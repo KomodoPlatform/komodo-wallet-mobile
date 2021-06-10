@@ -9,6 +9,25 @@ import AVFoundation
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
     var eventSink: FlutterEventSink?
+    var startArg: String?
+    var shouldRunInBg: Bool = false;
+    
+    func performStart() -> Int32 {
+        os_log("%{public}s", type: OSLogType.default, "START MM2 --------------------------------");
+        let error = Int32(mm2_main(startArg, { (line) in
+            let mm2log = ["log": "AppDelegate] " + String(cString: line!)]
+            NotificationCenter.default.post(name: .didReceiveData, object: nil, userInfo: mm2log)
+        }));
+        os_log("%{public}s", type: OSLogType.default, "START MM2: \(error) -----------------------------");
+        return error;
+    }
+    
+    func performStop() -> Int32 {
+        os_log("%{public}s", type: OSLogType.default, "STOP MM2 --------------------------------");
+        let error = Int32(mm2_stop());
+        os_log("%{public}s", type: OSLogType.default, "STOP MM2: \(error) -----------------------------");
+        return error;
+    }
     
     // Handle audio interruptions by Siri or calls.
     // Regular audio, like 'Apple Music' will be mixed with the app playback.
@@ -69,6 +88,7 @@ import AVFoundation
         
         mm2main.setMethodCallHandler ({(call: FlutterMethodCall, result: FlutterResult) -> Void in
                                         if call.method == "audio_bg" {
+                                            self.shouldRunInBg = true;
                                             let argDict = call.arguments as! Dictionary<String, Any>
                                             let path = argDict["path"] as! String
                                             result (Int (audio_bg (path)))
@@ -80,6 +100,8 @@ import AVFoundation
                                             let volume = NSNumber (value: call.arguments as! Double)
                                             result (Int (audio_volume (volume)))
                                         } else if call.method == "audio_stop" {
+                                            self.shouldRunInBg = false;
+                                            let _ = self.performStop();
                                             audio_bg ("")
                                             result (Int (audio_deactivate()))
                                         } else if call.method == "show_notification" {
@@ -108,22 +130,17 @@ import AVFoundation
                                             result(["level": level, "lowPowerMode": lowPowerMode, "charging": charging]);
                                         } else if call.method == "start" {
                                             guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
+                                            self.startArg = arg;
+                                            let error: Int32 = self.performStart();
                                             
-                                            print("START MM2 --------------------------------")
-                                            let error = Int32(mm2_main(arg, { (line) in
-                                                let mm2log = ["log": "AppDelegate] " + String(cString: line!)]
-                                                NotificationCenter.default.post(name: .didReceiveData, object: nil, userInfo: mm2log)
-                                            }));
-                                            //print(arg)
                                             result(error)
                                         } else if call.method == "status" {
                                             let ret = Int32(mm2_main_status());
                                             result(ret)
                                         } else if call.method == "stop" {
-                                            print("STOP MM2 --------------------------------")
-                                            let error = Int32(mm2_stop());
+                                            self.startArg = nil;
+                                            let error: Int32 = self.performStop();
 
-                                            print(error)
                                             result(error)
                                         } else if call.method == "lsof" {
                                             lsof()
@@ -179,8 +196,13 @@ import AVFoundation
         self.window?.addSubview(blurEffectView)
     }
     
+    public override func applicationDidEnterBackground(_ application: UIApplication) {
+        if !self.shouldRunInBg {let _ = performStop();}
+    }
+    
     public override func applicationDidBecomeActive(_ application: UIApplication) {
         signal(SIGPIPE, SIG_IGN)
+        if self.startArg != nil && !self.shouldRunInBg { let _ = performStart(); }
         self.window?.viewWithTag(61007)?.removeFromSuperview()
     }
     

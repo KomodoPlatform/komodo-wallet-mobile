@@ -433,7 +433,7 @@ class MMService {
   }
 
   Future<dynamic> maintainMm2BgExecution() async {
-    if (!Platform.isIOS) return;
+    if (!Platform.isWindows) return; // todo: implement on ios native side
 
     if (mainBloc.isInBackground) {
       if (_running && musicService.musicMode == MusicMode.SILENT) {
