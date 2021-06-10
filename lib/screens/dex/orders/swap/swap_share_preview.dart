@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:share/share.dart';
 
 class SwapSharePreview extends StatefulWidget {
   const SwapSharePreview({Key key, this.swap}) : super(key: key);
@@ -30,9 +31,9 @@ class _SwapSharePreviewState extends State<SwapSharePreview> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            RepaintBoundary(
-              key: repaintKey,
-              child: Center(
+            Center(
+              child: RepaintBoundary(
+                key: repaintKey,
                 child: Container(
                   width: 256,
                   height: 144,
@@ -206,6 +207,12 @@ class _SwapSharePreviewState extends State<SwapSharePreview> {
                     (await applicationDocumentsDirectory).path;
                 final imgFile = File('$directory/screenshot.png');
                 await imgFile.writeAsBytes(pngBytes);
+
+                Share.shareFiles(
+                  [imgFile.path],
+                  subject: 'Share',
+                  text: 'Example text',
+                );
               },
             ),
           ],
