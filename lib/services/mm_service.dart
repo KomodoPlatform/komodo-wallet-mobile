@@ -4,11 +4,8 @@ import 'dart:io';
 import 'dart:io' show File, Platform, Process;
 
 import 'package:flutter/foundation.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/model/startup_provider.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
-import 'package:komodo_dex/services/music_service.dart';
 import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
