@@ -433,7 +433,7 @@ class MMService {
     if (!Platform.isIOS) return;
 
     await pauseUntil(() async => await MM.isRpcUp());
-    initCoinsAndLoad();
+    initCoinsAndLoad(); // todo: implement on native side (Swift)
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {

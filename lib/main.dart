@@ -145,6 +145,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.inactive:
+        mainBloc.isInBackground = true;
         Log('main', 'lifecycle: inactive');
         lockService.lockSignal(context);
         break;
