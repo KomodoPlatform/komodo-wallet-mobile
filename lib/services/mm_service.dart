@@ -432,16 +432,11 @@ class MMService {
     return mm2StatusFrom(await checkStatusMm2());
   }
 
-  Future<dynamic> maintainMm2BgExecution() async {
-    if (!Platform.isWindows) return; // todo: implement on ios native side
+  Future<dynamic> handleWakeUp() async {
+    if (!Platform.isIOS) return;
 
-    if (mainBloc.isInBackground) {
-      if (_running && musicService.musicMode == MusicMode.SILENT) {
-        await stopmm2();
-      }
-    } else if (!(await MM.isRpcUp())) {
-      await startup.startMmIfUnlocked();
-    }
+    await pauseUntil(() async => await MM.isRpcUp());
+    initCoinsAndLoad();
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {

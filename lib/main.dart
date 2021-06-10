@@ -152,7 +152,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         Log('main', 'lifecycle: paused');
         mainBloc.isInBackground = true;
         lockService.lockSignal(context);
-        await mmSe.maintainMm2BgExecution();
         break;
       case AppLifecycleState.detached:
         Log('main', 'lifecycle: detached');
@@ -162,7 +161,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         Log('main', 'lifecycle: resumed');
         mainBloc.isInBackground = false;
         lockService.lockSignal(context);
-        await mmSe.maintainMm2BgExecution();
+        await mmSe.handleWakeUp();
         break;
     }
   }

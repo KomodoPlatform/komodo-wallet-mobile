@@ -290,7 +290,6 @@ class MusicService {
     }
 
     musicMode = newMode;
-    mmSe.maintainMm2BgExecution();
   }
 
   /// True when we want to periodically update the orders and swaps.

@@ -18,14 +18,14 @@ import AVFoundation
             let mm2log = ["log": "AppDelegate] " + String(cString: line!)]
             NotificationCenter.default.post(name: .didReceiveData, object: nil, userInfo: mm2log)
         }));
-        os_log("%{public}s", type: OSLogType.default, "START MM2: \(error) -----------------------------");
+        os_log("%{public}s", type: OSLogType.default, "START MM2 RESULT: \(error)");
         return error;
     }
     
     func performStop() -> Int32 {
         os_log("%{public}s", type: OSLogType.default, "STOP MM2 --------------------------------");
         let error = Int32(mm2_stop());
-        os_log("%{public}s", type: OSLogType.default, "STOP MM2: \(error) -----------------------------");
+        os_log("%{public}s", type: OSLogType.default, "STOP MM2 RESULT: \(error)");
         return error;
     }
     
@@ -100,8 +100,10 @@ import AVFoundation
                                             let volume = NSNumber (value: call.arguments as! Double)
                                             result (Int (audio_volume (volume)))
                                         } else if call.method == "audio_stop" {
-                                            self.shouldRunInBg = false;
-                                            let _ = self.performStop();
+                                            if self.shouldRunInBg {
+                                                self.shouldRunInBg = false;
+                                                let _ = self.performStop();
+                                            }
                                             audio_bg ("")
                                             result (Int (audio_deactivate()))
                                         } else if call.method == "show_notification" {
@@ -202,7 +204,7 @@ import AVFoundation
     
     public override func applicationDidBecomeActive(_ application: UIApplication) {
         signal(SIGPIPE, SIG_IGN)
-        if self.startArg != nil && !self.shouldRunInBg { let _ = performStart(); }
+        if self.startArg != nil { let _ = performStart(); }
         self.window?.viewWithTag(61007)?.removeFromSuperview()
     }
     
