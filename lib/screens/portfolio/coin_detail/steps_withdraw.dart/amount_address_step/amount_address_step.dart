@@ -116,9 +116,42 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
 
   void handleUri(Uri uri, [String barcode]) {
     final r = parsePaymentUri(uri);
+    final scheme = r['scheme'];
     final address = r['address'];
     final amount = r['amount'];
 
+    if (scheme == null) return;
+
+    if ((scheme == 'bitcoin' && widget.coin.abbr != 'BTC') ||
+        (scheme == 'ethereum' && widget.coin.abbr != 'ETH')) {
+      dialogBloc.dialog = showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              contentPadding: const EdgeInsets.all(24),
+              title: Text('Wrong coin'),
+              children: <Widget>[
+                Text('You are trying to scan a payment QR code for ' +
+                    scheme +
+                    ' but you are on the ' +
+                    widget.coin.abbr +
+                    ' withdraw screen'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Text('Ok'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ),
+              ],
+            );
+          });
+      return;
+    }
     if (address != null && address.isNotEmpty) {
       widget.addressController.text = address;
     } else if (barcode != null) {
