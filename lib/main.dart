@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/drawer/drawer.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
@@ -390,18 +391,57 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     if (coinBalance == null) return;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (context) => CoinDetail(
-            coinBalance: coinBalance,
-            isSendIsActive: true,
-            paymentUri: data.extraData,
-          ),
-        ),
-      );
+      final uri = Uri.tryParse(data.extraData);
+
+      final r = parsePaymentUri(uri);
+
+      final scheme = r['scheme'];
+      final address = r['address'];
+      final amount = r['amount'];
+
+      dialogBloc.dialog = showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              contentPadding: const EdgeInsets.all(24),
+              title: Text('Transaction Data'),
+              children: <Widget>[
+                Text('Coin: ' + (scheme ?? 'Unknow scheme')),
+                Text('Address: ' + (address ?? 'No address')),
+                Text('Amount: ' + (amount ?? 'No amount')),
+                Text('Do you accept this transaction?'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text('No'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    RaisedButton(
+                      child: Text('Yes'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.push<dynamic>(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (context) => CoinDetail(
+                              coinBalance: coinBalance,
+                              isSendIsActive: true,
+                              paymentUri: data.extraData,
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
+              ],
+            );
+          });
+      _intentDataProvider.emptyIntentData();
     });
-    _intentDataProvider.emptyIntentData();
   }
 
   Widget networkStatusStreamBuilder(AsyncSnapshot<int> snapshot,
