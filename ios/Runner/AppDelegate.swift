@@ -6,28 +6,38 @@ import os.log
 import UserNotifications
 import AVFoundation
 
+var startArg: String?
+var isMM2Down: Bool = false;
+
+@_cdecl("mymodule_foo")
+func setMM2Down() -> Void {
+    isMM2Down = true
+}
+
+let sigpipeHandler: @convention(c) (Int32) -> () = { sig in
+    setMM2Down()
+}
+
+func performStart() -> Int32 {
+    os_log("%{public}s", type: OSLogType.default, "START MM2 --------------------------------");
+    let error = Int32(mm2_main(startArg, { (line) in
+        let mm2log = ["log": "AppDelegate] " + String(cString: line!)]
+        NotificationCenter.default.post(name: .didReceiveData, object: nil, userInfo: mm2log)
+    }));
+    os_log("%{public}s", type: OSLogType.default, "START MM2 RESULT: \(error)");
+    return error;
+}
+
+func performStop() -> Int32 {
+    os_log("%{public}s", type: OSLogType.default, "STOP MM2 --------------------------------");
+    let error = Int32(mm2_stop());
+    os_log("%{public}s", type: OSLogType.default, "STOP MM2 RESULT: \(error)");
+    return error;
+}
+
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
     var eventSink: FlutterEventSink?
-    var startArg: String?
-    var shouldRunInBg: Bool = false;
-    
-    func performStart() -> Int32 {
-        os_log("%{public}s", type: OSLogType.default, "START MM2 --------------------------------");
-        let error = Int32(mm2_main(startArg, { (line) in
-            let mm2log = ["log": "AppDelegate] " + String(cString: line!)]
-            NotificationCenter.default.post(name: .didReceiveData, object: nil, userInfo: mm2log)
-        }));
-        os_log("%{public}s", type: OSLogType.default, "START MM2 RESULT: \(error)");
-        return error;
-    }
-    
-    func performStop() -> Int32 {
-        os_log("%{public}s", type: OSLogType.default, "STOP MM2 --------------------------------");
-        let error = Int32(mm2_stop());
-        os_log("%{public}s", type: OSLogType.default, "STOP MM2 RESULT: \(error)");
-        return error;
-    }
     
     // Handle audio interruptions by Siri or calls.
     // Regular audio, like 'Apple Music' will be mixed with the app playback.
@@ -63,6 +73,8 @@ import AVFoundation
     
     override func application (_ application: UIApplication,
                                didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        signal(SIGPIPE, sigpipeHandler)
+        
         guard let vc = window?.rootViewController as? FlutterViewController else {
             fatalError ("rootViewController is not type FlutterViewController")}
         let vcbm = vc as! FlutterBinaryMessenger
@@ -88,7 +100,6 @@ import AVFoundation
         
         mm2main.setMethodCallHandler ({(call: FlutterMethodCall, result: FlutterResult) -> Void in
                                         if call.method == "audio_bg" {
-                                            self.shouldRunInBg = true;
                                             let argDict = call.arguments as! Dictionary<String, Any>
                                             let path = argDict["path"] as! String
                                             result (Int (audio_bg (path)))
@@ -100,7 +111,6 @@ import AVFoundation
                                             let volume = NSNumber (value: call.arguments as! Double)
                                             result (Int (audio_volume (volume)))
                                         } else if call.method == "audio_stop" {
-                                            self.shouldRunInBg = false;
                                             audio_bg ("")
                                             result (Int (audio_deactivate()))
                                         } else if call.method == "show_notification" {
@@ -129,16 +139,16 @@ import AVFoundation
                                             result(["level": level, "lowPowerMode": lowPowerMode, "charging": charging]);
                                         } else if call.method == "start" {
                                             guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
-                                            self.startArg = arg;
-                                            let error: Int32 = self.performStart();
+                                            startArg = arg;
+                                            let error: Int32 = performStart();
                                             
                                             result(error)
                                         } else if call.method == "status" {
                                             let ret = Int32(mm2_main_status());
                                             result(ret)
                                         } else if call.method == "stop" {
-                                            self.startArg = nil;
-                                            let error: Int32 = self.performStop();
+                                            startArg = nil;
+                                            let error: Int32 = performStop();
 
                                             result(error)
                                         } else if call.method == "lsof" {
@@ -195,18 +205,24 @@ import AVFoundation
         self.window?.addSubview(blurEffectView)
     }
     
-    public override func applicationDidEnterBackground(_ application: UIApplication) {
-        if !self.shouldRunInBg {let _ = performStop();}
-    }
-    
     public override func applicationDidBecomeActive(_ application: UIApplication) {
-        signal(SIGPIPE, SIG_IGN)
-        if self.startArg != nil { let _ = performStart(); }
         self.window?.viewWithTag(61007)?.removeFromSuperview()
-    }
-    
-    override func applicationWillEnterForeground(_ application: UIApplication) {
-        signal(SIGPIPE, SIG_IGN)
+        
+        if isMM2Down {
+            let _ = performStop()
+            
+            if startArg != nil {
+                var ticker: Int = 0
+                // wait until mm2 stopped, but continue after 3s anyway
+                while(mm2_main_status() != 0 && ticker < 30) {
+                    usleep(100000) // 0.1s
+                    ticker += 1
+                }
+                let _ = performStart()
+            }
+            
+            isMM2Down = false
+        }
     }
 }
 
