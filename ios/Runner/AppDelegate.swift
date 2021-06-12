@@ -208,20 +208,23 @@ func performStop() -> Int32 {
     public override func applicationDidBecomeActive(_ application: UIApplication) {
         self.window?.viewWithTag(61007)?.removeFromSuperview()
         
-        if isMM2Down {
+        restartMM2IfNeeded()
+    }
+    
+    func restartMM2IfNeeded() {
+        if startArg == nil {return}
+        
+        if isMM2Down || mm2_main_status() == 0 {
             let _ = performStop()
             
-            if startArg != nil {
-                var ticker: Int = 0
-                // wait until mm2 stopped, but continue after 3s anyway
-                while(mm2_main_status() != 0 && ticker < 30) {
-                    usleep(100000) // 0.1s
-                    ticker += 1
-                }
-                let _ = performStart()
+            var ticker: Int = 0
+            // wait until mm2 stopped, but continue after 3s anyway
+            while(mm2_main_status() != 0 && ticker < 30) {
+                usleep(100000) // 0.1s
+                ticker += 1
             }
             
-            isMM2Down = false
+            if performStart() == 0 { isMM2Down = false }
         }
     }
 }

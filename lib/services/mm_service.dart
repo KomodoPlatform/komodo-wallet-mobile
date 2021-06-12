@@ -431,9 +431,15 @@ class MMService {
 
   Future<dynamic> handleWakeUp() async {
     if (!Platform.isIOS) return;
+    if (!running) return;
 
+    /// Wait until mm2 is up, in case it was restarted from Swift
     await pauseUntil(() async => await MM.isRpcUp());
-    initCoinsAndLoad(); // todo: implement on native side (Swift)
+
+    /// If [running], but enabled coins list is empty,
+    /// it means that mm2 was restarted from Swift, and we
+    /// should reenable active coins ones again
+    if ((await MM.getEnabledCoins()).isEmpty) initCoinsAndLoad();
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
