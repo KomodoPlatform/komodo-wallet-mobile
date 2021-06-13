@@ -6,32 +6,32 @@ import os.log
 import UserNotifications
 import AVFoundation
 
-var startArg: String?
-var isMM2Down: Bool = false;
+var mm2StartArgs: String?
+var shouldRestartMM2: Bool = false;
 
 @_cdecl("mymodule_foo")
-func setMM2Down() -> Void {
-    isMM2Down = true
+func queueMM2Restart() -> Void {
+    shouldRestartMM2 = true
 }
 
 let sigpipeHandler: @convention(c) (Int32) -> () = { sig in
-    setMM2Down()
+    queueMM2Restart()
 }
 
-func performStart() -> Int32 {
+func performMM2Start() -> Int32 {
     os_log("%{public}s", type: OSLogType.default, "START MM2 --------------------------------");
-    let error = Int32(mm2_main(startArg, { (line) in
+    let error = Int32(mm2_main(mm2StartArgs, { (line) in
         let mm2log = ["log": "AppDelegate] " + String(cString: line!)]
         NotificationCenter.default.post(name: .didReceiveData, object: nil, userInfo: mm2log)
     }));
-    os_log("%{public}s", type: OSLogType.default, "START MM2 RESULT: \(error)");
+    os_log("%{public}s", type: OSLogType.default, "START MM2 RESULT: \(error) ---------------");
     return error;
 }
 
-func performStop() -> Int32 {
+func performMM2Stop() -> Int32 {
     os_log("%{public}s", type: OSLogType.default, "STOP MM2 --------------------------------");
     let error = Int32(mm2_stop());
-    os_log("%{public}s", type: OSLogType.default, "STOP MM2 RESULT: \(error)");
+    os_log("%{public}s", type: OSLogType.default, "STOP MM2 RESULT: \(error) ---------------");
     return error;
 }
 
@@ -139,16 +139,16 @@ func performStop() -> Int32 {
                                             result(["level": level, "lowPowerMode": lowPowerMode, "charging": charging]);
                                         } else if call.method == "start" {
                                             guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
-                                            startArg = arg;
-                                            let error: Int32 = performStart();
+                                            mm2StartArgs = arg;
+                                            let error: Int32 = performMM2Start();
                                             
                                             result(error)
                                         } else if call.method == "status" {
                                             let ret = Int32(mm2_main_status());
                                             result(ret)
                                         } else if call.method == "stop" {
-                                            startArg = nil;
-                                            let error: Int32 = performStop();
+                                            mm2StartArgs = nil;
+                                            let error: Int32 = performMM2Stop();
 
                                             result(error)
                                         } else if call.method == "lsof" {
@@ -212,10 +212,10 @@ func performStop() -> Int32 {
     }
     
     func restartMM2IfNeeded() {
-        if startArg == nil {return}
+        if mm2StartArgs == nil {return}
         
-        if isMM2Down || mm2_main_status() == 0 {
-            let _ = performStop()
+        if shouldRestartMM2 || mm2_main_status() == 0 {
+            let _ = performMM2Stop()
             
             var ticker: Int = 0
             // wait until mm2 stopped, but continue after 3s anyway
@@ -224,7 +224,7 @@ func performStop() -> Int32 {
                 ticker += 1
             }
             
-            if performStart() == 0 { isMM2Down = false }
+            if performMM2Start() == 0 { shouldRestartMM2 = false }
         }
     }
 }

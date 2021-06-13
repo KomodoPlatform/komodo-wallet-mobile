@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -282,7 +281,6 @@ class MusicService {
         final int response =
             await MMService.nativeC.invokeMethod<int>('audio_stop');
         if (response != 0) Log('music_service', 'audio_stop: $response');
-        if (mainBloc.isInBackground) await mmSe.stopmm2();
       } else {
         // Loop the file in background.
         final rc = await MMService.nativeC
