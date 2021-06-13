@@ -81,12 +81,12 @@ class MusicService {
 
   /// Pick the current music mode based on the list of all the orders and SWAPs.
   MusicMode _pickMode(List<Order> orders, MusicMode prevMode) {
-    if (_anyNewSuccessfulSwaps()) {
+    if (prevMode == MusicMode.ACTIVE && _anyNewSuccessfulSwaps()) {
       Log('music_service]', 'pickMode: MusicMode.APPLAUSE');
       return MusicMode.APPLAUSE;
     }
 
-    if (_anyNewFailedSwaps()) {
+    if (prevMode == MusicMode.ACTIVE && _anyNewFailedSwaps()) {
       Log('music_service]', 'pickMode: MusicMode.FAILED');
       return MusicMode.FAILED;
     }
