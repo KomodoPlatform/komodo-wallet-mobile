@@ -548,6 +548,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                       : () async {
                           setState(() => _inProgress = true);
 
+                          await showSoundsDialog(context);
+
                           await tradeForm.makeSwap(
                             buyOrderType: _buyOrderType,
                             protectionSettings: _protectionSettings,
@@ -619,8 +621,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           builder: (BuildContext context) => SwapDetailPage(swap: swapEgg),
         ),
       );
-
-      showSoundsDialog(context);
     } else {
       Navigator.of(context).pop();
       showOrderCreatedDialog(context);
