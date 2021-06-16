@@ -260,6 +260,7 @@ class ApiProvider {
               coin: coin.abbr,
               txHistory: true,
               swapContractAddress: coin.swapContractAddress,
+              fallbackSwapContract: coin.fallbackSwapContract,
               urls: coin.serverList)
           .toJson());
 
