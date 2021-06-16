@@ -53,7 +53,13 @@ Future<LinkedHashMap<String, Coin>> get coins async {
 }
 
 class Coin {
-  Coin({this.type, this.abbr, this.swapContractAddress, this.serverList});
+  Coin({
+    this.type,
+    this.abbr,
+    this.swapContractAddress,
+    this.fallbackSwapContract,
+    this.serverList,
+  });
 
   /// Construct the coin from two JSON maps:
   /// [init] is from coins_init_mm2.json, an exact copy of https://github.com/jl777/coins/blob/master/coins;
