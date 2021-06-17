@@ -229,17 +229,24 @@ class TradeForm {
   double _getMaxSellAmount() {
     if (swapBloc.sellCoinBalance == null) return null;
 
-    final double fromPreimage = _getMaxFromPreimage();
-    if (fromPreimage != null) return fromPreimage;
-
     if (swapBloc.matchingBid != null && swapBloc.maxTakerVolume != null) {
-      return double.parse(
-          swapBloc.maxTakerVolume.toDouble().toStringAsFixed(precision));
+      /// maxTakerVolume should be floored to [precision]
+      /// instead of rounding
+      double maxTakerVolume = swapBloc.maxTakerVolume.toDouble();
+      maxTakerVolume =
+          (maxTakerVolume * pow(10, precision)).floor() / pow(10, precision);
+      return maxTakerVolume;
     }
 
-    return double.tryParse(
+    final double fromPreimage = _getMaxFromPreimage();
+    if (fromPreimage != null) {
+      return fromPreimage;
+    }
+
+    final double sellCoinBalance = double.tryParse(
         swapBloc.sellCoinBalance.balance.balance.toStringAsFixed(precision) ??
             '0');
+    return sellCoinBalance;
   }
 
   double _getMaxFromPreimage() {
