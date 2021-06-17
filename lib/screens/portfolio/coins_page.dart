@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -6,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -487,12 +490,47 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                       AppLocalizations.of(context).noInternet),
                                 ));
                               } else {
-                                Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          const SelectCoinsPage()),
-                                );
+                                final numCoinsEnabled =
+                                    coinsBloc.coinBalance.length;
+                                final maxCoinPerPlatform = Platform.isAndroid
+                                    ? appConfig.maxCoinsEnabledAndroid
+                                    : appConfig.maxCoinEnabledIOS;
+                                if (numCoinsEnabled >= maxCoinPerPlatform) {
+                                  dialogBloc.closeDialog(context);
+                                  dialogBloc.dialog = showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(AppLocalizations.of(context)
+                                            .tooManyAssetsEnabledTitle),
+                                        content: Text(
+                                            AppLocalizations.of(context)
+                                                    .tooManyAssetsEnabledSpan1 +
+                                                numCoinsEnabled.toString() +
+                                                AppLocalizations.of(context)
+                                                    .tooManyAssetsEnabledSpan2 +
+                                                maxCoinPerPlatform.toString() +
+                                                AppLocalizations.of(context)
+                                                    .tooManyAssetsEnabledSpan3),
+                                        actions: [
+                                          FlatButton(
+                                            child: Text('OK'),
+                                            onPressed: () {
+                                              dialogBloc.closeDialog(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  Navigator.push<dynamic>(
+                                    context,
+                                    MaterialPageRoute<dynamic>(
+                                        builder: (BuildContext context) =>
+                                            const SelectCoinsPage()),
+                                  );
+                                }
                               }
                             },
                           )),
