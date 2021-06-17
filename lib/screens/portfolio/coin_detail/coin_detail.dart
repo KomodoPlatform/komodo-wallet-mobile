@@ -44,7 +44,7 @@ class CoinDetail extends StatefulWidget {
 
   final CoinBalance coinBalance;
   final bool isSendIsActive;
-  final String paymentUri;
+  final Uri paymentUri;
 
   @override
   _CoinDetailState createState() => _CoinDetailState();

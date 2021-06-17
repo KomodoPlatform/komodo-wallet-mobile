@@ -540,11 +540,22 @@ void printError(String text) {
   print('\x1B[31m$text\x1B[0m');
 }
 
-Map<String, String> parsePaymentUri(Uri uri) {
+class PaymentUriInfo {
+  PaymentUriInfo({this.scheme, this.abbr, this.address, this.amount});
+
+  final String scheme;
+  final String abbr;
+  final String address;
+  final String amount;
+}
+
+PaymentUriInfo parsePaymentUri(Uri uri) {
   String address;
   double amount;
+  String abbr;
 
   if (uri.scheme == 'bitcoin') {
+    abbr = 'BTC';
     if (uri != null) {
       if (uri.path != null && uri.pathSegments.isNotEmpty)
         address = uri.pathSegments[0];
@@ -554,6 +565,7 @@ Map<String, String> parsePaymentUri(Uri uri) {
       }
     }
   } else if (uri.scheme == 'ethereum') {
+    abbr = 'ETH';
     if (uri != null) {
       if (uri.path != null && uri.pathSegments.isNotEmpty)
         address = uri.pathSegments[0];
@@ -565,9 +577,50 @@ Map<String, String> parsePaymentUri(Uri uri) {
     }
   }
 
-  return {
-    'scheme': uri.scheme,
-    'address': address,
-    'amount': amount?.toString(),
-  };
+  return PaymentUriInfo(
+    scheme: uri.scheme,
+    abbr: abbr,
+    address: address,
+    amount: amount?.toString(),
+  );
+}
+
+void showUriDetailsDialog(
+    BuildContext context, Uri uri, VoidCallback callbackIfAccepted) {
+  final r = parsePaymentUri(uri);
+
+  dialogBloc.dialog = showDialog(
+    context: context,
+    builder: (context) {
+      return SimpleDialog(
+        contentPadding: const EdgeInsets.all(24),
+        title: Text('Transaction Data'),
+        children: <Widget>[
+          Text('Scheme: ' + r.scheme ?? 'Unknown scheme'),
+          Text('Coin: ' + (r.abbr ?? 'Unknow abbr')),
+          Text('Address: ' + (r.address ?? 'No address')),
+          Text('Amount: ' + (r.amount ?? 'No amount')),
+          Text('Do you accept this transaction?'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              FlatButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              RaisedButton(
+                child: Text('Yes'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  callbackIfAccepted();
+                },
+              )
+            ],
+          ),
+        ],
+      );
+    },
+  );
 }

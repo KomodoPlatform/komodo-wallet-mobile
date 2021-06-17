@@ -16,10 +16,10 @@ class IntentDataProvider extends ChangeNotifier {
     final uri = Uri.tryParse(js);
     if (uri == null) return;
 
-    final map = parsePaymentUri(uri);
+    final r = parsePaymentUri(uri);
 
     ScreenSelection screen;
-    switch (map['scheme']) {
+    switch (r.scheme) {
       case 'bitcoin':
         screen = ScreenSelection.Bitcoin;
         break;
@@ -32,7 +32,7 @@ class IntentDataProvider extends ChangeNotifier {
 
     final nd = IntentData(
       screen: screen,
-      extraData: uri.toString(),
+      extraData: js.toString(),
     );
 
     _intentData = nd;

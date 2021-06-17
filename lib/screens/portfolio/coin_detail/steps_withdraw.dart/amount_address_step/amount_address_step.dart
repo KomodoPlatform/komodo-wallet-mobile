@@ -15,6 +15,7 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:decimal/decimal.dart';
 
 class AmountAddressStep extends StatefulWidget {
   const AmountAddressStep(
@@ -38,7 +39,7 @@ class AmountAddressStep extends StatefulWidget {
   final TextEditingController addressController;
   final bool autoFocus;
   final Coin coin;
-  final String paymentUri;
+  final Uri paymentUri;
 
   @override
   _AmountAddressStepState createState() => _AmountAddressStepState();
@@ -53,9 +54,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final uri = Uri.tryParse(widget.paymentUri);
-
-      handleUri(uri);
+      handleUri(widget.paymentUri);
     });
   }
 
@@ -116,92 +115,99 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
 
   void handleUri(Uri uri, [String barcode]) {
     final r = parsePaymentUri(uri);
-    final scheme = r['scheme'];
-    final address = r['address'];
-    final amount = r['amount'];
 
-    if (scheme == null) return;
+    if (r.scheme == null) return;
 
-    if ((scheme == 'bitcoin' && widget.coin.abbr != 'BTC') ||
-        (scheme == 'ethereum' && widget.coin.abbr != 'ETH')) {
-      dialogBloc.dialog = showDialog(
-          context: context,
-          builder: (context) {
-            return SimpleDialog(
-              contentPadding: const EdgeInsets.all(24),
-              title: Text('Wrong coin'),
-              children: <Widget>[
-                Text('You are trying to scan a payment QR code for ' +
-                    scheme +
-                    ' but you are on the ' +
-                    widget.coin.abbr +
-                    ' withdraw screen'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    RaisedButton(
-                      child: Text('Ok'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ],
-                ),
-              ],
-            );
-          });
+    if (r.abbr != widget.coin.abbr) {
+      showWrongCoinDialog(r);
       return;
     }
-    if (address != null && address.isNotEmpty) {
-      widget.addressController.text = address;
-    } else if (barcode != null) {
-      widget.addressController.text = barcode;
-    }
-    if (amount != null) {
-      final coinBalance = coinsBloc.coinBalance.firstWhere(
-          (cb) => cb.coin.abbr == widget.coin.abbr,
-          orElse: () => null);
-      final amountDecimal = deci(amount);
 
-      if (coinBalance != null && coinBalance.balance.balance >= amountDecimal) {
-        widget.amountController.text = amount.toString();
-      } else {
-        dialogBloc.dialog = showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return SimpleDialog(
-                title: Text(
-                    AppLocalizations.of(context).uriInsufficientBalanceTitle),
-                contentPadding: EdgeInsets.all(24),
+    showUriDetailsDialog(context, uri, () {
+      if (r.address != null && r.address.isNotEmpty) {
+        widget.addressController.text = r.address;
+      } else if (barcode != null) {
+        widget.addressController.text = barcode;
+      }
+      if (r.amount != null) {
+        final coinBalance = coinsBloc.coinBalance.firstWhere(
+            (cb) => cb.coin.abbr == widget.coin.abbr,
+            orElse: () => null);
+        final amountDecimal = deci(r.amount);
+
+        if (coinBalance != null &&
+            coinBalance.balance.balance >= amountDecimal) {
+          widget.amountController.text = r.amount;
+        } else {
+          showinsufficientBalanceDialog(amountDecimal);
+        }
+      }
+    });
+  }
+
+  void showWrongCoinDialog(PaymentUriInfo r) {
+    dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            contentPadding: const EdgeInsets.all(24),
+            title: Text('Wrong coin'),
+            children: <Widget>[
+              Text('You are trying to scan a payment QR code for ' +
+                  r.abbr +
+                  ' but you are on the ' +
+                  widget.coin.abbr +
+                  ' withdraw screen'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).uriInsufficientBalanceSpan1 +
-                        '${deci2s(amountDecimal)} ${widget.coin.abbr}' +
-                        AppLocalizations.of(context)
-                            .uriInsufficientBalanceSpan2,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      RaisedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                          AppLocalizations.of(context).warningOkBtn,
-                          style: Theme.of(context)
-                              .textTheme
-                              .button
-                              .copyWith(color: Colors.white),
-                        ),
-                      )
-                    ],
+                  RaisedButton(
+                    child: Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   )
                 ],
-              );
-            });
-      }
-    }
+              ),
+            ],
+          );
+        });
+  }
+
+  void showinsufficientBalanceDialog(Decimal amount) {
+    dialogBloc.dialog = showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(AppLocalizations.of(context).uriInsufficientBalanceTitle),
+          contentPadding: EdgeInsets.all(24),
+          children: <Widget>[
+            Text(
+              AppLocalizations.of(context).uriInsufficientBalanceSpan1 +
+                  '${deci2s(amount)} ${widget.coin.abbr}' +
+                  AppLocalizations.of(context).uriInsufficientBalanceSpan2,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    AppLocalizations.of(context).warningOkBtn,
+                    style: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(color: Colors.white),
+                  ),
+                )
+              ],
+            )
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildWithdrawButton(BuildContext context) {
