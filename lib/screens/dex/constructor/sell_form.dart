@@ -23,7 +23,7 @@ class _SellFormState extends State<SellForm> {
       _constrProvider.addListener(_onDataChange);
       _sellAmtCtrl.addListener(_onAmtFieldChange);
 
-      _onDataChange();
+      _fillForm();
     });
     super.initState();
   }
@@ -177,5 +177,10 @@ class _SellFormState extends State<SellForm> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _constrProvider.onSellAmtFieldChange(_sellAmtCtrl.text);
     });
+  }
+
+  void _fillForm() {
+    _onDataChange();
+    setState(() {});
   }
 }
