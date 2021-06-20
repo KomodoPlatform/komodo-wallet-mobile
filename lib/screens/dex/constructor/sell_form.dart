@@ -40,7 +40,6 @@ class _SellFormState extends State<SellForm> {
           _buildCoin(),
           SizedBox(height: 8),
           _buildAmt(),
-          SizedBox(height: 4),
           _buildButtons(),
         ],
       ),
@@ -71,19 +70,20 @@ class _SellFormState extends State<SellForm> {
     final bool isActive = formattedButtonAmt == _sellAmtCtrl.text;
 
     return Expanded(
-      child: Material(
-        color: isActive
-            ? Theme.of(context).highlightColor
-            : Theme.of(context).primaryColor,
-        child: InkWell(
-          onTap: isActive
-              ? null
-              : () {
-                  _constrProvider.sellAmount = buttonAmt;
-                },
+      child: GestureDetector(
+        onTap: isActive
+            ? null
+            : () {
+                _constrProvider.sellAmount = buttonAmt;
+              },
+        child: Container(
+          padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
           child: Container(
             alignment: Alignment(0, 0),
-            padding: EdgeInsets.fromLTRB(1, 2, 1, 2),
+            color: isActive
+                ? Theme.of(context).highlightColor
+                : Theme.of(context).primaryColor,
+            padding: EdgeInsets.fromLTRB(1, 3, 1, 3),
             child: Text(
               '${cutTrailingZeros(pct.toString())}%',
               style: TextStyle(
