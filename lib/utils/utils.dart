@@ -94,7 +94,18 @@ Rational fract2rat(Map<String, dynamic> fract) {
       int.parse(fract['denom']),
     );
     return rat;
-  } catch (_) {
+  } catch (e) {
+    Log('utils', 'fract2rat: $e');
+    return null;
+  }
+}
+
+Rational deci2rat(Decimal decimal) {
+  try {
+    final rat = Rational.parse(decimal.toString());
+    return rat;
+  } catch (e) {
+    Log('utils', 'deci2rat: $e');
     return null;
   }
 }

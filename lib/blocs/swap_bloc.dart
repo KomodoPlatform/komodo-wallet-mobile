@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:decimal/decimal.dart';
+import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/get_max_taker_volume.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -121,7 +121,7 @@ class SwapBloc implements BlocBase {
   void setAmountSell(double amount) {
     final double rounded = amount == null
         ? null
-        : double.parse(amount.toStringAsFixed(tradeForm.precision));
+        : double.parse(amount.toStringAsFixed(appConfig.tradeFormPrecision));
     amountSell = rounded;
     _inAmountSell.add(amountSell);
   }
@@ -129,7 +129,7 @@ class SwapBloc implements BlocBase {
   void setAmountReceive(double amount) {
     final double rounded = amount == null
         ? null
-        : double.parse(amount.toStringAsFixed(tradeForm.precision));
+        : double.parse(amount.toStringAsFixed(appConfig.tradeFormPrecision));
     amountReceive = rounded;
     _inAmountReceive.add(amountReceive);
   }

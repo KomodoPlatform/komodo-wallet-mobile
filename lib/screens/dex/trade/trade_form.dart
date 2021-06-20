@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/get_min_trading_volume.dart';
 import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
@@ -19,7 +20,6 @@ import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class TradeForm {
-  final int precision = 8;
   Timer _typingTimer;
 
   Future<void> onSellAmountFieldChange(String text) async {
@@ -233,13 +233,14 @@ class TradeForm {
     if (fromPreimage != null) return fromPreimage;
 
     if (swapBloc.matchingBid != null && swapBloc.maxTakerVolume != null) {
-      return double.parse(
-          swapBloc.maxTakerVolume.toDouble().toStringAsFixed(precision));
+      return double.parse(swapBloc.maxTakerVolume
+          .toDouble()
+          .toStringAsFixed(appConfig.tradeFormPrecision));
     }
 
-    return double.tryParse(
-        swapBloc.sellCoinBalance.balance.balance.toStringAsFixed(precision) ??
-            '0');
+    return double.tryParse(swapBloc.sellCoinBalance.balance.balance
+            .toStringAsFixed(appConfig.tradeFormPrecision) ??
+        '0');
   }
 
   double _getMaxFromPreimage() {
@@ -250,7 +251,8 @@ class TradeForm {
     final String volume = preimage.volume;
     if (volume != null) {
       final double volumeDouble = double.tryParse(volume);
-      return double.parse(volumeDouble.toStringAsFixed(precision));
+      return double.parse(
+          volumeDouble.toStringAsFixed(appConfig.tradeFormPrecision));
     }
 
     // If tradePreimage doesn't contain volume - trying to calculate it
@@ -261,7 +263,8 @@ class TradeForm {
     final double calculatedVolume =
         swapBloc.sellCoinBalance.balance.balance.toDouble() -
             (double.tryParse(totalSellCoinFee?.amount ?? '0') ?? 0.0);
-    return double.parse(calculatedVolume.toStringAsFixed(precision));
+    return double.parse(
+        calculatedVolume.toStringAsFixed(appConfig.tradeFormPrecision));
   }
 
   // Updates swapBloc.tradePreimage and returns error String or null

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -39,9 +40,9 @@ class _SellAmountFieldState extends State<SellAmountField> {
       key: Key('input-text-sell'),
       scrollPadding: const EdgeInsets.only(left: 35),
       inputFormatters: <TextInputFormatter>[
-        DecimalTextInputFormatter(decimalRange: tradeForm.precision),
+        DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),
         FilteringTextInputFormatter.allow(RegExp(
-            '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${tradeForm.precision}})?\$'))
+            '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
       ],
       controller: _ctrl,
       enabled: swapBloc.enabledSellField,
@@ -75,6 +76,8 @@ class _SellAmountFieldState extends State<SellAmountField> {
 
     _ctrl.setTextAndPosition(value == null
         ? ''
-        : cutTrailingZeros(value.toStringAsFixed(tradeForm.precision)) ?? '');
+        : cutTrailingZeros(
+                value.toStringAsFixed(appConfig.tradeFormPrecision)) ??
+            '');
   }
 }

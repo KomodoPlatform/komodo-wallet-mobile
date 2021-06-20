@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
+import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +14,17 @@ class SellForm extends StatefulWidget {
 }
 
 class _SellFormState extends State<SellForm> {
+  final _sellAmtCtrl = TextEditingControllerWorkaroud();
   ConstructorProvider _constrProvider;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _constrProvider.addListener(_onDataChange);
+      _sellAmtCtrl.addListener(_onAmtFieldChange);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +60,24 @@ class _SellFormState extends State<SellForm> {
   }
 
   Widget _buildButton(double pct) {
+    final Rational buttonAmt = _constrProvider.maxSellAmt *
+        Rational.parse('$pct') /
+        Rational.parse('100');
+    final String formattedButtonAmt = cutTrailingZeros(
+        buttonAmt.toStringAsFixed(appConfig.tradeFormPrecision));
+    final bool isActive = formattedButtonAmt == _sellAmtCtrl.text;
+
     return Expanded(
       child: Material(
-        color: Theme.of(context).primaryColor,
+        color: isActive
+            ? Theme.of(context).highlightColor
+            : Theme.of(context).primaryColor,
         child: InkWell(
-          onTap: () {},
+          onTap: isActive
+              ? null
+              : () {
+                  _constrProvider.sellAmount = buttonAmt;
+                },
           child: Container(
             alignment: Alignment(0, 0),
             padding: EdgeInsets.fromLTRB(1, 2, 1, 2),
@@ -64,7 +89,7 @@ class _SellFormState extends State<SellForm> {
                       .textTheme
                       .bodyText1
                       .color
-                      .withAlpha(180)),
+                      .withAlpha(isActive ? 200 : 180)),
               maxLines: 1,
             ),
           ),
@@ -75,11 +100,12 @@ class _SellFormState extends State<SellForm> {
 
   Widget _buildAmt() {
     return TextFormField(
+        controller: _sellAmtCtrl,
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         inputFormatters: <TextInputFormatter>[
-          DecimalTextInputFormatter(decimalRange: tradeForm.precision),
+          DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),
           FilteringTextInputFormatter.allow(RegExp(
-              '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${tradeForm.precision}})?\$'))
+              '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
         ],
         decoration: InputDecoration(
           isDense: true,
@@ -127,5 +153,26 @@ class _SellFormState extends State<SellForm> {
             )),
       ),
     );
+  }
+
+  void _onDataChange() {
+    if (_constrProvider.sellAmount == null) {
+      _sellAmtCtrl.text = '';
+      return;
+    }
+
+    final String newFormatted = cutTrailingZeros(_constrProvider.sellAmount
+        .toStringAsFixed(appConfig.tradeFormPrecision));
+    final String currentFormatted = cutTrailingZeros(_sellAmtCtrl.text);
+
+    if (currentFormatted != newFormatted) {
+      _sellAmtCtrl.setTextAndPosition(newFormatted);
+    }
+  }
+
+  void _onAmtFieldChange() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _constrProvider.onSellAmtFieldChange(_sellAmtCtrl.text);
+    });
   }
 }
