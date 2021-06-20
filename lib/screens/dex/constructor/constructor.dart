@@ -31,17 +31,13 @@ class _SwapConstructorState extends State<SwapConstructor> {
         return Container(
           padding: EdgeInsets.fromLTRB(12, 12, 0, 12),
           child: Column(
-            mainAxisSize: MainAxisSize.max,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
+              Flexible(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(child: _buildSell()),
-                    VerticalDivider(
-                      color: Theme.of(context).highlightColor,
-                      width: 2,
-                    ),
                     SizedBox(width: 12),
                     Expanded(child: _buildBuy()),
                   ],
@@ -57,16 +53,31 @@ class _SwapConstructorState extends State<SwapConstructor> {
   Widget _buildSell() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           'Sell:',
           style: Theme.of(context).textTheme.subtitle2,
         ),
         SizedBox(height: 6),
-        Expanded(
-          child: _constrProvider.sellCoin == null
-              ? CoinsList(type: CoinType.base)
-              : SellForm(),
+        Flexible(
+          child: Stack(
+            overflow: Overflow.visible,
+            children: [
+              _constrProvider.sellCoin == null
+                  ? CoinsList(type: CoinType.base)
+                  : SellForm(),
+              Positioned(
+                child: Container(
+                  color: Theme.of(context).primaryColor,
+                ),
+                right: -1,
+                width: 2,
+                top: 0,
+                bottom: 0,
+              )
+            ],
+          ),
         ),
       ],
     );
@@ -81,11 +92,24 @@ class _SwapConstructorState extends State<SwapConstructor> {
           style: Theme.of(context).textTheme.subtitle2,
         ),
         SizedBox(height: 6),
-        Expanded(
-          child: _constrProvider.buyCoin == null
-              ? CoinsList(type: CoinType.rel)
-              : BuyForm(),
-        ),
+        Flexible(
+            child: Stack(
+          overflow: Overflow.visible,
+          children: [
+            _constrProvider.buyCoin == null
+                ? CoinsList(type: CoinType.rel)
+                : BuyForm(),
+            Positioned(
+              child: Container(
+                color: Theme.of(context).primaryColor,
+              ),
+              left: -13,
+              width: 2,
+              top: 0,
+              bottom: 0,
+            )
+          ],
+        ))
       ],
     );
   }

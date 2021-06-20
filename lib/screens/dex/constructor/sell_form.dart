@@ -33,6 +33,7 @@ class _SellFormState extends State<SellForm> {
     return Padding(
       padding: EdgeInsets.only(right: 12),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           _buildCoin(),
           SizedBox(height: 8),

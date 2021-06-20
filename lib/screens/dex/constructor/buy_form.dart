@@ -13,6 +13,7 @@ class _BuyFormState extends State<BuyForm> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         _buildCoin(),
       ],

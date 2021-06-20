@@ -36,6 +36,7 @@ class _CoinsListState extends State<CoinsList> {
     final List<Coin> coins = _getCoins();
 
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: coins.length,
       itemBuilder: (context, i) {
         return _buildCoinItem(coins[i]);
