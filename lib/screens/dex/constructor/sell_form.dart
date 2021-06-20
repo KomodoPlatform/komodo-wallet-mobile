@@ -22,6 +22,8 @@ class _SellFormState extends State<SellForm> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _constrProvider.addListener(_onDataChange);
       _sellAmtCtrl.addListener(_onAmtFieldChange);
+
+      _onDataChange();
     });
     super.initState();
   }

@@ -12,6 +12,7 @@ class ConstructorProvider extends ChangeNotifier {
   String get sellCoin => _sellCoin;
   set sellCoin(String value) {
     _sellCoin = value;
+    _sellAmount = null;
     notifyListeners();
   }
 
