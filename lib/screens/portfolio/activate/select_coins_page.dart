@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/portfolio/activate/build_item_coin.dart';
 import 'package:komodo_dex/screens/portfolio/activate/build_type_header.dart';
@@ -224,7 +227,42 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   }
 
   void _pressDoneButton() {
-    setState(() => _isDone = true);
-    coinsBloc.activateCoinsSelected();
+    final numCoinsEnabled = coinsBloc.coinBalance.length;
+    final numCoinsTryingEnable =
+        coinsBloc.coinBeforeActivation.where((c) => c.isActive).toList().length;
+    final maxCoinPerPlatform = Platform.isAndroid
+        ? appConfig.maxCoinsEnabledAndroid
+        : appConfig.maxCoinEnabledIOS;
+    if (numCoinsEnabled + numCoinsTryingEnable > maxCoinPerPlatform) {
+      dialogBloc.closeDialog(context);
+      dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title:
+                Text(AppLocalizations.of(context).enablingTooManyAssetsTitle),
+            content: Text(
+                AppLocalizations.of(context).enablingTooManyAssetsSpan1 +
+                    numCoinsEnabled.toString() +
+                    AppLocalizations.of(context).enablingTooManyAssetsSpan2 +
+                    numCoinsTryingEnable.toString() +
+                    AppLocalizations.of(context).enablingTooManyAssetsSpan3 +
+                    maxCoinPerPlatform.toString() +
+                    AppLocalizations.of(context).enablingTooManyAssetsSpan4),
+            actions: [
+              FlatButton(
+                child: Text(AppLocalizations.of(context).warningOkBtn),
+                onPressed: () {
+                  dialogBloc.closeDialog(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      setState(() => _isDone = true);
+      coinsBloc.activateCoinsSelected();
+    }
   }
 }
