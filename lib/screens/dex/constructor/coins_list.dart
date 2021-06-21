@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/screens/dex/constructor/coins_list_best.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list_depths.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
@@ -29,7 +30,7 @@ class _CoinsListState extends State<CoinsList> {
     if (_counterAmount == null) {
       return CoinsListDepths(type: widget.type);
     } else {
-      return SizedBox();
+      return CoinsListBest(type: widget.type);
     }
   }
 }

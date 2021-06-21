@@ -112,7 +112,6 @@ class _SellFormState extends State<SellForm> {
         ],
         decoration: InputDecoration(
           isDense: true,
-          contentPadding: EdgeInsets.fromLTRB(8, 10, 8, 10),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide(
@@ -122,6 +121,18 @@ class _SellFormState extends State<SellForm> {
             width: 1,
             color: Theme.of(context).accentColor,
           )),
+          suffixIcon: _constrProvider.sellAmount == null
+              ? null
+              : InkWell(
+                  child: Icon(
+                    Icons.clear,
+                    size: 13,
+                    color: Theme.of(context).textTheme.caption.color,
+                  ),
+                  onTap: () {
+                    _constrProvider.sellAmount = null;
+                  },
+                ),
         ));
   }
 
@@ -132,28 +143,32 @@ class _SellFormState extends State<SellForm> {
         onTap: () {
           _constrProvider.sellCoin = null;
         },
-        child: Container(
-            padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 8,
-                  backgroundImage: AssetImage(
-                      'assets/${_constrProvider.sellCoin.toLowerCase()}.png'),
-                ),
-                SizedBox(width: 4),
-                Text(
-                  _constrProvider.sellCoin,
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-                Expanded(child: SizedBox()),
-                Icon(
-                  Icons.clear,
-                  size: 12,
-                  color: Theme.of(context).textTheme.caption.color,
-                ),
-              ],
-            )),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: 50),
+          child: Container(
+              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 8,
+                    backgroundImage: AssetImage(
+                        'assets/${_constrProvider.sellCoin.toLowerCase()}.png'),
+                  ),
+                  SizedBox(width: 4),
+                  Text(
+                    _constrProvider.sellCoin,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                  Expanded(child: SizedBox()),
+                  Icon(
+                    Icons.clear,
+                    size: 13,
+                    color: Theme.of(context).textTheme.caption.color,
+                  ),
+                  SizedBox(width: 10),
+                ],
+              )),
+        ),
       ),
     );
   }

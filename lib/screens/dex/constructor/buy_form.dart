@@ -29,28 +29,32 @@ class _BuyFormState extends State<BuyForm> {
         onTap: () {
           _constrProvider.buyCoin = null;
         },
-        child: Container(
-            padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 8,
-                  backgroundImage: AssetImage(
-                      'assets/${_constrProvider.buyCoin.toLowerCase()}.png'),
-                ),
-                SizedBox(width: 4),
-                Text(
-                  _constrProvider.buyCoin,
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-                Expanded(child: SizedBox()),
-                Icon(
-                  Icons.clear,
-                  size: 12,
-                  color: Theme.of(context).textTheme.caption.color,
-                ),
-              ],
-            )),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: 50),
+          child: Container(
+              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 8,
+                    backgroundImage: AssetImage(
+                        'assets/${_constrProvider.buyCoin.toLowerCase()}.png'),
+                  ),
+                  SizedBox(width: 4),
+                  Text(
+                    _constrProvider.buyCoin,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                  Expanded(child: SizedBox()),
+                  Icon(
+                    Icons.clear,
+                    size: 12,
+                    color: Theme.of(context).textTheme.caption.color,
+                  ),
+                  SizedBox(width: 10),
+                ],
+              )),
+        ),
       ),
     );
   }

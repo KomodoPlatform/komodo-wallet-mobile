@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/best_order.dart';
+import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/get_import_swaps.dart';
 import 'package:komodo_dex/model/get_min_trading_volume.dart';
 import 'package:komodo_dex/model/get_orderbook_depth.dart';
@@ -778,5 +780,12 @@ class ApiProvider {
       return _catchErrorString(
           'getOrderbookDepth', e, 'mm orderbook_depth] $e');
     }
+  }
+
+  Future<BestOrders> getBestOrders(
+    GetBestOrders request, {
+    http.Client client,
+  }) async {
+    return BestOrders();
   }
 }
