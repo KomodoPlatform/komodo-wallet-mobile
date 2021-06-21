@@ -18,6 +18,7 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rational/rational.dart';
@@ -594,12 +595,32 @@ void showUriDetailsDialog(
     builder: (context) {
       return SimpleDialog(
         contentPadding: const EdgeInsets.all(24),
-        title: Text('Transaction Data'),
+        title: Text('Payment Requested'),
         children: <Widget>[
-          Text('Scheme: ' + r.scheme ?? 'Unknown scheme'),
-          Text('Coin: ' + (r.abbr ?? 'Unknow abbr')),
-          Text('Address: ' + (r.address ?? 'No address')),
-          Text('Amount: ' + (r.amount ?? 'No amount')),
+          Row(
+            children: [
+              Text('Coin: '),
+              if (r.abbr != null)
+                Image.asset(
+                  'assets/${r.abbr.toLowerCase()}.png',
+                  width: 16,
+                ),
+              Text(' ${r.abbr} (${r.scheme})'),
+            ],
+          ),
+          Text('Address: ${r.address}'),
+          Row(
+            children: [
+              Text('Amount: ${r.amount} ${r.abbr}'),
+              SizedBox(width: 8),
+              CexFiatPreview(
+                amount: r.amount,
+                coinAbbr: r.abbr,
+                textStyle: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
           Text('Do you accept this transaction?'),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
