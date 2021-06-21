@@ -123,7 +123,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       return;
     }
 
-    showUriDetailsDialog(context, uri, () {
+    final Function callback = () {
       if (r.address != null && r.address.isNotEmpty) {
         widget.addressController.text = r.address;
       } else if (barcode != null) {
@@ -142,8 +142,16 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
           showinsufficientBalanceDialog(amountDecimal);
         }
       }
-    });
+    };
+
+    if (widget.paymentUri != null) {
+      callback();
+    } else {
+      showUriDetailsDialog(context, uri, callback);
+    }
   }
+
+  void acceptPaymentCallback() {}
 
   void showWrongCoinDialog(PaymentUriInfo r) {
     dialogBloc.dialog = showDialog(
