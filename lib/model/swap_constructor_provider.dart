@@ -8,6 +8,7 @@ class ConstructorProvider extends ChangeNotifier {
   String _sellCoin;
   String _buyCoin;
   Rational _sellAmount;
+  Rational _buyAmount;
 
   String get sellCoin => _sellCoin;
   set sellCoin(String value) {
@@ -19,12 +20,19 @@ class ConstructorProvider extends ChangeNotifier {
   String get buyCoin => _buyCoin;
   set buyCoin(String value) {
     _buyCoin = value;
+    _buyAmount = null;
     notifyListeners();
   }
 
   Rational get sellAmount => _sellAmount;
   set sellAmount(Rational value) {
     _sellAmount = value;
+    notifyListeners();
+  }
+
+  Rational get buyAmount => _buyAmount;
+  set buyAmount(Rational value) {
+    _buyAmount = value;
     notifyListeners();
   }
 
