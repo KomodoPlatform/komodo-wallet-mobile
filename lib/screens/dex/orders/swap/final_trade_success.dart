@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/detail_swap.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/swap_share_card.dart';
 import 'package:share/share.dart';
 
 class FinalTradeSuccess extends StatefulWidget {
@@ -61,165 +62,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                 left: 10000,
                 child: RepaintBoundary(
                   key: repaintKey,
-                  child: Container(
-                    width: 256,
-                    height: 144,
-                    child: Stack(
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/swap_share/swap_share_background.png',
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(16, 14, 16, 14),
-                                child: Column(
-                                  children: [
-                                    Stack(
-                                      alignment: AlignmentDirectional.bottomEnd,
-                                      children: [
-                                        Image.asset(
-                                          'assets/swap_share/swap_share_atomicdex_logo.png',
-                                          height: 24,
-                                        ),
-                                        Text(
-                                          'Powered by Komodo',
-                                          style: TextStyle(fontSize: 6),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 6),
-                                    Text(
-                                      widget.swap.result.myInfo.myCoin +
-                                          '/' +
-                                          widget.swap.result.myInfo.otherCoin +
-                                          ' '
-                                              'Swap Complete!',
-                                      style: TextStyle(fontSize: 8),
-                                    ),
-                                    SizedBox(height: 6),
-                                    Table(
-                                      children: [
-                                        TableRow(
-                                          children: [
-                                            Image.asset(
-                                              'assets/' +
-                                                  widget
-                                                      .swap.result.myInfo.myCoin
-                                                      .toLowerCase() +
-                                                  '.png',
-                                              height: 18,
-                                            ),
-                                            Icon(
-                                              Icons.swap_horiz_rounded,
-                                              size: 18,
-                                            ),
-                                            Image.asset(
-                                              'assets/' +
-                                                  widget.swap.result.myInfo
-                                                      .otherCoin
-                                                      .toLowerCase() +
-                                                  '.png',
-                                              height: 18,
-                                            ),
-                                          ],
-                                        ),
-                                        TableRow(
-                                          children: [
-                                            Text(
-                                              widget.swap.result.myInfo
-                                                      .myAmount +
-                                                  ' ' +
-                                                  widget.swap.result.myInfo
-                                                      .myCoin,
-                                              style: TextStyle(fontSize: 6),
-                                            ),
-                                            Icon(Icons.swap_horiz_rounded,
-                                                size: 8),
-                                            Text(
-                                              widget.swap.result.myInfo
-                                                      .otherAmount +
-                                                  ' ' +
-                                                  widget.swap.result.myInfo
-                                                      .otherCoin,
-                                              style: TextStyle(fontSize: 6),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 6),
-                                    Text(
-                                      'Details',
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 6,
-                                      ),
-                                    ),
-                                    SizedBox(height: 6),
-                                    Table(
-                                      children: [
-                                        TableRow(
-                                          children: [
-                                            Text(
-                                              'Date',
-                                              style: TextStyle(fontSize: 6),
-                                            ),
-                                            Text(
-                                              'TODO',
-                                              style: TextStyle(fontSize: 6),
-                                            ),
-                                          ],
-                                        ),
-                                        TableRow(
-                                          children: [
-                                            Text(
-                                              'Duration',
-                                              style: TextStyle(fontSize: 6),
-                                            ),
-                                            Text(
-                                              'TODO',
-                                              style: TextStyle(fontSize: 6),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Stack(
-                                    alignment: AlignmentDirectional.bottomEnd,
-                                    children: [
-                                      Image.asset(
-                                        'assets/swap_share/swap_share_illustration.png',
-                                      ),
-                                      Image.asset(
-                                        'assets/swap_share/swap_share_qrcode.png',
-                                        height: 33,
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Download AtomicDEX on atomicdex.io',
-                                    style: TextStyle(fontSize: 6),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+                  child: SwapShareCard(swap: widget.swap),
                 ),
               ),
               Column(
@@ -279,10 +122,16 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                     final imgFile = File('$directory/screenshot.png');
                     await imgFile.writeAsBytes(pngBytes);
 
+                    final myCoin = widget.swap.result.myInfo.myCoin;
+                    final otherCoin = widget.swap.result.myInfo.otherCoin;
+                    final shareText =
+                        "I've just atomic swapped $myCoin/$otherCoin"
+                        ' on my phone! You can try it too: https://atomicdex.io\n'
+                        '#blockchain #dex #atomicdex #komodoplatform #atomicswap';
+
                     Share.shareFiles(
                       [imgFile.path],
-                      subject: 'Share',
-                      text: 'Example text',
+                      text: shareText,
                     );
                   },
                 ),
