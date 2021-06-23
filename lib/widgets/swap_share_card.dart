@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:intl/intl.dart';
 
 class SwapShareCard extends StatelessWidget {
   const SwapShareCard({Key key, @required this.swap}) : super(key: key);
@@ -9,6 +10,25 @@ class SwapShareCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final startedEvent = swap.result.events
+        .firstWhere((e) => e.event.type == 'Started', orElse: () => null);
+    final finishedEvent = swap.result.events
+        .firstWhere((e) => e.event.type == 'Finished', orElse: () => null);
+    int durationMinutes = 0;
+    String dateFormatted = '';
+    if (finishedEvent != null && startedEvent != null) {
+      final startTime = DateTime.fromMillisecondsSinceEpoch(
+          startedEvent.event.data.startedAt * 1000);
+      final finalTime =
+          DateTime.fromMillisecondsSinceEpoch(finishedEvent.timestamp);
+
+      final DateFormat formatter = DateFormat.yMMMd();
+
+      final Duration timeDifference = finalTime.difference(startTime);
+      durationMinutes = timeDifference.inMinutes;
+
+      dateFormatted = formatter.format(finalTime);
+    }
     return Container(
       width: 256,
       height: 144,
@@ -36,7 +56,7 @@ class SwapShareCard extends StatelessWidget {
                             ),
                             Text(
                               'Powered by Komodo',
-                              style: TextStyle(fontSize: 6),
+                              style: TextStyle(fontSize: 4),
                             ),
                           ],
                         ),
@@ -117,6 +137,10 @@ class SwapShareCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Table(
+                          columnWidths: const {
+                            0: IntrinsicColumnWidth(),
+                            1: IntrinsicColumnWidth(),
+                          },
                           children: [
                             TableRow(
                               children: [
@@ -127,13 +151,15 @@ class SwapShareCard extends StatelessWidget {
                                     fontSize: 6,
                                   ),
                                 ),
+                                SizedBox(width: 8),
                                 SizedBox(),
                               ],
                             ),
                             const TableRow(
                               children: [
-                                SizedBox(height: 6),
-                                SizedBox(height: 6),
+                                SizedBox(height: 8),
+                                SizedBox(height: 8),
+                                SizedBox(height: 8),
                               ],
                             ),
                             TableRow(
@@ -142,9 +168,11 @@ class SwapShareCard extends StatelessWidget {
                                   'Date',
                                   style: TextStyle(fontSize: 6),
                                 ),
+                                SizedBox(width: 8),
                                 Text(
-                                  'TODO',
+                                  dateFormatted,
                                   style: TextStyle(fontSize: 6),
+                                  textAlign: TextAlign.left,
                                 ),
                               ],
                             ),
@@ -154,9 +182,11 @@ class SwapShareCard extends StatelessWidget {
                                   'Duration',
                                   style: TextStyle(fontSize: 6),
                                 ),
+                                SizedBox(width: 8),
                                 Text(
-                                  'TODO',
+                                  '$durationMinutes Minutes',
                                   style: TextStyle(fontSize: 6),
+                                  textAlign: TextAlign.left,
                                 ),
                               ],
                             ),
