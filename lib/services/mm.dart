@@ -786,6 +786,25 @@ class ApiProvider {
     GetBestOrders request, {
     http.Client client,
   }) async {
-    return BestOrders();
+    client ??= mmSe.client;
+
+    try {
+      final userBody = await _assertUserpass(client, request);
+      final response = await userBody.client
+          .post(url, body: getBestOrdersToJson(userBody.body));
+      _assert200(response);
+      _saveRes('getBestOrders', response);
+
+      // Parse JSON once, then check if the JSON is an error.
+      final dynamic jbody = jsonDecode(response.body);
+      final error = ErrorString.fromJson(jbody);
+      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+      return BestOrders.fromJson(jbody);
+    } catch (e) {
+      return BestOrders(
+          error: _catchErrorString(
+              'getOrderbookDepth', e, 'mm orderbook_depth] $e'));
+    }
   }
 }

@@ -21,6 +21,12 @@ class GetBestOrders {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method,
         'userpass': userpass,
+        'coin': coin,
+        'volume': {
+          'numer': volume.numerator.toString(),
+          'denom': volume.denominator.toString(),
+        },
+        'action': action == MarketAction.BUY ? 'buy' : 'sell',
       };
 }
 
