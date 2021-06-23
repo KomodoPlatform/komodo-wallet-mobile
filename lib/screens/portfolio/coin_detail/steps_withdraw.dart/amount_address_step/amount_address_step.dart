@@ -151,25 +151,24 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     widget.addressController.text = address;
   }
 
-  // TODO(MateusRodCosta): Implement localizations
   void showWrongCoinDialog(PaymentUriInfo uriInfo) {
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (context) {
           return SimpleDialog(
             contentPadding: const EdgeInsets.all(24),
-            title: Text('Wrong coin'),
+            title: Text(AppLocalizations.of(context).wrongCoinTitle),
             children: <Widget>[
-              Text('You are trying to scan a payment QR code for ' +
+              Text(AppLocalizations.of(context).wrongCoinSpan1 +
                   uriInfo.abbr +
-                  ' but you are on the ' +
+                  AppLocalizations.of(context).wrongCoinSpan2 +
                   widget.coin.abbr +
-                  ' withdraw screen'),
+                  AppLocalizations.of(context).wrongCoinSpan3),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   RaisedButton(
-                    child: Text('Ok'),
+                    child: Text(AppLocalizations.of(context).okButton),
                     onPressed: () {
                       dialogBloc.closeDialog(context);
                     },

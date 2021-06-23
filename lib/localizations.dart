@@ -1431,6 +1431,32 @@ class AppLocalizations {
   String get tooManyAssetsEnabledSpan3 =>
       Intl.message('. Please disable some before new ones adding.',
           name: 'tooManyAssetsEnableSpan3');
+
+  String get paymentUriDetailsTitle =>
+      Intl.message('Payment Requested', name: 'paymentUriDetailsTitle');
+  String get paymentUriDetailsCoinSpan =>
+      Intl.message('Coin: ', name: 'paymentUriDetailsCoinSpan');
+  String get paymentUriDetailsAddressSpan =>
+      Intl.message('Address: ', name: 'paymentUriDetailsAddressSpan');
+  String get paymentUriDetailsAmountSpan =>
+      Intl.message('Amount: ', name: 'paymentUriDetailsAmountSpan');
+  String get paymentUriDetailsAcceptQuestion =>
+      Intl.message('Do you accept this transaction?',
+          name: 'paymentUriDetailsAcceptQuestion');
+  String get paymentUriDetailsAccept =>
+      Intl.message('Yes', name: 'paymentUriDetailsAccept');
+  String get paymentUriDetailsDeny =>
+      Intl.message('No', name: 'paymentUriDetailsDeny');
+
+  String get wrongCoinTitle =>
+      Intl.message('Wrong coin', name: 'wrongCoinTitle');
+  String get wrongCoinSpan1 =>
+      Intl.message('You are trying to scan a payment QR code for ',
+          name: 'wrongCoinTitle');
+  String get wrongCoinSpan2 =>
+      Intl.message(' but you are on the ', name: 'wrongCoinSpan2');
+  String get wrongCoinSpan3 =>
+      Intl.message(' withdraw screen', name: 'wrongCoinSpan3');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

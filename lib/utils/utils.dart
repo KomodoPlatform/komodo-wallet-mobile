@@ -598,7 +598,6 @@ class PaymentUriInfo {
   final String amount;
 }
 
-// TODO(MateusRodCosta): use localizations for this method
 void showUriDetailsDialog(
     BuildContext context, PaymentUriInfo uriInfo, Function callbackIfAccepted) {
   dialogBloc.dialog = showDialog(
@@ -606,11 +605,11 @@ void showUriDetailsDialog(
     builder: (context) {
       return SimpleDialog(
         contentPadding: const EdgeInsets.all(24),
-        title: Text('Payment Requested'),
+        title: Text(AppLocalizations.of(context).paymentUriDetailsTitle),
         children: <Widget>[
           Row(
             children: [
-              Text('Coin: '),
+              Text(AppLocalizations.of(context).paymentUriDetailsCoinSpan),
               if (uriInfo.abbr != null)
                 Image.asset(
                   'assets/${uriInfo.abbr.toLowerCase()}.png',
@@ -620,10 +619,12 @@ void showUriDetailsDialog(
                   ' ${uriInfo.abbr} (${coinsBloc.getCoinByAbbr(uriInfo.abbr).name})'),
             ],
           ),
-          Text('Address: ${uriInfo.address}'),
+          Text(AppLocalizations.of(context).paymentUriDetailsAddressSpan +
+              uriInfo.address),
           Row(
             children: [
-              Text('Amount: ${uriInfo.amount} ${uriInfo.abbr}'),
+              Text(AppLocalizations.of(context).paymentUriDetailsAmountSpan +
+                  '${uriInfo.amount} ${uriInfo.abbr}'),
               SizedBox(width: 8),
               CexFiatPreview(
                 amount: uriInfo.amount,
@@ -633,18 +634,19 @@ void showUriDetailsDialog(
             ],
           ),
           SizedBox(height: 16),
-          Text('Do you accept this transaction?'),
+          Text(AppLocalizations.of(context).paymentUriDetailsAcceptQuestion),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               FlatButton(
-                child: Text('No'),
+                child: Text(AppLocalizations.of(context).paymentUriDetailsDeny),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               RaisedButton(
-                child: Text('Yes'),
+                child:
+                    Text(AppLocalizations.of(context).paymentUriDetailsAccept),
                 onPressed: () {
                   Navigator.of(context).pop();
                   callbackIfAccepted();
