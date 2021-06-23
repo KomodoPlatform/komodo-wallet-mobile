@@ -25,6 +25,11 @@ class _ContactEditState extends State<ContactEdit> {
   AddressBookProvider provider;
   String focusOn;
   final List<String> invalidFields = [];
+  final Map<String, String> networkChipLabels = {
+    'erc': 'ERC20',
+    'bep': 'BEP20',
+    'qrc': 'QRC20',
+  };
 
   @override
   void initState() {
@@ -321,10 +326,13 @@ class _ContactEditState extends State<ContactEdit> {
                         style: const TextStyle(fontSize: 18),
                       ),
                     ),
-                    if (coin.type == 'erc') _buildNetworkChip('ERC20'),
-                    if (coin.type == 'bep') _buildNetworkChip('BEP20'),
-                    if (coin.type == 'qrc') _buildNetworkChip('QRC20'),
-                    if (coin.type == 'smartChain') _buildKmdChip(),
+                    if (networkChipLabels.containsKey(coin.type)) ...{
+                      _buildNetworkChip(
+                        networkChipLabels[coin.type],
+                      )
+                    } else if (coin.type == 'smartChain') ...{
+                      _buildKmdChip()
+                    }
                   ],
                 ),
               ),
@@ -351,9 +359,9 @@ class _ContactEditState extends State<ContactEdit> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
-        children: const <Widget>[
+        children: <Widget>[
           Text(
-            'QRC20',
+            text,
             style: TextStyle(fontSize: 12),
           ),
         ],

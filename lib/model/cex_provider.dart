@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -362,6 +363,8 @@ class CexPrices {
     currencies = [_selectedFiat, 'BTC', 'KMD'];
 
     Timer.periodic(const Duration(seconds: 60), (_) {
+      if (!mmSe.running) return;
+
       updatePrices();
       updateRates();
     });

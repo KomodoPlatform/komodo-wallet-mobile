@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -153,12 +152,25 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.inactive:
+        mainBloc.isInBackground = true;
+        Log('main', 'lifecycle: inactive');
+        lockService.lockSignal(context);
+        break;
       case AppLifecycleState.paused:
+        Log('main', 'lifecycle: paused');
+        mainBloc.isInBackground = true;
+        lockService.lockSignal(context);
+        break;
       case AppLifecycleState.detached:
+        Log('main', 'lifecycle: detached');
         mainBloc.isInBackground = true;
         break;
-      default:
+      case AppLifecycleState.resumed:
+        Log('main', 'lifecycle: resumed');
         mainBloc.isInBackground = false;
+        lockService.lockSignal(context);
+        await mmSe.handleWakeUp();
+        break;
     }
   }
 
@@ -230,6 +242,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+  Timer timer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   IntentDataProvider _intentDataProvider;
 
@@ -256,38 +269,17 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    timer?.cancel();
     super.dispose();
   }
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    // https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle
     switch (state) {
-      case AppLifecycleState.inactive:
-        // willResignActive: “your app is no longer responding to touch but is still foreground
-        // (received a phone call, doing touch ID, et cetera)”
-        // - https://github.com/flutter/flutter/issues/10123#issuecomment-302763382
-        // Picking a file also triggers this on Android (?), as it switches into a system activity.
-        // On iOS *after* picking a file the app returns to `inactive`,
-        // on Android to `inactive` and then `resumed`.
-        Log('main:198', 'lifecycle: inactive');
-        lockService.lockSignal(context);
-        break;
-      case AppLifecycleState.paused:
-        Log('main:202', 'lifecycle: paused');
-        lockService.lockSignal(context);
-        break;
       case AppLifecycleState.resumed:
-        Log('main:216', 'lifecycle: resumed');
-        lockService.lockSignal(context);
-        if (Platform.isIOS) {
-          if (!mmSe.running) await startup.startMmIfUnlocked();
-        }
         _intentDataProvider?.grabData();
         break;
-      case AppLifecycleState.detached:
-        Log('main:223', 'lifecycle: detached');
-        break;
+      default:
     }
   }
 

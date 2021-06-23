@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -179,7 +178,6 @@ class LockService {
     Log.println('lock_service:178', 'Unfocus and lock..');
     FocusScope.of(context).requestFocus(FocusNode());
 
-    if (context != null) dialogBloc.closeDialog(context);
     if (_prefs.getBool('switch_pin_log_out_on_exit')) authBloc.logout();
     authBloc.showLock = true;
   }

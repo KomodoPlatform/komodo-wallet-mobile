@@ -1432,5 +1432,70 @@
         "type": "bep",
         "colorCoin": "0xffff309e",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+    },
+    {
+        "name": "tQTUM",
+        "type": "utxo",
+        "proto": "tcp",
+        "abbr": "tQTUM",
+        "coingeckoId": "test-token",
+        "testCoin": true,
+        "colorCoin": "0xFF52a5da",
+        "serverList": [
+            "electrum1.cipig.net:10071",
+            "electrum2.cipig.net:10071",
+            "electrum3.cipig.net:10071"
+        ],
+        "explorerUrl": [
+            "https://testnet.qtum.info/"
+        ]
+    },
+    {
+        "abbr": "BNBT",
+        "name": "BNBT",
+        "type": "bep",
+        "coingeckoId": "test-token",
+        "testCoin": true,
+        "colorCoin": "0xFFF0B90B",
+        "swap_contract_address": "0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150",
+        "serverList": [
+            "https://data-seed-prebsc-1-s2.binance.org:8545"
+        ],
+        "explorerUrl": [
+            "https://testnet.bscscan.com/"
+        ]
+    },
+    {
+        "name": "QRC20",
+        "type": "qrc",
+        "proto": "tcp",
+        "abbr": "QRC20",
+        "coingeckoId": "test-token",
+        "testCoin": true,
+        "swap_contract_address": "0xba8b71f3544b93e2f681f996da519a98ace0107a",
+        "colorCoin": "0xFF009dcd",
+        "serverList": [
+            "electrum1.cipig.net:10071",
+            "electrum2.cipig.net:10071",
+            "electrum3.cipig.net:10071"
+        ],
+        "explorerUrl": [
+            "https://testnet.qtum.info/"
+        ]
+    },
+    {
+        "abbr": "ADEXBSCT",
+        "name": "ADEXBSCT",
+        "type": "bep",
+        "coingeckoId": "test-token",
+        "testCoin": true,
+        "colorCoin": "0xFF4a7382",
+        "swap_contract_address": "0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150",
+        "serverList": [
+            "https://data-seed-prebsc-1-s2.binance.org:8545"
+        ],
+        "explorerUrl": [
+            "https://testnet.bscscan.com/"
+        ]
     }
 ]

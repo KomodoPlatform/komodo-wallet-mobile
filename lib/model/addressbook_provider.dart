@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -17,10 +18,7 @@ class AddressBookProvider extends ChangeNotifier {
   }
 
   Future<List<Contact>> get contacts async {
-    while (_contacts == null) {
-      await Future<dynamic>.delayed(const Duration(milliseconds: 50));
-    }
-
+    await pauseUntil(() => _contacts != null);
     return _contacts;
   }
 
