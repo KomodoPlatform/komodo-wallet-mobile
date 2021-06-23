@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
@@ -184,6 +185,10 @@ class _PinPageState extends State<PinPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.pinStatus == PinStatus.NORMAL_PIN) {
+      dialogBloc.closeDialog(context);
+    }
+
     return Scaffold(
       appBar: !isLoading
           ? AppBarStatus(

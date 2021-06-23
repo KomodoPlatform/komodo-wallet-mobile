@@ -20,6 +20,7 @@ class OrderBookProvider extends ChangeNotifier {
   OrderBookProvider() {
     syncOrderbook.linkProvider(this);
     jobService.install('syncOrderbook', 2, (j) async {
+      if (!mmSe.running) return;
       await syncOrderbook._updateOrderBooks();
     });
   }

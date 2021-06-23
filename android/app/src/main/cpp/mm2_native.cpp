@@ -5,7 +5,7 @@
 
 extern "C" {
 
-// Defined in "mm2_lib.rs".
+/// Defined in "mm2_lib.rs".
 int8_t mm2_main(const char *conf, void (*log_cb)(const char *line));
 
 /// Checks if the MM2 singleton thread is currently running or not.
@@ -14,6 +14,12 @@ int8_t mm2_main(const char *conf, void (*log_cb)(const char *line));
 /// 2 .. context, but no RPC yet.
 /// 3 .. RPC is up.
 int8_t mm2_main_status();
+
+/// Defined in "mm2_lib.rs".
+/// 0 .. MM2 has been stopped successfully.
+/// 1 .. not running.
+/// 2 .. error stopping an MM2 instance.
+int8_t mm2_stop();
 
 }
 
@@ -154,4 +160,11 @@ Java_com_komodoplatform_atomicdex_MainActivity_nativeMm2MainStatus(
     JNIEnv *,
     jobject /* this */) {
   return static_cast<jbyte>(mm2_main_status());
+}
+
+extern "C" JNIEXPORT jbyte JNICALL
+Java_com_komodoplatform_atomicdex_MainActivity_nativeMm2Stop(
+    JNIEnv *,
+    jobject /* this */) {
+  return static_cast<jbyte>(mm2_stop());
 }

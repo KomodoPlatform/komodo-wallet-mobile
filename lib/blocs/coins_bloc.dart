@@ -31,6 +31,8 @@ import 'package:komodo_dex/services/job_service.dart';
 class CoinsBloc implements BlocBase {
   CoinsBloc() {
     Timer.periodic(const Duration(seconds: 10), (_) {
+      if (!mmSe.running) return;
+
       _saveWalletSnapshot();
     });
   }
@@ -276,7 +278,7 @@ class CoinsBloc implements BlocBase {
   /// Handle the coins user has picked for activation.
   /// Also used for coin activations during the application startup.
   Future<void> enableCoins(List<Coin> coins) async {
-    while (_coinsLock) await sleepMs(77);
+    await pauseUntil(() => !_coinsLock, maxMs: 3000);
     _coinsLock = true;
 
     // Using a batch request to speed up the coin activation.
@@ -451,7 +453,7 @@ class CoinsBloc implements BlocBase {
       return;
     }
 
-    while (_coinsLock) await sleepMs(77);
+    await pauseUntil(() => !_coinsLock, maxMs: 3000);
     _coinsLock = true;
 
     await cexPrices.updatePrices(coins);
