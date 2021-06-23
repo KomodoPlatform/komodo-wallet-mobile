@@ -8,18 +8,19 @@ class IntentDataProvider extends ChangeNotifier {
   IntentData get intentData => _intentData;
 
   Future<void> grabData() async {
-    final dynamic js =
-        await MMService.nativeC.invokeMethod<dynamic>('get_intent_data');
-    if (js == null) return;
+    final String data =
+        await MMService.nativeC.invokeMethod<String>('get_intent_data');
+    if (data == null) return;
 
     //Check if is payment uri
-    final uri = Uri.tryParse(js);
+    final Uri uri = Uri.tryParse(data);
     if (uri == null) return;
 
-    final r = parsePaymentUri(uri);
+    final PaymentUriInfo uriInfo = PaymentUriInfo.fromUri(uri);
 
+    // ScreenSelection might be useful in the future for other types of intent
     ScreenSelection screen;
-    switch (r.scheme) {
+    switch (uriInfo.scheme) {
       case 'bitcoin':
         screen = ScreenSelection.Bitcoin;
         break;
@@ -32,7 +33,7 @@ class IntentDataProvider extends ChangeNotifier {
 
     final nd = IntentData(
       screen: screen,
-      extraData: js.toString(),
+      payload: data.toString(),
     );
 
     _intentData = nd;
@@ -46,10 +47,10 @@ class IntentDataProvider extends ChangeNotifier {
 }
 
 class IntentData {
-  IntentData({this.screen, this.extraData});
+  IntentData({this.screen, this.payload});
 
   final ScreenSelection screen;
-  final String extraData;
+  final String payload;
 }
 
 enum ScreenSelection { None, Bitcoin, Ethereum }

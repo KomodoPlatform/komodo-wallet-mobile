@@ -28,7 +28,7 @@ class AmountAddressStep extends StatefulWidget {
       this.onWithdrawPressed,
       this.onCancel,
       this.coin,
-      this.paymentUri})
+      this.paymentUriInfo})
       : super(key: key);
 
   final Function onCancel;
@@ -39,7 +39,7 @@ class AmountAddressStep extends StatefulWidget {
   final TextEditingController addressController;
   final bool autoFocus;
   final Coin coin;
-  final Uri paymentUri;
+  final PaymentUriInfo paymentUriInfo;
 
   @override
   _AmountAddressStepState createState() => _AmountAddressStepState();
@@ -54,7 +54,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      handleUri(widget.paymentUri);
+      handlePaymentData(widget.paymentUriInfo);
     });
   }
 
@@ -113,47 +113,46 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     );
   }
 
-  void handleUri(Uri uri, [String barcode]) {
-    final r = parsePaymentUri(uri);
+  void handlePaymentData(PaymentUriInfo uriInfo) {
+    if (uriInfo == null) return;
 
-    if (r.scheme == null) return;
-
-    if (r.abbr != widget.coin.abbr) {
-      showWrongCoinDialog(r);
+    if (uriInfo.abbr != widget.coin.abbr) {
+      showWrongCoinDialog(uriInfo);
       return;
     }
 
-    final Function callback = () {
-      if (r.address != null && r.address.isNotEmpty) {
-        widget.addressController.text = r.address;
-      } else if (barcode != null) {
-        widget.addressController.text = barcode;
+    final Function onConfirmCallback = () {
+      if (uriInfo.address != null && uriInfo.address.isNotEmpty) {
+        widget.addressController.text = uriInfo.address;
       }
-      if (r.amount != null) {
+      if (uriInfo.amount != null) {
         final coinBalance = coinsBloc.coinBalance.firstWhere(
             (cb) => cb.coin.abbr == widget.coin.abbr,
             orElse: () => null);
-        final amountDecimal = deci(r.amount);
+        final amountDecimal = deci(uriInfo.amount);
 
         if (coinBalance != null &&
             coinBalance.balance.balance >= amountDecimal) {
-          widget.amountController.text = r.amount;
+          widget.amountController.text = uriInfo.amount;
         } else {
           showinsufficientBalanceDialog(amountDecimal);
         }
       }
     };
 
-    if (widget.paymentUri != null) {
-      callback();
+    if (widget.paymentUriInfo != null) {
+      onConfirmCallback();
     } else {
-      showUriDetailsDialog(context, uri, callback);
+      showUriDetailsDialog(context, uriInfo, onConfirmCallback);
     }
   }
 
-  void acceptPaymentCallback() {}
+  void handleQrAdress(String address) {
+    widget.addressController.text = address;
+  }
 
-  void showWrongCoinDialog(PaymentUriInfo r) {
+  // TODO(MateusRodCosta): Implement localizations
+  void showWrongCoinDialog(PaymentUriInfo uriInfo) {
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (context) {
@@ -162,7 +161,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
             title: Text('Wrong coin'),
             children: <Widget>[
               Text('You are trying to scan a payment QR code for ' +
-                  r.abbr +
+                  uriInfo.abbr +
                   ' but you are on the ' +
                   widget.coin.abbr +
                   ' withdraw screen'),
@@ -172,7 +171,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
                   RaisedButton(
                     child: Text('Ok'),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      dialogBloc.closeDialog(context);
                     },
                   )
                 ],
@@ -256,11 +255,16 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
 
     final int lockCookie = lockService.enteringQrScanner();
     try {
-      final String barcode = await BarcodeScanner.scan();
-      final uri = Uri.tryParse(barcode.trim());
+      final String address = await BarcodeScanner.scan();
+      final uri = Uri.tryParse(address.trim());
 
       setState(() {
-        handleUri(uri, barcode);
+        final PaymentUriInfo uriInfo = PaymentUriInfo.fromUri(uri);
+        if (uriInfo != null) {
+          handlePaymentData(uriInfo);
+        } else {
+          handleQrAdress(address);
+        }
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {

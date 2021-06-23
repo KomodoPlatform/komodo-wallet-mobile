@@ -382,13 +382,17 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     if (coinBalance == null) return;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final uri = Uri.tryParse(data.extraData);
+      final Uri uri = Uri.tryParse(data.payload);
 
       if (uri == null) return;
 
+      final PaymentUriInfo uriInfo = PaymentUriInfo.fromUri(uri);
+
+      if (uriInfo == null) return;
+
       showUriDetailsDialog(
         context,
-        uri,
+        uriInfo,
         () {
           Navigator.push<dynamic>(
             context,
@@ -396,7 +400,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               builder: (context) => CoinDetail(
                 coinBalance: coinBalance,
                 isSendIsActive: true,
-                paymentUri: uri,
+                paymentUriInfo: uriInfo,
               ),
             ),
           );

@@ -554,52 +554,53 @@ void printError(String text) {
 class PaymentUriInfo {
   PaymentUriInfo({this.scheme, this.abbr, this.address, this.amount});
 
+  factory PaymentUriInfo.fromUri(Uri uri) {
+    String address;
+    double amount;
+    String abbr;
+
+    if (uri.scheme == 'bitcoin') {
+      abbr = 'BTC';
+      if (uri != null) {
+        if (uri.path != null && uri.pathSegments.isNotEmpty)
+          address = uri.pathSegments[0];
+        if (uri.queryParameters != null) {
+          if (uri.queryParameters.containsKey('amount'))
+            amount = double.tryParse(uri.queryParameters['amount']);
+        }
+      }
+    } else if (uri.scheme == 'ethereum') {
+      abbr = 'ETH';
+      if (uri != null) {
+        if (uri.path != null && uri.pathSegments.isNotEmpty)
+          address = uri.pathSegments[0];
+        if (uri.queryParameters != null) {
+          if (uri.queryParameters.containsKey('value'))
+            amount = double.tryParse(uri.queryParameters['value']);
+          if (amount != null) amount = amount * pow(10, -18);
+        }
+      }
+    } else {
+      return null;
+    }
+
+    return PaymentUriInfo(
+      scheme: uri.scheme,
+      abbr: abbr,
+      address: address,
+      amount: amount?.toString(),
+    );
+  }
+
   final String scheme;
   final String abbr;
   final String address;
   final String amount;
 }
 
-PaymentUriInfo parsePaymentUri(Uri uri) {
-  String address;
-  double amount;
-  String abbr;
-
-  if (uri.scheme == 'bitcoin') {
-    abbr = 'BTC';
-    if (uri != null) {
-      if (uri.path != null && uri.pathSegments.isNotEmpty)
-        address = uri.pathSegments[0];
-      if (uri.queryParameters != null) {
-        if (uri.queryParameters.containsKey('amount'))
-          amount = double.tryParse(uri.queryParameters['amount']);
-      }
-    }
-  } else if (uri.scheme == 'ethereum') {
-    abbr = 'ETH';
-    if (uri != null) {
-      if (uri.path != null && uri.pathSegments.isNotEmpty)
-        address = uri.pathSegments[0];
-      if (uri.queryParameters != null) {
-        if (uri.queryParameters.containsKey('value'))
-          amount = double.tryParse(uri.queryParameters['value']);
-        if (amount != null) amount = amount * pow(10, -18);
-      }
-    }
-  }
-
-  return PaymentUriInfo(
-    scheme: uri.scheme,
-    abbr: abbr,
-    address: address,
-    amount: amount?.toString(),
-  );
-}
-
+// TODO(MateusRodCosta): use localizations for this method
 void showUriDetailsDialog(
-    BuildContext context, Uri uri, VoidCallback callbackIfAccepted) {
-  final r = parsePaymentUri(uri);
-
+    BuildContext context, PaymentUriInfo uriInfo, Function callbackIfAccepted) {
   dialogBloc.dialog = showDialog(
     context: context,
     builder: (context) {
@@ -610,22 +611,23 @@ void showUriDetailsDialog(
           Row(
             children: [
               Text('Coin: '),
-              if (r.abbr != null)
+              if (uriInfo.abbr != null)
                 Image.asset(
-                  'assets/${r.abbr.toLowerCase()}.png',
+                  'assets/${uriInfo.abbr.toLowerCase()}.png',
                   width: 16,
                 ),
-              Text(' ${r.abbr} (${r.scheme})'),
+              Text(
+                  ' ${uriInfo.abbr} (${coinsBloc.getCoinByAbbr(uriInfo.abbr).name})'),
             ],
           ),
-          Text('Address: ${r.address}'),
+          Text('Address: ${uriInfo.address}'),
           Row(
             children: [
-              Text('Amount: ${r.amount} ${r.abbr}'),
+              Text('Amount: ${uriInfo.amount} ${uriInfo.abbr}'),
               SizedBox(width: 8),
               CexFiatPreview(
-                amount: r.amount,
-                coinAbbr: r.abbr,
+                amount: uriInfo.amount,
+                coinAbbr: uriInfo.abbr,
                 textStyle: TextStyle(color: Colors.white),
               ),
             ],
