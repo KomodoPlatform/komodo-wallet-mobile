@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_import_swaps.dart';
 import 'package:komodo_dex/model/import_swaps.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -29,28 +30,31 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context).importSingleSwapTitle,
+    return LockScreen(
+      context: context,
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context).importSingleSwapTitle,
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            if (_done) ...{
-              _buildResultImport(),
-            } else if (_swap == null) ...{
-              _buildLoadHeader(),
-              _buildFilePickerButton(),
-            } else ...{
-              _buildImportHeader(),
-              _buildSwap(),
-              _buildImportButton(),
-            }
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (_done) ...{
+                _buildResultImport(),
+              } else if (_swap == null) ...{
+                _buildLoadHeader(),
+                _buildFilePickerButton(),
+              } else ...{
+                _buildImportHeader(),
+                _buildSwap(),
+                _buildImportButton(),
+              }
+            ],
+          ),
         ),
       ),
     );

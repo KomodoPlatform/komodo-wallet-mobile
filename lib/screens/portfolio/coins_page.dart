@@ -497,7 +497,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                     : appConfig.maxCoinEnabledIOS;
                                 if (numCoinsEnabled >= maxCoinPerPlatform) {
                                   dialogBloc.closeDialog(context);
-                                  dialogBloc.dialog = showDialog(
+                                  dialogBloc.dialog = showDialog<void>(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
@@ -522,7 +522,8 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                         ],
                                       );
                                     },
-                                  );
+                                  ).then(
+                                      (dynamic _) => dialogBloc.dialog = null);
                                 } else {
                                   Navigator.push<dynamic>(
                                     context,

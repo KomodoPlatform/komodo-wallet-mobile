@@ -152,7 +152,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   }
 
   void showWrongCoinDialog(PaymentUriInfo uriInfo) {
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
           return SimpleDialog(
@@ -177,11 +177,11 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               ),
             ],
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   void showinsufficientBalanceDialog(Decimal amount) {
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
@@ -213,7 +213,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
           ],
         );
       },
-    );
+    ).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   Widget _buildWithdrawButton(BuildContext context) {
@@ -284,7 +284,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   }
 
   void _showCameraPermissionDialog() {
-    showDialog<bool>(
+    dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -308,6 +308,6 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
           ),
         );
       },
-    );
+    ).then((dynamic _) => dialogBloc.dialog = null);
   }
 }

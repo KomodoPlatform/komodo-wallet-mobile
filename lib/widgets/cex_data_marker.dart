@@ -35,7 +35,7 @@ class CexMarker extends StatelessWidget {
 }
 
 void showCexDialog(BuildContext context) {
-  dialogBloc.dialog = showDialog(
+  dialogBloc.dialog = showDialog<void>(
     context: context,
     builder: (BuildContext context) => SimpleDialog(
       title: Row(
@@ -66,5 +66,5 @@ void showCexDialog(BuildContext context) {
         ),
       ],
     ),
-  );
+  ).then((dynamic _) => dialogBloc.dialog = null);
 }

@@ -600,7 +600,7 @@ class PaymentUriInfo {
 
 void showUriDetailsDialog(
     BuildContext context, PaymentUriInfo uriInfo, Function callbackIfAccepted) {
-  dialogBloc.dialog = showDialog(
+  dialogBloc.dialog = showDialog<void>(
     context: context,
     builder: (context) {
       return SimpleDialog(
@@ -657,5 +657,5 @@ void showUriDetailsDialog(
         ],
       );
     },
-  );
+  ).then((dynamic _) => dialogBloc.dialog = null);
 }

@@ -12,7 +12,7 @@ void openBidDetailsDialog({
   Ask bid,
   Function onSelect,
 }) {
-  dialogBloc.dialog = showDialog(
+  dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (context) {
         return SharedPreferencesBuilder<bool>(
@@ -115,5 +115,5 @@ void openBidDetailsDialog({
                 },
               );
             });
-      });
+      }).then((dynamic _) => dialogBloc.dialog = null);
 }

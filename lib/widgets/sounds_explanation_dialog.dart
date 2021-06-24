@@ -6,7 +6,8 @@ import 'package:komodo_dex/localizations.dart';
 Future<void> showSoundsDialog(BuildContext context) async {
   if (!settingsBloc.showSoundsExplanationDialog) return;
 
-  dialogBloc.dialog = await showDialog(
+  dialogBloc.dialog = Future<void>(() {});
+  await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -84,4 +85,5 @@ Future<void> showSoundsDialog(BuildContext context) async {
           ),
         );
       });
+  dialogBloc.dialog = null;
 }

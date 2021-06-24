@@ -52,6 +52,11 @@ class _PinPageState extends State<PinPage> {
   @override
   void initState() {
     _initCorrectPin(widget.pinStatus);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.pinStatus == PinStatus.NORMAL_PIN) {
+        dialogBloc.closeDialog(context);
+      }
+    });
     super.initState();
   }
 
@@ -185,10 +190,6 @@ class _PinPageState extends State<PinPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.pinStatus == PinStatus.NORMAL_PIN) {
-      dialogBloc.closeDialog(context);
-    }
-
     return Scaffold(
       appBar: !isLoading
           ? AppBarStatus(

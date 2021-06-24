@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/orders/maker/maker_order_amount_price.dart';
 import 'package:komodo_dex/screens/dex/orders/maker/maker_order_note.dart';
 import 'package:komodo_dex/screens/dex/orders/maker/maker_order_swaps.dart';
@@ -22,54 +23,57 @@ class MakerOrderDetailsPage extends StatefulWidget {
 class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).makerDetailsTitle),
-        actions: const <Widget>[
-          SoundVolumeButton(),
-        ],
-      ),
-      body: StreamBuilder<List<dynamic>>(
-          initialData: ordersBloc.orderSwaps,
-          stream: ordersBloc.outOrderSwaps,
-          builder: (context, snapshot) {
-            Order order;
-            try {
-              order = snapshot.data.firstWhere((dynamic item) =>
-                  item is Order && item.uuid == widget.orderId);
-            } catch (_) {}
+    return LockScreen(
+      context: context,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context).makerDetailsTitle),
+          actions: const <Widget>[
+            SoundVolumeButton(),
+          ],
+        ),
+        body: StreamBuilder<List<dynamic>>(
+            initialData: ordersBloc.orderSwaps,
+            stream: ordersBloc.outOrderSwaps,
+            builder: (context, snapshot) {
+              Order order;
+              try {
+                order = snapshot.data.firstWhere((dynamic item) =>
+                    item is Order && item.uuid == widget.orderId);
+              } catch (_) {}
 
-            if (order == null) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (mounted) Navigator.of(context).pop();
-              });
-              return Container();
-            }
+              if (order == null) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) Navigator.of(context).pop();
+                });
+                return Container();
+              }
 
-            return SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Card(
-                      elevation: 8,
-                      child: Container(
-                        padding: const EdgeInsets.fromLTRB(16, 12, 12, 16),
-                        child: MakerOrderAmtAndPrice(order),
+              return SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Card(
+                        elevation: 8,
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(16, 12, 12, 16),
+                          child: MakerOrderAmtAndPrice(order),
+                        ),
                       ),
-                    ),
-                    if (order.cancelable) _buildCancelButton(order),
-                    _buildId(order),
-                    _buildDate(order),
-                    _buildNote(order),
-                    _buildHistory(order),
-                  ],
+                      if (order.cancelable) _buildCancelButton(order),
+                      _buildId(order),
+                      _buildDate(order),
+                      _buildNote(order),
+                      _buildHistory(order),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+      ),
     );
   }
 
