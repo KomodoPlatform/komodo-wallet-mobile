@@ -600,6 +600,14 @@ class PaymentUriInfo {
 
 void showUriDetailsDialog(
     BuildContext context, PaymentUriInfo uriInfo, Function callbackIfAccepted) {
+  if (uriInfo == null) return;
+
+  final String amount = cutTrailingZeros(formatPrice(uriInfo.amount));
+  final String abbr = uriInfo.abbr;
+  final String address = uriInfo.address;
+
+  if (amount == null || abbr == null || address == null) return;
+
   dialogBloc.dialog = showDialog<void>(
     context: context,
     builder: (context) {
@@ -614,7 +622,7 @@ void showUriDetailsDialog(
             alignment: WrapAlignment.start,
             children: [
               Text(
-                cutTrailingZeros(formatPrice(uriInfo.amount)),
+                amount,
                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 10),
@@ -624,11 +632,11 @@ void showUriDetailsDialog(
                   CircleAvatar(
                     radius: 11,
                     backgroundImage:
-                        AssetImage('assets/${uriInfo.abbr.toLowerCase()}.png'),
+                        AssetImage('assets/${abbr.toLowerCase()}.png'),
                   ),
                   SizedBox(width: 6),
                   Text(
-                    uriInfo.abbr,
+                    abbr,
                     style: TextStyle(fontSize: 26),
                   ),
                 ],
@@ -639,8 +647,8 @@ void showUriDetailsDialog(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CexFiatPreview(
-                amount: uriInfo.amount,
-                coinAbbr: uriInfo.abbr,
+                amount: amount,
+                coinAbbr: abbr,
                 textStyle: Theme.of(context).textTheme.bodyText1,
               ),
             ],
@@ -657,7 +665,7 @@ void showUriDetailsDialog(
           ),
           SizedBox(height: 6),
           Text(
-            uriInfo.address,
+            address,
             style: Theme.of(context).textTheme.bodyText1,
           ),
           SizedBox(height: 24),
