@@ -605,36 +605,62 @@ void showUriDetailsDialog(
     builder: (context) {
       return SimpleDialog(
         contentPadding: const EdgeInsets.all(24),
-        title: Text(AppLocalizations.of(context).paymentUriDetailsTitle),
+        title: Text(
+          AppLocalizations.of(context).paymentUriDetailsTitle,
+          style: TextStyle(fontSize: 24),
+        ),
         children: <Widget>[
-          Row(
+          Wrap(
+            alignment: WrapAlignment.start,
             children: [
-              Text(AppLocalizations.of(context).paymentUriDetailsCoinSpan),
-              if (uriInfo.abbr != null)
-                Image.asset(
-                  'assets/${uriInfo.abbr.toLowerCase()}.png',
-                  width: 16,
-                ),
               Text(
-                  ' ${uriInfo.abbr} (${coinsBloc.getCoinByAbbr(uriInfo.abbr).name})'),
-            ],
-          ),
-          Text(AppLocalizations.of(context).paymentUriDetailsAddressSpan +
-              uriInfo.address),
-          Row(
-            children: [
-              Text(AppLocalizations.of(context).paymentUriDetailsAmountSpan +
-                  '${uriInfo.amount} ${uriInfo.abbr}'),
-              SizedBox(width: 8),
-              CexFiatPreview(
-                amount: uriInfo.amount,
-                coinAbbr: uriInfo.abbr,
-                textStyle: TextStyle(color: Colors.white),
+                cutTrailingZeros(formatPrice(uriInfo.amount)),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(width: 10),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleAvatar(
+                    radius: 11,
+                    backgroundImage:
+                        AssetImage('assets/${uriInfo.abbr.toLowerCase()}.png'),
+                  ),
+                  SizedBox(width: 6),
+                  Text(
+                    uriInfo.abbr,
+                    style: TextStyle(fontSize: 26),
+                  ),
+                ],
               ),
             ],
           ),
-          SizedBox(height: 16),
-          Text(AppLocalizations.of(context).paymentUriDetailsAcceptQuestion),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CexFiatPreview(
+                amount: uriInfo.amount,
+                coinAbbr: uriInfo.abbr,
+                textStyle: Theme.of(context).textTheme.bodyText1,
+              ),
+            ],
+          ),
+          SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context).paymentUriDetailsAddressSpan + ':',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ],
+          ),
+          SizedBox(height: 6),
+          Text(
+            uriInfo.address,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[

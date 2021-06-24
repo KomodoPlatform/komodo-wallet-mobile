@@ -1437,16 +1437,16 @@ class AppLocalizations {
   String get paymentUriDetailsCoinSpan =>
       Intl.message('Coin: ', name: 'paymentUriDetailsCoinSpan');
   String get paymentUriDetailsAddressSpan =>
-      Intl.message('Address: ', name: 'paymentUriDetailsAddressSpan');
+      Intl.message('To Address ', name: 'paymentUriDetailsAddressSpan');
   String get paymentUriDetailsAmountSpan =>
       Intl.message('Amount: ', name: 'paymentUriDetailsAmountSpan');
   String get paymentUriDetailsAcceptQuestion =>
       Intl.message('Do you accept this transaction?',
           name: 'paymentUriDetailsAcceptQuestion');
   String get paymentUriDetailsAccept =>
-      Intl.message('Yes', name: 'paymentUriDetailsAccept');
+      Intl.message('Pay', name: 'paymentUriDetailsAccept');
   String get paymentUriDetailsDeny =>
-      Intl.message('No', name: 'paymentUriDetailsDeny');
+      Intl.message('Cancel', name: 'paymentUriDetailsDeny');
 
   String get wrongCoinTitle =>
       Intl.message('Wrong coin', name: 'wrongCoinTitle');

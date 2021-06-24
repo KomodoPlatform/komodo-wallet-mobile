@@ -164,6 +164,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
                   AppLocalizations.of(context).wrongCoinSpan2 +
                   widget.coin.abbr +
                   AppLocalizations.of(context).wrongCoinSpan3),
+              SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
@@ -193,6 +194,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
                   '${deci2s(amount)} ${widget.coin.abbr}' +
                   AppLocalizations.of(context).uriInsufficientBalanceSpan2,
             ),
+            SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
