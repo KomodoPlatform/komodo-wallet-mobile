@@ -1,5 +1,6 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
@@ -124,9 +125,11 @@ class _SwapConstructorState extends State<SwapConstructor> {
   }
 
   Future<bool> _subscribeDepths() async {
-    final List<Coin> active =
-        coinsBloc.coinBalance.map((bal) => bal.coin).toList();
-    for (Coin coin in active) {
+    final LinkedHashMap<String, Coin> known = await coins;
+
+    for (String abbr in known.keys) {
+      final Coin coin = known[abbr];
+
       await _obProvider.subscribeDepth(coin, CoinType.base);
       await _obProvider.subscribeDepth(coin, CoinType.rel);
     }

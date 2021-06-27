@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/screens/dex/constructor/coins_list_all.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list_best.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list_depths.dart';
 import 'package:provider/provider.dart';
@@ -23,11 +24,17 @@ class _CoinsListState extends State<CoinsList> {
   Widget build(BuildContext context) {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
 
+    final String _counterCoin = widget.type == CoinType.base
+        ? _constrProvider.buyCoin
+        : _constrProvider.sellCoin;
+
     final Rational _counterAmount = widget.type == CoinType.base
         ? _constrProvider.buyAmount
         : _constrProvider.sellAmount;
 
-    if (_counterAmount == null) {
+    if (_counterCoin == null) {
+      return CoinsListAll(type: widget.type);
+    } else if (_counterAmount == null) {
       return CoinsListDepths(type: widget.type);
     } else {
       return CoinsListBest(type: widget.type);

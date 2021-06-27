@@ -2,23 +2,26 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:decimal/decimal.dart';
 import 'package:provider/provider.dart';
+
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 
-class CoinsListDepths extends StatefulWidget {
-  const CoinsListDepths({this.type});
+class CoinsListAll extends StatefulWidget {
+  const CoinsListAll({this.type});
 
   final CoinType type;
 
   @override
-  _CoinsListDepthsState createState() => _CoinsListDepthsState();
+  _CoinsListAllState createState() => _CoinsListAllState();
 }
 
-class _CoinsListDepthsState extends State<CoinsListDepths> {
+class _CoinsListAllState extends State<CoinsListAll> {
   ConstructorProvider _constrProvider;
   OrderBookProvider _obProvider;
 
@@ -27,7 +30,7 @@ class _CoinsListDepthsState extends State<CoinsListDepths> {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
     _obProvider ??= Provider.of<OrderBookProvider>(context);
 
-    return FutureBuilder<List<DepthListCoin>>(
+    return FutureBuilder<List<ListAllItem>>(
       future: _getCoins(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -47,7 +50,7 @@ class _CoinsListDepthsState extends State<CoinsListDepths> {
     );
   }
 
-  Widget _buildCoinItem(DepthListCoin item) {
+  Widget _buildCoinItem(ListAllItem item) {
     return Opacity(
       opacity: item.coin.isActive ? 1 : 0.3,
       child: Card(
@@ -73,7 +76,10 @@ class _CoinsListDepthsState extends State<CoinsListDepths> {
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                   Expanded(child: SizedBox()),
-                  _buildNumber(item),
+                  Text(
+                    item.matchingCoins.toString(),
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ],
               )),
         ),
@@ -81,55 +87,43 @@ class _CoinsListDepthsState extends State<CoinsListDepths> {
     );
   }
 
-  Widget _buildNumber(DepthListCoin item) {
-    if (widget.type == CoinType.base) {
-      return Text(
-        item.matchingOrders.toString(),
-        style: Theme.of(context).textTheme.caption.copyWith(color: Colors.red),
-      );
-    } else {
-      return Text(
-        item.matchingOrders.toString(),
-        style:
-            Theme.of(context).textTheme.caption.copyWith(color: Colors.green),
-      );
+  int _getMatchingCoinsNumber(Coin coin) {
+    int counter = 0;
+    final List<OrderbookDepth> obDepths =
+        _obProvider.depthsForCoin(coin, widget.type);
+
+    for (OrderbookDepth obDepth in obDepths) {
+      final String coinBalanceRequired =
+          widget.type == CoinType.base ? coin.abbr : obDepth.pair.base;
+      final Decimal balance =
+          coinsBloc.getBalanceByAbbr(coinBalanceRequired)?.balance?.balance;
+
+      if (balance == null || balance.toDouble() == 0.0) continue;
+      if (obDepth.depth.bids > 0) counter++;
     }
+
+    return counter;
   }
 
-  Future<List<DepthListCoin>> _getCoins() async {
+  Future<List<ListAllItem>> _getCoins() async {
     final LinkedHashMap<String, Coin> known = await coins;
-    final List<DepthListCoin> available = [];
+    final List<ListAllItem> available = [];
 
     known.forEach((String abbr, Coin coin) {
-      OrderbookDepth depth;
+      if (!coin.isActive) return;
 
-      if (widget.type == CoinType.base) {
-        if (!coin.isActive) return;
+      final int matchingCoins = _getMatchingCoinsNumber(coin);
+      if (matchingCoins == 0) return;
 
-        depth = _obProvider.getDepth(
-            CoinsPair(sell: coin, buy: known[_constrProvider.buyCoin]));
-      } else {
-        depth = _obProvider.getDepth(
-            CoinsPair(buy: coin, sell: known[_constrProvider.sellCoin]));
-      }
-
-      final int matchingOrders = depth?.depth?.bids ?? 0;
-      if (matchingOrders == 0) return;
-
-      available.add(DepthListCoin(
+      available.add(ListAllItem(
         coin: coin,
-        matchingOrders: matchingOrders,
+        matchingCoins: matchingCoins,
       ));
     });
 
     available.sort((a, b) {
-      // TODO(yurii): Not sure if we should sort active coins before inactive
-      // Will decide later
-      // if (a.coin.isActive && !b.coin.isActive) return -1;
-      // if (!a.coin.isActive && b.coin.isActive) return 1;
-
-      if (a.matchingOrders > b.matchingOrders) return -1;
-      if (a.matchingOrders < b.matchingOrders) return 1;
+      if (a.matchingCoins > b.matchingCoins) return -1;
+      if (a.matchingCoins < b.matchingCoins) return 1;
 
       return a.coin.abbr.compareTo(b.coin.abbr);
     });
@@ -138,9 +132,9 @@ class _CoinsListDepthsState extends State<CoinsListDepths> {
   }
 }
 
-class DepthListCoin {
-  DepthListCoin({this.coin, this.matchingOrders});
+class ListAllItem {
+  ListAllItem({this.coin, this.matchingCoins});
 
   Coin coin;
-  int matchingOrders;
+  int matchingCoins;
 }

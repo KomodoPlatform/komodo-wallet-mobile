@@ -1,4 +1,7 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/best_order.dart';
@@ -91,6 +94,12 @@ class ConstructorProvider extends ChangeNotifier {
       action: action,
       volume: amount,
     ));
+
+    final LinkedHashMap<String, Coin> known = await coins;
+    final List<String> tickers = List.from(bestOrders.result.keys);
+    for (String ticker in tickers) {
+      if (!known.containsKey(ticker)) bestOrders.result.remove(ticker);
+    }
 
     return bestOrders;
   }
