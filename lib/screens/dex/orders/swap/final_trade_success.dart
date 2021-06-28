@@ -54,7 +54,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
       child: ListView(
         children: <Widget>[
           Stack(
-            alignment: AlignmentDirectional.bottomEnd,
+            alignment: Alignment.bottomRight,
             children: [
               Positioned(
                 width: 256,
@@ -132,6 +132,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                     Share.shareFiles(
                       [imgFile.path],
                       text: shareText,
+                      mimeTypes: ['image/png'],
                     );
                   },
                 ),

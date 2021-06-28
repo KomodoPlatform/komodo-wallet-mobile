@@ -48,7 +48,7 @@ class SwapShareCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Stack(
-                          alignment: AlignmentDirectional.bottomEnd,
+                          alignment: Alignment.bottomRight,
                           children: [
                             Image.asset(
                               'assets/swap_share/swap_share_atomicdex_logo.png',
@@ -76,59 +76,74 @@ class SwapShareCard extends StatelessWidget {
                                 style: TextStyle(fontSize: 8),
                               ),
                               SizedBox(height: 6),
-                              Table(
-                                columnWidths: const {
-                                  1: IntrinsicColumnWidth(),
-                                },
-                                children: [
-                                  TableRow(
-                                    children: [
-                                      Image.asset(
-                                        'assets/' +
-                                            swap.result.myInfo.myCoin
-                                                .toLowerCase() +
-                                            '.png',
-                                        height: 18,
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Align(
                                         alignment: Alignment.centerRight,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              'assets/' +
+                                                  swap.result.myInfo.myCoin
+                                                      .toLowerCase() +
+                                                  '.png',
+                                              height: 18,
+                                            ),
+                                            Text(
+                                              cutTrailingZeros(formatPrice(
+                                                      swap.result.myInfo
+                                                          .myAmount,
+                                                      4)) +
+                                                  ' ' +
+                                                  swap.result.myInfo.myCoin,
+                                              style: TextStyle(fontSize: 6),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      Icon(
+                                    ),
+                                    Expanded(
+                                      child: Icon(
                                         Icons.swap_horiz_rounded,
                                         size: 18,
                                       ),
-                                      Image.asset(
-                                        'assets/' +
-                                            swap.result.myInfo.otherCoin
-                                                .toLowerCase() +
-                                            '.png',
-                                        height: 18,
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Align(
                                         alignment: Alignment.centerLeft,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              'assets/' +
+                                                  swap.result.myInfo.otherCoin
+                                                      .toLowerCase() +
+                                                  '.png',
+                                              height: 18,
+                                            ),
+                                            Text(
+                                              cutTrailingZeros(formatPrice(
+                                                      swap.result.myInfo
+                                                          .otherAmount,
+                                                      4)) +
+                                                  ' ' +
+                                                  swap.result.myInfo.otherCoin,
+                                              style: TextStyle(fontSize: 6),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                  TableRow(
-                                    children: [
-                                      Text(
-                                        cutTrailingZeros(formatPrice(
-                                                swap.result.myInfo.myAmount,
-                                                4)) +
-                                            ' ' +
-                                            swap.result.myInfo.myCoin,
-                                        style: TextStyle(fontSize: 6),
-                                        textAlign: TextAlign.right,
-                                      ),
-                                      SizedBox(),
-                                      Text(
-                                        cutTrailingZeros(formatPrice(
-                                                swap.result.myInfo.otherAmount,
-                                                4)) +
-                                            ' ' +
-                                            swap.result.myInfo.otherCoin,
-                                        style: TextStyle(fontSize: 6),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -200,7 +215,7 @@ class SwapShareCard extends StatelessWidget {
               Expanded(
                 child: Stack(
                   fit: StackFit.expand,
-                  alignment: AlignmentDirectional.bottomEnd,
+                  alignment: Alignment.bottomRight,
                   children: [
                     Image.asset(
                       'assets/swap_share/swap_share_illustration.png',
