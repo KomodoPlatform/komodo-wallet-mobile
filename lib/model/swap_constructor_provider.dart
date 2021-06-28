@@ -95,6 +95,8 @@ class ConstructorProvider extends ChangeNotifier {
       volume: amount,
     ));
 
+    if (bestOrders.error != null) return bestOrders;
+
     final LinkedHashMap<String, Coin> known = await coins;
     final List<String> tickers = List.from(bestOrders.result.keys);
     for (String ticker in tickers) {
