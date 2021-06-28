@@ -1,4 +1,7 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list_all.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list_best.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list_depths.dart';
@@ -9,9 +12,10 @@ import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 
 class CoinsList extends StatefulWidget {
-  const CoinsList({this.type});
+  const CoinsList({this.type, this.known});
 
   final CoinType type;
+  final LinkedHashMap<String, Coin> known;
 
   @override
   _CoinsListState createState() => _CoinsListState();

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -51,8 +52,8 @@ class OrderBookProvider extends ChangeNotifier {
   Future<void> subscribeCoin([Coin coin, CoinType type]) =>
       syncOrderbook.subscribeCoin(coin, type);
 
-  Future<void> subscribeDepth([Coin coin, CoinType type]) async =>
-      await syncOrderbook.subscribeDepth(coin, type);
+  Future<void> subscribeDepth(List<Map<String, CoinType>> coinsList) async =>
+      await syncOrderbook.subscribeDepth(coinsList);
 
   CoinsPair get activePair => syncOrderbook.activePair;
   set activePair(CoinsPair coinsPair) => syncOrderbook.activePair = coinsPair;
@@ -168,24 +169,28 @@ class SyncOrderbook {
     return _orderbooksDepth[_tickerStr(coinsPair)];
   }
 
-  Future<void> subscribeDepth([Coin coin, CoinType type]) async {
-    coin ??= activePair.sell;
-    type ??= CoinType.base;
-
+  Future<void> subscribeDepth(List<Map<String, CoinType>> coinsList) async {
     bool wasChanged = false;
-    final List<CoinBalance> coinsList = coinsBloc.coinBalance;
+    final LinkedHashMap<String, Coin> known = await coins;
+    final List<CoinBalance> active = coinsBloc.coinBalance;
 
-    for (CoinBalance coinBalance in coinsList) {
-      if (coinBalance.coin.abbr == coin.abbr) continue;
+    for (Map<String, CoinType> item in coinsList) {
+      final String abbr = item.keys.toList()[0];
+      final CoinType type = item[abbr];
+      final Coin coin = known[abbr];
 
-      final String ticker = _tickerStr(CoinsPair(
-        sell: type == CoinType.base ? coin : coinBalance.coin,
-        buy: type == CoinType.rel ? coin : coinBalance.coin,
-      ));
+      for (CoinBalance coinBalance in active) {
+        if (coinBalance.coin.abbr == abbr) continue;
 
-      if (!_depthTickers.contains(ticker)) {
-        _depthTickers.add(ticker);
-        wasChanged = true;
+        final String ticker = _tickerStr(CoinsPair(
+          sell: type == CoinType.base ? coin : coinBalance.coin,
+          buy: type == CoinType.rel ? coin : coinBalance.coin,
+        ));
+
+        if (!_depthTickers.contains(ticker)) {
+          _depthTickers.add(ticker);
+          wasChanged = true;
+        }
       }
     }
 

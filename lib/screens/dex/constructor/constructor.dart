@@ -24,7 +24,7 @@ class _SwapConstructorState extends State<SwapConstructor> {
     _obProvider ??= Provider.of<OrderBookProvider>(context);
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
 
-    return FutureBuilder(
+    return FutureBuilder<LinkedHashMap<String, Coin>>(
       future: _subscribeDepths(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return _buildProgress();
@@ -38,9 +38,9 @@ class _SwapConstructorState extends State<SwapConstructor> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: _buildSell()),
+                    Expanded(child: _buildSell(snapshot.data)),
                     SizedBox(width: 12),
-                    Expanded(child: _buildBuy()),
+                    Expanded(child: _buildBuy(snapshot.data)),
                   ],
                 ),
               ),
@@ -51,7 +51,7 @@ class _SwapConstructorState extends State<SwapConstructor> {
     );
   }
 
-  Widget _buildSell() {
+  Widget _buildSell(LinkedHashMap<String, Coin> known) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -66,7 +66,7 @@ class _SwapConstructorState extends State<SwapConstructor> {
             overflow: Overflow.visible,
             children: [
               _constrProvider.sellCoin == null
-                  ? CoinsList(type: CoinType.base)
+                  ? CoinsList(type: CoinType.base, known: known)
                   : SellForm(),
               Positioned(
                 child: Container(
@@ -84,7 +84,7 @@ class _SwapConstructorState extends State<SwapConstructor> {
     );
   }
 
-  Widget _buildBuy() {
+  Widget _buildBuy(LinkedHashMap<String, Coin> known) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -98,7 +98,7 @@ class _SwapConstructorState extends State<SwapConstructor> {
           overflow: Overflow.visible,
           children: [
             _constrProvider.buyCoin == null
-                ? CoinsList(type: CoinType.rel)
+                ? CoinsList(type: CoinType.rel, known: known)
                 : BuyForm(),
             Positioned(
               child: Container(
@@ -124,16 +124,16 @@ class _SwapConstructorState extends State<SwapConstructor> {
     );
   }
 
-  Future<bool> _subscribeDepths() async {
+  Future<LinkedHashMap<String, Coin>> _subscribeDepths() async {
     final LinkedHashMap<String, Coin> known = await coins;
 
+    final List<Map<String, CoinType>> coinsList = [];
     for (String abbr in known.keys) {
-      final Coin coin = known[abbr];
-
-      await _obProvider.subscribeDepth(coin, CoinType.base);
-      await _obProvider.subscribeDepth(coin, CoinType.rel);
+      coinsList.add({abbr: CoinType.base});
+      coinsList.add({abbr: CoinType.rel});
     }
 
-    return true;
+    await _obProvider.subscribeDepth(coinsList);
+    return known;
   }
 }

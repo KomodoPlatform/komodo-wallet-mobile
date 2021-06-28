@@ -1,8 +1,6 @@
-import 'dart:async';
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:decimal/decimal.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:provider/provider.dart';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -30,22 +28,13 @@ class _CoinsListAllState extends State<CoinsListAll> {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
     _obProvider ??= Provider.of<OrderBookProvider>(context);
 
-    return FutureBuilder<List<ListAllItem>>(
-      future: _getCoins(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: 150),
-              child: Center(child: CircularProgressIndicator()));
-        }
+    final List<ListAllItem> items = _getItems();
 
-        return ListView.builder(
-          shrinkWrap: true,
-          itemCount: snapshot.data.length,
-          itemBuilder: (context, i) {
-            return _buildCoinItem(snapshot.data[i]);
-          },
-        );
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: items.length,
+      itemBuilder: (context, i) {
+        return _buildCoinItem(items[i]);
       },
     );
   }
@@ -105,21 +94,19 @@ class _CoinsListAllState extends State<CoinsListAll> {
     return counter;
   }
 
-  Future<List<ListAllItem>> _getCoins() async {
-    final LinkedHashMap<String, Coin> known = await coins;
+  List<ListAllItem> _getItems() {
     final List<ListAllItem> available = [];
+    final List<CoinBalance> active = coinsBloc.coinBalance;
 
-    known.forEach((String abbr, Coin coin) {
-      if (!coin.isActive) return;
-
-      final int matchingCoins = _getMatchingCoinsNumber(coin);
-      if (matchingCoins == 0) return;
+    for (CoinBalance coinBalance in active) {
+      final int matchingCoins = _getMatchingCoinsNumber(coinBalance.coin);
+      if (matchingCoins == 0) continue;
 
       available.add(ListAllItem(
-        coin: coin,
+        coin: coinBalance.coin,
         matchingCoins: matchingCoins,
       ));
-    });
+    }
 
     available.sort((a, b) {
       if (a.matchingCoins > b.matchingCoins) return -1;

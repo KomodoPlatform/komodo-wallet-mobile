@@ -113,8 +113,12 @@ class _CoinSelectState extends State<CoinSelect> {
 
   Future<bool> _loadDepths() async {
     if (widget.pairedCoin == null) return true;
-    await _orderBookProvider.subscribeDepth(widget.pairedCoin,
-        widget.type == CoinType.rel ? CoinType.base : CoinType.rel);
+    await _orderBookProvider.subscribeDepth([
+      {
+        widget.pairedCoin.abbr:
+            widget.type == CoinType.rel ? CoinType.base : CoinType.rel
+      }
+    ]);
     return true;
   }
 

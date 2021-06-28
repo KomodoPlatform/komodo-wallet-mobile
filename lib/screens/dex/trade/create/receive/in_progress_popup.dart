@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:provider/provider.dart';
 
 class InProgressPopup extends StatefulWidget {
@@ -24,7 +26,9 @@ class _InProgressPopupState extends State<InProgressPopup> {
   Widget build(BuildContext context) {
     orderBookProvider = Provider.of<OrderBookProvider>(context);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await orderBookProvider.subscribeDepth();
+      await orderBookProvider.subscribeDepth([
+        {swapBloc.sellCoinBalance.coin.abbr: CoinType.base}
+      ]);
       widget.onDone();
     });
 
