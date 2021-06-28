@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rational/rational.dart';
+import 'package:provider/provider.dart';
+
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -6,7 +9,6 @@ import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:provider/provider.dart';
 
 class CoinsListBest extends StatefulWidget {
   const CoinsListBest({this.type});
@@ -76,7 +78,7 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
   BestOrder _getTickerTopOrder(List<BestOrder> tickerOrdersList) {
     final List<BestOrder> sorted = List.from(tickerOrdersList);
-    sorted.sort((a, b) => a.price.compareTo(b.price));
+    sorted.sort((a, b) => a.price.toDouble().compareTo(b.price.toDouble()));
     return sorted[0];
   }
 
@@ -112,18 +114,20 @@ class _CoinsListBestState extends State<CoinsListBest> {
   }
 
   Widget _buildItemDetails(BestOrder order) {
+    final Rational counterAmount = widget.type == CoinType.base
+        ? _constrProvider.buyAmount
+        : _constrProvider.sellAmount;
     final double cexPrice = _cexProvider.getUsdPrice(order.coin);
 
     String receiveStr;
 
     if (cexPrice != 0) {
-      final double receiveAmtUsd = cexPrice *
-          order.price.toDouble() *
-          _constrProvider.sellAmount.toDouble();
+      final double receiveAmtUsd =
+          cexPrice * order.price.toDouble() * counterAmount.toDouble();
       receiveStr = _cexProvider.convert(receiveAmtUsd);
     } else {
       final double receiveAmt =
-          order.price.toDouble() * _constrProvider.sellAmount.toDouble();
+          order.price.toDouble() * counterAmount.toDouble();
       receiveStr = cutTrailingZeros(formatPrice(receiveAmt)) + ' ' + order.coin;
     }
 
