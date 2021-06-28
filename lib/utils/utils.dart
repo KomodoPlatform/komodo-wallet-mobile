@@ -608,6 +608,8 @@ void showUriDetailsDialog(
 
   if (amount == null || abbr == null || address == null) return;
 
+  final bool isActivated = coinsBloc.getBalanceByAbbr(abbr) != null;
+
   dialogBloc.dialog = showDialog<void>(
     context: context,
     builder: (context) {
@@ -669,25 +671,45 @@ void showUriDetailsDialog(
             style: Theme.of(context).textTheme.bodyText1,
           ),
           SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              FlatButton(
-                child: Text(AppLocalizations.of(context).paymentUriDetailsDeny),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              RaisedButton(
-                child:
-                    Text(AppLocalizations.of(context).paymentUriDetailsAccept),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  callbackIfAccepted();
-                },
-              )
-            ],
-          ),
+          if (!isActivated) ...{
+            Text(
+              AppLocalizations.of(context).paymentUriInactiveCoin(abbr),
+              style: TextStyle(color: Theme.of(context).errorColor),
+            ),
+            SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                RaisedButton(
+                  child: Text(AppLocalizations.of(context).okButton),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            )
+          } else ...{
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                FlatButton(
+                  child:
+                      Text(AppLocalizations.of(context).paymentUriDetailsDeny),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                RaisedButton(
+                  child: Text(
+                      AppLocalizations.of(context).paymentUriDetailsAccept),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    callbackIfAccepted();
+                  },
+                )
+              ],
+            )
+          },
         ],
       );
     },

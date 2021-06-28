@@ -349,6 +349,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     }
   }
 
+  void _emptyIntentData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _intentDataProvider.emptyIntentData();
+    });
+  }
+
   Future<void> _handleIntentData(GlobalKey<ScaffoldState> scaffoldKey) async {
     final data = _intentDataProvider.intentData;
     if (data == null) return;
@@ -360,26 +366,14 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     CoinBalance coinBalance;
     if (data.screen == ScreenSelection.Ethereum) {
       coinBalance = coinsBloc.coinBalance
-          .firstWhere((cb) => cb.coin.abbr == 'ETH', orElse: () {
-        _intentDataProvider.emptyIntentData();
-        scaffoldKey.currentState
-            .showSnackBar(SnackBar(content: Text('ETH coin is disabled')));
-        return null;
-      });
+          .firstWhere((cb) => cb.coin.abbr == 'ETH', orElse: () => null);
     } else if (data.screen == ScreenSelection.Bitcoin) {
       coinBalance = coinsBloc.coinBalance
-          .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () {
-        _intentDataProvider.emptyIntentData();
-        scaffoldKey.currentState
-            .showSnackBar(SnackBar(content: Text('BTC coin is disabled')));
-        return null;
-      });
+          .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () => null);
     } else {
-      _intentDataProvider.emptyIntentData();
+      _emptyIntentData();
       return;
     }
-
-    if (coinBalance == null) return;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final Uri uri = Uri.tryParse(data.payload);
@@ -407,7 +401,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         },
       );
 
-      _intentDataProvider.emptyIntentData();
+      _emptyIntentData();
     });
   }
 

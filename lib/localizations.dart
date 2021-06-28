@@ -1447,6 +1447,9 @@ class AppLocalizations {
       Intl.message('Pay', name: 'paymentUriDetailsAccept');
   String get paymentUriDetailsDeny =>
       Intl.message('Cancel', name: 'paymentUriDetailsDeny');
+  String paymentUriInactiveCoin(String abbr) =>
+      Intl.message('$abbr is not active. Please activate and try again.',
+          name: 'paymentUriInactiveCoin', args: <Object>[abbr]);
 
   String get wrongCoinTitle =>
       Intl.message('Wrong coin', name: 'wrongCoinTitle');
