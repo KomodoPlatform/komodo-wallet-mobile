@@ -64,15 +64,13 @@ class _AutoScrollTextState extends State<AutoScrollText> {
   Future<void> _animate() async {
     await Future<dynamic>.delayed(widget.delayBefore);
 
-    while (true) {
-      if (!mounted) return;
+    while (mounted) {
       await _scrollController?.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: widget.duration,
           curve: Curves.linear);
       await Future<dynamic>.delayed(Duration(milliseconds: 500));
 
-      if (!mounted) return;
       await _scrollController?.animateTo(
           _scrollController.position.minScrollExtent,
           duration: widget.duration,

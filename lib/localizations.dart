@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/screens/dex/trade/confirm/swap_confirmation_page.dart';
 
 import 'l10n/messages_all.dart';
 
@@ -44,6 +45,24 @@ class AppLocalizations {
   String get buyTestCoinWarning => Intl.message(
       'Warning, you\'re willing to buy test coins WITHOUT real value!',
       name: 'buyTestCoinWarning');
+  String get mobileDataWarning => Intl.message(
+      'Please note that now you\'re using cellular data and participation in '
+      'atomicDEX P2P network consume internet traffic. It\'s better to use a '
+      'WiFi network if your cellular data plan is costly.',
+      name: 'mobileDataWarning');
+  String get batteryCriticalError => Intl.message(
+      'Your battery charge is critical (<$batteryLevelCritical%) '
+      'to perform a swap safely. Please put it on charge and try again.',
+      name: 'batteryCriticalError');
+  String get batteryLowWarning => Intl.message(
+      'Your battery charge is lower than $batteryLevelLow%. '
+      'Please consider phone charging.',
+      name: 'batteryLowWarning');
+  String get batterySavingWarning => Intl.message(
+      'Your phone is in battery saving mode. Please disable this mode or do '
+      'NOT put the application to the background, otherwise, the app might '
+      'be killed by OS and swap failed.',
+      name: 'batterySavingWarning');
   String get sellTestCoinWarning => Intl.message(
         'Warning, you\'re willing to sell test coins WITHOUT real value!',
         name: 'sellTestCoinWarning',
@@ -1378,6 +1397,33 @@ class AppLocalizations {
       Intl.message('Receive coin', name: ' filtersReceive');
   String get filtersClearAll =>
       Intl.message('Clear all filters', name: 'filtersClearAll');
+
+  String get enablingTooManyAssetsTitle =>
+      Intl.message('Trying to enable too many assets',
+          name: 'enablingTooManyAssetsTitle');
+  String get enablingTooManyAssetsSpan1 =>
+      Intl.message('You have ', name: 'enablingTooManyAssetsSpan1');
+  String get enablingTooManyAssetsSpan2 =>
+      Intl.message(' assets enabled and trying to enable ',
+          name: 'enablingTooManyAssetsSpan2');
+  String get enablingTooManyAssetsSpan3 =>
+      Intl.message(' more. Enabled assets max limit is ',
+          name: 'enablingTooManyAssetsSpan3');
+  String get enablingTooManyAssetsSpan4 =>
+      Intl.message('. Please disable some before new ones adding.',
+          name: 'enablingTooManyAssetsSpan4');
+
+  String get tooManyAssetsEnabledTitle =>
+      Intl.message('Too many assets enabled',
+          name: 'tooManyAssetsEnabledTitle');
+  String get tooManyAssetsEnabledSpan1 =>
+      Intl.message('You have ', name: 'tooManyAssetsEnableSpan1');
+  String get tooManyAssetsEnabledSpan2 =>
+      Intl.message(' assets enabled. Enabled assets max limit is ',
+          name: 'tooManyAssetsEnableSpan2');
+  String get tooManyAssetsEnabledSpan3 =>
+      Intl.message('. Please disable some before new ones adding.',
+          name: 'tooManyAssetsEnableSpan3');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -410,6 +410,16 @@ Future<void> sleepMs(int ms) async {
   await Future<void>.delayed(Duration(milliseconds: ms));
 }
 
+Future<void> pauseUntil(Function cond, {int maxMs}) async {
+  maxMs ??= 10000;
+  final int start = DateTime.now().millisecondsSinceEpoch;
+
+  while ((!await cond()) &&
+      DateTime.now().millisecondsSinceEpoch - start < maxMs) {
+    await Future<dynamic>.delayed(Duration(milliseconds: 100));
+  }
+}
+
 /// Decode a lowercase hex into an integer.
 ///
 /// There's actually more than one way to decode a hex

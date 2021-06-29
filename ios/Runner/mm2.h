@@ -14,10 +14,16 @@ void start_mm2 (const char* mm2_conf);
 /// 3 .. RPC is up.
 int8_t mm2_main_status (void);
 
-// Defined in "common/for_c.rs".
+/// Defined in "common/for_c.rs".
 uint8_t is_loopback_ip (const char* ip);
-// Defined in "mm2_lib.rs".
+/// Defined in "mm2_lib.rs".
 int8_t mm2_main (const char* conf, void (*log_cb) (const char* line));
+
+/// Defined in "mm2_lib.rs".
+/// 0 .. MM2 has been stopped successfully.
+/// 1 .. not running.
+/// 2 .. error stopping an MM2 instance.
+int8_t mm2_stop (void);
 
 void lsof (void);
 

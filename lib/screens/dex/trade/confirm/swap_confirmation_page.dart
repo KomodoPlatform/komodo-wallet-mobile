@@ -1,6 +1,10 @@
+import 'dart:async';
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -19,11 +23,15 @@ import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
 import 'package:komodo_dex/screens/dex/trade/evaluation.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:provider/provider.dart';
+
+const int batteryLevelLow = 30;
+const int batteryLevelCritical = 20;
 
 class SwapConfirmationPage extends StatefulWidget {
   @override
@@ -36,12 +44,27 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   String _minVolume;
   bool _isMinVolumeValid = true;
   BuyOrderType _buyOrderType = BuyOrderType.FillOrKill;
+  LinkedHashMap _batteryData;
+  Timer _batteryTimer;
   ProtectionSettings _protectionSettings = ProtectionSettings(
     requiredConfirmations:
         swapBloc.receiveCoinBalance.coin.requiredConfirmations,
     requiresNotarization:
         swapBloc.receiveCoinBalance.coin.requiresNotarization ?? false,
   );
+
+  @override
+  void initState() {
+    super.initState();
+
+    _batteryTimer = Timer.periodic(Duration(seconds: 1), _checkBattery);
+  }
+
+  @override
+  void dispose() {
+    _batteryTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +85,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     SizedBox(height: 24),
                     _buildCoinSwapDetail(),
                     _buildTestCoinWarning(),
+                    _buildBatteryWarning(),
+                    _buildMobileDataWarning(),
                     SizedBox(height: 24),
                     _buildFees(),
                     SizedBox(height: 24),
@@ -97,6 +122,26 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
               ),
       ),
     );
+  }
+
+  Future<void> _checkBattery(dynamic _) async {
+    LinkedHashMap battery;
+    try {
+      battery = await MMService.nativeC.invokeMethod('battery');
+    } catch (e) {
+      Log('swap_confirmaiton_page]', '_checkBattery: $e');
+    }
+
+    setState(() {
+      _batteryData = battery;
+    });
+  }
+
+  bool _isBatteryCritical() {
+    if (_batteryData == null || _batteryData['level'] == null) return false;
+    if (_batteryData['charging']) return false;
+
+    return (_batteryData['level'] * 100).round() <= batteryLevelCritical;
   }
 
   bool _hasData() {
@@ -294,6 +339,51 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     );
   }
 
+  Widget _buildMobileDataWarning() {
+    return FutureBuilder(
+      future: Connectivity().checkConnectivity(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return SizedBox();
+        if (snapshot.data == ConnectivityResult.wifi) return SizedBox();
+
+        return _buildWarning(
+          text: AppLocalizations.of(context).mobileDataWarning,
+          iconData: Icons.network_check,
+        );
+      },
+    );
+  }
+
+  Widget _buildBatteryWarning() {
+    if (_batteryData == null) return SizedBox();
+
+    final double level = _batteryData['level'];
+    final bool isInLowPowerMode = _batteryData['lowPowerMode'];
+    final bool isCharging = _batteryData['charging'];
+
+    if (isCharging) return SizedBox();
+
+    String message = '';
+    Color color;
+
+    if (_isBatteryCritical()) {
+      message = AppLocalizations.of(context).batteryCriticalError;
+      color = Theme.of(context).errorColor;
+    } else if (level < batteryLevelLow / 100) {
+      message = AppLocalizations.of(context).batteryLowWarning;
+    } else if (isInLowPowerMode) {
+      message = AppLocalizations.of(context).batterySavingWarning;
+    }
+
+    if (message.isEmpty) return SizedBox();
+
+    return _buildWarning(
+      text: message,
+      color: color,
+      iconData: Icons.battery_alert,
+    );
+  }
+
   Widget _buildTestCoinWarning() {
     final Coin coinSell = swapBloc.sellCoinBalance.coin;
     final Coin coinBuy = swapBloc.receiveCoinBalance.coin;
@@ -309,27 +399,43 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     if (warningMessage == null) {
       return SizedBox();
     } else {
-      return Container(
-        width: double.infinity,
-        padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: settingsBloc.isLightTheme
-                ? Colors.yellow[700].withAlpha(200)
-                : Colors.yellow[100].withAlpha(200),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          padding: EdgeInsets.all(8),
-          child: Text(
-            warningMessage,
-            style: Theme.of(context)
-                .textTheme
-                .caption
-                .copyWith(color: Theme.of(context).primaryColor),
-          ),
-        ),
-      );
+      return _buildWarning(text: warningMessage);
     }
+  }
+
+  Widget _buildWarning({String text, IconData iconData, Color color}) {
+    color ??= settingsBloc.isLightTheme
+        ? Colors.yellow[700].withAlpha(200)
+        : Colors.yellow[100].withAlpha(200);
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        padding: EdgeInsets.all(8),
+        child: Row(
+          children: [
+            if (iconData != null) ...{
+              Icon(iconData, size: 16, color: Theme.of(context).primaryColor),
+              SizedBox(width: 10),
+            },
+            Expanded(
+              child: Text(
+                text,
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    .copyWith(color: Theme.of(context).primaryColor),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildSellFiat() {
@@ -418,7 +524,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildButtons() {
-    final bool disabled = _inProgress || !_isMinVolumeValid;
+    final bool disabled =
+        _inProgress || !_isMinVolumeValid || _isBatteryCritical();
 
     return Builder(builder: (context) {
       return Column(
@@ -440,6 +547,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                       ? null
                       : () async {
                           setState(() => _inProgress = true);
+
+                          await showSoundsDialog(context);
 
                           await tradeForm.makeSwap(
                             buyOrderType: _buyOrderType,
@@ -512,8 +621,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           builder: (BuildContext context) => SwapDetailPage(swap: swapEgg),
         ),
       );
-
-      showSoundsDialog(context);
     } else {
       Navigator.of(context).pop();
       showOrderCreatedDialog(context);
