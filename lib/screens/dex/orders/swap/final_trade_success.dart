@@ -3,11 +3,13 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/detail_swap.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/share_preview_overlay.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/swap_share_card.dart';
 import 'package:share/share.dart';
@@ -129,11 +131,17 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                         ' on my phone! You can try it too: https://atomicdex.io\n'
                         '#blockchain #dex #atomicdex #komodoplatform #atomicswap';
 
-                    Share.shareFiles(
+                    await Share.shareFiles(
                       [imgFile.path],
                       text: shareText,
                       mimeTypes: ['image/png'],
                     );
+
+                    if (Platform.isIOS) {
+                      dialogBloc.dialog = Navigator.of(context)
+                          .push(SharePreviewOverlay(imgFile))
+                          .then((_) => dialogBloc.dialog = null);
+                    }
                   },
                 ),
               ),
