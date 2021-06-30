@@ -16,7 +16,7 @@ class SellForm extends StatefulWidget {
 }
 
 class _SellFormState extends State<SellForm> {
-  final _sellAmtCtrl = TextEditingControllerWorkaroud();
+  final _amtCtrl = TextEditingControllerWorkaroud();
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
 
@@ -24,7 +24,7 @@ class _SellFormState extends State<SellForm> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _constrProvider.addListener(_onDataChange);
-      _sellAmtCtrl.addListener(_onAmtFieldChange);
+      _amtCtrl.addListener(_onAmtFieldChange);
 
       _fillForm();
     });
@@ -71,7 +71,7 @@ class _SellFormState extends State<SellForm> {
         Rational.parse('100');
     final String formattedButtonAmt = cutTrailingZeros(
         buttonAmt.toStringAsFixed(appConfig.tradeFormPrecision));
-    final bool isActive = formattedButtonAmt == _sellAmtCtrl.text;
+    final bool isActive = formattedButtonAmt == _amtCtrl.text;
 
     return Expanded(
       child: GestureDetector(
@@ -107,7 +107,7 @@ class _SellFormState extends State<SellForm> {
 
   Widget _buildAmt() {
     return TextFormField(
-        controller: _sellAmtCtrl,
+        controller: _amtCtrl,
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         inputFormatters: <TextInputFormatter>[
           DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),
@@ -223,22 +223,22 @@ class _SellFormState extends State<SellForm> {
 
   void _onDataChange() {
     if (_constrProvider.sellAmount == null) {
-      _sellAmtCtrl.text = '';
+      _amtCtrl.text = '';
       return;
     }
 
     final String newFormatted = cutTrailingZeros(_constrProvider.sellAmount
         .toStringAsFixed(appConfig.tradeFormPrecision));
-    final String currentFormatted = cutTrailingZeros(_sellAmtCtrl.text);
+    final String currentFormatted = cutTrailingZeros(_amtCtrl.text);
 
     if (currentFormatted != newFormatted) {
-      _sellAmtCtrl.setTextAndPosition(newFormatted);
+      _amtCtrl.setTextAndPosition(newFormatted);
     }
   }
 
   void _onAmtFieldChange() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _constrProvider.onSellAmtFieldChange(_sellAmtCtrl.text);
+      _constrProvider.onSellAmtFieldChange(_amtCtrl.text);
     });
   }
 

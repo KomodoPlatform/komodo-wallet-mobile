@@ -54,6 +54,22 @@ class ConstructorProvider extends ChangeNotifier {
     return deci2rat(coinBalance.balance.balance);
   }
 
+  void onBuyAmtFieldChange(String newText) {
+    Rational newAmount;
+    try {
+      newAmount = Rational.parse(newText);
+    } catch (_) {
+      _buyAmount = null;
+      notifyListeners();
+      return;
+    }
+
+    if (newAmount == _buyAmount) return;
+
+    _buyAmount = newAmount;
+    notifyListeners();
+  }
+
   void onSellAmtFieldChange(String newText) {
     Rational newAmount;
     try {

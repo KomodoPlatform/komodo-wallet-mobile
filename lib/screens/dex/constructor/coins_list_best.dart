@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:rational/rational.dart';
 import 'package:provider/provider.dart';
 
@@ -31,10 +32,12 @@ class _CoinsListBestState extends State<CoinsListBest> {
     return FutureBuilder<BestOrders>(
       future: _constrProvider.getBestOrders(widget.type),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: 150),
-              child: Center(child: CircularProgressIndicator()));
+        if (!snapshot.hasData) return _buildProgressIndicator();
+
+        final BestOrders bestOrders = snapshot.data;
+        if (bestOrders.error != null) {
+          return _buildErrorMessage(bestOrders.error);
+        }
 
         final List<Widget> items = _buildItems(snapshot.data);
         return ListView(
@@ -45,11 +48,36 @@ class _CoinsListBestState extends State<CoinsListBest> {
     );
   }
 
+  Widget _buildProgressIndicator() {
+    return ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: 150),
+        child: Center(child: CircularProgressIndicator()));
+  }
+
+  Widget _buildErrorMessage(ErrorString error) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: 150),
+      child: Center(
+        child: Container(
+          padding: EdgeInsets.all(12),
+          child: Text(
+            error.error,
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                .copyWith(color: Theme.of(context).errorColor),
+          ),
+        ),
+      ),
+    );
+  }
+
   List<Widget> _buildItems(BestOrders bestOrders) {
-    if (bestOrders == null) return [SizedBox()];
+    final Iterable tickers = bestOrders?.result?.keys;
+    if (tickers == null) return [_buildProgressIndicator()];
 
     final List<BestOrder> topOrdersList = [];
-    for (String ticker in bestOrders.result.keys) {
+    for (String ticker in tickers) {
       topOrdersList.add(_getTickerTopOrder(bestOrders.result[ticker]));
     }
 

@@ -790,8 +790,9 @@ class ApiProvider {
 
     try {
       final userBody = await _assertUserpass(client, request);
+      final String body = getBestOrdersToJson(userBody.body);
       final response = await userBody.client
-          .post(url, body: getBestOrdersToJson(userBody.body));
+          .post(url, body: body);
       _assert200(response);
       _saveRes('getBestOrders', response);
 
