@@ -4,6 +4,7 @@ import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
 import 'package:komodo_dex/screens/addressbook/contacts_list.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/widgets/round_button.dart';
 import 'package:provider/provider.dart';
 
@@ -38,53 +39,56 @@ class _AddressBookState extends State<AddressBookPage> {
   Widget build(BuildContext context) {
     provider = Provider.of<AddressBookProvider>(context);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          widget.contact == null
-              ? AppLocalizations.of(context).addressBookTitle
-              : AppLocalizations.of(context).contactTitle,
-          key: const Key('addressbook-title'),
-        ),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (widget.contact == null) _buildHeader(),
-          if (widget.contact == null) _buildActiveFilters(),
-          Expanded(
-            child: FutureBuilder(
-              future: provider.contacts,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<Contact>> snapshot) {
-                if (!snapshot.hasData || snapshot.data == null) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                final List<Contact> contacts = List.from(snapshot.data);
-                contacts.sort((Contact a, Contact b) {
-                  return a.name.compareTo(b.name);
-                });
-
-                if (contacts.isEmpty)
-                  return Center(
-                      child:
-                          Text(AppLocalizations.of(context).addressBookEmpty));
-
-                return ContactsList(
-                  contacts,
-                  shouldPop: widget.shouldPop,
-                  coin: coin,
-                  contact: widget.contact,
-                  searchPhrase: searchPhrase,
-                );
-              },
-            ),
+    return LockScreen(
+      context: context,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          title: Text(
+            widget.contact == null
+                ? AppLocalizations.of(context).addressBookTitle
+                : AppLocalizations.of(context).contactTitle,
+            key: const Key('addressbook-title'),
           ),
-        ],
+          centerTitle: true,
+          elevation: 0,
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            if (widget.contact == null) _buildHeader(),
+            if (widget.contact == null) _buildActiveFilters(),
+            Expanded(
+              child: FutureBuilder(
+                future: provider.contacts,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Contact>> snapshot) {
+                  if (!snapshot.hasData || snapshot.data == null) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  final List<Contact> contacts = List.from(snapshot.data);
+                  contacts.sort((Contact a, Contact b) {
+                    return a.name.compareTo(b.name);
+                  });
+
+                  if (contacts.isEmpty)
+                    return Center(
+                        child: Text(
+                            AppLocalizations.of(context).addressBookEmpty));
+
+                  return ContactsList(
+                    contacts,
+                    shouldPop: widget.shouldPop,
+                    coin: coin,
+                    contact: widget.contact,
+                    searchPhrase: searchPhrase,
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

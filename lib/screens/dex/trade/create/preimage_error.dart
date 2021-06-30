@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/trade/create/trade_form_validator.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -59,7 +60,7 @@ class _PreimageErrorState extends State<PreimageError> {
         ),
       ),
       onTap: () async {
-        showDialog<dynamic>(
+        dialogBloc.dialog = showDialog<void>(
             context: context,
             builder: (BuildContext context) {
               return SimpleDialog(
@@ -82,7 +83,7 @@ class _PreimageErrorState extends State<PreimageError> {
                   )
                 ],
               );
-            });
+            }).then((dynamic _) => dialogBloc.dialog = null);
       },
     );
   }

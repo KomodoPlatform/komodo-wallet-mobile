@@ -177,7 +177,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
   }
 
   void _showCoinSelectDialog() {
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
           if (coins == null)
@@ -231,7 +231,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
               );
             }).toList(),
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   Widget _buildNoFundsAlert() {

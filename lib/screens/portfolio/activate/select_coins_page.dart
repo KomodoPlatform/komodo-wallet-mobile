@@ -9,6 +9,7 @@ import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/portfolio/activate/build_item_coin.dart';
 import 'package:komodo_dex/screens/portfolio/activate/build_type_header.dart';
 import 'package:komodo_dex/screens/portfolio/activate/search_filter.dart';
@@ -52,71 +53,75 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          titleSpacing: 6.0,
+    return LockScreen(
+      context: context,
+      child: Scaffold(
+          appBar: AppBar(
+            titleSpacing: 6.0,
+            backgroundColor: Theme.of(context).backgroundColor,
+            elevation: 0,
+            title: SearchFieldFilterCoin(
+              clear: () {
+                _initCoinList();
+              },
+              onFilterCoins: (List<Coin> coinsFiltered) {
+                setState(() {
+                  _currentCoins = coinsFiltered;
+                });
+              },
+            ),
+            leading: Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            ),
+          ),
           backgroundColor: Theme.of(context).backgroundColor,
-          elevation: 0,
-          title: SearchFieldFilterCoin(
-            clear: () {
-              _initCoinList();
-            },
-            onFilterCoins: (List<Coin> coinsFiltered) {
-              setState(() {
-                _currentCoins = coinsFiltered;
-              });
-            },
-          ),
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: Icon(
-                  Icons.close,
-                  color: Theme.of(context).accentColor,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              );
-            },
-          ),
-        ),
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: StreamBuilder<CoinToActivate>(
-            initialData: coinsBloc.currentActiveCoin,
-            stream: coinsBloc.outcurrentActiveCoin,
-            builder:
-                (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-              if (snapshot.data != null) {
-                return LoadingCoin();
-              } else {
-                return _isDone
-                    ? LoadingCoin()
-                    : Stack(
-                        alignment: AlignmentDirectional.bottomCenter,
-                        children: <Widget>[
-                          ListView(
-                            padding: const EdgeInsets.only(bottom: 100),
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16),
-                                child: Text(
-                                  AppLocalizations.of(context).selectCoinInfo,
-                                  style: Theme.of(context).textTheme.bodyText1,
+          body: StreamBuilder<CoinToActivate>(
+              initialData: coinsBloc.currentActiveCoin,
+              stream: coinsBloc.outcurrentActiveCoin,
+              builder: (BuildContext context,
+                  AsyncSnapshot<CoinToActivate> snapshot) {
+                if (snapshot.data != null) {
+                  return LoadingCoin();
+                } else {
+                  return _isDone
+                      ? LoadingCoin()
+                      : Stack(
+                          alignment: AlignmentDirectional.bottomCenter,
+                          children: <Widget>[
+                            ListView(
+                              padding: const EdgeInsets.only(bottom: 100),
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: Text(
+                                    AppLocalizations.of(context).selectCoinInfo,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              ..._coinListItems(),
-                            ],
-                          ),
-                          _buildDoneButton(),
-                        ],
-                      );
-              }
-            }));
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                ..._coinListItems(),
+                              ],
+                            ),
+                            _buildDoneButton(),
+                          ],
+                        );
+                }
+              })),
+    );
   }
 
   void _initCoinList() {
@@ -235,7 +240,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         : appConfig.maxCoinEnabledIOS;
     if (numCoinsEnabled + numCoinsTryingEnable > maxCoinPerPlatform) {
       dialogBloc.closeDialog(context);
-      dialogBloc.dialog = showDialog(
+      dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -259,7 +264,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
             ],
           );
         },
-      );
+      ).then((dynamic _) => dialogBloc.dialog = null);
     } else {
       setState(() => _isDone = true);
       coinsBloc.activateCoinsSelected();

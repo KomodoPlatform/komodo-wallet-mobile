@@ -18,6 +18,7 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rational/rational.dart';
@@ -559,4 +560,169 @@ void printWarning(String text) {
 
 void printError(String text) {
   print('\x1B[31m$text\x1B[0m');
+}
+
+class PaymentUriInfo {
+  PaymentUriInfo({this.scheme, this.abbr, this.address, this.amount});
+
+  factory PaymentUriInfo.fromUri(Uri uri) {
+    String address;
+    double amount;
+    String abbr;
+
+    if (uri.scheme == 'bitcoin') {
+      abbr = 'BTC';
+      if (uri != null) {
+        if (uri.path != null && uri.pathSegments.isNotEmpty)
+          address = uri.pathSegments[0];
+        if (uri.queryParameters != null) {
+          if (uri.queryParameters.containsKey('amount'))
+            amount = double.tryParse(uri.queryParameters['amount']);
+        }
+      }
+    } else if (uri.scheme == 'ethereum') {
+      abbr = 'ETH';
+      if (uri != null) {
+        if (uri.path != null && uri.pathSegments.isNotEmpty)
+          address = uri.pathSegments[0];
+        if (uri.queryParameters != null) {
+          if (uri.queryParameters.containsKey('value'))
+            amount = double.tryParse(uri.queryParameters['value']);
+          if (amount != null) amount = amount * pow(10, -18);
+        }
+      }
+    } else {
+      return null;
+    }
+
+    return PaymentUriInfo(
+      scheme: uri.scheme,
+      abbr: abbr,
+      address: address,
+      amount: amount?.toString(),
+    );
+  }
+
+  final String scheme;
+  final String abbr;
+  final String address;
+  final String amount;
+}
+
+void showUriDetailsDialog(
+    BuildContext context, PaymentUriInfo uriInfo, Function callbackIfAccepted) {
+  if (uriInfo == null) return;
+
+  final String amount = cutTrailingZeros(formatPrice(uriInfo.amount));
+  final String abbr = uriInfo.abbr;
+  final String address = uriInfo.address;
+
+  if (amount == null || abbr == null || address == null) return;
+
+  final bool isActivated = coinsBloc.getBalanceByAbbr(abbr) != null;
+
+  dialogBloc.dialog = showDialog<void>(
+    context: context,
+    builder: (context) {
+      return SimpleDialog(
+        contentPadding: const EdgeInsets.all(24),
+        title: Text(
+          AppLocalizations.of(context).paymentUriDetailsTitle,
+          style: TextStyle(fontSize: 24),
+        ),
+        children: <Widget>[
+          Wrap(
+            alignment: WrapAlignment.start,
+            children: [
+              Text(
+                amount,
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(width: 10),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleAvatar(
+                    radius: 11,
+                    backgroundImage:
+                        AssetImage('assets/${abbr.toLowerCase()}.png'),
+                  ),
+                  SizedBox(width: 6),
+                  Text(
+                    abbr,
+                    style: TextStyle(fontSize: 26),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CexFiatPreview(
+                amount: amount,
+                coinAbbr: abbr,
+                textStyle: Theme.of(context).textTheme.bodyText1,
+              ),
+            ],
+          ),
+          SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context).paymentUriDetailsAddressSpan + ':',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ],
+          ),
+          SizedBox(height: 6),
+          Text(
+            address,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          SizedBox(height: 24),
+          if (!isActivated) ...{
+            Text(
+              AppLocalizations.of(context).paymentUriInactiveCoin(abbr),
+              style: TextStyle(color: Theme.of(context).errorColor),
+            ),
+            SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                RaisedButton(
+                  child: Text(AppLocalizations.of(context).okButton),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            )
+          } else ...{
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                FlatButton(
+                  child:
+                      Text(AppLocalizations.of(context).paymentUriDetailsDeny),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                RaisedButton(
+                  child: Text(
+                      AppLocalizations.of(context).paymentUriDetailsAccept),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    callbackIfAccepted();
+                  },
+                )
+              ],
+            )
+          },
+        ],
+      );
+    },
+  ).then((dynamic _) => dialogBloc.dialog = null);
 }

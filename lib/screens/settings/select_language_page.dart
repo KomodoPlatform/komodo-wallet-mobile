@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectLanguagePage extends StatefulWidget {
@@ -23,28 +24,32 @@ class _SelectLanguagePageState extends State<SelectLanguagePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).settingLanguageTitle),
-      ),
-      body: ListView(
-        children: mainBloc.supportedLocales
-            .map((Locale loc) => BuildItemLanguage(
-                  locale: loc,
-                  currentLoc: _currentLoc,
-                  onChange: (Locale loc) {
-                    setState(() {
-                      _currentLoc = loc;
-                      mainBloc.setNewLanguage(loc);
-                      SharedPreferences.getInstance()
-                          .then((SharedPreferences prefs) {
-                        prefs.setString('current_languages', loc.languageCode);
+    return LockScreen(
+      context: context,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context).settingLanguageTitle),
+        ),
+        body: ListView(
+          children: mainBloc.supportedLocales
+              .map((Locale loc) => BuildItemLanguage(
+                    locale: loc,
+                    currentLoc: _currentLoc,
+                    onChange: (Locale loc) {
+                      setState(() {
+                        _currentLoc = loc;
+                        mainBloc.setNewLanguage(loc);
+                        SharedPreferences.getInstance()
+                            .then((SharedPreferences prefs) {
+                          prefs.setString(
+                              'current_languages', loc.languageCode);
+                        });
                       });
-                    });
-                  },
-                ))
-            .toList(),
+                    },
+                  ))
+              .toList(),
+        ),
       ),
     );
   }
