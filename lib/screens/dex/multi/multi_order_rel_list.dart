@@ -184,7 +184,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   }
 
   void _showAutoFillDialog() {
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
           return SimpleDialog(
@@ -250,7 +250,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               ),
             ],
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
 
     final double baseFiatAmt = _getBaseFiatAmt();
     if (baseFiatAmt != null) {

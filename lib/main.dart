@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/drawer/drawer.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
+import 'package:komodo_dex/model/intent_data_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -20,6 +23,7 @@ import 'package:komodo_dex/screens/feed/feed_page.dart';
 import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/dex_page.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -85,6 +89,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ),
             ChangeNotifierProvider(
               create: (context) => MultiOrderProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => IntentDataProvider(),
             ),
           ],
           child: const MyApp(),
@@ -234,9 +241,10 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   Timer timer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  IntentDataProvider _intentDataProvider;
 
   final List<Widget> _children = <Widget>[
     CoinsPage(),
@@ -245,32 +253,44 @@ class _MyHomePageState extends State<MyHomePage> {
     FeedPage(),
   ];
 
-  Future<void> _initLanguage() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('current_languages') == null) {
-      final Locale loc = Localizations.localeOf(context);
-      prefs.setString('current_languages', loc.languageCode);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _intentDataProvider?.grabData();
+    });
+
     _initLanguage();
     lockService.initialize();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     timer?.cancel();
     super.dispose();
   }
 
   @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        _intentDataProvider?.grabData();
+        break;
+      default:
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _intentDataProvider ??= Provider.of<IntentDataProvider>(context);
     final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
+
+    _handleIntentData(_scaffoldKey);
 
     return StreamBuilder<int>(
       initialData: mainBloc.currentIndexTab,
@@ -319,6 +339,70 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       },
     );
+  }
+
+  Future<void> _initLanguage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('current_languages') == null) {
+      final Locale loc = Localizations.localeOf(context);
+      prefs.setString('current_languages', loc.languageCode);
+    }
+  }
+
+  void _emptyIntentData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _intentDataProvider.emptyIntentData();
+    });
+  }
+
+  Future<void> _handleIntentData(GlobalKey<ScaffoldState> scaffoldKey) async {
+    final data = _intentDataProvider.intentData;
+    if (data == null) return;
+
+    while (coinsBloc.coinBalance.isEmpty) {
+      await Future<dynamic>.delayed(Duration(milliseconds: 100));
+    }
+
+    CoinBalance coinBalance;
+    if (data.screen == ScreenSelection.Ethereum) {
+      coinBalance = coinsBloc.coinBalance
+          .firstWhere((cb) => cb.coin.abbr == 'ETH', orElse: () => null);
+    } else if (data.screen == ScreenSelection.Bitcoin) {
+      coinBalance = coinsBloc.coinBalance
+          .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () => null);
+    } else {
+      _emptyIntentData();
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final Uri uri = Uri.tryParse(data.payload);
+
+      if (uri == null) return;
+
+      final PaymentUriInfo uriInfo = PaymentUriInfo.fromUri(uri);
+
+      if (uriInfo == null) return;
+
+      showUriDetailsDialog(
+        context,
+        uriInfo,
+        () {
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (context) => CoinDetail(
+                coinBalance: coinBalance,
+                isSendIsActive: true,
+                paymentUriInfo: uriInfo,
+              ),
+            ),
+          );
+        },
+      );
+
+      _emptyIntentData();
+    });
   }
 
   Widget networkStatusStreamBuilder(AsyncSnapshot<int> snapshot,

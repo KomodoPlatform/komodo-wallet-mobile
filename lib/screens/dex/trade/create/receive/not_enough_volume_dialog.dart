@@ -8,7 +8,7 @@ import 'package:komodo_dex/utils/utils.dart';
 void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
   final String baseCoin = swapBloc.sellCoinBalance.coin.abbr;
 
-  dialogBloc.dialog = showDialog(
+  dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (context) {
         return SimpleDialog(
@@ -81,5 +81,5 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
             ),
           ],
         );
-      });
+      }).then((dynamic _) => dialogBloc.dialog = null);
 }

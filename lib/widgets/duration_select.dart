@@ -80,14 +80,14 @@ class _DurationSelectState extends State<DurationSelect> {
       }
     }
 
-    dialogBloc.dialog = showDialog<String>(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
           return SimpleDialog(
             title: const Text('Duration'),
             children: options,
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 }
 

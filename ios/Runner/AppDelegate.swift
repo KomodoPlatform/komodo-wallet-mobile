@@ -38,6 +38,7 @@ func performMM2Stop() -> Int32 {
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
     var eventSink: FlutterEventSink?
+    var intentURI: String?
     
     // Handle audio interruptions by Siri or calls.
     // Regular audio, like 'Apple Music' will be mixed with the app playback.
@@ -71,8 +72,12 @@ func performMM2Stop() -> Int32 {
         }
     }
     
-    override func application (_ application: UIApplication,
-                               didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:] ) -> Bool {
+        self.intentURI = url.absoluteString
+        return true
+    }
+    
+    override func application (_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         signal(SIGPIPE, sigpipeHandler)
         
         guard let vc = window?.rootViewController as? FlutterViewController else {
@@ -157,13 +162,16 @@ func performMM2Stop() -> Int32 {
                                         } else if call.method == "metrics" {
                                             let js = metrics()
                                             result (String (cString: js!))
+                                        } else if call.method == "get_intent_data" {
+                                            let uri = self.intentURI;
+                                            self.intentURI = nil;
+                                            result (uri)
                                         } else if call.method == "log" {
                                             // Allows us to log via the `os_log` default channel
                                             // (Flutter currently does it for us, but there's a chance that it won't).
                                             let arg = call.arguments as! String;
                                             os_log("%{public}s", type: OSLogType.default, arg);
                                         } else {result (FlutterMethodNotImplemented)}})
-        
         GeneratedPluginRegistrant.register(with: self)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
@@ -232,4 +240,3 @@ func performMM2Stop() -> Int32 {
 extension Notification.Name {
     static let didReceiveData = Notification.Name("didReceiveData")
 }
-

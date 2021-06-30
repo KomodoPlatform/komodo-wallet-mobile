@@ -169,7 +169,7 @@ class _FiltersState extends State<Filters> {
     final int failedPredictor = widget.filter(widget.items).length;
     _filters.status = temp;
 
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
           return SimpleDialog(
@@ -226,7 +226,7 @@ class _FiltersState extends State<Filters> {
               ),
             ],
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   Widget _buildDateFilter(DateFilterType dateType) {
@@ -407,7 +407,7 @@ class _FiltersState extends State<Filters> {
     final int takerPredictor = widget.filter(widget.items).length;
     _filters.type = temp;
 
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
           return SimpleDialog(
@@ -463,7 +463,7 @@ class _FiltersState extends State<Filters> {
               ),
             ],
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   Widget _buildCoinFilter(Market market) {
@@ -628,14 +628,14 @@ class _FiltersState extends State<Filters> {
           ),
         ));
 
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
           return SimpleDialog(
             contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
             children: items,
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   List<String> _getCoins(Market market) {

@@ -119,7 +119,7 @@ class _CoinSelectState extends State<CoinSelect> {
   }
 
   void _showDialog() {
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return StreamBuilder(
@@ -133,10 +133,12 @@ class _CoinSelectState extends State<CoinSelect> {
               return _buildList(snapshot.data);
             },
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   Widget _buildList(List<CoinBalance> coins) {
+    if (context == null) return SizedBox();
+
     final List<CoinBalance> sortedList = coinsBloc.sortCoins(coins);
 
     if (sortedList.isEmpty) {

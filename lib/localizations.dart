@@ -619,9 +619,9 @@ class AppLocalizations {
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
-  String errorNotEnoughtGas(String gas) =>
+  String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
-          name: 'errorNotEnoughtGas', args: <Object>[gas]);
+          name: 'errorNotEnoughGas', args: <Object>[gas]);
   String orderCancel(String coin) =>
       Intl.message('All $coin orders will be canceled.',
           name: 'orderCancel', args: <Object>[coin]);
@@ -1398,6 +1398,13 @@ class AppLocalizations {
   String get filtersClearAll =>
       Intl.message('Clear all filters', name: 'filtersClearAll');
 
+  String get uriInsufficientBalanceTitle =>
+      Intl.message('Insufficient balance', name: 'uriInsufficientBalanceTitle');
+  String get uriInsufficientBalanceSpan1 =>
+      Intl.message('Not enough balance for scanned ',
+          name: 'uriInsufficientBalanceSpan1');
+  String get uriInsufficientBalanceSpan2 =>
+      Intl.message(' payment request.', name: 'uriInsufficientBalanceSpan2');
   String get enablingTooManyAssetsTitle =>
       Intl.message('Trying to enable too many assets',
           name: 'enablingTooManyAssetsTitle');
@@ -1424,6 +1431,35 @@ class AppLocalizations {
   String get tooManyAssetsEnabledSpan3 =>
       Intl.message('. Please disable some before new ones adding.',
           name: 'tooManyAssetsEnableSpan3');
+
+  String get paymentUriDetailsTitle =>
+      Intl.message('Payment Requested', name: 'paymentUriDetailsTitle');
+  String get paymentUriDetailsCoinSpan =>
+      Intl.message('Coin: ', name: 'paymentUriDetailsCoinSpan');
+  String get paymentUriDetailsAddressSpan =>
+      Intl.message('To Address ', name: 'paymentUriDetailsAddressSpan');
+  String get paymentUriDetailsAmountSpan =>
+      Intl.message('Amount: ', name: 'paymentUriDetailsAmountSpan');
+  String get paymentUriDetailsAcceptQuestion =>
+      Intl.message('Do you accept this transaction?',
+          name: 'paymentUriDetailsAcceptQuestion');
+  String get paymentUriDetailsAccept =>
+      Intl.message('Pay', name: 'paymentUriDetailsAccept');
+  String get paymentUriDetailsDeny =>
+      Intl.message('Cancel', name: 'paymentUriDetailsDeny');
+  String paymentUriInactiveCoin(String abbr) =>
+      Intl.message('$abbr is not active. Please activate and try again.',
+          name: 'paymentUriInactiveCoin', args: <Object>[abbr]);
+
+  String get wrongCoinTitle =>
+      Intl.message('Wrong coin', name: 'wrongCoinTitle');
+  String get wrongCoinSpan1 =>
+      Intl.message('You are trying to scan a payment QR code for ',
+          name: 'wrongCoinTitle');
+  String get wrongCoinSpan2 =>
+      Intl.message(' but you are on the ', name: 'wrongCoinSpan2');
+  String get wrongCoinSpan3 =>
+      Intl.message(' withdraw screen', name: 'wrongCoinSpan3');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
