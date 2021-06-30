@@ -46,6 +46,8 @@ class _CoinsListBestState extends State<CoinsListBest> {
   }
 
   List<Widget> _buildItems(BestOrders bestOrders) {
+    if (bestOrders == null) return [SizedBox()];
+
     final List<BestOrder> topOrdersList = [];
     for (String ticker in bestOrders.result.keys) {
       topOrdersList.add(_getTickerTopOrder(bestOrders.result[ticker]));
@@ -89,42 +91,72 @@ class _CoinsListBestState extends State<CoinsListBest> {
       opacity: isCoinActive ? 1 : 0.4,
       child: Card(
         margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
-        child: Container(
-            padding: EdgeInsets.fromLTRB(8, 6, 8, 6),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 8,
-                      backgroundImage:
-                          AssetImage('assets/${order.coin.toLowerCase()}.png'),
-                    ),
-                    SizedBox(width: 4),
-                    Text(order.coin),
-                  ],
-                ),
-                SizedBox(height: 4),
-                _buildItemDetails(order),
-              ],
-            )),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: 50),
+          child: Container(
+              padding: EdgeInsets.fromLTRB(8, 6, 8, 6),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 8,
+                        backgroundImage: AssetImage(
+                            'assets/${order.coin.toLowerCase()}.png'),
+                      ),
+                      SizedBox(width: 4),
+                      Text(order.coin),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  _buildItemDetails(order),
+                ],
+              )),
+        ),
       ),
     );
   }
 
   Widget _buildItemDetails(BestOrder order) {
+    final String counterCoin = widget.type == CoinType.base
+        ? _constrProvider.buyCoin
+        : _constrProvider.sellCoin;
     final Rational counterAmount = widget.type == CoinType.base
         ? _constrProvider.buyAmount
         : _constrProvider.sellAmount;
     final double cexPrice = _cexProvider.getUsdPrice(order.coin);
+    final double counterCexPrice = _cexProvider.getUsdPrice(counterCoin);
 
     String receiveStr;
+    Widget fiatProfitStr;
 
     if (cexPrice != 0) {
       final double receiveAmtUsd =
           cexPrice * order.price.toDouble() * counterAmount.toDouble();
       receiveStr = _cexProvider.convert(receiveAmtUsd);
+
+      if (counterCexPrice != 0) {
+        final double counterAmtUsd = counterAmount.toDouble() * counterCexPrice;
+        final double fiatProfitPct =
+            (receiveAmtUsd - counterAmtUsd) * 100 / counterAmtUsd;
+        Color color = Theme.of(context).textTheme.caption.color;
+        if (fiatProfitPct < 0) {
+          color =
+              widget.type == CoinType.base ? Colors.green : Colors.orangeAccent;
+        } else if (fiatProfitPct > 0) {
+          color =
+              widget.type == CoinType.base ? Colors.orangeAccent : Colors.green;
+        }
+        fiatProfitStr = Text(
+          ' (' +
+              (fiatProfitPct > 0 ? '+' : '') +
+              cutTrailingZeros(formatPrice(fiatProfitPct, 3)) +
+              '%)',
+          style: Theme.of(context).textTheme.caption.copyWith(color: color),
+        );
+      }
     } else {
       final double receiveAmt =
           order.price.toDouble() * counterAmount.toDouble();
@@ -141,12 +173,13 @@ class _CoinsListBestState extends State<CoinsListBest> {
               .copyWith(color: Theme.of(context).textTheme.bodyText1.color),
         ),
         SizedBox(width: 4),
-        Expanded(
+        Flexible(
           child: AutoScrollText(
             text: receiveStr,
             style: Theme.of(context).textTheme.caption,
           ),
         ),
+        fiatProfitStr ?? SizedBox(),
       ],
     );
   }

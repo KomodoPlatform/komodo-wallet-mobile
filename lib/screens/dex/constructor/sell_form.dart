@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
@@ -16,6 +18,7 @@ class SellForm extends StatefulWidget {
 class _SellFormState extends State<SellForm> {
   final _sellAmtCtrl = TextEditingControllerWorkaroud();
   ConstructorProvider _constrProvider;
+  CexProvider _cexProvider;
 
   @override
   void initState() {
@@ -30,7 +33,8 @@ class _SellFormState extends State<SellForm> {
 
   @override
   Widget build(BuildContext context) {
-    _constrProvider = Provider.of<ConstructorProvider>(context);
+    _constrProvider ??= Provider.of<ConstructorProvider>(context);
+    _cexProvider ??= Provider.of<CexProvider>(context);
 
     return Padding(
       padding: EdgeInsets.only(right: 12),
@@ -138,28 +142,37 @@ class _SellFormState extends State<SellForm> {
 
   Widget _buildCoin() {
     return Card(
-      margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
-      child: InkWell(
-        onTap: () {
-          _constrProvider.sellCoin = null;
-        },
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: 50),
-          child: Container(
+        margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
+        child: InkWell(
+          onTap: () {
+            _constrProvider.sellCoin = null;
+          },
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: 50),
+            child: Container(
               padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 8,
-                    backgroundImage: AssetImage(
-                        'assets/${_constrProvider.sellCoin.toLowerCase()}.png'),
+                  Expanded(
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 8,
+                            backgroundImage: AssetImage(
+                                'assets/${_constrProvider.sellCoin.toLowerCase()}.png'),
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            _constrProvider.sellCoin,
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                        ],
+                      ),
+                      _buildFiatAmt(),
+                    ]),
                   ),
-                  SizedBox(width: 4),
-                  Text(
-                    _constrProvider.sellCoin,
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  Expanded(child: SizedBox()),
                   Icon(
                     Icons.clear,
                     size: 13,
@@ -167,9 +180,44 @@ class _SellFormState extends State<SellForm> {
                   ),
                   SizedBox(width: 10),
                 ],
-              )),
+              ),
+            ),
+          ),
+        ));
+  }
+
+  Widget _buildFiatAmt() {
+    final double usdPrice = _cexProvider.getUsdPrice(_constrProvider.sellCoin);
+    double usdAmt = 0.0;
+    if (_constrProvider.sellAmount != null) {
+      usdAmt = _constrProvider.sellAmount.toDouble() * usdPrice;
+    }
+
+    if (usdAmt == 0) return SizedBox();
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(height: 4),
+        Row(
+          children: [
+            Text(
+              'Send:',
+              style: Theme.of(context)
+                  .textTheme
+                  .caption
+                  .copyWith(color: Theme.of(context).textTheme.bodyText1.color),
+            ),
+            SizedBox(width: 4),
+            Expanded(
+              child: AutoScrollText(
+                text: _cexProvider.convert(usdAmt),
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ),
+          ],
         ),
-      ),
+      ],
     );
   }
 
