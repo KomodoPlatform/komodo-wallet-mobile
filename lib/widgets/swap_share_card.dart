@@ -29,181 +29,218 @@ class SwapShareCard extends StatelessWidget {
 
       dateFormatted = formatter.format(finalTime);
     }
-    return Container(
-      width: 256,
-      height: 144,
-      child: Stack(
-        children: <Widget>[
-          Image.asset(
-            'assets/swap_share/swap_share_background.png',
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            Image.asset(
-                              'assets/swap_share/swap_share_atomicdex_logo.png',
-                              height: 24,
-                            ),
-                            Text(
-                              'Powered by Komodo',
-                              style: TextStyle(fontSize: 4),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
+    return DefaultTextStyle.merge(
+      style: TextStyle(color: Colors.white),
+      child: Container(
+        width: 256,
+        height: 144,
+        child: Stack(
+          children: <Widget>[
+            Image.asset(
+              'assets/swap_share/swap_share_background.png',
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Stack(
+                            alignment: Alignment.bottomRight,
                             children: [
-                              Text(
-                                swap.result.myInfo.myCoin +
-                                    '/' +
-                                    swap.result.myInfo.otherCoin +
-                                    ' '
-                                        'Swap Complete!',
-                                style: TextStyle(fontSize: 8),
+                              Image.asset(
+                                'assets/swap_share/swap_share_atomicdex_logo.png',
+                                height: 24,
                               ),
-                              SizedBox(height: 6),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Image.asset(
-                                              'assets/' +
-                                                  swap.result.myInfo.myCoin
-                                                      .toLowerCase() +
-                                                  '.png',
-                                              height: 18,
-                                            ),
-                                            Text(
-                                              cutTrailingZeros(formatPrice(
-                                                      swap.result.myInfo
-                                                          .myAmount,
-                                                      4)) +
-                                                  ' ' +
-                                                  swap.result.myInfo.myCoin,
-                                              style: TextStyle(fontSize: 6),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Icon(
-                                        Icons.swap_horiz_rounded,
-                                        size: 18,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Image.asset(
-                                              'assets/' +
-                                                  swap.result.myInfo.otherCoin
-                                                      .toLowerCase() +
-                                                  '.png',
-                                              height: 18,
-                                            ),
-                                            Text(
-                                              cutTrailingZeros(formatPrice(
-                                                      swap.result.myInfo
-                                                          .otherAmount,
-                                                      4)) +
-                                                  ' ' +
-                                                  swap.result.myInfo.otherCoin,
-                                              style: TextStyle(fontSize: 6),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              Text(
+                                'Powered by Komodo',
+                                style: TextStyle(fontSize: 4),
                               ),
                             ],
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Table(
-                          columnWidths: const {
-                            0: IntrinsicColumnWidth(),
-                            1: IntrinsicColumnWidth(),
-                          },
-                          children: [
-                            TableRow(
+                        Expanded(
+                          flex: 2,
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  'Details',
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 6,
+                                  swap.result.myInfo.myCoin +
+                                      '/' +
+                                      swap.result.myInfo.otherCoin +
+                                      ' '
+                                          'Swap Complete!',
+                                  style: TextStyle(fontSize: 8),
+                                ),
+                                SizedBox(height: 6),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset(
+                                                'assets/' +
+                                                    swap.result.myInfo.myCoin
+                                                        .toLowerCase() +
+                                                    '.png',
+                                                height: 18,
+                                              ),
+                                              Text(
+                                                cutTrailingZeros(formatPrice(
+                                                        swap.result.myInfo
+                                                            .myAmount,
+                                                        4)) +
+                                                    ' ' +
+                                                    swap.result.myInfo.myCoin,
+                                                style: TextStyle(fontSize: 6),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Icon(
+                                          Icons.swap_horiz_rounded,
+                                          size: 18,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset(
+                                                'assets/' +
+                                                    swap.result.myInfo.otherCoin
+                                                        .toLowerCase() +
+                                                    '.png',
+                                                height: 18,
+                                              ),
+                                              Text(
+                                                cutTrailingZeros(formatPrice(
+                                                        swap.result.myInfo
+                                                            .otherAmount,
+                                                        4)) +
+                                                    ' ' +
+                                                    swap.result.myInfo
+                                                        .otherCoin,
+                                                style: TextStyle(fontSize: 6),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(width: 8),
-                                SizedBox(),
                               ],
                             ),
-                            const TableRow(
-                              children: [
-                                SizedBox(height: 8),
-                                SizedBox(height: 8),
-                                SizedBox(height: 8),
-                              ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Table(
+                            columnWidths: const {
+                              0: IntrinsicColumnWidth(),
+                              1: IntrinsicColumnWidth(),
+                            },
+                            children: [
+                              TableRow(
+                                children: [
+                                  Text(
+                                    'Details',
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 6,
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  SizedBox(),
+                                ],
+                              ),
+                              const TableRow(
+                                children: [
+                                  SizedBox(height: 8),
+                                  SizedBox(height: 8),
+                                  SizedBox(height: 8),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    'Date',
+                                    style: TextStyle(fontSize: 6),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    dateFormatted,
+                                    style: TextStyle(fontSize: 6),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    'Duration',
+                                    style: TextStyle(fontSize: 6),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    '$durationMinutes Minutes',
+                                    style: TextStyle(fontSize: 6),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      Image.asset(
+                        'assets/swap_share/swap_share_illustration.png',
+                        fit: BoxFit.cover,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Expanded(child: SizedBox()),
+                            Image.asset(
+                              'assets/swap_share/swap_share_qrcode.png',
+                              height: 34,
                             ),
-                            TableRow(
-                              children: [
-                                Text(
-                                  'Date',
-                                  style: TextStyle(fontSize: 6),
-                                ),
-                                SizedBox(width: 8),
-                                Text(
-                                  dateFormatted,
-                                  style: TextStyle(fontSize: 6),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ],
-                            ),
-                            TableRow(
-                              children: [
-                                Text(
-                                  'Duration',
-                                  style: TextStyle(fontSize: 6),
-                                ),
-                                SizedBox(width: 8),
-                                Text(
-                                  '$durationMinutes Minutes',
-                                  style: TextStyle(fontSize: 6),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ],
+                            SizedBox(height: 8),
+                            Text(
+                              'Download AtomicDEX on atomicdex.io',
+                              style: TextStyle(fontSize: 6),
                             ),
                           ],
                         ),
@@ -211,41 +248,10 @@ class SwapShareCard extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-              Expanded(
-                child: Stack(
-                  fit: StackFit.expand,
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    Image.asset(
-                      'assets/swap_share/swap_share_illustration.png',
-                      fit: BoxFit.cover,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Expanded(child: SizedBox()),
-                          Image.asset(
-                            'assets/swap_share/swap_share_qrcode.png',
-                            height: 34,
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            'Download AtomicDEX on atomicdex.io',
-                            style: TextStyle(fontSize: 6),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
