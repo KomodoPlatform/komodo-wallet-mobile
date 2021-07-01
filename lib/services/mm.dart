@@ -791,8 +791,7 @@ class ApiProvider {
     try {
       final userBody = await _assertUserpass(client, request);
       final String body = getBestOrdersToJson(userBody.body);
-      final response = await userBody.client
-          .post(url, body: body);
+      final response = await userBody.client.post(url, body: body);
       _assert200(response);
       _saveRes('getBestOrders', response);
 
@@ -801,6 +800,7 @@ class ApiProvider {
       final error = ErrorString.fromJson(jbody);
       if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
+      jbody['request'] = request;
       return BestOrders.fromJson(jbody);
     } catch (e) {
       return BestOrders(

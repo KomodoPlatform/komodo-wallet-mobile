@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:rational/rational.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
-import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_best_orders.dart';
+import 'package:komodo_dex/screens/dex/constructor/coins_list_best_item.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
-import 'package:komodo_dex/utils/utils.dart';
 
 class CoinsListBest extends StatefulWidget {
   const CoinsListBest({this.type});
@@ -23,6 +24,14 @@ class CoinsListBest extends StatefulWidget {
 class _CoinsListBestState extends State<CoinsListBest> {
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
+  int _timer;
+  bool _showAll = false;
+
+  @override
+  void initState() {
+    _showAll = widget.type == CoinType.rel;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +45,9 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
         final BestOrders bestOrders = snapshot.data;
         if (bestOrders.error != null) {
-          return _buildErrorMessage(bestOrders.error);
+          return _buildErrorHandler(bestOrders.error);
         }
+        _timer = null;
 
         final List<Widget> items = _buildItems(snapshot.data);
         return ListView(
@@ -48,6 +58,18 @@ class _CoinsListBestState extends State<CoinsListBest> {
     );
   }
 
+  Widget _buildErrorHandler(ErrorString error) {
+    // Showing spinner for 2sec before actual error message
+    // in case mm2 is restarting after app wakeup
+    final int now = DateTime.now().millisecondsSinceEpoch;
+    if (_timer != null && now - _timer > 2000) {
+      return _buildErrorMessage(error);
+    } else {
+      _timer ??= now;
+      return _buildProgressIndicator();
+    }
+  }
+
   Widget _buildProgressIndicator() {
     return ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 150),
@@ -56,7 +78,7 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
   Widget _buildErrorMessage(ErrorString error) {
     return ConstrainedBox(
-      constraints: BoxConstraints(minHeight: 150),
+      constraints: BoxConstraints(maxHeight: 150),
       child: Center(
         child: Container(
           padding: EdgeInsets.all(12),
@@ -82,133 +104,70 @@ class _CoinsListBestState extends State<CoinsListBest> {
     }
 
     topOrdersList.sort((a, b) {
-      final aCexPrice = _cexProvider.getUsdPrice(a.coin);
-      final bCexPrice = _cexProvider.getUsdPrice(b.coin);
+      final String aCoin = a.action == MarketAction.SELL ? a.coin : a.forCoin;
+      final String bCoin = b.action == MarketAction.SELL ? b.coin : b.forCoin;
+      final aCexPrice = _cexProvider.getUsdPrice(aCoin);
+      final bCexPrice = _cexProvider.getUsdPrice(bCoin);
 
       if (aCexPrice == 0 && bCexPrice != 0) return 1;
       if (aCexPrice != 0 && bCexPrice == 0) return -1;
 
       if (b.price.toDouble() * bCexPrice > a.price.toDouble() * aCexPrice) {
-        return 1;
+        return a.action == MarketAction.SELL ? 1 : -1;
       }
       if (b.price.toDouble() * bCexPrice < a.price.toDouble() * aCexPrice) {
-        return -1;
+        return a.action == MarketAction.SELL ? -1 : 1;
       }
 
-      return a.coin.compareTo(b.coin);
+      return aCoin.compareTo(bCoin);
     });
 
     final List<Widget> items = [];
+    bool switcherDisabled = true;
     for (BestOrder topOrder in topOrdersList) {
-      items.add(_buildItem(topOrder));
+      final String coin = topOrder.action == MarketAction.BUY
+          ? topOrder.forCoin
+          : topOrder.coin;
+
+      final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
+      final bool activeWithBalance =
+          (coinBalance?.balance?.balance ?? deci(0)).toDouble() > 0;
+      if (!activeWithBalance) switcherDisabled = false;
+
+      if (_showAll || activeWithBalance) {
+        items.add(CoinsListBestItem(topOrder));
+      }
     }
 
+    items.add(_buildShowAllSwitcher(switcherDisabled));
     return items;
   }
 
-  BestOrder _getTickerTopOrder(List<BestOrder> tickerOrdersList) {
-    final List<BestOrder> sorted = List.from(tickerOrdersList);
-    sorted.sort((a, b) => a.price.toDouble().compareTo(b.price.toDouble()));
-    return sorted[0];
-  }
-
-  Widget _buildItem(BestOrder order) {
-    final bool isCoinActive = coinsBloc.getBalanceByAbbr(order.coin) != null;
-
-    return Opacity(
-      opacity: isCoinActive ? 1 : 0.4,
-      child: Card(
-        margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: 50),
+  Widget _buildShowAllSwitcher(bool disabled) {
+    return Padding(
+      padding: EdgeInsets.only(right: 12),
+      child: InkWell(
+        onTap: disabled ? null : () => setState(() => _showAll = !_showAll),
+        child: Opacity(
+          opacity: disabled ? 0.3 : 1,
           child: Container(
-              padding: EdgeInsets.fromLTRB(8, 6, 8, 6),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 8,
-                        backgroundImage: AssetImage(
-                            'assets/${order.coin.toLowerCase()}.png'),
-                      ),
-                      SizedBox(width: 4),
-                      Text(order.coin),
-                    ],
-                  ),
-                  SizedBox(height: 4),
-                  _buildItemDetails(order),
-                ],
-              )),
+            padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
+            child: Text(_showAll ? 'Show less' : 'Show more',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyText1),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildItemDetails(BestOrder order) {
-    final String counterCoin = widget.type == CoinType.base
-        ? _constrProvider.buyCoin
-        : _constrProvider.sellCoin;
-    final Rational counterAmount = widget.type == CoinType.base
-        ? _constrProvider.buyAmount
-        : _constrProvider.sellAmount;
-    final double cexPrice = _cexProvider.getUsdPrice(order.coin);
-    final double counterCexPrice = _cexProvider.getUsdPrice(counterCoin);
-
-    String receiveStr;
-    Widget fiatProfitStr;
-
-    if (cexPrice != 0) {
-      final double receiveAmtUsd =
-          cexPrice * order.price.toDouble() * counterAmount.toDouble();
-      receiveStr = _cexProvider.convert(receiveAmtUsd);
-
-      if (counterCexPrice != 0) {
-        final double counterAmtUsd = counterAmount.toDouble() * counterCexPrice;
-        final double fiatProfitPct =
-            (receiveAmtUsd - counterAmtUsd) * 100 / counterAmtUsd;
-        Color color = Theme.of(context).textTheme.caption.color;
-        if (fiatProfitPct < 0) {
-          color =
-              widget.type == CoinType.base ? Colors.green : Colors.orangeAccent;
-        } else if (fiatProfitPct > 0) {
-          color =
-              widget.type == CoinType.base ? Colors.orangeAccent : Colors.green;
-        }
-        fiatProfitStr = Text(
-          ' (' +
-              (fiatProfitPct > 0 ? '+' : '') +
-              cutTrailingZeros(formatPrice(fiatProfitPct, 3)) +
-              '%)',
-          style: Theme.of(context).textTheme.caption.copyWith(color: color),
-        );
-      }
+  BestOrder _getTickerTopOrder(List<BestOrder> tickerOrdersList) {
+    final List<BestOrder> sorted = List.from(tickerOrdersList);
+    if (widget.type == CoinType.base) {
+      sorted.sort((a, b) => a.price.toDouble().compareTo(b.price.toDouble()));
     } else {
-      final double receiveAmt =
-          order.price.toDouble() * counterAmount.toDouble();
-      receiveStr = cutTrailingZeros(formatPrice(receiveAmt)) + ' ' + order.coin;
+      sorted.sort((a, b) => b.price.toDouble().compareTo(a.price.toDouble()));
     }
-
-    return Row(
-      children: [
-        Text(
-          'Receive:',
-          style: Theme.of(context)
-              .textTheme
-              .caption
-              .copyWith(color: Theme.of(context).textTheme.bodyText1.color),
-        ),
-        SizedBox(width: 4),
-        Flexible(
-          child: AutoScrollText(
-            text: receiveStr,
-            style: Theme.of(context).textTheme.caption,
-          ),
-        ),
-        fiatProfitStr ?? SizedBox(),
-      ],
-    );
+    return sorted[0];
   }
 }

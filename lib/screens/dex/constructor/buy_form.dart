@@ -41,7 +41,7 @@ class _BuyFormState extends State<BuyForm> {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildCoin(),
-          SizedBox(height: 8),
+          SizedBox(height: 6),
           _buildAmt(),
         ],
       ),

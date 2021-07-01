@@ -1,0 +1,142 @@
+import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
+import 'package:komodo_dex/utils/utils.dart';
+import 'package:rational/rational.dart';
+
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/best_order.dart';
+import 'package:komodo_dex/model/get_best_orders.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
+import 'package:provider/provider.dart';
+
+class CoinsListBestItem extends StatefulWidget {
+  const CoinsListBestItem(this.order);
+
+  final BestOrder order;
+
+  @override
+  _CoinsListBestItemState createState() => _CoinsListBestItemState();
+}
+
+class _CoinsListBestItemState extends State<CoinsListBestItem> {
+  ConstructorProvider _constrProvider;
+  CexProvider _cexProvider;
+  String _coin;
+
+  @override
+  Widget build(BuildContext context) {
+    _constrProvider ??= Provider.of<ConstructorProvider>(context);
+    _cexProvider ??= Provider.of<CexProvider>(context);
+    _coin = widget.order.action == MarketAction.SELL
+        ? widget.order.coin
+        : widget.order.forCoin;
+
+    final bool isCoinActive = coinsBloc.getBalanceByAbbr(_coin) != null;
+
+    return Opacity(
+      opacity: isCoinActive ? 1 : 0.4,
+      child: Card(
+        margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: 50),
+          child: Container(
+              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 8,
+                        backgroundImage:
+                            AssetImage('assets/${_coin.toLowerCase()}.png'),
+                      ),
+                      SizedBox(width: 4),
+                      Text(_coin),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  _buildItemDetails(),
+                ],
+              )),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildItemDetails() {
+    final String counterCoin = widget.order.action == MarketAction.BUY
+        ? _constrProvider.buyCoin
+        : _constrProvider.sellCoin;
+    final Rational counterAmount = widget.order.action == MarketAction.BUY
+        ? _constrProvider.buyAmount
+        : _constrProvider.sellAmount;
+    final double cexPrice = _cexProvider.getUsdPrice(_coin);
+    final double counterCexPrice = _cexProvider.getUsdPrice(counterCoin);
+
+    String receiveStr;
+    Widget fiatProfitStr;
+
+    if (cexPrice != 0) {
+      final double receiveAmtUsd =
+          cexPrice * widget.order.price.toDouble() * counterAmount.toDouble();
+      receiveStr = _cexProvider.convert(receiveAmtUsd);
+
+      if (counterCexPrice != 0) {
+        final double counterAmtUsd = counterAmount.toDouble() * counterCexPrice;
+        double fiatProfitPct =
+            (receiveAmtUsd - counterAmtUsd) * 100 / counterAmtUsd;
+        if (fiatProfitPct < -99.9) fiatProfitPct = -99.9;
+        if (fiatProfitPct > 99.9) fiatProfitPct = 99.9;
+
+        Color color = Theme.of(context).textTheme.caption.color;
+        if (fiatProfitPct < 0) {
+          color = widget.order.action == MarketAction.BUY
+              ? Colors.green
+              : Colors.orangeAccent;
+        } else if (fiatProfitPct > 0) {
+          color = widget.order.action == MarketAction.BUY
+              ? Colors.orangeAccent
+              : Colors.green;
+        }
+        fiatProfitStr = Text(
+          ' (' +
+              _getPctSign(fiatProfitPct) +
+              cutTrailingZeros(formatPrice(fiatProfitPct, 3)) +
+              '%)',
+          style: Theme.of(context).textTheme.caption.copyWith(color: color),
+        );
+      }
+    } else {
+      final double receiveAmt =
+          widget.order.price.toDouble() * counterAmount.toDouble();
+      receiveStr = cutTrailingZeros(formatPrice(receiveAmt)) + ' ' + _coin;
+    }
+
+    return Row(
+      children: [
+        Text(
+          (widget.order.action == MarketAction.SELL ? 'Receive' : 'Send') + ':',
+          style: Theme.of(context)
+              .textTheme
+              .caption
+              .copyWith(color: Theme.of(context).textTheme.bodyText1.color),
+        ),
+        SizedBox(width: 4),
+        Flexible(
+          child: AutoScrollText(
+            text: receiveStr,
+            style: Theme.of(context).textTheme.caption,
+          ),
+        ),
+        fiatProfitStr ?? SizedBox(),
+      ],
+    );
+  }
+
+  String _getPctSign(double pct) {
+    return pct > 0 ? '+' : '';
+  }
+}

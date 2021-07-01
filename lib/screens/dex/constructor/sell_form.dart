@@ -42,7 +42,7 @@ class _SellFormState extends State<SellForm> {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildCoin(),
-          SizedBox(height: 8),
+          SizedBox(height: 6),
           _buildAmt(),
           _buildButtons(),
         ],
