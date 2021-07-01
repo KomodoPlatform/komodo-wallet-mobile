@@ -30,7 +30,7 @@ class _SwapConstructorState extends State<SwapConstructor> {
         if (!snapshot.hasData) return _buildProgress();
 
         return Container(
-          padding: EdgeInsets.fromLTRB(12, 12, 0, 12),
+          padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -39,7 +39,6 @@ class _SwapConstructorState extends State<SwapConstructor> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(child: _buildSell(snapshot.data)),
-                    SizedBox(width: 12),
                     Expanded(child: _buildBuy(snapshot.data)),
                   ],
                 ),
@@ -56,9 +55,12 @@ class _SwapConstructorState extends State<SwapConstructor> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          'Sell:',
-          style: Theme.of(context).textTheme.subtitle2,
+        Container(
+          padding: EdgeInsets.only(left: 12),
+          child: Text(
+            'Sell:',
+            style: Theme.of(context).textTheme.subtitle2,
+          ),
         ),
         SizedBox(height: 6),
         Flexible(
@@ -88,9 +90,12 @@ class _SwapConstructorState extends State<SwapConstructor> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Buy:',
-          style: Theme.of(context).textTheme.subtitle2,
+        Container(
+          padding: EdgeInsets.only(left: 12),
+          child: Text(
+            'Buy:',
+            style: Theme.of(context).textTheme.subtitle2,
+          ),
         ),
         SizedBox(height: 6),
         Flexible(
@@ -104,7 +109,7 @@ class _SwapConstructorState extends State<SwapConstructor> {
               child: Container(
                 color: Theme.of(context).primaryColor,
               ),
-              left: -13,
+              left: -1,
               width: 2,
               top: 0,
               bottom: 0,

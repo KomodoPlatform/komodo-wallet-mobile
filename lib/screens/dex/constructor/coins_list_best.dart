@@ -38,23 +38,26 @@ class _CoinsListBestState extends State<CoinsListBest> {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
     _cexProvider ??= Provider.of<CexProvider>(context);
 
-    return FutureBuilder<BestOrders>(
-      future: _constrProvider.getBestOrders(widget.type),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return _buildProgressIndicator();
+    return Container(
+      padding: EdgeInsets.only(left: 12),
+      child: FutureBuilder<BestOrders>(
+        future: _constrProvider.getBestOrders(widget.type),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return _buildProgressIndicator();
 
-        final BestOrders bestOrders = snapshot.data;
-        if (bestOrders.error != null) {
-          return _buildErrorHandler(bestOrders.error);
-        }
-        _timer = null;
+          final BestOrders bestOrders = snapshot.data;
+          if (bestOrders.error != null) {
+            return _buildErrorHandler(bestOrders.error);
+          }
+          _timer = null;
 
-        final List<Widget> items = _buildItems(snapshot.data);
-        return ListView(
-          shrinkWrap: true,
-          children: items,
-        );
-      },
+          final List<Widget> items = _buildItems(snapshot.data);
+          return ListView(
+            shrinkWrap: true,
+            children: items,
+          );
+        },
+      ),
     );
   }
 

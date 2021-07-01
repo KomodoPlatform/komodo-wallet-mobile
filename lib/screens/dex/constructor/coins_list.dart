@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list_all.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list_best.dart';
-import 'package:komodo_dex/screens/dex/constructor/coins_list_depths.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
 
@@ -39,9 +38,54 @@ class _CoinsListState extends State<CoinsList> {
     if (_counterCoin == null) {
       return CoinsListAll(type: widget.type);
     } else if (_counterAmount == null) {
-      return CoinsListDepths(type: widget.type);
+      return _buildAmtMessage();
     } else {
       return CoinsListBest(type: widget.type);
     }
+  }
+
+  Widget _buildAmtMessage() {
+    final String coin = widget.type == CoinType.base
+        ? _constrProvider.buyCoin
+        : _constrProvider.sellCoin;
+    final String message = widget.type == CoinType.base
+        ? 'Plsease enter $coin amount to buy'
+        : 'Plsease enter $coin amount to sell';
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        if (widget.type == CoinType.rel) ...{
+          Container(
+              padding: EdgeInsets.only(bottom: 5),
+              child: Icon(
+                Icons.arrow_left,
+                color: Theme.of(context).textTheme.bodyText1.color,
+              )),
+        },
+        Expanded(
+          child: Container(
+              height: 106,
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 4),
+              alignment: Alignment(0, 1),
+              child: Text(
+                message,
+                textAlign: widget.type == CoinType.rel
+                    ? TextAlign.left
+                    : TextAlign.right,
+                style: Theme.of(context).textTheme.bodyText1,
+              )),
+        ),
+        if (widget.type == CoinType.base) ...{
+          Container(
+              padding: EdgeInsets.only(bottom: 5),
+              child: Icon(
+                Icons.arrow_right,
+                color: Theme.of(context).textTheme.bodyText1.color,
+              )),
+          SizedBox(width: 6),
+        }
+      ],
+    );
   }
 }

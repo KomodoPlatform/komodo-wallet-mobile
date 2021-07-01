@@ -30,12 +30,15 @@ class _CoinsListAllState extends State<CoinsListAll> {
 
     final List<ListAllItem> items = _getItems();
 
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: items.length,
-      itemBuilder: (context, i) {
-        return _buildCoinItem(items[i]);
-      },
+    return Container(
+      padding: EdgeInsets.only(left: 12),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: items.length,
+        itemBuilder: (context, i) {
+          return _buildCoinItem(items[i]);
+        },
+      ),
     );
   }
 

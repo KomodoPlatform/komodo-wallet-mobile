@@ -36,7 +36,7 @@ class _BuyFormState extends State<BuyForm> {
     _cexProvider ??= Provider.of<CexProvider>(context);
 
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 0, 12, 0),
+      padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -51,6 +51,7 @@ class _BuyFormState extends State<BuyForm> {
   Widget _buildAmt() {
     return TextFormField(
         controller: _amtCtrl,
+        autofocus: true,
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         inputFormatters: <TextInputFormatter>[
           DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),
