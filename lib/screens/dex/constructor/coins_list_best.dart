@@ -141,7 +141,13 @@ class _CoinsListBestState extends State<CoinsListBest> {
       if (!isInShortList) switcherDisabled = false;
 
       if (_showAll || isInShortList) {
-        items.add(CoinsListBestItem(topOrder));
+        final Key key = widget.type == CoinType.base
+            ? Key('buy-best-orders-$coin')
+            : Key('sell-best-orders-$coin');
+        items.add(CoinsListBestItem(
+          topOrder,
+          key: key,
+        ));
       }
     }
 

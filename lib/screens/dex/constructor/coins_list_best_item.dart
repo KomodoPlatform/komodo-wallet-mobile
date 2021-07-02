@@ -12,7 +12,7 @@ import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:provider/provider.dart';
 
 class CoinsListBestItem extends StatefulWidget {
-  const CoinsListBestItem(this.order);
+  const CoinsListBestItem(this.order, {Key key}) : super(key: key);
 
   final BestOrder order;
 
@@ -20,14 +20,20 @@ class CoinsListBestItem extends StatefulWidget {
   _CoinsListBestItemState createState() => _CoinsListBestItemState();
 }
 
-class _CoinsListBestItemState extends State<CoinsListBestItem> {
+class _CoinsListBestItemState extends State<CoinsListBestItem>
+    with AutomaticKeepAliveClientMixin {
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
   String _coin;
   bool _expanded = false;
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
     _cexProvider ??= Provider.of<CexProvider>(context);
     _coin = widget.order.action == MarketAction.SELL
