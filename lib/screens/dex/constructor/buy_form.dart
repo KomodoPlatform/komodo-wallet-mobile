@@ -90,6 +90,7 @@ class _BuyFormState extends State<BuyForm> {
     return Card(
         margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
         child: InkWell(
+          borderRadius: BorderRadius.circular(4),
           onTap: () {
             _constrProvider.buyCoin = null;
           },

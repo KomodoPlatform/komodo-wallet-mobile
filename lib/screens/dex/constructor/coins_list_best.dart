@@ -133,11 +133,14 @@ class _CoinsListBestState extends State<CoinsListBest> {
           : topOrder.coin;
 
       final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
-      final bool activeWithBalance =
+      final bool isActive = coinBalance != null;
+      final bool hasBalance =
           (coinBalance?.balance?.balance ?? deci(0)).toDouble() > 0;
-      if (!activeWithBalance) switcherDisabled = false;
+      final bool isInShortList =
+          widget.type == CoinType.base ? isActive && hasBalance : isActive;
+      if (!isInShortList) switcherDisabled = false;
 
-      if (_showAll || activeWithBalance) {
+      if (_showAll || isInShortList) {
         items.add(CoinsListBestItem(topOrder));
       }
     }

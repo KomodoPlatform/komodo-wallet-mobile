@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:rational/rational.dart';
@@ -23,6 +24,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem> {
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
   String _coin;
+  bool _expanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,41 +34,87 @@ class _CoinsListBestItemState extends State<CoinsListBestItem> {
         ? widget.order.coin
         : widget.order.forCoin;
 
-    final bool isCoinActive = coinsBloc.getBalanceByAbbr(_coin) != null;
+    return StreamBuilder<List<CoinBalance>>(
+        initialData: coinsBloc.coinBalance,
+        stream: coinsBloc.outCoins,
+        builder: (context, snapshot) {
+          final bool isCoinActive = snapshot.data.firstWhere(
+                  (item) => item.coin.abbr == _coin,
+                  orElse: () => null) !=
+              null;
 
-    return Opacity(
-      opacity: isCoinActive ? 1 : 0.4,
-      child: Card(
-        margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: 50),
-          child: Container(
-              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 8,
-                        backgroundImage:
-                            AssetImage('assets/${_coin.toLowerCase()}.png'),
-                      ),
-                      SizedBox(width: 4),
-                      Text(_coin),
-                    ],
-                  ),
-                  SizedBox(height: 4),
-                  _buildItemDetails(),
-                ],
-              )),
+          return Card(
+            margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
+            child: InkWell(
+              onTap: () => _handleTap(isCoinActive),
+              borderRadius: BorderRadius.circular(4),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: 50),
+                child: Opacity(
+                  opacity: isCoinActive
+                      ? 1
+                      : _expanded
+                          ? 0.6
+                          : 0.4,
+                  child: Container(
+                      padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildTitle(),
+                          SizedBox(height: 4),
+                          _buildDetails(isCoinActive),
+                        ],
+                      )),
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  Widget _buildTitle() {
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: 8,
+          backgroundImage: AssetImage('assets/${_coin.toLowerCase()}.png'),
         ),
-      ),
+        SizedBox(width: 4),
+        Text(_coin),
+      ],
     );
   }
 
-  Widget _buildItemDetails() {
+  void _handleTap(bool isCoinActive) {
+    if (isCoinActive) {
+      _selectOrder();
+    } else {
+      setState(() => _expanded = !_expanded);
+    }
+  }
+
+  void _selectOrder() {}
+
+  Widget _buildDetails(bool isCoinActive) {
+    return Column(
+      children: [
+        _buildAmtDetails(),
+        _buildExpanded(isCoinActive),
+      ],
+    );
+  }
+
+  Widget _buildExpanded(bool isCoinActive) {
+    if (!_expanded) {
+      return SizedBox();
+    }
+
+    return Text('Im expanded now!');
+  }
+
+  Widget _buildAmtDetails() {
     final String counterCoin = widget.order.action == MarketAction.BUY
         ? _constrProvider.buyCoin
         : _constrProvider.sellCoin;

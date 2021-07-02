@@ -804,8 +804,8 @@ class ApiProvider {
       return BestOrders.fromJson(jbody);
     } catch (e) {
       return BestOrders(
-          error: _catchErrorString(
-              'getOrderbookDepth', e, 'mm orderbook_depth] $e'));
+          error:
+              _catchErrorString('getOrderbookDepth', e, 'mm best_orders] $e'));
     }
   }
 
