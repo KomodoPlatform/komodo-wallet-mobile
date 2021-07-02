@@ -16,6 +16,7 @@ class BuyForm extends StatefulWidget {
 
 class _BuyFormState extends State<BuyForm> {
   final _amtCtrl = TextEditingControllerWorkaroud();
+  final _focusNode = FocusNode();
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
 
@@ -26,6 +27,7 @@ class _BuyFormState extends State<BuyForm> {
       _amtCtrl.addListener(_onAmtFieldChange);
 
       _fillForm();
+      _focusNode.requestFocus();
     });
     super.initState();
   }
@@ -51,7 +53,7 @@ class _BuyFormState extends State<BuyForm> {
   Widget _buildAmt() {
     return TextFormField(
         controller: _amtCtrl,
-        autofocus: true,
+        focusNode: _focusNode,
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         inputFormatters: <TextInputFormatter>[
           DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),

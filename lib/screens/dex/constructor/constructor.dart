@@ -1,6 +1,7 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
@@ -8,7 +9,6 @@ import 'package:komodo_dex/screens/dex/constructor/buy_form.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list.dart';
 import 'package:komodo_dex/screens/dex/constructor/sell_form.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
-import 'package:provider/provider.dart';
 
 class SwapConstructor extends StatefulWidget {
   @override
