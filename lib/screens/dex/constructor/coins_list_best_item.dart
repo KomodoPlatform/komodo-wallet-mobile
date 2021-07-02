@@ -60,7 +60,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
                   opacity: isCoinActive
                       ? 1
                       : _expanded
-                          ? 0.6
+                          ? 0.8
                           : 0.4,
                   child: Container(
                       padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
@@ -117,7 +117,35 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
       return SizedBox();
     }
 
-    return Text('Im expanded now!');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(height: 12),
+        Text(
+          '$_coin is not active!',
+          style: Theme.of(context).textTheme.caption,
+        ),
+        SizedBox(height: 4),
+        Row(
+          children: [],
+        )
+      ],
+    );
+  }
+
+  Widget _buildButton({Function onPressed, Widget child}) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(2),
+          color: Theme.of(context).accentColor,
+        ),
+        padding: EdgeInsets.all(4),
+        alignment: Alignment(0, 0),
+        child: child,
+      ),
+    );
   }
 
   Widget _buildAmtDetails() {

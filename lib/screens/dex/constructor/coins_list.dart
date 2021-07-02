@@ -38,6 +38,7 @@ class _CoinsListState extends State<CoinsList> {
     if (_counterCoin == null) {
       return CoinsListAll(type: widget.type);
     } else if (_counterAmount == null || _counterAmount.toDouble() == 0) {
+      //return CoinsListDepths(type: widget.type);
       return _buildAmtMessage();
     } else {
       return CoinsListBest(type: widget.type);

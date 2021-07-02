@@ -27,23 +27,26 @@ class _CoinsListDepthsState extends State<CoinsListDepths> {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
     _obProvider ??= Provider.of<OrderBookProvider>(context);
 
-    return FutureBuilder<List<DepthListCoin>>(
-      future: _getCoins(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: 150),
-              child: Center(child: CircularProgressIndicator()));
-        }
+    return Container(
+      padding: EdgeInsets.only(left: 12),
+      child: FutureBuilder<List<DepthListCoin>>(
+        future: _getCoins(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: 150),
+                child: Center(child: CircularProgressIndicator()));
+          }
 
-        return ListView.builder(
-          shrinkWrap: true,
-          itemCount: snapshot.data.length,
-          itemBuilder: (context, i) {
-            return _buildCoinItem(snapshot.data[i]);
-          },
-        );
-      },
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, i) {
+              return _buildCoinItem(snapshot.data[i]);
+            },
+          );
+        },
+      ),
     );
   }
 
