@@ -44,7 +44,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     _cexProvider ??= Provider.of<CexProvider>(context);
     _coin = widget.order.action == MarketAction.SELL
         ? widget.order.coin
-        : widget.order.forCoin;
+        : widget.order.otherCoin;
 
     return StreamBuilder<List<CoinBalance>>(
         initialData: coinsBloc.coinBalance,

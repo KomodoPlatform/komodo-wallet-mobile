@@ -11,12 +11,15 @@ class BestOrders {
     final BestOrders bestOrders = BestOrders(request: json['request']);
     if (json['result'] == null) return bestOrders;
 
+    final MarketAction action = bestOrders.request.action;
+
     json['result'].forEach((String ticker, dynamic items) {
       bestOrders.result ??= {};
       final List<BestOrder> list = [];
       for (dynamic item in items) {
-        item['for_coin'] = ticker;
-        item['action'] = bestOrders.request.action;
+        item['action'] = action;
+        item['other_coin'] =
+            action == MarketAction.SELL ? bestOrders.request.coin : ticker;
         list.add(BestOrder.fromJson(item));
       }
       bestOrders.result[ticker] = list;
@@ -34,7 +37,7 @@ class BestOrder {
   BestOrder({
     this.price,
     this.coin,
-    this.forCoin,
+    this.otherCoin,
     this.action,
   });
 
@@ -42,13 +45,13 @@ class BestOrder {
     return BestOrder(
       price: fract2rat(json['price_fraction']),
       coin: json['coin'],
-      forCoin: json['for_coin'],
+      otherCoin: json['other_coin'],
       action: json['action'],
     );
   }
 
   Rational price;
   String coin;
-  String forCoin;
+  String otherCoin;
   MarketAction action;
 }

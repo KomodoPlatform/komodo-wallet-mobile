@@ -16,6 +16,7 @@ class ConstructorProvider extends ChangeNotifier {
   String _buyCoin;
   Rational _sellAmount;
   Rational _buyAmount;
+  BestOrder _matchingOrder;
 
   String get sellCoin => _sellCoin;
   set sellCoin(String value) {
@@ -42,6 +43,8 @@ class ConstructorProvider extends ChangeNotifier {
     _buyAmount = value;
     notifyListeners();
   }
+
+  BestOrder get matchingOrder => _matchingOrder;
 
   Rational get maxSellAmt {
     /// todo: implement max balance calculation,
@@ -122,5 +125,17 @@ class ConstructorProvider extends ChangeNotifier {
     return bestOrders;
   }
 
-  void selectOrder(BestOrder order) {}
+  void selectOrder(BestOrder order) {
+    _matchingOrder = order;
+
+    if (order.action == MarketAction.BUY) {
+      _buyCoin = order.coin;
+      _sellCoin = order.otherCoin;
+    } else {
+      _buyCoin = order.coin;
+      _sellCoin = order.otherCoin;
+    }
+
+    notifyListeners();
+  }
 }

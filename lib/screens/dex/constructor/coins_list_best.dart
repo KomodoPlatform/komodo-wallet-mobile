@@ -107,8 +107,8 @@ class _CoinsListBestState extends State<CoinsListBest> {
     }
 
     topOrdersList.sort((a, b) {
-      final String aCoin = a.action == MarketAction.SELL ? a.coin : a.forCoin;
-      final String bCoin = b.action == MarketAction.SELL ? b.coin : b.forCoin;
+      final String aCoin = a.action == MarketAction.SELL ? a.coin : a.otherCoin;
+      final String bCoin = b.action == MarketAction.SELL ? b.coin : b.otherCoin;
       final aCexPrice = _cexProvider.getUsdPrice(aCoin);
       final bCexPrice = _cexProvider.getUsdPrice(bCoin);
 
@@ -129,7 +129,7 @@ class _CoinsListBestState extends State<CoinsListBest> {
     bool switcherDisabled = true;
     for (BestOrder topOrder in topOrdersList) {
       final String coin = topOrder.action == MarketAction.BUY
-          ? topOrder.forCoin
+          ? topOrder.otherCoin
           : topOrder.coin;
 
       final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
