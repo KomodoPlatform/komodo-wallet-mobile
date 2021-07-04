@@ -121,4 +121,6 @@ class ConstructorProvider extends ChangeNotifier {
 
     return bestOrders;
   }
+
+  void selectOrder(BestOrder order) {}
 }

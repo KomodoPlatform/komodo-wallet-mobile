@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -29,7 +30,8 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
   CexProvider _cexProvider;
   String _coin;
   bool _expanded = false;
-  int _maxCoins;
+  String _error;
+  bool _activationInProgress = false;
 
   @override
   bool get wantKeepAlive => true;
@@ -99,15 +101,11 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
 
   void _handleTap(bool isCoinActive) {
     if (isCoinActive) {
-      _selectOrder();
+      _constrProvider.selectOrder(widget.order);
     } else {
-      setState(() {
-        _expanded = !_expanded;
-      });
+      _toggle();
     }
   }
-
-  void _selectOrder() {}
 
   Widget _buildDetails(bool isCoinActive) {
     return Column(
@@ -135,11 +133,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
           children: [
             Expanded(
               child: _buildButton(
-                onPressed: () {
-                  setState(() {
-                    _expanded = !_expanded;
-                  });
-                },
+                onPressed: () => _toggle(),
                 child: Text(
                   'Close',
                   style: Theme.of(context)
@@ -152,16 +146,18 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
             ),
             SizedBox(width: 4),
             _buildButton(
-              disabled: _maxCoins != null,
-              onPressed: _maxCoins == null ? _tryActivate : null,
+              disabled: _error != null,
+              onPressed: _error == null ? _tryActivate : null,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.add_outlined,
-                    size: 14,
-                    color: Theme.of(context).primaryColor,
-                  ),
+                  _activationInProgress
+                      ? _buildActivationProgress()
+                      : Icon(
+                          Icons.add_outlined,
+                          size: 14,
+                          color: Theme.of(context).primaryColor,
+                        ),
                   Text(
                     'Activate',
                     style: Theme.of(context).textTheme.caption.copyWith(
@@ -178,24 +174,53 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     );
   }
 
+  Widget _buildActivationProgress() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
+      child: SizedBox(
+        width: 8,
+        height: 8,
+        child: CircularProgressIndicator(
+          strokeWidth: 1,
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+      ),
+    );
+  }
+
+  void _toggle() {
+    setState(() {
+      _expanded = !_expanded;
+      _error = null;
+    });
+  }
+
   Future<void> _tryActivate() async {
     final List<CoinBalance> active = coinsBloc.coinBalance;
     final int maxCoins = Platform.isIOS
         ? appConfig.maxCoinEnabledIOS
         : appConfig.maxCoinsEnabledAndroid;
     if (active.length < maxCoins) {
-      await _activate();
+      setState(() => _activationInProgress = true);
+      final bool wasActivated = await _activate();
+      setState(() => _activationInProgress = false);
+      if (wasActivated) {
+        _toggle();
+        _constrProvider.selectOrder(widget.order);
+      } else {
+        setState(() => _error = 'Unable to activate $_coin');
+      }
     } else {
       setState(() {
-        _maxCoins = maxCoins;
+        _error =
+            'Max active coins number is $maxCoins. Please deactivate some.';
       });
     }
   }
 
   Widget _buildExpandedMessage() {
-    if (_maxCoins != null) {
-      return Text(
-          'Max active coins number is $_maxCoins. Please deactivate some.',
+    if (_error != null) {
+      return Text(_error,
           style: Theme.of(context).textTheme.caption.copyWith(
                 color: Theme.of(context).errorColor,
               ));
@@ -208,6 +233,15 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
   }
 
   Future<bool> _activate() async {
+    final Coin inactive = (await coins)[_coin];
+    if (inactive == null) {
+      return false;
+    }
+    try {
+      await coinsBloc.enableCoins([inactive]);
+    } catch (_) {
+      return false;
+    }
     return true;
   }
 
