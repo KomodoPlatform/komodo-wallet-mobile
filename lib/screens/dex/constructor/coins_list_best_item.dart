@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
@@ -26,6 +29,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
   CexProvider _cexProvider;
   String _coin;
   bool _expanded = false;
+  int _maxCoins;
 
   @override
   bool get wantKeepAlive => true;
@@ -60,7 +64,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
                   opacity: isCoinActive
                       ? 1
                       : _expanded
-                          ? 0.6
+                          ? 1
                           : 0.4,
                   child: Container(
                       padding: EdgeInsets.fromLTRB(8, 6, 8, 6),
@@ -97,7 +101,9 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     if (isCoinActive) {
       _selectOrder();
     } else {
-      setState(() => _expanded = !_expanded);
+      setState(() {
+        _expanded = !_expanded;
+      });
     }
   }
 
@@ -122,10 +128,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
       children: [
         //SizedBox(height: 12),
         Divider(),
-        Text(
-          '$_coin is not active!',
-          style: Theme.of(context).textTheme.caption,
-        ),
+        _buildExpandedMessage(),
         SizedBox(height: 4),
         Row(
           mainAxisSize: MainAxisSize.max,
@@ -133,7 +136,9 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
             Expanded(
               child: _buildButton(
                 onPressed: () {
-                  setState(() => _expanded = !_expanded);
+                  setState(() {
+                    _expanded = !_expanded;
+                  });
                 },
                 child: Text(
                   'Close',
@@ -147,7 +152,8 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
             ),
             SizedBox(width: 4),
             _buildButton(
-              onPressed: _tryActivate,
+              disabled: _maxCoins != null,
+              onPressed: _maxCoins == null ? _tryActivate : null,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -172,23 +178,67 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     );
   }
 
-  Future<void> _tryActivate() async {}
+  Future<void> _tryActivate() async {
+    final List<CoinBalance> active = coinsBloc.coinBalance;
+    final int maxCoins = Platform.isIOS
+        ? appConfig.maxCoinEnabledIOS
+        : appConfig.maxCoinsEnabledAndroid;
+    if (active.length < maxCoins) {
+      await _activate();
+    } else {
+      setState(() {
+        _maxCoins = maxCoins;
+      });
+    }
+  }
 
-  Widget _buildButton({Color color, Function onPressed, Widget child}) {
-    color ??= Theme.of(context).accentColor;
+  Widget _buildExpandedMessage() {
+    if (_maxCoins != null) {
+      return Text(
+          'Max active coins number is $_maxCoins. Please deactivate some.',
+          style: Theme.of(context).textTheme.caption.copyWith(
+                color: Theme.of(context).errorColor,
+              ));
+    } else {
+      return Text('$_coin is not active!',
+          style: Theme.of(context).textTheme.caption.copyWith(
+                color: Theme.of(context).accentColor,
+              ));
+    }
+  }
 
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        decoration: BoxDecoration(
-          border:
-              Border.all(color: Theme.of(context).accentColor.withAlpha(100)),
-          borderRadius: BorderRadius.circular(4),
-          color: color,
+  Future<bool> _activate() async {
+    return true;
+  }
+
+  Widget _buildButton({
+    Color color,
+    Function onPressed,
+    Widget child,
+    bool disabled,
+  }) {
+    disabled ??= false;
+    color = disabled
+        ? Theme.of(context).disabledColor.withAlpha(150)
+        : color ?? Theme.of(context).accentColor;
+
+    return Opacity(
+      opacity: disabled ? 0.5 : 1,
+      child: InkWell(
+        onTap: disabled ? null : onPressed,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: disabled
+                    ? Colors.transparent
+                    : Theme.of(context).accentColor.withAlpha(100)),
+            borderRadius: BorderRadius.circular(4),
+            color: color,
+          ),
+          padding: EdgeInsets.fromLTRB(4, 8, 4, 8),
+          alignment: Alignment(0, 0),
+          child: child,
         ),
-        padding: EdgeInsets.fromLTRB(4, 8, 4, 8),
-        alignment: Alignment(0, 0),
-        child: child,
       ),
     );
   }
