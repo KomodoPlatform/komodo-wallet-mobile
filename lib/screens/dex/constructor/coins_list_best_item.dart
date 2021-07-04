@@ -60,10 +60,10 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
                   opacity: isCoinActive
                       ? 1
                       : _expanded
-                          ? 0.8
+                          ? 0.6
                           : 0.4,
                   child: Container(
-                      padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                      padding: EdgeInsets.fromLTRB(8, 6, 8, 6),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -120,28 +120,73 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(height: 12),
+        //SizedBox(height: 12),
+        Divider(),
         Text(
           '$_coin is not active!',
           style: Theme.of(context).textTheme.caption,
         ),
         SizedBox(height: 4),
         Row(
-          children: [],
-        )
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: _buildButton(
+                onPressed: () {
+                  setState(() => _expanded = !_expanded);
+                },
+                child: Text(
+                  'Close',
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                color: Colors.transparent,
+              ),
+            ),
+            SizedBox(width: 4),
+            _buildButton(
+              onPressed: _tryActivate,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add_outlined,
+                    size: 14,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  Text(
+                    'Activate',
+                    style: Theme.of(context).textTheme.caption.copyWith(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 4),
       ],
     );
   }
 
-  Widget _buildButton({Function onPressed, Widget child}) {
+  Future<void> _tryActivate() async {}
+
+  Widget _buildButton({Color color, Function onPressed, Widget child}) {
+    color ??= Theme.of(context).accentColor;
+
     return InkWell(
       onTap: onPressed,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(2),
-          color: Theme.of(context).accentColor,
+          border:
+              Border.all(color: Theme.of(context).accentColor.withAlpha(100)),
+          borderRadius: BorderRadius.circular(4),
+          color: color,
         ),
-        padding: EdgeInsets.all(4),
+        padding: EdgeInsets.fromLTRB(4, 8, 4, 8),
         alignment: Alignment(0, 0),
         child: child,
       ),

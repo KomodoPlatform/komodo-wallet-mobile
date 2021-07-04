@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list_all.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list_best.dart';
+//import 'package:komodo_dex/screens/dex/constructor/coins_list_depths.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
 
