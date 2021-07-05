@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/get_best_orders.dart';
@@ -22,6 +23,7 @@ class ConstructorProvider extends ChangeNotifier {
   set sellCoin(String value) {
     _sellCoin = value;
     _sellAmount = null;
+    _matchingOrder = null;
     notifyListeners();
   }
 
@@ -29,6 +31,7 @@ class ConstructorProvider extends ChangeNotifier {
   set buyCoin(String value) {
     _buyCoin = value;
     _buyAmount = null;
+    _matchingOrder = null;
     notifyListeners();
   }
 
@@ -63,11 +66,21 @@ class ConstructorProvider extends ChangeNotifier {
       newAmount = Rational.parse(newText);
     } catch (_) {
       _buyAmount = null;
+      if (_matchingOrder != null) _sellAmount = null;
       notifyListeners();
       return;
     }
 
-    if (newAmount == _buyAmount) return;
+    if (_matchingOrder != null) {
+      final Rational maxOrderAmt = _matchingOrder.maxVolume;
+      if (newAmount > maxOrderAmt) newAmount = maxOrderAmt;
+
+      final Rational price = _matchingOrder.action == MarketAction.BUY
+          ? _matchingOrder.price
+          : _matchingOrder.price.inverse;
+
+      _sellAmount = newAmount * price;
+    }
 
     _buyAmount = newAmount;
     notifyListeners();
@@ -79,15 +92,28 @@ class ConstructorProvider extends ChangeNotifier {
       newAmount = Rational.parse(newText);
     } catch (_) {
       _sellAmount = null;
+      if (_matchingOrder != null) _buyAmount = null;
       notifyListeners();
       return;
     }
 
-    if (newAmount == _sellAmount) return;
+    final String currentText = cutTrailingZeros(
+        _sellAmount.toStringAsFixed(appConfig.tradeFormPrecision));
+    if (newText == currentText) return;
 
-    if (newAmount > maxSellAmt) newAmount = maxSellAmt;
+    // if (newAmount > maxSellAmt) newAmount = maxSellAmt;
 
-    // todo: check if greater than matching bid max volume
+    if (_matchingOrder != null) {
+      final Rational price = _matchingOrder.action == MarketAction.SELL
+          ? _matchingOrder.price
+          : _matchingOrder.price.inverse;
+
+      final Rational maxOrderAmt = _matchingOrder.maxVolume;
+      final Rational maxAmt = maxOrderAmt * price;
+      if (newAmount > maxAmt) newAmount = maxAmt;
+
+      _buyAmount = newAmount * price;
+    }
 
     _sellAmount = newAmount;
     notifyListeners();
@@ -129,11 +155,11 @@ class ConstructorProvider extends ChangeNotifier {
     _matchingOrder = order;
 
     if (order.action == MarketAction.BUY) {
-      _buyCoin = order.coin;
       _sellCoin = order.otherCoin;
+      _sellAmount = order.price * _buyAmount;
     } else {
       _buyCoin = order.coin;
-      _sellCoin = order.otherCoin;
+      _buyAmount = order.price * _sellAmount;
     }
 
     notifyListeners();

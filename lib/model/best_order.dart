@@ -36,6 +36,7 @@ class BestOrders {
 class BestOrder {
   BestOrder({
     this.price,
+    this.maxVolume,
     this.coin,
     this.otherCoin,
     this.action,
@@ -44,6 +45,7 @@ class BestOrder {
   factory BestOrder.fromJson(Map<String, dynamic> json) {
     return BestOrder(
       price: fract2rat(json['price_fraction']),
+      maxVolume: fract2rat(json['max_volume_fraction']),
       coin: json['coin'],
       otherCoin: json['other_coin'],
       action: json['action'],
@@ -51,6 +53,7 @@ class BestOrder {
   }
 
   Rational price;
+  Rational maxVolume;
   String coin;
   String otherCoin;
   MarketAction action;
