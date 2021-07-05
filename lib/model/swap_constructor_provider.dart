@@ -23,7 +23,6 @@ class ConstructorProvider extends ChangeNotifier {
   set sellCoin(String value) {
     _sellCoin = value;
     _sellAmount = null;
-    _matchingOrder = null;
     notifyListeners();
   }
 
@@ -31,23 +30,60 @@ class ConstructorProvider extends ChangeNotifier {
   set buyCoin(String value) {
     _buyCoin = value;
     _buyAmount = null;
-    _matchingOrder = null;
     notifyListeners();
   }
 
   Rational get sellAmount => _sellAmount;
   set sellAmount(Rational value) {
+    if (value != null) {
+      // if > than balance
+      if (value > maxSellAmt) value = maxSellAmt;
+
+      // if > than order max volume
+      if (_matchingOrder != null) {
+        final Rational price = _matchingOrder.action == MarketAction.SELL
+            ? _matchingOrder.price
+            : _matchingOrder.price.inverse;
+
+        final Rational maxOrderAmt = _matchingOrder.maxVolume / price;
+        if (value > maxOrderAmt) value = maxOrderAmt;
+
+        _buyAmount = value * price;
+      }
+    }
+
     _sellAmount = value;
     notifyListeners();
   }
 
   Rational get buyAmount => _buyAmount;
   set buyAmount(Rational value) {
+    if (value != null) {
+      if (_matchingOrder != null) {
+        final Rational maxOrderAmt = _matchingOrder.maxVolume;
+        // if > than order max volume
+        if (value > maxOrderAmt) value = maxOrderAmt;
+
+        final Rational price = _matchingOrder.action == MarketAction.BUY
+            ? _matchingOrder.price
+            : _matchingOrder.price.inverse;
+
+        // if > than max sell balance
+        if (value * price > maxSellAmt) value = maxSellAmt / price;
+
+        _sellAmount = value * price;
+      }
+    }
+
     _buyAmount = value;
     notifyListeners();
   }
 
   BestOrder get matchingOrder => _matchingOrder;
+  set matchingOrder(BestOrder value) {
+    _matchingOrder = value;
+    notifyListeners();
+  }
 
   Rational get maxSellAmt {
     /// todo: implement max balance calculation,
@@ -71,19 +107,13 @@ class ConstructorProvider extends ChangeNotifier {
       return;
     }
 
-    if (_matchingOrder != null) {
-      final Rational maxOrderAmt = _matchingOrder.maxVolume;
-      if (newAmount > maxOrderAmt) newAmount = maxOrderAmt;
-
-      final Rational price = _matchingOrder.action == MarketAction.BUY
-          ? _matchingOrder.price
-          : _matchingOrder.price.inverse;
-
-      _sellAmount = newAmount * price;
+    if (_buyAmount != null) {
+      final String currentText = cutTrailingZeros(
+          _buyAmount.toStringAsFixed(appConfig.tradeFormPrecision));
+      if (newText == currentText) return;
     }
 
-    _buyAmount = newAmount;
-    notifyListeners();
+    buyAmount = newAmount;
   }
 
   void onSellAmtFieldChange(String newText) {
@@ -97,26 +127,13 @@ class ConstructorProvider extends ChangeNotifier {
       return;
     }
 
-    final String currentText = cutTrailingZeros(
-        _sellAmount.toStringAsFixed(appConfig.tradeFormPrecision));
-    if (newText == currentText) return;
-
-    // if (newAmount > maxSellAmt) newAmount = maxSellAmt;
-
-    if (_matchingOrder != null) {
-      final Rational price = _matchingOrder.action == MarketAction.SELL
-          ? _matchingOrder.price
-          : _matchingOrder.price.inverse;
-
-      final Rational maxOrderAmt = _matchingOrder.maxVolume;
-      final Rational maxAmt = maxOrderAmt * price;
-      if (newAmount > maxAmt) newAmount = maxAmt;
-
-      _buyAmount = newAmount * price;
+    if (_sellAmount != null) {
+      final String currentText = cutTrailingZeros(
+          _sellAmount.toStringAsFixed(appConfig.tradeFormPrecision));
+      if (newText == currentText) return;
     }
 
-    _sellAmount = newAmount;
-    notifyListeners();
+    sellAmount = newAmount;
   }
 
   Future<BestOrders> getBestOrders(CoinType coinsListType) async {
@@ -155,13 +172,11 @@ class ConstructorProvider extends ChangeNotifier {
     _matchingOrder = order;
 
     if (order.action == MarketAction.BUY) {
-      _sellCoin = order.otherCoin;
-      _sellAmount = order.price * _buyAmount;
+      sellCoin = order.otherCoin;
+      sellAmount = order.price * _buyAmount;
     } else {
-      _buyCoin = order.coin;
-      _buyAmount = order.price * _sellAmount;
+      buyCoin = order.coin;
+      buyAmount = order.price * _sellAmount;
     }
-
-    notifyListeners();
   }
 }
