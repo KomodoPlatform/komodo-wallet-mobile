@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/get_trade_preimage.dart';
+import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/best_order.dart';
@@ -18,6 +20,17 @@ class ConstructorProvider extends ChangeNotifier {
   Rational _sellAmount;
   Rational _buyAmount;
   BestOrder _matchingOrder;
+  TradePreimage _preimage;
+
+  TradePreimage get preimage => _preimage;
+
+  bool get haveAllData {
+    return _sellCoin != null &&
+        _buyCoin != null &&
+        (_buyAmount?.toDouble() ?? 0) > 0 &&
+        (_sellAmount?.toDouble() ?? 0) > 0 &&
+        _matchingOrder != null;
+  }
 
   String get sellCoin => _sellCoin;
   set sellCoin(String value) {
@@ -54,6 +67,8 @@ class ConstructorProvider extends ChangeNotifier {
 
     _sellAmount = value;
     notifyListeners();
+
+    _updatePreimage();
   }
 
   Rational get buyAmount => _buyAmount;
@@ -77,6 +92,8 @@ class ConstructorProvider extends ChangeNotifier {
 
     _buyAmount = value;
     notifyListeners();
+
+    _updatePreimage();
   }
 
   BestOrder get matchingOrder => _matchingOrder;
@@ -177,6 +194,25 @@ class ConstructorProvider extends ChangeNotifier {
     } else {
       buyCoin = order.coin;
       buyAmount = order.price * _sellAmount;
+    }
+  }
+
+  Future<void> _updatePreimage() async {
+    if (haveAllData) {
+      try {
+        _preimage = await MM.getTradePreimage(GetTradePreimage(
+            swapMethod: 'buy',
+            base: _buyCoin,
+            rel: _sellCoin,
+            volume: _buyAmount.toDouble().toString(),
+            price: (_sellAmount / _buyAmount).toDouble().toString()));
+      } catch (e) {
+        _preimage = null;
+      }
+      notifyListeners();
+    } else {
+      _preimage = null;
+      notifyListeners();
     }
   }
 }

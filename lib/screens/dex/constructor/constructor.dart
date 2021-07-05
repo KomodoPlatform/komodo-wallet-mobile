@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/screens/dex/trade/confirm/build_detailed_fees.dart';
 import 'package:provider/provider.dart';
 
 import 'package:komodo_dex/model/coin.dart';
@@ -43,6 +44,8 @@ class _SwapConstructorState extends State<SwapConstructor> {
                   ],
                 ),
               ),
+              if (_constrProvider.preimage != null)
+                BuildDetailedFees(preimage: _constrProvider.preimage)
             ],
           ),
         );
