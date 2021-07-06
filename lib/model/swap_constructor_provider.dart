@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/get_max_taker_volume.dart';
 import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:rational/rational.dart';
@@ -21,6 +22,7 @@ class ConstructorProvider extends ChangeNotifier {
   Rational _buyAmount;
   BestOrder _matchingOrder;
   TradePreimage _preimage;
+  Rational _maxTakerVolume;
 
   TradePreimage get preimage => _preimage;
   set preimage(TradePreimage value) {
@@ -40,6 +42,7 @@ class ConstructorProvider extends ChangeNotifier {
   set sellCoin(String value) {
     _sellCoin = value;
     _sellAmount = null;
+    _updateMaxTakerVolume();
     notifyListeners();
   }
 
@@ -107,9 +110,9 @@ class ConstructorProvider extends ChangeNotifier {
   }
 
   Rational get maxSellAmt {
-    /// todo: implement max balance calculation,
-    /// considering fees, max_taker_volume(?), preimage etc.
     if (_sellCoin == null) return null;
+
+    if (_maxTakerVolume != null) return _maxTakerVolume;
 
     final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(_sellCoin);
     if (coinBalance == null) return null;
@@ -217,6 +220,20 @@ class ConstructorProvider extends ChangeNotifier {
     } else {
       _preimage = null;
       notifyListeners();
+    }
+  }
+
+  Future<void> _updateMaxTakerVolume() async {
+    if (_sellCoin == null) {
+      _maxTakerVolume = null;
+      return;
+    }
+
+    try {
+      _maxTakerVolume =
+          await MM.getMaxTakerVolume(GetMaxTakerVolume(coin: _sellCoin));
+    } catch (_) {
+      _maxTakerVolume = null;
     }
   }
 }
