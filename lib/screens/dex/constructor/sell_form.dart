@@ -28,7 +28,11 @@ class _SellFormState extends State<SellForm> {
       _amtCtrl.addListener(_onAmtFieldChange);
 
       _fillForm();
-      _focusNode.requestFocus();
+      if (_constrProvider.buyCoin == null) {
+        _focusNode.requestFocus();
+      } else {
+        FocusScope.of(context).requestFocus(FocusNode());
+      }
     });
     super.initState();
   }
