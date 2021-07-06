@@ -30,26 +30,41 @@ class _SwapConstructorState extends State<SwapConstructor> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return _buildProgress();
 
-        return Container(
-          padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(child: _buildSell(snapshot.data)),
-                    Expanded(child: _buildBuy(snapshot.data)),
-                  ],
-                ),
-              ),
-              if (_constrProvider.preimage != null)
-                BuildDetailedFees(preimage: _constrProvider.preimage)
-            ],
-          ),
-        );
+        return _anyLists()
+            ? _buildContent(snapshot.data)
+            : SingleChildScrollView(
+                child: _buildContent(snapshot.data),
+              );
       },
+    );
+  }
+
+  Widget _buildContent(LinkedHashMap<String, Coin> known) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            flex: _anyLists() ? 1 : 0,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: _buildSell(known)),
+                Expanded(child: _buildBuy(known)),
+              ],
+            ),
+          ),
+          if (_constrProvider.preimage != null)
+            Container(
+              padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
+              child: BuildDetailedFees(
+                preimage: _constrProvider.preimage,
+                alignCenter: true,
+              ),
+            )
+        ],
+      ),
     );
   }
 
@@ -67,6 +82,7 @@ class _SwapConstructorState extends State<SwapConstructor> {
         ),
         SizedBox(height: 6),
         Flexible(
+          flex: _anyLists() ? 1 : 0,
           child: Stack(
             overflow: Overflow.visible,
             children: [
@@ -102,23 +118,24 @@ class _SwapConstructorState extends State<SwapConstructor> {
         ),
         SizedBox(height: 6),
         Flexible(
+            flex: _anyLists() ? 1 : 0,
             child: Stack(
-          overflow: Overflow.visible,
-          children: [
-            _constrProvider.buyCoin == null
-                ? CoinsList(type: CoinType.rel, known: known)
-                : BuyForm(),
-            Positioned(
-              child: Container(
-                color: Theme.of(context).primaryColor,
-              ),
-              left: -1,
-              width: 2,
-              top: 0,
-              bottom: 0,
-            )
-          ],
-        ))
+              overflow: Overflow.visible,
+              children: [
+                _constrProvider.buyCoin == null
+                    ? CoinsList(type: CoinType.rel, known: known)
+                    : BuyForm(),
+                Positioned(
+                  child: Container(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  left: -1,
+                  width: 2,
+                  top: 0,
+                  bottom: 0,
+                )
+              ],
+            ))
       ],
     );
   }
@@ -143,5 +160,9 @@ class _SwapConstructorState extends State<SwapConstructor> {
 
     await _obProvider.subscribeDepth(coinsList);
     return known;
+  }
+
+  bool _anyLists() {
+    return _constrProvider.buyCoin == null || _constrProvider.sellCoin == null;
   }
 }

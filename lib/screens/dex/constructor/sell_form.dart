@@ -156,6 +156,7 @@ class _SellFormState extends State<SellForm> {
           onTap: () {
             _constrProvider.sellCoin = null;
             _constrProvider.matchingOrder = null;
+            _constrProvider.preimage = null;
           },
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: 50),

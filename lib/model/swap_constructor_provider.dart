@@ -23,6 +23,10 @@ class ConstructorProvider extends ChangeNotifier {
   TradePreimage _preimage;
 
   TradePreimage get preimage => _preimage;
+  set preimage(TradePreimage value) {
+    _preimage = value;
+    notifyListeners();
+  }
 
   bool get haveAllData {
     return _sellCoin != null &&
