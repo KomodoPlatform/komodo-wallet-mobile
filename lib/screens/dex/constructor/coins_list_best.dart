@@ -81,7 +81,7 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
   Widget _buildErrorMessage(ErrorString error) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: 150),
+      constraints: BoxConstraints(minHeight: 150),
       child: Center(
         child: Container(
           padding: EdgeInsets.all(12),
@@ -99,7 +99,7 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
   List<Widget> _buildItems(BestOrders bestOrders) {
     final Iterable tickers = bestOrders?.result?.keys;
-    if (tickers == null) return [_buildProgressIndicator()];
+    if (tickers == null) return [_buildEmptyMessage()];
 
     final List<BestOrder> topOrdersList = [];
     for (String ticker in tickers) {
@@ -149,6 +149,16 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
     items.add(_buildShowAllSwitcher(switcherDisabled));
     return items;
+  }
+
+  Widget _buildEmptyMessage() {
+    return ConstrainedBox(
+        constraints: BoxConstraints(minHeight: 150),
+        child: Center(
+            child: Text(
+          'Nothing found',
+          style: Theme.of(context).textTheme.caption,
+        )));
   }
 
   Widget _buildShowAllSwitcher(bool disabled) {

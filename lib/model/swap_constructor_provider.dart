@@ -1,12 +1,13 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/get_trade_preimage_2.dart';
+import 'package:komodo_dex/model/rpc_error.dart';
+import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/get_max_taker_volume.dart';
-import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
@@ -23,6 +24,9 @@ class ConstructorProvider extends ChangeNotifier {
   BestOrder _matchingOrder;
   TradePreimage _preimage;
   Rational _maxTakerVolume;
+  String _error;
+
+  String get error => _error;
 
   TradePreimage get preimage => _preimage;
   set preimage(TradePreimage value) {
@@ -127,6 +131,7 @@ class ConstructorProvider extends ChangeNotifier {
     } catch (_) {
       _buyAmount = null;
       if (_matchingOrder != null) _sellAmount = null;
+      _preimage = null;
       notifyListeners();
       return;
     }
@@ -147,6 +152,7 @@ class ConstructorProvider extends ChangeNotifier {
     } catch (_) {
       _sellAmount = null;
       if (_matchingOrder != null) _buyAmount = null;
+      _preimage = null;
       notifyListeners();
       return;
     }
@@ -182,6 +188,7 @@ class ConstructorProvider extends ChangeNotifier {
     ));
 
     if (bestOrders.error != null) return bestOrders;
+    if (bestOrders.result == null) return bestOrders;
 
     final LinkedHashMap<String, Coin> known = await coins;
     final List<String> tickers = List.from(bestOrders.result.keys);
@@ -192,11 +199,12 @@ class ConstructorProvider extends ChangeNotifier {
     return bestOrders;
   }
 
-  void selectOrder(BestOrder order) {
+  Future<void> selectOrder(BestOrder order) async {
     _matchingOrder = order;
 
     if (order.action == MarketAction.BUY) {
       sellCoin = order.otherCoin;
+      await _updateMaxTakerVolume();
       sellAmount = order.price * _buyAmount;
     } else {
       buyCoin = order.coin;
@@ -206,24 +214,52 @@ class ConstructorProvider extends ChangeNotifier {
 
   Future<void> _updatePreimage() async {
     if (haveAllData) {
-      try {
-        _preimage = await MM.getTradePreimage(GetTradePreimage(
-            swapMethod: 'buy',
-            base: _buyCoin,
-            rel: _sellCoin,
-            volume: _buyAmount.toDouble().toString(),
-            price: (_sellAmount / _buyAmount).toDouble().toString()));
-      } catch (e) {
+      final TradePreimage preimage = await MM.getTradePreimage2(
+          GetTradePreimage2(
+              swapMethod: 'buy',
+              base: _buyCoin,
+              rel: _sellCoin,
+              volume: _buyAmount,
+              price: _sellAmount / _buyAmount));
+
+      if (preimage.error == null) {
+        _preimage = preimage;
+        _error = null;
+      } else {
         _preimage = null;
+        _error = _getHumanPreimageError(preimage.error);
       }
-      notifyListeners();
     } else {
       _preimage = null;
-      notifyListeners();
+      _error = null;
     }
+    notifyListeners();
+  }
+
+  String _getHumanPreimageError(RpcError error) {
+    String str;
+    switch (error.type) {
+      case RpcErrorType.NotSufficientBalance:
+        str = '${error.data['coin']} balance is not sufficient for trade. '
+            'Min required balance is '
+            '${cutTrailingZeros(formatPrice(error.data['required']))} '
+            '${error.data['coin']}';
+        break;
+      case RpcErrorType.VolumeTooLow:
+        str =
+            'Min volume is ${cutTrailingZeros(formatPrice(error.data['threshold']))}'
+            ' ${error.data['coin']}';
+        break;
+      default:
+        str = error.message ?? 'Something went wrong. Please try again.';
+    }
+
+    return str;
   }
 
   Future<void> _updateMaxTakerVolume() async {
+    _error = null;
+
     if (_sellCoin == null) {
       _maxTakerVolume = null;
       return;
@@ -232,8 +268,14 @@ class ConstructorProvider extends ChangeNotifier {
     try {
       _maxTakerVolume =
           await MM.getMaxTakerVolume(GetMaxTakerVolume(coin: _sellCoin));
-    } catch (_) {
+
+      if (_maxTakerVolume.toDouble() == 0) {
+        _error = 'Not enough balance to trade';
+      }
+    } catch (e) {
       _maxTakerVolume = null;
     }
+
+    notifyListeners();
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:rational/rational.dart';
+import 'package:provider/provider.dart';
+
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:provider/provider.dart';
 
 class BuildDetailedFees extends StatefulWidget {
   const BuildDetailedFees({
@@ -172,10 +174,16 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
     final String sellCoin =
         isTaker ? widget.preimage.request.rel : widget.preimage.request.base;
 
-    final double amountSell = isTaker
-        ? double.parse(widget.preimage.request.volume) *
-            double.parse(widget.preimage.request.price)
+    final double requestVolume = widget.preimage.request.volume is Rational
+        ? widget.preimage.request.volume.toDouble()
         : double.parse(widget.preimage.request.volume);
+
+    final double requestPrice = widget.preimage.request.price is Rational
+        ? widget.preimage.request.price.toDouble()
+        : double.parse(widget.preimage.request.price);
+
+    final double amountSell =
+        isTaker ? requestVolume * requestPrice : requestVolume;
 
     final double sellAmtUsd = amountSell * cexPrices.getUsdPrice(sellCoin);
     if (sellAmtUsd > 0) {

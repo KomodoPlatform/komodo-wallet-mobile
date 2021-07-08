@@ -58,7 +58,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
           return Card(
             margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
             child: InkWell(
-              onTap: () => _handleTap(isCoinActive),
+              onTap: () async => await _handleTap(isCoinActive),
               borderRadius: BorderRadius.circular(4),
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: 50),
@@ -99,9 +99,9 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     );
   }
 
-  void _handleTap(bool isCoinActive) {
+  Future<void> _handleTap(bool isCoinActive) async {
     if (isCoinActive) {
-      _constrProvider.selectOrder(widget.order);
+      await _constrProvider.selectOrder(widget.order);
     } else {
       _toggle();
     }
@@ -206,7 +206,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
       setState(() => _activationInProgress = false);
       if (wasActivated) {
         _toggle();
-        _constrProvider.selectOrder(widget.order);
+        await _constrProvider.selectOrder(widget.order);
       } else {
         setState(() => _error = 'Unable to activate $_coin');
       }

@@ -55,17 +55,33 @@ class _SwapConstructorState extends State<SwapConstructor> {
               ],
             ),
           ),
-          if (_constrProvider.preimage != null)
-            Container(
-              padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-              child: BuildDetailedFees(
-                preimage: _constrProvider.preimage,
-                alignCenter: true,
-              ),
-            )
+          if (!_anyLists()) _buildFeesOrError()
         ],
       ),
     );
+  }
+
+  Widget _buildFeesOrError() {
+    if (_constrProvider.error == null) {
+      return Container(
+        padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
+        child: BuildDetailedFees(
+          preimage: _constrProvider.preimage,
+          alignCenter: true,
+        ),
+      );
+    } else {
+      return Container(
+        padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
+        child: Text(
+          _constrProvider.error,
+          style: TextStyle(
+            color: Theme.of(context).errorColor,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
   }
 
   Widget _buildSell(LinkedHashMap<String, Coin> known) {
@@ -163,6 +179,20 @@ class _SwapConstructorState extends State<SwapConstructor> {
   }
 
   bool _anyLists() {
-    return _constrProvider.buyCoin == null || _constrProvider.sellCoin == null;
+    if (_constrProvider.buyCoin != null && _constrProvider.sellCoin != null) {
+      return false;
+    }
+
+    if (_constrProvider.sellCoin != null &&
+        (_constrProvider.sellAmount?.toDouble() ?? 0) == 0) {
+      return false;
+    }
+
+    if (_constrProvider.buyCoin != null &&
+        (_constrProvider.buyAmount?.toDouble() ?? 0) == 0) {
+      return false;
+    }
+
+    return true;
   }
 }
