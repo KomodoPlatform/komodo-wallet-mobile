@@ -4,6 +4,7 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/orders/orders_page.dart';
 import 'package:komodo_dex/screens/dex/multi/multi_order_page.dart';
+import 'package:komodo_dex/screens/dex/trade/create/pro/trade_page.dart';
 import 'package:komodo_dex/screens/dex/trade/create/simple/constructor.dart';
 //import 'package:komodo_dex/screens/dex/trade/create/trade_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
@@ -19,7 +20,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 4, vsync: this);
     ordersBloc.updateOrdersSwaps();
 
     swapBloc.outIndexTab.listen((int onData) {
@@ -51,13 +52,12 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
             indicator: CustomTabIndicator(context: context),
             controller: tabController,
             tabs: <Widget>[
-              Tab(
-                text: AppLocalizations.of(context).create.toUpperCase(),
-              ),
-              Tab(text: AppLocalizations.of(context).orders.toUpperCase()),
+              Tab(text: 'SIMPLE'),
+              Tab(text: 'PRO'),
               Tab(
                 text: AppLocalizations.of(context).multiTab.toUpperCase(),
               ),
+              Tab(text: AppLocalizations.of(context).orders.toUpperCase()),
             ],
           ),
         ),
@@ -102,7 +102,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: _buildAppBar(),
@@ -112,9 +112,9 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
               controller: tabController,
               children: <Widget>[
                 SwapConstructor(),
-                //TradePage(),
-                OrdersPage(),
+                TradePage(),
                 MultiOrderPage(),
+                OrdersPage(),
               ],
             );
           }),
