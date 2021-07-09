@@ -89,7 +89,6 @@ class _SellFormState extends State<SellForm> {
               ? null
               : () {
                   _constrProvider.sellAmount = buttonAmt;
-                  FocusScope.of(context).requestFocus(FocusNode());
                 },
           child: Container(
             padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
