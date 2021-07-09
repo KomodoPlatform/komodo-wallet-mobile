@@ -10,12 +10,11 @@ import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/markets/coin_select.dart';
 
 class CoinsListBest extends StatefulWidget {
   const CoinsListBest({this.type});
 
-  final CoinType type;
+  final Market type;
 
   @override
   _CoinsListBestState createState() => _CoinsListBestState();
@@ -29,7 +28,7 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
   @override
   void initState() {
-    _showAll = widget.type == CoinType.rel;
+    _showAll = widget.type == Market.BUY;
     super.initState();
   }
 
@@ -136,12 +135,12 @@ class _CoinsListBestState extends State<CoinsListBest> {
       final bool hasBalance =
           (coinBalance?.balance?.balance ?? deci(0)).toDouble() > 0;
       final bool isInShortList =
-          widget.type == CoinType.base ? isActive && hasBalance : isActive;
+          widget.type == Market.SELL ? isActive && hasBalance : isActive;
       if (!isInShortList) switcherDisabled = false;
 
       if (_showAll || isInShortList) {
         final String key =
-            '${widget.type == CoinType.base ? 'buy' : 'sell'}-$coin-top-order';
+            '${widget.type == Market.SELL ? 'buy' : 'sell'}-$coin-top-order';
         items.add(CoinsListBestItem(topOrder, key: Key(key)));
       }
     }
@@ -180,7 +179,7 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
   BestOrder _getTickerTopOrder(List<BestOrder> tickerOrdersList) {
     final List<BestOrder> sorted = List.from(tickerOrdersList);
-    if (widget.type == CoinType.base) {
+    if (widget.type == Market.SELL) {
       sorted.sort((a, b) => a.price.toDouble().compareTo(b.price.toDouble()));
     } else {
       sorted.sort((a, b) => b.price.toDouble().compareTo(a.price.toDouble()));

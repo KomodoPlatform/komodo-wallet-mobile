@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/build_swap_button.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/build_trade_details.dart';
@@ -81,7 +82,7 @@ class _SwapConstructorState extends State<SwapConstructor> {
             overflow: Overflow.visible,
             children: [
               _constrProvider.sellCoin == null
-                  ? CoinsList(type: CoinType.base, known: known)
+                  ? CoinsList(type: Market.SELL, known: known)
                   : SellForm(),
               Positioned(
                 child: Container(
@@ -117,7 +118,7 @@ class _SwapConstructorState extends State<SwapConstructor> {
               overflow: Overflow.visible,
               children: [
                 _constrProvider.buyCoin == null
-                    ? CoinsList(type: CoinType.rel, known: known)
+                    ? CoinsList(type: Market.BUY, known: known)
                     : BuyForm(),
                 Positioned(
                   child: Container(

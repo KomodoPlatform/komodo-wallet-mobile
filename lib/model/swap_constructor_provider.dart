@@ -10,7 +10,6 @@ import 'package:komodo_dex/model/get_max_taker_volume.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/best_order.dart';
-import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -166,12 +165,12 @@ class ConstructorProvider extends ChangeNotifier {
     sellAmount = newAmount;
   }
 
-  Future<BestOrders> getBestOrders(CoinType coinsListType) async {
+  Future<BestOrders> getBestOrders(Market coinsListType) async {
     String coin;
     Rational amount;
     Market action;
 
-    if (coinsListType == CoinType.base) {
+    if (coinsListType == Market.SELL) {
       coin = _buyCoin;
       amount = _buyAmount;
       action = Market.BUY;

@@ -2,18 +2,18 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/coins_list_all.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/coins_list_best.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
 
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/markets/coin_select.dart';
 
 class CoinsList extends StatefulWidget {
   const CoinsList({this.type, this.known});
 
-  final CoinType type;
+  final Market type;
   final LinkedHashMap<String, Coin> known;
 
   @override
@@ -27,11 +27,11 @@ class _CoinsListState extends State<CoinsList> {
   Widget build(BuildContext context) {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
 
-    final String _counterCoin = widget.type == CoinType.base
+    final String _counterCoin = widget.type == Market.SELL
         ? _constrProvider.buyCoin
         : _constrProvider.sellCoin;
 
-    final Rational _counterAmount = widget.type == CoinType.base
+    final Rational _counterAmount = widget.type == Market.SELL
         ? _constrProvider.buyAmount
         : _constrProvider.sellAmount;
 
@@ -45,17 +45,17 @@ class _CoinsListState extends State<CoinsList> {
   }
 
   Widget _buildAmtMessage() {
-    final String coin = widget.type == CoinType.base
+    final String coin = widget.type == Market.SELL
         ? _constrProvider.buyCoin
         : _constrProvider.sellCoin;
-    final String message = widget.type == CoinType.base
+    final String message = widget.type == Market.SELL
         ? 'Plsease enter $coin amount to buy'
         : 'Plsease enter $coin amount to sell';
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        if (widget.type == CoinType.rel) ...{
+        if (widget.type == Market.BUY) ...{
           Container(
               padding: EdgeInsets.only(bottom: 5),
               child: Icon(
@@ -70,13 +70,13 @@ class _CoinsListState extends State<CoinsList> {
               alignment: Alignment(0, 1),
               child: Text(
                 message,
-                textAlign: widget.type == CoinType.rel
+                textAlign: widget.type == Market.BUY
                     ? TextAlign.left
                     : TextAlign.right,
                 style: Theme.of(context).textTheme.bodyText1,
               )),
         ),
-        if (widget.type == CoinType.base) ...{
+        if (widget.type == Market.SELL) ...{
           Container(
               padding: EdgeInsets.only(bottom: 5),
               child: Icon(

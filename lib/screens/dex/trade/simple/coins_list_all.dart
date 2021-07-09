@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:provider/provider.dart';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -8,12 +9,11 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/markets/coin_select.dart';
 
 class CoinsListAll extends StatefulWidget {
   const CoinsListAll({this.type});
 
-  final CoinType type;
+  final Market type;
 
   @override
   _CoinsListAllState createState() => _CoinsListAllState();
@@ -49,7 +49,7 @@ class _CoinsListAllState extends State<CoinsListAll> {
         margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
         child: InkWell(
           onTap: () {
-            widget.type == CoinType.base
+            widget.type == Market.SELL
                 ? _constrProvider.sellCoin = item.coin.abbr
                 : _constrProvider.buyCoin = item.coin.abbr;
           },
@@ -86,7 +86,7 @@ class _CoinsListAllState extends State<CoinsListAll> {
 
     for (OrderbookDepth obDepth in obDepths) {
       final String coinBalanceRequired =
-          widget.type == CoinType.base ? coin.abbr : obDepth.pair.base;
+          widget.type == Market.SELL ? coin.abbr : obDepth.pair.base;
       final Decimal balance =
           coinsBloc.getBalanceByAbbr(coinBalanceRequired)?.balance?.balance;
 

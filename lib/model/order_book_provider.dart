@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_orderbook_depth.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -44,7 +45,7 @@ class OrderBookProvider extends ChangeNotifier {
   List<Orderbook> orderbooksForCoin([Coin coin]) =>
       syncOrderbook.orderbooksForCoin(coin);
 
-  List<OrderbookDepth> depthsForCoin([Coin coin, CoinType type]) =>
+  List<OrderbookDepth> depthsForCoin([Coin coin, Market type]) =>
       syncOrderbook.depthForCoin(coin, type);
 
   // deprecated in favor of subscribeDepth
@@ -234,13 +235,13 @@ class SyncOrderbook {
     return list;
   }
 
-  List<OrderbookDepth> depthForCoin([Coin coin, CoinType type]) {
+  List<OrderbookDepth> depthForCoin([Coin coin, Market type]) {
     coin ??= activePair.sell;
-    type ??= CoinType.base;
+    type ??= Market.SELL;
 
     final List<OrderbookDepth> list = [];
     _orderbooksDepth.forEach((ticker, orderbookDepth) {
-      final int coinIndex = type == CoinType.base ? 0 : 1;
+      final int coinIndex = type == Market.SELL ? 0 : 1;
       if (ticker.split('/')[coinIndex] == coin.abbr) {
         list.add(orderbookDepth);
       }
