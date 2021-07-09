@@ -1,3 +1,4 @@
+import 'package:komodo_dex/screens/dex/trade/create/pro/trade_form.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -6,7 +7,6 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class TradeFormValidator {

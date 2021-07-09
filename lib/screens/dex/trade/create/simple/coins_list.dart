@@ -2,9 +2,8 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/screens/dex/constructor/coins_list_all.dart';
-import 'package:komodo_dex/screens/dex/constructor/coins_list_best.dart';
-//import 'package:komodo_dex/screens/dex/constructor/coins_list_depths.dart';
+import 'package:komodo_dex/screens/dex/trade/create/simple/coins_list_all.dart';
+import 'package:komodo_dex/screens/dex/trade/create/simple/coins_list_best.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
 
@@ -39,7 +38,6 @@ class _CoinsListState extends State<CoinsList> {
     if (_counterCoin == null) {
       return CoinsListAll(type: widget.type);
     } else if (_counterAmount == null || _counterAmount.toDouble() == 0) {
-      //return CoinsListDepths(type: widget.type);
       return _buildAmtMessage();
     } else {
       return CoinsListBest(type: widget.type);

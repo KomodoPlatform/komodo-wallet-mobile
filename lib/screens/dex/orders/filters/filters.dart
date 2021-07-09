@@ -4,8 +4,8 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
-import 'package:komodo_dex/screens/dex/trade/create/trade_page.dart';
+import 'package:komodo_dex/screens/dex/trade/create/pro/trade_page.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 
 class Filters extends StatefulWidget {
   const Filters({

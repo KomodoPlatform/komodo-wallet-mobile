@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/screens/dex/trade/create/simple/coins_list_best_item.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_best_orders.dart';
-import 'package:komodo_dex/screens/dex/constructor/coins_list_best_item.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';

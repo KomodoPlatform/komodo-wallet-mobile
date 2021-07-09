@@ -5,7 +5,7 @@ import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
+import 'package:komodo_dex/screens/dex/trade/create/pro/trade_form.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';

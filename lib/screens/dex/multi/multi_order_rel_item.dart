@@ -7,7 +7,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/screens/dex/trade/confirm/build_detailed_fees.dart';
+import 'package:komodo_dex/screens/dex/trade/build_detailed_fees.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';

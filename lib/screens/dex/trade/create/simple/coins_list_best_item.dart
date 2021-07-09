@@ -5,7 +5,7 @@ import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:rational/rational.dart';
 

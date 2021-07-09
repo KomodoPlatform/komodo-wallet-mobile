@@ -1,14 +1,15 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/screens/dex/trade/confirm/build_detailed_fees.dart';
+import 'package:komodo_dex/screens/dex/trade/create/simple/build_swap_button.dart';
+import 'package:komodo_dex/screens/dex/trade/create/simple/build_trade_details.dart';
+import 'package:komodo_dex/screens/dex/trade/create/simple/buy_form.dart';
+import 'package:komodo_dex/screens/dex/trade/create/simple/coins_list.dart';
+import 'package:komodo_dex/screens/dex/trade/create/simple/sell_form.dart';
 import 'package:provider/provider.dart';
 
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/dex/constructor/buy_form.dart';
-import 'package:komodo_dex/screens/dex/constructor/coins_list.dart';
-import 'package:komodo_dex/screens/dex/constructor/sell_form.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 
 class SwapConstructor extends StatefulWidget {
@@ -55,33 +56,11 @@ class _SwapConstructorState extends State<SwapConstructor> {
               ],
             ),
           ),
-          if (!_anyLists()) _buildFeesOrError()
+          BuildTradeDetails(),
+          BuildSwapButton(),
         ],
       ),
     );
-  }
-
-  Widget _buildFeesOrError() {
-    if (_constrProvider.error == null) {
-      return Container(
-        padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-        child: BuildDetailedFees(
-          preimage: _constrProvider.preimage,
-          alignCenter: true,
-        ),
-      );
-    } else {
-      return Container(
-        padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-        child: Text(
-          _constrProvider.error,
-          style: TextStyle(
-            color: Theme.of(context).errorColor,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      );
-    }
   }
 
   Widget _buildSell(LinkedHashMap<String, Coin> known) {

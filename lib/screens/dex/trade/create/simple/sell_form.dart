@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
-import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
+import 'package:rational/rational.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
+import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
-class BuyForm extends StatefulWidget {
+class SellForm extends StatefulWidget {
   @override
-  _BuyFormState createState() => _BuyFormState();
+  _SellFormState createState() => _SellFormState();
 }
 
-class _BuyFormState extends State<BuyForm> {
+class _SellFormState extends State<SellForm> {
   final _amtCtrl = TextEditingControllerWorkaroud();
   final _focusNode = FocusNode();
   ConstructorProvider _constrProvider;
@@ -27,7 +28,7 @@ class _BuyFormState extends State<BuyForm> {
       _amtCtrl.addListener(_onAmtFieldChange);
 
       _fillForm();
-      if (_constrProvider.sellCoin == null) {
+      if (_constrProvider.buyCoin == null) {
         _focusNode.requestFocus();
       } else {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -41,7 +42,7 @@ class _BuyFormState extends State<BuyForm> {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
     _cexProvider ??= Provider.of<CexProvider>(context);
 
-    return Container(
+    return Padding(
       padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -49,7 +50,64 @@ class _BuyFormState extends State<BuyForm> {
           _buildCoin(),
           SizedBox(height: 6),
           _buildAmt(),
+          _buildButtons(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildButton(10),
+        SizedBox(width: 4),
+        _buildButton(25),
+        SizedBox(width: 4),
+        _buildButton(50),
+        SizedBox(width: 4),
+        _buildButton(100),
+      ],
+    );
+  }
+
+  Widget _buildButton(double pct) {
+    final Rational buttonAmt = _constrProvider.maxSellAmt *
+        Rational.parse('$pct') /
+        Rational.parse('100');
+    final String formattedButtonAmt = cutTrailingZeros(
+        buttonAmt.toStringAsFixed(appConfig.tradeFormPrecision));
+    final bool isActive = formattedButtonAmt == _amtCtrl.text;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: isActive
+            ? null
+            : () {
+                _constrProvider.sellAmount = buttonAmt;
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+        child: Container(
+          padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+          child: Container(
+            alignment: Alignment(0, 0),
+            color: isActive
+                ? Theme.of(context).highlightColor
+                : Theme.of(context).primaryColor,
+            padding: EdgeInsets.fromLTRB(1, 3, 1, 3),
+            child: Text(
+              '${cutTrailingZeros(pct.toString())}%',
+              style: TextStyle(
+                  fontSize: 11,
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .color
+                      .withAlpha(isActive ? 200 : 180)),
+              maxLines: 1,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -75,7 +133,7 @@ class _BuyFormState extends State<BuyForm> {
             width: 1,
             color: Theme.of(context).accentColor,
           )),
-          suffixIcon: _constrProvider.buyAmount == null
+          suffixIcon: _constrProvider.sellAmount == null
               ? null
               : InkWell(
                   child: Icon(
@@ -84,7 +142,7 @@ class _BuyFormState extends State<BuyForm> {
                     color: Theme.of(context).textTheme.caption.color,
                   ),
                   onTap: () {
-                    _constrProvider.buyAmount = null;
+                    _constrProvider.sellAmount = null;
                   },
                 ),
         ));
@@ -96,7 +154,7 @@ class _BuyFormState extends State<BuyForm> {
         child: InkWell(
           borderRadius: BorderRadius.circular(4),
           onTap: () {
-            _constrProvider.buyCoin = null;
+            _constrProvider.sellCoin = null;
             _constrProvider.matchingOrder = null;
             _constrProvider.preimage = null;
           },
@@ -114,11 +172,11 @@ class _BuyFormState extends State<BuyForm> {
                           CircleAvatar(
                             radius: 8,
                             backgroundImage: AssetImage(
-                                'assets/${_constrProvider.buyCoin.toLowerCase()}.png'),
+                                'assets/${_constrProvider.sellCoin.toLowerCase()}.png'),
                           ),
                           SizedBox(width: 4),
                           Text(
-                            _constrProvider.buyCoin,
+                            _constrProvider.sellCoin,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                         ],
@@ -140,10 +198,10 @@ class _BuyFormState extends State<BuyForm> {
   }
 
   Widget _buildFiatAmt() {
-    final double usdPrice = _cexProvider.getUsdPrice(_constrProvider.buyCoin);
+    final double usdPrice = _cexProvider.getUsdPrice(_constrProvider.sellCoin);
     double usdAmt = 0.0;
-    if (_constrProvider.buyAmount != null) {
-      usdAmt = _constrProvider.buyAmount.toDouble() * usdPrice;
+    if (_constrProvider.sellAmount != null) {
+      usdAmt = _constrProvider.sellAmount.toDouble() * usdPrice;
     }
 
     if (usdAmt == 0) return SizedBox();
@@ -155,7 +213,7 @@ class _BuyFormState extends State<BuyForm> {
         Row(
           children: [
             Text(
-              'Recieve:',
+              'Send:',
               style: Theme.of(context)
                   .textTheme
                   .caption
@@ -175,12 +233,12 @@ class _BuyFormState extends State<BuyForm> {
   }
 
   void _onDataChange() {
-    if (_constrProvider.buyAmount == null) {
+    if (_constrProvider.sellAmount == null) {
       _amtCtrl.text = '';
       return;
     }
 
-    final String newFormatted = cutTrailingZeros(_constrProvider.buyAmount
+    final String newFormatted = cutTrailingZeros(_constrProvider.sellAmount
         .toStringAsFixed(appConfig.tradeFormPrecision));
     final String currentFormatted = cutTrailingZeros(_amtCtrl.text);
 
@@ -191,7 +249,7 @@ class _BuyFormState extends State<BuyForm> {
 
   void _onAmtFieldChange() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _constrProvider.onBuyAmtFieldChange(_amtCtrl.text);
+      _constrProvider.onSellAmtFieldChange(_amtCtrl.text);
     });
   }
 
