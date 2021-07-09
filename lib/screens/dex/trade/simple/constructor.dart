@@ -1,10 +1,10 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/screens/dex/trade/create/simple/build_swap_button.dart';
-import 'package:komodo_dex/screens/dex/trade/create/simple/build_trade_details.dart';
-import 'package:komodo_dex/screens/dex/trade/create/simple/buy_form.dart';
-import 'package:komodo_dex/screens/dex/trade/create/simple/coins_list.dart';
-import 'package:komodo_dex/screens/dex/trade/create/simple/sell_form.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/build_swap_button.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/build_trade_details.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/buy_form.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/coins_list.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/sell_form.dart';
 import 'package:provider/provider.dart';
 
 import 'package:komodo_dex/model/coin.dart';

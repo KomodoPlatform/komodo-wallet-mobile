@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/screens/dex/trade/confirm/swap_confirmation_page.dart';
-
+import 'package:komodo_dex/model/app_config.dart';
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
@@ -51,11 +49,11 @@ class AppLocalizations {
       'WiFi network if your cellular data plan is costly.',
       name: 'mobileDataWarning');
   String get batteryCriticalError => Intl.message(
-      'Your battery charge is critical (<$batteryLevelCritical%) '
+      'Your battery charge is critical (${appConfig.batteryLevelCritical}%) '
       'to perform a swap safely. Please put it on charge and try again.',
       name: 'batteryCriticalError');
   String get batteryLowWarning => Intl.message(
-      'Your battery charge is lower than $batteryLevelLow%. '
+      'Your battery charge is lower than ${appConfig.batteryLevelLow}%. '
       'Please consider phone charging.',
       name: 'batteryLowWarning');
   String get batterySavingWarning => Intl.message(

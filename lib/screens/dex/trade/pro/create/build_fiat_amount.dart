@@ -3,7 +3,7 @@ import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/screens/dex/trade/create/pro/trade_page.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/create/trade_page.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';

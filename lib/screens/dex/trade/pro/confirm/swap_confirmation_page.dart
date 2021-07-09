@@ -8,6 +8,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -17,21 +18,18 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/build_detailed_fees.dart';
-import 'package:komodo_dex/screens/dex/trade/confirm/min_volume_control.dart';
-import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
-import 'package:komodo_dex/screens/dex/trade/create/pro/order_created_popup.dart';
-import 'package:komodo_dex/screens/dex/trade/create/pro/trade_form.dart';
-import 'package:komodo_dex/screens/dex/trade/evaluation.dart';
-import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/confirm/min_volume_control.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/confirm/order_created_popup.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/confirm/protection_control.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/evaluation.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/exchange_rate.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:provider/provider.dart';
-
-const int batteryLevelLow = 30;
-const int batteryLevelCritical = 20;
 
 class SwapConfirmationPage extends StatefulWidget {
   @override
@@ -141,7 +139,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     if (_batteryData == null || _batteryData['level'] == null) return false;
     if (_batteryData['charging']) return false;
 
-    return (_batteryData['level'] * 100).round() <= batteryLevelCritical;
+    return (_batteryData['level'] * 100).round() <=
+        appConfig.batteryLevelCritical;
   }
 
   bool _hasData() {
@@ -369,7 +368,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     if (_isBatteryCritical()) {
       message = AppLocalizations.of(context).batteryCriticalError;
       color = Theme.of(context).errorColor;
-    } else if (level < batteryLevelLow / 100) {
+    } else if (level < appConfig.batteryLevelLow / 100) {
       message = AppLocalizations.of(context).batteryLowWarning;
     } else if (isInLowPowerMode) {
       message = AppLocalizations.of(context).batterySavingWarning;

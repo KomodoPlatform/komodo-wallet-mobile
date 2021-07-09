@@ -1,4 +1,4 @@
-import 'package:komodo_dex/screens/dex/trade/create/pro/trade_form.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';

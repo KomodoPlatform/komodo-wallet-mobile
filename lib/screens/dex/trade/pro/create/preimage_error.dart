@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/dex/trade/create/pro/trade_form_validator.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form_validator.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class PreimageError extends StatefulWidget {

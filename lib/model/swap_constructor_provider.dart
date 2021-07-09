@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/get_trade_preimage_2.dart';
 import 'package:komodo_dex/model/rpc_error.dart';

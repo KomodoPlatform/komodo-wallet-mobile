@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/model/app_config.dart';
-import 'package:komodo_dex/screens/dex/trade/create/pro/trade_form.dart';
+import 'package:komodo_dex/blocs/swap_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-class ReceiveAmountField extends StatefulWidget {
+class SellAmountField extends StatefulWidget {
   @override
-  _ReceiveAmountFieldState createState() => _ReceiveAmountFieldState();
+  _SellAmountFieldState createState() => _SellAmountFieldState();
 }
 
-class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
+class _SellAmountFieldState extends State<SellAmountField> {
   final _ctrl = TextEditingControllerWorkaroud();
   String _prev;
 
@@ -21,10 +22,10 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
     super.initState();
 
     _ctrl.addListener(_onFieldChange);
-    swapBloc.outAmountReceive.listen(_onDataChange);
+    swapBloc.outAmountSell.listen(_onDataChange);
 
     WidgetsBinding.instance
-        .addPostFrameCallback((_) => _onDataChange(swapBloc.amountReceive));
+        .addPostFrameCallback((_) => _onDataChange(swapBloc.amountSell));
   }
 
   @override
@@ -36,27 +37,28 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        key: Key('input-text-buy'),
-        scrollPadding: const EdgeInsets.only(left: 35),
-        inputFormatters: <TextInputFormatter>[
-          DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),
-          FilteringTextInputFormatter.allow(RegExp(
-              '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
-        ],
-        controller: _ctrl,
-        enabled: swapBloc.enabledReceiveField,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        style: Theme.of(context).textTheme.subtitle2,
-        textInputAction: TextInputAction.done,
-        decoration: InputDecoration(
+      key: Key('input-text-sell'),
+      scrollPadding: const EdgeInsets.only(left: 35),
+      inputFormatters: <TextInputFormatter>[
+        DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),
+        FilteringTextInputFormatter.allow(RegExp(
+            '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
+      ],
+      controller: _ctrl,
+      enabled: swapBloc.enabledSellField,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      style: Theme.of(context).textTheme.subtitle2,
+      textInputAction: TextInputAction.done,
+      decoration: InputDecoration(
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Theme.of(context).accentColor),
           ),
           hintStyle: Theme.of(context)
               .textTheme
               .bodyText1
-              .copyWith(fontSize: 16, fontWeight: FontWeight.w400),
-        ));
+              .copyWith(fontWeight: FontWeight.w200),
+          hintText: AppLocalizations.of(context).amountToSell),
+    );
   }
 
   void _onFieldChange() {
@@ -65,7 +67,7 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
     if (text == _prev) return;
     _prev = text;
 
-    tradeForm.onReceiveAmountFieldChange(text);
+    tradeForm.onSellAmountFieldChange(text);
   }
 
   void _onDataChange(double value) {

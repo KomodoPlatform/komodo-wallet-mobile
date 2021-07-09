@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
-import 'package:komodo_dex/screens/dex/trade/create/pro/receive/matching_orderbook_item.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_orderbook_item.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';

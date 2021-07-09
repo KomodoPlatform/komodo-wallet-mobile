@@ -4,9 +4,8 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/orders/orders_page.dart';
 import 'package:komodo_dex/screens/dex/multi/multi_order_page.dart';
-import 'package:komodo_dex/screens/dex/trade/create/pro/trade_page.dart';
-import 'package:komodo_dex/screens/dex/trade/create/simple/constructor.dart';
-//import 'package:komodo_dex/screens/dex/trade/create/trade_page.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/create/trade_page.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/constructor.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 
 class DexPage extends StatefulWidget {

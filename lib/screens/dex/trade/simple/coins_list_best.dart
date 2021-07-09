@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/screens/dex/trade/create/simple/coins_list_best_item.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/coins_list_best_item.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
