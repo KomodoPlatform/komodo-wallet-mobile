@@ -46,6 +46,11 @@ class ConstructorProvider extends ChangeNotifier {
     _sellCoin = value;
     _sellAmount = null;
     _updateMaxTakerVolume();
+    if (value == null) {
+      _matchingOrder = null;
+      _preimage = null;
+      _error = null;
+    }
     notifyListeners();
   }
 
@@ -53,6 +58,11 @@ class ConstructorProvider extends ChangeNotifier {
   set buyCoin(String value) {
     _buyCoin = value;
     _buyAmount = null;
+    if (value == null) {
+      _matchingOrder = null;
+      _preimage = null;
+      _error = null;
+    }
     notifyListeners();
   }
 

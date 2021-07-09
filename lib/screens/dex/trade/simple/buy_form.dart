@@ -97,8 +97,6 @@ class _BuyFormState extends State<BuyForm> {
           borderRadius: BorderRadius.circular(4),
           onTap: () {
             _constrProvider.buyCoin = null;
-            _constrProvider.matchingOrder = null;
-            _constrProvider.preimage = null;
           },
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: 50),

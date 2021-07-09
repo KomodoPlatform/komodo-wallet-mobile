@@ -20,7 +20,7 @@ class EvaluationSimple extends StatefulWidget {
 
 class _EvaluationSimpleState extends State<EvaluationSimple> {
   final double _sliderH = 4;
-  final double _neutralRange = 5; // % - show lower values in neutral color
+  final double _neutralRange = 0; // % - show lower values in neutral color
   bool _showDetails = false;
   double _sliderW;
   num _sign;

@@ -44,12 +44,13 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
   Widget _buildFeesOrError() {
     if (_constrProvider.error != null) {
       return Container(
-        padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
+        padding: EdgeInsets.fromLTRB(12, 24, 12, 14),
         child: Text(
           _constrProvider.error,
-          style: TextStyle(
-            color: Theme.of(context).errorColor,
-          ),
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1
+              .copyWith(color: Theme.of(context).errorColor),
           textAlign: TextAlign.center,
         ),
       );
