@@ -2,9 +2,9 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/trade_page.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 
 class Filters extends StatefulWidget {
@@ -38,7 +38,7 @@ class _FiltersState extends State<Filters> {
         children: [
           _buildCoinFilter(Market.SELL),
           SizedBox(height: 12),
-          _buildCoinFilter(Market.RECEIVE),
+          _buildCoinFilter(Market.BUY),
           SizedBox(height: 12),
           _buildDateFilter(DateFilterType.START),
           SizedBox(height: 12),
@@ -648,7 +648,7 @@ class _FiltersState extends State<Filters> {
           case Market.SELL:
             coin = item.orderType == OrderType.MAKER ? item.base : item.rel;
             break;
-          case Market.RECEIVE:
+          case Market.BUY:
             coin = item.orderType == OrderType.MAKER ? item.rel : item.base;
             break;
         }
@@ -659,7 +659,7 @@ class _FiltersState extends State<Filters> {
           case Market.SELL:
             coin = item.isMaker ? item.makerAbbr : item.takerAbbr;
             break;
-          case Market.RECEIVE:
+          case Market.BUY:
             coin = item.isMaker ? item.takerAbbr : item.makerAbbr;
             break;
         }

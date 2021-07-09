@@ -9,6 +9,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
@@ -111,7 +112,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     return Column(
       children: <Widget>[
         _buildCard(Market.SELL),
-        _buildCard(Market.RECEIVE),
+        _buildCard(Market.BUY),
       ],
     );
   }
@@ -194,7 +195,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             ),
           ),
         ),
-        if (market == Market.RECEIVE)
+        if (market == Market.BUY)
           Positioned(
             top: -21,
             left: MediaQuery.of(context).size.width / 2 - 60,
@@ -302,7 +303,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         onTap: () async {
           _openSelectCoinDialog(market);
         },
-        child: market == Market.RECEIVE
+        child: market == Market.BUY
             ? StreamBuilder<CoinBalance>(
                 initialData: swapBloc.receiveCoinBalance,
                 stream: swapBloc.outReceiveCoinBalance,
@@ -361,7 +362,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<void> _openSelectCoinDialog(Market market) async {
-    if (market == Market.RECEIVE) {
+    if (market == Market.BUY) {
       if (swapBloc.amountSell == null || swapBloc.amountSell <= 0) {
         _showSnackbar(AppLocalizations.of(context).enterSellAmount);
         return;
@@ -479,9 +480,4 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     final TradeFormValidator validator = TradeFormValidator();
     swapBloc.validatorError = await validator.errorMessage;
   }
-}
-
-enum Market {
-  SELL,
-  RECEIVE,
 }

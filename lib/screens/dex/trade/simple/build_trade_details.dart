@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/build_detailed_fees.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/evaluation_simple.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/exchange_rate_simple.dart';
 import 'package:provider/provider.dart';
 
@@ -28,13 +29,16 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
   Widget _buildRate() {
     if (_constrProvider.matchingOrder == null) return SizedBox();
 
-    return ExchangeRateSimple();
+    return Container(
+        padding: EdgeInsets.fromLTRB(12, 0, 12, 8),
+        child: ExchangeRateSimple());
   }
 
   Widget _buildEvaluation() {
     if (_constrProvider.matchingOrder == null) return SizedBox();
 
-    return Text('evaluation here');
+    return Container(
+        padding: EdgeInsets.fromLTRB(12, 0, 12, 24), child: EvaluationSimple());
   }
 
   Widget _buildFeesOrError() {
@@ -51,7 +55,7 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
       );
     } else if (_constrProvider.matchingOrder != null) {
       return Container(
-        padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
+        padding: EdgeInsets.fromLTRB(12, 24, 12, 8),
         child: BuildDetailedFees(
           preimage: _constrProvider.preimage,
           alignCenter: true,

@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/get_trade_preimage_2.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/model/rpc_error.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/app_config.dart';
@@ -63,7 +64,7 @@ class ConstructorProvider extends ChangeNotifier {
       if (value > maxSellAmt) value = maxSellAmt;
 
       if (_matchingOrder != null) {
-        final Rational price = _matchingOrder.action == MarketAction.SELL
+        final Rational price = _matchingOrder.action == Market.SELL
             ? _matchingOrder.price
             : _matchingOrder.price.inverse;
 
@@ -89,7 +90,7 @@ class ConstructorProvider extends ChangeNotifier {
         // if > than order max volume
         if (value > maxOrderAmt) value = maxOrderAmt;
 
-        final Rational price = _matchingOrder.action == MarketAction.BUY
+        final Rational price = _matchingOrder.action == Market.BUY
             ? _matchingOrder.price
             : _matchingOrder.price.inverse;
 
@@ -168,16 +169,16 @@ class ConstructorProvider extends ChangeNotifier {
   Future<BestOrders> getBestOrders(CoinType coinsListType) async {
     String coin;
     Rational amount;
-    MarketAction action;
+    Market action;
 
     if (coinsListType == CoinType.base) {
       coin = _buyCoin;
       amount = _buyAmount;
-      action = MarketAction.BUY;
+      action = Market.BUY;
     } else {
       coin = _sellCoin;
       amount = _sellAmount;
-      action = MarketAction.SELL;
+      action = Market.SELL;
     }
 
     final BestOrders bestOrders = await MM.getBestOrders(GetBestOrders(
@@ -201,7 +202,7 @@ class ConstructorProvider extends ChangeNotifier {
   Future<void> selectOrder(BestOrder order) async {
     _matchingOrder = order;
 
-    if (order.action == MarketAction.BUY) {
+    if (order.action == Market.BUY) {
       sellCoin = order.otherCoin;
       await _updateMaxTakerVolume();
       sellAmount = order.price * _buyAmount;
@@ -255,7 +256,7 @@ class ConstructorProvider extends ChangeNotifier {
       final Rational minOrderVolume = _matchingOrder.minVolume;
       if (minOrderVolume != null && minOrderVolume > _buyAmount) {
         isValid = false;
-        final Rational price = _matchingOrder.action == MarketAction.SELL
+        final Rational price = _matchingOrder.action == Market.SELL
             ? _matchingOrder.price
             : _matchingOrder.price.inverse;
         final Rational minSellVolume = minOrderVolume / price;

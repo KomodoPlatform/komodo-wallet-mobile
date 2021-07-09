@@ -5,13 +5,13 @@ import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:rational/rational.dart';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/best_order.dart';
-import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -42,7 +42,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
 
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
     _cexProvider ??= Provider.of<CexProvider>(context);
-    _coin = widget.order.action == MarketAction.SELL
+    _coin = widget.order.action == Market.SELL
         ? widget.order.coin
         : widget.order.otherCoin;
 
@@ -278,10 +278,10 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
   }
 
   Widget _buildAmtDetails() {
-    final String counterCoin = widget.order.action == MarketAction.BUY
+    final String counterCoin = widget.order.action == Market.BUY
         ? _constrProvider.buyCoin
         : _constrProvider.sellCoin;
-    final Rational counterAmount = widget.order.action == MarketAction.BUY
+    final Rational counterAmount = widget.order.action == Market.BUY
         ? _constrProvider.buyAmount
         : _constrProvider.sellAmount;
     final double cexPrice = _cexProvider.getUsdPrice(_coin);
@@ -304,11 +304,11 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
 
         Color color = Theme.of(context).textTheme.caption.color;
         if (fiatProfitPct < 0) {
-          color = widget.order.action == MarketAction.BUY
+          color = widget.order.action == Market.BUY
               ? Colors.green
               : Colors.orangeAccent;
         } else if (fiatProfitPct > 0) {
-          color = widget.order.action == MarketAction.BUY
+          color = widget.order.action == Market.BUY
               ? Colors.orangeAccent
               : Colors.green;
         }
@@ -329,7 +329,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     return Row(
       children: [
         Text(
-          (widget.order.action == MarketAction.SELL ? 'Receive' : 'Send') + ':',
+          (widget.order.action == Market.SELL ? 'Receive' : 'Send') + ':',
           style: Theme.of(context)
               .textTheme
               .caption

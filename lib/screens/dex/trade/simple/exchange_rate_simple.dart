@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/market.dart';
+import 'package:provider/provider.dart';
+import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:provider/provider.dart';
 
 class ExchangeRateSimple extends StatefulWidget {
   @override
@@ -53,7 +55,10 @@ class _ExchangeRateSimpleState extends State<ExchangeRateSimple> {
     if (_constrProvider.matchingOrder == null) {
       _rate = null;
     } else {
-      _rate = _constrProvider.matchingOrder.price.toDouble();
+      final Rational price = _constrProvider.matchingOrder.action == Market.SELL
+          ? _constrProvider.matchingOrder.price
+          : _constrProvider.matchingOrder.price.inverse;
+      _rate = price.toDouble();
     }
   }
 

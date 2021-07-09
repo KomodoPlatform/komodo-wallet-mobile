@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/coins_list_best_item.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
@@ -107,8 +107,8 @@ class _CoinsListBestState extends State<CoinsListBest> {
     }
 
     topOrdersList.sort((a, b) {
-      final String aCoin = a.action == MarketAction.SELL ? a.coin : a.otherCoin;
-      final String bCoin = b.action == MarketAction.SELL ? b.coin : b.otherCoin;
+      final String aCoin = a.action == Market.SELL ? a.coin : a.otherCoin;
+      final String bCoin = b.action == Market.SELL ? b.coin : b.otherCoin;
       final aCexPrice = _cexProvider.getUsdPrice(aCoin);
       final bCexPrice = _cexProvider.getUsdPrice(bCoin);
 
@@ -116,10 +116,10 @@ class _CoinsListBestState extends State<CoinsListBest> {
       if (aCexPrice != 0 && bCexPrice == 0) return -1;
 
       if (b.price.toDouble() * bCexPrice > a.price.toDouble() * aCexPrice) {
-        return a.action == MarketAction.SELL ? 1 : -1;
+        return a.action == Market.SELL ? 1 : -1;
       }
       if (b.price.toDouble() * bCexPrice < a.price.toDouble() * aCexPrice) {
-        return a.action == MarketAction.SELL ? -1 : 1;
+        return a.action == Market.SELL ? -1 : 1;
       }
 
       return aCoin.compareTo(bCoin);
@@ -128,9 +128,8 @@ class _CoinsListBestState extends State<CoinsListBest> {
     final List<Widget> items = [];
     bool switcherDisabled = true;
     for (BestOrder topOrder in topOrdersList) {
-      final String coin = topOrder.action == MarketAction.BUY
-          ? topOrder.otherCoin
-          : topOrder.coin;
+      final String coin =
+          topOrder.action == Market.BUY ? topOrder.otherCoin : topOrder.coin;
 
       final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
       final bool isActive = coinBalance != null;

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:komodo_dex/model/market.dart';
 import 'package:rational/rational.dart';
 
 String getBestOrdersToJson(GetBestOrders data) => json.encode(data.toJson());
@@ -16,7 +17,7 @@ class GetBestOrders {
   String method;
   String coin;
   Rational volume;
-  MarketAction action;
+  Market action;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method,
@@ -26,11 +27,6 @@ class GetBestOrders {
           'numer': volume.numerator.toString(),
           'denom': volume.denominator.toString(),
         },
-        'action': action == MarketAction.BUY ? 'buy' : 'sell',
+        'action': action == Market.BUY ? 'buy' : 'sell',
       };
-}
-
-enum MarketAction {
-  SELL,
-  BUY,
 }

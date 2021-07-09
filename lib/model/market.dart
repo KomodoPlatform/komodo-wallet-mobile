@@ -1,0 +1,4 @@
+enum Market {
+  SELL,
+  BUY,
+}

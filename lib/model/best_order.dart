@@ -1,4 +1,5 @@
 import 'package:komodo_dex/model/get_best_orders.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:rational/rational.dart';
 
@@ -11,7 +12,7 @@ class BestOrders {
     final BestOrders bestOrders = BestOrders(request: json['request']);
     if (json['result'] == null) return bestOrders;
 
-    final MarketAction action = bestOrders.request.action;
+    final Market action = bestOrders.request.action;
 
     json['result'].forEach((String ticker, dynamic items) {
       bestOrders.result ??= {};
@@ -19,7 +20,7 @@ class BestOrders {
       for (dynamic item in items) {
         item['action'] = action;
         item['other_coin'] =
-            action == MarketAction.SELL ? bestOrders.request.coin : ticker;
+            action == Market.SELL ? bestOrders.request.coin : ticker;
         list.add(BestOrder.fromJson(item));
       }
       bestOrders.result[ticker] = list;
@@ -59,5 +60,5 @@ class BestOrder {
   Rational minVolume;
   String coin;
   String otherCoin;
-  MarketAction action;
+  Market action;
 }
