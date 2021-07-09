@@ -79,32 +79,44 @@ class _SellFormState extends State<SellForm> {
         buttonAmt.toStringAsFixed(appConfig.tradeFormPrecision));
     final bool isActive = formattedButtonAmt == _amtCtrl.text;
 
+    final bool disabled = (_constrProvider.maxSellAmt?.toDouble() ?? 0) == 0;
+
     return Expanded(
-      child: GestureDetector(
-        onTap: isActive
-            ? null
-            : () {
-                _constrProvider.sellAmount = buttonAmt;
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-        child: Container(
-          padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+      child: Opacity(
+        opacity: disabled ? 0.5 : 1,
+        child: GestureDetector(
+          onTap: isActive || disabled
+              ? null
+              : () {
+                  _constrProvider.sellAmount = buttonAmt;
+                  FocusScope.of(context).requestFocus(FocusNode());
+                },
           child: Container(
-            alignment: Alignment(0, 0),
-            color: isActive
-                ? Theme.of(context).highlightColor
-                : Theme.of(context).primaryColor,
-            padding: EdgeInsets.fromLTRB(1, 3, 1, 3),
-            child: Text(
-              '${cutTrailingZeros(pct.toString())}%',
-              style: TextStyle(
-                  fontSize: 11,
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      .color
-                      .withAlpha(isActive ? 200 : 180)),
-              maxLines: 1,
+            padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(2),
+                color: disabled
+                    ? Theme.of(context).highlightColor
+                    : isActive
+                        ? Theme.of(context).accentColor.withAlpha(200)
+                        : Theme.of(context).primaryColor,
+              ),
+              alignment: Alignment(0, 0),
+              padding: EdgeInsets.fromLTRB(1, 3, 1, 3),
+              child: Text(
+                '${cutTrailingZeros(pct.toString())}%',
+                style: TextStyle(
+                    fontSize: 11,
+                    color: disabled
+                        ? Theme.of(context).disabledColor
+                        : Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .color
+                            .withAlpha(isActive ? 255 : 180)),
+                maxLines: 1,
+              ),
             ),
           ),
         ),

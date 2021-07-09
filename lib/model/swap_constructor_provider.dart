@@ -229,8 +229,8 @@ class ConstructorProvider extends ChangeNotifier {
       }
     } else {
       _preimage = null;
-      _error = null;
     }
+
     notifyListeners();
   }
 
@@ -310,7 +310,7 @@ class ConstructorProvider extends ChangeNotifier {
           await MM.getMaxTakerVolume(GetMaxTakerVolume(coin: _sellCoin));
 
       if (_maxTakerVolume.toDouble() == 0) {
-        _error = '$_sellCoin balance is not sufficient to trade';
+        _error = '$_sellCoin balance is not sufficient for trade';
       }
     } catch (e) {
       _maxTakerVolume = null;

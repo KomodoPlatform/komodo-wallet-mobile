@@ -15,8 +15,6 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
   Widget build(BuildContext context) {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
 
-    if (_constrProvider.matchingOrder == null) return SizedBox();
-
     return Column(
       children: [
         _buildFeesOrError(),
@@ -27,23 +25,19 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
   }
 
   Widget _buildRate() {
+    if (_constrProvider.matchingOrder == null) return SizedBox();
+
     return Text('rate here');
   }
 
   Widget _buildEvaluation() {
+    if (_constrProvider.matchingOrder == null) return SizedBox();
+
     return Text('evaluation here');
   }
 
   Widget _buildFeesOrError() {
-    if (_constrProvider.error == null) {
-      return Container(
-        padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-        child: BuildDetailedFees(
-          preimage: _constrProvider.preimage,
-          alignCenter: true,
-        ),
-      );
-    } else {
+    if (_constrProvider.error != null) {
       return Container(
         padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
         child: Text(
@@ -54,6 +48,16 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
           textAlign: TextAlign.center,
         ),
       );
+    } else if (_constrProvider.matchingOrder != null) {
+      return Container(
+        padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
+        child: BuildDetailedFees(
+          preimage: _constrProvider.preimage,
+          alignCenter: true,
+        ),
+      );
+    } else {
+      return SizedBox();
     }
   }
 }
