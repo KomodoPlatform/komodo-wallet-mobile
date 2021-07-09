@@ -37,6 +37,7 @@ class BestOrder {
   BestOrder({
     this.price,
     this.maxVolume,
+    this.minVolume,
     this.coin,
     this.otherCoin,
     this.action,
@@ -46,6 +47,7 @@ class BestOrder {
     return BestOrder(
       price: fract2rat(json['price_fraction']),
       maxVolume: fract2rat(json['max_volume_fraction']),
+      minVolume: fract2rat(json['min_volume_fraction']),
       coin: json['coin'],
       otherCoin: json['other_coin'],
       action: json['action'],
@@ -54,6 +56,7 @@ class BestOrder {
 
   Rational price;
   Rational maxVolume;
+  Rational minVolume;
   String coin;
   String otherCoin;
   MarketAction action;

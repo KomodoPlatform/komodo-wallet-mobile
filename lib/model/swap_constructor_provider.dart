@@ -63,13 +63,13 @@ class ConstructorProvider extends ChangeNotifier {
       // if > than balance
       if (value > maxSellAmt) value = maxSellAmt;
 
-      // if > than order max volume
       if (_matchingOrder != null) {
         final Rational price = _matchingOrder.action == MarketAction.SELL
             ? _matchingOrder.price
             : _matchingOrder.price.inverse;
 
         final Rational maxOrderAmt = _matchingOrder.maxVolume / price;
+        // if > than order max volume
         if (value > maxOrderAmt) value = maxOrderAmt;
 
         _buyAmount = value * price;
@@ -222,12 +222,10 @@ class ConstructorProvider extends ChangeNotifier {
               volume: _buyAmount,
               price: _sellAmount / _buyAmount));
 
-      if (preimage.error == null) {
+      if (_validatePreimage(preimage)) {
         _preimage = preimage;
-        _error = null;
       } else {
         _preimage = null;
-        _error = _getHumanPreimageError(preimage.error);
       }
     } else {
       _preimage = null;
@@ -236,9 +234,51 @@ class ConstructorProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _validatePreimage(TradePreimage preimage) {
+    bool isValid = true;
+
+    if (preimage.error != null) {
+      isValid = false;
+      _error = _getHumanPreimageError(preimage.error);
+    } else {
+      // check active coins
+      for (CoinFee coinFee in preimage.totalFees) {
+        final CoinBalance coinBalance =
+            coinsBloc.getBalanceByAbbr(coinFee.coin);
+        if (coinBalance == null) {
+          isValid = false;
+          _error = '${coinFee.coin} is not active';
+          break;
+        }
+      }
+
+      // if < than order min volume
+      final Rational minOrderVolume = _matchingOrder.minVolume;
+      if (minOrderVolume != null && minOrderVolume > _buyAmount) {
+        isValid = false;
+        final Rational price = _matchingOrder.action == MarketAction.SELL
+            ? _matchingOrder.price
+            : _matchingOrder.price.inverse;
+        final Rational minSellVolume = minOrderVolume / price;
+        _error = 'Min order volume is'
+            ' ${minSellVolume.toStringAsFixed(appConfig.tradeFormPrecision)}'
+            ' ${_matchingOrder.otherCoin}'
+            '\n(${minOrderVolume.toStringAsFixed(appConfig.tradeFormPrecision)}'
+            ' ${_matchingOrder.coin})';
+      }
+    }
+
+    if (isValid) _error = null;
+    return isValid;
+  }
+
   String _getHumanPreimageError(RpcError error) {
     String str;
     switch (error.type) {
+      case RpcErrorType.NotSufficientBaseCoinBalance:
+        str = '${error.data['coin']} balance is not sufficient'
+            ' to pay fees';
+        break;
       case RpcErrorType.NotSufficientBalance:
         str = '${error.data['coin']} balance is not sufficient for trade. '
             'Min required balance is '
@@ -270,7 +310,7 @@ class ConstructorProvider extends ChangeNotifier {
           await MM.getMaxTakerVolume(GetMaxTakerVolume(coin: _sellCoin));
 
       if (_maxTakerVolume.toDouble() == 0) {
-        _error = 'Not enough balance to trade';
+        _error = '$_sellCoin balance is not sufficient to trade';
       }
     } catch (e) {
       _maxTakerVolume = null;
