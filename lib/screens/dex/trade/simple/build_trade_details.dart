@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/build_detailed_fees.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/exchange_rate_simple.dart';
 import 'package:provider/provider.dart';
 
 class BuildTradeDetails extends StatefulWidget {
@@ -27,7 +28,7 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
   Widget _buildRate() {
     if (_constrProvider.matchingOrder == null) return SizedBox();
 
-    return Text('rate here');
+    return ExchangeRateSimple();
   }
 
   Widget _buildEvaluation() {
