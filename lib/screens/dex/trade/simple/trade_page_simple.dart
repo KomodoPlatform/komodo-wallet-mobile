@@ -1,8 +1,8 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/market.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/build_trade_button_simple.dart';
 import 'package:provider/provider.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/build_swap_button.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/build_trade_details.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/buy_form.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/coins_list.dart';
@@ -12,12 +12,12 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 
-class SwapConstructor extends StatefulWidget {
+class TradePageSimple extends StatefulWidget {
   @override
-  _SwapConstructorState createState() => _SwapConstructorState();
+  _TradePageSimpleState createState() => _TradePageSimpleState();
 }
 
-class _SwapConstructorState extends State<SwapConstructor> {
+class _TradePageSimpleState extends State<TradePageSimple> {
   OrderBookProvider _obProvider;
   ConstructorProvider _constrProvider;
 
@@ -57,7 +57,7 @@ class _SwapConstructorState extends State<SwapConstructor> {
             ),
           ),
           BuildTradeDetails(),
-          BuildSwapButton(),
+          BuildTradeButtonSimple(),
         ],
       ),
     );
