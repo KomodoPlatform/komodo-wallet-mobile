@@ -221,6 +221,19 @@ class ConstructorProvider extends ChangeNotifier {
     }
   }
 
+  void reset() {
+    _sellCoin = null;
+    _buyCoin = null;
+    _sellAmount = null;
+    _buyAmount = null;
+    _matchingOrder = null;
+    _maxTakerVolume = null;
+    _preimage = null;
+    _error = null;
+
+    notifyListeners();
+  }
+
   Future<void> _updatePreimage() async {
     if (haveAllData) {
       final TradePreimage preimage = await MM.getTradePreimage2(

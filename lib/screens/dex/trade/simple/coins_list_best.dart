@@ -25,7 +25,6 @@ class _CoinsListBestState extends State<CoinsListBest> {
   CexProvider _cexProvider;
   int _timer;
   bool _showAll = false;
-  bool _shouldLoosFocus = true;
 
   @override
   void initState() {
@@ -44,11 +43,6 @@ class _CoinsListBestState extends State<CoinsListBest> {
         future: _constrProvider.getBestOrders(widget.type),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return _buildProgressIndicator();
-
-          if (_shouldLoosFocus) {
-            _shouldLoosFocus = false;
-            FocusScope.of(context).requestFocus(FocusNode());
-          }
 
           final BestOrders bestOrders = snapshot.data;
           if (bestOrders.error != null) {

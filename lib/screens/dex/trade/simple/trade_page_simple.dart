@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/market.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/build_reset_button_simple.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/build_trade_button_simple.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/build_trade_details.dart';
@@ -58,6 +59,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
           ),
           BuildTradeDetails(),
           BuildTradeButtonSimple(),
+          BuildResetButtonSimple(),
         ],
       ),
     );
