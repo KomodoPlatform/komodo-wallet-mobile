@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/confirm/swap_confirmation_page.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/swap_confirmation_page_simple.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 
@@ -42,7 +42,7 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
       Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => SwapConfirmationPage()));
+              builder: (BuildContext context) => SwapConfirmationPageSimple()));
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),

@@ -1,8 +1,12 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/buy_response.dart';
+import 'package:komodo_dex/model/get_buy.dart';
 import 'package:komodo_dex/model/get_trade_preimage_2.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/model/rpc_error.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/confirm/protection_control.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -218,6 +222,41 @@ class ConstructorProvider extends ChangeNotifier {
     } else {
       buyCoin = order.coin;
       buyAmount = order.price * _sellAmount;
+    }
+  }
+
+  Future<void> makeSwap({
+    ProtectionSettings protectionSettings,
+    BuyOrderType buyOrderType,
+    Function(dynamic) onSuccess,
+    Function(dynamic) onError,
+  }) async {
+    final Rational price = _matchingOrder.price;
+    final Rational volume = _buyAmount;
+
+    final dynamic re = await MM.postBuy(
+      mmSe.client,
+      GetBuySell(
+        base: _buyCoin,
+        rel: _sellCoin,
+        orderType: buyOrderType,
+        baseNota: protectionSettings.requiresNotarization,
+        baseConfs: protectionSettings.requiredConfirmations,
+        volume: {
+          'numer': volume.numerator.toString(),
+          'denom': volume.denominator.toString(),
+        },
+        price: {
+          'numer': price.numerator.toString(),
+          'denom': price.denominator.toString(),
+        },
+      ),
+    );
+
+    if (re is BuyResponse) {
+      onSuccess(re);
+    } else {
+      onError(re);
     }
   }
 

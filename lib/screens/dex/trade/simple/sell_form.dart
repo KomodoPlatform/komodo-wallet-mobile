@@ -135,6 +135,7 @@ class _SellFormState extends State<SellForm> {
         ],
         decoration: InputDecoration(
           isDense: true,
+          contentPadding: EdgeInsets.fromLTRB(12, 16, 0, 16),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide(

@@ -66,6 +66,7 @@ class _BuyFormState extends State<BuyForm> {
         ],
         decoration: InputDecoration(
           isDense: true,
+          contentPadding: EdgeInsets.fromLTRB(12, 16, 0, 16),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide(
