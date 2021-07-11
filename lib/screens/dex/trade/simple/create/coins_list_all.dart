@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/market.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/empty_list_message.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/create/empty_list_message.dart';
 import 'package:provider/provider.dart';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
