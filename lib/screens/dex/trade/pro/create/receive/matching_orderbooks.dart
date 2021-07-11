@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_orderbook_item.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +61,8 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
             ),
           ),
           ...orderbooksDepth
+              .where((obDepth) =>
+                  coinsBloc.getBalanceByAbbr(obDepth.pair.rel) != null)
               .where((obDepth) => obDepth.pair.rel
                   .toLowerCase()
                   .startsWith(searchTextController.text.toLowerCase()))
