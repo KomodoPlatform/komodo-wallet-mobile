@@ -485,6 +485,7 @@ String formatPrice(dynamic value, [int digits = 6, int fraction = 2]) {
   if (value == null) return null;
 
   if (value is String) value = double.parse(value);
+  if (value is Decimal) value = double.parse(deci2s(value));
   final String rounded = value.toStringAsFixed(fraction);
   if (rounded.length >= digits + 1) {
     return rounded;

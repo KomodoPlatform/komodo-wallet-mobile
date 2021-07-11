@@ -3,6 +3,8 @@ import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/empty_list_message.dart';
+import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:provider/provider.dart';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -73,11 +75,17 @@ class _CoinsListAllState extends State<CoinsListAll> {
                     item.coin.abbr,
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
-                  Expanded(child: SizedBox()),
-                  Text(
-                    item.matchingCoins.toString(),
-                    style: Theme.of(context).textTheme.caption,
-                  ),
+                  SizedBox(width: 6),
+                  if (widget.type == Market.SELL)
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment(1, 0),
+                        child: AutoScrollText(
+                          text: item.balance,
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                      ),
+                    ),
                 ],
               )),
         ),
@@ -140,6 +148,12 @@ class _CoinsListAllState extends State<CoinsListAll> {
 
 class ListAllItem {
   ListAllItem({this.coin, this.matchingCoins});
+
+  String get balance {
+    final Decimal coinBalance =
+        coinsBloc.getBalanceByAbbr(coin.abbr)?.balance?.balance ?? deci(0);
+    return cutTrailingZeros(formatPrice(coinBalance));
+  }
 
   Coin coin;
   int matchingCoins;
