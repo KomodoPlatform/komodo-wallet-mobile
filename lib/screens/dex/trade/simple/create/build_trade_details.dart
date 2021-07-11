@@ -31,14 +31,15 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
 
     return Container(
         padding: EdgeInsets.fromLTRB(12, 0, 12, 8),
-        child: ExchangeRateSimple());
+        child: ExchangeRateSimple(alignCenter: true));
   }
 
   Widget _buildEvaluation() {
     if (_constrProvider.matchingOrder == null) return SizedBox();
 
     return Container(
-        padding: EdgeInsets.fromLTRB(12, 0, 12, 24), child: EvaluationSimple());
+        padding: EdgeInsets.fromLTRB(12, 0, 12, 24),
+        child: EvaluationSimple(alignCenter: true));
   }
 
   Widget _buildFeesOrError() {

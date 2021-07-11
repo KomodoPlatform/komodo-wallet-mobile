@@ -14,6 +14,11 @@ import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class EvaluationSimple extends StatefulWidget {
+  const EvaluationSimple({
+    this.alignCenter = false,
+  });
+
+  final bool alignCenter;
   @override
   _EvaluationSimpleState createState() => _EvaluationSimpleState();
 }
@@ -48,7 +53,9 @@ class _EvaluationSimpleState extends State<EvaluationSimple> {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: widget.alignCenter
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
       children: <Widget>[
         _buildHeader(),
         if (_showDetails) _buildDetails(),
@@ -98,7 +105,9 @@ class _EvaluationSimpleState extends State<EvaluationSimple> {
       child: Container(
         padding: EdgeInsets.fromLTRB(6, 2, 6, 6),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: widget.alignCenter
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.start,
           children: [
             _buildEvaluationSimpleHeader(),
             Icon(
@@ -120,7 +129,9 @@ class _EvaluationSimpleState extends State<EvaluationSimple> {
     return Container(
       padding: EdgeInsets.fromLTRB(6, 4, 6, 0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: widget.alignCenter
+            ? CrossAxisAlignment.center
+            : CrossAxisAlignment.start,
         children: <Widget>[
           _buildCexRate(),
           SizedBox(height: 8),
@@ -134,7 +145,9 @@ class _EvaluationSimpleState extends State<EvaluationSimple> {
   Widget _buildCexRate() {
     return Container(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: widget.alignCenter
+            ? MainAxisAlignment.center
+            : MainAxisAlignment.start,
         children: [
           CexMarker(context, size: Size.fromRadius(6)),
           SizedBox(width: 2),
@@ -215,7 +228,9 @@ class _EvaluationSimpleState extends State<EvaluationSimple> {
 
   Widget _buildEvaluationSimpleSlider() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: widget.alignCenter
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.start,
       children: <Widget>[
         Text(
           '-$_indicatorRange%',

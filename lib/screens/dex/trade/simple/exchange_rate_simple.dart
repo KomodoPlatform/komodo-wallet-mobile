@@ -6,6 +6,12 @@ import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class ExchangeRateSimple extends StatefulWidget {
+  const ExchangeRateSimple({
+    this.alignCenter = false,
+  });
+
+  final bool alignCenter;
+
   @override
   _ExchangeRateSimpleState createState() => _ExchangeRateSimpleState();
 }
@@ -28,7 +34,9 @@ class _ExchangeRateSimpleState extends State<ExchangeRateSimple> {
         child: Opacity(
             opacity: 0.2,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: widget.alignCenter
+                  ? MainAxisAlignment.center
+                  : MainAxisAlignment.start,
               children: [
                 Text(
                   'Exchange rate:',
@@ -40,7 +48,9 @@ class _ExchangeRateSimpleState extends State<ExchangeRateSimple> {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: widget.alignCenter
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
       children: <Widget>[
         _buildHeader(),
         if (_showDetails) _buildDetails(),
@@ -68,7 +78,9 @@ class _ExchangeRateSimpleState extends State<ExchangeRateSimple> {
       child: Container(
         padding: EdgeInsets.fromLTRB(6, 2, 6, 6),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: widget.alignCenter
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.start,
           children: [
             _buildRateHeader(),
             Icon(
