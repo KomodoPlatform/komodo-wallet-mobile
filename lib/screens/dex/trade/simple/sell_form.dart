@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
@@ -79,7 +80,13 @@ class _SellFormState extends State<SellForm> {
         buttonAmt.toStringAsFixed(appConfig.tradeFormPrecision));
     final bool isActive = formattedButtonAmt == _amtCtrl.text;
 
-    final bool disabled = (_constrProvider.maxSellAmt?.toDouble() ?? 0) == 0;
+    bool disabled = false;
+    if ((_constrProvider.maxSellAmt?.toDouble() ?? 0) == 0) disabled = true;
+
+    final BestOrder order = _constrProvider.matchingOrder;
+    if (order != null && buttonAmt > order.maxVolume * order.price) {
+      disabled = true;
+    }
 
     return Expanded(
       child: Opacity(
