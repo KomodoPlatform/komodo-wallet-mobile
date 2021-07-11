@@ -1,8 +1,12 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/coins_list_best_item.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/empty_list_message.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -12,9 +16,11 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 
 class CoinsListBest extends StatefulWidget {
-  const CoinsListBest({this.type});
+  const CoinsListBest({this.type, this.searchTerm, this.known});
 
   final Market type;
+  final String searchTerm;
+  final LinkedHashMap<String, Coin> known;
 
   @override
   _CoinsListBestState createState() => _CoinsListBestState();
@@ -98,7 +104,7 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
   List<Widget> _buildItems(BestOrders bestOrders) {
     final Iterable tickers = bestOrders?.result?.keys;
-    if (tickers == null) return [_buildEmptyMessage()];
+    if (tickers == null) return [EmptyListMessage()];
 
     final List<BestOrder> topOrdersList = [];
     for (String ticker in tickers) {
@@ -127,10 +133,20 @@ class _CoinsListBestState extends State<CoinsListBest> {
     final List<Widget> items = [];
     bool switcherDisabled = true;
     for (BestOrder topOrder in topOrdersList) {
-      final String coin =
+      final String abbr =
           topOrder.action == Market.BUY ? topOrder.otherCoin : topOrder.coin;
 
-      final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
+      final Coin coin = widget.known[abbr];
+      final String term = widget.searchTerm.toLowerCase().trim();
+      if (term.isNotEmpty) {
+        bool matched = false;
+        if (coin.abbr.toLowerCase().contains(term)) matched = true;
+        if (coin.name.toLowerCase().contains(term)) matched = true;
+
+        if (!matched) continue;
+      }
+
+      final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(abbr);
       final bool isActive = coinBalance != null;
       final bool hasBalance =
           (coinBalance?.balance?.balance ?? deci(0)).toDouble() > 0;
@@ -140,23 +156,15 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
       if (_showAll || isInShortList) {
         final String key =
-            '${widget.type == Market.SELL ? 'buy' : 'sell'}-$coin-top-order';
+            '${widget.type == Market.SELL ? 'buy' : 'sell'}-$abbr-top-order';
         items.add(CoinsListBestItem(topOrder, key: Key(key)));
       }
     }
 
+    if (items.isEmpty) items.add(EmptyListMessage());
     items.add(_buildShowAllSwitcher(switcherDisabled));
-    return items;
-  }
 
-  Widget _buildEmptyMessage() {
-    return ConstrainedBox(
-        constraints: BoxConstraints(minHeight: 150),
-        child: Center(
-            child: Text(
-          'Nothing found',
-          style: Theme.of(context).textTheme.caption,
-        )));
+    return items;
   }
 
   Widget _buildShowAllSwitcher(bool disabled) {

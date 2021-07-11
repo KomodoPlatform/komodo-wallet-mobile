@@ -11,10 +11,11 @@ import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 
 class CoinsList extends StatefulWidget {
-  const CoinsList({this.type, this.known});
+  const CoinsList({this.type, this.known, this.searchTerm});
 
   final Market type;
   final LinkedHashMap<String, Coin> known;
+  final String searchTerm;
 
   @override
   _CoinsListState createState() => _CoinsListState();
@@ -36,11 +37,15 @@ class _CoinsListState extends State<CoinsList> {
         : _constrProvider.sellAmount;
 
     if (_counterCoin == null) {
-      return CoinsListAll(type: widget.type);
+      return CoinsListAll(type: widget.type, searchTerm: widget.searchTerm);
     } else if (_counterAmount == null || _counterAmount.toDouble() == 0) {
       return _buildAmtMessage();
     } else {
-      return CoinsListBest(type: widget.type);
+      return CoinsListBest(
+        type: widget.type,
+        searchTerm: widget.searchTerm,
+        known: widget.known,
+      );
     }
   }
 

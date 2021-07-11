@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/market.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/empty_list_message.dart';
 import 'package:provider/provider.dart';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -11,9 +12,10 @@ import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 
 class CoinsListAll extends StatefulWidget {
-  const CoinsListAll({this.type});
+  const CoinsListAll({this.type, this.searchTerm});
 
   final Market type;
+  final String searchTerm;
 
   @override
   _CoinsListAllState createState() => _CoinsListAllState();
@@ -29,6 +31,10 @@ class _CoinsListAllState extends State<CoinsListAll> {
     _obProvider ??= Provider.of<OrderBookProvider>(context);
 
     final List<ListAllItem> items = _getItems();
+
+    if (items.isEmpty) {
+      return EmptyListMessage();
+    }
 
     return Container(
       padding: EdgeInsets.only(left: 12),
@@ -104,6 +110,16 @@ class _CoinsListAllState extends State<CoinsListAll> {
     for (CoinBalance coinBalance in active) {
       final int matchingCoins = _getMatchingCoinsNumber(coinBalance.coin);
       if (matchingCoins == 0) continue;
+
+      final String term = widget.searchTerm.trim().toLowerCase();
+      if (term.isNotEmpty) {
+        final Coin coin = coinBalance.coin;
+        bool matched = false;
+        if (coin.abbr.toLowerCase().contains(term)) matched = true;
+        if (coin.name.toLowerCase().contains(term)) matched = true;
+
+        if (!matched) continue;
+      }
 
       available.add(ListAllItem(
         coin: coinBalance.coin,

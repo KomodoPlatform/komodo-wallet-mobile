@@ -19,6 +19,12 @@ class TradePageSimple extends StatefulWidget {
 }
 
 class _TradePageSimpleState extends State<TradePageSimple> {
+  final _sellSearchCtrl = TextEditingController();
+  final _buySearchCtrl = TextEditingController();
+  final _sellFocusNode = FocusNode();
+  final _buyFocusNode = FocusNode();
+  String _sellSearchTerm = '';
+  String _buySearchTerm = '';
   OrderBookProvider _obProvider;
   ConstructorProvider _constrProvider;
 
@@ -72,9 +78,14 @@ class _TradePageSimpleState extends State<TradePageSimple> {
       children: [
         Container(
           padding: EdgeInsets.only(left: 12),
-          child: Text(
-            'Sell:',
-            style: Theme.of(context).textTheme.subtitle2,
+          child: Row(
+            children: [
+              Text(
+                'Sell:',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+              _buildSearchField(Market.SELL),
+            ],
           ),
         ),
         SizedBox(height: 6),
@@ -84,7 +95,11 @@ class _TradePageSimpleState extends State<TradePageSimple> {
             overflow: Overflow.visible,
             children: [
               _constrProvider.sellCoin == null
-                  ? CoinsList(type: Market.SELL, known: known)
+                  ? CoinsList(
+                      type: Market.SELL,
+                      known: known,
+                      searchTerm: _sellSearchTerm,
+                    )
                   : SellForm(),
               Positioned(
                 child: Container(
@@ -108,9 +123,14 @@ class _TradePageSimpleState extends State<TradePageSimple> {
       children: [
         Container(
           padding: EdgeInsets.only(left: 12),
-          child: Text(
-            'Buy:',
-            style: Theme.of(context).textTheme.subtitle2,
+          child: Row(
+            children: [
+              Text(
+                'Buy:',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+              _buildSearchField(Market.BUY),
+            ],
           ),
         ),
         SizedBox(height: 6),
@@ -120,7 +140,11 @@ class _TradePageSimpleState extends State<TradePageSimple> {
               overflow: Overflow.visible,
               children: [
                 _constrProvider.buyCoin == null
-                    ? CoinsList(type: Market.BUY, known: known)
+                    ? CoinsList(
+                        type: Market.BUY,
+                        known: known,
+                        searchTerm: _buySearchTerm,
+                      )
                     : BuyForm(),
                 Positioned(
                   child: Container(
@@ -175,5 +199,86 @@ class _TradePageSimpleState extends State<TradePageSimple> {
     }
 
     return true;
+  }
+
+  Widget _buildSearchField(Market type) {
+    TextEditingController controller;
+    FocusNode focusNode;
+    String currentTerm;
+    if (type == Market.SELL) {
+      if (_constrProvider.sellCoin != null) return SizedBox();
+
+      controller = _sellSearchCtrl;
+      focusNode = _sellFocusNode;
+      currentTerm = _sellSearchTerm;
+    } else {
+      if (_constrProvider.buyCoin != null) return SizedBox();
+
+      controller = _buySearchCtrl;
+      focusNode = _buyFocusNode;
+      currentTerm = _buySearchTerm;
+    }
+
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+        child: Stack(
+          children: [
+            TextField(
+              controller: controller,
+              focusNode: focusNode,
+              style: TextStyle(color: Theme.of(context).accentColor),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                isDense: true,
+                contentPadding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+              ),
+              onChanged: (String text) {
+                setState(() {
+                  if (type == Market.SELL) {
+                    _sellSearchTerm = text;
+                  } else {
+                    _buySearchTerm = text;
+                  }
+                });
+              },
+            ),
+            Positioned(
+                right: 6,
+                top: 1,
+                child: currentTerm == null || currentTerm.isEmpty
+                    ? GestureDetector(
+                        onTap: () => focusNode.requestFocus(),
+                        child: Icon(
+                          Icons.search,
+                          size: 16,
+                          color: Theme.of(context).hintColor.withAlpha(150),
+                        ),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          controller.text = '';
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          setState(() {
+                            if (type == Market.SELL) {
+                              _sellSearchTerm = '';
+                            } else {
+                              _buySearchTerm = '';
+                            }
+                          });
+                        },
+                        child: Icon(
+                          Icons.clear,
+                          size: 16,
+                        ),
+                      ))
+          ],
+        ),
+      ),
+    );
   }
 }
