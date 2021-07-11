@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -230,7 +231,7 @@ class _SellFormState extends State<SellForm> {
         Row(
           children: [
             Text(
-              'Send:',
+              AppLocalizations.of(context).simpleTradeSend + ':',
               style: Theme.of(context)
                   .textTheme
                   .caption

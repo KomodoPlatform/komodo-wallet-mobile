@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/coins_list_all.dart';
@@ -54,8 +55,8 @@ class _CoinsListState extends State<CoinsList> {
         ? _constrProvider.buyCoin
         : _constrProvider.sellCoin;
     final String message = widget.type == Market.SELL
-        ? 'Plsease enter $coin amount to buy'
-        : 'Plsease enter $coin amount to sell';
+        ? AppLocalizations.of(context).simpleTradeBuyHint(coin)
+        : AppLocalizations.of(context).simpleTradeSellHint(coin);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,

@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/market.dart';
@@ -174,7 +175,10 @@ class _CoinsListBestState extends State<CoinsListBest> {
           opacity: disabled ? 0.3 : 1,
           child: Container(
             padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-            child: Text(_showAll ? 'Show less' : 'Show more',
+            child: Text(
+                _showAll
+                    ? AppLocalizations.of(context).simpleTradeShowLess
+                    : AppLocalizations.of(context).simpleTradeShowMore,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyText1),
           ),

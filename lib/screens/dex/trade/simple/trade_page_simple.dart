@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/build_reset_button_simple.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_button_simple.dart';
@@ -81,7 +82,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
           child: Row(
             children: [
               Text(
-                'Sell:',
+                AppLocalizations.of(context).simpleTradeSellTitle + ':',
                 style: Theme.of(context).textTheme.subtitle2,
               ),
               _buildSearchField(Market.SELL),
@@ -126,7 +127,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
           child: Row(
             children: [
               Text(
-                'Buy:',
+                AppLocalizations.of(context).simpleTradeBuyTitle + ':',
                 style: Theme.of(context).textTheme.subtitle2,
               ),
               _buildSearchField(Market.BUY),

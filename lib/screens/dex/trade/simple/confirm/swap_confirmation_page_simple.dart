@@ -121,7 +121,7 @@ class _SwapConfirmationPageSimpleState
     try {
       battery = await MMService.nativeC.invokeMethod('battery');
     } catch (e) {
-      Log('swap_confirmaiton_page]', '_checkBattery: $e');
+      Log('swap_confirmaiton_page_simple]', '_checkBattery: $e');
     }
 
     setState(() {
@@ -569,10 +569,10 @@ class _SwapConfirmationPageSimpleState
 
   void _catchErrorSwap(BuildContext context, ErrorString error) {
     String timeSecondeLeft = error.error;
-    Log('swap_confirmation_page', timeSecondeLeft);
+    Log('swap_confirmation_page_simple', timeSecondeLeft);
     timeSecondeLeft = timeSecondeLeft.substring(
         timeSecondeLeft.lastIndexOf(' '), timeSecondeLeft.length);
-    Log('swap_confirmation_page', timeSecondeLeft);
+    Log('swap_confirmation_page_simple', timeSecondeLeft);
     String errorDisplay =
         error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
     if (error.error.contains('is too low, required')) {

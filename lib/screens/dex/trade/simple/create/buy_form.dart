@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
@@ -154,7 +155,7 @@ class _BuyFormState extends State<BuyForm> {
         Row(
           children: [
             Text(
-              'Recieve:',
+              AppLocalizations.of(context).simpleTradeRecieve + ':',
               style: Theme.of(context)
                   .textTheme
                   .caption

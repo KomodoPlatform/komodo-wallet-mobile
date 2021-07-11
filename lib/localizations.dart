@@ -1458,6 +1458,39 @@ class AppLocalizations {
       Intl.message(' but you are on the ', name: 'wrongCoinSpan2');
   String get wrongCoinSpan3 =>
       Intl.message(' withdraw screen', name: 'wrongCoinSpan3');
+
+  // --- Simple trading view
+  String get simpleTradeSellTitle =>
+      Intl.message('Sell', name: 'simpleTradeSellTitle');
+  String get simpleTradeBuyTitle =>
+      Intl.message('Buy', name: 'simpleTradeBuyTitle');
+  String get simpleTradeRecieve =>
+      Intl.message('Receive', name: 'simpleTradeRecieve');
+  String get simpleTradeSend => Intl.message('Send', name: 'simpleTradeSend');
+  String get simpleTradeClose =>
+      Intl.message('Close', name: 'simpleTradeClose');
+  String get simpleTradeActivate =>
+      Intl.message('Activate', name: 'simpleTradeActivate');
+  String simpleTradeMaxActiveCoins(int maxCoins) => Intl.message(
+      'Max active coins number is $maxCoins. Please deactivate some.',
+      name: 'simpleTradeMaxActiveCoins',
+      args: <Object>[maxCoins]);
+  String simpleTradeUnableActivate(String coin) =>
+      Intl.message('Unable to activate $coin',
+          name: 'simpleTradeUnableActivate', args: <Object>[coin]);
+  String simpleTradeNotActive(String coin) =>
+      Intl.message('$coin is not active!',
+          name: 'simpleTradeNotActive', args: <Object>[coin]);
+  String simpleTradeBuyHint(String coin) =>
+      Intl.message('Plsease enter $coin amount to buy',
+          name: 'simpleTradeBuyHint', args: <Object>[coin]);
+  String simpleTradeSellHint(String coin) =>
+      Intl.message('Plsease enter $coin amount to sell',
+          name: 'simpleTradeSellHint', args: <Object>[coin]);
+  String get simpleTradeShowLess =>
+      Intl.message('Show less', name: 'simpleTradeShowLess');
+  String get simpleTradeShowMore =>
+      Intl.message('Show more', name: 'simpleTradeShowMore');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 
 class EmptyListMessage extends StatelessWidget {
   @override
@@ -8,7 +9,7 @@ class EmptyListMessage extends StatelessWidget {
       padding: EdgeInsets.only(right: 12),
       child: Center(
         child: Text(
-          'Nothing found',
+          AppLocalizations.of(context).nothingFound,
           style: Theme.of(context).textTheme.caption,
         ),
       ),

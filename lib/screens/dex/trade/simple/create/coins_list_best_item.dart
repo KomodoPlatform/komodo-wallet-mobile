@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -135,7 +136,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
               child: _buildButton(
                 onPressed: () => _toggle(),
                 child: Text(
-                  'Close',
+                  AppLocalizations.of(context).simpleTradeClose,
                   style: Theme.of(context)
                       .textTheme
                       .caption
@@ -159,7 +160,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
                           color: Theme.of(context).primaryColor,
                         ),
                   Text(
-                    'Activate',
+                    AppLocalizations.of(context).simpleTradeActivate,
                     style: Theme.of(context).textTheme.caption.copyWith(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold),
@@ -208,12 +209,13 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
         _toggle();
         await _constrProvider.selectOrder(widget.order);
       } else {
-        setState(() => _error = 'Unable to activate $_coin');
+        setState(() => _error =
+            AppLocalizations.of(context).simpleTradeUnableActivate(_coin));
       }
     } else {
       setState(() {
         _error =
-            'Max active coins number is $maxCoins. Please deactivate some.';
+            AppLocalizations.of(context).simpleTradeMaxActiveCoins(maxCoins);
       });
     }
   }
@@ -225,7 +227,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
                 color: Theme.of(context).errorColor,
               ));
     } else {
-      return Text('$_coin is not active!',
+      return Text(AppLocalizations.of(context).simpleTradeNotActive(_coin),
           style: Theme.of(context).textTheme.caption.copyWith(
                 color: Theme.of(context).accentColor,
               ));
@@ -329,7 +331,10 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     return Row(
       children: [
         Text(
-          (widget.order.action == Market.SELL ? 'Receive' : 'Send') + ':',
+          (widget.order.action == Market.SELL
+                  ? AppLocalizations.of(context).simpleTradeRecieve
+                  : AppLocalizations.of(context).simpleTradeSend) +
+              ':',
           style: Theme.of(context)
               .textTheme
               .caption
