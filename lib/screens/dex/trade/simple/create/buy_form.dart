@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rational/rational.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
@@ -46,11 +48,52 @@ class _BuyFormState extends State<BuyForm> {
       padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildCoin(),
           SizedBox(height: 6),
           _buildAmt(),
+          _buildMax(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMax() {
+    final BestOrder order = _constrProvider.matchingOrder;
+    if (order == null) return SizedBox();
+
+    final Rational maxAmount = order.maxVolume;
+    final Color color = maxAmount == _constrProvider.buyAmount
+        ? Theme.of(context).accentColor
+        : Theme.of(context).textTheme.bodyText1.color;
+
+    return Container(
+      padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
+      alignment: Alignment(-1, 0),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: 24),
+        child: Row(
+          children: [
+            Text('Max:',
+                style: Theme.of(context).textTheme.caption.copyWith(
+                      color: Theme.of(context).textTheme.bodyText1.color,
+                    )),
+            SizedBox(width: 4),
+            Text('${maxAmount.toStringAsFixed(appConfig.tradeFormPrecision)}',
+                style:
+                    Theme.of(context).textTheme.caption.copyWith(color: color)),
+            SizedBox(width: 4),
+            Flexible(
+              child: AutoScrollText(
+                text: '${order.coin}',
+                style: Theme.of(context).textTheme.caption.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1.color),
+              ),
+            ),
+            SizedBox(width: 4),
+          ],
+        ),
       ),
     );
   }
@@ -186,6 +229,12 @@ class _BuyFormState extends State<BuyForm> {
 
     if (currentFormatted != newFormatted) {
       _amtCtrl.setTextAndPosition(newFormatted);
+
+      Future<dynamic>.delayed(Duration.zero).then((dynamic _) {
+        if (!_focusNode.hasFocus) {
+          _amtCtrl.selection = TextSelection.collapsed(offset: 0);
+        }
+      });
     }
   }
 

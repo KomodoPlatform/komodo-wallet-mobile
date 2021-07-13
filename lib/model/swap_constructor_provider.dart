@@ -27,9 +27,13 @@ class ConstructorProvider extends ChangeNotifier {
   BestOrder _matchingOrder;
   TradePreimage _preimage;
   Rational _maxTakerVolume;
+  String _warning;
   String _error;
+  bool _inProgress = false;
 
   String get error => _error;
+  String get warning => _warning;
+  bool get inProgress => _inProgress;
 
   TradePreimage get preimage => _preimage;
   set preimage(TradePreimage value) {
@@ -55,6 +59,7 @@ class ConstructorProvider extends ChangeNotifier {
       _preimage = null;
       _error = null;
     }
+    _warning = null;
     notifyListeners();
   }
 
@@ -67,6 +72,7 @@ class ConstructorProvider extends ChangeNotifier {
       _preimage = null;
       _error = null;
     }
+    _warning = null;
     notifyListeners();
   }
 
@@ -90,6 +96,7 @@ class ConstructorProvider extends ChangeNotifier {
     }
 
     _sellAmount = value;
+    _warning = null;
     notifyListeners();
 
     _updatePreimage();
@@ -115,6 +122,7 @@ class ConstructorProvider extends ChangeNotifier {
     }
 
     _buyAmount = value;
+    _warning = null;
     notifyListeners();
 
     _updatePreimage();
@@ -218,10 +226,24 @@ class ConstructorProvider extends ChangeNotifier {
     if (order.action == Market.BUY) {
       sellCoin = order.otherCoin;
       await _updateMaxTakerVolume();
+
       sellAmount = order.price * _buyAmount;
+
+      if (_buyAmount == order.maxVolume) {
+        _warning = 'Buy amount was set to '
+            '${_buyAmount.toStringAsFixed(appConfig.tradeFormPrecision)} '
+            '$_buyCoin, which is the max volume for selected order';
+      }
     } else {
       buyCoin = order.coin;
+
       buyAmount = order.price * _sellAmount;
+
+      if (_sellAmount == order.maxVolume / order.price) {
+        _warning = 'Sell amount was set to '
+            '${_sellAmount.toStringAsFixed(appConfig.tradeFormPrecision)} '
+            '$_sellCoin, which is the max volume for selected order';
+      }
     }
   }
 
@@ -271,6 +293,7 @@ class ConstructorProvider extends ChangeNotifier {
     _maxTakerVolume = null;
     _preimage = null;
     _error = null;
+    _warning = null;
 
     notifyListeners();
   }

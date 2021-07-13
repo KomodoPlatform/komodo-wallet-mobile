@@ -19,10 +19,31 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
 
     return Column(
       children: [
+        _buildWarning(),
         _buildFeesOrError(),
         _buildRate(),
         _buildEvaluation(),
       ],
+    );
+  }
+
+  Widget _buildWarning() {
+    if (_constrProvider.error != null) return SizedBox();
+    if (_constrProvider.warning == null) return SizedBox();
+    if (_constrProvider.inProgress) return SizedBox();
+
+    return Container(
+      padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(
+            child: Text(_constrProvider.warning,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.caption),
+          ),
+        ],
+      ),
     );
   }
 

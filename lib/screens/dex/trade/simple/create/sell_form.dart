@@ -265,6 +265,12 @@ class _SellFormState extends State<SellForm> {
 
     if (currentFormatted != newFormatted) {
       _amtCtrl.setTextAndPosition(newFormatted);
+
+      Future<dynamic>.delayed(Duration.zero).then((dynamic _) {
+        if (!_focusNode.hasFocus) {
+          _amtCtrl.selection = TextSelection.collapsed(offset: 0);
+        }
+      });
     }
   }
 
