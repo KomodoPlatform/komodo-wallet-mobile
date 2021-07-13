@@ -187,6 +187,7 @@ flutter:
   - assets/currency-flags/
   - assets/svg/
   - assets/svg_light/
+  - assets/swap_share/
   - assets/coins_init_mm2.json
 
   # The following line ensures that the Material Icons font is
