@@ -34,6 +34,10 @@ class ConstructorProvider extends ChangeNotifier {
   String get error => _error;
   String get warning => _warning;
   bool get inProgress => _inProgress;
+  set inProgress(bool value) {
+    _inProgress = value;
+    notifyListeners();
+  }
 
   TradePreimage get preimage => _preimage;
   set preimage(TradePreimage value) {
@@ -231,7 +235,7 @@ class ConstructorProvider extends ChangeNotifier {
 
       if (_buyAmount == order.maxVolume) {
         _warning = 'Buy amount was set to '
-            '${_buyAmount.toStringAsFixed(appConfig.tradeFormPrecision)} '
+            '${cutTrailingZeros(_buyAmount.toStringAsFixed(appConfig.tradeFormPrecision))} '
             '$_buyCoin, which is the max volume for selected order';
       }
     } else {
@@ -241,7 +245,7 @@ class ConstructorProvider extends ChangeNotifier {
 
       if (_sellAmount == order.maxVolume / order.price) {
         _warning = 'Sell amount was set to '
-            '${_sellAmount.toStringAsFixed(appConfig.tradeFormPrecision)} '
+            '${cutTrailingZeros(_sellAmount.toStringAsFixed(appConfig.tradeFormPrecision))} '
             '$_sellCoin, which is the max volume for selected order';
       }
     }
@@ -300,6 +304,7 @@ class ConstructorProvider extends ChangeNotifier {
 
   Future<void> _updatePreimage() async {
     if (haveAllData) {
+      inProgress = true;
       final TradePreimage preimage = await MM.getTradePreimage2(
           GetTradePreimage2(
               swapMethod: 'buy',
@@ -307,6 +312,7 @@ class ConstructorProvider extends ChangeNotifier {
               rel: _sellCoin,
               volume: _buyAmount,
               price: _sellAmount / _buyAmount));
+      inProgress = false;
 
       if (_validatePreimage(preimage)) {
         _preimage = preimage;

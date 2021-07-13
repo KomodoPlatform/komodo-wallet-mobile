@@ -52,6 +52,7 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
   }
 
   bool _isEnabled() {
+    if (_constrProvider.inProgress) return false;
     if (_constrProvider.error != null) return false;
     if (_constrProvider.preimage == null) return false;
     if (_constrProvider.matchingOrder == null) return false;

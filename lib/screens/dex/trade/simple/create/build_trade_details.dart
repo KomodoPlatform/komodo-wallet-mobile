@@ -40,7 +40,8 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
           Flexible(
             child: Text(_constrProvider.warning,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.caption),
+                style: Theme.of(context).textTheme.caption.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1.color)),
           ),
         ],
       ),

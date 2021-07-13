@@ -50,10 +50,12 @@ class _TradePageSimpleState extends State<TradePageSimple> {
 
   Widget _buildContent(LinkedHashMap<String, Coin> known) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 12),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          _buildProgressBar(),
+          SizedBox(height: 12),
           Flexible(
             flex: _anyLists() ? 1 : 0,
             child: Row(
@@ -280,6 +282,14 @@ class _TradePageSimpleState extends State<TradePageSimple> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildProgressBar() {
+    return SizedBox(
+      height: 1,
+      child:
+          _constrProvider.inProgress ? LinearProgressIndicator() : SizedBox(),
     );
   }
 }

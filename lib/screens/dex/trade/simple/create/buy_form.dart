@@ -80,7 +80,8 @@ class _BuyFormState extends State<BuyForm> {
                       color: Theme.of(context).textTheme.bodyText1.color,
                     )),
             SizedBox(width: 4),
-            Text('${maxAmount.toStringAsFixed(appConfig.tradeFormPrecision)}',
+            Text(
+                '${cutTrailingZeros(maxAmount.toStringAsFixed(appConfig.tradeFormPrecision))}',
                 style:
                     Theme.of(context).textTheme.caption.copyWith(color: color)),
             SizedBox(width: 4),
