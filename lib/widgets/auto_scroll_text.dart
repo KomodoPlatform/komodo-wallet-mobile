@@ -71,6 +71,7 @@ class _AutoScrollTextState extends State<AutoScrollText> {
           curve: Curves.linear);
       await Future<dynamic>.delayed(Duration(milliseconds: 500));
 
+      if (!mounted) break;
       await _scrollController?.animateTo(
           _scrollController.position.minScrollExtent,
           duration: widget.duration,

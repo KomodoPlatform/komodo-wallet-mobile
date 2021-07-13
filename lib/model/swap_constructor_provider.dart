@@ -231,7 +231,9 @@ class ConstructorProvider extends ChangeNotifier {
     Function(dynamic) onSuccess,
     Function(dynamic) onError,
   }) async {
-    final Rational price = _matchingOrder.price;
+    final Rational price = _matchingOrder.action == Market.SELL
+        ? _matchingOrder.price.inverse
+        : _matchingOrder.price;
     final Rational volume = _buyAmount;
 
     final dynamic re = await MM.postBuy(
