@@ -1267,6 +1267,8 @@ class AppLocalizations {
   String get oldLogsDelete => Intl.message('Delete', name: 'oldLogsDelete');
   String get oldLogsUsed => Intl.message('Space used', name: 'oldLogsUsed');
   String get okButton => Intl.message('Ok', name: 'okButton');
+  String get closePreview =>
+      Intl.message('Close preview', name: 'closePreview');
   String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
 
   String get developerTitle =>
