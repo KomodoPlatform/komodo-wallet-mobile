@@ -26,6 +26,7 @@ class CoinsListAll extends StatefulWidget {
 class _CoinsListAllState extends State<CoinsListAll> {
   ConstructorProvider _constrProvider;
   OrderBookProvider _obProvider;
+  int _timer;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +36,16 @@ class _CoinsListAllState extends State<CoinsListAll> {
     final List<ListAllItem> items = _getItems();
 
     if (items.isEmpty) {
-      return EmptyListMessage();
+      final int now = DateTime.now().millisecondsSinceEpoch;
+      setState(() => _timer ??= now);
+      if (now - _timer > 1000) {
+        return EmptyListMessage();
+      } else {
+        return _buildProgress();
+      }
     }
+
+    setState(() => _timer = null);
 
     return Container(
       padding: EdgeInsets.only(left: 12),
@@ -48,6 +57,12 @@ class _CoinsListAllState extends State<CoinsListAll> {
         },
       ),
     );
+  }
+
+  Widget _buildProgress() {
+    return ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: 150),
+        child: Center(child: CircularProgressIndicator()));
   }
 
   Widget _buildCoinItem(ListAllItem item) {
