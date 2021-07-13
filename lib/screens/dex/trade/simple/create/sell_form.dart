@@ -4,6 +4,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:rational/rational.dart';
@@ -85,8 +86,10 @@ class _SellFormState extends State<SellForm> {
     if ((_constrProvider.maxSellAmt?.toDouble() ?? 0) == 0) disabled = true;
 
     final BestOrder order = _constrProvider.matchingOrder;
-    if (order != null && buttonAmt > order.maxVolume * order.price) {
-      disabled = true;
+    if (order != null) {
+      final Rational price =
+          order.action == Market.SELL ? order.price : order.price.inverse;
+      if (buttonAmt > order.maxVolume / price) disabled = true;
     }
 
     return Expanded(
