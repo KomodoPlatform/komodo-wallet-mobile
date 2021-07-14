@@ -193,7 +193,8 @@ class _CoinsListBestState extends State<CoinsListBest> {
     sorted.removeWhere((BestOrder order) {
       final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(order.coin);
       if (coinBalance == null) return false;
-      return coinBalance.balance.address == order.address;
+      return coinBalance.balance.address.toLowerCase() ==
+          order.address.toLowerCase();
     });
     if (widget.type == Market.SELL) {
       sorted.sort((a, b) => a.price.toDouble().compareTo(b.price.toDouble()));
