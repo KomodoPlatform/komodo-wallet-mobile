@@ -226,6 +226,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
       child: Container(
         padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
         child: Stack(
+          overflow: Overflow.visible,
           children: [
             TextField(
               controller: controller,
@@ -251,15 +252,18 @@ class _TradePageSimpleState extends State<TradePageSimple> {
               },
             ),
             Positioned(
-                right: 6,
+                right: 0,
                 top: 1,
                 child: currentTerm == null || currentTerm.isEmpty
                     ? GestureDetector(
                         onTap: () => focusNode.requestFocus(),
-                        child: Icon(
-                          Icons.search,
-                          size: 16,
-                          color: Theme.of(context).hintColor.withAlpha(150),
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(0, 0, 6, 6),
+                          child: Icon(
+                            Icons.search,
+                            size: 16,
+                            color: Theme.of(context).hintColor.withAlpha(150),
+                          ),
                         ),
                       )
                     : GestureDetector(
@@ -274,9 +278,12 @@ class _TradePageSimpleState extends State<TradePageSimple> {
                             }
                           });
                         },
-                        child: Icon(
-                          Icons.clear,
-                          size: 16,
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(0, 0, 6, 6),
+                          child: Icon(
+                            Icons.clear,
+                            size: 16,
+                          ),
                         ),
                       ))
           ],
