@@ -90,9 +90,9 @@ Decimal deci(dynamic dv) {
 
 Rational fract2rat(Map<String, dynamic> fract) {
   try {
-    final rat = Rational.fromInt(
-      int.parse(fract['numer']),
-      int.parse(fract['denom']),
+    final rat = Rational(
+      BigInt.from(double.parse(fract['numer'])),
+      BigInt.from(double.parse(fract['denom'])),
     );
     return rat;
   } catch (e) {

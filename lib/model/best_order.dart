@@ -46,9 +46,11 @@ class BestOrder {
 
   factory BestOrder.fromJson(Map<String, dynamic> json) {
     return BestOrder(
-      price: fract2rat(json['price_fraction']),
-      maxVolume: fract2rat(json['max_volume_fraction']),
-      minVolume: fract2rat(json['min_volume_fraction']),
+      price: fract2rat(json['price_fraction']) ?? Rational.parse(json['price']),
+      maxVolume: fract2rat(json['max_volume_fraction']) ??
+          Rational.parse(json['maxvolume']),
+      minVolume: fract2rat(json['min_volume_fraction']) ??
+          Rational.parse(json['min_volume']),
       coin: json['coin'],
       otherCoin: json['other_coin'],
       action: json['action'],
