@@ -41,7 +41,7 @@ class BestOrder {
     this.minVolume,
     this.coin,
     this.otherCoin,
-    this.isMine,
+    this.address,
     this.action,
   });
 
@@ -54,7 +54,7 @@ class BestOrder {
           Rational.parse(json['min_volume']),
       coin: json['coin'],
       otherCoin: json['other_coin'],
-      isMine: json['is_mine'] ?? false,
+      address: json['address'],
       action: json['action'],
     );
   }
@@ -65,5 +65,6 @@ class BestOrder {
   String coin;
   String otherCoin;
   bool isMine;
+  String address;
   Market action;
 }
