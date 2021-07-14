@@ -189,6 +189,7 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
   BestOrder _getTickerTopOrder(List<BestOrder> tickerOrdersList) {
     final List<BestOrder> sorted = List.from(tickerOrdersList);
+    sorted.removeWhere((BestOrder order) => order.isMine);
     if (widget.type == Market.SELL) {
       sorted.sort((a, b) => a.price.toDouble().compareTo(b.price.toDouble()));
     } else {
