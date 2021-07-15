@@ -278,7 +278,7 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
   }
 
   void _createOrder(Ask bid) {
-    final double maxSellAmt = swapBloc.maxTakerVolume ??
+    final double maxSellAmt = swapBloc.maxTakerVolume?.toDouble() ??
         swapBloc.sellCoinBalance.balance.balance.toDouble();
     final bool isEnoughVolume =
         !(bid.minVolume != null && maxSellAmt < bid.minVolume);
