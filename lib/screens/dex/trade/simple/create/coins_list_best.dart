@@ -191,7 +191,9 @@ class _CoinsListBestState extends State<CoinsListBest> {
   BestOrder _getTickerTopOrder(List<BestOrder> tickerOrdersList) {
     final List<BestOrder> sorted = List.from(tickerOrdersList);
     sorted.removeWhere((BestOrder order) {
-      final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(order.coin);
+      final String coin =
+          order.action == Market.SELL ? order.coin : order.otherCoin;
+      final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
       if (coinBalance == null) return false;
       return coinBalance.balance.address.toLowerCase() ==
           order.address.toLowerCase();
