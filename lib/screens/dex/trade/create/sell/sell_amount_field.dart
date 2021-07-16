@@ -15,7 +15,6 @@ class SellAmountField extends StatefulWidget {
 
 class _SellAmountFieldState extends State<SellAmountField> {
   final _ctrl = TextEditingControllerWorkaroud();
-  String _prev;
 
   @override
   void initState() {
@@ -62,18 +61,13 @@ class _SellAmountFieldState extends State<SellAmountField> {
   }
 
   void _onFieldChange() {
-    // Ignore listener events with the same _ctrl.text value
     final String text = _ctrl.text;
-    if (text == _prev) return;
-    _prev = text;
-
     tradeForm.onSellAmountFieldChange(text);
   }
 
   void _onDataChange(Rational value) {
     if (!mounted) return;
-    if (value != null &&
-        value.toStringAsFixed(tradeForm.precision) == _ctrl.text) return;
+    if (value == tryParseRat(_ctrl.text)) return;
 
     _ctrl.setTextAndPosition(value == null
         ? ''

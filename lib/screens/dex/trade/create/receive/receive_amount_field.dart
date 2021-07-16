@@ -14,7 +14,6 @@ class ReceiveAmountField extends StatefulWidget {
 
 class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   final _ctrl = TextEditingControllerWorkaroud();
-  String _prev;
 
   @override
   void initState() {
@@ -60,18 +59,13 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   }
 
   void _onFieldChange() {
-    // Ignore listener events with the same _ctrl.text value
     final String text = _ctrl.text;
-    if (text == _prev) return;
-    _prev = text;
-
     tradeForm.onReceiveAmountFieldChange(text);
   }
 
   void _onDataChange(Rational value) {
     if (!mounted) return;
-    if (value != null &&
-        value.toStringAsFixed(tradeForm.precision) == _ctrl.text) return;
+    if (value == tryParseRat(_ctrl.text)) return;
 
     _ctrl.setTextAndPosition(value == null
         ? ''

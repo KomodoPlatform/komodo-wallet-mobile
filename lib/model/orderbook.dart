@@ -139,7 +139,6 @@ class Ask {
     Rational buyAmount = amountToSell / fract2rat(priceFract);
     if (buyAmount >= fract2rat(maxvolumeFract))
       buyAmount = fract2rat(maxvolumeFract);
-    print(buyAmount.toDouble());
     return buyAmount;
   }
 

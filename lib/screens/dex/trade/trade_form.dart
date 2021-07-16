@@ -30,7 +30,7 @@ class TradeForm {
   }
 
   void _handleSellAmountChange(String text) {
-    Rational valueRat = Rational.parse(text ?? '');
+    Rational valueRat = tryParseRat(text);
     // If empty or non-numerical
     if (valueRat == null) {
       swapBloc.setAmountSell(null);
@@ -71,12 +71,12 @@ class TradeForm {
       swapBloc.setAmountReceive(amountReceive);
     }
 
-    swapBloc.setAmountSell(valueRat);
+    if (valueRat != swapBloc.amountSell) swapBloc.setAmountSell(valueRat);
   }
 
   void onReceiveAmountFieldChange(String text) {
     final Rational valueRat = tryParseRat(text);
-    swapBloc.setAmountReceive(valueRat);
+    if (valueRat != swapBloc.amountReceive) swapBloc.setAmountReceive(valueRat);
   }
 
   Future<void> makeSwap({
