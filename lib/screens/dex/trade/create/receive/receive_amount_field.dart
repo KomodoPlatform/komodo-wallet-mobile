@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rational/rational.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
@@ -67,9 +68,9 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
     tradeForm.onReceiveAmountFieldChange(text);
   }
 
-  void _onDataChange(double value) {
+  void _onDataChange(Rational value) {
     if (!mounted) return;
-    if (value == double.tryParse(_ctrl.text)) return;
+    if (value == Rational.parse(_ctrl.text)) return;
 
     _ctrl.setTextAndPosition(value == null
         ? ''

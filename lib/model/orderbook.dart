@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
+import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -102,7 +103,8 @@ class Ask {
       priceFract: json['price_fraction'],
       maxvolume: deci(json['maxvolume']),
       maxvolumeFract: json['max_volume_fraction'],
-      minVolume: double.tryParse(json['min_volume']),
+      minVolume: fract2rat(json['min_volume_fraction']) ??
+          Rational.parse(json['min_volume']),
       pubkey: json['pubkey'] ?? '',
       age: json['age'] ?? 0,
       zcredits: json['zcredits'] ?? 0,
@@ -115,7 +117,7 @@ class Ask {
   Map<String, dynamic> priceFract;
   Map<String, dynamic> maxvolumeFract;
   Decimal maxvolume;
-  double minVolume;
+  Rational minVolume;
   String pubkey;
   int age;
   int zcredits;
@@ -127,7 +129,7 @@ class Ask {
         'price_fraction': priceFract,
         'maxvolume': maxvolume.toString(),
         'max_volume_fraction': maxvolumeFract,
-        'min_volume': minVolume.toString(),
+        'min_volume_fraction': rat2fract(minVolume),
         'pubkey': pubkey ?? '',
         'age': age ?? 0,
         'zcredits': zcredits ?? 0,

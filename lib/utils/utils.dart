@@ -88,6 +88,14 @@ Decimal deci(dynamic dv) {
   throw Exception('Neither string nor double: $dv');
 }
 
+Rational deci2rat(Decimal decimal) {
+  try {
+    return Rational.parse(decimal.toString());
+  } catch (_) {
+    return null;
+  }
+}
+
 Rational fract2rat(Map<String, dynamic> fract) {
   try {
     final rat = Rational.fromInt(
@@ -95,6 +103,17 @@ Rational fract2rat(Map<String, dynamic> fract) {
       int.parse(fract['denom']),
     );
     return rat;
+  } catch (_) {
+    return null;
+  }
+}
+
+Map<String, dynamic> rat2fract(Rational rat) {
+  try {
+    return <String, dynamic>{
+      'numer': rat.numerator.toString(),
+      'denom': rat.denominator.toString(),
+    };
   } catch (_) {
     return null;
   }
@@ -474,6 +493,7 @@ String formatPrice(dynamic value, [int digits = 6, int fraction = 2]) {
   if (value == null) return null;
 
   if (value is String) value = double.parse(value);
+  if (value is Rational) value = value.toDouble();
   final String rounded = value.toStringAsFixed(fraction);
   if (rounded.length >= digits + 1) {
     return rounded;
@@ -535,6 +555,7 @@ bool isInfinite(dynamic value) {
   if (value == 0.0 || value == '0.0' || value == '0') return false;
 
   if (value is String) value = double.parse(value);
+  if (value is Rational) value = value.toDouble();
   value = value.abs();
 
   if (value > double.maxFinite || 1 / value > double.maxFinite) return true;
