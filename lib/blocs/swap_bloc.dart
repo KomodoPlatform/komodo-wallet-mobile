@@ -116,11 +116,13 @@ class SwapBloc implements BlocBase {
   }
 
   void setAmountSell(Rational amount) {
-    _inAmountSell.add(amount);
+    amountSell = amount;
+    _inAmountSell.add(amountSell);
   }
 
   void setAmountReceive(Rational amount) {
-    _inAmountReceive.add(amount);
+    amountReceive = amount;
+    _inAmountReceive.add(amountReceive);
   }
 
   void setIndexTabDex(int index) {

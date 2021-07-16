@@ -75,7 +75,7 @@ class TradeForm {
   }
 
   void onReceiveAmountFieldChange(String text) {
-    final Rational valueRat = Rational.parse(text ?? '');
+    final Rational valueRat = tryParseRat(text);
     swapBloc.setAmountReceive(valueRat);
   }
 
@@ -120,7 +120,7 @@ class TradeForm {
     } else if (swapBloc.isSellMaxActive && swapBloc.maxTakerVolume != null) {
       volume = swapBloc.maxTakerVolume / price;
     } else {
-      volume = Rational.parse(swapBloc.amountReceive.toString());
+      volume = swapBloc.amountReceive;
     }
 
     final dynamic re = await MM.postBuy(
@@ -155,8 +155,8 @@ class TradeForm {
     Function(dynamic) onSuccess,
     Function(dynamic) onError,
   }) async {
-    final amountSell = Rational.parse(swapBloc.amountSell.toString());
-    final amountReceive = Rational.parse(swapBloc.amountReceive.toString());
+    final amountSell = swapBloc.amountSell;
+    final amountReceive = swapBloc.amountReceive;
     final Rational price = amountReceive / amountSell;
 
     final dynamic re = await MM.postSetPrice(
@@ -285,14 +285,18 @@ class TradeForm {
             rel: swapBloc.receiveCoinBalance.coin.abbr,
             max: swapBloc.isSellMaxActive ?? false,
             swapMethod: 'setprice',
-            volume: swapBloc.amountSell.toString(),
-            price: (swapBloc.amountReceive / swapBloc.amountSell).toString())
+            volume: swapBloc.amountSell.toDouble().toString(),
+            price: (swapBloc.amountReceive / swapBloc.amountSell)
+                .toDouble()
+                .toString())
         : GetTradePreimage(
             base: swapBloc.receiveCoinBalance.coin.abbr,
             rel: swapBloc.sellCoinBalance.coin.abbr,
             swapMethod: 'buy',
-            volume: swapBloc.amountReceive.toString(),
-            price: (swapBloc.amountSell / swapBloc.amountReceive).toString());
+            volume: swapBloc.amountReceive.toDouble().toString(),
+            price: (swapBloc.amountSell / swapBloc.amountReceive)
+                .toDouble()
+                .toString());
 
     TradePreimage tradePreimage;
 

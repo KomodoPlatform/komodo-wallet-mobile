@@ -88,6 +88,14 @@ Decimal deci(dynamic dv) {
   throw Exception('Neither string nor double: $dv');
 }
 
+Rational tryParseRat(String text) {
+  try {
+    return Rational.parse(text);
+  } catch (_) {
+    return null;
+  }
+}
+
 Rational deci2rat(Decimal decimal) {
   try {
     return Rational.parse(decimal.toString());

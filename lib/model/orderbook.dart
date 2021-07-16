@@ -135,9 +135,11 @@ class Ask {
         'zcredits': zcredits ?? 0,
       };
 
-  Decimal getReceiveAmount(Decimal amountToSell) {
-    Decimal buyAmount = amountToSell / deci(price);
-    if (buyAmount >= maxvolume) buyAmount = maxvolume;
+  Rational getReceiveAmount(Rational amountToSell) {
+    Rational buyAmount = amountToSell / fract2rat(priceFract);
+    if (buyAmount >= fract2rat(maxvolumeFract))
+      buyAmount = fract2rat(maxvolumeFract);
+    print(buyAmount.toDouble());
     return buyAmount;
   }
 

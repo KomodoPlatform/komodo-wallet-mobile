@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:decimal/decimal.dart';
+import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
@@ -413,15 +412,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     swapBloc.enabledReceiveField = false;
     swapBloc.updateReceiveCoin(bid.coin);
-    swapBloc.setAmountReceive(
-        deci2rat(bid.getReceiveAmount(deci(swapBloc.amountSell))));
+    swapBloc.setAmountReceive(bid.getReceiveAmount(swapBloc.amountSell));
 
-    final Decimal amountSell = Decimal.parse(swapBloc.amountSell.toString());
-    final Decimal bidPrice = Decimal.parse(bid.price.toString());
-    final Decimal bidVolume = Decimal.parse(bid.maxvolume.toString());
+    final Rational amountSell = swapBloc.amountSell;
+    final Rational bidPrice = fract2rat(bid.priceFract);
+    final Rational bidVolume = fract2rat(bid.maxvolumeFract);
 
     if (amountSell > bidVolume * bidPrice) {
-      swapBloc.setAmountSell(deci2rat(bidVolume * bidPrice));
+      swapBloc.setAmountSell(bidVolume * bidPrice);
       swapBloc.setIsMaxActive(false);
     }
   }

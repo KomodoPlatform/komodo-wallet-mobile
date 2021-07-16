@@ -303,7 +303,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
     if (widget.sellAmount == null) return true;
 
     final double myVolume =
-        widget.order.getReceiveAmount(deci(widget.sellAmount)).toDouble();
+        widget.order.getReceiveAmount(widget.sellAmount).toDouble();
 
     return myVolume >= widget.order.minVolume.toDouble();
   }
@@ -375,9 +375,8 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
                     const SizedBox(width: 12),
                     Text(
-                      formatPrice(widget.order
-                          .getReceiveAmount(deci(widget.sellAmount))
-                          .toDouble()),
+                      formatPrice(
+                          widget.order.getReceiveAmount(widget.sellAmount)),
                       style: Theme.of(context).textTheme.subtitle2.copyWith(
                             fontWeight: FontWeight.normal,
                           ),
@@ -416,7 +415,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 const SizedBox(width: 12),
                 Text(
                   formatPrice(widget.order
-                          .getReceiveAmount(deci(widget.sellAmount))
+                          .getReceiveAmount(widget.sellAmount)
                           .toDouble() *
                       double.parse(widget.order.price)),
                   style: Theme.of(context).textTheme.subtitle2.copyWith(

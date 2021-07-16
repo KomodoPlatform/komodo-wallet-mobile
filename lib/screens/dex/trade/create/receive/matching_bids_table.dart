@@ -240,7 +240,7 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
                   color: Theme.of(context).highlightColor,
                 ))),
             child: Text(
-              formatPrice(bid.getReceiveAmount(deci(_sellAmount)).toDouble()),
+              formatPrice(bid.getReceiveAmount(_sellAmount)),
               style: Theme.of(context)
                   .textTheme
                   .bodyText2

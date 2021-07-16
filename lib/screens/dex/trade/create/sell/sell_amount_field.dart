@@ -72,7 +72,8 @@ class _SellAmountFieldState extends State<SellAmountField> {
 
   void _onDataChange(Rational value) {
     if (!mounted) return;
-    if (value == Rational.parse(_ctrl.text)) return;
+    if (value != null &&
+        value.toStringAsFixed(tradeForm.precision) == _ctrl.text) return;
 
     _ctrl.setTextAndPosition(value == null
         ? ''
