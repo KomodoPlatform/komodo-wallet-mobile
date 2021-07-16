@@ -57,9 +57,12 @@ class TradeFormValidator {
           swapBloc.receiveCoinBalance.coin.abbr, '$minVolumeReceive');
     } else if (matchingBid != null && matchingBid.minVolume != null) {
       if (amountReceive != null && amountReceive < matchingBid.minVolume) {
-        return appLocalizations.minValueBuy(
-            swapBloc.receiveCoinBalance.coin.abbr,
-            cutTrailingZeros(formatPrice(matchingBid.minVolume)));
+        return appLocalizations.minValueOrder(
+            sellCoin: swapBloc.sellCoinBalance.coin.abbr,
+            sellAmount: cutTrailingZeros(formatPrice(
+                matchingBid.minVolume * double.parse(matchingBid.price))),
+            buyCoin: swapBloc.receiveCoinBalance.coin.abbr,
+            buyAmount: cutTrailingZeros(formatPrice(matchingBid.minVolume)));
       }
       return null;
     } else {

@@ -76,7 +76,7 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
             ),
             SizedBox(height: 20),
             RaisedButton(
-              onPressed: () => dialogBloc.closeDialog(context),
+              onPressed: () => Navigator.of(context).pop(),
               child: Text(AppLocalizations.of(context).close),
             ),
           ],
