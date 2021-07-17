@@ -29,21 +29,30 @@ class TradeForm {
     });
   }
 
-  void _handleSellAmountChange(String text) {
-    Rational valueRat = tryParseRat(text);
-    // If empty or non-numerical
-    if (valueRat == null) {
+  void _handleSellAmountChange(String newText) {
+    Rational newAmount;
+    try {
+      newAmount = Rational.parse(newText);
+    } catch (_) {
       swapBloc.setAmountSell(null);
       swapBloc.setIsMaxActive(false);
-      if (swapBloc.matchingBid != null) swapBloc.setAmountReceive(null);
 
+      if (swapBloc.matchingBid != null) {
+        swapBloc.setAmountReceive(null);
+      }
       return;
+    }
+
+    if (swapBloc.amountSell != null) {
+      final String currentText = cutTrailingZeros(
+          swapBloc.amountSell.toStringAsFixed(tradeForm.precision));
+      if (newText == currentText) return;
     }
 
     // If greater than max available balance
     final double maxAmount = _getMaxSellAmount();
-    if (valueRat.toDouble() >= maxAmount) {
-      valueRat = Rational.parse(maxAmount.toString());
+    if (newAmount.toDouble() >= maxAmount) {
+      newAmount = Rational.parse(maxAmount.toString());
       swapBloc.setIsMaxActive(true);
     } else {
       swapBloc.setIsMaxActive(false);
@@ -59,24 +68,37 @@ class TradeForm {
       // If greater than matching bid max receive volume
       // TODO(yurii): refactor after
       // https://github.com/KomodoPlatform/atomicDEX-API/issues/838 implemented
-      if (valueRat >= (bidVolume * bidPrice)) {
-        valueRat = bidVolume * bidPrice;
+      if (newAmount >= (bidVolume * bidPrice)) {
+        newAmount = bidVolume * bidPrice;
         swapBloc.setIsMaxActive(false);
         swapBloc.shouldBuyOut = true;
       } else {
         swapBloc.shouldBuyOut = false;
       }
 
-      final Rational amountReceive = valueRat / bidPrice;
+      final Rational amountReceive = newAmount / bidPrice;
       swapBloc.setAmountReceive(amountReceive);
     }
 
-    if (valueRat != swapBloc.amountSell) swapBloc.setAmountSell(valueRat);
+    if (newAmount != swapBloc.amountSell) swapBloc.setAmountSell(newAmount);
   }
 
-  void onReceiveAmountFieldChange(String text) {
-    final Rational valueRat = tryParseRat(text);
-    if (valueRat != swapBloc.amountReceive) swapBloc.setAmountReceive(valueRat);
+  void onReceiveAmountFieldChange(String newText) {
+    Rational newAmount;
+    try {
+      newAmount = Rational.parse(newText);
+    } catch (_) {
+      swapBloc.setAmountReceive(null);
+
+      if (swapBloc.matchingBid != null) {
+        swapBloc.setAmountSell(null);
+      }
+      return;
+    }
+
+    if (newAmount != swapBloc.amountReceive) {
+      swapBloc.setAmountReceive(newAmount);
+    }
   }
 
   Future<void> makeSwap({
