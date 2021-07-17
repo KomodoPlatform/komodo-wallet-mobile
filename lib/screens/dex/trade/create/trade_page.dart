@@ -412,14 +412,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     swapBloc.enabledReceiveField = false;
     swapBloc.updateReceiveCoin(bid.coin);
-    swapBloc.setAmountReceive(bid.getReceiveAmount(swapBloc.amountSell));
+    tradeForm.updateAmountReceive(bid.getReceiveAmount(swapBloc.amountSell));
 
     final Rational amountSell = swapBloc.amountSell;
     final Rational bidPrice = fract2rat(bid.priceFract);
     final Rational bidVolume = fract2rat(bid.maxvolumeFract);
 
     if (amountSell > bidVolume * bidPrice) {
-      swapBloc.setAmountSell(bidVolume * bidPrice);
+      tradeForm.updateAmountSell(bidVolume * bidPrice);
       swapBloc.setIsMaxActive(false);
     }
   }
