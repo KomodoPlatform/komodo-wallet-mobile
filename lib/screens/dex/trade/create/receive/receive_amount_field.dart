@@ -59,16 +59,22 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   }
 
   void _onFieldChange() {
-    final String text = _ctrl.text;
-    tradeForm.onReceiveAmountFieldChange(text);
+    tradeForm.onReceiveAmountFieldChange(_ctrl.text);
   }
 
   void _onDataChange(Rational value) {
     if (!mounted) return;
-    if (value == tryParseRat(_ctrl.text)) return;
+    if (value == null) {
+      _ctrl.text = '';
+      return;
+    }
 
-    _ctrl.setTextAndPosition(value == null
-        ? ''
-        : cutTrailingZeros(value.toStringAsFixed(tradeForm.precision)) ?? '');
+    final String newFormatted =
+        cutTrailingZeros(value.toStringAsFixed(tradeForm.precision));
+    final String currentFormatted = cutTrailingZeros(_ctrl.text);
+
+    if (newFormatted != currentFormatted) {
+      _ctrl.setTextAndPosition(newFormatted);
+    }
   }
 }
