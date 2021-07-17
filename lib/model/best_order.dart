@@ -2,7 +2,6 @@ import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:rational/rational.dart';
-
 import 'package:komodo_dex/model/error_string.dart';
 
 class BestOrders {

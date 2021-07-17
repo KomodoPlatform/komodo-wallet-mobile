@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/build_detailed_fees.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/create/top_order_details.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/evaluation_simple.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/exchange_rate_simple.dart';
 import 'package:provider/provider.dart';
@@ -19,12 +20,20 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
 
     return Column(
       children: [
-        _buildWarning(),
-        _buildFeesOrError(),
-        _buildRate(),
+        _buildOrderDetails(),
         _buildEvaluation(),
+        // _buildWarning(),
+        _buildFeesOrError(),
+        // _buildRate(),
       ],
     );
+  }
+
+  Widget _buildOrderDetails() {
+    if (_constrProvider.matchingOrder == null) return SizedBox();
+
+    return Container(
+        padding: EdgeInsets.fromLTRB(12, 24, 12, 10), child: TopOrderDetails());
   }
 
   Widget _buildWarning() {
@@ -60,14 +69,14 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
     if (_constrProvider.matchingOrder == null) return SizedBox();
 
     return Container(
-        padding: EdgeInsets.fromLTRB(12, 0, 12, 24),
+        padding: EdgeInsets.fromLTRB(12, 0, 12, 12),
         child: EvaluationSimple(alignCenter: true));
   }
 
   Widget _buildFeesOrError() {
     if (_constrProvider.error != null) {
       return Container(
-        padding: EdgeInsets.fromLTRB(12, 24, 12, 14),
+        padding: EdgeInsets.fromLTRB(12, 0, 12, 22),
         child: Text(
           _constrProvider.error,
           style: Theme.of(context)
@@ -79,7 +88,7 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
       );
     } else if (_constrProvider.matchingOrder != null) {
       return Container(
-        padding: EdgeInsets.fromLTRB(12, 24, 12, 8),
+        padding: EdgeInsets.fromLTRB(12, 0, 12, 16),
         child: BuildDetailedFees(
           preimage: _constrProvider.preimage,
           alignCenter: true,
