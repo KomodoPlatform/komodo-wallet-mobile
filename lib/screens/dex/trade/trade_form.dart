@@ -273,8 +273,8 @@ class TradeForm {
   Future<String> updateTradePreimage() async {
     if (swapBloc.sellCoinBalance == null ||
         swapBloc.receiveCoinBalance == null ||
-        (swapBloc.amountSell ?? 0) == 0 ||
-        (swapBloc.amountReceive ?? 0) == 0) {
+        (swapBloc.amountSell?.toDouble() ?? 0) == 0 ||
+        (swapBloc.amountReceive?.toDouble() ?? 0) == 0) {
       swapBloc.tradePreimage = null;
       return null;
     }
