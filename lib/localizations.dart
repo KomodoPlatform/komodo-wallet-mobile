@@ -401,21 +401,33 @@ class AppLocalizations {
   String get showMyOrders =>
       Intl.message('SHOW MY ORDERS', name: 'showMyOrders');
   String minValue(String coinName, String number) => Intl.message(
-        'The minimun amount to sell is $number $coinName',
+        'The minimum amount to sell is $number $coinName',
         name: 'minValue',
         args: <Object>[coinName, number],
       );
   String get titleCreatePassword =>
       Intl.message('CREATE A PASSWORD', name: 'titleCreatePassword');
   String minValueBuy(String coinName, String number) => Intl.message(
-        'The minimun amount to buy is $number${String.fromCharCode(0x00A0)}$coinName',
+        'The minimum amount to buy is $number${String.fromCharCode(0x00A0)}$coinName',
         name: 'minValueBuy',
         args: <Object>[coinName, number],
       );
   String minValueSell(String coinName, String number) => Intl.message(
-        'The minimun amount to sell is $number${String.fromCharCode(0x00A0)}$coinName',
+        'The minimum amount to sell is $number${String.fromCharCode(0x00A0)}$coinName',
         name: 'minValueSell',
         args: <Object>[coinName, number],
+      );
+  String minValueOrder({
+    String buyCoin,
+    String buyAmount,
+    String sellCoin,
+    String sellAmount,
+  }) =>
+      Intl.message(
+        'Order minimum amount is $buyAmount${String.fromCharCode(0x00A0)}$buyCoin'
+        '\n($sellAmount${String.fromCharCode(0x00A0)}$sellCoin)',
+        name: 'minValueBuy',
+        args: <Object>[buyCoin, buyAmount],
       );
   String get enterSellAmount =>
       Intl.message('You must enter Sell Amount first', name: 'enterSellAmount');
