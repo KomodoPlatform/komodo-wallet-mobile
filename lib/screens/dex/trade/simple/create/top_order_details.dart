@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/market.dart';
@@ -14,11 +17,13 @@ class TopOrderDetails extends StatefulWidget {
 
 class _TopOrderDetailsState extends State<TopOrderDetails> {
   ConstructorProvider _constrProvider;
+  CexProvider _cexProvider;
   bool _showDetails = false;
 
   @override
   Widget build(BuildContext context) {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
+    _cexProvider ??= Provider.of<CexProvider>(context);
 
     return Column(
       children: [
@@ -37,7 +42,7 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Order selected:',
+              'Selected order:',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             SizedBox(width: 4),
@@ -80,13 +85,15 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
       children: [
         _buildRate(),
         SizedBox(height: 4),
-        _buildVolume(),
+        _buildMinVolume(),
+        SizedBox(height: 4),
+        _buildMaxVolume(),
         SizedBox(height: 12),
       ],
     );
   }
 
-  Widget _buildVolume() {
+  Widget _buildMinVolume() {
     final BestOrder order = _constrProvider.matchingOrder;
     final Rational price =
         order.action == Market.SELL ? order.price : order.price.inverse;
@@ -98,31 +105,82 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
           padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
           color: Theme.of(context).highlightColor.withAlpha(25),
           child: Text(
-            'Volume:',
+            'Min order volume:',
             style: Theme.of(context).textTheme.caption,
           ),
         ),
         SizedBox(height: 4),
         Container(
           padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
-          child: Text(
-            'Min volume: '
-            '${cutTrailingZeros((order.minVolume / price).toStringAsFixed(appConfig.tradeFormPrecision))} '
-            '${order.otherCoin} / '
-            '${cutTrailingZeros(order.minVolume.toStringAsFixed(appConfig.tradeFormPrecision))} '
-            '${order.coin}',
-            style: Theme.of(context).textTheme.caption,
+          child: Row(
+            children: [
+              Text(
+                'Min ${order.otherCoin}: '
+                '${cutTrailingZeros((order.minVolume / price).toStringAsFixed(appConfig.tradeFormPrecision))}',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              _buildFiatAmount(order.otherCoin, order.minVolume / price),
+            ],
           ),
         ),
         Container(
           padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+          child: Row(
+            children: [
+              Text(
+                'Min ${order.coin}: '
+                '${cutTrailingZeros(order.minVolume.toStringAsFixed(appConfig.tradeFormPrecision))}',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              _buildFiatAmount(order.coin, order.minVolume),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMaxVolume() {
+    final BestOrder order = _constrProvider.matchingOrder;
+    final Rational price =
+        order.action == Market.SELL ? order.price : order.price.inverse;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+          color: Theme.of(context).highlightColor.withAlpha(25),
           child: Text(
-            'Max volume: '
-            '${cutTrailingZeros((order.maxVolume / price).toStringAsFixed(appConfig.tradeFormPrecision))} '
-            '${order.otherCoin} / '
-            '${cutTrailingZeros(order.maxVolume.toStringAsFixed(appConfig.tradeFormPrecision))} '
-            '${order.coin}',
+            'Max order volume:',
             style: Theme.of(context).textTheme.caption,
+          ),
+        ),
+        SizedBox(height: 4),
+        Container(
+          padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+          child: Row(
+            children: [
+              Text(
+                'Max ${order.otherCoin}: '
+                '${cutTrailingZeros((order.maxVolume / price).toStringAsFixed(appConfig.tradeFormPrecision))}',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              _buildFiatAmount(order.otherCoin, order.maxVolume / price),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+          child: Row(
+            children: [
+              Text(
+                'Max ${order.coin}: '
+                '${cutTrailingZeros(order.maxVolume.toStringAsFixed(appConfig.tradeFormPrecision))}',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              _buildFiatAmount(order.coin, order.maxVolume),
+            ],
           ),
         ),
       ],
@@ -148,11 +206,16 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
         SizedBox(height: 4),
         Container(
           padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
-          child: Text(
-            '1 ${order.otherCoin} = '
-            '${price.toStringAsFixed(appConfig.tradeFormPrecision)} '
-            '${order.coin}',
-            style: Theme.of(context).textTheme.caption,
+          child: Row(
+            children: [
+              Text(
+                '1 ${order.otherCoin} = '
+                '${price.toStringAsFixed(appConfig.tradeFormPrecision)} '
+                '${order.coin}',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              _buildFiatAmount(order.coin, price),
+            ],
           ),
         ),
         Container(
@@ -163,6 +226,36 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
             '${order.otherCoin}',
             style: Theme.of(context).textTheme.caption,
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFiatAmount(String coin, Rational amount) {
+    final double usdPrice = _cexProvider.getUsdPrice(coin);
+
+    if (usdPrice == 0) return SizedBox();
+
+    final String fiatPrice =
+        _cexProvider.convert(amount.toDouble(), from: coin);
+    final TextStyle style =
+        Theme.of(context).textTheme.caption.copyWith(color: cexColor);
+
+    return Row(
+      children: [
+        Text(
+          ' (',
+          style: style,
+        ),
+        CexMarker(context, size: Size.fromRadius(6)),
+        SizedBox(width: 2),
+        Text(
+          '$fiatPrice',
+          style: style,
+        ),
+        Text(
+          ')',
+          style: style,
         ),
       ],
     );

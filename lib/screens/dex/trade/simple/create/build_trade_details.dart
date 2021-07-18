@@ -76,7 +76,7 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
   Widget _buildFeesOrError() {
     if (_constrProvider.error != null) {
       return Container(
-        padding: EdgeInsets.fromLTRB(12, 0, 12, 22),
+        padding: EdgeInsets.fromLTRB(12, 0, 12, 24),
         child: Text(
           _constrProvider.error,
           style: Theme.of(context)
@@ -88,7 +88,7 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
       );
     } else if (_constrProvider.matchingOrder != null) {
       return Container(
-        padding: EdgeInsets.fromLTRB(12, 0, 12, 16),
+        padding: EdgeInsets.fromLTRB(12, 0, 12, 24),
         child: BuildDetailedFees(
           preimage: _constrProvider.preimage,
           alignCenter: true,

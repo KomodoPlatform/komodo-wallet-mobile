@@ -45,11 +45,7 @@ class _EvaluationSimpleState extends State<EvaluationSimple> {
     _init();
 
     if (_rate == null || _cexRate == null || _cexRate == 0.0) {
-      return Container(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
-        child:
-            Text(String.fromCharCode(0x00A0), style: TextStyle(fontSize: 16)),
-      );
+      return SizedBox();
     }
 
     return Column(
