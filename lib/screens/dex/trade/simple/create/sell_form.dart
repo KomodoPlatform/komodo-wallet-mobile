@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/app_config.dart';
-import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:rational/rational.dart';
@@ -82,51 +80,34 @@ class _SellFormState extends State<SellForm> {
         buttonAmt.toStringAsFixed(appConfig.tradeFormPrecision));
     final bool isActive = formattedButtonAmt == _amtCtrl.text;
 
-    bool disabled = false;
-    if ((_constrProvider.maxSellAmt?.toDouble() ?? 0) == 0) disabled = true;
-
-    final BestOrder order = _constrProvider.matchingOrder;
-    if (order != null) {
-      final Rational price =
-          order.action == Market.SELL ? order.price : order.price.inverse;
-      if (buttonAmt > order.maxVolume / price) disabled = true;
-    }
-
     return Expanded(
-      child: Opacity(
-        opacity: disabled ? 0.5 : 1,
-        child: GestureDetector(
-          onTap: isActive || disabled
-              ? null
-              : () {
-                  _constrProvider.sellAmount = buttonAmt;
-                },
+      child: GestureDetector(
+        onTap: isActive
+            ? null
+            : () {
+                _constrProvider.sellAmount = buttonAmt;
+              },
+        child: Container(
+          padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
           child: Container(
-            padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2),
-                color: disabled
-                    ? Theme.of(context).highlightColor
-                    : isActive
-                        ? Theme.of(context).accentColor.withAlpha(200)
-                        : Theme.of(context).primaryColor,
-              ),
-              alignment: Alignment(0, 0),
-              padding: EdgeInsets.fromLTRB(1, 3, 1, 3),
-              child: Text(
-                '${cutTrailingZeros(pct.toString())}%',
-                style: TextStyle(
-                    fontSize: 11,
-                    color: disabled
-                        ? Theme.of(context).disabledColor
-                        : Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            .color
-                            .withAlpha(isActive ? 255 : 180)),
-                maxLines: 1,
-              ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(2),
+              color: isActive
+                  ? Theme.of(context).accentColor.withAlpha(200)
+                  : Theme.of(context).primaryColor,
+            ),
+            alignment: Alignment(0, 0),
+            padding: EdgeInsets.fromLTRB(1, 3, 1, 3),
+            child: Text(
+              '${cutTrailingZeros(pct.toString())}%',
+              style: TextStyle(
+                  fontSize: 11,
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .color
+                      .withAlpha(isActive ? 255 : 180)),
+              maxLines: 1,
             ),
           ),
         ),

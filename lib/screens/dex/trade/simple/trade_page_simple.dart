@@ -255,7 +255,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
                 right: 0,
                 top: 1,
                 child: currentTerm == null || currentTerm.isEmpty
-                    ? GestureDetector(
+                    ? InkWell(
                         onTap: () => focusNode.requestFocus(),
                         child: Container(
                           padding: EdgeInsets.fromLTRB(0, 0, 6, 6),
@@ -266,7 +266,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
                           ),
                         ),
                       )
-                    : GestureDetector(
+                    : InkWell(
                         onTap: () {
                           controller.text = '';
                           FocusScope.of(context).requestFocus(FocusNode());

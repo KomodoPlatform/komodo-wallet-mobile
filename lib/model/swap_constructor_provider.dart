@@ -32,7 +32,17 @@ class ConstructorProvider extends ChangeNotifier {
   bool _inProgress = false;
 
   String get error => _error;
+  set error(String value) {
+    _error = value;
+    notifyListeners();
+  }
+
   String get warning => _warning;
+  set warning(String value) {
+    _warning = value;
+    notifyListeners();
+  }
+
   bool get inProgress => _inProgress;
   set inProgress(bool value) {
     _inProgress = value;
@@ -82,6 +92,8 @@ class ConstructorProvider extends ChangeNotifier {
 
   Rational get sellAmount => _sellAmount;
   set sellAmount(Rational value) {
+    _warning = null;
+
     if (value != null) {
       // if > than balance
       if (value > maxSellAmt) value = maxSellAmt;
@@ -93,14 +105,18 @@ class ConstructorProvider extends ChangeNotifier {
 
         final Rational maxOrderAmt = _matchingOrder.maxVolume / price;
         // if > than order max volume
-        if (value > maxOrderAmt) value = maxOrderAmt;
+        if (value > maxOrderAmt) {
+          value = maxOrderAmt;
+          _warning = 'Sell amount was set to '
+              '${cutTrailingZeros(value.toStringAsFixed(appConfig.tradeFormPrecision))} '
+              '$_sellCoin, which is the max volume for selected order';
+        }
 
         _buyAmount = value * price;
       }
     }
 
     _sellAmount = value;
-    _warning = null;
     notifyListeners();
 
     _updatePreimage();
@@ -108,25 +124,33 @@ class ConstructorProvider extends ChangeNotifier {
 
   Rational get buyAmount => _buyAmount;
   set buyAmount(Rational value) {
+    _warning = null;
+
     if (value != null) {
       if (_matchingOrder != null) {
         final Rational maxOrderAmt = _matchingOrder.maxVolume;
         // if > than order max volume
-        if (value > maxOrderAmt) value = maxOrderAmt;
+        if (value > maxOrderAmt) {
+          value = maxOrderAmt;
+          _warning = 'Buy amount was set to '
+              '${cutTrailingZeros(value.toStringAsFixed(appConfig.tradeFormPrecision))} '
+              '$_buyCoin, which is the max volume for selected order';
+        }
 
         final Rational price = _matchingOrder.action == Market.BUY
             ? _matchingOrder.price
             : _matchingOrder.price.inverse;
 
         // if > than max sell balance
-        if (value * price > maxSellAmt) value = maxSellAmt / price;
+        if (value * price > maxSellAmt) {
+          value = maxSellAmt / price;
+        }
 
         _sellAmount = value * price;
       }
     }
 
     _buyAmount = value;
-    _warning = null;
     notifyListeners();
 
     _updatePreimage();
@@ -303,6 +327,7 @@ class ConstructorProvider extends ChangeNotifier {
   }
 
   Future<void> _updatePreimage() async {
+    error = null;
     if (haveAllData) {
       inProgress = true;
       final TradePreimage preimage = await MM.getTradePreimage2(

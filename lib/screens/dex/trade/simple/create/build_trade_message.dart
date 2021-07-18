@@ -27,7 +27,6 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: 34),
         child: Container(
-          //color: Colors.yellow,
           child: _buildContent(),
         ),
       ),
@@ -59,8 +58,10 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
                   .copyWith(color: color, height: 1),
             ),
           ),
-          GestureDetector(
-            onTap: () {},
+          InkWell(
+            onTap: () {
+              _constrProvider.warning = null;
+            },
             child: Container(
               padding: EdgeInsets.fromLTRB(6, 6, 16, 6),
               child: Icon(
