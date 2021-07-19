@@ -32,7 +32,7 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
     if (_constrProvider.matchingOrder == null) return SizedBox();
 
     return Container(
-        padding: EdgeInsets.fromLTRB(12, 0, 12, 10), child: TopOrderDetails());
+        padding: EdgeInsets.fromLTRB(12, 24, 12, 10), child: TopOrderDetails());
   }
 
   Widget _buildEvaluation() {
@@ -46,7 +46,7 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
   Widget _buildFees() {
     if (_constrProvider.matchingOrder != null) {
       return Container(
-        padding: EdgeInsets.fromLTRB(12, 0, 12, 36),
+        padding: EdgeInsets.fromLTRB(12, 0, 12, 30),
         child: BuildDetailedFees(
           preimage: _constrProvider.preimage,
           alignCenter: true,
