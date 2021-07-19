@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rational/rational.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
@@ -20,6 +20,7 @@ class _BuyFormState extends State<BuyForm> {
   final _focusNode = FocusNode();
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
+  bool _showClearButton = false;
 
   @override
   void initState() {
@@ -33,6 +34,10 @@ class _BuyFormState extends State<BuyForm> {
       } else {
         FocusScope.of(context).requestFocus(FocusNode());
       }
+
+      _focusNode.addListener(() {
+        setState(() => _showClearButton = _focusNode.hasFocus);
+      });
     });
     super.initState();
   }
@@ -78,7 +83,7 @@ class _BuyFormState extends State<BuyForm> {
             width: 1,
             color: Theme.of(context).accentColor,
           )),
-          suffixIcon: _constrProvider.buyAmount == null
+          suffixIcon: _constrProvider.buyAmount == null || !_showClearButton
               ? null
               : InkWell(
                   child: Icon(
@@ -141,38 +146,73 @@ class _BuyFormState extends State<BuyForm> {
   }
 
   Widget _buildFiatAmt() {
+    final Rational buyAmount = _constrProvider.buyAmount;
     final double usdPrice = _cexProvider.getUsdPrice(_constrProvider.buyCoin);
     double usdAmt = 0.0;
-    if (_constrProvider.buyAmount != null) {
-      usdAmt = _constrProvider.buyAmount.toDouble() * usdPrice;
+    if (buyAmount != null && buyAmount.toDouble() > 0) {
+      usdAmt = buyAmount.toDouble() * usdPrice;
+    } else {
+      return SizedBox();
     }
-
-    if (usdAmt == 0) return SizedBox();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(height: 4),
-        Row(
-          children: [
-            Text(
-              AppLocalizations.of(context).simpleTradeRecieve + ':',
-              style: Theme.of(context)
-                  .textTheme
-                  .caption
-                  .copyWith(color: Theme.of(context).textTheme.bodyText1.color),
-            ),
-            SizedBox(width: 4),
-            Expanded(
-              child: AutoScrollText(
-                text: _cexProvider.convert(usdAmt),
-                style: Theme.of(context).textTheme.caption,
+        usdAmt == 0
+            ? Row(
+                children: [
+                  Expanded(
+                    child: AutoScrollText(
+                      text: '${cutTrailingZeros(formatPrice(buyAmount))}'
+                          ' ${_constrProvider.buyCoin}',
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(
+                    child: AutoScrollText(
+                      text: _cexProvider.convert(usdAmt),
+                      style: Theme.of(context)
+                          .textTheme
+                          .caption
+                          .copyWith(color: _getFiatColor()),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ],
     );
+  }
+
+  Color _getFiatColor() {
+    final String sellCoin = _constrProvider.sellCoin;
+    final String buyCoin = _constrProvider.buyCoin;
+    final Rational buyAmount = _constrProvider.buyAmount;
+    final Rational sellAmount = _constrProvider.sellAmount;
+    if (sellCoin == null) return null;
+    if (buyCoin == null) return null;
+    if (sellAmount == null || sellAmount.toDouble() == 0) return null;
+    if (buyAmount == null || buyAmount.toDouble() == 0) return null;
+
+    final sellCoinUsdPrice = _cexProvider.getUsdPrice(sellCoin);
+    final buyCoinUsdPrice = _cexProvider.getUsdPrice(buyCoin);
+
+    if (sellCoinUsdPrice == 0 || buyCoinUsdPrice == 0) return null;
+
+    final double sellAmtUsd = sellAmount.toDouble() * sellCoinUsdPrice;
+    final double buyAmtUsd = buyAmount.toDouble() * buyCoinUsdPrice;
+
+    if (sellAmtUsd > buyAmtUsd) {
+      return Colors.orange;
+    } else if (sellAmtUsd < buyAmtUsd) {
+      return Colors.green;
+    } else {
+      return null;
+    }
   }
 
   void _onDataChange() {

@@ -327,7 +327,6 @@ class ConstructorProvider extends ChangeNotifier {
   }
 
   Future<void> _updatePreimage() async {
-    error = null;
     if (haveAllData) {
       inProgress = true;
       final TradePreimage preimage = await MM.getTradePreimage2(

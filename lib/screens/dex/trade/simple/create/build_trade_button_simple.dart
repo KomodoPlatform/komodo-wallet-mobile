@@ -27,7 +27,7 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
       child: PrimaryButton(
         key: const Key('trade-button-simple'),
         onPressed: _isEnabled() ? () => _validateAndConfirm(context) : null,
-        text: AppLocalizations.of(context).trade,
+        text: 'Next',
       ),
     );
   }

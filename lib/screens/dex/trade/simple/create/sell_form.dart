@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
@@ -21,6 +20,7 @@ class _SellFormState extends State<SellForm> {
   final _focusNode = FocusNode();
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
+  bool _showClearButton = false;
 
   @override
   void initState() {
@@ -34,6 +34,10 @@ class _SellFormState extends State<SellForm> {
       } else {
         FocusScope.of(context).requestFocus(FocusNode());
       }
+
+      _focusNode.addListener(() {
+        setState(() => _showClearButton = _focusNode.hasFocus);
+      });
     });
     super.initState();
   }
@@ -137,7 +141,7 @@ class _SellFormState extends State<SellForm> {
             width: 1,
             color: Theme.of(context).accentColor,
           )),
-          suffixIcon: _constrProvider.sellAmount == null
+          suffixIcon: _constrProvider.sellAmount == null || !_showClearButton
               ? null
               : InkWell(
                   child: Icon(
@@ -200,36 +204,41 @@ class _SellFormState extends State<SellForm> {
   }
 
   Widget _buildFiatAmt() {
+    final Rational sellAmount = _constrProvider.sellAmount;
     final double usdPrice = _cexProvider.getUsdPrice(_constrProvider.sellCoin);
     double usdAmt = 0.0;
-    if (_constrProvider.sellAmount != null) {
+    if (sellAmount != null && sellAmount.toDouble() > 0) {
       usdAmt = _constrProvider.sellAmount.toDouble() * usdPrice;
+    } else {
+      return SizedBox();
     }
-
-    if (usdAmt == 0) return SizedBox();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(height: 4),
-        Row(
-          children: [
-            Text(
-              AppLocalizations.of(context).simpleTradeSend + ':',
-              style: Theme.of(context)
-                  .textTheme
-                  .caption
-                  .copyWith(color: Theme.of(context).textTheme.bodyText1.color),
-            ),
-            SizedBox(width: 4),
-            Expanded(
-              child: AutoScrollText(
-                text: _cexProvider.convert(usdAmt),
-                style: Theme.of(context).textTheme.caption,
+        usdAmt == 0
+            ? Row(
+                children: [
+                  Expanded(
+                    child: AutoScrollText(
+                      text: '${cutTrailingZeros(formatPrice(sellAmount))}'
+                          ' ${_constrProvider.sellCoin}',
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(
+                    child: AutoScrollText(
+                      text: _cexProvider.convert(usdAmt),
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ],
     );
   }

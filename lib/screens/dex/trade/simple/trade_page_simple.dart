@@ -67,8 +67,9 @@ class _TradePageSimpleState extends State<TradePageSimple> {
             ),
           ),
           BuildTradeDetails(),
+          SizedBox(height: 12),
           BuildTradeButtonSimple(),
-          BuildResetButtonSimple(),
+          // BuildResetButtonSimple(),
         ],
       ),
     );
