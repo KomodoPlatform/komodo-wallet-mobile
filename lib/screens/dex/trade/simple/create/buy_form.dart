@@ -150,8 +150,10 @@ class _BuyFormState extends State<BuyForm> {
 
     return Text(
       _cexProvider.convert(usdAmt),
-      style:
-          Theme.of(context).textTheme.caption.copyWith(color: _getFiatColor()),
+      style: Theme.of(context)
+          .textTheme
+          .caption
+          .copyWith(color: _getFiatColor(), fontSize: 11),
     );
   }
 

@@ -205,10 +205,8 @@ class _SellFormState extends State<SellForm> {
 
     return Text(
       _cexProvider.convert(usdAmt),
-      style: Theme.of(context)
-          .textTheme
-          .caption
-          .copyWith(color: Theme.of(context).textTheme.bodyText1.color),
+      style: Theme.of(context).textTheme.caption.copyWith(
+          color: Theme.of(context).textTheme.bodyText1.color, fontSize: 11),
     );
   }
 

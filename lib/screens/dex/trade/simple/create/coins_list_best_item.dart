@@ -70,7 +70,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
                           ? 1
                           : 0.4,
                   child: Container(
-                      padding: EdgeInsets.fromLTRB(8, 11, 6, 3),
+                      padding: EdgeInsets.fromLTRB(8, 12, 6, 3),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -90,6 +90,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
   Widget _buildTitle() {
     return Row(
       children: [
+        SizedBox(width: 2),
         CircleAvatar(
           radius: 8,
           backgroundImage: AssetImage('assets/${_coin.toLowerCase()}.png'),
@@ -111,7 +112,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
   Widget _buildDetails(bool isCoinActive) {
     return Column(
       children: [
-        _buildAmtDetails(),
+        _buildFiatAmt(),
         _buildExpanded(isCoinActive),
       ],
     );
@@ -279,7 +280,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     );
   }
 
-  Widget _buildAmtDetails() {
+  Widget _buildFiatAmt() {
     final String counterCoin = widget.order.action == Market.BUY
         ? _constrProvider.buyCoin
         : _constrProvider.sellCoin;
@@ -321,7 +322,10 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
         Flexible(
           child: AutoScrollText(
             text: receiveStr,
-            style: Theme.of(context).textTheme.caption.copyWith(color: color),
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                .copyWith(color: color, fontSize: 11),
           ),
         ),
       ],
