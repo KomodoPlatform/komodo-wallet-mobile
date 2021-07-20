@@ -9,6 +9,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:rational/rational.dart';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -290,7 +291,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     final double counterCexPrice = _cexProvider.getUsdPrice(counterCoin);
 
     String receiveStr;
-    Widget fiatProfitStr;
+    Color color = Theme.of(context).textTheme.caption.color;
 
     if (cexPrice != 0) {
       final double receiveAmtUsd =
@@ -299,28 +300,15 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
 
       if (counterCexPrice != 0) {
         final double counterAmtUsd = counterAmount.toDouble() * counterCexPrice;
-        double fiatProfitPct =
-            (receiveAmtUsd - counterAmtUsd) * 100 / counterAmtUsd;
-        if (fiatProfitPct < -99.9) fiatProfitPct = -99.9;
-        if (fiatProfitPct > 99.9) fiatProfitPct = 99.9;
-
-        Color color = Theme.of(context).textTheme.caption.color;
-        if (fiatProfitPct < 0) {
+        if (counterAmtUsd > receiveAmtUsd) {
           color = widget.order.action == Market.BUY
               ? Colors.green
               : Colors.orangeAccent;
-        } else if (fiatProfitPct > 0) {
+        } else if (counterAmtUsd < receiveAmtUsd) {
           color = widget.order.action == Market.BUY
               ? Colors.orangeAccent
               : Colors.green;
         }
-        fiatProfitStr = Text(
-          ' (' +
-              _getPctSign(fiatProfitPct) +
-              cutTrailingZeros(formatPrice(fiatProfitPct, 3)) +
-              '%)',
-          style: Theme.of(context).textTheme.caption.copyWith(color: color),
-        );
       }
     } else {
       final double receiveAmt =
@@ -330,29 +318,20 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
 
     return Row(
       children: [
-        Text(
-          (widget.order.action == Market.SELL
-                  ? AppLocalizations.of(context).simpleTradeRecieve
-                  : AppLocalizations.of(context).simpleTradeSend) +
-              ':',
-          style: Theme.of(context)
-              .textTheme
-              .caption
-              .copyWith(color: Theme.of(context).textTheme.bodyText1.color),
-        ),
-        SizedBox(width: 4),
+        if (cexPrice > 0) ...{
+          CexMarker(
+            context,
+            size: Size.fromRadius(6),
+          ),
+          SizedBox(width: 2),
+        },
         Flexible(
           child: AutoScrollText(
             text: receiveStr,
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.caption.copyWith(color: color),
           ),
         ),
-        fiatProfitStr ?? SizedBox(),
       ],
     );
-  }
-
-  String _getPctSign(double pct) {
-    return pct > 0 ? '+' : '';
   }
 }

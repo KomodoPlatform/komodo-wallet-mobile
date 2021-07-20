@@ -4,6 +4,7 @@ import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
@@ -231,6 +232,11 @@ class _SellFormState extends State<SellForm> {
               )
             : Row(
                 children: [
+                  CexMarker(
+                    context,
+                    size: Size.fromRadius(6),
+                  ),
+                  SizedBox(width: 2),
                   Expanded(
                     child: AutoScrollText(
                       text: _cexProvider.convert(usdAmt),

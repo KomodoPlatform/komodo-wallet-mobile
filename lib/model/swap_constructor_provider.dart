@@ -109,7 +109,7 @@ class ConstructorProvider extends ChangeNotifier {
           value = maxOrderAmt;
           _warning = 'Sell amount was set to '
               '${cutTrailingZeros(value.toStringAsFixed(appConfig.tradeFormPrecision))} '
-              '$_sellCoin, which is the max volume for selected order';
+              '$_sellCoin, which is the max volume available for this price';
         }
 
         _buyAmount = value * price;
@@ -134,7 +134,7 @@ class ConstructorProvider extends ChangeNotifier {
           value = maxOrderAmt;
           _warning = 'Buy amount was set to '
               '${cutTrailingZeros(value.toStringAsFixed(appConfig.tradeFormPrecision))} '
-              '$_buyCoin, which is the max volume for selected order';
+              '$_buyCoin, which is the max volume available for this price';
         }
 
         final Rational price = _matchingOrder.action == Market.BUY

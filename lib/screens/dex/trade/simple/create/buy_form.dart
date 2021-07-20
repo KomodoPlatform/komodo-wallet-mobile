@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:rational/rational.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/model/app_config.dart';
@@ -173,6 +174,11 @@ class _BuyFormState extends State<BuyForm> {
               )
             : Row(
                 children: [
+                  CexMarker(
+                    context,
+                    size: Size.fromRadius(6),
+                  ),
+                  SizedBox(width: 2),
                   Expanded(
                     child: AutoScrollText(
                       text: _cexProvider.convert(usdAmt),
