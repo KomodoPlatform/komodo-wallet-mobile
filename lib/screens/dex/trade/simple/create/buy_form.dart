@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/create/build_rate_simple.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:rational/rational.dart';
 import 'package:flutter/services.dart';
@@ -57,6 +58,8 @@ class _BuyFormState extends State<BuyForm> {
           _buildCoin(),
           SizedBox(height: 6),
           _buildAmt(),
+          SizedBox(height: 2),
+          BuildRateSimple(),
         ],
       ),
     );
