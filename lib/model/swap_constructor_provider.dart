@@ -363,7 +363,9 @@ class ConstructorProvider extends ChangeNotifier {
             coinsBloc.getBalanceByAbbr(coinFee.coin);
         if (coinBalance == null) {
           isValid = false;
-          _error = '${coinFee.coin} is not active';
+          _error =
+              '${coinFee.coin} needs to be active in order to pay swap fees.'
+              ' Please activate and try again.';
           break;
         }
       }
