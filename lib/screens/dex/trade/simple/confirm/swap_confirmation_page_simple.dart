@@ -20,12 +20,12 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/confirm/protection_control.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/build_detailed_fees_simple.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/evaluation_simple.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/exchange_rate_simple.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -40,12 +40,12 @@ class _SwapConfirmationPageSimpleState
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
   bool _inProgress = false;
-  BuyOrderType _buyOrderType = BuyOrderType.FillOrKill;
   LinkedHashMap _batteryData;
   Timer _batteryTimer;
   ProtectionSettings _protectionSettings;
   Coin _sellCoin;
   Coin _buyCoin;
+  double _sellAmtUsd;
 
   @override
   void initState() {
@@ -85,27 +85,16 @@ class _SwapConfirmationPageSimpleState
             : SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 24),
+                    SizedBox(height: 12),
                     _buildCoinSwapDetail(),
                     _buildTestCoinWarning(),
                     _buildBatteryWarning(),
                     _buildMobileDataWarning(),
-                    SizedBox(height: 24),
-                    _buildFees(),
-                    SizedBox(height: 24),
+                    SizedBox(height: 12),
                     _buildExchangeRate(),
-                    SizedBox(height: 24),
-                    _buildEvaluation(),
-                    SizedBox(height: 24),
-                    ProtectionControl(
-                      coin: _buyCoin,
-                      onChange: (ProtectionSettings settings) {
-                        setState(() {
-                          _protectionSettings = settings;
-                        });
-                      },
-                    ),
-                    _buildBuyOrderType(),
+                    SizedBox(height: 12),
+                    _buildFees(),
+                    SizedBox(height: 12),
                     const SizedBox(height: 8),
                     _buildButtons(),
                     _buildInfoSwap()
@@ -141,23 +130,9 @@ class _SwapConfirmationPageSimpleState
     return _constrProvider.sellCoin != null && _constrProvider.buyCoin != null;
   }
 
-  Widget _buildEvaluation() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
-      child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-              color: Theme.of(context).highlightColor,
-            )),
-          ),
-          child: EvaluationSimple()),
-    );
-  }
-
   Widget _buildExchangeRate() {
     return Container(
-      padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+      padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
       child: Container(
           decoration: BoxDecoration(
             border: Border(
@@ -171,7 +146,7 @@ class _SwapConfirmationPageSimpleState
 
   Widget _buildFees() {
     return Container(
-      padding: EdgeInsets.fromLTRB(26, 0, 26, 0),
+      padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
       child: Container(
         padding: EdgeInsets.fromLTRB(6, 0, 6, 0),
         decoration: BoxDecoration(
@@ -185,51 +160,16 @@ class _SwapConfirmationPageSimpleState
     );
   }
 
-  Widget _buildBuyOrderType() {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          _buyOrderType = _buyOrderType == BuyOrderType.FillOrKill
-              ? BuyOrderType.GoodTillCancelled
-              : BuyOrderType.FillOrKill;
-        });
-      },
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-        child: Column(
-          children: [
-            Row(
-              children: <Widget>[
-                Icon(
-                  _buyOrderType == BuyOrderType.GoodTillCancelled
-                      ? Icons.check_box
-                      : Icons.check_box_outline_blank,
-                  size: 18,
-                ),
-                const SizedBox(width: 3),
-                Expanded(
-                  child: Text(
-                    AppLocalizations.of(context).buyOrderType,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildCoinSwapDetail() {
-    final String amountSell =
-        cutTrailingZeros(formatPrice(_constrProvider.sellAmount.toDouble()));
-    final String amountReceive =
-        cutTrailingZeros(formatPrice(_constrProvider.buyAmount.toDouble()));
+    final String amountSell = cutTrailingZeros(_constrProvider.sellAmount
+        .toStringAsFixed(appConfig.tradeFormPrecision));
+    final String amountReceive = cutTrailingZeros(_constrProvider.buyAmount
+        .toStringAsFixed(appConfig.tradeFormPrecision));
 
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           child: ClipRRect(
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(8), topRight: Radius.circular(8)),
@@ -247,16 +187,17 @@ class _SwapConfirmationPageSimpleState
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(AppLocalizations.of(context).sell,
+                  Text(AppLocalizations.of(context).send,
                       style: Theme.of(context).textTheme.bodyText2.copyWith(
                             color: Theme.of(context).accentColor,
                             fontWeight: FontWeight.w100,
                           )),
-                  Text(
-                    '$amountSell ${_constrProvider.sellCoin}',
-                    textAlign: TextAlign.center,
+                  SizedBox(height: 8),
+                  AutoScrollText(
+                    text: '$amountSell ${_constrProvider.sellCoin}',
                     style: Theme.of(context).textTheme.headline6,
                   ),
+                  SizedBox(height: 8),
                   _buildSellFiat(),
                 ],
               ),
@@ -267,7 +208,7 @@ class _SwapConfirmationPageSimpleState
           height: 2,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Stack(
             overflow: Overflow.visible,
             children: <Widget>[
@@ -290,19 +231,13 @@ class _SwapConfirmationPageSimpleState
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         _buildReceiveFiat(),
-                        Text(
-                          '$amountReceive ${_constrProvider.buyCoin}',
-                          textAlign: TextAlign.center,
+                        SizedBox(height: 4),
+                        AutoScrollText(
+                          text: '$amountReceive ${_constrProvider.buyCoin}',
                           style: Theme.of(context).textTheme.headline6,
                         ),
-                        Text(
-                            AppLocalizations.of(context)
-                                    .receive
-                                    .substring(0, 1) +
-                                AppLocalizations.of(context)
-                                    .receive
-                                    .toLowerCase()
-                                    .substring(1),
+                        SizedBox(height: 8),
+                        Text(AppLocalizations.of(context).receive,
                             style:
                                 Theme.of(context).textTheme.bodyText2.copyWith(
                                       color: Theme.of(context).accentColor,
@@ -399,7 +334,7 @@ class _SwapConfirmationPageSimpleState
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
+      padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
       child: Container(
         decoration: BoxDecoration(
           color: color,
@@ -428,13 +363,16 @@ class _SwapConfirmationPageSimpleState
   }
 
   Widget _buildSellFiat() {
-    final double sellAmtUsd = _constrProvider.sellAmount.toDouble() *
-        _cexProvider.getUsdPrice(_constrProvider.sellCoin);
-    if (sellAmtUsd == 0) return SizedBox();
+    setState(() {
+      _sellAmtUsd = _constrProvider.sellAmount.toDouble() *
+          _cexProvider.getUsdPrice(_constrProvider.sellCoin);
+    });
+
+    if (_sellAmtUsd == 0) return SizedBox();
 
     return Container(
       child: Text(
-        _cexProvider.convert(sellAmtUsd),
+        _cexProvider.convert(_sellAmtUsd),
         style: Theme.of(context).textTheme.caption,
       ),
     );
@@ -445,126 +383,136 @@ class _SwapConfirmationPageSimpleState
         _cexProvider.getUsdPrice(_constrProvider.buyCoin);
     if (receiveeAmtUsd == 0) return SizedBox();
 
+    Color color;
+    if (_sellAmtUsd > 0) {
+      if (receiveeAmtUsd > _sellAmtUsd) color = Colors.green;
+      if (receiveeAmtUsd < _sellAmtUsd) color = Colors.orange;
+    }
+
     return Container(
       child: Text(
         _cexProvider.convert(receiveeAmtUsd),
-        style: Theme.of(context).textTheme.caption,
+        style: Theme.of(context).textTheme.caption.copyWith(color: color),
       ),
     );
   }
 
   Widget _buildInfoSwap() {
-    return Column(
-      children: <Widget>[
-        Stack(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                  color: Theme.of(context).backgroundColor,
-                  height: 32,
-                ),
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(32)),
-                  child: Container(
-                    color: Theme.of(context).primaryColor,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 32, horizontal: 32),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            AppLocalizations.of(context).infoTrade1,
-                            style: Theme.of(context).textTheme.subtitle2,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            AppLocalizations.of(context).infoTrade2,
-                            style: Theme.of(context).textTheme.bodyText2,
-                          )
-                        ],
+    return Container(
+      padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+      child: Column(
+        children: <Widget>[
+          Stack(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Container(
+                    color: Theme.of(context).backgroundColor,
+                    height: 32,
+                  ),
+                  ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(32)),
+                    child: Container(
+                      color: Theme.of(context).primaryColor,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 32, horizontal: 32),
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              AppLocalizations.of(context).infoTrade1,
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Text(
+                              AppLocalizations.of(context).infoTrade2,
+                              style: Theme.of(context).textTheme.bodyText2,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Positioned(
-                left: 32,
-                top: 8,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(52)),
-                  child: Container(
-                    height: 52,
-                    width: 52,
-                    color: Theme.of(context).backgroundColor,
-                    child: Icon(
-                      Icons.info,
-                      size: 48,
+                ],
+              ),
+              Positioned(
+                  left: 32,
+                  top: 8,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(52)),
+                    child: Container(
+                      height: 52,
+                      width: 52,
+                      color: Theme.of(context).backgroundColor,
+                      child: Icon(
+                        Icons.info,
+                        size: 48,
+                      ),
                     ),
-                  ),
-                )),
-          ],
-        )
-      ],
+                  )),
+            ],
+          )
+        ],
+      ),
     );
   }
 
   Widget _buildButtons() {
     final bool disabled = _inProgress || _isBatteryCritical();
 
-    return Builder(builder: (context) {
-      return Column(
+    return Container(
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 56),
+      child: Row(
         children: <Widget>[
-          const SizedBox(
-            height: 16,
+          Expanded(
+            child: OutlinedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0))),
+                padding: MaterialStateProperty.all(
+                    EdgeInsets.symmetric(vertical: 16)),
+              ),
+              child: Text(AppLocalizations.of(context).back.toUpperCase()),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ),
-          _inProgress
-              ? const CircularProgressIndicator()
-              : RaisedButton(
-                  key: const Key('confirm-simple-swap-button'),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 52),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  child:
-                      Text(AppLocalizations.of(context).confirm.toUpperCase()),
-                  onPressed: disabled
-                      ? null
-                      : () async {
-                          setState(() => _inProgress = true);
+          SizedBox(width: 12),
+          Expanded(
+            child: _inProgress
+                ? const CircularProgressIndicator()
+                : RaisedButton(
+                    key: const Key('confirm-simple-swap-button'),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    child: Text('Start Swap !'.toUpperCase()),
+                    onPressed: disabled
+                        ? null
+                        : () async {
+                            setState(() => _inProgress = true);
 
-                          await showSoundsDialog(context);
+                            await showSoundsDialog(context);
 
-                          await _constrProvider.makeSwap(
-                            buyOrderType: _buyOrderType,
-                            protectionSettings: _protectionSettings,
-                            onSuccess: (dynamic re) =>
-                                _goToNextScreen(context, re),
-                            onError: (dynamic err) =>
-                                _catchErrorSwap(context, err),
-                          );
+                            await _constrProvider.makeSwap(
+                              buyOrderType: BuyOrderType.FillOrKill,
+                              protectionSettings: _protectionSettings,
+                              onSuccess: (dynamic re) =>
+                                  _goToNextScreen(context, re),
+                              onError: (dynamic err) =>
+                                  _catchErrorSwap(context, err),
+                            );
 
-                          setState(() => _inProgress = false);
-                        },
-                ),
-          const SizedBox(
-            height: 8,
-          ),
-          FlatButton(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 56),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0)),
-            child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+                            setState(() => _inProgress = false);
+                          },
+                  ),
           ),
         ],
-      );
-    });
+      ),
+    );
   }
 
   void _catchErrorSwap(BuildContext context, ErrorString error) {

@@ -5,7 +5,6 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/confirm/swap_confirmation_page_simple.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 
 class BuildTradeButtonSimple extends StatefulWidget {
@@ -22,12 +21,30 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
 
     if (_constrProvider.matchingOrder == null) return SizedBox();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 70),
-      child: PrimaryButton(
-        key: const Key('trade-button-simple'),
-        onPressed: _isEnabled() ? () => _validateAndConfirm(context) : null,
-        text: 'Next',
+    return Opacity(
+      opacity: _isEnabled() ? 1 : 0.6,
+      child: Row(
+        children: [
+          SizedBox(width: 70),
+          Expanded(
+            child: RaisedButton(
+              key: const Key('trade-button-simple'),
+              padding: const EdgeInsets.symmetric(
+                vertical: 16,
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+              onPressed:
+                  _isEnabled() ? () => _validateAndConfirm(context) : null,
+              child: Text(
+                'Next'.toUpperCase(),
+                style: TextStyle(
+                    color: _isEnabled() ? null : Theme.of(context).hintColor),
+              ),
+            ),
+          ),
+          SizedBox(width: 70),
+        ],
       ),
     );
   }
