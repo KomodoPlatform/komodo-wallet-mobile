@@ -50,6 +50,12 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
           border: Border.all(color: color, width: 0.5)),
       child: Row(
         children: [
+          Icon(
+            Icons.notification_important,
+            size: 16,
+            color: color,
+          ),
+          SizedBox(width: 8),
           Expanded(
             child: Text(
               _warning,
@@ -87,6 +93,12 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
           border: Border.all(color: color, width: 0.5)),
       child: Row(
         children: [
+          Icon(
+            Icons.error,
+            size: 16,
+            color: Theme.of(context).errorColor,
+          ),
+          SizedBox(width: 8),
           Expanded(
             child: Text(
               _error,
