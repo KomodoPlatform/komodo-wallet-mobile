@@ -483,7 +483,7 @@ class _SwapConfirmationPageSimpleState
           SizedBox(width: 12),
           Expanded(
             child: _inProgress
-                ? const CircularProgressIndicator()
+                ? Center(child: CircularProgressIndicator())
                 : RaisedButton(
                     key: const Key('confirm-simple-swap-button'),
                     padding: const EdgeInsets.symmetric(vertical: 16),
