@@ -9,7 +9,6 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:rational/rational.dart';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -71,7 +70,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
                           ? 1
                           : 0.4,
                   child: Container(
-                      padding: EdgeInsets.fromLTRB(8, 6, 8, 6),
+                      padding: EdgeInsets.fromLTRB(8, 11, 6, 3),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -317,14 +316,8 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     }
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if (cexPrice > 0) ...{
-          CexMarker(
-            context,
-            size: Size.fromRadius(6),
-          ),
-          SizedBox(width: 2),
-        },
         Flexible(
           child: AutoScrollText(
             text: receiveStr,

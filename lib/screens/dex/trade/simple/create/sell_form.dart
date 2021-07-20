@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
-import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
@@ -21,7 +19,6 @@ class _SellFormState extends State<SellForm> {
   final _focusNode = FocusNode();
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
-  bool _showClearButton = false;
 
   @override
   void initState() {
@@ -35,10 +32,6 @@ class _SellFormState extends State<SellForm> {
       } else {
         FocusScope.of(context).requestFocus(FocusNode());
       }
-
-      _focusNode.addListener(() {
-        setState(() => _showClearButton = _focusNode.hasFocus);
-      });
     });
     super.initState();
   }
@@ -121,40 +114,39 @@ class _SellFormState extends State<SellForm> {
   }
 
   Widget _buildAmt() {
-    return TextFormField(
-        controller: _amtCtrl,
-        focusNode: _focusNode,
-        keyboardType: TextInputType.numberWithOptions(decimal: true),
-        inputFormatters: <TextInputFormatter>[
-          DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),
-          FilteringTextInputFormatter.allow(RegExp(
-              '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
-        ],
-        decoration: InputDecoration(
-          isDense: true,
-          contentPadding: EdgeInsets.fromLTRB(12, 16, 0, 16),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4),
-              borderSide: BorderSide(
-                  color: Theme.of(context).highlightColor, width: 1)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-            width: 1,
-            color: Theme.of(context).accentColor,
-          )),
-          suffixIcon: _constrProvider.sellAmount == null || !_showClearButton
-              ? null
-              : InkWell(
-                  child: Icon(
-                    Icons.clear,
-                    size: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  ),
-                  onTap: () {
-                    _constrProvider.sellAmount = null;
-                  },
-                ),
-        ));
+    return Stack(
+      children: [
+        TextFormField(
+            controller: _amtCtrl,
+            focusNode: _focusNode,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            inputFormatters: <TextInputFormatter>[
+              DecimalTextInputFormatter(
+                  decimalRange: appConfig.tradeFormPrecision),
+              FilteringTextInputFormatter.allow(RegExp(
+                  '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
+            ],
+            style: TextStyle(height: 1),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 22),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(4),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).highlightColor, width: 1)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                width: 1,
+                color: Theme.of(context).accentColor,
+              )),
+            )),
+        Positioned(
+          right: 4,
+          bottom: 2,
+          child: _buildFiatAmt(),
+        )
+      ],
+    );
   }
 
   Widget _buildCoin() {
@@ -173,23 +165,20 @@ class _SellFormState extends State<SellForm> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundImage: AssetImage(
-                                'assets/${_constrProvider.sellCoin.toLowerCase()}.png'),
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            _constrProvider.sellCoin,
-                            style: Theme.of(context).textTheme.subtitle1,
-                          ),
-                        ],
-                      ),
-                      _buildFiatAmt(),
-                    ]),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 8,
+                          backgroundImage: AssetImage(
+                              'assets/${_constrProvider.sellCoin.toLowerCase()}.png'),
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          _constrProvider.sellCoin,
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
                   ),
                   Icon(
                     Icons.clear,
@@ -210,42 +199,16 @@ class _SellFormState extends State<SellForm> {
     double usdAmt = 0.0;
     if (sellAmount != null && sellAmount.toDouble() > 0) {
       usdAmt = _constrProvider.sellAmount.toDouble() * usdPrice;
-    } else {
-      return SizedBox();
     }
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(height: 4),
-        usdAmt == 0
-            ? Row(
-                children: [
-                  Expanded(
-                    child: AutoScrollText(
-                      text: '${cutTrailingZeros(formatPrice(sellAmount))}'
-                          ' ${_constrProvider.sellCoin}',
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  ),
-                ],
-              )
-            : Row(
-                children: [
-                  CexMarker(
-                    context,
-                    size: Size.fromRadius(6),
-                  ),
-                  SizedBox(width: 2),
-                  Expanded(
-                    child: AutoScrollText(
-                      text: _cexProvider.convert(usdAmt),
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  ),
-                ],
-              ),
-      ],
+    if (usdAmt == 0) return SizedBox();
+
+    return Text(
+      _cexProvider.convert(usdAmt),
+      style: Theme.of(context)
+          .textTheme
+          .caption
+          .copyWith(color: Theme.of(context).textTheme.bodyText1.color),
     );
   }
 
