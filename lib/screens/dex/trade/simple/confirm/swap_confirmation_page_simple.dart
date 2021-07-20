@@ -18,8 +18,8 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
-import 'package:komodo_dex/screens/dex/trade/build_detailed_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/confirm/protection_control.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/build_detailed_fees_simple.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/evaluation_simple.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/exchange_rate_simple.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -180,7 +180,7 @@ class _SwapConfirmationPageSimpleState
             color: Theme.of(context).highlightColor,
           ),
         )),
-        child: BuildDetailedFees(preimage: _constrProvider.preimage),
+        child: BuildDetailedFeesSimple(preimage: _constrProvider.preimage),
       ),
     );
   }

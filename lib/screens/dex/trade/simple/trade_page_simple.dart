@@ -2,7 +2,6 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/market.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/create/build_reset_button_simple.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_button_simple.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_details.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/buy_form.dart';

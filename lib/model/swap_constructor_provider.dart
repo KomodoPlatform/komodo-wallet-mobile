@@ -260,7 +260,7 @@ class ConstructorProvider extends ChangeNotifier {
       if (_buyAmount == order.maxVolume) {
         _warning = 'Buy amount was set to '
             '${cutTrailingZeros(_buyAmount.toStringAsFixed(appConfig.tradeFormPrecision))} '
-            '$_buyCoin, which is the max volume for selected order';
+            '$_buyCoin, which is the max volume available for this price';
       }
     } else {
       buyCoin = order.coin;
@@ -270,7 +270,7 @@ class ConstructorProvider extends ChangeNotifier {
       if (_sellAmount == order.maxVolume / order.price) {
         _warning = 'Sell amount was set to '
             '${cutTrailingZeros(_sellAmount.toStringAsFixed(appConfig.tradeFormPrecision))} '
-            '$_sellCoin, which is the max volume for selected order';
+            '$_sellCoin, which is the max volume available for this price';
       }
     }
   }
