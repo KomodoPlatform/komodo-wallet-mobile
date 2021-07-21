@@ -12,8 +12,8 @@ import 'package:komodo_dex/utils/utils.dart';
 class TradeFormValidator {
   final CoinBalance sellBalance = swapBloc.sellCoinBalance;
   final CoinBalance receiveBalance = swapBloc.receiveCoinBalance;
-  final double amountSell = swapBloc.amountSell;
-  final double amountReceive = swapBloc.amountReceive;
+  final Rational amountSell = swapBloc.amountSell;
+  final Rational amountReceive = swapBloc.amountReceive;
   final Ask matchingBid = swapBloc.matchingBid;
   final AppLocalizations appLocalizations = AppLocalizations();
 
@@ -49,10 +49,11 @@ class TradeFormValidator {
     final double minVolumeReceive =
         await tradeForm.minVolumeDefault(swapBloc.receiveCoinBalance.coin.abbr);
 
-    if (amountSell != null && amountSell < minVolumeSell) {
+    if (amountSell != null && amountSell.toDouble() < minVolumeSell) {
       return appLocalizations.minValue(
           swapBloc.sellCoinBalance.coin.abbr, '$minVolumeSell');
-    } else if (amountReceive != null && amountReceive < minVolumeReceive) {
+    } else if (amountReceive != null &&
+        amountReceive.toDouble() < minVolumeReceive) {
       return appLocalizations.minValueBuy(
           swapBloc.receiveCoinBalance.coin.abbr, '$minVolumeReceive');
     } else if (matchingBid != null && matchingBid.minVolume != null) {
@@ -60,7 +61,8 @@ class TradeFormValidator {
         return appLocalizations.minValueOrder(
             sellCoin: swapBloc.sellCoinBalance.coin.abbr,
             sellAmount: cutTrailingZeros(formatPrice(
-                matchingBid.minVolume * double.parse(matchingBid.price))),
+                matchingBid.minVolume.toDouble() *
+                    double.parse(matchingBid.price))),
             buyCoin: swapBloc.receiveCoinBalance.coin.abbr,
             buyAmount: cutTrailingZeros(formatPrice(matchingBid.minVolume)));
       }

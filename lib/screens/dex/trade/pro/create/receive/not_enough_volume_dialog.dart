@@ -66,8 +66,8 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
                     )),
                 SizedBox(width: 2),
                 Text(
-                    cutTrailingZeros(
-                        formatPrice(ask.minVolume * double.parse(ask.price))),
+                    cutTrailingZeros(formatPrice(
+                        ask.minVolume.toDouble() * double.parse(ask.price))),
                     style: TextStyle(
                       fontSize: 12,
                       color: Theme.of(context).disabledColor,

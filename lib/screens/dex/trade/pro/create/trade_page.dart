@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:decimal/decimal.dart';
+import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
@@ -363,7 +362,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<void> _openSelectCoinDialog(Market market) async {
     if (market == Market.BUY) {
-      if (swapBloc.amountSell == null || swapBloc.amountSell <= 0) {
+      if (swapBloc.amountSell == null || swapBloc.amountSell.toDouble() <= 0) {
         _showSnackbar(AppLocalizations.of(context).enterSellAmount);
         return;
       }
@@ -371,7 +370,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       if (!swapBloc.processing) {
         openSelectReceiveCoinDialog(
           context: context,
-          amountSell: swapBloc.amountSell,
+          amountSell: swapBloc.amountSell.toDouble(),
           onSelect: (Ask bid) => _performTakerOrder(bid),
           onCreate: (String coin) => _performMakerOrder(coin),
         );
@@ -414,15 +413,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     swapBloc.enabledReceiveField = false;
     swapBloc.updateReceiveCoin(bid.coin);
-    swapBloc.setAmountReceive(
-        bid.getReceiveAmount(deci(swapBloc.amountSell)).toDouble());
+    tradeForm.updateAmountReceive(bid.getReceiveAmount(swapBloc.amountSell));
 
-    final Decimal amountSell = Decimal.parse(swapBloc.amountSell.toString());
-    final Decimal bidPrice = Decimal.parse(bid.price.toString());
-    final Decimal bidVolume = Decimal.parse(bid.maxvolume.toString());
+    final Rational amountSell = swapBloc.amountSell;
+    final Rational bidPrice = fract2rat(bid.priceFract);
+    final Rational bidVolume = fract2rat(bid.maxvolumeFract);
 
     if (amountSell > bidVolume * bidPrice) {
-      swapBloc.setAmountSell((bidVolume * bidPrice).toDouble());
+      tradeForm.updateAmountSell(bidVolume * bidPrice);
       swapBloc.setIsMaxActive(false);
     }
   }
@@ -469,9 +467,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     // filled and non-zero, or if creating taker-swap
     final bool startAutovalidation = swapBloc.matchingBid != null ||
         swapBloc.sellCoinBalance != null &&
-            (swapBloc.amountSell ?? 0) > 0 &&
+            (swapBloc.amountSell?.toDouble() ?? 0) > 0 &&
             swapBloc.receiveCoinBalance != null &&
-            (swapBloc.amountReceive ?? 0) > 0;
+            (swapBloc.amountReceive?.toDouble() ?? 0) > 0;
 
     if (startAutovalidation) swapBloc.autovalidate = true;
   }

@@ -438,7 +438,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildSellFiat() {
-    final double sellAmtUsd = swapBloc.amountSell *
+    final double sellAmtUsd = swapBloc.amountSell.toDouble() *
         _cexProvider.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
     if (sellAmtUsd == 0) return SizedBox();
 
@@ -451,7 +451,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildReceiveFiat() {
-    final double receiveeAmtUsd = swapBloc.amountReceive *
+    final double receiveeAmtUsd = swapBloc.amountReceive.toDouble() *
         _cexProvider.getUsdPrice(swapBloc.receiveCoinBalance.coin.abbr);
     if (receiveeAmtUsd == 0) return SizedBox();
 

@@ -1,3 +1,4 @@
+import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
@@ -32,7 +33,7 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
   AddressBookProvider _addressBookProvider;
   OrderBookProvider _orderBookProvider;
 
-  final double _sellAmount = swapBloc.amountSell;
+  final Rational _sellAmount = swapBloc.amountSell;
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +240,7 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
                   color: Theme.of(context).highlightColor,
                 ))),
             child: Text(
-              formatPrice(bid.getReceiveAmount(deci(_sellAmount)).toDouble()),
+              formatPrice(bid.getReceiveAmount(_sellAmount)),
               style: Theme.of(context)
                   .textTheme
                   .bodyText2
@@ -278,8 +279,8 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
   }
 
   void _createOrder(Ask bid) {
-    final double maxSellAmt = swapBloc.maxTakerVolume?.toDouble() ??
-        swapBloc.sellCoinBalance.balance.balance.toDouble();
+    final Rational maxSellAmt = swapBloc.maxTakerVolume ??
+        Rational.parse(swapBloc.sellCoinBalance.balance.balance.toString());
     final bool isEnoughVolume =
         !(bid.minVolume != null && maxSellAmt < bid.minVolume);
 

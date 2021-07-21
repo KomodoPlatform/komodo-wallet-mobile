@@ -88,6 +88,22 @@ Decimal deci(dynamic dv) {
   throw Exception('Neither string nor double: $dv');
 }
 
+Rational tryParseRat(String text) {
+  try {
+    return Rational.parse(text);
+  } catch (_) {
+    return null;
+  }
+}
+
+Rational deci2rat(Decimal decimal) {
+  try {
+    return Rational.parse(decimal.toString());
+  } catch (_) {
+    return null;
+  }
+}
+
 Rational fract2rat(Map<String, dynamic> fract) {
   try {
     final rat = Rational(
@@ -101,12 +117,13 @@ Rational fract2rat(Map<String, dynamic> fract) {
   }
 }
 
-Rational deci2rat(Decimal decimal) {
+Map<String, dynamic> rat2fract(Rational rat) {
   try {
-    final rat = Rational.parse(decimal.toString());
-    return rat;
-  } catch (e) {
-    Log('utils', 'deci2rat: $e');
+    return <String, dynamic>{
+      'numer': rat.numerator.toString(),
+      'denom': rat.denominator.toString(),
+    };
+  } catch (_) {
     return null;
   }
 }
@@ -548,6 +565,7 @@ bool isInfinite(dynamic value) {
   if (value == 0.0 || value == '0.0' || value == '0') return false;
 
   if (value is String) value = double.parse(value);
+  if (value is Rational) value = value.toDouble();
   value = value.abs();
 
   if (value > double.maxFinite || 1 / value > double.maxFinite) return true;

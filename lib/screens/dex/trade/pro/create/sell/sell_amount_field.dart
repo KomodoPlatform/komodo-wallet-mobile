@@ -1,3 +1,4 @@
+import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/model/app_config.dart';
@@ -15,7 +16,6 @@ class SellAmountField extends StatefulWidget {
 
 class _SellAmountFieldState extends State<SellAmountField> {
   final _ctrl = TextEditingControllerWorkaroud();
-  String _prev;
 
   @override
   void initState() {
@@ -62,22 +62,22 @@ class _SellAmountFieldState extends State<SellAmountField> {
   }
 
   void _onFieldChange() {
-    // Ignore listener events with the same _ctrl.text value
-    final String text = _ctrl.text;
-    if (text == _prev) return;
-    _prev = text;
-
-    tradeForm.onSellAmountFieldChange(text);
+    tradeForm.onSellAmountFieldChange(_ctrl.text);
   }
 
-  void _onDataChange(double value) {
+  void _onDataChange(Rational value) {
     if (!mounted) return;
-    if (value == double.tryParse(_ctrl.text)) return;
+    if (value == null) {
+      _ctrl.text = '';
+      return;
+    }
 
-    _ctrl.setTextAndPosition(value == null
-        ? ''
-        : cutTrailingZeros(
-                value.toStringAsFixed(appConfig.tradeFormPrecision)) ??
-            '');
+    final String newFormatted =
+        cutTrailingZeros(value.toStringAsFixed(appConfig.tradeFormPrecision));
+    final String currentFormatted = cutTrailingZeros(_ctrl.text);
+
+    if (newFormatted != currentFormatted) {
+      _ctrl.setTextAndPosition(newFormatted);
+    }
   }
 }
