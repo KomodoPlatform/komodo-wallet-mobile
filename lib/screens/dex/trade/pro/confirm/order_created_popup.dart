@@ -19,7 +19,7 @@ void showOrderCreatedDialog(BuildContext context) {
                 PrimaryButton(
                   text: AppLocalizations.of(context).showMyOrders,
                   onPressed: () {
-                    swapBloc.setIndexTabDex(3);
+                    swapBloc.setIndexTabDex(1);
                     Navigator.of(context).pop();
                   },
                 ),
