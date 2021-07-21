@@ -126,13 +126,13 @@ class _CoinsListAllState extends State<CoinsListAll> {
     return counter;
   }
 
-  List<ListAllItem> _getItems() {
+  List<ListAllItem> _getItems({bool includeEmpty = false}) {
     final List<ListAllItem> available = [];
     final List<CoinBalance> active = coinsBloc.coinBalance;
 
     for (CoinBalance coinBalance in active) {
       final int matchingCoins = _getMatchingCoinsNumber(coinBalance.coin);
-      if (matchingCoins == 0) continue;
+      if (!includeEmpty && matchingCoins == 0) continue;
 
       final String term = widget.searchTerm.trim().toLowerCase();
       if (term.isNotEmpty) {
@@ -157,7 +157,13 @@ class _CoinsListAllState extends State<CoinsListAll> {
       return a.coin.abbr.compareTo(b.coin.abbr);
     });
 
-    return available;
+    if (available.isNotEmpty) {
+      return available;
+    } else if (!includeEmpty) {
+      return _getItems(includeEmpty: true);
+    } else {
+      return available;
+    }
   }
 }
 

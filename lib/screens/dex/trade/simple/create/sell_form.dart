@@ -77,10 +77,11 @@ class _SellFormState extends State<SellForm> {
     final String formattedButtonAmt = cutTrailingZeros(
         buttonAmt.toStringAsFixed(appConfig.tradeFormPrecision));
     final bool isActive = formattedButtonAmt == _amtCtrl.text;
+    final bool disabled = (_constrProvider.maxSellAmt?.toDouble() ?? 0) == 0;
 
     return Expanded(
       child: GestureDetector(
-        onTap: isActive
+        onTap: isActive || disabled
             ? null
             : () {
                 _constrProvider.sellAmount = buttonAmt;
@@ -90,9 +91,11 @@ class _SellFormState extends State<SellForm> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(2),
-              color: isActive
-                  ? Theme.of(context).accentColor.withAlpha(200)
-                  : Theme.of(context).primaryColor,
+              color: disabled
+                  ? Theme.of(context).primaryColor.withAlpha(200)
+                  : isActive
+                      ? Theme.of(context).accentColor.withAlpha(200)
+                      : Theme.of(context).primaryColor,
             ),
             alignment: Alignment(0, 0),
             padding: EdgeInsets.fromLTRB(1, 3, 1, 3),
@@ -104,7 +107,11 @@ class _SellFormState extends State<SellForm> {
                       .textTheme
                       .bodyText1
                       .color
-                      .withAlpha(isActive ? 255 : 180)),
+                      .withAlpha(disabled
+                          ? 100
+                          : isActive
+                              ? 255
+                              : 180)),
               maxLines: 1,
             ),
           ),
