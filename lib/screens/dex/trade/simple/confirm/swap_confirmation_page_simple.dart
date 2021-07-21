@@ -248,7 +248,7 @@ class _SwapConfirmationPageSimpleState
                     )),
               ),
               Positioned(
-                  left: (MediaQuery.of(context).size.width / 2) - 70,
+                  left: (MediaQuery.of(context).size.width / 2) - 60,
                   top: -22,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(32)),
