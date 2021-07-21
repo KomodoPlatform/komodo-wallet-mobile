@@ -616,9 +616,14 @@ class CexPrices {
               .toList();
 
       for (Coin coin in coins) {
+        if (!(pricesData['enough_volume'] ?? true)) return;
+
         final String coinAbbr = coin.abbr;
         _prices[coinAbbr] = {};
+
         pricesData.forEach((String currency, dynamic price) {
+          if (currency == 'enough_volume') return;
+
           double priceDouble;
           try {
             // Handle margin cases (e.g. int price, like '22000')
