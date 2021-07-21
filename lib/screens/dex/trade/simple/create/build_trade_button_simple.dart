@@ -56,6 +56,7 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
     }
 
     if (errorMessage == null) {
+      _constrProvider.warning = null;
       Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(

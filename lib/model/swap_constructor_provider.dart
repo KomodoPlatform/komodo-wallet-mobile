@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/buy_response.dart';
@@ -20,6 +21,11 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 
 class ConstructorProvider extends ChangeNotifier {
+  ConstructorProvider() {
+    _timer ??=
+        Timer.periodic(Duration(seconds: 5), (_) => _updateMatchingOrder());
+  }
+
   String _sellCoin;
   String _buyCoin;
   Rational _sellAmount;
@@ -30,6 +36,7 @@ class ConstructorProvider extends ChangeNotifier {
   String _warning;
   String _error;
   bool _inProgress = false;
+  Timer _timer;
 
   String get error => _error;
   set error(String value) {
@@ -312,6 +319,24 @@ class ConstructorProvider extends ChangeNotifier {
     }
   }
 
+  BestOrder getTickerTopOrder(List<BestOrder> tickerOrdersList, Market type) {
+    final List<BestOrder> sorted = List.from(tickerOrdersList);
+    sorted.removeWhere((BestOrder order) {
+      final String coin =
+          order.action == Market.SELL ? order.coin : order.otherCoin;
+      final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
+      if (coinBalance == null) return false;
+      return coinBalance.balance.address.toLowerCase() ==
+          order.address.toLowerCase();
+    });
+    if (type == Market.SELL) {
+      sorted.sort((a, b) => a.price.toDouble().compareTo(b.price.toDouble()));
+    } else {
+      sorted.sort((a, b) => b.price.toDouble().compareTo(a.price.toDouble()));
+    }
+    return sorted.isNotEmpty ? sorted[0] : null;
+  }
+
   void reset() {
     _sellCoin = null;
     _buyCoin = null;
@@ -324,6 +349,43 @@ class ConstructorProvider extends ChangeNotifier {
     _warning = null;
 
     notifyListeners();
+  }
+
+  Future<void> _updateMatchingOrder() async {
+    if (_matchingOrder == null) return;
+
+    final Market type =
+        _matchingOrder.action == Market.BUY ? Market.SELL : Market.BUY;
+
+    final BestOrders bestOrders = await getBestOrders(type);
+    if (bestOrders.error != null) return;
+
+    final String coin =
+        type == Market.SELL ? _matchingOrder.otherCoin : _matchingOrder.coin;
+
+    final BestOrder topOrder = getTickerTopOrder(bestOrders.result[coin], type);
+    if (topOrder == null) return;
+
+    if (topOrder.maxVolume == _matchingOrder.maxVolume &&
+        topOrder.price == _matchingOrder.price) return;
+
+    String warningMessage;
+
+    if (topOrder.price != _matchingOrder.price &&
+        topOrder.maxVolume != _matchingOrder.maxVolume) {
+      warningMessage = 'Warning: trade price and max volume was updated!';
+    } else if (topOrder.price != _matchingOrder.price) {
+      warningMessage = 'Warning: trade price was updated!';
+    } else if (topOrder.maxVolume != _matchingOrder.maxVolume) {
+      warningMessage = 'Warning: max trade volume was updated!';
+    }
+    _matchingOrder = topOrder;
+    sellAmount = _sellAmount; // recalculating sell and buy amounts
+
+    if (warningMessage != null) {
+      _warning = warningMessage;
+      notifyListeners();
+    }
   }
 
   Future<void> _updatePreimage() async {

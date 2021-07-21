@@ -107,7 +107,10 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
     final List<BestOrder> topOrdersList = [];
     for (String ticker in tickers) {
-      final BestOrder topOrder = _getTickerTopOrder(bestOrders.result[ticker]);
+      final BestOrder topOrder = _constrProvider.getTickerTopOrder(
+        bestOrders.result[ticker],
+        widget.type,
+      );
       if (topOrder != null) topOrdersList.add(topOrder);
     }
 
@@ -186,23 +189,5 @@ class _CoinsListBestState extends State<CoinsListBest> {
         ),
       ),
     );
-  }
-
-  BestOrder _getTickerTopOrder(List<BestOrder> tickerOrdersList) {
-    final List<BestOrder> sorted = List.from(tickerOrdersList);
-    sorted.removeWhere((BestOrder order) {
-      final String coin =
-          order.action == Market.SELL ? order.coin : order.otherCoin;
-      final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
-      if (coinBalance == null) return false;
-      return coinBalance.balance.address.toLowerCase() ==
-          order.address.toLowerCase();
-    });
-    if (widget.type == Market.SELL) {
-      sorted.sort((a, b) => a.price.toDouble().compareTo(b.price.toDouble()));
-    } else {
-      sorted.sort((a, b) => b.price.toDouble().compareTo(a.price.toDouble()));
-    }
-    return sorted.isNotEmpty ? sorted[0] : null;
   }
 }

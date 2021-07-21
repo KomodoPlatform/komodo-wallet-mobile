@@ -90,6 +90,7 @@ class _SwapConfirmationPageSimpleState
                     _buildTestCoinWarning(),
                     _buildBatteryWarning(),
                     _buildMobileDataWarning(),
+                    _buildTradeWarning(),
                     SizedBox(height: 12),
                     _buildExchangeRate(),
                     SizedBox(height: 12),
@@ -263,6 +264,15 @@ class _SwapConfirmationPageSimpleState
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildTradeWarning() {
+    if (_constrProvider.warning == null) return SizedBox();
+
+    return _buildWarning(
+      text: _constrProvider.warning,
+      iconData: Icons.notification_important,
     );
   }
 
