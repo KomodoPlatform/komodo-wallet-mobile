@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/dex/multi/multi_order_page.dart';
+import 'package:komodo_dex/screens/dex/trade/multi/multi_order_page.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/trade_page.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/trade_page_simple.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_mode_indicator.dart';
