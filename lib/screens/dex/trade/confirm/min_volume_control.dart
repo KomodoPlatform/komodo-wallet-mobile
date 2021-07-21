@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rational/rational.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -16,7 +17,7 @@ class MinVolumeControl extends StatefulWidget {
 
   final String base;
   final String rel;
-  final double price;
+  final Rational price;
   final Function(String, bool) onChange;
 
   @override
@@ -31,11 +32,11 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Object>(
+    return FutureBuilder<double>(
         future: tradeForm.minVolumeDefault(
           widget.base,
           rel: widget.rel,
-          price: widget.price,
+          price: widget.price.toDouble(),
         ),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return SizedBox();
@@ -127,7 +128,7 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
         future: tradeForm.minVolumeDefault(
           widget.base,
           rel: widget.rel,
-          price: widget.price,
+          price: widget.price.toDouble(),
         ),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return SizedBox();
@@ -169,12 +170,12 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
   String _validate(String value) {
     if (value == null) return null;
 
-    final double minVolumeValue = double.tryParse(value);
-    final double amountToSell = swapBloc.amountSell;
+    final Rational minVolumeValue = Rational.parse(value);
+    final Rational amountToSell = swapBloc.amountSell;
 
     if (minVolumeValue == null) {
       return AppLocalizations.of(context).nonNumericInput;
-    } else if (minVolumeValue < _defaultValue) {
+    } else if (minVolumeValue.toDouble() < _defaultValue) {
       return AppLocalizations.of(context)
           .minVolumeInput(_defaultValue, swapBloc.sellCoinBalance.coin.abbr);
     } else if (amountToSell != null && minVolumeValue > amountToSell) {
