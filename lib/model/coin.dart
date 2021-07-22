@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -170,6 +171,10 @@ class Coin {
     if (abbr == 'BNBT') return 'BNBT';
 
     return protocol?.protocolData?.platform;
+  }
+
+  bool get isActive {
+    return coinsBloc.getBalanceByAbbr(abbr) != null;
   }
 }
 

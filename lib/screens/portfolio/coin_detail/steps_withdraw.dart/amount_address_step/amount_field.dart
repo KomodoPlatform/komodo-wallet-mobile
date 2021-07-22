@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
 
@@ -100,7 +100,7 @@ class _AmountFieldState extends State<AmountField> {
                         key: const Key('send-amount-field'),
                         inputFormatters: <TextInputFormatter>[
                           DecimalTextInputFormatter(
-                              decimalRange: tradeForm.precision),
+                              decimalRange: appConfig.tradeFormPrecision),
                           FilteringTextInputFormatter.allow(RegExp(
                               '^\$|^(0|([1-9][0-9]{0,12}))([.,]{1}[0-9]{0,8})?\$'))
                         ],

@@ -17,6 +17,7 @@ import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/intent_data_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/feed/feed_page.dart';
@@ -92,6 +93,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ),
             ChangeNotifierProvider(
               create: (context) => IntentDataProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => ConstructorProvider(),
             ),
           ],
           child: const MyApp(),
@@ -298,7 +302,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         return Scaffold(
           key: _scaffoldKey,
-          endDrawer: AppDrawer(),
+          endDrawer: AppDrawer(context),
           resizeToAvoidBottomPadding: true,
           backgroundColor: Theme.of(context).backgroundColor,
           body: _children[snapshot.data],

@@ -8,9 +8,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class CexProvider extends ChangeNotifier {
@@ -543,16 +541,10 @@ class CexPrices {
   }
 
   Future<void> updatePrices([List<Coin> coinsList]) async {
-    coinsList ??= coinsBloc.coinBalance
-        ?.map((CoinBalance balance) => balance.coin)
-        ?.toList();
-
-    if (coinsList == null) return;
-
     // All available coins, inculding not active.
     final List<Coin> allCoins = (await coins).values.toList();
     final List<String> ids =
-        coinsList.map((Coin coin) => coin.coingeckoId).toList();
+        allCoins.map((Coin coin) => coin.coingeckoId).toList();
 
     for (String abbr in currencies) {
       if (ids.contains(abbr)) continue;
@@ -624,9 +616,14 @@ class CexPrices {
               .toList();
 
       for (Coin coin in coins) {
+        if (!(pricesData['enough_volume'] ?? true)) return;
+
         final String coinAbbr = coin.abbr;
         _prices[coinAbbr] = {};
+
         pricesData.forEach((String currency, dynamic price) {
+          if (currency == 'enough_volume') return;
+
           double priceDouble;
           try {
             // Handle margin cases (e.g. int price, like '22000')
