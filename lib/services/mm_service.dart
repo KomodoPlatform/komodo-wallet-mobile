@@ -5,7 +5,6 @@ import 'dart:io' show File, Platform, Process;
 
 import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
 import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
@@ -147,7 +146,6 @@ class MMService {
   Future<void> init(String passphrase) async {
     await mmSe.runBin();
     metrics();
-    tradeForm.reset();
 
     jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
       if (!mmSe.running) return;

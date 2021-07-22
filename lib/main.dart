@@ -302,7 +302,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         return Scaffold(
           key: _scaffoldKey,
-          endDrawer: AppDrawer(),
+          endDrawer: AppDrawer(context),
           resizeToAvoidBottomPadding: true,
           backgroundColor: Theme.of(context).backgroundColor,
           body: _children[snapshot.data],
