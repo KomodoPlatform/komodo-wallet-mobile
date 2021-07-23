@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
@@ -16,7 +17,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   bool _isButtonDisabled = false;
   bool _isLogin;
   bool _isSeedHidden = true;
-  bool checkBox = false;
+  bool _checkBox = false;
 
   @override
   void initState() {
@@ -115,7 +116,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   }
 
   void _checkSeed(String str) {
-    if (checkBox) {
+    if (_checkBox) {
       if (str.isNotEmpty) {
         setState(() {
           _isButtonDisabled = false;
@@ -143,10 +144,12 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
       children: <Widget>[
         Checkbox(
           key: const Key('checkbox-custom-seed'),
-          value: checkBox,
-          onChanged: (bool data) {
+          value: _checkBox,
+          onChanged: (bool data) async {
+            final bool confirmed = await _showCustomSeedWarning(data);
+            if (!confirmed) return;
             setState(() {
-              checkBox = !checkBox;
+              _checkBox = !_checkBox;
               _checkSeed(controllerSeed.text);
             });
           },
@@ -157,6 +160,61 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         )
       ],
     );
+  }
+
+  Future<bool> _showCustomSeedWarning(bool value) async {
+    if (!value) return true;
+
+    dialogBloc.dialog = Future<void>(() {});
+    final bool confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) {
+          bool enabled = false;
+          return StatefulBuilder(builder: (context, setState) {
+            return SimpleDialog(
+              contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+              title: Text(AppLocalizations.of(context).warning),
+              children: [
+                Text(AppLocalizations.of(context).customSeedWarning),
+                TextField(
+                  autofocus: true,
+                  style: TextStyle(color: Theme.of(context).accentColor),
+                  onChanged: (String text) {
+                    setState(() {
+                      enabled = text.trim().toLowerCase() ==
+                          AppLocalizations.of(context)
+                              .iUnderstand
+                              .toLowerCase();
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FlatButton(
+                        child: Text(AppLocalizations.of(context).cancelButton),
+                        onPressed: () {
+                          Navigator.pop(context, false);
+                        }),
+                    SizedBox(width: 12),
+                    RaisedButton(
+                      child: Text(AppLocalizations.of(context).okButton),
+                      onPressed: !enabled
+                          ? null
+                          : () {
+                              Navigator.pop(context, true);
+                            },
+                    ),
+                  ],
+                )
+              ],
+            );
+          });
+        });
+    dialogBloc.dialog = null;
+
+    return confirmed == true;
   }
 
   Widget _buildConfirmButton() {

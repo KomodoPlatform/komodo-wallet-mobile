@@ -291,6 +291,15 @@ class AppLocalizations {
       );
   String get allowCustomSeed =>
       Intl.message('Allow custom seed', name: 'allowCustomSeed');
+  String get warning => Intl.message('Warning!', name: 'warning');
+  String get iUnderstand => Intl.message('I understand', name: 'iUnderstand');
+  String get customSeedWarning => Intl.message(
+      'Custom seed phrases might be'
+      ' less secure and easier to crack than a generated BIP39 compliant seed'
+      ' phrase or private key (WIF). To confirm you understand the risk and know'
+      ' what you are doing, type'
+      ' "$iUnderstand" in the box below.',
+      name: 'customSeedWarning');
   String get hintEnterPassword =>
       Intl.message('Enter your password', name: 'hintEnterPassword');
   String get signInWithSeedPhrase =>
