@@ -1496,10 +1496,10 @@ class AppLocalizations {
       Intl.message('$coin is not active!',
           name: 'simpleTradeNotActive', args: <Object>[coin]);
   String simpleTradeBuyHint(String coin) =>
-      Intl.message('Plsease enter $coin amount to buy',
+      Intl.message('Please enter $coin amount to buy',
           name: 'simpleTradeBuyHint', args: <Object>[coin]);
   String simpleTradeSellHint(String coin) =>
-      Intl.message('Plsease enter $coin amount to sell',
+      Intl.message('Please enter $coin amount to sell',
           name: 'simpleTradeSellHint', args: <Object>[coin]);
   String get simpleTradeShowLess =>
       Intl.message('Show less', name: 'simpleTradeShowLess');
