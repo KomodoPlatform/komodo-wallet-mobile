@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
@@ -14,6 +15,7 @@ import 'package:komodo_dex/model/export_import_list_item.dart';
 import 'package:komodo_dex/model/get_import_swaps.dart';
 import 'package:komodo_dex/model/import_swaps.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/import-export/export_import_list.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
 import 'package:komodo_dex/screens/import-export/overwrite_dialog_content.dart';
@@ -44,30 +46,33 @@ class _ImportPageState extends State<ImportPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context).importTitle,
+    return LockScreen(
+      context: context,
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context).importTitle,
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            if (_done) ...{
-              _buildSuccess(),
-            } else if (_all == null) ...{
-              _buildLoadHeader(),
-              _buildFilePickerButton(),
-            } else ...{
-              _buildImportHeader(),
-              _buildNotes(),
-              _buildContacts(),
-              _buildSwaps(),
-              _buildImportButton(),
-            }
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (_done) ...{
+                _buildSuccess(),
+              } else if (_all == null) ...{
+                _buildLoadHeader(),
+                _buildFilePickerButton(),
+              } else ...{
+                _buildImportHeader(),
+                _buildNotes(),
+                _buildContacts(),
+                _buildSwaps(),
+                _buildImportButton(),
+              }
+            ],
+          ),
         ),
       ),
     );
@@ -166,6 +171,7 @@ class _ImportPageState extends State<ImportPage> {
       }
 
       String mergedValue = '';
+      dialogBloc.dialog = Future<void>(() {});
       final choice = await showDialog<NoteImportChoice>(
         context: context,
         builder: (context) {
@@ -189,6 +195,7 @@ class _ImportPageState extends State<ImportPage> {
           );
         },
       );
+      dialogBloc.dialog = null;
       if (choice == NoteImportChoice.Overwrite) {
         await Db.saveNote(id, note);
       } else if (choice == NoteImportChoice.Merge) {
@@ -453,6 +460,7 @@ class _ImportPageState extends State<ImportPage> {
     setState(() => _isPassObscured = true);
     _passController.text = '';
 
+    dialogBloc.dialog = Future<void>(() {});
     final pass = await showDialog<String>(
       context: context,
       barrierDismissible: false,
@@ -524,6 +532,7 @@ class _ImportPageState extends State<ImportPage> {
         );
       }),
     );
+    dialogBloc.dialog = null;
 
     if (pass == null) return null;
 

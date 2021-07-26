@@ -106,8 +106,11 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
   // first trying to find existing item,
   // related to swap (taker order) and only if it was found,
   // and then disappears (not converts in swap or maker) - closing the page.
-  void _closeIfCancelled(AsyncSnapshot<List<dynamic>> ordersSnapshot) {
+  Future<void> _closeIfCancelled(
+      AsyncSnapshot<List<dynamic>> ordersSnapshot) async {
     if (!ordersSnapshot.hasData) return;
+
+    await Future<dynamic>.delayed(Duration(seconds: 1));
 
     dynamic existingOrderOrSwap =
         ordersBloc.orderSwaps.firstWhere((dynamic item) {

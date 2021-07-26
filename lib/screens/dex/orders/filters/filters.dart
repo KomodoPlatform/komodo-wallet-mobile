@@ -2,11 +2,11 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
-import 'package:komodo_dex/screens/dex/trade/create/trade_page.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 
 class Filters extends StatefulWidget {
   const Filters({
@@ -39,7 +39,7 @@ class _FiltersState extends State<Filters> {
         children: [
           _buildCoinFilter(Market.SELL),
           SizedBox(height: 12),
-          _buildCoinFilter(Market.RECEIVE),
+          _buildCoinFilter(Market.BUY),
           SizedBox(height: 12),
           _buildDateFilter(DateFilterType.START),
           SizedBox(height: 12),
@@ -170,7 +170,7 @@ class _FiltersState extends State<Filters> {
     final int failedPredictor = widget.filter(widget.items).length;
     _filters.status = temp;
 
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
           return CustomSimpleDialog(
@@ -227,7 +227,7 @@ class _FiltersState extends State<Filters> {
               ),
             ],
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   Widget _buildDateFilter(DateFilterType dateType) {
@@ -408,7 +408,7 @@ class _FiltersState extends State<Filters> {
     final int takerPredictor = widget.filter(widget.items).length;
     _filters.type = temp;
 
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
           return CustomSimpleDialog(
@@ -464,7 +464,7 @@ class _FiltersState extends State<Filters> {
               ),
             ],
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   Widget _buildCoinFilter(Market market) {
@@ -629,14 +629,14 @@ class _FiltersState extends State<Filters> {
           ),
         ));
 
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
           return CustomSimpleDialog(
             hasHorizontalPadding: false,
             children: items,
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   List<String> _getCoins(Market market) {
@@ -649,7 +649,7 @@ class _FiltersState extends State<Filters> {
           case Market.SELL:
             coin = item.orderType == OrderType.MAKER ? item.base : item.rel;
             break;
-          case Market.RECEIVE:
+          case Market.BUY:
             coin = item.orderType == OrderType.MAKER ? item.rel : item.base;
             break;
         }
@@ -660,7 +660,7 @@ class _FiltersState extends State<Filters> {
           case Market.SELL:
             coin = item.isMaker ? item.makerAbbr : item.takerAbbr;
             break;
-          case Market.RECEIVE:
+          case Market.BUY:
             coin = item.isMaker ? item.takerAbbr : item.makerAbbr;
             break;
         }

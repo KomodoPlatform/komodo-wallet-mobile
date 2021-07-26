@@ -8,7 +8,8 @@ import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 Future<void> showSoundsDialog(BuildContext context) async {
   if (!settingsBloc.showSoundsExplanationDialog) return;
 
-  dialogBloc.dialog = showDialog(
+  dialogBloc.dialog = Future<void>(() {});
+  await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return CustomSimpleDialog(
@@ -95,4 +96,5 @@ Future<void> showSoundsDialog(BuildContext context) async {
           ],
         );
       });
+  dialogBloc.dialog = null;
 }

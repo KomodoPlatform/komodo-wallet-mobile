@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -13,6 +16,7 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:decimal/decimal.dart';
 
 class AmountAddressStep extends StatefulWidget {
   const AmountAddressStep(
@@ -24,7 +28,8 @@ class AmountAddressStep extends StatefulWidget {
       this.autoFocus = false,
       this.onWithdrawPressed,
       this.onCancel,
-      this.coin})
+      this.coin,
+      this.paymentUriInfo})
       : super(key: key);
 
   final Function onCancel;
@@ -35,6 +40,7 @@ class AmountAddressStep extends StatefulWidget {
   final TextEditingController addressController;
   final bool autoFocus;
   final Coin coin;
+  final PaymentUriInfo paymentUriInfo;
 
   @override
   _AmountAddressStepState createState() => _AmountAddressStepState();
@@ -44,6 +50,14 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   String barcode = '';
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool isCancel = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      handlePaymentData(widget.paymentUriInfo);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +114,111 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     );
   }
 
+  void handlePaymentData(PaymentUriInfo uriInfo) {
+    if (uriInfo == null) return;
+
+    if (uriInfo.abbr != widget.coin.abbr) {
+      showWrongCoinDialog(uriInfo);
+      return;
+    }
+
+    final Function onConfirmCallback = () {
+      if (uriInfo.address != null && uriInfo.address.isNotEmpty) {
+        widget.addressController.text = uriInfo.address;
+      }
+      if (uriInfo.amount != null) {
+        final coinBalance = coinsBloc.coinBalance.firstWhere(
+            (cb) => cb.coin.abbr == widget.coin.abbr,
+            orElse: () => null);
+        final amountDecimal = deci(uriInfo.amount);
+
+        if (coinBalance != null &&
+            coinBalance.balance.balance >= amountDecimal) {
+          widget.amountController.text = uriInfo.amount;
+        } else {
+          showinsufficientBalanceDialog(amountDecimal);
+        }
+      }
+    };
+
+    if (widget.paymentUriInfo != null) {
+      onConfirmCallback();
+    } else {
+      showUriDetailsDialog(context, uriInfo, onConfirmCallback);
+    }
+  }
+
+  void handleQrAdress(String address) {
+    widget.addressController.text = address;
+  }
+
+  void showWrongCoinDialog(PaymentUriInfo uriInfo) {
+    dialogBloc.dialog = showDialog<void>(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            contentPadding: const EdgeInsets.all(24),
+            title: Text(AppLocalizations.of(context).wrongCoinTitle),
+            children: <Widget>[
+              Text(AppLocalizations.of(context).wrongCoinSpan1 +
+                  uriInfo.abbr +
+                  AppLocalizations.of(context).wrongCoinSpan2 +
+                  widget.coin.abbr +
+                  AppLocalizations.of(context).wrongCoinSpan3),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text(AppLocalizations.of(context).okButton),
+                    onPressed: () {
+                      dialogBloc.closeDialog(context);
+                    },
+                  )
+                ],
+              ),
+            ],
+          );
+        }).then((dynamic _) => dialogBloc.dialog = null);
+  }
+
+  void showinsufficientBalanceDialog(Decimal amount) {
+    dialogBloc.dialog = showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(AppLocalizations.of(context).uriInsufficientBalanceTitle),
+          contentPadding: EdgeInsets.all(24),
+          children: <Widget>[
+            Text(
+              AppLocalizations.of(context).uriInsufficientBalanceSpan1 +
+                  '${deci2s(amount)} ${widget.coin.abbr}' +
+                  AppLocalizations.of(context).uriInsufficientBalanceSpan2,
+            ),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    AppLocalizations.of(context).warningOkBtn,
+                    style: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(color: Colors.white),
+                  ),
+                )
+              ],
+            )
+          ],
+        );
+      },
+    ).then((dynamic _) => dialogBloc.dialog = null);
+  }
+
   Widget _buildWithdrawButton(BuildContext context) {
     return Builder(
       builder: (BuildContext mContext) {
@@ -138,9 +257,16 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
 
     final int lockCookie = lockService.enteringQrScanner();
     try {
-      final String barcode = await BarcodeScanner.scan();
+      final String address = await BarcodeScanner.scan();
+      final uri = Uri.tryParse(address.trim());
+
       setState(() {
-        widget.addressController.text = barcode;
+        final PaymentUriInfo uriInfo = PaymentUriInfo.fromUri(uri);
+        if (uriInfo != null) {
+          handlePaymentData(uriInfo);
+        } else {
+          handleQrAdress(address);
+        }
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
@@ -161,7 +287,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   }
 
   void _showCameraPermissionDialog() {
-    showDialog<bool>(
+    dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return CustomSimpleDialog(
@@ -181,6 +307,6 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
           ],
         );
       },
-    );
+    ).then((dynamic _) => dialogBloc.dialog = null);
   }
 }

@@ -114,13 +114,17 @@ class _CoinSelectState extends State<CoinSelect> {
 
   Future<bool> _loadDepths() async {
     if (widget.pairedCoin == null) return true;
-    await _orderBookProvider.subscribeDepth(widget.pairedCoin,
-        widget.type == CoinType.rel ? CoinType.base : CoinType.rel);
+    await _orderBookProvider.subscribeDepth([
+      {
+        widget.pairedCoin.abbr:
+            widget.type == CoinType.rel ? CoinType.base : CoinType.rel
+      }
+    ]);
     return true;
   }
 
   void _showDialog() {
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return StreamBuilder(
@@ -134,10 +138,12 @@ class _CoinSelectState extends State<CoinSelect> {
               return _buildList(snapshot.data);
             },
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   Widget _buildList(List<CoinBalance> coins) {
+    if (context == null) return SizedBox();
+
     final List<CoinBalance> sortedList = coinsBloc.sortCoins(coins);
 
     if (sortedList.isEmpty) {

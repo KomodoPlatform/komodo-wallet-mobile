@@ -1,4 +1,5 @@
 import 'package:komodo_dex/model/get_trade_preimage.dart';
+import 'package:komodo_dex/model/rpc_error.dart';
 
 class TradePreimage {
   TradePreimage({
@@ -10,6 +11,7 @@ class TradePreimage {
     this.totalFees,
     this.feeToSendTakerFee,
     this.request,
+    this.error,
   });
 
   factory TradePreimage.fromJson(Map<String, dynamic> json) {
@@ -37,7 +39,8 @@ class TradePreimage {
   CoinFee takerFee;
   CoinFee feeToSendTakerFee;
   List<CoinFee> totalFees;
-  GetTradePreimage request;
+  dynamic request; // GetTradePreimage or GetTradePreimage2
+  RpcError error; // Used by RPC 2.0
 
   Map<String, dynamic> toJson() {
     final result = <String, dynamic>{

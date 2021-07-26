@@ -3,8 +3,7 @@ import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/orders/orders_page.dart';
-import 'package:komodo_dex/screens/dex/multi/multi_order_page.dart';
-import 'package:komodo_dex/screens/dex/trade/create/trade_page.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_modes_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 
 class DexPage extends StatefulWidget {
@@ -18,7 +17,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
     ordersBloc.updateOrdersSwaps();
 
     swapBloc.outIndexTab.listen((int onData) {
@@ -35,8 +34,6 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     Widget _buildAppBar() {
-      final bool _isSmallScreen = MediaQuery.of(context).size.height < 680;
-
       final Widget _tabsPanel = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Container(
@@ -50,50 +47,26 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
             indicator: CustomTabIndicator(context: context),
             controller: tabController,
             tabs: <Widget>[
-              Tab(
-                text: AppLocalizations.of(context).create.toUpperCase(),
-              ),
+              Tab(text: 'Swap'.toUpperCase()),
               Tab(text: AppLocalizations.of(context).orders.toUpperCase()),
-              Tab(
-                text: AppLocalizations.of(context).multiTab.toUpperCase(),
-              ),
             ],
           ),
         ),
       );
 
-      return _isSmallScreen
-          ? PreferredSize(
-              preferredSize: const Size.fromHeight(80),
-              child: AppBar(
-                flexibleSpace: SafeArea(
-                    child: Column(
-                  children: <Widget>[
-                    const SizedBox(height: 20),
-                    _tabsPanel,
-                  ],
-                )),
-                automaticallyImplyLeading: false,
-              ),
-            )
-          : AppBar(
-              title: Center(
-                  child: Text(
-                AppLocalizations.of(context).exchangeTitle,
-                key: const Key('exchange-title'),
-                style: Theme.of(context).textTheme.subtitle2,
-              )),
-              bottom: PreferredSize(
-                preferredSize: const Size(200.0, 70.0),
-                child: Column(
-                  children: <Widget>[
-                    _tabsPanel,
-                    const SizedBox(height: 15),
-                  ],
-                ),
-              ),
-              automaticallyImplyLeading: false,
-            );
+      return PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: AppBar(
+          flexibleSpace: SafeArea(
+              child: Column(
+            children: <Widget>[
+              SizedBox(height: 20),
+              _tabsPanel,
+            ],
+          )),
+          automaticallyImplyLeading: false,
+        ),
+      );
     }
 
     return GestureDetector(
@@ -101,7 +74,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: DefaultTabController(
-        length: 3,
+        length: 2,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: _buildAppBar(),
@@ -110,11 +83,8 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
             return TabBarView(
               controller: tabController,
               children: <Widget>[
-                TradePage(
-                  mContext: context,
-                ),
+                TradeModesPage(),
                 OrdersPage(),
-                MultiOrderPage(),
               ],
             );
           }),

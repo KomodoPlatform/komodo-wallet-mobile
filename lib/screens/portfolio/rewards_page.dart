@@ -470,7 +470,7 @@ class _RewardsPageState extends State<RewardsPage> {
   }
 
   void _showStatusHint(RewardsItem item) {
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return CustomSimpleDialog(
@@ -503,7 +503,7 @@ class _RewardsPageState extends State<RewardsPage> {
               ),
             ],
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   String _formatTimeLeft(Duration duration) {

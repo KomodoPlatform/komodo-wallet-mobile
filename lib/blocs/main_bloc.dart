@@ -8,6 +8,12 @@ MainBloc mainBloc = MainBloc();
 
 class MainBloc implements BlocBase {
   int currentIndexTab = 0;
+  int _tradeMode = 0; // 0: simple, 1: advanced, 2: multi
+
+  final StreamController<int> _tradeModeController =
+      StreamController<int>.broadcast();
+  Sink<int> get _inTradeMode => _tradeModeController.sink;
+  Stream<int> get outTradeMode => _tradeModeController.stream;
 
   final StreamController<int> _currentIndexTabController =
       StreamController<int>.broadcast();
@@ -79,6 +85,12 @@ class MainBloc implements BlocBase {
 
     _isInBackground = val;
     _inIsInBackground.add(_isInBackground);
+  }
+
+  int get tradeMode => _tradeMode;
+  set tradeMode(int value) {
+    _tradeMode = value;
+    _inTradeMode.add(value);
   }
 }
 

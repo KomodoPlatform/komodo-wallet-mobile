@@ -21,7 +21,7 @@ class CexFiatPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cexProvider = Provider.of<CexProvider>(context, listen: false);
+    final cexProvider = Provider.of<CexProvider>(context);
 
     final double price = cexProvider.getUsdPrice(coinAbbr);
     final amountParsed = double.tryParse(amount) ?? 0.0;

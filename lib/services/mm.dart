@@ -3,11 +3,15 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/best_order.dart';
+import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/get_import_swaps.dart';
 import 'package:komodo_dex/model/get_min_trading_volume.dart';
 import 'package:komodo_dex/model/get_orderbook_depth.dart';
+import 'package:komodo_dex/model/get_trade_preimage_2.dart';
 import 'package:komodo_dex/model/import_swaps.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
+import 'package:komodo_dex/model/rpc_error.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/get_convert_address.dart';
 import 'package:komodo_dex/model/get_enabled_coins.dart';
@@ -260,6 +264,7 @@ class ApiProvider {
               coin: coin.abbr,
               txHistory: true,
               swapContractAddress: coin.swapContractAddress,
+              fallbackSwapContract: coin.fallbackSwapContract,
               urls: coin.serverList)
           .toJson());
 
@@ -277,7 +282,9 @@ class ApiProvider {
       'requires_notarization': coin.requiresNotarization ?? false,
       'address_format': coin.addressFormat,
       if (coin.swapContractAddress.isNotEmpty)
-        'swap_contract_address': coin.swapContractAddress
+        'swap_contract_address': coin.swapContractAddress,
+      if (coin.fallbackSwapContract.isNotEmpty)
+        'fallback_swap_contract': coin.fallbackSwapContract
     };
     final js = json.encode(electrum);
     Log('mm:251', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
@@ -673,6 +680,66 @@ class ApiProvider {
     }
   }
 
+  Future<TradePreimage> getTradePreimage2(
+    GetTradePreimage2 request, {
+    http.Client client,
+  }) async {
+    client ??= mmSe.client;
+
+    final userBody = await _assertUserpass(client, request);
+
+    Response response;
+    try {
+      response = await userBody.client
+          .post(url, body: getTradePreimage2ToJson(userBody.body));
+      _saveRes('getTradePreimage2', response);
+    } catch (e) {
+      return TradePreimage(
+        request: request,
+        error: RpcError(
+          type: RpcErrorType.connectionError,
+          message: e,
+        ),
+      );
+    }
+
+    dynamic jbody;
+    try {
+      jbody = jsonDecode(response.body);
+    } catch (e) {
+      return TradePreimage(
+        request: request,
+        error: RpcError(
+          type: RpcErrorType.decodingError,
+          message: e,
+        ),
+      );
+    }
+
+    if (jbody['error'] != null) {
+      return TradePreimage(
+        request: request,
+        error: RpcError.fromJson(jbody),
+      );
+    }
+
+    TradePreimage preimage;
+    try {
+      preimage = TradePreimage.fromJson(jbody);
+    } catch (_) {}
+
+    if (preimage == null) {
+      return TradePreimage(
+          request: request,
+          error: RpcError(
+            type: RpcErrorType.mappingError,
+          ));
+    }
+
+    preimage.request = request;
+    return preimage;
+  }
+
   Future<Rational> getMaxTakerVolume(
     GetMaxTakerVolume request, {
     http.Client client,
@@ -778,5 +845,48 @@ class ApiProvider {
       return _catchErrorString(
           'getOrderbookDepth', e, 'mm orderbook_depth] $e');
     }
+  }
+
+  Future<BestOrders> getBestOrders(
+    GetBestOrders request, {
+    http.Client client,
+  }) async {
+    client ??= mmSe.client;
+
+    try {
+      final userBody = await _assertUserpass(client, request);
+      final String body = getBestOrdersToJson(userBody.body);
+      final response = await userBody.client.post(url, body: body);
+      _assert200(response);
+      _saveRes('getBestOrders', response);
+
+      // Parse JSON once, then check if the JSON is an error.
+      final dynamic jbody = jsonDecode(response.body);
+      final error = ErrorString.fromJson(jbody);
+      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+      jbody['request'] = request;
+      return BestOrders.fromJson(jbody);
+    } catch (e) {
+      return BestOrders(
+          error:
+              _catchErrorString('getOrderbookDepth', e, 'mm best_orders] $e'));
+    }
+  }
+
+  Future<bool> isRpcUp([http.Client client]) async {
+    client ??= mmSe.client;
+
+    bool isUp = false;
+    try {
+      final VersionMm2 versionmm2 =
+          await MM.getVersionMM2(BaseService(method: 'version'));
+
+      isUp = versionmm2 is VersionMm2 && versionmm2 != null;
+    } catch (e) {
+      Log('mm', 'isRpcUp: $e');
+    }
+
+    return isUp;
   }
 }

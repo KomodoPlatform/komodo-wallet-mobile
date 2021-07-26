@@ -6,17 +6,39 @@ import os.log
 import UserNotifications
 import AVFoundation
 
+var mm2StartArgs: String?
+var shouldRestartMM2: Bool = false;
+
+@_cdecl("mymodule_foo")
+func queueMM2Restart() -> Void {
+    shouldRestartMM2 = true
+}
+
+let sigpipeHandler: @convention(c) (Int32) -> () = { sig in
+    queueMM2Restart()
+}
+
+func performMM2Start() -> Int32 {
+    os_log("%{public}s", type: OSLogType.default, "START MM2 --------------------------------");
+    let error = Int32(mm2_main(mm2StartArgs, { (line) in
+        let mm2log = ["log": "AppDelegate] " + String(cString: line!)]
+        NotificationCenter.default.post(name: .didReceiveData, object: nil, userInfo: mm2log)
+    }));
+    os_log("%{public}s", type: OSLogType.default, "START MM2 RESULT: \(error) ---------------");
+    return error;
+}
+
+func performMM2Stop() -> Int32 {
+    os_log("%{public}s", type: OSLogType.default, "STOP MM2 --------------------------------");
+    let error = Int32(mm2_stop());
+    os_log("%{public}s", type: OSLogType.default, "STOP MM2 RESULT: \(error) ---------------");
+    return error;
+}
+
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
     var eventSink: FlutterEventSink?
-    
-    func audio (vc: FlutterViewController) {
-        // TODO: change with actual sound-scheme samples
-        let mk = vc.lookupKey (forAsset: "assets/audio/tick-tock.mp3")
-        let mp = Bundle.main.path (forResource: mk, ofType: nil)
-        audio_init (mp)
-        handleAudioInterruptions()
-    }
+    var intentURI: String?
     
     // Handle audio interruptions by Siri or calls.
     // Regular audio, like 'Apple Music' will be mixed with the app playback.
@@ -36,9 +58,6 @@ import AVFoundation
         }
         
         switch type {
-        // case .began:
-        // An interruption began.
-        
         case .ended:
             // An interruption ended. Resume playback, if appropriate.
             guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
@@ -53,13 +72,22 @@ import AVFoundation
         }
     }
     
-    override func application (_ application: UIApplication,
-                               didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:] ) -> Bool {
+        self.intentURI = url.absoluteString
+        return true
+    }
+    
+    override func application (_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        signal(SIGPIPE, sigpipeHandler)
+        
         guard let vc = window?.rootViewController as? FlutterViewController else {
             fatalError ("rootViewController is not type FlutterViewController")}
         let vcbm = vc as! FlutterBinaryMessenger
         
-        audio (vc: vc)
+        let audioDirKey = vc.lookupKey (forAsset: "assets/audio/start.mp3")
+        let audioDirPath = Bundle.main.path (forResource: audioDirKey, ofType: nil)
+        save_audio_path(audioDirPath)
+        handleAudioInterruptions()
         
         let mm2main = FlutterMethodChannel (name: "mm2", binaryMessenger: vcbm)
         let chargingChannel = FlutterEventChannel (name: "AtomicDEX/logC", binaryMessenger: vcbm)
@@ -73,24 +101,29 @@ import AVFoundation
             }
         }
         
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        
         mm2main.setMethodCallHandler ({(call: FlutterMethodCall, result: FlutterResult) -> Void in
                                         if call.method == "audio_bg" {
-                                            let dick = call.arguments as! Dictionary<String, Any>
-                                            let path = dick["path"] as! String
+                                            let argDict = call.arguments as! Dictionary<String, Any>
+                                            let path = argDict["path"] as! String
                                             result (Int (audio_bg (path)))
                                         } else if call.method == "audio_fg" {
-                                            let dick = call.arguments as! Dictionary<String, Any>
-                                            let path = dick["path"] as! String
+                                            let argDict = call.arguments as! Dictionary<String, Any>
+                                            let path = argDict["path"] as! String
                                             result (Int (audio_fg (path)))
                                         } else if call.method == "audio_volume" {
                                             let volume = NSNumber (value: call.arguments as! Double)
                                             result (Int (audio_volume (volume)))
+                                        } else if call.method == "audio_stop" {
+                                            audio_bg ("")
+                                            result (Int (audio_deactivate()))
                                         } else if call.method == "show_notification" {
-                                            let dic = call.arguments as! Dictionary<String, Any>
-                                            let id = String(dic["uid"] as! Int)
+                                            let argDict = call.arguments as! Dictionary<String, Any>
+                                            let id = String(argDict["uid"] as! Int)
                                             let content = UNMutableNotificationContent()
-                                            content.title = dic["title"] as! String
-                                            content.subtitle = dic["text"] as! String
+                                            content.title = argDict["title"] as! String
+                                            content.subtitle = argDict["text"] as! String
                                             content.sound = UNNotificationSound.default
                                             
                                             let request = UNNotificationRequest(identifier: id, content: content, trigger: nil)
@@ -103,36 +136,42 @@ import AVFoundation
                                                 authorized = true;
                                             }
                                             result(!authorized)
+                                        } else if call.method == "battery" {
+                                            let level: Float = UIDevice.current.batteryLevel;
+                                            let lowPowerMode: Bool = ProcessInfo.processInfo.isLowPowerModeEnabled;
+                                            let charging: Bool = UIDevice.current.batteryState == .charging;
+                                            
+                                            result(["level": level, "lowPowerMode": lowPowerMode, "charging": charging]);
                                         } else if call.method == "start" {
                                             guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
+                                            mm2StartArgs = arg;
+                                            let error: Int32 = performMM2Start();
                                             
-                                            print("START MM2 --------------------------------")
-                                            let error = Int32(mm2_main(arg, { (line) in
-                                                let mm2log = ["log": "AppDelegate] " + String(cString: line!)]
-                                                NotificationCenter.default.post(name: .didReceiveData, object: nil, userInfo: mm2log)
-                                            }));
-                                            //print(arg)
                                             result(error)
                                         } else if call.method == "status" {
                                             let ret = Int32(mm2_main_status());
-                                            
-                                            print(ret)
                                             result(ret)
+                                        } else if call.method == "stop" {
+                                            mm2StartArgs = nil;
+                                            let error: Int32 = performMM2Stop();
+
+                                            result(error)
                                         } else if call.method == "lsof" {
                                             lsof()
                                             result(0)
                                         } else if call.method == "metrics" {
                                             let js = metrics()
                                             result (String (cString: js!))
+                                        } else if call.method == "get_intent_data" {
+                                            let uri = self.intentURI;
+                                            self.intentURI = nil;
+                                            result (uri)
                                         } else if call.method == "log" {
                                             // Allows us to log via the `os_log` default channel
                                             // (Flutter currently does it for us, but there's a chance that it won't).
                                             let arg = call.arguments as! String;
                                             os_log("%{public}s", type: OSLogType.default, arg);
-                                        } else if call.method == "backgroundTimeRemaining" {
-                                            result(Double(application.backgroundTimeRemaining))
                                         } else {result (FlutterMethodNotImplemented)}})
-        
         GeneratedPluginRegistrant.register(with: self)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
@@ -176,10 +215,28 @@ import AVFoundation
     
     public override func applicationDidBecomeActive(_ application: UIApplication) {
         self.window?.viewWithTag(61007)?.removeFromSuperview()
+        
+        restartMM2IfNeeded()
+    }
+    
+    func restartMM2IfNeeded() {
+        if mm2StartArgs == nil {return}
+        
+        if shouldRestartMM2 || mm2_main_status() == 0 {
+            let _ = performMM2Stop()
+            
+            var ticker: Int = 0
+            // wait until mm2 stopped, but continue after 3s anyway
+            while(mm2_main_status() != 0 && ticker < 30) {
+                usleep(100000) // 0.1s
+                ticker += 1
+            }
+            
+            if performMM2Start() == 0 { shouldRestartMM2 = false }
+        }
     }
 }
 
 extension Notification.Name {
     static let didReceiveData = Notification.Name("didReceiveData")
 }
-

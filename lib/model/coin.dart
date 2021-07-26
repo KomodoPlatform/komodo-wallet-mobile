@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -21,7 +22,7 @@ bool _coinsInvoked = false;
 Future<LinkedHashMap<String, Coin>> get coins async {
   // Protect from loading coins multiple times from parallel green threads.
   if (_coinsInvoked) {
-    while (_coins == null) await sleepMs(77);
+    await pauseUntil(() => _coins != null);
     return _coins;
   }
   _coinsInvoked = true;
@@ -53,7 +54,13 @@ Future<LinkedHashMap<String, Coin>> get coins async {
 }
 
 class Coin {
-  Coin({this.type, this.abbr, this.swapContractAddress, this.serverList});
+  Coin({
+    this.type,
+    this.abbr,
+    this.swapContractAddress,
+    this.fallbackSwapContract,
+    this.serverList,
+  });
 
   /// Construct the coin from two JSON maps:
   /// [init] is from coins_init_mm2.json, an exact copy of https://github.com/jl777/coins/blob/master/coins;
@@ -73,6 +80,7 @@ class Coin {
     coingeckoId = config['coingeckoId'] ?? '';
     testCoin = config['testCoin'] ?? false;
     swapContractAddress = config['swap_contract_address'] ?? '';
+    fallbackSwapContract = config['fallback_swap_contract'] ?? '';
     colorCoin = config['colorCoin'] ?? '';
     isDefault = config['isDefault'] ?? false;
     serverList = List<String>.from(config['serverList']);
@@ -104,6 +112,7 @@ class Coin {
   List<String> serverList;
   List<String> explorerUrl;
   String swapContractAddress;
+  String fallbackSwapContract;
 
   /// NB: If the initial value is `null` then it might be updated from MM during the coin activation.
   int requiredConfirmations;
@@ -130,6 +139,7 @@ class Coin {
         'coingeckoId': coingeckoId ?? '',
         'testCoin': testCoin ?? false,
         'swap_contract_address': swapContractAddress ?? '',
+        'fallback_swap_contract': fallbackSwapContract ?? '',
         'colorCoin': colorCoin ?? '',
         'serverList':
             List<dynamic>.from(serverList.map<String>((dynamic x) => x)) ??
@@ -161,6 +171,10 @@ class Coin {
     if (abbr == 'BNBT') return 'BNBT';
 
     return protocol?.protocolData?.platform;
+  }
+
+  bool get isActive {
+    return coinsBloc.getBalanceByAbbr(abbr) != null;
   }
 }
 

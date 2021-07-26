@@ -1,26 +1,30 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/drawer/drawer.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
+import 'package:komodo_dex/model/intent_data_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/feed/feed_page.dart';
 import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/dex_page.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -87,6 +91,12 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ChangeNotifierProvider(
               create: (context) => MultiOrderProvider(),
             ),
+            ChangeNotifierProvider(
+              create: (context) => IntentDataProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => ConstructorProvider(),
+            ),
           ],
           child: const MyApp(),
         ));
@@ -146,12 +156,25 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.inactive:
+        mainBloc.isInBackground = true;
+        Log('main', 'lifecycle: inactive');
+        lockService.lockSignal(context);
+        break;
       case AppLifecycleState.paused:
+        Log('main', 'lifecycle: paused');
+        mainBloc.isInBackground = true;
+        lockService.lockSignal(context);
+        break;
       case AppLifecycleState.detached:
+        Log('main', 'lifecycle: detached');
         mainBloc.isInBackground = true;
         break;
-      default:
+      case AppLifecycleState.resumed:
+        Log('main', 'lifecycle: resumed');
         mainBloc.isInBackground = false;
+        lockService.lockSignal(context);
+        await mmSe.handleWakeUp();
+        break;
     }
   }
 
@@ -225,6 +248,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   Timer timer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  IntentDataProvider _intentDataProvider;
 
   final List<Widget> _children = <Widget>[
     CoinsPage(),
@@ -233,65 +257,44 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     FeedPage(),
   ];
 
-  Future<void> _initLanguage() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('current_languages') == null) {
-      final Locale loc = Localizations.localeOf(context);
-      prefs.setString('current_languages', loc.languageCode);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _intentDataProvider?.grabData();
+    });
+
     _initLanguage();
     lockService.initialize();
   }
 
   @override
   void dispose() {
-    timer?.cancel();
     WidgetsBinding.instance.removeObserver(this);
+    timer?.cancel();
     super.dispose();
   }
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    // https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle
     switch (state) {
-      case AppLifecycleState.inactive:
-        // willResignActive: “your app is no longer responding to touch but is still foreground
-        // (received a phone call, doing touch ID, et cetera)”
-        // - https://github.com/flutter/flutter/issues/10123#issuecomment-302763382
-        // Picking a file also triggers this on Android (?), as it switches into a system activity.
-        // On iOS *after* picking a file the app returns to `inactive`,
-        // on Android to `inactive` and then `resumed`.
-        Log('main:198', 'lifecycle: inactive');
-        lockService.lockSignal(context);
-        break;
-      case AppLifecycleState.paused:
-        Log('main:202', 'lifecycle: paused');
-        lockService.lockSignal(context);
-        break;
       case AppLifecycleState.resumed:
-        Log('main:216', 'lifecycle: resumed');
-        lockService.lockSignal(context);
-        if (Platform.isIOS) {
-          if (!mmSe.running) await startup.startMmIfUnlocked();
-        }
+        _intentDataProvider?.grabData();
         break;
-      case AppLifecycleState.detached:
-        Log('main:223', 'lifecycle: detached');
-        break;
+      default:
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    _intentDataProvider ??= Provider.of<IntentDataProvider>(context);
     final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
+
+    _handleIntentData(_scaffoldKey);
 
     return StreamBuilder<int>(
       initialData: mainBloc.currentIndexTab,
@@ -299,7 +302,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         return Scaffold(
           key: _scaffoldKey,
-          endDrawer: AppDrawer(),
+          endDrawer: AppDrawer(context),
           resizeToAvoidBottomPadding: true,
           backgroundColor: Theme.of(context).backgroundColor,
           body: _children[snapshot.data],
@@ -340,6 +343,70 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         );
       },
     );
+  }
+
+  Future<void> _initLanguage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('current_languages') == null) {
+      final Locale loc = Localizations.localeOf(context);
+      prefs.setString('current_languages', loc.languageCode);
+    }
+  }
+
+  void _emptyIntentData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _intentDataProvider.emptyIntentData();
+    });
+  }
+
+  Future<void> _handleIntentData(GlobalKey<ScaffoldState> scaffoldKey) async {
+    final data = _intentDataProvider.intentData;
+    if (data == null) return;
+
+    while (coinsBloc.coinBalance.isEmpty) {
+      await Future<dynamic>.delayed(Duration(milliseconds: 100));
+    }
+
+    CoinBalance coinBalance;
+    if (data.screen == ScreenSelection.Ethereum) {
+      coinBalance = coinsBloc.coinBalance
+          .firstWhere((cb) => cb.coin.abbr == 'ETH', orElse: () => null);
+    } else if (data.screen == ScreenSelection.Bitcoin) {
+      coinBalance = coinsBloc.coinBalance
+          .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () => null);
+    } else {
+      _emptyIntentData();
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final Uri uri = Uri.tryParse(data.payload);
+
+      if (uri == null) return;
+
+      final PaymentUriInfo uriInfo = PaymentUriInfo.fromUri(uri);
+
+      if (uriInfo == null) return;
+
+      showUriDetailsDialog(
+        context,
+        uriInfo,
+        () {
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (context) => CoinDetail(
+                coinBalance: coinBalance,
+                isSendIsActive: true,
+                paymentUriInfo: uriInfo,
+              ),
+            ),
+          );
+        },
+      );
+
+      _emptyIntentData();
+    });
   }
 
   Widget networkStatusStreamBuilder(AsyncSnapshot<int> snapshot,

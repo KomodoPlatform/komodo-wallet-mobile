@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import 'package:komodo_dex/model/app_config.dart';
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
@@ -44,6 +43,24 @@ class AppLocalizations {
   String get buyTestCoinWarning => Intl.message(
       'Warning, you\'re willing to buy test coins WITHOUT real value!',
       name: 'buyTestCoinWarning');
+  String get mobileDataWarning => Intl.message(
+      'Please note that now you\'re using cellular data and participation in '
+      'atomicDEX P2P network consume internet traffic. It\'s better to use a '
+      'WiFi network if your cellular data plan is costly.',
+      name: 'mobileDataWarning');
+  String get batteryCriticalError => Intl.message(
+      'Your battery charge is critical (${appConfig.batteryLevelCritical}%) '
+      'to perform a swap safely. Please put it on charge and try again.',
+      name: 'batteryCriticalError');
+  String get batteryLowWarning => Intl.message(
+      'Your battery charge is lower than ${appConfig.batteryLevelLow}%. '
+      'Please consider phone charging.',
+      name: 'batteryLowWarning');
+  String get batterySavingWarning => Intl.message(
+      'Your phone is in battery saving mode. Please disable this mode or do '
+      'NOT put the application to the background, otherwise, the app might '
+      'be killed by OS and swap failed.',
+      name: 'batterySavingWarning');
   String get sellTestCoinWarning => Intl.message(
         'Warning, you\'re willing to sell test coins WITHOUT real value!',
         name: 'sellTestCoinWarning',
@@ -274,6 +291,15 @@ class AppLocalizations {
       );
   String get allowCustomSeed =>
       Intl.message('Allow custom seed', name: 'allowCustomSeed');
+  String get warning => Intl.message('Warning!', name: 'warning');
+  String get iUnderstand => Intl.message('I understand', name: 'iUnderstand');
+  String get customSeedWarning => Intl.message(
+      'Custom seed phrases might be'
+      ' less secure and easier to crack than a generated BIP39 compliant seed'
+      ' phrase or private key (WIF). To confirm you understand the risk and know'
+      ' what you are doing, type'
+      ' "$iUnderstand" in the box below.',
+      name: 'customSeedWarning');
   String get hintEnterPassword =>
       Intl.message('Enter your password', name: 'hintEnterPassword');
   String get signInWithSeedPhrase =>
@@ -384,21 +410,33 @@ class AppLocalizations {
   String get showMyOrders =>
       Intl.message('SHOW MY ORDERS', name: 'showMyOrders');
   String minValue(String coinName, String number) => Intl.message(
-        'The minimun amount to sell is $number $coinName',
+        'The minimum amount to sell is $number $coinName',
         name: 'minValue',
         args: <Object>[coinName, number],
       );
   String get titleCreatePassword =>
       Intl.message('CREATE A PASSWORD', name: 'titleCreatePassword');
   String minValueBuy(String coinName, String number) => Intl.message(
-        'The minimun amount to buy is $number${String.fromCharCode(0x00A0)}$coinName',
+        'The minimum amount to buy is $number${String.fromCharCode(0x00A0)}$coinName',
         name: 'minValueBuy',
         args: <Object>[coinName, number],
       );
   String minValueSell(String coinName, String number) => Intl.message(
-        'The minimun amount to sell is $number${String.fromCharCode(0x00A0)}$coinName',
+        'The minimum amount to sell is $number${String.fromCharCode(0x00A0)}$coinName',
         name: 'minValueSell',
         args: <Object>[coinName, number],
+      );
+  String minValueOrder({
+    String buyCoin,
+    String buyAmount,
+    String sellCoin,
+    String sellAmount,
+  }) =>
+      Intl.message(
+        'Order minimum amount is $buyAmount${String.fromCharCode(0x00A0)}$buyCoin'
+        '\n($sellAmount${String.fromCharCode(0x00A0)}$sellCoin)',
+        name: 'minValueBuy',
+        args: <Object>[buyCoin, buyAmount],
       );
   String get enterSellAmount =>
       Intl.message('You must enter Sell Amount first', name: 'enterSellAmount');
@@ -600,9 +638,9 @@ class AppLocalizations {
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
-  String errorNotEnoughtGas(String gas) =>
+  String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
-          name: 'errorNotEnoughtGas', args: <Object>[gas]);
+          name: 'errorNotEnoughGas', args: <Object>[gas]);
   String orderCancel(String coin) =>
       Intl.message('All $coin orders will be canceled.',
           name: 'orderCancel', args: <Object>[coin]);
@@ -1250,6 +1288,8 @@ class AppLocalizations {
   String get oldLogsDelete => Intl.message('Delete', name: 'oldLogsDelete');
   String get oldLogsUsed => Intl.message('Space used', name: 'oldLogsUsed');
   String get okButton => Intl.message('Ok', name: 'okButton');
+  String get closePreview =>
+      Intl.message('Close preview', name: 'closePreview');
   String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
 
   String get developerTitle =>
@@ -1378,6 +1418,102 @@ class AppLocalizations {
       Intl.message('Receive coin', name: ' filtersReceive');
   String get filtersClearAll =>
       Intl.message('Clear all filters', name: 'filtersClearAll');
+
+  String get uriInsufficientBalanceTitle =>
+      Intl.message('Insufficient balance', name: 'uriInsufficientBalanceTitle');
+  String get uriInsufficientBalanceSpan1 =>
+      Intl.message('Not enough balance for scanned ',
+          name: 'uriInsufficientBalanceSpan1');
+  String get uriInsufficientBalanceSpan2 =>
+      Intl.message(' payment request.', name: 'uriInsufficientBalanceSpan2');
+  String get enablingTooManyAssetsTitle =>
+      Intl.message('Trying to enable too many assets',
+          name: 'enablingTooManyAssetsTitle');
+  String get enablingTooManyAssetsSpan1 =>
+      Intl.message('You have ', name: 'enablingTooManyAssetsSpan1');
+  String get enablingTooManyAssetsSpan2 =>
+      Intl.message(' assets enabled and trying to enable ',
+          name: 'enablingTooManyAssetsSpan2');
+  String get enablingTooManyAssetsSpan3 =>
+      Intl.message(' more. Enabled assets max limit is ',
+          name: 'enablingTooManyAssetsSpan3');
+  String get enablingTooManyAssetsSpan4 =>
+      Intl.message('. Please disable some before new ones adding.',
+          name: 'enablingTooManyAssetsSpan4');
+
+  String get tooManyAssetsEnabledTitle =>
+      Intl.message('Too many assets enabled',
+          name: 'tooManyAssetsEnabledTitle');
+  String get tooManyAssetsEnabledSpan1 =>
+      Intl.message('You have ', name: 'tooManyAssetsEnableSpan1');
+  String get tooManyAssetsEnabledSpan2 =>
+      Intl.message(' assets enabled. Enabled assets max limit is ',
+          name: 'tooManyAssetsEnableSpan2');
+  String get tooManyAssetsEnabledSpan3 =>
+      Intl.message('. Please disable some before new ones adding.',
+          name: 'tooManyAssetsEnableSpan3');
+
+  String get paymentUriDetailsTitle =>
+      Intl.message('Payment Requested', name: 'paymentUriDetailsTitle');
+  String get paymentUriDetailsCoinSpan =>
+      Intl.message('Coin: ', name: 'paymentUriDetailsCoinSpan');
+  String get paymentUriDetailsAddressSpan =>
+      Intl.message('To Address ', name: 'paymentUriDetailsAddressSpan');
+  String get paymentUriDetailsAmountSpan =>
+      Intl.message('Amount: ', name: 'paymentUriDetailsAmountSpan');
+  String get paymentUriDetailsAcceptQuestion =>
+      Intl.message('Do you accept this transaction?',
+          name: 'paymentUriDetailsAcceptQuestion');
+  String get paymentUriDetailsAccept =>
+      Intl.message('Pay', name: 'paymentUriDetailsAccept');
+  String get paymentUriDetailsDeny =>
+      Intl.message('Cancel', name: 'paymentUriDetailsDeny');
+  String paymentUriInactiveCoin(String abbr) =>
+      Intl.message('$abbr is not active. Please activate and try again.',
+          name: 'paymentUriInactiveCoin', args: <Object>[abbr]);
+
+  String get wrongCoinTitle =>
+      Intl.message('Wrong coin', name: 'wrongCoinTitle');
+  String get wrongCoinSpan1 =>
+      Intl.message('You are trying to scan a payment QR code for ',
+          name: 'wrongCoinTitle');
+  String get wrongCoinSpan2 =>
+      Intl.message(' but you are on the ', name: 'wrongCoinSpan2');
+  String get wrongCoinSpan3 =>
+      Intl.message(' withdraw screen', name: 'wrongCoinSpan3');
+
+  // --- Simple trading view
+  String get simpleTradeSellTitle =>
+      Intl.message('Sell', name: 'simpleTradeSellTitle');
+  String get simpleTradeBuyTitle =>
+      Intl.message('Buy', name: 'simpleTradeBuyTitle');
+  String get simpleTradeRecieve =>
+      Intl.message('Receive', name: 'simpleTradeRecieve');
+  String get simpleTradeSend => Intl.message('Send', name: 'simpleTradeSend');
+  String get simpleTradeClose =>
+      Intl.message('Close', name: 'simpleTradeClose');
+  String get simpleTradeActivate =>
+      Intl.message('Activate', name: 'simpleTradeActivate');
+  String simpleTradeMaxActiveCoins(int maxCoins) => Intl.message(
+      'Max active coins number is $maxCoins. Please deactivate some.',
+      name: 'simpleTradeMaxActiveCoins',
+      args: <Object>[maxCoins]);
+  String simpleTradeUnableActivate(String coin) =>
+      Intl.message('Unable to activate $coin',
+          name: 'simpleTradeUnableActivate', args: <Object>[coin]);
+  String simpleTradeNotActive(String coin) =>
+      Intl.message('$coin is not active!',
+          name: 'simpleTradeNotActive', args: <Object>[coin]);
+  String simpleTradeBuyHint(String coin) =>
+      Intl.message('Please enter $coin amount to buy',
+          name: 'simpleTradeBuyHint', args: <Object>[coin]);
+  String simpleTradeSellHint(String coin) =>
+      Intl.message('Please enter $coin amount to sell',
+          name: 'simpleTradeSellHint', args: <Object>[coin]);
+  String get simpleTradeShowLess =>
+      Intl.message('Show less', name: 'simpleTradeShowLess');
+  String get simpleTradeShowMore =>
+      Intl.message('Show more', name: 'simpleTradeShowMore');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

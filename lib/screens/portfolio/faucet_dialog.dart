@@ -11,7 +11,7 @@ void showFaucetDialog({
   @required String coin,
   @required String address,
 }) {
-  dialogBloc.dialog = showDialog<dynamic>(
+  dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return FutureBuilder<Map<String, dynamic>>(
@@ -53,7 +53,7 @@ void showFaucetDialog({
                 ],
               );
             });
-      });
+      }).then((dynamic _) => dialogBloc.dialog = null);
 }
 
 Widget _buildFaucetProgress({

@@ -219,7 +219,7 @@ class _ContactListItemState extends State<ContactListItem> {
   }
 
   void _showWarning({String title, String message}) {
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return CustomSimpleDialog(
@@ -261,6 +261,6 @@ class _ContactListItemState extends State<ContactListItem> {
           ],
         );
       },
-    );
+    ).then((dynamic _) => dialogBloc.dialog = null);
   }
 }

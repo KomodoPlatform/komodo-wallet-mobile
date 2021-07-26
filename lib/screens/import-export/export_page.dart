@@ -10,6 +10,7 @@ import 'package:komodo_dex/model/backup.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
@@ -47,28 +48,31 @@ class _ExportPageState extends State<ExportPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context).exportTitle,
+    return LockScreen(
+      context: context,
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context).exportTitle,
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            if (_done) ...{
-              _buildSuccess(),
-            } else ...{
-              _buildHeader(),
-              _buildNotes(),
-              _buildContacts(),
-              _buildSwaps(),
-              _buildPass(),
-              _buildButton(),
-            }
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (_done) ...{
+                _buildSuccess(),
+              } else ...{
+                _buildHeader(),
+                _buildNotes(),
+                _buildContacts(),
+                _buildSwaps(),
+                _buildPass(),
+                _buildButton(),
+              }
+            ],
+          ),
         ),
       ),
     );
