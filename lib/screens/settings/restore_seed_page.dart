@@ -179,6 +179,11 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                 TextField(
                   autofocus: true,
                   style: TextStyle(color: Theme.of(context).accentColor),
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Theme.of(context).accentColor)),
+                  ),
                   onChanged: (String text) {
                     setState(() {
                       enabled = text.trim().toLowerCase() ==
