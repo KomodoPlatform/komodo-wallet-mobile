@@ -661,8 +661,7 @@ void showUriDetailsDialog(
   dialogBloc.dialog = showDialog<void>(
     context: context,
     builder: (context) {
-      return SimpleDialog(
-        contentPadding: const EdgeInsets.all(24),
+      return CustomSimpleDialog(
         title: Text(
           AppLocalizations.of(context).paymentUriDetailsTitle,
           style: TextStyle(fontSize: 24),

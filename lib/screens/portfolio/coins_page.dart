@@ -19,6 +19,7 @@ import 'package:komodo_dex/screens/portfolio/activate/select_coins_page.dart';
 import 'package:komodo_dex/screens/portfolio/loading_coin.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 import 'item_coin.dart';
@@ -500,24 +501,33 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                   dialogBloc.dialog = showDialog<void>(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return AlertDialog(
+                                      return CustomSimpleDialog(
                                         title: Text(AppLocalizations.of(context)
                                             .tooManyAssetsEnabledTitle),
-                                        content: Text(
-                                            AppLocalizations.of(context)
-                                                    .tooManyAssetsEnabledSpan1 +
-                                                numCoinsEnabled.toString() +
-                                                AppLocalizations.of(context)
-                                                    .tooManyAssetsEnabledSpan2 +
-                                                maxCoinPerPlatform.toString() +
-                                                AppLocalizations.of(context)
-                                                    .tooManyAssetsEnabledSpan3),
-                                        actions: [
-                                          FlatButton(
-                                            child: Text('OK'),
-                                            onPressed: () {
-                                              dialogBloc.closeDialog(context);
-                                            },
+                                        children: [
+                                          Text(AppLocalizations.of(context)
+                                                  .tooManyAssetsEnabledSpan1 +
+                                              numCoinsEnabled.toString() +
+                                              AppLocalizations.of(context)
+                                                  .tooManyAssetsEnabledSpan2 +
+                                              maxCoinPerPlatform.toString() +
+                                              AppLocalizations.of(context)
+                                                  .tooManyAssetsEnabledSpan3),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              RaisedButton(
+                                                child: Text(
+                                                    AppLocalizations.of(context)
+                                                        .warningOkBtn
+                                                        .toUpperCase()),
+                                                onPressed: () {
+                                                  dialogBloc
+                                                      .closeDialog(context);
+                                                },
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       );

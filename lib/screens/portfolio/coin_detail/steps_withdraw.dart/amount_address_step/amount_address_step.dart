@@ -156,8 +156,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
-          return SimpleDialog(
-            contentPadding: const EdgeInsets.all(24),
+          return CustomSimpleDialog(
             title: Text(AppLocalizations.of(context).wrongCoinTitle),
             children: <Widget>[
               Text(AppLocalizations.of(context).wrongCoinSpan1 +
@@ -186,9 +185,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return SimpleDialog(
+        return CustomSimpleDialog(
           title: Text(AppLocalizations.of(context).uriInsufficientBalanceTitle),
-          contentPadding: EdgeInsets.all(24),
           children: <Widget>[
             Text(
               AppLocalizations.of(context).uriInsufficientBalanceSpan1 +
