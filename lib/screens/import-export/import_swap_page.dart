@@ -145,7 +145,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
                 ? _swap.type == 'Maker'
                     ? AppLocalizations.of(context).makerOrder
                     : AppLocalizations.of(context).takerOrder
-                : _swap.type + AppLocalizations.of(context).orderTypePartial,
+                : AppLocalizations.of(context).orderTypeUnknown,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontSize: 14,
                   color: Theme.of(context)
