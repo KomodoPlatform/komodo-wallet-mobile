@@ -263,7 +263,8 @@ class SwapEF {
       this.makerPubkey,
       this.secretHash,
       this.transaction,
-      this.error});
+      this.error,
+      this.waitUntil});
 
   factory SwapEF.fromJson(Map<String, dynamic> json) => SwapEF(
       lockDuration: json['lock_duration'],
@@ -313,7 +314,8 @@ class SwapEF {
       transaction: json['transaction'] == null
           ? null
           : Transaction.fromJson(json['transaction']),
-      error: json['error'] ?? '');
+      error: json['error'] ?? '',
+      waitUntil: json['wait_until'] ?? 0);
 
   /// The lock duration of swap payments in seconds
   /// The sender can refund the transaction when the lock duration is passed
@@ -380,6 +382,8 @@ class SwapEF {
   Transaction transaction;
   String error;
 
+  int waitUntil;
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'lock_duration': lockDuration ?? 0,
         'maker_amount': makerAmount ?? '',
@@ -424,7 +428,8 @@ class SwapEF {
         'maker_pubkey': makerPubkey ?? '',
         'secret_hash': secretHash ?? '',
         'transaction': transaction == null ? null : transaction.toJson(),
-        'error': error ?? ''
+        'error': error ?? '',
+        'wait_until': waitUntil ?? 0
       };
 }
 
