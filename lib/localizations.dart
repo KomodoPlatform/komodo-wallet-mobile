@@ -1390,6 +1390,8 @@ class AppLocalizations {
           name: 'importSwapJsonDecodingError');
   String get orderTypePartial =>
       Intl.message(' Order', name: 'orderTypePartial');
+  String get orderTypeUnknown =>
+      Intl.message('Unknown Type Order', name: 'orderTypeUnknown');
   String get couldntImportError =>
       Intl.message("Couldn't import: ", name: 'couldntImportError');
   String get importSomeItemsSkippedWarning =>
