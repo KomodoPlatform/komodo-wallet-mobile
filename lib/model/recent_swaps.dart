@@ -84,7 +84,7 @@ class MmSwap {
       Log('recent_swaps:84', '!my_info: $ex, $trace');
     }
     successEvents = List<String>.from(json['success_events']);
-    type = json['type'];
+    type = json['type'] ?? _getType(successEvents);
     uuid = json['uuid'];
     _recoverable = json['recoverable'];
     gui = json['gui'];
@@ -94,6 +94,16 @@ class MmSwap {
     takerCoin = json['taker_coin'];
     takerAmount = json['taker_amount'];
     myOrderUuid = json['my_order_uuid'];
+  }
+
+  /// returns swap type ('Taker' or 'Maker') based on swap events list
+  String _getType(List<String> events) {
+    for (String event in events) {
+      if (event == 'TakerFeeSent') return 'Taker';
+      if (event == 'TakerFeeValidated') return 'Maker';
+    }
+
+    return null;
   }
 
   /// if at least 1 of the events happens, the swap is considered a failure
