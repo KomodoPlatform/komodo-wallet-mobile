@@ -131,6 +131,8 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
 
     String _getTxHash(Swap swap, int i) {
       if (i > swap.result.events.length - 1) return '';
+      if (i > swap.result.successEvents.length - 1) return '';
+
       if (swap.result.successEvents[i] != 'TakerPaymentSpent') {
         return swap.result.events[i].event.data?.txHash ?? '';
       } else {
