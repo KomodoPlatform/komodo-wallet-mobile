@@ -763,7 +763,6 @@ class _SettingPageState extends State<SettingPage> {
                               const EdgeInsets.symmetric(horizontal: 16),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0)),
-                          backgroundColor: Colors.white,
                           title: Column(
                             children: <Widget>[
                               SvgPicture.asset('assets/svg/delete_wallet.svg'),
