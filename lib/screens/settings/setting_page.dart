@@ -759,11 +759,7 @@ class _SettingPageState extends State<SettingPage> {
                   dialogBloc.dialog = showDialog<dynamic>(
                       context: context,
                       builder: (BuildContext context) {
-                        return SimpleDialog(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 16),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0)),
+                        return CustomSimpleDialog(
                           title: Column(
                             children: <Widget>[
                               SvgPicture.asset('assets/svg/delete_wallet.svg'),
@@ -1084,8 +1080,7 @@ class _ShowLoadingDeleteState extends State<ShowLoadingDelete> {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    return CustomSimpleDialog(
       children: <Widget>[
         Center(
             child: Row(
