@@ -141,11 +141,9 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
           ),
           SizedBox(height: 2),
           Text(
-            (_swap.type == 'Maker' || _swap.type == 'Taker')
-                ? _swap.type == 'Maker'
-                    ? AppLocalizations.of(context).makerOrder
-                    : AppLocalizations.of(context).takerOrder
-                : _swap.type + AppLocalizations.of(context).orderTypePartial,
+            _swap.type == 'Maker'
+                ? AppLocalizations.of(context).makerOrder
+                : AppLocalizations.of(context).takerOrder,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontSize: 14,
                   color: Theme.of(context)
@@ -276,6 +274,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
 
                 try {
                   final s = MmSwap.fromJson(data);
+                  _validateSwapData(s);
                   setState(() {
                     _swap = s;
                   });
@@ -288,6 +287,25 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
         text: AppLocalizations.of(context).selectFileImport,
       ),
     );
+  }
+
+  void _validateSwapData(MmSwap data) {
+    const String error = 'Invalid swap data';
+
+    if ((data.uuid ?? '').isEmpty) throw error;
+    if (data.type != 'Taker' && data.type != 'Maker') throw error;
+
+    if (data.myInfo != null) {
+      if ((data.myInfo.myCoin ?? '').isEmpty) throw error;
+      if ((data.myInfo.myAmount ?? '').isEmpty) throw error;
+      if ((data.myInfo.otherCoin ?? '').isEmpty) throw error;
+      if ((data.myInfo.otherAmount ?? '').isEmpty) throw error;
+    } else {
+      if ((data.makerCoin ?? '').isEmpty) throw error;
+      if ((data.takerCoin ?? '').isEmpty) throw error;
+      if ((data.makerAmount ?? '').isEmpty) throw error;
+      if ((data.takerAmount ?? '').isEmpty) throw error;
+    }
   }
 
   Future<Map<String, dynamic>> _getSwapData(File file) async {
