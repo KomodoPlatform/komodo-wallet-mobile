@@ -5,6 +5,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 void openSelectSellCoinDialog({
@@ -18,12 +19,12 @@ void openSelectSellCoinDialog({
       context: context,
       builder: (BuildContext context) {
         return coinItemsList.isNotEmpty
-            ? SimpleDialog(
+            ? CustomSimpleDialog(
+                hasHorizontalPadding: false,
                 title: Text(AppLocalizations.of(context).sell),
                 children: coinItemsList,
               )
-            : SimpleDialog(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            : CustomSimpleDialog(
                 title: Column(
                   children: <Widget>[
                     Icon(
