@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
@@ -8,6 +9,8 @@ import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {
@@ -208,23 +211,204 @@ class _BuildScreenAuthMultiWalletsState
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
-                Container(
-                    height: 100,
-                    child: Icon(
-                      Icons.lock,
-                      color: Theme.of(context).backgroundColor,
-                    ),
-                    width: 30,
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(6),
-                          bottomRight: Radius.circular(6),
-                          bottomLeft: Radius.elliptical(10, 50),
-                          topLeft: Radius.elliptical(10, 50),
+                IconButton(
+                  icon: Icon(
+                    Icons.delete_outline,
+                    size: 32,
+                  ),
+                  // TODO(MateusRodCosta): Unify this and _showDialogDeleteWallet from settings_page
+                  // into a single method with different callbacks for when the user accepts deleting
+                  // the wallet.
+                  onPressed: () async {
+                    Navigator.push<dynamic>(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => UnlockWalletPage(
+                          textButton: AppLocalizations.of(context).unlock,
+                          wallet: wallet,
+                          isSignWithSeedIsEnabled: false,
+                          onSuccess: (_, String password) {
+                            Navigator.of(context).pop();
+                            dialogBloc.dialog = showDialog<dynamic>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SimpleDialog(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0)),
+                                    title: Column(
+                                      children: <Widget>[
+                                        SvgPicture.asset(
+                                            'assets/svg/delete_wallet.svg'),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                        Text(
+                                          AppLocalizations.of(context)
+                                              .deleteWallet
+                                              .toUpperCase(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6
+                                              .copyWith(
+                                                  color: Theme.of(context)
+                                                      .errorColor),
+                                        ),
+                                        const SizedBox(
+                                          height: 24,
+                                        ),
+                                      ],
+                                    ),
+                                    children: <Widget>[
+                                      RichText(
+                                        textAlign: TextAlign.center,
+                                        text: TextSpan(children: <InlineSpan>[
+                                          TextSpan(
+                                              text: AppLocalizations.of(context)
+                                                  .settingDialogSpan1,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2
+                                                          .color
+                                                          .withOpacity(0.8))),
+                                          TextSpan(
+                                              text:
+                                                  walletBloc.currentWallet.name,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2
+                                                          .color
+                                                          .withOpacity(0.8),
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                          TextSpan(
+                                              text: AppLocalizations.of(context)
+                                                  .settingDialogSpan2,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2
+                                                          .color
+                                                          .withOpacity(0.8))),
+                                        ]),
+                                      ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      Center(
+                                        child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(children: <InlineSpan>[
+                                            TextSpan(
+                                                text:
+                                                    AppLocalizations.of(context)
+                                                        .settingDialogSpan3,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2
+                                                    .copyWith(
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText2
+                                                            .color
+                                                            .withOpacity(0.8))),
+                                            TextSpan(
+                                                text:
+                                                    AppLocalizations.of(context)
+                                                        .settingDialogSpan4,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2
+                                                    .copyWith(
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText2
+                                                            .color
+                                                            .withOpacity(0.8),
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                            TextSpan(
+                                                text:
+                                                    AppLocalizations.of(context)
+                                                        .settingDialogSpan5,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2
+                                                    .copyWith(
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText2
+                                                            .color
+                                                            .withOpacity(0.8))),
+                                          ]),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 24,
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: SecondaryButton(
+                                              text: AppLocalizations.of(context)
+                                                  .cancel,
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                              isDarkMode: false,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Expanded(
+                                            child: PrimaryButton(
+                                              text: AppLocalizations.of(context)
+                                                  .delete,
+                                              key: const Key('delete-wallet'),
+                                              onPressed: () async {
+                                                Navigator.of(context).pop();
+                                                await walletBloc
+                                                    .deleteSeedPhrase(
+                                                        password, wallet);
+                                                await walletBloc
+                                                    .deleteSpecificWallet(
+                                                        wallet);
+                                                walletBloc.getWalletsSaved();
+                                              },
+                                              backgroundColor:
+                                                  Theme.of(context).errorColor,
+                                              isDarkMode: false,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 24,
+                                      ),
+                                    ],
+                                  );
+                                }).then((dynamic _) {
+                              dialogBloc.dialog = null;
+                            });
+                          },
                         ),
-                        color: settingsBloc.isLightTheme
-                            ? Colors.black.withOpacity(0.3)
-                            : Colors.white.withOpacity(0.6)))
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
             decoration: BoxDecoration(

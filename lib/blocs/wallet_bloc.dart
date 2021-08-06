@@ -70,6 +70,10 @@ class WalletBloc implements BlocBase {
     authBloc.logout();
   }
 
+  Future<void> deleteSpecificWallet(Wallet wallet) async {
+    await Db.deleteWallet(wallet);
+  }
+
   Future<void> deleteSeedPhrase(String password, Wallet wallet) async {
     final EncryptionTool entryptionTool = EncryptionTool();
     await entryptionTool.deleteData(KeyEncryption.SEED, wallet, password);
