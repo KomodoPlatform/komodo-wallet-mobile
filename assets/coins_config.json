@@ -536,6 +536,22 @@
         ]
     },
     {
+        "name": "TOKEL",
+        "type": "smartChain",
+        "address": "1.eu.tokel.electrum.dexstats.info",
+        "port": 10077,
+        "proto": "tcp",
+        "abbr": "TKL",
+        "coingeckoId": "test-coin",
+        "colorCoin": "0xFF1E2835",
+        "serverList": [
+            "1.eu.tokel.electrum.dexstats.info:10077"
+        ],
+        "explorerUrl": [
+            "https://explorer.tokel.io/"
+        ]
+    },
+    {
         "name": "TrueUSD",
         "type": "erc",
         "address": "http://eth1.cipig.net",
