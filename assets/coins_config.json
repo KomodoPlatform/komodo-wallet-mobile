@@ -131,6 +131,24 @@
         ]
     },
     {
+        "name": "CHIPS",
+        "type": "utxo",
+        "address": "electrum1.cipig.net",
+        "port": 10053,
+        "proto": "tcp",
+        "abbr": "CHIPS",
+        "coingeckoId": "test-coin",
+        "colorCoin": "0xFF598182",
+        "serverList": [
+            "electrum1.cipig.net:10053",
+            "electrum2.cipig.net:10053",
+            "electrum3.cipig.net:10053"
+        ],
+        "explorerUrl": [
+            "https://explorer.chips.cash/"
+        ]
+    },
+    {
         "name": "ChainZilla",
         "type": "smartChain",
         "address": "electrum1.cipig.net",
