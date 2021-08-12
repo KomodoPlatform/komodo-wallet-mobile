@@ -582,6 +582,24 @@ void printError(String text) {
   print('\x1B[31m$text\x1B[0m');
 }
 
+void pinScreenOrientation(BuildContext context) {
+  final double shortSide = min(
+      MediaQuery.of(context).size.width, MediaQuery.of(context).size.height);
+  if (shortSide < 768) {
+    SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  } else {
+    SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
+}
+
 class PaymentUriInfo {
   PaymentUriInfo({this.scheme, this.abbr, this.address, this.amount});
 

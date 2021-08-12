@@ -264,6 +264,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _intentDataProvider?.grabData();
+      pinScreenOrientation(context);
     });
 
     _initLanguage();
