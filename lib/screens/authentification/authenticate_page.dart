@@ -382,6 +382,11 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              LanguageFlagIcon(
+                loc: _currentLoc,
+                size: 16,
+              ),
+              SizedBox(width: 8),
               Text(_currentLoc.languageCode),
               Icon(
                 Icons.arrow_drop_down,
@@ -471,6 +476,7 @@ class _BuildLanguageDialogOptionState extends State<BuildLanguageDialogOption> {
       localeCode = widget.locale.toString();
     }
     return SimpleDialogOption(
+      padding: EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 24),
       onPressed: () {
         widget.onChange(widget.locale);
       },
@@ -483,6 +489,11 @@ class _BuildLanguageDialogOptionState extends State<BuildLanguageDialogOption> {
               widget.onChange(value);
             },
           ),
+          LanguageFlagIcon(
+            loc: widget.locale,
+            size: 32,
+          ),
+          SizedBox(width: 8),
           Text(settingsBloc.getNameLanguage(
                   context, widget.locale.languageCode) +
               getGenericScript(scripCode) +
@@ -490,5 +501,41 @@ class _BuildLanguageDialogOptionState extends State<BuildLanguageDialogOption> {
         ],
       ),
     );
+  }
+}
+
+class LanguageFlagIcon extends StatelessWidget {
+  const LanguageFlagIcon({Key key, this.loc, this.size}) : super(key: key);
+
+  static const flagMap = <String, String>{
+    'en': 'usd',
+    'fr': 'eur',
+    'de': 'eur',
+    'zh': 'cny',
+    'zh_TW': 'twd',
+    'ru': 'rub',
+    'ja': 'jpy',
+    'tr': 'try',
+    'hu': 'huf',
+  };
+
+  final Locale loc;
+
+  final double size;
+
+  String _getLocaleCountrySuffix(Locale loc) {
+    if (loc.countryCode != null)
+      return '${loc.languageCode}_${loc.countryCode}';
+    return loc.languageCode;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return loc != null && flagMap.containsKey(loc.languageCode)
+        ? Image.asset(
+            'assets/currency-flags/${flagMap[_getLocaleCountrySuffix(loc)]}.png',
+            width: size,
+          )
+        : Container();
   }
 }
