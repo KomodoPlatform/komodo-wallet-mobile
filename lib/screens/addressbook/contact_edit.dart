@@ -26,11 +26,7 @@ class _ContactEditState extends State<ContactEdit> {
   AddressBookProvider provider;
   String focusOn;
   final List<String> invalidFields = [];
-  final Map<String, String> networkChipLabels = {
-    'erc': 'ERC20',
-    'bep': 'BEP20',
-    'qrc': 'QRC20',
-  };
+  Map<String, String> networkChipLabels;
 
   @override
   void initState() {
@@ -38,6 +34,13 @@ class _ContactEditState extends State<ContactEdit> {
         ? Contact.fromJson(widget.contact.toJson())
         : Contact();
     hashBeforeEdit = jsonEncode(editContact.toJson());
+
+    networkChipLabels = {
+      'erc': AppLocalizations.of(context).tagERC20,
+      'bep': AppLocalizations.of(context).tagBEP20,
+      'qrc': AppLocalizations.of(context).tagQRC20,
+    };
+
     super.initState();
   }
 
@@ -313,6 +316,8 @@ class _ContactEditState extends State<ContactEdit> {
                   _buildNetworkChip(
                     networkChipLabels[coin.type],
                   )
+                } else if (coin.abbr == 'TKL') ...{
+                  _buildNetworkChip(AppLocalizations.of(context).tagTokel)
                 } else if (coin.type == 'smartChain') ...{
                   _buildKmdChip()
                 }
@@ -424,14 +429,14 @@ class _ContactEditState extends State<ContactEdit> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
-        children: const <Widget>[
+        children: <Widget>[
           CircleAvatar(
             maxRadius: 6,
             backgroundImage: AssetImage('assets/kmd.png'),
           ),
           SizedBox(width: 3),
           Text(
-            'KMD',
+            AppLocalizations.of(context).tagKMD,
             style: TextStyle(fontSize: 12),
           ),
         ],
