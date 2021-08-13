@@ -10,6 +10,7 @@ import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/multi/multi_order_rel_item.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 class MultiOrderRelList extends StatefulWidget {
@@ -187,8 +188,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
-          return SimpleDialog(
-            contentPadding: const EdgeInsets.all(20),
+          return CustomSimpleDialog(
             children: <Widget>[
               Text(AppLocalizations.of(context).multiFiatDesc),
               Row(

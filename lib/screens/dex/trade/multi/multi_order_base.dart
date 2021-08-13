@@ -11,7 +11,6 @@ import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
@@ -237,7 +236,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
   }
 
   Widget _buildNoFundsAlert() {
-    return SimpleDialog(
+    return CustomSimpleDialog(
       title: Row(
         children: <Widget>[
           Icon(
@@ -251,7 +250,6 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
               style: Theme.of(context).textTheme.headline6),
         ],
       ),
-      contentPadding: const EdgeInsets.all(20),
       children: <Widget>[
         Text(AppLocalizations.of(context).noFundsDetected,
             style: Theme.of(context)
@@ -264,14 +262,12 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         Row(
           children: <Widget>[
             Expanded(
-              flex: 2,
-              child: PrimaryButton(
-                text: AppLocalizations.of(context).goToPorfolio,
+              child: RaisedButton(
+                child: Text(AppLocalizations.of(context).goToPorfolio),
                 onPressed: () {
                   Navigator.of(context).pop();
                   mainBloc.setCurrentIndexTab(0);
                 },
-                backgroundColor: Theme.of(context).accentColor,
               ),
             )
           ],
