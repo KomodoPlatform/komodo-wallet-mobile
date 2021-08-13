@@ -3,6 +3,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/widgets/language_flag_icon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectLanguagePage extends StatefulWidget {
@@ -110,9 +111,15 @@ class _BuildItemLanguageState extends State<BuildItemLanguage> {
             widget.onChange(value);
           },
         ),
-        title: Text(
-            settingsBloc.getNameLanguage(context, widget.locale.languageCode) +
+        title: Row(
+          children: [
+            LanguageFlagIcon(loc: widget.locale, size: 32),
+            SizedBox(width: 16),
+            Text(settingsBloc.getNameLanguage(
+                    context, widget.locale.languageCode) +
                 getGenericScript(scripCode) +
-                getGenericLocale(localeCode)));
+                getGenericLocale(localeCode)),
+          ],
+        ));
   }
 }
