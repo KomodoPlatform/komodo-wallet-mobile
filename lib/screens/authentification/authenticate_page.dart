@@ -260,49 +260,58 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Container(
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Container(
-                      height: 240,
-                      width: 240,
-                      child: Image.asset(settingsBloc.isLightTheme
-                          ? 'assets/mark_and_text_vertical_dark.png'
-                          : 'assets/mark_and_text_vertical_light.png')),
-                ],
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    bottom: 32,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      CreateWalletButton(),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      RestoreButton(),
+                      Container(
+                          height: 240,
+                          width: 240,
+                          child: Image.asset(settingsBloc.isLightTheme
+                              ? 'assets/mark_and_text_vertical_dark.png'
+                              : 'assets/mark_and_text_vertical_light.png')),
                     ],
                   ),
-                ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        bottom: 32,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          CreateWalletButton(),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          RestoreButton(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+            child: SelectLanguageButton(),
+          ),
+        ],
       ),
     );
   }
