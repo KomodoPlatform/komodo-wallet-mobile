@@ -21,9 +21,10 @@ import 'get_orderbook.dart';
 class OrderBookProvider extends ChangeNotifier {
   OrderBookProvider() {
     syncOrderbook.linkProvider(this);
-    jobService.install('syncOrderbook', 2, (j) async {
+    jobService.install('syncOrderbook', 5, (j) async {
       if (!mmSe.running) return;
       await syncOrderbook._updateOrderBooks();
+      await syncOrderbook._updateOrderbookDepth();
     });
   }
   @override

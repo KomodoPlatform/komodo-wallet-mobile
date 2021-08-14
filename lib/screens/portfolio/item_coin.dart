@@ -336,12 +336,28 @@ class _ItemCoinState extends State<ItemCoin> {
         child: Container(
             color: widget.coinBalance.coin.type == 'erc' ||
                     widget.coinBalance.coin.type == 'bep' ||
-                    widget.coinBalance.coin.type == 'qrc'
+                    widget.coinBalance.coin.type == 'qrc' ||
+                    widget.coinBalance.coin.abbr == 'TKL'
                 ? const Color.fromRGBO(20, 117, 186, 1)
                 : Theme.of(context).backgroundColor,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
               child: Builder(builder: (context) {
+                if (widget.coinBalance.coin.abbr == 'TKL')
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        AppLocalizations.of(context).tagTokel,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2
+                            .copyWith(color: Colors.white),
+                      ),
+                    ],
+                  );
+
                 switch (widget.coinBalance.coin.type) {
                   case 'erc':
                     {
