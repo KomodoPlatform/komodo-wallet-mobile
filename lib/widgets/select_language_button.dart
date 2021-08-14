@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/language_flag_icon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -94,36 +93,8 @@ class BuildLanguageDialogOption extends StatefulWidget {
 }
 
 class _BuildLanguageDialogOptionState extends State<BuildLanguageDialogOption> {
-  String getGenericScript(String scriptCode) {
-    switch (scriptCode) {
-      case 'Hans':
-        return ' ' + AppLocalizations.of(context).simplifiedChinese;
-        break;
-      default:
-        return '';
-    }
-  }
-
-  String getGenericLocale(String localeCode) {
-    switch (localeCode) {
-      case 'zh_TW':
-        return ' ' + AppLocalizations.of(context).simplifiedChinese;
-        break;
-      default:
-        return '';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    String scripCode = '';
-    String localeCode = '';
-    if (widget.locale.scriptCode != null) {
-      scripCode = widget.locale.scriptCode;
-    }
-    if (widget.locale.countryCode != null) {
-      localeCode = widget.locale.toString();
-    }
     return SimpleDialogOption(
       padding: EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 24),
       onPressed: () {
@@ -143,10 +114,8 @@ class _BuildLanguageDialogOptionState extends State<BuildLanguageDialogOption> {
             size: 32,
           ),
           SizedBox(width: 8),
-          Text(settingsBloc.getNameLanguage(
-                  context, widget.locale.languageCode) +
-              getGenericScript(scripCode) +
-              getGenericLocale(localeCode))
+          Text(
+              settingsBloc.getNameLanguage(context, widget.locale.languageCode))
         ],
       ),
     );
