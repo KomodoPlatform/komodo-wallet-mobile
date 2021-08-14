@@ -227,7 +227,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "ДАВАЙТЕ ПЕРЕПРОВЕРИМ ВАШ SEED-КЛЮЧ"),
         "checkingUpdates":
             MessageLookupByLibrary.simpleMessage("Проверка обновлений..."),
-        "chineseLanguage": MessageLookupByLibrary.simpleMessage("Китайский"),
         "claim": MessageLookupByLibrary.simpleMessage("Востребовать"),
         "claimTitle": MessageLookupByLibrary.simpleMessage(
             "Востребовать KMD вознаграждение? "),
@@ -297,7 +296,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteSpan2": MessageLookupByLibrary.simpleMessage(
             "из вашего портфолио? Все несовпавшие ордеры будут отменены."),
         "deleteWallet": MessageLookupByLibrary.simpleMessage("Удалить кошелек"),
-        "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Немецкий"),
         "dex": MessageLookupByLibrary.simpleMessage("DEX"),
         "disclaimerAndTos":
             MessageLookupByLibrary.simpleMessage("Disclaimer & ToS"),
@@ -309,7 +307,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "editContact": MessageLookupByLibrary.simpleMessage("Редактировать"),
         "encryptingWallet":
             MessageLookupByLibrary.simpleMessage("Шифрую кошелек"),
-        "englishLanguage": MessageLookupByLibrary.simpleMessage("English"),
         "enterNewPinCode":
             MessageLookupByLibrary.simpleMessage("Введите новый PIN"),
         "enterOldPinCode":
@@ -440,7 +437,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "feedUpdated":
             MessageLookupByLibrary.simpleMessage("Лента новостей обновлена"),
         "feedback": MessageLookupByLibrary.simpleMessage("Отправить логи"),
-        "frenchLanguage": MessageLookupByLibrary.simpleMessage("Французский"),
         "from": MessageLookupByLibrary.simpleMessage("Из"),
         "gas": MessageLookupByLibrary.simpleMessage("Gas"),
         "gasPrice": MessageLookupByLibrary.simpleMessage("Цена Gas"),
@@ -466,7 +462,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "hintPassword": MessageLookupByLibrary.simpleMessage("Пароль"),
         "history": MessageLookupByLibrary.simpleMessage("история"),
         "hours": MessageLookupByLibrary.simpleMessage("ч"),
-        "hungarianLanguage": MessageLookupByLibrary.simpleMessage("Венгерский"),
         "infoPasswordDialog": MessageLookupByLibrary.simpleMessage(
             "Если вы решите не использовать пароль, вам нужно будет вводить свою seed-фразу каждый раз, когда вы хотите получить доступ к своему кошельку."),
         "infoTrade1": MessageLookupByLibrary.simpleMessage(
@@ -475,7 +470,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Эта транзакция может занять до 10 минут - НЕ закрывайте приложение!"),
         "infoWalletPassword": MessageLookupByLibrary.simpleMessage(
             "Вы можете зашифровать свой кошелек паролем. Если вы решите не использовать пароль, вам нужно будет вводить свою seed-фразу каждый раз, когда вы хотите получить доступ к своему кошельку."),
-        "japaneseLanguage": MessageLookupByLibrary.simpleMessage("Японский"),
         "language": MessageLookupByLibrary.simpleMessage("Язык"),
         "legalTitle": MessageLookupByLibrary.simpleMessage("Легальные аспекты"),
         "loading": MessageLookupByLibrary.simpleMessage("Загрузка..."),
@@ -717,7 +711,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsTimeMin": m29,
         "rewardsTitle":
             MessageLookupByLibrary.simpleMessage("Инфо о вознаграждениях:"),
-        "russianLanguage": MessageLookupByLibrary.simpleMessage("Русский"),
         "searchFilterCoin":
             MessageLookupByLibrary.simpleMessage("Поиск монеты"),
         "searchFilterSubtitleERC":
@@ -806,7 +799,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("торговая комиссия:"),
         "traditionalChinese":
             MessageLookupByLibrary.simpleMessage("традиционный"),
-        "turkishLanguage": MessageLookupByLibrary.simpleMessage("Турецкий"),
         "txBlock": MessageLookupByLibrary.simpleMessage("Блок"),
         "txConfirmations":
             MessageLookupByLibrary.simpleMessage("Подтверждения"),
