@@ -21,10 +21,10 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
     return InkWell(
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(color: Colors.white)),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Theme.of(context).highlightColor)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: EdgeInsets.fromLTRB(12, 6, 12, 6),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -33,9 +33,10 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
                 size: 16,
               ),
               SizedBox(width: 8),
-              Text(getLocaleFullName(_currentLoc)),
+              Text(getLocaleFullName(_currentLoc).toUpperCase()),
               Icon(
                 Icons.arrow_drop_down,
+                size: 16,
               )
             ],
           ),
@@ -55,13 +56,15 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
                           onChange: (Locale loc) {
                             setState(() {
                               _currentLoc = loc;
-                              mainBloc.setNewLanguage(loc);
-                              SharedPreferences.getInstance()
-                                  .then((SharedPreferences prefs) {
-                                prefs.setString(
-                                    'current_languages', loc.languageCode);
-                              });
                             });
+
+                            mainBloc.setNewLanguage(loc);
+                            SharedPreferences.getInstance()
+                                .then((SharedPreferences prefs) {
+                              prefs.setString(
+                                  'current_languages', loc.languageCode);
+                            });
+                            Navigator.pop(context);
                           },
                         ))
                     .toList(),

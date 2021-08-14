@@ -132,11 +132,12 @@ class _BuildScreenAuthMultiWalletsState
                             ? 'assets/mark_and_text_vertical_dark.png'
                             : 'assets/mark_and_text_vertical_light.png')),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: SelectLanguageButton(),
-                  ),
                 ],
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
+                child: Container(
+                    alignment: Alignment(1, 0), child: SelectLanguageButton()),
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -281,8 +282,11 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
                               : 'assets/mark_and_text_vertical_light.png')),
                     ],
                   ),
-                  const SizedBox(
-                    height: 16,
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 16, 16),
+                    child: Container(
+                        alignment: Alignment(1, 0),
+                        child: SelectLanguageButton()),
                   ),
                   Center(
                     child: Padding(
@@ -306,10 +310,6 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
                 ],
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-            child: SelectLanguageButton(),
           ),
         ],
       ),
