@@ -563,7 +563,8 @@
         "coingeckoId": "test-coin",
         "colorCoin": "0xFF1E2835",
         "serverList": [
-            "1.eu.tokel.electrum.dexstats.info:10077"
+            "1.eu.tokel.electrum.dexstats.info:10077",
+            "2.eu.tokel.electrum.dexstats.info:10077"
         ],
         "explorerUrl": [
             "https://explorer.tokel.io/"
