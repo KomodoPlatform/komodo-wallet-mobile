@@ -764,3 +764,8 @@ void showUriDetailsDialog(
     },
   ).then((dynamic _) => dialogBloc.dialog = null);
 }
+
+String getLocaleFullName(Locale loc) {
+  if (loc.countryCode != null) return '${loc.languageCode}_${loc.countryCode}';
+  return loc.languageCode;
+}

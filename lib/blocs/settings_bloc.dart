@@ -89,9 +89,6 @@ class SettingsBloc implements BlocBase {
       case 'zh':
         return AppLocalizations.of(context).chineseLanguage;
         break;
-      case 'zh_TW':
-        return AppLocalizations.of(context).simplifiedChinese;
-        break;
       case 'ru':
         return AppLocalizations.of(context).russianLanguage;
         break;

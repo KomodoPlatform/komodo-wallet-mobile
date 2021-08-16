@@ -677,8 +677,6 @@ class AppLocalizations {
       Intl.message('Deutsch', name: 'deutscheLanguage');
   String get chineseLanguage =>
       Intl.message('Chinese', name: 'chineseLanguage');
-  String get simplifiedChinese =>
-      Intl.message('simplified', name: 'simplifiedChinese');
   String get traditionalChinese =>
       Intl.message('traditional', name: 'traditionalChinese');
   String get russianLanguage =>

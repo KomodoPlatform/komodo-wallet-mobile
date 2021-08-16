@@ -8,6 +8,7 @@ import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/widgets/select_language_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {
@@ -120,13 +121,23 @@ class _BuildScreenAuthMultiWalletsState
               const SizedBox(
                 height: 16,
               ),
-              Center(
+              Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Center(
+                    child: Container(
+                        height: 200,
+                        width: 200,
+                        child: Image.asset(settingsBloc.isLightTheme
+                            ? 'assets/mark_and_text_vertical_dark.png'
+                            : 'assets/mark_and_text_vertical_light.png')),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
                 child: Container(
-                    height: 200,
-                    width: 200,
-                    child: Image.asset(settingsBloc.isLightTheme
-                        ? 'assets/mark_and_text_vertical_dark.png'
-                        : 'assets/mark_and_text_vertical_light.png')),
+                    alignment: Alignment(1, 0), child: SelectLanguageButton()),
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -250,49 +261,57 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Container(
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Container(
-                      height: 240,
-                      width: 240,
-                      child: Image.asset(settingsBloc.isLightTheme
-                          ? 'assets/mark_and_text_vertical_dark.png'
-                          : 'assets/mark_and_text_vertical_light.png')),
-                ],
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    bottom: 32,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      CreateWalletButton(),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      RestoreButton(),
+                      Container(
+                          height: 240,
+                          width: 240,
+                          child: Image.asset(settingsBloc.isLightTheme
+                              ? 'assets/mark_and_text_vertical_dark.png'
+                              : 'assets/mark_and_text_vertical_light.png')),
                     ],
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 16, 16),
+                    child: Container(
+                        alignment: Alignment(1, 0),
+                        child: SelectLanguageButton()),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        bottom: 32,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          CreateWalletButton(),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          RestoreButton(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
