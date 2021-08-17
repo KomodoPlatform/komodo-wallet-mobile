@@ -65,13 +65,9 @@ class WalletBloc implements BlocBase {
     _inCurrentWallet.add(currentWallet);
   }
 
-  Future<void> deleteCurrentWallet() async {
-    await Db.deleteWallet(currentWallet);
-    authBloc.logout();
-  }
-
-  Future<void> deleteSpecificWallet(Wallet wallet) async {
+  Future<void> deleteWallet(Wallet wallet) async {
     await Db.deleteWallet(wallet);
+    authBloc.logout();
   }
 
   Future<void> deleteSeedPhrase(String password, Wallet wallet) async {

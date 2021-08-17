@@ -164,7 +164,7 @@ class AppLocalizations {
   String get receive => Intl.message('RECEIVE', name: 'receive');
   String get send => Intl.message('SEND', name: 'send');
   String get back => Intl.message('back', name: 'back');
-  String get cancel => Intl.message('cancel', name: 'cancel');
+  String get cancel => Intl.message('Cancel', name: 'cancel');
   String get details => Intl.message('details', name: 'details');
   String get unspendable => Intl.message('unspendable', name: 'unspendable');
   String get commingsoon =>

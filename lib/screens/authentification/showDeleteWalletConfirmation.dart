@@ -1,0 +1,166 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/blocs/wallet_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/wallet.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
+
+Future<void> showDeleteWalletConfirmation(BuildContext context,
+    {Wallet wallet, String password}) async {
+  wallet ??= walletBloc.currentWallet;
+
+  dialogBloc.dialog = showDialog<dynamic>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+          title: Column(
+            children: <Widget>[
+              SvgPicture.asset('assets/svg/delete_wallet.svg'),
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                AppLocalizations.of(context).deleteWallet.toUpperCase(),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Theme.of(context).errorColor),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+            ],
+          ),
+          children: <Widget>[
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(children: <InlineSpan>[
+                TextSpan(
+                    text: AppLocalizations.of(context).settingDialogSpan1,
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withOpacity(0.8))),
+                TextSpan(
+                    text: walletBloc.currentWallet.name,
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withOpacity(0.8),
+                        fontWeight: FontWeight.bold)),
+                TextSpan(
+                    text: AppLocalizations.of(context).settingDialogSpan2,
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withOpacity(0.8))),
+              ]),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Center(
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(children: <InlineSpan>[
+                  TextSpan(
+                      text: AppLocalizations.of(context).settingDialogSpan3,
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .color
+                              .withOpacity(0.8))),
+                  TextSpan(
+                      text: AppLocalizations.of(context).settingDialogSpan4,
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .color
+                              .withOpacity(0.8),
+                          fontWeight: FontWeight.bold)),
+                  TextSpan(
+                      text: AppLocalizations.of(context).settingDialogSpan5,
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .color
+                              .withOpacity(0.8))),
+                ]),
+              ),
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            StreamBuilder<bool>(
+                initialData: settingsBloc.isDeleteLoading,
+                stream: settingsBloc.outIsDeleteLoading,
+                builder: (context, snapshot) {
+                  return Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: FlatButton(
+                          child: Text(AppLocalizations.of(context).cancel),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                        child: RaisedButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (snapshot.data) ...{
+                                SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 1,
+                                  ),
+                                ),
+                                SizedBox(width: 4),
+                              },
+                              Text(AppLocalizations.of(context).delete),
+                            ],
+                          ),
+                          key: const Key('delete-wallet'),
+                          onPressed: snapshot.data
+                              ? null
+                              : () async {
+                                  Navigator.of(context).pop();
+                                  settingsBloc.setDeleteLoading(true);
+                                  await walletBloc.deleteSeedPhrase(
+                                      password, wallet);
+                                  await walletBloc.deleteWallet(wallet);
+                                  settingsBloc.setDeleteLoading(false);
+
+                                  walletBloc.getWalletsSaved();
+                                },
+                        ),
+                      )
+                    ],
+                  );
+                }),
+            const SizedBox(
+              height: 24,
+            ),
+          ],
+        );
+      }).then((dynamic _) {
+    dialogBloc.dialog = null;
+  });
+}

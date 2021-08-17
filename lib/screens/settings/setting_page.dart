@@ -19,6 +19,7 @@ import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
+import 'package:komodo_dex/screens/authentification/showDeleteWalletConfirmation.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/import-export/export_page.dart';
 import 'package:komodo_dex/screens/import-export/import_page.dart';
@@ -31,8 +32,6 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -755,182 +754,13 @@ class _SettingPageState extends State<SettingPage> {
                 isSignWithSeedIsEnabled: false,
                 onSuccess: (_, String password) {
                   Navigator.of(context).pop();
-                  dialogBloc.dialog = showDialog<dynamic>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return SimpleDialog(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 16),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0)),
-                          title: Column(
-                            children: <Widget>[
-                              SvgPicture.asset('assets/svg/delete_wallet.svg'),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              Text(
-                                AppLocalizations.of(context)
-                                    .deleteWallet
-                                    .toUpperCase(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    .copyWith(
-                                        color: Theme.of(context).errorColor),
-                              ),
-                              const SizedBox(
-                                height: 24,
-                              ),
-                            ],
-                          ),
-                          children: <Widget>[
-                            RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(children: <InlineSpan>[
-                                TextSpan(
-                                    text: AppLocalizations.of(context)
-                                        .settingDialogSpan1,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2
-                                                .color
-                                                .withOpacity(0.8))),
-                                TextSpan(
-                                    text: walletBloc.currentWallet.name,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2
-                                                .color
-                                                .withOpacity(0.8),
-                                            fontWeight: FontWeight.bold)),
-                                TextSpan(
-                                    text: AppLocalizations.of(context)
-                                        .settingDialogSpan2,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2
-                                                .color
-                                                .withOpacity(0.8))),
-                              ]),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Center(
-                              child: RichText(
-                                textAlign: TextAlign.center,
-                                text: TextSpan(children: <InlineSpan>[
-                                  TextSpan(
-                                      text: AppLocalizations.of(context)
-                                          .settingDialogSpan3,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2
-                                          .copyWith(
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText2
-                                                  .color
-                                                  .withOpacity(0.8))),
-                                  TextSpan(
-                                      text: AppLocalizations.of(context)
-                                          .settingDialogSpan4,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2
-                                          .copyWith(
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText2
-                                                  .color
-                                                  .withOpacity(0.8),
-                                              fontWeight: FontWeight.bold)),
-                                  TextSpan(
-                                      text: AppLocalizations.of(context)
-                                          .settingDialogSpan5,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2
-                                          .copyWith(
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText2
-                                                  .color
-                                                  .withOpacity(0.8))),
-                                ]),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 24,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: SecondaryButton(
-                                    text: AppLocalizations.of(context).cancel,
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                    isDarkMode: false,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Expanded(
-                                  child: PrimaryButton(
-                                    text: AppLocalizations.of(context).delete,
-                                    key: const Key('delete-wallet'),
-                                    onPressed: () async {
-                                      Navigator.of(context).pop();
-                                      settingsBloc.setDeleteLoading(true);
-                                      _showLoadingDelete();
-                                      await walletBloc.deleteSeedPhrase(
-                                          password, walletBloc.currentWallet);
-                                      await walletBloc.deleteCurrentWallet();
-                                      settingsBloc.setDeleteLoading(false);
-                                    },
-                                    backgroundColor:
-                                        Theme.of(context).errorColor,
-                                    isDarkMode: false,
-                                  ),
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 24,
-                            ),
-                          ],
-                        );
-                      }).then((dynamic _) {
-                    dialogBloc.dialog = null;
-                  });
+                  showDeleteWalletConfirmation(
+                    context,
+                    password: password,
+                  );
                 },
               )),
     );
-  }
-
-  void _showLoadingDelete() {
-    dialogBloc.dialog = showDialog<dynamic>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return ShowLoadingDelete();
-        }).then((dynamic _) {
-      dialogBloc.dialog = null;
-    });
   }
 
   Future<void> _shareLogs() async {
