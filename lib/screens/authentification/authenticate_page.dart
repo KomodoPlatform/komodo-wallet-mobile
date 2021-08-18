@@ -233,9 +233,6 @@ class _BuildScreenAuthMultiWalletsState
             ? Colors.black.withOpacity(0.3)
             : Colors.white.withOpacity(0.6),
       ),
-      // TODO(MateusRodCosta): Unify this and _showDialogDeleteWallet from settings_page
-      // into a single method with different callbacks for when the user accepts deleting
-      // the wallet.
       onPressed: () async {
         Navigator.push<dynamic>(
           context,
