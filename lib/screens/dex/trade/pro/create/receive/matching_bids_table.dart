@@ -282,7 +282,7 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
     final Rational maxSellAmt = swapBloc.maxTakerVolume ??
         Rational.parse(swapBloc.sellCoinBalance.balance.balance.toString());
     final bool isEnoughVolume =
-        !(bid.minVolume != null && maxSellAmt < bid.minVolume);
+        !(bid.minVolume != null && maxSellAmt < (bid.minVolume * bid.priceRat));
 
     if (isEnoughVolume) {
       Navigator.of(context).pop();
