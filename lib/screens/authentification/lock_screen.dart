@@ -115,29 +115,21 @@ class _LockScreenState extends State<LockScreen> {
 
     initConnectivity();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      pinScreenOrientation(context);
+
       if (updatesProvider.status == null &&
-          mainBloc.networkStatus == NetworkStatus.Online)
+          mainBloc.networkStatus == NetworkStatus.Online) {
         await updatesProvider.check();
+      }
       setState(() {
         shouldUpdate = updatesProvider.status == UpdateStatus.recommended ||
             updatesProvider.status == UpdateStatus.required;
       });
     });
-
-    SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
   }
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
     _connectivitySubscription.cancel();
     super.dispose();
   }

@@ -637,6 +637,7 @@ class AppLocalizations {
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
+  String get tagTokel => Intl.message('IDO', name: 'tagTokel');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
@@ -676,8 +677,6 @@ class AppLocalizations {
       Intl.message('Deutsch', name: 'deutscheLanguage');
   String get chineseLanguage =>
       Intl.message('Chinese', name: 'chineseLanguage');
-  String get simplifiedChinese =>
-      Intl.message('simplified', name: 'simplifiedChinese');
   String get traditionalChinese =>
       Intl.message('traditional', name: 'traditionalChinese');
   String get russianLanguage =>
