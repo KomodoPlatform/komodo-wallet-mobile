@@ -122,6 +122,10 @@ class Ask {
   int age;
   int zcredits;
 
+  Rational get priceRat {
+    return fract2rat(priceFract) ?? Rational.parse(price);
+  }
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'coin': coin ?? '',
         'address': address ?? '',

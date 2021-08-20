@@ -27,23 +27,25 @@ class _ContactEditState extends State<ContactEdit> {
   AddressBookProvider provider;
   String focusOn;
   final List<String> invalidFields = [];
-  final Map<String, String> networkChipLabels = {
-    'erc': 'ERC20',
-    'bep': 'BEP20',
-    'qrc': 'QRC20',
-  };
+  Map<String, String> networkChipLabels;
 
   @override
   void initState() {
+    super.initState();
     editContact = widget.contact != null
         ? Contact.fromJson(widget.contact.toJson())
         : Contact();
     hashBeforeEdit = jsonEncode(editContact.toJson());
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    networkChipLabels = {
+      'erc': AppLocalizations.of(context).tagERC20,
+      'bep': AppLocalizations.of(context).tagBEP20,
+      'qrc': AppLocalizations.of(context).tagQRC20,
+    };
+
     provider = Provider.of<AddressBookProvider>(context);
 
     return WillPopScope(
@@ -289,7 +291,47 @@ class _ContactEditState extends State<ContactEdit> {
     );
   }
 
+  List<SimpleDialogOption> _buildCoinDialogOption(List<Coin> coins) {
+    return coins.map(
+      (coin) {
+        return SimpleDialogOption(
+          onPressed: () => _createAddress(coin),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 8.0,
+              bottom: 8.0,
+            ),
+            child: Row(
+              children: <Widget>[
+                _buildCoinIcon(coin.abbr),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    coin.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ),
+                if (networkChipLabels.containsKey(coin.type)) ...{
+                  _buildNetworkChip(
+                    networkChipLabels[coin.type],
+                  )
+                } else if (coin.abbr == 'TKL') ...{
+                  _buildNetworkChip(AppLocalizations.of(context).tagTokel)
+                } else if (coin.type == 'smartChain') ...{
+                  _buildKmdChip()
+                }
+              ],
+            ),
+          ),
+        );
+      },
+    ).toList();
+  }
+
   Future<void> _showCoinSelectDialog() async {
+    final searchTextController = TextEditingController();
+
     setState(() {
       focusOn = '';
     });
@@ -305,55 +347,53 @@ class _ContactEditState extends State<ContactEdit> {
     all.sort((Coin a, Coin b) => a.name.compareTo(b.name));
     dialogBloc.closeDialog(context);
     await Future<dynamic>.delayed(Duration(seconds: 0));
+
+    final coinsList = editContact.addresses != null
+        ? all
+            .where((Coin c) => !editContact.addresses.containsKey(c.abbr))
+            .toList()
+        : all;
+
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          final List<SimpleDialogOption> coinsList = [];
-          for (Coin coin in all) {
-            bool exist = false;
-            if (editContact.addresses != null &&
-                editContact.addresses.containsKey(coin.abbr)) {
-              exist = true;
-            }
-            if (exist) continue;
-
-            coinsList.add(SimpleDialogOption(
-              onPressed: () => _createAddress(coin),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 8.0,
-                  bottom: 8.0,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    _buildCoinIcon(coin.abbr),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: Text(
-                        coin.name,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 18),
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return CustomSimpleDialog(
+                hasHorizontalPadding: false,
+                title: Text(AppLocalizations.of(context).addressSelectCoin),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: TextField(
+                      controller: searchTextController,
+                      onChanged: (_) => setState(() {}),
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Theme.of(context).textTheme.bodyText2.color,
+                        ),
+                        hintText: 'Search for Ticker',
+                        counterText: '',
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor),
+                        ),
                       ),
+                      maxLength: 16,
                     ),
-                    if (networkChipLabels.containsKey(coin.type)) ...{
-                      _buildNetworkChip(
-                        networkChipLabels[coin.type],
-                      )
-                    } else if (coin.type == 'smartChain') ...{
-                      _buildKmdChip()
-                    }
-                  ],
-                ),
-              ),
-            ));
-          }
-
-          return CustomSimpleDialog(
-            hasHorizontalPadding: false,
-            title: Text(AppLocalizations.of(context).addressSelectCoin),
-            children: [
-              ...coinsList,
-            ],
+                  ),
+                  ..._buildCoinDialogOption(
+                    coinsList
+                        .where((c) => c.abbr.toLowerCase().startsWith(
+                              searchTextController.text.trim().toLowerCase(),
+                            ))
+                        .toList(),
+                  ),
+                ],
+              );
+            },
           );
         }).then((dynamic _) => dialogBloc.dialog = null);
   }
@@ -390,14 +430,14 @@ class _ContactEditState extends State<ContactEdit> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
-        children: const <Widget>[
+        children: <Widget>[
           CircleAvatar(
             maxRadius: 6,
             backgroundImage: AssetImage('assets/kmd.png'),
           ),
           SizedBox(width: 3),
           Text(
-            'KMD',
+            AppLocalizations.of(context).tagKMD,
             style: TextStyle(fontSize: 12),
           ),
         ],
