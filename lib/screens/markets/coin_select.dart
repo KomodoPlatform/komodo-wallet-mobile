@@ -147,7 +147,8 @@ class _CoinSelectState extends State<CoinSelect> {
     final List<CoinBalance> sortedList = coinsBloc.sortCoins(coins);
 
     if (sortedList.isEmpty) {
-      return SimpleDialog(
+      return CustomSimpleDialog(
+        hasHorizontalPadding: false,
         title: Text(AppLocalizations.of(context).coinSelectTitle),
         children: <Widget>[
           Padding(
