@@ -252,9 +252,9 @@ class _BuildScreenAuthMultiWalletsState
               textButton: AppLocalizations.of(context).unlock,
               wallet: wallet,
               isSignWithSeedIsEnabled: false,
-              onSuccess: (_, String password) {
+              onSuccess: (_, String password) async {
                 Navigator.of(context).pop();
-                showDeleteWalletConfirmation(
+                await showDeleteWalletConfirmation(
                   context,
                   wallet: wallet,
                   password: password,

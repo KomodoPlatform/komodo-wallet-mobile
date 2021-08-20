@@ -889,16 +889,6 @@ class ShowLoadingDelete extends StatefulWidget {
 
 class _ShowLoadingDeleteState extends State<ShowLoadingDelete> {
   @override
-  void initState() {
-    super.initState();
-    settingsBloc.outIsDeleteLoading.listen((bool onData) {
-      if (!onData) {
-        Navigator.of(context).pop();
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SimpleDialog(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
