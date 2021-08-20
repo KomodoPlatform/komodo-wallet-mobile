@@ -168,7 +168,7 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
   }
 
   String _validate(String value) {
-    if (value == null) return null;
+    if (value == null || value.isEmpty) return null;
 
     final Rational minVolumeValue = Rational.parse(value);
     final Rational amountToSell = swapBloc.amountSell;
