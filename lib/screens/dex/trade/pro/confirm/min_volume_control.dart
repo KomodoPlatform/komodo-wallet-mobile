@@ -170,12 +170,16 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
   String _validate(String value) {
     if (value == null || value.isEmpty) return null;
 
-    final Rational minVolumeValue = Rational.parse(value);
+    Rational minVolumeValue;
+    try {
+      minVolumeValue = Rational.parse(value);
+    } catch (_) {
+      return AppLocalizations.of(context).nonNumericInput;
+    }
+
     final Rational amountToSell = swapBloc.amountSell;
 
-    if (minVolumeValue == null) {
-      return AppLocalizations.of(context).nonNumericInput;
-    } else if (minVolumeValue.toDouble() < _defaultValue) {
+    if (minVolumeValue.toDouble() < _defaultValue) {
       return AppLocalizations.of(context)
           .minVolumeInput(_defaultValue, swapBloc.sellCoinBalance.coin.abbr);
     } else if (amountToSell != null && minVolumeValue > amountToSell) {
