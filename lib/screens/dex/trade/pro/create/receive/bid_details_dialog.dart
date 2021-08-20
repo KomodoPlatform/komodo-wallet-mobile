@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/screens/markets/build_order_details.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -25,7 +26,8 @@ void openBidDetailsDialog({
 
               return StatefulBuilder(
                 builder: (context, setState) {
-                  return SimpleDialog(
+                  return CustomSimpleDialog(
+                    hasHorizontalPadding: false,
                     title: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -47,17 +49,6 @@ void openBidDetailsDialog({
                           ),
                         ),
                       ],
-                    ),
-                    titlePadding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: 20,
-                      bottom: 4,
-                    ),
-                    contentPadding: const EdgeInsets.only(
-                      left: 8,
-                      right: 0,
-                      bottom: 20,
                     ),
                     children: <Widget>[
                       if (showSettings)
