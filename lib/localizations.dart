@@ -1177,7 +1177,7 @@ class AppLocalizations {
       Intl.message('Do you provide user support?', name: 'question_6');
   String get answer_6 => Intl.message(
       'Yes! ${toInitialUpper(appConfig.appName)} offers support through the'
-      ' <a href="https://komodoplatform.com/discord">'
+      ' <a href="${appConfig.appCompanyDiscord}">'
       '${appConfig.appCompanyShort} Discord server'
       '</a>. The team and the community are always happy to help!',
       name: 'answer_6');

@@ -13,6 +13,7 @@ class AppConfig {
   String get appName => 'atomicDEX';
   String get appCompanyLong => 'Komodo Platform';
   String get appCompanyShort => 'Komodo';
+  String get appCompanyDiscord => 'http://komodoplatform.com/discord';
 
   bool get isFeedEnabled => true;
   String get feedProviderSourceUrl => 'https://komodo.live/messages';

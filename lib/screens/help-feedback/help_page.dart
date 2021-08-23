@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -227,8 +228,8 @@ class _HelpPageState extends State<HelpPage> {
               children: <Widget>[
                 _buildSocialPlatform(
                   title: 'DISCORD',
-                  subtitle: 'Komodo #support',
-                  link: 'http://komodoplatform.com/discord',
+                  subtitle: '${appConfig.appCompanyShort} #support',
+                  link: appConfig.appCompanyDiscord,
                   icon: SizedBox(
                     width: 60,
                     child: Image.asset('assets/discord_logo.png'),
