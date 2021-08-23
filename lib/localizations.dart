@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {

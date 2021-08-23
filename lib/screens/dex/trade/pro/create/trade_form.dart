@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/get_min_trading_volume.dart';
 import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';

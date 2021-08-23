@@ -13,7 +13,7 @@ import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/candles_icon.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class CoinSelect extends StatefulWidget {

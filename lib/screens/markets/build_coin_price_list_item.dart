@@ -12,7 +12,7 @@ import 'package:komodo_dex/widgets/candles_icon.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/duration_select.dart';
 import 'package:komodo_dex/widgets/small_button.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {

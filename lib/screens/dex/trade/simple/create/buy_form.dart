@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/build_rate_simple.dart';
 import 'package:rational/rational.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
