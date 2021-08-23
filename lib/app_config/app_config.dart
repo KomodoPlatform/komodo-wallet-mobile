@@ -17,4 +17,6 @@ class AppConfig {
 
   bool get isFeedEnabled => true;
   String get feedProviderSourceUrl => 'https://komodo.live/messages';
+
+  List<String> get defaultCoins => ['KMD', 'BTC'];
 }
