@@ -35,17 +35,17 @@ class _ContactEditState extends State<ContactEdit> {
         : Contact();
     hashBeforeEdit = jsonEncode(editContact.toJson());
 
-    networkChipLabels = {
-      'erc': AppLocalizations.of(context).tagERC20,
-      'bep': AppLocalizations.of(context).tagBEP20,
-      'qrc': AppLocalizations.of(context).tagQRC20,
-    };
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    networkChipLabels ??= {
+      'erc': AppLocalizations.of(context).tagERC20,
+      'bep': AppLocalizations.of(context).tagBEP20,
+      'qrc': AppLocalizations.of(context).tagQRC20,
+    };
+
     provider = Provider.of<AddressBookProvider>(context);
 
     return WillPopScope(
