@@ -71,9 +71,10 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ChangeNotifierProvider(
               create: (context) => OrderBookProvider(),
             ),
-            ChangeNotifierProvider(
-              create: (context) => FeedProvider(),
-            ),
+            if (appConfig.isFeedEnabled)
+              ChangeNotifierProvider(
+                create: (context) => FeedProvider(),
+              ),
             ChangeNotifierProvider(
               create: (context) => RewardsProvider(),
             ),
@@ -255,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     CoinsPage(),
     DexPage(),
     MarketsPage(),
-    FeedPage(),
+    if (appConfig.isFeedEnabled) FeedPage()
   ];
 
   @override
@@ -292,9 +293,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     _intentDataProvider ??= Provider.of<IntentDataProvider>(context);
-    final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
-    final UpdatesProvider updatesProvider =
-        Provider.of<UpdatesProvider>(context);
 
     _handleIntentData(_scaffoldKey);
 
@@ -333,9 +331,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   color: Theme.of(context).primaryColor,
                   child: SafeArea(
                     child: networkStatusStreamBuilder(
-                      snapshot,
-                      feedProvider,
-                      updatesProvider,
+                      snapshot.data,
                     ),
                   ),
                 ),
@@ -411,8 +407,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     });
   }
 
-  Widget networkStatusStreamBuilder(AsyncSnapshot<int> snapshot,
-      FeedProvider feedProvider, UpdatesProvider updatesProvider) {
+  Widget networkStatusStreamBuilder(int indexTab) {
+    final FeedProvider feedProvider =
+        appConfig.isFeedEnabled ? Provider.of<FeedProvider>(context) : null;
+    final UpdatesProvider updatesProvider =
+        Provider.of<UpdatesProvider>(context);
     return StreamBuilder<NetworkStatus>(
       initialData: mainBloc.networkStatus,
       stream: mainBloc.outNetworkStatus,
@@ -495,7 +494,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               elevation: 0,
               type: BottomNavigationBarType.fixed,
               onTap: onTabTapped,
-              currentIndex: snapshot.data,
+              currentIndex: indexTab,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                     icon: Icon(
@@ -513,15 +512,16 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   ),
                   label: AppLocalizations.of(context).marketsTab,
                 ),
-                BottomNavigationBarItem(
-                    icon: Stack(
-                      children: <Widget>[
-                        Icon(Icons.library_books,
-                            key: const Key('main-nav-feed')),
-                        if (feedProvider.hasNewItems) buildRedDot(context),
-                      ],
-                    ),
-                    label: AppLocalizations.of(context).feedTab),
+                if (appConfig.isFeedEnabled)
+                  BottomNavigationBarItem(
+                      icon: Stack(
+                        children: <Widget>[
+                          Icon(Icons.library_books,
+                              key: const Key('main-nav-feed')),
+                          if (feedProvider.hasNewItems) buildRedDot(context),
+                        ],
+                      ),
+                      label: AppLocalizations.of(context).feedTab),
                 BottomNavigationBarItem(
                     icon: Stack(
                       children: <Widget>[
