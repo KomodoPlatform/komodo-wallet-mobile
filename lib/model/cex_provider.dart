@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -358,7 +359,7 @@ class CexPrices {
     prefs = await SharedPreferences.getInstance();
     activeCurrency = prefs.getInt('activeCurrency') ?? 0;
     _selectedFiat = prefs.getString('selectedFiat') ?? 'USD';
-    currencies = [_selectedFiat, 'BTC', 'KMD'];
+    currencies = [_selectedFiat, ...appConfig.coinsFiat];
 
     Timer.periodic(const Duration(seconds: 60), (_) {
       if (!mmSe.running) return;
