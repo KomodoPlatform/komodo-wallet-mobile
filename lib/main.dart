@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -208,7 +209,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       builder: (BuildContext cont,
                           AsyncSnapshot<dynamic> currentTheme) {
                         return MaterialApp(
-                            title: 'atomicDEX',
+                            title: appConfig.appName,
                             localizationsDelegates: <
                                 LocalizationsDelegate<dynamic>>[
                               const AppLocalizationsDelegate(),
