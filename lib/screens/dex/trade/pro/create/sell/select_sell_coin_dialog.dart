@@ -93,7 +93,7 @@ List<SimpleDialogOption> _coinItemsList({
                 height: 30,
                 width: 30,
                 child: Image.asset(
-                  'assets/${coin.coin.abbr.toLowerCase()}.png',
+                  'assets/coin-icons/${coin.coin.abbr.toLowerCase()}.png',
                 )),
             Expanded(
               child: Container(),

@@ -186,6 +186,7 @@ flutter:
   - assets/mocks/
   - assets/currency-flags/
   - assets/language-flags/
+  - assets/coin-icons/
   - assets/svg/
   - assets/svg_light/
   - assets/swap_share/

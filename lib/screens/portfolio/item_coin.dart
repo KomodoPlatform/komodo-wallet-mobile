@@ -151,8 +151,8 @@ class _ItemCoinState extends State<ItemCoin> {
                           CircleAvatar(
                             radius: 28,
                             backgroundColor: Colors.transparent,
-                            backgroundImage: AssetImage(
-                                'assets/${balance.coin.toLowerCase()}.png'),
+                            backgroundImage: AssetImage('assets/coin-icons/'
+                                '${balance.coin.toLowerCase()}.png'),
                           ),
                           const SizedBox(height: 8),
                           Text(
@@ -421,7 +421,7 @@ class _ItemCoinState extends State<ItemCoin> {
                           }
                         },
                         child: Image.asset(
-                          'assets/kmd.png',
+                          'assets/coin-icons/kmd.png',
                           width: 18,
                           height: 18,
                         ),

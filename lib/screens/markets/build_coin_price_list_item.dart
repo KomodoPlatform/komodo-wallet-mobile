@@ -83,7 +83,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                         radius: 18,
                                         backgroundColor: Colors.transparent,
                                         backgroundImage: AssetImage(
-                                            'assets/${balance.coin.toLowerCase()}.png'),
+                                            'assets/coin-icons/${balance.coin.toLowerCase()}.png'),
                                       ),
                                       const SizedBox(width: 8),
                                       Text(

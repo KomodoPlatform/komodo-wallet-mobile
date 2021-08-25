@@ -92,7 +92,7 @@ class SwapShareCard extends StatelessWidget {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Image.asset(
-                                                'assets/' +
+                                                'assets/coin-icons/' +
                                                     swap.result.myInfo.myCoin
                                                         .toLowerCase() +
                                                     '.png',
@@ -127,7 +127,7 @@ class SwapShareCard extends StatelessWidget {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Image.asset(
-                                                'assets/' +
+                                                'assets/coin-icons/' +
                                                     swap.result.myInfo.otherCoin
                                                         .toLowerCase() +
                                                     '.png',

@@ -155,7 +155,7 @@ class _RewardsPageState extends State<RewardsPage> {
       child: Column(
         children: <Widget>[
           const SizedBox(height: 40),
-          SizedBox(width: 50, child: Image.asset('assets/kmd.png')),
+          SizedBox(width: 50, child: Image.asset('assets/coin-icons/kmd.png')),
           const SizedBox(height: 8),
           rewardsProvider.errorMessage == null &&
                   rewardsProvider.successMessage != null

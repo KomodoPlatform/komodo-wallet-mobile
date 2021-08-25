@@ -268,7 +268,8 @@ class _ContactEditState extends State<ContactEdit> {
   Widget _buildCoinIcon(String abbr) {
     return CircleAvatar(
       maxRadius: 8,
-      backgroundImage: AssetImage('assets/${abbr.toLowerCase()}.png'),
+      backgroundImage:
+          AssetImage('assets/coin-icons/${abbr.toLowerCase()}.png'),
     );
   }
 
@@ -432,7 +433,7 @@ class _ContactEditState extends State<ContactEdit> {
         children: <Widget>[
           CircleAvatar(
             maxRadius: 6,
-            backgroundImage: AssetImage('assets/kmd.png'),
+            backgroundImage: AssetImage('assets/coin-icons/kmd.png'),
           ),
           SizedBox(width: 3),
           Text(
