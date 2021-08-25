@@ -40,7 +40,7 @@ class _ContactEditState extends State<ContactEdit> {
 
   @override
   Widget build(BuildContext context) {
-    networkChipLabels = {
+    networkChipLabels ??= {
       'erc': AppLocalizations.of(context).tagERC20,
       'bep': AppLocalizations.of(context).tagBEP20,
       'qrc': AppLocalizations.of(context).tagQRC20,
