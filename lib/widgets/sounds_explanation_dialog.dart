@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/settings/sound_settings_page.dart';
 
 Future<void> showSoundsDialog(BuildContext context) async {
   if (!settingsBloc.showSoundsExplanationDialog) return;
 
-  dialogBloc.dialog = showDialog(
+  dialogBloc.dialog = Future<void>(() {});
+  await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -65,22 +65,8 @@ Future<void> showSoundsDialog(BuildContext context) async {
                 ),
                 SizedBox(height: 12),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Expanded(
-                        child: FlatButton(
-                      onPressed: () {
-                        dialogBloc.dialog = null;
-                        Navigator.of(context).pop();
-                        Navigator.push<dynamic>(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                              builder: (BuildContext context) =>
-                                  SoundSettingsPage()),
-                        );
-                      },
-                      child: Text(AppLocalizations.of(context).settings),
-                    )),
-                    SizedBox(width: 12),
                     Expanded(
                       child: RaisedButton(
                         onPressed: () {
@@ -99,4 +85,5 @@ Future<void> showSoundsDialog(BuildContext context) async {
           ),
         );
       });
+  dialogBloc.dialog = null;
 }

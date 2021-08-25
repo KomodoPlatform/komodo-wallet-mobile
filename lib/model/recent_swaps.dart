@@ -84,7 +84,7 @@ class MmSwap {
       Log('recent_swaps:84', '!my_info: $ex, $trace');
     }
     successEvents = List<String>.from(json['success_events']);
-    type = json['type'];
+    type = json['type'] ?? _getType(successEvents);
     uuid = json['uuid'];
     _recoverable = json['recoverable'];
     gui = json['gui'];
@@ -94,6 +94,16 @@ class MmSwap {
     takerCoin = json['taker_coin'];
     takerAmount = json['taker_amount'];
     myOrderUuid = json['my_order_uuid'];
+  }
+
+  /// returns swap type ('Taker' or 'Maker') based on swap events list
+  String _getType(List<String> events) {
+    for (String event in events) {
+      if (event == 'TakerFeeSent') return 'Taker';
+      if (event == 'TakerFeeValidated') return 'Maker';
+    }
+
+    return null;
   }
 
   /// if at least 1 of the events happens, the swap is considered a failure
@@ -263,7 +273,8 @@ class SwapEF {
       this.makerPubkey,
       this.secretHash,
       this.transaction,
-      this.error});
+      this.error,
+      this.waitUntil});
 
   factory SwapEF.fromJson(Map<String, dynamic> json) => SwapEF(
       lockDuration: json['lock_duration'],
@@ -313,7 +324,8 @@ class SwapEF {
       transaction: json['transaction'] == null
           ? null
           : Transaction.fromJson(json['transaction']),
-      error: json['error'] ?? '');
+      error: json['error'] ?? '',
+      waitUntil: json['wait_until'] ?? 0);
 
   /// The lock duration of swap payments in seconds
   /// The sender can refund the transaction when the lock duration is passed
@@ -380,6 +392,8 @@ class SwapEF {
   Transaction transaction;
   String error;
 
+  int waitUntil;
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'lock_duration': lockDuration ?? 0,
         'maker_amount': makerAmount ?? '',
@@ -424,7 +438,8 @@ class SwapEF {
         'maker_pubkey': makerPubkey ?? '',
         'secret_hash': secretHash ?? '',
         'transaction': transaction == null ? null : transaction.toJson(),
-        'error': error ?? ''
+        'error': error ?? '',
+        'wait_until': waitUntil ?? 0
       };
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/html_parser.dart';
 
@@ -140,19 +141,22 @@ class _HelpPageState extends State<HelpPage> {
       },
     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).helpTitle),
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _buildLinks(),
-            _buildFAQ(),
-            const SizedBox(height: 50),
-          ],
+    return LockScreen(
+      context: context,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context).helpTitle),
+        ),
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildLinks(),
+              _buildFAQ(),
+              const SizedBox(height: 50),
+            ],
+          ),
         ),
       ),
     );

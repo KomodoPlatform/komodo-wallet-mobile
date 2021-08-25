@@ -68,7 +68,7 @@ void showCurrenciesDialog(BuildContext context) {
     ));
   }
 
-  dialogBloc.dialog = showDialog(
+  dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
@@ -81,5 +81,5 @@ void showCurrenciesDialog(BuildContext context) {
             ...options,
           ],
         );
-      });
+      }).then((dynamic _) => dialogBloc.dialog = null);
 }

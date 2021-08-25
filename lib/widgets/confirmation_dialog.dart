@@ -12,7 +12,7 @@ void showConfirmationDialog({
   String confirmButtonText = 'Confirm',
   Key key,
 }) {
-  dialogBloc.dialog = showDialog(
+  dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
@@ -75,5 +75,5 @@ void showConfirmationDialog({
             ),
           ],
         );
-      });
+      }).then((dynamic _) => dialogBloc.dialog = null);
 }

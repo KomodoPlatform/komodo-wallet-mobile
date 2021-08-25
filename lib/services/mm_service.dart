@@ -5,7 +5,6 @@ import 'dart:io' show File, Platform, Process;
 
 import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
@@ -83,7 +82,7 @@ class MMService {
   /// Log entries streamed from native code.
   /// MM log is coming that way on iOS.
   static const EventChannel logC = EventChannel('AtomicDEX/logC');
-  final Client client = http.Client();
+  Client client = http.Client();
 
   /// Maps a $year-$month-$day date to the corresponding log file.
   /// The current date time can fluctuate (due to time correction services, for instance)
@@ -147,7 +146,6 @@ class MMService {
   Future<void> init(String passphrase) async {
     await mmSe.runBin();
     metrics();
-    tradeForm.reset();
 
     jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
       if (!mmSe.running) return;
@@ -370,7 +368,7 @@ class MMService {
       await coinsBloc.updateCoinBalances();
       Log('mm_service:434', 'loadCoin finished');
     } catch (e) {
-      print(e);
+      Log('mm_service', 'initCoinsAndLoad: $e');
     }
   }
 
@@ -398,25 +396,52 @@ class MMService {
     await file.delete();
   }
 
-  Future<dynamic> stopmm2() async {
-    _running = false;
+  Future<void> stopmm2() async {
+    if (Platform.isIOS) {
+      await _stopmm2Ios();
+      Log('mm_service', 'stopmm2: done');
+      return;
+    }
+
     try {
       final BaseService baseService =
           BaseService(userpass: userpass, method: 'stop');
-      final Response response =
-          await http.post(url, body: baseServiceToJson(baseService));
-      // await Future<dynamic>.delayed(const Duration(seconds: 1));
+      await client.post(url, body: baseServiceToJson(baseService));
 
       _running = false;
-      return baseServiceFromJson(response.body);
     } catch (e) {
-      print(e);
-      return null;
+      Log('mm_service', 'stopmm2: $e');
     }
   }
 
+  Future<void> _stopmm2Ios() async {
+    final int errorCode = await nativeC.invokeMethod<int>('stop');
+    final Mm2StopError error = mm2StopErrorFrom(errorCode);
+    Log('mm_service', 'stopmm2Ios: $error');
+
+    await pauseUntil(() async => await _mm2status() == Mm2Status.not_running);
+    _running = false;
+  }
+
+  Future<Mm2Status> _mm2status() async {
+    return mm2StatusFrom(await checkStatusMm2());
+  }
+
+  Future<dynamic> handleWakeUp() async {
+    if (!Platform.isIOS) return;
+    if (!running) return;
+
+    /// Wait until mm2 is up, in case it was restarted from Swift
+    await pauseUntil(() async => await MM.isRpcUp());
+
+    /// If [running], but enabled coins list is empty,
+    /// it means that mm2 was restarted from Swift, and we
+    /// should reenable active coins ones again
+    if ((await MM.getEnabledCoins()).isEmpty) initCoinsAndLoad();
+  }
+
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:482', 'getAllBalances');
+    Log('mm_service', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
@@ -448,6 +473,14 @@ enum Mm2Error {
   unknown,
 }
 
+/// mm2_stop error codes defined in "mm2_lib.rs".
+enum Mm2StopError {
+  ok,
+  not_running,
+  error_stopping,
+  unknown,
+}
+
 /// mm2_main_status codes defined in "mm2_lib.rs".
 enum Mm2Status {
   not_running,
@@ -472,6 +505,18 @@ Mm2Error mm2ErrorFrom(int errorCode) {
     default:
       return Mm2Error.unknown;
   }
+}
+
+Mm2StopError mm2StopErrorFrom(int errorCode) {
+  switch (errorCode) {
+    case 0:
+      return Mm2StopError.ok;
+    case 1:
+      return Mm2StopError.not_running;
+    case 2:
+      return Mm2StopError.error_stopping;
+  }
+  return Mm2StopError.unknown;
 }
 
 Mm2Status mm2StatusFrom(int statusCode) {

@@ -17,6 +17,10 @@ import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatefulWidget {
+  const AppDrawer(this.mContext);
+
+  final BuildContext mContext;
+
   @override
   _AppDrawerState createState() => _AppDrawerState();
 }
@@ -310,7 +314,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                 key: const Key('side-nav-logout'), size: 16),
                             onTap: () {
                               Navigator.pop(context);
-                              showLogoutConfirmation(context);
+                              showLogoutConfirmation(widget.mContext);
                             },
                             title: Text(AppLocalizations.of(context).logout),
                           ),

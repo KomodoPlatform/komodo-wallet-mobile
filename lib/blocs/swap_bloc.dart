@@ -1,8 +1,5 @@
 import 'dart:async';
-
-import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/model/get_max_taker_volume.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -16,8 +13,8 @@ class SwapBloc implements BlocBase {
   CoinBalance receiveCoinBalance;
   bool enabledSellField = false;
   bool enabledReceiveField = false;
-  double amountSell;
-  double amountReceive;
+  Rational amountSell;
+  Rational amountReceive;
   Ask matchingBid;
   bool shouldBuyOut = false;
   bool isSellMaxActive = false;
@@ -44,15 +41,15 @@ class SwapBloc implements BlocBase {
   Stream<CoinBalance> get outSellCoinBalance =>
       _sellCoinBalanceController.stream;
 
-  final StreamController<double> _amountSellController =
-      StreamController<double>.broadcast();
-  Sink<double> get _inAmountSell => _amountSellController.sink;
-  Stream<double> get outAmountSell => _amountSellController.stream;
+  final StreamController<Rational> _amountSellController =
+      StreamController<Rational>.broadcast();
+  Sink<Rational> get _inAmountSell => _amountSellController.sink;
+  Stream<Rational> get outAmountSell => _amountSellController.stream;
 
-  final StreamController<double> _amountReceiveController =
-      StreamController<double>.broadcast();
-  Sink<double> get _inAmountReceive => _amountReceiveController.sink;
-  Stream<double> get outAmountReceive => _amountReceiveController.stream;
+  final StreamController<Rational> _amountReceiveController =
+      StreamController<Rational>.broadcast();
+  Sink<Rational> get _inAmountReceive => _amountReceiveController.sink;
+  Stream<Rational> get outAmountReceive => _amountReceiveController.stream;
 
   final StreamController<int> _indexTabController =
       StreamController<int>.broadcast();
@@ -118,28 +115,14 @@ class SwapBloc implements BlocBase {
     _inEnabledSellField.add(this.enabledSellField);
   }
 
-  void setAmountSell(double amount) {
-    final double rounded = amount == null
-        ? null
-        : double.parse(amount.toStringAsFixed(tradeForm.precision));
-    amountSell = rounded;
+  void setAmountSell(Rational amount) {
+    amountSell = amount;
     _inAmountSell.add(amountSell);
   }
 
-  void setAmountReceive(double amount) {
-    final double rounded = amount == null
-        ? null
-        : double.parse(amount.toStringAsFixed(tradeForm.precision));
-    amountReceive = rounded;
+  void setAmountReceive(Rational amount) {
+    amountReceive = amount;
     _inAmountReceive.add(amountReceive);
-  }
-
-  void calcAndSetAmountReceive(Decimal amountSell, Ask matchingBid) {
-    if (matchingBid == null) return;
-
-    final amountReceive =
-        amountSell.toDouble() * double.parse(matchingBid.price);
-    setAmountReceive(amountReceive);
   }
 
   void setIndexTabDex(int index) {

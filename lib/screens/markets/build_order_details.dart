@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
@@ -16,7 +17,7 @@ class BuildOrderDetails extends StatefulWidget {
   const BuildOrderDetails(this.order, {this.sellAmount});
 
   final Ask order;
-  final double sellAmount;
+  final Rational sellAmount;
 
   @override
   _BuildOrderDetailsState createState() => _BuildOrderDetailsState();
@@ -302,14 +303,14 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
     if (widget.sellAmount == null) return true;
 
     final double myVolume =
-        widget.order.getReceiveAmount(deci(widget.sellAmount)).toDouble();
+        widget.order.getReceiveAmount(widget.sellAmount).toDouble();
 
-    return myVolume >= widget.order.minVolume;
+    return myVolume >= widget.order.minVolume.toDouble();
   }
 
   Widget _buildMinVolume() {
     if (widget.order.minVolume == null) return SizedBox();
-    if (widget.order.minVolume <= 0.00777) return SizedBox();
+    if (widget.order.minVolume <= Rational.parse('0.00777')) return SizedBox();
 
     return Row(
       children: <Widget>[
@@ -374,9 +375,8 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
                     const SizedBox(width: 12),
                     Text(
-                      formatPrice(widget.order
-                          .getReceiveAmount(deci(widget.sellAmount))
-                          .toDouble()),
+                      formatPrice(
+                          widget.order.getReceiveAmount(widget.sellAmount)),
                       style: Theme.of(context).textTheme.subtitle2.copyWith(
                             fontWeight: FontWeight.normal,
                           ),
@@ -415,7 +415,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 const SizedBox(width: 12),
                 Text(
                   formatPrice(widget.order
-                          .getReceiveAmount(deci(widget.sellAmount))
+                          .getReceiveAmount(widget.sellAmount)
                           .toDouble() *
                       double.parse(widget.order.price)),
                   style: Theme.of(context).textTheme.subtitle2.copyWith(

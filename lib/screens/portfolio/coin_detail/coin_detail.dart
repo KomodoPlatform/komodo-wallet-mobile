@@ -39,10 +39,12 @@ class CoinDetail extends StatefulWidget {
   const CoinDetail({
     this.coinBalance,
     this.isSendIsActive = false,
+    this.paymentUriInfo,
   });
 
   final CoinBalance coinBalance;
   final bool isSendIsActive;
+  final PaymentUriInfo paymentUriInfo;
 
   @override
   _CoinDetailState createState() => _CoinDetailState();
@@ -284,7 +286,7 @@ class _CoinDetailState extends State<CoinDetail> {
   bool isRefresh = false;
 
   Widget _buildSyncChain() {
-    // Since we currently fething erc20 transactions history
+    // Since we currently fetching erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
     if (widget.coinBalance.coin.type == 'erc' ||
@@ -732,6 +734,7 @@ class _CoinDetailState extends State<CoinDetail> {
     listSteps.clear();
     listSteps.add(AmountAddressStep(
       coin: widget.coinBalance.coin,
+      paymentUriInfo: widget.paymentUriInfo,
       onCancel: () {
         setState(() {
           isExpanded = false;
@@ -781,7 +784,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
               ApiProvider()
                   .postRawTransaction(
-                      MMService().client,
+                      mmSe.client,
                       GetSendRawTransaction(
                           coin: widget.coinBalance.coin.abbr,
                           txHex: response.txHex))
@@ -815,7 +818,7 @@ class _CoinDetailState extends State<CoinDetail> {
                     duration: const Duration(seconds: 2),
                     backgroundColor: Theme.of(context).errorColor,
                     content: Text(
-                      AppLocalizations.of(mainContext).errorNotEnoughtGas(gas),
+                      AppLocalizations.of(mainContext).errorNotEnoughGas(gas),
                     ),
                   ));
                 } else {

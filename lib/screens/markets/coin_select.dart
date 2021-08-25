@@ -9,8 +9,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/candles_icon.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
@@ -24,7 +23,6 @@ class CoinSelect extends StatefulWidget {
       this.pairedCoin,
       this.autoOpen = false,
       this.compact = false,
-      this.hideInactiveCoins = false,
       this.onChange,
       Key key})
       : super(key: key);
@@ -34,8 +32,6 @@ class CoinSelect extends StatefulWidget {
   final Coin pairedCoin;
   final bool autoOpen;
   final bool compact;
-  // Only show coins with at least one order or swap
-  final bool hideInactiveCoins;
   final Function(Coin) onChange;
 
   @override
@@ -43,24 +39,11 @@ class CoinSelect extends StatefulWidget {
 }
 
 class _CoinSelectState extends State<CoinSelect> {
-  List<CoinBalance> _coinsList;
-  bool _isDialogOpen = false;
-  bool _orderBooksLoaded = false;
-  StreamSubscription _coinsListener;
   OrderBookProvider _orderBookProvider;
 
   @override
   void initState() {
     super.initState();
-
-    // Using stream listener instead of StreamBuilder in order
-    // to make SimpleDialog updatable
-    _coinsListener = coinsBloc.outCoins.listen((List<CoinBalance> list) {
-      if (_coinsList == list) return;
-
-      setState(() => _coinsList = list);
-      _refreshDialog();
-    });
 
     if (mmSe.running) coinsBloc.updateCoinBalances();
 
@@ -72,19 +55,10 @@ class _CoinSelectState extends State<CoinSelect> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _coinsListener?.cancel();
-  }
-
-  @override
   Widget build(BuildContext context) {
     _orderBookProvider = Provider.of<OrderBookProvider>(context);
     return InkWell(
       onTap: () {
-        setState(() {
-          _orderBooksLoaded = false;
-        });
         _showDialog();
       },
       child: Container(
@@ -137,155 +111,112 @@ class _CoinSelectState extends State<CoinSelect> {
     return coin == widget.pairedCoin;
   }
 
-  bool _isPairSwapable(CoinsPair pair) {
-    final Orderbook _orderbook = _orderBookProvider.getOrderBook(pair);
-    final List<Swap> _swapHistory = _orderBookProvider.getSwapHistory(pair);
-
-    return !((_swapHistory == null || _swapHistory.isEmpty) &&
-        (_orderbook == null ||
-            ((_orderbook.asks == null || _orderbook.asks.isEmpty) &&
-                (_orderbook.bids == null || _orderbook.bids.isEmpty))));
-  }
-
-  bool _isCoinActive(Coin coin) {
-    if (widget.pairedCoin != null) {
-      final _pair = CoinsPair(
-        buy: widget.type == CoinType.base ? coin : widget.pairedCoin,
-        sell: widget.type == CoinType.base ? widget.pairedCoin : coin,
-      );
-
-      return _isPairSwapable(_pair); //
-    }
-
-    for (int i = 0; i < _coinsList.length; i++) {
-      final _pair = CoinsPair(
-        buy: widget.type == CoinType.base ? coin : _coinsList[i].coin,
-        sell: widget.type == CoinType.base ? _coinsList[i].coin : coin,
-      );
-
-      if (_isPairSwapable(_pair)) return true; //
-    }
-
-    return false; //
-  }
-
-  Future<void> _loadOrderBooks() async {
-    await _orderBookProvider.subscribeCoin(widget.pairedCoin, widget.type);
-    setState(() {
-      _orderBooksLoaded = true;
-    });
-    _refreshDialog();
-  }
-
-  void _refreshDialog() {
-    if (!_isDialogOpen) return;
-
-    _closeDialog();
-    _showDialog();
+  Future<bool> _loadDepths() async {
+    if (widget.pairedCoin == null) return true;
+    await _orderBookProvider.subscribeDepth([
+      {
+        widget.pairedCoin.abbr:
+            widget.type == CoinType.rel ? CoinType.base : CoinType.rel
+      }
+    ]);
+    return true;
   }
 
   void _showDialog() {
-    setState(() {
-      _isDialogOpen = true;
-    });
-
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          if (_coinsList == null) {
-            if (!_orderBooksLoaded) _loadOrderBooks();
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+          return StreamBuilder(
+            initialData: coinsBloc.coinBalance,
+            stream: coinsBloc.outCoins,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData || snapshot.data == null) {
+                return _buildProgressDialog();
+              }
 
-          if (widget.pairedCoin != null && !_orderBooksLoaded) {
-            _loadOrderBooks();
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          final List<CoinBalance> _sortedList = coinsBloc.sortCoins(_coinsList);
-          if (_sortedList.isEmpty) {
-            return SimpleDialog(
-              title: Text(AppLocalizations.of(context).coinSelectTitle),
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Text(AppLocalizations.of(context).coinSelectNotFound),
-                ),
-              ],
-            );
-          }
-
-          final List<SimpleDialogOption> resetSelect = widget.value == null
-              ? []
-              : [
-                  SimpleDialogOption(
-                    onPressed: () {
-                      _closeDialog();
-                      if (widget.onChange != null) {
-                        widget.onChange(null);
-                      }
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        Icon(Icons.cancel),
-                        const SizedBox(width: 8),
-                        Text(AppLocalizations.of(context).coinSelectClear),
-                      ],
-                    ),
-                  ),
-                ];
-
-          final List<SimpleDialogOption> coinsList = [];
-          for (int i = 0; i < _sortedList.length; i++) {
-            final CoinBalance coinBalance = _sortedList[i];
-
-            if (widget.hideInactiveCoins && !_isCoinActive(coinBalance.coin)) {
-              continue;
-            }
-
-            coinsList.add(SimpleDialogOption(
-              key: Key('coin-select-option-${coinBalance.coin.abbr}'),
-              onPressed: _isOptionDisabled(coinBalance.coin)
-                  ? null
-                  : () {
-                      _closeDialog();
-                      if (widget.onChange != null) {
-                        widget.onChange(coinBalance.coin);
-                      }
-                    },
-              child: _buildOption(coinBalance),
-            ));
-          }
-
-          if (coinsList.isEmpty) {
-            coinsList.add(
-              SimpleDialogOption(
-                child: Text(AppLocalizations.of(context).coinSelectNotFound),
-              ),
-            );
-          }
-
-          return SimpleDialog(
-            title: Text(AppLocalizations.of(context).coinSelectTitle),
-            children: [
-              ...resetSelect,
-              ...coinsList,
-            ],
+              return _buildList(snapshot.data);
+            },
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
-  void _closeDialog() {
-    if (!_isDialogOpen) return;
+  Widget _buildList(List<CoinBalance> coins) {
+    if (context == null) return SizedBox();
 
-    dialogBloc.closeDialog(context);
-    setState(() {
-      _isDialogOpen = false;
-    });
+    final List<CoinBalance> sortedList = coinsBloc.sortCoins(coins);
+
+    if (sortedList.isEmpty) {
+      return SimpleDialog(
+        title: Text(AppLocalizations.of(context).coinSelectTitle),
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Text(AppLocalizations.of(context).coinSelectNotFound),
+          ),
+        ],
+      );
+    }
+
+    return FutureBuilder<bool>(
+      future: _loadDepths(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return _buildProgressDialog();
+
+        final List<SimpleDialogOption> resetSelect = widget.value == null
+            ? []
+            : [
+                SimpleDialogOption(
+                  onPressed: () {
+                    dialogBloc.closeDialog(context);
+                    if (widget.onChange != null) {
+                      widget.onChange(null);
+                    }
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.cancel),
+                      const SizedBox(width: 8),
+                      Text(AppLocalizations.of(context).coinSelectClear),
+                    ],
+                  ),
+                ),
+              ];
+
+        final List<SimpleDialogOption> coinsList = [];
+        for (int i = 0; i < sortedList.length; i++) {
+          final CoinBalance coinBalance = sortedList[i];
+
+          coinsList.add(SimpleDialogOption(
+            key: Key('coin-select-option-${coinBalance.coin.abbr}'),
+            onPressed: _isOptionDisabled(coinBalance.coin)
+                ? null
+                : () {
+                    dialogBloc.closeDialog(context);
+                    if (widget.onChange != null) {
+                      widget.onChange(coinBalance.coin);
+                    }
+                  },
+            child: _buildOption(coinBalance),
+          ));
+        }
+
+        if (coinsList.isEmpty) {
+          coinsList.add(
+            SimpleDialogOption(
+              child: Text(AppLocalizations.of(context).coinSelectNotFound),
+            ),
+          );
+        }
+
+        return SimpleDialog(
+          title: Text(AppLocalizations.of(context).coinSelectTitle),
+          children: [
+            ...resetSelect,
+            ...coinsList,
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildOption(CoinBalance coinBalance) {
@@ -402,21 +333,21 @@ class _CoinSelectState extends State<CoinSelect> {
       if (widget.pairedCoin == null) return Container();
       if (widget.pairedCoin.abbr == coinBalance.coin.abbr) return Container();
 
-      final Orderbook orderbook = _orderBookProvider.getOrderBook(CoinsPair(
+      final OrderbookDepth obDepth = _orderBookProvider.getDepth(CoinsPair(
         sell:
             widget.type == CoinType.rel ? widget.pairedCoin : coinBalance.coin,
         buy:
             widget.type == CoinType.base ? widget.pairedCoin : coinBalance.coin,
       ));
 
-      if (orderbook == null) return Container();
+      if (obDepth == null) return Container();
 
       return Row(
         children: <Widget>[
           Text(
-            '${orderbook.asks.length}',
+            '${obDepth.depth.asks}',
             style: TextStyle(
-              color: orderbook.asks.isNotEmpty
+              color: (obDepth.depth.asks ?? 0) > 0
                   ? Colors.red
                   : Theme.of(context).highlightColor,
               fontSize: 13,
@@ -426,17 +357,18 @@ class _CoinSelectState extends State<CoinSelect> {
           Container(
             width: 1,
             height: 10,
-            color: orderbook.asks.isNotEmpty && orderbook.bids.isNotEmpty
-                ? settingsBloc.isLightTheme
-                    ? cexColorLight.withAlpha(100)
-                    : cexColor.withAlpha(100)
-                : Theme.of(context).highlightColor,
+            color:
+                (obDepth.depth.asks ?? 0) > 0 && (obDepth.depth.bids ?? 0) > 0
+                    ? settingsBloc.isLightTheme
+                        ? cexColorLight.withAlpha(100)
+                        : cexColor.withAlpha(100)
+                    : Theme.of(context).highlightColor,
           ),
           const SizedBox(width: 2),
           Text(
-            '${orderbook.bids.length}',
+            '${obDepth.depth.bids}',
             style: TextStyle(
-              color: orderbook.bids.isNotEmpty
+              color: (obDepth.depth.bids ?? 0) > 0
                   ? Colors.green
                   : Theme.of(context).highlightColor,
               fontSize: 13,
@@ -479,6 +411,27 @@ class _CoinSelectState extends State<CoinSelect> {
           const SizedBox(width: 2),
           _bildOrdersNumber(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildProgressDialog() {
+    return Dialog(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const CircularProgressIndicator(),
+            const SizedBox(
+              width: 16,
+            ),
+            Text(
+              AppLocalizations.of(context).loading,
+              style: Theme.of(context).textTheme.bodyText2,
+            )
+          ],
+        ),
       ),
     );
   }

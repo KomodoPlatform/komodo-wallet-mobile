@@ -38,112 +38,97 @@ static AVAudioPlayerNode* dex_player;
 /// We keep a pointer to it in order to keep rescheduling it into the end of the `player` queue.
 static AVAudioFile* dex_bg_file;
 
-/// The number of files in the `player` queue.
-static volatile atomic_int_fast32_t dex_scheduled = 0;
-
 /// Increased wheneve the queue is reset, invalidating old completion handlers.
 static volatile atomic_int_fast32_t dex_generation = 0;
 
 /// Path to the assets/audio directory.
 static NSString* dex_assets_audio;
 
-/// Scheduled between files in order to hold to the `isPlayingProcessAssertion`.
-static AVAudioFile* ballast_file;
-void audio_ballast() {
-    if (ballast_file == nil) {
-        NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "none.mp3"];
-
-        NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
-        NSError* err;
-        ballast_file = [[AVAudioFile alloc] initForReading: url error: &err];
-        if (err) {os_log (OS_LOG_DEFAULT, "audio_ballast] !file: %{public}@", err); return;}
-    }
+void save_audio_path(const char* path) {
+    if (!path) {os_log (OS_LOG_DEFAULT, "save_audio_path] !path"); return;}
     
-    [dex_player scheduleSegment: ballast_file startingFrame: 60000 frameCount: 30000 atTime: nil completionHandler: nil];}
+    const char* end = strstr (path, "/start.mp3");
+    if (!end) {os_log (OS_LOG_DEFAULT, "save_audio_path] !end"); return;}
+    dex_assets_audio = [[[NSString alloc] initWithUTF8String: path] substringToIndex: end - path];
+}
 
 /// Invoked by completion handlers in order to maintain the background audio loop.
 void audio_reschedule (int generation) {
-  //os_log (OS_LOG_DEFAULT, "audio_reschedule] Entered..");
-  int cur_generation = atomic_load (&dex_generation);
-  if (generation != cur_generation) return;
-  if (!dex_bg_file) return;
-
-  // Need another thread in order not to trigger
-  // "dispatch_sync called on queue already owned by current thread" in `AVAudioPlayerNodeImpl`
-  dispatch_async (dispatch_get_global_queue (DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() {
-    //os_log (OS_LOG_DEFAULT, "audio_reschedule] Async..");
+    if (!dex_player) audio_init();
+    
     int cur_generation = atomic_load (&dex_generation);
     if (generation != cur_generation) return;
     if (!dex_bg_file) return;
-
-    // Stops the player. Should only do this when the `processingFormat` is known to change.
-    //[dex_engine connect: dex_player to: [dex_engine mainMixerNode] format: dex_bg_file.processingFormat];
-
-    //os_log (OS_LOG_DEFAULT, "audio_reschedule] Looping..");
-    [dex_player scheduleFile: dex_bg_file atTime: nil completionHandler: ^() {audio_reschedule (generation);}];
-    audio_ballast();});}
+    
+    // Need another thread in order not to trigger
+    // "dispatch_sync called on queue already owned by current thread" in `AVAudioPlayerNodeImpl`
+    dispatch_async (dispatch_get_global_queue (DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() {
+        //os_log (OS_LOG_DEFAULT, "audio_reschedule] Async..");
+        int cur_generation = atomic_load (&dex_generation);
+        if (generation != cur_generation) return;
+        if (!dex_bg_file) return;
+        
+        // Stops the player. Should only do this when the `processingFormat` is known to change.
+        //[dex_engine connect: dex_player to: [dex_engine mainMixerNode] format: dex_bg_file.processingFormat];
+        
+        //os_log (OS_LOG_DEFAULT, "audio_reschedule] Looping..");
+        [dex_player scheduleFile: dex_bg_file atTime: nil completionHandler: ^() {audio_reschedule (generation);}]; });}
 
 // TBD: dispatch_async, go off the main thread and run initialization in background.
-void audio_init (const char* assets_ticking) {
-  //os_log (OS_LOG_DEFAULT, "audio_init] Entered..");
+void audio_init () {
+    AVAudioEngine* engine = [[AVAudioEngine alloc] init];
+    AVAudioPlayerNode* player = [[AVAudioPlayerNode alloc] init];
+    [engine attachNode:player];
+    
+    const char* documents = documentDirectory();
+    if (documents == NULL) {os_log (OS_LOG_DEFAULT, "audio_init] !documents"); return;}
+    
+    // TODO: change with actual sound-scheme samples
+    NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "start.mp3"];  // “Standing by”
+    
+    NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
+    NSError* err;
+    AVAudioFile* file = [[AVAudioFile alloc] initForReading: url error: &err];
+    if (err) {os_log (OS_LOG_DEFAULT, "audio_init] !file: %{public}@", err); return;}
+    
+    AVAudioMixerNode* mixer = [engine mainMixerNode];
+    //os_log (OS_LOG_DEFAULT, "audio_init] Attaching..");
+    // NB: Should investigate the format compatibility between the different possible audio sources.
+    // cf. https://stackoverflow.com/questions/33484140/how-can-i-specify-the-format-of-avaudioengine-mic-input
+    // Reconnecting the payer to the mixer before a new schedule seems to help with maintaining the format.
+    [engine connect: player to: mixer format: file.processingFormat];
+    
+    //os_log (OS_LOG_DEFAULT, "audio_init] Category..");
+    err = nil;
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback withOptions: AVAudioSessionCategoryOptionMixWithOthers error: &err];
+    if (err) {os_log (OS_LOG_DEFAULT, "audio_init] !setCategory: %{public}@", err); return;}
+    
+    //os_log (OS_LOG_DEFAULT, "audio_init] Starting..");
+    err = nil;
+    [engine startAndReturnError: &err];
+    if (err) {os_log (OS_LOG_DEFAULT, "audio_init] !start: %{public}@", err); return;}
+    [player play];
+    
+    audio_volume ([[NSNumber alloc] initWithDouble: 0.1]);
+    
+    //os_log (OS_LOG_DEFAULT, "audio_init] Playing..");
+    [player scheduleFile:file atTime:nil completionHandler:nil];
+    
+    //os_log (OS_LOG_DEFAULT, "audio_init] Done");
+    dex_engine = engine;
+    dex_player = player;}
 
-  AVAudioEngine* engine = [[AVAudioEngine alloc] init];
-  AVAudioPlayerNode* player = [[AVAudioPlayerNode alloc] init];
-  [engine attachNode:player];
-
-  const char* documents = documentDirectory();
-  if (documents == NULL) {os_log (OS_LOG_DEFAULT, "audio_init] !documents"); return;}
-
-  NSString* documents_ns = [[NSString alloc] initWithUTF8String: documents];
-  NSArray* documents_a = [[NSFileManager defaultManager] contentsOfDirectoryAtPath: documents_ns error: NULL];
-  [documents_a enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-    NSString* filename = (NSString*) obj;
-    //os_log (OS_LOG_DEFAULT, "audio_init] Documents file: %{public}s", filename.UTF8String);
-  }];
-
-  if (!assets_ticking) {os_log (OS_LOG_DEFAULT, "audio_init] !assets_ticking"); return;}
-  // TODO: change with actual sound-scheme samples
-  const char* end = strstr (assets_ticking, "/tick-tock.mp3");
-  if (!end) {os_log (OS_LOG_DEFAULT, "audio_init] !end"); return;}
-  dex_assets_audio = [[[NSString alloc] initWithUTF8String: assets_ticking] substringToIndex: end - assets_ticking];
-  //os_log (OS_LOG_DEFAULT, "audio_init] dex_assets_audio set to %{public}@", dex_assets_audio);
-
-  // TODO: change with actual sound-scheme samples
-  NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "start.mp3"];  // “Standing by”
-
-  NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
-  NSError* err;
-  AVAudioFile* file = [[AVAudioFile alloc] initForReading: url error: &err];
-  if (err) {os_log (OS_LOG_DEFAULT, "audio_init] !file: %{public}@", err); return;}
-
-  AVAudioMixerNode* mixer = [engine mainMixerNode];
-  //os_log (OS_LOG_DEFAULT, "audio_init] Attaching..");
-  // NB: Should investigate the format compatibility between the different possible audio sources.
-  // cf. https://stackoverflow.com/questions/33484140/how-can-i-specify-the-format-of-avaudioengine-mic-input
-  // Reconnecting the payer to the mixer before a new schedule seems to help with maintaining the format.
-  [engine connect: player to: mixer format: file.processingFormat];
-
-  //os_log (OS_LOG_DEFAULT, "audio_init] Category..");
-  err = nil;
-  [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback withOptions: AVAudioSessionCategoryOptionMixWithOthers error: &err];
-  if (err) {os_log (OS_LOG_DEFAULT, "audio_init] !setCategory: %{public}@", err); return;}
-
-  //os_log (OS_LOG_DEFAULT, "audio_init] Starting..");
-  err = nil;
-  [engine startAndReturnError: &err];
-  if (err) {os_log (OS_LOG_DEFAULT, "audio_init] !start: %{public}@", err); return;}
-  [player play];
-
-  audio_volume ([[NSNumber alloc] initWithDouble: 0.1]);
-
-  //os_log (OS_LOG_DEFAULT, "audio_init] Playing..");
-  [player scheduleFile:file atTime:nil completionHandler:nil];
-
-  //os_log (OS_LOG_DEFAULT, "audio_init] Done");
-  dex_engine = engine;
-  dex_player = player;}
+int audio_deactivate() {
+    if (!dex_player) return  -1;
+    
+    dex_engine = nil;
+    dex_player = nil;
+    return  0;
+}
 
 void audio_resume() {
+    if (!dex_player) return;
+    
     NSError* err;
     [dex_engine startAndReturnError: &err];
     if (err) {os_log (OS_LOG_DEFAULT, "audio_resume]: %{public}@", err); return;}
@@ -151,66 +136,67 @@ void audio_resume() {
 }
 
 AVAudioFile* audio_load_file (NSString* rpath) {
-  // See if there is a custom sound in Documents.
-  const char* documents = documentDirectory();
-  NSString* path = [NSString stringWithFormat:@"%s/%@", documents, rpath];
-  NSFileManager *fileManager = [NSFileManager defaultManager];
-  if ([fileManager fileExistsAtPath: path]) {
+    // See if there is a custom sound in Documents.
+    const char* documents = documentDirectory();
+    NSString* path = [NSString stringWithFormat:@"%s/%@", documents, rpath];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath: path]) {
+        NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
+        NSError* err;
+        AVAudioFile* file = [[AVAudioFile alloc] initForReading: url error: &err];
+        if (err) {
+            os_log (OS_LOG_DEFAULT, "audio_load_file] Error loading a custom file %{public}@: %{public}@", path, err);
+        } else {
+            os_log (OS_LOG_DEFAULT, "audio_load_file] Loaded %{public}@", path);
+            return file;}}
+    
+    path = [NSString stringWithFormat:@"%@/%@", dex_assets_audio, rpath];
+    if (![fileManager fileExistsAtPath: path]) {
+        os_log (OS_LOG_DEFAULT, "audio_load_file] No asset at %{public}@", path);
+        return nil;}
+    
     NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
     NSError* err;
     AVAudioFile* file = [[AVAudioFile alloc] initForReading: url error: &err];
     if (err) {
-      os_log (OS_LOG_DEFAULT, "audio_load_file] Error loading a custom file %{public}@: %{public}@", path, err);
-    } else {
-      os_log (OS_LOG_DEFAULT, "audio_load_file] Loaded %{public}@", path);
-      return file;}}
-
-  path = [NSString stringWithFormat:@"%@/%@", dex_assets_audio, rpath];
-  if (![fileManager fileExistsAtPath: path]) {
-    os_log (OS_LOG_DEFAULT, "audio_load_file] No asset at %{public}@", path);
-    return nil;}
-
-  NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
-  NSError* err;
-  AVAudioFile* file = [[AVAudioFile alloc] initForReading: url error: &err];
-  if (err) {
-    os_log (OS_LOG_DEFAULT, "audio_load_file] Error loading asset %{public}@: %{public}@", path, err);
-    return nil;}
-  os_log (OS_LOG_DEFAULT, "audio_load_file] Loaded %{public}@", path);
-  return file;}
+        os_log (OS_LOG_DEFAULT, "audio_load_file] Error loading asset %{public}@: %{public}@", path, err);
+        return nil;}
+    os_log (OS_LOG_DEFAULT, "audio_load_file] Loaded %{public}@", path);
+    return file;}
 
 int audio_bg (NSString* rpath) {
-  if ([rpath length] == 0) {
-    dex_bg_file = nil;
+    if ([rpath length] == 0) {
+        dex_bg_file = nil;
+        return 0;}
+    
+    if (!dex_player) audio_init();
+    
+    AVAudioFile* file = audio_load_file (rpath);
+    if (!file) return -2;
+    dex_bg_file = file;
+    atomic_fetch_add (&dex_generation, 1);  // Invalidate previous completion handlers
+    int generation = atomic_load (&dex_generation);
+    [dex_player stop];  // Clears the queue
+    [dex_engine connect: dex_player to: [dex_engine mainMixerNode] format: file.processingFormat];
+    [dex_player play];
+    [dex_player scheduleFile: file atTime: nil completionHandler: ^() {audio_reschedule (generation);}];
     return 0;}
 
-  if (!dex_player) return -1;
-  AVAudioFile* file = audio_load_file (rpath);
-  if (!file) return -2;
-  dex_bg_file = file;
-  atomic_fetch_add (&dex_generation, 1);  // Invalidate previous completion handlers
-  int generation = atomic_load (&dex_generation);
-  [dex_player stop];  // Clears the queue
-  [dex_engine connect: dex_player to: [dex_engine mainMixerNode] format: file.processingFormat];
-  [dex_player play];
-  [dex_player scheduleFile: file atTime: nil completionHandler: ^() {audio_reschedule (generation);}];
-  audio_ballast();
-  return 0;}
-
 int audio_fg (NSString* rpath) {
-  if (!dex_player) return -1;
-  AVAudioFile* file = audio_load_file (rpath);
-  if (!file) return -2;
-  atomic_fetch_add (&dex_generation, 1);  // Invalidate previous completion handlers
-  int generation = atomic_load (&dex_generation);
-  [dex_player stop];  // Clears the queue
-  [dex_engine connect: dex_player to: [dex_engine mainMixerNode] format: file.processingFormat];
-  [dex_player play];
-  [dex_player scheduleFile: file atTime: nil completionHandler: ^() {audio_reschedule (generation);}];
-  audio_ballast();
-  return 0;}
+    if (!dex_player) audio_init();
+    
+    AVAudioFile* file = audio_load_file (rpath);
+    if (!file) return -2;
+    atomic_fetch_add (&dex_generation, 1);  // Invalidate previous completion handlers
+    int generation = atomic_load (&dex_generation);
+    [dex_player stop];  // Clears the queue
+    [dex_engine connect: dex_player to: [dex_engine mainMixerNode] format: file.processingFormat];
+    [dex_player play];
+    [dex_player scheduleFile: file atTime: nil completionHandler: ^() {audio_reschedule (generation);}];
+    return 0;}
 
 int audio_volume (NSNumber* volume) {
-  if (!dex_player) return -1;
-  [dex_player setVolume: [volume doubleValue]];
-  return 0;}
+    if (!dex_player) return -1;
+    
+    [dex_player setVolume: [volume doubleValue]];
+    return 0;}

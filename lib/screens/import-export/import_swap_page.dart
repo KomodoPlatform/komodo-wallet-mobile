@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_import_swaps.dart';
 import 'package:komodo_dex/model/import_swaps.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -29,28 +30,31 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context).importSingleSwapTitle,
+    return LockScreen(
+      context: context,
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context).importSingleSwapTitle,
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            if (_done) ...{
-              _buildResultImport(),
-            } else if (_swap == null) ...{
-              _buildLoadHeader(),
-              _buildFilePickerButton(),
-            } else ...{
-              _buildImportHeader(),
-              _buildSwap(),
-              _buildImportButton(),
-            }
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (_done) ...{
+                _buildResultImport(),
+              } else if (_swap == null) ...{
+                _buildLoadHeader(),
+                _buildFilePickerButton(),
+              } else ...{
+                _buildImportHeader(),
+                _buildSwap(),
+                _buildImportButton(),
+              }
+            ],
+          ),
         ),
       ),
     );
@@ -137,11 +141,9 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
           ),
           SizedBox(height: 2),
           Text(
-            (_swap.type == 'Maker' || _swap.type == 'Taker')
-                ? _swap.type == 'Maker'
-                    ? AppLocalizations.of(context).makerOrder
-                    : AppLocalizations.of(context).takerOrder
-                : _swap.type + AppLocalizations.of(context).orderTypePartial,
+            _swap.type == 'Maker'
+                ? AppLocalizations.of(context).makerOrder
+                : AppLocalizations.of(context).takerOrder,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontSize: 14,
                   color: Theme.of(context)
@@ -272,6 +274,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
 
                 try {
                   final s = MmSwap.fromJson(data);
+                  _validateSwapData(s);
                   setState(() {
                     _swap = s;
                   });
@@ -284,6 +287,25 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
         text: AppLocalizations.of(context).selectFileImport,
       ),
     );
+  }
+
+  void _validateSwapData(MmSwap data) {
+    const String error = 'Invalid swap data';
+
+    if ((data.uuid ?? '').isEmpty) throw error;
+    if (data.type != 'Taker' && data.type != 'Maker') throw error;
+
+    if (data.myInfo != null) {
+      if ((data.myInfo.myCoin ?? '').isEmpty) throw error;
+      if ((data.myInfo.myAmount ?? '').isEmpty) throw error;
+      if ((data.myInfo.otherCoin ?? '').isEmpty) throw error;
+      if ((data.myInfo.otherAmount ?? '').isEmpty) throw error;
+    } else {
+      if ((data.makerCoin ?? '').isEmpty) throw error;
+      if ((data.takerCoin ?? '').isEmpty) throw error;
+      if ((data.makerAmount ?? '').isEmpty) throw error;
+      if ((data.takerAmount ?? '').isEmpty) throw error;
+    }
   }
 
   Future<Map<String, dynamic>> _getSwapData(File file) async {

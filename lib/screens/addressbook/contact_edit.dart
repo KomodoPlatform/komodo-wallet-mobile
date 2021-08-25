@@ -6,6 +6,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit_field.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/widgets/confirmation_dialog.dart';
 import 'package:komodo_dex/widgets/small_button.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ class _ContactEditState extends State<ContactEdit> {
   AddressBookProvider provider;
   String focusOn;
   final List<String> invalidFields = [];
+  Map<String, String> networkChipLabels;
 
   @override
   void initState() {
@@ -32,11 +34,18 @@ class _ContactEditState extends State<ContactEdit> {
         ? Contact.fromJson(widget.contact.toJson())
         : Contact();
     hashBeforeEdit = jsonEncode(editContact.toJson());
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    networkChipLabels ??= {
+      'erc': AppLocalizations.of(context).tagERC20,
+      'bep': AppLocalizations.of(context).tagBEP20,
+      'qrc': AppLocalizations.of(context).tagQRC20,
+    };
+
     provider = Provider.of<AddressBookProvider>(context);
 
     return WillPopScope(
@@ -48,99 +57,105 @@ class _ContactEditState extends State<ContactEdit> {
             FocusScope.of(context).requestFocus(FocusNode());
           });
         },
-        child: Scaffold(
-          backgroundColor: Theme.of(context).backgroundColor,
-          appBar: AppBar(
-            title: Text(
-              widget.contact == null
-                  ? AppLocalizations.of(context).createContact
-                  : AppLocalizations.of(context).editContact,
-              key: const Key('contact_edit-title'),
+        child: LockScreen(
+          context: context,
+          child: Scaffold(
+            backgroundColor: Theme.of(context).backgroundColor,
+            appBar: AppBar(
+              title: Text(
+                widget.contact == null
+                    ? AppLocalizations.of(context).createContact
+                    : AppLocalizations.of(context).editContact,
+                key: const Key('contact_edit-title'),
+              ),
+              actions: <Widget>[
+                if (widget.contact != null)
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () => _showDeleteConfiramtion(),
+                  ),
+              ],
+              centerTitle: true,
+              elevation: 0,
             ),
-            actions: <Widget>[
-              if (widget.contact != null)
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => _showDeleteConfiramtion(),
-                ),
-            ],
-            centerTitle: true,
-            elevation: 0,
-          ),
-          body: Column(
-            children: <Widget>[
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      ContactEditField(
-                          name: 'name',
-                          label: AppLocalizations.of(context).contactTitleName,
-                          invalid: invalidFields.contains('name'),
-                          icon: Icon(
-                            Icons.account_circle,
-                            size: 16,
-                            color: Theme.of(context).textTheme.bodyText1.color,
-                          ),
-                          color: Theme.of(context).primaryColor,
-                          value: editContact.name,
-                          removable: false,
-                          autofocus: widget.contact == null && focusOn == null,
-                          onChange: (String value) {
-                            setState(() {
-                              editContact.name = value;
-                            });
-                            _validate();
-                          }),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: _buildAddButton(),
-                      ),
-                      FutureBuilder<Widget>(
-                        future: _buildAddresses(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<Widget> snapshot) {
-                          if (!snapshot.hasData)
-                            return const Center(
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 16),
-                                child: SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child:
-                                      CircularProgressIndicator(strokeWidth: 1),
+            body: Column(
+              children: <Widget>[
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        ContactEditField(
+                            name: 'name',
+                            label:
+                                AppLocalizations.of(context).contactTitleName,
+                            invalid: invalidFields.contains('name'),
+                            icon: Icon(
+                              Icons.account_circle,
+                              size: 16,
+                              color:
+                                  Theme.of(context).textTheme.bodyText1.color,
+                            ),
+                            color: Theme.of(context).primaryColor,
+                            value: editContact.name,
+                            removable: false,
+                            autofocus:
+                                widget.contact == null && focusOn == null,
+                            onChange: (String value) {
+                              setState(() {
+                                editContact.name = value;
+                              });
+                              _validate();
+                            }),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: _buildAddButton(),
+                        ),
+                        FutureBuilder<Widget>(
+                          future: _buildAddresses(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Widget> snapshot) {
+                            if (!snapshot.hasData)
+                              return const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 16),
+                                  child: SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 1),
+                                  ),
                                 ),
-                              ),
-                            );
+                              );
 
-                          return snapshot.data;
+                            return snapshot.data;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Theme.of(context).primaryColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          _exitPage();
                         },
+                        child: Text(AppLocalizations.of(context).contactCancel),
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          _saveContact();
+                        },
+                        child: Text(AppLocalizations.of(context).contactSave),
                       ),
                     ],
                   ),
                 ),
-              ),
-              Container(
-                color: Theme.of(context).primaryColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    FlatButton(
-                      onPressed: () {
-                        _exitPage();
-                      },
-                      child: Text(AppLocalizations.of(context).contactCancel),
-                    ),
-                    FlatButton(
-                      onPressed: () {
-                        _saveContact();
-                      },
-                      child: Text(AppLocalizations.of(context).contactSave),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -276,68 +291,110 @@ class _ContactEditState extends State<ContactEdit> {
     );
   }
 
+  List<SimpleDialogOption> _buildCoinDialogOption(List<Coin> coins) {
+    return coins.map(
+      (coin) {
+        return SimpleDialogOption(
+          onPressed: () => _createAddress(coin),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 8.0,
+              bottom: 8.0,
+            ),
+            child: Row(
+              children: <Widget>[
+                _buildCoinIcon(coin.abbr),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    coin.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ),
+                if (networkChipLabels.containsKey(coin.type)) ...{
+                  _buildNetworkChip(
+                    networkChipLabels[coin.type],
+                  )
+                } else if (coin.abbr == 'TKL') ...{
+                  _buildNetworkChip(AppLocalizations.of(context).tagTokel)
+                } else if (coin.type == 'smartChain') ...{
+                  _buildKmdChip()
+                }
+              ],
+            ),
+          ),
+        );
+      },
+    ).toList();
+  }
+
   Future<void> _showCoinSelectDialog() async {
+    final searchTextController = TextEditingController();
+
     setState(() {
       focusOn = '';
     });
     FocusScope.of(context).requestFocus(FocusNode());
 
-    dialogBloc.dialog = showDialog(
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return const Center(child: CircularProgressIndicator());
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
 
     final List<Coin> all = (await coins).values.toList();
     all.sort((Coin a, Coin b) => a.name.compareTo(b.name));
     dialogBloc.closeDialog(context);
-    dialogBloc.dialog = showDialog(
+    await Future<dynamic>.delayed(Duration(seconds: 0));
+
+    final coinsList = editContact.addresses != null
+        ? all
+            .where((Coin c) => !editContact.addresses.containsKey(c.abbr))
+            .toList()
+        : all;
+
+    dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          final List<SimpleDialogOption> coinsList = [];
-          for (Coin coin in all) {
-            bool exist = false;
-            if (editContact.addresses != null &&
-                editContact.addresses.containsKey(coin.abbr)) {
-              exist = true;
-            }
-            if (exist) continue;
-
-            coinsList.add(SimpleDialogOption(
-              onPressed: () => _createAddress(coin),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 8.0,
-                  bottom: 8.0,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    _buildCoinIcon(coin.abbr),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: Text(
-                        coin.name,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 18),
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return SimpleDialog(
+                title: Text(AppLocalizations.of(context).addressSelectCoin),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: TextField(
+                      controller: searchTextController,
+                      onChanged: (_) => setState(() {}),
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Theme.of(context).textTheme.bodyText2.color,
+                        ),
+                        hintText: 'Search for Ticker',
+                        counterText: '',
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor),
+                        ),
                       ),
+                      maxLength: 16,
                     ),
-                    if (coin.type == 'erc') _buildNetworkChip('ERC20'),
-                    if (coin.type == 'bep') _buildNetworkChip('BEP20'),
-                    if (coin.type == 'qrc') _buildNetworkChip('QRC20'),
-                    if (coin.type == 'smartChain') _buildKmdChip(),
-                  ],
-                ),
-              ),
-            ));
-          }
-
-          return SimpleDialog(
-            title: Text(AppLocalizations.of(context).addressSelectCoin),
-            children: [
-              ...coinsList,
-            ],
+                  ),
+                  ..._buildCoinDialogOption(
+                    coinsList
+                        .where((c) => c.abbr.toLowerCase().startsWith(
+                              searchTextController.text.trim().toLowerCase(),
+                            ))
+                        .toList(),
+                  ),
+                ],
+              );
+            },
           );
-        });
+        }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
   Widget _buildNetworkChip(String text) {
@@ -351,9 +408,9 @@ class _ContactEditState extends State<ContactEdit> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
-        children: const <Widget>[
+        children: <Widget>[
           Text(
-            'QRC20',
+            text,
             style: TextStyle(fontSize: 12),
           ),
         ],
@@ -372,14 +429,14 @@ class _ContactEditState extends State<ContactEdit> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
-        children: const <Widget>[
+        children: <Widget>[
           CircleAvatar(
             maxRadius: 6,
             backgroundImage: AssetImage('assets/kmd.png'),
           ),
           SizedBox(width: 3),
           Text(
-            'KMD',
+            AppLocalizations.of(context).tagKMD,
             style: TextStyle(fontSize: 12),
           ),
         ],
