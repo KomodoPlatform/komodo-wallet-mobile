@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -58,15 +59,16 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
           Stack(
             alignment: Alignment.bottomRight,
             children: [
-              Positioned(
-                width: 256,
-                height: 144,
-                left: 10000,
-                child: RepaintBoundary(
-                  key: repaintKey,
-                  child: SwapShareCard(swap: widget.swap),
+              if (appConfig.isSwapShareCardEnabled)
+                Positioned(
+                  width: 256,
+                  height: 144,
+                  left: 10000,
+                  child: RepaintBoundary(
+                    key: repaintKey,
+                    child: SwapShareCard(swap: widget.swap),
+                  ),
                 ),
-              ),
               Column(
                 children: [
                   const SizedBox(
@@ -106,45 +108,46 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: IconButton(
-                  icon: Icon(Icons.share),
-                  onPressed: () async {
-                    final RenderRepaintBoundary boundary =
-                        repaintKey.currentContext.findRenderObject();
-                    final ui.Image image =
-                        await boundary.toImage(pixelRatio: 4);
-                    final byteData =
-                        await image.toByteData(format: ui.ImageByteFormat.png);
-                    final pngBytes = byteData.buffer.asUint8List();
+              if (appConfig.isSwapShareCardEnabled)
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: IconButton(
+                    icon: Icon(Icons.share),
+                    onPressed: () async {
+                      final RenderRepaintBoundary boundary =
+                          repaintKey.currentContext.findRenderObject();
+                      final ui.Image image =
+                          await boundary.toImage(pixelRatio: 4);
+                      final byteData = await image.toByteData(
+                          format: ui.ImageByteFormat.png);
+                      final pngBytes = byteData.buffer.asUint8List();
 
-                    final String directory =
-                        (await applicationDocumentsDirectory).path;
-                    final imgFile = File('$directory/screenshot.png');
-                    await imgFile.writeAsBytes(pngBytes);
+                      final String directory =
+                          (await applicationDocumentsDirectory).path;
+                      final imgFile = File('$directory/screenshot.png');
+                      await imgFile.writeAsBytes(pngBytes);
 
-                    final myCoin = widget.swap.result.myInfo.myCoin;
-                    final otherCoin = widget.swap.result.myInfo.otherCoin;
-                    final shareText =
-                        "I've just atomic swapped $myCoin/$otherCoin"
-                        ' on my phone! You can try it too: https://atomicdex.io\n'
-                        '#blockchain #dex #atomicdex #komodoplatform #atomicswap';
+                      final myCoin = widget.swap.result.myInfo.myCoin;
+                      final otherCoin = widget.swap.result.myInfo.otherCoin;
+                      final shareText =
+                          "I've just atomic swapped $myCoin/$otherCoin"
+                          ' on my phone! You can try it too: https://atomicdex.io\n'
+                          '#blockchain #dex #atomicdex #komodoplatform #atomicswap';
 
-                    await Share.shareFiles(
-                      [imgFile.path],
-                      text: shareText,
-                      mimeTypes: ['image/png'],
-                    );
+                      await Share.shareFiles(
+                        [imgFile.path],
+                        text: shareText,
+                        mimeTypes: ['image/png'],
+                      );
 
-                    if (Platform.isIOS) {
-                      dialogBloc.dialog = Navigator.of(context)
-                          .push(SharePreviewOverlay(imgFile))
-                          .then((_) => dialogBloc.dialog = null);
-                    }
-                  },
+                      if (Platform.isIOS) {
+                        dialogBloc.dialog = Navigator.of(context)
+                            .push(SharePreviewOverlay(imgFile))
+                            .then((_) => dialogBloc.dialog = null);
+                      }
+                    },
+                  ),
                 ),
-              ),
             ],
           ),
           DetailSwap(
