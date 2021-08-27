@@ -239,6 +239,8 @@ Future<bool> authenticateBiometrics(
       Log.println('utils:312', 'authenticateWithBiometrics ex: ' + e.message);
     }
 
+    await pauseUntil(() => !mainBloc.isInBackground);
+
     lockService.biometricsReturned(lockCookie);
 
     if (didAuthenticate) {
