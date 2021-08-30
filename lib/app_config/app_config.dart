@@ -21,5 +21,5 @@ class AppConfig {
   List<String> get defaultCoins => ['KMD', 'BTC'];
   List<String> get coinsFiat => ['BTC', 'KMD'];
 
-  bool get isSwapShareCardEnabled => false;
+  bool get isSwapShareCardEnabled => true;
 }
