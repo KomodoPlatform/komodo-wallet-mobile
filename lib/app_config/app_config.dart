@@ -25,4 +25,13 @@ class AppConfig {
 
   bool get isUpdateCheckerEnabled => true;
   String get updateCheckerEndpoint => 'https://komodo.live/adexversion';
+
+  String get fiatPricesEndpoint => 'https://rates.komodo.live/api/v1/usd_rates';
+  String get cryptoPricesEndpoint =>
+      'https://rates.komodo.live/api/v1/gecko_rates/';
+  String get cryptoPricesFallback =>
+      'https://api.coingecko.com/api/v3/simple/price?ids=';
+  String get candlestickTickersList =>
+      'https://komodo.live:3333/api/v1/ohlc/tickers_list';
+  String get candlestickData => 'https://komodo.live:3333/api/v1/ohlc';
 }
