@@ -8,6 +8,8 @@ import 'package:komodo_dex/widgets/custom_textfield.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
+import 'package:bip39/src/wordlists/english.dart';
+
 class CheckPassphrasePage extends StatefulWidget {
   const CheckPassphrasePage({this.seed});
 
@@ -132,6 +134,43 @@ class SeedRandom extends StatefulWidget {
 }
 
 class _SeedRandomState extends State<SeedRandom> {
+  List<String> _buildListSeeds() {
+    final List<String> words = [];
+    final wordList = WORDLIST;
+
+    words.add(widget.data.word);
+
+    final _random = Random();
+    while (true) {
+      if (words.length >= 4) break;
+      final e = wordList[_random.nextInt(wordList.length)];
+      if (!words.contains(e)) words.add(e);
+    }
+
+    words.shuffle();
+
+    return words;
+  }
+
+  Widget _buildSeedWord(String word) {
+    return InkWell(
+      onTap: () {
+        _controller.text = word;
+
+        checkPassphrasePage.setWord(_controller.text);
+        checkPassphrasePage.setIsWordGood(
+            const CheckPassphrasePage().checkSeedWord(widget.data));
+      },
+      child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).buttonColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text(word)),
+    );
+  }
+
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -143,6 +182,13 @@ class _SeedRandomState extends State<SeedRandom> {
               .checkSeedPhraseSubtile((widget.data.index + 1).toString()),
           key: const Key('which-word'),
           style: Theme.of(context).textTheme.bodyText2,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: _buildListSeeds().map(_buildSeedWord).toList(),
         ),
         const SizedBox(
           height: 8,
