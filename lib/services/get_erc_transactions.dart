@@ -10,16 +10,6 @@ import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/utils/log.dart';
 
-// At the moment (8/24/2020) tx history is disabled on parity nodes,
-// so we switching ETH/ERC20, BNB/BEP20 tx history to
-// the https://komodo.live:3334 endpoint
-//
-// API calls:
-// '/api/v1/eth_tx_history/{address}' - ETH transaction history for address
-// '/api/v1/erc_tx_history/{token}/{address}' - ERC20 transaction history
-//
-// ref: https://github.com/ca333/komodoDEX/issues/872
-
 GetErcTransactions getErcTransactions = GetErcTransactions();
 
 class GetErcTransactions {

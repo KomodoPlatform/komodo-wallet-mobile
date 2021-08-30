@@ -1,3 +1,5 @@
+import 'package:komodo_dex/model/feed_provider.dart';
+
 AppConfig appConfig = AppConfig();
 
 class AppConfig {
@@ -35,8 +37,26 @@ class AppConfig {
       'https://komodo.live:3333/api/v1/ohlc/tickers_list';
   String get candlestickData => 'https://komodo.live:3333/api/v1/ohlc';
 
+// At the moment (8/24/2020) tx history is disabled on parity nodes,
+// so we switching ETH/ERC20, BNB/BEP20 tx history to
+// the https://komodo.live:3334 endpoint
+//
+// API calls:
+// '/api/v1/eth_tx_history/{address}' - ETH transaction history for address
+// '/api/v1/erc_tx_history/{token}/{address}' - ERC20 transaction history
+//
+// ref: https://github.com/ca333/komodoDEX/issues/872
+
   String get ethUrl => 'https://komodo.live:3334/api/v1/eth_tx_history';
   String get ercUrl => 'https://komodo.live:3334/api/v2/erc_tx_history';
   String get bnbUrl => 'https://komodo.live:3334/api/v1/bnb_tx_history';
   String get bepUrl => 'https://komodo.live:3334/api/v2/bep_tx_history';
+
+  NewsSource get defaultNewsSource => NewsSource(
+        name: 'Komodo #official-news',
+        url:
+            'https://discord.com/channels/412898016371015680/412915799251222539',
+        pic:
+            'https://cdn.discordapp.com/icons/412898016371015680/a_157cb08c4198ad53b9e9b7168c930571.png',
+      );
 }
