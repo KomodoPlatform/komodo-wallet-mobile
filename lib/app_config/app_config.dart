@@ -22,4 +22,7 @@ class AppConfig {
   List<String> get coinsFiat => ['BTC', 'KMD'];
 
   bool get isSwapShareCardEnabled => true;
+
+  bool get isUpdateCheckerEnabled => true;
+  String get updateCheckerEndpoint => 'https://komodo.live/adexversion';
 }
