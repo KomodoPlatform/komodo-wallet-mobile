@@ -34,4 +34,9 @@ class AppConfig {
   String get candlestickTickersList =>
       'https://komodo.live:3333/api/v1/ohlc/tickers_list';
   String get candlestickData => 'https://komodo.live:3333/api/v1/ohlc';
+
+  String get ethUrl => 'https://komodo.live:3334/api/v1/eth_tx_history';
+  String get ercUrl => 'https://komodo.live:3334/api/v2/erc_tx_history';
+  String get bnbUrl => 'https://komodo.live:3334/api/v1/bnb_tx_history';
+  String get bepUrl => 'https://komodo.live:3334/api/v2/bep_tx_history';
 }
