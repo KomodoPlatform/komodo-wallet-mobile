@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/check_passphrase_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/custom_textfield.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
-
-import 'package:bip39/src/wordlists/english.dart';
 
 class CheckPassphrasePage extends StatefulWidget {
   const CheckPassphrasePage({this.seed});
@@ -135,16 +134,11 @@ class SeedRandom extends StatefulWidget {
 
 class _SeedRandomState extends State<SeedRandom> {
   List<String> _buildListSeeds() {
-    final List<String> words = [];
-    final wordList = WORDLIST;
+    final List<String> words = [widget.data.word];
 
-    words.add(widget.data.word);
-
-    final _random = Random();
-    while (true) {
-      if (words.length >= 4) break;
-      final e = wordList[_random.nextInt(wordList.length)];
-      if (!words.contains(e)) words.add(e);
+    while (words.length < 4) {
+      final String word = getRandomWord();
+      if (!words.contains(word)) words.add(word);
     }
 
     words.shuffle();
