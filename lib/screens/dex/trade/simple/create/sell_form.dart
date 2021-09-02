@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:rational/rational.dart';
@@ -176,8 +176,8 @@ class _SellFormState extends State<SellForm> {
                       children: [
                         CircleAvatar(
                           radius: 8,
-                          backgroundImage: AssetImage(
-                              'assets/${_constrProvider.sellCoin.toLowerCase()}.png'),
+                          backgroundImage: AssetImage('assets/coin-icons/'
+                              '${_constrProvider.sellCoin.toLowerCase()}.png'),
                         ),
                         SizedBox(width: 4),
                         Text(

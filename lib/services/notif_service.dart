@@ -99,9 +99,6 @@ class NotifService {
       final List<Transaction> transactions = [];
 
       for (CoinBalance coin in coins) {
-        // For ETH/ERC20 tokens we use komodo.live endpoint for txs history
-        // Notifications for ETH/ERC20 txs are not available for now
-        // https://github.com/ca333/komodoDEX/issues/872
         if (coin.coin.type == 'erc' || coin.coin.type == 'bep') continue;
 
         final String abbr = coin.coin.abbr;

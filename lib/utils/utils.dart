@@ -684,8 +684,8 @@ void showUriDetailsDialog(
                 children: [
                   CircleAvatar(
                     radius: 11,
-                    backgroundImage:
-                        AssetImage('assets/${abbr.toLowerCase()}.png'),
+                    backgroundImage: AssetImage(
+                        'assets/coin-icons/${abbr.toLowerCase()}.png'),
                   ),
                   SizedBox(width: 6),
                   Text(

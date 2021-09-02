@@ -129,8 +129,8 @@ class _BuildScreenAuthMultiWalletsState
                         height: 200,
                         width: 200,
                         child: Image.asset(settingsBloc.isLightTheme
-                            ? 'assets/mark_and_text_vertical_dark.png'
-                            : 'assets/mark_and_text_vertical_light.png')),
+                            ? 'assets/branding/mark_and_text_vertical_dark.png'
+                            : 'assets/branding/mark_and_text_vertical_light.png')),
                   ),
                 ],
               ),
@@ -278,8 +278,8 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
                           height: 240,
                           width: 240,
                           child: Image.asset(settingsBloc.isLightTheme
-                              ? 'assets/mark_and_text_vertical_dark.png'
-                              : 'assets/mark_and_text_vertical_light.png')),
+                              ? 'assets/branding/mark_and_text_vertical_dark.png'
+                              : 'assets/branding/mark_and_text_vertical_light.png')),
                     ],
                   ),
                   Padding(

@@ -37,7 +37,7 @@ dependencies:
     git:
       url: git://github.com/KomodoPlatform/audioplayers.git
       ref: 859c88c2c3fe926bdbb6e5e729d3c16d088be76a
-  
+
   # https://pub.dev/packages/file_picker
   file_picker: # 1.4.3+2 - DONE: Secure code reviewed b68ee11
     git:
@@ -82,7 +82,7 @@ dev_dependencies:
       ref: a4a010ca31b67d6ef331786bb93d79cb71f1f327
   shared_preferences: 0.5.12+2 # flutter.dev
   bip39: # 1.0.3 - DONE: Secure code reviewed dbd846b (1.0.3) - DONE: sub dependencies reviewed
-    git: 
+    git:
       url: git://github.com/ca333/bip39-dart.git
       ref: 3bee3eedb28ba5ae1af82873c8e5b6f32038b8a1
   pin_code_view: # SECURE REVIEW REQUIRED: reviewed c0b6516
@@ -126,12 +126,12 @@ dev_dependencies:
       url: git://github.com/KomodoPlatform/flutter_secure_storage.git
       ref: eef67d3d006b2c53453df183f7d4ac081948e110
   uuid: # 2.0.4 - DONE: Secure code reviewed diff 1b7db8f (2.0.1) 981adca (2.0.4)
-    git: 
+    git:
       url: git://github.com/KomodoPlatform/dart-uuid.git
       ref: 981adcac181443e3def4ced76a43b96c534e68ce
   connectivity: 0.4.6+2 # flutter.dev
   flutter_slidable: # 0.5.4 - DONE: Secure code reviewed diff 9bf12c (0.5.3) 27bbe0d (0.5.4)
-    git: 
+    git:
       url: https://github.com/KomodoPlatform/flutter_slidable.git
       ref: 27bbe0dfa9866ae01e8001267e873221ef5fbd67
   package_info: 0.4.3 # flutter.dev
@@ -171,8 +171,8 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path_ios: "assets/logo_kmd.png"
-  image_path_android: "assets/logo_kmd.png"
+  image_path_ios: "assets/branding/logo_app.png"
+  image_path_android: "assets/branding/logo_app.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -182,10 +182,13 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   - assets/
+  - assets/branding/
+  - assets/branding/svg/
   - assets/audio/
   - assets/mocks/
   - assets/currency-flags/
   - assets/language-flags/
+  - assets/coin-icons/
   - assets/svg/
   - assets/svg_light/
   - assets/swap_share/

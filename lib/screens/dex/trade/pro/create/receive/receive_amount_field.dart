@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rational/rational.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';

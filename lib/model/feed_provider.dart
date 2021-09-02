@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -47,7 +48,7 @@ class FeedProvider extends ChangeNotifier {
     http.Response response;
 
     try {
-      response = await http.get('https://komodo.live/messages');
+      response = await http.get(appConfig.feedProviderSourceUrl);
     } catch (e) {
       Log('feed_provider:44', '_updateNews] $e');
     }

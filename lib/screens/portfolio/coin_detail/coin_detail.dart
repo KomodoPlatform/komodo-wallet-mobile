@@ -245,8 +245,8 @@ class _CoinDetailState extends State<CoinDetail> {
           title: Row(
             children: <Widget>[
               PhotoHero(
-                tag:
-                    'assets/${currentCoinBalance.balance.coin.toLowerCase()}.png',
+                tag: 'assets/coin-icons/'
+                    '${currentCoinBalance.balance.coin.toLowerCase()}.png',
                 radius: 16,
               ),
               const SizedBox(

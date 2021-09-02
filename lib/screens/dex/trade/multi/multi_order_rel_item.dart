@@ -10,7 +10,7 @@ import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/screens/dex/trade/build_detailed_fees.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class MultiOrderRelItem extends StatefulWidget {
@@ -135,7 +135,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                   CircleAvatar(
                     maxRadius: 6,
                     backgroundImage: AssetImage(
-                        'assets/${widget.item.coin.abbr.toLowerCase()}.png'),
+                        'assets/coin-icons/${widget.item.coin.abbr.toLowerCase()}.png'),
                   ),
                   const SizedBox(width: 4),
                   Text(

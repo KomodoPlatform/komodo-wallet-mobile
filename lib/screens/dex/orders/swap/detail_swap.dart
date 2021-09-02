@@ -332,7 +332,7 @@ class _DetailSwapState extends State<DetailSwap> {
       height: 25,
       width: 25,
       child: Image.asset(
-        'assets/${coin.toLowerCase()}.png',
+        'assets/coin-icons/${coin.toLowerCase()}.png',
         fit: BoxFit.cover,
       ),
     );

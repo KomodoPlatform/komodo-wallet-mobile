@@ -147,8 +147,8 @@ class _LockScreenState extends State<LockScreen> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Image.asset(settingsBloc.isLightTheme
-                  ? 'assets/logo_kmd_light.png'
-                  : 'assets/logo_kmd.png'),
+                  ? 'assets/branding/logo_app_light.png'
+                  : 'assets/branding/logo_app.png'),
               const SizedBox(height: 12),
               Text(message,
                   style: TextStyle(
