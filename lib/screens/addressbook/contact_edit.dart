@@ -453,7 +453,7 @@ class _ContactEditState extends State<ContactEdit> {
       abbr = 'KMD';
     } else if (coin.type == 'erc') {
       abbr = 'ETH';
-    } else if (coin.type == 'bep') {
+    } else if (coin.type == 'bep' && coin.abbr != 'SMTF') {
       abbr = 'BNB';
     } else if (coin.type == 'qrc') {
       abbr = 'QTUM';
