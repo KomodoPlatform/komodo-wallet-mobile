@@ -160,7 +160,7 @@ class _SeedRandomState extends State<SeedRandom> {
             color: Theme.of(context).buttonColor,
             borderRadius: BorderRadius.circular(10),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           child: Text(word)),
     );
   }
@@ -180,8 +180,10 @@ class _SeedRandomState extends State<SeedRandom> {
         const SizedBox(
           height: 8,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Wrap(
+          runSpacing: 8,
+          spacing: 8,
+          alignment: WrapAlignment.spaceBetween,
           children: _buildListSeeds().map(_buildSeedWord).toList(),
         ),
         const SizedBox(
