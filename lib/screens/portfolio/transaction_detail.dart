@@ -254,7 +254,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
     fee = cutTrailingZeros(formatPrice(fee, 8));
 
     String feeCoin = widget.transaction.feeDetails.coin;
-    if (feeCoin.isEmpty) feeCoin = widget.transaction.coin;
+    if (feeCoin == null || feeCoin.isEmpty) feeCoin = widget.transaction.coin;
 
     return '$fee $feeCoin';
   }

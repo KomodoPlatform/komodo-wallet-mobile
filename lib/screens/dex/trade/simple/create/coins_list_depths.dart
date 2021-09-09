@@ -68,7 +68,7 @@ class _CoinsListDepthsState extends State<CoinsListDepths> {
                   CircleAvatar(
                     radius: 8,
                     backgroundImage: AssetImage(
-                        'assets/${item.coin.abbr.toLowerCase()}.png'),
+                        'assets/coin-icons/${item.coin.abbr.toLowerCase()}.png'),
                   ),
                   SizedBox(width: 4),
                   Text(

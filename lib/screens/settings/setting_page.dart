@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart' as arch;
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -126,7 +127,7 @@ class _SettingPageState extends State<SettingPage> {
                 _buildTitle(AppLocalizations.of(context).developerTitle),
                 _buildEnableTestCoins(),
                 _buildTitle(version),
-                _buildUpdate(),
+                if (appConfig.isUpdateCheckerEnabled) _buildUpdate(),
                 const SizedBox(
                   height: 48,
                 ),

@@ -35,17 +35,17 @@ class _ContactEditState extends State<ContactEdit> {
         : Contact();
     hashBeforeEdit = jsonEncode(editContact.toJson());
 
-    networkChipLabels = {
-      'erc': AppLocalizations.of(context).tagERC20,
-      'bep': AppLocalizations.of(context).tagBEP20,
-      'qrc': AppLocalizations.of(context).tagQRC20,
-    };
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    networkChipLabels ??= {
+      'erc': AppLocalizations.of(context).tagERC20,
+      'bep': AppLocalizations.of(context).tagBEP20,
+      'qrc': AppLocalizations.of(context).tagQRC20,
+    };
+
     provider = Provider.of<AddressBookProvider>(context);
 
     return WillPopScope(
@@ -268,7 +268,8 @@ class _ContactEditState extends State<ContactEdit> {
   Widget _buildCoinIcon(String abbr) {
     return CircleAvatar(
       maxRadius: 8,
-      backgroundImage: AssetImage('assets/${abbr.toLowerCase()}.png'),
+      backgroundImage:
+          AssetImage('assets/coin-icons/${abbr.toLowerCase()}.png'),
     );
   }
 
@@ -432,7 +433,7 @@ class _ContactEditState extends State<ContactEdit> {
         children: <Widget>[
           CircleAvatar(
             maxRadius: 6,
-            backgroundImage: AssetImage('assets/kmd.png'),
+            backgroundImage: AssetImage('assets/coin-icons/kmd.png'),
           ),
           SizedBox(width: 3),
           Text(

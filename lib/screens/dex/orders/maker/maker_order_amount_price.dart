@@ -7,7 +7,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/screens/dex/orders/maker/order_fill.dart';
 import 'package:provider/provider.dart';
 
@@ -65,7 +65,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
                   CircleAvatar(
                     radius: 12,
                     backgroundColor: Colors.transparent,
-                    backgroundImage: AssetImage('assets/'
+                    backgroundImage: AssetImage('assets/coin-icons/'
                         '${widget.order.base.toLowerCase()}.png'),
                   ),
                   const SizedBox(width: 4),
@@ -150,7 +150,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
               CircleAvatar(
                 radius: 12,
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('assets/'
+                backgroundImage: AssetImage('assets/coin-icons/'
                     '${widget.order.rel.toLowerCase()}.png'),
               ),
               const SizedBox(width: 4),

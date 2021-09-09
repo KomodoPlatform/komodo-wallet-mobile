@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/services/job_service.dart';
@@ -22,7 +23,7 @@ class UpdatesProvider extends ChangeNotifier {
   String newVersion;
   String message;
 
-  final String url = 'https://komodo.live/adexversion';
+  final String url = appConfig.updateCheckerEndpoint;
 
   Future<void> check() => _check();
 
@@ -30,9 +31,11 @@ class UpdatesProvider extends ChangeNotifier {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     currentVersion = packageInfo.version;
 
-    jobService.install('checkUpdates', 300, (_) async {
-      if (mainBloc.isInBackground) _check();
-    });
+    if (appConfig.isUpdateCheckerEnabled) {
+      jobService.install('checkUpdates', 300, (_) async {
+        if (mainBloc.isInBackground) _check();
+      });
+    }
 
     notifyListeners();
   }
@@ -43,6 +46,13 @@ class UpdatesProvider extends ChangeNotifier {
     status = null;
     message = null;
     notifyListeners();
+
+    if (!appConfig.isUpdateCheckerEnabled) {
+      status = UpdateStatus.upToDate;
+      isFetching = false;
+      notifyListeners();
+      return;
+    }
 
     http.Response response;
     Map<String, dynamic> json;

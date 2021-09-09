@@ -239,6 +239,8 @@ Future<bool> authenticateBiometrics(
       Log.println('utils:312', 'authenticateWithBiometrics ex: ' + e.message);
     }
 
+    await pauseUntil(() => !mainBloc.isInBackground);
+
     lockService.biometricsReturned(lockCookie);
 
     if (didAuthenticate) {
@@ -682,8 +684,8 @@ void showUriDetailsDialog(
                 children: [
                   CircleAvatar(
                     radius: 11,
-                    backgroundImage:
-                        AssetImage('assets/${abbr.toLowerCase()}.png'),
+                    backgroundImage: AssetImage(
+                        'assets/coin-icons/${abbr.toLowerCase()}.png'),
                   ),
                   SizedBox(width: 6),
                   Text(

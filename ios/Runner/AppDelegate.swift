@@ -7,16 +7,7 @@ import UserNotifications
 import AVFoundation
 
 var mm2StartArgs: String?
-var shouldRestartMM2: Bool = false;
-
-@_cdecl("mymodule_foo")
-func queueMM2Restart() -> Void {
-    shouldRestartMM2 = true
-}
-
-let sigpipeHandler: @convention(c) (Int32) -> () = { sig in
-    queueMM2Restart()
-}
+var shouldRestartMM2: Bool = true;
 
 func performMM2Start() -> Int32 {
     os_log("%{public}s", type: OSLogType.default, "START MM2 --------------------------------");
@@ -78,8 +69,6 @@ func performMM2Stop() -> Int32 {
     }
     
     override func application (_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        signal(SIGPIPE, sigpipeHandler)
-        
         guard let vc = window?.rootViewController as? FlutterViewController else {
             fatalError ("rootViewController is not type FlutterViewController")}
         let vcbm = vc as! FlutterBinaryMessenger
@@ -105,6 +94,7 @@ func performMM2Stop() -> Int32 {
         
         mm2main.setMethodCallHandler ({(call: FlutterMethodCall, result: FlutterResult) -> Void in
                                         if call.method == "audio_bg" {
+                                            shouldRestartMM2 = false
                                             let argDict = call.arguments as! Dictionary<String, Any>
                                             let path = argDict["path"] as! String
                                             result (Int (audio_bg (path)))
@@ -116,6 +106,7 @@ func performMM2Stop() -> Int32 {
                                             let volume = NSNumber (value: call.arguments as! Double)
                                             result (Int (audio_volume (volume)))
                                         } else if call.method == "audio_stop" {
+                                            shouldRestartMM2 = true
                                             audio_bg ("")
                                             result (Int (audio_deactivate()))
                                         } else if call.method == "show_notification" {
@@ -214,9 +205,14 @@ func performMM2Stop() -> Int32 {
     }
     
     public override func applicationDidBecomeActive(_ application: UIApplication) {
+        signal(SIGPIPE, SIG_IGN);
         self.window?.viewWithTag(61007)?.removeFromSuperview()
         
         restartMM2IfNeeded()
+    }
+    
+    override func applicationWillEnterForeground(_ application: UIApplication) {
+        signal(SIGPIPE, SIG_IGN);
     }
     
     func restartMM2IfNeeded() {
@@ -232,7 +228,7 @@ func performMM2Stop() -> Int32 {
                 ticker += 1
             }
             
-            if performMM2Start() == 0 { shouldRestartMM2 = false }
+            let _ = performMM2Start()
         }
     }
 }

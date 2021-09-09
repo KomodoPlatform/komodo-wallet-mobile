@@ -9,7 +9,7 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class RewardsPage extends StatefulWidget {
@@ -155,7 +155,7 @@ class _RewardsPageState extends State<RewardsPage> {
       child: Column(
         children: <Widget>[
           const SizedBox(height: 40),
-          SizedBox(width: 50, child: Image.asset('assets/kmd.png')),
+          SizedBox(width: 50, child: Image.asset('assets/coin-icons/kmd.png')),
           const SizedBox(height: 8),
           rewardsProvider.errorMessage == null &&
                   rewardsProvider.successMessage != null

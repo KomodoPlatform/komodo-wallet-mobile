@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/screens/feed/news/news_article.dart';
@@ -70,14 +71,8 @@ class _BuildNewsItemState extends State<BuildNewsItem>
   }
 
   Widget _buildHeader() {
-    final NewsSource _source = widget.newsItem.source ??
-        NewsSource(
-          name: 'Komodo #official-news',
-          url:
-              'https://discord.com/channels/412898016371015680/412915799251222539',
-          pic:
-              'https://cdn.discordapp.com/icons/412898016371015680/a_157cb08c4198ad53b9e9b7168c930571.png',
-        );
+    final NewsSource _source =
+        widget.newsItem.source ?? appConfig.defaultNewsSource;
 
     return Row(
       children: <Widget>[

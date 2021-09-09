@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -74,9 +75,8 @@ class CexProvider extends ChangeNotifier {
     cexPrices.unlinkProvider(this);
   }
 
-  final String _chartsUrl = 'https://komodo.live:3333/api/v1/ohlc';
-  final String _tickersListUrl =
-      'https://komodo.live:3333/api/v1/ohlc/tickers_list';
+  final String _chartsUrl = appConfig.candlestickData;
+  final String _tickersListUrl = appConfig.candlestickTickersList;
   final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
   bool _updatingChart = false;
   List<String> _tickers;
@@ -358,7 +358,7 @@ class CexPrices {
     prefs = await SharedPreferences.getInstance();
     activeCurrency = prefs.getInt('activeCurrency') ?? 0;
     _selectedFiat = prefs.getString('selectedFiat') ?? 'USD';
-    currencies = [_selectedFiat, 'BTC', 'KMD'];
+    currencies = [_selectedFiat, ...appConfig.coinsFiat];
 
     Timer.periodic(const Duration(seconds: 60), (_) {
       if (!mmSe.running) return;
@@ -406,8 +406,7 @@ class CexPrices {
     http.Response _res;
     String _body;
     try {
-      _res =
-          await http.get('https://rates.komodo.live/api/v1/usd_rates').timeout(
+      _res = await http.get(appConfig.fiatPricesEndpoint).timeout(
         const Duration(seconds: 60),
         onTimeout: () {
           throw 'Fetching rates timed out';
@@ -556,12 +555,9 @@ class CexPrices {
       ids.add(coin.coingeckoId);
     }
 
-    final String mainUrl =
-        'https://rates.komodo.live/api/v1/gecko_rates/' + ids.join(',');
+    final String mainUrl = appConfig.cryptoPricesEndpoint + ids.join(',');
     final String fallbackUrl =
-        'https://api.coingecko.com/api/v3/simple/price?ids=' +
-            ids.join(',') +
-            '&vs_currencies=usd';
+        appConfig.cryptoPricesFallback + ids.join(',') + '&vs_currencies=usd';
 
     bool fetched = await _fetchPrices(mainUrl);
     if (!fetched) fetched = await _fetchPrices(fallbackUrl);
