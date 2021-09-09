@@ -139,14 +139,13 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
                       onPressed: loading
                           ? null
                           : () async {
-                              Navigator.of(context).pop();
                               setState(() => loading = true);
                               await walletBloc.deleteSeedPhrase(
                                   password, wallet);
                               await walletBloc.deleteWallet(wallet);
                               await walletBloc.getWalletsSaved();
 
-                              setState(() => loading = false);
+                              Navigator.of(context).pop();
                             },
                     ),
                   )
