@@ -18,7 +18,7 @@ class CheckPassphrasePage extends StatefulWidget {
   _CheckPassphrasePageState createState() => _CheckPassphrasePageState();
 
   bool checkSeedWord(WordData wordToCheck) {
-    return wordToCheck.word == checkPassphrasePage.word;
+    return wordToCheck.word == checkPassphraseBloc.word;
   }
 }
 
@@ -29,7 +29,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
 
   @override
   void initState() {
-    checkPassphrasePage.setIsWordGood(false);
+    checkPassphraseBloc.setIsWordGood(false);
     final List<WordData> wordsData = <WordData>[];
     final List<String> wordsSeed = widget.seed.split(' ');
 
@@ -80,8 +80,8 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
             height: 16,
           ),
           StreamBuilder<bool>(
-              initialData: checkPassphrasePage.isWordGood,
-              stream: checkPassphrasePage.outIsWordGoodLogin,
+              initialData: checkPassphraseBloc.isWordGood,
+              stream: checkPassphraseBloc.outIsWordGoodLogin,
               builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                 return PrimaryButton(
                   text: AppLocalizations.of(context).checkSeedPhraseButton1,
@@ -104,7 +104,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
 
   void _onPressedNext() {
     if (widget.checkSeedWord(wordsDataRandom[stepper])) {
-      checkPassphrasePage.setIsResetText(true);
+      checkPassphraseBloc.setIsResetText(true);
       if (stepper == 2) {
         Navigator.pushReplacement<dynamic, dynamic>(
           context,
@@ -114,7 +114,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
                   )),
         );
       } else {
-        checkPassphrasePage.setIsWordGood(false);
+        checkPassphraseBloc.setIsWordGood(false);
         setState(() {
           stepper += 1;
         });
@@ -151,8 +151,8 @@ class _SeedRandomState extends State<SeedRandom> {
       onTap: () {
         _controller.text = word;
 
-        checkPassphrasePage.setWord(_controller.text);
-        checkPassphrasePage.setIsWordGood(
+        checkPassphraseBloc.setWord(_controller.text);
+        checkPassphraseBloc.setIsWordGood(
             const CheckPassphrasePage().checkSeedWord(widget.data));
       },
       child: Container(
@@ -190,8 +190,8 @@ class _SeedRandomState extends State<SeedRandom> {
           height: 8,
         ),
         StreamBuilder<bool>(
-            initialData: checkPassphrasePage.isResetText,
-            stream: checkPassphrasePage.outIsResetTextLogin,
+            initialData: checkPassphraseBloc.isResetText,
+            stream: checkPassphraseBloc.outIsResetTextLogin,
             builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
               if (snapshot.data) {
                 _controller.text = '';
@@ -200,8 +200,8 @@ class _SeedRandomState extends State<SeedRandom> {
                 key: const Key('which-word-field'),
                 controller: _controller,
                 onChanged: (String text) {
-                  checkPassphrasePage.setWord(text);
-                  checkPassphrasePage.setIsWordGood(
+                  checkPassphraseBloc.setWord(text);
+                  checkPassphraseBloc.setIsWordGood(
                       const CheckPassphrasePage().checkSeedWord(widget.data));
                 },
                 hintText: AppLocalizations.of(context)
