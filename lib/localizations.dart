@@ -1539,6 +1539,8 @@ class AppLocalizations {
       Intl.message('Show less', name: 'simpleTradeShowLess');
   String get simpleTradeShowMore =>
       Intl.message('Show more', name: 'simpleTradeShowMore');
+
+  String get noCoinFound => Intl.message('No coin found', name: 'noCoinFound');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

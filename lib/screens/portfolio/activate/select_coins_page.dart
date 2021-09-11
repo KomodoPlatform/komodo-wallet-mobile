@@ -29,7 +29,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   bool _isDone = false;
   StreamSubscription<bool> _listenerClosePage;
   List<Coin> _currentCoins = <Coin>[];
-  List<Widget> listViewItems = <Widget>[];
+  List<Widget> _listViewItems = <Widget>[];
 
   @override
   void initState() {
@@ -68,7 +68,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
               onFilterCoins: (List<Coin> coinsFiltered) {
                 setState(() {
                   _currentCoins = coinsFiltered;
-                  listViewItems = _buildListView();
+                  _listViewItems = _buildListView();
                 });
               },
             ),
@@ -102,9 +102,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                           children: <Widget>[
                             ListView.builder(
                               padding: const EdgeInsets.only(bottom: 100),
-                              itemCount: listViewItems.length,
+                              itemCount: _listViewItems.length,
                               itemBuilder: (BuildContext context, int i) =>
-                                  listViewItems[i],
+                                  _listViewItems[i],
                             ),
                             _buildDoneButton(),
                           ],
@@ -121,7 +121,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
             .removeWhere((Coin coin) => coin.abbr == coinToActivate.coin.abbr);
         _currentCoins.add(coinToActivate.coin);
       }
-      listViewItems = _buildListView();
+      _listViewItems = _buildListView();
     });
   }
 
@@ -146,7 +146,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       return [
         Center(
           child: Text(
-            'No coin found',
+            AppLocalizations.of(context).noCoinFound,
             style: Theme.of(context).textTheme.bodyText1,
           ),
         )
