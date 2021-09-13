@@ -217,9 +217,9 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 12),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   FlatButton(
                     onPressed: () {

@@ -148,12 +148,20 @@ class _CoinSelectState extends State<CoinSelect> {
 
     if (sortedList.isEmpty) {
       return CustomSimpleDialog(
-        hasHorizontalPadding: false,
         title: Text(AppLocalizations.of(context).coinSelectTitle),
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: Text(AppLocalizations.of(context).coinSelectNotFound),
+          Text(AppLocalizations.of(context).coinSelectNotFound),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              RaisedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(AppLocalizations.of(context).okButton),
+              ),
+            ],
           ),
         ],
       );

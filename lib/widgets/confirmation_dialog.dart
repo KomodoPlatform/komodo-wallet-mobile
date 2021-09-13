@@ -29,7 +29,7 @@ void showConfirmationDialog({
           ),
           children: <Widget>[
             Text(message),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
@@ -38,7 +38,7 @@ void showConfirmationDialog({
                     dialogBloc.closeDialog(context);
                   },
                   child: Text(
-                    AppLocalizations.of(context).cancel.toUpperCase(),
+                    AppLocalizations.of(context).cancel,
                     style: TextStyle(fontWeight: FontWeight.normal),
                     maxLines: 1,
                   ),
@@ -51,7 +51,7 @@ void showConfirmationDialog({
                     if (onConfirm != null) onConfirm();
                   },
                   child: Text(
-                    confirmButtonText.toUpperCase(),
+                    confirmButtonText,
                     style: TextStyle(fontWeight: FontWeight.normal),
                     maxLines: 1,
                   ),

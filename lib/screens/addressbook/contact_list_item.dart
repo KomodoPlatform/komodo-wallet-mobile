@@ -245,18 +245,23 @@ class _ContactListItemState extends State<ContactListItem> {
                 )),
               ],
             ),
-            SizedBox(height: 16),
-            RaisedButton(
-              onPressed: () {
-                dialogBloc.closeDialog(context);
-              },
-              child: Text(
-                AppLocalizations.of(context).warningOkBtn.toUpperCase(),
-                style: Theme.of(context)
-                    .textTheme
-                    .button
-                    .copyWith(color: Colors.white),
-              ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                RaisedButton(
+                  onPressed: () {
+                    dialogBloc.closeDialog(context);
+                  },
+                  child: Text(
+                    AppLocalizations.of(context).warningOkBtn,
+                    style: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ],
         );

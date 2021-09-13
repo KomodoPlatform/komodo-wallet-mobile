@@ -39,7 +39,7 @@ class AppLocalizations {
       Intl.message('Enter Your Seed Phrase', name: 'enterSeedPhrase');
   String get exampleHintSeed =>
       Intl.message('Example: build case level ...', name: 'exampleHintSeed');
-  String get confirm => Intl.message('confirm', name: 'confirm');
+  String get confirm => Intl.message('Confirm', name: 'confirm');
   String get buyTestCoinWarning => Intl.message(
       'Warning, you\'re willing to buy test coins WITHOUT real value!',
       name: 'buyTestCoinWarning');
@@ -164,7 +164,7 @@ class AppLocalizations {
   String get receive => Intl.message('RECEIVE', name: 'receive');
   String get send => Intl.message('SEND', name: 'send');
   String get back => Intl.message('back', name: 'back');
-  String get cancel => Intl.message('cancel', name: 'cancel');
+  String get cancel => Intl.message('Cancel', name: 'cancel');
   String get details => Intl.message('details', name: 'details');
   String get unspendable => Intl.message('unspendable', name: 'unspendable');
   String get commingsoon =>
@@ -659,7 +659,7 @@ class AppLocalizations {
           name: 'cantDeleteDefaultCoinSpan');
   String get cantDeleteDefaultCoinOk =>
       Intl.message('Ok', name: 'cantDeleteDefaultCoinOk');
-  String get share => Intl.message('SHARE', name: 'share');
+  String get share => Intl.message('Share', name: 'share');
   String get warningShareLogs => Intl.message(
       'Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!',
       name: 'warningShareLogs');
@@ -997,7 +997,7 @@ class AppLocalizations {
       'because $abbr is not activated. Please go to portfolio.',
       args: <Object>[abbr],
       name: 'addressCoinInactive');
-  String get warningOkBtn => Intl.message('OK', name: 'warningOkBtn');
+  String get warningOkBtn => Intl.message('Ok', name: 'warningOkBtn');
 
   // --- Camouflage Pin ---
 

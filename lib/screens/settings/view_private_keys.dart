@@ -182,17 +182,17 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                           .bodyText1
                           .copyWith(fontFamily: 'monospace')),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Row(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    FlatButton(
+                    RaisedButton(
                       child: Text(
                         AppLocalizations.of(context).close.toUpperCase(),
                         style: Theme.of(context)
                             .textTheme
                             .button
-                            .copyWith(color: Theme.of(context).accentColor),
+                            .copyWith(color: Colors.white),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();

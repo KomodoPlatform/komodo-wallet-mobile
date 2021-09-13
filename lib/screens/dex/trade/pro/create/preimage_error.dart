@@ -76,9 +76,14 @@ class _PreimageErrorState extends State<PreimageError> {
                     ],
                   ),
                   SizedBox(height: 12),
-                  RaisedButton(
-                    onPressed: Navigator.of(context).pop,
-                    child: Text(AppLocalizations.of(context).okButton),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      RaisedButton(
+                        onPressed: Navigator.of(context).pop,
+                        child: Text(AppLocalizations.of(context).okButton),
+                      ),
+                    ],
                   )
                 ],
               );

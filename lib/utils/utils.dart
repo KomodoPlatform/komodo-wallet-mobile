@@ -285,14 +285,13 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
                 ],
               ),
             ),
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 RaisedButton(
                   child: Text(
-                    AppLocalizations.of(context)
-                        .cantDeleteDefaultCoinOk
-                        .toUpperCase(),
+                    AppLocalizations.of(context).cantDeleteDefaultCoinOk,
                     style: Theme.of(context).textTheme.button.copyWith(
                           color: Colors.white,
                         ),
@@ -331,22 +330,24 @@ Future<void> showConfirmationRemoveCoin(
                           .copyWith(fontWeight: FontWeight.bold)),
                   TextSpan(text: AppLocalizations.of(context).deleteSpan2),
                 ])),
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FlatButton(
                   child: Text(
-                    AppLocalizations.of(context).cancel.toUpperCase(),
+                    AppLocalizations.of(context).cancel,
                     style: Theme.of(context).textTheme.button,
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
+                const SizedBox(width: 12),
                 RaisedButton(
                   color: Theme.of(context).errorColor,
                   child: Text(
-                    AppLocalizations.of(context).confirm.toUpperCase(),
+                    AppLocalizations.of(context).confirm,
                     style: Theme.of(context)
                         .textTheme
                         .button

@@ -243,9 +243,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
             Icons.info_outline,
             size: 48,
           ),
-          const SizedBox(
-            width: 16,
-          ),
+          const SizedBox(width: 12),
           Text(AppLocalizations.of(context).noFunds,
               style: Theme.of(context).textTheme.headline6),
         ],
@@ -260,15 +258,14 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
           height: 24,
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Expanded(
-              child: RaisedButton(
-                child: Text(AppLocalizations.of(context).goToPorfolio),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  mainBloc.setCurrentIndexTab(0);
-                },
-              ),
+            RaisedButton(
+              child: Text(AppLocalizations.of(context).goToPorfolio),
+              onPressed: () {
+                Navigator.of(context).pop();
+                mainBloc.setCurrentIndexTab(0);
+              },
             )
           ],
         ),

@@ -140,17 +140,23 @@ class FilePickerButton extends StatelessWidget {
                 children: <Widget>[
                   Text(AppLocalizations.of(context)
                       .soundCantPlayThatMsg(description)),
-                  RaisedButton(
-                    child: Text(
-                      AppLocalizations.of(context).warningOkBtn.toUpperCase(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .button
-                          .copyWith(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      RaisedButton(
+                        child: Text(
+                          AppLocalizations.of(context).warningOkBtn,
+                          style: Theme.of(context)
+                              .textTheme
+                              .button
+                              .copyWith(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

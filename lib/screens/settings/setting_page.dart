@@ -1002,14 +1002,14 @@ class _SettingPageState extends State<SettingPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FlatButton(
-                    child:
-                        Text(AppLocalizations.of(context).cancel.toUpperCase()),
+                    child: Text(AppLocalizations.of(context).cancel),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
+                  const SizedBox(width: 12),
                   RaisedButton(
                     key: const Key('setting-share-button'),
                     child: Text(
-                      AppLocalizations.of(context).share.toUpperCase(),
+                      AppLocalizations.of(context).share,
                       style: Theme.of(context)
                           .textTheme
                           .button
