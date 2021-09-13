@@ -419,23 +419,25 @@ class _CoinSelectState extends State<CoinSelect> {
   }
 
   Widget _buildProgressDialog() {
-    return Dialog(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const CircularProgressIndicator(),
-            const SizedBox(
-              width: 16,
-            ),
-            Text(
-              AppLocalizations.of(context).loading,
-              style: Theme.of(context).textTheme.bodyText2,
-            )
-          ],
+    return CustomSimpleDialog(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const CircularProgressIndicator(),
+              const SizedBox(
+                width: 16,
+              ),
+              Text(
+                AppLocalizations.of(context).loading,
+                style: Theme.of(context).textTheme.bodyText2,
+              )
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
