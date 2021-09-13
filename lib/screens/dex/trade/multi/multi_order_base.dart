@@ -181,8 +181,12 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         context: context,
         builder: (context) {
           if (coins == null)
-            return const Center(
-              child: CircularProgressIndicator(),
+            return CustomSimpleDialog(
+              children: [
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ],
             );
 
           final List<CoinBalance> availableForSell =
