@@ -340,7 +340,11 @@ class _ContactEditState extends State<ContactEdit> {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return const Center(child: CircularProgressIndicator());
+          return CustomSimpleDialog(
+            children: const [
+              Center(child: CircularProgressIndicator()),
+            ],
+          );
         }).then((dynamic _) => dialogBloc.dialog = null);
 
     final List<Coin> all = (await coins).values.toList();
