@@ -16,7 +16,7 @@ void showOrderCreatedDialog(BuildContext context) {
               verticalButtons: [
                 RaisedButton(
                   child: Text(
-                    AppLocalizations.of(context).showMyOrders.toUpperCase(),
+                    AppLocalizations.of(context).showMyOrders,
                     style: Theme.of(context)
                         .textTheme
                         .button
@@ -31,7 +31,7 @@ void showOrderCreatedDialog(BuildContext context) {
                   height: 8,
                 ),
                 FlatButton(
-                  child: Text(AppLocalizations.of(context).close.toUpperCase()),
+                  child: Text(AppLocalizations.of(context).close),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },

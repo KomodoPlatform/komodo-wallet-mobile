@@ -82,24 +82,27 @@ void openBidDetailsDialog({
                         bid,
                         sellAmount: swapBloc.amountSell,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          FlatButton(
-                            onPressed: () => dialogBloc.closeDialog(context),
-                            child: Text(AppLocalizations.of(context)
-                                .orderDetailsCancel),
-                          ),
-                          const SizedBox(width: 12),
-                          RaisedButton(
-                            onPressed: () {
-                              dialogBloc.closeDialog(context);
-                              onSelect();
-                            },
-                            child: Text(AppLocalizations.of(context)
-                                .orderDetailsSelect),
-                          )
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            FlatButton(
+                              onPressed: () => dialogBloc.closeDialog(context),
+                              child: Text(AppLocalizations.of(context)
+                                  .orderDetailsCancel),
+                            ),
+                            const SizedBox(width: 12),
+                            RaisedButton(
+                              onPressed: () {
+                                dialogBloc.closeDialog(context);
+                                onSelect();
+                              },
+                              child: Text(AppLocalizations.of(context)
+                                  .orderDetailsSelect),
+                            )
+                          ],
+                        ),
                       )
                     ],
                   );
