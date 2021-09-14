@@ -389,9 +389,17 @@ class _ContactEditState extends State<ContactEdit> {
                   ),
                   ..._buildCoinDialogOption(
                     coinsList
-                        .where((c) => c.abbr.toLowerCase().startsWith(
-                              searchTextController.text.trim().toLowerCase(),
-                            ))
+                        .where(
+                          (c) =>
+                              c.abbr.toLowerCase().startsWith(
+                                  searchTextController.text
+                                      .trim()
+                                      .toLowerCase()) ||
+                              c.name.toLowerCase().startsWith(
+                                  searchTextController.text
+                                      .trim()
+                                      .toLowerCase()),
+                        )
                         .toList(),
                   ),
                 ],
