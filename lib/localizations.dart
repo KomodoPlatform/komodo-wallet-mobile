@@ -456,7 +456,7 @@ class AppLocalizations {
   String get receive => Intl.message('RECEIVE', name: 'receive');
   String get send => Intl.message('SEND', name: 'send');
   String get back => Intl.message('back', name: 'back');
-  String get cancel => Intl.message('cancel', name: 'cancel');
+  String get cancel => Intl.message('Cancel', name: 'cancel');
   String get details => Intl.message('details', name: 'details');
   String get unspendable => Intl.message('unspendable', name: 'unspendable');
   String get commingsoon =>
@@ -562,12 +562,12 @@ class AppLocalizations {
       'Your seed phrase is important - that\'s why we like to make sure it\'s correct. We\'ll ask you three different questions about your seed phrase to make sure you\'ll be able to easily restore your wallet whenever you want.',
       name: 'checkSeedPhraseInfo');
   String checkSeedPhraseSubtile(String index) => Intl.message(
-        'What is the $index. word in your seed phrase?',
+        'What is the $index word in your seed phrase?',
         name: 'checkSeedPhraseSubtile',
         args: <Object>[index],
       );
   String checkSeedPhraseHint(String index) => Intl.message(
-        'Enter the $index. word',
+        'Enter the $index word',
         name: 'checkSeedPhraseHint',
         args: <Object>[index],
       );
@@ -1539,6 +1539,8 @@ class AppLocalizations {
       Intl.message('Show less', name: 'simpleTradeShowLess');
   String get simpleTradeShowMore =>
       Intl.message('Show more', name: 'simpleTradeShowMore');
+
+  String get noCoinFound => Intl.message('No coin found', name: 'noCoinFound');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

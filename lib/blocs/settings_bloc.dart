@@ -31,16 +31,10 @@ class SettingsBloc implements BlocBase {
     enableTestCoins = _prefs.getBool('switch_test_coins') ?? enableTestCoins;
   }
 
-  bool isDeleteLoading = true;
   bool showBalance = true;
   bool isLightTheme = false;
   bool showSoundsExplanationDialog = true;
   bool enableTestCoins = false;
-
-  final StreamController<bool> _isDeleteLoadingController =
-      StreamController<bool>.broadcast();
-  Sink<bool> get _inIsDeleteLoading => _isDeleteLoadingController.sink;
-  Stream<bool> get outIsDeleteLoading => _isDeleteLoadingController.stream;
 
   final StreamController<bool> _showBalanceController =
       StreamController<bool>.broadcast();
@@ -64,15 +58,9 @@ class SettingsBloc implements BlocBase {
 
   @override
   void dispose() {
-    _isDeleteLoadingController.close();
     _showBalanceController?.close();
     _showSoundsDialogCtrl?.close();
     _enableTestCoinsController?.close();
-  }
-
-  void setDeleteLoading(bool isLoading) {
-    isDeleteLoading = isLoading;
-    _inIsDeleteLoading.add(isDeleteLoading);
   }
 
   String getNameLanguage(BuildContext context, String languageCode) {
