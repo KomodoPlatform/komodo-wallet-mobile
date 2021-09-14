@@ -16,6 +16,7 @@ import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'get_orderbook.dart';
 
 class OrderBookProvider extends ChangeNotifier {
@@ -125,6 +126,7 @@ class SyncOrderbook {
   Map<String, Orderbook> _orderBooks = {}; // {'BTC/KMD': Orderbook(),}
   Map<String, OrderbookDepth> _orderbooksDepth = {};
   CoinsPair _activePair;
+  bool _updatingDepth = false;
 
   /// Maps short order IDs to latest liveliness markers.
   final List<String> _tickers = [];
@@ -172,6 +174,8 @@ class SyncOrderbook {
   }
 
   Future<void> subscribeDepth(List<Map<String, CoinType>> coinsList) async {
+    if (_updatingDepth) await pauseUntil(() => !_updatingDepth);
+
     bool wasChanged = false;
     final LinkedHashMap<String, Coin> known = await coins;
     final List<CoinBalance> active = coinsBloc.coinBalance;
@@ -276,6 +280,8 @@ class SyncOrderbook {
   }
 
   Future<void> _updateOrderbookDepth() async {
+    _updatingDepth = true;
+
     final List<List<String>> pairs = [];
     for (String pair in _depthTickers) {
       final List<String> abbr = pair.split('/');
@@ -287,6 +293,7 @@ class SyncOrderbook {
 
     if (result is ErrorString) {
       Log('order_book_provider', '_updateOrderbooksDepth] ${result.error}');
+      _updatingDepth = false;
       return;
     }
 
@@ -300,6 +307,8 @@ class SyncOrderbook {
       _orderbooksDepth = orderbooksDepth;
       _notifyListeners();
     }
+
+    _updatingDepth = false;
   }
 
   String _tickerStr(CoinsPair pair) {
