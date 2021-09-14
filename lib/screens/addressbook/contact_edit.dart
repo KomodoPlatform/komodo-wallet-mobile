@@ -78,83 +78,86 @@ class _ContactEditState extends State<ContactEdit> {
               centerTitle: true,
               elevation: 0,
             ),
-            body: Column(
-              children: <Widget>[
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        ContactEditField(
-                            name: 'name',
-                            label:
-                                AppLocalizations.of(context).contactTitleName,
-                            invalid: invalidFields.contains('name'),
-                            icon: Icon(
-                              Icons.account_circle,
-                              size: 16,
-                              color:
-                                  Theme.of(context).textTheme.bodyText1.color,
-                            ),
-                            color: Theme.of(context).primaryColor,
-                            value: editContact.name,
-                            removable: false,
-                            autofocus:
-                                widget.contact == null && focusOn == null,
-                            onChange: (String value) {
-                              setState(() {
-                                editContact.name = value;
-                              });
-                              _validate();
-                            }),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          child: _buildAddButton(),
-                        ),
-                        FutureBuilder<Widget>(
-                          future: _buildAddresses(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<Widget> snapshot) {
-                            if (!snapshot.hasData)
-                              return const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 16),
-                                  child: SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                        strokeWidth: 1),
+            body: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          ContactEditField(
+                              name: 'name',
+                              label:
+                                  AppLocalizations.of(context).contactTitleName,
+                              invalid: invalidFields.contains('name'),
+                              icon: Icon(
+                                Icons.account_circle,
+                                size: 16,
+                                color:
+                                    Theme.of(context).textTheme.bodyText1.color,
+                              ),
+                              color: Theme.of(context).primaryColor,
+                              value: editContact.name,
+                              removable: false,
+                              autofocus:
+                                  widget.contact == null && focusOn == null,
+                              onChange: (String value) {
+                                setState(() {
+                                  editContact.name = value;
+                                });
+                                _validate();
+                              }),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16.0),
+                            child: _buildAddButton(),
+                          ),
+                          FutureBuilder<Widget>(
+                            future: _buildAddresses(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<Widget> snapshot) {
+                              if (!snapshot.hasData)
+                                return const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 16),
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 1),
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
 
-                            return snapshot.data;
+                              return snapshot.data;
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: Theme.of(context).primaryColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            _exitPage();
                           },
+                          child:
+                              Text(AppLocalizations.of(context).contactCancel),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            _saveContact();
+                          },
+                          child: Text(AppLocalizations.of(context).contactSave),
                         ),
                       ],
                     ),
                   ),
-                ),
-                Container(
-                  color: Theme.of(context).primaryColor,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      FlatButton(
-                        onPressed: () {
-                          _exitPage();
-                        },
-                        child: Text(AppLocalizations.of(context).contactCancel),
-                      ),
-                      FlatButton(
-                        onPressed: () {
-                          _saveContact();
-                        },
-                        child: Text(AppLocalizations.of(context).contactSave),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
