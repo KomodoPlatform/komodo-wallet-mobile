@@ -63,9 +63,15 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
           ...orderbooksDepth
               .where((obDepth) =>
                   coinsBloc.getBalanceByAbbr(obDepth.pair.rel) != null)
-              .where((obDepth) => obDepth.pair.rel
-                  .toLowerCase()
-                  .startsWith(searchTextController.text.toLowerCase()))
+              .where((obDepth) =>
+                  obDepth.pair.rel.toLowerCase().startsWith(
+                      searchTextController.text.trim().toLowerCase()) ||
+                  coinsBloc
+                      .getCoinByAbbr(obDepth.pair.rel)
+                      .name
+                      .toLowerCase()
+                      .startsWith(
+                          searchTextController.text.trim().toLowerCase()))
               .map((OrderbookDepth obDepth) => MatchingOrderbookItem(
                   key: ValueKey(
                       'orderbook-item-${obDepth.pair.rel.toLowerCase()}'),
