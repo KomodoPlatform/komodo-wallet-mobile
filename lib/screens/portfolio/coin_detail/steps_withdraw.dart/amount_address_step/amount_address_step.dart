@@ -296,11 +296,16 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               style: TextStyle(fontSize: 13),
             ),
             SizedBox(height: 12),
-            RaisedButton(
-              child: Text(AppLocalizations.of(context).okButton),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                RaisedButton(
+                  child: Text(AppLocalizations.of(context).okButton),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
           ],
         );

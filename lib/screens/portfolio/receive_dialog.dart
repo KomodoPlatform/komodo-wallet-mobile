@@ -65,11 +65,11 @@ void showReceiveDialog(BuildContext mContext, String address, Coin coin) {
                   ),
                 ),
                 Row(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     RaisedButton(
                       child: Text(
-                        AppLocalizations.of(context).close.toUpperCase(),
+                        AppLocalizations.of(context).close,
                         style: Theme.of(context)
                             .textTheme
                             .button

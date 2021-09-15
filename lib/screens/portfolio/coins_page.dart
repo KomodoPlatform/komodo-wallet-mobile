@@ -513,6 +513,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                               maxCoinPerPlatform.toString() +
                                               AppLocalizations.of(context)
                                                   .tooManyAssetsEnabledSpan3),
+                                          SizedBox(height: 12),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
@@ -520,8 +521,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                               RaisedButton(
                                                 child: Text(
                                                     AppLocalizations.of(context)
-                                                        .warningOkBtn
-                                                        .toUpperCase()),
+                                                        .warningOkBtn),
                                                 onPressed: () {
                                                   dialogBloc
                                                       .closeDialog(context);

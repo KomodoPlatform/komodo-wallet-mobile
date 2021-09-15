@@ -34,18 +34,23 @@ void showFaucetDialog({
                                 context: context,
                                 coin: coin,
                               ),
-                        SizedBox(height: 16),
-                        RaisedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            AppLocalizations.of(context).close.toUpperCase(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .button
-                                .copyWith(color: Colors.white),
-                          ),
+                        SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            RaisedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                AppLocalizations.of(context).close,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .button
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

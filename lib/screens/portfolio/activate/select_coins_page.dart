@@ -255,13 +255,12 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                   AppLocalizations.of(context).enablingTooManyAssetsSpan3 +
                   maxCoinPerPlatform.toString() +
                   AppLocalizations.of(context).enablingTooManyAssetsSpan4),
+              SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   RaisedButton(
-                    child: Text(AppLocalizations.of(context)
-                        .warningOkBtn
-                        .toUpperCase()),
+                    child: Text(AppLocalizations.of(context).warningOkBtn),
                     onPressed: () {
                       dialogBloc.closeDialog(context);
                     },

@@ -188,7 +188,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                   children: <Widget>[
                     RaisedButton(
                       child: Text(
-                        AppLocalizations.of(context).close.toUpperCase(),
+                        AppLocalizations.of(context).close,
                         style: Theme.of(context)
                             .textTheme
                             .button
