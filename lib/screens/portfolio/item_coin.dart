@@ -77,7 +77,7 @@ class _ItemCoinState extends State<ItemCoin> {
         showReceiveDialog(context, balance.address, coin);
       },
     ));
-    if (double.parse(balance.getBalance()) > 0) {
+    if (!coin.walletOnly && double.parse(balance.getBalance()) > 0) {
       actions.add(IconSlideAction(
         caption: AppLocalizations.of(context).swap.toUpperCase(),
         color: Theme.of(context).accentColor,

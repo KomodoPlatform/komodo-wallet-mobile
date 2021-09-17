@@ -275,6 +275,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
 
     int count = 0;
     for (CoinBalance item in data) {
+      if (item.coin.walletOnly) continue;
       if (item.coin.abbr == multiOrderProvider.baseCoin) continue;
       final Color color = count % 2 == 0
           ? Theme.of(context).highlightColor.withAlpha(15)

@@ -61,8 +61,11 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
             ),
           ),
           ...orderbooksDepth
-              .where((obDepth) =>
-                  coinsBloc.getBalanceByAbbr(obDepth.pair.rel) != null)
+              .where((obDepth) {
+                final coinBalance =
+                    coinsBloc.getBalanceByAbbr(obDepth.pair.rel);
+                return coinBalance != null && !coinBalance.coin.walletOnly;
+              })
               .where((obDepth) => obDepth.pair.rel
                   .toLowerCase()
                   .startsWith(searchTextController.text.toLowerCase()))

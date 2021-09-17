@@ -84,6 +84,7 @@ class Coin {
     fallbackSwapContract = config['fallback_swap_contract'] ?? '';
     colorCoin = config['colorCoin'] ?? '';
     isDefault = appConfig.defaultCoins.contains(abbr);
+    walletOnly = appConfig.walletOnlyCoins.contains(abbr);
     serverList = List<String>.from(config['serverList']);
     explorerUrl = List<String>.from(config['explorerUrl']);
     requiredConfirmations = init['required_confirmations'];
@@ -123,6 +124,9 @@ class Coin {
 
   // Whether to block disabling this coin
   bool isDefault;
+
+  // Whether to disable swaps for that coin
+  bool walletOnly;
 
   Protocol protocol;
   int dust;
