@@ -778,3 +778,13 @@ String getRandomWord() {
   final List<String> words = mnemonic.split(' ');
   return words[Random().nextInt(words.length)];
 }
+
+List<Coin> filterCoinsByQuery(List<Coin> coins, String query) {
+  if (coins == null || coins.isEmpty) return [];
+  final list = coins
+      .where((Coin coin) =>
+          coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
+          coin.name.toLowerCase().contains(query.trim().toLowerCase()))
+      .toList();
+  return list;
+}
