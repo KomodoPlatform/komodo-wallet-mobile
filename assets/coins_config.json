@@ -1350,6 +1350,26 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
+		"abbr": "LINK-ERC20",
+		"name": "Chainlink (ERC20)",
+        "coingeckoId": "chainlink",
+        "colorCoin": "0xff4588eb",
+        "type": "erc",
+        "address": "http://eth1.cipig.net",
+        "port": 8555,
+        "proto": "tcp",
+        "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
+        "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+        "serverList": [
+            "http://eth1.cipig.net:8555",
+            "http://eth2.cipig.net:8555",
+            "http://eth3.cipig.net:8555"
+        ],
+        "explorerUrl": [
+            "https://etherscan.io/"
+        ]
+	},
+    {
         "abbr": "SUSHI-BEP20",
         "name": "Sushi",
         "coingeckoId": "sushi",
