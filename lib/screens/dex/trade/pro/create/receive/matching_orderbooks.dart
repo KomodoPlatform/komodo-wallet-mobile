@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_orderbook_item.dart';
 import 'package:provider/provider.dart';
@@ -52,6 +53,8 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
                   color: Theme.of(context).textTheme.bodyText2.color,
                 ),
                 hintText: 'Search for Ticker',
+                hintStyle: TextStyle(
+                    color: Theme.of(context).hintColor.withAlpha(180)),
                 counterText: '',
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Theme.of(context).accentColor),
@@ -63,15 +66,14 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
           ...orderbooksDepth
               .where((obDepth) =>
                   coinsBloc.getBalanceByAbbr(obDepth.pair.rel) != null)
-              .where((obDepth) =>
-                  obDepth.pair.rel.toLowerCase().startsWith(
-                      searchTextController.text.trim().toLowerCase()) ||
-                  coinsBloc
-                      .getCoinByAbbr(obDepth.pair.rel)
-                      .name
-                      .toLowerCase()
-                      .startsWith(
-                          searchTextController.text.trim().toLowerCase()))
+              .where((obDepth) {
+                final String searchTerm =
+                    searchTextController.text.trim().toLowerCase();
+                final Coin relCoin = coinsBloc.getCoinByAbbr(obDepth.pair.rel);
+
+                return relCoin.abbr.toLowerCase().contains(searchTerm) ||
+                    relCoin.name.toLowerCase().contains(searchTerm);
+              })
               .map((OrderbookDepth obDepth) => MatchingOrderbookItem(
                   key: ValueKey(
                       'orderbook-item-${obDepth.pair.rel.toLowerCase()}'),
