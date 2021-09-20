@@ -744,7 +744,7 @@
         "proto": "tcp",
         "abbr": "SFUSD",
         "coingeckoId": "test-token",
-        "colorCoin": "0xfff73c70",
+        "colorCoin": "0xffa255fd",
         "serverList": [
             "electrum1.cipig.net:10070",
             "electrum2.cipig.net:10070",
@@ -752,6 +752,23 @@
         ],
         "explorerUrl": [
             "https://explorer.pbc.kmd.sh/"
+        ]
+    },
+    {
+        "abbr": "SMTF",
+        "name": "SmartFi Token",
+        "type": "bep",
+        "coingeckoId": "smtf-test",
+        "colorCoin": "0xFFf6455d",
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "serverList": [
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
+        ],
+        "explorerUrl": [
+            "https://bscscan.com/"
         ]
     },
     {
