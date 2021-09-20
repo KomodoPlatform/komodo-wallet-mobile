@@ -38,6 +38,9 @@ class _AddressFieldState extends State<AddressField> {
     });
 
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateAddressFromClipboard();
+    });
   }
 
   @override
