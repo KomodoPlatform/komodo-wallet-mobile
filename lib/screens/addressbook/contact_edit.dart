@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit_field.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/confirmation_dialog.dart';
 import 'package:komodo_dex/widgets/small_button.dart';
 import 'package:provider/provider.dart';
@@ -388,11 +389,7 @@ class _ContactEditState extends State<ContactEdit> {
                     ),
                   ),
                   ..._buildCoinDialogOption(
-                    coinsList
-                        .where((c) => c.abbr.toLowerCase().startsWith(
-                              searchTextController.text.trim().toLowerCase(),
-                            ))
-                        .toList(),
+                    filterCoinsByQuery(coinsList, searchTextController.text),
                   ),
                 ],
               );
