@@ -26,7 +26,6 @@ class AddressField extends StatefulWidget {
 }
 
 class _AddressFieldState extends State<AddressField> {
-  AddressBookProvider addressBookProvider;
   bool mm2Validated = false;
   bool autovalidate = false;
   String convertMessage;
@@ -39,18 +38,13 @@ class _AddressFieldState extends State<AddressField> {
     });
 
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateAddressFromClipboard();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    addressBookProvider = Provider.of<AddressBookProvider>(context);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (addressBookProvider.clipboard != null) {
-        widget.controller.text = addressBookProvider.clipboard;
-        addressBookProvider.clipboard = null;
-      }
-    });
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
@@ -111,14 +105,15 @@ class _AddressFieldState extends State<AddressField> {
                     suffixIcon: InkWell(
                       onTap: () {
                         Navigator.push<dynamic>(
-                            context,
-                            MaterialPageRoute<dynamic>(
-                              builder: (BuildContext context) =>
-                                  AddressBookPage(
-                                shouldPop: true,
-                                coin: widget.coin,
-                              ),
-                            ));
+                                context,
+                                MaterialPageRoute<dynamic>(
+                                  builder: (BuildContext context) =>
+                                      AddressBookPage(
+                                    shouldPop: true,
+                                    coin: widget.coin,
+                                  ),
+                                ))
+                            .then((dynamic _) => _updateAddressFromClipboard());
                       },
                       child: Icon(Icons.import_contacts),
                     ),
@@ -145,6 +140,15 @@ class _AddressFieldState extends State<AddressField> {
         ],
       ),
     );
+  }
+
+  void _updateAddressFromClipboard() {
+    final AddressBookProvider addressBookProvider =
+        Provider.of<AddressBookProvider>(context, listen: false);
+    if (addressBookProvider.clipboard != null) {
+      widget.controller.text = addressBookProvider.clipboard;
+      addressBookProvider.clipboard = null;
+    }
   }
 
   Widget _buildConvertButton() {
