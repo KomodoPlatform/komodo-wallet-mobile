@@ -441,6 +441,7 @@ class CexPrices {
 
   double getUsdPrice(String abbr) {
     if (abbr == 'USD') return 1;
+    if (abbr == 'SFUSD') return 1;
     if (_isFiat(abbr)) {
       return 1 / _getFiatRate(abbr);
     }
