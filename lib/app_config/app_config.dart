@@ -20,7 +20,7 @@ class AppConfig {
 
   List<String> get defaultCoins => ['KMD', 'BTC'];
   List<String> get coinsFiat => ['BTC', 'KMD'];
-  List<String> get walletOnlyCoins => [];
+  List<String> get walletOnlyCoins => ['USDT-ERC20'];
 
   bool get isSwapShareCardEnabled => true;
 
