@@ -343,6 +343,27 @@ class _ItemCoinState extends State<ItemCoin> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
               child: Builder(builder: (context) {
+                if (widget.coinBalance.coin.walletOnly)
+                  return InkWell(
+                    onTap: () {
+                      ScaffoldState scaffold;
+                      try {
+                        scaffold = Scaffold.of(context);
+                      } catch (_) {}
+
+                      if (scaffold != null) {
+                        scaffold.showSnackBar(const SnackBar(
+                          duration: Duration(seconds: 2),
+                          content: Text('Wallet only mode'),
+                        ));
+                      }
+                    },
+                    child: Icon(
+                      Icons.account_balance_wallet_rounded,
+                      color: Colors.white,
+                    ),
+                  );
+
                 if (widget.coinBalance.coin.abbr == 'TKL')
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
