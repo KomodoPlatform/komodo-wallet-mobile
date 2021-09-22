@@ -359,8 +359,9 @@ class _ItemCoinState extends State<ItemCoin> {
                       }
                     },
                     child: Icon(
-                      Icons.account_balance_wallet_rounded,
-                      color: Colors.white,
+                      Icons.account_balance_wallet_outlined,
+                      color: Colors.white.withAlpha(220),
+                      size: 16,
                     ),
                   );
 
