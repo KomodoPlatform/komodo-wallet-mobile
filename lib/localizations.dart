@@ -794,6 +794,10 @@ class AppLocalizations {
       Intl.message('Failed to calculate trade fees',
           name: 'tradePreimageError');
   String get remove => Intl.message('Disable', name: 'remove');
+  String get walletOnly => Intl.message('Wallet only', name: 'walletOnly');
+  String get dexIsNotAvailable =>
+      Intl.message('DEX is not available for this coin',
+          name: 'dexIsNotAvailable');
   String get searchFilterCoin =>
       Intl.message('Search a coin', name: 'searchFilterCoin');
   String get searchFilterSubtitleSmartChain =>

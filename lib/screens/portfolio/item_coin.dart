@@ -77,7 +77,7 @@ class _ItemCoinState extends State<ItemCoin> {
         showReceiveDialog(context, balance.address, coin);
       },
     ));
-    if (double.parse(balance.getBalance()) > 0) {
+    if (!coin.walletOnly && double.parse(balance.getBalance()) > 0) {
       actions.add(IconSlideAction(
         caption: AppLocalizations.of(context).swap.toUpperCase(),
         color: Theme.of(context).accentColor,
@@ -217,8 +217,10 @@ class _ItemCoinState extends State<ItemCoin> {
                               }),
                           _buildClaimButton(),
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               _buildFaucetButton(),
+                              _buildWalletOnly(),
                               _buildNetworkLabel(),
                             ],
                           ),
@@ -415,6 +417,42 @@ class _ItemCoinState extends State<ItemCoin> {
               }),
             )),
       ),
+    );
+  }
+
+  Widget _buildWalletOnly() {
+    if (!widget.coinBalance.coin.walletOnly) return SizedBox();
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 14, 8, 0),
+      child: InkWell(
+          onTap: () {
+            ScaffoldState scaffold;
+            try {
+              scaffold = Scaffold.of(context);
+            } catch (_) {}
+
+            if (scaffold != null) {
+              scaffold.showSnackBar(SnackBar(
+                duration: Duration(seconds: 2),
+                content: Text(AppLocalizations.of(context).dexIsNotAvailable),
+              ));
+            }
+          },
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            child: Container(
+              color: Theme.of(context).backgroundColor,
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              child: Text(
+                AppLocalizations.of(context).walletOnly.toUpperCase(),
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    .copyWith(fontFamily: 'RobotoCondensed'),
+              ),
+            ),
+          )),
     );
   }
 }

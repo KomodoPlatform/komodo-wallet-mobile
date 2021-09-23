@@ -78,7 +78,7 @@ List<SimpleDialogOption> _coinItemsList({
 }) {
   final List<SimpleDialogOption> listDialog = <SimpleDialogOption>[];
   for (CoinBalance coin in coinsBloc.coinBalance) {
-    if (double.parse(coin.balance.getBalance()) > 0) {
+    if (!coin.coin.walletOnly && double.parse(coin.balance.getBalance()) > 0) {
       final SimpleDialogOption dialogItem = SimpleDialogOption(
         key: Key('item-dialog-${coin.coin.abbr.toLowerCase()}-sell'),
         onPressed: () {

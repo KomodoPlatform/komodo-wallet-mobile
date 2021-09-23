@@ -249,7 +249,12 @@ class ConstructorProvider extends ChangeNotifier {
     final LinkedHashMap<String, Coin> known = await coins;
     final List<String> tickers = List.from(bestOrders.result.keys);
     for (String ticker in tickers) {
-      if (!known.containsKey(ticker)) bestOrders.result.remove(ticker);
+      if (!known.containsKey(ticker)) {
+        bestOrders.result.remove(ticker);
+      }
+      if (appConfig.walletOnlyCoins.contains(ticker)) {
+        bestOrders.result.remove(ticker);
+      }
     }
 
     return bestOrders;
