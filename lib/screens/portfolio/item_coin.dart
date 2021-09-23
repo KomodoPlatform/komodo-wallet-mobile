@@ -336,8 +336,7 @@ class _ItemCoinState extends State<ItemCoin> {
         child: Container(
             color: widget.coinBalance.coin.type == 'erc' ||
                     widget.coinBalance.coin.type == 'bep' ||
-                    widget.coinBalance.coin.type == 'qrc' ||
-                    widget.coinBalance.coin.abbr == 'TKL'
+                    widget.coinBalance.coin.type == 'qrc'
                 ? const Color.fromRGBO(20, 117, 186, 1)
                 : Theme.of(context).backgroundColor,
             child: Padding(
