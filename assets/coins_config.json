@@ -609,24 +609,6 @@
         ]
     },
     {
-        "name": "Utrum",
-        "type": "smartChain",
-        "address": "electrum1.cipig.net",
-        "port": 10088,
-        "proto": "tcp",
-        "abbr": "OOT",
-        "coingeckoId": "utrum",
-        "colorCoin": "0xFF23AADF",
-        "serverList": [
-            "electrum1.cipig.net:10021",
-            "electrum2.cipig.net:10021",
-            "electrum3.cipig.net:10021"
-        ],
-        "explorerUrl": [
-            "https://explorer.utrum.io/"
-        ]
-    },
-    {
         "name": "VerusCoin",
         "type": "utxo",
         "address": "el0.veruscoin.io",
@@ -1367,8 +1349,8 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
-		"abbr": "LINK-ERC20",
-		"name": "Chainlink (ERC20)",
+        "abbr": "LINK-ERC20",
+        "name": "Chainlink (ERC20)",
         "coingeckoId": "chainlink",
         "colorCoin": "0xff4588eb",
         "type": "erc",
@@ -1385,7 +1367,7 @@
         "explorerUrl": [
             "https://etherscan.io/"
         ]
-	},
+    },
     {
         "abbr": "SUSHI-BEP20",
         "name": "Sushi",
