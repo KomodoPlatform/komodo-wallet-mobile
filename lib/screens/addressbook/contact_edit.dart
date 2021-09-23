@@ -321,8 +321,6 @@ class _ContactEditState extends State<ContactEdit> {
                   _buildNetworkChip(
                     networkChipLabels[coin.type],
                   )
-                } else if (coin.abbr == 'TKL') ...{
-                  _buildNetworkChip(AppLocalizations.of(context).tagTokel)
                 } else if (coin.type == 'smartChain') ...{
                   _buildKmdChip()
                 }
