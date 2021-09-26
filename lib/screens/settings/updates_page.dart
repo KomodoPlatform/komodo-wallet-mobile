@@ -59,8 +59,8 @@ class _UpdatesPageState extends State<UpdatesPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Image.asset(settingsBloc.isLightTheme
-                            ? 'assets/logo_kmd_light.png'
-                            : 'assets/logo_kmd.png'),
+                            ? 'assets/branding/logo_app_light.png'
+                            : 'assets/branding/logo_app.png'),
                         const SizedBox(height: 12),
                         Text(AppLocalizations.of(context).updatesCurrentVersion(
                             updatesProvider.currentVersion)),

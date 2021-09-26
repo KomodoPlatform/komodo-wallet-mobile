@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
@@ -18,6 +18,310 @@ class AppLocalizations {
   static AppLocalizations of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
+
+  String toInitialUpper(String val) {
+    if (val == null || val.isEmpty) return '';
+    final String initial = val.substring(0, 1);
+    final String rest = val.substring(1);
+    return initial.toUpperCase() + rest;
+  }
+
+  // --- Branding ---
+
+  String get appName => Intl.message('${appConfig.appName}', name: 'appName');
+
+  String get articleFrom =>
+      Intl.message('${toInitialUpper(appConfig.appName)} NEWS',
+          name: 'articleFrom');
+  String get mobileDataWarning => Intl.message(
+      'Please note that now you\'re using cellular data and participation in '
+      '${appConfig.appName} P2P network consume internet traffic. It\'s better to use a '
+      'WiFi network if your cellular data plan is costly.',
+      name: 'mobileDataWarning');
+
+  String get withdrawCameraAccessTitle =>
+      Intl.message('Access Denied', name: 'withdrawCameraAccessTitle');
+  String get withdrawCameraAccessText => Intl.message(
+      'You have previously denied ${toInitialUpper(appConfig.appName)} access to the camera.'
+      '\nPlease manually change camera permission in your phone'
+      ' settings to proceed with the QR code scan.',
+      name: 'withdrawCameraAccessText');
+
+  String get welcomeTitle => Intl.message('WELCOME', name: 'welcomeTitle');
+  String get welcomeName =>
+      Intl.message('${toInitialUpper(appConfig.appName)}', name: 'welcomeName');
+  String get welcomeWallet => Intl.message('wallet', name: 'welcomeWallet');
+  String get welcomeInfo => Intl.message(
+      '${toInitialUpper(appConfig.appName)} mobile is a next generation multi-coin wallet with native third generation DEX functionality and more.',
+      name: 'welcomeInfo');
+  String get welcomeLetSetUp =>
+      Intl.message('LET\'S GET SET UP!', name: 'welcomeLetSetUp');
+
+  // --- Branding - EULA ---
+
+  String get eulaTitle1 => Intl.message(
+      'End-User License Agreement (EULA) of ${appConfig.appName} mobile:\n\n',
+      name: 'eulaTitle1');
+  String get eulaTitle2 =>
+      Intl.message('TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)\n\n',
+          name: 'eulaTitle2');
+  String get eulaTitle3 =>
+      Intl.message('TERMS AND CONDITIONS OF USE AND DISCLAIMER\n\n',
+          name: 'eulaTitle3');
+  String get eulaTitle4 => Intl.message('GENERAL USE\n\n', name: 'eulaTitle4');
+  String get eulaTitle5 =>
+      Intl.message('MODIFICATIONS\n\n', name: 'eulaTitle5');
+  String get eulaTitle6 =>
+      Intl.message('LIMITATIONS ON USE\n\n', name: 'eulaTitle6');
+  String get eulaTitle7 =>
+      Intl.message('Accounts and membership\n\n', name: 'eulaTitle7');
+  String get eulaTitle8 => Intl.message('Backups\n\n', name: 'eulaTitle8');
+  String get eulaTitle9 =>
+      Intl.message('GENERAL WARNING\n\n', name: 'eulaTitle9');
+  String get eulaTitle10 =>
+      Intl.message('ACCESS AND SECURITY\n\n', name: 'eulaTitle10');
+  String get eulaTitle11 =>
+      Intl.message('INTELLECTUAL PROPERTY RIGHTS\n\n', name: 'eulaTitle11');
+  String get eulaTitle12 => Intl.message('DISCLAIMER\n\n', name: 'eulaTitle12');
+  String get eulaTitle13 => Intl.message(
+      'REPRESENTATIONS AND WARRANTIES, INDEMNIFICATION, AND LIMITATION OF LIABILITY\n\n',
+      name: 'eulaTitle13');
+  String get eulaTitle14 =>
+      Intl.message('GENERAL RISK FACTORS\n\n', name: 'eulaTitle14');
+  String get eulaTitle15 =>
+      Intl.message('INDEMNIFICATION\n\n', name: 'eulaTitle15');
+  String get eulaTitle16 =>
+      Intl.message('RISK DISCLOSURES RELATING TO THE WALLET\n\n',
+          name: 'eulaTitle16');
+  String get eulaTitle17 =>
+      Intl.message('NO INVESTMENT ADVICE OR BROKERAGE\n\n',
+          name: 'eulaTitle17');
+  String get eulaTitle18 =>
+      Intl.message('TERMINATION\n\n', name: 'eulaTitle18');
+  String get eulaTitle19 =>
+      Intl.message('THIRD PARTY RIGHTS\n\n', name: 'eulaTitle19');
+  String get eulaTitle20 =>
+      Intl.message('OUR LEGAL OBLIGATIONS\n\n', name: 'eulaTitle20');
+
+  String get eulaParagraphe1 => Intl.message(
+      'This End-User License Agreement (\'EULA\') is a legal agreement between you and ${appConfig.appCompanyLong}.\n\nThis EULA agreement governs your acquisition and use of our ${appConfig.appName} mobile software (\'Software\', \'Mobile Application\', \'Application\' or \'App\') directly from ${appConfig.appCompanyLong} or indirectly through a ${appConfig.appCompanyLong} authorized entity, reseller or distributor (a \'Distributor\').\nPlease read this EULA agreement carefully before completing the installation process and using the ${appConfig.appName} mobile software. It provides a license to use the ${appConfig.appName} mobile software and contains warranty information and liability disclaimers.\nIf you register for the beta program of the ${appConfig.appName} mobile software, this EULA agreement will also govern that trial. By clicking \'accept\' or installing and/or using the ${appConfig.appName} mobile software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.\nIf you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.\nThis EULA agreement shall apply only to the Software supplied by ${appConfig.appCompanyLong} herewith regardless of whether other software is referred to or described herein. The terms also apply to any ${appConfig.appCompanyLong} updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.\nLicense Grant\n${appConfig.appCompanyLong} hereby grants you a personal, non-transferable, non-exclusive licence to use the ${appConfig.appName} mobile software on your devices in accordance with the terms of this EULA agreement.\n\nYou are permitted to load the ${appConfig.appName} mobile software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the ${appConfig.appName} mobile software.\nYou are not permitted to:\nEdit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things\nReproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose\nUse the Software in any way which breaches any applicable local, national or international law\nuse the Software for any purpose that ${appConfig.appCompanyLong} considers is a breach of this EULA agreement\nIntellectual Property and Ownership\n${appConfig.appCompanyLong} shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of ${appConfig.appCompanyLong}.\n\n${appConfig.appCompanyLong} reserves the right to grant licences to use the Software to third parties.\nTermination\nThis EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to ${appConfig.appCompanyLong}.\nIt will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.\nGoverning Law\nThis EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.\n\nThis document was last updated on January 31st, 2020\n\n',
+      name: 'eulaParagraphe1');
+  String get eulaParagraphe2 => Intl.message(
+      'This disclaimer applies to the contents and services of the app ${toInitialUpper(appConfig.appName)} and is valid for all users of the “Application” (\'Software\', “Mobile Application”, “Application” or “App”).\n\nThe Application is owned by ${appConfig.appCompanyLong}.\n\nWe reserve the right to amend the following Terms and Conditions (governing the use of the application “${appConfig.appName} mobile”) at any time without prior notice and at our sole discretion. It is your responsibility to periodically check this Terms and Conditions for any updates to these Terms, which shall come into force once published.\nYour continued use of the application shall be deemed as acceptance of the following Terms. \nWe are a company incorporated in Vietnam and these Terms and Conditions are governed by and subject to the laws of Vietnam. \nIf You do not agree with these Terms and Conditions, You must not use or access this software.\n\n',
+      name: 'eulaParagraphe2');
+  String get eulaParagraphe3 => Intl.message(
+      'By entering into this User (each subject accessing or using the site) Agreement (this writing) You declare that You are an individual over the age of majority (at least 18 or older) and have the capacity to enter into this User Agreement and accept to be legally bound by the terms and conditions of this User Agreement, as incorporated herein and amended from time to time. \n\n',
+      name: 'eulaParagraphe3');
+  String get eulaParagraphe4 => Intl.message(
+      'We may change the terms of this User Agreement at any time. Any such changes will take effect when published in the application, or when You use the Services.\n\n\nRead the User Agreement carefully every time You use our Services. Your continued use of the Services shall signify your acceptance to be bound by the current User Agreement. Our failure or delay in enforcing or partially enforcing any provision of this User Agreement shall not be construed as a waiver of any.\n\n',
+      name: 'eulaParagraphe4');
+  String get eulaParagraphe5 => Intl.message(
+      'You are not allowed to decompile, decode, disassemble, rent, lease, loan, sell, sublicense, or create derivative works from the ${appConfig.appName} mobile application or the user content. Nor are You allowed to use any network monitoring or detection software to determine the software architecture, or extract information about usage or individuals’ or users’ identities. \nYou are not allowed to copy, modify, reproduce, republish, distribute, display, or transmit for commercial, non-profit or public purposes all or any portion of the application or the user content without our prior written authorization.\n\n',
+      name: 'eulaParagraphe5');
+  String get eulaParagraphe6 => Intl.message(
+      'If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions. \n\n ${toInitialUpper(appConfig.appName)} mobile is a non-custodial wallet implementation and thus ${appConfig.appCompanyLong} can not access nor restore your account in case of (data) loss.\n\n',
+      name: 'eulaParagraphe6');
+  String get eulaParagraphe7 => Intl.message(
+      'We are not responsible for seed-phrases residing in the Mobile Application. In no event shall we be held liable for any loss of any kind. It is your sole responsibility to maintain appropriate backups of your accounts and their seedprases.\n\n',
+      name: 'eulaParagraphe7');
+  String get eulaParagraphe8 => Intl.message(
+      'You should not act, or refrain from acting solely on the basis of the content of this application. \nYour access to this application does not itself create an adviser-client relationship between You and us. \nThe content of this application does not constitute a solicitation or inducement to invest in any financial products or services offered by us. \nAny advice included in this application has been prepared without taking into account your objectives, financial situation or needs. You should consider our Risk Disclosure Notice before making any decision on whether to acquire the product described in that document.\n\n',
+      name: 'eulaParagraphe8');
+  String get eulaParagraphe9 => Intl.message(
+      'We do not guarantee your continuous access to the application or that your access or use will be error-free. \nWe will not be liable in the event that the application is unavailable to You for any reason (for example, due to computer downtime ascribable to malfunctions, upgrades, server problems, precautionary or corrective maintenance activities or interruption in telecommunication supplies). \n\n',
+      name: 'eulaParagraphe9');
+  String get eulaParagraphe10 => Intl.message(
+      '${appConfig.appCompanyLong} is the owner and/or authorised user of all trademarks, service marks, design marks, patents, copyrights, database rights and all other intellectual property appearing on or contained within the application, unless otherwise indicated. All information, text, material, graphics, software and advertisements on the application interface are copyright of ${appConfig.appCompanyLong}, its suppliers and licensors, unless otherwise expressly indicated by ${appConfig.appCompanyLong}. \nExcept as provided in the Terms, use of the application does not grant You any right, title, interest or license to any such intellectual property You may have access to on the application. \nWe own the rights, or have permission to use, the trademarks listed in our application. You are not authorised to use any of those trademarks without our written authorization – doing so would constitute a breach of our or another party’s intellectual property rights. \nAlternatively, we might authorise You to use the content in our application if You previously contact us and we agree in writing.\n\n',
+      name: 'eulaParagraphe10');
+  String get eulaParagraphe11 => Intl.message(
+      '${appConfig.appCompanyLong} cannot guarantee the safety or security of your computer systems. We do not accept liability for any loss or corruption of electronically stored data or any damage to any computer system occurred in connection with the use of the application or of the user content.\n${appConfig.appCompanyLong} makes no representation or warranty of any kind, express or implied, as to the operation of the application or the user content. You expressly agree that your use of the application is entirely at your sole risk.\nYou agree that the content provided in the application and the user content do not constitute financial product, legal or taxation advice, and You agree on not representing the user content or the application as such.\nTo the extent permitted by current legislation, the application is provided on an “as is, as available” basis.\n\n${appConfig.appCompanyLong} expressly disclaims all responsibility for any loss, injury, claim, liability, or damage, or any indirect, incidental, special or consequential damages or loss of profits whatsoever resulting from, arising out of or in any way related to: \n(a) any errors in or omissions of the application and/or the user content, including but not limited to technical inaccuracies and typographical errors; \n(b) any third party website, application or content directly or indirectly accessed through links in the application, including but not limited to any errors or omissions; \n(c) the unavailability of the application or any portion of it; \n(d) your use of the application;\n(e) your use of any equipment or software in connection with the application. \nAny Services offered in connection with the Platform are provided on an \'as is\' basis, without any representation or warranty, whether express, implied or statutory. To the maximum extent permitted by applicable law, we specifically disclaim any implied warranties of title, merchantability, suitability for a particular purpose and/or non-infringement. We do not make any representations or warranties that use of the Platform will be continuous, uninterrupted, timely, or error-free.\nWe make no warranty that any Platform will be free from viruses, malware, or other related harmful material and that your ability to access any Platform will be uninterrupted. Any defects or malfunction in the product should be directed to the third party offering the Platform, not to ${appConfig.appCompanyShort}. \nWe will not be responsible or liable to You for any loss of any kind, from action taken, or taken in reliance on the material or information contained in or through the Platform.\nThis is experimental and unfinished software. Use at your own risk. No warranty for any kind of damage. By using this application you agree to this terms and conditions.\n\n',
+      name: 'eulaParagraphe11');
+  String get eulaParagraphe12 => Intl.message(
+      'When accessing or using the Services, You agree that You are solely responsible for your conduct while accessing and using our Services. Without limiting the generality of the foregoing, You agree that You will not:\n(a) Use the Services in any manner that could interfere with, disrupt, negatively affect or inhibit other users from fully enjoying the Services, or that could damage, disable, overburden or impair the functioning of our Services in any manner;\n(b) Use the Services to pay for, support or otherwise engage in any illegal activities, including, but not limited to illegal gambling, fraud, money laundering, or terrorist activities;\n(c) Use any robot, spider, crawler, scraper or other automated means or interface not provided by us to access our Services or to extract data;\n(d) Use or attempt to use another user’s Wallet or credentials without authorization;\n(e) Attempt to circumvent any content filtering techniques we employ, or attempt to access any service or area of our Services that You are not authorized to access;\n(f) Introduce to the Services any virus, Trojan, worms, logic bombs or other harmful material;\n(g) Develop any third-party applications that interact with our Services without our prior written consent;\n(h) Provide false, inaccurate, or misleading information; \n(i) Encourage or induce any other person to engage in any of the activities prohibited under this Section.\n\n\n',
+      name: 'eulaParagraphe12');
+  String get eulaParagraphe13 => Intl.message(
+      'You agree and understand that there are risks associated with utilizing Services involving Virtual Currencies including, but not limited to, the risk of failure of hardware, software and internet connections, the risk of malicious software introduction, and the risk that third parties may obtain unauthorized access to information stored within your Wallet, including but not limited to your public and private keys. You agree and understand that ${appConfig.appCompanyLong} will not be responsible for any communication failures, disruptions, errors, distortions or delays You may experience when using the Services, however caused.\nYou accept and acknowledge that there are risks associated with utilizing any virtual currency network, including, but not limited to, the risk of unknown vulnerabilities in or unanticipated changes to the network protocol. You acknowledge and accept that ${appConfig.appCompanyLong} has no control over any cryptocurrency network and will not be responsible for any harm occurring as a result of such risks, including, but not limited to, the inability to reverse a transaction, and any losses in connection therewith due to erroneous or fraudulent actions.\nThe risk of loss in using Services involving Virtual Currencies may be substantial and losses may occur over a short period of time. In addition, price and liquidity are subject to significant fluctuations that may be unpredictable.\nVirtual Currencies are not legal tender and are not backed by any sovereign government. In addition, the legislative and regulatory landscape around Virtual Currencies is constantly changing and may affect your ability to use, transfer, or exchange Virtual Currencies.\nCFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 80.6% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether You understand how CFDs work and whether You can afford to take the high risk of losing your money.\n\n',
+      name: 'eulaParagraphe13');
+  String get eulaParagraphe14 => Intl.message(
+      'You agree to indemnify, defend and hold harmless ${appConfig.appCompanyLong}, its officers, directors, employees, agents, licensors, suppliers and any third party information providers to the application from and against all losses, expenses, damages and costs, including reasonable lawyer fees, resulting from any violation of the Terms by You.\nYou also agree to indemnify ${appConfig.appCompanyLong} against any claims that information or material which You have submitted to ${appConfig.appCompanyLong} is in violation of any law or in breach of any third party rights (including, but not limited to, claims in respect of defamation, invasion of privacy, breach of confidence, infringement of copyright or infringement of any other intellectual property right).\n\n',
+      name: 'eulaParagraphe14');
+  String get eulaParagraphe15 => Intl.message(
+      'In order to be completed, any Virtual Currency transaction created with the ${appConfig.appCompanyLong} must be confirmed and recorded in the Virtual Currency ledger associated with the relevant Virtual Currency network. Such networks are decentralized, peer-to-peer networks supported by independent third parties, which are not owned, controlled or operated by ${appConfig.appCompanyLong}.\n${appConfig.appCompanyLong} has no control over any Virtual Currency network and therefore cannot and does not ensure that any transaction details You submit via our Services will be confirmed on the relevant Virtual Currency network. You agree and understand that the transaction details You submit via our Services may not be completed, or may be substantially delayed, by the Virtual Currency network used to process the transaction. We do not guarantee that the Wallet can transfer title or right in any Virtual Currency or make any warranties whatsoever with regard to title.\nOnce transaction details have been submitted to a Virtual Currency network, we cannot assist You to cancel or otherwise modify your transaction or transaction details. ${appConfig.appCompanyLong} has no control over any Virtual Currency network and does not have the ability to facilitate any cancellation or modification requests.\nIn the event of a Fork, ${appConfig.appCompanyLong} may not be able to support activity related to your Virtual Currency. You agree and understand that, in the event of a Fork, the transactions may not be completed, completed partially, incorrectly completed, or substantially delayed. ${appConfig.appCompanyLong} is not responsible for any loss incurred by You caused in whole or in part, directly or indirectly, by a Fork.\nIn no event shall ${appConfig.appCompanyLong}, its affiliates and service providers, or any of their respective officers, directors, agents, employees or representatives, be liable for any lost profits or any special, incidental, indirect, intangible, or consequential damages, whether based on contract, tort, negligence, strict liability, or otherwise, arising out of or in connection with authorized or unauthorized use of the services, or this agreement, even if an authorized representative of ${appConfig.appCompanyLong} has been advised of, has known of, or should have known of the possibility of such damages. \nFor example (and without limiting the scope of the preceding sentence), You may not recover for lost profits, lost business opportunities, or other types of special, incidental, indirect, intangible, or consequential damages. Some jurisdictions do not allow the exclusion or limitation of incidental or consequential damages, so the above limitation may not apply to You. \nWe will not be responsible or liable to You for any loss and take no responsibility for damages or claims arising in whole or in part, directly or indirectly from: (a) user error such as forgotten passwords, incorrectly constructed transactions, or mistyped Virtual Currency addresses; (b) server failure or data loss; (c) corrupted or otherwise non-performing Wallets or Wallet files; (d) unauthorized access to applications; (e) any unauthorized activities, including without limitation the use of hacking, viruses, phishing, brute forcing or other means of attack against the Services.\n\n',
+      name: 'eulaParagraphe15');
+  String get eulaParagraphe16 => Intl.message(
+      'For the avoidance of doubt, ${appConfig.appCompanyLong} does not provide investment, tax or legal advice, nor does ${appConfig.appCompanyLong} broker trades on your behalf. All ${appConfig.appCompanyLong} trades are executed automatically, based on the parameters of your order instructions and in accordance with posted Trade execution procedures, and You are solely responsible for determining whether any investment, investment strategy or related transaction is appropriate for You based on your personal investment objectives, financial circumstances and risk tolerance. You should consult your legal or tax professional regarding your specific situation.\Neither ${appConfig.appCompanyShort} nor its owners, members, officers, directors, partners, consultants, nor anyone involved in the publication of this application, is a registered investment adviser or broker-dealer or associated person with a registered investment adviser or broker-dealer and none of the foregoing make any recommendation that the purchase or sale of crypto-assets or securities of any company profiled in the mobile Application is suitable or advisable for any person or that an investment or transaction in such crypto-assets or securities will be profitable. \The information contained in the mobile Application is not intended to be, and shall not constitute, an offer to sell or the solicitation of any offer to buy any crypto-asset or security. \The information presented in the mobile Application is provided for informational purposes only and is not to be treated as advice or a recommendation to make any specific investment or transaction. \Please, consult with a qualified professional before making any decisions.\The opinions and analysis included in this applications are based on information from sources deemed to be reliable and are provided “as is” in good faith. ${appConfig.appCompanyShort} makes no representation or warranty, expressed, implied, or statutory, as to the accuracy or completeness of such information, which may be subject to change without notice. ${appConfig.appCompanyShort} shall not be liable for any errors or any actions taken in relation to the above. Statements of opinion and belief are those of the authors and/or editors who contribute to this application, and are based solely upon the information possessed by such authors and/or editors. \No inference should be drawn that ${appConfig.appCompanyShort} or such authors or editors have any special or greater knowledge about the crypto-assets or companies profiled or any particular expertise in the industries or markets in which the profiled crypto-assets and companies operate and compete.\Information on this application is obtained from sources deemed to be reliable; however, ${appConfig.appCompanyShort} takes no responsibility for verifying the accuracy of such information and makes no representation that such information is accurate or complete. \Certain statements included in this application may be forward-looking statements based on current expectations. ${appConfig.appCompanyShort} makes no representation and provides no assurance or guarantee that such forward-looking statements will prove to be accurate.\Persons using the ${appConfig.appCompanyShort} application are urged to consult with a qualified professional with respect to an investment or transaction in any crypto-asset or company profiled herein. \Additionally, persons using this application expressly represent that the content in this application is not and will not be a consideration in such persons’ investment or transaction decisions. Traders should verify independently information provided in the ${appConfig.appCompanyShort} application by completing their own due diligence on any crypto-asset or company in which they are contemplating an investment or transaction of any kind and review a complete information package on that crypto-asset or company, which should include, but not be limited to, related blog updates and press releases.\Past performance of profiled crypto-assets and securities is not indicative of future results. \Crypto-assets and companies profiled on this site may lack an active trading market and invest in a crypto-asset or security that lacks an active trading market or trade on certain media, platforms and markets are deemed highly speculative and carry a high degree of risk. Anyone holding such crypto-assets and securities should be financially able and prepared to bear the risk of loss and the actual loss of his or her entire trade. The information in this application is not designed to be used as a basis for an investment decision. \Persons using the ${appConfig.appCompanyShort} application should confirm to their own satisfaction the veracity of any information prior to entering into any investment or making any transaction. The decision to buy or sell any crypto-asset or security that may be featured by ${appConfig.appCompanyShort} is done purely and entirely at the reader’s own risk. \As a reader and user of this application, You agree that under no circumstances will You seek to hold liable owners, members, officers, directors, partners, consultants or other persons involved in the publication of this application for any losses incurred by the use of information contained in this application\\${appConfig.appCompanyShort} and its contractors and affiliates may profit in the event the crypto-assets and securities increase or decrease in value. Such crypto-assets and securities may be bought or sold from time to time, even after ${appConfig.appCompanyShort} has distributed positive information regarding the crypto-assets and companies. \\${appConfig.appCompanyShort} has no obligation to inform readers of its trading activities or the trading activities of any of its owners, members, officers, directors, contractors and affiliates and/or any companies affiliated with BC Relations’ owners, members, officers, directors, contractors and affiliates.\\${appConfig.appCompanyShort} and its affiliates may from time to time enter into agreements to purchase crypto-assets or securities to provide a method to reach their goals.\n\n',
+      name: 'eulaParagraphe16');
+  String get eulaParagraphe17 => Intl.message(
+      'The Terms are effective until terminated by ${appConfig.appCompanyLong}. \nIn the event of termination, You are no longer authorized to access the Application, but all restrictions imposed on You and the disclaimers and limitations of liability set out in the Terms will survive termination. \nSuch termination shall not affect any legal right that may have accrued to ${appConfig.appCompanyLong} against You up to the date of termination. \n${appConfig.appCompanyLong} may also remove the Application as a whole or any sections or features of the Application at any time. \n\n',
+      name: 'eulaParagraphe17');
+  String get eulaParagraphe18 => Intl.message(
+      'The provisions of previous paragraphs are for the benefit of ${appConfig.appCompanyLong} and its officers, directors, employees, agents, licensors, suppliers, and any third party information providers to the Application. Each of these individuals or entities shall have the right to assert and enforce those provisions directly against You on its own behalf.\n\n',
+      name: 'eulaParagraphe18');
+  String get eulaParagraphe19 => Intl.message(
+      '${toInitialUpper(appConfig.appName)} mobile is a non-custodial, decentralized and blockchain based application and as such does ${appConfig.appCompanyLong} never store any user-data (accounts and authentication data). \nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on January 31st, 2020\n\n',
+      name: 'eulaParagraphe19');
+
+  // --- Branding - Updates ---
+
+  String get updatesTitle =>
+      Intl.message('${appConfig.appName} update', name: 'updatesTitle');
+  String updatesCurrentVersion(String version) =>
+      Intl.message('You are using version $version',
+          args: <Object>[version], name: 'updatesCurrentVersion');
+  String get updatesChecking =>
+      Intl.message('Checking for updates...', name: 'updatesChecking');
+  String get updatesUpToDate =>
+      Intl.message('Already up to date', name: 'updatesUpToDate');
+  String get updatesAvailable =>
+      Intl.message('New version available', name: 'updatesAvailable');
+  String get updatesUpdate => Intl.message('Update', name: 'updatesUpdate');
+  String get updatesSkip => Intl.message('Skip for now', name: 'updatesSkip');
+  String get updatesNotifTitle =>
+      Intl.message('Update available', name: 'updatesNotifTitle');
+  String get updatesNotifAvailable =>
+      Intl.message('New version available. Please update.',
+          name: 'updatesNotifAvailable');
+  String updatesNotifAvailableVersion(String version) =>
+      Intl.message('Version $version available. Please update.',
+          args: <Object>[version], name: 'updatesNotifAvailableVersion');
+
+  // --- Branding - Help & FAQ ---
+
+  String get helpLink => Intl.message('Help', name: 'helpLink');
+  String get helpTitle => Intl.message('Help and Support', name: 'helpTitle');
+  String get faqTitle =>
+      Intl.message('Frequently Asked Questions', name: 'faqTitle');
+  String get support => Intl.message('Support', name: 'support');
+  String get supportLinksDesc => Intl.message(
+      'If you have any questions,'
+      ' or think you\'ve found a technical problem with'
+      ' the ${appConfig.appName} app, you can report it and get support'
+      ' from our team.',
+      name: 'supportLinksDesc');
+
+  String get question_1 =>
+      Intl.message('Do you store my private keys?', name: 'question_1');
+  String get answer_1 => Intl.message(
+      'No! ${toInitialUpper(appConfig.appName)} is non-custodial. We never store any sensitive data,'
+      ' including your private keys, seed phrases, or PIN. This data is only'
+      ' stored on the user’s device and never leaves it.'
+      ' You are in full control of your assets.',
+      name: 'answer_1');
+  String get question_2 => Intl.message(
+      'How is trading on ${toInitialUpper(appConfig.appName)} different from trading on other DEXs?',
+      name: 'question_2');
+  String get answer_2 => Intl.message(
+      'Other DEXs generally only allow you to trade assets that are based'
+      ' on a single blockchain network, use proxy tokens, and'
+      ' only allow placing a single order with the same funds.'
+      '\n\n${toInitialUpper(appConfig.appName)} enables you to natively trade across two different'
+      ' blockchain networks without proxy tokens. You can also place multiple'
+      ' orders with the same funds. For example, you can sell 0.1 BTC for'
+      ' KMD, QTUM, or VRSC — the first order that fills automatically'
+      ' cancels all other orders.',
+      name: 'answer_2');
+  String get question_3 =>
+      Intl.message('How long does each atomic swap take?', name: 'question_3');
+  String get answer_3 => Intl.message(
+      'Several factors determine the processing time for each swap.'
+      ' The block time of the traded assets depends on each network'
+      ' (Bitcoin typically being the slowest) Additionally, the user can'
+      ' customize security preferences. For example, you can ask ${toInitialUpper(appConfig.appName)}'
+      ' to consider a KMD transaction as final after just 3 confirmations'
+      ' which makes the swap time shorter compared to waiting'
+      ' for a <a href="'
+      'https://komodoplatform.com/security-delayed-proof-of-work-dpow/'
+      '">notarization</a>.',
+      name: 'answer_3');
+  String get question_4 =>
+      Intl.message('Do I need to be online for the duration of the swap?',
+          name: 'question_4');
+  String get answer_4 => Intl.message(
+      'Yes. You must remain connected to the internet and have your app'
+      ' running to successfully complete each atomic swap (very short breaks'
+      ' in connectivity are usually fine). Otherwise, there is risk of trade'
+      ' cancellation if you are a maker, and risk of loss of funds if you are'
+      ' a taker. The atomic swap protocol requires both participants to stay'
+      ' online and monitor the involved blockchains for'
+      ' the process to stay atomic.',
+      name: 'answer_4');
+  String get question_5 =>
+      Intl.message('How are the fees on ${appConfig.appName} calculated?',
+          name: 'question_5');
+  String get answer_5 => Intl.message(
+      'There are two fee categories to consider when trading on ${toInitialUpper(appConfig.appName)}.\n\n'
+      '1. ${toInitialUpper(appConfig.appName)} charges approximately 0.13% (1/777 of trading volume but'
+      ' not lower than 0.0001) as the trading fee for taker orders, and maker'
+      ' orders have zero fees.\n\n2. Both makers and takers will need to pay'
+      ' normal network fees to the involved blockchains when making atomic'
+      ' swap transactions.\n\nNetwork fees can vary greatly depending on'
+      ' your selected trading pair.',
+      name: 'answer_5');
+  String get question_6 =>
+      Intl.message('Do you provide user support?', name: 'question_6');
+  String get answer_6 => Intl.message(
+      'Yes! ${toInitialUpper(appConfig.appName)} offers support through the'
+      ' <a href="${appConfig.appCompanyDiscord}">'
+      '${appConfig.appCompanyShort} Discord server'
+      '</a>. The team and the community are always happy to help!',
+      name: 'answer_6');
+  String get question_7 =>
+      Intl.message('Do you have country restrictions?', name: 'question_7');
+  String get answer_7 => Intl.message(
+      'No! ${toInitialUpper(appConfig.appName)} is fully decentralized.'
+      ' It is not possible to limit user access by any third party.',
+      name: 'answer_7');
+  String get question_8 =>
+      Intl.message('Who is behind ${toInitialUpper(appConfig.appName)}?',
+          name: 'question_8');
+  String get answer_8 => Intl.message(
+      '${toInitialUpper(appConfig.appName)} is developed by the ${appConfig.appCompanyShort} team. ${appConfig.appCompanyShort} is one of'
+      ' the most established blockchain projects working on innovative'
+      ' solutions like atomic swaps, Delayed Proof of Work, and an'
+      ' interoperable multi-chain architecture.',
+      name: 'answer_8');
+  String get question_9 => Intl.message(
+      'Is it possible to develop my own white-label'
+      ' exchange on ${toInitialUpper(appConfig.appName)}?',
+      name: 'question_9');
+  String get answer_9 => Intl.message(
+      'Absolutely! You can read our'
+      ' <a href="https://developers.atomicdex.io/">'
+      'developer documentation</a> for more'
+      ' details or contact us with your partnership inquiries. Have a specific'
+      ' technical question? The ${toInitialUpper(appConfig.appName)} developer community'
+      ' is always ready to help!',
+      name: 'answer_9');
+  String get question_10 => Intl.message(
+      'Which devices can I use ${toInitialUpper(appConfig.appName)} on?',
+      name: 'question_10');
+  String get answer_10 => Intl.message(
+      '${toInitialUpper(appConfig.appName)} is available for mobile on both Android and iPhone,'
+      ' and for desktop on Windows, Mac, and Linux operating systems.',
+      name: 'answer_10');
+
+  // --- Branding - Feed section ---
+
+  String get feedTab => Intl.message('Feed', name: 'feedTab');
+  String get feedTitle => Intl.message('News Feed', name: 'feedTitle');
+  String get feedReadMore => Intl.message('Read more...', name: 'feedReadMore');
+  String get feedNotFound => Intl.message('Nothing here', name: 'feedNotFound');
+  String get feedUpdated =>
+      Intl.message('News feed updated', name: 'feedUpdated');
+  String get snackbarDismiss =>
+      Intl.message('Dismiss', name: 'snackbarDismiss');
+  String get feedNewsTab => Intl.message('News', name: 'feedNewsTab');
+  String get feedUnableToUpdate =>
+      Intl.message('Unable to get news update', name: 'feedUnableToUpdate');
+  String get feedUnableToProceed =>
+      Intl.message('Unable to proceed news update',
+          name: 'feedUnableToProceed');
+  String get feedUpToDate =>
+      Intl.message('Already up to date', name: 'feedUpToDate');
+  String get feedNotifTitle =>
+      Intl.message('${appConfig.appCompanyShort} news', name: 'feedNotifTitle');
+
+  // ---
 
   String get createPin => Intl.message('Create PIN', name: 'createPin');
   String get enterPinCode =>
@@ -43,11 +347,6 @@ class AppLocalizations {
   String get buyTestCoinWarning => Intl.message(
       'Warning, you\'re willing to buy test coins WITHOUT real value!',
       name: 'buyTestCoinWarning');
-  String get mobileDataWarning => Intl.message(
-      'Please note that now you\'re using cellular data and participation in '
-      'atomicDEX P2P network consume internet traffic. It\'s better to use a '
-      'WiFi network if your cellular data plan is costly.',
-      name: 'mobileDataWarning');
   String get batteryCriticalError => Intl.message(
       'Your battery charge is critical (${appConfig.batteryLevelCritical}%) '
       'to perform a swap safely. Please put it on charge and try again.',
@@ -84,13 +383,6 @@ class AppLocalizations {
   String get withdrawConfirmError =>
       Intl.message('Something went wrong. Try again later.',
           name: 'withdrawConfirmError');
-  String get withdrawCameraAccessTitle =>
-      Intl.message('Access Denied', name: 'withdrawCameraAccessTitle');
-  String get withdrawCameraAccessText => Intl.message(
-      'You have previously denied AtomicDEX access to the camera.'
-      '\nPlease manually change camera permission in your phone'
-      ' settings to proceed with the QR code scan.',
-      name: 'withdrawCameraAccessText');
   String get close => Intl.message('Close', name: 'close');
   String get confirmSeed =>
       Intl.message('Confirm Seed Phrase', name: 'confirmSeed');
@@ -164,7 +456,7 @@ class AppLocalizations {
   String get receive => Intl.message('RECEIVE', name: 'receive');
   String get send => Intl.message('SEND', name: 'send');
   String get back => Intl.message('back', name: 'back');
-  String get cancel => Intl.message('cancel', name: 'cancel');
+  String get cancel => Intl.message('Cancel', name: 'cancel');
   String get details => Intl.message('details', name: 'details');
   String get unspendable => Intl.message('unspendable', name: 'unspendable');
   String get commingsoon =>
@@ -198,7 +490,7 @@ class AppLocalizations {
   String get dex => Intl.message('DEX', name: 'dex');
   String get media => Intl.message('News', name: 'media');
   String get newsFeed => Intl.message('News feed', name: 'newsFeed');
-  String get appName => Intl.message('atomicDEX', name: 'appName');
+
   String get clipboard =>
       Intl.message('Copied to the clipboard', name: 'clipboard');
   String get from => Intl.message('From', name: 'from');
@@ -224,7 +516,7 @@ class AppLocalizations {
   String get swapUUID => Intl.message('Swap UUID', name: 'swapUUID');
   String get mediaBrowse => Intl.message('BROWSE', name: 'mediaBrowse');
   String get mediaSaved => Intl.message('SAVED', name: 'mediaSaved');
-  String get articleFrom => Intl.message('AtomicDEX NEWS', name: 'articleFrom');
+
   String get mediaNotSavedDescription =>
       Intl.message('YOU HAVE NO SAVED ARTICLES',
           name: 'mediaNotSavedDescription');
@@ -270,12 +562,12 @@ class AppLocalizations {
       'Your seed phrase is important - that\'s why we like to make sure it\'s correct. We\'ll ask you three different questions about your seed phrase to make sure you\'ll be able to easily restore your wallet whenever you want.',
       name: 'checkSeedPhraseInfo');
   String checkSeedPhraseSubtile(String index) => Intl.message(
-        'What is the $index. word in your seed phrase?',
+        'What is the $index word in your seed phrase?',
         name: 'checkSeedPhraseSubtile',
         args: <Object>[index],
       );
   String checkSeedPhraseHint(String index) => Intl.message(
-        'Enter the $index. word',
+        'Enter the $index word',
         name: 'checkSeedPhraseHint',
         args: <Object>[index],
       );
@@ -369,14 +661,6 @@ class AppLocalizations {
   String get clipboardCopy =>
       Intl.message('Copy to clipboard', name: 'clipboardCopy');
 
-  String get welcomeTitle => Intl.message('WELCOME', name: 'welcomeTitle');
-  String get welcomeName => Intl.message('AtomicDEX', name: 'welcomeName');
-  String get welcomeWallet => Intl.message('wallet', name: 'welcomeWallet');
-  String get welcomeInfo => Intl.message(
-      'AtomicDEX mobile is a next generation multi-coin wallet with native third generation DEX functionality and more.',
-      name: 'welcomeInfo');
-  String get welcomeLetSetUp =>
-      Intl.message('LET\'S GET SET UP!', name: 'welcomeLetSetUp');
   String get unlock => Intl.message('unlock', name: 'unlock');
   String noOrder(String coinName) => Intl.message(
         'Please enter the $coinName amount.',
@@ -462,108 +746,6 @@ class AppLocalizations {
   String get confirmeula => Intl.message(
       'By clicking the below buttons you confirm to have read the \'EULA\' and \'Terms and Conditions\' and accept these',
       name: 'confirmeula');
-
-  String get eulaTitle1 =>
-      Intl.message('End-User License Agreement (EULA) of atomicDEX mobile:\n\n',
-          name: 'eulaTitle1');
-  String get eulaTitle2 =>
-      Intl.message('TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)\n\n',
-          name: 'eulaTitle2');
-  String get eulaTitle3 =>
-      Intl.message('TERMS AND CONDITIONS OF USE AND DISCLAIMER\n\n',
-          name: 'eulaTitle3');
-  String get eulaTitle4 => Intl.message('GENERAL USE\n\n', name: 'eulaTitle4');
-  String get eulaTitle5 =>
-      Intl.message('MODIFICATIONS\n\n', name: 'eulaTitle5');
-  String get eulaTitle6 =>
-      Intl.message('LIMITATIONS ON USE\n\n', name: 'eulaTitle6');
-  String get eulaTitle7 =>
-      Intl.message('Accounts and membership\n\n', name: 'eulaTitle7');
-  String get eulaTitle8 => Intl.message('Backups\n\n', name: 'eulaTitle8');
-  String get eulaTitle9 =>
-      Intl.message('GENERAL WARNING\n\n', name: 'eulaTitle9');
-  String get eulaTitle10 =>
-      Intl.message('ACCESS AND SECURITY\n\n', name: 'eulaTitle10');
-  String get eulaTitle11 =>
-      Intl.message('INTELLECTUAL PROPERTY RIGHTS\n\n', name: 'eulaTitle11');
-  String get eulaTitle12 => Intl.message('DISCLAIMER\n\n', name: 'eulaTitle12');
-  String get eulaTitle13 => Intl.message(
-      'REPRESENTATIONS AND WARRANTIES, INDEMNIFICATION, AND LIMITATION OF LIABILITY\n\n',
-      name: 'eulaTitle13');
-  String get eulaTitle14 =>
-      Intl.message('GENERAL RISK FACTORS\n\n', name: 'eulaTitle14');
-  String get eulaTitle15 =>
-      Intl.message('INDEMNIFICATION\n\n', name: 'eulaTitle15');
-  String get eulaTitle16 =>
-      Intl.message('RISK DISCLOSURES RELATING TO THE WALLET\n\n',
-          name: 'eulaTitle16');
-  String get eulaTitle17 =>
-      Intl.message('NO INVESTMENT ADVICE OR BROKERAGE\n\n',
-          name: 'eulaTitle17');
-  String get eulaTitle18 =>
-      Intl.message('TERMINATION\n\n', name: 'eulaTitle18');
-  String get eulaTitle19 =>
-      Intl.message('THIRD PARTY RIGHTS\n\n', name: 'eulaTitle19');
-  String get eulaTitle20 =>
-      Intl.message('OUR LEGAL OBLIGATIONS\n\n', name: 'eulaTitle20');
-
-  String get eulaParagraphe1 => Intl.message(
-      'This End-User License Agreement (\'EULA\') is a legal agreement between you and Komodo Platform.\n\nThis EULA agreement governs your acquisition and use of our atomicDEX mobile software (\'Software\', \'Mobile Application\', \'Application\' or \'App\') directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a \'Distributor\').\nPlease read this EULA agreement carefully before completing the installation process and using the atomicDEX mobile software. It provides a license to use the atomicDEX mobile software and contains warranty information and liability disclaimers.\nIf you register for the beta program of the atomicDEX mobile software, this EULA agreement will also govern that trial. By clicking \'accept\' or installing and/or using the atomicDEX mobile software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.\nIf you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.\nThis EULA agreement shall apply only to the Software supplied by Komodo Platform herewith regardless of whether other software is referred to or described herein. The terms also apply to any Komodo Platform updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.\nLicense Grant\nKomodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the atomicDEX mobile software on your devices in accordance with the terms of this EULA agreement.\n\nYou are permitted to load the atomicDEX mobile software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the atomicDEX mobile software.\nYou are not permitted to:\nEdit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things\nReproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose\nUse the Software in any way which breaches any applicable local, national or international law\nuse the Software for any purpose that Komodo Platform considers is a breach of this EULA agreement\nIntellectual Property and Ownership\nKomodo Platform shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of Komodo Platform.\n\nKomodo Platform reserves the right to grant licences to use the Software to third parties.\nTermination\nThis EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to Komodo Platform.\nIt will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.\nGoverning Law\nThis EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.\n\nThis document was last updated on January 31st, 2020\n\n',
-      name: 'eulaParagraphe1');
-  String get eulaParagraphe2 => Intl.message(
-      'This disclaimer applies to the contents and services of the app AtomicDEX and is valid for all users of the “Application” (\'Software\', “Mobile Application”, “Application” or “App”).\n\nThe Application is owned by Komodo Platform.\n\nWe reserve the right to amend the following Terms and Conditions (governing the use of the application “atomicDEX mobile”) at any time without prior notice and at our sole discretion. It is your responsibility to periodically check this Terms and Conditions for any updates to these Terms, which shall come into force once published.\nYour continued use of the application shall be deemed as acceptance of the following Terms. \nWe are a company incorporated in Vietnam and these Terms and Conditions are governed by and subject to the laws of Vietnam. \nIf You do not agree with these Terms and Conditions, You must not use or access this software.\n\n',
-      name: 'eulaParagraphe2');
-  String get eulaParagraphe3 => Intl.message(
-      'By entering into this User (each subject accessing or using the site) Agreement (this writing) You declare that You are an individual over the age of majority (at least 18 or older) and have the capacity to enter into this User Agreement and accept to be legally bound by the terms and conditions of this User Agreement, as incorporated herein and amended from time to time. \n\n',
-      name: 'eulaParagraphe3');
-  String get eulaParagraphe4 => Intl.message(
-      'We may change the terms of this User Agreement at any time. Any such changes will take effect when published in the application, or when You use the Services.\n\n\nRead the User Agreement carefully every time You use our Services. Your continued use of the Services shall signify your acceptance to be bound by the current User Agreement. Our failure or delay in enforcing or partially enforcing any provision of this User Agreement shall not be construed as a waiver of any.\n\n',
-      name: 'eulaParagraphe4');
-  String get eulaParagraphe5 => Intl.message(
-      'You are not allowed to decompile, decode, disassemble, rent, lease, loan, sell, sublicense, or create derivative works from the atomicDEX mobile application or the user content. Nor are You allowed to use any network monitoring or detection software to determine the software architecture, or extract information about usage or individuals’ or users’ identities. \nYou are not allowed to copy, modify, reproduce, republish, distribute, display, or transmit for commercial, non-profit or public purposes all or any portion of the application or the user content without our prior written authorization.\n\n',
-      name: 'eulaParagraphe5');
-  String get eulaParagraphe6 => Intl.message(
-      'If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions. \n\n AtomicDEX mobile is a non-custodial wallet implementation and thus Komodo Platform can not access nor restore your account in case of (data) loss.\n\n',
-      name: 'eulaParagraphe6');
-  String get eulaParagraphe7 => Intl.message(
-      'We are not responsible for seed-phrases residing in the Mobile Application. In no event shall we be held liable for any loss of any kind. It is your sole responsibility to maintain appropriate backups of your accounts and their seedprases.\n\n',
-      name: 'eulaParagraphe7');
-  String get eulaParagraphe8 => Intl.message(
-      'You should not act, or refrain from acting solely on the basis of the content of this application. \nYour access to this application does not itself create an adviser-client relationship between You and us. \nThe content of this application does not constitute a solicitation or inducement to invest in any financial products or services offered by us. \nAny advice included in this application has been prepared without taking into account your objectives, financial situation or needs. You should consider our Risk Disclosure Notice before making any decision on whether to acquire the product described in that document.\n\n',
-      name: 'eulaParagraphe8');
-  String get eulaParagraphe9 => Intl.message(
-      'We do not guarantee your continuous access to the application or that your access or use will be error-free. \nWe will not be liable in the event that the application is unavailable to You for any reason (for example, due to computer downtime ascribable to malfunctions, upgrades, server problems, precautionary or corrective maintenance activities or interruption in telecommunication supplies). \n\n',
-      name: 'eulaParagraphe9');
-  String get eulaParagraphe10 => Intl.message(
-      'Komodo Platform is the owner and/or authorised user of all trademarks, service marks, design marks, patents, copyrights, database rights and all other intellectual property appearing on or contained within the application, unless otherwise indicated. All information, text, material, graphics, software and advertisements on the application interface are copyright of Komodo Platform, its suppliers and licensors, unless otherwise expressly indicated by Komodo Platform. \nExcept as provided in the Terms, use of the application does not grant You any right, title, interest or license to any such intellectual property You may have access to on the application. \nWe own the rights, or have permission to use, the trademarks listed in our application. You are not authorised to use any of those trademarks without our written authorization – doing so would constitute a breach of our or another party’s intellectual property rights. \nAlternatively, we might authorise You to use the content in our application if You previously contact us and we agree in writing.\n\n',
-      name: 'eulaParagraphe10');
-  String get eulaParagraphe11 => Intl.message(
-      'Komodo Platform cannot guarantee the safety or security of your computer systems. We do not accept liability for any loss or corruption of electronically stored data or any damage to any computer system occurred in connection with the use of the application or of the user content.\nKomodo Platform makes no representation or warranty of any kind, express or implied, as to the operation of the application or the user content. You expressly agree that your use of the application is entirely at your sole risk.\nYou agree that the content provided in the application and the user content do not constitute financial product, legal or taxation advice, and You agree on not representing the user content or the application as such.\nTo the extent permitted by current legislation, the application is provided on an “as is, as available” basis.\n\nKomodo Platform expressly disclaims all responsibility for any loss, injury, claim, liability, or damage, or any indirect, incidental, special or consequential damages or loss of profits whatsoever resulting from, arising out of or in any way related to: \n(a) any errors in or omissions of the application and/or the user content, including but not limited to technical inaccuracies and typographical errors; \n(b) any third party website, application or content directly or indirectly accessed through links in the application, including but not limited to any errors or omissions; \n(c) the unavailability of the application or any portion of it; \n(d) your use of the application;\n(e) your use of any equipment or software in connection with the application. \nAny Services offered in connection with the Platform are provided on an \'as is\' basis, without any representation or warranty, whether express, implied or statutory. To the maximum extent permitted by applicable law, we specifically disclaim any implied warranties of title, merchantability, suitability for a particular purpose and/or non-infringement. We do not make any representations or warranties that use of the Platform will be continuous, uninterrupted, timely, or error-free.\nWe make no warranty that any Platform will be free from viruses, malware, or other related harmful material and that your ability to access any Platform will be uninterrupted. Any defects or malfunction in the product should be directed to the third party offering the Platform, not to Komodo. \nWe will not be responsible or liable to You for any loss of any kind, from action taken, or taken in reliance on the material or information contained in or through the Platform.\nThis is experimental and unfinished software. Use at your own risk. No warranty for any kind of damage. By using this application you agree to this terms and conditions.\n\n',
-      name: 'eulaParagraphe11');
-  String get eulaParagraphe12 => Intl.message(
-      'When accessing or using the Services, You agree that You are solely responsible for your conduct while accessing and using our Services. Without limiting the generality of the foregoing, You agree that You will not:\n(a) Use the Services in any manner that could interfere with, disrupt, negatively affect or inhibit other users from fully enjoying the Services, or that could damage, disable, overburden or impair the functioning of our Services in any manner;\n(b) Use the Services to pay for, support or otherwise engage in any illegal activities, including, but not limited to illegal gambling, fraud, money laundering, or terrorist activities;\n(c) Use any robot, spider, crawler, scraper or other automated means or interface not provided by us to access our Services or to extract data;\n(d) Use or attempt to use another user’s Wallet or credentials without authorization;\n(e) Attempt to circumvent any content filtering techniques we employ, or attempt to access any service or area of our Services that You are not authorized to access;\n(f) Introduce to the Services any virus, Trojan, worms, logic bombs or other harmful material;\n(g) Develop any third-party applications that interact with our Services without our prior written consent;\n(h) Provide false, inaccurate, or misleading information; \n(i) Encourage or induce any other person to engage in any of the activities prohibited under this Section.\n\n\n',
-      name: 'eulaParagraphe12');
-  String get eulaParagraphe13 => Intl.message(
-      'You agree and understand that there are risks associated with utilizing Services involving Virtual Currencies including, but not limited to, the risk of failure of hardware, software and internet connections, the risk of malicious software introduction, and the risk that third parties may obtain unauthorized access to information stored within your Wallet, including but not limited to your public and private keys. You agree and understand that Komodo Platform will not be responsible for any communication failures, disruptions, errors, distortions or delays You may experience when using the Services, however caused.\nYou accept and acknowledge that there are risks associated with utilizing any virtual currency network, including, but not limited to, the risk of unknown vulnerabilities in or unanticipated changes to the network protocol. You acknowledge and accept that Komodo Platform has no control over any cryptocurrency network and will not be responsible for any harm occurring as a result of such risks, including, but not limited to, the inability to reverse a transaction, and any losses in connection therewith due to erroneous or fraudulent actions.\nThe risk of loss in using Services involving Virtual Currencies may be substantial and losses may occur over a short period of time. In addition, price and liquidity are subject to significant fluctuations that may be unpredictable.\nVirtual Currencies are not legal tender and are not backed by any sovereign government. In addition, the legislative and regulatory landscape around Virtual Currencies is constantly changing and may affect your ability to use, transfer, or exchange Virtual Currencies.\nCFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 80.6% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether You understand how CFDs work and whether You can afford to take the high risk of losing your money.\n\n',
-      name: 'eulaParagraphe13');
-  String get eulaParagraphe14 => Intl.message(
-      'You agree to indemnify, defend and hold harmless Komodo Platform, its officers, directors, employees, agents, licensors, suppliers and any third party information providers to the application from and against all losses, expenses, damages and costs, including reasonable lawyer fees, resulting from any violation of the Terms by You.\nYou also agree to indemnify Komodo Platform against any claims that information or material which You have submitted to Komodo Platform is in violation of any law or in breach of any third party rights (including, but not limited to, claims in respect of defamation, invasion of privacy, breach of confidence, infringement of copyright or infringement of any other intellectual property right).\n\n',
-      name: 'eulaParagraphe14');
-  String get eulaParagraphe15 => Intl.message(
-      'In order to be completed, any Virtual Currency transaction created with the Komodo Platform must be confirmed and recorded in the Virtual Currency ledger associated with the relevant Virtual Currency network. Such networks are decentralized, peer-to-peer networks supported by independent third parties, which are not owned, controlled or operated by Komodo Platform.\nKomodo Platform has no control over any Virtual Currency network and therefore cannot and does not ensure that any transaction details You submit via our Services will be confirmed on the relevant Virtual Currency network. You agree and understand that the transaction details You submit via our Services may not be completed, or may be substantially delayed, by the Virtual Currency network used to process the transaction. We do not guarantee that the Wallet can transfer title or right in any Virtual Currency or make any warranties whatsoever with regard to title.\nOnce transaction details have been submitted to a Virtual Currency network, we cannot assist You to cancel or otherwise modify your transaction or transaction details. Komodo Platform has no control over any Virtual Currency network and does not have the ability to facilitate any cancellation or modification requests.\nIn the event of a Fork, Komodo Platform may not be able to support activity related to your Virtual Currency. You agree and understand that, in the event of a Fork, the transactions may not be completed, completed partially, incorrectly completed, or substantially delayed. Komodo Platform is not responsible for any loss incurred by You caused in whole or in part, directly or indirectly, by a Fork.\nIn no event shall Komodo Platform, its affiliates and service providers, or any of their respective officers, directors, agents, employees or representatives, be liable for any lost profits or any special, incidental, indirect, intangible, or consequential damages, whether based on contract, tort, negligence, strict liability, or otherwise, arising out of or in connection with authorized or unauthorized use of the services, or this agreement, even if an authorized representative of Komodo Platform has been advised of, has known of, or should have known of the possibility of such damages. \nFor example (and without limiting the scope of the preceding sentence), You may not recover for lost profits, lost business opportunities, or other types of special, incidental, indirect, intangible, or consequential damages. Some jurisdictions do not allow the exclusion or limitation of incidental or consequential damages, so the above limitation may not apply to You. \nWe will not be responsible or liable to You for any loss and take no responsibility for damages or claims arising in whole or in part, directly or indirectly from: (a) user error such as forgotten passwords, incorrectly constructed transactions, or mistyped Virtual Currency addresses; (b) server failure or data loss; (c) corrupted or otherwise non-performing Wallets or Wallet files; (d) unauthorized access to applications; (e) any unauthorized activities, including without limitation the use of hacking, viruses, phishing, brute forcing or other means of attack against the Services.\n\n',
-      name: 'eulaParagraphe15');
-  String get eulaParagraphe16 => Intl.message(
-      'For the avoidance of doubt, Komodo Platform does not provide investment, tax or legal advice, nor does Komodo Platform broker trades on your behalf. All Komodo Platform trades are executed automatically, based on the parameters of your order instructions and in accordance with posted Trade execution procedures, and You are solely responsible for determining whether any investment, investment strategy or related transaction is appropriate for You based on your personal investment objectives, financial circumstances and risk tolerance. You should consult your legal or tax professional regarding your specific situation.\Neither Komodo nor its owners, members, officers, directors, partners, consultants, nor anyone involved in the publication of this application, is a registered investment adviser or broker-dealer or associated person with a registered investment adviser or broker-dealer and none of the foregoing make any recommendation that the purchase or sale of crypto-assets or securities of any company profiled in the mobile Application is suitable or advisable for any person or that an investment or transaction in such crypto-assets or securities will be profitable. \The information contained in the mobile Application is not intended to be, and shall not constitute, an offer to sell or the solicitation of any offer to buy any crypto-asset or security. \The information presented in the mobile Application is provided for informational purposes only and is not to be treated as advice or a recommendation to make any specific investment or transaction. \Please, consult with a qualified professional before making any decisions.\The opinions and analysis included in this applications are based on information from sources deemed to be reliable and are provided “as is” in good faith. Komodo makes no representation or warranty, expressed, implied, or statutory, as to the accuracy or completeness of such information, which may be subject to change without notice. Komodo shall not be liable for any errors or any actions taken in relation to the above. Statements of opinion and belief are those of the authors and/or editors who contribute to this application, and are based solely upon the information possessed by such authors and/or editors. \No inference should be drawn that Komodo or such authors or editors have any special or greater knowledge about the crypto-assets or companies profiled or any particular expertise in the industries or markets in which the profiled crypto-assets and companies operate and compete.\Information on this application is obtained from sources deemed to be reliable; however, Komodo takes no responsibility for verifying the accuracy of such information and makes no representation that such information is accurate or complete. \Certain statements included in this application may be forward-looking statements based on current expectations. Komodo makes no representation and provides no assurance or guarantee that such forward-looking statements will prove to be accurate.\Persons using the Komodo application are urged to consult with a qualified professional with respect to an investment or transaction in any crypto-asset or company profiled herein. \Additionally, persons using this application expressly represent that the content in this application is not and will not be a consideration in such persons’ investment or transaction decisions. Traders should verify independently information provided in the Komodo application by completing their own due diligence on any crypto-asset or company in which they are contemplating an investment or transaction of any kind and review a complete information package on that crypto-asset or company, which should include, but not be limited to, related blog updates and press releases.\Past performance of profiled crypto-assets and securities is not indicative of future results. \Crypto-assets and companies profiled on this site may lack an active trading market and invest in a crypto-asset or security that lacks an active trading market or trade on certain media, platforms and markets are deemed highly speculative and carry a high degree of risk. Anyone holding such crypto-assets and securities should be financially able and prepared to bear the risk of loss and the actual loss of his or her entire trade. The information in this application is not designed to be used as a basis for an investment decision. \Persons using the Komodo application should confirm to their own satisfaction the veracity of any information prior to entering into any investment or making any transaction. The decision to buy or sell any crypto-asset or security that may be featured by Komodo is done purely and entirely at the reader’s own risk. \As a reader and user of this application, You agree that under no circumstances will You seek to hold liable owners, members, officers, directors, partners, consultants or other persons involved in the publication of this application for any losses incurred by the use of information contained in this application\Komodo and its contractors and affiliates may profit in the event the crypto-assets and securities increase or decrease in value. Such crypto-assets and securities may be bought or sold from time to time, even after Komodo has distributed positive information regarding the crypto-assets and companies. \Komodo has no obligation to inform readers of its trading activities or the trading activities of any of its owners, members, officers, directors, contractors and affiliates and/or any companies affiliated with BC Relations’ owners, members, officers, directors, contractors and affiliates.\Komodo and its affiliates may from time to time enter into agreements to purchase crypto-assets or securities to provide a method to reach their goals.\n\n',
-      name: 'eulaParagraphe16');
-  String get eulaParagraphe17 => Intl.message(
-      'The Terms are effective until terminated by Komodo Platform. \nIn the event of termination, You are no longer authorized to access the Application, but all restrictions imposed on You and the disclaimers and limitations of liability set out in the Terms will survive termination. \nSuch termination shall not affect any legal right that may have accrued to Komodo Platform against You up to the date of termination. \nKomodo Platform may also remove the Application as a whole or any sections or features of the Application at any time. \n\n',
-      name: 'eulaParagraphe17');
-  String get eulaParagraphe18 => Intl.message(
-      'The provisions of previous paragraphs are for the benefit of Komodo Platform and its officers, directors, employees, agents, licensors, suppliers, and any third party information providers to the Application. Each of these individuals or entities shall have the right to assert and enforce those provisions directly against You on its own behalf.\n\n',
-      name: 'eulaParagraphe18');
-  String get eulaParagraphe19 => Intl.message(
-      'AtomicDEX mobile is a non-custodial, decentralized and blockchain based application and as such does Komodo Platform never store any user-data (accounts and authentication data). \nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on January 31st, 2020\n\n',
-      name: 'eulaParagraphe19');
   String gasFee(String coin) =>
       Intl.message('$coin fee', name: 'gasFee', args: <Object>[coin]);
   String notEnoughGas(String coin) =>
@@ -612,6 +794,10 @@ class AppLocalizations {
       Intl.message('Failed to calculate trade fees',
           name: 'tradePreimageError');
   String get remove => Intl.message('Disable', name: 'remove');
+  String get walletOnly => Intl.message('Wallet only', name: 'walletOnly');
+  String get dexIsNotAvailable =>
+      Intl.message('DEX is not available for this coin',
+          name: 'dexIsNotAvailable');
   String get searchFilterCoin =>
       Intl.message('Search a coin', name: 'searchFilterCoin');
   String get searchFilterSubtitleSmartChain =>
@@ -637,7 +823,6 @@ class AppLocalizations {
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
-  String get tagTokel => Intl.message('IDO', name: 'tagTokel');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
@@ -798,27 +983,6 @@ class AppLocalizations {
       Intl.message('Something went wrong. Try again later.',
           name: 'candleChartError');
 
-  // --- Feed section ---
-
-  String get feedTab => Intl.message('Feed', name: 'feedTab');
-  String get feedTitle => Intl.message('News Feed', name: 'feedTitle');
-  String get feedReadMore => Intl.message('Read more...', name: 'feedReadMore');
-  String get feedNotFound => Intl.message('Nothing here', name: 'feedNotFound');
-  String get feedUpdated =>
-      Intl.message('News feed updated', name: 'feedUpdated');
-  String get snackbarDismiss =>
-      Intl.message('Dismiss', name: 'snackbarDismiss');
-  String get feedNewsTab => Intl.message('News', name: 'feedNewsTab');
-  String get feedUnableToUpdate =>
-      Intl.message('Unable to get news update', name: 'feedUnableToUpdate');
-  String get feedUnableToProceed =>
-      Intl.message('Unable to proceed news update',
-          name: 'feedUnableToProceed');
-  String get feedUpToDate =>
-      Intl.message('Already up to date', name: 'feedUpToDate');
-  String get feedNotifTitle =>
-      Intl.message('Komodo news', name: 'feedNotifTitle');
-
   // --- Rewards ---
 
   String get rewardsTitle =>
@@ -929,30 +1093,6 @@ class AppLocalizations {
   String get multiMinReceiveAmt =>
       Intl.message('Min receive amount is', name: 'multiMinReceiveAmt');
 
-  // --- Updates ---
-
-  String get updatesTitle =>
-      Intl.message('atomicDEX update', name: 'updatesTitle');
-  String updatesCurrentVersion(String version) =>
-      Intl.message('You are using version $version',
-          args: <Object>[version], name: 'updatesCurrentVersion');
-  String get updatesChecking =>
-      Intl.message('Checking for updates...', name: 'updatesChecking');
-  String get updatesUpToDate =>
-      Intl.message('Already up to date', name: 'updatesUpToDate');
-  String get updatesAvailable =>
-      Intl.message('New version available', name: 'updatesAvailable');
-  String get updatesUpdate => Intl.message('Update', name: 'updatesUpdate');
-  String get updatesSkip => Intl.message('Skip for now', name: 'updatesSkip');
-  String get updatesNotifTitle =>
-      Intl.message('Update available', name: 'updatesNotifTitle');
-  String get updatesNotifAvailable =>
-      Intl.message('New version available. Please update.',
-          name: 'updatesNotifAvailable');
-  String updatesNotifAvailableVersion(String version) =>
-      Intl.message('Version $version available. Please update.',
-          args: <Object>[version], name: 'updatesNotifAvailableVersion');
-
   // --- Address book ---
 
   String get addressBook => Intl.message('Address book', name: 'addressBook');
@@ -1050,7 +1190,8 @@ class AppLocalizations {
       Intl.message('OFF', name: 'protectionCtrlOff');
   String get protectionCtrlConfirmations =>
       Intl.message('Confirmations', name: 'protectionCtrlConfirmations');
-  String get dPow => Intl.message('Komodo dPoW security', name: 'dPow');
+  String get dPow =>
+      Intl.message('${appConfig.appCompanyShort} dPoW security', name: 'dPow');
   String get protectionCtrlCustom =>
       Intl.message('Use custom protection settings',
           name: 'protectionCtrlCustom');
@@ -1089,120 +1230,6 @@ class AppLocalizations {
 
   String get makerOrder => Intl.message('Maker Order', name: 'makerOrder');
   String get takerOrder => Intl.message('Taker Order', name: 'takerOrder');
-
-  // --- Help & FAQ ---
-
-  String get helpLink => Intl.message('Help', name: 'helpLink');
-  String get helpTitle => Intl.message('Help and Support', name: 'helpTitle');
-  String get faqTitle =>
-      Intl.message('Frequently Asked Questions', name: 'faqTitle');
-  String get support => Intl.message('Support', name: 'support');
-  String get supportLinksDesc => Intl.message(
-      'If you have any questions,'
-      ' or think you\'ve found a technical problem with'
-      ' the atomicDEX app, you can report it and get support'
-      ' from our team.',
-      name: 'supportLinksDesc');
-
-  String get question_1 =>
-      Intl.message('Do you store my private keys?', name: 'question_1');
-  String get answer_1 => Intl.message(
-      'No! AtomicDEX is non-custodial. We never store any sensitive data,'
-      ' including your private keys, seed phrases, or PIN. This data is only'
-      ' stored on the user’s device and never leaves it.'
-      ' You are in full control of your assets.',
-      name: 'answer_1');
-  String get question_2 => Intl.message(
-      'How is trading on AtomicDEX different from trading on other DEXs?',
-      name: 'question_2');
-  String get answer_2 => Intl.message(
-      'Other DEXs generally only allow you to trade assets that are based'
-      ' on a single blockchain network, use proxy tokens, and'
-      ' only allow placing a single order with the same funds.'
-      '\n\nAtomicDEX enables you to natively trade across two different'
-      ' blockchain networks without proxy tokens. You can also place multiple'
-      ' orders with the same funds. For example, you can sell 0.1 BTC for'
-      ' KMD, QTUM, or VRSC — the first order that fills automatically'
-      ' cancels all other orders.',
-      name: 'answer_2');
-  String get question_3 =>
-      Intl.message('How long does each atomic swap take?', name: 'question_3');
-  String get answer_3 => Intl.message(
-      'Several factors determine the processing time for each swap.'
-      ' The block time of the traded assets depends on each network'
-      ' (Bitcoin typically being the slowest) Additionally, the user can'
-      ' customize security preferences. For example, you can ask AtomicDEX'
-      ' to consider a KMD transaction as final after just 3 confirmations'
-      ' which makes the swap time shorter compared to waiting'
-      ' for a <a href="'
-      'https://komodoplatform.com/security-delayed-proof-of-work-dpow/'
-      '">notarization</a>.',
-      name: 'answer_3');
-  String get question_4 =>
-      Intl.message('Do I need to be online for the duration of the swap?',
-          name: 'question_4');
-  String get answer_4 => Intl.message(
-      'Yes. You must remain connected to the internet and have your app'
-      ' running to successfully complete each atomic swap (very short breaks'
-      ' in connectivity are usually fine). Otherwise, there is risk of trade'
-      ' cancellation if you are a maker, and risk of loss of funds if you are'
-      ' a taker. The atomic swap protocol requires both participants to stay'
-      ' online and monitor the involved blockchains for'
-      ' the process to stay atomic.',
-      name: 'answer_4');
-  String get question_5 =>
-      Intl.message('How are the fees on atomicDEX calculated?',
-          name: 'question_5');
-  String get answer_5 => Intl.message(
-      'There are two fee categories to consider when trading on AtomicDEX.\n\n'
-      '1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but'
-      ' not lower than 0.0001) as the trading fee for taker orders, and maker'
-      ' orders have zero fees.\n\n2. Both makers and takers will need to pay'
-      ' normal network fees to the involved blockchains when making atomic'
-      ' swap transactions.\n\nNetwork fees can vary greatly depending on'
-      ' your selected trading pair.',
-      name: 'answer_5');
-  String get question_6 =>
-      Intl.message('Do you provide user support?', name: 'question_6');
-  String get answer_6 => Intl.message(
-      'Yes! AtomicDEX offers support through the'
-      ' <a href="https://komodoplatform.com/discord">'
-      'Komodo Discord server'
-      '</a>. The team and the community are always happy to help!',
-      name: 'answer_6');
-  String get question_7 =>
-      Intl.message('Do you have country restrictions?', name: 'question_7');
-  String get answer_7 => Intl.message(
-      'No! AtomicDEX is fully decentralized.'
-      ' It is not possible to limit user access by any third party.',
-      name: 'answer_7');
-  String get question_8 =>
-      Intl.message('Who is behind AtomicDEX?', name: 'question_8');
-  String get answer_8 => Intl.message(
-      'AtomicDEX is developed by the Komodo team. Komodo is one of'
-      ' the most established blockchain projects working on innovative'
-      ' solutions like atomic swaps, Delayed Proof of Work, and an'
-      ' interoperable multi-chain architecture.',
-      name: 'answer_8');
-  String get question_9 => Intl.message(
-      'Is it possible to develop my own white-label'
-      ' exchange on AtomicDEX?',
-      name: 'question_9');
-  String get answer_9 => Intl.message(
-      'Absolutely! You can read our'
-      ' <a href="https://developers.atomicdex.io/">'
-      'developer documentation</a> for more'
-      ' details or contact us with your partnership inquiries. Have a specific'
-      ' technical question? The AtomicDEX developer community'
-      ' is always ready to help!',
-      name: 'answer_9');
-  String get question_10 =>
-      Intl.message('Which devices can I use AtomicDEX on?',
-          name: 'question_10');
-  String get answer_10 => Intl.message(
-      'AtomicDEX is available for mobile on both Android and iPhone,'
-      ' and for desktop on Windows, Mac, and Linux operating systems.',
-      name: 'answer_10');
 
   // --- Swaps ---
 
@@ -1515,6 +1542,8 @@ class AppLocalizations {
       Intl.message('Show less', name: 'simpleTradeShowLess');
   String get simpleTradeShowMore =>
       Intl.message('Show more', name: 'simpleTradeShowMore');
+
+  String get noCoinFound => Intl.message('No coin found', name: 'noCoinFound');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

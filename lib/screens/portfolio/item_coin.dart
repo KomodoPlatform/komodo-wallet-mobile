@@ -77,7 +77,7 @@ class _ItemCoinState extends State<ItemCoin> {
         showReceiveDialog(context, balance.address, coin);
       },
     ));
-    if (double.parse(balance.getBalance()) > 0) {
+    if (!coin.walletOnly && double.parse(balance.getBalance()) > 0) {
       actions.add(IconSlideAction(
         caption: AppLocalizations.of(context).swap.toUpperCase(),
         color: Theme.of(context).accentColor,
@@ -151,8 +151,8 @@ class _ItemCoinState extends State<ItemCoin> {
                           CircleAvatar(
                             radius: 28,
                             backgroundColor: Colors.transparent,
-                            backgroundImage: AssetImage(
-                                'assets/${balance.coin.toLowerCase()}.png'),
+                            backgroundImage: AssetImage('assets/coin-icons/'
+                                '${balance.coin.toLowerCase()}.png'),
                           ),
                           const SizedBox(height: 8),
                           Text(
@@ -217,8 +217,10 @@ class _ItemCoinState extends State<ItemCoin> {
                               }),
                           _buildClaimButton(),
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               _buildFaucetButton(),
+                              _buildWalletOnly(),
                               _buildNetworkLabel(),
                             ],
                           ),
@@ -336,28 +338,12 @@ class _ItemCoinState extends State<ItemCoin> {
         child: Container(
             color: widget.coinBalance.coin.type == 'erc' ||
                     widget.coinBalance.coin.type == 'bep' ||
-                    widget.coinBalance.coin.type == 'qrc' ||
-                    widget.coinBalance.coin.abbr == 'TKL'
+                    widget.coinBalance.coin.type == 'qrc'
                 ? const Color.fromRGBO(20, 117, 186, 1)
                 : Theme.of(context).backgroundColor,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
               child: Builder(builder: (context) {
-                if (widget.coinBalance.coin.abbr == 'TKL')
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagTokel,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
-                  );
-
                 switch (widget.coinBalance.coin.type) {
                   case 'erc':
                     {
@@ -421,7 +407,7 @@ class _ItemCoinState extends State<ItemCoin> {
                           }
                         },
                         child: Image.asset(
-                          'assets/kmd.png',
+                          'assets/coin-icons/kmd.png',
                           width: 18,
                           height: 18,
                         ),
@@ -431,6 +417,42 @@ class _ItemCoinState extends State<ItemCoin> {
               }),
             )),
       ),
+    );
+  }
+
+  Widget _buildWalletOnly() {
+    if (!widget.coinBalance.coin.walletOnly) return SizedBox();
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 14, 8, 0),
+      child: InkWell(
+          onTap: () {
+            ScaffoldState scaffold;
+            try {
+              scaffold = Scaffold.of(context);
+            } catch (_) {}
+
+            if (scaffold != null) {
+              scaffold.showSnackBar(SnackBar(
+                duration: Duration(seconds: 2),
+                content: Text(AppLocalizations.of(context).dexIsNotAvailable),
+              ));
+            }
+          },
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            child: Container(
+              color: Theme.of(context).backgroundColor,
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              child: Text(
+                AppLocalizations.of(context).walletOnly.toUpperCase(),
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    .copyWith(fontFamily: 'RobotoCondensed'),
+              ),
+            ),
+          )),
     );
   }
 }

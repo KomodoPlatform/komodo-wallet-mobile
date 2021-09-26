@@ -9,7 +9,7 @@ import 'package:komodo_dex/model/rpc_error.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/confirm/protection_control.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:rational/rational.dart';
-import 'package:komodo_dex/model/app_config.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/get_max_taker_volume.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
@@ -249,7 +249,12 @@ class ConstructorProvider extends ChangeNotifier {
     final LinkedHashMap<String, Coin> known = await coins;
     final List<String> tickers = List.from(bestOrders.result.keys);
     for (String ticker in tickers) {
-      if (!known.containsKey(ticker)) bestOrders.result.remove(ticker);
+      if (!known.containsKey(ticker)) {
+        bestOrders.result.remove(ticker);
+      }
+      if (appConfig.walletOnlyCoins.contains(ticker)) {
+        bestOrders.result.remove(ticker);
+      }
     }
 
     return bestOrders;

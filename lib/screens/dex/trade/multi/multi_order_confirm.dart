@@ -186,8 +186,8 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                         const SizedBox(width: 2),
                         CircleAvatar(
                           maxRadius: 9,
-                          backgroundImage: AssetImage(
-                              'assets/${multiOrderProvider.baseCoin.toLowerCase()}.png'),
+                          backgroundImage: AssetImage('assets/coin-icons/'
+                              '${multiOrderProvider.baseCoin.toLowerCase()}.png'),
                         ),
                       ],
                     ),
@@ -211,8 +211,8 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                       children: <Widget>[
                         CircleAvatar(
                           maxRadius: 9,
-                          backgroundImage:
-                              AssetImage('assets/${coin.toLowerCase()}.png'),
+                          backgroundImage: AssetImage(
+                              'assets/coin-icons/${coin.toLowerCase()}.png'),
                         ),
                         const SizedBox(width: 2),
                         Text(coin),

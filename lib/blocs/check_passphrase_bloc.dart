@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
-CheckPassphrasePage checkPassphrasePage = CheckPassphrasePage();
+CheckPassphraseBloc checkPassphraseBloc = CheckPassphraseBloc();
 
-class CheckPassphrasePage extends BlocBase {
+class CheckPassphraseBloc extends BlocBase {
   String word = '';
 
   final StreamController<String> _wordController =

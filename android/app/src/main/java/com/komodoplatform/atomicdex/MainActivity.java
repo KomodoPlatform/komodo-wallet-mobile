@@ -4,9 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.app.PendingIntent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.BatteryManager;
@@ -14,10 +15,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.PersistableBundle;
 import android.os.PowerManager;
 import android.view.WindowManager;
-import android.content.IntentFilter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,8 +34,6 @@ import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class MainActivity extends FlutterFragmentActivity {
   private EventChannel logC;
@@ -112,11 +109,11 @@ public class MainActivity extends FlutterFragmentActivity {
     notificationManagerCompat.notify(notificationId, builder.build());
   }
 
-  private void nativeC() {
+  private void nativeC(FlutterEngine flutterEngine) {
     final Activity activity = this;
     final Context context = activity.getApplicationContext();
 
-    BinaryMessenger bm = getFlutterEngine().getDartExecutor().getBinaryMessenger();
+    BinaryMessenger bm = flutterEngine.getDartExecutor().getBinaryMessenger();
     // https://flutter.dev/docs/development/platform-integration/platform-channels?tab=android-channel-kotlin-tab#step-3-add-an-android-platform-specific-implementation
     new MethodChannel(bm, "com.komodoplatform.atomicdex/nativeC")
         .setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -187,10 +184,10 @@ public class MainActivity extends FlutterFragmentActivity {
         });
   }
 
-  private void logC() {
+  private void logC(FlutterEngine flutterEngine) {
     // https://blog.testfairy.com/listeners-with-eventchannel-in-flutter/
     // https://api.flutter.dev/javadoc/index.html?io/flutter/plugin/common/EventChannel.html
-    BinaryMessenger bm = getFlutterEngine().getDartExecutor().getBinaryMessenger();
+    BinaryMessenger bm = flutterEngine.getDartExecutor().getBinaryMessenger();
     EventChannel chan = new EventChannel(bm, "AtomicDEX/logC");
 
     chan.setStreamHandler(new EventChannel.StreamHandler() {
@@ -245,8 +242,8 @@ public class MainActivity extends FlutterFragmentActivity {
   @Override
   public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
     GeneratedPluginRegistrant.registerWith(flutterEngine);
-    nativeC();
-    logC();
+    nativeC(flutterEngine);
+    logC(flutterEngine);
   }
 }
 

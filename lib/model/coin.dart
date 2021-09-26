@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -82,7 +83,8 @@ class Coin {
     swapContractAddress = config['swap_contract_address'] ?? '';
     fallbackSwapContract = config['fallback_swap_contract'] ?? '';
     colorCoin = config['colorCoin'] ?? '';
-    isDefault = config['isDefault'] ?? false;
+    isDefault = appConfig.defaultCoins.contains(abbr);
+    walletOnly = appConfig.walletOnlyCoins.contains(abbr);
     serverList = List<String>.from(config['serverList']);
     explorerUrl = List<String>.from(config['explorerUrl']);
     requiredConfirmations = init['required_confirmations'];
@@ -122,6 +124,9 @@ class Coin {
 
   // Whether to block disabling this coin
   bool isDefault;
+
+  // Whether to disable swaps for that coin
+  bool walletOnly;
 
   Protocol protocol;
   int dust;

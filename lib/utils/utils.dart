@@ -7,6 +7,7 @@ import 'package:convert/convert.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:keccak/keccak.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -684,8 +685,8 @@ void showUriDetailsDialog(
                 children: [
                   CircleAvatar(
                     radius: 11,
-                    backgroundImage:
-                        AssetImage('assets/${abbr.toLowerCase()}.png'),
+                    backgroundImage: AssetImage(
+                        'assets/coin-icons/${abbr.toLowerCase()}.png'),
                   ),
                   SizedBox(width: 6),
                   Text(
@@ -770,4 +771,20 @@ void showUriDetailsDialog(
 String getLocaleFullName(Locale loc) {
   if (loc.countryCode != null) return '${loc.languageCode}_${loc.countryCode}';
   return loc.languageCode;
+}
+
+String getRandomWord() {
+  final String mnemonic = bip39.generateMnemonic();
+  final List<String> words = mnemonic.split(' ');
+  return words[Random().nextInt(words.length)];
+}
+
+List<Coin> filterCoinsByQuery(List<Coin> coins, String query) {
+  if (coins == null || coins.isEmpty) return [];
+  final list = coins
+      .where((Coin coin) =>
+          coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
+          coin.name.toLowerCase().contains(query.trim().toLowerCase()))
+      .toList();
+  return list;
 }
