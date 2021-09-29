@@ -259,12 +259,13 @@ class AppLocalizations {
       name: 'answer_5');
   String get question_6 =>
       Intl.message('Do you provide user support?', name: 'question_6');
-  String get answer_6 => Intl.message(
+  String answer_6(String name, String link) => Intl.message(
       'Yes! ${toInitialUpper(appConfig.appName)} offers support through the'
-      ' <a href="${appConfig.appCompanyDiscord}">'
-      '${appConfig.appCompanyShort} Discord server'
+      ' <a href="$link">'
+      '${appConfig.appCompanyShort} $name'
       '</a>. The team and the community are always happy to help!',
-      name: 'answer_6');
+      name: 'answer_6',
+      args: <Object>[name, link]);
   String get question_7 =>
       Intl.message('Do you have country restrictions?', name: 'question_7');
   String get answer_7 => Intl.message(
