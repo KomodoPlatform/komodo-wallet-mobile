@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
+import 'package:komodo_dex/screens/help-feedback/support_channel_item.dart';
 
 AppConfig appConfig = AppConfig();
 
@@ -24,8 +26,18 @@ class AppConfig {
 
   bool get isSwapShareCardEnabled => true;
 
-  // discord invitation web page
-  String get appCompanyDiscord => 'http://komodoplatform.com/discord';
+  // support channels (showed on help page)
+  List<SupportChannel> supportChannels = [
+    SupportChannel(
+      title: 'DISCORD',
+      subtitle: 'Komodo #support',
+      link: 'http://komodoplatform.com/discord',
+      icon: SizedBox(
+        width: 60,
+        child: Image.asset('assets/discord_logo.png'),
+      ),
+    ),
+  ];
 
   // endpoint source code:
   // https://github.com/KomodoPlatform/discord_feed_parser
