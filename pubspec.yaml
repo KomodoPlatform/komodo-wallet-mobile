@@ -39,10 +39,10 @@ dependencies:
       ref: 859c88c2c3fe926bdbb6e5e729d3c16d088be76a
 
   # https://pub.dev/packages/file_picker
-  file_picker: # 1.4.3+2 - DONE: Secure code reviewed b68ee11
-    git:
-      url: git://github.com/KomodoPlatform/flutter_file_picker.git
-      ref: b68ee11c6ac117460ffa0c96b13ac4b89f2386f7
+  file_picker: 2.1.7
+  #  git:
+  #    url: git://github.com/KomodoPlatform/flutter_file_picker.git
+  #    ref: b68ee11c6ac117460ffa0c96b13ac4b89f2386f7
 
   # https://pub.dev/packages/path_provider
   # https://github.com/flutter/plugins
