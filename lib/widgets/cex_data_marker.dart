@@ -3,7 +3,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/html_parser.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class CexMarker extends StatelessWidget {

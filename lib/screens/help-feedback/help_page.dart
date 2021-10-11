@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/screens/help-feedback/support_channel_item.dart';
 import 'package:komodo_dex/widgets/html_parser.dart';
 
 class HelpPage extends StatefulWidget {
@@ -76,19 +77,9 @@ class _HelpPageState extends State<HelpPage> {
         ),
         'isExpanded': false,
       },
-      {
+      <String, dynamic>{
         'q': local.question_6,
-        'a': HtmlParser(
-          local.answer_6,
-          textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
-                fontWeight: FontWeight.w300,
-                height: 1.3,
-                fontSize: 15,
-              ),
-          linkStyle: const TextStyle(
-            color: Colors.blue,
-          ),
-        ),
+        'a': _getSupportAnswer(),
         'isExpanded': false,
       },
       {
@@ -162,12 +153,32 @@ class _HelpPageState extends State<HelpPage> {
     );
   }
 
+  dynamic _getSupportAnswer() {
+    final List<SupportChannel> channels = appConfig.supportChannels;
+    if (channels == null || channels.isEmpty) return null;
+
+    final String name = channels[0].title ?? channels[0].subtitle;
+    if (name == null) return null;
+
+    return HtmlParser(
+      local.answer_6(name, channels[0].link ?? ''),
+      textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
+            fontWeight: FontWeight.w300,
+            height: 1.3,
+            fontSize: 15,
+          ),
+      linkStyle: const TextStyle(
+        color: Colors.blue,
+      ),
+    );
+  }
+
   Widget _buildFAQ() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
+          padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
           child: Text(
             AppLocalizations.of(context).faqTitle + ':',
             style: Theme.of(context).textTheme.subtitle2,
@@ -179,7 +190,9 @@ class _HelpPageState extends State<HelpPage> {
               data[index]['isExpanded'] = !isExpanded;
             });
           },
-          children: data.map((dynamic item) {
+          children: data
+              .where((dynamic item) => item['a'] != null)
+              .map((dynamic item) {
             return ExpansionPanel(
               canTapOnHeader: true,
               headerBuilder: (context, isExpanded) {
@@ -201,6 +214,9 @@ class _HelpPageState extends State<HelpPage> {
   }
 
   Widget _buildLinks() {
+    final List<SupportChannel> channels = appConfig.supportChannels;
+    if (channels == null || channels.isEmpty) return SizedBox();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -218,56 +234,20 @@ class _HelpPageState extends State<HelpPage> {
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
-        Container(
-          width: double.infinity,
-          height: MediaQuery.of(context).size.width / 2,
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.width / 2,
+          ),
           child: Center(
             child: Wrap(
               alignment: WrapAlignment.spaceAround,
-              children: <Widget>[
-                _buildSocialPlatform(
-                  title: 'DISCORD',
-                  subtitle: 'Komodo #support',
-                  link: 'http://komodoplatform.com/discord',
-                  icon: SizedBox(
-                    width: 60,
-                    child: Image.asset('assets/discord_logo.png'),
-                  ),
-                ),
-              ],
+              children: channels.map((SupportChannel channel) {
+                return SupportChannelItem(channel);
+              }).toList(),
             ),
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildSocialPlatform({
-    Widget icon,
-    String title,
-    String subtitle,
-    String link,
-  }) {
-    return FlatButton(
-      onPressed: () {
-        launchURL(link);
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            icon,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(subtitle),
-                Text(title),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

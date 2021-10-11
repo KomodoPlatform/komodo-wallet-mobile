@@ -5,7 +5,6 @@
         "abbr": "KMD",
         "coingeckoId": "komodo",
         "colorCoin": "0xFF326464",
-        "isDefault": true,
         "serverList": [
             "electrum1.cipig.net:20001",
             "electrum2.cipig.net:20001",
@@ -24,7 +23,6 @@
         "abbr": "BTC",
         "coingeckoId": "bitcoin",
         "colorCoin": "0xFFf7931a",
-        "isDefault": true,
         "serverList": [
             "electrum1.cipig.net:10000",
             "electrum2.cipig.net:10000",
@@ -611,24 +609,6 @@
         ]
     },
     {
-        "name": "Utrum",
-        "type": "smartChain",
-        "address": "electrum1.cipig.net",
-        "port": 10088,
-        "proto": "tcp",
-        "abbr": "OOT",
-        "coingeckoId": "utrum",
-        "colorCoin": "0xFF23AADF",
-        "serverList": [
-            "electrum1.cipig.net:10021",
-            "electrum2.cipig.net:10021",
-            "electrum3.cipig.net:10021"
-        ],
-        "explorerUrl": [
-            "https://explorer.utrum.io/"
-        ]
-    },
-    {
         "name": "VerusCoin",
         "type": "utxo",
         "address": "el0.veruscoin.io",
@@ -746,7 +726,7 @@
         "proto": "tcp",
         "abbr": "SFUSD",
         "coingeckoId": "test-token",
-        "colorCoin": "0xfff73c70",
+        "colorCoin": "0xffa255fd",
         "serverList": [
             "electrum1.cipig.net:10070",
             "electrum2.cipig.net:10070",
@@ -754,6 +734,23 @@
         ],
         "explorerUrl": [
             "https://explorer.pbc.kmd.sh/"
+        ]
+    },
+    {
+        "abbr": "SMTF",
+        "name": "SmartFi Token",
+        "type": "bep",
+        "coingeckoId": "smtf-test",
+        "colorCoin": "0xFFf6455d",
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "serverList": [
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
+        ],
+        "explorerUrl": [
+            "https://bscscan.com/"
         ]
     },
     {
@@ -1301,6 +1298,26 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
+        "name": "Tether-ERC20",
+        "type": "erc",
+        "address": "http://eth1.cipig.net",
+        "port": 8555,
+        "proto": "tcp",
+        "abbr": "USDT-ERC20",
+        "coingeckoId": "tether",
+        "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
+        "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+        "colorCoin": "0xff38c1a4",
+        "serverList": [
+            "http://eth1.cipig.net:8555",
+            "http://eth2.cipig.net:8555",
+            "http://eth3.cipig.net:8555"
+        ],
+        "explorerUrl": [
+            "https://etherscan.io/"
+        ]
+    },
+    {
         "abbr": "BAT-BEP20",
         "name": "BAT-BEP20",
         "coingeckoId": "basic-attention-token",
@@ -1350,6 +1367,26 @@
         "colorCoin": "0xfffe8137",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+    },
+    {
+        "abbr": "LINK-ERC20",
+        "name": "Chainlink (ERC20)",
+        "coingeckoId": "chainlink",
+        "colorCoin": "0xff4588eb",
+        "type": "erc",
+        "address": "http://eth1.cipig.net",
+        "port": 8555,
+        "proto": "tcp",
+        "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
+        "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+        "serverList": [
+            "http://eth1.cipig.net:8555",
+            "http://eth2.cipig.net:8555",
+            "http://eth3.cipig.net:8555"
+        ],
+        "explorerUrl": [
+            "https://etherscan.io/"
+        ]
     },
     {
         "abbr": "SUSHI-BEP20",

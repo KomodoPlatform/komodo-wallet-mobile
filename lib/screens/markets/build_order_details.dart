@@ -10,7 +10,7 @@ import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class BuildOrderDetails extends StatefulWidget {
@@ -237,9 +237,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     CircleAvatar(
                       radius: 7,
                       backgroundImage: _isAsk
-                          ? AssetImage('assets/'
+                          ? AssetImage('assets/coin-icons/'
                               '${_activePair.sell.abbr.toLowerCase()}.png')
-                          : AssetImage('assets/'
+                          : AssetImage('assets/coin-icons/'
                               '${_activePair.buy.abbr.toLowerCase()}.png'),
                     ),
                     const SizedBox(width: 4),
@@ -275,10 +275,10 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 CircleAvatar(
                   radius: 7,
                   backgroundImage: _isAsk
-                      ? AssetImage(
-                          'assets/${_activePair.buy.abbr.toLowerCase()}.png')
-                      : AssetImage(
-                          'assets/${_activePair.sell.abbr.toLowerCase()}.png'),
+                      ? AssetImage('assets/coin-icons/'
+                          '${_activePair.buy.abbr.toLowerCase()}.png')
+                      : AssetImage('assets/coin-icons/'
+                          '${_activePair.sell.abbr.toLowerCase()}.png'),
                 ),
                 const SizedBox(width: 4),
                 Text(_isAsk ? _activePair.buy.abbr : _activePair.sell.abbr),
@@ -366,9 +366,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     CircleAvatar(
                       radius: 7,
                       backgroundImage: _isAsk
-                          ? AssetImage('assets/'
+                          ? AssetImage('assets/coin-icons/'
                               '${_activePair.sell.abbr.toLowerCase()}.png')
-                          : AssetImage('assets/'
+                          : AssetImage('assets/coin-icons/'
                               '${_activePair.buy.abbr.toLowerCase()}.png'),
                     ),
                     const SizedBox(width: 4),
@@ -405,9 +405,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 CircleAvatar(
                   radius: 7,
                   backgroundImage: _isAsk
-                      ? AssetImage('assets/'
+                      ? AssetImage('assets/coin-icons/'
                           '${_activePair.buy.abbr.toLowerCase()}.png')
-                      : AssetImage('assets/'
+                      : AssetImage('assets/coin-icons/'
                           '${_activePair.sell.abbr.toLowerCase()}.png'),
                 ),
                 const SizedBox(width: 4),

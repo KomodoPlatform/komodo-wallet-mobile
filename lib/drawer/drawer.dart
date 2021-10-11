@@ -68,7 +68,7 @@ class _AppDrawerState extends State<AppDrawer> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: SvgPicture.asset(
-                              'assets/svg/mark_and_text_vertical_white.svg',
+                              'assets/branding/svg/mark_and_text_vertical_white.svg',
                               color: Colors.white,
                             ),
                           ),

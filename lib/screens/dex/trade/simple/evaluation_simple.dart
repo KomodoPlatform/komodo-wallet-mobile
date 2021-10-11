@@ -10,7 +10,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class EvaluationSimple extends StatefulWidget {

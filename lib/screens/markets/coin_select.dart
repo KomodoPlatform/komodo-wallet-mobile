@@ -14,7 +14,7 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/candles_icon.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class CoinSelect extends StatefulWidget {
@@ -74,7 +74,8 @@ class _CoinSelectState extends State<CoinSelect> {
                 children: <Widget>[
                   widget.value != null
                       ? Image.asset(
-                          'assets/${widget.value.abbr.toLowerCase()}.png',
+                          'assets/coin-icons/'
+                          '${widget.value.abbr.toLowerCase()}.png',
                           height: widget.compact ? 16 : 24,
                         )
                       : CircleAvatar(
@@ -244,8 +245,8 @@ class _CoinSelectState extends State<CoinSelect> {
                   children: <Widget>[
                     PhotoHero(
                       radius: widget.compact ? 8 : 12,
-                      tag:
-                          'assets/${coinBalance.balance.coin.toLowerCase()}.png',
+                      tag: 'assets/coin-icons/'
+                          '${coinBalance.balance.coin.toLowerCase()}.png',
                     ),
                     SizedBox(width: widget.compact ? 6 : 8),
                     Text(
@@ -293,8 +294,8 @@ class _CoinSelectState extends State<CoinSelect> {
                   children: <Widget>[
                     PhotoHero(
                       radius: widget.compact ? 8 : 12,
-                      tag:
-                          'assets/${coinBalance.balance.coin.toLowerCase()}.png',
+                      tag: 'assets/coin-icons/'
+                          '${coinBalance.balance.coin.toLowerCase()}.png',
                     ),
                     SizedBox(width: widget.compact ? 6 : 8),
                     Text(
@@ -322,7 +323,8 @@ class _CoinSelectState extends State<CoinSelect> {
               children: <Widget>[
                 PhotoHero(
                   radius: widget.compact ? 8 : 12,
-                  tag: 'assets/${coinBalance.balance.coin.toLowerCase()}.png',
+                  tag: 'assets/coin-icons/'
+                      '${coinBalance.balance.coin.toLowerCase()}.png',
                 ),
                 SizedBox(width: widget.compact ? 6 : 8),
                 Text(

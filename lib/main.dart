@@ -1,14 +1,16 @@
 import 'dart:async';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/drawer/drawer.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/drawer/drawer.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -20,10 +22,10 @@ import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
-import 'package:komodo_dex/screens/feed/feed_page.dart';
-import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/dex_page.dart';
+import 'package:komodo_dex/screens/feed/feed_page.dart';
+import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
@@ -34,13 +36,12 @@ import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:connectivity/connectivity.dart';
 
+import 'app_config/theme_data.dart';
 import 'model/multi_order_provider.dart';
 import 'model/startup_provider.dart';
 import 'utils/utils.dart';
 import 'widgets/shared_preferences_builder.dart';
-import 'widgets/theme_data.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,9 +71,10 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ChangeNotifierProvider(
               create: (context) => OrderBookProvider(),
             ),
-            ChangeNotifierProvider(
-              create: (context) => FeedProvider(),
-            ),
+            if (appConfig.isFeedEnabled)
+              ChangeNotifierProvider(
+                create: (context) => FeedProvider(),
+              ),
             ChangeNotifierProvider(
               create: (context) => RewardsProvider(),
             ),
@@ -208,7 +210,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       builder: (BuildContext cont,
                           AsyncSnapshot<dynamic> currentTheme) {
                         return MaterialApp(
-                            title: 'atomicDEX',
+                            title: appConfig.appName,
                             localizationsDelegates: <
                                 LocalizationsDelegate<dynamic>>[
                               const AppLocalizationsDelegate(),
@@ -254,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     CoinsPage(),
     DexPage(),
     MarketsPage(),
-    FeedPage(),
+    if (appConfig.isFeedEnabled) FeedPage()
   ];
 
   @override
@@ -291,9 +293,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     _intentDataProvider ??= Provider.of<IntentDataProvider>(context);
-    final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
-    final UpdatesProvider updatesProvider =
-        Provider.of<UpdatesProvider>(context);
 
     _handleIntentData(_scaffoldKey);
 
@@ -332,9 +331,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   color: Theme.of(context).primaryColor,
                   child: SafeArea(
                     child: networkStatusStreamBuilder(
-                      snapshot,
-                      feedProvider,
-                      updatesProvider,
+                      snapshot.data,
                     ),
                   ),
                 ),
@@ -410,8 +407,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     });
   }
 
-  Widget networkStatusStreamBuilder(AsyncSnapshot<int> snapshot,
-      FeedProvider feedProvider, UpdatesProvider updatesProvider) {
+  Widget networkStatusStreamBuilder(int indexTab) {
+    final FeedProvider feedProvider =
+        appConfig.isFeedEnabled ? Provider.of<FeedProvider>(context) : null;
+    final UpdatesProvider updatesProvider =
+        Provider.of<UpdatesProvider>(context);
     return StreamBuilder<NetworkStatus>(
       initialData: mainBloc.networkStatus,
       stream: mainBloc.outNetworkStatus,
@@ -494,7 +494,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               elevation: 0,
               type: BottomNavigationBarType.fixed,
               onTap: onTabTapped,
-              currentIndex: snapshot.data,
+              currentIndex: indexTab,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                     icon: Icon(
@@ -512,15 +512,16 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   ),
                   label: AppLocalizations.of(context).marketsTab,
                 ),
-                BottomNavigationBarItem(
-                    icon: Stack(
-                      children: <Widget>[
-                        Icon(Icons.library_books,
-                            key: const Key('main-nav-feed')),
-                        if (feedProvider.hasNewItems) buildRedDot(context),
-                      ],
-                    ),
-                    label: AppLocalizations.of(context).feedTab),
+                if (appConfig.isFeedEnabled)
+                  BottomNavigationBarItem(
+                      icon: Stack(
+                        children: <Widget>[
+                          Icon(Icons.library_books,
+                              key: const Key('main-nav-feed')),
+                          if (feedProvider.hasNewItems) buildRedDot(context),
+                        ],
+                      ),
+                      label: AppLocalizations.of(context).feedTab),
                 BottomNavigationBarItem(
                     icon: Stack(
                       children: <Widget>[

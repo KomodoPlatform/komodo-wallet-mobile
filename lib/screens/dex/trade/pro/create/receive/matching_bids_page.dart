@@ -12,7 +12,7 @@ import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 
 class MatchingBidsPage extends StatefulWidget {
   const MatchingBidsPage(
@@ -75,8 +75,8 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
               Container(
                   height: 30,
                   width: 30,
-                  child:
-                      Image.asset('assets/${receiveCoin.toLowerCase()}.png')),
+                  child: Image.asset(
+                      'assets/coin-icons/${receiveCoin.toLowerCase()}.png')),
             ],
           ),
         ),

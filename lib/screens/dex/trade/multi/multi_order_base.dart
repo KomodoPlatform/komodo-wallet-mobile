@@ -11,7 +11,7 @@ import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class MultiOrderBase extends StatefulWidget {
@@ -159,7 +159,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                     baseCoin == null ? Theme.of(context).accentColor : null,
                 backgroundImage: baseCoin == null
                     ? null
-                    : AssetImage('assets/${baseCoin.toLowerCase()}.png'),
+                    : AssetImage(
+                        'assets/coin-icons/${baseCoin.toLowerCase()}.png'),
               ),
               const SizedBox(width: 6),
               Expanded(
@@ -191,7 +192,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
 
           final List<CoinBalance> availableForSell =
               coins.where((CoinBalance coin) {
-            return coin.balance.balance.toDouble() > 0;
+            return !coin.coin.walletOnly && coin.balance.balance.toDouble() > 0;
           }).toList();
 
           if (availableForSell.isEmpty) {
@@ -217,7 +218,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                       CircleAvatar(
                         maxRadius: 12,
                         backgroundImage: AssetImage(
-                            'assets/${item.coin.abbr.toLowerCase()}.png'),
+                            'assets/coin-icons/${item.coin.abbr.toLowerCase()}.png'),
                       ),
                       const SizedBox(width: 6),
                       Text(
