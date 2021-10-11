@@ -512,14 +512,13 @@ class _ImportPageState extends State<ImportPage> {
               children: <Widget>[
                 FlatButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text(AppLocalizations.of(context)
-                      .importPassCancel
-                      .toUpperCase()),
+                  child: Text(AppLocalizations.of(context).importPassCancel),
                 ),
+                SizedBox(width: 12),
                 RaisedButton(
                   onPressed: () => Navigator.pop(context, _passController.text),
                   child: Text(
-                    AppLocalizations.of(context).importPassOk.toUpperCase(),
+                    AppLocalizations.of(context).importPassOk,
                     style: Theme.of(context)
                         .textTheme
                         .button

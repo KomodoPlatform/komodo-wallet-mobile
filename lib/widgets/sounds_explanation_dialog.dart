@@ -64,9 +64,9 @@ Future<void> showSoundsDialog(BuildContext context) async {
             ),
             SizedBox(height: 12),
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Expanded(
-                    child: FlatButton(
+                FlatButton(
                   onPressed: () {
                     dialogBloc.dialog = null;
                     Navigator.of(context).pop();
@@ -78,17 +78,15 @@ Future<void> showSoundsDialog(BuildContext context) async {
                     );
                   },
                   child: Text(AppLocalizations.of(context).settings),
-                )),
+                ),
                 SizedBox(width: 12),
-                Expanded(
-                  child: RaisedButton(
-                    onPressed: () {
-                      dialogBloc.dialog = null;
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      AppLocalizations.of(context).close,
-                    ),
+                RaisedButton(
+                  onPressed: () {
+                    dialogBloc.dialog = null;
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    AppLocalizations.of(context).close,
                   ),
                 ),
               ],
