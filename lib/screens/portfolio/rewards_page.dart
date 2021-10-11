@@ -481,9 +481,9 @@ class _RewardsPageState extends State<RewardsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(item.error['long']),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       RaisedButton(
                         onPressed: () {
