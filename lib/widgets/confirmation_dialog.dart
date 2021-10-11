@@ -39,7 +39,6 @@ void showConfirmationDialog({
                   },
                   child: Text(
                     AppLocalizations.of(context).cancel,
-                    style: TextStyle(fontWeight: FontWeight.normal),
                     maxLines: 1,
                   ),
                 ),
@@ -52,7 +51,6 @@ void showConfirmationDialog({
                   },
                   child: Text(
                     confirmButtonText,
-                    style: TextStyle(fontWeight: FontWeight.normal),
                     maxLines: 1,
                   ),
                 ),
