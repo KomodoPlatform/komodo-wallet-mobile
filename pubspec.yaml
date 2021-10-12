@@ -39,7 +39,8 @@ dependencies:
       ref: 859c88c2c3fe926bdbb6e5e729d3c16d088be76a
 
   # https://pub.dev/packages/file_picker
-  file_picker: 2.1.7
+  file_picker: 2.1.7 # needs secure code review
+  # previous version used:
   #  git:
   #    url: git://github.com/KomodoPlatform/flutter_file_picker.git
   #    ref: b68ee11c6ac117460ffa0c96b13ac4b89f2386f7
