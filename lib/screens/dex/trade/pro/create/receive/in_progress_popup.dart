@@ -3,6 +3,7 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 class InProgressPopup extends StatefulWidget {
@@ -32,23 +33,25 @@ class _InProgressPopupState extends State<InProgressPopup> {
       widget.onDone();
     });
 
-    return Dialog(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const CircularProgressIndicator(),
-            const SizedBox(
-              width: 16,
-            ),
-            Text(
-              AppLocalizations.of(context).loadingOrderbook,
-              style: Theme.of(context).textTheme.bodyText2,
-            )
-          ],
+    return CustomSimpleDialog(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const CircularProgressIndicator(),
+              const SizedBox(
+                width: 16,
+              ),
+              Text(
+                AppLocalizations.of(context).loadingOrderbook,
+                style: Theme.of(context).textTheme.bodyText2,
+              )
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

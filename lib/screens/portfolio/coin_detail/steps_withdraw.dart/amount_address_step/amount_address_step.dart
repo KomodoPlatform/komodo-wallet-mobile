@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -155,8 +156,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
-          return SimpleDialog(
-            contentPadding: const EdgeInsets.all(24),
+          return CustomSimpleDialog(
             title: Text(AppLocalizations.of(context).wrongCoinTitle),
             children: <Widget>[
               Text(AppLocalizations.of(context).wrongCoinSpan1 +
@@ -185,9 +185,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return SimpleDialog(
+        return CustomSimpleDialog(
           title: Text(AppLocalizations.of(context).uriInsufficientBalanceTitle),
-          contentPadding: EdgeInsets.all(24),
           children: <Widget>[
             Text(
               AppLocalizations.of(context).uriInsufficientBalanceSpan1 +
@@ -289,25 +288,26 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+        return CustomSimpleDialog(
           title: Text(AppLocalizations.of(context).withdrawCameraAccessTitle),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                AppLocalizations.of(context).withdrawCameraAccessText,
-                style: TextStyle(fontSize: 13),
-              ),
-              SizedBox(height: 12),
-              RaisedButton(
-                child: Text(AppLocalizations.of(context).okButton),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
+          children: [
+            Text(
+              AppLocalizations.of(context).withdrawCameraAccessText,
+              style: TextStyle(fontSize: 13),
+            ),
+            SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                RaisedButton(
+                  child: Text(AppLocalizations.of(context).okButton),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ],
         );
       },
     ).then((dynamic _) => dialogBloc.dialog = null);

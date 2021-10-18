@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
 void showFaucetDialog({
   @required BuildContext context,
@@ -16,44 +17,46 @@ void showFaucetDialog({
         return FutureBuilder<Map<String, dynamic>>(
             future: callFaucet(coin, address),
             builder: (context, snapshot) {
-              return AlertDialog(
-                  contentPadding: const EdgeInsets.all(16),
-                  titlePadding: const EdgeInsets.all(0),
-                  shape: RoundedRectangleBorder(
-                      side: const BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(6.0)),
-                  content: Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            const SizedBox(height: 20),
-                            snapshot.hasData
-                                ? _buildFaucetResponse(
-                                    context: context,
-                                    response: snapshot.data,
-                                  )
-                                : _buildFaucetProgress(
-                                    context: context,
-                                    coin: coin,
-                                  ),
-                            Container(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: FlatButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .close
-                                      .toUpperCase(),
-                                  style: TextStyle(
-                                    color: Theme.of(context).accentColor,
-                                  ),
-                                ),
+              return CustomSimpleDialog(
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        snapshot.hasData
+                            ? _buildFaucetResponse(
+                                context: context,
+                                response: snapshot.data,
+                              )
+                            : _buildFaucetProgress(
+                                context: context,
+                                coin: coin,
+                              ),
+                        SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            RaisedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                AppLocalizations.of(context).close,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .button
+                                    .copyWith(color: Colors.white),
                               ),
                             ),
-                          ])));
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
             });
       }).then((dynamic _) => dialogBloc.dialog = null);
 }
@@ -74,7 +77,7 @@ Widget _buildFaucetProgress({
                 strokeWidth: 2,
               )),
         ),
-        const SizedBox(height: 35),
+        SizedBox(height: 16),
         Text(
           AppLocalizations.of(context).faucetInProgress(coin),
           style: Theme.of(context).textTheme.bodyText1,
@@ -99,7 +102,7 @@ Widget _buildFaucetResponse({
               fontSize: 20,
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 16),
           Text(
             response['Result']['Message'],
             style: Theme.of(context).textTheme.bodyText1,
@@ -117,7 +120,7 @@ Widget _buildFaucetResponse({
               fontSize: 20,
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 16),
           Text(
             response['Result']['Message'],
             style: Theme.of(context).textTheme.bodyText1,
@@ -135,7 +138,7 @@ Widget _buildFaucetResponse({
               fontSize: 20,
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 16),
           Text(
             response['Result']['Message'],
             style: Theme.of(context).textTheme.bodyText1,

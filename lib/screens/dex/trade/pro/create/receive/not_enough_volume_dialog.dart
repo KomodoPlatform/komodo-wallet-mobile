@@ -4,6 +4,7 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
 void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
   final String baseCoin = swapBloc.sellCoinBalance.coin.abbr;
@@ -11,14 +12,12 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
   dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (context) {
-        return SimpleDialog(
+        return CustomSimpleDialog(
           title: Text(
             AppLocalizations.of(context).insufficientTitle,
             maxLines: 1,
             style: TextStyle(fontSize: 22),
           ),
-          contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 20),
-          titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 10),
           children: [
             Text('${AppLocalizations.of(context).insufficientText}:'),
             SizedBox(height: 10),
@@ -75,9 +74,14 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
               ],
             ),
             SizedBox(height: 20),
-            RaisedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(AppLocalizations.of(context).close),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                RaisedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(AppLocalizations.of(context).close),
+                ),
+              ],
             ),
           ],
         );

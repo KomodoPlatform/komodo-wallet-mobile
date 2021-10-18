@@ -24,6 +24,7 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
@@ -174,10 +175,8 @@ class _ImportPageState extends State<ImportPage> {
       final choice = await showDialog<NoteImportChoice>(
         context: context,
         builder: (context) {
-          return SimpleDialog(
+          return CustomSimpleDialog(
             title: const Text('Already exists'),
-            titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 12),
-            contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 12),
             children: <Widget>[
               OverwriteDialogContent(
                   currentValue: existingNote,
@@ -466,9 +465,8 @@ class _ImportPageState extends State<ImportPage> {
       context: context,
       barrierDismissible: false,
       builder: (context) => StatefulBuilder(builder: (context, setState) {
-        return SimpleDialog(
+        return CustomSimpleDialog(
           title: Text(AppLocalizations.of(context).importPassword),
-          contentPadding: EdgeInsets.fromLTRB(24, 24, 24, 12),
           children: <Widget>[
             TextField(
               controller: _passController,
@@ -516,9 +514,16 @@ class _ImportPageState extends State<ImportPage> {
                   onPressed: () => Navigator.pop(context),
                   child: Text(AppLocalizations.of(context).importPassCancel),
                 ),
+                SizedBox(width: 12),
                 RaisedButton(
                   onPressed: () => Navigator.pop(context, _passController.text),
-                  child: Text(AppLocalizations.of(context).importPassOk),
+                  child: Text(
+                    AppLocalizations.of(context).importPassOk,
+                    style: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(color: Colors.white),
+                  ),
                 ),
               ],
             ),

@@ -14,6 +14,7 @@ import 'package:komodo_dex/screens/portfolio/activate/build_item_coin.dart';
 import 'package:komodo_dex/screens/portfolio/activate/build_type_header.dart';
 import 'package:komodo_dex/screens/portfolio/activate/search_filter.dart';
 import 'package:komodo_dex/screens/portfolio/loading_coin.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class SelectCoinsPage extends StatefulWidget {
@@ -251,23 +252,28 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return CustomSimpleDialog(
             title:
                 Text(AppLocalizations.of(context).enablingTooManyAssetsTitle),
-            content: Text(
-                AppLocalizations.of(context).enablingTooManyAssetsSpan1 +
-                    numCoinsEnabled.toString() +
-                    AppLocalizations.of(context).enablingTooManyAssetsSpan2 +
-                    numCoinsTryingEnable.toString() +
-                    AppLocalizations.of(context).enablingTooManyAssetsSpan3 +
-                    maxCoinPerPlatform.toString() +
-                    AppLocalizations.of(context).enablingTooManyAssetsSpan4),
-            actions: [
-              FlatButton(
-                child: Text(AppLocalizations.of(context).warningOkBtn),
-                onPressed: () {
-                  dialogBloc.closeDialog(context);
-                },
+            children: [
+              Text(AppLocalizations.of(context).enablingTooManyAssetsSpan1 +
+                  numCoinsEnabled.toString() +
+                  AppLocalizations.of(context).enablingTooManyAssetsSpan2 +
+                  numCoinsTryingEnable.toString() +
+                  AppLocalizations.of(context).enablingTooManyAssetsSpan3 +
+                  maxCoinPerPlatform.toString() +
+                  AppLocalizations.of(context).enablingTooManyAssetsSpan4),
+              SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  RaisedButton(
+                    child: Text(AppLocalizations.of(context).warningOkBtn),
+                    onPressed: () {
+                      dialogBloc.closeDialog(context);
+                    },
+                  ),
+                ],
               ),
             ],
           );
