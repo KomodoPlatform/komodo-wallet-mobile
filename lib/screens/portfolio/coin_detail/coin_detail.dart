@@ -27,6 +27,7 @@ import 'package:komodo_dex/screens/portfolio/rewards_page.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
@@ -252,14 +253,16 @@ class _CoinDetailState extends State<CoinDetail> {
               const SizedBox(
                 width: 8,
               ),
-              Text(
-                currentCoinBalance.coin.name.toUpperCase(),
-                style: TextStyle(
-                  color: ThemeData.estimateBrightnessForColor(Color(
-                              int.parse(currentCoinBalance.coin.colorCoin))) ==
-                          Brightness.dark
-                      ? Colors.white
-                      : Colors.black,
+              Expanded(
+                child: AutoScrollText(
+                  text: currentCoinBalance.coin.name.toUpperCase(),
+                  style: TextStyle(
+                    color: ThemeData.estimateBrightnessForColor(Color(int.parse(
+                                currentCoinBalance.coin.colorCoin))) ==
+                            Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                 ),
               ),
             ],
