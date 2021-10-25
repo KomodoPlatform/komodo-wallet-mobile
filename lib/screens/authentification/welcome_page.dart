@@ -85,7 +85,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 controller: controller,
                 onChanged: (String str) {
                   final allWallets = walletBloc.wallets;
-                  if (allWallets != null) {
+                  if (allWallets != null && allWallets.isNotEmpty) {
                     final List<String> walletsNames =
                         allWallets.map((w) => w.name).toList();
                     if (walletsNames.contains(str)) {
