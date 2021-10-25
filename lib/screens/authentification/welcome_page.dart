@@ -84,6 +84,17 @@ class _WelcomePageState extends State<WelcomePage> {
                 maxLength: 40,
                 controller: controller,
                 onChanged: (String str) {
+                  final allWallets = walletBloc.wallets;
+                  if (allWallets != null) {
+                    final List<String> walletsNames =
+                        allWallets.map((w) => w.name).toList();
+                    if (walletsNames.contains(str)) {
+                      setState(() {
+                        isButtonLoginEnabled = false;
+                      });
+                      return;
+                    }
+                  }
                   if (str.isEmpty || str.length > 40) {
                     setState(() {
                       isButtonLoginEnabled = false;
