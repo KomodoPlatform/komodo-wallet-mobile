@@ -19,6 +19,7 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:local_auth/local_auth.dart';
@@ -266,36 +267,43 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
   return dialogBloc.dialog = showDialog<void>(
       context: mContext,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context).cantDeleteDefaultCoinTitle +
-              coin.abbr),
-          content: RichText(
-            text: TextSpan(
-              style: Theme.of(context).textTheme.bodyText2,
-              children: <TextSpan>[
-                TextSpan(
-                    text: '${coin.name}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .copyWith(fontWeight: FontWeight.bold)),
-                TextSpan(
-                    text:
-                        AppLocalizations.of(context).cantDeleteDefaultCoinSpan),
-              ],
-            ),
+        return CustomSimpleDialog(
+          title: Text(
+            AppLocalizations.of(context).cantDeleteDefaultCoinTitle + coin.abbr,
           ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(
-                AppLocalizations.of(context)
-                    .cantDeleteDefaultCoinOk
-                    .toUpperCase(),
-                style: Theme.of(context).textTheme.button,
+          children: <Widget>[
+            RichText(
+              text: TextSpan(
+                style: Theme.of(context).textTheme.bodyText2,
+                children: <TextSpan>[
+                  TextSpan(
+                      text: '${coin.name}',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(fontWeight: FontWeight.bold)),
+                  TextSpan(
+                      text: AppLocalizations.of(context)
+                          .cantDeleteDefaultCoinSpan),
+                ],
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                RaisedButton(
+                  child: Text(
+                    AppLocalizations.of(context).cantDeleteDefaultCoinOk,
+                    style: Theme.of(context).textTheme.button.copyWith(
+                          color: Colors.white,
+                        ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
           ],
         );
@@ -309,46 +317,56 @@ Future<void> showConfirmationRemoveCoin(
   return dialogBloc.dialog = showDialog<void>(
       context: mContext,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return CustomSimpleDialog(
           title: Text(AppLocalizations.of(context).deleteConfirm),
-          content: RichText(
-              text: TextSpan(
-                  style: Theme.of(context).textTheme.bodyText2,
-                  children: <TextSpan>[
-                TextSpan(text: AppLocalizations.of(context).deleteSpan1),
-                TextSpan(
-                    text: '${coin.name}',
+          children: <Widget>[
+            RichText(
+                text: TextSpan(
+                    style: Theme.of(context).textTheme.bodyText2,
+                    children: <TextSpan>[
+                  TextSpan(text: AppLocalizations.of(context).deleteSpan1),
+                  TextSpan(
+                      text: '${coin.name}',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(fontWeight: FontWeight.bold)),
+                  TextSpan(text: AppLocalizations.of(context).deleteSpan2),
+                ])),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FlatButton(
+                  child: Text(
+                    AppLocalizations.of(context).cancel,
+                    style: Theme.of(context).textTheme.button,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                const SizedBox(width: 12),
+                RaisedButton(
+                  color: Theme.of(context).errorColor,
+                  child: Text(
+                    AppLocalizations.of(context).confirm,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
-                        .copyWith(fontWeight: FontWeight.bold)),
-                TextSpan(text: AppLocalizations.of(context).deleteSpan2),
-              ])),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(
-                AppLocalizations.of(context).cancel.toUpperCase(),
-                style: Theme.of(context).textTheme.button,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+                        .button
+                        .copyWith(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    try {
+                      await coinsBloc.removeCoin(coin);
+                    } on ErrorString catch (ex) {
+                      showMessage(mContext, ex.error);
+                    }
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
             ),
-            RaisedButton(
-              color: Theme.of(context).errorColor,
-              child: Text(
-                AppLocalizations.of(context).confirm.toUpperCase(),
-                style: Theme.of(context).textTheme.button,
-              ),
-              onPressed: () async {
-                try {
-                  await coinsBloc.removeCoin(coin);
-                } on ErrorString catch (ex) {
-                  showMessage(mContext, ex.error);
-                }
-                Navigator.of(context).pop();
-              },
-            )
           ],
         );
       }).then((_) {
@@ -665,8 +683,7 @@ void showUriDetailsDialog(
   dialogBloc.dialog = showDialog<void>(
     context: context,
     builder: (context) {
-      return SimpleDialog(
-        contentPadding: const EdgeInsets.all(24),
+      return CustomSimpleDialog(
         title: Text(
           AppLocalizations.of(context).paymentUriDetailsTitle,
           style: TextStyle(fontSize: 24),

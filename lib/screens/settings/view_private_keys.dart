@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/get_priv_key.dart';
 import 'package:komodo_dex/model/priv_key.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ViewPrivateKeys extends StatelessWidget {
@@ -87,13 +88,10 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
             dialogBloc.dialog = showDialog<dynamic>(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
-                  contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  titlePadding: const EdgeInsets.all(0),
-                  shape: RoundedRectangleBorder(
-                      side: const BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(6.0)),
-                  content: _buildDialogContent(),
+                return CustomSimpleDialog(
+                  children: [
+                    _buildDialogContent(),
+                  ],
                 );
               },
             ).then((dynamic data) {
@@ -184,17 +182,17 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                           .bodyText1
                           .copyWith(fontFamily: 'monospace')),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Row(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    FlatButton(
+                    RaisedButton(
                       child: Text(
-                        AppLocalizations.of(context).close.toUpperCase(),
+                        AppLocalizations.of(context).close,
                         style: Theme.of(context)
                             .textTheme
                             .button
-                            .copyWith(color: Theme.of(context).accentColor),
+                            .copyWith(color: Colors.white),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();

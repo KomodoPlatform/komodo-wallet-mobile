@@ -5,7 +5,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
 void openSelectSellCoinDialog({
   BuildContext context,
@@ -18,12 +18,12 @@ void openSelectSellCoinDialog({
       context: context,
       builder: (BuildContext context) {
         return coinItemsList.isNotEmpty
-            ? SimpleDialog(
+            ? CustomSimpleDialog(
+                hasHorizontalPadding: false,
                 title: Text(AppLocalizations.of(context).sell),
                 children: coinItemsList,
               )
-            : SimpleDialog(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            : CustomSimpleDialog(
                 title: Column(
                   children: <Widget>[
                     Icon(
@@ -50,22 +50,16 @@ void openSelectSellCoinDialog({
                     height: 24,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: PrimaryButton(
-                          text: AppLocalizations.of(context).goToPorfolio,
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            mainBloc.setCurrentIndexTab(0);
-                          },
-                          backgroundColor: Theme.of(context).accentColor,
-                        ),
+                      RaisedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          mainBloc.setCurrentIndexTab(0);
+                        },
+                        child: Text(AppLocalizations.of(context).goToPorfolio),
                       )
                     ],
-                  ),
-                  const SizedBox(
-                    height: 24,
                   ),
                 ],
               );

@@ -9,6 +9,7 @@ import 'package:komodo_dex/screens/addressbook/contact_edit_field.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/confirmation_dialog.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/small_button.dart';
 import 'package:provider/provider.dart';
 
@@ -31,12 +32,11 @@ class _ContactEditState extends State<ContactEdit> {
 
   @override
   void initState() {
+    super.initState();
     editContact = widget.contact != null
         ? Contact.fromJson(widget.contact.toJson())
         : Contact();
     hashBeforeEdit = jsonEncode(editContact.toJson());
-
-    super.initState();
   }
 
   @override
@@ -343,7 +343,11 @@ class _ContactEditState extends State<ContactEdit> {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return const Center(child: CircularProgressIndicator());
+          return CustomSimpleDialog(
+            children: const [
+              Center(child: CircularProgressIndicator()),
+            ],
+          );
         }).then((dynamic _) => dialogBloc.dialog = null);
 
     final List<Coin> all = (await coins).values.toList();
@@ -362,7 +366,8 @@ class _ContactEditState extends State<ContactEdit> {
         builder: (BuildContext context) {
           return StatefulBuilder(
             builder: (context, setState) {
-              return SimpleDialog(
+              return CustomSimpleDialog(
+                hasHorizontalPadding: false,
                 title: Text(AppLocalizations.of(context).addressSelectCoin),
                 children: [
                   Padding(

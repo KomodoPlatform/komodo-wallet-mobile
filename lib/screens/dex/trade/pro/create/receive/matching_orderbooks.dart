@@ -3,6 +3,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_orderbook_item.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -37,7 +38,8 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
         widget.orderbooksDepth ?? orderBookProvider.depthsForCoin();
 
     return StatefulBuilder(builder: (context, setState) {
-      return SimpleDialog(
+      return CustomSimpleDialog(
+        hasHorizontalPadding: false,
         title: Text(AppLocalizations.of(context).receiveLower),
         key: const Key('receive-list-coins'),
         children: [

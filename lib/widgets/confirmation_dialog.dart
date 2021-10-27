@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
 void showConfirmationDialog({
   BuildContext context,
@@ -15,8 +16,7 @@ void showConfirmationDialog({
   dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          contentPadding: const EdgeInsets.all(20),
+        return CustomSimpleDialog(
           title: Row(
             children: <Widget>[
               Icon(
@@ -29,48 +29,31 @@ void showConfirmationDialog({
           ),
           children: <Widget>[
             Text(message),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Expanded(
-                    child: RaisedButton(
-                  key: key ?? const Key('confirm-button-key'),
-                  color: Theme.of(context).dialogBackgroundColor,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                        color: Theme.of(context).textTheme.caption.color),
-                    borderRadius: BorderRadius.circular(30.0),
+                FlatButton(
+                  onPressed: () {
+                    dialogBloc.closeDialog(context);
+                  },
+                  child: Text(
+                    AppLocalizations.of(context).cancel,
+                    maxLines: 1,
                   ),
+                ),
+                const SizedBox(width: 12),
+                RaisedButton(
+                  key: key ?? const Key('confirm-button-key'),
                   onPressed: () {
                     dialogBloc.closeDialog(context);
                     if (onConfirm != null) onConfirm();
                   },
                   child: Text(
-                    confirmButtonText.toUpperCase(),
-                    style: TextStyle(fontWeight: FontWeight.normal),
+                    confirmButtonText,
                     maxLines: 1,
                   ),
-                )),
-                const SizedBox(width: 12),
-                Expanded(
-                    child: RaisedButton(
-                  color: Theme.of(context).dialogBackgroundColor,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                        color: Theme.of(context).textTheme.caption.color),
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  onPressed: () {
-                    dialogBloc.closeDialog(context);
-                  },
-                  child: Text(
-                    AppLocalizations.of(context).cancel.toUpperCase(),
-                    style: TextStyle(fontWeight: FontWeight.normal),
-                    maxLines: 1,
-                  ),
-                )),
+                ),
               ],
             ),
           ],

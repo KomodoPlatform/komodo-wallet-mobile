@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/small_button.dart';
 
 class DurationSelect extends StatefulWidget {
@@ -83,7 +84,8 @@ class _DurationSelectState extends State<DurationSelect> {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (context) {
-          return SimpleDialog(
+          return CustomSimpleDialog(
+            hasHorizontalPadding: false,
             title: const Text('Duration'),
             children: options,
           );

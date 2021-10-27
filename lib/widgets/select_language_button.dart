@@ -3,6 +3,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/language_flag_icon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,7 +46,8 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
         dialogBloc.dialog = showDialog<dynamic>(
           context: context,
           builder: (BuildContext context) {
-            return SimpleDialog(
+            return CustomSimpleDialog(
+              hasHorizontalPadding: false,
               title: Text('Select language'),
               children: [
                 ...mainBloc.supportedLocales
