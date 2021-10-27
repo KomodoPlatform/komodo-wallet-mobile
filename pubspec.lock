@@ -232,9 +232,11 @@ packages:
   file_picker:
     dependency: "direct main"
     description:
-      name: file_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "627c0a31b22026809cea3c5cb3c0a81d2a632117"
+      resolved-ref: "627c0a31b22026809cea3c5cb3c0a81d2a632117"
+      url: "git://github.com/KomodoPlatform/flutter_file_picker.git"
+    source: git
     version: "2.1.7"
   flutter:
     dependency: "direct main"
