@@ -737,7 +737,24 @@
         ]
     },
     {
-        "abbr": "SMTF",
+        "abbr": "SMTF-OLD",
+        "name": "SmartFi Token",
+        "type": "bep",
+        "coingeckoId": "smtf-test",
+        "colorCoin": "0xFFf6455d",
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "serverList": [
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
+        ],
+        "explorerUrl": [
+            "https://bscscan.com/"
+        ]
+    },
+    {
+        "abbr": "SMTFv1",
         "name": "SmartFi Token",
         "type": "bep",
         "coingeckoId": "smtf-test",
