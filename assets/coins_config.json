@@ -738,7 +738,7 @@
     },
     {
         "abbr": "SMTF-OLD",
-        "name": "SmartFi Token",
+        "name": "SmartFi Token OLD",
         "type": "bep",
         "coingeckoId": "smtf-test",
         "colorCoin": "0xFFf6455d",
@@ -754,7 +754,7 @@
         ]
     },
     {
-        "abbr": "SMTFv1",
+        "abbr": "SMTF-v2",
         "name": "SmartFi Token",
         "type": "bep",
         "coingeckoId": "smtf-test",
