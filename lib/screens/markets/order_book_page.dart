@@ -83,24 +83,26 @@ class _OrderBookPageState extends State<OrderBookPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              CoinSelect(
-                  key: const Key('coin-select-left'),
-                  value: _orderBookProvider.activePair?.sell,
-                  type: CoinType.base,
-                  pairedCoin: _orderBookProvider.activePair?.buy,
-                  autoOpen: _orderBookProvider.activePair?.sell == null &&
-                      _orderBookProvider.activePair?.buy != null,
-                  compact: MediaQuery.of(context).size.width < 360,
-                  onChange: (Coin value) {
-                    setState(() {
-                      _showChart = false;
-                    });
-                    _orderBookProvider.activePair = CoinsPair(
-                      sell: value,
-                      buy: _orderBookProvider.activePair?.buy,
-                    );
-                  }),
-              const SizedBox(width: 12),
+              Expanded(
+                child: CoinSelect(
+                    key: const Key('coin-select-left'),
+                    value: _orderBookProvider.activePair?.sell,
+                    type: CoinType.base,
+                    pairedCoin: _orderBookProvider.activePair?.buy,
+                    autoOpen: _orderBookProvider.activePair?.sell == null &&
+                        _orderBookProvider.activePair?.buy != null,
+                    compact: MediaQuery.of(context).size.width < 360,
+                    onChange: (Coin value) {
+                      setState(() {
+                        _showChart = false;
+                      });
+                      _orderBookProvider.activePair = CoinsPair(
+                        sell: value,
+                        buy: _orderBookProvider.activePair?.buy,
+                      );
+                    }),
+              ),
+              const SizedBox(width: 4),
               ButtonTheme(
                 minWidth: 40,
                 child: FlatButton(
@@ -114,24 +116,26 @@ class _OrderBookPageState extends State<OrderBookPage> {
                     },
                     child: Icon(Icons.swap_horiz)),
               ),
-              const SizedBox(width: 12),
-              CoinSelect(
-                key: const Key('coin-select-right'),
-                value: _orderBookProvider.activePair?.buy,
-                type: CoinType.rel,
-                pairedCoin: _orderBookProvider.activePair?.sell,
-                autoOpen: _orderBookProvider.activePair?.buy == null &&
-                    _orderBookProvider.activePair?.sell != null,
-                compact: MediaQuery.of(context).size.width < 360,
-                onChange: (Coin value) {
-                  setState(() {
-                    _showChart = false;
-                  });
-                  _orderBookProvider.activePair = CoinsPair(
-                    buy: value,
-                    sell: _orderBookProvider.activePair?.sell,
-                  );
-                },
+              const SizedBox(width: 4),
+              Expanded(
+                child: CoinSelect(
+                  key: const Key('coin-select-right'),
+                  value: _orderBookProvider.activePair?.buy,
+                  type: CoinType.rel,
+                  pairedCoin: _orderBookProvider.activePair?.sell,
+                  autoOpen: _orderBookProvider.activePair?.buy == null &&
+                      _orderBookProvider.activePair?.sell != null,
+                  compact: MediaQuery.of(context).size.width < 360,
+                  onChange: (Coin value) {
+                    setState(() {
+                      _showChart = false;
+                    });
+                    _orderBookProvider.activePair = CoinsPair(
+                      buy: value,
+                      sell: _orderBookProvider.activePair?.sell,
+                    );
+                  },
+                ),
               ),
             ],
           ),
