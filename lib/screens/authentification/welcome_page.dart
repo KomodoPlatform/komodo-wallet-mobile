@@ -79,33 +79,50 @@ class _WelcomePageState extends State<WelcomePage> {
           ),
           Padding(
             padding: const EdgeInsets.all(24.0),
-            child: TextField(
+            child: TextFormField(
                 key: const Key('name-wallet-field'),
                 maxLength: 40,
                 controller: controller,
-                onChanged: (String str) {
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (String str) {
+                  if (str.isEmpty) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      setState(() {
+                        isButtonLoginEnabled = false;
+                      });
+                    });
+                    return 'Wallet name must not be empty';
+                  }
+                  if (str.length > 40) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      setState(() {
+                        isButtonLoginEnabled = false;
+                      });
+                    });
+                    return 'Wallet name must have a max of 40 characters';
+                  }
+
                   final allWallets = walletBloc.wallets;
                   if (allWallets != null && allWallets.isNotEmpty) {
                     final List<String> walletsNames =
                         allWallets.map((w) => w.name).toList();
                     if (walletsNames.contains(str)) {
-                      setState(() {
-                        isButtonLoginEnabled = false;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        setState(() {
+                          isButtonLoginEnabled = false;
+                        });
                       });
-                      return;
+                      return 'Wallet name is already in use';
                     }
                   }
-                  if (str.isEmpty || str.length > 40) {
-                    setState(() {
-                      isButtonLoginEnabled = false;
-                    });
-                  } else {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
                     setState(() {
                       isButtonLoginEnabled = true;
                     });
-                  }
+                  });
+                  return null;
                 },
-                onSubmitted: (String data) {
+                onFieldSubmitted: (String data) {
                   _newPage();
                 },
                 autocorrect: false,
