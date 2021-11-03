@@ -157,6 +157,8 @@ class SwapShareCard extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: Table(
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.baseline,
                             columnWidths: const {
                               0: IntrinsicColumnWidth(),
                               1: IntrinsicColumnWidth(),
@@ -206,6 +208,20 @@ class SwapShareCard extends StatelessWidget {
                                   Text(
                                     '$durationMinutes Minutes',
                                     style: TextStyle(fontSize: 6),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  Text(
+                                    'UUID',
+                                    style: TextStyle(fontSize: 6),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    '${swap.result.myOrderUuid}',
+                                    style: TextStyle(fontSize: 4),
                                     textAlign: TextAlign.left,
                                   ),
                                 ],
