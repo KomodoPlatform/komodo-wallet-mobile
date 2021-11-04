@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 
 class BuildItemCoin extends StatefulWidget {
   const BuildItemCoin({Key key, this.coin}) : super(key: key);
@@ -45,7 +46,10 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                     width: 40,
                   ),
                   const SizedBox(width: 24),
-                  Text('${widget.coin.name} (${widget.coin.abbr})')
+                  Expanded(
+                    child: AutoScrollText(
+                        text: '${widget.coin.name} (${widget.coin.abbr})'),
+                  )
                 ],
               ),
             ),
