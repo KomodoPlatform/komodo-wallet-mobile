@@ -117,21 +117,31 @@ class FilePickerButton extends StatelessWidget {
         icon: Icon(Icons.folder_open),
         color: Theme.of(context).toggleableActiveColor,
         onPressed: () async {
-          String path;
+          FilePickerResult filePickerResult;
           final int lockCookie = lockService.enteringFilePicker();
           try {
-            path = await FilePicker.getFilePath();
+            filePickerResult = await FilePicker.platform.pickFiles();
           } catch (err) {
             Log('setting_page:804', 'file picker exception: $err');
           }
           lockService.filePickerReturned(lockCookie);
 
+          if (filePickerResult == null) return;
+
+          PlatformFile pFile;
+          if (filePickerResult.count != 0) {
+            pFile = filePickerResult.files[0];
+            if (pFile == null) {
+              return;
+            }
+          }
+
           // On iOS this happens *after* pin lock, but very close in time to it (same second),
           // on Android/debug *before* pin lock,
           // chance is it's unordered.
-          Log('setting_page:811', 'file picked: $path');
+          Log('setting_page:811', 'file picked: ${pFile.path}');
 
-          final bool ck = checkAudioFile(path);
+          final bool ck = checkAudioFile(pFile.path);
           if (!ck) {
             dialogBloc.dialog = showDialog<dynamic>(
               context: context,
@@ -163,7 +173,7 @@ class FilePickerButton extends StatelessWidget {
             ).then((dynamic _) => dialogBloc.dialog = null);
             return;
           }
-          await musicService.setSoundPath(musicMode, path);
+          await musicService.setSoundPath(musicMode, pFile.path);
         });
   }
 }
