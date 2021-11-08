@@ -552,6 +552,12 @@ class _CoinDetailState extends State<CoinDetail> {
                 padding: const EdgeInsets.only(right: 8),
                 child: _buildButtonLight(StatusButton.FAUCET, mContext),
               )),
+            if (currentCoinBalance.coin.abbr == 'TKL')
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: _buildButtonLight(StatusButton.PUBKEY, mContext),
+              )),
             if (double.parse(currentCoinBalance.balance.getBalance()) > 0)
               Expanded(
                   child: Padding(
@@ -581,6 +587,10 @@ class _CoinDetailState extends State<CoinDetail> {
         text = isExpanded
             ? AppLocalizations.of(context).close.toUpperCase()
             : AppLocalizations.of(context).send.toUpperCase();
+        break;
+
+      case StatusButton.PUBKEY:
+        text = 'Public Key'.toUpperCase();
         break;
       case StatusButton.FAUCET:
         text = AppLocalizations.of(context).faucetName;
@@ -645,10 +655,20 @@ class _CoinDetailState extends State<CoinDetail> {
               });
             }
             break;
+          case StatusButton.PUBKEY:
+            getPublicKey().then(
+                (v) => showReceiveDialog(mContext, v, widget.coinBalance.coin));
+            break;
           default:
         }
       },
     );
+  }
+
+  Future<String> getPublicKey() async {
+    final pb = await MM.getPublicKey();
+    final String key = pb.result.publicKey;
+    return key;
   }
 
   Widget _buildForm() {
@@ -851,4 +871,4 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 }
 
-enum StatusButton { SEND, RECEIVE, FAUCET, CLAIM }
+enum StatusButton { SEND, RECEIVE, FAUCET, CLAIM, PUBKEY }
