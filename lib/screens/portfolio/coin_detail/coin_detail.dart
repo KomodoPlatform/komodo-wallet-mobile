@@ -34,7 +34,7 @@ import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import '../faucet_dialog.dart';
-import '../receive_dialog.dart';
+import '../copy_dialog.dart';
 
 class CoinDetail extends StatefulWidget {
   const CoinDetail({
@@ -590,7 +590,7 @@ class _CoinDetailState extends State<CoinDetail> {
         break;
 
       case StatusButton.PUBKEY:
-        text = 'Public Key'.toUpperCase();
+        text = AppLocalizations.of(context).pubkey.toUpperCase();
         break;
       case StatusButton.FAUCET:
         text = AppLocalizations.of(context).faucetName;
@@ -631,7 +631,7 @@ class _CoinDetailState extends State<CoinDetail> {
       onPressed: () {
         switch (statusButton) {
           case StatusButton.RECEIVE:
-            showReceiveDialog(mContext, currentCoinBalance.balance.address,
+            showCopyDialog(mContext, currentCoinBalance.balance.address,
                 widget.coinBalance.coin);
             break;
           case StatusButton.FAUCET:
@@ -657,7 +657,7 @@ class _CoinDetailState extends State<CoinDetail> {
             break;
           case StatusButton.PUBKEY:
             getPublicKey().then(
-                (v) => showReceiveDialog(mContext, v, widget.coinBalance.coin));
+                (v) => showCopyDialog(mContext, v, widget.coinBalance.coin));
             break;
           default:
         }
