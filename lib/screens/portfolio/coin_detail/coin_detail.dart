@@ -23,6 +23,8 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amo
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/build_confirmation_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/tx_list_item.dart';
+import 'package:komodo_dex/screens/portfolio/copy_dialog.dart';
+import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
 import 'package:komodo_dex/screens/portfolio/rewards_page.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -33,8 +35,6 @@ import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import '../faucet_dialog.dart';
-import '../copy_dialog.dart';
 
 class CoinDetail extends StatefulWidget {
   const CoinDetail({
@@ -555,7 +555,7 @@ class _CoinDetailState extends State<CoinDetail> {
             if (currentCoinBalance.coin.abbr == 'TKL')
               Expanded(
                   child: Padding(
-                padding: const EdgeInsets.only(right: 16),
+                padding: const EdgeInsets.only(right: 8),
                 child: _buildButtonLight(StatusButton.PUBKEY, mContext),
               )),
             if (double.parse(currentCoinBalance.balance.getBalance()) > 0)
