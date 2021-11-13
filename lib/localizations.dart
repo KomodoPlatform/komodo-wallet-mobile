@@ -456,6 +456,7 @@ class AppLocalizations {
   String get toAddress => Intl.message('To address:', name: 'toAddress');
   String get receive => Intl.message('RECEIVE', name: 'receive');
   String get send => Intl.message('SEND', name: 'send');
+  String get pubkey => Intl.message('Pubkey', name: 'pubkey');
   String get back => Intl.message('back', name: 'back');
   String get cancel => Intl.message('Cancel', name: 'cancel');
   String get details => Intl.message('details', name: 'details');

@@ -18,7 +18,7 @@ import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'coin_detail/coin_detail.dart';
-import 'receive_dialog.dart';
+import 'copy_dialog.dart';
 import 'rewards_page.dart';
 
 class ItemCoin extends StatefulWidget {
@@ -74,7 +74,7 @@ class _ItemCoinState extends State<ItemCoin> {
       color: Theme.of(context).backgroundColor,
       icon: Icons.arrow_downward,
       onTap: () {
-        showReceiveDialog(context, balance.address, coin);
+        showCopyDialog(context, balance.address, coin);
       },
     ));
     if (!coin.walletOnly && double.parse(balance.getBalance()) > 0) {

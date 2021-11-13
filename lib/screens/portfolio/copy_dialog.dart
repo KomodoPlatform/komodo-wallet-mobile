@@ -7,7 +7,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-void showReceiveDialog(BuildContext mContext, String address, Coin coin) {
+void showCopyDialog(BuildContext mContext, String address, Coin coin) {
   dialogBloc.dialog = showDialog<dynamic>(
     context: mContext,
     builder: (BuildContext context) {
