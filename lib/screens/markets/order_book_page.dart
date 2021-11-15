@@ -170,7 +170,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
               children: <Widget>[
                 CandlesIcon(
                     size: 14,
-                    color: _showChart
+                    color: !_showChart
                         ? settingsBloc.isLightTheme
                             ? cexColorLight
                             : cexColor.withOpacity(0.8)
@@ -178,7 +178,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 const SizedBox(width: 2),
                 Text(
                   AppLocalizations.of(context).marketsChart,
-                  style: _showChart
+                  style: !_showChart
                       ? TextStyle(
                           color: settingsBloc.isLightTheme
                               ? cexColorLight
@@ -197,7 +197,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
             },
             child: Text(
               AppLocalizations.of(context).marketsDepth,
-              style: !_showChart
+              style: _showChart
                   ? TextStyle(
                       color: settingsBloc.isLightTheme
                           ? cexColorLight
