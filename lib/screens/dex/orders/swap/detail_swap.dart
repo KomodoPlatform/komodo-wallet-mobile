@@ -263,7 +263,7 @@ class _DetailSwapState extends State<DetailSwap> {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Table(
-          columnWidths: {
+          columnWidths: const {
             0: IntrinsicColumnWidth(flex: 1),
             1: IntrinsicColumnWidth(),
             2: IntrinsicColumnWidth(flex: 1),
