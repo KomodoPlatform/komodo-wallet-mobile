@@ -259,12 +259,13 @@ class AppLocalizations {
       name: 'answer_5');
   String get question_6 =>
       Intl.message('Do you provide user support?', name: 'question_6');
-  String get answer_6 => Intl.message(
+  String answer_6(String name, String link) => Intl.message(
       'Yes! ${toInitialUpper(appConfig.appName)} offers support through the'
-      ' <a href="${appConfig.appCompanyDiscord}">'
-      '${appConfig.appCompanyShort} Discord server'
+      ' <a href="$link">'
+      '${appConfig.appCompanyShort} $name'
       '</a>. The team and the community are always happy to help!',
-      name: 'answer_6');
+      name: 'answer_6',
+      args: <Object>[name, link]);
   String get question_7 =>
       Intl.message('Do you have country restrictions?', name: 'question_7');
   String get answer_7 => Intl.message(
@@ -343,7 +344,7 @@ class AppLocalizations {
       Intl.message('Enter Your Seed Phrase', name: 'enterSeedPhrase');
   String get exampleHintSeed =>
       Intl.message('Example: build case level ...', name: 'exampleHintSeed');
-  String get confirm => Intl.message('confirm', name: 'confirm');
+  String get confirm => Intl.message('Confirm', name: 'confirm');
   String get buyTestCoinWarning => Intl.message(
       'Warning, you\'re willing to buy test coins WITHOUT real value!',
       name: 'buyTestCoinWarning');
@@ -455,6 +456,7 @@ class AppLocalizations {
   String get toAddress => Intl.message('To address:', name: 'toAddress');
   String get receive => Intl.message('RECEIVE', name: 'receive');
   String get send => Intl.message('SEND', name: 'send');
+  String get pubkey => Intl.message('Pubkey', name: 'pubkey');
   String get back => Intl.message('back', name: 'back');
   String get cancel => Intl.message('Cancel', name: 'cancel');
   String get details => Intl.message('details', name: 'details');
@@ -692,7 +694,7 @@ class AppLocalizations {
   String get orderCreatedInfo =>
       Intl.message('Order successfully created', name: 'orderCreatedInfo');
   String get showMyOrders =>
-      Intl.message('SHOW MY ORDERS', name: 'showMyOrders');
+      Intl.message('Show My Orders', name: 'showMyOrders');
   String minValue(String coinName, String number) => Intl.message(
         'The minimum amount to sell is $number $coinName',
         name: 'minValue',
@@ -844,7 +846,7 @@ class AppLocalizations {
           name: 'cantDeleteDefaultCoinSpan');
   String get cantDeleteDefaultCoinOk =>
       Intl.message('Ok', name: 'cantDeleteDefaultCoinOk');
-  String get share => Intl.message('SHARE', name: 'share');
+  String get share => Intl.message('Share', name: 'share');
   String get warningShareLogs => Intl.message(
       'Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!',
       name: 'warningShareLogs');
@@ -1137,7 +1139,7 @@ class AppLocalizations {
       'because $abbr is not activated. Please go to portfolio.',
       args: <Object>[abbr],
       name: 'addressCoinInactive');
-  String get warningOkBtn => Intl.message('OK', name: 'warningOkBtn');
+  String get warningOkBtn => Intl.message('Ok', name: 'warningOkBtn');
 
   // --- Camouflage Pin ---
 

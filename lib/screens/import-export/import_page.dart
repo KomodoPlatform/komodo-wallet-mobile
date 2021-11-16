@@ -24,6 +24,7 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
@@ -174,10 +175,8 @@ class _ImportPageState extends State<ImportPage> {
       final choice = await showDialog<NoteImportChoice>(
         context: context,
         builder: (context) {
-          return SimpleDialog(
+          return CustomSimpleDialog(
             title: const Text('Already exists'),
-            titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 12),
-            contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 12),
             children: <Widget>[
               OverwriteDialogContent(
                   currentValue: existingNote,
@@ -423,24 +422,33 @@ class _ImportPageState extends State<ImportPage> {
             : () async {
                 setState(() => _loading = true);
 
-                String path;
+                FilePickerResult filePickerResult;
                 final int lockCookie = lockService.enteringFilePicker();
                 try {
-                  path = await FilePicker.getFilePath();
+                  filePickerResult = await FilePicker.platform.pickFiles();
                 } catch (err) {
                   Log('import_page]', 'file picker exception: $err');
                 }
                 lockService.filePickerReturned(lockCookie);
 
-                if (path == null) {
+                if (filePickerResult == null) {
                   setState(() => _loading = false);
                   return;
                 }
 
-                final File file = File(path);
-                if (!file.existsSync()) {
-                  _showError(AppLocalizations.of(context).importFileNotFound);
-                  return;
+                File file;
+                if (filePickerResult.count != 0) {
+                  final pFile = filePickerResult.files[0];
+                  if (pFile == null) {
+                    _showError(AppLocalizations.of(context).importFileNotFound);
+                    return;
+                  }
+
+                  file = File(pFile.path);
+                  if (!file.existsSync()) {
+                    _showError(AppLocalizations.of(context).importFileNotFound);
+                    return;
+                  }
                 }
 
                 final Map<String, dynamic> decrypted = await _decrypt(file);
@@ -466,9 +474,8 @@ class _ImportPageState extends State<ImportPage> {
       context: context,
       barrierDismissible: false,
       builder: (context) => StatefulBuilder(builder: (context, setState) {
-        return SimpleDialog(
+        return CustomSimpleDialog(
           title: Text(AppLocalizations.of(context).importPassword),
-          contentPadding: EdgeInsets.fromLTRB(24, 24, 24, 12),
           children: <Widget>[
             TextField(
               controller: _passController,
@@ -516,9 +523,16 @@ class _ImportPageState extends State<ImportPage> {
                   onPressed: () => Navigator.pop(context),
                   child: Text(AppLocalizations.of(context).importPassCancel),
                 ),
+                SizedBox(width: 12),
                 RaisedButton(
                   onPressed: () => Navigator.pop(context, _passController.text),
-                  child: Text(AppLocalizations.of(context).importPassOk),
+                  child: Text(
+                    AppLocalizations.of(context).importPassOk,
+                    style: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(color: Colors.white),
+                  ),
                 ),
               ],
             ),

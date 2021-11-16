@@ -11,7 +11,9 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/widgets/candles_icon.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -82,18 +84,15 @@ class _CoinSelectState extends State<CoinSelect> {
                           radius: widget.compact ? 8 : 12,
                         ),
                   const SizedBox(width: 6),
-                  ConstrainedBox(
-                      constraints:
-                          BoxConstraints(minWidth: widget.compact ? 34 : 50),
-                      child: Center(
-                          child: Text(
-                        widget.value != null ? widget.value.abbr : '-',
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2
-                            .copyWith(fontSize: widget.compact ? 14 : null),
-                        maxLines: 1,
-                      ))),
+                  Expanded(
+                    child: AutoScrollText(
+                      text: widget.value != null ? widget.value.abbr : '-',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          .copyWith(fontSize: widget.compact ? 14 : null),
+                    ),
+                  ),
                   Icon(
                     Icons.arrow_drop_down,
                     size: widget.compact ? 14 : null,
@@ -147,12 +146,21 @@ class _CoinSelectState extends State<CoinSelect> {
     final List<CoinBalance> sortedList = coinsBloc.sortCoins(coins);
 
     if (sortedList.isEmpty) {
-      return SimpleDialog(
+      return CustomSimpleDialog(
         title: Text(AppLocalizations.of(context).coinSelectTitle),
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: Text(AppLocalizations.of(context).coinSelectNotFound),
+          Text(AppLocalizations.of(context).coinSelectNotFound),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              RaisedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(AppLocalizations.of(context).okButton),
+              ),
+            ],
           ),
         ],
       );
@@ -209,7 +217,8 @@ class _CoinSelectState extends State<CoinSelect> {
           );
         }
 
-        return SimpleDialog(
+        return CustomSimpleDialog(
+          hasHorizontalPadding: false,
           title: Text(AppLocalizations.of(context).coinSelectTitle),
           children: [
             ...resetSelect,
@@ -418,23 +427,25 @@ class _CoinSelectState extends State<CoinSelect> {
   }
 
   Widget _buildProgressDialog() {
-    return Dialog(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const CircularProgressIndicator(),
-            const SizedBox(
-              width: 16,
-            ),
-            Text(
-              AppLocalizations.of(context).loading,
-              style: Theme.of(context).textTheme.bodyText2,
-            )
-          ],
+    return CustomSimpleDialog(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const CircularProgressIndicator(),
+              const SizedBox(
+                width: 16,
+              ),
+              Text(
+                AppLocalizations.of(context).loading,
+                style: Theme.of(context).textTheme.bodyText2,
+              )
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

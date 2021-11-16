@@ -249,24 +249,33 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
             : () async {
                 setState(() => _loading = true);
 
-                String path;
+                FilePickerResult filePickerResult;
                 final int lockCookie = lockService.enteringFilePicker();
                 try {
-                  path = await FilePicker.getFilePath();
+                  filePickerResult = await FilePicker.platform.pickFiles();
                 } catch (err) {
                   Log('import_page]', 'file picker exception: $err');
                 }
                 lockService.filePickerReturned(lockCookie);
 
-                if (path == null) {
+                if (filePickerResult == null) {
                   setState(() => _loading = false);
                   return;
                 }
 
-                final File file = File(path);
-                if (!file.existsSync()) {
-                  _showError(AppLocalizations.of(context).importFileNotFound);
-                  return;
+                File file;
+                if (filePickerResult.count != 0) {
+                  final pFile = filePickerResult.files[0];
+                  if (pFile == null) {
+                    _showError(AppLocalizations.of(context).importFileNotFound);
+                    return;
+                  }
+
+                  file = File(pFile.path);
+                  if (!file.existsSync()) {
+                    _showError(AppLocalizations.of(context).importFileNotFound);
+                    return;
+                  }
                 }
 
                 final Map<String, dynamic> data = await _getSwapData(file);

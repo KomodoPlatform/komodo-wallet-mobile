@@ -7,6 +7,7 @@ import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/sound_volume_button.dart';
 
 class SoundSettingsPage extends StatefulWidget {
@@ -116,41 +117,63 @@ class FilePickerButton extends StatelessWidget {
         icon: Icon(Icons.folder_open),
         color: Theme.of(context).toggleableActiveColor,
         onPressed: () async {
-          String path;
+          FilePickerResult filePickerResult;
           final int lockCookie = lockService.enteringFilePicker();
           try {
-            path = await FilePicker.getFilePath();
+            filePickerResult = await FilePicker.platform.pickFiles();
           } catch (err) {
             Log('setting_page:804', 'file picker exception: $err');
           }
           lockService.filePickerReturned(lockCookie);
 
+          if (filePickerResult == null) return;
+
+          PlatformFile pFile;
+          if (filePickerResult.count != 0) {
+            pFile = filePickerResult.files[0];
+            if (pFile == null) {
+              return;
+            }
+          }
+
           // On iOS this happens *after* pin lock, but very close in time to it (same second),
           // on Android/debug *before* pin lock,
           // chance is it's unordered.
-          Log('setting_page:811', 'file picked: $path');
+          Log('setting_page:811', 'file picked: ${pFile.path}');
 
-          final bool ck = checkAudioFile(path);
+          final bool ck = checkAudioFile(pFile.path);
           if (!ck) {
             dialogBloc.dialog = showDialog<dynamic>(
               context: context,
-              builder: (context) => AlertDialog(
+              builder: (context) => CustomSimpleDialog(
                 title: Text(AppLocalizations.of(context).soundCantPlayThat),
-                content: Text(AppLocalizations.of(context)
-                    .soundCantPlayThatMsg(description)),
-                actions: <Widget>[
-                  FlatButton(
-                    child: const Text('Ok'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                children: <Widget>[
+                  Text(AppLocalizations.of(context)
+                      .soundCantPlayThatMsg(description)),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      RaisedButton(
+                        child: Text(
+                          AppLocalizations.of(context).warningOkBtn,
+                          style: Theme.of(context)
+                              .textTheme
+                              .button
+                              .copyWith(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
             ).then((dynamic _) => dialogBloc.dialog = null);
             return;
           }
-          await musicService.setSoundPath(musicMode, path);
+          await musicService.setSoundPath(musicMode, pFile.path);
         });
   }
 }

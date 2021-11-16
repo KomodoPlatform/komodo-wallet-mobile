@@ -23,17 +23,18 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amo
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/build_confirmation_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/tx_list_item.dart';
+import 'package:komodo_dex/screens/portfolio/copy_dialog.dart';
+import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
 import 'package:komodo_dex/screens/portfolio/rewards_page.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import '../faucet_dialog.dart';
-import '../receive_dialog.dart';
 
 class CoinDetail extends StatefulWidget {
   const CoinDetail({
@@ -252,14 +253,16 @@ class _CoinDetailState extends State<CoinDetail> {
               const SizedBox(
                 width: 8,
               ),
-              Text(
-                currentCoinBalance.coin.name.toUpperCase(),
-                style: TextStyle(
-                  color: ThemeData.estimateBrightnessForColor(Color(
-                              int.parse(currentCoinBalance.coin.colorCoin))) ==
-                          Brightness.dark
-                      ? Colors.white
-                      : Colors.black,
+              Expanded(
+                child: AutoScrollText(
+                  text: currentCoinBalance.coin.name.toUpperCase(),
+                  style: TextStyle(
+                    color: ThemeData.estimateBrightnessForColor(Color(int.parse(
+                                currentCoinBalance.coin.colorCoin))) ==
+                            Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                 ),
               ),
             ],
@@ -549,6 +552,12 @@ class _CoinDetailState extends State<CoinDetail> {
                 padding: const EdgeInsets.only(right: 8),
                 child: _buildButtonLight(StatusButton.FAUCET, mContext),
               )),
+            if (currentCoinBalance.coin.abbr == 'TKL')
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: _buildButtonLight(StatusButton.PUBKEY, mContext),
+              )),
             if (double.parse(currentCoinBalance.balance.getBalance()) > 0)
               Expanded(
                   child: Padding(
@@ -578,6 +587,10 @@ class _CoinDetailState extends State<CoinDetail> {
         text = isExpanded
             ? AppLocalizations.of(context).close.toUpperCase()
             : AppLocalizations.of(context).send.toUpperCase();
+        break;
+
+      case StatusButton.PUBKEY:
+        text = AppLocalizations.of(context).pubkey.toUpperCase();
         break;
       case StatusButton.FAUCET:
         text = AppLocalizations.of(context).faucetName;
@@ -618,7 +631,7 @@ class _CoinDetailState extends State<CoinDetail> {
       onPressed: () {
         switch (statusButton) {
           case StatusButton.RECEIVE:
-            showReceiveDialog(mContext, currentCoinBalance.balance.address,
+            showCopyDialog(mContext, currentCoinBalance.balance.address,
                 widget.coinBalance.coin);
             break;
           case StatusButton.FAUCET:
@@ -642,10 +655,20 @@ class _CoinDetailState extends State<CoinDetail> {
               });
             }
             break;
+          case StatusButton.PUBKEY:
+            getPublicKey().then(
+                (v) => showCopyDialog(mContext, v, widget.coinBalance.coin));
+            break;
           default:
         }
       },
     );
+  }
+
+  Future<String> getPublicKey() async {
+    final pb = await MM.getPublicKey();
+    final String key = pb.result.publicKey;
+    return key;
   }
 
   Widget _buildForm() {
@@ -848,4 +871,4 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 }
 
-enum StatusButton { SEND, RECEIVE, FAUCET, CLAIM }
+enum StatusButton { SEND, RECEIVE, FAUCET, CLAIM, PUBKEY }

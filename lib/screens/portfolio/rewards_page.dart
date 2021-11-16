@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
@@ -472,33 +473,35 @@ class _RewardsPageState extends State<RewardsPage> {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return CustomSimpleDialog(
             title: Text(AppLocalizations.of(context).rewardsPopupTitle),
-            contentPadding: const EdgeInsets.only(
-              left: 25,
-              right: 25,
-              top: 25,
-              bottom: 15,
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(item.error['long']),
-                const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    RaisedButton(
-                      onPressed: () {
-                        dialogBloc.closeDialog(context);
-                      },
-                      child: Text(AppLocalizations.of(context).rewardsPopupOk),
-                    )
-                  ],
-                )
-              ],
-            ),
+            children: <Widget>[
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(item.error['long']),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: () {
+                          dialogBloc.closeDialog(context);
+                        },
+                        child: Text(
+                          AppLocalizations.of(context).rewardsPopupOk,
+                          style: Theme.of(context)
+                              .textTheme
+                              .button
+                              .copyWith(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ],
           );
         }).then((dynamic _) => dialogBloc.dialog = null);
   }

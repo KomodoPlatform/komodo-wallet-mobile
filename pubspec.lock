@@ -233,11 +233,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: b68ee11c6ac117460ffa0c96b13ac4b89f2386f7
-      resolved-ref: b68ee11c6ac117460ffa0c96b13ac4b89f2386f7
+      ref: "627c0a31b22026809cea3c5cb3c0a81d2a632117"
+      resolved-ref: "627c0a31b22026809cea3c5cb3c0a81d2a632117"
       url: "git://github.com/KomodoPlatform/flutter_file_picker.git"
     source: git
-    version: "1.4.3+2"
+    version: "2.1.7"
   flutter:
     dependency: "direct main"
     description: flutter

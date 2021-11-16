@@ -393,7 +393,7 @@
         "port": 10023,
         "proto": "tcp",
         "abbr": "MCL",
-        "coingeckoId": "test-token",
+        "coingeckoId": "mcl",
         "colorCoin": "0xFF326464",
         "serverList": [
             "electrum3.cipig.net:10023",
@@ -558,7 +558,7 @@
         "port": 10077,
         "proto": "tcp",
         "abbr": "TKL",
-        "coingeckoId": "test-coin",
+        "coingeckoId": "tokel",
         "colorCoin": "0xFF1E2835",
         "serverList": [
             "1.eu.tokel.electrum.dexstats.info:10077",
@@ -737,7 +737,7 @@
         ]
     },
     {
-        "abbr": "SMTF",
+        "abbr": "SMTF-v2",
         "name": "SmartFi Token",
         "type": "bep",
         "coingeckoId": "smtf-test",

@@ -10,7 +10,7 @@ import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
@@ -182,8 +182,12 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         context: context,
         builder: (context) {
           if (coins == null)
-            return const Center(
-              child: CircularProgressIndicator(),
+            return CustomSimpleDialog(
+              children: [
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ],
             );
 
           final List<CoinBalance> availableForSell =
@@ -195,7 +199,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
             return _buildNoFundsAlert();
           }
 
-          return SimpleDialog(
+          return CustomSimpleDialog(
+            hasHorizontalPadding: false,
             title: Text(AppLocalizations.of(context).multiBaseSelectTitle),
             children: coinsBloc
                 .sortCoins(availableForSell)
@@ -236,21 +241,18 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
   }
 
   Widget _buildNoFundsAlert() {
-    return SimpleDialog(
+    return CustomSimpleDialog(
       title: Row(
         children: <Widget>[
           Icon(
             Icons.info_outline,
             size: 48,
           ),
-          const SizedBox(
-            width: 16,
-          ),
+          const SizedBox(width: 12),
           Text(AppLocalizations.of(context).noFunds,
               style: Theme.of(context).textTheme.headline6),
         ],
       ),
-      contentPadding: const EdgeInsets.all(20),
       children: <Widget>[
         Text(AppLocalizations.of(context).noFundsDetected,
             style: Theme.of(context)
@@ -261,17 +263,14 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
           height: 24,
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: PrimaryButton(
-                text: AppLocalizations.of(context).goToPorfolio,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  mainBloc.setCurrentIndexTab(0);
-                },
-                backgroundColor: Theme.of(context).accentColor,
-              ),
+            RaisedButton(
+              child: Text(AppLocalizations.of(context).goToPorfolio),
+              onPressed: () {
+                Navigator.of(context).pop();
+                mainBloc.setCurrentIndexTab(0);
+              },
             )
           ],
         ),

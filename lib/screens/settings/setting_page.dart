@@ -33,6 +33,7 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -827,19 +828,32 @@ class _SettingPageState extends State<SettingPage> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return CustomSimpleDialog(
             title: Text(AppLocalizations.of(context).feedback),
-            content: Text(AppLocalizations.of(context).warningShareLogs),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(AppLocalizations.of(context).cancel),
-                onPressed: () => Navigator.of(context).pop(),
+            children: <Widget>[
+              Text(AppLocalizations.of(context).warningShareLogs),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FlatButton(
+                    child: Text(AppLocalizations.of(context).cancel),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  const SizedBox(width: 12),
+                  RaisedButton(
+                    key: const Key('setting-share-button'),
+                    child: Text(
+                      AppLocalizations.of(context).share,
+                      style: Theme.of(context)
+                          .textTheme
+                          .button
+                          .copyWith(color: Colors.white),
+                    ),
+                    onPressed: () => _shareLogs(),
+                  )
+                ],
               ),
-              RaisedButton(
-                key: const Key('setting-share-button'),
-                child: Text(AppLocalizations.of(context).share),
-                onPressed: () => _shareLogs(),
-              )
             ],
           );
         }).then((dynamic _) {
@@ -891,8 +905,7 @@ class ShowLoadingDelete extends StatefulWidget {
 class _ShowLoadingDeleteState extends State<ShowLoadingDelete> {
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    return CustomSimpleDialog(
       children: <Widget>[
         Center(
             child: Row(

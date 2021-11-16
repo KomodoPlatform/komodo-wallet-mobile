@@ -8,7 +8,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ContactListItem extends StatefulWidget {
@@ -223,19 +223,13 @@ class _ContactListItemState extends State<ContactListItem> {
     dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          contentPadding: const EdgeInsets.only(
-            left: 20,
-            right: 20,
-            bottom: 20,
-            top: 10,
-          ),
+        return CustomSimpleDialog(
           title: Row(
             children: <Widget>[
               Icon(
                 Icons.warning,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               Text(title),
             ],
           ),
@@ -252,15 +246,24 @@ class _ContactListItemState extends State<ContactListItem> {
                 )),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: SecondaryButton(
-                onPressed: () {
-                  dialogBloc.closeDialog(context);
-                },
-                child: Text(AppLocalizations.of(context).warningOkBtn),
-              ),
-            )
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                RaisedButton(
+                  onPressed: () {
+                    dialogBloc.closeDialog(context);
+                  },
+                  child: Text(
+                    AppLocalizations.of(context).warningOkBtn,
+                    style: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
           ],
         );
       },

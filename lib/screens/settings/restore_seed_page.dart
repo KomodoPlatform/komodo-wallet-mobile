@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:bip39/bip39.dart' as bip39;
@@ -171,8 +172,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         builder: (context) {
           bool enabled = false;
           return StatefulBuilder(builder: (context, setState) {
-            return SimpleDialog(
-              contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+            return CustomSimpleDialog(
               title: Text(AppLocalizations.of(context).warning),
               children: [
                 Text(AppLocalizations.of(context).customSeedWarning),

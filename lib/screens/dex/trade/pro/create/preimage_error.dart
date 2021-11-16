@@ -3,6 +3,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form_validator.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
 class PreimageError extends StatefulWidget {
   const PreimageError(this.apiErrorMessage);
@@ -63,9 +64,7 @@ class _PreimageErrorState extends State<PreimageError> {
         dialogBloc.dialog = showDialog<void>(
             context: context,
             builder: (BuildContext context) {
-              return SimpleDialog(
-                contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+              return CustomSimpleDialog(
                 title: Text(AppLocalizations.of(context).invalidSwap,
                     style: TextStyle(fontSize: 18)),
                 children: [
@@ -77,9 +76,14 @@ class _PreimageErrorState extends State<PreimageError> {
                     ],
                   ),
                   SizedBox(height: 12),
-                  RaisedButton(
-                    onPressed: Navigator.of(context).pop,
-                    child: Text(AppLocalizations.of(context).okButton),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      RaisedButton(
+                        onPressed: Navigator.of(context).pop,
+                        child: Text(AppLocalizations.of(context).okButton),
+                      ),
+                    ],
                   )
                 ],
               );

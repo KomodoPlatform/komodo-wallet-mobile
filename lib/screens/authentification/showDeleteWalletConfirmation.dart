@@ -4,6 +4,7 @@ import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
 Future<void> showDeleteWalletConfirmation(BuildContext context,
     {Wallet wallet, String password}) async {
@@ -14,10 +15,7 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
       builder: (BuildContext context) {
         bool loading = false;
 
-        return SimpleDialog(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        return CustomSimpleDialog(
           title: Column(
             children: <Widget>[
               SvgPicture.asset('assets/svg/delete_wallet.svg'),
@@ -107,54 +105,47 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
             ),
             StatefulBuilder(builder: (context, setState) {
               return Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Expanded(
-                    child: FlatButton(
-                      child: Text(AppLocalizations.of(context).cancel),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
+                  FlatButton(
+                    child: Text(AppLocalizations.of(context).cancel),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
                   const SizedBox(
-                    width: 8,
+                    width: 12,
                   ),
-                  Expanded(
-                    child: RaisedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (loading) ...{
-                            SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 1,
-                              ),
+                  RaisedButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (loading) ...{
+                          SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 1,
                             ),
-                            SizedBox(width: 4),
-                          },
-                          Text(AppLocalizations.of(context).delete),
-                        ],
-                      ),
-                      key: const Key('delete-wallet'),
-                      onPressed: loading
-                          ? null
-                          : () async {
-                              setState(() => loading = true);
-                              await walletBloc.deleteSeedPhrase(
-                                  password, wallet);
-                              await walletBloc.deleteWallet(wallet);
-                              await walletBloc.getWalletsSaved();
-
-                              Navigator.of(context).pop();
-                            },
+                          ),
+                          SizedBox(width: 4),
+                        },
+                        Text(AppLocalizations.of(context).delete),
+                      ],
                     ),
+                    key: const Key('delete-wallet'),
+                    onPressed: loading
+                        ? null
+                        : () async {
+                            setState(() => loading = true);
+                            await walletBloc.deleteSeedPhrase(password, wallet);
+                            await walletBloc.deleteWallet(wallet);
+                            await walletBloc.getWalletsSaved();
+
+                            Navigator.of(context).pop();
+                          },
                   )
                 ],
               );
             }),
-            const SizedBox(
-              height: 24,
-            ),
           ],
         );
       }).then((dynamic _) {
