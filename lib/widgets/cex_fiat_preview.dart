@@ -29,7 +29,7 @@ class CexFiatPreview extends StatelessWidget {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.baseline,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CexMarker(
           context,

@@ -7,11 +7,12 @@ import 'package:komodo_dex/screens/addressbook/contact_list_item.dart';
 class ContactsList extends StatefulWidget {
   const ContactsList(
     this.contacts, {
+    Key key,
     this.shouldPop = false,
     this.coin,
     this.contact,
     this.searchPhrase,
-  });
+  }) : super(key: key);
 
   final List<Contact> contacts;
   final bool shouldPop;
@@ -109,7 +110,7 @@ class _ContactsListState extends State<ContactsList> {
               child: Text(
                 indexLetter,
                 style: TextStyle(
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),

@@ -9,7 +9,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class UpdatesProvider extends ChangeNotifier {
   UpdatesProvider() {
@@ -60,7 +60,7 @@ class UpdatesProvider extends ChangeNotifier {
     try {
       response = await http
           .post(
-        url,
+        Uri.parse(url),
         body: jsonEncode({
           'currentVersion': currentVersion,
           'platform': Platform.isAndroid ? 'android' : 'ios',

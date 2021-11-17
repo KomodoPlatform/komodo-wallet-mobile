@@ -14,7 +14,7 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
       // return object of type Dialog
       return CustomSimpleDialog(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height * 0.4,
             width: MediaQuery.of(context).size.width * 0.9,
             child: Column(
@@ -38,27 +38,23 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
                   child: Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          child: Center(
-                              child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 16),
-                            child: AutoSizeText(
-                              address,
-                              textKey: const Key('coin-details-address'),
-                              style: Theme.of(context).textTheme.bodyText2,
-                              maxLines: 2,
-                            ),
-                          )),
-                        ),
+                        child: Center(
+                            child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 16),
+                          child: AutoSizeText(
+                            address,
+                            textKey: const Key('coin-details-address'),
+                            style: Theme.of(context).textTheme.bodyText2,
+                            maxLines: 2,
+                          ),
+                        )),
                       ),
                       SizedBox(width: 8),
-                      Container(
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            child: Icon(Icons.copy),
-                          ),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Icon(Icons.copy),
                         ),
                       ),
                     ],
@@ -67,7 +63,7 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text(
                         AppLocalizations.of(context).close,
                         style: Theme.of(context)

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/round_button.dart';
 import 'package:komodo_dex/services/lock_service.dart';
-import 'package:barcode_scan/barcode_scan.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class ContactEditField extends StatefulWidget {
   const ContactEditField({
+    Key key,
     this.name,
     this.label,
     this.value,
@@ -17,7 +18,7 @@ class ContactEditField extends StatefulWidget {
     this.padding,
     this.icon,
     this.invalid = false,
-  });
+  }) : super(key: key);
 
   final String name;
   final bool autofocus;
@@ -91,13 +92,20 @@ class _ContactEditFieldState extends State<ContactEditField> {
                           if (widget.name != 'name')
                             ButtonTheme(
                               minWidth: 0,
-                              child: FlatButton(
-                                padding: const EdgeInsets.only(
-                                  right: 6,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6.0)),
+                              child: TextButton(
                                 onPressed: () => _scan(),
+                                style: ButtonStyle(
+                                  padding: MaterialStateProperty.all(
+                                    const EdgeInsets.only(
+                                      right: 6,
+                                    ),
+                                  ),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6.0),
+                                    ),
+                                  ),
+                                ),
                                 child: Icon(
                                   Icons.add_a_photo,
                                   color: settingsBloc.isLightTheme
@@ -133,7 +141,9 @@ class _ContactEditFieldState extends State<ContactEditField> {
                                     borderSide: BorderSide(
                                         color: widget.invalid
                                             ? Colors.red
-                                            : Theme.of(context).accentColor)),
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .secondary)),
                                 hintStyle:
                                     Theme.of(context).textTheme.bodyText1,
                                 labelStyle:
@@ -151,7 +161,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                                     if (widget.onRemove != null)
                                       widget.onRemove();
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.remove,
                                     size: 16,
                                   )),
@@ -167,13 +177,16 @@ class _ContactEditFieldState extends State<ContactEditField> {
 
   Future<void> _scan() async {
     final int lockCookie = lockService.enteringQrScanner();
-    try {
-      final String barcode = await BarcodeScanner.scan();
+
+    final result = await scanQr();
+
+    if (result != null) {
       setState(() {
-        controller.text = barcode;
+        controller.text = result;
       });
-      widget.onChange(barcode);
-    } catch (_) {}
+    }
+    widget.onChange(result);
+
     lockService.qrScannerReturned(lockCookie);
   }
 }

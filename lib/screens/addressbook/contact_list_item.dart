@@ -14,10 +14,11 @@ import 'package:provider/provider.dart';
 class ContactListItem extends StatefulWidget {
   const ContactListItem(
     this.contact, {
+    Key key,
     this.shouldPop = false,
     this.coin,
     this.expanded = false,
-  });
+  }) : super(key: key);
 
   final Contact contact;
   final bool shouldPop;
@@ -71,7 +72,7 @@ class _ContactListItemState extends State<ContactListItem> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: SizedBox(
                     width: double.infinity,
-                    child: FlatButton(
+                    child: TextButton(
                         onPressed: () {
                           Navigator.push<dynamic>(
                               context,
@@ -84,7 +85,7 @@ class _ContactListItemState extends State<ContactListItem> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Icon(Icons.edit, size: 16),
+                            const Icon(Icons.edit, size: 16),
                             const SizedBox(width: 4),
                             Text(AppLocalizations.of(context).contactEdit),
                           ],
@@ -146,14 +147,14 @@ class _ContactListItemState extends State<ContactListItem> {
                           child: truncateMiddle(
                             value,
                             style: TextStyle(
-                              color: Theme.of(context).accentColor,
+                              color: Theme.of(context).colorScheme.secondary,
                               fontSize: 14,
                             ),
                           ),
                         ),
                         Icon(
                           Icons.chevron_right,
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.secondary,
                           size: 20,
                         ),
                       ],
@@ -226,7 +227,7 @@ class _ContactListItemState extends State<ContactListItem> {
         return CustomSimpleDialog(
           title: Row(
             children: <Widget>[
-              Icon(
+              const Icon(
                 Icons.warning,
               ),
               const SizedBox(width: 8),
@@ -250,7 +251,7 @@ class _ContactListItemState extends State<ContactListItem> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     dialogBloc.closeDialog(context);
                   },

@@ -500,8 +500,8 @@ class _ImportPageState extends State<ImportPage> {
                     borderSide:
                         BorderSide(color: Theme.of(context).primaryColorLight)),
                 focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).accentColor)),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.secondary)),
                 hintStyle: Theme.of(context).textTheme.bodyText1,
                 labelStyle: Theme.of(context).textTheme.bodyText2,
                 hintText: AppLocalizations.of(context).hintPassword,
@@ -519,12 +519,12 @@ class _ImportPageState extends State<ImportPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text(AppLocalizations.of(context).importPassCancel),
                 ),
                 SizedBox(width: 12),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () => Navigator.pop(context, _passController.text),
                   child: Text(
                     AppLocalizations.of(context).importPassOk,
@@ -569,9 +569,9 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   void _showError(String e) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-      '$e',
+      e,
       style: TextStyle(color: Theme.of(context).errorColor),
     )));
   }

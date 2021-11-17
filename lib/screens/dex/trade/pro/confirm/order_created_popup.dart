@@ -14,7 +14,7 @@ void showOrderCreatedDialog(BuildContext context) {
                 SizedBox(height: 16),
               ],
               verticalButtons: [
-                RaisedButton(
+                ElevatedButton(
                   child: Text(
                     AppLocalizations.of(context).showMyOrders,
                     style: Theme.of(context)
@@ -30,7 +30,7 @@ void showOrderCreatedDialog(BuildContext context) {
                 const SizedBox(
                   height: 8,
                 ),
-                FlatButton(
+                TextButton(
                   child: Text(AppLocalizations.of(context).close),
                   onPressed: () {
                     Navigator.of(context).pop();

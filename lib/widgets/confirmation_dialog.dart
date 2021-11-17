@@ -33,7 +33,7 @@ void showConfirmationDialog({
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     dialogBloc.closeDialog(context);
                   },
@@ -43,7 +43,7 @@ void showConfirmationDialog({
                   ),
                 ),
                 const SizedBox(width: 12),
-                RaisedButton(
+                ElevatedButton(
                   key: key ?? const Key('confirm-button-key'),
                   onPressed: () {
                     dialogBloc.closeDialog(context);

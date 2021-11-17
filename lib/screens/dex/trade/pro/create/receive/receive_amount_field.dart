@@ -50,7 +50,8 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).accentColor),
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.secondary),
           ),
           hintStyle: Theme.of(context)
               .textTheme

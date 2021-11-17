@@ -81,9 +81,12 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
 }
 
 class BuildLanguageDialogOption extends StatefulWidget {
-  const BuildLanguageDialogOption(
-      {Key key, this.locale, this.currentLoc, this.onChange})
-      : super(key: key);
+  const BuildLanguageDialogOption({
+    Key key,
+    this.locale,
+    this.currentLoc,
+    this.onChange,
+  }) : super(key: key);
 
   final Locale locale;
   final Locale currentLoc;

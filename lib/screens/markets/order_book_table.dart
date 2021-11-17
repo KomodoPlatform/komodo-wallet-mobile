@@ -345,10 +345,10 @@ class _OrderBookTableState extends State<OrderBookTable> {
     return TableRow(
       children: [
         cexRate > 0
-            ? Container(
+            ? SizedBox(
                 height: 26,
                 child: Stack(
-                  overflow: Overflow.visible,
+                  clipBehavior: Clip.none,
                   children: <Widget>[
                     Positioned(
                       top: 0,

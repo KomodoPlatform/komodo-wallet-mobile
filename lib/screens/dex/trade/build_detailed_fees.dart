@@ -55,14 +55,12 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
                   ],
                 )),
           )
-        : Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildHeader(),
-                if (_showDetails) _buildDetails(),
-              ],
-            ),
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildHeader(),
+              if (_showDetails) _buildDetails(),
+            ],
           );
   }
 
@@ -203,65 +201,63 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
   }
 
   Widget _buildPaidFromBalance() {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+          color: Theme.of(context).highlightColor.withAlpha(25),
+          child: Text(
+            'Paid from balance:',
+            style: Theme.of(context).textTheme.caption,
+          ),
+        ),
+        SizedBox(height: 4),
+        if (_sellTxFee != null && !_sellTxFee.paidFromTradingVol)
           Container(
-            padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-            color: Theme.of(context).highlightColor.withAlpha(25),
+            padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
             child: Text(
-              'Paid from balance:',
+              '• ${cutTrailingZeros(formatPrice(_sellTxFee.amount))} '
+              '${_sellTxFee.coin} '
+              '(${_cexProvider.convert(double.tryParse(_sellTxFee.amount), from: _sellTxFee.coin)}): '
+              'send $_sellCoin tx fee',
               style: Theme.of(context).textTheme.caption,
             ),
           ),
-          SizedBox(height: 4),
-          if (_sellTxFee != null && !_sellTxFee.paidFromTradingVol)
-            Container(
-              padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
-              child: Text(
-                '• ${cutTrailingZeros(formatPrice(_sellTxFee.amount))} '
-                '${_sellTxFee.coin} '
-                '(${_cexProvider.convert(double.tryParse(_sellTxFee.amount), from: _sellTxFee.coin)}): '
-                'send $_sellCoin tx fee',
-                style: Theme.of(context).textTheme.caption,
-              ),
+        if (_receiveTxFee != null && !_receiveTxFee.paidFromTradingVol)
+          Container(
+            padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+            child: Text(
+              '• ${cutTrailingZeros(formatPrice(_receiveTxFee.amount))} '
+              '${_receiveTxFee.coin} '
+              '(${_cexProvider.convert(double.tryParse(_receiveTxFee.amount), from: _receiveTxFee.coin)}): '
+              'receive $_receiveCoin tx fee',
+              style: Theme.of(context).textTheme.caption,
             ),
-          if (_receiveTxFee != null && !_receiveTxFee.paidFromTradingVol)
-            Container(
-              padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
-              child: Text(
-                '• ${cutTrailingZeros(formatPrice(_receiveTxFee.amount))} '
-                '${_receiveTxFee.coin} '
-                '(${_cexProvider.convert(double.tryParse(_receiveTxFee.amount), from: _receiveTxFee.coin)}): '
-                'receive $_receiveCoin tx fee',
-                style: Theme.of(context).textTheme.caption,
-              ),
+          ),
+        if (_dexFee != null && !_dexFee.paidFromTradingVol)
+          Container(
+            padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+            child: Text(
+              '• ${cutTrailingZeros(formatPrice(_dexFee.amount))} '
+              '${_dexFee.coin} '
+              '(${_cexProvider.convert(double.tryParse(_dexFee.amount), from: _dexFee.coin)}): '
+              'trading fee',
+              style: Theme.of(context).textTheme.caption,
             ),
-          if (_dexFee != null && !_dexFee.paidFromTradingVol)
-            Container(
-              padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
-              child: Text(
-                '• ${cutTrailingZeros(formatPrice(_dexFee.amount))} '
-                '${_dexFee.coin} '
-                '(${_cexProvider.convert(double.tryParse(_dexFee.amount), from: _dexFee.coin)}): '
-                'trading fee',
-                style: Theme.of(context).textTheme.caption,
-              ),
+          ),
+        if (_feeToSendDexFee != null && !_feeToSendDexFee.paidFromTradingVol)
+          Container(
+            padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+            child: Text(
+              '• ${cutTrailingZeros(formatPrice(_feeToSendDexFee.amount))} '
+              '${_feeToSendDexFee.coin} '
+              '(${_cexProvider.convert(double.tryParse(_feeToSendDexFee.amount), from: _feeToSendDexFee.coin)}): '
+              'send trading fee tx fee',
+              style: Theme.of(context).textTheme.caption,
             ),
-          if (_feeToSendDexFee != null && !_feeToSendDexFee.paidFromTradingVol)
-            Container(
-              padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
-              child: Text(
-                '• ${cutTrailingZeros(formatPrice(_feeToSendDexFee.amount))} '
-                '${_feeToSendDexFee.coin} '
-                '(${_cexProvider.convert(double.tryParse(_feeToSendDexFee.amount), from: _feeToSendDexFee.coin)}): '
-                'send trading fee tx fee',
-                style: Theme.of(context).textTheme.caption,
-              ),
-            ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 
@@ -325,22 +321,20 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
         ),
       ));
 
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-            color: Theme.of(context).highlightColor.withAlpha(25),
-            child: Text(
-              'Paid from received volume:',
-              style: Theme.of(context).textTheme.caption,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+          color: Theme.of(context).highlightColor.withAlpha(25),
+          child: Text(
+            'Paid from received volume:',
+            style: Theme.of(context).textTheme.caption,
           ),
-          SizedBox(height: 4),
-          ...items,
-        ],
-      ),
+        ),
+        SizedBox(height: 4),
+        ...items,
+      ],
     );
   }
 }

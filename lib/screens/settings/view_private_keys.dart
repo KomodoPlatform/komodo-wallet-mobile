@@ -128,7 +128,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
   }
 
   Widget _buildDialogContent() {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.5,
       width: MediaQuery.of(context).size.width * 0.9,
       child: FutureBuilder<PrivKey>(
@@ -173,7 +173,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                   onTap: () {
                     copyToClipBoard(mContext, privKey);
                     Future.delayed(Duration(seconds: 2), () {
-                      Scaffold.of(mContext).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(mContext).hideCurrentSnackBar();
                     });
                   },
                   child: Text(privKey,
@@ -186,7 +186,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text(
                         AppLocalizations.of(context).close,
                         style: Theme.of(context)

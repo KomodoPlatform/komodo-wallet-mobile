@@ -82,7 +82,7 @@ class _BuyFormState extends State<BuyForm> {
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                 width: 1,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               )),
             )),
         Positioned(

@@ -8,7 +8,7 @@ class SupportChannelItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return TextButton(
       onPressed: data.link == null
           ? null
           : () {

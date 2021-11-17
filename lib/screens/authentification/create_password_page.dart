@@ -5,7 +5,7 @@ import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class CreatePasswordPage extends StatefulWidget {
-  const CreatePasswordPage({@required this.seed});
+  const CreatePasswordPage({Key key, @required this.seed}) : super(key: key);
 
   final String seed;
 
@@ -123,8 +123,8 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                     borderSide:
                         BorderSide(color: Theme.of(context).primaryColorLight)),
                 focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).accentColor)),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.secondary)),
                 hintStyle: Theme.of(context).textTheme.bodyText1,
                 labelStyle: Theme.of(context).textTheme.bodyText2,
                 hintText: AppLocalizations.of(context).hintPassword,
@@ -167,8 +167,8 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                       borderSide: BorderSide(
                           color: Theme.of(context).primaryColorLight)),
                   focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Theme.of(context).accentColor)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.secondary)),
                   hintStyle: Theme.of(context).textTheme.bodyText1,
                   labelStyle: Theme.of(context).textTheme.bodyText2,
                   hintText: AppLocalizations.of(context).hintConfirmPassword,
@@ -228,7 +228,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   }
 
   void _showError(BuildContext context, String data) {
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
       content: Text(data),

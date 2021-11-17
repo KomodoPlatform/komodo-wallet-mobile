@@ -99,7 +99,8 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
               borderSide:
                   BorderSide(color: Theme.of(context).primaryColorLight)),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              borderSide:
+                  BorderSide(color: Theme.of(context).colorScheme.secondary)),
           hintStyle: Theme.of(context).textTheme.bodyText1,
           labelStyle: Theme.of(context).textTheme.bodyText2,
           hintText: AppLocalizations.of(context).exampleHintSeed,
@@ -178,11 +179,12 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                 Text(AppLocalizations.of(context).customSeedWarning),
                 TextField(
                   autofocus: true,
-                  style: TextStyle(color: Theme.of(context).accentColor),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).accentColor)),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary)),
                   ),
                   onChanged: (String text) {
                     setState(() {
@@ -197,13 +199,13 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    FlatButton(
+                    TextButton(
                         child: Text(AppLocalizations.of(context).cancelButton),
                         onPressed: () {
                           Navigator.pop(context, false);
                         }),
                     SizedBox(width: 12),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text(AppLocalizations.of(context).okButton),
                       onPressed: !enabled
                           ? null
@@ -225,7 +227,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   Widget _buildConfirmButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         height: 50,
         child: _isLogin

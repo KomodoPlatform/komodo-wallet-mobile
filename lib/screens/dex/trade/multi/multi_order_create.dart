@@ -59,14 +59,13 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
 
     final int qtt = multiOrderProvider.relCoins.length;
 
-    return RaisedButton(
-      disabledColor: Theme.of(context).disabledColor.withAlpha(100),
+    return ElevatedButton(
       onPressed: allowCreate
           ? () async {
               if (await multiOrderProvider.validate()) {
                 multiOrderProvider.validated = true;
               } else {
-                Scaffold.of(context).showSnackBar(SnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     backgroundColor: Theme.of(context).backgroundColor,
                     content: Text(
                       AppLocalizations.of(context).multiFixErrors,

@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
+//import 'dart:typed_data';
 
-import 'package:convert/convert.dart';
+//import 'package:convert/convert.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bip39/bip39.dart' as bip39;
-import 'package:keccak/keccak.dart';
+//import 'package:keccak/keccak.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -27,17 +27,18 @@ import 'package:rational/rational.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
+import 'package:barcode_scan2/barcode_scan2.dart';
 
 import '../localizations.dart';
 
 void copyToClipBoard(BuildContext context, String str) {
-  ScaffoldState scaffold;
+  ScaffoldMessengerState scaffoldMessenger;
   try {
-    scaffold = Scaffold.of(context);
+    scaffoldMessenger = ScaffoldMessenger.of(context);
   } catch (_) {}
 
-  if (scaffold != null) {
-    scaffold.showSnackBar(SnackBar(
+  if (scaffoldMessenger != null) {
+    scaffoldMessenger.showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       content: Text(AppLocalizations.of(context).clipboard),
     ));
@@ -45,6 +46,10 @@ void copyToClipBoard(BuildContext context, String str) {
   Clipboard.setData(ClipboardData(text: str));
 }
 
+// MRC: This is apparently unused and uses the keccak plugin that we aren't
+// aren't able to use
+
+/*
 bool isAddress(String address) {
   if (RegExp('!/^(0x)?[0-9a-f]{40}\$/i').hasMatch(address)) {
     return false;
@@ -75,6 +80,7 @@ bool isChecksumAddress(String address) {
   }
   return true;
 }
+*/
 
 /// Convers a null, a string or a double into a Decimal.
 Decimal deci(dynamic dv) {
@@ -165,7 +171,7 @@ bool isNumeric(String s) {
 }
 
 void showMessage(BuildContext mContext, String error) {
-  Scaffold.of(mContext).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
     duration: const Duration(seconds: 3),
     backgroundColor: Theme.of(mContext).primaryColor,
     content: Text(
@@ -176,7 +182,7 @@ void showMessage(BuildContext mContext, String error) {
 }
 
 void showErrorMessage(BuildContext mContext, String error) {
-  Scaffold.of(mContext).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
     duration: const Duration(seconds: 2),
     backgroundColor: Theme.of(mContext).errorColor,
     content: Text(
@@ -230,7 +236,8 @@ Future<bool> authenticateBiometrics(
     final int lockCookie = lockService.enteringBiometrics();
 
     try {
-      didAuthenticate = await localAuth.authenticateWithBiometrics(
+      didAuthenticate = await localAuth.authenticate(
+          biometricOnly: true,
           stickyAuth: true,
           localizedReason: AppLocalizations.of(context).lockScreenAuth);
     } on PlatformException catch (e) {
@@ -277,7 +284,7 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
                 style: Theme.of(context).textTheme.bodyText2,
                 children: <TextSpan>[
                   TextSpan(
-                      text: '${coin.name}',
+                      text: coin.name,
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2
@@ -292,7 +299,7 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                RaisedButton(
+                ElevatedButton(
                   child: Text(
                     AppLocalizations.of(context).cantDeleteDefaultCoinOk,
                     style: Theme.of(context).textTheme.button.copyWith(
@@ -326,7 +333,7 @@ Future<void> showConfirmationRemoveCoin(
                     children: <TextSpan>[
                   TextSpan(text: AppLocalizations.of(context).deleteSpan1),
                   TextSpan(
-                      text: '${coin.name}',
+                      text: coin.name,
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2
@@ -337,7 +344,7 @@ Future<void> showConfirmationRemoveCoin(
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                FlatButton(
+                TextButton(
                   child: Text(
                     AppLocalizations.of(context).cancel,
                     style: Theme.of(context).textTheme.button,
@@ -347,15 +354,7 @@ Future<void> showConfirmationRemoveCoin(
                   },
                 ),
                 const SizedBox(width: 12),
-                RaisedButton(
-                  color: Theme.of(context).errorColor,
-                  child: Text(
-                    AppLocalizations.of(context).confirm,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Colors.white),
-                  ),
+                ElevatedButton(
                   onPressed: () async {
                     try {
                       await coinsBloc.removeCoin(coin);
@@ -364,6 +363,17 @@ Future<void> showConfirmationRemoveCoin(
                     }
                     Navigator.of(context).pop();
                   },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Theme.of(context).errorColor),
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context).confirm,
+                    style: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(color: Colors.white),
+                  ),
                 )
               ],
             ),
@@ -749,7 +759,7 @@ void showUriDetailsDialog(
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                RaisedButton(
+                ElevatedButton(
                   child: Text(AppLocalizations.of(context).okButton),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -761,14 +771,14 @@ void showUriDetailsDialog(
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   child:
                       Text(AppLocalizations.of(context).paymentUriDetailsDeny),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text(
                       AppLocalizations.of(context).paymentUriDetailsAccept),
                   onPressed: () {
@@ -804,4 +814,16 @@ List<Coin> filterCoinsByQuery(List<Coin> coins, String query) {
           coin.name.toLowerCase().contains(query.trim().toLowerCase()))
       .toList();
   return list;
+}
+
+Future<String> scanQr() async {
+  final result = await BarcodeScanner.scan(
+    options: ScanOptions(restrictFormat: [BarcodeFormat.qr]),
+  );
+
+  if (result.type == ResultType.Barcode && result.format == BarcodeFormat.qr) {
+    final content = result.rawContent;
+    return content;
+  }
+  return null;
 }

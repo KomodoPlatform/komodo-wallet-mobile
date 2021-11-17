@@ -53,8 +53,6 @@ class BuildFiatAmount extends StatelessWidget {
   }
 
   Widget _spacer() {
-    return Container(
-      child: Text(String.fromCharCode(0x00A0), style: TextStyle(fontSize: 12)),
-    );
+    return Text(String.fromCharCode(0x00A0), style: TextStyle(fontSize: 12));
   }
 }

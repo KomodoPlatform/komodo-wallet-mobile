@@ -27,7 +27,7 @@ class HealthIndicator extends StatelessWidget {
     if (_value != null && _value < _min) _value = _min;
     if (_value != null && _value > _max) _value = _max;
 
-    return Container(
+    return SizedBox(
       width: _size,
       height: _size * 0.8,
       child: Stack(children: [

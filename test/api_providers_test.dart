@@ -70,15 +70,15 @@ void main() {
         GetDisableCoin(userpass: 'test', method: 'disable_coin', coin: 'KMD');
 
     test('returns a DisableCoin', () async {
-      when(client.post(url, body: json.encode(getDisableCoin))).thenAnswer(
-          (_) async =>
+      when(client.post(Uri.parse(url), body: json.encode(getDisableCoin)))
+          .thenAnswer((_) async =>
               http.Response(fixture('disable_coin/disable_coin.json'), 200));
       expect(await MM.disableCoin(getDisableCoin, client: client),
           const TypeMatcher<DisableCoin>());
     });
 
     test('throws on 404', () async {
-      when(client.post(url, body: json.encode(getDisableCoin)))
+      when(client.post(Uri.parse(url), body: json.encode(getDisableCoin)))
           .thenAnswer((_) async => http.Response('Not Found', 404));
       expect(() async => await MM.disableCoin(getDisableCoin, client: client),
           throwsA(const TypeMatcher<ErrorString>()));
@@ -86,7 +86,7 @@ void main() {
 
     test('throws on MM error', () async {
       const mock = 'disable_coin/errors/error_disable_coin_no_such_coin.json';
-      when(client.post(url, body: json.encode(getDisableCoin)))
+      when(client.post(Uri.parse(url), body: json.encode(getDisableCoin)))
           .thenAnswer((_) async => http.Response(fixture(mock), 200));
       expect(() async => await MM.disableCoin(getDisableCoin, client: client),
           throwsA(const TypeMatcher<ErrorString>()));
@@ -94,7 +94,7 @@ void main() {
 
     test('throws on MM error, v2', () async {
       const mock = 'disable_coin/errors/error_disable_coin_active_swaps.json';
-      when(client.post(url, body: json.encode(getDisableCoin)))
+      when(client.post(Uri.parse(url), body: json.encode(getDisableCoin)))
           .thenAnswer((_) async => http.Response(fixture(mock), 200));
       expect(() async => await MM.disableCoin(getDisableCoin, client: client),
           throwsA(const TypeMatcher<ErrorString>()));
@@ -102,7 +102,7 @@ void main() {
 
     test('throws on MM error, v3', () async {
       const mk = 'disable_coin/errors/error_disable_coin_matching_orders.json';
-      when(client.post(url, body: json.encode(getDisableCoin)))
+      when(client.post(Uri.parse(url), body: json.encode(getDisableCoin)))
           .thenAnswer((_) async => http.Response(fixture(mk), 200));
       expect(() async => await MM.disableCoin(getDisableCoin, client: client),
           throwsA(const TypeMatcher<ErrorString>()));
@@ -117,7 +117,7 @@ void main() {
 
     test('returns a WithdrawResponse if the http call completes successfully',
         () async {
-      when(client.post(url, body: getWithdrawToJson(getWithdraw))).thenAnswer(
+      when(client.post(Uri.parse(url), body: getWithdrawToJson(getWithdraw))).thenAnswer(
           (_) async => http.Response(fixture('withdraw/withdraw.json'), 200));
       expect(await MM.postWithdraw(client, getWithdraw),
           const TypeMatcher<WithdrawResponse>());
@@ -125,7 +125,7 @@ void main() {
 
     test('returns a ErrorString if the http call success with a error',
         () async {
-      when(client.post(url, body: getWithdrawToJson(getWithdraw))).thenAnswer(
+      when(client.post(Uri.parse(url), body: getWithdrawToJson(getWithdraw))).thenAnswer(
           (_) async => http.Response(
               fixture('withdraw/errors/error_withdraw.json'), 200));
       expect(await MM.postWithdraw(client, getWithdraw),
@@ -141,8 +141,8 @@ void main() {
 
     test('returns a TradeFee if the http call completes successfully',
         () async {
-      when(client.post(url, body: getTradeFeeToJson(getTradeFee))).thenAnswer(
-          (_) async =>
+      when(client.post(Uri.parse(url), body: getTradeFeeToJson(getTradeFee)))
+          .thenAnswer((_) async =>
               http.Response(fixture('get_trade_fee/get_trade_fee.json'), 200));
       expect(await MM.getTradeFee(client, getTradeFee),
           const TypeMatcher<TradeFee>());
@@ -158,7 +158,7 @@ void main() {
     test(
         'returns a SendRawTransactionResponse if the http call completes successfully',
         () async {
-      when(client.post(url,
+      when(client.post(Uri.parse(url),
               body: getSendRawTransactionToJson(getSendRawTransaction)))
           .thenAnswer((_) async => http.Response(
               fixture('send_raw_transaction/send_raw_transaction.json'), 200));
@@ -167,7 +167,7 @@ void main() {
     });
 
     test('returns a ErrorString if the http result is error', () async {
-      when(client.post(url,
+      when(client.post(Uri.parse(url),
               body: getSendRawTransactionToJson(getSendRawTransaction)))
           .thenAnswer((_) async =>
               http.Response(fixture('general_errors/error_string.json'), 200));
@@ -183,8 +183,8 @@ void main() {
 
     test('returns a CoinToKickStart if the http call completes successfully',
         () async {
-      when(client.post(url, body: baseServiceToJson(getRecentSwap))).thenAnswer(
-          (_) async => http.Response(
+      when(client.post(Uri.parse(url), body: baseServiceToJson(getRecentSwap)))
+          .thenAnswer((_) async => http.Response(
               fixture(
                   'coins_needed_for_kick_start/coins_needed_for_kick_start.json'),
               200));
@@ -194,8 +194,8 @@ void main() {
 
     test('returns a ErrorString if the http call completes unsuccessfully',
         () async {
-      when(client.post(url, body: baseServiceToJson(getRecentSwap))).thenAnswer(
-          (_) async =>
+      when(client.post(Uri.parse(url), body: baseServiceToJson(getRecentSwap)))
+          .thenAnswer((_) async =>
               http.Response(fixture('general_errors/error_string.json'), 200));
       expect(await MM.getCoinToKickStart(client, getRecentSwap),
           const TypeMatcher<ErrorString>());
@@ -209,8 +209,8 @@ void main() {
 
     test('returns a ResultSuccess if the http call completes successfully',
         () async {
-      when(client.post(url, body: getCancelOrderToJson(body))).thenAnswer(
-          (_) async =>
+      when(client.post(Uri.parse(url), body: getCancelOrderToJson(body)))
+          .thenAnswer((_) async =>
               http.Response(fixture('cancel_order/cancel_order.json'), 200));
       expect(await MM.cancelOrder(client, body),
           const TypeMatcher<ResultSuccess>());
@@ -218,8 +218,8 @@ void main() {
 
     test('returns a ErrorString if the http call completes with error from mm2',
         () async {
-      when(client.post(url, body: getCancelOrderToJson(body))).thenAnswer(
-          (_) async => http.Response(
+      when(client.post(Uri.parse(url), body: getCancelOrderToJson(body)))
+          .thenAnswer((_) async => http.Response(
               fixture('cancel_order/errors/error_cancel_order.json'), 200));
       final dynamic error = await MM.cancelOrder(client, body);
       expect(error, const TypeMatcher<ErrorString>());
@@ -234,15 +234,16 @@ void main() {
     final BaseService body = BaseService(userpass: 'test', method: 'my_orders');
 
     test('returns a Orders if the http call completes successfully', () async {
-      when(client.post(url, body: baseServiceToJson(body))).thenAnswer(
-          (_) async => http.Response(fixture('my_orders/my_orders.json'), 200));
+      when(client.post(Uri.parse(url), body: baseServiceToJson(body)))
+          .thenAnswer((_) async =>
+              http.Response(fixture('my_orders/my_orders.json'), 200));
       expect(await MM.getMyOrders(client, body), const TypeMatcher<Orders>());
     });
 
     test('returns a ErrorString if the http call completes unsuccessfully',
         () async {
-      when(client.post(url, body: baseServiceToJson(body))).thenAnswer(
-          (_) async =>
+      when(client.post(Uri.parse(url), body: baseServiceToJson(body)))
+          .thenAnswer((_) async =>
               http.Response(fixture('general_errors/error_string.json'), 200));
       expect(
           await MM.getMyOrders(client, body), const TypeMatcher<ErrorString>());
@@ -257,38 +258,38 @@ void main() {
 
     test('returns a RecentSwaps if the http call completes successfully',
         () async {
-      when(client.post(url, body: getRecentSwapToJson(body))).thenAnswer(
-          (_) async => http.Response(
+      when(client.post(Uri.parse(url), body: getRecentSwapToJson(body)))
+          .thenAnswer((_) async => http.Response(
               fixture('my_recent_swaps/my_recent_swaps.json'), 200));
       expect(await MM.getRecentSwaps(body, client: client),
           const TypeMatcher<RecentSwaps>());
     });
 
     test('throws if http call completes unsuccessfully', () async {
-      when(client.post(url, body: getRecentSwapToJson(body))).thenAnswer(
-          (_) async =>
+      when(client.post(Uri.parse(url), body: getRecentSwapToJson(body)))
+          .thenAnswer((_) async =>
               http.Response(fixture('general_errors/error_string.json'), 200));
       expect(() async => await MM.getRecentSwaps(body, client: client),
           throwsA(const TypeMatcher<ErrorString>()));
     });
 
     test('throws if http call completes with error', () async {
-      when(client.post(url, body: getRecentSwapToJson(body)))
+      when(client.post(Uri.parse(url), body: getRecentSwapToJson(body)))
           .thenAnswer((_) async => http.Response('Error Parsing', 200));
       expect(() async => await MM.getRecentSwaps(body, client: client),
           throwsA(ft.isException));
     });
 
     test('throws if http call completes with status 500', () async {
-      when(client.post(url, body: getRecentSwapToJson(body)))
+      when(client.post(Uri.parse(url), body: getRecentSwapToJson(body)))
           .thenAnswer((_) async => http.Response('Error Parsing', 500));
       expect(() async => await MM.getRecentSwaps(body, client: client),
           throwsA(const TypeMatcher<ErrorString>()));
     });
 
     test('throws if http call completes with error from mm2', () async {
-      when(client.post(url, body: getRecentSwapToJson(body))).thenAnswer(
-          (_) async => http.Response(
+      when(client.post(Uri.parse(url), body: getRecentSwapToJson(body)))
+          .thenAnswer((_) async => http.Response(
               fixture('my_recent_swaps/errors/swap_not_found.json'), 200));
       ErrorString err;
       try {
@@ -309,8 +310,8 @@ void main() {
 
     test('returns a Transactions if the http call completes successfully',
         () async {
-      when(client.post(url, body: getTxHistoryToJson(body))).thenAnswer(
-          (_) async =>
+      when(client.post(Uri.parse(url), body: getTxHistoryToJson(body)))
+          .thenAnswer((_) async =>
               http.Response(fixture('my_tx_history/my_tx_history.json'), 200));
       expect(await MM.getTransactions(client, body),
           const TypeMatcher<Transactions>());
@@ -318,8 +319,8 @@ void main() {
 
     test('returns a ErrorString if the http call completes with error',
         () async {
-      when(client.post(url, body: getTxHistoryToJson(body))).thenAnswer(
-          (_) async => http.Response(
+      when(client.post(Uri.parse(url), body: getTxHistoryToJson(body)))
+          .thenAnswer((_) async => http.Response(
               fixture('my_tx_history/errors/error_my_tx_history.json'), 200));
 
       final dynamic errorString = await MM.getTransactions(client, body);
@@ -336,16 +337,17 @@ void main() {
 
     test('returns a SetPriceResponse if the http call completes successfully',
         () async {
-      when(client.post(url, body: getSetPriceToJson(body))).thenAnswer(
-          (_) async => http.Response(fixture('setprice/set_price.json'), 200));
+      when(client.post(Uri.parse(url), body: getSetPriceToJson(body)))
+          .thenAnswer((_) async =>
+              http.Response(fixture('setprice/set_price.json'), 200));
       expect(await MM.postSetPrice(client, body),
           const TypeMatcher<SetPriceResponse>());
     });
 
     test('returns a ErrorString if the http call completes with error',
         () async {
-      when(client.post(url, body: getSetPriceToJson(body))).thenAnswer(
-          (_) async => http.Response(
+      when(client.post(Uri.parse(url), body: getSetPriceToJson(body)))
+          .thenAnswer((_) async => http.Response(
               fixture('setprice/errors/error_set_price_rel_not_found.json'),
               200));
       expect(await MM.postSetPrice(client, body),
@@ -375,7 +377,8 @@ void main() {
 
     test('returns an ActiveCoin, ERC', () async {
       const mock = 'active_coin/active_coin.json';
-      when(client.post(url, body: MM.enableCoinImpl(coinToActiveERC)))
+      when(client.post(Uri.parse(url),
+              body: MM.enableCoinImpl(coinToActiveERC)))
           .thenAnswer((_) async => http.Response(fixture(mock), 200));
       expect(await MM.enableCoin(coinToActiveERC, client: client),
           const TypeMatcher<ActiveCoin>());
@@ -384,7 +387,7 @@ void main() {
     /* TODO: fix after ci/cd setup
     test('returns an ActiveCoin', () async {
       const mock = 'active_coin/active_coin.json';
-      when(client.post(url, body: MM.enableCoinImpl(coinToActive)))
+      when(client.post(Uri.parse(url), body: MM.enableCoinImpl(coinToActive)))
           .thenAnswer((_) async => http.Response(fixture(mock), 200));
       expect(await MM.enableCoin(coinToActive, client: client),
           const TypeMatcher<ActiveCoin>());
@@ -392,7 +395,7 @@ void main() {
 
     test('throws an ErrorString', () async {
       const mock = 'active_coin/errors/error_active_coin_mm2_param.json';
-      when(client.post(url, body: MM.enableCoinImpl(coinToActive)))
+      when(client.post(Uri.parse(url), body: MM.enableCoinImpl(coinToActive)))
           .thenAnswer((_) async => http.Response(fixture(mock), 200));
       expect(() async => await MM.enableCoin(coinToActive, client: client),
           throwsA(const TypeMatcher<ErrorString>()));
@@ -407,15 +410,16 @@ void main() {
 
     test('returns a BuyResponse if the http call completes successfully',
         () async {
-      when(client.post(url, body: getBuyToJson(body)))
+      when(client.post(Uri.parse(url), body: getBuyToJson(body)))
           .thenAnswer((_) async => http.Response(fixture('buy/buy.json'), 200));
       expect(await MM.postSell(client, body), const TypeMatcher<BuyResponse>());
     });
 
     test('returns a ErrorString if the http call completes with error',
         () async {
-      when(client.post(url, body: getBuyToJson(body))).thenAnswer((_) async =>
-          http.Response(fixture('buy/errors/buy_to_low.json'), 200));
+      when(client.post(Uri.parse(url), body: getBuyToJson(body))).thenAnswer(
+          (_) async =>
+              http.Response(fixture('buy/errors/buy_to_low.json'), 200));
 
       expect(await MM.postSell(client, body), const TypeMatcher<ErrorString>());
     });
@@ -428,22 +432,23 @@ void main() {
 
     test('returns a BuyResponse if the http call completes successfully',
         () async {
-      when(client.post(url, body: getBuyToJson(body)))
+      when(client.post(Uri.parse(url), body: getBuyToJson(body)))
           .thenAnswer((_) async => http.Response(fixture('buy/buy.json'), 200));
       expect(await MM.postBuy(client, body), const TypeMatcher<BuyResponse>());
     });
 
     test('returns a ErrorString if the http call completes with error',
         () async {
-      when(client.post(url, body: getBuyToJson(body))).thenAnswer((_) async =>
-          http.Response(fixture('error_post_buy_buy_to_low.json'), 200));
+      when(client.post(Uri.parse(url), body: getBuyToJson(body))).thenAnswer(
+          (_) async =>
+              http.Response(fixture('error_post_buy_buy_to_low.json'), 200));
       expect(await MM.postBuy(client, body), const TypeMatcher<ErrorString>());
     });
 
     test('returns a ErrorString if the http call completes with error',
         () async {
-      when(client.post(url, body: getBuyToJson(body))).thenAnswer((_) async =>
-          http.Response(
+      when(client.post(Uri.parse(url), body: getBuyToJson(body))).thenAnswer(
+          (_) async => http.Response(
               fixture('buy/errors/electrums_disconnected.json'), 200));
 
       final ErrorString error = await MM.postBuy(client, body);
@@ -452,7 +457,7 @@ void main() {
 
     test('returns a ErrorString if the http call completes with error',
         () async {
-      when(client.post(url, body: getBuyToJson(body)))
+      when(client.post(Uri.parse(url), body: getBuyToJson(body)))
           .thenAnswer((_) async => http.Response('Error parsing json', 200));
       final ErrorString error = await MM.postBuy(client, body);
       expect(error.error, 'Error on post buy');
@@ -460,16 +465,18 @@ void main() {
 
     test('returns a ErrorString if the http call completes with error from mm2',
         () async {
-      when(client.post(url, body: getBuyToJson(body))).thenAnswer((_) async =>
-          http.Response(fixture('buy/errors/rel_to_low.json'), 200));
+      when(client.post(Uri.parse(url), body: getBuyToJson(body))).thenAnswer(
+          (_) async =>
+              http.Response(fixture('buy/errors/rel_to_low.json'), 200));
       final ErrorString error = await MM.postBuy(client, body);
       expect(error.error, 'REL balance 12.88892991 is too low, required 21.15');
     });
 
     test('returns a ErrorString if the http call completes with error from mm2',
         () async {
-      when(client.post(url, body: getBuyToJson(body))).thenAnswer((_) async =>
-          http.Response(fixture('buy/errors/larger_than_available.json'), 200));
+      when(client.post(Uri.parse(url), body: getBuyToJson(body))).thenAnswer(
+          (_) async => http.Response(
+              fixture('buy/errors/larger_than_available.json'), 200));
       final ErrorString error = await MM.postBuy(client, body);
       expect(error.error,
           'The WORLD amount 40000/3 is larger than available 47.60450107, balance: 47.60450107, locked by swaps: 0.00000000');
@@ -482,16 +489,16 @@ void main() {
     final GetBalance body = GetBalance(userpass: 'test');
 
     test('returns a Balance if the http call completes successfully', () async {
-      when(client.post(url, body: getBalanceToJson(body))).thenAnswer(
-          (_) async =>
+      when(client.post(Uri.parse(url), body: getBalanceToJson(body)))
+          .thenAnswer((_) async =>
               http.Response(fixture('my_balance/my_balance.json'), 200));
       expect(await MM.getBalance(body, client: client),
           const TypeMatcher<Balance>());
     });
 
     test('throws ErrorString if the http call completes with error', () async {
-      when(client.post(url, body: getBalanceToJson(body))).thenAnswer(
-          (_) async =>
+      when(client.post(Uri.parse(url), body: getBalanceToJson(body)))
+          .thenAnswer((_) async =>
               http.Response(fixture('general_errors/error_string.json'), 200));
       ErrorString error;
       try {
@@ -503,7 +510,7 @@ void main() {
     });
 
     test('throws ErrorString if the http call completes with error', () async {
-      when(client.post(url, body: getBalanceToJson(body)))
+      when(client.post(Uri.parse(url), body: getBalanceToJson(body)))
           .thenAnswer((_) async => http.Response('Not found', 404));
       ErrorString error;
       try {
@@ -520,14 +527,14 @@ void main() {
     final MockClient client = MockClient();
 
     final GetOrderbook body = GetOrderbook(userpass: 'test');
-    
+
     test('returns a Balance if the http call completes successfully', () async {
-      when(client.post(url, body: getOrderbookToJson(body))).thenAnswer(
+      when(client.post(Uri.parse(url), body: getOrderbookToJson(body))).thenAnswer(
           (_) async => http.Response(fixture('orderbook/orderbook.json'), 200));
       expect(
           await MM.getOrderbook(client, body), const TypeMatcher<Orderbook>());
     });
-    
+
   });
   */
 
@@ -538,8 +545,8 @@ void main() {
 
     test('returns a Swap if the http call completes successfully (Taker swap)',
         () async {
-      when(client.post(url, body: getSwapToJson(body))).thenAnswer((_) async =>
-          http.Response(
+      when(client.post(Uri.parse(url), body: getSwapToJson(body))).thenAnswer(
+          (_) async => http.Response(
               fixture('my_swap_status/my_swap_status_taker_swap.json'), 200));
       final dynamic result = await MM.getSwapStatus(client, body);
       expect(result, const TypeMatcher<Swap>());
@@ -547,8 +554,8 @@ void main() {
 
     test('returns a Swap if the http call completes successfully (Maker swap)',
         () async {
-      when(client.post(url, body: getSwapToJson(body))).thenAnswer((_) async =>
-          http.Response(
+      when(client.post(Uri.parse(url), body: getSwapToJson(body))).thenAnswer(
+          (_) async => http.Response(
               fixture('my_swap_status/my_swap_status_maker_swap.json'), 200));
       final dynamic result = await MM.getSwapStatus(client, body);
       expect(result, const TypeMatcher<Swap>());
@@ -556,8 +563,9 @@ void main() {
 
     test('returns a ErrorString if the http call completes with error',
         () async {
-      when(client.post(url, body: getSwapToJson(body))).thenAnswer((_) async =>
-          http.Response(fixture('general_errors/error_string.json'), 200));
+      when(client.post(Uri.parse(url), body: getSwapToJson(body))).thenAnswer(
+          (_) async =>
+              http.Response(fixture('general_errors/error_string.json'), 200));
 
       final dynamic errorString = await MM.getSwapStatus(client, body);
       expect(errorString, const TypeMatcher<ErrorString>());
@@ -572,7 +580,7 @@ void main() {
 
     test('returns a RecoverFundsOfSwap if the http call completes successfully',
         () async {
-      when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
+      when(client.post(Uri.parse(url), body: getRecoverFundsOfSwapToJson(body)))
           .thenAnswer((_) async => http.Response(
               fixture('recover_funds_of_swap/recover_funds_of_swap.json'),
               200));
@@ -583,7 +591,7 @@ void main() {
     test(
         'return a ErrorString if the http call completes unsuccefully, maker payment was already spent',
         () async {
-      when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
+      when(client.post(Uri.parse(url), body: getRecoverFundsOfSwapToJson(body)))
           .thenAnswer((_) async => http.Response(
               fixture(
                   'recover_funds_of_swap/errors/error_swap_recover_maker.json'),
@@ -596,7 +604,7 @@ void main() {
     test(
         'return a ErrorString if the http call completes unsuccefully, swap is not finished yet',
         () async {
-      when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
+      when(client.post(Uri.parse(url), body: getRecoverFundsOfSwapToJson(body)))
           .thenAnswer((_) async => http.Response(
               fixture('recover_funds_of_swap/errors/error_swap_recover.json'),
               200));
@@ -609,7 +617,7 @@ void main() {
     test(
         'returns a ErrorString if the http call completes with a error parsing',
         () async {
-      when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
+      when(client.post(Uri.parse(url), body: getRecoverFundsOfSwapToJson(body)))
           .thenAnswer((_) async => http.Response('Error parsing', 200));
       expect(await MM.recoverFundsOfSwap(client, body),
           const TypeMatcher<ErrorString>());
@@ -618,7 +626,7 @@ void main() {
     test(
         'returns a ErrorString if the http call completes with a swap not found',
         () async {
-      when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
+      when(client.post(Uri.parse(url), body: getRecoverFundsOfSwapToJson(body)))
           .thenAnswer((_) async => http.Response(
               fixture(
                   'recover_funds_of_swap/errors/error_recover_swap_not_found.json'),
@@ -641,7 +649,7 @@ void main() {
       <String, dynamic>{'method': 'electrum'}
     ];
 
-    when(client.post(url, body: anyNamed('body'))).thenAnswer(
+    when(client.post(Uri.parse(url), body: anyNamed('body'))).thenAnswer(
         (_) async => http.Response(fixture('batch_response.json'), 200));
     final res = await MM.batch(req, client: client);
     expect(res.length, 3);

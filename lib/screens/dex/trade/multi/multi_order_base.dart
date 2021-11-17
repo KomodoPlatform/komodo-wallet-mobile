@@ -63,7 +63,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
     cexProvider ??= Provider.of<CexProvider>(context);
     baseCoin = multiOrderProvider.baseCoin;
 
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Card(
         child: Container(
@@ -106,13 +106,11 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         baseCoin == null ? null : multiOrderProvider.getError(baseCoin);
     if (error == null) return Container();
 
-    return Container(
-      child: Text(
-        error,
-        style: Theme.of(context).textTheme.caption.copyWith(
-              color: Theme.of(context).errorColor,
-            ),
-      ),
+    return Text(
+      error,
+      style: Theme.of(context).textTheme.caption.copyWith(
+            color: Theme.of(context).errorColor,
+          ),
     );
   }
 
@@ -155,8 +153,9 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
             children: <Widget>[
               CircleAvatar(
                 maxRadius: 12,
-                backgroundColor:
-                    baseCoin == null ? Theme.of(context).accentColor : null,
+                backgroundColor: baseCoin == null
+                    ? Theme.of(context).colorScheme.secondary
+                    : null,
                 backgroundImage: baseCoin == null
                     ? null
                     : AssetImage(
@@ -183,7 +182,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         builder: (context) {
           if (coins == null)
             return CustomSimpleDialog(
-              children: [
+              children: const [
                 Center(
                   child: CircularProgressIndicator(),
                 ),
@@ -265,7 +264,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            RaisedButton(
+            ElevatedButton(
               child: Text(AppLocalizations.of(context).goToPorfolio),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -307,7 +306,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                           isDense: true,
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                                color: Theme.of(context).accentColor),
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                           contentPadding:
                               const EdgeInsets.fromLTRB(0, 4, 0, 10),
@@ -369,7 +368,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                       style: TextStyle(
                         fontSize: 13,
                         color: multiOrderProvider.isMax
-                            ? Theme.of(context).accentColor
+                            ? Theme.of(context).colorScheme.secondary
                             : null,
                       ),
                     ),

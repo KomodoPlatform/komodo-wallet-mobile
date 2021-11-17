@@ -147,15 +147,26 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                     size: 15,
                   ),
                   widget.order.cancelable
-                      ? Container(
+                      ? SizedBox(
                           height: 30,
-                          child: OutlineButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0)),
-                            borderSide: BorderSide(
-                                color: settingsBloc.isLightTheme
-                                    ? Colors.black.withOpacity(0.8)
-                                    : Colors.white.withOpacity(0.8)),
+                          child: OutlinedButton(
+                            onPressed: () {
+                              ordersBloc.cancelOrder(widget.order.uuid);
+                            },
+                            style: ButtonStyle(
+                              side: MaterialStateProperty.all(
+                                BorderSide(
+                                  color: settingsBloc.isLightTheme
+                                      ? Colors.black.withOpacity(0.8)
+                                      : Colors.white.withOpacity(0.8),
+                                ),
+                              ),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                              ),
+                            ),
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 6, horizontal: 12),
@@ -176,9 +187,6 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                                 ],
                               ),
                             ),
-                            onPressed: () {
-                              ordersBloc.cancelOrder(widget.order.uuid);
-                            },
                           ),
                         )
                       : Container()

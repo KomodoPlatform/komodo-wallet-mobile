@@ -63,7 +63,7 @@ class _DurationSelectState extends State<DurationSelect> {
                       : Icons.radio_button_unchecked,
                   size: 16,
                   color: duration == widget.value
-                      ? Theme.of(context).accentColor
+                      ? Theme.of(context).colorScheme.secondary
                       : null,
                 ),
                 const SizedBox(width: 4),
@@ -71,7 +71,7 @@ class _DurationSelectState extends State<DurationSelect> {
                   _durations[duration] ?? '${duration}s',
                   style: TextStyle(
                       color: duration == widget.value
-                          ? Theme.of(context).accentColor
+                          ? Theme.of(context).colorScheme.secondary
                           : null),
                 ),
               ],

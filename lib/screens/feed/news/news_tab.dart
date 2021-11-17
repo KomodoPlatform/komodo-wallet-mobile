@@ -45,51 +45,49 @@ class _NewsTabState extends State<NewsTab> {
           : Container(height: 1);
     }
 
-    return Container(
-      child: Column(
-        children: <Widget>[
-          _buildUpdateIndicator(),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                final String updateResponse = await _feedProvider.updateNews();
-                String message;
-                if (updateResponse == 'ok') {
-                  message = AppLocalizations.of(context).feedUpdated;
-                } else {
-                  message = updateResponse;
-                }
+    return Column(
+      children: <Widget>[
+        _buildUpdateIndicator(),
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: () async {
+              final String updateResponse = await _feedProvider.updateNews();
+              String message;
+              if (updateResponse == 'ok') {
+                message = AppLocalizations.of(context).feedUpdated;
+              } else {
+                message = updateResponse;
+              }
 
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                    message,
-                    style: TextStyle(color: Theme.of(context).disabledColor),
-                  ),
-                  backgroundColor: Theme.of(context).backgroundColor,
-                  duration: const Duration(seconds: 1),
-                  action: SnackBarAction(
-                    textColor: Theme.of(context).accentColor,
-                    label: AppLocalizations.of(context).snackbarDismiss,
-                    onPressed: () {
-                      Scaffold.of(context).hideCurrentSnackBar();
-                    },
-                  ),
-                ));
-              },
-              child: ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  itemCount: _news.length,
-                  itemBuilder: (BuildContext context, int i) {
-                    return Column(
-                      children: <Widget>[
-                        BuildNewsItem(_news[i]),
-                      ],
-                    );
-                  }),
-            ),
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(
+                  message,
+                  style: TextStyle(color: Theme.of(context).disabledColor),
+                ),
+                backgroundColor: Theme.of(context).backgroundColor,
+                duration: const Duration(seconds: 1),
+                action: SnackBarAction(
+                  textColor: Theme.of(context).colorScheme.secondary,
+                  label: AppLocalizations.of(context).snackbarDismiss,
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  },
+                ),
+              ));
+            },
+            child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 20),
+                itemCount: _news.length,
+                itemBuilder: (BuildContext context, int i) {
+                  return Column(
+                    children: <Widget>[
+                      BuildNewsItem(_news[i]),
+                    ],
+                  );
+                }),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

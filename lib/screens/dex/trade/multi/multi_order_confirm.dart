@@ -65,7 +65,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          FlatButton(
+          TextButton(
             onPressed: inProgress
                 ? null
                 : () {
@@ -73,7 +73,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                   },
             child: Text(AppLocalizations.of(context).multiConfirmCancel),
           ),
-          RaisedButton(
+          ElevatedButton(
             onPressed: inProgress
                 ? null
                 : () async {
@@ -89,7 +89,6 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                       }
                     });
                   },
-            disabledColor: Theme.of(context).disabledColor.withAlpha(100),
             child: Text(AppLocalizations.of(context).multiConfirmConfirm),
           ),
         ],

@@ -188,9 +188,17 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
       padding: const EdgeInsets.fromLTRB(8, 20, 8, 20),
       child: SizedBox(
         height: 30,
-        child: OutlineButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        child: OutlinedButton(
+          onPressed: () {
+            ordersBloc.cancelOrder(order.uuid);
+          },
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
+          ),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             decoration: BoxDecoration(
@@ -208,9 +216,6 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
               ],
             ),
           ),
-          onPressed: () {
-            ordersBloc.cancelOrder(order.uuid);
-          },
         ),
       ),
     );

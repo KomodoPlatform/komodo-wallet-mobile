@@ -34,26 +34,24 @@ class _FiltersState extends State<Filters> {
   Widget build(BuildContext context) {
     _filters ??= widget.activeFilters;
 
-    return Container(
-      child: Column(
-        children: [
-          _buildCoinFilter(Market.SELL),
-          SizedBox(height: 12),
-          _buildCoinFilter(Market.BUY),
-          SizedBox(height: 12),
-          _buildDateFilter(DateFilterType.START),
-          SizedBox(height: 12),
-          _buildDateFilter(DateFilterType.END),
-          SizedBox(height: 12),
-          _buildTypeFilter(),
-          if (widget.showStatus) ...{
-            SizedBox(height: 12),
-            _buildStatusFilter(),
-          },
-          SizedBox(height: 20),
-          _buildClearButton(),
-        ],
-      ),
+    return Column(
+      children: [
+        _buildCoinFilter(Market.SELL),
+        const SizedBox(height: 12),
+        _buildCoinFilter(Market.BUY),
+        const SizedBox(height: 12),
+        _buildDateFilter(DateFilterType.START),
+        const SizedBox(height: 12),
+        _buildDateFilter(DateFilterType.END),
+        const SizedBox(height: 12),
+        _buildTypeFilter(),
+        if (widget.showStatus) ...{
+          const SizedBox(height: 12),
+          _buildStatusFilter(),
+        },
+        const SizedBox(height: 20),
+        _buildClearButton(),
+      ],
     );
   }
 
@@ -63,17 +61,17 @@ class _FiltersState extends State<Filters> {
         : Theme.of(context).textTheme.bodyText2.color;
 
     return Row(children: [
-      Expanded(
+      const Expanded(
         child: SizedBox(),
       ),
       InkWell(
         child: Container(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Row(
             children: [
               Text(AppLocalizations.of(context).filtersClearAll.toUpperCase(),
                   style: TextStyle(color: color, fontWeight: FontWeight.w400)),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Icon(
                 Icons.clear,
                 size: 16,
@@ -108,11 +106,11 @@ class _FiltersState extends State<Filters> {
         onTap: () => _openStatusDialog(),
         child: Container(
           width: 100,
-          padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
+          padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
           decoration: BoxDecoration(
               border: Border(
             bottom: BorderSide(
-              color: Theme.of(context).accentColor.withAlpha(150),
+              color: Theme.of(context).colorScheme.secondary.withAlpha(150),
               width: 1,
             ),
           )),
@@ -128,7 +126,7 @@ class _FiltersState extends State<Filters> {
                   style: TextStyle(color: color),
                 ),
               ),
-              SizedBox(width: 4),
+              const SizedBox(width: 4),
               Icon(
                 Icons.arrow_drop_down,
                 size: 16,
@@ -140,10 +138,10 @@ class _FiltersState extends State<Filters> {
       ),
       InkWell(
         child: Container(
-          padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
           child: Opacity(
             opacity: current == null ? 0.5 : 1,
-            child: Icon(
+            child: const Icon(
               Icons.clear,
               size: 16,
             ),
@@ -184,7 +182,7 @@ class _FiltersState extends State<Filters> {
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
-                    padding: EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(12),
                     child: Text(AppLocalizations.of(context).filtersAll)),
               ),
               InkWell(
@@ -195,7 +193,7 @@ class _FiltersState extends State<Filters> {
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
-                    padding: EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Text(AppLocalizations.of(context).filtersSuccessful),
@@ -214,7 +212,7 @@ class _FiltersState extends State<Filters> {
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
-                    padding: EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Text(AppLocalizations.of(context).filtersFailed),
@@ -249,11 +247,11 @@ class _FiltersState extends State<Filters> {
         onTap: () => _openDateDialog(dateType),
         child: Container(
           width: 100,
-          padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
+          padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
           decoration: BoxDecoration(
               border: Border(
             bottom: BorderSide(
-              color: Theme.of(context).accentColor.withAlpha(150),
+              color: Theme.of(context).colorScheme.secondary.withAlpha(150),
               width: 1,
             ),
           )),
@@ -266,7 +264,7 @@ class _FiltersState extends State<Filters> {
                   style: TextStyle(color: color),
                 ),
               ),
-              SizedBox(width: 4),
+              const SizedBox(width: 4),
               Icon(
                 Icons.arrow_drop_down,
                 size: 16,
@@ -278,10 +276,10 @@ class _FiltersState extends State<Filters> {
       ),
       InkWell(
         child: Container(
-          padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
           child: Opacity(
             opacity: current == null ? 0.5 : 1,
-            child: Icon(
+            child: const Icon(
               Icons.clear,
               size: 16,
             ),
@@ -322,8 +320,8 @@ class _FiltersState extends State<Filters> {
       setState(() {
         dateType == DateFilterType.START
             ? _filters.start = date
-            : _filters.end =
-                date.add(Duration(days: 1) - Duration(milliseconds: 1));
+            : _filters.end = date
+                .add(const Duration(days: 1) - const Duration(milliseconds: 1));
       });
       _filters.matches = widget.filter(widget.items).length;
       widget.onChange(_filters);
@@ -346,11 +344,11 @@ class _FiltersState extends State<Filters> {
         onTap: () => _openTypeDialog(),
         child: Container(
           width: 100,
-          padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
+          padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
           decoration: BoxDecoration(
               border: Border(
             bottom: BorderSide(
-              color: Theme.of(context).accentColor.withAlpha(150),
+              color: Theme.of(context).colorScheme.secondary.withAlpha(150),
               width: 1,
             ),
           )),
@@ -366,7 +364,7 @@ class _FiltersState extends State<Filters> {
                   style: TextStyle(color: color),
                 ),
               ),
-              SizedBox(width: 4),
+              const SizedBox(width: 4),
               Icon(
                 Icons.arrow_drop_down,
                 size: 16,
@@ -378,10 +376,10 @@ class _FiltersState extends State<Filters> {
       ),
       InkWell(
         child: Container(
-          padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
           child: Opacity(
             opacity: current == null ? 0.5 : 1,
-            child: Icon(
+            child: const Icon(
               Icons.clear,
               size: 16,
             ),
@@ -421,8 +419,9 @@ class _FiltersState extends State<Filters> {
                   widget.onChange(_filters);
                   dialogBloc.closeDialog(context);
                 },
-                child:
-                    Container(padding: EdgeInsets.all(12), child: Text('All')),
+                child: Container(
+                    padding: const EdgeInsets.all(12),
+                    child: const Text('All')),
               ),
               InkWell(
                 onTap: () {
@@ -524,7 +523,7 @@ class _FiltersState extends State<Filters> {
         decoration: BoxDecoration(
             border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).accentColor.withAlpha(150),
+            color: Theme.of(context).colorScheme.secondary.withAlpha(150),
             width: 1,
           ),
         )),
@@ -623,7 +622,7 @@ class _FiltersState extends State<Filters> {
                 CircleAvatar(
                     radius: 8,
                     backgroundColor: Theme.of(context).highlightColor),
-                SizedBox(width: 4),
+                const SizedBox(width: 4),
                 Text(AppLocalizations.of(context).filtersAll),
               ],
             ),

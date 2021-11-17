@@ -118,9 +118,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Widget _buildCard(Market market) {
     return Stack(
-      overflow: Overflow.visible,
+      clipBehavior: Clip.none,
       children: <Widget>[
-        Container(
+        SizedBox(
           width: double.infinity,
           child: Card(
             elevation: 8,
@@ -143,7 +143,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                 AppLocalizations.of(context).selectCoin,
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
-                              Container(
+                              SizedBox(
                                 width: 130,
                                 child: _buildCoinSelect(market),
                               ),
@@ -279,7 +279,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                             fontSize: 13,
                             fontWeight: FontWeight.w500,
                             color: maxSnapshot.data
-                                ? Theme.of(context).accentColor
+                                ? Theme.of(context).colorScheme.secondary
                                 : null,
                           ),
                         ),
@@ -334,7 +334,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                       height: 25,
                     )
                   : CircleAvatar(
-                      backgroundColor: Theme.of(context).accentColor,
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
                       radius: 12,
                     ),
               SizedBox(width: 4),
@@ -428,7 +428,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void _showSnackbar(String text) {
     if (context == null) return;
 
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       content: Text(text),
     ));

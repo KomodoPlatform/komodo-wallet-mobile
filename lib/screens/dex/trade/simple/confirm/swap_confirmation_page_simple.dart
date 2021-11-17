@@ -4,7 +4,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -190,7 +190,7 @@ class _SwapConfirmationPageSimpleState
                 children: <Widget>[
                   Text(AppLocalizations.of(context).send,
                       style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                             fontWeight: FontWeight.w100,
                           )),
                   SizedBox(height: 8),
@@ -211,7 +211,7 @@ class _SwapConfirmationPageSimpleState
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: <Widget>[
               ClipRRect(
                 borderRadius: const BorderRadius.only(
@@ -239,11 +239,14 @@ class _SwapConfirmationPageSimpleState
                         ),
                         SizedBox(height: 8),
                         Text(AppLocalizations.of(context).receive,
-                            style:
-                                Theme.of(context).textTheme.bodyText2.copyWith(
-                                      color: Theme.of(context).accentColor,
-                                      fontWeight: FontWeight.w100,
-                                    ))
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.w100,
+                                ))
                       ],
                     )),
               ),
@@ -380,11 +383,9 @@ class _SwapConfirmationPageSimpleState
 
     if (_sellAmtUsd == 0) return SizedBox();
 
-    return Container(
-      child: Text(
-        _cexProvider.convert(_sellAmtUsd),
-        style: Theme.of(context).textTheme.caption,
-      ),
+    return Text(
+      _cexProvider.convert(_sellAmtUsd),
+      style: Theme.of(context).textTheme.caption,
     );
   }
 
@@ -399,11 +400,9 @@ class _SwapConfirmationPageSimpleState
       if (receiveeAmtUsd < _sellAmtUsd) color = Colors.orange;
     }
 
-    return Container(
-      child: Text(
-        _cexProvider.convert(receiveeAmtUsd),
-        style: Theme.of(context).textTheme.caption.copyWith(color: color),
-      ),
+    return Text(
+      _cexProvider.convert(receiveeAmtUsd),
+      style: Theme.of(context).textTheme.caption.copyWith(color: color),
     );
   }
 
@@ -494,12 +493,8 @@ class _SwapConfirmationPageSimpleState
           Expanded(
             child: _inProgress
                 ? Center(child: CircularProgressIndicator())
-                : RaisedButton(
+                : ElevatedButton(
                     key: const Key('confirm-simple-swap-button'),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: Text('Start Swap !'.toUpperCase()),
                     onPressed: disabled
                         ? null
                         : () async {
@@ -518,6 +513,17 @@ class _SwapConfirmationPageSimpleState
 
                             setState(() => _inProgress = false);
                           },
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                    ),
+                    child: Text('Start Swap !'.toUpperCase()),
                   ),
           ),
         ],
@@ -536,7 +542,7 @@ class _SwapConfirmationPageSimpleState
     if (error.error.contains('is too low, required')) {
       errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
     }
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 4),
       backgroundColor: Theme.of(context).errorColor,
       content: Text(errorDisplay),

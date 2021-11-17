@@ -23,7 +23,7 @@ class _PreimageErrorState extends State<PreimageError> {
     _mainContext = context;
 
     return InkWell(
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width * 4 / 5,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -79,7 +79,7 @@ class _PreimageErrorState extends State<PreimageError> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      RaisedButton(
+                      ElevatedButton(
                         onPressed: Navigator.of(context).pop,
                         child: Text(AppLocalizations.of(context).okButton),
                       ),
@@ -131,7 +131,8 @@ class _PreimageErrorState extends State<PreimageError> {
                       copyToClipBoard(_mainContext, widget.apiErrorMessage);
                       Future<dynamic>.delayed(Duration(seconds: 2))
                           .then<dynamic>((dynamic _) {
-                        Scaffold.of(_mainContext).hideCurrentSnackBar();
+                        ScaffoldMessenger.of(_mainContext)
+                            .hideCurrentSnackBar();
                       });
                     },
                     child: ConstrainedBox(

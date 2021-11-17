@@ -11,12 +11,14 @@ import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class UnlockWalletPage extends StatefulWidget {
-  const UnlockWalletPage(
-      {@required this.wallet,
-      this.onSuccess,
-      this.isSignWithSeedIsEnabled = true,
-      @required this.textButton,
-      this.isCreatedPin = false});
+  const UnlockWalletPage({
+    Key key,
+    @required this.wallet,
+    this.onSuccess,
+    this.isSignWithSeedIsEnabled = true,
+    @required this.textButton,
+    this.isCreatedPin = false,
+  }) : super(key: key);
 
   final Wallet wallet;
   final Function(String seed, String password) onSuccess;
@@ -39,7 +41,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
     return WillPopScope(
       onWillPop: () async => !widget.isCreatedPin,
       child: Scaffold(
-        resizeToAvoidBottomPadding: true,
+        resizeToAvoidBottomInset: true,
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: widget.isCreatedPin
             ? AppBar(
@@ -49,9 +51,9 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                       await authBloc.logout();
                       Navigator.pop(context);
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.exit_to_app,
-                      key: const Key('settings-pin-logout'),
+                      key: Key('settings-pin-logout'),
                       color: Colors.red,
                     )),
                 backgroundColor: Theme.of(context).backgroundColor,
@@ -139,8 +141,8 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                           borderSide: BorderSide(
                               color: Theme.of(context).primaryColorLight)),
                       focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor)),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary)),
                       hintStyle: Theme.of(context).textTheme.bodyText1,
                       labelStyle: Theme.of(context).textTheme.bodyText2,
                       hintText: AppLocalizations.of(context).hintEnterPassword,
@@ -163,7 +165,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                 return isLoading
                     ? Column(
                         children: <Widget>[
-                          Container(
+                          SizedBox(
                               height: 52,
                               child: const Center(
                                 child: CircularProgressIndicator(),
@@ -248,7 +250,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
         isLoading = false;
       });
     }).catchError((dynamic onError) {
-      Scaffold.of(mContext).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(mContext).errorColor,
         content: Text(AppLocalizations.of(context).wrongPassword),

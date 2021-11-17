@@ -71,7 +71,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                           ],
                         ),
                         Text(
-                          '${formatPrice(widget.order.baseAmount, 8)}',
+                          formatPrice(widget.order.baseAmount, 8),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -96,7 +96,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                           ],
                         ),
                         Text(
-                          '${formatPrice(widget.order.relAmount, 8)}',
+                          formatPrice(widget.order.relAmount, 8),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -160,27 +160,35 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Expanded(
-                      child: Container(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context).orderMatching,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            BuildTakerCountdown(widget.order.uuid,
-                                style: Theme.of(context).textTheme.bodyText1),
-                          ],
-                        ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context).orderMatching,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          BuildTakerCountdown(widget.order.uuid,
+                              style: Theme.of(context).textTheme.bodyText1),
+                        ],
                       ),
                     ),
                     widget.order.cancelable
-                        ? Container(
+                        ? SizedBox(
                             height: 30,
-                            child: OutlineButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              borderSide: const BorderSide(color: Colors.white),
+                            child: OutlinedButton(
+                              onPressed: () {
+                                ordersBloc.cancelOrder(widget.order.uuid);
+                              },
+                              style: ButtonStyle(
+                                side: MaterialStateProperty.all(
+                                  const BorderSide(color: Colors.white),
+                                ),
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                  ),
+                                ),
+                              ),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 6, horizontal: 12),
@@ -205,9 +213,6 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                                   ],
                                 ),
                               ),
-                              onPressed: () {
-                                ordersBloc.cancelOrder(widget.order.uuid);
-                              },
                             ),
                           )
                         : Container()
@@ -222,7 +227,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
   }
 
   Widget _buildIcon(String coin) {
-    return Container(
+    return SizedBox(
       height: 25,
       width: 25,
       child: Image.asset(

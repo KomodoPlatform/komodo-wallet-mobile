@@ -6,6 +6,8 @@ import 'package:komodo_dex/screens/authentification/check_passphrase_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class NewAccountPage extends StatefulWidget {
+  const NewAccountPage({Key key}) : super(key: key);
+
   @override
   _NewAccountPageState createState() => _NewAccountPageState();
 }
@@ -43,7 +45,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).newAccountUpper),
@@ -94,8 +96,8 @@ class _NewAccountPageState extends State<NewAccountPage> {
               InkWell(
                 key: const Key('seed-refresh'),
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
                   child: Icon(
                     Icons.refresh,
                     color: Colors.red,
@@ -129,8 +131,8 @@ class _NewAccountPageState extends State<NewAccountPage> {
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: seed));
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
                     child: Icon(
                       Icons.content_copy,
                       color: Colors.red,
@@ -162,7 +164,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                 )),
                 height: 45,
                 width: 45,
-                child: Center(
+                child: const Center(
                   child: Icon(
                     Icons.warning,
                     color: Colors.white,
@@ -201,7 +203,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
   Widget _buildNextButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-      child: Container(
+      child: SizedBox(
           width: double.infinity,
           height: 50,
           child: PrimaryButton(

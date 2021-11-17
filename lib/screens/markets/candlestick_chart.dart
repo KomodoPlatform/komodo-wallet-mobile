@@ -94,98 +94,96 @@ class CandleChartState extends State<CandleChart>
       return constrained;
     }
 
-    return Container(
-      child: ClipRect(
-        child: Listener(
-          onPointerDown: (_) {
+    return ClipRect(
+      child: Listener(
+        onPointerDown: (_) {
+          setState(() {
+            touchCounter++;
+          });
+        },
+        onPointerUp: (_) {
+          setState(() {
+            touchCounter--;
+          });
+        },
+        child: GestureDetector(
+          onHorizontalDragUpdate: (DragUpdateDetails drag) {
+            if (touchCounter > 1) return;
+
             setState(() {
-              touchCounter++;
+              timeAxisShift = _constrainedTimeShift(
+                  timeAxisShift + drag.delta.dx / staticZoom / dynamicZoom);
             });
           },
-          onPointerUp: (_) {
+          onScaleStart: (_) {
             setState(() {
-              touchCounter--;
+              prevTimeAxisShift = timeAxisShift;
             });
           },
-          child: GestureDetector(
-            onHorizontalDragUpdate: (DragUpdateDetails drag) {
-              if (touchCounter > 1) return;
+          onScaleEnd: (_) {
+            setState(() {
+              staticZoom = staticZoom * dynamicZoom;
+              dynamicZoom = 1;
+            });
+          },
+          onScaleUpdate: (ScaleUpdateDetails scale) {
+            setState(() {
+              dynamicZoom = _constrainedZoom(scale.scale);
+              timeAxisShift = _constrainedTimeShift(prevTimeAxisShift -
+                  canvasSize.width /
+                      2 *
+                      (1 - dynamicZoom) /
+                      (staticZoom * dynamicZoom));
+            });
+          },
+          onTapDown: (TapDownDetails details) {
+            tapPosition = null;
 
-              setState(() {
-                timeAxisShift = _constrainedTimeShift(
-                    timeAxisShift + drag.delta.dx / staticZoom / dynamicZoom);
-              });
-            },
-            onScaleStart: (_) {
-              setState(() {
-                prevTimeAxisShift = timeAxisShift;
-              });
-            },
-            onScaleEnd: (_) {
-              setState(() {
-                staticZoom = staticZoom * dynamicZoom;
-                dynamicZoom = 1;
-              });
-            },
-            onScaleUpdate: (ScaleUpdateDetails scale) {
-              setState(() {
-                dynamicZoom = _constrainedZoom(scale.scale);
-                timeAxisShift = _constrainedTimeShift(prevTimeAxisShift -
-                    canvasSize.width /
-                        2 *
-                        (1 - dynamicZoom) /
-                        (staticZoom * dynamicZoom));
-              });
-            },
-            onTapDown: (TapDownDetails details) {
-              tapPosition = null;
-
-              setState(() {
-                tapDownPosition = details.localPosition;
-              });
-            },
-            onTap: () {
-              tapPosition = tapDownPosition;
-            },
-            child: CustomPaint(
-              painter: _ChartPainter(
-                widget: widget,
-                timeAxisShift: timeAxisShift,
-                zoom: staticZoom * dynamicZoom,
-                tapPosition: tapPosition,
-                selectedPoint: selectedPoint,
-                setWidgetState: (String prop, dynamic value) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    setState(() {
-                      switch (prop) {
-                        case 'maxTimeShift':
-                          {
-                            maxTimeShift = value;
-                            break;
-                          }
-                        case 'canvasSize':
-                          {
-                            canvasSize = value;
-                            break;
-                          }
-                        case 'tapPosition':
-                          {
-                            tapPosition = value;
-                            break;
-                          }
-                        case 'selectedPoint':
-                          {
-                            selectedPoint = value;
-                            break;
-                          }
-                      }
-                    });
+            setState(() {
+              tapDownPosition = details.localPosition;
+            });
+          },
+          onTap: () {
+            tapPosition = tapDownPosition;
+          },
+          child: CustomPaint(
+            painter: _ChartPainter(
+              widget: widget,
+              timeAxisShift: timeAxisShift,
+              zoom: staticZoom * dynamicZoom,
+              tapPosition: tapPosition,
+              selectedPoint: selectedPoint,
+              setWidgetState: (String prop, dynamic value) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  setState(() {
+                    switch (prop) {
+                      case 'maxTimeShift':
+                        {
+                          maxTimeShift = value;
+                          break;
+                        }
+                      case 'canvasSize':
+                        {
+                          canvasSize = value;
+                          break;
+                        }
+                      case 'tapPosition':
+                        {
+                          tapPosition = value;
+                          break;
+                        }
+                      case 'selectedPoint':
+                        {
+                          selectedPoint = value;
+                          break;
+                        }
+                    }
                   });
-                },
-              ),
-              child: Center(
-                child: Container(),
-              ),
+                });
+              },
+            ),
+            child: Center(
+              child: Container(),
             ),
           ),
         ),

@@ -53,11 +53,11 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: merging
               ? <Widget>[
-                  RaisedButton(
+                  ElevatedButton(
                     child: const Text('Save merged'),
                     onPressed: () => widget.onMerge(mergedValueController.text),
                   ),
-                  FlatButton(
+                  TextButton(
                     child: const Text('Back'),
                     onPressed: () {
                       setState(() {
@@ -67,7 +67,7 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
                   ),
                 ]
               : <Widget>[
-                  RaisedButton(
+                  ElevatedButton(
                     child: const Text('Merge'),
                     onPressed: () {
                       setState(() {
@@ -75,11 +75,11 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
                       });
                     },
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     child: const Text('Skip'),
                     onPressed: widget.onSkip,
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     child: const Text('Overwrite'),
                     onPressed: widget.onOverwrite,
                   ),

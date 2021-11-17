@@ -225,13 +225,13 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       switch (swap.status) {
         case Status.SWAP_SUCCESSFUL:
           icon = Icon(Icons.check_circle,
-              size: 15, color: Theme.of(context).accentColor);
+              size: 15, color: Theme.of(context).colorScheme.secondary);
           break;
         case Status.ORDER_MATCHED:
         case Status.SWAP_ONGOING:
         case Status.ORDER_MATCHING:
           icon = Icon(Icons.swap_horiz,
-              size: 15, color: Theme.of(context).accentColor);
+              size: 15, color: Theme.of(context).colorScheme.secondary);
           break;
         case Status.SWAP_FAILED:
           icon =
@@ -316,7 +316,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                       Text(AppLocalizations.of(context).swapCurrent + ': ',
                           style: TextStyle(
                             fontSize: 13,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           )),
                       Text(
                         durationFormat(actualTotalSpeed),
@@ -337,7 +337,9 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                                         ': ',
                                     style: TextStyle(
                                       fontSize: 13,
-                                      color: Theme.of(context).accentColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     )),
                                 Text(
                                   durationFormat(estimatedTotalSpeed),
@@ -375,14 +377,12 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
           _buildFirstStep(),
           ..._buildFollowingSteps(),
           const SizedBox(height: 12),
-          Container(
-            child: Text(
-              _swapProvider.swapDescription(swap.result?.uuid),
-              style: TextStyle(
-                fontFamily: 'Monospace',
-                color: Theme.of(context).accentColor,
-                fontSize: 14,
-              ),
+          Text(
+            _swapProvider.swapDescription(swap.result?.uuid),
+            style: TextStyle(
+              fontFamily: 'Monospace',
+              color: Theme.of(context).colorScheme.secondary,
+              fontSize: 14,
             ),
           ),
         ],

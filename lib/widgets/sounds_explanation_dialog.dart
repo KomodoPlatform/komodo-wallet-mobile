@@ -17,7 +17,7 @@ Future<void> showSoundsDialog(BuildContext context) async {
             children: <Widget>[
               Icon(
                 Icons.audiotrack,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               SizedBox(width: 4),
               Text(AppLocalizations.of(context).soundsDialogTitle),
@@ -66,7 +66,7 @@ Future<void> showSoundsDialog(BuildContext context) async {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     dialogBloc.dialog = null;
                     Navigator.of(context).pop();
@@ -80,7 +80,7 @@ Future<void> showSoundsDialog(BuildContext context) async {
                   child: Text(AppLocalizations.of(context).settings),
                 ),
                 SizedBox(width: 12),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     dialogBloc.dialog = null;
                     Navigator.of(context).pop();

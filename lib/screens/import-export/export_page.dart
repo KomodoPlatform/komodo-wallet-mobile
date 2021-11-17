@@ -406,7 +406,8 @@ class _ExportPageState extends State<ExportPage> {
                 borderSide:
                     BorderSide(color: Theme.of(context).primaryColorLight)),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor)),
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.secondary)),
             hintStyle: Theme.of(context).textTheme.bodyText1,
             labelStyle: Theme.of(context).textTheme.bodyText2,
             hintText: AppLocalizations.of(context).hintCreatePassword,
@@ -442,7 +443,8 @@ class _ExportPageState extends State<ExportPage> {
                 borderSide:
                     BorderSide(color: Theme.of(context).primaryColorLight)),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor)),
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.secondary)),
             hintStyle: Theme.of(context).textTheme.bodyText1,
             labelStyle: Theme.of(context).textTheme.bodyText2,
             hintText: AppLocalizations.of(context).hintConfirmPassword,
@@ -454,9 +456,9 @@ class _ExportPageState extends State<ExportPage> {
   }
 
   void _showError(String e) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-      '$e',
+      e,
       style: TextStyle(color: Theme.of(context).errorColor),
     )));
   }

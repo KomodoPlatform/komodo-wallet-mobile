@@ -17,7 +17,7 @@ import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatefulWidget {
-  const AppDrawer(this.mContext);
+  const AppDrawer(this.mContext, {Key key}) : super(key: key);
 
   final BuildContext mContext;
 
@@ -138,10 +138,10 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             SoundSettingsPage()));
                               },
-                              leading: Icon(Icons.audiotrack, size: 16),
+                              leading: const Icon(Icons.audiotrack, size: 16),
                               trailing: InkWell(
                                 child: Container(
-                                  padding: EdgeInsets.all(4),
+                                  padding: const EdgeInsets.all(4),
                                   child: Icon(
                                     musicService.on()
                                         ? Icons.volume_up
@@ -191,9 +191,8 @@ class _AppDrawerState extends State<AppDrawer> {
                                                       context),
                                             )));
                               },
-                              leading: Icon(Icons.language,
-                                  key: const Key('side-nav-language'),
-                                  size: 16)),
+                              leading: const Icon(Icons.language,
+                                  key: Key('side-nav-language'), size: 16)),
                           _buildDrawerItem(
                               title: Row(
                                 children: <Widget>[
@@ -206,14 +205,13 @@ class _AppDrawerState extends State<AppDrawer> {
                                 showCurrenciesDialog(context);
                               },
                               leading: cexProvider.selectedFiatSymbol.length > 1
-                                  ? Icon(Icons.account_balance_wallet,
-                                      key: const Key('side-nav-currency'),
-                                      size: 16)
+                                  ? const Icon(Icons.account_balance_wallet,
+                                      key: Key('side-nav-currency'), size: 16)
                                   : Text(' ${cexProvider.selectedFiatSymbol}')),
                           _buildDrawerItem(
                             title:
                                 Text(AppLocalizations.of(context).hideBalance),
-                            leading: Icon(Icons.money_off, size: 16),
+                            leading: const Icon(Icons.money_off, size: 16),
                             trailing: StreamBuilder<bool>(
                               initialData: settingsBloc.showBalance,
                               stream: settingsBloc.outShowBalance,
@@ -247,9 +245,8 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             const AddressBookPage()));
                               },
-                              leading: Icon(Icons.import_contacts,
-                                  key: const Key('side-nav-addressbook'),
-                                  size: 16)),
+                              leading: const Icon(Icons.import_contacts,
+                                  key: Key('side-nav-addressbook'), size: 16)),
                           Divider(
                             indent: 20,
                             endIndent: 20,
@@ -266,9 +263,8 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             SettingPage()));
                               },
-                              leading: Icon(Icons.settings,
-                                  key: const Key('side-nav-settings'),
-                                  size: 16)),
+                              leading: const Icon(Icons.settings,
+                                  key: Key('side-nav-settings'), size: 16)),
                           _buildDrawerItem(
                               title:
                                   Text(AppLocalizations.of(context).helpLink),
@@ -280,13 +276,13 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             HelpPage()));
                               },
-                              leading: Icon(Icons.help,
-                                  key: const Key('side-nav-help-feedback'),
+                              leading: const Icon(Icons.help,
+                                  key: Key('side-nav-help-feedback'),
                                   size: 16)),
                           _buildDrawerItem(
                             title:
                                 Text(AppLocalizations.of(context).switchTheme),
-                            leading: Icon(Icons.brush, size: 16),
+                            leading: const Icon(Icons.brush, size: 16),
                             trailing: StreamBuilder<bool>(
                               initialData: settingsBloc.isLightTheme,
                               stream: settingsBloc.outLightTheme,
@@ -310,8 +306,8 @@ class _AppDrawerState extends State<AppDrawer> {
                             color: Theme.of(context).hintColor,
                           ),
                           _buildDrawerItem(
-                            leading: Icon(Icons.exit_to_app,
-                                key: const Key('side-nav-logout'), size: 16),
+                            leading: const Icon(Icons.exit_to_app,
+                                key: Key('side-nav-logout'), size: 16),
                             onTap: () {
                               Navigator.pop(context);
                               showLogoutConfirmation(widget.mContext);
@@ -337,7 +333,7 @@ class _AppDrawerState extends State<AppDrawer> {
     Widget leading,
     Widget trailing,
   }) {
-    trailing ??= Icon(Icons.chevron_right);
+    trailing ??= const Icon(Icons.chevron_right);
 
     return InkWell(
       onTap: onTap,

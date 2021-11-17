@@ -15,7 +15,9 @@ class SellAmountField extends StatefulWidget {
 }
 
 class _SellAmountFieldState extends State<SellAmountField> {
-  final _ctrl = TextEditingControllerWorkaroud();
+  // MRC: Seems this workaround controller causes problems, so disabling it for now
+
+  final _ctrl = TextEditingController(); //TextEditingControllerWorkaroud();
 
   @override
   void initState() {
@@ -51,7 +53,8 @@ class _SellAmountFieldState extends State<SellAmountField> {
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).accentColor),
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.secondary),
           ),
           hintStyle: Theme.of(context)
               .textTheme
@@ -76,8 +79,12 @@ class _SellAmountFieldState extends State<SellAmountField> {
         cutTrailingZeros(value.toStringAsFixed(appConfig.tradeFormPrecision));
     final String currentFormatted = cutTrailingZeros(_ctrl.text);
 
+    // MRC: Using TextEditingControllerWorkaround breaks stuff,
+    // so disabling this
+    /*
     if (newFormatted != currentFormatted) {
       _ctrl.setTextAndPosition(newFormatted);
     }
+    */
   }
 }

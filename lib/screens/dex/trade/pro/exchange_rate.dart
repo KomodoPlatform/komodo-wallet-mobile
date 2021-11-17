@@ -122,7 +122,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
               .copyWith(color: Theme.of(context).textTheme.bodyText2.color),
         ),
         Text(
-          '$_buyAbbr',
+          _buyAbbr,
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ],

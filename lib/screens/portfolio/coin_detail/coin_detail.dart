@@ -30,7 +30,7 @@ import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
-import 'package:komodo_dex/widgets/buildRedDot.dart';
+import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
@@ -180,7 +180,7 @@ class _CoinDetailState extends State<CoinDetail> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           elevation: elevationHeader,
@@ -188,7 +188,7 @@ class _CoinDetailState extends State<CoinDetail> {
             IconButton(
               key: const Key('coin-deactivate'),
               icon: isDeleteLoading
-                  ? Container(
+                  ? SizedBox(
                       height: 20,
                       width: 20,
                       child: const CircularProgressIndicator(
@@ -303,8 +303,8 @@ class _CoinDetailState extends State<CoinDetail> {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData && snapshot.data is Transactions) {
             final Transactions tx = snapshot.data;
-            final String syncState =
-                '${StateOfSync.InProgress.toString().substring(StateOfSync.InProgress.toString().indexOf('.') + 1)}';
+            final String syncState = StateOfSync.InProgress.toString()
+                .substring(StateOfSync.InProgress.toString().indexOf('.') + 1);
             if (tx.result != null &&
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
@@ -337,7 +337,7 @@ class _CoinDetailState extends State<CoinDetail> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Center(
-                          child: Container(
+                          child: SizedBox(
                         height: 20,
                         width: 20,
                         child: const CircularProgressIndicator(
@@ -366,7 +366,7 @@ class _CoinDetailState extends State<CoinDetail> {
     return Expanded(
       child: RefreshIndicator(
         backgroundColor: Theme.of(context).backgroundColor,
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.secondary,
         key: _refreshIndicatorKey,
         onRefresh: _refresh,
         child: ListView(
@@ -385,8 +385,9 @@ class _CoinDetailState extends State<CoinDetail> {
                   }
                   if (snapshot.data is Transactions) {
                     final Transactions transactions = snapshot.data;
-                    final String syncState =
-                        '${StateOfSync.InProgress.toString().substring(StateOfSync.InProgress.toString().indexOf('.') + 1)}';
+                    final String syncState = StateOfSync.InProgress.toString()
+                        .substring(
+                            StateOfSync.InProgress.toString().indexOf('.') + 1);
 
                     if (snapshot.hasData &&
                         transactions.result != null &&
@@ -602,7 +603,7 @@ class _CoinDetailState extends State<CoinDetail> {
             SecondaryButton(
               text: text,
               textColor: Theme.of(context).textTheme.button.color,
-              borderColor: Theme.of(context).accentColor,
+              borderColor: Theme.of(context).colorScheme.secondary,
               onPressed: () {
                 rewardsProvider.update();
                 Navigator.push<dynamic>(
@@ -626,8 +627,8 @@ class _CoinDetailState extends State<CoinDetail> {
     return SecondaryButton(
       text: text,
       isDarkMode: !settingsBloc.isLightTheme,
-      textColor: Theme.of(context).accentColor,
-      borderColor: Theme.of(context).accentColor,
+      textColor: Theme.of(context).colorScheme.secondary,
+      borderColor: Theme.of(context).colorScheme.secondary,
       onPressed: () {
         switch (statusButton) {
           case StatusButton.RECEIVE:
@@ -672,20 +673,22 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Widget _buildForm() {
-    return AnimatedCrossFade(
-      crossFadeState:
-          isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-      duration: const Duration(milliseconds: 200),
-      firstChild: Container(),
-      secondChild: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Card(
-            margin:
-                const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
-            elevation: 8.0,
-            child: SingleChildScrollView(child: listSteps[currentIndex])),
+    return SingleChildScrollView(
+      child: AnimatedCrossFade(
+        crossFadeState:
+            isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+        duration: const Duration(milliseconds: 200),
+        firstChild: Container(),
+        secondChild: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Card(
+              margin:
+                  const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
+              elevation: 8.0,
+              child: SingleChildScrollView(child: listSteps[currentIndex])),
+        ),
       ),
     );
   }
@@ -696,12 +699,12 @@ class _CoinDetailState extends State<CoinDetail> {
         padding: const EdgeInsets.all(8.0),
         color: Colors.blue,
         child: Row(
-          children: <Widget>[
+          children: const <Widget>[
             Icon(Icons.refresh),
-            const SizedBox(
+            SizedBox(
               width: 8.0,
             ),
-            const Text('Latest Transactions'),
+            Text('Latest Transactions'),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),
@@ -715,7 +718,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   void catchError(BuildContext mContext) {
     resetSend();
-    Scaffold.of(mContext).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
       content: Text(AppLocalizations.of(mContext).errorTryLater),
@@ -778,7 +781,7 @@ class _CoinDetailState extends State<CoinDetail> {
               });
             },
             onNoInternet: () {
-              Scaffold.of(mainContext).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(mainContext).showSnackBar(SnackBar(
                 duration: const Duration(seconds: 2),
                 backgroundColor: Theme.of(context).errorColor,
                 content: Text(AppLocalizations.of(mainContext).noInternet),
@@ -792,7 +795,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 isSendIsActive = false;
               });
 
-              listSteps.add(Container(
+              listSteps.add(SizedBox(
                   height: 100,
                   width: double.infinity,
                   child: const Center(
@@ -837,7 +840,7 @@ class _CoinDetailState extends State<CoinDetail> {
                           dataRawTx.error
                               .indexOf(r',', dataRawTx.error.indexOf(r'"')))
                       .trim();
-                  Scaffold.of(mainContext).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(mainContext).showSnackBar(SnackBar(
                     duration: const Duration(seconds: 2),
                     backgroundColor: Theme.of(context).errorColor,
                     content: Text(

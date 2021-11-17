@@ -78,7 +78,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                 children: [
                   Expanded(
                     child: Text(
-                      '$error',
+                      error,
                       maxLines: _showDetailedError ? null : 1,
                       style: Theme.of(context)
                           .textTheme
@@ -260,8 +260,8 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                       color: settingsBloc.isLightTheme
-                          ? getThemeLight().accentColor
-                          : getThemeDark().accentColor),
+                          ? getThemeLight().colorScheme.secondary
+                          : getThemeDark().colorScheme.secondary),
                 ),
                 contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
               ),

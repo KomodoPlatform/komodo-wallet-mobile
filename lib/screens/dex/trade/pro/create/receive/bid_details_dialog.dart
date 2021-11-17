@@ -87,13 +87,13 @@ void openBidDetailsDialog({
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
-                            FlatButton(
+                            TextButton(
                               onPressed: () => dialogBloc.closeDialog(context),
                               child: Text(AppLocalizations.of(context)
                                   .orderDetailsCancel),
                             ),
                             const SizedBox(width: 12),
-                            RaisedButton(
+                            ElevatedButton(
                               onPressed: () {
                                 dialogBloc.closeDialog(context);
                                 onSelect();

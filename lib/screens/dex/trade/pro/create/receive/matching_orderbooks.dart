@@ -59,7 +59,8 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
                     color: Theme.of(context).hintColor.withAlpha(180)),
                 counterText: '',
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
               maxLength: 16,
@@ -121,7 +122,7 @@ class CreateOrder extends StatelessWidget {
               Icon(
                 Icons.add_circle,
                 size: 30,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               const SizedBox(
                 width: 16,
@@ -131,7 +132,7 @@ class CreateOrder extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyText2
-                    .copyWith(color: Theme.of(context).accentColor),
+                    .copyWith(color: Theme.of(context).colorScheme.secondary),
               )
             ],
           ),

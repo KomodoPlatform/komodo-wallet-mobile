@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -115,7 +114,7 @@ class _CoinsPageState extends State<CoinsPage> {
                                                 totalBalanceUSD,
                                                 hidden: hidden,
                                               );
-                                              return FlatButton(
+                                              return TextButton(
                                                   onPressed: () {
                                                     _cexProvider
                                                         .switchCurrency();
@@ -147,10 +146,8 @@ class _CoinsPageState extends State<CoinsPage> {
                                           );
                                         } else {
                                           return Center(
-                                              child: Container(
-                                            child:
-                                                const CircularProgressIndicator(),
-                                          ));
+                                              child:
+                                                  const CircularProgressIndicator());
                                         }
                                       }),
                                 ),
@@ -273,7 +270,7 @@ class BarGraphState extends State<BarGraph> {
           duration: const Duration(milliseconds: 300),
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            child: Container(
+            child: SizedBox(
               width: _widthBar,
               height: 16,
               child: Row(
@@ -288,9 +285,7 @@ class BarGraphState extends State<BarGraph> {
 }
 
 class LoadAsset extends StatefulWidget {
-  const LoadAsset({
-    Key key,
-  }) : super(key: key);
+  const LoadAsset({Key key}) : super(key: key);
 
   @override
   LoadAssetState createState() {
@@ -331,14 +326,14 @@ class LoadAssetState extends State<LoadAsset> {
             color: Colors.white.withOpacity(0.8),
           ));
         } else {
-          listRet.add(Container(
+          listRet.add(SizedBox(
               height: 10,
               width: 10,
               child: const CircularProgressIndicator(
                 strokeWidth: 1.0,
               )));
         }
-        return Container(
+        return SizedBox(
           height: 30,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -352,9 +347,7 @@ class LoadAssetState extends State<LoadAsset> {
 }
 
 class ListCoins extends StatefulWidget {
-  const ListCoins({
-    Key key,
-  }) : super(key: key);
+  const ListCoins({Key key}) : super(key: key);
 
   @override
   ListCoinsState createState() {
@@ -365,7 +358,6 @@ class ListCoins extends StatefulWidget {
 class ListCoinsState extends State<ListCoins> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
-  final SlidableController slidableController = SlidableController();
 
   @override
   void initState() {
@@ -405,7 +397,6 @@ class ListCoinsState extends State<ListCoins> {
                         key: Key('coin-list-${datas[index].coin.abbr}'),
                         mContext: context,
                         coinBalance: datas[index],
-                        slidableController: slidableController,
                       );
                     }
                   },
@@ -477,14 +468,16 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                               child: FloatingActionButton(
                             key: const Key('adding-coins'),
                             backgroundColor: Theme.of(context).primaryColor,
-                            foregroundColor: Theme.of(context).accentColor,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.secondary,
                             child: Icon(
                               Icons.add,
                             ),
                             onPressed: () {
                               if (mainBloc.networkStatus !=
                                   NetworkStatus.Online) {
-                                Scaffold.of(context).showSnackBar(SnackBar(
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
                                   duration: const Duration(seconds: 2),
                                   backgroundColor: Theme.of(context).errorColor,
                                   content: Text(
@@ -518,7 +511,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              RaisedButton(
+                                              ElevatedButton(
                                                 child: Text(
                                                     AppLocalizations.of(context)
                                                         .warningOkBtn),

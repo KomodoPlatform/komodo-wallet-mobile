@@ -171,7 +171,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
           Icon(
             Icons.open_in_new,
             size: 14,
-            color: Theme.of(context).accentColor.withAlpha(180),
+            color: Theme.of(context).colorScheme.secondary.withAlpha(180),
           ),
           const Text(
             ': ',
@@ -313,7 +313,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
                       confs.toString(),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
             ],
@@ -325,26 +325,24 @@ class _ProtectionControlState extends State<ProtectionControl> {
   }
 
   Widget _buildSlider() {
-    return Container(
-      child: SliderTheme(
-        data: SliderTheme.of(context).copyWith(
-          valueIndicatorTextStyle:
-              TextStyle(color: Theme.of(context).backgroundColor),
-        ),
-        child: Slider(
-            activeColor: Theme.of(context).accentColor,
-            divisions: maxConfs - minConfs,
-            label: confs.toString(),
-            min: minConfs.toDouble(),
-            max: maxConfs.toDouble(),
-            value: confs.toDouble(),
-            onChanged: (double value) {
-              setState(() {
-                confs = value.round();
-              });
-              _onChange();
-            }),
+    return SliderTheme(
+      data: SliderTheme.of(context).copyWith(
+        valueIndicatorTextStyle:
+            TextStyle(color: Theme.of(context).backgroundColor),
       ),
+      child: Slider(
+          activeColor: Theme.of(context).colorScheme.secondary,
+          divisions: maxConfs - minConfs,
+          label: confs.toString(),
+          min: minConfs.toDouble(),
+          max: maxConfs.toDouble(),
+          value: confs.toDouble(),
+          onChanged: (double value) {
+            setState(() {
+              confs = value.round();
+            });
+            _onChange();
+          }),
     );
   }
 

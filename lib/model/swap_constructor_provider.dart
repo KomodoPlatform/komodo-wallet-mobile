@@ -22,8 +22,8 @@ import 'package:komodo_dex/model/coin_balance.dart';
 
 class ConstructorProvider extends ChangeNotifier {
   ConstructorProvider() {
-    _timer ??=
-        Timer.periodic(Duration(seconds: 5), (_) => _updateMatchingOrder());
+    _timer ??= Timer.periodic(
+        const Duration(seconds: 5), (_) => _updateMatchingOrder());
   }
 
   String _sellCoin;

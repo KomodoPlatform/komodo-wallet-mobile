@@ -181,7 +181,7 @@ class SwapBloc implements BlocBase {
       _processing = value;
       _inProcessing.add(true);
     } else {
-      _processingTimer = Timer(Duration(milliseconds: 500), () {
+      _processingTimer = Timer(const Duration(milliseconds: 500), () {
         _processing = value;
         _inProcessing.add(false);
       });

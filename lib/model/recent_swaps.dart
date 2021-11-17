@@ -225,7 +225,7 @@ class SwapEEL {
   String type;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
-        'data': data == null ? null : data.toJson(),
+        'data': data?.toJson(),
         'type': type ?? '',
       };
 }
@@ -416,7 +416,7 @@ class SwapEF {
         'taker_pubkey': takerPubkey ?? '',
         'block_height': blockHeight ?? 0,
         'coin': coin ?? '',
-        'fee_details': feeDetails == null ? null : feeDetails.toJson(),
+        'fee_details': feeDetails?.toJson(),
         'from': from == null
             ? null
             : List<dynamic>.from(from.map<dynamic>((String x) => x)),
@@ -437,7 +437,7 @@ class SwapEF {
         'maker_payment_locktime': makerPaymentLocktime ?? 0,
         'maker_pubkey': makerPubkey ?? '',
         'secret_hash': secretHash ?? '',
-        'transaction': transaction == null ? null : transaction.toJson(),
+        'transaction': transaction?.toJson(),
         'error': error ?? '',
         'wait_until': waitUntil ?? 0
       };
@@ -499,7 +499,7 @@ class Transaction {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'block_height': blockHeight ?? 0,
         'coin': coin ?? '',
-        'fee_details': feeDetails == null ? null : feeDetails.toJson(),
+        'fee_details': feeDetails?.toJson(),
         'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
             <String>[],
         'internal_id': internalId ?? '',

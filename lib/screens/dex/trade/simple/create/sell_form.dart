@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
+//import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
@@ -15,7 +15,7 @@ class SellForm extends StatefulWidget {
 }
 
 class _SellFormState extends State<SellForm> {
-  final _amtCtrl = TextEditingControllerWorkaroud();
+  final _amtCtrl = TextEditingController(); //TextEditingControllerWorkaroud();
   final _focusNode = FocusNode();
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
@@ -94,7 +94,7 @@ class _SellFormState extends State<SellForm> {
               color: disabled
                   ? Theme.of(context).primaryColor.withAlpha(200)
                   : isActive
-                      ? Theme.of(context).accentColor.withAlpha(200)
+                      ? Theme.of(context).colorScheme.secondary.withAlpha(200)
                       : Theme.of(context).primaryColor,
             ),
             alignment: Alignment(0, 0),
@@ -144,7 +144,7 @@ class _SellFormState extends State<SellForm> {
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                 width: 1,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               )),
             )),
         Positioned(
@@ -228,7 +228,8 @@ class _SellFormState extends State<SellForm> {
     final String currentFormatted = cutTrailingZeros(_amtCtrl.text);
 
     if (currentFormatted != newFormatted) {
-      _amtCtrl.setTextAndPosition(newFormatted);
+      // MRC: Belong to TextEditingControllerWorkaround only
+      //_amtCtrl.setTextAndPosition(newFormatted);
 
       Future<dynamic>.delayed(Duration.zero).then((dynamic _) {
         if (!_focusNode.hasFocus) {

@@ -95,8 +95,8 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
                       decoration: InputDecoration(
                         isDense: true,
                         focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ),
                       maxLines: 1,
@@ -138,8 +138,8 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
               setState(() => _isActive = !_isActive);
 
               if (_isActive) {
-                setState(() => _value ??=
-                    '${cutTrailingZeros(formatPrice(snapshot.data))}');
+                setState(() =>
+                    _value ??= cutTrailingZeros(formatPrice(snapshot.data)));
                 _valueCtrl.text = _value;
                 widget.onChange(_value, _validate(_value) == null);
               } else {

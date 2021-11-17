@@ -19,15 +19,15 @@ import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class CoinSelect extends StatefulWidget {
-  const CoinSelect(
-      {this.value,
-      this.type,
-      this.pairedCoin,
-      this.autoOpen = false,
-      this.compact = false,
-      this.onChange,
-      Key key})
-      : super(key: key);
+  const CoinSelect({
+    Key key,
+    this.value,
+    this.type,
+    this.pairedCoin,
+    this.autoOpen = false,
+    this.compact = false,
+    this.onChange,
+  }) : super(key: key);
 
   final Coin value;
   final CoinType type;
@@ -80,7 +80,8 @@ class _CoinSelectState extends State<CoinSelect> {
                           height: widget.compact ? 16 : 24,
                         )
                       : CircleAvatar(
-                          backgroundColor: Theme.of(context).accentColor,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
                           radius: widget.compact ? 8 : 12,
                         ),
                   const SizedBox(width: 6),
@@ -154,7 +155,7 @@ class _CoinSelectState extends State<CoinSelect> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -252,7 +253,7 @@ class _CoinSelectState extends State<CoinSelect> {
                       style: TextStyle(
                         fontSize: widget.compact ? 14 : null,
                         color: coinBalance.coin == widget.value
-                            ? Theme.of(context).accentColor
+                            ? Theme.of(context).colorScheme.secondary
                             : null,
                       ),
                     ),
@@ -300,7 +301,7 @@ class _CoinSelectState extends State<CoinSelect> {
                       coinBalance.coin.abbr.toUpperCase(),
                       style: TextStyle(
                         color: coinBalance.coin == widget.value
-                            ? Theme.of(context).accentColor
+                            ? Theme.of(context).colorScheme.secondary
                             : null,
                         fontSize: widget.compact ? 14 : null,
                       ),
@@ -329,7 +330,7 @@ class _CoinSelectState extends State<CoinSelect> {
                   coinBalance.coin.name.toUpperCase(),
                   style: TextStyle(
                     color: coinBalance.coin == widget.value
-                        ? Theme.of(context).accentColor
+                        ? Theme.of(context).colorScheme.secondary
                         : null,
                     fontSize: widget.compact ? 14 : null,
                   ),

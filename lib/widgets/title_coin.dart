@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
 class TitleCoin extends StatefulWidget {
-  const TitleCoin({Key key, @required this.text, this.style, this.tag})
-      : super(key: key);
+  const TitleCoin({
+    Key key,
+    @required this.text,
+    this.style,
+    this.tag,
+  }) : super(key: key);
 
   final String text;
   final TextStyle style;

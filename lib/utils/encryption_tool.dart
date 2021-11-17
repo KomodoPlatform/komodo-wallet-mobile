@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
@@ -14,18 +17,24 @@ class EncryptionTool {
   Future<bool> isPasswordValid(
       KeyEncryption key, Wallet wallet, String password) async {
     if (key == KeyEncryption.SEED) {
-      return await PasswordHash.verifyStorage(
-              await storage.read(key: keyPassword(key, wallet)), password)
-          .then((bool onValue) =>
-              onValue ? onValue : throw Exception('Invalid password.'))
-          .catchError((dynamic e) => true);
+      final onValue = PasswordHash.verifyStorage(
+          await storage.read(key: keyPassword(key, wallet)), password);
+      return onValue ? onValue : throw Exception('Invalid password.');
     } else {
       return true;
     }
   }
 
-  Future<String> _computeHash(String data) async =>
-      await PasswordHash.hashStorage(data).catchError((dynamic e) => data);
+  String _computeHash(String data) {
+    // TODO(MRC): Check if this is the best way to encode to Uint8List
+    // PasswordHash.hashStorage apparently uses ascii.decode internally,
+    // so I'm  using it here as well
+    // I need to know whether to use utf-8 or ascii
+    // But utf-8 should work for ascii cases
+    final encodedData = utf8.encode(data);
+    final dataAsBytes = Uint8List.fromList(encodedData);
+    return PasswordHash.hashStorage(dataAsBytes);
+  }
 
   Future<void> writeData(KeyEncryption key, Wallet wallet, String password,
           String data) async =>
@@ -34,8 +43,7 @@ class EncryptionTool {
           .then((_) async {
         if (key == KeyEncryption.SEED) {
           await storage.write(
-              key: keyPassword(key, wallet),
-              value: await _computeHash(password));
+              key: keyPassword(key, wallet), value: _computeHash(password));
         }
       });
 

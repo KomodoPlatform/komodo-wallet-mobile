@@ -26,7 +26,7 @@ import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 /// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
@@ -406,7 +406,7 @@ class MMService {
     try {
       final BaseService baseService =
           BaseService(userpass: userpass, method: 'stop');
-      await client.post(url, body: baseServiceToJson(baseService));
+      await client.post(Uri.parse(url), body: baseServiceToJson(baseService));
 
       _running = false;
     } catch (e) {

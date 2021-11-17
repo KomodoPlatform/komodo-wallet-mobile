@@ -250,7 +250,7 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
         CexMarker(context, size: Size.fromRadius(6)),
         SizedBox(width: 2),
         Text(
-          '$fiatPrice',
+          fiatPrice,
           style: style,
         ),
         Text(

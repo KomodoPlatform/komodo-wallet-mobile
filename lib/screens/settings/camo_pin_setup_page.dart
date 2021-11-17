@@ -93,7 +93,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                             Text(
                               '${camoFraction.data}%',
                               style: TextStyle(
-                                color: Theme.of(context).accentColor,
+                                color: Theme.of(context).colorScheme.secondary,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -107,7 +107,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                               color: Theme.of(context).backgroundColor),
                         ),
                         child: Slider(
-                            activeColor: Theme.of(context).accentColor,
+                            activeColor:
+                                Theme.of(context).colorScheme.secondary,
                             divisions: 50,
                             label: camoFraction.data.toString(),
                             min: 1,

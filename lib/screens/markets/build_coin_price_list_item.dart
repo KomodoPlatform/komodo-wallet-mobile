@@ -49,123 +49,114 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
     final bool _hasChartData = cexProvider
         .isChartAvailable('${widget.coinBalance.coin.abbr}-$_currency');
 
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Container(
-                color: Color(int.parse(coin.colorCoin)),
-                width: 8,
-                height: 64,
-              ),
-              Expanded(
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Material(
-                        color: Theme.of(context).primaryColor,
-                        child: Container(
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                  child: InkWell(
-                                onTap: widget.onTap,
-                                child: Container(
-                                  height: 64,
-                                  padding: const EdgeInsets.only(
-                                      left: 14, right: 14),
-                                  child: Row(
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Container(
+              color: Color(int.parse(coin.colorCoin)),
+              width: 8,
+              height: 64,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Material(
+                    color: Theme.of(context).primaryColor,
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                            child: InkWell(
+                          onTap: widget.onTap,
+                          child: Container(
+                            height: 64,
+                            padding: const EdgeInsets.only(left: 14, right: 14),
+                            child: Row(
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius: 18,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage: AssetImage(
+                                      'assets/coin-icons/${balance.coin.toLowerCase()}.png'),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  coin.name.toUpperCase(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      .copyWith(fontSize: 14),
+                                )
+                              ],
+                            ),
+                          ),
+                        )),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              expanded = !expanded;
+                            });
+                          },
+                          child: Container(
+                            height: 64,
+                            padding: const EdgeInsets.only(
+                              left: 14,
+                              right: 14,
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                if (_hasNonzeroPrice)
+                                  Row(
                                     children: <Widget>[
-                                      CircleAvatar(
-                                        radius: 18,
-                                        backgroundColor: Colors.transparent,
-                                        backgroundImage: AssetImage(
-                                            'assets/coin-icons/${balance.coin.toLowerCase()}.png'),
+                                      CexMarker(
+                                        context,
+                                        size: const Size.fromHeight(14),
                                       ),
-                                      const SizedBox(width: 8),
+                                      const SizedBox(
+                                        width: 4,
+                                      ),
                                       Text(
-                                        coin.name.toUpperCase(),
+                                        cexProvider.convert(double.parse(
+                                          widget.coinBalance.priceForOne,
+                                        )),
                                         style: Theme.of(context)
                                             .textTheme
                                             .subtitle2
-                                            .copyWith(fontSize: 14),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    expanded = !expanded;
-                                  });
-                                },
-                                child: Container(
-                                  height: 64,
-                                  padding: const EdgeInsets.only(
-                                    left: 14,
-                                    right: 14,
-                                  ),
-                                  child: Row(
-                                    children: <Widget>[
-                                      if (_hasNonzeroPrice)
-                                        Row(
-                                          children: <Widget>[
-                                            CexMarker(
-                                              context,
-                                              size: const Size.fromHeight(14),
-                                            ),
-                                            const SizedBox(
-                                              width: 4,
-                                            ),
-                                            Text(
-                                              cexProvider.convert(double.parse(
-                                                widget.coinBalance.priceForOne,
-                                              )),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2
-                                                  .copyWith(
-                                                      color: settingsBloc
-                                                              .isLightTheme
-                                                          ? cexColorLight
-                                                          : cexColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                            ),
-                                          ],
-                                        ),
-                                      Container(
-                                        child: _hasNonzeroPrice && _hasChartData
-                                            ? CandlesIcon(
-                                                size: 14,
+                                            .copyWith(
                                                 color: settingsBloc.isLightTheme
                                                     ? cexColorLight
-                                                    : cexColor.withOpacity(0.8),
-                                              )
-                                            : null,
+                                                    : cexColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal),
                                       ),
                                     ],
                                   ),
+                                Container(
+                                  child: _hasNonzeroPrice && _hasChartData
+                                      ? CandlesIcon(
+                                          size: 14,
+                                          color: settingsBloc.isLightTheme
+                                              ? cexColorLight
+                                              : cexColor.withOpacity(0.8),
+                                        )
+                                      : null,
                                 ),
-                              )
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-          if (expanded && _hasChartData) _buildChart(),
-        ],
-      ),
+            ),
+          ],
+        ),
+        if (expanded && _hasChartData) _buildChart(),
+      ],
     );
   }
 
@@ -263,7 +254,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                         height: chartHeight,
                         child: snapshot.hasData
                             ? StreamBuilder<Object>(

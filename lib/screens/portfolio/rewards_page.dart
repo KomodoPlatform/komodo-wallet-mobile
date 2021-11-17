@@ -43,21 +43,19 @@ class _RewardsPageState extends State<RewardsPage> {
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        rewardsProvider.updateInProgress
-                            ? const SizedBox(
-                                height: 1,
-                                child: LinearProgressIndicator(),
-                              )
-                            : Container(height: 1),
-                        _buildHeader(),
-                        _buildButtons(),
-                        _buildLink(),
-                        _buildTable(),
-                      ],
-                    ),
+                  child: Column(
+                    children: <Widget>[
+                      rewardsProvider.updateInProgress
+                          ? const SizedBox(
+                              height: 1,
+                              child: LinearProgressIndicator(),
+                            )
+                          : Container(height: 1),
+                      _buildHeader(),
+                      _buildButtons(),
+                      _buildLink(),
+                      _buildTable(),
+                    ],
                   ),
                 ),
               ),
@@ -80,32 +78,30 @@ class _RewardsPageState extends State<RewardsPage> {
   }
 
   Widget _buildLink() {
-    return Container(
-      child: InkWell(
-        onTap: () {
-          launchURL('https://support.komodoplatform.com/support/'
-              'solutions/articles/'
-              '29000024428-komodo-5-active-user-reward-all-you-need-to-know');
-        },
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: <Widget>[
-              Text(
-                AppLocalizations.of(context).rewardsReadMore,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.blue,
-                ),
-              ),
-              const SizedBox(width: 4),
-              Icon(
-                Icons.open_in_new,
-                size: 12,
+    return InkWell(
+      onTap: () {
+        launchURL('https://support.komodoplatform.com/support/'
+            'solutions/articles/'
+            '29000024428-komodo-5-active-user-reward-all-you-need-to-know');
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: <Widget>[
+            Text(
+              AppLocalizations.of(context).rewardsReadMore,
+              style: TextStyle(
+                fontSize: 14,
                 color: Colors.blue,
-              )
-            ],
-          ),
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(
+              Icons.open_in_new,
+              size: 12,
+              color: Colors.blue,
+            )
+          ],
         ),
       ),
     );
@@ -485,7 +481,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      RaisedButton(
+                      ElevatedButton(
                         onPressed: () {
                           dialogBloc.closeDialog(context);
                         },

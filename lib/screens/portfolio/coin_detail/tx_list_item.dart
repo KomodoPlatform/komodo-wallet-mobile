@@ -48,8 +48,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
                         coinBalance: widget.currentCoinBalance)),
               );
             },
-            child: Container(
-                child: Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
@@ -231,7 +230,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
                   ),
                 )
               ],
-            )),
+            ),
           )),
     );
   }

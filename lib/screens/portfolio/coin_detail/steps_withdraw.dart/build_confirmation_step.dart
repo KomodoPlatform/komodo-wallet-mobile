@@ -203,7 +203,10 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
               child: Container(
                 height: 1,
                 width: double.infinity,
-                color: Theme.of(context).textSelectionColor.withOpacity(0.4),
+                color: Theme.of(context)
+                    .textSelectionTheme
+                    .selectionColor
+                    .withOpacity(0.4),
               ),
             ),
             Row(
@@ -236,12 +239,10 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
             const SizedBox(
               height: 24,
             ),
-            Container(
-              child: AutoSizeText(
-                widget.addressToSend,
-                style: Theme.of(context).textTheme.bodyText2,
-                maxLines: 1,
-              ),
+            AutoSizeText(
+              widget.addressToSend,
+              style: Theme.of(context).textTheme.bodyText2,
+              maxLines: 1,
             ),
             const SizedBox(
               height: 24,

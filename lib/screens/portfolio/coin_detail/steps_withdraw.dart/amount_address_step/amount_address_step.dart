@@ -6,8 +6,6 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:flutter/services.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_field.dart';
@@ -122,29 +120,28 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       return;
     }
 
-    final Function onConfirmCallback = () {
-      if (uriInfo.address != null && uriInfo.address.isNotEmpty) {
-        widget.addressController.text = uriInfo.address;
-      }
-      if (uriInfo.amount != null) {
-        final coinBalance = coinsBloc.coinBalance.firstWhere(
-            (cb) => cb.coin.abbr == widget.coin.abbr,
-            orElse: () => null);
-        final amountDecimal = deci(uriInfo.amount);
-
-        if (coinBalance != null &&
-            coinBalance.balance.balance >= amountDecimal) {
-          widget.amountController.text = uriInfo.amount;
-        } else {
-          showinsufficientBalanceDialog(amountDecimal);
-        }
-      }
-    };
-
     if (widget.paymentUriInfo != null) {
-      onConfirmCallback();
+      onConfirmCallback(uriInfo);
     } else {
       showUriDetailsDialog(context, uriInfo, onConfirmCallback);
+    }
+  }
+
+  void onConfirmCallback(PaymentUriInfo uriInfo) {
+    if (uriInfo.address != null && uriInfo.address.isNotEmpty) {
+      widget.addressController.text = uriInfo.address;
+    }
+    if (uriInfo.amount != null) {
+      final coinBalance = coinsBloc.coinBalance.firstWhere(
+          (cb) => cb.coin.abbr == widget.coin.abbr,
+          orElse: () => null);
+      final amountDecimal = deci(uriInfo.amount);
+
+      if (coinBalance != null && coinBalance.balance.balance >= amountDecimal) {
+        widget.amountController.text = uriInfo.amount;
+      } else {
+        showinsufficientBalanceDialog(amountDecimal);
+      }
     }
   }
 
@@ -168,7 +165,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text(AppLocalizations.of(context).okButton),
                     onPressed: () {
                       dialogBloc.closeDialog(context);
@@ -197,7 +194,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -254,8 +251,14 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     }
 
     final int lockCookie = lockService.enteringQrScanner();
-    try {
-      final String address = await BarcodeScanner.scan();
+
+    final result = await scanQr();
+    if (result == null) {
+      setState(() {
+        barcode = 'Error';
+      });
+    } else {
+      final address = result;
       final uri = Uri.tryParse(address.trim());
 
       setState(() {
@@ -266,21 +269,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
           handleQrAdress(address);
         }
       });
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
-        prefs.setBool('camera_denied_by_user', true);
-        setState(() {
-          barcode = 'The user did not grant the camera permission!';
-        });
-      } else {
-        setState(() => barcode = 'Unknown error: $e');
-      }
-    } on FormatException {
-      setState(() => barcode =
-          'null (User returned using the "back"-button before scanning anything. Result)');
-    } catch (e) {
-      setState(() => barcode = 'Unknown error: $e');
     }
+
     lockService.qrScannerReturned(lockCookie);
   }
 
@@ -299,7 +289,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                RaisedButton(
+                ElevatedButton(
                   child: Text(AppLocalizations.of(context).okButton),
                   onPressed: () {
                     Navigator.of(context).pop();

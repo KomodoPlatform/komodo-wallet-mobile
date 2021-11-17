@@ -74,7 +74,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                   const SizedBox(
                     height: 32,
                   ),
-                  Container(
+                  SizedBox(
                     height: 200,
                     child: SvgPicture.asset(
                         settingsBloc.isLightTheme
@@ -91,10 +91,8 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                           style: Theme.of(context).textTheme.headline6),
                       Text(
                         AppLocalizations.of(context).tradeCompleted,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6
-                            .copyWith(color: Theme.of(context).accentColor),
+                        style: Theme.of(context).textTheme.headline6.copyWith(
+                            color: Theme.of(context).colorScheme.secondary),
                       ),
                     ],
                   ),

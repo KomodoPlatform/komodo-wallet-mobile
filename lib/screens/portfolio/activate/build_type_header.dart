@@ -33,7 +33,7 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
                     height: 15,
                     width: 15,
                     color: isActive
-                        ? Theme.of(context).accentColor
+                        ? Theme.of(context).colorScheme.secondary
                         : Theme.of(context).primaryColor,
                   ),
                   const SizedBox(width: 24),

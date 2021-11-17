@@ -18,25 +18,25 @@ class FiltersButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color color = activeFilters.anyActive
-        ? Theme.of(context).accentColor
+        ? Theme.of(context).colorScheme.secondary
         : Theme.of(context).textTheme.bodyText1.color;
 
     return InkWell(
       onTap: onPressed,
       child: Container(
-        padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
+        padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Padding(
-              padding: EdgeInsets.only(bottom: 1.0),
+              padding: const EdgeInsets.only(bottom: 1.0),
               child: Icon(
                 Icons.filter_alt_outlined,
                 size: 14,
                 color: color,
               ),
             ),
-            SizedBox(width: 2),
+            const SizedBox(width: 2),
             Text(
               text ?? AppLocalizations.of(context).filtersButton,
               style: Theme.of(context).textTheme.bodyText1.copyWith(

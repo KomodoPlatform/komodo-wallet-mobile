@@ -19,7 +19,7 @@ void showFaucetDialog({
             builder: (context, snapshot) {
               return CustomSimpleDialog(
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -38,7 +38,7 @@ void showFaucetDialog({
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            RaisedButton(
+                            ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
@@ -153,7 +153,7 @@ Future<Map<String, dynamic>> callFaucet(String coin, String address) async {
   http.Response response;
   try {
     response = await http
-        .get('https://faucet.komodo.live/faucet/$coin/$address')
+        .get(Uri.parse('https://faucet.komodo.live/faucet/$coin/$address'))
         .timeout(const Duration(seconds: 30), onTimeout: () {
       throw AppLocalizations().faucetTimedOut;
     });

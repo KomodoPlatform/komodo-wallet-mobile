@@ -13,13 +13,14 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DisclaimerPage extends StatefulWidget {
-  const DisclaimerPage(
-      {Key key,
-      this.password,
-      this.seed,
-      this.onSuccess,
-      this.readOnly = false})
-      : super(key: key);
+  const DisclaimerPage({
+    Key key,
+    this.password,
+    this.seed,
+    this.onSuccess,
+    this.readOnly = false,
+  }) : super(key: key);
+
   final String password;
   final String seed;
   final Function onSuccess;
@@ -328,7 +329,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                 });
               },
               child: FloatingActionButton(
-                child: Icon(Icons.arrow_downward),
+                child: const Icon(Icons.arrow_downward),
                 onPressed: () {
                   if (isEndOfScroll) {
                     timer.cancel();

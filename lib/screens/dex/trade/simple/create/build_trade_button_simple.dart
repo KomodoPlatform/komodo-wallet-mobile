@@ -27,15 +27,22 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
         children: [
           SizedBox(width: 70),
           Expanded(
-            child: RaisedButton(
+            child: ElevatedButton(
               key: const Key('trade-button-simple'),
-              padding: const EdgeInsets.symmetric(
-                vertical: 16,
-              ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0)),
               onPressed:
                   _isEnabled() ? () => _validateAndConfirm(context) : null,
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(
+                    vertical: 16,
+                  ),
+                ),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+              ),
               child: Text(
                 'Next'.toUpperCase(),
                 style: TextStyle(
@@ -62,7 +69,7 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
           MaterialPageRoute<dynamic>(
               builder: (BuildContext context) => SwapConfirmationPageSimple()));
     } else {
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(errorMessage),
       ));

@@ -52,7 +52,7 @@ class GetErcTransactions {
 
     String body;
     try {
-      final Response response = await http.get(url);
+      final Response response = await http.get(Uri.parse(url));
       body = response.body;
     } catch (e) {
       Log('get_erc_transactions', 'getTransactions/fetch] $e');

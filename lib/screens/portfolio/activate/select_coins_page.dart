@@ -78,7 +78,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 return IconButton(
                   icon: Icon(
                     Icons.close,
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -208,7 +208,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     return Container(
       color: Theme.of(context).primaryColor,
       child: SafeArea(
-        child: Container(
+        child: SizedBox(
           height: 60,
           child: Center(
             child: Padding(
@@ -267,7 +267,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text(AppLocalizations.of(context).warningOkBtn),
                     onPressed: () {
                       dialogBloc.closeDialog(context);

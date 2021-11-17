@@ -42,33 +42,38 @@ class _OrdersPageState extends State<OrdersPage> {
             SizedBox(width: 8),
             _buildFiltersButton(),
             Expanded(child: SizedBox()),
-            FlatButton(
-                padding: EdgeInsets.all(4),
-                onPressed: () {
-                  setState(() {
-                    _currentTab = OrdersTab.active;
-                  });
-                },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      AppLocalizations.of(context).ordersActive + ' ',
-                      style: TextStyle(
-                          color: _currentTab == OrdersTab.active
-                              ? Theme.of(context).accentColor
-                              : null),
-                    ),
-                    _buildActiveOrdersNumber(),
-                  ],
-                )),
-            FlatButton(
-              padding: EdgeInsets.all(4),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _currentTab = OrdersTab.active;
+                });
+              },
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(const EdgeInsets.all(4)),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context).ordersActive + ' ',
+                    style: TextStyle(
+                        color: _currentTab == OrdersTab.active
+                            ? Theme.of(context).colorScheme.secondary
+                            : null),
+                  ),
+                  _buildActiveOrdersNumber(),
+                ],
+              ),
+            ),
+            TextButton(
               onPressed: () {
                 setState(() {
                   _currentTab = OrdersTab.history;
                 });
               },
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(const EdgeInsets.all(4)),
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
@@ -76,7 +81,7 @@ class _OrdersPageState extends State<OrdersPage> {
                     AppLocalizations.of(context).ordersHistory + ' ',
                     style: TextStyle(
                         color: _currentTab == OrdersTab.history
-                            ? Theme.of(context).accentColor
+                            ? Theme.of(context).colorScheme.secondary
                             : null),
                   ),
                   _buildHistoryNumber(),
@@ -156,7 +161,7 @@ class _OrdersPageState extends State<OrdersPage> {
               fontSize: 13,
               fontWeight: FontWeight.w400,
               color: _currentTab == OrdersTab.history
-                  ? Theme.of(context).accentColor
+                  ? Theme.of(context).colorScheme.secondary
                   : null,
             ),
           );
@@ -180,7 +185,7 @@ class _OrdersPageState extends State<OrdersPage> {
             fontSize: 13,
             fontWeight: FontWeight.w400,
             color: _currentTab == OrdersTab.active
-                ? Theme.of(context).accentColor
+                ? Theme.of(context).colorScheme.secondary
                 : null,
           ),
         );

@@ -51,18 +51,22 @@ class _AddressFieldState extends State<AddressField> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Container(
+              SizedBox(
                 height: 60,
                 child: ButtonTheme(
                   minWidth: 50,
-                  child: FlatButton(
-                    padding: const EdgeInsets.only(
-                      left: 6,
-                      right: 6,
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0)),
+                  child: TextButton(
                     onPressed: widget.onScan,
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(
+                        const EdgeInsets.only(left: 6, right: 6),
+                      ),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                      ),
+                    ),
                     child: Icon(
                       Icons.add_a_photo,
                       color: Theme.of(context)
@@ -97,8 +101,8 @@ class _AddressFieldState extends State<AddressField> {
                         borderSide: BorderSide(
                             color: Theme.of(context).primaryColorLight)),
                     focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).accentColor)),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary)),
                     hintStyle: Theme.of(context).textTheme.bodyText2,
                     labelStyle: Theme.of(context).textTheme.bodyText2,
                     labelText: AppLocalizations.of(context).addressSend,
@@ -162,9 +166,9 @@ class _AddressFieldState extends State<AddressField> {
           style: Theme.of(context)
               .textTheme
               .caption
-              .copyWith(color: Theme.of(context).accentColor),
+              .copyWith(color: Theme.of(context).colorScheme.secondary),
         )),
-        RaisedButton(
+        ElevatedButton(
           onPressed: () async {
             final String converted = await MM.convertLegacyAddress(
               address: widget.controller.text,

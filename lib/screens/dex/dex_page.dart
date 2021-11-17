@@ -60,7 +60,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
           flexibleSpace: SafeArea(
               child: Column(
             children: <Widget>[
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _tabsPanel,
             ],
           )),
@@ -76,7 +76,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
-          resizeToAvoidBottomPadding: false,
+          resizeToAvoidBottomInset: false,
           appBar: _buildAppBar(),
           backgroundColor: Theme.of(context).backgroundColor,
           body: Builder(builder: (BuildContext context) {

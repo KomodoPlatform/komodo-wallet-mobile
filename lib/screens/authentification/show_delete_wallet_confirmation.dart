@@ -107,26 +107,26 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
               return Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text(AppLocalizations.of(context).cancel),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   const SizedBox(
                     width: 12,
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (loading) ...{
-                          SizedBox(
+                          const SizedBox(
                             width: 16,
                             height: 16,
                             child: CircularProgressIndicator(
                               strokeWidth: 1,
                             ),
                           ),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                         },
                         Text(AppLocalizations.of(context).delete),
                       ],

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatefulWidget {
-  const PrimaryButton(
-      {Key key,
-      @required this.onPressed,
-      @required this.text,
-      this.isLoading = false,
-      this.isDarkMode = true,
-      this.backgroundColor})
-      : super(key: key);
+  const PrimaryButton({
+    Key key,
+    @required this.onPressed,
+    @required this.text,
+    this.isLoading = false,
+    this.isDarkMode = true,
+    this.backgroundColor,
+  }) : super(key: key);
 
   final VoidCallback onPressed;
   final String text;
@@ -26,27 +26,30 @@ class _PrimaryButtonState extends State<PrimaryButton> {
     Color backgroundColor;
 
     if (widget.backgroundColor == null) {
-      backgroundColor = Theme.of(context).accentColor;
+      backgroundColor = Theme.of(context).colorScheme.secondary;
     } else {
       backgroundColor = widget.backgroundColor;
     }
 
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: widget.isLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : RaisedButton(
-              padding: const EdgeInsets.symmetric(
-                vertical: 12,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
+          : ElevatedButton(
               onPressed: widget.onPressed,
-              color: backgroundColor,
-              disabledColor: Theme.of(context).disabledColor,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(backgroundColor),
+                padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(vertical: 12),
+                ),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+              ),
               child: Text(
                 widget.text.toUpperCase(),
                 style: Theme.of(context).textTheme.button.copyWith(

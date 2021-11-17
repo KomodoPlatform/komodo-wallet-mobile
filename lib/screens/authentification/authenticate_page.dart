@@ -4,7 +4,7 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/screens/authentification/showDeleteWalletConfirmation.dart';
+import 'package:komodo_dex/screens/authentification/show_delete_wallet_confirmation.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -13,6 +13,8 @@ import 'package:komodo_dex/widgets/select_language_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {
+  const AuthenticatePage({Key key}) : super(key: key);
+
   @override
   _AuthenticatePageState createState() => _AuthenticatePageState();
 }
@@ -40,15 +42,18 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
               ? BuildScreenAuthMultiWallets(
                   wallets: snapshot.data,
                 )
-              : BuildScreenAuth();
+              : const BuildScreenAuth();
         });
   }
 }
 
 class BoxButton extends StatelessWidget {
-  const BoxButton(
-      {Key key, this.text, this.assetPath, @required this.onPressed})
-      : super(key: key);
+  const BoxButton({
+    Key key,
+    this.text,
+    this.assetPath,
+    @required this.onPressed,
+  }) : super(key: key);
 
   final String text;
   final String assetPath;
@@ -80,7 +85,7 @@ class BoxButton extends StatelessWidget {
             child: Center(
                 child: Column(
               children: <Widget>[
-                Container(height: 40, child: SvgPicture.asset(assetPath)),
+                SizedBox(height: 40, child: SvgPicture.asset(assetPath)),
                 const SizedBox(
                   height: 8,
                 ),
@@ -98,7 +103,7 @@ class BoxButton extends StatelessWidget {
 }
 
 class BuildScreenAuthMultiWallets extends StatefulWidget {
-  const BuildScreenAuthMultiWallets({this.wallets});
+  const BuildScreenAuthMultiWallets({Key key, this.wallets}) : super(key: key);
 
   final List<Wallet> wallets;
 
@@ -112,54 +117,53 @@ class _BuildScreenAuthMultiWalletsState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              const SizedBox(
-                height: 16,
-              ),
-              Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Center(
-                    child: Container(
-                        height: 200,
-                        width: 200,
-                        child: Image.asset(settingsBloc.isLightTheme
-                            ? 'assets/branding/mark_and_text_vertical_dark.png'
-                            : 'assets/branding/mark_and_text_vertical_light.png')),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            const SizedBox(
+              height: 16,
+            ),
+            Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Center(
+                  child: SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: Image.asset(settingsBloc.isLightTheme
+                          ? 'assets/branding/mark_and_text_vertical_dark.png'
+                          : 'assets/branding/mark_and_text_vertical_light.png')),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
+              child: Container(
+                  alignment: const Alignment(1, 0),
+                  child: const SelectLanguageButton()),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: const <Widget>[
+                  Expanded(child: CreateWalletButton()),
+                  SizedBox(
+                    width: 8,
                   ),
+                  Expanded(child: RestoreButton())
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
-                child: Container(
-                    alignment: Alignment(1, 0), child: SelectLanguageButton()),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(child: CreateWalletButton()),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(child: RestoreButton())
-                  ],
-                ),
-              ),
-              Column(
-                children: widget.wallets.map<Widget>((wallet) {
-                  return _buildItemWallet(wallet);
-                }).toList(),
-              ),
-              const SizedBox(height: 32),
-            ],
-          ),
+            ),
+            Column(
+              children: widget.wallets.map<Widget>((wallet) {
+                return _buildItemWallet(wallet);
+              }).toList(),
+            ),
+            const SizedBox(height: 32),
+          ],
         ),
       ),
     );
@@ -236,7 +240,7 @@ class _BuildScreenAuthMultiWalletsState
 
   Widget _buildDeleteButton(Wallet wallet) {
     return IconButton(
-      padding: EdgeInsets.fromLTRB(0, 0, 12, 0),
+      padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
       icon: Icon(
         Icons.delete_outline,
         size: 24,
@@ -269,6 +273,8 @@ class _BuildScreenAuthMultiWalletsState
 }
 
 class BuildScreenAuth extends StatefulWidget {
+  const BuildScreenAuth({Key key}) : super(key: key);
+
   @override
   _BuildScreenAuthState createState() => _BuildScreenAuthState();
 }
@@ -277,7 +283,7 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: Stack(
         alignment: Alignment.topRight,
@@ -292,7 +298,7 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Container(
+                      SizedBox(
                           height: 240,
                           width: 240,
                           child: Image.asset(settingsBloc.isLightTheme
@@ -301,10 +307,10 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 16, 16),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 16, 16),
                     child: Container(
-                        alignment: Alignment(1, 0),
-                        child: SelectLanguageButton()),
+                        alignment: const Alignment(1, 0),
+                        child: const SelectLanguageButton()),
                   ),
                   Center(
                     child: Padding(
@@ -315,9 +321,9 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
+                        children: const <Widget>[
                           CreateWalletButton(),
-                          const SizedBox(
+                          SizedBox(
                             height: 16,
                           ),
                           RestoreButton(),
@@ -336,6 +342,8 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
 }
 
 class CreateWalletButton extends StatefulWidget {
+  const CreateWalletButton({Key key}) : super(key: key);
+
   @override
   _CreateWalletButtonState createState() => _CreateWalletButtonState();
 }
@@ -361,6 +369,8 @@ class _CreateWalletButtonState extends State<CreateWalletButton> {
 }
 
 class RestoreButton extends StatefulWidget {
+  const RestoreButton({Key key}) : super(key: key);
+
   @override
   _RestoreButtonState createState() => _RestoreButtonState();
 }

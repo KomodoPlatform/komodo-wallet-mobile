@@ -138,14 +138,14 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       borderRadius: BorderRadius.circular(2),
                       border: Border.all(
                         color: allSelected
-                            ? Theme.of(context).accentColor
+                            ? Theme.of(context).colorScheme.secondary
                             : Theme.of(context).textTheme.bodyText1.color,
                       )),
                   child: Icon(
                     Icons.done_all,
                     size: 11,
                     color: allSelected
-                        ? Theme.of(context).accentColor
+                        ? Theme.of(context).colorScheme.secondary
                         : Theme.of(context).textTheme.bodyText1.color,
                   ),
                 ),
@@ -205,8 +205,8 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       maxLines: 1,
                       decoration: InputDecoration(
                         focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ),
                       inputFormatters: <TextInputFormatter>[
@@ -221,7 +221,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  FlatButton(
+                  TextButton(
                     onPressed: () {
                       fiatAmtCtrl.text = '';
                       dialogBloc.closeDialog(context);
@@ -229,7 +229,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                     child: Text(AppLocalizations.of(context).multiFiatCancel),
                   ),
                   const SizedBox(width: 12),
-                  RaisedButton(
+                  ElevatedButton(
                     onPressed: () {
                       double fiatAmt;
                       try {

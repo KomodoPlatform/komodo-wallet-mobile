@@ -10,7 +10,7 @@ import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class CheckPassphrasePage extends StatefulWidget {
-  const CheckPassphrasePage({this.seed});
+  const CheckPassphrasePage({Key key, this.seed}) : super(key: key);
 
   final String seed;
 
@@ -53,7 +53,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).checkSeedPhrase),
@@ -124,7 +124,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
 }
 
 class SeedRandom extends StatefulWidget {
-  const SeedRandom({this.data});
+  const SeedRandom({Key key, this.data}) : super(key: key);
 
   final WordData data;
 
@@ -157,10 +157,9 @@ class _SeedRandomState extends State<SeedRandom> {
       },
       child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).buttonColor,
             borderRadius: BorderRadius.circular(10),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           child: Text(word)),
     );
   }

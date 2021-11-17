@@ -49,14 +49,12 @@ class _AutoScrollTextState extends State<AutoScrollText> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SingleChildScrollView(
-        controller: _scrollController,
-        scrollDirection: Axis.horizontal,
-        child: Text(
-          widget.text ?? '',
-          style: widget.style,
-        ),
+    return SingleChildScrollView(
+      controller: _scrollController,
+      scrollDirection: Axis.horizontal,
+      child: Text(
+        widget.text ?? '',
+        style: widget.style,
       ),
     );
   }

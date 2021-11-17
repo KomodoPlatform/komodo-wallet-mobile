@@ -38,7 +38,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
       context: context,
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).updatesTitle),
         ),
@@ -49,7 +49,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
           child: ListView(
             padding: const EdgeInsets.all(12),
             children: <Widget>[
-              Container(
+              SizedBox(
                 height: MediaQuery.of(context).size.height / 3,
                 child: Container(
                     width: double.infinity,
@@ -85,7 +85,9 @@ class _UpdatesPageState extends State<UpdatesPage> {
                                 : Text(
                                     AppLocalizations.of(context)
                                             .updatesAvailable +
-                                        '${updatesProvider.newVersion == null ? '' : ': ${updatesProvider.newVersion}'}',
+                                        (updatesProvider.newVersion == null
+                                            ? ''
+                                            : ': ${updatesProvider.newVersion}'),
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   )
@@ -111,19 +113,12 @@ class _UpdatesPageState extends State<UpdatesPage> {
                 ),
               if (updatesProvider.status != UpdateStatus.upToDate &&
                   !updatesProvider.isFetching)
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height / 5,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      RaisedButton(
-                        color: Theme.of(context).dialogBackgroundColor,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              color: Theme.of(context).textTheme.caption.color),
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
+                      ElevatedButton(
                         onPressed: () {
                           Platform.isIOS
                               ? launchURL(
@@ -131,24 +126,46 @@ class _UpdatesPageState extends State<UpdatesPage> {
                               : launchURL(
                                   'https://play.google.com/store/apps/details?id=com.komodoplatform.atomicdex');
                         },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).dialogBackgroundColor),
+                          elevation: MaterialStateProperty.all(0),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .caption
+                                      .color),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                        ),
                         child: Text(AppLocalizations.of(context).updatesUpdate),
                       ),
                       if (updatesProvider.status == UpdateStatus.available ||
                           updatesProvider.status ==
                               UpdateStatus.recommended) ...[
                         const SizedBox(width: 12),
-                        RaisedButton(
-                          color: Theme.of(context).dialogBackgroundColor,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                                color:
-                                    Theme.of(context).textTheme.caption.color),
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
+                        ElevatedButton(
                           onPressed: () {
                             if (widget.onSkip != null) widget.onSkip();
                           },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                Theme.of(context).dialogBackgroundColor),
+                            elevation: MaterialStateProperty.all(0),
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                side: BorderSide(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .caption
+                                        .color),
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
+                          ),
                           child: Text(AppLocalizations.of(context).updatesSkip),
                         )
                       ]

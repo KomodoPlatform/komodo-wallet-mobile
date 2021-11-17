@@ -56,7 +56,7 @@ class _DetailSwapState extends State<DetailSwap> {
                 child: Text(
                   AppLocalizations.of(context).tradeDetail + ':',
                   style: Theme.of(context).textTheme.subtitle2.copyWith(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -151,7 +151,8 @@ class _DetailSwapState extends State<DetailSwap> {
                             isDense: true,
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
-                                  color: Theme.of(context).accentColor),
+                                  color:
+                                      Theme.of(context).colorScheme.secondary),
                             ),
                           ),
                           controller: noteTextController,
@@ -328,7 +329,7 @@ class _DetailSwapState extends State<DetailSwap> {
   }
 
   Widget _buildIcon(String coin) {
-    return Container(
+    return SizedBox(
       height: 25,
       width: 25,
       child: Image.asset(

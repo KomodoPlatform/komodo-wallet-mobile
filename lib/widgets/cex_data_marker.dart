@@ -19,17 +19,15 @@ class CexMarker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GestureDetector(
-        excludeFromSemantics: true,
-        onTap: () => showCexDialog(context),
-        child: Icon(
-          Icons.info_outline,
-          size: size.height,
-          color: settingsBloc.isLightTheme
-              ? cexColorLight
-              : cexColor.withOpacity(0.8),
-        ),
+    return GestureDetector(
+      excludeFromSemantics: true,
+      onTap: () => showCexDialog(context),
+      child: Icon(
+        Icons.info_outline,
+        size: size.height,
+        color: settingsBloc.isLightTheme
+            ? cexColorLight
+            : cexColor.withOpacity(0.8),
       ),
     );
   }

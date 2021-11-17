@@ -17,15 +17,17 @@ import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PinPage extends StatefulWidget {
-  const PinPage(
-      {this.firstCreationPin,
-      this.title,
-      this.subTitle,
-      this.pinStatus,
-      this.isFromChangingPin,
-      this.password,
-      this.onSuccess,
-      this.code});
+  const PinPage({
+    Key key,
+    this.firstCreationPin,
+    this.title,
+    this.subTitle,
+    this.pinStatus,
+    this.isFromChangingPin,
+    this.password,
+    this.onSuccess,
+    this.code,
+  }) : super(key: key);
 
   final bool firstCreationPin;
   @required
@@ -199,7 +201,7 @@ class _PinPageState extends State<PinPage> {
             )
           : null,
       backgroundColor: Theme.of(context).backgroundColor,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: !isLoading
           ? PinCode(
               title: Text(
@@ -302,8 +304,11 @@ class _PinPageState extends State<PinPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Theme(
-            data: Theme.of(context).copyWith(accentColor: Colors.red),
-            child: CircularProgressIndicator(),
+            data: Theme.of(context).copyWith(
+              colorScheme:
+                  Theme.of(context).colorScheme.copyWith(secondary: Colors.red),
+            ),
+            child: const CircularProgressIndicator(),
           ),
           const SizedBox(
             height: 8,
@@ -322,12 +327,12 @@ class _PinPageState extends State<PinPage> {
 }
 
 class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
-  AppBarStatus(
-      {Key key,
-      @required this.pinStatus,
-      @required this.context,
-      @required this.title})
-      : super(key: key);
+  AppBarStatus({
+    Key key,
+    @required this.pinStatus,
+    @required this.context,
+    @required this.title,
+  }) : super(key: key);
 
   final PinStatus pinStatus;
   final BuildContext context;
@@ -355,14 +360,14 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
                 onTap: () {
                   showLogoutConfirmation(context);
                 },
-                child: Padding(
-                  padding: const EdgeInsets.only(
+                child: const Padding(
+                  padding: EdgeInsets.only(
                     right: 12.0,
                     left: 12,
                   ),
                   child: Icon(
                     Icons.exit_to_app,
-                    key: const Key('settings-pin-logout'),
+                    key: Key('settings-pin-logout'),
                     color: Colors.red,
                   ),
                 )),
@@ -375,5 +380,5 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

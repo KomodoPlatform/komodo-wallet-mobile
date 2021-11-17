@@ -329,9 +329,9 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
   }
 
   void _showError(String e) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-      '$e',
+      e,
       style: TextStyle(color: Theme.of(context).errorColor),
     )));
   }

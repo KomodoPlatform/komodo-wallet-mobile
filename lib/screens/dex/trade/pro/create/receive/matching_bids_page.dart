@@ -15,13 +15,14 @@ import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 
 class MatchingBidsPage extends StatefulWidget {
-  const MatchingBidsPage(
-      {Key key,
-      this.sellAmount,
-      this.onCreateOrder,
-      this.onCreateNoOrder,
-      this.baseCoin})
-      : super(key: key);
+  const MatchingBidsPage({
+    Key key,
+    this.sellAmount,
+    this.onCreateOrder,
+    this.onCreateNoOrder,
+    this.baseCoin,
+  }) : super(key: key);
+
   final double sellAmount;
   final Function(Ask) onCreateOrder;
   final Function(String) onCreateNoOrder;
@@ -72,7 +73,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
               ),
               _buildCexRate(),
               const SizedBox(width: 4),
-              Container(
+              SizedBox(
                   height: 30,
                   width: 30,
                   child: Image.asset(
@@ -170,7 +171,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                     'Less',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 )),
@@ -187,7 +188,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                     'More',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 )),

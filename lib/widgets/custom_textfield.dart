@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
-  const CustomTextField(
-      {Key key,
-      this.controller,
-      this.labelText,
-      this.textInputType,
-      this.hintText,
-      this.onChanged,
-      this.errorText})
-      : super(key: key);
+  const CustomTextField({
+    Key key,
+    this.controller,
+    this.labelText,
+    this.textInputType,
+    this.hintText,
+    this.onChanged,
+    this.errorText,
+  }) : super(key: key);
 
   final TextEditingController controller;
   final String labelText;
@@ -41,7 +41,8 @@ class CustomTextFieldState extends State<CustomTextField> {
               borderSide:
                   BorderSide(color: Theme.of(context).primaryColorLight)),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              borderSide:
+                  BorderSide(color: Theme.of(context).colorScheme.secondary)),
           hintStyle: Theme.of(context).textTheme.bodyText1,
           labelStyle: Theme.of(context).textTheme.bodyText2,
           hintText: widget.hintText,

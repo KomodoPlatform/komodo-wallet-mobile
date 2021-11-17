@@ -65,7 +65,7 @@ class _SwapHistoryState extends State<SwapHistory> {
             children: [
               if (widget.showFilters) _buildFilters(swaps),
               if (swapsFiltered.isEmpty) ...{
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height / 4,
                   child:
                       Center(child: Text(AppLocalizations.of(context).noSwaps)),

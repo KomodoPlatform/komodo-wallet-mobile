@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,7 +32,7 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
-import 'package:komodo_dex/widgets/buildRedDot.dart';
+import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -116,7 +116,7 @@ Future<void> _checkNetworkStatus(ConnectivityResult result) async {
     if (mainBloc.networkStatus == NetworkStatus.Offline ||
         mainBloc.networkStatus == NetworkStatus.Checking) {
       mainBloc.setNetworkStatus(NetworkStatus.Restored);
-      await Future.delayed(Duration(seconds: 2), () {});
+      await Future.delayed(const Duration(seconds: 2), () {});
       mainBloc.setNetworkStatus(NetworkStatus.Online);
     }
   }
@@ -124,13 +124,13 @@ Future<void> _checkNetworkStatus(ConnectivityResult result) async {
 
 Future<void> _forceCheckNetworkStatus() async {
   mainBloc.setNetworkStatus(NetworkStatus.Checking);
-  await Future.delayed(Duration(seconds: 2), () {});
+  await Future.delayed(const Duration(seconds: 2), () {});
   final connectivity = await Connectivity().checkConnectivity();
   await _checkNetworkStatus(connectivity);
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({this.password});
+  const MyApp({Key key, this.password}) : super(key: key);
 
   final String password;
 
@@ -182,7 +182,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
       SystemUiOverlay.bottom,
       SystemUiOverlay.top,
     ]);
@@ -199,7 +199,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         child: StreamBuilder<Locale>(
             stream: mainBloc.outcurrentLocale,
             builder:
-                (BuildContext context, AsyncSnapshot<dynamic> currentLocale) {
+                (BuildContext context, AsyncSnapshot<Locale> currentLocale) {
               return SharedPreferencesBuilder<dynamic>(
                   pref: 'current_languages',
                   builder: (BuildContext context,
@@ -211,9 +211,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                           AsyncSnapshot<dynamic> currentTheme) {
                         return MaterialApp(
                             title: appConfig.appName,
-                            localizationsDelegates: <
+                            localizationsDelegates: const <
                                 LocalizationsDelegate<dynamic>>[
-                              const AppLocalizationsDelegate(),
+                              AppLocalizationsDelegate(),
                               GlobalMaterialLocalizations.delegate,
                               GlobalWidgetsLocalizations.delegate,
                               GlobalCupertinoLocalizations.delegate
@@ -232,7 +232,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                               // When we navigate to the '/' route, build the FirstScreen Widget
                               '/': (BuildContext context) => LockScreen(
                                     context: context,
-                                    child: MyHomePage(),
+                                    child: const MyHomePage(),
                                   ),
                             });
                       },
@@ -243,6 +243,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key key}) : super(key: key);
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -303,7 +305,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         return Scaffold(
           key: _scaffoldKey,
           endDrawer: AppDrawer(context),
-          resizeToAvoidBottomPadding: true,
+          resizeToAvoidBottomInset: true,
           backgroundColor: Theme.of(context).backgroundColor,
           body: _children[snapshot.data],
           bottomNavigationBar: Container(
@@ -325,7 +327,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               child: Theme(
                 data: Theme.of(context).copyWith(
                     canvasColor: Theme.of(context).primaryColor,
-                    primaryColor: Theme.of(context).accentColor,
+                    primaryColor: Theme.of(context).colorScheme.secondary,
                     textTheme: Theme.of(context).textTheme),
                 child: Container(
                   color: Theme.of(context).primaryColor,
@@ -362,7 +364,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     if (data == null) return;
 
     while (coinsBloc.coinBalance.isEmpty) {
-      await Future<dynamic>.delayed(Duration(milliseconds: 100));
+      await Future<dynamic>.delayed(const Duration(milliseconds: 100));
     }
 
     CoinBalance coinBalance;
@@ -432,31 +434,31 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                           child: Center(
                             child: Text(
                               AppLocalizations.of(context).internetRestored,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                               ),
                             ),
                           ),
                         )
                       : Padding(
-                          padding: EdgeInsets.only(left: 16, right: 8),
+                          padding: const EdgeInsets.only(left: 16, right: 8),
                           child: Row(
                             children: [
                               Text(
                                 AppLocalizations.of(context).noInternet,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                 ),
                               ),
-                              Expanded(child: SizedBox()),
+                              const Expanded(child: SizedBox()),
                               InkWell(
                                 child: Padding(
-                                  padding: EdgeInsets.all(8),
+                                  padding: const EdgeInsets.all(8),
                                   child: Row(
                                     children: [
                                       if (networkStatus ==
                                           NetworkStatus.Checking)
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 16,
                                           width: 16,
                                           child: CircularProgressIndicator(
@@ -468,11 +470,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                         ),
                                       if (networkStatus ==
                                           NetworkStatus.Checking)
-                                        SizedBox(width: 8),
+                                        const SizedBox(width: 8),
                                       Text(
                                         AppLocalizations.of(context)
                                             .internetRefreshButton,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                         ),
                                       ),
@@ -497,18 +499,18 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               currentIndex: indexTab,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.account_balance_wallet,
-                      key: const Key('main-nav-portfolio'),
+                      key: Key('main-nav-portfolio'),
                     ),
                     label: AppLocalizations.of(context).portfolio),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.swap_vert, key: const Key('main-nav-dex')),
+                    icon: const Icon(Icons.swap_vert, key: Key('main-nav-dex')),
                     label: AppLocalizations.of(context).dex),
                 BottomNavigationBarItem(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.show_chart,
-                    key: const Key('main-nav-markets'),
+                    key: Key('main-nav-markets'),
                   ),
                   label: AppLocalizations.of(context).marketsTab,
                 ),
@@ -516,8 +518,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   BottomNavigationBarItem(
                       icon: Stack(
                         children: <Widget>[
-                          Icon(Icons.library_books,
-                              key: const Key('main-nav-feed')),
+                          const Icon(Icons.library_books,
+                              key: Key('main-nav-feed')),
                           if (feedProvider.hasNewItems) buildRedDot(context),
                         ],
                       ),
@@ -525,7 +527,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                 BottomNavigationBarItem(
                     icon: Stack(
                       children: <Widget>[
-                        Icon(Icons.dehaze, key: const Key('main-nav-more')),
+                        const Icon(Icons.dehaze, key: Key('main-nav-more')),
                         if (updatesProvider.status != UpdateStatus.upToDate)
                           buildRedDot(context),
                       ],

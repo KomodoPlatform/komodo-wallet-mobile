@@ -33,7 +33,7 @@ class DetailedSwapStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color _disabledColor = Theme.of(context).textTheme.bodyText1.color;
-    final Color _accentColor = Theme.of(context).accentColor;
+    final Color _accentColor = Theme.of(context).colorScheme.secondary;
 
     Widget _buildStepStatusIcon(SwapStepStatus status) {
       Widget icon = Container();
@@ -101,7 +101,7 @@ class DetailedSwapStep extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: 0),
                   child: Icon(
                     Icons.open_in_browser,
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).colorScheme.secondary,
                     size: 22,
                   ),
                 ),
@@ -122,7 +122,7 @@ class DetailedSwapStep extends StatelessWidget {
                 onTap: () {
                   copyToClipBoard(context, txHash ?? '');
                   Future.delayed(Duration(seconds: 2), () {
-                    Scaffold.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   });
                 },
                 child: truncateMiddle(

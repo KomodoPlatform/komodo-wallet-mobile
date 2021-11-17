@@ -30,10 +30,8 @@ class _MatchingBidsChartState extends State<MatchingBidsChart> {
     orderBookProvider = Provider.of<OrderBookProvider>(context);
     sellCoin = orderBookProvider.activePair.sell;
 
-    return Container(
-      child: CustomPaint(
-        painter: _ChartPainter(widget),
-      ),
+    return CustomPaint(
+      painter: _ChartPainter(widget),
     );
   }
 }

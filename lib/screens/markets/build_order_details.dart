@@ -119,8 +119,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             child: Row(
               children: <Widget>[
                 Text(
-                  formatPrice(
-                      '${_isAsk ? widget.order.price : (1 / double.parse(widget.order.price)).toString()}'),
+                  formatPrice(_isAsk
+                      ? widget.order.price
+                      : (1 / double.parse(widget.order.price)).toString()),
                   style: TextStyle(color: _isAsk ? Colors.red : Colors.green),
                 ),
                 const SizedBox(width: 6),
@@ -140,8 +141,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             child: Row(
               children: <Widget>[
                 Text(
-                  formatPrice(
-                      '${!_isAsk ? widget.order.price : (1 / double.parse(widget.order.price)).toString()}'),
+                  formatPrice(!_isAsk
+                      ? widget.order.price
+                      : (1 / double.parse(widget.order.price)).toString()),
                   style: const TextStyle(
                     fontSize: 13,
                   ),

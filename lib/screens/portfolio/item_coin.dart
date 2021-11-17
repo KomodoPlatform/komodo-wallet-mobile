@@ -14,7 +14,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
-import 'package:komodo_dex/widgets/buildRedDot.dart';
+import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'coin_detail/coin_detail.dart';
@@ -22,22 +22,21 @@ import 'copy_dialog.dart';
 import 'rewards_page.dart';
 
 class ItemCoin extends StatefulWidget {
-  const ItemCoin(
-      {Key key,
-      @required this.mContext,
-      this.coinBalance,
-      this.slidableController})
-      : super(key: key);
+  const ItemCoin({
+    Key key,
+    @required this.mContext,
+    this.coinBalance,
+  }) : super(key: key);
 
   final CoinBalance coinBalance;
   final BuildContext mContext;
-  final SlidableController slidableController;
 
   @override
   _ItemCoinState createState() => _ItemCoinState();
 }
 
-class _ItemCoinState extends State<ItemCoin> {
+class _ItemCoinState extends State<ItemCoin>
+    with SingleTickerProviderStateMixin {
   RewardsProvider rewardsProvider;
 
   @override
@@ -53,11 +52,11 @@ class _ItemCoinState extends State<ItemCoin> {
           'coins_page:379',
           '${coin.abbr} balance: ${balance.balance}'
               '; locked_by_swaps: ${balance.lockedBySwaps}');
-      actions.add(IconSlideAction(
-        caption: AppLocalizations.of(context).send,
-        color: Colors.white,
+      actions.add(SlidableAction(
+        label: AppLocalizations.of(context).send,
+        backgroundColor: Colors.white,
         icon: Icons.arrow_upward,
-        onTap: () {
+        onPressed: (context) {
           Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
@@ -69,20 +68,20 @@ class _ItemCoinState extends State<ItemCoin> {
         },
       ));
     }
-    actions.add(IconSlideAction(
-      caption: AppLocalizations.of(context).receive,
-      color: Theme.of(context).backgroundColor,
+    actions.add(SlidableAction(
+      label: AppLocalizations.of(context).receive,
+      backgroundColor: Theme.of(context).backgroundColor,
       icon: Icons.arrow_downward,
-      onTap: () {
+      onPressed: (context) {
         showCopyDialog(context, balance.address, coin);
       },
     ));
     if (!coin.walletOnly && double.parse(balance.getBalance()) > 0) {
-      actions.add(IconSlideAction(
-        caption: AppLocalizations.of(context).swap.toUpperCase(),
-        color: Theme.of(context).accentColor,
+      actions.add(SlidableAction(
+        label: AppLocalizations.of(context).swap.toUpperCase(),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         icon: Icons.swap_vert,
-        onTap: () {
+        onPressed: (context) {
           mainBloc.setCurrentIndexTab(1);
           swapHistoryBloc.isSwapsOnGoing = false;
           Future<dynamic>.delayed(const Duration(milliseconds: 100), () {
@@ -96,34 +95,39 @@ class _ItemCoinState extends State<ItemCoin> {
     return Column(
       children: <Widget>[
         Slidable(
-          controller: widget.slidableController,
-          actionPane: const SlidableDrawerActionPane(),
-          actionExtentRatio: 0.25,
-          actions: actions,
-          secondaryActions: <Widget>[
-            IconSlideAction(
-              caption: AppLocalizations.of(context).remove.toUpperCase(),
-              color: Theme.of(context).errorColor,
-              icon: Icons.delete,
-              onTap: () async {
-                if (coin.isDefault) {
-                  await showCantRemoveDefaultCoin(context, coin);
-                } else {
-                  await showConfirmationRemoveCoin(context, coin);
-                }
-              },
-            )
-          ],
+          startActionPane: ActionPane(
+            motion: const DrawerMotion(),
+            extentRatio: 0.25,
+            children: actions,
+          ),
+          endActionPane: ActionPane(
+            motion: const DrawerMotion(),
+            extentRatio: 0.25,
+            children: [
+              SlidableAction(
+                label: AppLocalizations.of(context).remove.toUpperCase(),
+                backgroundColor: Theme.of(context).errorColor,
+                icon: Icons.delete,
+                onPressed: (context) async {
+                  if (coin.isDefault) {
+                    await showCantRemoveDefaultCoin(context, coin);
+                  } else {
+                    await showConfirmationRemoveCoin(context, coin);
+                  }
+                },
+              ),
+            ],
+          ),
           child: Builder(builder: (BuildContext context) {
             return InkWell(
               borderRadius: const BorderRadius.all(Radius.circular(4)),
               onLongPress: () {
-                Slidable.of(context).open(actionType: SlideActionType.primary);
+                Slidable.of(context).openCurrentActionPane();
               },
               onTap: () {
-                if (widget.slidableController != null &&
-                    widget.slidableController.activeState != null) {
-                  widget.slidableController.activeState.close();
+                final slidableController = Slidable.of(context);
+                if (slidableController != null) {
+                  slidableController.close();
                 }
                 Navigator.push<dynamic>(
                   context,
@@ -142,7 +146,7 @@ class _ItemCoinState extends State<ItemCoin> {
                       width: 8,
                     ),
                     const SizedBox(width: 14),
-                    Container(
+                    SizedBox(
                       width: 110,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -178,24 +182,21 @@ class _ItemCoinState extends State<ItemCoin> {
                           const SizedBox(
                             height: 4,
                           ),
-                          Container(
-                            child: StreamBuilder<bool>(
-                                initialData: settingsBloc.showBalance,
-                                stream: settingsBloc.outShowBalance,
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<bool> snapshot) {
-                                  String amount = f.format(
-                                      double.parse(balance.getBalance()));
-                                  if (snapshot.hasData && !snapshot.data)
-                                    amount = '**.**';
-                                  return AutoSizeText(
-                                    '$amount ${coin.abbr}',
-                                    maxLines: 1,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
-                                  );
-                                }),
-                          ),
+                          StreamBuilder<bool>(
+                              initialData: settingsBloc.showBalance,
+                              stream: settingsBloc.outShowBalance,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                String amount = f
+                                    .format(double.parse(balance.getBalance()));
+                                if (snapshot.hasData && !snapshot.data)
+                                  amount = '**.**';
+                                return AutoSizeText(
+                                  '$amount ${coin.abbr}',
+                                  maxLines: 1,
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                );
+                              }),
                           const SizedBox(
                             height: 4,
                           ),
@@ -248,12 +249,7 @@ class _ItemCoinState extends State<ItemCoin> {
 
     return Padding(
       padding: const EdgeInsets.only(top: 8),
-      child: OutlineButton(
-        borderSide: BorderSide(color: Theme.of(context).accentColor),
-        highlightedBorderColor: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      child: OutlinedButton(
         onPressed: () async {
           rewardsProvider.update();
           Navigator.push<dynamic>(
@@ -262,6 +258,19 @@ class _ItemCoinState extends State<ItemCoin> {
                 builder: (BuildContext context) => RewardsPage()),
           );
         },
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all(
+            const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+          ),
+          side: MaterialStateProperty.all(
+            BorderSide(color: Theme.of(context).colorScheme.secondary),
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
+        ),
         child: Row(
           children: <Widget>[
             if (rewardsProvider.needClaim)
@@ -269,7 +278,7 @@ class _ItemCoinState extends State<ItemCoin> {
                 padding: const EdgeInsets.only(right: 4),
                 child: Stack(
                   children: <Widget>[
-                    Container(
+                    SizedBox(
                       width: 10,
                       height: 10,
                     ),
@@ -296,18 +305,26 @@ class _ItemCoinState extends State<ItemCoin> {
           top: 12,
           right: 8,
         ),
-        child: OutlineButton(
-          borderSide: BorderSide(color: Theme.of(context).accentColor),
-          highlightedBorderColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        child: OutlinedButton(
           onPressed: () async {
             showFaucetDialog(
                 context: context,
                 coin: widget.coinBalance.coin.abbr,
                 address: widget.coinBalance.balance.address);
           },
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all(
+              const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+            ),
+            side: MaterialStateProperty.all(
+              BorderSide(color: Theme.of(context).colorScheme.secondary),
+            ),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
+          ),
           child: Text(
             AppLocalizations.of(context).faucetName,
             style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
@@ -394,13 +411,13 @@ class _ItemCoinState extends State<ItemCoin> {
                     {
                       return InkWell(
                         onTap: () {
-                          ScaffoldState scaffold;
+                          ScaffoldMessengerState scaffoldMessenger;
                           try {
-                            scaffold = Scaffold.of(context);
+                            scaffoldMessenger = ScaffoldMessenger.of(context);
                           } catch (_) {}
 
-                          if (scaffold != null) {
-                            scaffold.showSnackBar(const SnackBar(
+                          if (scaffoldMessenger != null) {
+                            scaffoldMessenger.showSnackBar(const SnackBar(
                               duration: Duration(seconds: 2),
                               content: Text('Built on Komodo'),
                             ));
@@ -427,13 +444,13 @@ class _ItemCoinState extends State<ItemCoin> {
       padding: EdgeInsets.fromLTRB(0, 14, 8, 0),
       child: InkWell(
           onTap: () {
-            ScaffoldState scaffold;
+            ScaffoldMessengerState scaffoldMessenger;
             try {
-              scaffold = Scaffold.of(context);
+              scaffoldMessenger = ScaffoldMessenger.of(context);
             } catch (_) {}
 
-            if (scaffold != null) {
-              scaffold.showSnackBar(SnackBar(
+            if (scaffoldMessenger != null) {
+              scaffoldMessenger.showSnackBar(SnackBar(
                 duration: Duration(seconds: 2),
                 content: Text(AppLocalizations.of(context).dexIsNotAvailable),
               ));

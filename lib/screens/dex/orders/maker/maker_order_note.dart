@@ -41,8 +41,8 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
               ? TextField(
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Theme.of(context).accentColor),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.secondary),
                     ),
                   ),
                   controller: noteTextController,

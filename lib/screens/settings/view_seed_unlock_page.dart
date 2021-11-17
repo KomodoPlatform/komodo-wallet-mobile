@@ -65,7 +65,7 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                     });
                   },
                   onError: (String data) {
-                    Scaffold.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: const Duration(seconds: 2),
                       backgroundColor: Theme.of(context).errorColor,
                       content: Text(data),
@@ -146,7 +146,8 @@ class _UnlockPasswordState extends State<UnlockPassword> {
                 borderSide:
                     BorderSide(color: Theme.of(context).primaryColorLight)),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor)),
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.secondary)),
             hintStyle: Theme.of(context).textTheme.bodyText1,
             labelStyle: Theme.of(context).textTheme.bodyText2,
             hintText: AppLocalizations.of(context).hintCurrentPassword,

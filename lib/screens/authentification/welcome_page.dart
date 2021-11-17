@@ -23,7 +23,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -59,7 +59,8 @@ class _WelcomePageState extends State<WelcomePage> {
               Text(
                 AppLocalizations.of(context).welcomeName + ' ',
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 18, color: Theme.of(context).accentColor),
+                    fontSize: 18,
+                    color: Theme.of(context).colorScheme.secondary),
               ),
               Text(
                 AppLocalizations.of(context).welcomeWallet,
@@ -134,8 +135,8 @@ class _WelcomePageState extends State<WelcomePage> {
                         borderSide: BorderSide(
                             color: Theme.of(context).primaryColorLight)),
                     focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).accentColor)),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary)),
                     hintStyle: Theme.of(context).textTheme.bodyText1,
                     labelStyle: Theme.of(context).textTheme.bodyText2,
                     hintText: AppLocalizations.of(context).hintNameYourWallet,
@@ -170,7 +171,7 @@ class _WelcomePageState extends State<WelcomePage> {
         Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => NewAccountPage()),
+              builder: (BuildContext context) => const NewAccountPage()),
         );
       }
     }

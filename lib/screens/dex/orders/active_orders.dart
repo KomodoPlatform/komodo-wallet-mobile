@@ -41,7 +41,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
         initialData: ordersBloc.orderSwaps,
         stream: ordersBloc.outOrderSwaps,
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-          if (!snapshot.hasData) return SizedBox();
+          if (!snapshot.hasData) return const SizedBox();
 
           List<dynamic> orderSwaps = snapshot.data;
           orderSwaps = snapshot.data.reversed.toList();
@@ -61,7 +61,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
                     case OrderType.TAKER:
                       return BuildItemTaker(item);
                     default:
-                      return SizedBox();
+                      return const SizedBox();
                   }
                 } else {
                   return Container();
@@ -80,12 +80,13 @@ class _ActiveOrdersState extends State<ActiveOrders> {
                 _buildPagination(orderSwapsFiltered),
               },
               if (orderSwapsFiltered.isEmpty) ...{
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height / 4,
-                  child: Center(child: Text('No orders, please go to trade.')),
+                  child: const Center(
+                      child: Text('No orders, please go to trade.')),
                 )
               },
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
             ],
           );
         });
@@ -93,9 +94,9 @@ class _ActiveOrdersState extends State<ActiveOrders> {
 
   Widget _buildFilters(List<dynamic> orderSwaps) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(12, 0, 8, 0),
+      padding: const EdgeInsets.fromLTRB(12, 0, 8, 0),
       child: Container(
-        padding: EdgeInsets.fromLTRB(12, 12, 4, 12),
+        padding: const EdgeInsets.fromLTRB(12, 12, 4, 12),
         child: Filters(
           items: orderSwaps,
           filter: _filter,
@@ -161,7 +162,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
 
   Widget _buildPagination(List<dynamic> orderSwaps) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
+      padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
       child: Pagination(
         currentPage: _currentPage,
         total: orderSwaps.length,

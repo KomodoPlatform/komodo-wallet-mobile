@@ -52,7 +52,7 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
                 focusNode: _focus,
                 maxLength: 50,
                 maxLines: 1,
-                cursorColor: Theme.of(context).accentColor,
+                cursorColor: Theme.of(context).colorScheme.secondary,
                 decoration: InputDecoration(
                     counterText: '',
                     border: InputBorder.none,

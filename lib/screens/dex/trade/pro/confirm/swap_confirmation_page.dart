@@ -4,7 +4,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -256,7 +256,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                 children: <Widget>[
                   Text(AppLocalizations.of(context).sell,
                       style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                             fontWeight: FontWeight.w100,
                           )),
                   Text(
@@ -276,7 +276,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: <Widget>[
               ClipRRect(
                 borderRadius: const BorderRadius.only(
@@ -310,11 +310,14 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                                     .receive
                                     .toLowerCase()
                                     .substring(1),
-                            style:
-                                Theme.of(context).textTheme.bodyText2.copyWith(
-                                      color: Theme.of(context).accentColor,
-                                      fontWeight: FontWeight.w100,
-                                    ))
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.w100,
+                                ))
                       ],
                     )),
               ),
@@ -442,11 +445,9 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         _cexProvider.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
     if (sellAmtUsd == 0) return SizedBox();
 
-    return Container(
-      child: Text(
-        _cexProvider.convert(sellAmtUsd),
-        style: Theme.of(context).textTheme.caption,
-      ),
+    return Text(
+      _cexProvider.convert(sellAmtUsd),
+      style: Theme.of(context).textTheme.caption,
     );
   }
 
@@ -455,11 +456,9 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         _cexProvider.getUsdPrice(swapBloc.receiveCoinBalance.coin.abbr);
     if (receiveeAmtUsd == 0) return SizedBox();
 
-    return Container(
-      child: Text(
-        _cexProvider.convert(receiveeAmtUsd),
-        style: Theme.of(context).textTheme.caption,
-      ),
+    return Text(
+      _cexProvider.convert(receiveeAmtUsd),
+      style: Theme.of(context).textTheme.caption,
     );
   }
 
@@ -534,14 +533,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           ),
           _inProgress
               ? const CircularProgressIndicator()
-              : RaisedButton(
+              : ElevatedButton(
                   key: const Key('confirm-swap-button'),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 52),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  child:
-                      Text(AppLocalizations.of(context).confirm.toUpperCase()),
                   onPressed: disabled
                       ? null
                       : () async {
@@ -561,18 +554,37 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
 
                           setState(() => _inProgress = false);
                         },
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 52),
+                    ),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                  ),
+                  child:
+                      Text(AppLocalizations.of(context).confirm.toUpperCase()),
                 ),
           const SizedBox(
             height: 8,
           ),
-          FlatButton(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 56),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0)),
-            child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
+          TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all(
+                const EdgeInsets.symmetric(vertical: 16, horizontal: 56),
+              ),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+            ),
+            child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
           ),
         ],
       );
@@ -590,7 +602,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     if (error.error.contains('is too low, required')) {
       errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
     }
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 4),
       backgroundColor: Theme.of(context).errorColor,
       content: Text(errorDisplay),

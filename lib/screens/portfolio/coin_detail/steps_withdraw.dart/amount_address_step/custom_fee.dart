@@ -115,8 +115,8 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                           borderSide: BorderSide(
                               color: Theme.of(context).primaryColorLight)),
                       focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor)),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary)),
                       hintStyle: Theme.of(context).textTheme.bodyText2,
                       labelStyle: Theme.of(context).textTheme.bodyText2,
                       labelText: AppLocalizations.of(context).gasLimit),
@@ -159,8 +159,8 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                     borderSide:
                         BorderSide(color: Theme.of(context).primaryColorLight)),
                 focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).accentColor)),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.secondary)),
                 hintStyle: Theme.of(context).textTheme.bodyText2,
                 labelStyle: Theme.of(context).textTheme.bodyText2,
                 labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]'),
@@ -220,8 +220,8 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
                       borderSide: BorderSide(
                           color: Theme.of(context).primaryColorLight)),
                   focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Theme.of(context).accentColor)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.secondary)),
                   hintStyle: Theme.of(context).textTheme.bodyText2,
                   labelStyle: Theme.of(context).textTheme.bodyText2,
                   labelText: AppLocalizations.of(context).customFee +

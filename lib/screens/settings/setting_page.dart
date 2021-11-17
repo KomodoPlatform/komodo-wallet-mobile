@@ -20,7 +20,7 @@ import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
-import 'package:komodo_dex/screens/authentification/showDeleteWalletConfirmation.dart';
+import 'package:komodo_dex/screens/authentification/show_delete_wallet_confirmation.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/import-export/export_page.dart';
 import 'package:komodo_dex/screens/import-export/import_page.dart';
@@ -32,13 +32,13 @@ import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/buildRedDot.dart';
+import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -86,60 +86,56 @@ class _SettingPageState extends State<SettingPage> {
           data: Theme.of(context).copyWith(
               canvasColor: Theme.of(context).primaryColor,
               textTheme: Theme.of(context).textTheme),
-          child: Container(
-            child: ListView(
-              key: const Key('settings-scrollable'),
-              children: <Widget>[
-                _buildTitle(AppLocalizations.of(context).logoutsettings),
-                _buildLogOutOnExit(),
-                _buildTitle(AppLocalizations.of(context).soundTitle),
-                _buildSound(),
-                _buildTitle(AppLocalizations.of(context).security),
-                _buildActivatePIN(),
-                const SizedBox(
-                  height: 1,
-                ),
-                _buildActivateBiometric(),
-                _buildCamouflagePin(),
-                const SizedBox(
-                  height: 1,
-                ),
-                _buildChangePIN(),
-                const SizedBox(
-                  height: 1,
-                ),
-                _buildSendFeedback(),
-                walletBloc.currentWallet != null
-                    ? _buildTitle(AppLocalizations.of(context).backupTitle)
-                    : Container(),
-                walletBloc.currentWallet != null
-                    ? _buildViewSeed()
-                    : Container(),
-                _buildExport(),
-                _buildImport(),
-                _buildImportSwap(),
-                const SizedBox(
-                  height: 1,
-                ),
-                _buildTitle(AppLocalizations.of(context).oldLogsTitle),
-                BuildOldLogs(),
-                _buildTitle(AppLocalizations.of(context).legalTitle),
-                _buildDisclaimerToS(),
-                _buildTitle(AppLocalizations.of(context).developerTitle),
-                _buildEnableTestCoins(),
-                _buildTitle(version),
-                if (appConfig.isUpdateCheckerEnabled) _buildUpdate(),
-                const SizedBox(
-                  height: 48,
-                ),
-                walletBloc.currentWallet != null
-                    ? _buildDeleteWallet()
-                    : Container(),
-                const SizedBox(
-                  height: 24,
-                ),
-              ],
-            ),
+          child: ListView(
+            key: const Key('settings-scrollable'),
+            children: <Widget>[
+              _buildTitle(AppLocalizations.of(context).logoutsettings),
+              _buildLogOutOnExit(),
+              _buildTitle(AppLocalizations.of(context).soundTitle),
+              _buildSound(),
+              _buildTitle(AppLocalizations.of(context).security),
+              _buildActivatePIN(),
+              const SizedBox(
+                height: 1,
+              ),
+              _buildActivateBiometric(),
+              _buildCamouflagePin(),
+              const SizedBox(
+                height: 1,
+              ),
+              _buildChangePIN(),
+              const SizedBox(
+                height: 1,
+              ),
+              _buildSendFeedback(),
+              walletBloc.currentWallet != null
+                  ? _buildTitle(AppLocalizations.of(context).backupTitle)
+                  : Container(),
+              walletBloc.currentWallet != null ? _buildViewSeed() : Container(),
+              _buildExport(),
+              _buildImport(),
+              _buildImportSwap(),
+              const SizedBox(
+                height: 1,
+              ),
+              _buildTitle(AppLocalizations.of(context).oldLogsTitle),
+              BuildOldLogs(),
+              _buildTitle(AppLocalizations.of(context).legalTitle),
+              _buildDisclaimerToS(),
+              _buildTitle(AppLocalizations.of(context).developerTitle),
+              _buildEnableTestCoins(),
+              _buildTitle(version),
+              if (appConfig.isUpdateCheckerEnabled) _buildUpdate(),
+              const SizedBox(
+                height: 48,
+              ),
+              walletBloc.currentWallet != null
+                  ? _buildDeleteWallet()
+                  : Container(),
+              const SizedBox(
+                height: 24,
+              ),
+            ],
           ),
         ),
       ),
@@ -614,7 +610,7 @@ class _SettingPageState extends State<SettingPage> {
           title: Row(
             children: <Widget>[
               Stack(
-                overflow: Overflow.visible,
+                clipBehavior: Clip.none,
                 children: <Widget>[
                   Text(
                     AppLocalizations.of(context).checkForUpdates,
@@ -836,12 +832,12 @@ class _SettingPageState extends State<SettingPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  FlatButton(
+                  TextButton(
                     child: Text(AppLocalizations.of(context).cancel),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   const SizedBox(width: 12),
-                  RaisedButton(
+                  ElevatedButton(
                     key: const Key('setting-share-button'),
                     child: Text(
                       AppLocalizations.of(context).share,
@@ -944,7 +940,7 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
   Widget build(BuildContext context) {
     return CustomTile(
       child: ListTile(
-        trailing: RaisedButton(
+        trailing: ElevatedButton(
             child: Text(AppLocalizations.of(context).oldLogsDelete),
             onPressed: () {
               for (File f in _listLogs) {

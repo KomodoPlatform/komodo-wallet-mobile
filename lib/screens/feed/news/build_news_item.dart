@@ -101,7 +101,7 @@ class _BuildNewsItemState extends State<BuildNewsItem>
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 16,
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),

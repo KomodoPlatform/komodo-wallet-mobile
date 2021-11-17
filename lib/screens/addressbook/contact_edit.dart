@@ -14,7 +14,7 @@ import 'package:komodo_dex/widgets/small_button.dart';
 import 'package:provider/provider.dart';
 
 class ContactEdit extends StatefulWidget {
-  const ContactEdit({this.contact});
+  const ContactEdit({Key key, this.contact}) : super(key: key);
 
   final Contact contact;
 
@@ -72,7 +72,7 @@ class _ContactEditState extends State<ContactEdit> {
               actions: <Widget>[
                 if (widget.contact != null)
                   IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () => _showDeleteConfiramtion(),
                   ),
               ],
@@ -141,14 +141,14 @@ class _ContactEditState extends State<ContactEdit> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        FlatButton(
+                        TextButton(
                           onPressed: () {
                             _exitPage();
                           },
                           child:
                               Text(AppLocalizations.of(context).contactCancel),
                         ),
-                        FlatButton(
+                        TextButton(
                           onPressed: () {
                             _saveContact();
                           },
@@ -230,7 +230,7 @@ class _ContactEditState extends State<ContactEdit> {
       addresses.add(
         ContactEditField(
           name: abbr,
-          label: name == null ? '$abbr' : label,
+          label: name == null ? abbr : label,
           value: value,
           padding: const EdgeInsets.only(
             top: 10,
@@ -287,7 +287,7 @@ class _ContactEditState extends State<ContactEdit> {
           },
           child: Row(
             children: <Widget>[
-              Icon(Icons.add, size: 16),
+              const Icon(Icons.add, size: 16),
               Text(AppLocalizations.of(context).addressAdd),
             ],
           ),
@@ -343,8 +343,8 @@ class _ContactEditState extends State<ContactEdit> {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return CustomSimpleDialog(
-            children: const [
+          return const CustomSimpleDialog(
+            children: [
               Center(child: CircularProgressIndicator()),
             ],
           );
@@ -353,7 +353,7 @@ class _ContactEditState extends State<ContactEdit> {
     final List<Coin> all = (await coins).values.toList();
     all.sort((Coin a, Coin b) => a.name.compareTo(b.name));
     dialogBloc.closeDialog(context);
-    await Future<dynamic>.delayed(Duration(seconds: 0));
+    await Future<dynamic>.delayed(const Duration(seconds: 0));
 
     final coinsList = editContact.addresses != null
         ? all
@@ -384,8 +384,8 @@ class _ContactEditState extends State<ContactEdit> {
                         hintText: 'Search for Ticker',
                         counterText: '',
                         focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ),
                       maxLength: 16,
@@ -415,7 +415,7 @@ class _ContactEditState extends State<ContactEdit> {
         children: <Widget>[
           Text(
             text,
-            style: TextStyle(fontSize: 12),
+            style: const TextStyle(fontSize: 12),
           ),
         ],
       ),
@@ -434,14 +434,14 @@ class _ContactEditState extends State<ContactEdit> {
       ),
       child: Row(
         children: <Widget>[
-          CircleAvatar(
+          const CircleAvatar(
             maxRadius: 6,
             backgroundImage: AssetImage('assets/coin-icons/kmd.png'),
           ),
-          SizedBox(width: 3),
+          const SizedBox(width: 3),
           Text(
             AppLocalizations.of(context).tagKMD,
-            style: TextStyle(fontSize: 12),
+            style: const TextStyle(fontSize: 12),
           ),
         ],
       ),

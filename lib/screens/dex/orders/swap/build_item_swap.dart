@@ -67,7 +67,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                           ],
                         ),
                         Text(
-                          '${formatPrice(widget.swap.result.myInfo.myAmount, 8)}',
+                          formatPrice(widget.swap.result.myInfo.myAmount, 8),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -92,7 +92,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                           ],
                         ),
                         Text(
-                          '${formatPrice(widget.swap.result.myInfo.otherAmount, 8)}',
+                          formatPrice(widget.swap.result.myInfo.otherAmount, 8),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -196,7 +196,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                   recoverIsLoading
                       ? Padding(
                           padding: const EdgeInsets.all(16),
-                          child: Container(
+                          child: SizedBox(
                               height: 25,
                               width: 25,
                               child: const CircularProgressIndicator(
@@ -204,18 +204,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                               )))
                       : Padding(
                           padding: const EdgeInsets.only(right: 16, bottom: 16),
-                          child: FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0)),
-                            color: const Color.fromRGBO(191, 191, 191, 1),
-                            child: Text(
-                              'Unlock Funds',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .button
-                                  .copyWith(
-                                      color: Theme.of(context).primaryColor),
-                            ),
+                          child: TextButton(
                             onPressed: () async {
                               // recover call
                               setState(() {
@@ -238,7 +227,26 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                         recoverIsLoading = false;
                                       }));
                             },
-                          )),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                const Color.fromRGBO(191, 191, 191, 1),
+                              ),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              'Unlock Funds',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .button
+                                  .copyWith(
+                                      color: Theme.of(context).primaryColor),
+                            ),
+                          ),
+                        ),
               ],
             ),
           ),
@@ -248,7 +256,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
   }
 
   Widget _buildIcon(String coin) {
-    return Container(
+    return SizedBox(
       height: 25,
       width: 25,
       child: Image.asset(

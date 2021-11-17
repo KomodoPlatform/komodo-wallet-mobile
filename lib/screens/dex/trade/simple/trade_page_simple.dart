@@ -95,7 +95,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
         Flexible(
           flex: _anyLists() ? 1 : 0,
           child: Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: [
               _constrProvider.sellCoin == null
                   ? CoinsList(
@@ -140,7 +140,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
         Flexible(
             flex: _anyLists() ? 1 : 0,
             child: Stack(
-              overflow: Overflow.visible,
+              clipBehavior: Clip.none,
               children: [
                 _constrProvider.buyCoin == null
                     ? CoinsList(
@@ -226,12 +226,12 @@ class _TradePageSimpleState extends State<TradePageSimple> {
       child: Container(
         padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
         child: Stack(
-          overflow: Overflow.visible,
+          clipBehavior: Clip.none,
           children: [
             TextField(
               controller: controller,
               focusNode: focusNode,
-              style: TextStyle(color: Theme.of(context).accentColor),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,

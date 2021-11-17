@@ -10,10 +10,11 @@ import 'package:provider/provider.dart';
 
 class AddressBookPage extends StatefulWidget {
   const AddressBookPage({
+    Key key,
     this.coin,
     this.shouldPop = false,
     this.contact,
-  });
+  }) : super(key: key);
 
   final Coin coin;
   final bool shouldPop;
@@ -127,7 +128,7 @@ class _AddressBookState extends State<AddressBookPage> {
               isSearchOpen = false;
             });
           },
-          child: Icon(Icons.close),
+          child: const Icon(Icons.close),
         ),
       ],
     );
@@ -147,7 +148,7 @@ class _AddressBookState extends State<AddressBookPage> {
                   ),
                 ));
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
         const SizedBox(width: 4),
         RoundButton(
@@ -156,7 +157,7 @@ class _AddressBookState extends State<AddressBookPage> {
               isSearchOpen = true;
             });
           },
-          child: Icon(Icons.search),
+          child: const Icon(Icons.search),
         ),
       ],
     );
@@ -180,7 +181,7 @@ class _AddressBookState extends State<AddressBookPage> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 12,
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
       ),
