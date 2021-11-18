@@ -1,13 +1,12 @@
+import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
 import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
-//import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
-//import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class SellAmountField extends StatefulWidget {
   @override
@@ -15,15 +14,12 @@ class SellAmountField extends StatefulWidget {
 }
 
 class _SellAmountFieldState extends State<SellAmountField> {
-  // MRC: Seems this workaround controller causes problems, so disabling it for now
-
-  final _ctrl = TextEditingController(); //TextEditingControllerWorkaroud();
+  final _ctrl = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    _ctrl.addListener(_onFieldChange);
     swapBloc.outAmountSell.listen(_onDataChange);
 
     WidgetsBinding.instance
@@ -47,6 +43,7 @@ class _SellAmountFieldState extends State<SellAmountField> {
             '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
       ],
       controller: _ctrl,
+      onChanged: tradeForm.onSellAmountFieldChange,
       enabled: swapBloc.enabledSellField,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       style: Theme.of(context).textTheme.subtitle2,
@@ -64,10 +61,6 @@ class _SellAmountFieldState extends State<SellAmountField> {
     );
   }
 
-  void _onFieldChange() {
-    tradeForm.onSellAmountFieldChange(_ctrl.text);
-  }
-
   void _onDataChange(Rational value) {
     if (!mounted) return;
     if (value == null) {
@@ -75,17 +68,17 @@ class _SellAmountFieldState extends State<SellAmountField> {
       return;
     }
 
-    // MRC: Using TextEditingControllerWorkaround breaks stuff,
-    // so disabling this
-    /*
     final String newFormatted =
         cutTrailingZeros(value.toStringAsFixed(appConfig.tradeFormPrecision));
     final String currentFormatted = cutTrailingZeros(_ctrl.text);
 
-
     if (newFormatted != currentFormatted) {
-      _ctrl.setTextAndPosition(newFormatted);
+      // MRC: Using TextEditingControllerWorkaround breaks stuff,
+      // so disabling this
+
+      //_ctrl.setTextAndPosition(newFormatted);
+
+      _ctrl.text = newFormatted;
     }
-    */
   }
 }

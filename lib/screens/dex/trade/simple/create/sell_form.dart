@@ -15,7 +15,7 @@ class SellForm extends StatefulWidget {
 }
 
 class _SellFormState extends State<SellForm> {
-  final _amtCtrl = TextEditingController(); //TextEditingControllerWorkaroud();
+  final _amtCtrl = TextEditingController();
   final _focusNode = FocusNode();
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
@@ -23,23 +23,23 @@ class _SellFormState extends State<SellForm> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _constrProvider.addListener(_onDataChange);
-      _amtCtrl.addListener(_onAmtFieldChange);
+      final constrProvider = context.read<ConstructorProvider>();
+      constrProvider.addListener(_onDataChange);
 
-      _fillForm();
-      if (_constrProvider.buyCoin == null) {
+      if (constrProvider.buyCoin == null) {
         _focusNode.requestFocus();
       } else {
         FocusScope.of(context).requestFocus(FocusNode());
       }
     });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _constrProvider ??= Provider.of<ConstructorProvider>(context);
-    _cexProvider ??= Provider.of<CexProvider>(context);
+    _constrProvider ??= context.watch<ConstructorProvider>();
+    _cexProvider ??= context.watch<CexProvider>();
 
     return Padding(
       padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
@@ -125,6 +125,7 @@ class _SellFormState extends State<SellForm> {
       children: [
         TextFormField(
             controller: _amtCtrl,
+            onChanged: _constrProvider.onSellAmtFieldChange,
             focusNode: _focusNode,
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             inputFormatters: <TextInputFormatter>[
@@ -209,7 +210,6 @@ class _SellFormState extends State<SellForm> {
     }
 
     if (usdAmt == 0) return SizedBox();
-
     return Text(
       _cexProvider.convert(usdAmt),
       style: Theme.of(context).textTheme.caption.copyWith(
@@ -218,12 +218,14 @@ class _SellFormState extends State<SellForm> {
   }
 
   void _onDataChange() {
-    if (_constrProvider.sellAmount == null) {
+    if (!mounted) return;
+    final constrProvider = context.read<ConstructorProvider>();
+    if (constrProvider.sellAmount == null) {
       _amtCtrl.text = '';
       return;
     }
 
-    final String newFormatted = cutTrailingZeros(_constrProvider.sellAmount
+    final String newFormatted = cutTrailingZeros(constrProvider.sellAmount
         .toStringAsFixed(appConfig.tradeFormPrecision));
     final String currentFormatted = cutTrailingZeros(_amtCtrl.text);
 
@@ -231,22 +233,11 @@ class _SellFormState extends State<SellForm> {
       // MRC: Belong to TextEditingControllerWorkaround only
       //_amtCtrl.setTextAndPosition(newFormatted);
 
-      Future<dynamic>.delayed(Duration.zero).then((dynamic _) {
-        if (!_focusNode.hasFocus) {
-          _amtCtrl.selection = TextSelection.collapsed(offset: 0);
-        }
-      });
+      _amtCtrl.text = newFormatted;
+
+      if (!_focusNode.hasFocus) {
+        _amtCtrl.selection = TextSelection.collapsed(offset: 0);
+      }
     }
-  }
-
-  void _onAmtFieldChange() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _constrProvider.onSellAmtFieldChange(_amtCtrl.text);
-    });
-  }
-
-  void _fillForm() {
-    _onDataChange();
-    setState(() {});
   }
 }
