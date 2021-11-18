@@ -6,8 +6,8 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
-import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
-import 'package:komodo_dex/utils/utils.dart';
+//import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
+//import 'package:komodo_dex/utils/utils.dart';
 
 class SellAmountField extends StatefulWidget {
   @override
@@ -75,13 +75,14 @@ class _SellAmountFieldState extends State<SellAmountField> {
       return;
     }
 
+    // MRC: Using TextEditingControllerWorkaround breaks stuff,
+    // so disabling this
+    /*
     final String newFormatted =
         cutTrailingZeros(value.toStringAsFixed(appConfig.tradeFormPrecision));
     final String currentFormatted = cutTrailingZeros(_ctrl.text);
 
-    // MRC: Using TextEditingControllerWorkaround breaks stuff,
-    // so disabling this
-    /*
+
     if (newFormatted != currentFormatted) {
       _ctrl.setTextAndPosition(newFormatted);
     }
