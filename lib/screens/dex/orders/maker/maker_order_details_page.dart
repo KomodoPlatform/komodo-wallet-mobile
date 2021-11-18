@@ -189,14 +189,11 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
       child: SizedBox(
         height: 30,
         child: OutlinedButton(
-          onPressed: () {
-            ordersBloc.cancelOrder(order.uuid);
-          },
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
+          onPressed: () => ordersBloc.cancelOrder(order.uuid),
+          style: OutlinedButton.styleFrom(
+            textStyle: Theme.of(context).textTheme.bodyText1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
             ),
           ),
           child: Container(
@@ -208,11 +205,9 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                    AppLocalizations.of(context)
-                        .makerDetailsCancel
-                        .toUpperCase(),
-                    style: Theme.of(context).textTheme.bodyText1)
+                Text(AppLocalizations.of(context)
+                    .makerDetailsCancel
+                    .toUpperCase()),
               ],
             ),
           ),

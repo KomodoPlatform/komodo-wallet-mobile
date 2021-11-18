@@ -150,21 +150,17 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                       ? SizedBox(
                           height: 30,
                           child: OutlinedButton(
-                            onPressed: () {
-                              ordersBloc.cancelOrder(widget.order.uuid);
-                            },
-                            style: ButtonStyle(
-                              side: MaterialStateProperty.all(
-                                BorderSide(
-                                  color: settingsBloc.isLightTheme
-                                      ? Colors.black.withOpacity(0.8)
-                                      : Colors.white.withOpacity(0.8),
-                                ),
+                            onPressed: () =>
+                                ordersBloc.cancelOrder(widget.order.uuid),
+                            style: OutlinedButton.styleFrom(
+                              textStyle: Theme.of(context).textTheme.bodyText1,
+                              side: BorderSide(
+                                color: settingsBloc.isLightTheme
+                                    ? Colors.black.withOpacity(0.8)
+                                    : Colors.white.withOpacity(0.8),
                               ),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
                             child: Container(
@@ -178,12 +174,9 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text(
-                                      AppLocalizations.of(context)
-                                          .cancel
-                                          .toUpperCase(),
-                                      style:
-                                          Theme.of(context).textTheme.bodyText1)
+                                  Text(AppLocalizations.of(context)
+                                      .cancel
+                                      .toUpperCase())
                                 ],
                               ),
                             ),

@@ -142,16 +142,12 @@ class _ContactEditState extends State<ContactEdit> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         TextButton(
-                          onPressed: () {
-                            _exitPage();
-                          },
+                          onPressed: _exitPage,
                           child:
                               Text(AppLocalizations.of(context).contactCancel),
                         ),
                         TextButton(
-                          onPressed: () {
-                            _saveContact();
-                          },
+                          onPressed: _saveContact,
                           child: Text(AppLocalizations.of(context).contactSave),
                         ),
                       ],

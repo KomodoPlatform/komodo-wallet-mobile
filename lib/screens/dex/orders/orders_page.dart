@@ -48,18 +48,16 @@ class _OrdersPageState extends State<OrdersPage> {
                   _currentTab = OrdersTab.active;
                 });
               },
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(const EdgeInsets.all(4)),
+              style: TextButton.styleFrom(
+                primary: _currentTab == OrdersTab.active
+                    ? Theme.of(context).colorScheme.secondary
+                    : null,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Text(
                     AppLocalizations.of(context).ordersActive + ' ',
-                    style: TextStyle(
-                        color: _currentTab == OrdersTab.active
-                            ? Theme.of(context).colorScheme.secondary
-                            : null),
                   ),
                   _buildActiveOrdersNumber(),
                 ],
@@ -71,18 +69,16 @@ class _OrdersPageState extends State<OrdersPage> {
                   _currentTab = OrdersTab.history;
                 });
               },
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(const EdgeInsets.all(4)),
+              style: TextButton.styleFrom(
+                primary: _currentTab == OrdersTab.history
+                    ? Theme.of(context).colorScheme.secondary
+                    : null,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Text(
                     AppLocalizations.of(context).ordersHistory + ' ',
-                    style: TextStyle(
-                        color: _currentTab == OrdersTab.history
-                            ? Theme.of(context).colorScheme.secondary
-                            : null),
                   ),
                   _buildHistoryNumber(),
                 ],
@@ -157,13 +153,13 @@ class _OrdersPageState extends State<OrdersPage> {
 
           return Text(
             '(${completed.length})',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-              color: _currentTab == OrdersTab.history
-                  ? Theme.of(context).colorScheme.secondary
-                  : null,
-            ),
+            style: Theme.of(context).textTheme.button.copyWith(
+                  color: _currentTab == OrdersTab.history
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                ),
           );
         });
   }
@@ -181,13 +177,13 @@ class _OrdersPageState extends State<OrdersPage> {
 
         return Text(
           '(${active.length})',
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w400,
-            color: _currentTab == OrdersTab.active
-                ? Theme.of(context).colorScheme.secondary
-                : null,
-          ),
+          style: Theme.of(context).textTheme.button.copyWith(
+                color: _currentTab == OrdersTab.active
+                    ? Theme.of(context).colorScheme.secondary
+                    : null,
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+              ),
         );
       },
     );

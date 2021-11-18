@@ -80,7 +80,7 @@ class _PreimageErrorState extends State<PreimageError> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton(
-                        onPressed: Navigator.of(context).pop,
+                        onPressed: () => Navigator.of(context).pop(),
                         child: Text(AppLocalizations.of(context).okButton),
                       ),
                     ],

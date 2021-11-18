@@ -55,26 +55,15 @@ class _AddressFieldState extends State<AddressField> {
                 height: 60,
                 child: ButtonTheme(
                   minWidth: 50,
-                  child: TextButton(
+                  child: IconButton(
+                    padding: EdgeInsets.only(left: 6, right: 6),
                     onPressed: widget.onScan,
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all(
-                        const EdgeInsets.only(left: 6, right: 6),
-                      ),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                      ),
-                    ),
-                    child: Icon(
-                      Icons.add_a_photo,
-                      color: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          .color
-                          .withOpacity(0.45),
-                    ),
+                    color: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        .color
+                        .withOpacity(0.45),
+                    icon: Icon(Icons.add_a_photo),
                   ),
                 ),
               ),

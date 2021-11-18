@@ -39,16 +39,11 @@ void showFaucetDialog({
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                AppLocalizations.of(context).close,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .button
-                                    .copyWith(color: Colors.white),
+                              onPressed: () => Navigator.of(context).pop(),
+                              style: ElevatedButton.styleFrom(
+                                onPrimary: Colors.white,
                               ),
+                              child: Text(AppLocalizations.of(context).close),
                             ),
                           ],
                         ),

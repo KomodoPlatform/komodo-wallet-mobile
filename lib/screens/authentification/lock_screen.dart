@@ -363,10 +363,10 @@ class _BiometricPageState extends State<BiometricPage> {
               height: 16,
             ),
             ElevatedButton(
-              child:
-                  Text(AppLocalizations.of(context).authenticate.toUpperCase()),
               onPressed: () =>
                   authenticateBiometrics(context, widget.pinStatus),
+              child:
+                  Text(AppLocalizations.of(context).authenticate.toUpperCase()),
             )
           ],
         ),

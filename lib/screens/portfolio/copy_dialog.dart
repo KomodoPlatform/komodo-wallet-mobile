@@ -64,16 +64,11 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     ElevatedButton(
-                      child: Text(
-                        AppLocalizations.of(context).close,
-                        style: Theme.of(context)
-                            .textTheme
-                            .button
-                            .copyWith(color: Colors.white),
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: ElevatedButton.styleFrom(
+                        onPrimary: Colors.white,
                       ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
+                      child: Text(AppLocalizations.of(context).close),
                     ),
                   ],
                 ),

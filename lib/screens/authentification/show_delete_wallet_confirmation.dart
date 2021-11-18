@@ -108,13 +108,24 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   TextButton(
-                    child: Text(AppLocalizations.of(context).cancel),
                     onPressed: () => Navigator.of(context).pop(),
+                    child: Text(AppLocalizations.of(context).cancel),
                   ),
                   const SizedBox(
                     width: 12,
                   ),
                   ElevatedButton(
+                    key: const Key('delete-wallet'),
+                    onPressed: loading
+                        ? null
+                        : () async {
+                            setState(() => loading = true);
+                            await walletBloc.deleteSeedPhrase(password, wallet);
+                            await walletBloc.deleteWallet(wallet);
+                            await walletBloc.getWalletsSaved();
+
+                            Navigator.of(context).pop();
+                          },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -131,17 +142,6 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
                         Text(AppLocalizations.of(context).delete),
                       ],
                     ),
-                    key: const Key('delete-wallet'),
-                    onPressed: loading
-                        ? null
-                        : () async {
-                            setState(() => loading = true);
-                            await walletBloc.deleteSeedPhrase(password, wallet);
-                            await walletBloc.deleteWallet(wallet);
-                            await walletBloc.getWalletsSaved();
-
-                            Navigator.of(context).pop();
-                          },
                   )
                 ],
               );

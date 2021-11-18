@@ -176,17 +176,15 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                         ? SizedBox(
                             height: 30,
                             child: OutlinedButton(
-                              onPressed: () {
-                                ordersBloc.cancelOrder(widget.order.uuid);
-                              },
-                              style: ButtonStyle(
-                                side: MaterialStateProperty.all(
-                                  const BorderSide(color: Colors.white),
-                                ),
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
+                              onPressed: () =>
+                                  ordersBloc.cancelOrder(widget.order.uuid),
+                              style: OutlinedButton.styleFrom(
+                                primary: Colors.white,
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText1,
+                                side: const BorderSide(color: Colors.white),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
                                 ),
                               ),
                               child: Container(
@@ -200,16 +198,9 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Text(
-                                        AppLocalizations.of(context)
-                                            .cancel
-                                            .toUpperCase(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1
-                                            .copyWith(
-                                              color: Colors.white,
-                                            ))
+                                    Text(AppLocalizations.of(context)
+                                        .cancel
+                                        .toUpperCase())
                                   ],
                                 ),
                               ),

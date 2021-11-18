@@ -73,8 +73,8 @@ Future<void> showSoundsDialog(BuildContext context) async {
                     Navigator.push<dynamic>(
                       context,
                       MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) =>
-                              SoundSettingsPage()),
+                        builder: (BuildContext context) => SoundSettingsPage(),
+                      ),
                     );
                   },
                   child: Text(AppLocalizations.of(context).settings),
@@ -85,9 +85,7 @@ Future<void> showSoundsDialog(BuildContext context) async {
                     dialogBloc.dialog = null;
                     Navigator.of(context).pop();
                   },
-                  child: Text(
-                    AppLocalizations.of(context).close,
-                  ),
+                  child: Text(AppLocalizations.of(context).close),
                 ),
               ],
             ),

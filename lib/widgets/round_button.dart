@@ -18,22 +18,18 @@ class RoundButton extends StatelessWidget {
       height: size,
       child: ElevatedButton(
         onPressed: onPressed,
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-                Theme.of(context).dialogBackgroundColor),
-            elevation: MaterialStateProperty.all(0),
-            padding: MaterialStateProperty.all(
-              const EdgeInsets.all(0),
+        style: ElevatedButton.styleFrom(
+          primary: Theme.of(context).dialogBackgroundColor,
+          elevation: 0,
+          padding: const EdgeInsets.all(0),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Theme.of(context).primaryColorDark,
+              width: 1,
             ),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                side: BorderSide(
-                  color: Theme.of(context).primaryColorDark,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-            )),
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+        ),
         child: child,
       ),
     );

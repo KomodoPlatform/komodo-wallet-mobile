@@ -833,12 +833,13 @@ class _SettingPageState extends State<SettingPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    child: Text(AppLocalizations.of(context).cancel),
                     onPressed: () => Navigator.of(context).pop(),
+                    child: Text(AppLocalizations.of(context).cancel),
                   ),
                   const SizedBox(width: 12),
                   ElevatedButton(
                     key: const Key('setting-share-button'),
+                    onPressed: _shareLogs,
                     child: Text(
                       AppLocalizations.of(context).share,
                       style: Theme.of(context)
@@ -846,7 +847,6 @@ class _SettingPageState extends State<SettingPage> {
                           .button
                           .copyWith(color: Colors.white),
                     ),
-                    onPressed: () => _shareLogs(),
                   )
                 ],
               ),
@@ -941,13 +941,14 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
     return CustomTile(
       child: ListTile(
         trailing: ElevatedButton(
-            child: Text(AppLocalizations.of(context).oldLogsDelete),
-            onPressed: () {
-              for (File f in _listLogs) {
-                f.deleteSync();
-              }
-              _update();
-            }),
+          onPressed: () {
+            for (File f in _listLogs) {
+              f.deleteSync();
+            }
+            _update();
+          },
+          child: Text(AppLocalizations.of(context).oldLogsDelete),
+        ),
         title: Text(
           AppLocalizations.of(context).oldLogsUsed +
               ': ' +

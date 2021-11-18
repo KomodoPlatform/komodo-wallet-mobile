@@ -268,10 +268,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
+                    onPressed: () => dialogBloc.closeDialog(context),
                     child: Text(AppLocalizations.of(context).warningOkBtn),
-                    onPressed: () {
-                      dialogBloc.closeDialog(context);
-                    },
                   ),
                 ],
               ),

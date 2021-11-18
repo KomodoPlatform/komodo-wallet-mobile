@@ -39,24 +39,17 @@ class _PrimaryButtonState extends State<PrimaryButton> {
             )
           : ElevatedButton(
               onPressed: widget.onPressed,
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(backgroundColor),
-                padding: MaterialStateProperty.all(
-                  const EdgeInsets.symmetric(vertical: 12),
-                ),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
+              style: ElevatedButton.styleFrom(
+                primary: backgroundColor,
+                onPrimary: widget.isDarkMode
+                    ? Theme.of(context).primaryColor
+                    : Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              child: Text(
-                widget.text.toUpperCase(),
-                style: Theme.of(context).textTheme.button.copyWith(
-                    color: widget.isDarkMode
-                        ? Theme.of(context).primaryColor
-                        : Colors.white),
-              ),
+              child: Text(widget.text.toUpperCase()),
             ),
     );
   }

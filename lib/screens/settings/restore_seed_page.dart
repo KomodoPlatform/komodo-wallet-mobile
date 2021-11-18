@@ -200,18 +200,17 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                        child: Text(AppLocalizations.of(context).cancelButton),
-                        onPressed: () {
-                          Navigator.pop(context, false);
-                        }),
+                      onPressed: () => Navigator.pop(context, false),
+                      child: Text(AppLocalizations.of(context).cancelButton),
+                    ),
                     SizedBox(width: 12),
                     ElevatedButton(
-                      child: Text(AppLocalizations.of(context).okButton),
                       onPressed: !enabled
                           ? null
                           : () {
                               Navigator.pop(context, true);
                             },
+                      child: Text(AppLocalizations.of(context).okButton),
                     ),
                   ],
                 )

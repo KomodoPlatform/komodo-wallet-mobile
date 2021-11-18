@@ -50,23 +50,17 @@ class _SecondaryButtonState extends State<SecondaryButton> {
       width: double.infinity,
       child: OutlinedButton(
         key: isSend ? const Key('secondary-button-send') : null,
-        style: ButtonStyle(
-          padding: MaterialStateProperty.all(
-            const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        onPressed: widget.onPressed,
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          side: BorderSide(
+            color:
+                settingsBloc.isLightTheme ? widget.borderColor : Colors.white,
           ),
-          side: MaterialStateProperty.all(
-            BorderSide(
-                color: settingsBloc.isLightTheme
-                    ? widget.borderColor
-                    : Colors.white),
-          ),
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
-            ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
           ),
         ),
-        onPressed: widget.onPressed,
         child: child,
       ),
     );

@@ -15,22 +15,19 @@ class SmallButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      child: child,
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(
-            Theme.of(context).dialogBackgroundColor),
-        elevation: MaterialStateProperty.all(0),
-        padding: MaterialStateProperty.all(padding),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            side: BorderSide(
-              color: Theme.of(context).primaryColorDark,
-              width: 1,
-            ),
-            borderRadius: BorderRadius.circular(30.0),
+      style: ElevatedButton.styleFrom(
+        primary: Theme.of(context).dialogBackgroundColor,
+        elevation: 0,
+        padding: padding,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Theme.of(context).primaryColorDark,
+            width: 1,
           ),
+          borderRadius: BorderRadius.circular(30.0),
         ),
       ),
+      child: child,
     );
   }
 }

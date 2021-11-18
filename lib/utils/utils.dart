@@ -300,15 +300,12 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  child: Text(
-                    AppLocalizations.of(context).cantDeleteDefaultCoinOk,
-                    style: Theme.of(context).textTheme.button.copyWith(
-                          color: Colors.white,
-                        ),
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ElevatedButton.styleFrom(
+                    onPrimary: Colors.white,
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  child: Text(
+                      AppLocalizations.of(context).cantDeleteDefaultCoinOk),
                 ),
               ],
             ),
@@ -345,13 +342,8 @@ Future<void> showConfirmationRemoveCoin(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  child: Text(
-                    AppLocalizations.of(context).cancel,
-                    style: Theme.of(context).textTheme.button,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(AppLocalizations.of(context).cancel),
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton(
@@ -363,17 +355,11 @@ Future<void> showConfirmationRemoveCoin(
                     }
                     Navigator.of(context).pop();
                   },
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Theme.of(context).errorColor),
+                  style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).errorColor,
+                    onPrimary: Colors.white,
                   ),
-                  child: Text(
-                    AppLocalizations.of(context).confirm,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Colors.white),
-                  ),
+                  child: Text(AppLocalizations.of(context).confirm),
                 )
               ],
             ),
@@ -760,10 +746,8 @@ void showUriDetailsDialog(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
                   child: Text(AppLocalizations.of(context).okButton),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
                 )
               ],
             )
@@ -772,19 +756,17 @@ void showUriDetailsDialog(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
                   child:
                       Text(AppLocalizations.of(context).paymentUriDetailsDeny),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
                 ),
                 ElevatedButton(
-                  child: Text(
-                      AppLocalizations.of(context).paymentUriDetailsAccept),
                   onPressed: () {
                     Navigator.of(context).pop();
                     callbackIfAccepted();
                   },
+                  child: Text(
+                      AppLocalizations.of(context).paymentUriDetailsAccept),
                 )
               ],
             )

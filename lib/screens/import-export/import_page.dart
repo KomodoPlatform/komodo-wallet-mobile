@@ -526,13 +526,10 @@ class _ImportPageState extends State<ImportPage> {
                 SizedBox(width: 12),
                 ElevatedButton(
                   onPressed: () => Navigator.pop(context, _passController.text),
-                  child: Text(
-                    AppLocalizations.of(context).importPassOk,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Colors.white),
+                  style: ElevatedButton.styleFrom(
+                    onPrimary: Colors.white,
                   ),
+                  child: Text(AppLocalizations.of(context).importPassOk),
                 ),
               ],
             ),

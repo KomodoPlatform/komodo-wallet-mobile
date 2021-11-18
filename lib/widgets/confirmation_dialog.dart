@@ -34,9 +34,7 @@ void showConfirmationDialog({
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 TextButton(
-                  onPressed: () {
-                    dialogBloc.closeDialog(context);
-                  },
+                  onPressed: () => dialogBloc.closeDialog(context),
                   child: Text(
                     AppLocalizations.of(context).cancel,
                     maxLines: 1,

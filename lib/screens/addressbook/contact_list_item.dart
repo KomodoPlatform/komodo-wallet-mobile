@@ -72,24 +72,18 @@ class _ContactListItemState extends State<ContactListItem> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: SizedBox(
                     width: double.infinity,
-                    child: TextButton(
-                        onPressed: () {
-                          Navigator.push<dynamic>(
-                              context,
-                              MaterialPageRoute<dynamic>(
-                                builder: (BuildContext context) => ContactEdit(
-                                  contact: widget.contact,
-                                ),
-                              ));
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const Icon(Icons.edit, size: 16),
-                            const SizedBox(width: 4),
-                            Text(AppLocalizations.of(context).contactEdit),
-                          ],
-                        )),
+                    child: TextButton.icon(
+                      onPressed: () => Navigator.push<dynamic>(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => ContactEdit(
+                            contact: widget.contact,
+                          ),
+                        ),
+                      ),
+                      icon: const Icon(Icons.edit, size: 16),
+                      label: Text(AppLocalizations.of(context).contactEdit),
+                    ),
                   ),
                 )
               ],
@@ -252,16 +246,11 @@ class _ContactListItemState extends State<ContactListItem> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    dialogBloc.closeDialog(context);
-                  },
-                  child: Text(
-                    AppLocalizations.of(context).warningOkBtn,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Colors.white),
+                  onPressed: () => dialogBloc.closeDialog(context),
+                  style: ElevatedButton.styleFrom(
+                    onPrimary: Colors.white,
                   ),
+                  child: Text(AppLocalizations.of(context).warningOkBtn),
                 ),
               ],
             ),

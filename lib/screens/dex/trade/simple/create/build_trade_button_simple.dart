@@ -31,23 +31,16 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
               key: const Key('trade-button-simple'),
               onPressed:
                   _isEnabled() ? () => _validateAndConfirm(context) : null,
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(
-                  const EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
+              style: ElevatedButton.styleFrom(
+                onPrimary: _isEnabled() ? null : Theme.of(context).hintColor,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
                 ),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              child: Text(
-                'Next'.toUpperCase(),
-                style: TextStyle(
-                    color: _isEnabled() ? null : Theme.of(context).hintColor),
-              ),
+              child: Text('Next'.toUpperCase()),
             ),
           ),
           SizedBox(width: 70),

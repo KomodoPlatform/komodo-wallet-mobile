@@ -90,28 +90,11 @@ class _ContactEditFieldState extends State<ContactEditField> {
                       Row(
                         children: <Widget>[
                           if (widget.name != 'name')
-                            ButtonTheme(
-                              minWidth: 0,
-                              child: TextButton(
+                            Padding(
+                              padding: EdgeInsets.only(right: 6),
+                              child: IconButton(
                                 onPressed: () => _scan(),
-                                style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                    const EdgeInsets.only(
-                                      right: 6,
-                                    ),
-                                  ),
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6.0),
-                                    ),
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.add_a_photo,
-                                  color: settingsBloc.isLightTheme
-                                      ? Colors.black45
-                                      : Colors.white,
-                                ),
+                                icon: Icon(Icons.add_a_photo),
                               ),
                             ),
                           Expanded(

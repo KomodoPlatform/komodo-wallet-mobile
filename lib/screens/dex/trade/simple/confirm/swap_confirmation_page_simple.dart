@@ -477,16 +477,14 @@ class _SwapConfirmationPageSimpleState
         children: <Widget>[
           Expanded(
             child: OutlinedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0))),
-                padding: MaterialStateProperty.all(
-                    EdgeInsets.symmetric(vertical: 16)),
+              onPressed: () => Navigator.of(context).pop(),
+              style: OutlinedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
               ),
               child: Text(AppLocalizations.of(context).back.toUpperCase()),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
             ),
           ),
           SizedBox(width: 12),
@@ -513,14 +511,10 @@ class _SwapConfirmationPageSimpleState
 
                             setState(() => _inProgress = false);
                           },
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
                     child: Text('Start Swap !'.toUpperCase()),

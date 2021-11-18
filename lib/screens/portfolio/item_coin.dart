@@ -258,17 +258,13 @@ class _ItemCoinState extends State<ItemCoin>
                 builder: (BuildContext context) => RewardsPage()),
           );
         },
-        style: ButtonStyle(
-          padding: MaterialStateProperty.all(
-            const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-          ),
-          side: MaterialStateProperty.all(
-            BorderSide(color: Theme.of(context).colorScheme.secondary),
-          ),
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
-            ),
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+          textStyle:
+              Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
+          side: BorderSide(color: Theme.of(context).colorScheme.secondary),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
           ),
         ),
         child: Row(
@@ -286,11 +282,7 @@ class _ItemCoinState extends State<ItemCoin>
                   ],
                 ),
               ),
-            Text(
-              AppLocalizations.of(context).rewardsButton.toUpperCase(),
-              style:
-                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
-            )
+            Text(AppLocalizations.of(context).rewardsButton.toUpperCase())
           ],
         ),
       ),
@@ -312,23 +304,16 @@ class _ItemCoinState extends State<ItemCoin>
                 coin: widget.coinBalance.coin.abbr,
                 address: widget.coinBalance.balance.address);
           },
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(
-              const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-            ),
-            side: MaterialStateProperty.all(
-              BorderSide(color: Theme.of(context).colorScheme.secondary),
-            ),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+            textStyle:
+                Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
+            side: BorderSide(color: Theme.of(context).colorScheme.secondary),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
             ),
           ),
-          child: Text(
-            AppLocalizations.of(context).faucetName,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
-          ),
+          child: Text(AppLocalizations.of(context).faucetName),
         ),
       );
     } else {

@@ -166,10 +166,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   ElevatedButton(
+                    onPressed: () => dialogBloc.closeDialog(context),
                     child: Text(AppLocalizations.of(context).okButton),
-                    onPressed: () {
-                      dialogBloc.closeDialog(context);
-                    },
                   )
                 ],
               ),
@@ -195,16 +193,11 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    AppLocalizations.of(context).warningOkBtn,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Colors.white),
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ElevatedButton.styleFrom(
+                    onPrimary: Colors.white,
                   ),
+                  child: Text(AppLocalizations.of(context).warningOkBtn),
                 )
               ],
             )
@@ -290,10 +283,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
                   child: Text(AppLocalizations.of(context).okButton),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
                 ),
               ],
             ),

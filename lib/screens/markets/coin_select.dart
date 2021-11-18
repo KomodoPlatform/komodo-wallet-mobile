@@ -156,9 +156,7 @@ class _CoinSelectState extends State<CoinSelect> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                onPressed: () => Navigator.of(context).pop(),
                 child: Text(AppLocalizations.of(context).okButton),
               ),
             ],

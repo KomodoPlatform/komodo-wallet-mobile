@@ -54,34 +54,34 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
           children: merging
               ? <Widget>[
                   ElevatedButton(
-                    child: const Text('Save merged'),
                     onPressed: () => widget.onMerge(mergedValueController.text),
+                    child: const Text('Save merged'),
                   ),
                   TextButton(
-                    child: const Text('Back'),
                     onPressed: () {
                       setState(() {
                         merging = false;
                       });
                     },
+                    child: const Text('Back'),
                   ),
                 ]
               : <Widget>[
                   ElevatedButton(
-                    child: const Text('Merge'),
                     onPressed: () {
                       setState(() {
                         merging = true;
                       });
                     },
+                    child: const Text('Merge'),
                   ),
                   ElevatedButton(
-                    child: const Text('Skip'),
                     onPressed: widget.onSkip,
+                    child: const Text('Skip'),
                   ),
                   ElevatedButton(
-                    child: const Text('Overwrite'),
                     onPressed: widget.onOverwrite,
+                    child: const Text('Overwrite'),
                   ),
                 ],
         )

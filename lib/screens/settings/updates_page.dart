@@ -126,19 +126,14 @@ class _UpdatesPageState extends State<UpdatesPage> {
                               : launchURL(
                                   'https://play.google.com/store/apps/details?id=com.komodoplatform.atomicdex');
                         },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Theme.of(context).dialogBackgroundColor),
-                          elevation: MaterialStateProperty.all(0),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              side: BorderSide(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .caption
-                                      .color),
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Theme.of(context).dialogBackgroundColor,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                color:
+                                    Theme.of(context).textTheme.caption.color),
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
                         child: Text(AppLocalizations.of(context).updatesUpdate),
@@ -151,19 +146,16 @@ class _UpdatesPageState extends State<UpdatesPage> {
                           onPressed: () {
                             if (widget.onSkip != null) widget.onSkip();
                           },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).dialogBackgroundColor),
-                            elevation: MaterialStateProperty.all(0),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                side: BorderSide(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .caption
-                                        .color),
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).dialogBackgroundColor,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .caption
+                                      .color),
+                              borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
                           child: Text(AppLocalizations.of(context).updatesSkip),

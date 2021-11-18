@@ -64,21 +64,14 @@ class _AmountFieldState extends State<AmountField> {
                     minWidth: 50,
                     child: TextButton(
                       onPressed: widget.onMaxValue,
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
-                          const EdgeInsets.only(left: 6, right: 6),
-                        ),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
+                      style: TextButton.styleFrom(
+                        primary: Theme.of(context).colorScheme.secondary,
+                        padding: const EdgeInsets.only(left: 6, right: 6),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
                         ),
                       ),
-                      child: Text(
-                        AppLocalizations.of(context).max,
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            color: Theme.of(context).colorScheme.secondary),
-                      ),
+                      child: Text(AppLocalizations.of(context).max),
                     ),
                   ),
                 ),

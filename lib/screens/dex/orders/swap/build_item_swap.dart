@@ -227,24 +227,15 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                         recoverIsLoading = false;
                                       }));
                             },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                const Color.fromRGBO(191, 191, 191, 1),
-                              ),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
+                            style: TextButton.styleFrom(
+                              primary: Theme.of(context).primaryColor,
+                              backgroundColor:
+                                  const Color.fromRGBO(191, 191, 191, 1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
-                            child: Text(
-                              'Unlock Funds',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .button
-                                  .copyWith(
-                                      color: Theme.of(context).primaryColor),
-                            ),
+                            child: Text('Unlock Funds'),
                           ),
                         ),
               ],

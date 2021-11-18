@@ -28,9 +28,7 @@ class _ExportImportSuccessState extends State<ExportImportSuccess> {
           ),
           SizedBox(height: 24),
           ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
             child: Text(
               AppLocalizations.of(context).okButton,
             ),

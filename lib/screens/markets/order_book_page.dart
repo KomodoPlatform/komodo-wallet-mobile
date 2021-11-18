@@ -100,21 +100,19 @@ class _OrderBookPageState extends State<OrderBookPage> {
                   }),
             ),
             const SizedBox(width: 4),
-            ButtonTheme(
-              minWidth: 40,
-              child: TextButton(
-                key: const Key('coin-select-swap'),
-                onPressed: () {
-                  _orderBookProvider.activePair = CoinsPair(
-                    buy: _orderBookProvider.activePair?.sell,
-                    sell: _orderBookProvider.activePair?.buy,
-                  );
-                },
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(const EdgeInsets.all(0)),
-                ),
-                child: Icon(Icons.swap_horiz),
+            TextButton(
+              key: const Key('coin-select-swap'),
+              onPressed: () {
+                _orderBookProvider.activePair = CoinsPair(
+                  buy: _orderBookProvider.activePair?.sell,
+                  sell: _orderBookProvider.activePair?.buy,
+                );
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(0),
+                minimumSize: Size(40, 0),
               ),
+              child: Icon(Icons.swap_horiz),
             ),
             const SizedBox(width: 4),
             Expanded(
@@ -159,52 +157,39 @@ class _OrderBookPageState extends State<OrderBookPage> {
             },
           ),
         Expanded(child: Container()),
+        TextButton.icon(
+          onPressed: () {
+            setState(() {
+              _showChart = true;
+            });
+          },
+          style: TextButton.styleFrom(
+            primary: !_showChart
+                ? settingsBloc.isLightTheme
+                    ? cexColorLight
+                    : cexColor.withOpacity(0.8)
+                : Theme.of(context).colorScheme.secondary,
+          ),
+          icon: CandlesIcon(
+            size: 14,
+          ),
+          label: Text(AppLocalizations.of(context).marketsChart),
+        ),
         TextButton(
-            onPressed: () {
-              setState(() {
-                _showChart = true;
-              });
-            },
-            child: Row(
-              children: <Widget>[
-                CandlesIcon(
-                    size: 14,
-                    color: !_showChart
-                        ? settingsBloc.isLightTheme
-                            ? cexColorLight
-                            : cexColor.withOpacity(0.8)
-                        : Theme.of(context).colorScheme.secondary),
-                const SizedBox(width: 2),
-                Text(
-                  AppLocalizations.of(context).marketsChart,
-                  style: !_showChart
-                      ? TextStyle(
-                          color: settingsBloc.isLightTheme
-                              ? cexColorLight
-                              : cexColor.withOpacity(0.8))
-                      : TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                ),
-              ],
-            )),
-        TextButton(
-            onPressed: () {
-              setState(() {
-                _showChart = false;
-              });
-            },
-            child: Text(
-              AppLocalizations.of(context).marketsDepth,
-              style: _showChart
-                  ? TextStyle(
-                      color: settingsBloc.isLightTheme
-                          ? cexColorLight
-                          : cexColor.withOpacity(0.8))
-                  : TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-            )),
+          onPressed: () {
+            setState(() {
+              _showChart = false;
+            });
+          },
+          style: TextButton.styleFrom(
+            primary: _showChart
+                ? settingsBloc.isLightTheme
+                    ? cexColorLight
+                    : cexColor.withOpacity(0.8)
+                : Theme.of(context).colorScheme.secondary,
+          ),
+          child: Text(AppLocalizations.of(context).marketsDepth),
+        ),
       ],
     );
   }

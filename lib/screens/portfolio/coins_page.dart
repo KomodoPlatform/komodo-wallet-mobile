@@ -115,33 +115,28 @@ class _CoinsPageState extends State<CoinsPage> {
                                                 hidden: hidden,
                                               );
                                               return TextButton(
-                                                  onPressed: () {
-                                                    _cexProvider
-                                                        .switchCurrency();
-                                                  },
-                                                  child: AutoSizeText(
-                                                    amountText,
-                                                    maxFontSize: 18,
-                                                    minFontSize: 12,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline6
-                                                        .copyWith(
-                                                            color: _heightFactor <
-                                                                    1.3
-                                                                ? settingsBloc
-                                                                        .isLightTheme
-                                                                    ? Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            0.8)
-                                                                    : Colors
-                                                                        .white
-                                                                : Colors.white
-                                                                    .withOpacity(
-                                                                        0.8)),
-                                                    maxLines: 1,
-                                                  ));
+                                                onPressed: () => _cexProvider
+                                                    .switchCurrency(),
+                                                style: TextButton.styleFrom(
+                                                  primary: _heightFactor < 1.3
+                                                      ? settingsBloc
+                                                              .isLightTheme
+                                                          ? Colors.black
+                                                              .withOpacity(0.8)
+                                                          : Colors.white
+                                                      : Colors.white
+                                                          .withOpacity(0.8),
+                                                  textStyle: Theme.of(context)
+                                                      .textTheme
+                                                      .headline6,
+                                                ),
+                                                child: AutoSizeText(
+                                                  amountText,
+                                                  maxFontSize: 18,
+                                                  minFontSize: 12,
+                                                  maxLines: 1,
+                                                ),
+                                              );
                                             },
                                           );
                                         } else {
@@ -512,13 +507,11 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                                 MainAxisAlignment.end,
                                             children: [
                                               ElevatedButton(
+                                                onPressed: () => dialogBloc
+                                                    .closeDialog(context),
                                                 child: Text(
                                                     AppLocalizations.of(context)
                                                         .warningOkBtn),
-                                                onPressed: () {
-                                                  dialogBloc
-                                                      .closeDialog(context);
-                                                },
                                               ),
                                             ],
                                           ),

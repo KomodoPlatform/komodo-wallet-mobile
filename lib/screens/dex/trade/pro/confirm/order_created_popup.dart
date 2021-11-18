@@ -15,26 +15,21 @@ void showOrderCreatedDialog(BuildContext context) {
               ],
               verticalButtons: [
                 ElevatedButton(
-                  child: Text(
-                    AppLocalizations.of(context).showMyOrders,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Colors.white),
-                  ),
                   onPressed: () {
                     swapBloc.setIndexTabDex(1);
                     Navigator.of(context).pop();
                   },
+                  style: ElevatedButton.styleFrom(
+                    onPrimary: Colors.white,
+                  ),
+                  child: Text(AppLocalizations.of(context).showMyOrders),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
                 TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
                   child: Text(AppLocalizations.of(context).close),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
                 )
               ],
             );

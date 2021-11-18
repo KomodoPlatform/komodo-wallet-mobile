@@ -482,16 +482,12 @@ class _RewardsPageState extends State<RewardsPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       ElevatedButton(
-                        onPressed: () {
-                          dialogBloc.closeDialog(context);
-                        },
-                        child: Text(
-                          AppLocalizations.of(context).rewardsPopupOk,
-                          style: Theme.of(context)
-                              .textTheme
-                              .button
-                              .copyWith(color: Colors.white),
+                        onPressed: () => dialogBloc.closeDialog(context),
+                        style: ElevatedButton.styleFrom(
+                          onPrimary: Colors.white,
                         ),
+                        child:
+                            Text(AppLocalizations.of(context).rewardsPopupOk),
                       )
                     ],
                   )
