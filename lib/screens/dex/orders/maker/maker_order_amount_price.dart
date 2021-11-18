@@ -213,7 +213,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
       ),
       TableRow(
         children: [
-          Container(),
+          SizedBox(),
           Container(
             padding: const EdgeInsets.only(left: 6),
             child: Row(

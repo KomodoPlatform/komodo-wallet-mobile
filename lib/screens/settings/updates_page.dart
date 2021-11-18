@@ -37,7 +37,6 @@ class _UpdatesPageState extends State<UpdatesPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).updatesTitle),

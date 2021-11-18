@@ -44,22 +44,24 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
         resizeToAvoidBottomInset: true,
         appBar: widget.isCreatedPin
             ? AppBar(
-                leading: InkWell(
-                    onTap: () async {
+                leading: IconButton(
+                    key: Key('settings-pin-logout'),
+                    onPressed: () async {
                       await Db.deleteWallet(widget.wallet);
                       await authBloc.logout();
                       Navigator.pop(context);
                     },
-                    child: const Icon(
+                    color: Theme.of(context).errorColor,
+                    icon: const Icon(
                       Icons.exit_to_app,
-                      key: Key('settings-pin-logout'),
-                      color: Colors.red,
                     )),
-                backgroundColor: Theme.of(context).backgroundColor,
+                backgroundColor: Colors.transparent,
                 elevation: 0,
+                foregroundColor: Theme.of(context).colorScheme.onBackground,
               )
             : AppBar(
-                backgroundColor: Theme.of(context).backgroundColor,
+                backgroundColor: Colors.transparent,
+                foregroundColor: Theme.of(context).colorScheme.onBackground,
                 elevation: 0,
               ),
         body: ListView(
@@ -169,17 +171,15 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                               child: const Center(
                                 child: CircularProgressIndicator(),
                               )),
-                          isLoading
-                              ? const SizedBox(
-                                  height: 8,
-                                )
-                              : Container(),
+                          SizedBox(
+                            height: isLoading ? 8 : null,
+                          ),
                           isLoading
                               ? Text(
                                   AppLocalizations.of(context).decryptingWallet,
                                   style: Theme.of(context).textTheme.bodyText2,
                                 )
-                              : Container()
+                              : SizedBox()
                         ],
                       )
                     : Padding(
@@ -226,7 +226,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                       ),
                     ),
                   )
-                : Container(),
+                : SizedBox(),
             const SizedBox(
               height: 16,
             )

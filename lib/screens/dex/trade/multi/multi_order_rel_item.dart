@@ -162,8 +162,8 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
     final double sellAmt = _multiOrderProvider.baseAmt;
     final double relAmt =
         _multiOrderProvider.getRelCoinAmt(widget.item.coin.abbr);
-    if (relAmt == null || relAmt == 0) return Container();
-    if (sellAmt == null || sellAmt == 0) return Container();
+    if (relAmt == null || relAmt == 0) return SizedBox();
+    if (sellAmt == null || sellAmt == 0) return SizedBox();
 
     final double price = relAmt / sellAmt;
     final double cexPrice = _cexProvider.getCexRate(CoinsPair(
@@ -192,7 +192,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
   }
 
   Widget _buildDelta(double delta) {
-    if (delta == null) return Container();
+    if (delta == null) return SizedBox();
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -231,7 +231,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
 
   Widget _buildAmount() {
     if (!_multiOrderProvider.isRelCoinSelected(widget.item.coin.abbr))
-      return Container();
+      return SizedBox();
 
     final double usdPrice =
         _cexProvider.getUsdPrice(widget.item.coin.abbr) ?? 0;

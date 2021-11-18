@@ -67,7 +67,6 @@ class _CoinsPageState extends State<CoinsPage> {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
-                  backgroundColor: Theme.of(context).backgroundColor,
                   expandedHeight: _heightSliver,
                   pinned: true,
                   flexibleSpace: Builder(
@@ -167,7 +166,7 @@ class _CoinsPageState extends State<CoinsPage> {
                                             return snapshot.hasData &&
                                                     snapshot.data
                                                 ? BarGraph()
-                                                : Container();
+                                                : SizedBox();
                                           })
                                     ],
                                   ),
@@ -207,14 +206,12 @@ class _CoinsPageState extends State<CoinsPage> {
         stream: coinsBloc.outcurrentActiveCoin,
         builder:
             (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-          if (snapshot.data != null) {
-            return const SizedBox(
-              height: 2,
-              child: LinearProgressIndicator(),
-            );
-          } else {
-            return Container();
-          }
+          return snapshot.data != null
+              ? const SizedBox(
+                  height: 2,
+                  child: LinearProgressIndicator(),
+                )
+              : SizedBox();
         });
   }
 }
@@ -406,7 +403,7 @@ class ListCoinsState extends State<ListCoins> {
                   ],
                 );
               } else {
-                return Container();
+                return SizedBox();
               }
             }));
       },
@@ -530,7 +527,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                         ),
                       );
                     } else {
-                      return Container();
+                      return SizedBox();
                     }
                   },
                 );

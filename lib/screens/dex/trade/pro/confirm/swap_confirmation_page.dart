@@ -71,7 +71,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).swapDetailTitle),
         ),
@@ -469,8 +468,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                Container(
-                  color: Theme.of(context).backgroundColor,
+                SizedBox(
                   height: 32,
                 ),
                 ClipRRect(
@@ -484,14 +482,26 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context).infoTrade1,
-                            style: Theme.of(context).textTheme.subtitle2,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                           ),
                           const SizedBox(
                             height: 16,
                           ),
                           Text(
                             AppLocalizations.of(context).infoTrade2,
-                            style: Theme.of(context).textTheme.bodyText2,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                           )
                         ],
                       ),

@@ -35,7 +35,7 @@ class OrderBookChart extends StatelessWidget {
       _bidTotals.isNotEmpty ? _bidTotals[_bidTotals.length - 1] : 0,
     );
 
-    if (_maxAmount == 0) return Container();
+    if (_maxAmount == 0) return SizedBox();
 
     final List<Widget> _asksList = [];
     for (int i = 0; i < _askTotals.length; i++) {

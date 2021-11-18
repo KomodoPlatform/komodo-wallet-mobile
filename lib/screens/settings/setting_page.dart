@@ -82,9 +82,8 @@ class _SettingPageState extends State<SettingPage> {
           elevation: settingsBloc.isLightTheme ? 3 : 0,
         ),
         body: Theme(
-          data: Theme.of(context).copyWith(
-              canvasColor: Theme.of(context).backgroundColor,
-              textTheme: Theme.of(context).textTheme),
+          data: Theme.of(context)
+              .copyWith(textTheme: Theme.of(context).textTheme),
           child: ListView(
             key: const Key('settings-scrollable'),
             children: <Widget>[
@@ -107,10 +106,10 @@ class _SettingPageState extends State<SettingPage> {
                 height: 1,
               ),
               _buildSendFeedback(),
-              walletBloc.currentWallet != null
-                  ? _buildTitle(AppLocalizations.of(context).backupTitle)
-                  : Container(),
-              walletBloc.currentWallet != null ? _buildViewSeed() : Container(),
+              if (walletBloc.currentWallet != null) ...[
+                _buildTitle(AppLocalizations.of(context).backupTitle),
+                _buildViewSeed(),
+              ],
               _buildExport(),
               _buildImport(),
               _buildImportSwap(),
@@ -128,12 +127,7 @@ class _SettingPageState extends State<SettingPage> {
               const SizedBox(
                 height: 48,
               ),
-              walletBloc.currentWallet != null
-                  ? _buildDeleteWallet()
-                  : Container(),
-              const SizedBox(
-                height: 24,
-              ),
+              if (walletBloc.currentWallet != null) _buildDeleteWallet(),
             ],
           ),
         ),
@@ -269,7 +263,7 @@ class _SettingPageState extends State<SettingPage> {
                             setState(() {});
                           }
                         })
-                    : Container();
+                    : SizedBox();
               },
             )
           ],
@@ -363,7 +357,7 @@ class _SettingPageState extends State<SettingPage> {
                                     setState(() {});
                                   }
                                 })
-                            : Container();
+                            : SizedBox();
                       },
                     )
                   ],
@@ -371,7 +365,7 @@ class _SettingPageState extends State<SettingPage> {
               ),
             );
           } else {
-            return Container();
+            return SizedBox();
           }
         });
   }
@@ -381,7 +375,7 @@ class _SettingPageState extends State<SettingPage> {
         initialData: camoBloc.isCamoActive,
         stream: camoBloc.outIsCamoActive,
         builder: (context, AsyncSnapshot<bool> snapshot) {
-          if (snapshot.data == true) return Container();
+          if (snapshot.data == true) return SizedBox();
 
           return Column(
             children: <Widget>[
@@ -673,7 +667,7 @@ class _SettingPageState extends State<SettingPage> {
                             });
                           });
                         })
-                    : Container();
+                    : SizedBox();
               },
             )
           ],
@@ -730,7 +724,7 @@ class _SettingPageState extends State<SettingPage> {
                           settingsBloc.setEnableTestCoins(dataSwitch);
                         },
                       )
-                    : Container();
+                    : SizedBox();
               },
             ),
           ],
@@ -868,14 +862,10 @@ class CustomTile extends StatefulWidget {
 }
 
 class _CustomTileState extends State<CustomTile> {
-  Color backgroundColor;
-
   @override
   Widget build(BuildContext context) {
-    backgroundColor = widget.backgroundColor ?? Theme.of(context).canvasColor;
-
     return Container(
-      color: backgroundColor,
+      color: widget.backgroundColor,
       child: Material(
         color: Colors.transparent,
         child: InkWell(

@@ -25,19 +25,20 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Colors.transparent,
           elevation: 0,
+          foregroundColor: Theme.of(context).colorScheme.onSurface,
           title:
               Text(AppLocalizations.of(context).viewSeedAndKeys.toUpperCase()),
           centerTitle: true,
           actions: <Widget>[
-            InkWell(
-              onTap: () => Navigator.of(context).pop(),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Center(child: Text(AppLocalizations.of(context).done)),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              style: TextButton.styleFrom(
+                  primary: Theme.of(context).colorScheme.onSurface),
+              child: Text(
+                AppLocalizations.of(context).done.toUpperCase(),
               ),
             )
           ],

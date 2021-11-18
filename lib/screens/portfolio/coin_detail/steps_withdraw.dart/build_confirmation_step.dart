@@ -170,34 +170,32 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                 ),
               ],
             ),
-            needGas && isGasActive && notEnoughGas
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).notEnoughGas(fee.coin),
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            .copyWith(color: Theme.of(context).errorColor),
-                      ),
-                    ],
-                  )
-                : Container(),
-            needGas && !isGasActive
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).gasNotActive(fee.coin),
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            .copyWith(color: Theme.of(context).errorColor),
-                      ),
-                    ],
-                  )
-                : Container(),
+            if (needGas && isGasActive && notEnoughGas)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context).notEnoughGas(fee.coin),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Theme.of(context).errorColor),
+                  ),
+                ],
+              ),
+            if (needGas && !isGasActive)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context).gasNotActive(fee.coin),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Theme.of(context).errorColor),
+                  ),
+                ],
+              ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Container(

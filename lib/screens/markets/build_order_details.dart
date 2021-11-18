@@ -78,8 +78,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
     final String myAddress =
         coinsBloc.getBalanceByAbbr(widget.order.coin)?.balance?.address;
 
-    if (orderAdress.toLowerCase() != myAddress.toLowerCase())
-      return Container();
+    if (orderAdress.toLowerCase() != myAddress.toLowerCase()) return SizedBox();
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -135,7 +134,6 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
       ),
       TableRow(
         children: [
-          Container(),
           Container(
             padding: const EdgeInsets.only(left: 6),
             child: Row(

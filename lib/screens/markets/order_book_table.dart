@@ -217,8 +217,6 @@ class _OrderBookTableState extends State<OrderBookTable> {
               style: const TextStyle(color: Colors.green, fontSize: 14),
             ),
           ),
-          Container(),
-          Container(),
         ],
       ));
     }
@@ -330,8 +328,6 @@ class _OrderBookTableState extends State<OrderBookTable> {
               style: const TextStyle(color: Colors.red, fontSize: 14),
             ),
           ),
-          Container(),
-          Container(),
         ],
       ));
     }
@@ -413,7 +409,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
                   ],
                 ),
               )
-            : Container(),
+            : SizedBox(),
         const SizedBox(height: 26),
         const SizedBox(height: 26),
       ],

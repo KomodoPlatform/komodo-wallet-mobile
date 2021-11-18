@@ -226,7 +226,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                     const SizedBox(width: 4),
                   ],
                 ),
-                Expanded(child: Container()),
+                Expanded(child: SizedBox()),
                 Icon(expanded.contains(coin)
                     ? Icons.arrow_drop_up
                     : Icons.arrow_drop_down)
@@ -241,7 +241,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
 
   Widget _buildError(String coin) {
     final String error = multiOrderProvider.getError(coin);
-    if (error == null) return Container();
+    if (error == null) return SizedBox();
 
     return Container(
       padding: const EdgeInsets.only(top: 4),

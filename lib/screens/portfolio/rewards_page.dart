@@ -63,7 +63,7 @@ class _RewardsPageState extends State<RewardsPage> {
   }
 
   Widget _buildErrorMessage() {
-    if (rewardsProvider.errorMessage == null) return Container();
+    if (rewardsProvider.errorMessage == null) return SizedBox();
 
     return Container(
       alignment: const Alignment(0, 0),
@@ -208,7 +208,7 @@ class _RewardsPageState extends State<RewardsPage> {
                           height: 1,
                           child: rewardsProvider.claimInProgress
                               ? const LinearProgressIndicator()
-                              : Container(),
+                              : SizedBox(),
                         )
                       ],
                     )
@@ -231,7 +231,7 @@ class _RewardsPageState extends State<RewardsPage> {
       rows.add(_buildTableRow(i, item));
     }
 
-    if (rows.isEmpty) return Container();
+    if (rows.isEmpty) return SizedBox();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -416,7 +416,7 @@ class _RewardsPageState extends State<RewardsPage> {
             padding:
                 const EdgeInsets.only(left: 8, right: 8, top: 12, bottom: 12),
             child: item.stopAt == null || item.stopAt == null
-                ? Container()
+                ? SizedBox()
                 : Builder(builder: (context) {
                     final duration = Duration(
                         milliseconds: item.stopAt * 1000 -

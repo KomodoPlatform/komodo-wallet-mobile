@@ -61,9 +61,7 @@ class _FiltersState extends State<Filters> {
         : Theme.of(context).textTheme.bodyText2.color;
 
     return Row(children: [
-      const Expanded(
-        child: SizedBox(),
-      ),
+      const Expanded(child: SizedBox()),
       InkWell(
         child: Container(
           padding: const EdgeInsets.all(8),

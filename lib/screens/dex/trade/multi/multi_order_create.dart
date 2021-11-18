@@ -32,7 +32,6 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
                   MultiOrderRelList(),
                   const SizedBox(height: 10),
                   _buildButton(),
-                  const SizedBox(height: 100),
                 ],
               ),
             ),

@@ -144,7 +144,6 @@ class _HelpPageState extends State<HelpPage> {
             children: <Widget>[
               _buildLinks(),
               _buildFAQ(),
-              const SizedBox(height: 50),
             ],
           ),
         ),

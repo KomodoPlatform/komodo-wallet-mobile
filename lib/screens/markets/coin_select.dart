@@ -258,15 +258,14 @@ class _CoinSelectState extends State<CoinSelect> {
                   ],
                 ),
               ),
-              Opacity(
-                opacity: 0.4,
-                child: widget.pairedCoin != null
-                    ? Text(
-                        '  /  ${widget.pairedCoin.abbr}',
-                        style: TextStyle(fontSize: widget.compact ? 14 : null),
-                      )
-                    : Container(),
-              ),
+              if (widget.pairedCoin != null)
+                Opacity(
+                  opacity: 0.4,
+                  child: Text(
+                    '  /  ${widget.pairedCoin.abbr}',
+                    style: TextStyle(fontSize: widget.compact ? 14 : null),
+                  ),
+                ),
             ],
           );
           break;
@@ -276,15 +275,14 @@ class _CoinSelectState extends State<CoinSelect> {
         {
           _optionTitle = Row(
             children: <Widget>[
-              Opacity(
-                opacity: 0.4,
-                child: widget.pairedCoin != null
-                    ? Text(
-                        '${widget.pairedCoin.abbr}  /  ',
-                        style: TextStyle(fontSize: widget.compact ? 14 : null),
-                      )
-                    : Container(),
-              ),
+              if (widget.pairedCoin != null)
+                Opacity(
+                  opacity: 0.4,
+                  child: Text(
+                    '${widget.pairedCoin.abbr}  /  ',
+                    style: TextStyle(fontSize: widget.compact ? 14 : null),
+                  ),
+                ),
               Opacity(
                 opacity: _isOptionDisabled(coinBalance.coin) ? 0.4 : 1,
                 child: Row(
@@ -340,8 +338,8 @@ class _CoinSelectState extends State<CoinSelect> {
     }
 
     Widget _bildOrdersNumber() {
-      if (widget.pairedCoin == null) return Container();
-      if (widget.pairedCoin.abbr == coinBalance.coin.abbr) return Container();
+      if (widget.pairedCoin == null) return SizedBox();
+      if (widget.pairedCoin.abbr == coinBalance.coin.abbr) return SizedBox();
 
       final OrderbookDepth obDepth = _orderBookProvider.getDepth(CoinsPair(
         sell:
@@ -350,7 +348,7 @@ class _CoinSelectState extends State<CoinSelect> {
             widget.type == CoinType.base ? widget.pairedCoin : coinBalance.coin,
       ));
 
-      if (obDepth == null) return Container();
+      if (obDepth == null) return SizedBox();
 
       return Row(
         children: <Widget>[
@@ -389,15 +387,15 @@ class _CoinSelectState extends State<CoinSelect> {
     }
 
     Widget _buildCandlesIcon() {
-      if (widget.pairedCoin == null) return Container();
-      if (widget.pairedCoin.abbr == coinBalance.coin.abbr) return Container();
+      if (widget.pairedCoin == null) return SizedBox();
+      if (widget.pairedCoin.abbr == coinBalance.coin.abbr) return SizedBox();
 
       final CexProvider cexProvider = Provider.of<CexProvider>(context);
       final String pair =
           '${widget.pairedCoin.abbr.toLowerCase()}-${coinBalance.coin.abbr.toLowerCase()}';
       final bool available = cexProvider.isChartAvailable(pair);
 
-      if (!available) return Container();
+      if (!available) return SizedBox();
 
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,

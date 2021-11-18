@@ -168,9 +168,7 @@ class _ItemCoinState extends State<ItemCoin>
                     ],
                   ),
                 ),
-                Expanded(
-                  child: SizedBox(),
-                ),
+                Expanded(child: SizedBox()),
                 Padding(
                   padding: const EdgeInsets.only(right: 16),
                   child: Column(
@@ -238,7 +236,7 @@ class _ItemCoinState extends State<ItemCoin>
     final bool needClaimButton = widget.coinBalance.coin.abbr == 'KMD' &&
         double.parse(widget.coinBalance.balance.getBalance()) >= 10;
 
-    if (!needClaimButton) return Container();
+    if (!needClaimButton) return SizedBox();
 
     return Padding(
       padding: const EdgeInsets.only(top: 8),
@@ -310,7 +308,7 @@ class _ItemCoinState extends State<ItemCoin>
         ),
       );
     } else {
-      return Container();
+      return SizedBox();
     }
   }
 
@@ -324,7 +322,7 @@ class _ItemCoinState extends State<ItemCoin>
         widget.coinBalance.coin.abbr != 'BNB' &&
         widget.coinBalance.coin.abbr != 'QTUM';
 
-    if (!needLabel) return Container();
+    if (!needLabel) return SizedBox();
 
     return Padding(
       padding: const EdgeInsets.only(top: 14),

@@ -150,7 +150,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
                                       ),
                                     );
                                   }
-                                  return Container();
+                                  return SizedBox();
                                 }
                               }),
                         ],
@@ -163,7 +163,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
                     builder:
                         (BuildContext context, AsyncSnapshot<String> snapshot) {
                       if (!snapshot.hasData) {
-                        return Container();
+                        return SizedBox();
                       }
                       return InkWell(
                         onTap: () {
@@ -202,9 +202,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
-                      Expanded(
-                        child: Container(),
-                      ),
+                      Expanded(child: SizedBox()),
                       Builder(
                         builder: (BuildContext context) {
                           return widget.transaction.confirmations > 0

@@ -26,7 +26,7 @@ class _ExportImportListState extends State<ExportImportList> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).canvasColor,
             child: Opacity(
               opacity: _haveItems() ? 1 : 0.2,
               child: Row(
@@ -114,7 +114,7 @@ class _ExportImportListState extends State<ExportImportList> {
 
     return Container(
       padding: EdgeInsets.fromLTRB(6, 12, 4, 12),
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).canvasColor,
       child: Column(
         children: list,
       ),

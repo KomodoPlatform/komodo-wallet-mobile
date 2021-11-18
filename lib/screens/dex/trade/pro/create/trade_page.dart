@@ -85,7 +85,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 SizedBox(height: 20),
                 BuildTradeButton(),
                 BuildResetButton(),
-                SizedBox(height: 50),
               ],
             ),
           ),

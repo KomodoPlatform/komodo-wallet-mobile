@@ -199,7 +199,7 @@ class _ContactEditState extends State<ContactEdit> {
 
   Future<Widget> _buildAddresses() async {
     if (editContact.addresses == null || editContact.addresses.isEmpty)
-      return Container();
+      return SizedBox();
 
     final List<Widget> addresses = [];
     final List<Coin> all = (await coins).values.toList();
@@ -418,7 +418,7 @@ class _ContactEditState extends State<ContactEdit> {
         vertical: 2,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).canvasColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(

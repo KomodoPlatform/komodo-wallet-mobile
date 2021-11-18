@@ -163,7 +163,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
     Widget _usdAmount(String priceForOne) {
       if (priceForOne == null) return _progressIndicator;
 
-      if (double.parse(priceForOne) == 0) return Container();
+      if (double.parse(priceForOne) == 0) return SizedBox();
 
       return StreamBuilder<bool>(
           initialData: settingsBloc.showBalance,
@@ -205,11 +205,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
   Widget _buildListDetails() {
     return Column(
       children: <Widget>[
-        widget.transaction.blockHeight > 0
-            ? ItemTransationDetail(
-                title: AppLocalizations.of(context).txBlock,
-                data: widget.transaction.blockHeight.toString())
-            : Container(),
+        if (widget.transaction.blockHeight > 0)
+          ItemTransationDetail(
+              title: AppLocalizations.of(context).txBlock,
+              data: widget.transaction.blockHeight.toString()),
         ItemTransationDetail(
             title: AppLocalizations.of(context).txConfirmations,
             data: widget.transaction.confirmations.toString()),

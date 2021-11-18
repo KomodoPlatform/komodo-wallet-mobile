@@ -79,7 +79,7 @@ class HealthIndicator extends StatelessWidget {
                     ),
                   ),
                 )
-              : Container(),
+              : SizedBox(),
         )
       ]),
     );

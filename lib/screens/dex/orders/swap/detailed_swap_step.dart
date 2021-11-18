@@ -36,7 +36,7 @@ class DetailedSwapStep extends StatelessWidget {
     final Color _accentColor = Theme.of(context).colorScheme.secondary;
 
     Widget _buildStepStatusIcon(SwapStepStatus status) {
-      Widget icon = Container();
+      Widget icon = SizedBox();
       switch (status) {
         case SwapStepStatus.pending:
           icon = Icon(
@@ -162,7 +162,7 @@ class DetailedSwapStep extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: estimatedTotalSpeed == null
-                        ? Container()
+                        ? SizedBox()
                         : ProgressStep(
                             estimatedTotalSpeed: estimatedTotalSpeed,
                             actualTotalSpeed: actualTotalSpeed,
@@ -189,56 +189,55 @@ class DetailedSwapStep extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 4),
-                      estimatedSpeed == null
-                          ? Container()
-                          : Row(
-                              children: <Widget>[
-                                Text('|',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: status == SwapStepStatus.pending
-                                          ? _disabledColor
-                                          : null,
-                                    )),
-                                const SizedBox(width: 4),
-                                Text(
-                                    AppLocalizations.of(context).swapEstimated +
-                                        ': ',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: status == SwapStepStatus.pending
-                                          ? _disabledColor
-                                          : _accentColor,
-                                    )),
-                                Text(
-                                  durationFormat(estimatedSpeed),
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: status == SwapStepStatus.pending
-                                        ? _disabledColor
-                                        : null,
-                                  ),
-                                ),
-                                estimatedDeviation == null
-                                    ? Container()
-                                    : Row(
-                                        children: <Widget>[
-                                          Text(' ±',
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                color: _disabledColor,
-                                              )),
-                                          Text(
-                                            durationFormat(estimatedDeviation),
-                                            style: TextStyle(
-                                              fontSize: 13,
-                                              color: _disabledColor,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                              ],
+                      if (estimatedSpeed != null)
+                        Row(
+                          children: <Widget>[
+                            Text('|',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: status == SwapStepStatus.pending
+                                      ? _disabledColor
+                                      : null,
+                                )),
+                            const SizedBox(width: 4),
+                            Text(
+                                AppLocalizations.of(context).swapEstimated +
+                                    ': ',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: status == SwapStepStatus.pending
+                                      ? _disabledColor
+                                      : _accentColor,
+                                )),
+                            Text(
+                              durationFormat(estimatedSpeed),
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: status == SwapStepStatus.pending
+                                    ? _disabledColor
+                                    : null,
+                              ),
                             ),
+                            estimatedDeviation == null
+                                ? SizedBox()
+                                : Row(
+                                    children: <Widget>[
+                                      Text(' ±',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: _disabledColor,
+                                          )),
+                                      Text(
+                                        durationFormat(estimatedDeviation),
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: _disabledColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          ],
+                        ),
                     ],
                   ),
                 ],
@@ -246,7 +245,7 @@ class DetailedSwapStep extends StatelessWidget {
             ),
           ],
         ),
-        txHash != '0x' && txHash != '' ? _buildTxDetails() : Container(),
+        if (txHash != '0x' && txHash != '') _buildTxDetails(),
         const SizedBox(height: 16),
       ],
     );

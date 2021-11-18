@@ -203,10 +203,8 @@ class _BuildScreenAuthMultiWalletsState
                     child: Center(
                       child: Text(
                         wallet.name.substring(0, 1),
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6
-                            .copyWith(color: Theme.of(context).backgroundColor),
+                        style: Theme.of(context).textTheme.headline6.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface),
                       ),
                     ),
                     backgroundColor: settingsBloc.isLightTheme
@@ -240,12 +238,12 @@ class _BuildScreenAuthMultiWalletsState
   Widget _buildDeleteButton(Wallet wallet) {
     return IconButton(
       padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
+      color: settingsBloc.isLightTheme
+          ? Colors.black.withOpacity(0.3)
+          : Colors.white.withOpacity(0.6),
       icon: Icon(
         Icons.delete_outline,
         size: 24,
-        color: settingsBloc.isLightTheme
-            ? Colors.black.withOpacity(0.3)
-            : Colors.white.withOpacity(0.6),
       ),
       onPressed: () async {
         Navigator.push<dynamic>(

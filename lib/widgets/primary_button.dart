@@ -23,11 +23,6 @@ class PrimaryButton extends StatefulWidget {
 class _PrimaryButtonState extends State<PrimaryButton> {
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor;
-
-    backgroundColor =
-        widget.backgroundColor ?? Theme.of(context).colorScheme.secondary;
-
     return SizedBox(
       width: double.infinity,
       child: widget.isLoading
@@ -37,7 +32,8 @@ class _PrimaryButtonState extends State<PrimaryButton> {
           : ElevatedButton(
               onPressed: widget.onPressed,
               style: ElevatedButton.styleFrom(
-                primary: backgroundColor,
+                primary: widget.backgroundColor ??
+                    Theme.of(context).colorScheme.secondary,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),

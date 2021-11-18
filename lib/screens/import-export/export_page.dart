@@ -52,7 +52,6 @@ class _ExportPageState extends State<ExportPage> {
       context: context,
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(
             AppLocalizations.of(context).exportTitle,
@@ -379,7 +378,6 @@ class _ExportPageState extends State<ExportPage> {
 
   Widget _buildPass() {
     return Container(
-      color: Theme.of(context).primaryColor,
       padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
       child: Column(children: [
         TextField(

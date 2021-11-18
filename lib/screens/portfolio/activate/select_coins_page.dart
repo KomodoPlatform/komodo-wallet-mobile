@@ -75,13 +75,11 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
             leading: Builder(
               builder: (BuildContext context) {
                 return IconButton(
+                  color: Theme.of(context).colorScheme.secondary,
                   icon: Icon(
                     Icons.close,
-                    color: Theme.of(context).colorScheme.secondary,
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: () => Navigator.of(context).pop(),
                 );
               },
             ),

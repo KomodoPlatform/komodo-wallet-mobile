@@ -39,7 +39,7 @@ Future<void> showSoundsDialog(BuildContext context) async {
                     initialData: settingsBloc.showSoundsExplanationDialog,
                     stream: settingsBloc.outShowSoundsDialog,
                     builder: (context, snapshot) {
-                      if (!snapshot.hasData) return Container();
+                      if (!snapshot.hasData) return SizedBox();
 
                       return Checkbox(
                           value: !snapshot.data,

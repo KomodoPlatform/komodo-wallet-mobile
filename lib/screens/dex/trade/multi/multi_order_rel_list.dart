@@ -101,7 +101,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
         initialData: coinsBloc.coinBalance,
         stream: coinsBloc.outCoins,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return Container();
+          if (!snapshot.hasData) return SizedBox();
 
           bool allSelected = true;
           for (CoinBalance item in snapshot.data) {

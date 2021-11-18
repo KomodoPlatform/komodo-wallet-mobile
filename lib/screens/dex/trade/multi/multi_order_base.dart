@@ -104,7 +104,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
   Widget _buildErrors() {
     final String error =
         baseCoin == null ? null : multiOrderProvider.getError(baseCoin);
-    if (error == null) return Container();
+    if (error == null) return SizedBox();
 
     return Text(
       error,

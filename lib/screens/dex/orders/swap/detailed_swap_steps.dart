@@ -159,7 +159,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     }
 
     List<Widget> _buildFollowingSteps() {
-      if (swap.step == 0) return [Container()];
+      if (swap.step == 0) return [SizedBox()];
 
       final List<Widget> list = [];
 
@@ -221,7 +221,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     }
 
     Widget _getSwapStatusIcon() {
-      Widget icon = Container();
+      Widget icon = SizedBox();
       switch (swap.status) {
         case Status.SWAP_SUCCESSFUL:
           icon = Icon(Icons.check_circle,
@@ -303,14 +303,13 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(AppLocalizations.of(context).swapTotal + ':'),
-                  estimatedTotalSpeed == null
-                      ? Container()
-                      : ProgressStep(
-                          actualTotalSpeed: actualTotalSpeed,
-                          estimatedTotalSpeed: estimatedTotalSpeed,
-                          actualStepSpeed: actualTotalSpeed,
-                          estimatedStepSpeed: estimatedTotalSpeed,
-                        ),
+                  if (estimatedTotalSpeed != null)
+                    ProgressStep(
+                      actualTotalSpeed: actualTotalSpeed,
+                      estimatedTotalSpeed: estimatedTotalSpeed,
+                      actualStepSpeed: actualTotalSpeed,
+                      estimatedStepSpeed: estimatedTotalSpeed,
+                    ),
                   Row(
                     children: <Widget>[
                       Text(AppLocalizations.of(context).swapCurrent + ': ',
@@ -324,7 +323,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                       ),
                       const SizedBox(width: 4),
                       estimatedTotalSpeed == null
-                          ? Container()
+                          ? SizedBox()
                           : Row(
                               children: <Widget>[
                                 const Text('|',

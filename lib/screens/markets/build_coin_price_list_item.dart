@@ -235,7 +235,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                             },
                           ),
                           ..._buildDisclaimer(),
-                          Expanded(child: Container()),
+                          Expanded(child: SizedBox()),
                           SmallButton(
                               onPressed: snapshot.hasData
                                   ? () {

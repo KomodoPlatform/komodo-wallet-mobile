@@ -113,7 +113,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                     builder:
                         (BuildContext context, AsyncSnapshot<String> snapshot) {
                       if (!snapshot.hasData) {
-                        return Container();
+                        return SizedBox();
                       }
 
                       return InkWell(
@@ -172,38 +172,37 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                         ],
                       ),
                     ),
-                    widget.order.cancelable
-                        ? SizedBox(
-                            height: 30,
-                            child: OutlinedButton(
-                              onPressed: () =>
-                                  ordersBloc.cancelOrder(widget.order.uuid),
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: Colors.white),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
-                              ),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 6, horizontal: 12),
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(24)),
-                                  color: Colors.transparent,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(AppLocalizations.of(context)
-                                        .cancel
-                                        .toUpperCase())
-                                  ],
-                                ),
-                              ),
+                    if (widget.order.cancelable)
+                      SizedBox(
+                        height: 30,
+                        child: OutlinedButton(
+                          onPressed: () =>
+                              ordersBloc.cancelOrder(widget.order.uuid),
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.white),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
                             ),
-                          )
-                        : Container()
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(24)),
+                              color: Colors.transparent,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(AppLocalizations.of(context)
+                                    .cancel
+                                    .toUpperCase())
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ],

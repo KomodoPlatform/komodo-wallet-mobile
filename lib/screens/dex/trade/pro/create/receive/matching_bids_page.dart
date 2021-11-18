@@ -61,7 +61,6 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Row(
             children: <Widget>[
@@ -200,7 +199,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
   Widget _buildCexRate() {
     final double cexRate = _cexProvider.getCexRate() ?? 0.0;
 
-    if (cexRate == 0.0) return Container();
+    if (cexRate == 0.0) return SizedBox();
 
     return Row(
       children: <Widget>[

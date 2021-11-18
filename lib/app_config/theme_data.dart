@@ -12,11 +12,10 @@ SnackBarThemeData _snackBarTheme() => const SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
     );
 
-// MRC: The properties of the themes have been greatly reduce so we can mostly
+// MRC: The properties of the themes have been greatly reduced so we can mostly
 // foucs on colorScheme
 
 ThemeData getThemeDark() => ThemeData(
-      brightness: Brightness.dark,
       fontFamily: 'Ubuntu',
       textTheme: TextTheme(
         headline5: const TextStyle(

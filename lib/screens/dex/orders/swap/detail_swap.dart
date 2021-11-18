@@ -276,13 +276,13 @@ class _DetailSwapState extends State<DetailSwap> {
             ],
           ),
           Expanded(
-            child: Container(),
+            child: SizedBox(),
           ),
           _buildIcon(widget.swap.result.myInfo.myCoin),
           Icon(Icons.sync, size: 20),
           _buildIcon(widget.swap.result.myInfo.otherCoin),
           Expanded(
-            child: Container(),
+            child: SizedBox(),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,

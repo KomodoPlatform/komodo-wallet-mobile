@@ -110,7 +110,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                   builder:
                       (BuildContext context, AsyncSnapshot<String> snapshot) {
                     if (!snapshot.hasData) {
-                      return Container();
+                      return SizedBox();
                     }
 
                     return InkWell(
@@ -181,7 +181,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                             ),
                           ),
                         )
-                      : Container()
+                      : SizedBox()
                 ],
               ),
             ],

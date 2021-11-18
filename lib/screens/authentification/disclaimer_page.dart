@@ -234,53 +234,51 @@ class _DisclaimerPageState extends State<DisclaimerPage>
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: <Widget>[
-          widget.readOnly
-              ? Container()
-              : Column(
+          if (!widget.readOnly)
+            Column(
+              children: <Widget>[
+                Row(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Checkbox(
-                          key: const Key('checkbox-eula'),
-                          value: _checkBoxEULA,
-                          onChanged: (bool value) {
-                            setState(() {
-                              _checkBoxEULA = !_checkBoxEULA;
-                            });
-                          },
-                        ),
-                        Flexible(
-                            child:
-                                Text(AppLocalizations.of(context).accepteula)),
-                      ],
+                    Checkbox(
+                      key: const Key('checkbox-eula'),
+                      value: _checkBoxEULA,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _checkBoxEULA = !_checkBoxEULA;
+                        });
+                      },
                     ),
-                    Row(
-                      children: <Widget>[
-                        Checkbox(
-                          key: const Key('checkbox-toc'),
-                          value: _checkBoxTOC,
-                          onChanged: (bool value) {
-                            setState(() {
-                              _checkBoxTOC = !_checkBoxTOC;
-                            });
-                          },
-                        ),
-                        Flexible(
-                            child: Text(
-                          AppLocalizations.of(context).accepttac,
-                        )),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
-                      child: Text(
-                        AppLocalizations.of(context).confirmeula,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ),
+                    Flexible(
+                        child: Text(AppLocalizations.of(context).accepteula)),
                   ],
                 ),
+                Row(
+                  children: <Widget>[
+                    Checkbox(
+                      key: const Key('checkbox-toc'),
+                      value: _checkBoxTOC,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _checkBoxTOC = !_checkBoxTOC;
+                        });
+                      },
+                    ),
+                    Flexible(
+                        child: Text(
+                      AppLocalizations.of(context).accepttac,
+                    )),
+                  ],
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  child: Text(
+                    AppLocalizations.of(context).confirmeula,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ),
+              ],
+            ),
           PrimaryButton(
             key: const Key('next-disclaimer'),
             onPressed: (widget.readOnly
@@ -293,17 +291,15 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                 : AppLocalizations.of(context).next,
             isLoading: isLoading,
           ),
-          isLoading
-              ? const SizedBox(
-                  height: 8,
-                )
-              : Container(),
-          isLoading
-              ? Text(
-                  AppLocalizations.of(context).encryptingWallet,
-                  style: Theme.of(context).textTheme.bodyText2,
-                )
-              : Container()
+          if (isLoading) ...[
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              AppLocalizations.of(context).encryptingWallet,
+              style: Theme.of(context).textTheme.bodyText2,
+            )
+          ]
         ],
       ),
     );
@@ -352,6 +348,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
             style: Theme.of(context).textTheme.headline6,
           ),
           backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
           elevation: 0,
         ),
         body: SafeArea(

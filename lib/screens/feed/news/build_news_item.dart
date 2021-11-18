@@ -133,7 +133,7 @@ class _BuildNewsItemState extends State<BuildNewsItem>
 
   Widget _buildContent() {
     if (widget.newsItem.content == null || widget.newsItem.content.isEmpty) {
-      return Container();
+      return SizedBox();
     }
     final NewsArticle _article = NewsArticle(widget.newsItem.content);
     _recognizers = _article.recognizers;

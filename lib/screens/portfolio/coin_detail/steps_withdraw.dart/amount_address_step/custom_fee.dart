@@ -47,7 +47,7 @@ class _CustomFeeState extends State<CustomFee> {
                 ? CrossFadeState.showSecond
                 : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 200),
-            firstChild: Container(),
+            firstChild: SizedBox(),
             secondChild: Column(
               children: <Widget>[
                 Text(

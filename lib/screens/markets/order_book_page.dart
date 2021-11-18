@@ -156,7 +156,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
               });
             },
           ),
-        Expanded(child: Container()),
+        Expanded(child: SizedBox()),
         TextButton.icon(
           onPressed: () {
             setState(() {

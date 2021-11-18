@@ -145,7 +145,7 @@ class _AddressFieldState extends State<AddressField> {
   }
 
   Widget _buildConvertButton() {
-    if (convertMessage == null) return Container();
+    if (convertMessage == null) return SizedBox();
 
     return Row(
       children: <Widget>[

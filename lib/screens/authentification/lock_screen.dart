@@ -211,9 +211,9 @@ class _LockScreenState extends State<LockScreen> {
                                           authenticateBiometrics(
                                               context, widget.pinStatus);
                                         }
-                                        return Container();
+                                        return SizedBox();
                                       }
-                                      return Container();
+                                      return SizedBox();
                                     },
                                   ),
                                   shouldUpdate

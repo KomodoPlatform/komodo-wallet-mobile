@@ -175,7 +175,6 @@ class SwapShareCard extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(width: 8),
-                                  SizedBox(),
                                 ],
                               ),
                               const TableRow(

@@ -109,7 +109,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                     builder:
                         (BuildContext context, AsyncSnapshot<String> snapshot) {
                       if (!snapshot.hasData) {
-                        return Container();
+                        return SizedBox();
                       }
 
                       return InkWell(
@@ -156,7 +156,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Expanded(
-                      child: Container(),
+                      child: SizedBox(),
                     ),
                     Container(
                       padding: const EdgeInsets.only(bottom: 16),

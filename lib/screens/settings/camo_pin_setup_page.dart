@@ -28,12 +28,12 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         initialData: camoBloc.isCamoActive,
         stream: camoBloc.outIsCamoActive,
         builder: (context, AsyncSnapshot<bool> snapshot) {
-          if (!snapshot.hasData) return Container();
+          if (!snapshot.hasData) return SizedBox();
           if (snapshot.data) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.popUntil(context, ModalRoute.withName('/'));
             });
-            return Container();
+            return SizedBox();
           }
 
           return LockScreen(
@@ -67,13 +67,13 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
       initialData: camoBloc.camoFraction,
       stream: camoBloc.outCamoFraction,
       builder: (context, AsyncSnapshot<int> camoFraction) {
-        if (!camoFraction.hasData) return Container();
+        if (!camoFraction.hasData) return SizedBox();
 
         return StreamBuilder<bool>(
             initialData: camoBloc.isCamoEnabled,
             stream: camoBloc.outCamoEnabled,
             builder: (context, AsyncSnapshot<bool> camoEnabled) {
-              if (!camoEnabled.hasData) return Container();
+              if (!camoEnabled.hasData) return SizedBox();
 
               return Opacity(
                 opacity: camoEnabled.data ? 1 : 0.5,
@@ -133,26 +133,26 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         initialData: camoBloc.isCamoEnabled,
         stream: camoBloc.outCamoEnabled,
         builder: (context, camoEnabled) {
-          if (camoEnabled.data != true) return Container();
+          if (camoEnabled.data != true) return SizedBox();
 
           return FutureBuilder<String>(
               future: EncryptionTool().read('pin'),
               builder: (context, AsyncSnapshot<String> normalPin) {
-                if (!normalPin.hasData) return Container();
+                if (!normalPin.hasData) return SizedBox();
 
                 return SharedPreferencesBuilder<dynamic>(
                     pref: 'switch_pin',
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> normalPinEnabled) {
-                      if (!normalPinEnabled.hasData) return Container();
+                      if (!normalPinEnabled.hasData) return SizedBox();
 
                       if (normalPinEnabled.data) {
                         return FutureBuilder<String>(
                             future: EncryptionTool().read('camoPin'),
                             builder: (context, AsyncSnapshot<String> camoPin) {
-                              if (!camoPin.hasData) return Container();
+                              if (!camoPin.hasData) return SizedBox();
                               if (camoPin.data != normalPin.data)
-                                return Container();
+                                return SizedBox();
 
                               return Container(
                                 padding: const EdgeInsets.all(18),
@@ -193,7 +193,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
               initialData: camoBloc.isCamoEnabled,
               stream: camoBloc.outCamoEnabled,
               builder: (context, AsyncSnapshot<bool> camoEnabledSnapshot) {
-                if (!camoEnabledSnapshot.hasData) return Container();
+                if (!camoEnabledSnapshot.hasData) return SizedBox();
 
                 final bool isEnabled = camoEnabledSnapshot.data;
                 return Opacity(
@@ -246,7 +246,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                                 AsyncSnapshot<String>
                                                     normalPin) {
                                               if (!normalPin.hasData)
-                                                return Container();
+                                                return SizedBox();
 
                                               if (normalPin.data !=
                                                   camoPinSnapshot.data)
@@ -336,7 +336,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         initialData: camoBloc.isCamoEnabled,
         stream: camoBloc.outCamoEnabled,
         builder: (context, AsyncSnapshot<bool> snapshot) {
-          if (!snapshot.hasData) return Container();
+          if (!snapshot.hasData) return SizedBox();
 
           final bool isEnabled = snapshot.data;
           return Card(

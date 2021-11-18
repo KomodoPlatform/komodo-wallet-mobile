@@ -163,7 +163,7 @@ class _AddressBookState extends State<AddressBookPage> {
   }
 
   Widget _buildActiveFilters() {
-    if (coin == null) return Container();
+    if (coin == null) return SizedBox();
 
     String title = coin.abbr;
 

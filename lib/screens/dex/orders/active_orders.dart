@@ -64,7 +64,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
                       return const SizedBox();
                   }
                 } else {
-                  return Container();
+                  return SizedBox();
                 }
               })
               .toList()

@@ -183,6 +183,11 @@ class _CoinDetailState extends State<CoinDetail> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: elevationHeader,
+          foregroundColor: ThemeData.estimateBrightnessForColor(
+                      Color(int.parse(currentCoinBalance.coin.colorCoin))) ==
+                  Brightness.dark
+              ? Colors.white
+              : Colors.black,
           actions: <Widget>[
             IconButton(
               key: const Key('coin-deactivate'),
@@ -195,11 +200,6 @@ class _CoinDetailState extends State<CoinDetail> {
                       ),
                     )
                   : Icon(Icons.delete),
-              color: ThemeData.estimateBrightnessForColor(Color(
-                          int.parse(currentCoinBalance.coin.colorCoin))) ==
-                      Brightness.dark
-                  ? Colors.white
-                  : Colors.black,
               onPressed: () async {
                 if (widget.coinBalance.coin.isDefault) {
                   await showCantRemoveDefaultCoin(
@@ -222,11 +222,6 @@ class _CoinDetailState extends State<CoinDetail> {
             ),
             IconButton(
               icon: Icon(Icons.share),
-              color: ThemeData.estimateBrightnessForColor(Color(
-                          int.parse(currentCoinBalance.coin.colorCoin))) ==
-                      Brightness.dark
-                  ? Colors.white
-                  : Colors.black,
               onPressed: () async {
                 mainBloc.isUrlLaucherIsOpen = true;
                 await Share.share(AppLocalizations.of(context).shareAddress(
@@ -235,13 +230,7 @@ class _CoinDetailState extends State<CoinDetail> {
               },
             )
           ],
-          leading: BackButton(
-            color: ThemeData.estimateBrightnessForColor(
-                        Color(int.parse(currentCoinBalance.coin.colorCoin))) ==
-                    Brightness.dark
-                ? Colors.white
-                : Colors.black,
-          ),
+          leading: BackButton(),
           title: Row(
             children: <Widget>[
               PhotoHero(
@@ -255,13 +244,6 @@ class _CoinDetailState extends State<CoinDetail> {
               Expanded(
                 child: AutoScrollText(
                   text: currentCoinBalance.coin.name.toUpperCase(),
-                  style: TextStyle(
-                    color: ThemeData.estimateBrightnessForColor(Color(int.parse(
-                                currentCoinBalance.coin.colorCoin))) ==
-                            Brightness.dark
-                        ? Colors.white
-                        : Colors.black,
-                  ),
                 ),
               ),
             ],
@@ -275,7 +257,7 @@ class _CoinDetailState extends State<CoinDetail> {
             children: <Widget>[
               _buildForm(),
               _buildHeaderCoinDetail(context),
-              _shouldRefresh ? _buildNewTransactionsButton() : const SizedBox(),
+              if (_shouldRefresh) _buildNewTransactionsButton(),
               _buildSyncChain(),
               _buildTransactionsList(context),
             ],
@@ -293,7 +275,7 @@ class _CoinDetailState extends State<CoinDetail> {
     // for erc20 tokens
     if (widget.coinBalance.coin.type == 'erc' ||
         widget.coinBalance.coin.type == 'bep') {
-      return Container();
+      return SizedBox();
     }
 
     return StreamBuilder<dynamic>(
@@ -347,9 +329,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         width: 8,
                       ),
                       const Text('Loading...'),
-                      Expanded(
-                        child: Container(),
-                      ),
+                      Expanded(child: SizedBox()),
                       Text('Transactions left $txLeft'),
                     ],
                   ),
@@ -357,7 +337,7 @@ class _CoinDetailState extends State<CoinDetail> {
               }
             }
           }
-          return Container();
+          return SizedBox();
         });
   }
 
@@ -421,7 +401,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       )),
                     );
                   }
-                  return Container();
+                  return SizedBox();
                 })
           ],
         ),
@@ -526,7 +506,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         );
                       });
                 } else {
-                  return Container();
+                  return SizedBox();
                 }
               }),
         ),
@@ -677,7 +657,7 @@ class _CoinDetailState extends State<CoinDetail> {
         crossFadeState:
             isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
         duration: const Duration(milliseconds: 200),
-        firstChild: Container(),
+        firstChild: SizedBox(),
         secondChild: GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());

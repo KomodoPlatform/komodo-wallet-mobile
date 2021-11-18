@@ -18,7 +18,7 @@ class ViewPrivateKeys extends StatelessWidget {
       stream: coinsBloc.outCoins,
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
-        if (!snapshot.hasData) return Container();
+        if (!snapshot.hasData) return SizedBox();
         final data = snapshot.data;
         data.sort((a, b) => a.coin.abbr.compareTo(b.coin.abbr));
         final zebra = <String, bool>{};

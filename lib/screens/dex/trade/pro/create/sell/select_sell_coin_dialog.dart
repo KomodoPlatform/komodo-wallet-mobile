@@ -89,9 +89,7 @@ List<SimpleDialogOption> _coinItemsList({
                 child: Image.asset(
                   'assets/coin-icons/${coin.coin.abbr.toLowerCase()}.png',
                 )),
-            Expanded(
-              child: Container(),
-            ),
+            Expanded(child: SizedBox()),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[

@@ -98,7 +98,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                   future: Db.getCurrentWallet(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<Wallet> snapshot) {
-                                    if (!snapshot.hasData) return Container();
+                                    if (!snapshot.hasData) return SizedBox();
                                     return Text(
                                       snapshot.data.name,
                                       style: const TextStyle(
@@ -122,44 +122,43 @@ class _AppDrawerState extends State<AppDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         _buildDrawerItem(
-                            title: Row(
-                              children: <Widget>[
-                                Text(AppLocalizations.of(context)
-                                    .soundSettingsLink),
-                              ],
-                            ),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          SoundSettingsPage()));
-                            },
-                            leading: const Icon(Icons.audiotrack, size: 16),
-                            trailing: InkWell(
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Icon(
-                                  musicService.on()
-                                      ? Icons.volume_up
-                                      : Icons.volume_down,
-                                  size: 22,
-                                  color: musicService.on()
-                                      ? Theme.of(context)
-                                          .toggleButtonsTheme
-                                          .color
-                                      : Theme.of(context)
-                                          .toggleButtonsTheme
-                                          .disabledColor,
-                                ),
-                              ),
-                              onTap: () {
+                          title: Row(
+                            children: <Widget>[
+                              Text(AppLocalizations.of(context)
+                                  .soundSettingsLink),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.push<dynamic>(
+                                context,
+                                MaterialPageRoute<dynamic>(
+                                    builder: (BuildContext context) =>
+                                        SoundSettingsPage()));
+                          },
+                          leading: const Icon(Icons.audiotrack, size: 16),
+                          trailing: SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: IconButton(
+                              padding: EdgeInsets.all(0),
+                              visualDensity: VisualDensity.compact,
+                              onPressed: () {
                                 setState(() {
                                   musicService.flip();
                                 });
                               },
-                            )),
+                              icon: Icon(
+                                  musicService.on()
+                                      ? Icons.volume_up
+                                      : Icons.volume_down,
+                                  color: musicService.on()
+                                      ? Theme.of(context).toggleableActiveColor
+                                      : Theme.of(context)
+                                          .unselectedWidgetColor),
+                            ),
+                          ),
+                        ),
                         _buildDrawerItem(
                             title: SharedPreferencesBuilder<dynamic>(
                                 pref: 'current_languages',
@@ -221,7 +220,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                         settingsBloc
                                             .setShowBalance(!dataSwitch);
                                       })
-                                  : Container();
+                                  : SizedBox();
                             },
                           ),
                         ),
@@ -285,7 +284,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                       onChanged: (bool dataSwitch) {
                                         settingsBloc.setLightTheme(dataSwitch);
                                       })
-                                  : Container();
+                                  : SizedBox();
                             },
                           ),
                         ),

@@ -46,7 +46,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (mounted) Navigator.of(context).pop();
                 });
-                return Container();
+                return SizedBox();
               }
 
               return SingleChildScrollView(

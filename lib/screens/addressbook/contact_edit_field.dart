@@ -88,12 +88,9 @@ class _ContactEditFieldState extends State<ContactEditField> {
                       Row(
                         children: <Widget>[
                           if (widget.name != 'name')
-                            Padding(
-                              padding: EdgeInsets.only(right: 6),
-                              child: IconButton(
-                                onPressed: () => _scan(),
-                                icon: Icon(Icons.add_a_photo),
-                              ),
+                            IconButton(
+                              onPressed: () => _scan(),
+                              icon: Icon(Icons.add_a_photo),
                             ),
                           Expanded(
                             child: TextField(

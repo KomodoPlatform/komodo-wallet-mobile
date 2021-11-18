@@ -142,7 +142,7 @@ class _OrdersPageState extends State<OrdersPage> {
         initialData: swapMonitor.swaps,
         builder:
             (BuildContext context, AsyncSnapshot<Iterable<Swap>> snapshot) {
-          if (!snapshot.hasData) return Container();
+          if (!snapshot.hasData) return SizedBox();
 
           final List<Swap> completed = snapshot.data
               .where((Swap item) =>
@@ -169,7 +169,7 @@ class _OrdersPageState extends State<OrdersPage> {
       initialData: ordersBloc.orderSwaps,
       stream: ordersBloc.outOrderSwaps,
       builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-        if (!snapshot.hasData) return Container();
+        if (!snapshot.hasData) return SizedBox();
 
         final List<dynamic> active = snapshot.data
             .where((dynamic item) => item is Order || item is Swap)

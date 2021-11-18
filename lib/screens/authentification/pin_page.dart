@@ -302,12 +302,8 @@ class _PinPageState extends State<PinPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Theme(
-            data: Theme.of(context).copyWith(
-              colorScheme:
-                  Theme.of(context).colorScheme.copyWith(secondary: Colors.red),
-            ),
-            child: const CircularProgressIndicator(),
+          CircularProgressIndicator(
+            color: Theme.of(context).errorColor,
           ),
           const SizedBox(
             height: 8,
@@ -346,7 +342,6 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
       case PinStatus.CONFIRM_CAMO_PIN:
         return AppBar(
           centerTitle: true,
-          backgroundColor: Theme.of(context).backgroundColor,
           title: Text(title),
         );
         break;
@@ -355,23 +350,15 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
           centerTitle: true,
           automaticallyImplyLeading: pinStatus != PinStatus.NORMAL_PIN,
           actions: <Widget>[
-            InkWell(
-                onTap: () {
-                  showLogoutConfirmation(context);
-                },
-                child: const Padding(
-                  padding: EdgeInsets.only(
-                    right: 12.0,
-                    left: 12,
-                  ),
-                  child: Icon(
-                    Icons.exit_to_app,
-                    key: Key('settings-pin-logout'),
-                    color: Colors.red,
-                  ),
-                )),
+            IconButton(
+              key: Key('settings-pin-logout'),
+              onPressed: () => showLogoutConfirmation(context),
+              color: Theme.of(context).errorColor,
+              icon: Icon(
+                Icons.exit_to_app,
+              ),
+            ),
           ],
-          backgroundColor: Theme.of(context).backgroundColor,
           title: Text(title),
           elevation: 0,
         );
