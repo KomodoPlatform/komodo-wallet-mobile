@@ -31,7 +31,7 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(32),
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).canvasColor,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
@@ -40,6 +40,7 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
             Icon(
               Icons.search,
               size: 22,
+              color: Theme.of(context).primaryColor,
             ),
             const SizedBox(
               width: 8,

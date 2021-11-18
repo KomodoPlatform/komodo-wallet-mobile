@@ -138,7 +138,6 @@ class _HelpPageState extends State<HelpPage> {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).helpTitle),
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

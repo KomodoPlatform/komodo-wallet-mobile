@@ -198,9 +198,7 @@ class _CoinsPageState extends State<CoinsPage> {
                 ),
               ];
             },
-            body: Container(
-                color: Theme.of(context).backgroundColor,
-                child: const ListCoins())));
+            body: const ListCoins()));
   }
 
   Widget _buildProgressIndicator() {
@@ -380,7 +378,7 @@ class ListCoinsState extends State<ListCoins> {
 
                 datas.addAll(_sorted);
                 datas.add(true);
-                return ListView.builder(
+                return ListView.separated(
                   key: const Key('list-view-coins'),
                   itemCount: datas.length,
                   padding: const EdgeInsets.all(0),
@@ -395,6 +393,7 @@ class ListCoinsState extends State<ListCoins> {
                       );
                     }
                   },
+                  separatorBuilder: (context, _) => Divider(height: 0),
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();
@@ -462,9 +461,6 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                           child: Center(
                               child: FloatingActionButton(
                             key: const Key('adding-coins'),
-                            backgroundColor: Theme.of(context).primaryColor,
-                            foregroundColor:
-                                Theme.of(context).colorScheme.secondary,
                             child: Icon(
                               Icons.add,
                             ),

@@ -64,7 +64,6 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Material(
-                    color: Theme.of(context).primaryColor,
                     child: Row(
                       children: <Widget>[
                         Expanded(

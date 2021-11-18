@@ -26,7 +26,6 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).makerDetailsTitle),
           actions: const <Widget>[
@@ -191,7 +190,6 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
         child: OutlinedButton(
           onPressed: () => ordersBloc.cancelOrder(order.uuid),
           style: OutlinedButton.styleFrom(
-            textStyle: Theme.of(context).textTheme.bodyText1,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),

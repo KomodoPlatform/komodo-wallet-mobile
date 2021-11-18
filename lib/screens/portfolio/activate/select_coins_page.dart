@@ -60,7 +60,6 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       child: Scaffold(
           appBar: AppBar(
             titleSpacing: 6.0,
-            backgroundColor: Theme.of(context).backgroundColor,
             elevation: 0,
             title: SearchFieldFilterCoin(
               clear: () {
@@ -87,7 +86,6 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
               },
             ),
           ),
-          backgroundColor: Theme.of(context).backgroundColor,
           body: StreamBuilder<CoinToActivate>(
               initialData: coinsBloc.currentActiveCoin,
               stream: coinsBloc.outcurrentActiveCoin,
@@ -98,14 +96,14 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 } else {
                   return _isDone
                       ? LoadingCoin()
-                      : Stack(
-                          alignment: AlignmentDirectional.bottomCenter,
-                          children: <Widget>[
-                            ListView.builder(
-                              padding: const EdgeInsets.only(bottom: 100),
-                              itemCount: _listViewItems.length,
-                              itemBuilder: (BuildContext context, int i) =>
-                                  _listViewItems[i],
+                      : Column(
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: _listViewItems.length,
+                                itemBuilder: (BuildContext context, int i) =>
+                                    _listViewItems[i],
+                              ),
                             ),
                             _buildDoneButton(),
                           ],
@@ -205,36 +203,31 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   }
 
   Widget _buildDoneButton() {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      child: SafeArea(
-        child: SizedBox(
-          height: 60,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: StreamBuilder<List<CoinToActivate>>(
-                  initialData: coinsBloc.coinBeforeActivation,
-                  stream: coinsBloc.outCoinBeforeActivation,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<CoinToActivate>> snapshot) {
-                    bool isButtonActive = false;
-                    if (snapshot.hasData) {
-                      for (CoinToActivate coinToActivate in snapshot.data) {
-                        if (coinToActivate.isActive) {
-                          isButtonActive = true;
-                        }
-                      }
+    return SizedBox(
+      height: 60,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: StreamBuilder<List<CoinToActivate>>(
+              initialData: coinsBloc.coinBeforeActivation,
+              stream: coinsBloc.outCoinBeforeActivation,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<CoinToActivate>> snapshot) {
+                bool isButtonActive = false;
+                if (snapshot.hasData) {
+                  for (CoinToActivate coinToActivate in snapshot.data) {
+                    if (coinToActivate.isActive) {
+                      isButtonActive = true;
                     }
-                    return PrimaryButton(
-                      key: const Key('done-activate-coins'),
-                      text: AppLocalizations.of(context).done,
-                      isLoading: _isDone,
-                      onPressed: isButtonActive ? _pressDoneButton : null,
-                    );
-                  }),
-            ),
-          ),
+                  }
+                }
+                return PrimaryButton(
+                  key: const Key('done-activate-coins'),
+                  text: AppLocalizations.of(context).done,
+                  isLoading: _isDone,
+                  onPressed: isButtonActive ? _pressDoneButton : null,
+                );
+              }),
         ),
       ),
     );

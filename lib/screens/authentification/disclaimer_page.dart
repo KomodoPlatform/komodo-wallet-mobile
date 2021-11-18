@@ -354,7 +354,6 @@ class _DisclaimerPageState extends State<DisclaimerPage>
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
         body: SafeArea(
           // On small screens and in split-screen mode
           // page controls (checkboxes, button) should not be docked

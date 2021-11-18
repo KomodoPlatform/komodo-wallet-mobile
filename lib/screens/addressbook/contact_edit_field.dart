@@ -64,7 +64,6 @@ class _ContactEditFieldState extends State<ContactEditField> {
         Expanded(
             child: Card(
                 margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
-                color: widget.color ?? Theme.of(context).backgroundColor,
                 child: Container(
                   padding: widget.padding ?? const EdgeInsets.all(16),
                   child: Column(
@@ -111,21 +110,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                               style: Theme.of(context).textTheme.bodyText2,
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: Theme.of(context).backgroundColor,
                                 border: const OutlineInputBorder(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: widget.invalid
-                                            ? Colors.red
-                                            : Theme.of(context)
-                                                .primaryColorLight)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: widget.invalid
-                                            ? Colors.red
-                                            : Theme.of(context)
-                                                .colorScheme
-                                                .secondary)),
                                 hintStyle:
                                     Theme.of(context).textTheme.bodyText1,
                                 labelStyle:

@@ -32,7 +32,6 @@ class _RewardsPageState extends State<RewardsPage> {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).rewardsTitle),
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
         body: rewards == null
             ? const Center(
                 child: CircularProgressIndicator(),
@@ -483,9 +482,6 @@ class _RewardsPageState extends State<RewardsPage> {
                     children: <Widget>[
                       ElevatedButton(
                         onPressed: () => dialogBloc.closeDialog(context),
-                        style: ElevatedButton.styleFrom(
-                          onPrimary: Colors.white,
-                        ),
                         child:
                             Text(AppLocalizations.of(context).rewardsPopupOk),
                       )

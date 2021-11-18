@@ -28,7 +28,6 @@ class _SelectLanguagePageState extends State<SelectLanguagePage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).settingLanguageTitle),
         ),

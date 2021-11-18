@@ -147,7 +147,6 @@ class _ContactsListState extends State<ContactsList> {
             indent: 10,
             endIndent: 10,
             height: 1,
-            color: Theme.of(context).primaryColorLight,
           ),
         );
       }

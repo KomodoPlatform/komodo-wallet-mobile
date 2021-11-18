@@ -78,7 +78,6 @@ class _FeedPageState extends State<FeedPage>
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: _buildAppBar(),
       body: TabBarView(
         controller: _controllerTabs,

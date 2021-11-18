@@ -36,8 +36,8 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                     height: 15,
                     width: 15,
                     color: coinToActivate.isActive
-                        ? Theme.of(context).colorScheme.secondary
-                        : Theme.of(context).primaryColor,
+                        ? Theme.of(context).toggleableActiveColor
+                        : Theme.of(context).unselectedWidgetColor,
                   ),
                   const SizedBox(width: 24),
                   Image.asset(

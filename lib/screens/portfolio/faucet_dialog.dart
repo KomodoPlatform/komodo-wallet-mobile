@@ -40,9 +40,6 @@ void showFaucetDialog({
                           children: [
                             ElevatedButton(
                               onPressed: () => Navigator.of(context).pop(),
-                              style: ElevatedButton.styleFrom(
-                                onPrimary: Colors.white,
-                              ),
                               child: Text(AppLocalizations.of(context).close),
                             ),
                           ],

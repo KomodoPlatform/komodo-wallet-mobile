@@ -200,7 +200,6 @@ class _PinPageState extends State<PinPage> {
               context: context,
             )
           : null,
-      backgroundColor: Theme.of(context).backgroundColor,
       resizeToAvoidBottomInset: false,
       body: !isLoading
           ? PinCode(

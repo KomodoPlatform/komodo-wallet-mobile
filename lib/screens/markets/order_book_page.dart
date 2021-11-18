@@ -170,9 +170,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                     : cexColor.withOpacity(0.8)
                 : Theme.of(context).colorScheme.secondary,
           ),
-          icon: CandlesIcon(
-            size: 14,
-          ),
+          icon: CandlesIcon(size: 14),
           label: Text(AppLocalizations.of(context).marketsChart),
         ),
         TextButton(

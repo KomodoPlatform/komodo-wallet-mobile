@@ -306,7 +306,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           key: _scaffoldKey,
           endDrawer: AppDrawer(context),
           resizeToAvoidBottomInset: true,
-          backgroundColor: Theme.of(context).backgroundColor,
           body: _children[snapshot.data],
           bottomNavigationBar: Container(
             decoration: const BoxDecoration(
@@ -325,10 +324,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             child: Material(
               elevation: 8.0,
               child: Theme(
-                data: Theme.of(context).copyWith(
-                    canvasColor: Theme.of(context).primaryColor,
-                    primaryColor: Theme.of(context).colorScheme.secondary,
-                    textTheme: Theme.of(context).textTheme),
+                data: Theme.of(context)
+                    .copyWith(textTheme: Theme.of(context).textTheme),
                 child: Container(
                   color: Theme.of(context).primaryColor,
                   child: SafeArea(

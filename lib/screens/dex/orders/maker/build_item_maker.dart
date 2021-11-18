@@ -153,7 +153,6 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                             onPressed: () =>
                                 ordersBloc.cancelOrder(widget.order.uuid),
                             style: OutlinedButton.styleFrom(
-                              textStyle: Theme.of(context).textTheme.bodyText1,
                               side: BorderSide(
                                 color: settingsBloc.isLightTheme
                                     ? Colors.black.withOpacity(0.8)

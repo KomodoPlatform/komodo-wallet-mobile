@@ -181,7 +181,6 @@ class _CoinDetailState extends State<CoinDetail> {
       context: context,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           elevation: elevationHeader,
           actions: <Widget>[

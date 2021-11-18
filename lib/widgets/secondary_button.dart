@@ -39,8 +39,6 @@ class _SecondaryButtonState extends State<SecondaryButton> {
         widget.text.toUpperCase(),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.button.copyWith(
-            color: settingsBloc.isLightTheme ? widget.textColor : Colors.white),
       );
     } else {
       child = widget.child;
@@ -52,6 +50,9 @@ class _SecondaryButtonState extends State<SecondaryButton> {
         key: isSend ? const Key('secondary-button-send') : null,
         onPressed: widget.onPressed,
         style: OutlinedButton.styleFrom(
+          primary: settingsBloc.isLightTheme
+              ? widget.textColor
+              : Theme.of(context).colorScheme.onSurface,
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           side: BorderSide(
             color:

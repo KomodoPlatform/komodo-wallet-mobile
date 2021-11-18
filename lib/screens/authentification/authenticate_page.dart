@@ -118,7 +118,6 @@ class _BuildScreenAuthMultiWalletsState
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -284,7 +283,6 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).backgroundColor,
       body: Stack(
         alignment: Alignment.topRight,
         children: [

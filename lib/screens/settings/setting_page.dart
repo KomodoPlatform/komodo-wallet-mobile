@@ -73,7 +73,6 @@ class _SettingPageState extends State<SettingPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(
             AppLocalizations.of(context).settings.toUpperCase(),
@@ -84,7 +83,7 @@ class _SettingPageState extends State<SettingPage> {
         ),
         body: Theme(
           data: Theme.of(context).copyWith(
-              canvasColor: Theme.of(context).primaryColor,
+              canvasColor: Theme.of(context).backgroundColor,
               textTheme: Theme.of(context).textTheme),
           child: ListView(
             key: const Key('settings-scrollable'),
@@ -692,14 +691,12 @@ class _SettingPageState extends State<SettingPage> {
           padding: const EdgeInsets.all(6.0),
           child: SvgPicture.asset('assets/svg/delete_setting.svg'),
         ),
-        title: Text(AppLocalizations.of(context).deleteWallet,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                fontWeight: FontWeight.w300,
-                color: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .color
-                    .withOpacity(0.8))),
+        title: Text(
+          AppLocalizations.of(context).deleteWallet,
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Theme.of(context).colorScheme.onError.withOpacity(0.8)),
+        ),
       ),
     );
   }
@@ -875,11 +872,8 @@ class _CustomTileState extends State<CustomTile> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.backgroundColor == null) {
-      backgroundColor = Theme.of(context).primaryColor;
-    } else {
-      backgroundColor = widget.backgroundColor;
-    }
+    backgroundColor = widget.backgroundColor ?? Theme.of(context).canvasColor;
+
     return Container(
       color: backgroundColor,
       child: Material(

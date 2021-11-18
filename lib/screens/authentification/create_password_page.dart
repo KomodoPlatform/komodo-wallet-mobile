@@ -69,7 +69,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
       body: Form(
         key: _formKey,
         autovalidateMode:

@@ -247,9 +247,6 @@ class _ContactListItemState extends State<ContactListItem> {
               children: [
                 ElevatedButton(
                   onPressed: () => dialogBloc.closeDialog(context),
-                  style: ElevatedButton.styleFrom(
-                    onPrimary: Colors.white,
-                  ),
                   child: Text(AppLocalizations.of(context).warningOkBtn),
                 ),
               ],

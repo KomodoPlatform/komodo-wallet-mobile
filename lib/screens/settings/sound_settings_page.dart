@@ -21,7 +21,6 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(
             AppLocalizations.of(context).soundSettingsTitle.toUpperCase(),
@@ -154,9 +153,6 @@ class FilePickerButton extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        style: ElevatedButton.styleFrom(
-                          onPrimary: Colors.white,
-                        ),
                         child: Text(AppLocalizations.of(context).warningOkBtn),
                       ),
                     ],

@@ -25,11 +25,8 @@ class _PrimaryButtonState extends State<PrimaryButton> {
   Widget build(BuildContext context) {
     Color backgroundColor;
 
-    if (widget.backgroundColor == null) {
-      backgroundColor = Theme.of(context).colorScheme.secondary;
-    } else {
-      backgroundColor = widget.backgroundColor;
-    }
+    backgroundColor =
+        widget.backgroundColor ?? Theme.of(context).colorScheme.secondary;
 
     return SizedBox(
       width: double.infinity,
@@ -41,9 +38,6 @@ class _PrimaryButtonState extends State<PrimaryButton> {
               onPressed: widget.onPressed,
               style: ElevatedButton.styleFrom(
                 primary: backgroundColor,
-                onPrimary: widget.isDarkMode
-                    ? Theme.of(context).primaryColor
-                    : Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),

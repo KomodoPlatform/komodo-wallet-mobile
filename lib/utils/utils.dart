@@ -301,9 +301,6 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
               children: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  style: ElevatedButton.styleFrom(
-                    onPrimary: Colors.white,
-                  ),
                   child: Text(
                       AppLocalizations.of(context).cantDeleteDefaultCoinOk),
                 ),
@@ -357,7 +354,6 @@ Future<void> showConfirmationRemoveCoin(
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).errorColor,
-                    onPrimary: Colors.white,
                   ),
                   child: Text(AppLocalizations.of(context).confirm),
                 )

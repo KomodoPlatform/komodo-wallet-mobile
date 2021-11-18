@@ -188,9 +188,6 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                   children: <Widget>[
                     ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      style: ElevatedButton.styleFrom(
-                        onPrimary: Colors.white,
-                      ),
                       child: Text(AppLocalizations.of(context).close),
                     ),
                   ],

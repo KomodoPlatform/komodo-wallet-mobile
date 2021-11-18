@@ -143,7 +143,6 @@ class _LockScreenState extends State<LockScreen> {
 
     Widget _buildSplash(String message) {
       return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -345,7 +344,6 @@ class _BiometricPageState extends State<BiometricPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBarStatus(
         context: context,
         pinStatus: PinStatus.NORMAL_PIN,

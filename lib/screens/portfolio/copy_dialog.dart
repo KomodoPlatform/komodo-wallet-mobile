@@ -65,9 +65,6 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
                   children: <Widget>[
                     ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      style: ElevatedButton.styleFrom(
-                        onPrimary: Colors.white,
-                      ),
                       child: Text(AppLocalizations.of(context).close),
                     ),
                   ],

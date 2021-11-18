@@ -50,7 +50,6 @@ class _ImportPageState extends State<ImportPage> {
       context: context,
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(
             AppLocalizations.of(context).importTitle,
@@ -526,9 +525,6 @@ class _ImportPageState extends State<ImportPage> {
                 SizedBox(width: 12),
                 ElevatedButton(
                   onPressed: () => Navigator.pop(context, _passController.text),
-                  style: ElevatedButton.styleFrom(
-                    onPrimary: Colors.white,
-                  ),
                   child: Text(AppLocalizations.of(context).importPassOk),
                 ),
               ],

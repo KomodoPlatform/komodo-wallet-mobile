@@ -61,7 +61,6 @@ class _ContactEditState extends State<ContactEdit> {
         child: LockScreen(
           context: context,
           child: Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
             appBar: AppBar(
               title: Text(
                 widget.contact == null
@@ -94,8 +93,6 @@ class _ContactEditState extends State<ContactEdit> {
                               icon: Icon(
                                 Icons.account_circle,
                                 size: 16,
-                                color:
-                                    Theme.of(context).textTheme.bodyText1.color,
                               ),
                               color: Theme.of(context).primaryColor,
                               value: editContact.name,
@@ -136,22 +133,18 @@ class _ContactEditState extends State<ContactEdit> {
                       ),
                     ),
                   ),
-                  Container(
-                    color: Theme.of(context).primaryColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        TextButton(
-                          onPressed: _exitPage,
-                          child:
-                              Text(AppLocalizations.of(context).contactCancel),
-                        ),
-                        TextButton(
-                          onPressed: _saveContact,
-                          child: Text(AppLocalizations.of(context).contactSave),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      TextButton(
+                        onPressed: _exitPage,
+                        child: Text(AppLocalizations.of(context).contactCancel),
+                      ),
+                      TextButton(
+                        onPressed: _saveContact,
+                        child: Text(AppLocalizations.of(context).contactSave),
+                      ),
+                    ],
                   ),
                 ],
               ),

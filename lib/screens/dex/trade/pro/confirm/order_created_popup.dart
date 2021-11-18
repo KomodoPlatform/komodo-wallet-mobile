@@ -19,9 +19,6 @@ void showOrderCreatedDialog(BuildContext context) {
                     swapBloc.setIndexTabDex(1);
                     Navigator.of(context).pop();
                   },
-                  style: ElevatedButton.styleFrom(
-                    onPrimary: Colors.white,
-                  ),
                   child: Text(AppLocalizations.of(context).showMyOrders),
                 ),
                 const SizedBox(

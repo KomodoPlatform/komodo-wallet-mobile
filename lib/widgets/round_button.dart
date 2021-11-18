@@ -19,7 +19,6 @@ class RoundButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          primary: Theme.of(context).dialogBackgroundColor,
           elevation: 0,
           padding: const EdgeInsets.all(0),
           shape: RoundedRectangleBorder(
