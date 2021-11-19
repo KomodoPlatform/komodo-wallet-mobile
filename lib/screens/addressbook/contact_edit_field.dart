@@ -64,7 +64,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
         Expanded(
             child: Card(
                 margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
-                child: Container(
+                child: Padding(
                   padding: widget.padding ?? const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,7 +104,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                             ),
                           ),
                           if (widget.removable)
-                            Container(
+                            Padding(
                               padding: const EdgeInsets.only(left: 4, right: 4),
                               child: RoundButton(
                                   size: 24,

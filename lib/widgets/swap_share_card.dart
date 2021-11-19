@@ -160,6 +160,7 @@ class SwapShareCard extends StatelessWidget {
                           child: Table(
                             defaultVerticalAlignment:
                                 TableCellVerticalAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
                             columnWidths: const {
                               0: IntrinsicColumnWidth(),
                               1: IntrinsicColumnWidth(),
@@ -175,6 +176,7 @@ class SwapShareCard extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(width: 8),
+                                  SizedBox(),
                                 ],
                               ),
                               const TableRow(
