@@ -50,8 +50,6 @@ class _AddressBookState extends State<AddressBookPage> {
                 : AppLocalizations.of(context).contactTitle,
             key: const Key('addressbook-title'),
           ),
-          centerTitle: true,
-          elevation: 0,
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +93,7 @@ class _AddressBookState extends State<AddressBookPage> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
       child: isSearchOpen ? _buildSearchBar() : _buildToolBar(),
     );
   }
@@ -105,11 +103,6 @@ class _AddressBookState extends State<AddressBookPage> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Expanded(
-            child: Padding(
-          padding: const EdgeInsets.only(
-            left: 8,
-            right: 8,
-          ),
           child: TextField(
             autofocus: true,
             onChanged: (String value) {
@@ -118,8 +111,8 @@ class _AddressBookState extends State<AddressBookPage> {
               });
             },
           ),
-        )),
-        const SizedBox(width: 4),
+        ),
+        const SizedBox(width: 8),
         RoundButton(
           onPressed: () {
             setState(() {

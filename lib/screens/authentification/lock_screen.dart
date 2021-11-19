@@ -22,7 +22,6 @@ import 'package:local_auth/local_auth.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 /// Protective layer: MyApp | LockScreen | MyHomePage.
 /// Also handles the application startup.
@@ -147,9 +146,11 @@ class _LockScreenState extends State<LockScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Image.asset(settingsBloc.isLightTheme
-                  ? 'assets/branding/logo_app_light.png'
-                  : 'assets/branding/logo_app.png'),
+              Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                    ? 'assets/branding/logo_app_light.png'
+                    : 'assets/branding/logo_app.png',
+              ),
               const SizedBox(height: 12),
               Text(message,
                   style: TextStyle(

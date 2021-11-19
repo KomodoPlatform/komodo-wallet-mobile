@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/screens/authentification/new_account_page.dart';
 import 'package:komodo_dex/screens/settings/restore_seed_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -26,7 +25,6 @@ class _WelcomePageState extends State<WelcomePage> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
       ),
       body: ListView(
         key: const Key('welcome-scrollable'),
@@ -34,7 +32,7 @@ class _WelcomePageState extends State<WelcomePage> {
           const SizedBox(
             height: 16,
           ),
-          SvgPicture.asset(settingsBloc.isLightTheme
+          SvgPicture.asset(Theme.of(context).brightness == Brightness.light
               ? 'assets/svg_light/welcome_wallet.svg'
               : 'assets/svg/welcome_wallet.svg'),
           Center(
@@ -80,66 +78,58 @@ class _WelcomePageState extends State<WelcomePage> {
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: TextFormField(
-                key: const Key('name-wallet-field'),
-                maxLength: 40,
-                controller: controller,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (String str) {
-                  if (str.isEmpty) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      setState(() {
-                        isButtonLoginEnabled = false;
-                      });
-                    });
-                    return 'Wallet name must not be empty';
-                  }
-                  if (str.length > 40) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      setState(() {
-                        isButtonLoginEnabled = false;
-                      });
-                    });
-                    return 'Wallet name must have a max of 40 characters';
-                  }
-
-                  final allWallets = walletBloc.wallets;
-                  if (allWallets != null && allWallets.isNotEmpty) {
-                    final List<String> walletsNames =
-                        allWallets.map((w) => w.name).toList();
-                    if (walletsNames.contains(str)) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        setState(() {
-                          isButtonLoginEnabled = false;
-                        });
-                      });
-                      return 'Wallet name is already in use';
-                    }
-                  }
+              key: const Key('name-wallet-field'),
+              maxLength: 40,
+              controller: controller,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (String str) {
+                if (str.isEmpty) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     setState(() {
-                      isButtonLoginEnabled = true;
+                      isButtonLoginEnabled = false;
                     });
                   });
-                  return null;
-                },
-                onFieldSubmitted: (String data) {
-                  _newPage();
-                },
-                autocorrect: false,
-                enableInteractiveSelection: true,
-                style: Theme.of(context).textTheme.bodyText2,
-                decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColorLight)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.secondary)),
-                    hintStyle: Theme.of(context).textTheme.bodyText1,
-                    labelStyle: Theme.of(context).textTheme.bodyText2,
-                    hintText: AppLocalizations.of(context).hintNameYourWallet,
-                    labelText: null)),
+                  return 'Wallet name must not be empty';
+                }
+                if (str.length > 40) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    setState(() {
+                      isButtonLoginEnabled = false;
+                    });
+                  });
+                  return 'Wallet name must have a max of 40 characters';
+                }
+
+                final allWallets = walletBloc.wallets;
+                if (allWallets != null && allWallets.isNotEmpty) {
+                  final List<String> walletsNames =
+                      allWallets.map((w) => w.name).toList();
+                  if (walletsNames.contains(str)) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      setState(() {
+                        isButtonLoginEnabled = false;
+                      });
+                    });
+                    return 'Wallet name is already in use';
+                  }
+                }
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  setState(() {
+                    isButtonLoginEnabled = true;
+                  });
+                });
+                return null;
+              },
+              onFieldSubmitted: (String data) {
+                _newPage();
+              },
+              autocorrect: false,
+              enableInteractiveSelection: true,
+              style: Theme.of(context).textTheme.bodyText2,
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context).hintNameYourWallet,
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),

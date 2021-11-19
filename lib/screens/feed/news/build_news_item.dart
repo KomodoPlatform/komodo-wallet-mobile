@@ -60,7 +60,6 @@ class _BuildNewsItemState extends State<BuildNewsItem>
           children: <Widget>[
             _buildHeader(),
             Divider(
-              color: Theme.of(context).hintColor,
               height: 40,
             ),
             _buildContent(),

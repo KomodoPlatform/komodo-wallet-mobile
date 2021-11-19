@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
@@ -185,7 +184,8 @@ class _RewardsPageState extends State<RewardsPage> {
                               CexMarker(
                                 context,
                                 size: const Size.fromHeight(12),
-                                color: settingsBloc.isLightTheme
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
                                     ? cexColorLight
                                     : cexColor,
                               ),

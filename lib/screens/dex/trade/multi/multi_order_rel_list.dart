@@ -203,12 +203,6 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
                       maxLines: 1,
-                      decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary),
-                        ),
-                      ),
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(16),
                         DecimalTextInputFormatter(decimalRange: 8),

@@ -80,8 +80,7 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
       child: SizedBox(
         width: 60,
         child: Icon(_isObscured ? Icons.visibility_off : Icons.visibility,
-            color:
-                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
+            color: Theme.of(context).colorScheme.onSurface),
       ),
     );
   }

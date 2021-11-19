@@ -59,12 +59,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       context: context,
       child: Scaffold(
           appBar: AppBar(
-            titleSpacing: 6.0,
-            elevation: 0,
             title: SearchFieldFilterCoin(
-              clear: () {
-                _initCoinList();
-              },
+              clear: () => _initCoinList(),
               onFilterCoins: (List<Coin> coinsFiltered) {
                 setState(() {
                   _currentCoins = coinsFiltered;

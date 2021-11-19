@@ -720,17 +720,12 @@ void showUriDetailsDialog(
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                AppLocalizations.of(context).paymentUriDetailsAddressSpan + ':',
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
+              Text(AppLocalizations.of(context).paymentUriDetailsAddressSpan +
+                  ':'),
             ],
           ),
           SizedBox(height: 6),
-          Text(
-            address,
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
+          Text(address),
           SizedBox(height: 24),
           if (!isActivated) ...{
             Text(

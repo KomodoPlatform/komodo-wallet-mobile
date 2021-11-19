@@ -94,17 +94,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         maxLines: _isSeedHidden ? 1 : null,
         style: Theme.of(context).textTheme.bodyText2,
         decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          enabledBorder: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: Theme.of(context).primaryColorLight)),
-          focusedBorder: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: Theme.of(context).colorScheme.secondary)),
-          hintStyle: Theme.of(context).textTheme.bodyText1,
-          labelStyle: Theme.of(context).textTheme.bodyText2,
           hintText: AppLocalizations.of(context).exampleHintSeed,
-          labelText: null,
           suffixIcon: PasswordVisibilityControl(
             onVisibilityChange: (bool isObscured) {
               setState(() {
@@ -179,13 +169,6 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                 Text(AppLocalizations.of(context).customSeedWarning),
                 TextField(
                   autofocus: true,
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.secondary),
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.secondary)),
-                  ),
                   onChanged: (String text) {
                     setState(() {
                       enabled = text.trim().toLowerCase() ==

@@ -19,7 +19,7 @@ class FiltersButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color = activeFilters.anyActive
         ? Theme.of(context).colorScheme.secondary
-        : Theme.of(context).textTheme.bodyText1.color;
+        : null;
 
     return InkWell(
       onTap: onPressed,

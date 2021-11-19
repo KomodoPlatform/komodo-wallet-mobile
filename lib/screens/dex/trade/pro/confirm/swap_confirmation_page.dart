@@ -27,7 +27,6 @@ import 'package:komodo_dex/screens/dex/trade/pro/exchange_rate.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -247,7 +246,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                 top: 20,
               ),
               width: double.infinity,
-              color: settingsBloc.isLightTheme
+              color: Theme.of(context).brightness == Brightness.light
                   ? Colors.black.withOpacity(0.05)
                   : Colors.white.withOpacity(0.15),
               child: Column(
@@ -289,7 +288,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                       top: 26,
                     ),
                     width: double.infinity,
-                    color: settingsBloc.isLightTheme
+                    color: Theme.of(context).brightness == Brightness.light
                         ? Colors.black.withOpacity(0.05)
                         : Colors.white.withOpacity(0.15),
                     child: Column(
@@ -329,9 +328,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 4),
                         color: Theme.of(context).backgroundColor,
-                        child: SvgPicture.asset(settingsBloc.isLightTheme
-                            ? 'assets/svg_light/icon_swap.svg'
-                            : 'assets/svg/icon_swap.svg')),
+                        child: SvgPicture.asset(
+                            Theme.of(context).brightness == Brightness.light
+                                ? 'assets/svg_light/icon_swap.svg'
+                                : 'assets/svg/icon_swap.svg')),
                   ))
             ],
           ),
@@ -405,9 +405,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildWarning({String text, IconData iconData, Color color}) {
-    color ??= settingsBloc.isLightTheme
-        ? Colors.yellow[700].withAlpha(200)
-        : Colors.yellow[100].withAlpha(200);
+    color ??= (Theme.of(context).brightness == Brightness.light
+            ? Colors.yellow[700]
+            : Colors.yellow[100])
+        .withAlpha(200);
 
     return Container(
       width: double.infinity,

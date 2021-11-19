@@ -12,7 +12,6 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -213,10 +212,10 @@ class _PinPageState extends State<PinPage> {
               obscurePin: true,
               error: _error,
               errorDelayProgressColor:
-                  settingsBloc.isLightTheme ? Colors.black : Colors.white,
-              keyTextStyle: TextStyle(
-                  color: Theme.of(context).textTheme.headline6.color,
-                  fontSize: Theme.of(context).textTheme.headline6.fontSize),
+                  Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
+              keyTextStyle: Theme.of(context).textTheme.headline6,
               errorDelaySeconds:
                   widget.pinStatus == PinStatus.NORMAL_PIN ? 5 : null,
               codeLength: 6,
@@ -341,13 +340,13 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
       case PinStatus.CREATE_CAMO_PIN:
       case PinStatus.CONFIRM_CAMO_PIN:
         return AppBar(
-          centerTitle: true,
           title: Text(title),
         );
         break;
       default:
         return AppBar(
-          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.onSurface,
           automaticallyImplyLeading: pinStatus != PinStatus.NORMAL_PIN,
           actions: <Widget>[
             IconButton(
@@ -360,7 +359,6 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
             ),
           ],
           title: Text(title),
-          elevation: 0,
         );
     }
   }

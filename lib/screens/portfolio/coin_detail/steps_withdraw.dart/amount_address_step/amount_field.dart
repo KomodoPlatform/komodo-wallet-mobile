@@ -60,19 +60,17 @@ class _AmountFieldState extends State<AmountField> {
               children: <Widget>[
                 SizedBox(
                   height: 60,
-                  child: ButtonTheme(
-                    minWidth: 50,
-                    child: TextButton(
-                      onPressed: widget.onMaxValue,
-                      style: TextButton.styleFrom(
-                        primary: Theme.of(context).colorScheme.secondary,
-                        padding: const EdgeInsets.only(left: 6, right: 6),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
+                  child: TextButton(
+                    onPressed: widget.onMaxValue,
+                    style: TextButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                      primary: Theme.of(context).colorScheme.secondary,
+                      padding: const EdgeInsets.only(left: 6, right: 6),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0),
                       ),
-                      child: Text(AppLocalizations.of(context).max),
                     ),
+                    child: Text(AppLocalizations.of(context).max),
                   ),
                 ),
                 const SizedBox(
@@ -113,19 +111,8 @@ class _AmountFieldState extends State<AmountField> {
                             coinsDetailBloc.setAmountToSend(amount);
                           },
                           decoration: InputDecoration(
-                              border: const OutlineInputBorder(),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColorLight),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary)),
-                              hintStyle: Theme.of(context).textTheme.bodyText2,
-                              labelStyle: Theme.of(context).textTheme.bodyText2,
-                              labelText: AppLocalizations.of(context).amount),
+                            labelText: AppLocalizations.of(context).amount,
+                          ),
                           // The validator receives the text the user has typed in
                           validator: (String value) {
                             if (value.isEmpty && coinsDetailBloc.isCancel) {

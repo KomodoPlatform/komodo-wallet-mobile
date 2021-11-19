@@ -8,7 +8,6 @@ import 'package:komodo_dex/screens/authentification/show_delete_wallet_confirmat
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/select_language_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -132,7 +131,8 @@ class _BuildScreenAuthMultiWalletsState
                   child: SizedBox(
                       height: 200,
                       width: 200,
-                      child: Image.asset(settingsBloc.isLightTheme
+                      child: Image.asset(Theme.of(context).brightness ==
+                              Brightness.light
                           ? 'assets/branding/mark_and_text_vertical_dark.png'
                           : 'assets/branding/mark_and_text_vertical_light.png')),
                 ),
@@ -207,9 +207,6 @@ class _BuildScreenAuthMultiWalletsState
                             color: Theme.of(context).colorScheme.onSurface),
                       ),
                     ),
-                    backgroundColor: settingsBloc.isLightTheme
-                        ? Colors.black.withOpacity(0.3)
-                        : Colors.white.withOpacity(0.6),
                   ),
                 ),
                 const SizedBox(
@@ -225,11 +222,9 @@ class _BuildScreenAuthMultiWalletsState
               ],
             ),
             decoration: BoxDecoration(
-                border: Border.all(
-                    color: settingsBloc.isLightTheme
-                        ? Colors.black.withOpacity(0.3)
-                        : Colors.white.withOpacity(0.6)),
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(8),
+                ),
                 color: Colors.transparent)),
       ),
     );
@@ -238,9 +233,6 @@ class _BuildScreenAuthMultiWalletsState
   Widget _buildDeleteButton(Wallet wallet) {
     return IconButton(
       padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
-      color: settingsBloc.isLightTheme
-          ? Colors.black.withOpacity(0.3)
-          : Colors.white.withOpacity(0.6),
       icon: Icon(
         Icons.delete_outline,
         size: 24,
@@ -297,7 +289,8 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
                       SizedBox(
                           height: 240,
                           width: 240,
-                          child: Image.asset(settingsBloc.isLightTheme
+                          child: Image.asset(Theme.of(context).brightness ==
+                                  Brightness.light
                               ? 'assets/branding/mark_and_text_vertical_dark.png'
                               : 'assets/branding/mark_and_text_vertical_light.png')),
                     ],
@@ -350,7 +343,7 @@ class _CreateWalletButtonState extends State<CreateWalletButton> {
     return BoxButton(
       key: const Key('createWalletButton'),
       text: AppLocalizations.of(context).createAWallet,
-      assetPath: settingsBloc.isLightTheme
+      assetPath: Theme.of(context).brightness == Brightness.light
           ? 'assets/svg_light/create_wallet.svg'
           : 'assets/svg/create_wallet.svg',
       onPressed: () {
@@ -377,7 +370,7 @@ class _RestoreButtonState extends State<RestoreButton> {
     return BoxButton(
       key: const Key('restoreWallet'),
       text: AppLocalizations.of(context).restoreWallet,
-      assetPath: settingsBloc.isLightTheme
+      assetPath: Theme.of(context).brightness == Brightness.light
           ? 'assets/svg_light/lock_off.svg'
           : 'assets/svg/lock_off.svg',
       onPressed: () {

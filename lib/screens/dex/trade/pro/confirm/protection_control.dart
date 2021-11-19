@@ -325,25 +325,19 @@ class _ProtectionControlState extends State<ProtectionControl> {
   }
 
   Widget _buildSlider() {
-    return SliderTheme(
-      data: SliderTheme.of(context).copyWith(
-        valueIndicatorTextStyle:
-            TextStyle(color: Theme.of(context).backgroundColor),
-      ),
-      child: Slider(
-          activeColor: Theme.of(context).colorScheme.secondary,
-          divisions: maxConfs - minConfs,
-          label: confs.toString(),
-          min: minConfs.toDouble(),
-          max: maxConfs.toDouble(),
-          value: confs.toDouble(),
-          onChanged: (double value) {
-            setState(() {
-              confs = value.round();
-            });
-            _onChange();
-          }),
-    );
+    return Slider(
+        activeColor: Theme.of(context).colorScheme.secondary,
+        divisions: maxConfs - minConfs,
+        label: confs.toString(),
+        min: minConfs.toDouble(),
+        max: maxConfs.toDouble(),
+        value: confs.toDouble(),
+        onChanged: (double value) {
+          setState(() {
+            confs = value.round();
+          });
+          _onChange();
+        });
   }
 
   void _onChange() {

@@ -53,18 +53,11 @@ class _AddressFieldState extends State<AddressField> {
             children: <Widget>[
               SizedBox(
                 height: 60,
-                child: ButtonTheme(
-                  minWidth: 50,
-                  child: IconButton(
-                    padding: EdgeInsets.only(left: 6, right: 6),
-                    onPressed: widget.onScan,
-                    color: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        .color
-                        .withOpacity(0.45),
-                    icon: Icon(Icons.add_a_photo),
-                  ),
+                child: IconButton(
+                  padding: EdgeInsets.all(0),
+                  visualDensity: VisualDensity.compact,
+                  onPressed: widget.onScan,
+                  icon: Icon(Icons.add_a_photo),
                 ),
               ),
               const SizedBox(
@@ -85,15 +78,6 @@ class _AddressFieldState extends State<AddressField> {
                   style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColorLight)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.secondary)),
-                    hintStyle: Theme.of(context).textTheme.bodyText2,
-                    labelStyle: Theme.of(context).textTheme.bodyText2,
                     labelText: AppLocalizations.of(context).addressSend,
                     suffixIcon: InkWell(
                       onTap: () {

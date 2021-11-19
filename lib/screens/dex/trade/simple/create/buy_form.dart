@@ -62,29 +62,20 @@ class _BuyFormState extends State<BuyForm> {
     return Stack(
       children: [
         TextFormField(
-            controller: _amtCtrl,
-            focusNode: _focusNode,
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: <TextInputFormatter>[
-              DecimalTextInputFormatter(
-                  decimalRange: appConfig.tradeFormPrecision),
-              FilteringTextInputFormatter.allow(RegExp(
-                  '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
-            ],
-            style: TextStyle(height: 1),
-            decoration: InputDecoration(
-              isDense: true,
-              contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 22),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
-                  borderSide: BorderSide(
-                      color: Theme.of(context).highlightColor, width: 1)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                width: 1,
-                color: Theme.of(context).colorScheme.secondary,
-              )),
-            )),
+          controller: _amtCtrl,
+          focusNode: _focusNode,
+          keyboardType: TextInputType.numberWithOptions(decimal: true),
+          inputFormatters: <TextInputFormatter>[
+            DecimalTextInputFormatter(
+                decimalRange: appConfig.tradeFormPrecision),
+            FilteringTextInputFormatter.allow(RegExp(
+                '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
+          ],
+          style: TextStyle(height: 1),
+          decoration: InputDecoration(
+            isDense: true,
+          ),
+        ),
         Positioned(
           right: 4,
           bottom: 2,

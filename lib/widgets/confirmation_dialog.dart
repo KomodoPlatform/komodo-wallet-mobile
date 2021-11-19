@@ -21,7 +21,7 @@ void showConfirmationDialog({
             children: <Widget>[
               Icon(
                 icon,
-                color: iconColor ?? Theme.of(context).textTheme.bodyText2.color,
+                color: iconColor ?? Theme.of(context).colorScheme.onSurface,
               ),
               const SizedBox(width: 12),
               Text(title),

@@ -49,15 +49,9 @@ class _SellAmountFieldState extends State<SellAmountField> {
       style: Theme.of(context).textTheme.subtitle2,
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-          focusedBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).colorScheme.secondary),
-          ),
-          hintStyle: Theme.of(context)
-              .textTheme
-              .bodyText1
-              .copyWith(fontWeight: FontWeight.w200),
-          hintText: AppLocalizations.of(context).amountToSell),
+        border: UnderlineInputBorder(),
+        hintText: AppLocalizations.of(context).amountToSell,
+      ),
     );
   }
 

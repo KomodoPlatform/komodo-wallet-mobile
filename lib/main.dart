@@ -208,7 +208,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       stream: settingsBloc.outLightTheme,
                       initialData: settingsBloc.isLightTheme,
                       builder: (BuildContext cont,
-                          AsyncSnapshot<dynamic> currentTheme) {
+                          AsyncSnapshot<bool> currentTheme) {
                         return MaterialApp(
                             title: appConfig.appName,
                             localizationsDelegates: const <
@@ -224,7 +224,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                                     ? Locale(prefLocale.data)
                                     : null,
                             supportedLocales: mainBloc.supportedLocales,
-                            theme: settingsBloc.isLightTheme
+                            theme: currentTheme.data
                                 ? getThemeLight()
                                 : getThemeDark(),
                             initialRoute: '/',
@@ -323,15 +323,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             ),
             child: Material(
               elevation: 8.0,
-              child: Theme(
-                data: Theme.of(context)
-                    .copyWith(textTheme: Theme.of(context).textTheme),
-                child: Container(
-                  color: Theme.of(context).primaryColor,
-                  child: SafeArea(
-                    child: networkStatusStreamBuilder(
-                      snapshot.data,
-                    ),
+              child: Container(
+                color: Theme.of(context).primaryColor,
+                child: SafeArea(
+                  child: networkStatusStreamBuilder(
+                    snapshot.data,
                   ),
                 ),
               ),
@@ -490,7 +486,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                 ),
               ),
             BottomNavigationBar(
-              elevation: 0,
               type: BottomNavigationBarType.fixed,
               onTap: onTabTapped,
               currentIndex: indexTab,

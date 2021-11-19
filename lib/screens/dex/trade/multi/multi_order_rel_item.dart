@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
@@ -45,19 +44,24 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
     return Container(
       color: widget.color,
       padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              _buildTitle(),
-              Expanded(child: _buildAmount()),
-              _buildSwitch(),
-            ],
-          ),
-          _buildFees(),
-          _buildError(),
-        ],
+      child: SwitchListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                _buildTitle(),
+                Expanded(child: _buildAmount()),
+              ],
+            ),
+            _buildFees(),
+            _buildError(),
+          ],
+        ),
+        value: _multiOrderProvider.isRelCoinSelected(widget.item.coin.abbr) ??
+            false,
+        onChanged: widget.onSelectChange,
       ),
     );
   }
@@ -126,7 +130,6 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
         child: Container(
           padding: const EdgeInsets.fromLTRB(16, 6, 12, 0),
           child: Column(
-            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -137,19 +140,14 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                     backgroundImage: AssetImage(
                         'assets/coin-icons/${widget.item.coin.abbr.toLowerCase()}.png'),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 8),
                   Text(
                     widget.item.coin.abbr,
                     maxLines: 1,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                    ),
                   ),
                 ],
               ),
-              Container(
-                  padding: EdgeInsets.only(left: 2), child: _buildPrice()),
+              Container(child: _buildPrice()),
               // _buildFee(item),
             ],
           ),
@@ -203,7 +201,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                 '≈0.00%',
                 style: TextStyle(
                   fontSize: 10,
-                  color: settingsBloc.isLightTheme
+                  color: Theme.of(context).brightness == Brightness.light
                       ? cexColorLight.withAlpha(150)
                       : cexColor.withAlpha(150),
                 ),
@@ -257,13 +255,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                   const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 isDense: true,
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: settingsBloc.isLightTheme
-                          ? getThemeLight().colorScheme.secondary
-                          : getThemeDark().colorScheme.secondary),
-                ),
-                contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                border: UnderlineInputBorder(),
               ),
               maxLines: 1,
               inputFormatters: <TextInputFormatter>[
@@ -281,7 +273,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
               convertedAmt,
               textAlign: TextAlign.right,
               style: TextStyle(
-                color: settingsBloc.isLightTheme
+                color: Theme.of(context).brightness == Brightness.light
                     ? cexColorLight.withAlpha(150)
                     : cexColor.withAlpha(150),
                 fontSize: 10,
@@ -291,11 +283,5 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
         ],
       ),
     );
-  }
-
-  Widget _buildSwitch() {
-    return Switch(
-        value: _multiOrderProvider.isRelCoinSelected(widget.item.coin.abbr),
-        onChanged: widget.onSelectChange);
   }
 }

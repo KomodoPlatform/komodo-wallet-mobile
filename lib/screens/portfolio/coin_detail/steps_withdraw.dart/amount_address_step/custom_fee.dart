@@ -110,16 +110,8 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                   style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColorLight)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary)),
-                      hintStyle: Theme.of(context).textTheme.bodyText2,
-                      labelStyle: Theme.of(context).textTheme.bodyText2,
-                      labelText: AppLocalizations.of(context).gasLimit),
+                    labelText: AppLocalizations.of(context).gasLimit,
+                  ),
                   validator: (String value) {
                     if (widget.isCustomFeeActive) {
                       value = value.replaceAll(',', '.');
@@ -154,16 +146,8 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
             style: Theme.of(context).textTheme.bodyText2,
             textAlign: TextAlign.end,
             decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).primaryColorLight)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.secondary)),
-                hintStyle: Theme.of(context).textTheme.bodyText2,
-                labelStyle: Theme.of(context).textTheme.bodyText2,
-                labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]'),
+              labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]',
+            ),
             validator: (String value) {
               if (widget.isCustomFeeActive) {
                 value = value.replaceAll(',', '.');
@@ -215,19 +199,9 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
               style: Theme.of(context).textTheme.bodyText2,
               textAlign: TextAlign.end,
               decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColorLight)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.secondary)),
-                  hintStyle: Theme.of(context).textTheme.bodyText2,
-                  labelStyle: Theme.of(context).textTheme.bodyText2,
-                  labelText: AppLocalizations.of(context).customFee +
-                      ' [' +
-                      widget.coin.abbr +
-                      ']'),
+                labelText: AppLocalizations.of(context).customFee +
+                    '[${widget.coin.abbr}]',
+              ),
               // The validator receives the text the user has typed in
               validator: (String value) {
                 if (widget.isCustomFeeActive) {

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -367,7 +366,7 @@ class _CoinSelectState extends State<CoinSelect> {
             height: 10,
             color:
                 (obDepth.depth.asks ?? 0) > 0 && (obDepth.depth.bids ?? 0) > 0
-                    ? settingsBloc.isLightTheme
+                    ? Theme.of(context).brightness == Brightness.light
                         ? cexColorLight.withAlpha(100)
                         : cexColor.withAlpha(100)
                     : Theme.of(context).highlightColor,
@@ -402,7 +401,7 @@ class _CoinSelectState extends State<CoinSelect> {
         children: <Widget>[
           CandlesIcon(
             size: 14,
-            color: settingsBloc.isLightTheme
+            color: Theme.of(context).brightness == Brightness.light
                 ? cexColorLight.withAlpha(50)
                 : cexColor.withAlpha(50),
           ),

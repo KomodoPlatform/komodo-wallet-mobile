@@ -4,7 +4,6 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
@@ -42,28 +41,24 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
       onWillPop: () async => !widget.isCreatedPin,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: widget.isCreatedPin
-            ? AppBar(
-                leading: IconButton(
-                    key: Key('settings-pin-logout'),
-                    onPressed: () async {
-                      await Db.deleteWallet(widget.wallet);
-                      await authBloc.logout();
-                      Navigator.pop(context);
-                    },
-                    color: Theme.of(context).errorColor,
-                    icon: const Icon(
-                      Icons.exit_to_app,
-                    )),
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                foregroundColor: Theme.of(context).colorScheme.onBackground,
-              )
-            : AppBar(
-                backgroundColor: Colors.transparent,
-                foregroundColor: Theme.of(context).colorScheme.onBackground,
-                elevation: 0,
-              ),
+        appBar: AppBar(
+          leading: widget.isCreatedPin
+              ? IconButton(
+                  key: Key('settings-pin-logout'),
+                  onPressed: () async {
+                    await Db.deleteWallet(widget.wallet);
+                    await authBloc.logout();
+                    Navigator.pop(context);
+                  },
+                  color: Theme.of(context).errorColor,
+                  icon: const Icon(
+                    Icons.exit_to_app,
+                  ),
+                )
+              : null,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
+        ),
         body: ListView(
           key: const Key('unlock-wallet-scrollable'),
           children: <Widget>[
@@ -75,7 +70,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: SvgPicture.asset(
-                        settingsBloc.isLightTheme
+                        Theme.of(context).brightness == Brightness.light
                             ? 'assets/svg_light/lock.svg'
                             : 'assets/svg/lock.svg',
                         semanticsLabel: 'Lock'),
@@ -137,17 +132,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                     ),
                     style: Theme.of(context).textTheme.bodyText2,
                     decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColorLight)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary)),
-                      hintStyle: Theme.of(context).textTheme.bodyText1,
-                      labelStyle: Theme.of(context).textTheme.bodyText2,
                       hintText: AppLocalizations.of(context).hintEnterPassword,
-                      labelText: null,
                       suffixIcon: PasswordVisibilityControl(
                         isFocused: false,
                         onVisibilityChange: (bool isPasswordObscured) {

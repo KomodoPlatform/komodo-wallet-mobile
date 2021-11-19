@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -151,7 +150,9 @@ class _EvaluationState extends State<Evaluation> {
           '${cutTrailingZeros(formatPrice(_cexRate))} $_buyAbbr',
           style: TextStyle(
             fontSize: 12,
-            color: settingsBloc.isLightTheme ? cexColorLight : cexColor,
+            color: Theme.of(context).brightness == Brightness.light
+                ? cexColorLight
+                : cexColor,
           ),
         )
       ],

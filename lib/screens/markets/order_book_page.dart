@@ -6,7 +6,6 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
@@ -165,7 +164,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
           },
           style: TextButton.styleFrom(
             primary: !_showChart
-                ? settingsBloc.isLightTheme
+                ? Theme.of(context).brightness == Brightness.light
                     ? cexColorLight
                     : cexColor.withOpacity(0.8)
                 : Theme.of(context).colorScheme.secondary,
@@ -181,7 +180,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
           },
           style: TextButton.styleFrom(
             primary: _showChart
-                ? settingsBloc.isLightTheme
+                ? Theme.of(context).brightness == Brightness.light
                     ? cexColorLight
                     : cexColor.withOpacity(0.8)
                 : Theme.of(context).colorScheme.secondary,
@@ -227,18 +226,15 @@ class _OrderBookPageState extends State<OrderBookPage> {
               });
             });
 
-            return StreamBuilder<Object>(
-                initialData: settingsBloc.isLightTheme,
-                stream: settingsBloc.outLightTheme,
-                builder: (context, light) {
-                  return CandleChart(
-                      data: snapshot.data.data[_chartDuration],
-                      duration: int.parse(_chartDuration),
-                      textColor: light.data ? Colors.black : Colors.white,
-                      gridColor: light.data
-                          ? Colors.black.withOpacity(.2)
-                          : Colors.white.withOpacity(.4));
-                });
+            return CandleChart(
+                data: snapshot.data.data[_chartDuration],
+                duration: int.parse(_chartDuration),
+                textColor: Theme.of(context).brightness == Brightness.light
+                    ? Colors.black
+                    : Colors.white,
+                gridColor: Theme.of(context).brightness == Brightness.light
+                    ? Colors.black.withOpacity(.2)
+                    : Colors.white.withOpacity(.4));
           },
         ),
       ),

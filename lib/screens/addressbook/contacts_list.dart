@@ -146,7 +146,6 @@ class _ContactsListState extends State<ContactsList> {
           Divider(
             indent: 10,
             endIndent: 10,
-            height: 1,
           ),
         );
       }

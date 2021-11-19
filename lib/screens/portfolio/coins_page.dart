@@ -118,8 +118,9 @@ class _CoinsPageState extends State<CoinsPage> {
                                                     .switchCurrency(),
                                                 style: TextButton.styleFrom(
                                                   primary: _heightFactor < 1.3
-                                                      ? settingsBloc
-                                                              .isLightTheme
+                                                      ? Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness.light
                                                           ? Colors.black
                                                               .withOpacity(0.8)
                                                           : Colors.white
@@ -390,7 +391,7 @@ class ListCoinsState extends State<ListCoins> {
                       );
                     }
                   },
-                  separatorBuilder: (context, _) => Divider(height: 0),
+                  separatorBuilder: (context, _) => Divider(),
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();

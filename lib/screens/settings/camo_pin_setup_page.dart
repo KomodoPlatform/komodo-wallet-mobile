@@ -100,25 +100,18 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                           ],
                         ),
                       ),
-                      SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          valueIndicatorTextStyle: TextStyle(
-                              color: Theme.of(context).backgroundColor),
-                        ),
-                        child: Slider(
-                            activeColor:
-                                Theme.of(context).colorScheme.secondary,
-                            divisions: 50,
-                            label: camoFraction.data.toString(),
-                            min: 1,
-                            max: 50,
-                            value: camoFraction.data.toDouble(),
-                            onChanged: camoEnabled.data
-                                ? (double value) {
-                                    camoBloc.camoFraction = value.round();
-                                  }
-                                : null),
-                      ),
+                      Slider(
+                          activeColor: Theme.of(context).colorScheme.secondary,
+                          divisions: 50,
+                          label: camoFraction.data.toString(),
+                          min: 1,
+                          max: 50,
+                          value: camoFraction.data.toDouble(),
+                          onChanged: camoEnabled.data
+                              ? (double value) {
+                                  camoBloc.camoFraction = value.round();
+                                }
+                              : null),
                     ],
                   ),
                 ),

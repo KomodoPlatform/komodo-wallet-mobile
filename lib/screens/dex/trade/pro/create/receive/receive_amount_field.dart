@@ -34,29 +34,23 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        key: Key('input-text-buy'),
-        scrollPadding: const EdgeInsets.only(left: 35),
-        onChanged: tradeForm.onReceiveAmountFieldChange,
-        inputFormatters: <TextInputFormatter>[
-          DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),
-          FilteringTextInputFormatter.allow(RegExp(
-              '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
-        ],
-        controller: _ctrl,
-        enabled: swapBloc.enabledReceiveField,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        style: Theme.of(context).textTheme.subtitle2,
-        textInputAction: TextInputAction.done,
-        decoration: InputDecoration(
-          focusedBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).colorScheme.secondary),
-          ),
-          hintStyle: Theme.of(context)
-              .textTheme
-              .bodyText1
-              .copyWith(fontSize: 16, fontWeight: FontWeight.w400),
-        ));
+      key: Key('input-text-buy'),
+      scrollPadding: const EdgeInsets.only(left: 35),
+      onChanged: tradeForm.onReceiveAmountFieldChange,
+      inputFormatters: <TextInputFormatter>[
+        DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),
+        FilteringTextInputFormatter.allow(RegExp(
+            '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
+      ],
+      controller: _ctrl,
+      enabled: swapBloc.enabledReceiveField,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      style: Theme.of(context).textTheme.subtitle2,
+      decoration: InputDecoration(
+        border: UnderlineInputBorder(),
+      ),
+      textInputAction: TextInputAction.done,
+    );
   }
 
   void _onDataChange(Rational value) {

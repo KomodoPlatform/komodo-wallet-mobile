@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_bids_chart.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_bids_table.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_orderbooks.dart';
@@ -212,7 +211,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
           formatPrice(cexRate),
           style: TextStyle(
               fontSize: 14,
-              color: settingsBloc.isLightTheme
+              color: Theme.of(context).brightness == Brightness.light
                   ? cexColorLight.withAlpha(150)
                   : cexColor.withAlpha(150),
               fontWeight: FontWeight.w400),

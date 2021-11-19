@@ -50,18 +50,8 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
               controller: searchTextController,
               onChanged: (_) => setState(() {}),
               decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Theme.of(context).textTheme.bodyText2.color,
-                ),
+                prefixIcon: Icon(Icons.search),
                 hintText: 'Search for Ticker',
-                hintStyle: TextStyle(
-                    color: Theme.of(context).hintColor.withAlpha(180)),
-                counterText: '',
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
               ),
               maxLength: 16,
             ),

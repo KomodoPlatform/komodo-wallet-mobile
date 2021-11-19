@@ -94,10 +94,6 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
                           TextInputType.numberWithOptions(decimal: true),
                       decoration: InputDecoration(
                         isDense: true,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary),
-                        ),
                       ),
                       maxLines: 1,
                       inputFormatters: <TextInputFormatter>[

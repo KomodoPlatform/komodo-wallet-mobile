@@ -149,11 +149,6 @@ class _DetailSwapState extends State<DetailSwap> {
                       ? TextField(
                           decoration: InputDecoration(
                             isDense: true,
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary),
-                            ),
                           ),
                           controller: noteTextController,
                           maxLength: 200,

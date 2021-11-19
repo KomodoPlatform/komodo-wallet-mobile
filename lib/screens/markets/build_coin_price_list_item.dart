@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -11,7 +9,6 @@ import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
 import 'package:komodo_dex/widgets/candles_icon.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/duration_select.dart';
-import 'package:komodo_dex/widgets/small_button.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
@@ -124,7 +121,9 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                             .textTheme
                                             .subtitle2
                                             .copyWith(
-                                                color: settingsBloc.isLightTheme
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.light
                                                     ? cexColorLight
                                                     : cexColor,
                                                 fontSize: 14,
@@ -136,7 +135,8 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                   child: _hasNonzeroPrice && _hasChartData
                                       ? CandlesIcon(
                                           size: 14,
-                                          color: settingsBloc.isLightTheme
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.light
                                               ? cexColorLight
                                               : cexColor.withOpacity(0.8),
                                         )
@@ -207,9 +207,10 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                       '(based on ${widget.coinBalance.coin.abbr}/$mediateBase)',
                       style: TextStyle(
                           fontSize: 12,
-                          color: settingsBloc.isLightTheme
-                              ? cexColorLight
-                              : cexColor),
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? cexColorLight
+                                  : cexColor),
                     )
                   ];
                 }
@@ -236,7 +237,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                           ),
                           ..._buildDisclaimer(),
                           Expanded(child: SizedBox()),
-                          SmallButton(
+                          ElevatedButton(
                               onPressed: snapshot.hasData
                                   ? () {
                                       setState(() {
@@ -244,6 +245,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                       });
                                     }
                                   : null,
+                              style: elevatedButtonSmallButtonStyle(),
                               child: Text(
                                 quotedChart
                                     ? '$_currency/${widget.coinBalance.coin.abbr}'
@@ -256,21 +258,18 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                     SizedBox(
                         height: chartHeight,
                         child: snapshot.hasData
-                            ? StreamBuilder<Object>(
-                                initialData: settingsBloc.isLightTheme,
-                                stream: settingsBloc.outLightTheme,
-                                builder: (context, light) {
-                                  return CandleChart(
-                                      data: candles,
-                                      duration: int.parse(chartDuration),
-                                      quoted: quotedChart,
-                                      textColor: light.data
-                                          ? Colors.black
-                                          : Colors.white,
-                                      gridColor: light.data
-                                          ? Colors.black.withOpacity(.2)
-                                          : Colors.white.withOpacity(.4));
-                                })
+                            ? CandleChart(
+                                data: candles,
+                                duration: int.parse(chartDuration),
+                                quoted: quotedChart,
+                                textColor: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
+                                gridColor: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black.withOpacity(.2)
+                                    : Colors.white.withOpacity(.4))
                             : snapshot.hasError
                                 ? Center(
                                     child: Text(AppLocalizations.of(context)

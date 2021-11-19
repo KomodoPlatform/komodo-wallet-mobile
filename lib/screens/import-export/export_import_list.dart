@@ -107,9 +107,7 @@ class _ExportImportListState extends State<ExportImportList> {
           ),
         ),
       );
-      list.add(Divider(
-        color: Colors.grey,
-      ));
+      list.add(Divider());
     }
 
     return Container(

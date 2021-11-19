@@ -100,10 +100,6 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
         SizedBox(height: 4),
         TextField(
           controller: mergedValueController,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(12),
-            border: OutlineInputBorder(),
-          ),
         ),
         SizedBox(height: 12),
       ],

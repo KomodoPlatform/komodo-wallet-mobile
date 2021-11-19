@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -204,7 +203,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   color: Theme.of(context).backgroundColor,
                 ),
                 child: SvgPicture.asset(
-                  settingsBloc.isLightTheme
+                  Theme.of(context).brightness == Brightness.light
                       ? 'assets/svg_light/icon_swap.svg'
                       : 'assets/svg/icon_swap.svg',
                   height: 40,

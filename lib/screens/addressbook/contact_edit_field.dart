@@ -78,10 +78,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                                 const SizedBox(width: 4),
                               ],
                             ),
-                          Text(
-                            '${widget.label}:',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
+                          Text('${widget.label}:'),
                         ],
                       ),
                       const SizedBox(height: 16),
@@ -104,16 +101,6 @@ class _ContactEditFieldState extends State<ContactEditField> {
                               },
                               autocorrect: false,
                               enableInteractiveSelection: true,
-                              style: Theme.of(context).textTheme.bodyText2,
-                              decoration: InputDecoration(
-                                filled: true,
-                                border: const OutlineInputBorder(),
-                                hintStyle:
-                                    Theme.of(context).textTheme.bodyText1,
-                                labelStyle:
-                                    Theme.of(context).textTheme.bodyText2,
-                                labelText: null,
-                              ),
                             ),
                           ),
                           if (widget.removable)

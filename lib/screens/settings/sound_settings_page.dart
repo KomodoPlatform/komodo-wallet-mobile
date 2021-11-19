@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -23,11 +22,7 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalizations.of(context).soundSettingsTitle.toUpperCase(),
-            textAlign: TextAlign.center,
-          ),
-          centerTitle: true,
-          elevation: 0,
+              AppLocalizations.of(context).soundSettingsTitle.toUpperCase()),
         ),
         body: Column(
           children: [
@@ -43,17 +38,10 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
                         .withOpacity(0.7),
                   )),
             ),
-            CustomTile(
-              child: ListTile(
-                title: Text(
-                  AppLocalizations.of(context).soundOption,
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      fontWeight: FontWeight.w300,
-                      color: Theme.of(context).textTheme.bodyText2.color),
-                ),
-                trailing:
-                    const SoundVolumeButton(key: Key('settings-sound-button')),
-              ),
+            ListTile(
+              title: Text(AppLocalizations.of(context).soundOption),
+              trailing:
+                  const SoundVolumeButton(key: Key('settings-sound-button')),
             ),
             const SizedBox(
               height: 1,
@@ -173,21 +161,20 @@ class SoundPicker extends StatelessWidget {
   final String name, description;
   @override
   Widget build(BuildContext context) {
-    return CustomTile(
-        child: Tooltip(
-            message: AppLocalizations.of(context).soundPlayedWhen(description),
-            child: ListTile(
-              title: Text(
-                name,
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .color
-                        .withOpacity(0.7)),
-              ),
-              trailing: FilePickerButton(musicMode, description),
-            )));
+    return Tooltip(
+        message: AppLocalizations.of(context).soundPlayedWhen(description),
+        child: ListTile(
+          title: Text(
+            name,
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                fontWeight: FontWeight.w300,
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .color
+                    .withOpacity(0.7)),
+          ),
+          trailing: FilePickerButton(musicMode, description),
+        ));
   }
 }

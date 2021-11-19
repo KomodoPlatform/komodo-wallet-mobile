@@ -67,7 +67,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
       ),
       body: Form(
         key: _formKey,
@@ -115,17 +114,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
               style: Theme.of(context).textTheme.bodyText2,
               decoration: InputDecoration(
                 errorMaxLines: 6,
-                errorStyle: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 12, color: Theme.of(context).errorColor),
-                border: const OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).primaryColorLight)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.secondary)),
-                hintStyle: Theme.of(context).textTheme.bodyText1,
-                labelStyle: Theme.of(context).textTheme.bodyText2,
                 hintText: AppLocalizations.of(context).hintPassword,
                 labelText: null,
                 suffixIcon: PasswordVisibilityControl(
@@ -161,17 +149,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 },
                 style: Theme.of(context).textTheme.bodyText2,
                 decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColorLight)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.secondary)),
-                  hintStyle: Theme.of(context).textTheme.bodyText1,
-                  labelStyle: Theme.of(context).textTheme.bodyText2,
                   hintText: AppLocalizations.of(context).hintConfirmPassword,
-                  labelText: null,
                 ),
               );
             }),

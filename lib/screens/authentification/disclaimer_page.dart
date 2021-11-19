@@ -343,13 +343,9 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).disclaimerAndTos,
-            style: Theme.of(context).textTheme.headline6,
-          ),
+          title: Text(AppLocalizations.of(context).disclaimerAndTos),
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.onBackground,
-          elevation: 0,
         ),
         body: SafeArea(
           // On small screens and in split-screen mode

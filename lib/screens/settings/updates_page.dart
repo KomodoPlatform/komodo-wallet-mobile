@@ -6,7 +6,6 @@ import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class UpdatesPage extends StatefulWidget {
   const UpdatesPage({this.refresh = false, this.onSkip});
@@ -57,9 +56,10 @@ class _UpdatesPageState extends State<UpdatesPage> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Image.asset(settingsBloc.isLightTheme
-                            ? 'assets/branding/logo_app_light.png'
-                            : 'assets/branding/logo_app.png'),
+                        Image.asset(
+                            Theme.of(context).brightness == Brightness.light
+                                ? 'assets/branding/logo_app_light.png'
+                                : 'assets/branding/logo_app.png'),
                         const SizedBox(height: 12),
                         Text(AppLocalizations.of(context).updatesCurrentVersion(
                             updatesProvider.currentVersion)),
@@ -103,7 +103,6 @@ class _UpdatesPageState extends State<UpdatesPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Divider(
-                        color: Theme.of(context).hintColor,
                         height: 60,
                       ),
                       Text(updatesProvider.message),
@@ -127,7 +126,6 @@ class _UpdatesPageState extends State<UpdatesPage> {
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Theme.of(context).dialogBackgroundColor,
-                          elevation: 0,
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                                 color:
@@ -147,7 +145,6 @@ class _UpdatesPageState extends State<UpdatesPage> {
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Theme.of(context).dialogBackgroundColor,
-                            elevation: 0,
                             shape: RoundedRectangleBorder(
                               side: BorderSide(
                                   color: Theme.of(context)

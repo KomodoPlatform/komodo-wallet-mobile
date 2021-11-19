@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
@@ -354,7 +353,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
                         children: <Widget>[
                           Container(
                             decoration: BoxDecoration(
-                              color: settingsBloc.isLightTheme
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
                                   ? cexColorLight.withAlpha(50)
                                   : cexColor.withAlpha(50),
                               borderRadius:
@@ -384,7 +384,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
                                 ),
                                 CexMarker(
                                   context,
-                                  color: settingsBloc.isLightTheme
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
                                       ? cexColorLight
                                       : cexColor,
                                   size: const Size.fromHeight(12),
@@ -398,7 +399,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
                           Text(
                             '≈ ${cexProvider.convert(cexRate, from: orderBookProvider.activePair.buy.abbr)}',
                             style: TextStyle(
-                                color: settingsBloc.isLightTheme
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
                                     ? cexColorLight
                                     : cexColor,
                                 fontSize: 14),

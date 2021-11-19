@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
@@ -10,7 +11,6 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/confirmation_dialog.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/small_button.dart';
 import 'package:provider/provider.dart';
 
 class ContactEdit extends StatefulWidget {
@@ -75,8 +75,6 @@ class _ContactEditState extends State<ContactEdit> {
                     onPressed: () => _showDeleteConfiramtion(),
                   ),
               ],
-              centerTitle: true,
-              elevation: 0,
             ),
             body: SafeArea(
               child: Column(
@@ -270,16 +268,11 @@ class _ContactEditState extends State<ContactEdit> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SmallButton(
-          onPressed: () {
-            _showCoinSelectDialog();
-          },
-          child: Row(
-            children: <Widget>[
-              const Icon(Icons.add, size: 16),
-              Text(AppLocalizations.of(context).addressAdd),
-            ],
-          ),
+        ElevatedButton.icon(
+          onPressed: () => _showCoinSelectDialog(),
+          style: elevatedButtonSmallButtonStyle(),
+          icon: const Icon(Icons.add, size: 16),
+          label: Text(AppLocalizations.of(context).addressAdd),
         ),
       ],
     );
@@ -366,16 +359,8 @@ class _ContactEditState extends State<ContactEdit> {
                       controller: searchTextController,
                       onChanged: (_) => setState(() {}),
                       decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Theme.of(context).textTheme.bodyText2.color,
-                        ),
+                        prefixIcon: Icon(Icons.search),
                         hintText: 'Search for Ticker',
-                        counterText: '',
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary),
-                        ),
                       ),
                       maxLength: 16,
                     ),

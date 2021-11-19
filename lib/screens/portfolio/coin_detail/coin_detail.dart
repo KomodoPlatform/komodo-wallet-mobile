@@ -605,7 +605,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
     return SecondaryButton(
       text: text,
-      isDarkMode: !settingsBloc.isLightTheme,
+      isDarkMode: Theme.of(context).brightness != Brightness.light,
       textColor: Theme.of(context).colorScheme.secondary,
       borderColor: Theme.of(context).colorScheme.secondary,
       onPressed: () {

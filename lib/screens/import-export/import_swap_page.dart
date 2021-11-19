@@ -35,9 +35,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).importSingleSwapTitle,
-          ),
+          title: Text(AppLocalizations.of(context).importSingleSwapTitle),
         ),
         body: SingleChildScrollView(
           child: Column(

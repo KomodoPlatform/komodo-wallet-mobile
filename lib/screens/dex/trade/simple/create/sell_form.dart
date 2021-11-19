@@ -42,7 +42,7 @@ class _SellFormState extends State<SellForm> {
     _cexProvider ??= context.watch<CexProvider>();
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+      padding: EdgeInsets.symmetric(horizontal: 12),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -86,7 +86,7 @@ class _SellFormState extends State<SellForm> {
             : () {
                 _constrProvider.sellAmount = buttonAmt;
               },
-        child: Container(
+        child: Padding(
           padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
           child: Container(
             decoration: BoxDecoration(
@@ -124,30 +124,20 @@ class _SellFormState extends State<SellForm> {
     return Stack(
       children: [
         TextFormField(
-            controller: _amtCtrl,
-            onChanged: _constrProvider.onSellAmtFieldChange,
-            focusNode: _focusNode,
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: <TextInputFormatter>[
-              DecimalTextInputFormatter(
-                  decimalRange: appConfig.tradeFormPrecision),
-              FilteringTextInputFormatter.allow(RegExp(
-                  '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
-            ],
-            style: TextStyle(height: 1),
-            decoration: InputDecoration(
-              isDense: true,
-              contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 22),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
-                  borderSide: BorderSide(
-                      color: Theme.of(context).highlightColor, width: 1)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                width: 1,
-                color: Theme.of(context).colorScheme.secondary,
-              )),
-            )),
+          controller: _amtCtrl,
+          onChanged: _constrProvider.onSellAmtFieldChange,
+          focusNode: _focusNode,
+          keyboardType: TextInputType.numberWithOptions(decimal: true),
+          inputFormatters: <TextInputFormatter>[
+            DecimalTextInputFormatter(
+                decimalRange: appConfig.tradeFormPrecision),
+            FilteringTextInputFormatter.allow(RegExp(
+                '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
+          ],
+          decoration: InputDecoration(
+            isDense: true,
+          ),
+        ),
         Positioned(
           right: 4,
           bottom: 2,

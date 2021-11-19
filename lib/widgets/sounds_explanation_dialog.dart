@@ -54,10 +54,8 @@ Future<void> showSoundsDialog(BuildContext context) async {
                       settingsBloc.setShowSoundsDialog(
                           !settingsBloc.showSoundsExplanationDialog);
                     },
-                    child: Text(
-                      AppLocalizations.of(context).soundsDoNotShowAgain,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
+                    child:
+                        Text(AppLocalizations.of(context).soundsDoNotShowAgain),
                   ),
                 ),
               ],

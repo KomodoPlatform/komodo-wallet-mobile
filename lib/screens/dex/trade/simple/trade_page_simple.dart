@@ -223,23 +223,16 @@ class _TradePageSimpleState extends State<TradePageSimple> {
     }
 
     return Expanded(
-      child: Container(
-        padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12),
         child: Stack(
-          clipBehavior: Clip.none,
           children: [
             TextField(
               controller: controller,
               focusNode: focusNode,
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
               decoration: InputDecoration(
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
                 isDense: true,
-                contentPadding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+                border: UnderlineInputBorder(),
               ),
               onChanged: (String text) {
                 setState(() {
@@ -252,40 +245,33 @@ class _TradePageSimpleState extends State<TradePageSimple> {
               },
             ),
             Positioned(
-                right: 0,
-                top: 1,
-                child: currentTerm == null || currentTerm.isEmpty
-                    ? InkWell(
-                        onTap: () => focusNode.requestFocus(),
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(0, 0, 6, 6),
-                          child: Icon(
-                            Icons.search,
-                            size: 16,
-                            color: Theme.of(context).hintColor.withAlpha(150),
-                          ),
-                        ),
-                      )
-                    : InkWell(
-                        onTap: () {
-                          controller.text = '';
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          setState(() {
-                            if (type == Market.SELL) {
-                              _sellSearchTerm = '';
-                            } else {
-                              _buySearchTerm = '';
-                            }
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(0, 0, 6, 6),
-                          child: Icon(
-                            Icons.clear,
-                            size: 16,
-                          ),
-                        ),
-                      ))
+              top: 0,
+              right: 0,
+              child: InkWell(
+                onTap: currentTerm == null || currentTerm.isEmpty
+                    ? () => focusNode.requestFocus()
+                    : () {
+                        controller.text = '';
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        setState(() {
+                          if (type == Market.SELL) {
+                            _sellSearchTerm = '';
+                          } else {
+                            _buySearchTerm = '';
+                          }
+                        });
+                      },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    currentTerm == null || currentTerm.isEmpty
+                        ? Icons.search
+                        : Icons.clear,
+                    size: 16,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

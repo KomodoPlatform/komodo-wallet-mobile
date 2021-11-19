@@ -51,9 +51,7 @@ class _ImportPageState extends State<ImportPage> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).importTitle,
-          ),
+          title: Text(AppLocalizations.of(context).importTitle),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -492,19 +490,7 @@ class _ImportPageState extends State<ImportPage> {
               style: Theme.of(context).textTheme.bodyText2,
               decoration: InputDecoration(
                 errorMaxLines: 6,
-                errorStyle: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 12, color: Theme.of(context).errorColor),
-                border: const OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).primaryColorLight)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.secondary)),
-                hintStyle: Theme.of(context).textTheme.bodyText1,
-                labelStyle: Theme.of(context).textTheme.bodyText2,
                 hintText: AppLocalizations.of(context).hintPassword,
-                labelText: null,
                 suffixIcon: PasswordVisibilityControl(
                   onVisibilityChange: (bool isPasswordObscured) {
                     setState(() {

@@ -7,7 +7,6 @@ import 'package:komodo_dex/screens/dex/orders/maker/maker_order_details_page.dar
 import 'package:komodo_dex/screens/dex/orders/maker/order_fill.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class BuildItemMaker extends StatefulWidget {
   const BuildItemMaker(this.order);
@@ -153,11 +152,6 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                             onPressed: () =>
                                 ordersBloc.cancelOrder(widget.order.uuid),
                             style: OutlinedButton.styleFrom(
-                              side: BorderSide(
-                                color: settingsBloc.isLightTheme
-                                    ? Colors.black.withOpacity(0.8)
-                                    : Colors.white.withOpacity(0.8),
-                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
