@@ -49,7 +49,6 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
                   backgroundColor: Colors.transparent,
                   leading: BackButton(
                     key: const Key('swap-detail-back-button'),
-                    color: Theme.of(context).primaryColor,
                     onPressed: () => Navigator.pop(context, false),
                   ),
                   actions: const <Widget>[

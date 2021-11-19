@@ -133,7 +133,8 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
       ),
       TableRow(
         children: [
-          Container(
+          SizedBox(),
+          Padding(
             padding: const EdgeInsets.only(left: 6),
             child: Row(
               children: <Widget>[
