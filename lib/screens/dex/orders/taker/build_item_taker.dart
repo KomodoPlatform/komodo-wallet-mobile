@@ -31,19 +31,21 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
         Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => SwapDetailPage(
-                    swap: Swap(
-                        status: Status.ORDER_MATCHING,
-                        result: MmSwap(
-                          uuid: widget.order.uuid,
-                          myInfo: SwapMyInfo(
-                              myAmount: widget.order.baseAmount,
-                              otherAmount: widget.order.relAmount,
-                              myCoin: widget.order.base,
-                              otherCoin: widget.order.rel,
-                              startedAt: DateTime.now().millisecondsSinceEpoch),
-                        )),
-                  )),
+            builder: (BuildContext context) => SwapDetailPage(
+              swap: Swap(
+                status: Status.ORDER_MATCHING,
+                result: MmSwap(
+                  uuid: widget.order.uuid,
+                  myInfo: SwapMyInfo(
+                      myAmount: widget.order.baseAmount,
+                      otherAmount: widget.order.relAmount,
+                      myCoin: widget.order.base,
+                      otherCoin: widget.order.rel,
+                      startedAt: DateTime.now().millisecondsSinceEpoch),
+                ),
+              ),
+            ),
+          ),
         );
       },
       child: Column(

@@ -171,10 +171,9 @@ class _AddressBookState extends State<AddressBookPage> {
         child: Text(
           AppLocalizations.of(context).addressBookFilter(title),
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 12,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
         ),
       ),
     );

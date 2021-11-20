@@ -154,11 +154,7 @@ class _OrdersPageState extends State<OrdersPage> {
           return Text(
             '(${completed.length})',
             style: Theme.of(context).textTheme.button.copyWith(
-                  color: _currentTab == OrdersTab.history
-                      ? Theme.of(context).colorScheme.secondary
-                      : null,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
+                  color: Theme.of(context).textTheme.button.color,
                 ),
           );
         });

@@ -50,35 +50,23 @@ class _FiltersState extends State<Filters> {
           _buildStatusFilter(),
         },
         const SizedBox(height: 20),
-        _buildClearButton(),
+        _buildClearAllButton(),
       ],
     );
   }
 
-  Widget _buildClearButton() {
-    final Color color = !_filters.anyActive
-        ? Theme.of(context).textTheme.bodyText1.color
-        : Theme.of(context).textTheme.bodyText2.color;
-
+  Widget _buildClearAllButton() {
     return Row(children: [
       const Expanded(child: SizedBox()),
-      InkWell(
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-            children: [
-              Text(AppLocalizations.of(context).filtersClearAll.toUpperCase(),
-                  style: TextStyle(color: color, fontWeight: FontWeight.w400)),
-              const SizedBox(width: 8),
-              Icon(
-                Icons.clear,
-                size: 16,
-                color: color,
-              )
-            ],
-          ),
+      TextButton(
+        child: Row(
+          children: [
+            Text(AppLocalizations.of(context).filtersClearAll.toUpperCase()),
+            const SizedBox(width: 8),
+            Icon(Icons.clear)
+          ],
         ),
-        onTap: () {
+        onPressed: () {
           setState(() {
             _filters = ActiveFilters();
           });
@@ -108,7 +96,7 @@ class _FiltersState extends State<Filters> {
           decoration: BoxDecoration(
               border: Border(
             bottom: BorderSide(
-              color: Theme.of(context).colorScheme.secondary.withAlpha(150),
+              color: Theme.of(context).colorScheme.secondary,
               width: 1,
             ),
           )),
@@ -134,18 +122,8 @@ class _FiltersState extends State<Filters> {
           ),
         ),
       ),
-      InkWell(
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-          child: Opacity(
-            opacity: current == null ? 0.5 : 1,
-            child: const Icon(
-              Icons.clear,
-              size: 16,
-            ),
-          ),
-        ),
-        onTap: current == null
+      _buildIndividualClearButtonHelper(
+        onPresseed: current == null
             ? null
             : () {
                 setState(() {
@@ -154,7 +132,7 @@ class _FiltersState extends State<Filters> {
                 _filters.matches = widget.filter(widget.items).length;
                 widget.onChange(_filters);
               },
-      )
+      ),
     ]);
   }
 
@@ -249,7 +227,7 @@ class _FiltersState extends State<Filters> {
           decoration: BoxDecoration(
               border: Border(
             bottom: BorderSide(
-              color: Theme.of(context).colorScheme.secondary.withAlpha(150),
+              color: Theme.of(context).colorScheme.secondary,
               width: 1,
             ),
           )),
@@ -272,18 +250,8 @@ class _FiltersState extends State<Filters> {
           ),
         ),
       ),
-      InkWell(
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-          child: Opacity(
-            opacity: current == null ? 0.5 : 1,
-            child: const Icon(
-              Icons.clear,
-              size: 16,
-            ),
-          ),
-        ),
-        onTap: current == null
+      _buildIndividualClearButtonHelper(
+        onPresseed: current == null
             ? null
             : () {
                 setState(() {
@@ -346,7 +314,7 @@ class _FiltersState extends State<Filters> {
           decoration: BoxDecoration(
               border: Border(
             bottom: BorderSide(
-              color: Theme.of(context).colorScheme.secondary.withAlpha(150),
+              color: Theme.of(context).colorScheme.secondary,
               width: 1,
             ),
           )),
@@ -372,18 +340,8 @@ class _FiltersState extends State<Filters> {
           ),
         ),
       ),
-      InkWell(
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-          child: Opacity(
-            opacity: current == null ? 0.5 : 1,
-            child: const Icon(
-              Icons.clear,
-              size: 16,
-            ),
-          ),
-        ),
-        onTap: current == null
+      _buildIndividualClearButtonHelper(
+        onPresseed: current == null
             ? null
             : () {
                 setState(() {
@@ -392,7 +350,7 @@ class _FiltersState extends State<Filters> {
                 _filters.matches = widget.filter(widget.items).length;
                 widget.onChange(_filters);
               },
-      )
+      ),
     ]);
   }
 
@@ -480,18 +438,8 @@ class _FiltersState extends State<Filters> {
           ),
         ),
         _buildCoinSelect(market),
-        InkWell(
-          child: Container(
-            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-            child: Opacity(
-              opacity: current == null ? 0.5 : 1,
-              child: Icon(
-                Icons.clear,
-                size: 16,
-              ),
-            ),
-          ),
-          onTap: current == null
+        _buildIndividualClearButtonHelper(
+          onPresseed: current == null
               ? null
               : () {
                   setState(() {
@@ -521,7 +469,7 @@ class _FiltersState extends State<Filters> {
         decoration: BoxDecoration(
             border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).colorScheme.secondary.withAlpha(150),
+            color: Theme.of(context).colorScheme.secondary,
             width: 1,
           ),
         )),
@@ -667,6 +615,18 @@ class _FiltersState extends State<Filters> {
     }
 
     return list;
+  }
+
+  Widget _buildIndividualClearButtonHelper(
+      {@required VoidCallback onPresseed}) {
+    return IconButton(
+      visualDensity: VisualDensity.compact,
+      icon: const Icon(Icons.clear),
+      iconSize: 12,
+      splashRadius: 12,
+      constraints: BoxConstraints.tightFor(width: 24, height: 24),
+      onPressed: onPresseed,
+    );
   }
 }
 

@@ -46,31 +46,6 @@ DividerThemeData get _dividerThemeDataLight => DividerThemeData(
 
 ThemeData getThemeDark() => ThemeData(
       fontFamily: 'Ubuntu',
-      textTheme: TextTheme(
-        headline5: const TextStyle(
-          fontSize: 40,
-          fontWeight: FontWeight.w700,
-          color: Colors.white,
-        ),
-        headline6: const TextStyle(
-          fontSize: 26.0,
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
-        ),
-        subtitle2: const TextStyle(fontSize: 18.0, color: Colors.white),
-        bodyText2: const TextStyle(
-          fontSize: 16.0,
-          color: Colors.white,
-          fontWeight: FontWeight.w300,
-        ),
-        button: const TextStyle(fontSize: 16.0, color: Colors.white),
-        bodyText1:
-            TextStyle(fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
-        caption: TextStyle(
-            fontSize: 12.0,
-            color: Colors.white.withOpacity(0.8),
-            fontWeight: FontWeight.w400),
-      ),
       colorScheme: const ColorScheme(
         primary: Color.fromRGBO(90, 104, 230, 1),
         primaryVariant: Color.fromRGBO(64, 78, 201, 1),
@@ -95,34 +70,6 @@ ThemeData getThemeDark() => ThemeData(
     );
 ThemeData getThemeLight() => ThemeData(
       fontFamily: 'Ubuntu',
-      textTheme: TextTheme(
-        headline5: const TextStyle(
-          fontSize: 40,
-          fontWeight: FontWeight.w700,
-          color: Color.fromRGBO(24, 35, 49, 1),
-        ),
-        headline6: const TextStyle(
-          fontSize: 26.0,
-          color: Color.fromRGBO(24, 35, 49, 1),
-          fontWeight: FontWeight.w700,
-        ),
-        subtitle2: const TextStyle(
-            fontSize: 18.0, color: Color.fromRGBO(24, 35, 49, 1)),
-        bodyText2: const TextStyle(
-            fontSize: 16.0,
-            color: Color.fromRGBO(24, 35, 49, 1),
-            fontWeight: FontWeight.w300),
-        button: const TextStyle(
-            fontSize: 16.0, color: Color.fromRGBO(24, 35, 49, 1)),
-        bodyText1: TextStyle(
-            fontSize: 14.0,
-            color: const Color.fromRGBO(24, 35, 49, 1).withOpacity(0.5)),
-        caption: TextStyle(
-          fontSize: 12.0,
-          color: const Color.fromRGBO(24, 35, 49, 1).withOpacity(0.8),
-          fontWeight: FontWeight.w400,
-        ),
-      ),
       colorScheme: const ColorScheme(
         primary: Color.fromRGBO(90, 104, 230, 1),
         primaryVariant: Color.fromRGBO(64, 78, 201, 1),

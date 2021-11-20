@@ -353,9 +353,8 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
               key: Key('settings-pin-logout'),
               onPressed: () => showLogoutConfirmation(context),
               color: Theme.of(context).errorColor,
-              icon: Icon(
-                Icons.exit_to_app,
-              ),
+              icon: Icon(Icons.exit_to_app),
+              splashRadius: 24,
             ),
           ],
           title: Text(title),

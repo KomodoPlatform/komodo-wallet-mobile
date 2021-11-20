@@ -125,7 +125,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
           Expanded(
               child: Text(
             'Trading Mode:',
-            style: Theme.of(context).textTheme.caption.copyWith(
+            style: Theme.of(context).textTheme.bodyText1.copyWith(
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
           )),
@@ -134,7 +134,6 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
             child: TabBar(
               controller: _tradeTabController,
               indicator: TradeModeIndicator(context: context),
-              labelStyle: Theme.of(context).textTheme.caption,
               labelPadding: EdgeInsets.symmetric(horizontal: 0),
               indicatorPadding: EdgeInsets.symmetric(horizontal: 0),
               tabs: [

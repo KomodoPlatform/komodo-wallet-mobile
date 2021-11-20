@@ -98,7 +98,8 @@ class FilePickerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        key: const Key('file-picker-button'),
+        key: const Key('file-picker-button'), //
+        splashRadius: 24,
         icon: Icon(Icons.folder_open),
         color: Theme.of(context).toggleableActiveColor,
         onPressed: () async {
@@ -164,16 +165,7 @@ class SoundPicker extends StatelessWidget {
     return Tooltip(
         message: AppLocalizations.of(context).soundPlayedWhen(description),
         child: ListTile(
-          title: Text(
-            name,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                fontWeight: FontWeight.w300,
-                color: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .color
-                    .withOpacity(0.7)),
-          ),
+          title: Text(name, style: Theme.of(context).textTheme.bodyText2),
           trailing: FilePickerButton(musicMode, description),
         ));
   }

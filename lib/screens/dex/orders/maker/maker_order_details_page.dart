@@ -171,11 +171,12 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
           ),
           Builder(builder: (context) {
             return InkWell(
-                onTap: () {
-                  copyToClipBoard(context, order.uuid);
-                },
-                child: Container(
-                    padding: const EdgeInsets.all(8), child: Text(order.uuid)));
+              onTap: () => copyToClipBoard(context, order.uuid),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Text(order.uuid),
+              ),
+            );
           }),
         ],
       ),

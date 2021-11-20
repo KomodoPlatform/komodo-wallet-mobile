@@ -23,10 +23,8 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
               .firstWhere((item) => item.coin.abbr == widget.coin.abbr);
 
           return InkWell(
-            onTap: () {
-              coinsBloc.setCoinBeforeActivation(
-                  widget.coin, !coinToActivate.isActive);
-            },
+            onTap: () => coinsBloc.setCoinBeforeActivation(
+                widget.coin, !coinToActivate.isActive),
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 16, bottom: 16, left: 50, right: 16),
@@ -48,7 +46,9 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                   const SizedBox(width: 24),
                   Expanded(
                     child: AutoScrollText(
-                        text: '${widget.coin.name} (${widget.coin.abbr})'),
+                      text: '${widget.coin.name} (${widget.coin.abbr})',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                   )
                 ],
               ),

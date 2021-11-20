@@ -55,9 +55,10 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
               Text(
                 AppLocalizations.of(context).welcomeName + ' ',
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 18,
-                    color: Theme.of(context).colorScheme.secondary),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
               Text(
                 AppLocalizations.of(context).welcomeWallet,
@@ -125,7 +126,6 @@ class _WelcomePageState extends State<WelcomePage> {
               },
               autocorrect: false,
               enableInteractiveSelection: true,
-              style: Theme.of(context).textTheme.bodyText2,
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context).hintNameYourWallet,
               ),

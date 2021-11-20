@@ -65,34 +65,38 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
     return SizedBox(
       width: double.infinity,
       child: Card(
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(15, 10, 15, 6),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.fromLTRB(6, 6, 0, 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      AppLocalizations.of(context).multiSellTitle,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    _buildResetButton(),
-                  ],
-                ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(flex: 5, child: _buildCoinSelect()),
-                  const SizedBox(width: 20),
-                  Expanded(flex: 5, child: _buildSellAmount()),
+            children: [
+              Table(
+                columnWidths: const {
+                  1: FixedColumnWidth(16),
+                },
+                children: [
+                  TableRow(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context).multiSellTitle,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      SizedBox(),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: _buildResetButton(),
+                      )
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      _buildCoinSelect(),
+                      SizedBox(),
+                      _buildSellAmount(),
+                    ],
+                  )
                 ],
               ),
-              const SizedBox(height: 12),
-              _buildErrors(),
+              ..._buildErrors(),
             ],
           ),
         ),
@@ -100,45 +104,45 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
     );
   }
 
-  Widget _buildErrors() {
+  List<Widget> _buildErrors() {
     final String error =
         baseCoin == null ? null : multiOrderProvider.getError(baseCoin);
-    if (error == null) return SizedBox();
+    if (error == null) return [SizedBox()];
 
-    return Text(
-      error,
-      style: Theme.of(context).textTheme.caption.copyWith(
-            color: Theme.of(context).errorColor,
-          ),
-    );
+    return [
+      const SizedBox(height: 16),
+      Text(
+        error,
+        style: Theme.of(context).textTheme.caption.copyWith(
+              color: Theme.of(context).errorColor,
+            ),
+      ),
+    ];
   }
 
   Widget _buildResetButton() {
-    return InkWell(
-      onTap: multiOrderProvider.baseCoin == null
+    return IconButton(
+      onPressed: multiOrderProvider.baseCoin == null
           ? null
           : () {
               multiOrderProvider.reset();
               amountCtrl.text = '';
             },
-      child: Opacity(
+      constraints: BoxConstraints(maxHeight: 16, maxWidth: 16),
+      padding: EdgeInsets.all(0),
+      iconSize: 16,
+      splashRadius: 16,
+      visualDensity: VisualDensity.compact,
+      icon: Opacity(
         opacity: multiOrderProvider.baseCoin == null ? 0.3 : 1,
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
-          child: Icon(
-            Icons.clear,
-            size: 13,
-          ),
-        ),
+        child: Icon(Icons.clear),
       ),
     );
   }
 
   Widget _buildCoinSelect() {
     return InkWell(
-      onTap: () {
-        _showCoinSelectDialog();
-      },
+      onTap: () => _showCoinSelectDialog(),
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(

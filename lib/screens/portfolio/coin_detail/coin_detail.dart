@@ -190,6 +190,7 @@ class _CoinDetailState extends State<CoinDetail> {
               : Colors.black,
           actions: <Widget>[
             IconButton(
+              splashRadius: 24,
               key: const Key('coin-deactivate'),
               icon: isDeleteLoading
                   ? SizedBox(
@@ -221,6 +222,7 @@ class _CoinDetailState extends State<CoinDetail> {
               },
             ),
             IconButton(
+              splashRadius: 24,
               icon: Icon(Icons.share),
               onPressed: () async {
                 mainBloc.isUrlLaucherIsOpen = true;
@@ -676,14 +678,23 @@ class _CoinDetailState extends State<CoinDetail> {
     return InkWell(
       child: Container(
         padding: const EdgeInsets.all(8.0),
-        color: Colors.blue,
+        color: Theme.of(context).colorScheme.secondary,
         child: Row(
-          children: const <Widget>[
-            Icon(Icons.refresh),
+          children: <Widget>[
+            Icon(
+              Icons.refresh,
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
             SizedBox(
               width: 8.0,
             ),
-            Text('Latest Transactions'),
+            Text(
+              'Latest Transactions',
+              style: Theme.of(context)
+                  .textTheme
+                  .button
+                  .copyWith(color: Theme.of(context).colorScheme.onSecondary),
+            ),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),

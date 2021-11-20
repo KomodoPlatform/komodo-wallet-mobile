@@ -145,21 +145,21 @@ class _SeedRandomState extends State<SeedRandom> {
   }
 
   Widget _buildSeedWord(String word) {
-    return InkWell(
-      onTap: () {
-        _controller.text = word;
+    return ElevatedButton(
+        onPressed: () {
+          _controller.text = word;
 
-        checkPassphraseBloc.setWord(_controller.text);
-        checkPassphraseBloc.setIsWordGood(
-            const CheckPassphrasePage().checkSeedWord(widget.data));
-      },
-      child: Container(
-          decoration: BoxDecoration(
+          checkPassphraseBloc.setWord(_controller.text);
+          checkPassphraseBloc.setIsWordGood(
+              const CheckPassphrasePage().checkSeedWord(widget.data));
+        },
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 2),
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          child: Text(word)),
-    );
+        ),
+        child: Text(word));
   }
 
   final TextEditingController _controller = TextEditingController();

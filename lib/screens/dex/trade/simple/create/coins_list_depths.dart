@@ -56,11 +56,9 @@ class _CoinsListDepthsState extends State<CoinsListDepths> {
       child: Card(
         margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
         child: InkWell(
-          onTap: () {
-            widget.type == CoinType.base
-                ? _constrProvider.sellCoin = item.coin.abbr
-                : _constrProvider.buyCoin = item.coin.abbr;
-          },
+          onTap: () => widget.type == CoinType.base
+              ? _constrProvider.sellCoin = item.coin.abbr
+              : _constrProvider.buyCoin = item.coin.abbr,
           child: Container(
               padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
               child: Row(

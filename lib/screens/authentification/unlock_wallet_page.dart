@@ -51,9 +51,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                     Navigator.pop(context);
                   },
                   color: Theme.of(context).errorColor,
-                  icon: const Icon(
-                    Icons.exit_to_app,
-                  ),
+                  icon: const Icon(Icons.exit_to_app),
                 )
               : null,
           backgroundColor: Colors.transparent,
@@ -178,40 +176,36 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                         ));
               },
             ),
-            widget.isSignWithSeedIsEnabled
-                ? Center(
+            //TODO(MRC): Convert to a fitting Button widget
+            if (widget.isSignWithSeedIsEnabled)
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: InkWell(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    onTap: () {
+                      Navigator.push<dynamic>(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                const WelcomePage(
+                                  isFromRestore: true,
+                                )),
+                      );
+                    },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: InkWell(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        onTap: () {
-                          Navigator.push<dynamic>(
-                            context,
-                            MaterialPageRoute<dynamic>(
-                                builder: (BuildContext context) =>
-                                    const WelcomePage(
-                                      isFromRestore: true,
-                                    )),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            AppLocalizations.of(context).signInWithSeedPhrase,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Colors.white),
-                          ),
-                        ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context).signInWithSeedPhrase,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyText1.copyWith(
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.white),
                       ),
                     ),
-                  )
-                : SizedBox(),
+                  ),
+                ),
+              ),
             const SizedBox(
               height: 16,
             )

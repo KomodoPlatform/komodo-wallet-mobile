@@ -80,40 +80,31 @@ class _SellFormState extends State<SellForm> {
     final bool disabled = (_constrProvider.maxSellAmt?.toDouble() ?? 0) == 0;
 
     return Expanded(
-      child: GestureDetector(
+      child: InkWell(
         onTap: isActive || disabled
             ? null
-            : () {
-                _constrProvider.sellAmount = buttonAmt;
-              },
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(2),
-              color: disabled
-                  ? Theme.of(context).primaryColor.withAlpha(200)
-                  : isActive
-                      ? Theme.of(context).colorScheme.secondary.withAlpha(200)
-                      : Theme.of(context).primaryColor,
-            ),
-            alignment: Alignment(0, 0),
-            padding: EdgeInsets.fromLTRB(1, 3, 1, 3),
-            child: Text(
-              '${cutTrailingZeros(pct.toString())}%',
-              style: TextStyle(
-                  fontSize: 11,
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      .color
-                      .withAlpha(disabled
-                          ? 100
-                          : isActive
-                              ? 255
-                              : 180)),
-              maxLines: 1,
-            ),
+            : () => _constrProvider.sellAmount = buttonAmt,
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            color: disabled
+                ? Theme.of(context).disabledColor
+                : isActive
+                    ? Theme.of(context).colorScheme.secondary
+                    : Theme.of(context).unselectedWidgetColor,
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            '${cutTrailingZeros(pct.toString())}%',
+            style: Theme.of(context).textTheme.caption.copyWith(
+                  color: disabled
+                      ? Theme.of(context).colorScheme.onSurface
+                      : isActive
+                          ? Theme.of(context).colorScheme.onSecondary
+                          : Theme.of(context).colorScheme.onSurface,
+                ),
+            maxLines: 1,
           ),
         ),
       ),
@@ -149,46 +140,24 @@ class _SellFormState extends State<SellForm> {
 
   Widget _buildCoin() {
     return Card(
-        margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(4),
-          onTap: () {
-            _constrProvider.sellCoin = null;
-          },
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 50),
-            child: Container(
-              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundImage: AssetImage('assets/coin-icons/'
-                              '${_constrProvider.sellCoin.toLowerCase()}.png'),
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          _constrProvider.sellCoin,
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(
-                    Icons.clear,
-                    size: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  ),
-                  SizedBox(width: 10),
-                ],
-              ),
-            ),
-          ),
-        ));
+      margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
+      child: ListTile(
+        visualDensity: VisualDensity.compact,
+        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+        horizontalTitleGap: 0,
+        onTap: () => _constrProvider.sellCoin = null,
+        leading: CircleAvatar(
+          radius: 8,
+          backgroundImage: AssetImage('assets/coin-icons/'
+              '${_constrProvider.sellCoin.toLowerCase()}.png'),
+        ),
+        title: Text(_constrProvider.sellCoin),
+        trailing: Icon(
+          Icons.clear,
+          size: 16,
+        ),
+      ),
+    );
   }
 
   Widget _buildFiatAmt() {

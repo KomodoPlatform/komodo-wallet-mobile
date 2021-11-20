@@ -17,6 +17,7 @@ class _SoundVolumeButtonState extends State<SoundVolumeButton> {
   Widget build(BuildContext context) {
     return IconButton(
         key: const Key('sound-volume-button'),
+        splashRadius: 24,
         icon: Icon(
           musicService.on() ? Icons.volume_up : Icons.volume_down,
         ),

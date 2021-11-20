@@ -54,15 +54,14 @@ class _AddressFieldState extends State<AddressField> {
               SizedBox(
                 height: 60,
                 child: IconButton(
+                  splashRadius: 24,
                   padding: EdgeInsets.all(0),
                   visualDensity: VisualDensity.compact,
                   onPressed: widget.onScan,
                   icon: Icon(Icons.add_a_photo),
                 ),
               ),
-              const SizedBox(
-                width: 8,
-              ),
+              const SizedBox(width: 8),
               Expanded(
                 child: TextFormField(
                   key: const Key('send-address-field'),
@@ -79,20 +78,17 @@ class _AddressFieldState extends State<AddressField> {
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context).addressSend,
-                    suffixIcon: InkWell(
-                      onTap: () {
-                        Navigator.push<dynamic>(
-                                context,
-                                MaterialPageRoute<dynamic>(
-                                  builder: (BuildContext context) =>
-                                      AddressBookPage(
-                                    shouldPop: true,
-                                    coin: widget.coin,
-                                  ),
-                                ))
-                            .then((dynamic _) => _updateAddressFromClipboard());
-                      },
-                      child: Icon(Icons.import_contacts),
+                    suffixIcon: IconButton(
+                      splashRadius: 24,
+                      onPressed: () => Navigator.push<dynamic>(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => AddressBookPage(
+                              shouldPop: true,
+                              coin: widget.coin,
+                            ),
+                          )).then((dynamic _) => _updateAddressFromClipboard()),
+                      icon: Icon(Icons.import_contacts),
                     ),
                   ),
                   // The validator receives the text the user has typed in

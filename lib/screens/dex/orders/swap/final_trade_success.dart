@@ -109,6 +109,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: IconButton(
+                    splashRadius: 24,
                     icon: Icon(Icons.share),
                     onPressed: () async {
                       final RenderRepaintBoundary boundary =

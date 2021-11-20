@@ -59,9 +59,7 @@ class _CoinSelectState extends State<CoinSelect> {
   Widget build(BuildContext context) {
     _orderBookProvider = Provider.of<OrderBookProvider>(context);
     return InkWell(
-      onTap: () {
-        _showDialog();
-      },
+      onTap: () => _showDialog(),
       child: Container(
           decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.grey))),

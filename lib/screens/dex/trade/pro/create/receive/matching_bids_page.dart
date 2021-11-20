@@ -167,10 +167,9 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                   padding: EdgeInsets.all(6),
                   child: Text(
                     'Less',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
                   ),
                 )),
           if (_listLength > _listLimit)
@@ -184,10 +183,9 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                   padding: EdgeInsets.all(6),
                   child: Text(
                     'More',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
                   ),
                 )),
         ],

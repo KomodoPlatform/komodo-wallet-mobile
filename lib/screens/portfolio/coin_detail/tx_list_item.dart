@@ -39,15 +39,14 @@ class _TransactionListItemState extends State<TransactionListItem> {
           elevation: 8.0,
           child: InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
-            onTap: () {
-              Navigator.push<dynamic>(
-                context,
-                MaterialPageRoute<dynamic>(
-                    builder: (BuildContext context) => TransactionDetail(
-                        transaction: widget.transaction,
-                        coinBalance: widget.currentCoinBalance)),
-              );
-            },
+            onTap: () => Navigator.push<dynamic>(
+              context,
+              MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => TransactionDetail(
+                    transaction: widget.transaction,
+                    coinBalance: widget.currentCoinBalance),
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[

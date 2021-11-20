@@ -163,7 +163,7 @@ class SwapShareCard extends StatelessWidget {
                             textBaseline: TextBaseline.alphabetic,
                             columnWidths: const {
                               0: IntrinsicColumnWidth(),
-                              1: IntrinsicColumnWidth(),
+                              1: FixedColumnWidth(8),
                             },
                             children: [
                               const TableRow(
@@ -175,7 +175,7 @@ class SwapShareCard extends StatelessWidget {
                                       fontSize: 6,
                                     ),
                                   ),
-                                  SizedBox(width: 8),
+                                  SizedBox(),
                                   SizedBox(),
                                 ],
                               ),
@@ -192,7 +192,7 @@ class SwapShareCard extends StatelessWidget {
                                     'Date',
                                     style: TextStyle(fontSize: 6),
                                   ),
-                                  const SizedBox(width: 8),
+                                  const SizedBox(),
                                   Text(
                                     dateFormatted,
                                     style: const TextStyle(fontSize: 6),
@@ -206,7 +206,7 @@ class SwapShareCard extends StatelessWidget {
                                     'Duration',
                                     style: TextStyle(fontSize: 6),
                                   ),
-                                  const SizedBox(width: 8),
+                                  const SizedBox(),
                                   Text(
                                     '$durationMinutes Minutes',
                                     style: const TextStyle(fontSize: 6),
@@ -220,7 +220,7 @@ class SwapShareCard extends StatelessWidget {
                                     'UUID',
                                     style: TextStyle(fontSize: 6),
                                   ),
-                                  const SizedBox(width: 8),
+                                  const SizedBox(),
                                   Text(
                                     swap.result.myOrderUuid,
                                     style: const TextStyle(fontSize: 4),

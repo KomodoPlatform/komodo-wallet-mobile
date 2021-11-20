@@ -25,10 +25,12 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
     return InkWell(
       onTap: () {
         Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) =>
-                    MakerOrderDetailsPage(widget.order.uuid)));
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) =>
+                MakerOrderDetailsPage(widget.order.uuid),
+          ),
+        );
       },
       child: Card(
         child: Padding(
@@ -167,9 +169,12 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text(AppLocalizations.of(context)
-                                      .cancel
-                                      .toUpperCase())
+                                  Text(
+                                      AppLocalizations.of(context)
+                                          .cancel
+                                          .toUpperCase(),
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1)
                                 ],
                               ),
                             ),

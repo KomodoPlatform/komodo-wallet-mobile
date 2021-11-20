@@ -285,6 +285,8 @@ class LoadAsset extends StatefulWidget {
 }
 
 class LoadAssetState extends State<LoadAsset> {
+  final Color color = Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<CoinBalance>>(
@@ -304,17 +306,17 @@ class LoadAssetState extends State<LoadAsset> {
 
           listRet.add(Icon(
             Icons.show_chart,
-            color: Colors.white.withOpacity(0.8),
+            color: color,
           ));
-          listRet.add(Text(
+          listRet.add(
+            Text(
               AppLocalizations.of(context).numberAssets(assetNumber.toString()),
-              style: Theme.of(context)
-                  .textTheme
-                  .caption
-                  .copyWith(color: Colors.white.withOpacity(0.8))));
+              style: Theme.of(context).textTheme.caption.copyWith(color: color),
+            ),
+          );
           listRet.add(Icon(
             Icons.chevron_right,
-            color: Colors.white.withOpacity(0.8),
+            color: color,
           ));
         } else {
           listRet.add(SizedBox(
@@ -459,9 +461,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                           child: Center(
                               child: FloatingActionButton(
                             key: const Key('adding-coins'),
-                            child: Icon(
-                              Icons.add,
-                            ),
+                            child: Icon(Icons.add),
                             onPressed: () {
                               if (mainBloc.networkStatus !=
                                   NetworkStatus.Online) {

@@ -92,17 +92,12 @@ class _NewAccountPageState extends State<NewAccountPage> {
           // height: 100,
           child: Row(
             children: <Widget>[
-              InkWell(
+              IconButton(
                 key: const Key('seed-refresh'),
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                child: const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Icon(
-                    Icons.refresh,
-                    color: Colors.red,
-                  ),
-                ),
-                onTap: () {
+                splashRadius: 24,
+                color: Theme.of(context).errorColor,
+                icon: Icon(Icons.refresh),
+                onPressed: () {
                   setState(() {
                     seed = getSeed();
                   });
@@ -118,25 +113,18 @@ class _NewAccountPageState extends State<NewAccountPage> {
                 style: Theme.of(context)
                     .textTheme
                     .bodyText2
-                    .copyWith(color: Colors.red),
+                    .copyWith(color: Theme.of(context).errorColor),
                 textAlign: TextAlign.center,
               )),
               const SizedBox(
                 width: 6,
               ),
-              InkWell(
+              IconButton(
+                  splashRadius: 24,
                   key: const Key('seed-copy'),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  onTap: () {
-                    Clipboard.setData(ClipboardData(text: seed));
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Icon(
-                      Icons.content_copy,
-                      color: Colors.red,
-                    ),
-                  )),
+                  onPressed: () => Clipboard.setData(ClipboardData(text: seed)),
+                  color: Theme.of(context).errorColor,
+                  icon: Icon(Icons.content_copy)),
             ],
           ),
         ),

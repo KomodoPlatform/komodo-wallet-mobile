@@ -109,11 +109,9 @@ class _ContactsListState extends State<ContactsList> {
               padding: const EdgeInsets.only(left: 14.0),
               child: Text(
                 indexLetter,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
               ),
             ),
           );

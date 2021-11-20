@@ -163,6 +163,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
         launchURL(dPoWInfoUrl);
       },
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Text(
@@ -184,6 +185,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
   Widget _buildToggle() {
     return Row(
       children: <Widget>[
+        //TODO(MRC): Figure out whether this can be safely replaced with a checkbox
         InkWell(
           onTap: () {
             setState(() {
@@ -259,28 +261,21 @@ class _ProtectionControlState extends State<ProtectionControl> {
       padding: const EdgeInsets.only(left: 8),
       child: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: _builddPowLink(),
-              ),
-              Opacity(
-                opacity: dpowAvailable ? 1 : 0.5,
-                child: Switch(
-                  onChanged: dpowAvailable
-                      ? (bool value) {
-                          setState(() {
-                            dpowRequired = value;
-                          });
-                          _onChange();
-                        }
-                      : null,
-                  value: dpowRequired,
-                  inactiveThumbColor:
-                      dpowAvailable ? null : Theme.of(context).highlightColor,
-                ),
-              ),
-            ],
+          Opacity(
+            opacity: dpowAvailable ? 1 : 0.5,
+            child: SwitchListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 8),
+              value: dpowRequired,
+              onChanged: dpowAvailable
+                  ? (bool value) {
+                      setState(() {
+                        dpowRequired = value;
+                      });
+                      _onChange();
+                    }
+                  : null,
+              title: _builddPowLink(),
+            ),
           ),
         ],
       ),
@@ -326,7 +321,6 @@ class _ProtectionControlState extends State<ProtectionControl> {
 
   Widget _buildSlider() {
     return Slider(
-        activeColor: Theme.of(context).colorScheme.secondary,
         divisions: maxConfs - minConfs,
         label: confs.toString(),
         min: minConfs.toDouble(),

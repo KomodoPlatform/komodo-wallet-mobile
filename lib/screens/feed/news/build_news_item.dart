@@ -98,10 +98,9 @@ class _BuildNewsItemState extends State<BuildNewsItem>
                 child: Text(
                   _source.name,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
+                  style: Theme.of(context).textTheme.subtitle1.copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                 ),
               ),
               _buildDate(),
@@ -119,15 +118,7 @@ class _BuildNewsItemState extends State<BuildNewsItem>
           DateTime.parse(widget.newsItem.date).millisecondsSinceEpoch);
     } catch (_) {}
 
-    return _date == null
-        ? Container(width: 0)
-        : Text(
-            _date,
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).textTheme.caption.color,
-            ),
-          );
+    return _date == null ? Container(width: 0) : Text(_date);
   }
 
   Widget _buildContent() {
@@ -142,10 +133,7 @@ class _BuildNewsItemState extends State<BuildNewsItem>
       children: <Widget>[
         RichText(
           text: TextSpan(
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).textTheme.caption.color,
-            ),
+            style: Theme.of(context).textTheme.bodyText1,
             children: _article.lead,
           ),
         ),

@@ -103,7 +103,11 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
 
   Widget _buildHeader(String total) {
     return InkWell(
-      onTap: () => setState(() => _showDetails = !_showDetails),
+      onTap: () {
+        setState(() {
+          _showDetails = !_showDetails;
+        });
+      },
       child: Container(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
         child: Row(

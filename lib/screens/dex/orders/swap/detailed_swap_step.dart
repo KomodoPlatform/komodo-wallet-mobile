@@ -78,24 +78,15 @@ class DetailedSwapStep extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: () {
-            launchURL(
-              explorerUrl + 'tx/' + txHash,
-            );
-          },
+          onTap: () => launchURL(explorerUrl + 'tx/' + txHash),
           child: Padding(
             padding: EdgeInsets.fromLTRB(6, 2, 4, 2),
             child: Row(
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 2, 0),
-                  child: Text(
-                    AppLocalizations.of(context).viewInExplorerButton,
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        .copyWith(fontSize: 11),
-                  ),
+                  child: Text(AppLocalizations.of(context).viewInExplorerButton,
+                      style: Theme.of(context).textTheme.caption),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 0),
@@ -127,10 +118,10 @@ class DetailedSwapStep extends StatelessWidget {
                 },
                 child: truncateMiddle(
                   txHash ?? '',
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                        fontFamily: 'monospace',
-                        fontSize: 12,
-                      ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(fontFamily: 'monospace'),
                 ),
               ),
             ),

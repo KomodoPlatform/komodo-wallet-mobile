@@ -129,24 +129,25 @@ class _AppDrawerState extends State<AppDrawer> {
                                     SoundSettingsPage()));
                       },
                       leading: const Icon(Icons.audiotrack, size: 16),
-                      trailing: SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: IconButton(
-                          padding: EdgeInsets.all(0),
-                          onPressed: () {
-                            setState(() {
-                              musicService.flip();
-                            });
-                          },
-                          icon: Icon(
-                              musicService.on()
-                                  ? Icons.volume_up
-                                  : Icons.volume_down,
-                              color: musicService.on()
-                                  ? Theme.of(context).toggleableActiveColor
-                                  : Theme.of(context).unselectedWidgetColor),
+                      trailing: IconButton(
+                        constraints: BoxConstraints.tightFor(
+                          height: 24,
+                          width: 24,
                         ),
+                        splashRadius: 24,
+                        padding: EdgeInsets.all(0),
+                        onPressed: () {
+                          setState(() {
+                            musicService.flip();
+                          });
+                        },
+                        icon: Icon(
+                            musicService.on()
+                                ? Icons.volume_up
+                                : Icons.volume_down,
+                            color: musicService.on()
+                                ? Theme.of(context).toggleableActiveColor
+                                : Theme.of(context).unselectedWidgetColor),
                       ),
                     ),
                     _buildDrawerItem(

@@ -41,6 +41,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
         appBar: AppBar(
           actions: <Widget>[
             IconButton(
+              splashRadius: 24,
               icon: Icon(Icons.share),
               onPressed: () {
                 final String fromOrTo = double.parse(
@@ -61,6 +62,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
               },
             ),
             IconButton(
+              splashRadius: 24,
               icon: Icon(Icons.open_in_browser),
               onPressed: () => launchURL(
                   widget.coinBalance.coin.explorerUrl[0] +
@@ -287,12 +289,13 @@ class ItemTransationDetail extends StatelessWidget {
                   copyToClipBoard(context, data);
                 } else {
                   Navigator.push<dynamic>(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) => AddressBookPage(
-                          contact: contact,
-                        ),
-                      ));
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => AddressBookPage(
+                        contact: contact,
+                      ),
+                    ),
+                  );
                 }
               },
               child: Padding(
@@ -402,6 +405,8 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                   ),
           ),
           IconButton(
+            visualDensity: VisualDensity.compact,
+            splashRadius: 24,
             icon: Icon(isEdit ? Icons.check : Icons.edit),
             onPressed: () {
               setState(

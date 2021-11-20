@@ -76,33 +76,27 @@ class _CoinsListAllState extends State<CoinsListAll> {
                 ? _constrProvider.sellCoin = item.coin.abbr
                 : _constrProvider.buyCoin = item.coin.abbr;
           },
-          child: Container(
-              padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 8,
-                    backgroundImage: AssetImage(
-                        'assets/coin-icons/${item.coin.abbr.toLowerCase()}.png'),
-                  ),
-                  SizedBox(width: 4),
-                  Text(
-                    item.coin.abbr,
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  SizedBox(width: 6),
-                  if (widget.type == Market.SELL)
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment(1, 0),
-                        child: AutoScrollText(
-                          text: item.balance,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ),
-                    ),
-                ],
-              )),
+          child: ListTile(
+            visualDensity: VisualDensity.compact,
+            dense: true,
+            contentPadding: EdgeInsets.symmetric(horizontal: 8),
+            horizontalTitleGap: 0,
+            leading: CircleAvatar(
+              radius: 8,
+              backgroundImage: AssetImage(
+                  'assets/coin-icons/${item.coin.abbr.toLowerCase()}.png'),
+            ),
+            title: Text(
+              item.coin.abbr,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            trailing: widget.type == Market.SELL
+                ? AutoScrollText(
+                    text: item.balance,
+                    style: Theme.of(context).textTheme.caption,
+                  )
+                : null,
+          ),
         ),
       ),
     );

@@ -72,8 +72,11 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
     return error == null
         ? SizedBox()
         : InkWell(
-            onTap: () =>
-                setState(() => _showDetailedError = !_showDetailedError),
+            onTap: () {
+              setState(() {
+                _showDetailedError = !_showDetailedError;
+              });
+            },
             child: Container(
               width: double.infinity,
               padding: EdgeInsets.fromLTRB(16, 0, 8, 0),

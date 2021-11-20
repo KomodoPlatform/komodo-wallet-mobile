@@ -156,10 +156,13 @@ class _BuildScreenAuthMultiWalletsState
                 ],
               ),
             ),
-            Column(
-              children: widget.wallets.map<Widget>((wallet) {
-                return _buildItemWallet(wallet);
-              }).toList(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: widget.wallets.map<Widget>((wallet) {
+                  return _buildItemWallet(wallet);
+                }).toList(),
+              ),
             ),
             const SizedBox(height: 32),
           ],
@@ -169,74 +172,48 @@ class _BuildScreenAuthMultiWalletsState
   }
 
   Widget _buildItemWallet(Wallet wallet) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-      child: InkWell(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        onTap: () {
-          Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => UnlockWalletPage(
-                      textButton: AppLocalizations.of(context).login,
-                      wallet: wallet,
-                      onSuccess: (String seed, String password) async {
-                        authBloc.showLock = false;
-                        if (!mmSe.running) {
-                          await authBloc.login(seed, password);
-                        }
-                        Navigator.of(context).pop();
-                      },
-                    )),
-          );
-        },
-        child: Container(
-            child: Row(
-              children: <Widget>[
-                const SizedBox(
-                  width: 16,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: CircleAvatar(
-                    radius: 30,
-                    child: Center(
-                      child: Text(
-                        wallet.name.substring(0, 1),
-                        style: Theme.of(context).textTheme.headline6.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                  child: Text(
-                    wallet.name,
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                ),
-                _buildDeleteButton(wallet),
-              ],
-            ),
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(8),
-                ),
-                color: Colors.transparent)),
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      tileColor: Theme.of(context).colorScheme.surface,
+      onTap: () => Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => UnlockWalletPage(
+            textButton: AppLocalizations.of(context).login,
+            wallet: wallet,
+            onSuccess: (String seed, String password) async {
+              authBloc.showLock = false;
+              if (!mmSe.running) {
+                await authBloc.login(seed, password);
+              }
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
       ),
+      leading: CircleAvatar(
+        radius: 30,
+        child: Center(
+          child: Text(
+            wallet.name.substring(0, 1),
+          ),
+        ),
+      ),
+      title: Text(
+        wallet.name,
+        style: Theme.of(context)
+            .textTheme
+            .bodyText2
+            .copyWith(color: Theme.of(context).colorScheme.onSurface),
+      ),
+      trailing: _buildDeleteButton(wallet),
     );
   }
 
   Widget _buildDeleteButton(Wallet wallet) {
     return IconButton(
-      padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
-      icon: Icon(
-        Icons.delete_outline,
-        size: 24,
-      ),
+      icon: Icon(Icons.delete_outline),
+      splashRadius: 24,
       onPressed: () async {
         Navigator.push<dynamic>(
           context,

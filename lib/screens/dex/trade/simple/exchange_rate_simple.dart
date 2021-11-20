@@ -74,7 +74,11 @@ class _ExchangeRateSimpleState extends State<ExchangeRateSimple> {
 
   Widget _buildHeader() {
     return InkWell(
-      onTap: () => setState(() => _showDetails = !_showDetails),
+      onTap: () {
+        setState(() {
+          _showDetails = !_showDetails;
+        });
+      },
       child: Container(
         padding: EdgeInsets.fromLTRB(6, 2, 6, 6),
         child: Row(

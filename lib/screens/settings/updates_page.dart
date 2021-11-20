@@ -127,9 +127,6 @@ class _UpdatesPageState extends State<UpdatesPage> {
                         style: ElevatedButton.styleFrom(
                           primary: Theme.of(context).dialogBackgroundColor,
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                                color:
-                                    Theme.of(context).textTheme.caption.color),
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),

@@ -72,9 +72,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
               builder: (BuildContext context) {
                 return IconButton(
                   color: Theme.of(context).colorScheme.secondary,
-                  icon: Icon(
-                    Icons.close,
-                  ),
+                  icon: Icon(Icons.close),
+                  splashRadius: 24,
                   onPressed: () => Navigator.of(context).pop(),
                 );
               },
@@ -124,7 +123,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Text(
           AppLocalizations.of(context).selectCoinInfo,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.subtitle1,
         ),
       ),
       const SizedBox(

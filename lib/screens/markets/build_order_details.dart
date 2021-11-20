@@ -449,9 +449,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
 
   Widget _buildAddressButton() {
     return InkWell(
-      onTap: () {
-        copyToClipBoard(context, widget.order.address);
-      },
+      onTap: () => copyToClipBoard(context, widget.order.address),
       child: Container(
         padding: const EdgeInsets.only(left: 6, right: 12),
         height: 40,
@@ -462,15 +460,14 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
 
   Widget _buildContactButton() {
     return InkWell(
-      onTap: () {
-        Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => AddressBookPage(
-                contact: _contact,
-              ),
-            ));
-      },
+      onTap: () => Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => AddressBookPage(
+            contact: _contact,
+          ),
+        ),
+      ),
       child: Container(
         padding: const EdgeInsets.only(left: 6),
         height: 40,
@@ -480,7 +477,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
               Icons.account_circle,
               size: 14,
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: 8),
             Text(
               _contact.name,
             )

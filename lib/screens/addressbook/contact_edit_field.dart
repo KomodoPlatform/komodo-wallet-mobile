@@ -71,24 +71,23 @@ class _ContactEditFieldState extends State<ContactEditField> {
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          if (widget.icon != null)
-                            Row(
-                              children: <Widget>[
-                                widget.icon,
-                                const SizedBox(width: 4),
-                              ],
-                            ),
+                          if (widget.icon != null) ...[
+                            widget.icon,
+                            const SizedBox(width: 8),
+                          ],
                           Text('${widget.label}:'),
                         ],
                       ),
                       const SizedBox(height: 16),
                       Row(
                         children: <Widget>[
-                          if (widget.name != 'name')
+                          if (widget.name != 'name') ...[
                             IconButton(
                               onPressed: () => _scan(),
                               icon: Icon(Icons.add_a_photo),
+                              splashRadius: 24,
                             ),
+                          ],
                           Expanded(
                             child: TextField(
                               controller: controller,

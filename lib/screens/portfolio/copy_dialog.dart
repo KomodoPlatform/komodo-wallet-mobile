@@ -21,9 +21,7 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
               children: <Widget>[
                 Expanded(
                   child: InkWell(
-                    onTap: () {
-                      copyToClipBoard(mContext, address);
-                    },
+                    onTap: () => copyToClipBoard(mContext, address),
                     child: QrImage(
                       foregroundColor: Colors.black,
                       backgroundColor: Colors.white,
@@ -32,9 +30,7 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    copyToClipBoard(mContext, address);
-                  },
+                  onTap: () => copyToClipBoard(mContext, address),
                   child: Row(
                     children: [
                       Expanded(

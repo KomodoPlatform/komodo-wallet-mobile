@@ -77,11 +77,9 @@ class _RewardsPageState extends State<RewardsPage> {
 
   Widget _buildLink() {
     return InkWell(
-      onTap: () {
-        launchURL('https://support.komodoplatform.com/support/'
-            'solutions/articles/'
-            '29000024428-komodo-5-active-user-reward-all-you-need-to-know');
-      },
+      onTap: () => launchURL('https://support.komodoplatform.com/support/'
+          'solutions/articles/'
+          '29000024428-komodo-5-active-user-reward-all-you-need-to-know'),
       child: Container(
         padding: const EdgeInsets.all(12),
         child: Row(
@@ -444,9 +442,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   ),
                 )
               : TableRowInkWell(
-                  onTap: () {
-                    _showStatusHint(item);
-                  },
+                  onTap: () => _showStatusHint(item),
                   child: Container(
                     alignment: const Alignment(1, 0),
                     padding: const EdgeInsets.only(

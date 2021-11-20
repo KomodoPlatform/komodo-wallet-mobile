@@ -37,9 +37,10 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
         Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => SwapDetailPage(
-                    swap: widget.swap,
-                  )),
+            builder: (BuildContext context) => SwapDetailPage(
+              swap: widget.swap,
+            ),
+          ),
         );
       },
       child: Column(

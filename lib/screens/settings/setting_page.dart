@@ -472,8 +472,10 @@ class _SettingPageState extends State<SettingPage> {
       ),
       title: Text(
         AppLocalizations.of(context).deleteWallet,
-        style: Theme.of(context).textTheme.subtitle1.copyWith(
-            color: Theme.of(context).colorScheme.onError.withOpacity(0.8)),
+        style: Theme.of(context)
+            .textTheme
+            .subtitle1
+            .copyWith(color: Theme.of(context).colorScheme.onError),
       ),
       onTap: () => _showDialogDeleteWallet(),
     );

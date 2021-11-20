@@ -73,6 +73,7 @@ class _ContactEditState extends State<ContactEdit> {
                   IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () => _showDeleteConfiramtion(),
+                    splashRadius: 24,
                   ),
               ],
             ),
@@ -387,10 +388,7 @@ class _ContactEditState extends State<ContactEdit> {
       ),
       child: Row(
         children: <Widget>[
-          Text(
-            text,
-            style: const TextStyle(fontSize: 12),
-          ),
+          Text(text),
         ],
       ),
     );
@@ -415,7 +413,6 @@ class _ContactEditState extends State<ContactEdit> {
           const SizedBox(width: 3),
           Text(
             AppLocalizations.of(context).tagKMD,
-            style: const TextStyle(fontSize: 12),
           ),
         ],
       ),

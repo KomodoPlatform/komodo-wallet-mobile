@@ -90,9 +90,7 @@ class _BuyFormState extends State<BuyForm> {
         margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
         child: InkWell(
           borderRadius: BorderRadius.circular(4),
-          onTap: () {
-            _constrProvider.buyCoin = null;
-          },
+          onTap: () => _constrProvider.buyCoin = null,
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: 50),
             child: Container(
@@ -108,7 +106,7 @@ class _BuyFormState extends State<BuyForm> {
                           backgroundImage: AssetImage('assets/coin-icons/'
                               '${_constrProvider.buyCoin.toLowerCase()}.png'),
                         ),
-                        SizedBox(width: 4),
+                        SizedBox(width: 8),
                         Text(
                           _constrProvider.buyCoin,
                           style: Theme.of(context).textTheme.subtitle1,
@@ -118,10 +116,8 @@ class _BuyFormState extends State<BuyForm> {
                   ),
                   Icon(
                     Icons.clear,
-                    size: 13,
-                    color: Theme.of(context).textTheme.caption.color,
+                    size: 16,
                   ),
-                  SizedBox(width: 10),
                 ],
               ),
             ),

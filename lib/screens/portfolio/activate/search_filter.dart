@@ -43,6 +43,8 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
         ),
         suffixIcon: !isEmptyQuery
             ? IconButton(
+                visualDensity: VisualDensity.compact,
+                splashRadius: 24,
                 onPressed: () {
                   widget.clear();
                   _controller.clear();

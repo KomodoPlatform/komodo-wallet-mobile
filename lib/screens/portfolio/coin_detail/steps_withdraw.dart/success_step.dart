@@ -21,9 +21,7 @@ class _SuccessStepState extends State<SuccessStep> {
         child: Column(
           children: <Widget>[
             InkWell(
-              onTap: () {
-                copyToClipBoard(context, widget.txHash);
-              },
+              onTap: () => copyToClipBoard(context, widget.txHash),
               child: Column(
                 children: <Widget>[
                   Text(AppLocalizations.of(context).success),

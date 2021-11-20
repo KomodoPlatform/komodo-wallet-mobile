@@ -153,7 +153,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-              color: Theme.of(context).highlightColor,
+              color: Theme.of(context).colorScheme.secondary,
             )),
           ),
           child: Evaluation()),

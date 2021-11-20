@@ -35,7 +35,11 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
 
   Widget _buildHeader() {
     return InkWell(
-      onTap: () => setState(() => _showDetails = !_showDetails),
+      onTap: () {
+        setState(() {
+          _showDetails = !_showDetails;
+        });
+      },
       child: Container(
         padding: EdgeInsets.fromLTRB(0, 2, 0, 6),
         child: Row(

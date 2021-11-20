@@ -173,6 +173,7 @@ class _DetailSwapState extends State<DetailSwap> {
         Padding(
           padding: EdgeInsets.fromLTRB(0, 24, 16, 0),
           child: IconButton(
+            splashRadius: 24,
             icon: Icon(isNoteEdit ? Icons.check : Icons.edit),
             onPressed: () {
               setState(
@@ -221,24 +222,14 @@ class _DetailSwapState extends State<DetailSwap> {
             ),
           ),
           InkWell(
-            onTap: () {
-              copyToClipBoard(
-                context,
-                id,
-              );
-            },
+            onTap: () => copyToClipBoard(context, id),
             child: Row(
               children: [
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: Text(
-                      id,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                    ),
+                    child:
+                        Text(id, style: Theme.of(context).textTheme.bodyText2),
                   ),
                 ),
               ],

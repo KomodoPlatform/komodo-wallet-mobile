@@ -22,9 +22,8 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
           final bool isActive = _areAllActive(snapshot.data);
 
           return InkWell(
-            onTap: () {
-              coinsBloc.setCoinsBeforeActivationByType(widget.type, !isActive);
-            },
+            onTap: () => coinsBloc.setCoinsBeforeActivationByType(
+                widget.type, !isActive),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
               child: Row(
@@ -39,7 +38,7 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
                   const SizedBox(width: 24),
                   Text(
                     _getTitleText(),
-                    style: Theme.of(context).textTheme.subtitle2,
+                    style: Theme.of(context).textTheme.subtitle1,
                   )
                 ],
               ),

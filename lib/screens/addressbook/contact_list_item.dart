@@ -46,24 +46,21 @@ class _ContactListItemState extends State<ContactListItem> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        InkWell(
+        ListTile(
           onTap: () {
             setState(() {
               expanded = !expanded;
             });
           },
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              widget.contact.name,
-              style: const TextStyle(
-                fontSize: 20,
-              ),
+          title: Text(
+            widget.contact.name,
+            style: const TextStyle(
+              fontSize: 20,
             ),
           ),
         ),
         if (expanded)
-          Container(
+          Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
             child: Column(
               children: <Widget>[
@@ -107,59 +104,39 @@ class _ContactListItemState extends State<ContactListItem> {
         if (coinAbbr != abbr) return;
       }
 
-      addresses.add(
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 8,
-            right: 8,
-          ),
-          child: Row(
-            children: <Widget>[
-              CircleAvatar(
-                maxRadius: 6,
-                backgroundImage:
-                    AssetImage('assets/coin-icons/${abbr.toLowerCase()}.png'),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                '$abbr: ',
-                style: const TextStyle(fontSize: 14),
-              ),
-              Flexible(
-                child: InkWell(
-                  onTap: () {
-                    _tryToSend(abbr, value);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 8,
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: truncateMiddle(
-                            value,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.chevron_right,
-                          color: Theme.of(context).colorScheme.secondary,
-                          size: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+      addresses.add(ListTile(
+        visualDensity: VisualDensity.compact,
+        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+        onTap: () {
+          _tryToSend(abbr, value);
+        },
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              maxRadius: 6,
+              backgroundImage:
+                  AssetImage('assets/coin-icons/${abbr.toLowerCase()}.png'),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              '$abbr: ',
+              style: const TextStyle(fontSize: 14),
+            ),
+          ],
         ),
-      );
+        title: truncateMiddle(
+          value,
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 14,
+              ),
+        ),
+        trailing: Icon(
+          Icons.chevron_right,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ));
     });
 
     if (addresses.isEmpty) {

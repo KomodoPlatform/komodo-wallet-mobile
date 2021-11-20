@@ -333,38 +333,12 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
 
           final bool isEnabled = snapshot.data;
           return Card(
-            child: InkWell(
-              onTap: () {
-                _switchEnabled(!isEnabled);
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  top: 8,
-                  bottom: 8,
-                  right: 8,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        isEnabled
-                            ? AppLocalizations.of(context).camoPinOn
-                            : AppLocalizations.of(context).camoPinOff,
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                    Switch(
-                      value: isEnabled,
-                      onChanged: (bool value) {
-                        _switchEnabled(value);
-                      },
-                    ),
-                  ],
-                ),
-              ),
+            child: SwitchListTile(
+              title: Text(isEnabled
+                  ? AppLocalizations.of(context).camoPinOn
+                  : AppLocalizations.of(context).camoPinOff),
+              value: isEnabled,
+              onChanged: (bool value) => _switchEnabled(value),
             ),
           );
         });

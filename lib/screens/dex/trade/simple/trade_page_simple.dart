@@ -85,7 +85,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
             children: [
               Text(
                 AppLocalizations.of(context).simpleTradeSellTitle + ':',
-                style: Theme.of(context).textTheme.subtitle2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               _buildSearchField(Market.SELL),
             ],
@@ -130,7 +130,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
             children: [
               Text(
                 AppLocalizations.of(context).simpleTradeBuyTitle + ':',
-                style: Theme.of(context).textTheme.subtitle2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               _buildSearchField(Market.BUY),
             ],
@@ -247,8 +247,8 @@ class _TradePageSimpleState extends State<TradePageSimple> {
             Positioned(
               top: 0,
               right: 0,
-              child: InkWell(
-                onTap: currentTerm == null || currentTerm.isEmpty
+              child: IconButton(
+                onPressed: currentTerm == null || currentTerm.isEmpty
                     ? () => focusNode.requestFocus()
                     : () {
                         controller.text = '';
@@ -261,14 +261,13 @@ class _TradePageSimpleState extends State<TradePageSimple> {
                           }
                         });
                       },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    currentTerm == null || currentTerm.isEmpty
-                        ? Icons.search
-                        : Icons.clear,
-                    size: 16,
-                  ),
+                iconSize: 12,
+                constraints: BoxConstraints(maxHeight: 20, maxWidth: 20),
+                splashRadius: 12,
+                icon: Icon(
+                  currentTerm == null || currentTerm.isEmpty
+                      ? Icons.search
+                      : Icons.clear,
                 ),
               ),
             ),

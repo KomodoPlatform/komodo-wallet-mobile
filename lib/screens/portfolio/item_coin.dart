@@ -119,9 +119,7 @@ class _ItemCoinState extends State<ItemCoin>
       child: Builder(builder: (BuildContext context) {
         return InkWell(
           borderRadius: const BorderRadius.all(Radius.circular(4)),
-          onLongPress: () {
-            Slidable.of(context).openCurrentActionPane();
-          },
+          onLongPress: () => Slidable.of(context).openCurrentActionPane(),
           onTap: () {
             final slidableController = Slidable.of(context);
             if (slidableController != null) {
@@ -130,8 +128,9 @@ class _ItemCoinState extends State<ItemCoin>
             Navigator.push<dynamic>(
               context,
               MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) =>
-                      CoinDetail(coinBalance: widget.coinBalance)),
+                builder: (BuildContext context) =>
+                    CoinDetail(coinBalance: widget.coinBalance),
+              ),
             );
           },
           child: Container(
@@ -160,10 +159,7 @@ class _ItemCoinState extends State<ItemCoin>
                       Text(
                         coin.name.toUpperCase(),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2
-                            .copyWith(fontSize: 14),
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ],
                   ),
@@ -190,7 +186,7 @@ class _ItemCoinState extends State<ItemCoin>
                             return AutoSizeText(
                               '$amount ${coin.abbr}',
                               maxLines: 1,
-                              style: Theme.of(context).textTheme.subtitle2,
+                              style: Theme.of(context).textTheme.headline6,
                             );
                           }),
                       const SizedBox(
@@ -362,7 +358,9 @@ class _ItemCoinState extends State<ItemCoin>
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context).tagBEP20,
-                            style: Theme.of(context).textTheme.subtitle2,
+                            style: Theme.of(context).textTheme.button.copyWith(
+                                  color: Colors.white,
+                                ),
                           ),
                         ],
                       );
