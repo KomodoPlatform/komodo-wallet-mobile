@@ -21,23 +21,18 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
     return InkWell(
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Theme.of(context).highlightColor)),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Theme.of(context).colorScheme.onSurface),
+        ),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(12, 6, 12, 6),
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              LanguageFlagIcon(
-                loc: _currentLoc,
-                size: 16,
-              ),
+              LanguageFlagIcon(loc: _currentLoc, size: 16),
               SizedBox(width: 8),
               Text(getLocaleFullName(_currentLoc).toUpperCase()),
-              Icon(
-                Icons.arrow_drop_down,
-                size: 16,
-              )
+              Icon(Icons.arrow_drop_down, size: 16)
             ],
           ),
         ),

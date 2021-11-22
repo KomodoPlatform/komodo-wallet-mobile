@@ -49,24 +49,24 @@ class _TradePageSimpleState extends State<TradePageSimple> {
 
   Widget _buildContent(LinkedHashMap<String, Coin> known) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 12),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildProgressBar(),
-          SizedBox(height: 12),
-          Flexible(
+          Expanded(
             flex: _anyLists() ? 1 : 0,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(child: _buildSell(known)),
+                VerticalDivider(),
                 Expanded(child: _buildBuy(known)),
               ],
             ),
           ),
           BuildTradeDetails(),
-          SizedBox(height: 12),
+          SizedBox(height: 16),
           BuildTradeButtonSimple(),
           // BuildResetButtonSimple(),
         ],
@@ -75,92 +75,67 @@ class _TradePageSimpleState extends State<TradePageSimple> {
   }
 
   Widget _buildSell(LinkedHashMap<String, Coin> known) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: EdgeInsets.only(left: 12),
-          child: Row(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
             children: [
               Text(
                 AppLocalizations.of(context).simpleTradeSellTitle + ':',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
+              SizedBox(width: 8),
               _buildSearchField(Market.SELL),
             ],
           ),
-        ),
-        SizedBox(height: 6),
-        Flexible(
-          flex: _anyLists() ? 1 : 0,
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              _constrProvider.sellCoin == null
-                  ? CoinsList(
-                      type: Market.SELL,
-                      known: known,
-                      searchTerm: _sellSearchTerm,
-                    )
-                  : SellForm(),
-              Positioned(
-                child: Container(
-                  color: Theme.of(context).primaryColor,
-                ),
-                right: -1,
-                width: 2,
-                top: 0,
-                bottom: 0,
-              )
-            ],
+          SizedBox(height: 6),
+          Expanded(
+            flex: _anyLists() ? 1 : 0,
+            child: _constrProvider.sellCoin == null
+                ? CoinsList(
+                    type: Market.SELL,
+                    known: known,
+                    searchTerm: _sellSearchTerm,
+                  )
+                : SellForm(),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildBuy(LinkedHashMap<String, Coin> known) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.only(left: 12),
-          child: Row(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
               Text(
                 AppLocalizations.of(context).simpleTradeBuyTitle + ':',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
+              SizedBox(width: 8),
               _buildSearchField(Market.BUY),
             ],
           ),
-        ),
-        SizedBox(height: 6),
-        Flexible(
+          SizedBox(height: 6),
+          Expanded(
             flex: _anyLists() ? 1 : 0,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                _constrProvider.buyCoin == null
-                    ? CoinsList(
-                        type: Market.BUY,
-                        known: known,
-                        searchTerm: _buySearchTerm,
-                      )
-                    : BuyForm(),
-                Positioned(
-                  child: Container(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  left: -1,
-                  width: 2,
-                  top: 0,
-                  bottom: 0,
-                )
-              ],
-            ))
-      ],
+            child: _constrProvider.buyCoin == null
+                ? CoinsList(
+                    type: Market.BUY,
+                    known: known,
+                    searchTerm: _buySearchTerm,
+                  )
+                : BuyForm(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -223,56 +198,53 @@ class _TradePageSimpleState extends State<TradePageSimple> {
     }
 
     return Expanded(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        child: Stack(
-          children: [
-            TextField(
-              controller: controller,
-              focusNode: focusNode,
-              decoration: InputDecoration(
-                isDense: true,
-                border: UnderlineInputBorder(),
-              ),
-              onChanged: (String text) {
-                setState(() {
-                  if (type == Market.SELL) {
-                    _sellSearchTerm = text;
-                  } else {
-                    _buySearchTerm = text;
-                  }
-                });
-              },
+      child: Stack(
+        children: [
+          TextField(
+            controller: controller,
+            focusNode: focusNode,
+            decoration: InputDecoration(
+              isDense: true,
+              border: UnderlineInputBorder(),
             ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: IconButton(
-                onPressed: currentTerm == null || currentTerm.isEmpty
-                    ? () => focusNode.requestFocus()
-                    : () {
-                        controller.text = '';
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        setState(() {
-                          if (type == Market.SELL) {
-                            _sellSearchTerm = '';
-                          } else {
-                            _buySearchTerm = '';
-                          }
-                        });
-                      },
-                iconSize: 12,
-                constraints: BoxConstraints(maxHeight: 20, maxWidth: 20),
-                splashRadius: 12,
-                icon: Icon(
-                  currentTerm == null || currentTerm.isEmpty
-                      ? Icons.search
-                      : Icons.clear,
-                ),
+            onChanged: (String text) {
+              setState(() {
+                if (type == Market.SELL) {
+                  _sellSearchTerm = text;
+                } else {
+                  _buySearchTerm = text;
+                }
+              });
+            },
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: IconButton(
+              padding: EdgeInsets.all(0),
+              onPressed: currentTerm == null || currentTerm.isEmpty
+                  ? () => focusNode.requestFocus()
+                  : () {
+                      controller.text = '';
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      setState(() {
+                        if (type == Market.SELL) {
+                          _sellSearchTerm = '';
+                        } else {
+                          _buySearchTerm = '';
+                        }
+                      });
+                    },
+              iconSize: 12,
+              constraints: BoxConstraints(maxHeight: 20, maxWidth: 20),
+              splashRadius: 12,
+              icon: Icon(
+                currentTerm == null || currentTerm.isEmpty
+                    ? Icons.search
+                    : Icons.clear,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

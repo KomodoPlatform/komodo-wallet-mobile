@@ -18,12 +18,7 @@ class _TradeModesPageState extends State<TradeModesPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    return Column(
-      children: [
-        SizedBox(height: 8),
-        _buildView(),
-      ],
-    );
+    return _buildView();
   }
 
   Widget _buildView() {
@@ -36,7 +31,7 @@ class _TradeModesPageState extends State<TradeModesPage>
       initialData: mainBloc.tradeMode,
       stream: mainBloc.outTradeMode,
       builder: (context, snapshot) {
-        return Flexible(child: views[snapshot.data]);
+        return views[snapshot.data];
       },
     );
   }

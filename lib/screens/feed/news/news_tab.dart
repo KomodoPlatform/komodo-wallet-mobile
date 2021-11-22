@@ -76,7 +76,7 @@ class _NewsTabState extends State<NewsTab> {
               ));
             },
             child: ListView.builder(
-                padding: const EdgeInsets.only(bottom: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 itemCount: _news.length,
                 itemBuilder: (BuildContext context, int i) {
                   return Column(

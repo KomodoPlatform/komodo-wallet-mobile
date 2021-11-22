@@ -346,68 +346,63 @@ class _CoinDetailState extends State<CoinDetail> {
   Widget _buildTransactionsList(BuildContext context) {
     return Expanded(
       child: RefreshIndicator(
-        backgroundColor: Theme.of(context).backgroundColor,
-        color: Theme.of(context).colorScheme.secondary,
-        key: _refreshIndicatorKey,
-        onRefresh: _refresh,
-        child: ListView(
-          controller: _scrollController,
-          children: <Widget>[
-            StreamBuilder<dynamic>(
-                stream: coinsBloc.outTransactions,
-                initialData: coinsBloc.transactions,
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    _isWaiting = true;
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    _isWaiting = false;
-                  }
-                  if (snapshot.data is Transactions) {
-                    final Transactions transactions = snapshot.data;
-                    final String syncState = StateOfSync.InProgress.toString()
-                        .substring(
-                            StateOfSync.InProgress.toString().indexOf('.') + 1);
+          backgroundColor: Theme.of(context).backgroundColor,
+          color: Theme.of(context).colorScheme.secondary,
+          key: _refreshIndicatorKey,
+          onRefresh: _refresh,
+          child: StreamBuilder<dynamic>(
+              stream: coinsBloc.outTransactions,
+              initialData: coinsBloc.transactions,
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  _isWaiting = true;
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  _isWaiting = false;
+                }
+                if (snapshot.data is Transactions) {
+                  final Transactions transactions = snapshot.data;
+                  final String syncState = StateOfSync.InProgress.toString()
+                      .substring(
+                          StateOfSync.InProgress.toString().indexOf('.') + 1);
 
-                    if (snapshot.hasData &&
-                        transactions.result != null &&
-                        transactions.result.transactions != null) {
-                      if (transactions.result.transactions.isNotEmpty) {
-                        //@Slyris plz clean up
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 8),
-                          child: _buildTransactions(
-                              context, transactions.result.transactions),
-                        );
-                      } else if (transactions.result.transactions.isEmpty &&
-                          !(transactions.result.syncStatus.state ==
-                              syncState)) {
-                        return Center(
-                            child: Text(
-                          AppLocalizations.of(context).noTxs,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ));
-                      }
-                    }
-                  } else if (snapshot.data is ErrorCode &&
-                      snapshot.data.error != null) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
+                  if (snapshot.hasData &&
+                      transactions.result != null &&
+                      transactions.result.transactions != null) {
+                    if (transactions.result.transactions.isNotEmpty) {
+                      //@Slyris plz clean up
+                      return ListView.builder(
+                        itemCount: transactions.result.transactions.length,
+                        itemBuilder: (context, i) => _buildTransactionItem(
+                          transactions.result.transactions[i],
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                        controller: _scrollController,
+                      );
+                    } else if (transactions.result.transactions.isEmpty &&
+                        !(transactions.result.syncStatus.state == syncState)) {
+                      return Center(
                           child: Text(
-                        snapshot.data.error.message,
+                        AppLocalizations.of(context).noTxs,
                         style: Theme.of(context).textTheme.bodyText1,
-                        textAlign: TextAlign.center,
-                      )),
-                    );
+                      ));
+                    }
                   }
-                  return SizedBox();
-                })
-          ],
-        ),
-      ),
+                } else if (snapshot.data is ErrorCode &&
+                    snapshot.data.error != null) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                        child: Text(
+                      snapshot.data.error.message,
+                      style: Theme.of(context).textTheme.bodyText1,
+                      textAlign: TextAlign.center,
+                    )),
+                  );
+                }
+                return SizedBox();
+              })),
     );
   }
 
@@ -420,31 +415,12 @@ class _CoinDetailState extends State<CoinDetail> {
     }
   }
 
-  Widget _buildTransactions(
-      BuildContext context, List<Transaction> transactionsData) {
-    final List<Widget> transactionsWidget = [];
+  Widget _buildTransactionItem(Transaction transaction) {
+    fromId = transaction.internalId;
 
-    for (Transaction transaction in transactionsData) {
-      fromId = transaction.internalId;
-
-      transactionsWidget.add(TransactionListItem(
-        transaction: transaction,
-        currentCoinBalance: currentCoinBalance,
-      ));
-    }
-
-    transactionsWidget.add(Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Opacity(
-          opacity: isLoading ? 1.0 : 00,
-          child: const CircularProgressIndicator(),
-        ),
-      ),
-    ));
-
-    return Column(
-      children: transactionsWidget,
+    return TransactionListItem(
+      transaction: transaction,
+      currentCoinBalance: currentCoinBalance,
     );
   }
 

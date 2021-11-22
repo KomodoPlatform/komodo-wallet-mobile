@@ -33,16 +33,14 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
     return Card(
         child: InkWell(
       borderRadius: const BorderRadius.all(Radius.circular(4)),
-      onTap: () {
-        Navigator.push<dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => SwapDetailPage(
-              swap: widget.swap,
-            ),
+      onTap: () => Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => SwapDetailPage(
+            swap: widget.swap,
           ),
-        );
-      },
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[

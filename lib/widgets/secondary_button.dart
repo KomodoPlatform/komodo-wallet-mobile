@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SecondaryButton extends StatefulWidget {
+class SecondaryButton extends StatelessWidget {
   const SecondaryButton({
     @required this.onPressed,
     this.text,
@@ -22,40 +22,35 @@ class SecondaryButton extends StatefulWidget {
   final double width;
 
   @override
-  _SecondaryButtonState createState() => _SecondaryButtonState();
-}
-
-class _SecondaryButtonState extends State<SecondaryButton> {
-  @override
   Widget build(BuildContext context) {
     Widget child;
     bool isSend = false;
-    if (widget.text != null) {
-      if (widget.text == 'SEND') {
+    if (text != null) {
+      if (text == 'SEND') {
         isSend = true;
       }
       child = Text(
-        widget.text.toUpperCase(),
+        text.toUpperCase(),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       );
     } else {
-      child = widget.child;
+      child = child;
     }
     return SizedBox(
-      height: widget.height,
+      height: height,
       width: double.infinity,
       child: OutlinedButton(
         key: isSend ? const Key('secondary-button-send') : null,
-        onPressed: widget.onPressed,
+        onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           primary: Theme.of(context).brightness == Brightness.light
-              ? widget.textColor
+              ? textColor
               : Theme.of(context).colorScheme.onSurface,
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           side: BorderSide(
             color: Theme.of(context).brightness == Brightness.light
-                ? widget.borderColor
+                ? borderColor
                 : Colors.white,
           ),
           shape: RoundedRectangleBorder(

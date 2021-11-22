@@ -22,19 +22,15 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
       children: [
         _buildProgressBar(),
         Expanded(
-          child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              child: Column(
-                children: <Widget>[
-                  MultiOrderBase(),
-                  const SizedBox(height: 6),
-                  MultiOrderRelList(),
-                  const SizedBox(height: 10),
-                  _buildButton(),
-                ],
-              ),
-            ),
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            children: <Widget>[
+              MultiOrderBase(),
+              const SizedBox(height: 8),
+              MultiOrderRelList(),
+              const SizedBox(height: 16),
+              _buildButton(),
+            ],
           ),
         ),
       ],

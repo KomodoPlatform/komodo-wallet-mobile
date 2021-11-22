@@ -58,50 +58,30 @@ class _CoinSelectState extends State<CoinSelect> {
   @override
   Widget build(BuildContext context) {
     _orderBookProvider = Provider.of<OrderBookProvider>(context);
-    return InkWell(
+    return ListTile(
+      contentPadding: EdgeInsets.all(0),
+      minLeadingWidth: 16,
+      horizontalTitleGap: 8,
       onTap: () => _showDialog(),
-      child: Container(
-          decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey))),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: <Widget>[
-                  widget.value != null
-                      ? Image.asset(
-                          'assets/coin-icons/'
-                          '${widget.value.abbr.toLowerCase()}.png',
-                          height: widget.compact ? 16 : 24,
-                        )
-                      : CircleAvatar(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                          radius: widget.compact ? 8 : 12,
-                        ),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: AutoScrollText(
-                      text: widget.value != null ? widget.value.abbr : '-',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle2
-                          .copyWith(fontSize: widget.compact ? 14 : null),
-                    ),
-                  ),
-                  Icon(
-                    Icons.arrow_drop_down,
-                    size: widget.compact ? 14 : null,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 6,
-              ),
-            ],
-          )),
+      leading: widget.value != null
+          ? Image.asset(
+              'assets/coin-icons/'
+              '${widget.value.abbr.toLowerCase()}.png',
+              height: widget.compact ? 16 : 24,
+            )
+          : CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              radius: widget.compact ? 8 : 12,
+            ),
+      title: AutoScrollText(
+        text: widget.value != null ? widget.value.abbr : '-',
+      ),
+      trailing: Icon(Icons.arrow_drop_down),
+      shape: Border(
+        bottom: BorderSide(
+          color: Theme.of(context).primaryColor,
+        ),
+      ),
     );
   }
 

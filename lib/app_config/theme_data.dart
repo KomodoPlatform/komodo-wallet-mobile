@@ -4,40 +4,18 @@ import 'package:flutter/material.dart';
 // several parts of the theming, I will have to figure out how to fix later
 
 SnackBarThemeData _snackBarTheme = const SnackBarThemeData(
-  elevation: 12.0,
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.all(Radius.circular(4)),
-  ),
-  actionTextColor: Colors.green,
   behavior: SnackBarBehavior.floating,
 );
 
 AppBarTheme get _appBarTheme => AppBarTheme(
-      elevation: 0,
       centerTitle: true,
     );
 
-BottomNavigationBarThemeData get _bottomNavigationBarThemeData =>
-    BottomNavigationBarThemeData(
-      elevation: 0,
-    );
-
-ElevatedButtonThemeData get _elevatedButtonThemeData => ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-      ),
-    );
 InputDecorationTheme get _inputDecorationTheme => InputDecorationTheme(
       border: OutlineInputBorder(),
     );
 
 DividerThemeData get _dividerThemeData => DividerThemeData(
-      color: Colors.white,
-      space: 1,
-    );
-
-DividerThemeData get _dividerThemeDataLight => DividerThemeData(
-      color: Colors.black,
       space: 1,
     );
 
@@ -62,9 +40,7 @@ ThemeData getThemeDark() => ThemeData(
         brightness: Brightness.dark,
       ),
       snackBarTheme: _snackBarTheme,
-      bottomNavigationBarTheme: _bottomNavigationBarThemeData,
       appBarTheme: _appBarTheme,
-      elevatedButtonTheme: _elevatedButtonThemeData,
       inputDecorationTheme: _inputDecorationTheme,
       dividerTheme: _dividerThemeData,
     );
@@ -86,11 +62,9 @@ ThemeData getThemeLight() => ThemeData(
         brightness: Brightness.light,
       ),
       snackBarTheme: _snackBarTheme,
-      bottomNavigationBarTheme: _bottomNavigationBarThemeData,
       appBarTheme: _appBarTheme,
-      elevatedButtonTheme: _elevatedButtonThemeData,
       inputDecorationTheme: _inputDecorationTheme,
-      dividerTheme: _dividerThemeDataLight,
+      dividerTheme: _dividerThemeData,
     );
 
 const Color cexColor = Color.fromARGB(200, 253, 247, 227);

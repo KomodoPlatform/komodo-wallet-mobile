@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PrimaryButton extends StatefulWidget {
+class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     Key key,
     @required this.onPressed,
@@ -17,29 +17,24 @@ class PrimaryButton extends StatefulWidget {
   final Color backgroundColor;
 
   @override
-  _PrimaryButtonState createState() => _PrimaryButtonState();
-}
-
-class _PrimaryButtonState extends State<PrimaryButton> {
-  @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: widget.isLoading
+      child: isLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )
           : ElevatedButton(
-              onPressed: widget.onPressed,
+              onPressed: onPressed,
               style: ElevatedButton.styleFrom(
-                primary: widget.backgroundColor ??
-                    Theme.of(context).colorScheme.secondary,
+                primary:
+                    backgroundColor ?? Theme.of(context).colorScheme.secondary,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              child: Text(widget.text.toUpperCase()),
+              child: Text(text.toUpperCase()),
             ),
     );
   }

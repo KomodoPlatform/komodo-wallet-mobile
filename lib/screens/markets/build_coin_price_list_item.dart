@@ -68,7 +68,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                           onTap: widget.onTap,
                           child: Container(
                             height: 64,
-                            padding: const EdgeInsets.only(left: 14, right: 14),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Row(
                               children: <Widget>[
                                 CircleAvatar(
@@ -97,10 +97,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                           },
                           child: Container(
                             height: 64,
-                            padding: const EdgeInsets.only(
-                              left: 14,
-                              right: 14,
-                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Row(
                               children: <Widget>[
                                 if (_hasNonzeroPrice)

@@ -61,6 +61,7 @@ class _SwapHistoryState extends State<SwapHistory> {
               .sublist(start, end);
 
           return ListView(
+            padding: EdgeInsets.symmetric(horizontal: 16),
             controller: widget.scrollCtrl,
             children: [
               if (widget.showFilters) _buildFilters(swaps),

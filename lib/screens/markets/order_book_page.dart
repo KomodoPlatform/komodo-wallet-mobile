@@ -47,27 +47,24 @@ class _OrderBookPageState extends State<OrderBookPage> {
         : null;
     _hasChartsData = _hasBothCoins && _cexProvider.isChartAvailable(_pairStr);
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 8,
-              left: 8,
-              right: 8,
-            ),
-            child: _buildPairSelect(),
+    return ListView(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
           ),
-          if (_hasChartsData)
-            Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8),
-              child: _buildTabsButtons(),
-            ),
-          if (_showChart) _buildCandleChart(),
-          if (!_showChart) _buildOrderBook(),
-        ],
-      ),
+          child: _buildPairSelect(),
+        ),
+        if (_hasChartsData)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: _buildTabsButtons(),
+          ),
+        if (_showChart) _buildCandleChart(),
+        if (!_showChart) _buildOrderBook(),
+      ],
     );
   }
 
@@ -156,36 +153,58 @@ class _OrderBookPageState extends State<OrderBookPage> {
             },
           ),
         Expanded(child: SizedBox()),
-        TextButton.icon(
-          onPressed: () {
+        InkWell(
+          onTap: () {
             setState(() {
               _showChart = true;
             });
           },
-          style: TextButton.styleFrom(
-            primary: !_showChart
-                ? Theme.of(context).brightness == Brightness.light
-                    ? cexColorLight
-                    : cexColor.withOpacity(0.8)
-                : Theme.of(context).colorScheme.secondary,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text(
+                  AppLocalizations.of(context).marketsChart,
+                  style: Theme.of(context).textTheme.button.copyWith(
+                        color: !_showChart
+                            ? Theme.of(context).brightness == Brightness.light
+                                ? cexColorLight
+                                : cexColor.withOpacity(0.8)
+                            : Theme.of(context).colorScheme.secondary,
+                      ),
+                ),
+                SizedBox(width: 8),
+                CandlesIcon(
+                  size: 14,
+                  color: !_showChart
+                      ? Theme.of(context).brightness == Brightness.light
+                          ? cexColorLight
+                          : cexColor.withOpacity(0.8)
+                      : Theme.of(context).colorScheme.secondary,
+                ),
+              ],
+            ),
           ),
-          icon: CandlesIcon(size: 14),
-          label: Text(AppLocalizations.of(context).marketsChart),
         ),
-        TextButton(
-          onPressed: () {
+        InkWell(
+          onTap: () {
             setState(() {
               _showChart = false;
             });
           },
-          style: TextButton.styleFrom(
-            primary: _showChart
-                ? Theme.of(context).brightness == Brightness.light
-                    ? cexColorLight
-                    : cexColor.withOpacity(0.8)
-                : Theme.of(context).colorScheme.secondary,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              AppLocalizations.of(context).marketsDepth,
+              style: Theme.of(context).textTheme.button.copyWith(
+                    color: _showChart
+                        ? Theme.of(context).brightness == Brightness.light
+                            ? cexColorLight
+                            : cexColor.withOpacity(0.8)
+                        : Theme.of(context).colorScheme.secondary,
+                  ),
+            ),
           ),
-          child: Text(AppLocalizations.of(context).marketsDepth),
         ),
       ],
     );

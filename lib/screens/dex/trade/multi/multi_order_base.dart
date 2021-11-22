@@ -62,43 +62,40 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
     cexProvider ??= Provider.of<CexProvider>(context);
     baseCoin = multiOrderProvider.baseCoin;
 
-    return SizedBox(
-      width: double.infinity,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Table(
-                columnWidths: const {
-                  1: FixedColumnWidth(16),
-                },
-                children: [
-                  TableRow(
-                    children: [
-                      Text(
-                        AppLocalizations.of(context).multiSellTitle,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      SizedBox(),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: _buildResetButton(),
-                      )
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      _buildCoinSelect(),
-                      SizedBox(),
-                      _buildSellAmount(),
-                    ],
-                  )
-                ],
-              ),
-              ..._buildErrors(),
-            ],
-          ),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Table(
+              columnWidths: const {
+                1: FixedColumnWidth(16),
+              },
+              children: [
+                TableRow(
+                  children: [
+                    Text(
+                      AppLocalizations.of(context).multiSellTitle,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    SizedBox(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: _buildResetButton(),
+                    )
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    _buildCoinSelect(),
+                    SizedBox(),
+                    _buildSellAmount(),
+                  ],
+                )
+              ],
+            ),
+            ..._buildErrors(),
+          ],
         ),
       ),
     );

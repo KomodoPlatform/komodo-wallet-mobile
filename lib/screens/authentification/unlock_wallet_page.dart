@@ -55,95 +55,81 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                 )
               : null,
           backgroundColor: Colors.transparent,
-          foregroundColor: Theme.of(context).colorScheme.onBackground,
+          elevation: 0,
         ),
         body: ListView(
           key: const Key('unlock-wallet-scrollable'),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
           children: <Widget>[
             Center(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(150)),
-                child: Container(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(150)),
                   color: Theme.of(context).primaryColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: SvgPicture.asset(
-                        Theme.of(context).brightness == Brightness.light
-                            ? 'assets/svg_light/lock.svg'
-                            : 'assets/svg/lock.svg',
-                        semanticsLabel: 'Lock'),
+                ),
+                padding: const EdgeInsets.all(24.0),
+                child: SvgPicture.asset(
+                    Theme.of(context).brightness == Brightness.light
+                        ? 'assets/svg_light/lock.svg'
+                        : 'assets/svg/lock.svg',
+                    semanticsLabel: 'Lock'),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'UNLOCK',
+              style: Theme.of(context).textTheme.headline3,
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              'your wallet',
+              style: Theme.of(context).textTheme.headline6,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 24),
+            Builder(builder: (BuildContext context) {
+              return TextField(
+                key: const Key('enter-password-field'),
+                maxLength: 40,
+                controller: controller,
+                onChanged: (String str) {
+                  if (str.isEmpty || str.length > 40) {
+                    setState(() {
+                      isButtonLoginEnabled = false;
+                    });
+                  } else {
+                    setState(() {
+                      isButtonLoginEnabled = true;
+                    });
+                  }
+                },
+                onSubmitted: (String data) {
+                  _login(context);
+                },
+                autocorrect: false,
+                obscureText: isObscured,
+                enableInteractiveSelection: true,
+                toolbarOptions: ToolbarOptions(
+                  paste: controller.text.isEmpty,
+                  copy: false,
+                  cut: false,
+                  selectAll: false,
+                ),
+                style: Theme.of(context).textTheme.bodyText2,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context).hintEnterPassword,
+                  suffixIcon: PasswordVisibilityControl(
+                    isFocused: false,
+                    onVisibilityChange: (bool isPasswordObscured) {
+                      setState(() {
+                        isObscured = isPasswordObscured;
+                      });
+                    },
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Center(
-              child: Text(
-                'UNLOCK',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    .copyWith(fontSize: 48),
-              ),
-            ),
-            Center(
-              child: Text(
-                'your wallet',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .copyWith(fontWeight: FontWeight.w100, fontSize: 24),
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Builder(builder: (BuildContext context) {
-                  return TextField(
-                    key: const Key('enter-password-field'),
-                    maxLength: 40,
-                    controller: controller,
-                    onChanged: (String str) {
-                      if (str.isEmpty || str.length > 40) {
-                        setState(() {
-                          isButtonLoginEnabled = false;
-                        });
-                      } else {
-                        setState(() {
-                          isButtonLoginEnabled = true;
-                        });
-                      }
-                    },
-                    onSubmitted: (String data) {
-                      _login(context);
-                    },
-                    autocorrect: false,
-                    obscureText: isObscured,
-                    enableInteractiveSelection: true,
-                    toolbarOptions: ToolbarOptions(
-                      paste: controller.text.isEmpty,
-                      copy: false,
-                      cut: false,
-                      selectAll: false,
-                    ),
-                    style: Theme.of(context).textTheme.bodyText2,
-                    decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).hintEnterPassword,
-                      suffixIcon: PasswordVisibilityControl(
-                        isFocused: false,
-                        onVisibilityChange: (bool isPasswordObscured) {
-                          setState(() {
-                            isObscured = isPasswordObscured;
-                          });
-                        },
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            ),
+              );
+            }),
+            SizedBox(height: 24),
             Builder(
               builder: (BuildContext context) {
                 return isLoading
@@ -165,50 +151,42 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                               : SizedBox()
                         ],
                       )
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 100),
-                        child: PrimaryButton(
-                          key: const Key('unlock-wallet'),
-                          onPressed: isButtonLoginEnabled
-                              ? () => _login(context)
-                              : null,
-                          text: widget.textButton,
-                        ));
+                    : PrimaryButton(
+                        key: const Key('unlock-wallet'),
+                        onPressed:
+                            isButtonLoginEnabled ? () => _login(context) : null,
+                        text: widget.textButton,
+                      );
               },
             ),
             //TODO(MRC): Convert to a fitting Button widget
-            if (widget.isSignWithSeedIsEnabled)
+            if (widget.isSignWithSeedIsEnabled) ...[
+              SizedBox(height: 24),
               Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: InkWell(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    onTap: () {
-                      Navigator.push<dynamic>(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                                const WelcomePage(
-                                  isFromRestore: true,
-                                )),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        AppLocalizations.of(context).signInWithSeedPhrase,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            decoration: TextDecoration.underline,
-                            decorationColor: Colors.white),
+                child: InkWell(
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  onTap: () {
+                    Navigator.push<dynamic>(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) =>
+                            const WelcomePage(isFromRestore: true),
                       ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      AppLocalizations.of(context).signInWithSeedPhrase,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white),
                     ),
                   ),
                 ),
               ),
-            const SizedBox(
-              height: 16,
-            )
+            ],
           ],
         ),
       ),

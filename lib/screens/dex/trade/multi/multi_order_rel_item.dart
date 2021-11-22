@@ -41,28 +41,25 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
     _multiOrderProvider ??= Provider.of<MultiOrderProvider>(context);
     _cexProvider ??= Provider.of<CexProvider>(context);
 
-    return Container(
-      color: widget.color,
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
-      child: SwitchListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                _buildTitle(),
-                Expanded(child: _buildAmount()),
-              ],
-            ),
-            _buildFees(),
-            _buildError(),
-          ],
-        ),
-        value: _multiOrderProvider.isRelCoinSelected(widget.item.coin.abbr) ??
-            false,
-        onChanged: widget.onSelectChange,
+    return SwitchListTile(
+      tileColor: widget.color,
+      contentPadding: EdgeInsets.symmetric(horizontal: 0),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              _buildTitle(),
+              Expanded(child: _buildAmount()),
+            ],
+          ),
+          _buildFees(),
+          _buildError(),
+        ],
       ),
+      value:
+          _multiOrderProvider.isRelCoinSelected(widget.item.coin.abbr) ?? false,
+      onChanged: widget.onSelectChange,
     );
   }
 

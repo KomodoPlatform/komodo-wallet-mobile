@@ -71,6 +71,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
               .sublist(start, end);
 
           return ListView(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
             controller: widget.scrollCtrl,
             children: [
               if (widget.showFilters) _buildFilters(orderSwaps),

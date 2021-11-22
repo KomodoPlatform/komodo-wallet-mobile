@@ -35,11 +35,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
     cexProvider ??= Provider.of<CexProvider>(context);
     addressBookProvider ??= Provider.of<AddressBookProvider>(context);
 
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 8,
-        right: 8,
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Table(
         key: const Key('order-book-table'),
         columnWidths: const {

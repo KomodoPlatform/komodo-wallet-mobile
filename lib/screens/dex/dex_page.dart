@@ -116,37 +116,34 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
 
   Widget _buildModeSwitcher() {
     return PreferredSize(
-      preferredSize: Size.fromHeight(
-        AppBar.preferredHeightFor(context, Size(double.infinity, 64)),
-      ),
-      child: Row(
-        children: [
-          SizedBox(width: 16),
-          Expanded(
-              child: Text(
-            'Trading Mode:',
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-          )),
-          Flexible(
-            flex: 2,
-            child: TabBar(
-              controller: _tradeTabController,
-              indicator: TradeModeIndicator(context: context),
-              labelPadding: EdgeInsets.symmetric(horizontal: 0),
-              indicatorPadding: EdgeInsets.symmetric(horizontal: 0),
-              tabs: [
-                Tab(text: 'Simple'),
-                Tab(text: 'Advanced'),
-                Tab(
-                  text: AppLocalizations.of(context).multiTab,
-                ),
-              ],
+      preferredSize: Size.fromHeight(kToolbarHeight),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Expanded(
+                child: Text(
+              'Trading Mode:',
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+            )),
+            Flexible(
+              flex: 2,
+              child: TabBar(
+                controller: _tradeTabController,
+                indicator: TradeModeIndicator(context: context),
+                labelPadding: EdgeInsets.symmetric(horizontal: 0),
+                indicatorPadding: EdgeInsets.symmetric(horizontal: 0),
+                tabs: [
+                  Tab(text: 'Simple'),
+                  Tab(text: 'Advanced'),
+                  Tab(text: AppLocalizations.of(context).multiTab),
+                ],
+              ),
             ),
-          ),
-          SizedBox(width: 16),
-        ],
+          ],
+        ),
       ),
     );
   }

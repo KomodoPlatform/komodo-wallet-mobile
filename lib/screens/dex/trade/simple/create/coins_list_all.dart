@@ -47,15 +47,12 @@ class _CoinsListAllState extends State<CoinsListAll> {
 
     setState(() => _timer = null);
 
-    return Container(
-      padding: EdgeInsets.only(left: 12),
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: items.length,
-        itemBuilder: (context, i) {
-          return _buildCoinItem(items[i]);
-        },
-      ),
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: items.length,
+      itemBuilder: (context, i) {
+        return _buildCoinItem(items[i]);
+      },
     );
   }
 
@@ -69,34 +66,32 @@ class _CoinsListAllState extends State<CoinsListAll> {
     return Opacity(
       opacity: item.coin.isActive ? 1 : 0.3,
       child: Card(
-        margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
-        child: InkWell(
+        margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+        child: ListTile(
           onTap: () {
             widget.type == Market.SELL
                 ? _constrProvider.sellCoin = item.coin.abbr
                 : _constrProvider.buyCoin = item.coin.abbr;
           },
-          child: ListTile(
-            visualDensity: VisualDensity.compact,
-            dense: true,
-            contentPadding: EdgeInsets.symmetric(horizontal: 8),
-            horizontalTitleGap: 0,
-            leading: CircleAvatar(
-              radius: 8,
-              backgroundImage: AssetImage(
-                  'assets/coin-icons/${item.coin.abbr.toLowerCase()}.png'),
-            ),
-            title: Text(
-              item.coin.abbr,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            trailing: widget.type == Market.SELL
-                ? AutoScrollText(
-                    text: item.balance,
-                    style: Theme.of(context).textTheme.caption,
-                  )
-                : null,
+          minLeadingWidth: 16,
+          dense: true,
+          contentPadding: EdgeInsets.symmetric(horizontal: 8),
+          horizontalTitleGap: 8,
+          leading: CircleAvatar(
+            radius: 8,
+            backgroundImage: AssetImage(
+                'assets/coin-icons/${item.coin.abbr.toLowerCase()}.png'),
           ),
+          title: Text(
+            item.coin.abbr,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          trailing: widget.type == Market.SELL
+              ? AutoScrollText(
+                  text: item.balance,
+                  style: Theme.of(context).textTheme.caption,
+                )
+              : null,
         ),
       ),
     );

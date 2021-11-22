@@ -131,7 +131,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                 _updateAmtFields();
                 _calculateAmts();
               },
-              child: Container(
+              child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Container(
                   padding: const EdgeInsets.all(1),
@@ -158,7 +158,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -172,6 +172,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
             iconSize: 16,
             constraints: BoxConstraints(maxHeight: 24, maxWidth: 24),
             splashRadius: 16,
+            padding: EdgeInsets.all(0),
             icon: Icon(Icons.flash_auto),
           ),
         ],

@@ -135,10 +135,10 @@ class _ItemCoinState extends State<ItemCoin>
           },
           child: Container(
             color: Theme.of(context).canvasColor,
-            height: 125,
             child: Row(
               children: <Widget>[
                 Container(
+                  height: 128,
                   color: Color(int.parse(coin.colorCoin)),
                   width: 8,
                 ),
@@ -147,7 +147,6 @@ class _ItemCoinState extends State<ItemCoin>
                   width: 110,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       CircleAvatar(
                         radius: 28,
@@ -166,14 +165,12 @@ class _ItemCoinState extends State<ItemCoin>
                 ),
                 Expanded(child: SizedBox()),
                 Padding(
-                  padding: const EdgeInsets.only(right: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      const SizedBox(
-                        height: 4,
-                      ),
                       StreamBuilder<bool>(
                           initialData: settingsBloc.showBalance,
                           stream: settingsBloc.outShowBalance,
@@ -189,9 +186,7 @@ class _ItemCoinState extends State<ItemCoin>
                               style: Theme.of(context).textTheme.headline6,
                             );
                           }),
-                      const SizedBox(
-                        height: 4,
-                      ),
+                      const SizedBox(height: 8),
                       StreamBuilder(
                           initialData: settingsBloc.showBalance,
                           stream: settingsBloc.outShowBalance,
@@ -280,10 +275,7 @@ class _ItemCoinState extends State<ItemCoin>
     if (widget.coinBalance.coin.abbr == 'RICK' ||
         widget.coinBalance.coin.abbr == 'MORTY') {
       return Padding(
-        padding: const EdgeInsets.only(
-          top: 12,
-          right: 8,
-        ),
+        padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
         child: OutlinedButton(
           onPressed: () async {
             showFaucetDialog(
@@ -303,9 +295,8 @@ class _ItemCoinState extends State<ItemCoin>
           child: Text(AppLocalizations.of(context).faucetName),
         ),
       );
-    } else {
-      return SizedBox();
     }
+    return SizedBox();
   }
 
   Widget _buildNetworkLabel() {
@@ -321,92 +312,93 @@ class _ItemCoinState extends State<ItemCoin>
     if (!needLabel) return SizedBox();
 
     return Padding(
-      padding: const EdgeInsets.only(top: 14),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        child: Container(
-            color: widget.coinBalance.coin.type == 'erc' ||
-                    widget.coinBalance.coin.type == 'bep' ||
-                    widget.coinBalance.coin.type == 'qrc'
-                ? const Color.fromRGBO(20, 117, 186, 1)
-                : Theme.of(context).colorScheme.onSurface,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-              child: Builder(builder: (context) {
-                switch (widget.coinBalance.coin.type) {
-                  case 'erc':
-                    {
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            AppLocalizations.of(context).tagERC20,
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle2
-                                .copyWith(color: Colors.white),
-                          ),
-                        ],
-                      );
-                    }
-                  case 'bep':
-                    {
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            AppLocalizations.of(context).tagBEP20,
-                            style: Theme.of(context).textTheme.button.copyWith(
-                                  color: Colors.white,
-                                ),
-                          ),
-                        ],
-                      );
-                    }
-                  case 'qrc':
-                    {
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            AppLocalizations.of(context).tagQRC20,
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle2
-                                .copyWith(color: Colors.white),
-                          ),
-                        ],
-                      );
-                    }
-                  default:
-                    {
-                      return InkWell(
-                        onTap: () {
-                          ScaffoldMessengerState scaffoldMessenger;
-                          try {
-                            scaffoldMessenger = ScaffoldMessenger.of(context);
-                          } catch (_) {}
-
-                          if (scaffoldMessenger != null) {
-                            scaffoldMessenger.showSnackBar(const SnackBar(
-                              duration: Duration(seconds: 2),
-                              content: Text('Built on Komodo'),
-                            ));
-                          }
-                        },
-                        child: Image.asset(
-                          'assets/coin-icons/kmd.png',
-                          width: 18,
-                          height: 18,
-                        ),
-                      );
-                    }
+      padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          color: widget.coinBalance.coin.type == 'erc' ||
+                  widget.coinBalance.coin.type == 'bep' ||
+                  widget.coinBalance.coin.type == 'qrc'
+              ? const Color.fromRGBO(20, 117, 186, 1)
+              : Theme.of(context).colorScheme.onSurface,
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        child: Builder(
+          builder: (context) {
+            switch (widget.coinBalance.coin.type) {
+              case 'erc':
+                {
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        AppLocalizations.of(context).tagERC20,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2
+                            .copyWith(color: Colors.white),
+                      ),
+                    ],
+                  );
                 }
-              }),
-            )),
+              case 'bep':
+                {
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        AppLocalizations.of(context).tagBEP20,
+                        style: Theme.of(context).textTheme.button.copyWith(
+                              color: Colors.white,
+                            ),
+                      ),
+                    ],
+                  );
+                }
+              case 'qrc':
+                {
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        AppLocalizations.of(context).tagQRC20,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2
+                            .copyWith(color: Colors.white),
+                      ),
+                    ],
+                  );
+                }
+              default:
+                {
+                  return InkWell(
+                    onTap: () {
+                      ScaffoldMessengerState scaffoldMessenger;
+                      try {
+                        scaffoldMessenger = ScaffoldMessenger.of(context);
+                      } catch (_) {}
+
+                      if (scaffoldMessenger != null) {
+                        scaffoldMessenger.showSnackBar(const SnackBar(
+                          duration: Duration(seconds: 2),
+                          content: Text('Built on Komodo'),
+                        ));
+                      }
+                    },
+                    child: Image.asset(
+                      'assets/coin-icons/kmd.png',
+                      width: 18,
+                      height: 18,
+                    ),
+                  );
+                }
+            }
+          },
+        ),
       ),
     );
   }
@@ -415,7 +407,7 @@ class _ItemCoinState extends State<ItemCoin>
     if (!widget.coinBalance.coin.walletOnly) return SizedBox();
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 14, 8, 0),
+      padding: EdgeInsets.only(top: 8, left: 4),
       child: InkWell(
           onTap: () {
             ScaffoldMessengerState scaffoldMessenger;
@@ -430,18 +422,18 @@ class _ItemCoinState extends State<ItemCoin>
               ));
             }
           },
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-            child: Container(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
               color: Theme.of(context).backgroundColor,
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-              child: Text(
-                AppLocalizations.of(context).walletOnly.toUpperCase(),
-                style: Theme.of(context)
-                    .textTheme
-                    .caption
-                    .copyWith(fontFamily: 'RobotoCondensed'),
-              ),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            child: Text(
+              AppLocalizations.of(context).walletOnly.toUpperCase(),
+              style: Theme.of(context)
+                  .textTheme
+                  .caption
+                  .copyWith(fontFamily: 'RobotoCondensed'),
             ),
           )),
     );

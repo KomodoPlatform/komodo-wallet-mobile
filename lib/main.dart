@@ -307,29 +307,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           endDrawer: AppDrawer(context),
           resizeToAvoidBottomInset: true,
           body: _children[snapshot.data],
-          bottomNavigationBar: Container(
-            decoration: const BoxDecoration(
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.black,
-                  blurRadius: 10.0, // has the effect of softening the shadow
-                  spreadRadius: 5.0, // has the effect of extending the shadow
-                  offset: Offset(
-                    10.0, // horizontal, move right 10
-                    10.0, // vertical, move down 10
-                  ),
-                )
-              ],
-            ),
-            child: Material(
-              elevation: 8.0,
-              child: Container(
-                color: Theme.of(context).primaryColor,
-                child: SafeArea(
-                  child: networkStatusStreamBuilder(
-                    snapshot.data,
-                  ),
-                ),
+          bottomNavigationBar: Material(
+            elevation: 8.0,
+            child: SafeArea(
+              child: networkStatusStreamBuilder(
+                snapshot.data,
               ),
             ),
           ),

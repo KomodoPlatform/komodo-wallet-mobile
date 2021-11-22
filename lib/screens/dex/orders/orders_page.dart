@@ -36,58 +36,59 @@ class _OrdersPageState extends State<OrdersPage> {
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(width: 8),
-            _buildFiltersButton(),
-            Expanded(child: SizedBox()),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _currentTab = OrdersTab.active;
-                });
-              },
-              style: TextButton.styleFrom(
-                primary: _currentTab == OrdersTab.active
-                    ? Theme.of(context).colorScheme.secondary
-                    : null,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              _buildFiltersButton(),
+              Expanded(child: SizedBox()),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _currentTab = OrdersTab.active;
+                  });
+                },
+                style: TextButton.styleFrom(
+                  primary: _currentTab == OrdersTab.active
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context).ordersActive + ' ',
+                    ),
+                    _buildActiveOrdersNumber(),
+                  ],
+                ),
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).ordersActive + ' ',
-                  ),
-                  _buildActiveOrdersNumber(),
-                ],
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _currentTab = OrdersTab.history;
+                  });
+                },
+                style: TextButton.styleFrom(
+                  primary: _currentTab == OrdersTab.history
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context).ordersHistory + ' ',
+                    ),
+                    _buildHistoryNumber(),
+                  ],
+                ),
               ),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _currentTab = OrdersTab.history;
-                });
-              },
-              style: TextButton.styleFrom(
-                primary: _currentTab == OrdersTab.history
-                    ? Theme.of(context).colorScheme.secondary
-                    : null,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).ordersHistory + ' ',
-                  ),
-                  _buildHistoryNumber(),
-                ],
-              ),
-            ),
-            SizedBox(width: 8),
-          ],
+            ],
+          ),
         ),
-        Flexible(
+        Expanded(
             child: _currentTab == OrdersTab.active
                 ? ActiveOrders(
                     scrollCtrl: _scrollCtrl[OrdersTab.active],

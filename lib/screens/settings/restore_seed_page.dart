@@ -39,13 +39,20 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
       appBar: AppBar(
         title: Text(
             '${AppLocalizations.of(context).login[0].toUpperCase()}${AppLocalizations.of(context).login.substring(1)}'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
       body: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         children: <Widget>[
+          const SizedBox(height: 32),
           _buildTitle(),
+          const SizedBox(height: 64),
+          SizedBox(height: 24),
           _buildInputSeed(),
+          SizedBox(height: 8),
           _buildCheckBoxCustomSeed(),
+          SizedBox(height: 24),
           _buildConfirmButton(),
         ],
       ),
@@ -53,55 +60,40 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   }
 
   Widget _buildTitle() {
-    return Column(
-      children: <Widget>[
-        const SizedBox(
-          height: 56,
-        ),
-        Center(
-          child: Text(
-            AppLocalizations.of(context).enterSeedPhrase,
-            style: Theme.of(context).textTheme.headline6,
-            textAlign: TextAlign.center,
-          ),
-        ),
-        const SizedBox(
-          height: 56,
-        ),
-      ],
+    return Text(
+      AppLocalizations.of(context).enterSeedPhrase,
+      style: Theme.of(context).textTheme.headline6,
+      textAlign: TextAlign.center,
     );
   }
 
   Widget _buildInputSeed() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      child: TextField(
-        key: const Key('restore-seed-field'),
-        controller: controllerSeed,
-        onChanged: (String str) {
-          _checkSeed(str);
-        },
-        autocorrect: false,
-        keyboardType: TextInputType.multiline,
-        obscureText: _isSeedHidden,
-        enableInteractiveSelection: true,
-        toolbarOptions: ToolbarOptions(
-          paste: controllerSeed.text.isEmpty,
-          copy: false,
-          cut: false,
-          selectAll: false,
-        ),
-        maxLines: _isSeedHidden ? 1 : null,
-        style: Theme.of(context).textTheme.bodyText2,
-        decoration: InputDecoration(
-          hintText: AppLocalizations.of(context).exampleHintSeed,
-          suffixIcon: PasswordVisibilityControl(
-            onVisibilityChange: (bool isObscured) {
-              setState(() {
-                _isSeedHidden = isObscured;
-              });
-            },
-          ),
+    return TextField(
+      key: const Key('restore-seed-field'),
+      controller: controllerSeed,
+      onChanged: (String str) {
+        _checkSeed(str);
+      },
+      autocorrect: false,
+      keyboardType: TextInputType.multiline,
+      obscureText: _isSeedHidden,
+      enableInteractiveSelection: true,
+      toolbarOptions: ToolbarOptions(
+        paste: controllerSeed.text.isEmpty,
+        copy: false,
+        cut: false,
+        selectAll: false,
+      ),
+      maxLines: _isSeedHidden ? 1 : null,
+      style: Theme.of(context).textTheme.bodyText2,
+      decoration: InputDecoration(
+        hintText: AppLocalizations.of(context).exampleHintSeed,
+        suffixIcon: PasswordVisibilityControl(
+          onVisibilityChange: (bool isObscured) {
+            setState(() {
+              _isSeedHidden = isObscured;
+            });
+          },
         ),
       ),
     );
@@ -132,25 +124,23 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   }
 
   Widget _buildCheckBoxCustomSeed() {
-    return Row(
-      children: <Widget>[
-        Checkbox(
-          key: const Key('checkbox-custom-seed'),
-          value: _checkBox,
-          onChanged: (bool data) async {
-            final bool confirmed = await _showCustomSeedWarning(data);
-            if (!confirmed) return;
-            setState(() {
-              _checkBox = !_checkBox;
-              _checkSeed(controllerSeed.text);
-            });
-          },
-        ),
-        Text(
-          AppLocalizations.of(context).allowCustomSeed,
-          style: Theme.of(context).textTheme.bodyText1,
-        )
-      ],
+    return CheckboxListTile(
+      key: const Key('checkbox-custom-seed'),
+      value: _checkBox,
+      onChanged: (bool data) async {
+        final bool confirmed = await _showCustomSeedWarning(data);
+        if (!confirmed) return;
+        setState(() {
+          _checkBox = !_checkBox;
+          _checkSeed(controllerSeed.text);
+        });
+      },
+      controlAffinity: ListTileControlAffinity.leading,
+      contentPadding: EdgeInsets.all(0),
+      title: Text(
+        AppLocalizations.of(context).allowCustomSeed,
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
     );
   }
 
@@ -207,19 +197,12 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   }
 
   Widget _buildConfirmButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-      child: SizedBox(
-        width: double.infinity,
-        height: 50,
-        child: _isLogin
-            ? const Center(child: CircularProgressIndicator())
-            : PrimaryButton(
-                key: const Key('confirm-seed-button'),
-                text: AppLocalizations.of(context).confirm,
-                onPressed: _isButtonDisabled ? null : _onLoginPressed),
-      ),
-    );
+    return _isLogin
+        ? const Center(child: CircularProgressIndicator())
+        : PrimaryButton(
+            key: const Key('confirm-seed-button'),
+            text: AppLocalizations.of(context).confirm,
+            onPressed: _isButtonDisabled ? null : _onLoginPressed);
   }
 
   void _onLoginPressed() {

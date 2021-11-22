@@ -55,28 +55,24 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).checkSeedPhrase),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(32.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         children: <Widget>[
           Text(
             AppLocalizations.of(context).checkSeedPhraseTitle,
             style: Theme.of(context).textTheme.headline6,
           ),
-          const SizedBox(
-            height: 16,
-          ),
+          const SizedBox(height: 16),
           Text(
             AppLocalizations.of(context).checkSeedPhraseInfo,
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          const SizedBox(
-            height: 48,
-          ),
+          const SizedBox(height: 48),
           wordsWidget[stepper],
-          const SizedBox(
-            height: 16,
-          ),
+          const SizedBox(height: 16),
           StreamBuilder<bool>(
               initialData: checkPassphraseBloc.isWordGood,
               stream: checkPassphraseBloc.outIsWordGoodLogin,
