@@ -25,45 +25,49 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      textInputAction: TextInputAction.search,
-      autofocus: true,
-      controller: _controller,
-      focusNode: _focus,
-      maxLines: 1,
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(50),
-      ],
-      decoration: InputDecoration(
-        isDense: true,
-        prefixIcon: Icon(Icons.search),
-        hintText: AppLocalizations.of(context).searchFilterCoin,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32),
-        ),
-        suffixIcon: !isEmptyQuery
-            ? IconButton(
-                visualDensity: VisualDensity.compact,
-                splashRadius: 24,
-                onPressed: () {
-                  widget.clear();
-                  _controller.clear();
-                  setState(() {
-                    isEmptyQuery = true;
-                  });
-                },
-                icon: RotationTransition(
-                  turns: const AlwaysStoppedAnimation<double>(45 / 360),
-                  child: Icon(Icons.add_circle),
-                ),
-              )
-            : null,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(32),
+        color: Theme.of(context).primaryColor,
       ),
-      onChanged: (String query) async {
-        isEmptyQuery = query.isEmpty;
-        widget.onFilterCoins(
-            await coinsBloc.getAllNotActiveCoinsWithFilter(query));
-      },
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: TextFormField(
+        textInputAction: TextInputAction.search,
+        autofocus: true,
+        controller: _controller,
+        focusNode: _focus,
+        maxLines: 1,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(50),
+        ],
+        decoration: InputDecoration(
+          isDense: true,
+          prefixIcon: Icon(Icons.search),
+          hintText: AppLocalizations.of(context).searchFilterCoin,
+          border: InputBorder.none,
+          suffixIcon: !isEmptyQuery
+              ? IconButton(
+                  splashRadius: 24,
+                  onPressed: () {
+                    widget.clear();
+                    _controller.clear();
+                    setState(() {
+                      isEmptyQuery = true;
+                    });
+                  },
+                  icon: RotationTransition(
+                    turns: const AlwaysStoppedAnimation<double>(45 / 360),
+                    child: Icon(Icons.add_circle),
+                  ),
+                )
+              : null,
+        ),
+        onChanged: (String query) async {
+          isEmptyQuery = query.isEmpty;
+          widget.onFilterCoins(
+              await coinsBloc.getAllNotActiveCoinsWithFilter(query));
+        },
+      ),
     );
   }
 }

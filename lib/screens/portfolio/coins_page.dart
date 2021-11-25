@@ -67,6 +67,7 @@ class _CoinsPageState extends State<CoinsPage> {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
+                  backgroundColor: Theme.of(context).backgroundColor,
                   expandedHeight: _heightSliver,
                   pinned: true,
                   flexibleSpace: Builder(
@@ -198,7 +199,9 @@ class _CoinsPageState extends State<CoinsPage> {
                 ),
               ];
             },
-            body: const ListCoins()));
+            body: Container(
+                color: Theme.of(context).backgroundColor,
+                child: const ListCoins())));
   }
 
   Widget _buildProgressIndicator() {
@@ -306,7 +309,7 @@ class LoadAssetState extends State<LoadAsset> {
 
           listRet.add(Icon(
             Icons.show_chart,
-            color: color,
+            color: color.withOpacity(0.8),
           ));
           listRet.add(
             Text(
@@ -316,7 +319,7 @@ class LoadAssetState extends State<LoadAsset> {
           );
           listRet.add(Icon(
             Icons.chevron_right,
-            color: color,
+            color: color.withOpacity(0.8),
           ));
         } else {
           listRet.add(SizedBox(

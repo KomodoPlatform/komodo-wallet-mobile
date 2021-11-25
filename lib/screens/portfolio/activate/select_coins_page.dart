@@ -58,7 +58,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
+          backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppBar(
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
             title: SearchFieldFilterCoin(
               clear: () => _initCoinList(),
               onFilterCoins: (List<Coin> coinsFiltered) {
@@ -71,7 +73,6 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
             leading: Builder(
               builder: (BuildContext context) {
                 return IconButton(
-                  color: Theme.of(context).colorScheme.secondary,
                   icon: Icon(Icons.close),
                   splashRadius: 24,
                   onPressed: () => Navigator.of(context).pop(),

@@ -181,6 +181,7 @@ class _CoinDetailState extends State<CoinDetail> {
       context: context,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           elevation: elevationHeader,
           foregroundColor: ThemeData.estimateBrightnessForColor(
@@ -222,7 +223,6 @@ class _CoinDetailState extends State<CoinDetail> {
               },
             ),
             IconButton(
-              splashRadius: 24,
               icon: Icon(Icons.share),
               onPressed: () async {
                 mainBloc.isUrlLaucherIsOpen = true;
@@ -232,7 +232,6 @@ class _CoinDetailState extends State<CoinDetail> {
               },
             )
           ],
-          leading: BackButton(),
           title: Row(
             children: <Widget>[
               PhotoHero(
@@ -630,22 +629,20 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Widget _buildForm() {
-    return SingleChildScrollView(
-      child: AnimatedCrossFade(
-        crossFadeState:
-            isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-        duration: const Duration(milliseconds: 200),
-        firstChild: SizedBox(),
-        secondChild: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: Card(
-              margin:
-                  const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
-              elevation: 8.0,
-              child: SingleChildScrollView(child: listSteps[currentIndex])),
-        ),
+    return AnimatedCrossFade(
+      crossFadeState:
+          isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      duration: const Duration(milliseconds: 200),
+      firstChild: SizedBox(),
+      secondChild: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Card(
+            margin:
+                const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
+            elevation: 8.0,
+            child: SingleChildScrollView(child: listSteps[currentIndex])),
       ),
     );
   }

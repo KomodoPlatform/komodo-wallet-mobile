@@ -31,6 +31,7 @@ class _RewardsPageState extends State<RewardsPage> {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).rewardsTitle),
         ),
+        backgroundColor: Theme.of(context).backgroundColor,
         body: rewards == null
             ? const Center(
                 child: CircularProgressIndicator(),

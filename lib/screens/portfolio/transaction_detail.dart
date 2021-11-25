@@ -38,6 +38,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
     return LockScreen(
       context: context,
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           actions: <Widget>[
             IconButton(
@@ -405,7 +406,6 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                   ),
           ),
           IconButton(
-            visualDensity: VisualDensity.compact,
             splashRadius: 24,
             icon: Icon(isEdit ? Icons.check : Icons.edit),
             onPressed: () {
