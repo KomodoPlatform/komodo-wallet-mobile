@@ -77,10 +77,9 @@ class _CoinsPageState extends State<CoinsPage> {
                           FlexibleSpaceBar(
                               collapseMode: CollapseMode.pin,
                               centerTitle: true,
-                              title: Container(
-                                padding: EdgeInsets.only(
-                                    top: 20 +
-                                        MediaQuery.of(context).padding.top),
+                              titlePadding:
+                                  EdgeInsetsDirectional.only(top: 0, bottom: 0),
+                              title: SizedBox(
                                 width: _widthScreen * 0.5,
                                 child: Center(
                                   heightFactor: _heightFactor,
