@@ -39,6 +39,12 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
         Expanded(
           child: isEdit
               ? TextField(
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.secondary),
+                    ),
+                  ),
                   controller: noteTextController,
                   maxLength: 200,
                   minLines: 1,

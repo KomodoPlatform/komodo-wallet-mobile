@@ -70,6 +70,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).swapDetailTitle),
         ),

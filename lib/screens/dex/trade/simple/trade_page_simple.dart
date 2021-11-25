@@ -54,7 +54,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildProgressBar(),
-          Expanded(
+          Flexible(
             flex: _anyLists() ? 1 : 0,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

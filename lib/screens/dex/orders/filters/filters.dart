@@ -469,7 +469,7 @@ class _FiltersState extends State<Filters> {
         decoration: BoxDecoration(
             border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.secondary.withAlpha(150),
             width: 1,
           ),
         )),
@@ -568,7 +568,7 @@ class _FiltersState extends State<Filters> {
                 CircleAvatar(
                     radius: 8,
                     backgroundColor: Theme.of(context).highlightColor),
-                const SizedBox(width: 4),
+                const SizedBox(width: 8),
                 Text(AppLocalizations.of(context).filtersAll),
               ],
             ),

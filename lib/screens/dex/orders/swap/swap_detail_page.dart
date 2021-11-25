@@ -45,8 +45,10 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
             context: context,
             onSuccess: () {},
             child: Scaffold(
+              backgroundColor: Theme.of(context).backgroundColor,
               appBar: AppBar(
                   backgroundColor: Colors.transparent,
+                  elevation: 0,
                   leading: BackButton(
                     key: const Key('swap-detail-back-button'),
                     onPressed: () => Navigator.pop(context, false),
