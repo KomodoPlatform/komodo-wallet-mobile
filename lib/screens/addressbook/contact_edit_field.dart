@@ -63,9 +63,11 @@ class _ContactEditFieldState extends State<ContactEditField> {
       children: <Widget>[
         Expanded(
             child: Card(
-                margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
+                margin: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                color: widget.color ?? Theme.of(context).backgroundColor,
                 child: Padding(
-                  padding: widget.padding ?? const EdgeInsets.all(16),
+                  padding: widget.padding ??
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -83,8 +85,15 @@ class _ContactEditFieldState extends State<ContactEditField> {
                         children: <Widget>[
                           if (widget.name != 'name') ...[
                             IconButton(
+                              padding: EdgeInsets.all(0),
                               onPressed: () => _scan(),
-                              icon: Icon(Icons.add_a_photo),
+                              icon: Icon(
+                                Icons.add_a_photo,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black45
+                                    : Colors.white,
+                              ),
                               splashRadius: 24,
                             ),
                           ],
@@ -102,20 +111,19 @@ class _ContactEditFieldState extends State<ContactEditField> {
                               enableInteractiveSelection: true,
                             ),
                           ),
-                          if (widget.removable)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 4, right: 4),
-                              child: RoundButton(
-                                  size: 24,
-                                  onPressed: () {
-                                    if (widget.onRemove != null)
-                                      widget.onRemove();
-                                  },
-                                  child: const Icon(
-                                    Icons.remove,
-                                    size: 16,
-                                  )),
-                            ),
+                          if (widget.removable) ...[
+                            SizedBox(width: 8),
+                            RoundButton(
+                                size: 24,
+                                onPressed: () {
+                                  if (widget.onRemove != null)
+                                    widget.onRemove();
+                                },
+                                child: const Icon(
+                                  Icons.remove,
+                                  size: 16,
+                                )),
+                          ],
                         ],
                       ),
                     ],

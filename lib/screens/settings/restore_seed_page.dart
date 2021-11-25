@@ -42,6 +42,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         children: <Widget>[

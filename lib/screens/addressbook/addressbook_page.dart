@@ -43,6 +43,7 @@ class _AddressBookState extends State<AddressBookPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(
             widget.contact == null
@@ -93,7 +94,7 @@ class _AddressBookState extends State<AddressBookPage> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: isSearchOpen ? _buildSearchBar() : _buildToolBar(),
     );
   }

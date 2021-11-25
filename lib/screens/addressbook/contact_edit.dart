@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -61,6 +62,7 @@ class _ContactEditState extends State<ContactEdit> {
         child: LockScreen(
           context: context,
           child: Scaffold(
+            backgroundColor: Theme.of(context).backgroundColor,
             appBar: AppBar(
               title: Text(
                 widget.contact == null
@@ -81,55 +83,49 @@ class _ContactEditState extends State<ContactEdit> {
               child: Column(
                 children: <Widget>[
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          ContactEditField(
-                              name: 'name',
-                              label:
-                                  AppLocalizations.of(context).contactTitleName,
-                              invalid: invalidFields.contains('name'),
-                              icon: Icon(
-                                Icons.account_circle,
-                                size: 16,
-                              ),
-                              color: Theme.of(context).primaryColor,
-                              value: editContact.name,
-                              removable: false,
-                              autofocus:
-                                  widget.contact == null && focusOn == null,
-                              onChange: (String value) {
-                                setState(() {
-                                  editContact.name = value;
-                                });
-                                _validate();
-                              }),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: _buildAddButton(),
+                    child: ListView(
+                      children: <Widget>[
+                        ContactEditField(
+                          name: 'name',
+                          label: AppLocalizations.of(context).contactTitleName,
+                          invalid: invalidFields.contains('name'),
+                          icon: Icon(
+                            Icons.account_circle,
+                            size: 16,
                           ),
-                          FutureBuilder<Widget>(
-                            future: _buildAddresses(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<Widget> snapshot) {
-                              if (!snapshot.hasData)
-                                return const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 16),
-                                    child: SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                          strokeWidth: 1),
-                                    ),
+                          value: editContact.name,
+                          removable: false,
+                          autofocus: widget.contact == null && focusOn == null,
+                          onChange: (String value) {
+                            setState(() {
+                              editContact.name = value;
+                            });
+                            _validate();
+                          },
+                        ),
+                        SizedBox(height: 16),
+                        _buildAddButton(),
+                        FutureBuilder<Widget>(
+                          future: _buildAddresses(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Widget> snapshot) {
+                            if (!snapshot.hasData)
+                              return const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 16),
+                                  child: SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 1),
                                   ),
-                                );
+                                ),
+                              );
 
-                              return snapshot.data;
-                            },
-                          ),
-                        ],
-                      ),
+                            return snapshot.data;
+                          },
+                        ),
+                      ],
                     ),
                   ),
                   Row(
@@ -250,7 +246,7 @@ class _ContactEditState extends State<ContactEdit> {
       children: [
         ...addresses,
         Padding(
-          padding: const EdgeInsets.only(top: 16, bottom: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           child: _buildAddButton(),
         ),
       ],
@@ -363,7 +359,9 @@ class _ContactEditState extends State<ContactEdit> {
                         prefixIcon: Icon(Icons.search),
                         hintText: 'Search for Ticker',
                       ),
-                      maxLength: 16,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(16),
+                      ],
                     ),
                   ),
                   ..._buildCoinDialogOption(
@@ -386,11 +384,7 @@ class _ContactEditState extends State<ContactEdit> {
         color: const Color.fromRGBO(20, 117, 186, 1),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Row(
-        children: <Widget>[
-          Text(text),
-        ],
-      ),
+      child: Text(text),
     );
   }
 
@@ -401,7 +395,7 @@ class _ContactEditState extends State<ContactEdit> {
         vertical: 2,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).canvasColor,
+        color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -410,7 +404,7 @@ class _ContactEditState extends State<ContactEdit> {
             maxRadius: 6,
             backgroundImage: AssetImage('assets/coin-icons/kmd.png'),
           ),
-          const SizedBox(width: 3),
+          const SizedBox(width: 4),
           Text(
             AppLocalizations.of(context).tagKMD,
           ),

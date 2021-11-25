@@ -33,15 +33,16 @@ class _AppDrawerState extends State<AppDrawer> {
     cexProvider = Provider.of<CexProvider>(context);
     double drawerWidth = MediaQuery.of(context).size.width * 0.7;
     if (drawerWidth < 200) drawerWidth = 200;
+    final double headerHeight = MediaQuery.of(context).size.height * 0.25;
 
     return SizedBox(
       width: drawerWidth,
       child: Drawer(
-        child: Material(
-          color: Colors.transparent,
-          child: Column(
-            children: <Widget>[
-              DrawerHeader(
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: headerHeight,
+              child: DrawerHeader(
                 margin: EdgeInsets.all(0),
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -54,237 +55,224 @@ class _AppDrawerState extends State<AppDrawer> {
                     ],
                   ),
                 ),
-                child: SafeArea(
-                  left: false,
-                  right: false,
-                  bottom: false,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: SvgPicture.asset(
-                            'assets/branding/svg/mark_and_text_vertical_white.svg',
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Divider(
-                          indent: drawerWidth * 0.1,
-                          endIndent: drawerWidth * 0.1,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                            bottom: 8,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              SvgPicture.asset(
-                                'assets/svg/wallet.svg',
-                                height: 18,
-                              ),
-                              const SizedBox(width: 4),
-                              FutureBuilder<Wallet>(
-                                  future: Db.getCurrentWallet(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<Wallet> snapshot) {
-                                    if (!snapshot.hasData) return SizedBox();
-                                    return Text(
-                                      snapshot.data.name,
-                                      style: const TextStyle(
-                                          fontSize: 18, color: Colors.white),
-                                      overflow: TextOverflow.ellipsis,
-                                    );
-                                  })
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: ListView(
-                  padding: EdgeInsets.all(0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    _buildDrawerItem(
-                      title:
-                          Text(AppLocalizations.of(context).soundSettingsLink),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.push<dynamic>(
-                            context,
-                            MaterialPageRoute<dynamic>(
-                                builder: (BuildContext context) =>
-                                    SoundSettingsPage()));
-                      },
-                      leading: const Icon(Icons.audiotrack, size: 16),
-                      trailing: IconButton(
-                        constraints: BoxConstraints.tightFor(
-                          height: 24,
-                          width: 24,
-                        ),
-                        splashRadius: 24,
-                        padding: EdgeInsets.all(0),
-                        onPressed: () {
-                          setState(() {
-                            musicService.flip();
-                          });
-                        },
-                        icon: Icon(
-                            musicService.on()
-                                ? Icons.volume_up
-                                : Icons.volume_down,
-                            color: musicService.on()
-                                ? Theme.of(context).toggleableActiveColor
-                                : Theme.of(context).unselectedWidgetColor),
+                    Flexible(
+                      flex: 5,
+                      child: SvgPicture.asset(
+                        'assets/branding/svg/mark_and_text_vertical_white.svg',
+                        color: Colors.white,
                       ),
                     ),
-                    _buildDrawerItem(
-                        title: SharedPreferencesBuilder<dynamic>(
-                            pref: 'current_languages',
-                            builder: (BuildContext context,
-                                AsyncSnapshot<dynamic> snapshot) {
-                              return Row(
-                                children: <Widget>[
-                                  Text(AppLocalizations.of(context).language),
-                                  Text(
-                                    snapshot.hasData
-                                        ? ' (${snapshot.data})'.toUpperCase()
-                                        : '',
-                                  ),
-                                ],
-                              );
-                            }),
-                        onTap: () {
-                          Navigator.push<dynamic>(
-                              context,
-                              MaterialPageRoute<dynamic>(
-                                  builder: (BuildContext context) =>
-                                      SelectLanguagePage(
-                                        currentLoc:
-                                            Localizations.localeOf(context),
-                                      )));
-                        },
-                        leading: const Icon(Icons.language,
-                            key: Key('side-nav-language'), size: 16)),
-                    _buildDrawerItem(
-                        title: Row(
-                          children: <Widget>[
-                            Text(AppLocalizations.of(context).currency),
-                            if (cexProvider.selectedFiat != null)
-                              Text(' (${cexProvider.selectedFiat})'),
-                          ],
-                        ),
-                        onTap: () {
-                          showCurrenciesDialog(context);
-                        },
-                        leading: cexProvider.selectedFiatSymbol.length > 1
-                            ? const Icon(Icons.account_balance_wallet,
-                                key: Key('side-nav-currency'), size: 16)
-                            : Text(' ${cexProvider.selectedFiatSymbol}')),
-                    StreamBuilder<bool>(
-                      initialData: settingsBloc.showBalance,
-                      stream: settingsBloc.outShowBalance,
-                      builder:
-                          (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                        return SwitchListTile(
-                          secondary: const Icon(Icons.money_off, size: 16),
-                          title: Text(AppLocalizations.of(context).hideBalance),
-                          value: !snapshot.data ?? false,
-                          onChanged: (bool dataSwitch) {
-                            settingsBloc.setShowBalance(!dataSwitch);
-                          },
-                        );
-                      },
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Divider(
+                        color: Colors.white,
+                        indent: drawerWidth * 0.1,
+                        endIndent: drawerWidth * 0.1,
+                      ),
                     ),
-                    Divider(
-                      indent: 20,
-                      endIndent: 20,
-                    ),
-                    _buildDrawerItem(
-                        title: Text(AppLocalizations.of(context).addressBook),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push<dynamic>(
-                              context,
-                              MaterialPageRoute<dynamic>(
-                                  builder: (BuildContext context) =>
-                                      const AddressBookPage()));
-                        },
-                        leading: const Icon(Icons.import_contacts,
-                            key: Key('side-nav-addressbook'), size: 16)),
-                    Divider(
-                      indent: 20,
-                      endIndent: 20,
-                    ),
-                    _buildDrawerItem(
-                        title: Text(AppLocalizations.of(context).settings),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push<dynamic>(
-                              context,
-                              MaterialPageRoute<dynamic>(
-                                  builder: (BuildContext context) =>
-                                      SettingPage()));
-                        },
-                        leading: const Icon(Icons.settings,
-                            key: Key('side-nav-settings'), size: 16)),
-                    _buildDrawerItem(
-                        title: Text(AppLocalizations.of(context).helpLink),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push<dynamic>(
-                              context,
-                              MaterialPageRoute<dynamic>(
-                                  builder: (BuildContext context) =>
-                                      HelpPage()));
-                        },
-                        leading: const Icon(Icons.help,
-                            key: Key('side-nav-help-feedback'), size: 16)),
-                    StreamBuilder<bool>(
-                      initialData: settingsBloc.isLightTheme,
-                      stream: settingsBloc.outLightTheme,
-                      builder:
-                          (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                        return SwitchListTile(
-                          title: Text(AppLocalizations.of(context).switchTheme),
-                          secondary: const Icon(Icons.brush, size: 16),
-                          value: snapshot.data ?? false,
-                          onChanged: (bool dataSwitch) {
-                            settingsBloc.setLightTheme(dataSwitch);
-                          },
-                        );
-                      },
-                    ),
-                    Divider(
-                      indent: 20,
-                      endIndent: 20,
-                    ),
-                    _buildDrawerItem(
-                      leading: const Icon(Icons.exit_to_app,
-                          key: Key('side-nav-logout'), size: 16),
-                      onTap: () {
-                        Navigator.pop(context);
-                        showLogoutConfirmation(widget.mContext);
-                      },
-                      title: Text(AppLocalizations.of(context).logout),
+                    Flexible(
+                      flex: 4,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SvgPicture.asset(
+                            'assets/svg/wallet.svg',
+                            height: 18,
+                          ),
+                          const SizedBox(width: 4),
+                          FutureBuilder<Wallet>(
+                              future: Db.getCurrentWallet(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<Wallet> snapshot) {
+                                if (!snapshot.hasData) return SizedBox();
+                                return Text(
+                                  snapshot.data.name,
+                                  style: const TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                  overflow: TextOverflow.ellipsis,
+                                );
+                              })
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.all(0),
+                children: <Widget>[
+                  _buildDrawerItem(
+                    title: Text(AppLocalizations.of(context).soundSettingsLink),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.push<dynamic>(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) =>
+                              SoundSettingsPage(),
+                        ),
+                      );
+                    },
+                    leading: const Icon(Icons.audiotrack, size: 16),
+                    trailing: IconButton(
+                      constraints: BoxConstraints.tightFor(
+                        height: 24,
+                        width: 24,
+                      ),
+                      splashRadius: 24,
+                      padding: EdgeInsets.all(0),
+                      icon: Icon(
+                          musicService.on()
+                              ? Icons.volume_up
+                              : Icons.volume_down,
+                          color: musicService.on()
+                              ? Theme.of(context).toggleableActiveColor
+                              : Theme.of(context).unselectedWidgetColor),
+                      onPressed: () {
+                        setState(() {
+                          musicService.flip();
+                        });
+                      },
+                    ),
+                  ),
+                  _buildDrawerItem(
+                      title: SharedPreferencesBuilder<dynamic>(
+                          pref: 'current_languages',
+                          builder: (BuildContext context,
+                              AsyncSnapshot<dynamic> snapshot) {
+                            return Row(
+                              children: <Widget>[
+                                Text(AppLocalizations.of(context).language),
+                                Text(
+                                  snapshot.hasData
+                                      ? ' (${snapshot.data})'.toUpperCase()
+                                      : '',
+                                ),
+                              ],
+                            );
+                          }),
+                      onTap: () {
+                        Navigator.push<dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) =>
+                                    SelectLanguagePage(
+                                      currentLoc:
+                                          Localizations.localeOf(context),
+                                    )));
+                      },
+                      leading: const Icon(Icons.language,
+                          key: Key('side-nav-language'), size: 16)),
+                  _buildDrawerItem(
+                      title: Row(
+                        children: <Widget>[
+                          Text(AppLocalizations.of(context).currency),
+                          if (cexProvider.selectedFiat != null)
+                            Text(' (${cexProvider.selectedFiat})'),
+                        ],
+                      ),
+                      onTap: () => showCurrenciesDialog(context),
+                      leading: cexProvider.selectedFiatSymbol.length > 1
+                          ? const Icon(Icons.account_balance_wallet,
+                              key: Key('side-nav-currency'), size: 16)
+                          : Text(' ${cexProvider.selectedFiatSymbol}')),
+                  StreamBuilder<bool>(
+                    initialData: settingsBloc.showBalance,
+                    stream: settingsBloc.outShowBalance,
+                    builder:
+                        (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                      return SwitchListTile(
+                        secondary: const Icon(Icons.money_off, size: 16),
+                        title: Text(AppLocalizations.of(context).hideBalance),
+                        value: !snapshot.data ?? false,
+                        onChanged: (bool dataSwitch) {
+                          settingsBloc.setShowBalance(!dataSwitch);
+                        },
+                      );
+                    },
+                  ),
+                  Divider(
+                    indent: 20,
+                    endIndent: 20,
+                    color: Colors.white,
+                  ),
+                  _buildDrawerItem(
+                      title: Text(AppLocalizations.of(context).addressBook),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push<dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) =>
+                                    const AddressBookPage()));
+                      },
+                      leading: const Icon(Icons.import_contacts,
+                          key: Key('side-nav-addressbook'), size: 16)),
+                  Divider(
+                    indent: 20,
+                    endIndent: 20,
+                  ),
+                  _buildDrawerItem(
+                      title: Text(AppLocalizations.of(context).settings),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push<dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) =>
+                                    SettingPage()));
+                      },
+                      leading: const Icon(Icons.settings,
+                          key: Key('side-nav-settings'), size: 16)),
+                  _buildDrawerItem(
+                      title: Text(AppLocalizations.of(context).helpLink),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push<dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) => HelpPage()));
+                      },
+                      leading: const Icon(Icons.help,
+                          key: Key('side-nav-help-feedback'), size: 16)),
+                  StreamBuilder<bool>(
+                    initialData: settingsBloc.isLightTheme,
+                    stream: settingsBloc.outLightTheme,
+                    builder:
+                        (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                      return SwitchListTile(
+                        title: Text(AppLocalizations.of(context).switchTheme),
+                        secondary: const Icon(Icons.brush, size: 16),
+                        value: snapshot.data ?? false,
+                        onChanged: (bool dataSwitch) {
+                          settingsBloc.setLightTheme(dataSwitch);
+                        },
+                      );
+                    },
+                  ),
+                  Divider(
+                    indent: 20,
+                    endIndent: 20,
+                    color: Theme.of(context).dividerColor,
+                  ),
+                  _buildDrawerItem(
+                    leading: const Icon(Icons.exit_to_app,
+                        key: Key('side-nav-logout'), size: 16),
+                    onTap: () {
+                      Navigator.pop(context);
+                      showLogoutConfirmation(widget.mContext);
+                    },
+                    title: Text(AppLocalizations.of(context).logout),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

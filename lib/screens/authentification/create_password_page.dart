@@ -67,7 +67,9 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Form(
         key: _formKey,
         autovalidateMode:
@@ -115,7 +117,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
               decoration: InputDecoration(
                 errorMaxLines: 6,
                 hintText: AppLocalizations.of(context).hintPassword,
-                labelText: null,
                 suffixIcon: PasswordVisibilityControl(
                   onVisibilityChange: (bool isPasswordObscured) {
                     setState(() {

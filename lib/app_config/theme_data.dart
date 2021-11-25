@@ -7,16 +7,86 @@ SnackBarThemeData _snackBarTheme = const SnackBarThemeData(
   behavior: SnackBarBehavior.floating,
 );
 
-AppBarTheme get _appBarTheme => AppBarTheme(
+AppBarTheme get _appBarTheme => const AppBarTheme(
       centerTitle: true,
     );
 
-InputDecorationTheme get _inputDecorationTheme => InputDecorationTheme(
+InputDecorationTheme get _inputDecorationTheme => const InputDecorationTheme(
       border: OutlineInputBorder(),
     );
 
-DividerThemeData get _dividerThemeData => DividerThemeData(
+DividerThemeData get _dividerThemeData => const DividerThemeData(
       space: 1,
+    );
+
+// Color scheme dark adapted from current dev
+/*
+ColorScheme get _colorScheme => const ColorScheme(
+      primary: Color.fromRGBO(42, 54, 71, 1),
+      primaryVariant: Color.fromRGBO(28, 36, 48, 1),
+      secondary: Color.fromRGBO(57, 161, 238, 1),
+      secondaryVariant: Colors.transparent, // Needs to be generated
+      surface: Color.fromRGBO(42, 54, 71, 1),
+      background: Color.fromRGBO(30, 42, 58, 1),
+      error: Color.fromRGBO(202, 78, 61, 1),
+      onPrimary: Colors.transparent, // Needs to be generated
+      onSecondary: Colors.transparent, // Needs to be generated
+      onSurface: Colors.transparent, // Needs to be generated
+      onBackground: Colors.transparent, // Needs to be generated
+      onError: Colors.transparent, // Needs to be generated
+      brightness: Brightness.dark,
+    );
+*/
+
+ColorScheme get _colorScheme => const ColorScheme(
+      primary: Color.fromRGBO(90, 104, 230, 1),
+      primaryVariant: Color.fromRGBO(64, 78, 201, 1),
+      secondary: Color.fromRGBO(106, 77, 227, 1),
+      secondaryVariant: Color.fromRGBO(67, 46, 157, 1),
+      surface: Color.fromRGBO(36, 39, 61, 1),
+      background: Color.fromRGBO(32, 35, 55, 1),
+      error: Color.fromRGBO(229, 33, 103, 1),
+      onPrimary: Color.fromRGBO(255, 255, 255, 1),
+      onSecondary: Color.fromRGBO(255, 255, 255, 1),
+      onSurface: Color.fromRGBO(255, 255, 255, 1),
+      onBackground: Color.fromRGBO(255, 255, 255, 1),
+      onError: Color.fromRGBO(255, 255, 255, 1),
+      brightness: Brightness.dark,
+    );
+
+// Color scheme light adapted from current dev
+
+/*
+ColorScheme get _colorSchemeLight => const ColorScheme(
+      primary: Color.fromRGBO(255, 255, 255, 1),
+      primaryVariant: Color.fromRGBO(183, 187, 191, 1),
+      secondary: Color.fromRGBO(60, 201, 191, 1),
+      secondaryVariant: Colors.transparent, // Needs to be generated
+      surface: Color.fromRGBO(255, 255, 255, 1),
+      background: Color.fromRGBO(245, 245, 245, 1),
+      error: Color.fromRGBO(202, 78, 61, 1),
+      onPrimary: Colors.transparent, // Needs to be generated
+      onSecondary: Colors.transparent, // Needs to be generated
+      onSurface: Colors.transparent, // Needs to be generated
+      onBackground: Colors.transparent, // Needs to be generated
+      onError: Colors.transparent, //
+      brightness: Brightness.light,
+    );
+*/
+ColorScheme get _colorSchemeLight => const ColorScheme(
+      primary: Color.fromRGBO(90, 104, 230, 1),
+      primaryVariant: Color.fromRGBO(64, 78, 201, 1),
+      secondary: Color.fromRGBO(106, 77, 227, 1),
+      secondaryVariant: Color.fromRGBO(67, 46, 157, 1),
+      surface: Color.fromRGBO(255, 255, 255, 1),
+      background: Color.fromRGBO(248, 248, 248, 1),
+      error: Color.fromRGBO(229, 33, 103, 1),
+      onPrimary: Color.fromRGBO(255, 255, 255, 1),
+      onSecondary: Color.fromRGBO(255, 255, 255, 1),
+      onSurface: Color.fromRGBO(69, 96, 120, 1),
+      onBackground: Color.fromRGBO(69, 96, 120, 1),
+      onError: Color.fromRGBO(255, 255, 255, 1),
+      brightness: Brightness.light,
     );
 
 // MRC: The properties of the themes have been greatly reduced so we can mostly
@@ -24,43 +94,16 @@ DividerThemeData get _dividerThemeData => DividerThemeData(
 
 ThemeData getThemeDark() => ThemeData(
       fontFamily: 'Ubuntu',
-      colorScheme: const ColorScheme(
-        primary: Color.fromRGBO(90, 104, 230, 1),
-        primaryVariant: Color.fromRGBO(64, 78, 201, 1),
-        secondary: Color.fromRGBO(106, 77, 227, 1),
-        secondaryVariant: Color.fromRGBO(67, 46, 157, 1),
-        surface: Color.fromRGBO(36, 39, 61, 1),
-        background: Color.fromRGBO(32, 35, 55, 1),
-        error: Color.fromRGBO(229, 33, 103, 1),
-        onPrimary: Color.fromRGBO(255, 255, 255, 1),
-        onSecondary: Color.fromRGBO(255, 255, 255, 1),
-        onSurface: Color.fromRGBO(255, 255, 255, 1),
-        onBackground: Color.fromRGBO(255, 255, 255, 1),
-        onError: Color.fromRGBO(255, 255, 255, 1),
-        brightness: Brightness.dark,
-      ),
+      colorScheme: _colorScheme,
       snackBarTheme: _snackBarTheme,
       appBarTheme: _appBarTheme,
       inputDecorationTheme: _inputDecorationTheme,
       dividerTheme: _dividerThemeData,
     );
+
 ThemeData getThemeLight() => ThemeData(
       fontFamily: 'Ubuntu',
-      colorScheme: const ColorScheme(
-        primary: Color.fromRGBO(90, 104, 230, 1),
-        primaryVariant: Color.fromRGBO(64, 78, 201, 1),
-        secondary: Color.fromRGBO(106, 77, 227, 1),
-        secondaryVariant: Color.fromRGBO(67, 46, 157, 1),
-        surface: Color.fromRGBO(255, 255, 255, 1),
-        background: Color.fromRGBO(248, 248, 248, 1),
-        error: Color.fromRGBO(229, 33, 103, 1),
-        onPrimary: Color.fromRGBO(255, 255, 255, 1),
-        onSecondary: Color.fromRGBO(255, 255, 255, 1),
-        onSurface: Color.fromRGBO(69, 96, 120, 1),
-        onBackground: Color.fromRGBO(69, 96, 120, 1),
-        onError: Color.fromRGBO(255, 255, 255, 1),
-        brightness: Brightness.light,
-      ),
+      colorScheme: _colorSchemeLight,
       snackBarTheme: _snackBarTheme,
       appBarTheme: _appBarTheme,
       inputDecorationTheme: _inputDecorationTheme,

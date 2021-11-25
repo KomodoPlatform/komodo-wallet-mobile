@@ -104,6 +104,7 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         children: <Widget>[
@@ -142,7 +143,9 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
   Widget _buildItemWallet(Wallet wallet, BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-      tileColor: Theme.of(context).colorScheme.surface,
+      tileColor: Theme.of(context).brightness == Brightness.light
+          ? Colors.black.withOpacity(0.3)
+          : Colors.white.withOpacity(0.6),
       onTap: () => Navigator.push<dynamic>(
         context,
         MaterialPageRoute<dynamic>(
@@ -164,17 +167,29 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
         child: Center(
           child: Text(
             wallet.name.substring(0, 1),
+            style: Theme.of(context)
+                .textTheme
+                .headline6
+                .copyWith(color: Theme.of(context).backgroundColor),
           ),
         ),
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.black.withOpacity(0.3)
+            : Colors.white.withOpacity(0.6),
       ),
       title: Text(
         wallet.name,
-        style: Theme.of(context)
-            .textTheme
-            .bodyText2
-            .copyWith(color: Theme.of(context).colorScheme.onSurface),
+        style: Theme.of(context).textTheme.bodyText2,
       ),
       trailing: _buildDeleteButton(wallet, context),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: Theme.of(context).brightness == Brightness.light
+              ? Colors.black.withOpacity(0.3)
+              : Colors.white.withOpacity(0.6),
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+      ),
     );
   }
 
@@ -217,6 +232,7 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Stack(
         alignment: Alignment.topRight,
         children: [

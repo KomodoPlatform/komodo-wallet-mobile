@@ -54,9 +54,7 @@ class _ContactListItemState extends State<ContactListItem> {
           },
           title: Text(
             widget.contact.name,
-            style: const TextStyle(
-              fontSize: 20,
-            ),
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
         if (expanded)
@@ -65,23 +63,17 @@ class _ContactListItemState extends State<ContactListItem> {
             child: Column(
               children: <Widget>[
                 _buildAddressesList(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: TextButton.icon(
-                      onPressed: () => Navigator.push<dynamic>(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) => ContactEdit(
-                            contact: widget.contact,
-                          ),
-                        ),
-                      ),
-                      icon: const Icon(Icons.edit, size: 16),
-                      label: Text(AppLocalizations.of(context).contactEdit),
+                SizedBox(height: 8),
+                TextButton.icon(
+                  onPressed: () => Navigator.push<dynamic>(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) =>
+                          ContactEdit(contact: widget.contact),
                     ),
                   ),
+                  icon: const Icon(Icons.edit, size: 16),
+                  label: Text(AppLocalizations.of(context).contactEdit),
                 )
               ],
             ),
@@ -93,51 +85,71 @@ class _ContactListItemState extends State<ContactListItem> {
   Widget _buildAddressesList() {
     final List<Widget> addresses = [];
 
-    widget.contact.addresses?.forEach((String abbr, String value) {
-      if (widget.coin != null) {
-        String coinAbbr = widget.coin.abbr;
-        if (widget.coin.type == 'erc') coinAbbr = 'ETH';
-        if (widget.coin.type == 'bep') coinAbbr = 'BNB';
-        if (widget.coin.type == 'qrc') coinAbbr = 'QTUM';
-        if (widget.coin.type == 'smartChain') coinAbbr = 'KMD';
+    widget.contact.addresses?.forEach(
+      (String abbr, String value) {
+        if (widget.coin != null) {
+          String coinAbbr = widget.coin.abbr;
+          if (widget.coin.type == 'erc') coinAbbr = 'ETH';
+          if (widget.coin.type == 'bep') coinAbbr = 'BNB';
+          if (widget.coin.type == 'qrc') coinAbbr = 'QTUM';
+          if (widget.coin.type == 'smartChain') coinAbbr = 'KMD';
 
-        if (coinAbbr != abbr) return;
-      }
+          if (coinAbbr != abbr) return;
+        }
 
-      addresses.add(ListTile(
-        visualDensity: VisualDensity.compact,
-        contentPadding: EdgeInsets.symmetric(horizontal: 8),
-        onTap: () {
-          _tryToSend(abbr, value);
-        },
-        leading: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircleAvatar(
-              maxRadius: 6,
-              backgroundImage:
-                  AssetImage('assets/coin-icons/${abbr.toLowerCase()}.png'),
+        addresses.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              children: <Widget>[
+                CircleAvatar(
+                  maxRadius: 6,
+                  foregroundImage:
+                      AssetImage('assets/coin-icons/${abbr.toLowerCase()}.png'),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '$abbr: ',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                Flexible(
+                  child: InkWell(
+                    onTap: () => _tryToSend(abbr, value),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 8,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: truncateMiddle(
+                              value,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2
+                                  .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                            ),
+                          ),
+                          Icon(
+                            Icons.chevron_right,
+                            color: Theme.of(context).colorScheme.secondary,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 4),
-            Text(
-              '$abbr: ',
-              style: const TextStyle(fontSize: 14),
-            ),
-          ],
-        ),
-        title: truncateMiddle(
-          value,
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-                color: Theme.of(context).colorScheme.secondary,
-                fontSize: 14,
-              ),
-        ),
-        trailing: Icon(
-          Icons.chevron_right,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ));
-    });
+          ),
+        );
+      },
+    );
 
     if (addresses.isEmpty) {
       addresses.add(Padding(
@@ -198,9 +210,7 @@ class _ContactListItemState extends State<ContactListItem> {
         return CustomSimpleDialog(
           title: Row(
             children: <Widget>[
-              const Icon(
-                Icons.warning,
-              ),
+              const Icon(Icons.warning),
               const SizedBox(width: 8),
               Text(title),
             ],

@@ -53,6 +53,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).checkSeedPhrase),
         backgroundColor: Colors.transparent,

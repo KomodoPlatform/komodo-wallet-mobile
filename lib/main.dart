@@ -306,6 +306,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           key: _scaffoldKey,
           endDrawer: AppDrawer(context),
           resizeToAvoidBottomInset: true,
+          backgroundColor: Theme.of(context).backgroundColor,
           body: _children[snapshot.data],
           bottomNavigationBar: Material(
             elevation: 8.0,

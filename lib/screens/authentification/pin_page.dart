@@ -199,6 +199,7 @@ class _PinPageState extends State<PinPage> {
               context: context,
             )
           : null,
+      backgroundColor: Theme.of(context).backgroundColor,
       resizeToAvoidBottomInset: false,
       body: !isLoading
           ? PinCode(
@@ -340,6 +341,8 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
       case PinStatus.CREATE_CAMO_PIN:
       case PinStatus.CONFIRM_CAMO_PIN:
         return AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           title: Text(title),
         );
         break;
