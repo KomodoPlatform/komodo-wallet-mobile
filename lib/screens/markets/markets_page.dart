@@ -36,6 +36,7 @@ class _MarketsPageState extends State<MarketsPage>
     init = true;
 
     Widget _buildAppBar() {
+      final bool _isSmallScreen = MediaQuery.of(context).size.height < 680;
       final Widget _tabsPanel = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Container(
@@ -60,25 +61,41 @@ class _MarketsPageState extends State<MarketsPage>
         ),
       );
 
-      return AppBar(
-        title: Text(
-          AppLocalizations.of(context).marketsTitle,
-          key: const Key('markets-title'),
-        ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(
-            AppBar.preferredHeightFor(context, Size(double.infinity, 64)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: _tabsPanel,
-          ),
-        ),
-        automaticallyImplyLeading: false,
-      );
+      return _isSmallScreen
+          ? PreferredSize(
+              preferredSize: const Size.fromHeight(80),
+              child: AppBar(
+                flexibleSpace: SafeArea(
+                    child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 20),
+                    _tabsPanel,
+                  ],
+                )),
+                automaticallyImplyLeading: false,
+              ),
+            )
+          : AppBar(
+              title: Center(
+                  child: Text(
+                AppLocalizations.of(context).marketsTitle,
+                key: const Key('markets-title'),
+              )),
+              bottom: PreferredSize(
+                preferredSize: const Size(200.0, 70.0),
+                child: Column(
+                  children: <Widget>[
+                    _tabsPanel,
+                    const SizedBox(height: 15),
+                  ],
+                ),
+              ),
+              automaticallyImplyLeading: false,
+            );
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: _buildAppBar(),
       body: Builder(builder: (BuildContext context) {
         return TabBarView(

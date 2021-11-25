@@ -94,7 +94,7 @@ class CandleChartState extends State<CandleChart>
       return constrained;
     }
 
-    return ClipRect(
+    return SizedBox(
       child: Listener(
         onPointerDown: (_) {
           setState(() {
