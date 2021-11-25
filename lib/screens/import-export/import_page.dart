@@ -50,6 +50,7 @@ class _ImportPageState extends State<ImportPage> {
       context: context,
       child: Scaffold(
         key: _scaffoldKey,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).importTitle),
         ),

@@ -26,17 +26,13 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          foregroundColor: Theme.of(context).colorScheme.onSurface,
+          elevation: 0,
           title:
               Text(AppLocalizations.of(context).viewSeedAndKeys.toUpperCase()),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              style: TextButton.styleFrom(
-                  primary: Theme.of(context).colorScheme.onSurface),
-              child: Text(
-                AppLocalizations.of(context).done.toUpperCase(),
-              ),
+              child: Text(AppLocalizations.of(context).done.toUpperCase()),
             )
           ],
         ),

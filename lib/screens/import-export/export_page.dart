@@ -52,24 +52,23 @@ class _ExportPageState extends State<ExportPage> {
       context: context,
       child: Scaffold(
         key: _scaffoldKey,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).exportTitle),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              if (_done) ...{
-                _buildSuccess(),
-              } else ...{
-                _buildHeader(),
-                _buildNotes(),
-                _buildContacts(),
-                _buildSwaps(),
-                _buildPass(),
-                _buildButton(),
-              }
-            ],
-          ),
+        body: ListView(
+          children: [
+            if (_done) ...{
+              _buildSuccess(),
+            } else ...{
+              _buildHeader(),
+              _buildNotes(),
+              _buildContacts(),
+              _buildSwaps(),
+              _buildPass(),
+              _buildButton(),
+            }
+          ],
         ),
       ),
     );
@@ -376,6 +375,7 @@ class _ExportPageState extends State<ExportPage> {
 
   Widget _buildPass() {
     return Container(
+      color: Theme.of(context).primaryColor,
       padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
       child: Column(children: [
         TextField(
@@ -408,6 +408,7 @@ class _ExportPageState extends State<ExportPage> {
         ),
         TextField(
           controller: _ctrlPass2,
+          textInputAction: TextInputAction.done,
           autocorrect: false,
           obscureText: _isPassObscured,
           enableInteractiveSelection: true,

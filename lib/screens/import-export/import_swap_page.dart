@@ -34,6 +34,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
       context: context,
       child: Scaffold(
         key: _scaffoldKey,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).importSingleSwapTitle),
         ),

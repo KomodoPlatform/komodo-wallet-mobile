@@ -39,6 +39,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
           return LockScreen(
             context: context,
             child: Scaffold(
+              backgroundColor: Theme.of(context).backgroundColor,
               appBar: AppBar(
                 title: Text(AppLocalizations.of(context).camoPinTitle),
               ),
