@@ -129,7 +129,7 @@ class _BuildNewsItemState extends State<BuildNewsItem>
       children: <Widget>[
         RichText(
           text: TextSpan(
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyText2,
             children: _article.lead,
           ),
         ),

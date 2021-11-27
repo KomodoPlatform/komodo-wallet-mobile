@@ -200,7 +200,12 @@ class _ItemCoinState extends State<ItemCoin>
                                 widget.coinBalance.balanceUSD,
                                 hidden: hidden,
                               ),
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(
+                                    color: Colors.grey,
+                                  ),
                             );
                           }),
                       _buildClaimButton(),
@@ -320,7 +325,7 @@ class _ItemCoinState extends State<ItemCoin>
                   widget.coinBalance.coin.type == 'bep' ||
                   widget.coinBalance.coin.type == 'qrc'
               ? const Color.fromRGBO(20, 117, 186, 1)
-              : Theme.of(context).colorScheme.onSurface,
+              : Theme.of(context).backgroundColor,
         ),
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: Builder(
@@ -350,7 +355,7 @@ class _ItemCoinState extends State<ItemCoin>
                     children: <Widget>[
                       Text(
                         AppLocalizations.of(context).tagBEP20,
-                        style: Theme.of(context).textTheme.button.copyWith(
+                        style: Theme.of(context).textTheme.subtitle1.copyWith(
                               color: Colors.white,
                             ),
                       ),

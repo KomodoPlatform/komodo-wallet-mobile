@@ -43,6 +43,7 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
               title: Text(AppLocalizations.of(context).soundOption),
               trailing:
                   const SoundVolumeButton(key: Key('settings-sound-button')),
+              tileColor: Theme.of(context).primaryColor,
             ),
             const SizedBox(
               height: 1,
@@ -168,6 +169,7 @@ class SoundPicker extends StatelessWidget {
         child: ListTile(
           title: Text(name, style: Theme.of(context).textTheme.bodyText2),
           trailing: FilePickerButton(musicMode, description),
+          tileColor: Theme.of(context).primaryColor,
         ));
   }
 }

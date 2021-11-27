@@ -64,7 +64,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
         Expanded(
             child: Card(
                 margin: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                color: widget.color ?? Theme.of(context).backgroundColor,
+                color: widget.color ?? Theme.of(context).cardColor,
                 child: Padding(
                   padding: widget.padding ??
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

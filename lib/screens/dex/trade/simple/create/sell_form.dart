@@ -42,7 +42,7 @@ class _SellFormState extends State<SellForm> {
     _cexProvider ??= context.watch<CexProvider>();
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12),
+      padding: EdgeInsets.only(right: 8),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

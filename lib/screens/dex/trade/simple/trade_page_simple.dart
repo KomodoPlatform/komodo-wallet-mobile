@@ -198,53 +198,45 @@ class _TradePageSimpleState extends State<TradePageSimple> {
     }
 
     return Expanded(
-      child: Stack(
-        children: [
-          TextField(
-            controller: controller,
-            focusNode: focusNode,
-            decoration: InputDecoration(
-              isDense: true,
-              border: UnderlineInputBorder(),
-            ),
-            onChanged: (String text) {
-              setState(() {
-                if (type == Market.SELL) {
-                  _sellSearchTerm = text;
-                } else {
-                  _buySearchTerm = text;
-                }
-              });
-            },
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: IconButton(
-              padding: EdgeInsets.all(0),
-              onPressed: currentTerm == null || currentTerm.isEmpty
-                  ? () => focusNode.requestFocus()
-                  : () {
-                      controller.text = '';
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      setState(() {
-                        if (type == Market.SELL) {
-                          _sellSearchTerm = '';
-                        } else {
-                          _buySearchTerm = '';
-                        }
-                      });
-                    },
-              iconSize: 12,
-              constraints: BoxConstraints(maxHeight: 20, maxWidth: 20),
-              splashRadius: 12,
-              icon: Icon(
-                currentTerm == null || currentTerm.isEmpty
-                    ? Icons.search
-                    : Icons.clear,
-              ),
+      child: TextField(
+        textAlignVertical: TextAlignVertical.center,
+        controller: controller,
+        focusNode: focusNode,
+        decoration: InputDecoration(
+          isCollapsed: true,
+          isDense: true,
+          border: UnderlineInputBorder(),
+          suffixIcon: IconButton(
+            padding: EdgeInsets.all(0),
+            onPressed: currentTerm == null || currentTerm.isEmpty
+                ? () => focusNode.requestFocus()
+                : () {
+                    controller.text = '';
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    setState(() {
+                      if (type == Market.SELL) {
+                        _sellSearchTerm = '';
+                      } else {
+                        _buySearchTerm = '';
+                      }
+                    });
+                  },
+            icon: Icon(
+              currentTerm == null || currentTerm.isEmpty
+                  ? Icons.search
+                  : Icons.clear,
             ),
           ),
-        ],
+        ),
+        onChanged: (String text) {
+          setState(() {
+            if (type == Market.SELL) {
+              _sellSearchTerm = text;
+            } else {
+              _buySearchTerm = text;
+            }
+          });
+        },
       ),
     );
   }

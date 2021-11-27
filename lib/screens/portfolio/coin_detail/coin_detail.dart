@@ -462,7 +462,7 @@ class _CoinDetailState extends State<CoinDetail> {
                               coinBalance +
                                   ' ' +
                                   currentCoinBalance.balance.coin,
-                              style: Theme.of(context).textTheme.headline6,
+                              style: Theme.of(context).textTheme.headline5,
                               textAlign: TextAlign.center,
                             ),
                             if (double.tryParse(unspendableBalance ?? '0') > 0)

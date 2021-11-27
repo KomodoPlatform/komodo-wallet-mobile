@@ -160,6 +160,9 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                 Text(AppLocalizations.of(context).customSeedWarning),
                 TextField(
                   autofocus: true,
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(),
+                  ),
                   onChanged: (String text) {
                     setState(() {
                       enabled = text.trim().toLowerCase() ==

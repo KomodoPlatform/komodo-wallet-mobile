@@ -96,7 +96,7 @@ class _ContactsListState extends State<ContactsList> {
         if (needIndexes) {
           list.add(
             Padding(
-              padding: const EdgeInsets.only(left: 14.0),
+              padding: const EdgeInsets.only(left: 24),
               child: Text(
                 indexLetter,
                 style: Theme.of(context).textTheme.headline5.copyWith(

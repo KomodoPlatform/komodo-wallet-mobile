@@ -30,7 +30,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
 
     final TextStyle subtitle = Theme.of(context)
         .textTheme
-        .subtitle2
+        .subtitle1
         .copyWith(fontWeight: FontWeight.bold);
 
     return Card(
@@ -178,7 +178,9 @@ class _TransactionListItemState extends State<TransactionListItem> {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Text(
                     widget.transaction.getTimeFormat(),
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          color: Colors.grey,
+                        ),
                   ),
                 ),
                 Expanded(child: SizedBox()),

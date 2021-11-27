@@ -90,25 +90,23 @@ class _SettingPageState extends State<SettingPage> {
             _buildSound(),
             _buildTitle(AppLocalizations.of(context).security),
             _buildActivatePIN(),
-            const SizedBox(
-              height: 1,
-            ),
+            const SizedBox(height: 1),
             _buildActivateBiometric(),
+            const SizedBox(height: 1),
             _buildCamouflagePin(),
-            const SizedBox(
-              height: 1,
-            ),
+            const SizedBox(height: 1),
             _buildChangePIN(),
-            const SizedBox(
-              height: 1,
-            ),
+            const SizedBox(height: 1),
             _buildSendFeedback(),
             if (walletBloc.currentWallet != null) ...[
               _buildTitle(AppLocalizations.of(context).backupTitle),
               _buildViewSeed(),
+              const SizedBox(height: 1),
             ],
             _buildExport(),
+            const SizedBox(height: 1),
             _buildImport(),
+            const SizedBox(height: 1),
             _buildImportSwap(),
             const SizedBox(
               height: 1,
@@ -174,6 +172,7 @@ class _SettingPageState extends State<SettingPage> {
           title: Text(AppLocalizations.of(
             context,
           ).activateAccessPin),
+          tileColor: Theme.of(context).primaryColor,
           value: snapshot.data ?? false,
           onChanged: (
             bool switchValue,
@@ -249,6 +248,7 @@ class _SettingPageState extends State<SettingPage> {
                 title: Text(AppLocalizations.of(
                   context,
                 ).activateAccessBiometric),
+                tileColor: Theme.of(context).primaryColor,
                 value: snapshot.data ?? false,
                 onChanged: (
                   bool switchValue,
@@ -459,6 +459,7 @@ class _SettingPageState extends State<SettingPage> {
             });
           },
           title: Text(AppLocalizations.of(context).logoutOnExit),
+          tileColor: Theme.of(context).primaryColor,
         );
       },
     );
@@ -490,6 +491,7 @@ class _SettingPageState extends State<SettingPage> {
       onTap: onTap,
       trailing: Icon(Icons.chevron_right),
       title: title,
+      tileColor: Theme.of(context).primaryColor,
     );
   }
 
@@ -504,6 +506,7 @@ class _SettingPageState extends State<SettingPage> {
           onChanged: (bool dataSwitch) {
             settingsBloc.setEnableTestCoins(dataSwitch);
           },
+          tileColor: Theme.of(context).primaryColor,
         );
       },
     );
@@ -685,6 +688,7 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
           (_sizeMb >= 1000
               ? '${(_sizeMb / 1000).toStringAsFixed(2)} GB'
               : ' ${_sizeMb.toStringAsFixed(2)} MB')),
+      tileColor: Theme.of(context).primaryColor,
     );
   }
 

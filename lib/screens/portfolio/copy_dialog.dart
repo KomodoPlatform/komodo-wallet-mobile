@@ -41,7 +41,7 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
                           child: AutoSizeText(
                             address,
                             textKey: const Key('coin-details-address'),
-                            style: Theme.of(context).textTheme.bodyText2,
+                            style: Theme.of(context).textTheme.bodyText1,
                             maxLines: 2,
                           ),
                         )),

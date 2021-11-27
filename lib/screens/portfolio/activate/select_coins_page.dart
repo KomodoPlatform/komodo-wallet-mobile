@@ -124,7 +124,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Text(
           AppLocalizations.of(context).selectCoinInfo,
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.headline1.copyWith(
+                color: Colors.grey,
+              ),
         ),
       ),
       const SizedBox(

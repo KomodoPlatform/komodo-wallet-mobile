@@ -128,18 +128,22 @@ class _ContactEditState extends State<ContactEdit> {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      TextButton(
-                        onPressed: _exitPage,
-                        child: Text(AppLocalizations.of(context).contactCancel),
-                      ),
-                      TextButton(
-                        onPressed: _saveContact,
-                        child: Text(AppLocalizations.of(context).contactSave),
-                      ),
-                    ],
+                  Container(
+                    color: Theme.of(context).primaryColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        TextButton(
+                          onPressed: _exitPage,
+                          child:
+                              Text(AppLocalizations.of(context).contactCancel),
+                        ),
+                        TextButton(
+                          onPressed: _saveContact,
+                          child: Text(AppLocalizations.of(context).contactSave),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -356,6 +360,7 @@ class _ContactEditState extends State<ContactEdit> {
                       controller: searchTextController,
                       onChanged: (_) => setState(() {}),
                       decoration: InputDecoration(
+                        border: UnderlineInputBorder(),
                         prefixIcon: Icon(Icons.search),
                         hintText: 'Search for Ticker',
                       ),

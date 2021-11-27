@@ -22,6 +22,7 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
           final CoinToActivate coinToActivate = snapshot.data
               .firstWhere((item) => item.coin.abbr == widget.coin.abbr);
 
+          // TODO(MRC): Optimize this to use CheckboxListTile in a future point in time
           return InkWell(
             onTap: () => coinsBloc.setCoinBeforeActivation(
                 widget.coin, !coinToActivate.isActive),
@@ -47,7 +48,7 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                   Expanded(
                     child: AutoScrollText(
                       text: '${widget.coin.name} (${widget.coin.abbr})',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
                   )
                 ],

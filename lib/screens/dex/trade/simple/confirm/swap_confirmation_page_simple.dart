@@ -75,6 +75,7 @@ class _SwapConfirmationPageSimpleState
     return LockScreen(
       context: context,
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).swapDetailTitle),
         ),
@@ -165,104 +166,105 @@ class _SwapConfirmationPageSimpleState
     final String amountReceive = cutTrailingZeros(_constrProvider.buyAmount
         .toStringAsFixed(appConfig.tradeFormPrecision));
 
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-            child: Container(
-              padding: const EdgeInsets.only(
-                left: 8,
-                right: 8,
-                bottom: 30,
-                top: 20,
-              ),
-              width: double.infinity,
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Colors.black.withOpacity(0.05)
-                  : Colors.white.withOpacity(0.15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context).send,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontWeight: FontWeight.w100,
-                          )),
-                  SizedBox(height: 8),
-                  AutoScrollText(
-                    text: '$amountSell ${_constrProvider.sellCoin}',
-                    style: Theme.of(context).textTheme.headline6,
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    left: 8,
+                    right: 8,
+                    bottom: 30,
+                    top: 20,
                   ),
-                  SizedBox(height: 8),
-                  _buildSellFiat(),
+                  width: double.infinity,
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black.withOpacity(0.05)
+                      : Colors.white.withOpacity(0.15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(AppLocalizations.of(context).send,
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w100,
+                              )),
+                      SizedBox(height: 8),
+                      AutoScrollText(
+                        text: '$amountSell ${_constrProvider.sellCoin}',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      SizedBox(height: 8),
+                      _buildSellFiat(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 2),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8)),
+                    child: Container(
+                        padding: const EdgeInsets.only(
+                          left: 8,
+                          right: 8,
+                          bottom: 20,
+                          top: 26,
+                        ),
+                        width: double.infinity,
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black.withOpacity(0.05)
+                            : Colors.white.withOpacity(0.15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            _buildReceiveFiat(),
+                            SizedBox(height: 4),
+                            AutoScrollText(
+                              text: '$amountReceive ${_constrProvider.buyCoin}',
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                            SizedBox(height: 8),
+                            Text(AppLocalizations.of(context).receive,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontWeight: FontWeight.w100,
+                                    ))
+                          ],
+                        )),
+                  ),
                 ],
               ),
             ),
-          ),
+          ],
         ),
-        const SizedBox(
-          height: 2,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(8),
-                    bottomRight: Radius.circular(8)),
-                child: Container(
-                    padding: const EdgeInsets.only(
-                      left: 8,
-                      right: 8,
-                      bottom: 20,
-                      top: 26,
-                    ),
-                    width: double.infinity,
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.black.withOpacity(0.05)
-                        : Colors.white.withOpacity(0.15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        _buildReceiveFiat(),
-                        SizedBox(height: 4),
-                        AutoScrollText(
-                          text: '$amountReceive ${_constrProvider.buyCoin}',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        SizedBox(height: 8),
-                        Text(AppLocalizations.of(context).receive,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText2
-                                .copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontWeight: FontWeight.w100,
-                                ))
-                      ],
-                    )),
-              ),
-              Positioned(
-                  left: (MediaQuery.of(context).size.width / 2) - 60,
-                  top: -22,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(32)),
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 4),
-                        color: Theme.of(context).backgroundColor,
-                        child: SvgPicture.asset(
-                            Theme.of(context).brightness == Brightness.light
-                                ? 'assets/svg_light/icon_swap.svg'
-                                : 'assets/svg/icon_swap.svg')),
-                  ))
-            ],
+        ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(32)),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+            color: Theme.of(context).backgroundColor,
+            child: SvgPicture.asset(
+                Theme.of(context).brightness == Brightness.light
+                    ? 'assets/svg_light/icon_swap.svg'
+                    : 'assets/svg/icon_swap.svg'),
           ),
         ),
       ],

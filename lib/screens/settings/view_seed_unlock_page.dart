@@ -24,6 +24,7 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,

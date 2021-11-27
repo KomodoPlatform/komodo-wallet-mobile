@@ -143,9 +143,7 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
   Widget _buildItemWallet(Wallet wallet, BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-      tileColor: Theme.of(context).brightness == Brightness.light
-          ? Colors.black.withOpacity(0.3)
-          : Colors.white.withOpacity(0.6),
+      tileColor: Colors.transparent,
       onTap: () => Navigator.push<dynamic>(
         context,
         MaterialPageRoute<dynamic>(

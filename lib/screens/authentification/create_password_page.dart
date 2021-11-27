@@ -75,18 +75,13 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
         autovalidateMode:
             _autoValidate ? AutovalidateMode.always : AutovalidateMode.disabled,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
           children: <Widget>[
-            const SizedBox(
-              height: 16,
-            ),
             Text(
               AppLocalizations.of(context).titleCreatePassword,
               style: Theme.of(context).textTheme.headline6,
             ),
-            const SizedBox(
-              height: 24,
-            ),
+            const SizedBox(height: 24),
             TextFormField(
               key: const Key('create-password-field'),
               maxLength: 40,
@@ -126,9 +121,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 8,
-            ),
+            const SizedBox(height: 8),
             Builder(builder: (BuildContext context) {
               return TextFormField(
                 key: const Key('create-password-field-confirm'),
@@ -154,24 +147,19 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 ),
               );
             }),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             Builder(builder: (BuildContext context) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  children: <Widget>[
-                    PrimaryButton(
-                      key: const Key('confirm-password'),
-                      text: AppLocalizations.of(context).confirmPassword,
-                      onPressed: isValidPassword
-                          ? () => _checkValidation(context)
-                          : null,
-                      isLoading: isLoading,
-                    ),
-                  ],
-                ),
+              return Column(
+                children: <Widget>[
+                  PrimaryButton(
+                    key: const Key('confirm-password'),
+                    text: AppLocalizations.of(context).confirmPassword,
+                    onPressed: isValidPassword
+                        ? () => _checkValidation(context)
+                        : null,
+                    isLoading: isLoading,
+                  ),
+                ],
               );
             }),
           ],
