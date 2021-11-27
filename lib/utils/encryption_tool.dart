@@ -1,9 +1,6 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:komodo_dex/model/wallet.dart';
-import 'package:flutter_sodium/flutter_sodium.dart';
+import 'package:dargon2_flutter/dargon2_flutter.dart';
 
 class EncryptionTool {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -14,11 +11,20 @@ class EncryptionTool {
   String keyData(KeyEncryption key, Wallet wallet, String password) =>
       '${key.toString()}$password${wallet.name}${wallet.id}';
 
+  // MRC: It seems our previous version of flutter_sodium was using Argon2id,
+  // so I am setting it here as well to keep compatibility
+  // On my testing it allows unlocking the wallet with the old password
+  // Apparently libsodium started using Argon2id since 1.0.15, according to
+  // https://libsodium.gitbook.io/doc/password_hashing/default_phf#notes
+
   Future<bool> isPasswordValid(
       KeyEncryption key, Wallet wallet, String password) async {
     if (key == KeyEncryption.SEED) {
-      final onValue = PasswordHash.verifyStorage(
-          await storage.read(key: keyPassword(key, wallet)), password);
+      final onValue = argon2.verifyHashStringSync(
+        password,
+        await storage.read(key: keyPassword(key, wallet)),
+        type: Argon2Type.id,
+      );
       return onValue ? onValue : throw Exception('Invalid password.');
     } else {
       return true;
@@ -26,14 +32,12 @@ class EncryptionTool {
   }
 
   String _computeHash(String data) {
-    // TODO(MRC): Check if this is the best way to encode to Uint8List
-    // PasswordHash.hashStorage apparently uses ascii.decode internally,
-    // so I'm  using it here as well
-    // I need to know whether to use utf-8 or ascii
-    // But utf-8 should work for ascii cases
-    final encodedData = utf8.encode(data);
-    final dataAsBytes = Uint8List.fromList(encodedData);
-    return PasswordHash.hashStorage(dataAsBytes);
+    final s = Salt.newSalt();
+
+    final result =
+        argon2.hashPasswordStringSync(data, salt: s, type: Argon2Type.id);
+
+    return result.encodedString;
   }
 
   Future<void> writeData(KeyEncryption key, Wallet wallet, String password,

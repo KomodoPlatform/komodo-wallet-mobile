@@ -158,29 +158,13 @@ dev_dependencies:
       #url: git://github.com/KomodoPlatform/dart-decimal.git
       #ref: 93fcaabe2da686b1987a351a03a70e86edf6504f
 
-  # AG: Error `value of type 'UnsafePointer<_>' has no member 'bindMemory'`
-  # means that flutter_sodium is using SWIFT 5 code
-  # (merged in https://github.com/firstfloorsoftware/flutter_sodium/pull/16).
-  # Downgrade to "0.0.9" to fix.
-  # I thought about upgrading the flutter project to Swift 5,
-  # but Xcode 10.1 on our Mac CI server only supports Swift 4.2
-  # (cf. https://www.swiftprogrammer.info/swift5_high_sierra.html: "your best bet is to upgrade your Mac")
-  #flutter_sodium: 0.0.9
-  #flutter_sodium: 0.0.10
+  # MRC: Argon2 was our only remaining use of flutter_sodium, so I'm now switching
+  # to a plugin that only does Argon2, therefore dropping our dependency on
+  # flutter_sodium completely
 
-  # flutter_sodium 0.0.11 still has error with latest flutter version 1.14.3
-  # while assembling android release:
-  # "Execution failed for task ':flutter_sodium:verifyReleaseResources'"
-  # This error is caused by using old compileSdkVersion - 27
-  # https://github.com/firstfloorsoftware/flutter_sodium/issues/28
-  # Our fork has a fixed compileSdkVersion - 28:
-  # https://github.com/KomodoPlatform/flutter_sodium
-  #flutter_sodium: ^0.0.11
-  # TODO: selfhost libsodium-jni (android implementation depends on AAR library from https://github.com/joshjdevl/libsodium-jni)
-  flutter_sodium: 0.2.0 # needs secure code review
-    #git:
-      #url: git://github.com/KomodoPlatform/flutter_sodium.git
-      #ref: 3d6f8d89b4e5f5fbb46b0f230a760b3930c57a39
+  dargon2_flutter: 2.1.0 # needs secure code review
+
+  #flutter_sodium: 0.2.0 # needs secure code review
 
 flutter_icons:
   android: true
