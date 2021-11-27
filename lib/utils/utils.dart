@@ -21,13 +21,14 @@ import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
+import 'package:komodo_dex/widgets/qr_view.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rational/rational.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
-import 'package:barcode_scan2/barcode_scan2.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../localizations.dart';
 
@@ -789,14 +790,12 @@ List<Coin> filterCoinsByQuery(List<Coin> coins, String query) {
   return list;
 }
 
-Future<String> scanQr() async {
-  final result = await BarcodeScanner.scan(
-    options: ScanOptions(restrictFormat: [BarcodeFormat.qr]),
+Future<String> scanQr(BuildContext context) async {
+  final barcode = await Navigator.of(context).push<Barcode>(
+    MaterialPageRoute(builder: (context) => AppQRView()),
   );
 
-  if (result.type == ResultType.Barcode && result.format == BarcodeFormat.qr) {
-    final content = result.rawContent;
-    return content;
-  }
-  return null;
+  if (barcode == null) return null;
+
+  return barcode.code;
 }

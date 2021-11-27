@@ -242,7 +242,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
 
     final int lockCookie = lockService.enteringQrScanner();
 
-    final result = await scanQr();
+    final result = await scanQr(context);
     if (result == null) {
       setState(() {
         barcode = 'Error';

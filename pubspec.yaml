@@ -81,11 +81,11 @@ dev_dependencies:
     #git:
       #url: git://github.com/KomodoPlatform/auto_size_text.git
       #ref: a2cb00e548916731f5c4c241d79a93419a4f9447
-  # barcode_scan was discontinued, so it is replaced with the fork
-  barcode_scan2: 4.1.4 # needs secure code review
-    #git:
-      #url: git://github.com/KomodoPlatform/flutter_barcode_reader.git
-      #ref: a4a010ca31b67d6ef331786bb93d79cb71f1f327
+
+  # barcode_scan was discontinued, I was originally going to replace it with a fork
+  # but instead decided to replace with a completely new plugin
+  qr_code_scanner: 0.6.1 # needs secure code review
+
   shared_preferences: 2.0.8 # flutter.dev
   bip39: 1.0.6 # needs secure code review
     #git:

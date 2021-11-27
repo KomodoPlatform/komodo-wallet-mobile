@@ -136,7 +136,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
   Future<void> _scan() async {
     final int lockCookie = lockService.enteringQrScanner();
 
-    final result = await scanQr();
+    final result = await scanQr(context);
 
     if (result != null) {
       setState(() {
