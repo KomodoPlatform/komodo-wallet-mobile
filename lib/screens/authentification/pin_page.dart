@@ -341,6 +341,7 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
       case PinStatus.CONFIRM_CAMO_PIN:
         return AppBar(
           backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
           elevation: 0,
           title: Text(title),
         );
@@ -348,7 +349,7 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
       default:
         return AppBar(
           backgroundColor: Colors.transparent,
-          foregroundColor: Theme.of(context).colorScheme.onSurface,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
           automaticallyImplyLeading: pinStatus != PinStatus.NORMAL_PIN,
           actions: <Widget>[
             IconButton(

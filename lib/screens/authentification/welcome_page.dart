@@ -25,6 +25,7 @@ class _WelcomePageState extends State<WelcomePage> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        foregroundColor: Theme.of(context).colorScheme.onBackground,
         elevation: 0,
       ),
       body: ListView(

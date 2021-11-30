@@ -48,6 +48,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
           elevation: 0,
           title: Text(AppLocalizations.of(context).newAccountUpper),
         ),

@@ -56,6 +56,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).checkSeedPhrase),
         backgroundColor: Colors.transparent,
+        foregroundColor: Theme.of(context).colorScheme.onBackground,
         elevation: 0,
       ),
       body: ListView(

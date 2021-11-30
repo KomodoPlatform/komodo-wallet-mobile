@@ -67,6 +67,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        foregroundColor: Theme.of(context).colorScheme.onBackground,
         elevation: 0,
       ),
       body: Form(
