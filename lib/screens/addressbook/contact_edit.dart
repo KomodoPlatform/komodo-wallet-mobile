@@ -62,7 +62,6 @@ class _ContactEditState extends State<ContactEdit> {
         child: LockScreen(
           context: context,
           child: Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
             appBar: AppBar(
               title: Text(
                 widget.contact == null

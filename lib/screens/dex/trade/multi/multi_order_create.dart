@@ -61,13 +61,12 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
                 multiOrderProvider.validated = true;
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Theme.of(context).backgroundColor,
                     content: Text(
-                      AppLocalizations.of(context).multiFixErrors,
-                      style: TextStyle(
-                        color: Theme.of(context).errorColor,
-                      ),
-                    )));
+                  AppLocalizations.of(context).multiFixErrors,
+                  style: TextStyle(
+                    color: Theme.of(context).errorColor,
+                  ),
+                )));
               }
             }
           : null,

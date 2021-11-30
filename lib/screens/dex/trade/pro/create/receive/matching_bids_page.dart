@@ -60,7 +60,6 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Row(
             children: <Widget>[

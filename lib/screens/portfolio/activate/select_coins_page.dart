@@ -58,7 +58,6 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-          backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppBar(
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
             title: SearchFieldFilterCoin(

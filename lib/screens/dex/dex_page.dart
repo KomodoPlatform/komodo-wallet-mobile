@@ -95,7 +95,6 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: _buildAppBar(),
-          backgroundColor: Theme.of(context).backgroundColor,
           body: Builder(builder: (BuildContext context) {
             return TabBarView(
               controller: tabController,

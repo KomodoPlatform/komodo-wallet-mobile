@@ -95,7 +95,6 @@ class _MarketsPageState extends State<MarketsPage>
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: _buildAppBar(),
       body: Builder(builder: (BuildContext context) {
         return TabBarView(

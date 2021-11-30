@@ -52,7 +52,6 @@ class _ExportPageState extends State<ExportPage> {
       context: context,
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).exportTitle),
         ),

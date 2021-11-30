@@ -20,7 +20,6 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(
               AppLocalizations.of(context).soundSettingsTitle.toUpperCase()),

@@ -38,7 +38,6 @@ class _TransactionDetailState extends State<TransactionDetail> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           actions: <Widget>[
             IconButton(

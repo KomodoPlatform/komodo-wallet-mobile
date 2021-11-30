@@ -104,7 +104,6 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).backgroundColor,
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         children: <Widget>[
@@ -230,7 +229,6 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).backgroundColor,
       body: Stack(
         alignment: Alignment.topRight,
         children: [

@@ -41,7 +41,6 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
       onWillPop: () async => !widget.isCreatedPin,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           leading: widget.isCreatedPin
               ? IconButton(
