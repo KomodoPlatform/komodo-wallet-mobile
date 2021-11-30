@@ -64,7 +64,7 @@ class _NewsTabState extends State<NewsTab> {
                   message,
                   style: TextStyle(color: Theme.of(context).disabledColor),
                 ),
-                backgroundColor: Theme.of(context).backgroundColor,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 duration: const Duration(seconds: 1),
                 action: SnackBarAction(
                   textColor: Theme.of(context).colorScheme.secondary,

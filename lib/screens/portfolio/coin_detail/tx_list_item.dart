@@ -165,7 +165,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
                 );
               }),
           Container(
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
             height: 1,
             width: double.infinity,
           ),

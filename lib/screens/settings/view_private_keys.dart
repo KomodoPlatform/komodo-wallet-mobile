@@ -81,7 +81,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
 
     return Material(
         color: widget.zebra
-            ? Theme.of(context).backgroundColor
+            ? Theme.of(context).scaffoldBackgroundColor
             : Theme.of(context).cardColor,
         child: InkWell(
           onTap: () {

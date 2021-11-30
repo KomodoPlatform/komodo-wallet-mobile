@@ -399,7 +399,7 @@ class _ContactEditState extends State<ContactEdit> {
         vertical: 2,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(

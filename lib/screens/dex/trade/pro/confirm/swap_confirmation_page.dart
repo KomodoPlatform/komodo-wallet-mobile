@@ -327,7 +327,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     child: Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 4),
-                        color: Theme.of(context).backgroundColor,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         child: SvgPicture.asset(
                             Theme.of(context).brightness == Brightness.light
                                 ? 'assets/svg_light/icon_swap.svg'
@@ -519,7 +519,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                   child: Container(
                     height: 52,
                     width: 52,
-                    color: Theme.of(context).backgroundColor,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     child: Icon(
                       Icons.info,
                       size: 48,

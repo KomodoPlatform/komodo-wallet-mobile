@@ -67,7 +67,7 @@ class _CoinsPageState extends State<CoinsPage> {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
-                  backgroundColor: Theme.of(context).backgroundColor,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   expandedHeight: _heightSliver,
                   pinned: true,
                   flexibleSpace: Builder(
@@ -199,7 +199,7 @@ class _CoinsPageState extends State<CoinsPage> {
               ];
             },
             body: Container(
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 child: const ListCoins())));
   }
 
@@ -368,7 +368,7 @@ class ListCoinsState extends State<ListCoins> {
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         return RefreshIndicator(
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             key: _refreshIndicatorKey,
             onRefresh: () => coinsBloc.updateCoinBalances(),
             child: Builder(builder: (BuildContext context) {

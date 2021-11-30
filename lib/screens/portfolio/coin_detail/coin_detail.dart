@@ -313,7 +313,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 return Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -344,7 +344,7 @@ class _CoinDetailState extends State<CoinDetail> {
   Widget _buildTransactionsList(BuildContext context) {
     return Expanded(
       child: RefreshIndicator(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           color: Theme.of(context).colorScheme.secondary,
           key: _refreshIndicatorKey,
           onRefresh: _refresh,

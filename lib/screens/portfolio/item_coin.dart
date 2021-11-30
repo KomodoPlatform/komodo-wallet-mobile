@@ -70,7 +70,7 @@ class _ItemCoinState extends State<ItemCoin>
     }
     actions.add(SlidableAction(
       label: AppLocalizations.of(context).receive,
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       icon: Icons.arrow_downward,
       onPressed: (context) {
         showCopyDialog(context, balance.address, coin);
@@ -325,7 +325,7 @@ class _ItemCoinState extends State<ItemCoin>
                   widget.coinBalance.coin.type == 'bep' ||
                   widget.coinBalance.coin.type == 'qrc'
               ? const Color.fromRGBO(20, 117, 186, 1)
-              : Theme.of(context).backgroundColor,
+              : Theme.of(context).scaffoldBackgroundColor,
         ),
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: Builder(
@@ -430,7 +430,7 @@ class _ItemCoinState extends State<ItemCoin>
           child: Container(
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(16)),
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).scaffoldBackgroundColor,
             ),
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
             child: Text(

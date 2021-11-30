@@ -161,7 +161,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
     final double chartHeight = MediaQuery.of(context).size.height / 2;
 
     return Container(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       height: controlsBarHeight + chartHeight,
       child: Row(
         children: <Widget>[

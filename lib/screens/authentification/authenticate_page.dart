@@ -71,7 +71,7 @@ class BoxButton extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSurface,
           ),
           borderRadius: borderRadius,
-          color: Theme.of(context).backgroundColor,
+          color: Theme.of(context).scaffoldBackgroundColor,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
@@ -167,7 +167,7 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .headline6
-                .copyWith(color: Theme.of(context).backgroundColor),
+                .copyWith(color: Theme.of(context).scaffoldBackgroundColor),
           ),
         ),
         backgroundColor: Theme.of(context).brightness == Brightness.light

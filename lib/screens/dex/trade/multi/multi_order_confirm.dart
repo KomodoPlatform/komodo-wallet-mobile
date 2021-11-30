@@ -262,7 +262,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
             Column(
               children: <Widget>[
                 Container(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   height: 32,
                 ),
                 ClipRRect(
@@ -300,7 +300,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                   child: Container(
                     height: 52,
                     width: 52,
-                    color: Theme.of(context).backgroundColor,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     child: Icon(
                       Icons.info,
                       size: 48,

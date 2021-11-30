@@ -118,7 +118,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(32)),
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).scaffoldBackgroundColor,
             ),
             child: SvgPicture.asset(
               Theme.of(context).brightness == Brightness.light
