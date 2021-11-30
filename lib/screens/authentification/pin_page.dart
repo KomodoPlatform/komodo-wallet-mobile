@@ -202,6 +202,7 @@ class _PinPageState extends State<PinPage> {
       resizeToAvoidBottomInset: false,
       body: !isLoading
           ? PinCode(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               title: Text(
                 widget.subTitle,
                 style: Theme.of(context).textTheme.subtitle2,
@@ -348,6 +349,7 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
         break;
       default:
         return AppBar(
+          elevation: 0,
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.onBackground,
           automaticallyImplyLeading: pinStatus != PinStatus.NORMAL_PIN,
