@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:io' show File, Platform, Process;
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
@@ -27,6 +28,7 @@ import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:package_info/package_info.dart';
+import 'package:uuid/uuid.dart';
 
 /// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
@@ -161,8 +163,92 @@ class MMService {
   }
 
   void initUsername(String passphrase) {
-    final List<int> bytes = utf8.encode(passphrase); // data being hashed
-    userpass = sha256.convert(bytes).toString();
+    const int numAttempts = 5;
+
+    String pass = '';
+    for (var i = 0; i < numAttempts; i++) {
+      pass = generateRpcPassword();
+
+      if (validateRpcPassword(pass)) break;
+    }
+
+    if (!validateRpcPassword(pass)) {
+      Log('mm_service] initUsername]',
+          "Couldn't generate valid rpcPassword in $numAttempts attempts.");
+    }
+
+    userpass = pass;
+  }
+
+  String generateRpcPassword() {
+    // MRC: yurii suggested to use a random uuid, convert to base64 and use a substring
+    // This way the password will be random, have both upper an lowercase letters and
+    // have the correct lenght
+
+    final uuid = Uuid();
+    final rand = Random();
+
+    final generatedUuid = uuid.v4();
+
+    final r = base64.encode(utf8.encode(generatedUuid));
+
+    final start = rand.nextInt(r.length - 32);
+    final str = r.substring(start, start + 32);
+
+    // MRC: Now, switch a random character with a special symbol
+
+    // The list of the possible symbols, no accentuation included
+    const List<String> symbols = <String>[
+      '!',
+      '@',
+      '#',
+      r'$',
+      '%',
+      '&',
+      '*',
+      '-',
+      '+',
+      '?',
+      '/'
+    ];
+
+    final pos = rand.nextInt(str.length);
+    final symbPos = rand.nextInt(symbols.length);
+
+    // MRC: There's apparently no simple way to replace only a character at X position
+    // So, I'm using substring for that
+
+    final String newString =
+        str.substring(0, pos) + symbols[symbPos] + str.substring(pos + 1);
+
+    return newString;
+  }
+
+  bool validateRpcPassword(String src) {
+    if (src == null || src.isEmpty) return false;
+    if (src.toLowerCase().contains('password')) return false;
+
+    final RegExp exp =
+        RegExp(r'^(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)).{8,32}$');
+    if (!src.contains(exp)) return false;
+
+    // MRC: Divide the password into all possible 3 character blocks
+    final pieces = <String>[];
+    for (int start = 0, end = 3; end <= src.length; start += 1, end += 1) {
+      pieces.add(src.substring(start, end));
+    }
+
+    // If all 3 character are the same, show the message
+    for (String p in pieces) {
+      final src = p[0];
+      int count = 1;
+      if (p[1] == src) count += 1;
+      if (p[2] == src) count += 1;
+
+      if (count == 3) return false;
+    }
+
+    return true;
   }
 
   String get filesPath => applicationDocumentsDirectorySync == null
