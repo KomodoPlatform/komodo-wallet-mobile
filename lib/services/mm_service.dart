@@ -2,12 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:io' show File, Platform, Process;
-import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:path/path.dart' as path;
-import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
     show EventChannel, MethodChannel, rootBundle, SystemChannels;
 import 'package:flutter/services.dart' show rootBundle;
@@ -28,7 +26,6 @@ import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:package_info/package_info.dart';
-import 'package:uuid/uuid.dart';
 
 /// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
@@ -163,74 +160,42 @@ class MMService {
   }
 
   void initUsername(String passphrase) {
-    const int numAttempts = 5;
+    // MRC: Instead of the previous algortihm (uuid -> base64 -> substring, etc.)
+    // It was decided to use just a password generator.
 
-    String pass = '';
-    for (var i = 0; i < numAttempts; i++) {
-      pass = generateRpcPassword();
-
-      if (validateRpcPassword(pass)) break;
-    }
+    final String pass = generatePassword(true, true, true, true, 32);
 
     if (!validateRpcPassword(pass)) {
-      Log('mm_service] initUsername]',
-          "Couldn't generate valid rpcPassword in $numAttempts attempts.");
+      Log(
+          'mm_service] initUsername]',
+          "If you're seeing this, there's a bug in the rpcPassword generation code."
+              ' Please report.');
     }
 
     userpass = pass;
   }
 
-  String generateRpcPassword() {
-    // MRC: yurii suggested to use a random uuid, convert to base64 and use a substring
-    // This way the password will be random, have both upper an lowercase letters and
-    // have the correct lenght
-
-    final uuid = Uuid();
-    final rand = Random();
-
-    final generatedUuid = uuid.v4();
-
-    final r = base64.encode(utf8.encode(generatedUuid));
-
-    final start = rand.nextInt(r.length - 32);
-    final str = r.substring(start, start + 32);
-
-    // MRC: Now, switch a random character with a special symbol
-
-    // The list of the possible symbols, no accentuation included
-    const List<String> symbols = <String>[
-      '!',
-      '@',
-      '#',
-      r'$',
-      '%',
-      '&',
-      '*',
-      '-',
-      '+',
-      '?',
-      '/'
-    ];
-
-    final pos = rand.nextInt(str.length);
-    final symbPos = rand.nextInt(symbols.length);
-
-    // MRC: There's apparently no simple way to replace only a character at X position
-    // So, I'm using substring for that
-
-    final String newString =
-        str.substring(0, pos) + symbols[symbPos] + str.substring(pos + 1);
-
-    return newString;
-  }
-
+  // MRC: Since the app now uses an actual password generator for rpcPassword,
+  // then this method is not as useful anymore.
+  // However, it can still be useful if the criteria changes in the future, either by
+  // being updated to be used to validate the new algorithm or as an archive of
+  // the old criteria.
+  //
+  // Current criteria explained in comments.
   bool validateRpcPassword(String src) {
     if (src == null || src.isEmpty) return false;
+
+    // Password can't contain word 'password'
     if (src.toLowerCase().contains('password')) return false;
 
+    // Password must contain one digit, one lowercase letter, one uppercase letter,
+    // one special character and its length must be between 8 and 32 characters
     final RegExp exp =
         RegExp(r'^(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)).{8,32}$');
     if (!src.contains(exp)) return false;
+
+    // Password can't contain same character three time in a row,
+    // so some code below to check that:
 
     // MRC: Divide the password into all possible 3 character blocks
     final pieces = <String>[];
@@ -238,7 +203,7 @@ class MMService {
       pieces.add(src.substring(start, end));
     }
 
-    // If all 3 character are the same, show the message
+    // If, for any block, all 3 character are the same, block doesn't fit criteria
     for (String p in pieces) {
       final src = p[0];
       int count = 1;
