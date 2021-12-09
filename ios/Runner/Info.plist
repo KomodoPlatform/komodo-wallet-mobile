@@ -70,6 +70,10 @@
 	<string>Location services are not required by this application, please contact the app provider if you see this message.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location services are not required by this application, please contact the app provider if you see this message.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Photo Library write-access is required for social media sharing feature</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library general access is NOT required by this application, please contact the app provider if you see this message.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
@@ -93,7 +97,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>$(PRODUCT_NAME)</string>
 </dict>
 </plist>
