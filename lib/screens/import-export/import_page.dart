@@ -306,9 +306,11 @@ class _ImportPageState extends State<ImportPage> {
               Row(
                 children: <Widget>[
                   Text(
-                    DateFormat('dd MMM yyyy HH:mm').format(
-                        DateTime.fromMillisecondsSinceEpoch(
-                            swap.myInfo.startedAt * 1000)),
+                    swap.myInfo == null
+                        ? 'No info'
+                        : DateFormat('dd MMM yyyy HH:mm').format(
+                            DateTime.fromMillisecondsSinceEpoch(
+                                swap.myInfo.startedAt * 1000)),
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                           fontSize: 14,
                           color: Theme.of(context)
@@ -341,28 +343,36 @@ class _ImportPageState extends State<ImportPage> {
               Row(
                 children: <Widget>[
                   Text(
-                    cutTrailingZeros(formatPrice(swap.myInfo.myAmount, 4)) +
-                        ' ' +
-                        swap.myInfo.myCoin,
+                    swap.myInfo == null
+                        ? 'No info'
+                        : cutTrailingZeros(
+                                formatPrice(swap.myInfo.myAmount, 4)) +
+                            ' ' +
+                            swap.myInfo.myCoin,
                   ),
                   SizedBox(width: 4),
-                  Image.asset(
-                    'assets/coin-icons/${swap.myInfo.myCoin.toLowerCase()}.png',
-                    height: 20,
-                  ),
+                  if (swap.myInfo != null)
+                    Image.asset(
+                      'assets/coin-icons/${swap.myInfo.myCoin.toLowerCase()}.png',
+                      height: 20,
+                    ),
                   SizedBox(width: 8),
                   Icon(Icons.swap_horiz),
                   SizedBox(width: 8),
                   Text(
-                    cutTrailingZeros(formatPrice(swap.myInfo.otherAmount, 4)) +
-                        ' ' +
-                        swap.myInfo.otherCoin,
+                    swap.myInfo == null
+                        ? 'No info'
+                        : cutTrailingZeros(
+                                formatPrice(swap.myInfo.otherAmount, 4)) +
+                            ' ' +
+                            swap.myInfo.otherCoin,
                   ),
                   SizedBox(width: 4),
-                  Image.asset(
-                    'assets/coin-icons/${swap.myInfo.otherCoin.toLowerCase()}.png',
-                    height: 20,
-                  ),
+                  if (swap.myInfo != null)
+                    Image.asset(
+                      'assets/coin-icons/${swap.myInfo.otherCoin.toLowerCase()}.png',
+                      height: 20,
+                    ),
                 ],
               ),
             ],
