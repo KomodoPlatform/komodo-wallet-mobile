@@ -223,7 +223,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                                     ? Locale(prefLocale.data)
                                     : null,
                             supportedLocales: mainBloc.supportedLocales,
-                            theme: currentTheme.data
+                            theme: settingsBloc.isLightTheme
                                 ? getThemeLight()
                                 : getThemeDark(),
                             initialRoute: '/',
