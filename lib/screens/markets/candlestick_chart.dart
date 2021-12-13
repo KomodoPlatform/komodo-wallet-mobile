@@ -182,6 +182,9 @@ class CandleChartState extends State<CandleChart>
                 });
               },
             ),
+            child: Center(
+              child: Container(),
+            ),
           ),
         ),
       ),
