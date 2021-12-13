@@ -69,7 +69,7 @@ dev_dependencies:
   # recommended linter rules
   flutter_lints: 1.0.4 # flutter.dev (Note: Supports null safety)
 
-  test: 1.17.10 # dart.dev (Note: Supports null safety)
+  test: 1.17.12 # dart.dev (Note: Supports null safety)
 
   mockito: 5.0.16 # dart.dev (Note: Supports null safety)
   http: 0.13.4 # dart.dev (Note: Supports null safety)

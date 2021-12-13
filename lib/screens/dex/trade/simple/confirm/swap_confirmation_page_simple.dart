@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:io' show File, Platform, Process;
 
 import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
@@ -9,7 +8,6 @@ import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
     show EventChannel, MethodChannel, rootBundle, SystemChannels;
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
