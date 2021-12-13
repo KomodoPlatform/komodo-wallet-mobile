@@ -95,7 +95,7 @@ class _ItemCoinState extends State<ItemCoin>
     return Slidable(
       startActionPane: ActionPane(
         motion: const DrawerMotion(),
-        extentRatio: 0.25,
+        extentRatio: 0.75,
         children: actions,
       ),
       endActionPane: ActionPane(
