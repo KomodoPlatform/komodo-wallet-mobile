@@ -223,9 +223,6 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
               },
             ),
           ),
-          const SizedBox(
-            width: 8,
-          )
         ],
       ),
     );
