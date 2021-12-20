@@ -24,41 +24,35 @@ DividerThemeData get _dividerThemeData => const DividerThemeData(
 
 // Color scheme dark adapted from current dev
 ColorScheme get _colorScheme => const ColorScheme(
-      primary: Color.fromRGBO(42, 54, 71, 1),
-      primaryVariant: Color.fromRGBO(28, 36, 48, 1),
-      secondary: Color.fromRGBO(57, 161, 238, 1),
-      secondaryVariant:
-          Color.fromRGBO(57, 161, 238, 1), // Currently set to same as secondary
-      surface: Color.fromRGBO(42, 54, 71, 1),
-      background: Color.fromRGBO(30, 42, 58, 1),
-      error: Color.fromRGBO(202, 78, 61, 1),
-      // All of those set to White
-      onPrimary: Colors.white, // Currently set to white
-      onSecondary: Colors.white, // Currently set to white
-      onSurface: Colors.white, // Currently set to white
-      onBackground: Colors.white, // Currently set to white
-      onError: Colors.white, // Currently set to white
+      primary: Color.fromRGBO(90, 104, 230, 1),
+      primaryVariant: Color.fromRGBO(64, 78, 201, 1),
+      secondary: Color.fromRGBO(60, 201, 191, 1),
+      secondaryVariant: Color.fromRGBO(67, 46, 157, 1),
+      surface: Color.fromRGBO(36, 39, 61, 1),
+      background: Color.fromRGBO(32, 35, 55, 1),
+      error: Color.fromRGBO(255, 255, 255, 1),
+      onPrimary: Color.fromRGBO(255, 255, 255, 1),
+      onSecondary: Color.fromRGBO(255, 255, 255, 1),
+      onSurface: Color.fromRGBO(255, 255, 255, 1),
+      onBackground: Color.fromRGBO(255, 255, 255, 1),
+      onError: Color.fromRGBO(229, 33, 103, 1),
       brightness: Brightness.dark,
     );
 
 // Color scheme light adapted from current dev
 ColorScheme get _colorSchemeLight => const ColorScheme(
-      // White breaks as primary breaks the color scheme, which would need many overrides
-      // So copying the primary and primaryVariant of Dark theme for now
-      primary: Color.fromRGBO(42, 54, 71, 1),
-      primaryVariant: Color.fromRGBO(28, 36, 48, 1),
+      primary: Color.fromRGBO(90, 104, 230, 1),
+      primaryVariant: Color.fromRGBO(64, 78, 201, 1),
       secondary: Color.fromRGBO(60, 201, 191, 1),
-      secondaryVariant:
-          Color.fromRGBO(60, 201, 191, 1), // Currently set to same as secondary
+      secondaryVariant: Color.fromRGBO(67, 46, 157, 1),
       surface: Color.fromRGBO(255, 255, 255, 1),
-      background: Color.fromRGBO(245, 245, 245, 1),
-      error: Color.fromRGBO(202, 78, 61, 1),
-      // Set to either black or white depending on contrast
-      onPrimary: Colors.white, // Currently set to white
-      onSecondary: Colors.white, // Currently set to white
-      onSurface: Colors.black, // Currently set to black
-      onBackground: Colors.black, // Currently set to black
-      onError: Colors.white, // Currently set to white
+      background: Color.fromRGBO(248, 248, 248, 1),
+      error: Color.fromRGBO(229, 33, 103, 1),
+      onPrimary: Color.fromRGBO(255, 255, 255, 1),
+      onSecondary: Color.fromRGBO(255, 255, 255, 1),
+      onSurface: Color.fromRGBO(69, 96, 120, 1),
+      onBackground: Color.fromRGBO(69, 96, 120, 1),
+      onError: Color.fromRGBO(255, 255, 255, 1),
       brightness: Brightness.light,
     );
 
