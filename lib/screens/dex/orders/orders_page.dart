@@ -59,6 +59,11 @@ class _OrdersPageState extends State<OrdersPage> {
                   children: <Widget>[
                     Text(
                       AppLocalizations.of(context).ordersActive + ' ',
+                      style: Theme.of(context).textTheme.button.copyWith(
+                            color: _currentTab == OrdersTab.active
+                                ? Theme.of(context).colorScheme.secondary
+                                : null,
+                          ),
                     ),
                     _buildActiveOrdersNumber(),
                   ],
@@ -80,6 +85,11 @@ class _OrdersPageState extends State<OrdersPage> {
                   children: <Widget>[
                     Text(
                       AppLocalizations.of(context).ordersHistory + ' ',
+                      style: Theme.of(context).textTheme.button.copyWith(
+                            color: _currentTab == OrdersTab.history
+                                ? Theme.of(context).colorScheme.secondary
+                                : null,
+                          ),
                     ),
                     _buildHistoryNumber(),
                   ],
@@ -155,7 +165,9 @@ class _OrdersPageState extends State<OrdersPage> {
           return Text(
             '(${completed.length})',
             style: Theme.of(context).textTheme.button.copyWith(
-                  color: Theme.of(context).textTheme.button.color,
+                  color: _currentTab == OrdersTab.history
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
                 ),
           );
         });
