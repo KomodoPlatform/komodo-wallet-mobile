@@ -24,6 +24,13 @@ TextSelectionThemeData get _textSelectionThemeData =>
         selectionColor: Color.fromRGBO(57, 161, 238, 0.3),
         cursorColor: Color.fromRGBO(57, 161, 238, 1));
 
+// MRC: Currently used only to force the same active icon color for light and dark theme
+// As apparently Flutter will choose either primary or secondary color depending on theme brightness
+BottomNavigationBarThemeData get _bottomNavigationBarThemeData =>
+    const BottomNavigationBarThemeData(
+      selectedItemColor: Color.fromRGBO(90, 104, 230, 1),
+    );
+
 // Color scheme dark adapted from current dev
 ColorScheme get _colorScheme => const ColorScheme(
       primary: Color.fromRGBO(90, 104, 230, 1),
@@ -71,6 +78,7 @@ ThemeData getThemeDark() => ThemeData(
       inputDecorationTheme: _inputDecorationTheme,
       dividerTheme: _dividerThemeData,
       textSelectionTheme: _textSelectionThemeData,
+      bottomNavigationBarTheme: _bottomNavigationBarThemeData,
     );
 
 ThemeData getThemeLight() => ThemeData(
@@ -83,6 +91,7 @@ ThemeData getThemeLight() => ThemeData(
       inputDecorationTheme: _inputDecorationTheme,
       dividerTheme: _dividerThemeData,
       textSelectionTheme: _textSelectionThemeData,
+      bottomNavigationBarTheme: _bottomNavigationBarThemeData,
     );
 
 const Color cexColor = Color.fromARGB(200, 253, 247, 227);
