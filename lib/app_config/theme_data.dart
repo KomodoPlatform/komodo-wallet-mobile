@@ -19,12 +19,6 @@ DividerThemeData get _dividerThemeData => const DividerThemeData(
       space: 1,
     );
 
-BottomNavigationBarThemeData get _bottomNavigationBarThemeData =>
-    const BottomNavigationBarThemeData(
-      backgroundColor: Color.fromRGBO(36, 39, 61, 1),
-      unselectedItemColor: Color.fromRGBO(248, 248, 248, 1),
-    );
-
 TextSelectionThemeData get _textSelectionThemeData =>
     const TextSelectionThemeData(
         selectionColor: Color.fromRGBO(57, 161, 238, 0.3),
@@ -76,7 +70,6 @@ ThemeData getThemeDark() => ThemeData(
       appBarTheme: _appBarTheme,
       inputDecorationTheme: _inputDecorationTheme,
       dividerTheme: _dividerThemeData,
-      bottomNavigationBarTheme: _bottomNavigationBarThemeData,
       textSelectionTheme: _textSelectionThemeData,
     );
 
@@ -89,7 +82,6 @@ ThemeData getThemeLight() => ThemeData(
       appBarTheme: _appBarTheme,
       inputDecorationTheme: _inputDecorationTheme,
       dividerTheme: _dividerThemeData,
-      bottomNavigationBarTheme: _bottomNavigationBarThemeData,
       textSelectionTheme: _textSelectionThemeData,
     );
 
