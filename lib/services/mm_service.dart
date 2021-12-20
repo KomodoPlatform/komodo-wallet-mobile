@@ -167,12 +167,12 @@ class MMService {
 
     if (!validateRpcPassword(pass)) {
       Log(
-          'mm_service.dart] initUsername]',
+          'mm_service] initUsername',
           "If you're seeing this, there's a bug in the rpcPassword generation code."
               ' Please report.');
     } else {
       Log(
-          'mm_service.dart] initUsername]',
+          'mm_service] initUsername',
           'The generated rpcPassword seems to match the current criteria,'
               ' so everything should be alright!');
     }
