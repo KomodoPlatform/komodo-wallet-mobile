@@ -165,8 +165,7 @@ class _ItemCoinState extends State<ItemCoin>
                 ),
                 Expanded(child: SizedBox()),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.only(top: 8, bottom: 8, right: 12),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
