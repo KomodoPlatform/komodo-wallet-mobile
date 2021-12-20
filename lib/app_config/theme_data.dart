@@ -70,6 +70,7 @@ ColorScheme get _colorSchemeLight => const ColorScheme(
 ThemeData getThemeDark() => ThemeData(
       fontFamily: 'Ubuntu',
       scaffoldBackgroundColor: const Color.fromRGBO(30, 42, 58, 1),
+      dialogBackgroundColor: const Color.fromRGBO(42, 54, 71, 1),
       colorScheme: _colorScheme,
       snackBarTheme: _snackBarTheme,
       appBarTheme: _appBarTheme,
@@ -82,6 +83,7 @@ ThemeData getThemeDark() => ThemeData(
 ThemeData getThemeLight() => ThemeData(
       fontFamily: 'Ubuntu',
       scaffoldBackgroundColor: const Color.fromRGBO(245, 245, 245, 1),
+      dialogBackgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       colorScheme: _colorSchemeLight,
       snackBarTheme: _snackBarTheme,
       appBarTheme: _appBarTheme,
