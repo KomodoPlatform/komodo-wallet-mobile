@@ -466,10 +466,13 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildDeleteWallet() {
     return ListTile(
-      tileColor: Theme.of(context).errorColor,
+      tileColor: Theme.of(context).colorScheme.error,
       leading: Padding(
         padding: const EdgeInsets.all(6.0),
-        child: SvgPicture.asset('assets/svg/delete_setting.svg'),
+        child: SvgPicture.asset(
+          'assets/svg/delete_setting.svg',
+          color: Theme.of(context).colorScheme.onError,
+        ),
       ),
       title: Text(
         AppLocalizations.of(context).deleteWallet,
