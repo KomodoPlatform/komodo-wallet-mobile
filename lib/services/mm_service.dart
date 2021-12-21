@@ -163,18 +163,26 @@ class MMService {
     // MRC: Instead of the previous algortihm (uuid -> base64 -> substring, etc.)
     // It was decided to use just a password generator.
 
-    final String pass = generatePassword(true, true, true, true, 32);
+    const int numAttempts = 10;
+
+    String pass = '';
+    for (var i = 0; i < numAttempts; i++) {
+      pass = generatePassword(true, true, true, true, 32);
+
+      if (validateRpcPassword(pass)) {
+        Log(
+            'mm_service] initUsername',
+            'Number of tries that were needed for generating a password that'
+                'matches the current criteria: ${i + 1}.');
+        break;
+      }
+    }
 
     if (!validateRpcPassword(pass)) {
       Log(
           'mm_service] initUsername',
-          "If you're seeing this, there's a bug in the rpcPassword generation code."
-              ' Please report.');
-    } else {
-      Log(
-          'mm_service] initUsername',
-          'The generated rpcPassword seems to match the current criteria,'
-              ' so everything should be alright!');
+          "Couldn't generate valid rpcPassword in $numAttempts attempts."
+              'Please report this problem!');
     }
 
     userpass = pass;
