@@ -817,7 +817,7 @@ String generatePassword(bool _isWithLetters, bool _isWithUppercase,
   const String _lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
   const String _upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const String _numbers = '0123456789';
-  const String _special = r'@#=+!$%&?[](){}';
+  const String _special = r'@#=+!$%?[](){}';
 
   //Create the empty string that will contain the allowed chars
   String _allowedChars = '';
