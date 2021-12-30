@@ -70,6 +70,8 @@
 	<string>Location services are not required by this application, please contact the app provider if you see this message.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location services are not required by this application, please contact the app provider if you see this message.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library general access is required for backup functionality.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
@@ -93,7 +95,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>$(PRODUCT_NAME)</string>
 </dict>
 </plist>

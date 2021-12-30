@@ -799,3 +799,40 @@ Future<String> scanQr(BuildContext context) async {
 
   return barcode.code;
 }
+
+/// Function to generate password based on some criteria
+///
+/// Adapted from code at https://blog.albertobonacina.com/password-generator-with-dart.
+/// Please review it very carefully!
+
+String generatePassword(bool _isWithLetters, bool _isWithUppercase,
+    bool _isWithNumbers, bool _isWithSpecial, int _numberCharPassword) {
+  //Define the allowed chars to use in the password
+  const String _lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+  const String _upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const String _numbers = '0123456789';
+  const String _special = r'@#=+!$%?[](){}';
+
+  //Create the empty string that will contain the allowed chars
+  String _allowedChars = '';
+
+  //Put chars on the allowed ones based on the input values
+  _allowedChars += _isWithLetters ? _lowerCaseLetters : '';
+  _allowedChars += _isWithUppercase ? _upperCaseLetters : '';
+  _allowedChars += _isWithNumbers ? _numbers : '';
+  _allowedChars += _isWithSpecial ? _special : '';
+
+  int i = 0;
+  String _result = '';
+
+  //Create password
+  while (i < _numberCharPassword) {
+    //Get random int
+    final int randomInt = Random.secure().nextInt(_allowedChars.length);
+    //Get random char and append it to the password
+    _result += _allowedChars[randomInt];
+    i++;
+  }
+
+  return _result;
+}
