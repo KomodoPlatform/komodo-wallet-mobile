@@ -343,13 +343,11 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
         return AppBar(
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.onBackground,
-          elevation: 0,
           title: Text(title),
         );
         break;
       default:
         return AppBar(
-          elevation: 0,
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.onBackground,
           automaticallyImplyLeading: pinStatus != PinStatus.NORMAL_PIN,

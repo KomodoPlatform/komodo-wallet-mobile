@@ -56,7 +56,6 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
               : null,
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.onBackground,
-          elevation: 0,
         ),
         body: ListView(
           key: const Key('unlock-wallet-scrollable'),

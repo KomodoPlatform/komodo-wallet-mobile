@@ -57,7 +57,6 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
         title: Text(AppLocalizations.of(context).checkSeedPhrase),
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.onBackground,
-        elevation: 0,
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),

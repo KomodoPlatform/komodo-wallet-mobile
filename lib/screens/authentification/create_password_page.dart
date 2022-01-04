@@ -68,7 +68,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.onBackground,
-        elevation: 0,
       ),
       body: Form(
         key: _formKey,

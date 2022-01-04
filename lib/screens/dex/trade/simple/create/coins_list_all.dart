@@ -68,6 +68,7 @@ class _CoinsListAllState extends State<CoinsListAll> {
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
         child: ListTile(
+          visualDensity: VisualDensity.compact,
           onTap: () {
             widget.type == Market.SELL
                 ? _constrProvider.sellCoin = item.coin.abbr

@@ -27,7 +27,6 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.onBackground,
-          elevation: 0,
           title:
               Text(AppLocalizations.of(context).viewSeedAndKeys.toUpperCase()),
           actions: <Widget>[

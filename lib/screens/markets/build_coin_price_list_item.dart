@@ -60,7 +60,8 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Material(
+                  Card(
+                    margin: EdgeInsets.all(0),
                     child: Row(
                       children: <Widget>[
                         Expanded(

@@ -26,7 +26,6 @@ class _WelcomePageState extends State<WelcomePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.onBackground,
-        elevation: 0,
       ),
       body: ListView(
         key: const Key('welcome-scrollable'),

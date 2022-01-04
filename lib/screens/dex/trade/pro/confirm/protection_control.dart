@@ -93,7 +93,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
         _buildNotarizaton(),
         Container(
           height: 1,
-          color: Theme.of(context).canvasColor,
+          color: Theme.of(context).colorScheme.surface,
         ),
         _buildConfirmations(),
       ],

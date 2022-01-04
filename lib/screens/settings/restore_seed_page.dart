@@ -40,7 +40,6 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
             '${AppLocalizations.of(context).login[0].toUpperCase()}${AppLocalizations.of(context).login.substring(1)}'),
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.onBackground,
-        elevation: 0,
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),

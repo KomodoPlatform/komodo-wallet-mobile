@@ -134,7 +134,7 @@ class _ItemCoinState extends State<ItemCoin>
             );
           },
           child: Container(
-            color: Theme.of(context).canvasColor,
+            color: Theme.of(context).colorScheme.surface,
             child: Row(
               children: <Widget>[
                 Container(

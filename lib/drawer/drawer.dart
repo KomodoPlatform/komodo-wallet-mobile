@@ -38,6 +38,7 @@ class _AppDrawerState extends State<AppDrawer> {
     return SizedBox(
       width: drawerWidth,
       child: Drawer(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         child: Column(
           children: <Widget>[
             SizedBox(
@@ -199,7 +200,6 @@ class _AppDrawerState extends State<AppDrawer> {
                   Divider(
                     indent: 20,
                     endIndent: 20,
-                    color: Colors.white,
                   ),
                   _buildDrawerItem(
                       title: Text(AppLocalizations.of(context).addressBook),
@@ -258,7 +258,6 @@ class _AppDrawerState extends State<AppDrawer> {
                   Divider(
                     indent: 20,
                     endIndent: 20,
-                    color: Theme.of(context).dividerColor,
                   ),
                   _buildDrawerItem(
                     leading: const Icon(Icons.exit_to_app,
