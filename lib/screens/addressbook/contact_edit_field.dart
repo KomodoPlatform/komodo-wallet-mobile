@@ -142,8 +142,8 @@ class _ContactEditFieldState extends State<ContactEditField> {
       setState(() {
         controller.text = result;
       });
+      widget.onChange(result);
     }
-    widget.onChange(result);
 
     lockService.qrScannerReturned(lockCookie);
   }

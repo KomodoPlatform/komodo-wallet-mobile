@@ -791,6 +791,8 @@ List<Coin> filterCoinsByQuery(List<Coin> coins, String query) {
 }
 
 Future<String> scanQr(BuildContext context) async {
+  unfocusTextField(context);
+  await Future.delayed(const Duration(milliseconds: 200));
   final barcode = await Navigator.of(context).push<Barcode>(
     MaterialPageRoute(builder: (context) => AppQRView()),
   );
@@ -835,4 +837,12 @@ String generatePassword(bool _isWithLetters, bool _isWithUppercase,
   }
 
   return _result;
+}
+
+void unfocusTextField(BuildContext context) {
+  FocusScopeNode currentFocus = FocusScope.of(context);
+
+  if (!currentFocus.hasPrimaryFocus) {
+    currentFocus.unfocus();
+  }
 }
