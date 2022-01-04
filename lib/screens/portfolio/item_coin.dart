@@ -95,12 +95,14 @@ class _ItemCoinState extends State<ItemCoin>
     return Slidable(
       startActionPane: ActionPane(
         motion: const DrawerMotion(),
-        extentRatio: 0.75,
+        extentRatio: (actions != null && actions.isNotEmpty)
+            ? (actions.length * 0.3).clamp(0.3, 1.0)
+            : null,
         children: actions,
       ),
       endActionPane: ActionPane(
         motion: const DrawerMotion(),
-        extentRatio: 0.25,
+        extentRatio: 0.4,
         children: [
           SlidableAction(
             label: AppLocalizations.of(context).remove.toUpperCase(),
