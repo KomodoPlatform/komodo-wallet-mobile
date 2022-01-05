@@ -91,6 +91,15 @@ OutlinedButtonThemeData get _outlinedButtonThemeDataLight =>
       ),
     );
 
+ProgressIndicatorThemeData get _progressIndicatorThemeData =>
+    ProgressIndicatorThemeData(
+      color: _colorScheme.secondary,
+    );
+ProgressIndicatorThemeData get _progressIndicatorThemeDataLight =>
+    ProgressIndicatorThemeData(
+      color: _colorSchemeLight.secondary,
+    );
+
 // Color scheme dark adapted from current dev
 ColorScheme get _colorScheme => const ColorScheme(
       primary: Color.fromRGBO(42, 54, 71, 1),
@@ -152,6 +161,7 @@ ThemeData getThemeDark() => ThemeData(
       elevatedButtonTheme: _elevatedButtonThemeData,
       textButtonTheme: _textButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
+      progressIndicatorTheme: _progressIndicatorThemeData,
     );
 
 ThemeData getThemeLight() => ThemeData(
@@ -178,6 +188,7 @@ ThemeData getThemeLight() => ThemeData(
       elevatedButtonTheme: _elevatedButtonThemeDataLight,
       textButtonTheme: _textButtonThemeDataLight,
       outlinedButtonTheme: _outlinedButtonThemeDataLight,
+      progressIndicatorTheme: _progressIndicatorThemeDataLight,
     );
 
 const Color cexColor = Color.fromARGB(200, 253, 247, 227);
