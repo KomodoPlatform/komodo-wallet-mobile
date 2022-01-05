@@ -456,7 +456,7 @@ class _ChartPainter extends CustomPainter {
         _drawText(
           canvas: canvas,
           align: TextAlign.right,
-          color: Colors.black,
+          color: widget.textColor == Colors.black ? Colors.white : Colors.black,
           backgroundColor: widget.textColor,
           text: ' ${formatPrice(selectedPoint['price'], 8)} ',
           point: Offset(size.width - labelWidth - 2, dy - 2),
@@ -472,7 +472,7 @@ class _ChartPainter extends CustomPainter {
         _drawText(
           canvas: canvas,
           align: TextAlign.center,
-          color: Colors.black,
+          color: widget.textColor == Colors.black ? Colors.white : Colors.black,
           backgroundColor: widget.textColor,
           text: ' ${_formatTime(selectedCandle.closeTime * 1000)} ',
           point: Offset(dx - 50, size.height - 7),
