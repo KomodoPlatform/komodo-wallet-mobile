@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -31,10 +30,11 @@ class _AppQRViewState extends State<AppQRView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Column(
         children: <Widget>[
           Expanded(
-            flex: 5,
+            flex: 9,
             child: QRView(
               key: qrKey,
               onQRViewCreated: _onQRViewCreated,
@@ -44,10 +44,7 @@ class _AppQRViewState extends State<AppQRView> {
           Expanded(
             flex: 1,
             child: Center(
-              child: (result != null)
-                  ? Text(
-                      'Barcode Type: ${describeEnum(result.format)}   Data: ${result.code}')
-                  : Text('Scan a code'),
+              child: Text('Scan a code'),
             ),
           )
         ],
@@ -58,6 +55,7 @@ class _AppQRViewState extends State<AppQRView> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) async {
+      if (scanData == null || scanData.format != BarcodeFormat.qrcode) return;
       controller.stopCamera();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Found Qr Code')),
@@ -69,7 +67,6 @@ class _AppQRViewState extends State<AppQRView> {
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    //log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('No Permission')),
