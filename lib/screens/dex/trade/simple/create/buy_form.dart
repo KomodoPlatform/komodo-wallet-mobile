@@ -31,7 +31,7 @@ class _BuyFormState extends State<BuyForm> {
       if (_constrProvider.sellCoin == null) {
         _focusNode.requestFocus();
       } else {
-        FocusScope.of(context).requestFocus(FocusNode());
+        unfocusTextField(context);
       }
     });
     super.initState();

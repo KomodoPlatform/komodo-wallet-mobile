@@ -3,6 +3,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/markets/build_order_details.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class OrderDetailsPage extends StatelessWidget {
   const OrderDetailsPage({
@@ -22,7 +23,7 @@ class OrderDetailsPage extends StatelessWidget {
         body: SingleChildScrollView(
           child: GestureDetector(
             onTap: () {
-              FocusScope.of(context).requestFocus(FocusNode());
+              unfocusTextField(context);
             },
             child: Container(
               padding: const EdgeInsets.all(12),

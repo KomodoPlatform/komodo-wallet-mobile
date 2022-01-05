@@ -839,6 +839,9 @@ String generatePassword(bool _isWithLetters, bool _isWithUppercase,
   return _result;
 }
 
+// According to https://flutterigniter.com/dismiss-keyboard-form-lose-focus/
+// this is the correct way to unfocus a TextField (so the keyboard is dismissed)
+// it's recommended over `FocusScope.of(context).requestFocus(new FocusNode())`
 void unfocusTextField(BuildContext context) {
   FocusScopeNode currentFocus = FocusScope.of(context);
 

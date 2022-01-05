@@ -634,7 +634,7 @@ class _CoinDetailState extends State<CoinDetail> {
       firstChild: SizedBox(),
       secondChild: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          unfocusTextField(context);
         },
         child: Card(
             margin:

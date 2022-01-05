@@ -7,6 +7,7 @@ import 'package:komodo_dex/screens/dex/orders/orders_page.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_mode_indicator.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_modes_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class DexPage extends StatefulWidget {
   @override
@@ -88,7 +89,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
 
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+        unfocusTextField(context);
       },
       child: DefaultTabController(
         length: 2,

@@ -7,6 +7,7 @@ import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_details.d
 import 'package:komodo_dex/screens/dex/trade/simple/create/buy_form.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/coins_list.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/sell_form.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -212,7 +213,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
                 ? () => focusNode.requestFocus()
                 : () {
                     controller.text = '';
-                    FocusScope.of(context).requestFocus(FocusNode());
+                    unfocusTextField(context);
                     setState(() {
                       if (type == Market.SELL) {
                         _sellSearchTerm = '';
