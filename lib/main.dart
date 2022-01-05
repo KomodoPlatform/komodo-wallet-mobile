@@ -186,7 +186,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       SystemUiOverlay.top,
     ]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: getThemeDark().backgroundColor,
+      systemNavigationBarColor: getThemeDark().scaffoldBackgroundColor,
       systemNavigationBarIconBrightness: Brightness.light,
     ));
 
