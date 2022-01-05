@@ -147,7 +147,9 @@ class _BuildNewsItemState extends State<BuildNewsItem>
               child: Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 16, right: 16),
                 child: Text(AppLocalizations.of(context).feedReadMore,
-                    style: TextStyle(fontSize: 16, color: Colors.blue)),
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.secondary)),
               ),
             ),
           ),
