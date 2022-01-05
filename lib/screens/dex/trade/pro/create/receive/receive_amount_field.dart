@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:rational/rational.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
@@ -47,7 +48,15 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       style: Theme.of(context).textTheme.subtitle2,
       decoration: InputDecoration(
-        border: UnderlineInputBorder(),
+        border: Theme.of(context).brightness == Brightness.light
+            ? defaultUnderlineInputBorderLight
+            : defaultUnderlineInputBorder,
+        focusedBorder: Theme.of(context).brightness == Brightness.light
+            ? defaultFocusedUnderlineInputBorderLight
+            : defaultFocusedUnderlineInputBorder,
+        labelStyle: Theme.of(context).brightness == Brightness.light
+            ? defaultUnderlineInputBorderLabelStyleLight
+            : defaultUnderlineInputBorderLabelStyle,
       ),
       textInputAction: TextInputAction.done,
     );

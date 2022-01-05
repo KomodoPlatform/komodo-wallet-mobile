@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/services/db/database.dart';
@@ -40,10 +41,16 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
           child: isEdit
               ? TextField(
                   decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.secondary),
-                    ),
+                    border: Theme.of(context).brightness == Brightness.light
+                        ? defaultUnderlineInputBorderLight
+                        : defaultUnderlineInputBorder,
+                    focusedBorder:
+                        Theme.of(context).brightness == Brightness.light
+                            ? defaultFocusedUnderlineInputBorderLight
+                            : defaultFocusedUnderlineInputBorder,
+                    labelStyle: Theme.of(context).brightness == Brightness.light
+                        ? defaultUnderlineInputBorderLabelStyleLight
+                        : defaultUnderlineInputBorderLabelStyle,
                   ),
                   controller: noteTextController,
                   maxLength: 200,

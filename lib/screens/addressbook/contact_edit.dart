@@ -359,7 +359,17 @@ class _ContactEditState extends State<ContactEdit> {
                       controller: searchTextController,
                       onChanged: (_) => setState(() {}),
                       decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
+                        border: Theme.of(context).brightness == Brightness.light
+                            ? defaultUnderlineInputBorderLight
+                            : defaultUnderlineInputBorder,
+                        focusedBorder:
+                            Theme.of(context).brightness == Brightness.light
+                                ? defaultFocusedUnderlineInputBorderLight
+                                : defaultFocusedUnderlineInputBorder,
+                        labelStyle:
+                            Theme.of(context).brightness == Brightness.light
+                                ? defaultUnderlineInputBorderLabelStyleLight
+                                : defaultUnderlineInputBorderLabelStyle,
                         prefixIcon: Icon(Icons.search),
                         hintText: 'Search for Ticker',
                       ),

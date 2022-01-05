@@ -306,7 +306,17 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                         isDense: true,
                         hintText: AppLocalizations.of(context)
                             .multiBaseAmtPlaceholder,
-                        border: UnderlineInputBorder(),
+                        border: Theme.of(context).brightness == Brightness.light
+                            ? defaultUnderlineInputBorderLight
+                            : defaultUnderlineInputBorder,
+                        focusedBorder:
+                            Theme.of(context).brightness == Brightness.light
+                                ? defaultFocusedUnderlineInputBorderLight
+                                : defaultFocusedUnderlineInputBorder,
+                        labelStyle:
+                            Theme.of(context).brightness == Brightness.light
+                                ? defaultUnderlineInputBorderLabelStyleLight
+                                : defaultUnderlineInputBorderLabelStyle,
                       ),
                       onChanged: (String value) {
                         double amnt;

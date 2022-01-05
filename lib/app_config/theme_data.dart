@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-// TODO(MRC): The Flutter upgrade from the previous version to 2.5.x broke
-// several parts of the theming, I will have to figure out how to fix later
-
 SnackBarThemeData _snackBarTheme = const SnackBarThemeData(
   behavior: SnackBarBehavior.floating,
 );
@@ -12,8 +9,24 @@ AppBarTheme get _appBarTheme => const AppBarTheme(
       elevation: 0,
     );
 
-InputDecorationTheme get _inputDecorationTheme => const InputDecorationTheme(
+InputDecorationTheme get _inputDecorationTheme => InputDecorationTheme(
       border: OutlineInputBorder(),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: _colorScheme.secondary,
+        ),
+      ),
+      labelStyle: TextStyle(color: _colorScheme.secondary),
+    );
+
+InputDecorationTheme get _inputDecorationThemeLight => InputDecorationTheme(
+      border: OutlineInputBorder(),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: _colorSchemeLight.secondary,
+        ),
+      ),
+      labelStyle: TextStyle(color: _colorSchemeLight.secondary),
     );
 
 DividerThemeData get _dividerThemeData => const DividerThemeData(
@@ -158,7 +171,7 @@ ThemeData getThemeLight() => ThemeData(
       bottomAppBarColor: _colorSchemeLight.surface,
       snackBarTheme: _snackBarTheme,
       appBarTheme: _appBarTheme,
-      inputDecorationTheme: _inputDecorationTheme,
+      inputDecorationTheme: _inputDecorationThemeLight,
       dividerTheme: _dividerThemeData,
       textSelectionTheme: _textSelectionThemeData,
       bottomNavigationBarTheme: _bottomNavigationBarThemeDataLight,
@@ -181,3 +194,19 @@ ButtonStyle elevatedButtonSmallButtonStyle({EdgeInsets padding}) =>
         borderRadius: BorderRadius.circular(30.0),
       ),
     );
+
+// Some variables to simplify the non-Outlined TextFields
+
+UnderlineInputBorder get defaultUnderlineInputBorder => UnderlineInputBorder();
+UnderlineInputBorder get defaultFocusedUnderlineInputBorder =>
+    UnderlineInputBorder(borderSide: BorderSide(color: _colorScheme.secondary));
+TextStyle get defaultUnderlineInputBorderLabelStyle =>
+    TextStyle(color: _colorScheme.secondary);
+
+UnderlineInputBorder get defaultUnderlineInputBorderLight =>
+    UnderlineInputBorder();
+UnderlineInputBorder get defaultFocusedUnderlineInputBorderLight =>
+    UnderlineInputBorder(
+        borderSide: BorderSide(color: _colorSchemeLight.secondary));
+TextStyle get defaultUnderlineInputBorderLabelStyleLight =>
+    TextStyle(color: _colorSchemeLight.secondary);

@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_button_simple.dart';
@@ -206,7 +207,15 @@ class _TradePageSimpleState extends State<TradePageSimple> {
         decoration: InputDecoration(
           isCollapsed: true,
           isDense: true,
-          border: UnderlineInputBorder(),
+          border: Theme.of(context).brightness == Brightness.light
+              ? defaultUnderlineInputBorderLight
+              : defaultUnderlineInputBorder,
+          focusedBorder: Theme.of(context).brightness == Brightness.light
+              ? defaultFocusedUnderlineInputBorderLight
+              : defaultFocusedUnderlineInputBorder,
+          labelStyle: Theme.of(context).brightness == Brightness.light
+              ? defaultUnderlineInputBorderLabelStyleLight
+              : defaultUnderlineInputBorderLabelStyle,
           suffixIcon: IconButton(
             padding: EdgeInsets.all(0),
             onPressed: currentTerm == null || currentTerm.isEmpty

@@ -255,7 +255,15 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                   const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 isDense: true,
-                border: UnderlineInputBorder(),
+                border: Theme.of(context).brightness == Brightness.light
+                    ? defaultUnderlineInputBorderLight
+                    : defaultUnderlineInputBorder,
+                focusedBorder: Theme.of(context).brightness == Brightness.light
+                    ? defaultFocusedUnderlineInputBorderLight
+                    : defaultFocusedUnderlineInputBorder,
+                labelStyle: Theme.of(context).brightness == Brightness.light
+                    ? defaultUnderlineInputBorderLabelStyleLight
+                    : defaultUnderlineInputBorderLabelStyle,
               ),
               maxLines: 1,
               inputFormatters: <TextInputFormatter>[

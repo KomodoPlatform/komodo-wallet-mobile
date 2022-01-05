@@ -1,3 +1,4 @@
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
 import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,15 @@ class _SellAmountFieldState extends State<SellAmountField> {
       style: Theme.of(context).textTheme.subtitle2,
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-        border: UnderlineInputBorder(),
+        border: Theme.of(context).brightness == Brightness.light
+            ? defaultUnderlineInputBorderLight
+            : defaultUnderlineInputBorder,
+        focusedBorder: Theme.of(context).brightness == Brightness.light
+            ? defaultFocusedUnderlineInputBorderLight
+            : defaultFocusedUnderlineInputBorder,
+        labelStyle: Theme.of(context).brightness == Brightness.light
+            ? defaultUnderlineInputBorderLabelStyleLight
+            : defaultUnderlineInputBorderLabelStyle,
         hintText: AppLocalizations.of(context).amountToSell,
       ),
     );
