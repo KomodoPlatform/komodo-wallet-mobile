@@ -272,18 +272,27 @@ class _DetailSwapState extends State<DetailSwap> {
           children: [
             TableRow(
               children: [
-                _buildTextAmount(widget.swap.result.myInfo.myCoin,
-                    widget.swap.result.myInfo.myAmount),
-                Row(
-                  children: [
-                    _buildIcon(widget.swap.result.myInfo.myCoin),
-                    Icon(Icons.sync, size: 20),
-                    _buildIcon(widget.swap.result.myInfo.otherCoin),
-                  ],
+                TableCell(
+                  verticalAlignment: TableCellVerticalAlignment.middle,
+                  child: _buildTextAmount(widget.swap.result.myInfo.myCoin,
+                      widget.swap.result.myInfo.myAmount),
                 ),
-                _buildTextAmount(widget.swap.result.myInfo.otherCoin,
-                    widget.swap.result.myInfo.otherAmount,
-                    textAlign: TextAlign.right),
+                TableCell(
+                  verticalAlignment: TableCellVerticalAlignment.middle,
+                  child: Row(
+                    children: [
+                      _buildIcon(widget.swap.result.myInfo.myCoin),
+                      Icon(Icons.sync, size: 20),
+                      _buildIcon(widget.swap.result.myInfo.otherCoin),
+                    ],
+                  ),
+                ),
+                TableCell(
+                  verticalAlignment: TableCellVerticalAlignment.middle,
+                  child: _buildTextAmount(widget.swap.result.myInfo.otherCoin,
+                      widget.swap.result.myInfo.otherAmount,
+                      textAlign: TextAlign.right),
+                ),
               ],
             ),
             TableRow(
