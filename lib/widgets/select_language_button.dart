@@ -22,7 +22,8 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Theme.of(context).colorScheme.onSurface),
+          border: Border.all(
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3)),
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),

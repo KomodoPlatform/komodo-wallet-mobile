@@ -67,12 +67,11 @@ class BoxButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-          borderRadius: borderRadius,
-          color: Theme.of(context).scaffoldBackgroundColor,
-        ),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
+            ),
+            borderRadius: borderRadius,
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
           child: Center(
@@ -192,7 +191,11 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
 
   Widget _buildDeleteButton(Wallet wallet, BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.delete_outline),
+      icon: Icon(Icons.delete_outline,
+          size: 24,
+          color: Theme.of(context).brightness == Brightness.light
+              ? Colors.black.withOpacity(0.3)
+              : Colors.white.withOpacity(0.6)),
       onPressed: () async {
         Navigator.push<dynamic>(
           context,
