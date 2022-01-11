@@ -308,9 +308,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           body: _children[snapshot.data],
           bottomNavigationBar: Material(
             elevation: 8.0,
-            child: SafeArea(
-              child: networkStatusStreamBuilder(
-                snapshot.data,
+            child: Container(
+              color: Theme.of(context).colorScheme.surface,
+              child: SafeArea(
+                child: networkStatusStreamBuilder(
+                  snapshot.data,
+                ),
               ),
             ),
           ),
@@ -471,6 +474,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               type: BottomNavigationBarType.fixed,
               onTap: onTabTapped,
               currentIndex: indexTab,
+              elevation: 0,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                     icon: const Icon(
