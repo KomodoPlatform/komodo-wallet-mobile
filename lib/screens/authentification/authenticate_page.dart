@@ -128,11 +128,12 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
             ],
           ),
           SizedBox(height: 16),
-          ...ListTile.divideTiles(
-                  tiles: wallets.map<Widget>(
-                      (element) => _buildItemWallet(element, context)),
-                  color: Theme.of(context).dividerColor)
-              .toList(),
+          ...wallets.map<Widget>((element) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: _buildItemWallet(element, context),
+            );
+          }).toList(),
         ],
       ),
     );
