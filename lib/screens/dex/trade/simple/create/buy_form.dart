@@ -25,16 +25,22 @@ class _BuyFormState extends State<BuyForm> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _constrProvider.addListener(_onDataChange);
-      _amtCtrl.addListener(_onAmtFieldChange);
 
-      _fillForm();
+      _onDataChange(); // fill the form with current data on page load
       if (_constrProvider.sellCoin == null) {
         _focusNode.requestFocus();
       } else {
         unfocusTextField(context);
       }
     });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _constrProvider.removeListener(_onDataChange);
+    super.dispose();
   }
 
   @override
@@ -62,11 +68,12 @@ class _BuyFormState extends State<BuyForm> {
           controller: _amtCtrl,
           focusNode: _focusNode,
           keyboardType: TextInputType.numberWithOptions(decimal: true),
+          onChanged: _constrProvider.onBuyAmtFieldChange,
           inputFormatters: <TextInputFormatter>[
             DecimalTextInputFormatter(
                 decimalRange: appConfig.tradeFormPrecision),
             FilteringTextInputFormatter.allow(RegExp(
-                '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
+                '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?'))
           ],
           style: TextStyle(height: 1),
           decoration: InputDecoration(
@@ -171,6 +178,8 @@ class _BuyFormState extends State<BuyForm> {
   }
 
   void _onDataChange() {
+    if (!mounted) return;
+
     if (_constrProvider.buyAmount == null) {
       _amtCtrl.text = '';
       return;
@@ -181,24 +190,8 @@ class _BuyFormState extends State<BuyForm> {
     final String currentFormatted = cutTrailingZeros(_amtCtrl.text);
 
     if (currentFormatted != newFormatted) {
-      _amtCtrl.setTextAndPosition(newFormatted);
-
-      Future<dynamic>.delayed(Duration.zero).then((dynamic _) {
-        if (!_focusNode.hasFocus) {
-          _amtCtrl.selection = TextSelection.collapsed(offset: 0);
-        }
-      });
+      _amtCtrl.text = newFormatted;
+      moveCursorToEnd(_amtCtrl);
     }
-  }
-
-  void _onAmtFieldChange() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _constrProvider.onBuyAmtFieldChange(_amtCtrl.text);
-    });
-  }
-
-  void _fillForm() {
-    _onDataChange();
-    setState(() {});
   }
 }
