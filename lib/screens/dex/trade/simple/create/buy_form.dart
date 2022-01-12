@@ -6,7 +6,6 @@ import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
-import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +15,7 @@ class BuyForm extends StatefulWidget {
 }
 
 class _BuyFormState extends State<BuyForm> {
-  final _amtCtrl = TextEditingControllerWorkaroud();
+  final _amtCtrl = TextEditingController();
   final _focusNode = FocusNode();
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
