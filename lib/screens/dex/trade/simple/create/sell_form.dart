@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-//import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
@@ -23,10 +22,10 @@ class _SellFormState extends State<SellForm> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final constrProvider = context.read<ConstructorProvider>();
-      constrProvider.addListener(_onDataChange);
+      _constrProvider.addListener(_onDataChange);
+      _onDataChange(); // fill the form with current data on page load
 
-      if (constrProvider.buyCoin == null) {
+      if (_constrProvider.buyCoin == null) {
         _focusNode.requestFocus();
       } else {
         unfocusTextField(context);
@@ -34,6 +33,12 @@ class _SellFormState extends State<SellForm> {
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _constrProvider?.removeListener(_onDataChange);
+    super.dispose();
   }
 
   @override
@@ -123,7 +128,7 @@ class _SellFormState extends State<SellForm> {
             DecimalTextInputFormatter(
                 decimalRange: appConfig.tradeFormPrecision),
             FilteringTextInputFormatter.allow(RegExp(
-                '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
+                '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?'))
           ],
           decoration: InputDecoration(
             isDense: true,
@@ -178,25 +183,19 @@ class _SellFormState extends State<SellForm> {
 
   void _onDataChange() {
     if (!mounted) return;
-    final constrProvider = context.read<ConstructorProvider>();
-    if (constrProvider.sellAmount == null) {
+
+    if (_constrProvider.sellAmount == null) {
       _amtCtrl.text = '';
       return;
     }
 
-    final String newFormatted = cutTrailingZeros(constrProvider.sellAmount
+    final String newFormatted = cutTrailingZeros(_constrProvider.sellAmount
         .toStringAsFixed(appConfig.tradeFormPrecision));
     final String currentFormatted = cutTrailingZeros(_amtCtrl.text);
 
     if (currentFormatted != newFormatted) {
-      // MRC: Belong to TextEditingControllerWorkaround only
-      //_amtCtrl.setTextAndPosition(newFormatted);
-
       _amtCtrl.text = newFormatted;
-
-      if (!_focusNode.hasFocus) {
-        _amtCtrl.selection = TextSelection.collapsed(offset: 0);
-      }
+      moveCursorToEnd(_amtCtrl);
     }
   }
 }

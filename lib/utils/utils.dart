@@ -849,3 +849,9 @@ void unfocusTextField(BuildContext context) {
     currentFocus.unfocus();
   }
 }
+
+void moveCursorToEnd(TextEditingController controller) {
+  controller.selection = TextSelection.fromPosition(
+    TextPosition(offset: controller.text.length),
+  );
+}
