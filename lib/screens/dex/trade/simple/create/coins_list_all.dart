@@ -47,12 +47,15 @@ class _CoinsListAllState extends State<CoinsListAll> {
 
     setState(() => _timer = null);
 
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: items.length,
-      itemBuilder: (context, i) {
-        return _buildCoinItem(items[i]);
-      },
+    return Container(
+      padding: EdgeInsets.only(left: 12),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: items.length,
+        itemBuilder: (context, i) {
+          return _buildCoinItem(items[i]);
+        },
+      ),
     );
   }
 
@@ -66,7 +69,7 @@ class _CoinsListAllState extends State<CoinsListAll> {
     return Opacity(
       opacity: item.coin.isActive ? 1 : 0.3,
       child: Card(
-        margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+        margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
         child: ListTile(
           visualDensity: VisualDensity.compact,
           onTap: () {

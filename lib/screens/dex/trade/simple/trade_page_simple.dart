@@ -1,6 +1,5 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_button_simple.dart';
@@ -8,7 +7,6 @@ import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_details.d
 import 'package:komodo_dex/screens/dex/trade/simple/create/buy_form.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/coins_list.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/sell_form.dart';
-import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -51,24 +49,24 @@ class _TradePageSimpleState extends State<TradePageSimple> {
 
   Widget _buildContent(LinkedHashMap<String, Coin> known) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 12),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildProgressBar(),
+          SizedBox(height: 12),
           Flexible(
             flex: _anyLists() ? 1 : 0,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(child: _buildSell(known)),
-                VerticalDivider(),
                 Expanded(child: _buildBuy(known)),
               ],
             ),
           ),
           BuildTradeDetails(),
-          SizedBox(height: 16),
+          SizedBox(height: 12),
           BuildTradeButtonSimple(),
           // BuildResetButtonSimple(),
         ],
@@ -77,67 +75,93 @@ class _TradePageSimpleState extends State<TradePageSimple> {
   }
 
   Widget _buildSell(LinkedHashMap<String, Coin> known) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 12),
+          child: Row(
             children: [
               Text(
                 AppLocalizations.of(context).simpleTradeSellTitle + ':',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
-              SizedBox(width: 8),
               _buildSearchField(Market.SELL),
             ],
           ),
-          SizedBox(height: 6),
-          Expanded(
-            flex: _anyLists() ? 1 : 0,
-            child: _constrProvider.sellCoin == null
-                ? CoinsList(
-                    type: Market.SELL,
-                    known: known,
-                    searchTerm: _sellSearchTerm,
-                  )
-                : SellForm(),
+        ),
+        SizedBox(height: 6),
+        Flexible(
+          flex: _anyLists() ? 1 : 0,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              _constrProvider.sellCoin == null
+                  ? CoinsList(
+                      type: Market.SELL,
+                      known: known,
+                      searchTerm: _sellSearchTerm,
+                    )
+                  : SellForm(),
+              Positioned(
+                child: Container(
+                  color: Theme.of(context).primaryColor,
+                ),
+                right: -1,
+                width: 2,
+                top: 0,
+                bottom: 0,
+              )
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildBuy(LinkedHashMap<String, Coin> known) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 12),
+          child: Row(
             children: [
               Text(
                 AppLocalizations.of(context).simpleTradeBuyTitle + ':',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
-              SizedBox(width: 8),
               _buildSearchField(Market.BUY),
             ],
           ),
-          SizedBox(height: 6),
-          Expanded(
-            flex: _anyLists() ? 1 : 0,
-            child: _constrProvider.buyCoin == null
-                ? CoinsList(
-                    type: Market.BUY,
-                    known: known,
-                    searchTerm: _buySearchTerm,
-                  )
-                : BuyForm(),
+        ),
+        SizedBox(height: 6),
+        Flexible(
+          flex: _anyLists() ? 1 : 0,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              _constrProvider.buyCoin == null
+                  ? CoinsList(
+                      type: Market.BUY,
+                      known: known,
+                      searchTerm: _buySearchTerm,
+                    )
+                  : BuyForm(),
+              Positioned(
+                child: Container(
+                  color: Theme.of(context).primaryColor,
+                ),
+                left: -1,
+                width: 2,
+                top: 0,
+                bottom: 0,
+              )
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -200,53 +224,71 @@ class _TradePageSimpleState extends State<TradePageSimple> {
     }
 
     return Expanded(
-      child: TextField(
-        textAlignVertical: TextAlignVertical.center,
-        controller: controller,
-        focusNode: focusNode,
-        decoration: InputDecoration(
-          isCollapsed: true,
-          isDense: true,
-          border: Theme.of(context).brightness == Brightness.light
-              ? defaultUnderlineInputBorderLight
-              : defaultUnderlineInputBorder,
-          focusedBorder: Theme.of(context).brightness == Brightness.light
-              ? defaultFocusedUnderlineInputBorderLight
-              : defaultFocusedUnderlineInputBorder,
-          labelStyle: Theme.of(context).brightness == Brightness.light
-              ? defaultUnderlineInputBorderLabelStyleLight
-              : defaultUnderlineInputBorderLabelStyle,
-          suffixIcon: IconButton(
-            padding: EdgeInsets.all(0),
-            onPressed: currentTerm == null || currentTerm.isEmpty
-                ? () => focusNode.requestFocus()
-                : () {
-                    controller.text = '';
-                    unfocusTextField(context);
-                    setState(() {
-                      if (type == Market.SELL) {
-                        _sellSearchTerm = '';
-                      } else {
-                        _buySearchTerm = '';
-                      }
-                    });
-                  },
-            icon: Icon(
-              currentTerm == null || currentTerm.isEmpty
-                  ? Icons.search
-                  : Icons.clear,
+      child: Container(
+        padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            TextField(
+              controller: controller,
+              focusNode: focusNode,
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                isDense: true,
+                contentPadding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+              ),
+              onChanged: (String text) {
+                setState(() {
+                  if (type == Market.SELL) {
+                    _sellSearchTerm = text;
+                  } else {
+                    _buySearchTerm = text;
+                  }
+                });
+              },
             ),
-          ),
+            Positioned(
+                right: 0,
+                top: 1,
+                child: currentTerm == null || currentTerm.isEmpty
+                    ? InkWell(
+                        onTap: () => focusNode.requestFocus(),
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(0, 0, 6, 6),
+                          child: Icon(
+                            Icons.search,
+                            size: 16,
+                            color: Theme.of(context).hintColor.withAlpha(150),
+                          ),
+                        ),
+                      )
+                    : InkWell(
+                        onTap: () {
+                          controller.text = '';
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          setState(() {
+                            if (type == Market.SELL) {
+                              _sellSearchTerm = '';
+                            } else {
+                              _buySearchTerm = '';
+                            }
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(0, 0, 6, 6),
+                          child: Icon(
+                            Icons.clear,
+                            size: 16,
+                          ),
+                        ),
+                      ))
+          ],
         ),
-        onChanged: (String text) {
-          setState(() {
-            if (type == Market.SELL) {
-              _sellSearchTerm = text;
-            } else {
-              _buySearchTerm = text;
-            }
-          });
-        },
       ),
     );
   }

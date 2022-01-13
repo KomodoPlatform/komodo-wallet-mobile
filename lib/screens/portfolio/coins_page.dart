@@ -78,7 +78,7 @@ class _CoinsPageState extends State<CoinsPage> {
                               collapseMode: CollapseMode.pin,
                               centerTitle: true,
                               titlePadding:
-                                  EdgeInsetsDirectional.only(top: 0, bottom: 0),
+                                  EdgeInsetsDirectional.only(bottom: 10),
                               title: SizedBox(
                                 width: _widthScreen * 0.5,
                                 child: Center(
@@ -395,7 +395,8 @@ class ListCoinsState extends State<ListCoins> {
                       );
                     }
                   },
-                  separatorBuilder: (context, _) => Divider(),
+                  separatorBuilder: (context, _) =>
+                      Divider(color: Theme.of(context).colorScheme.surface),
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();

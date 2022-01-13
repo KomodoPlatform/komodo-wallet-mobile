@@ -47,16 +47,19 @@ class _BuyFormState extends State<BuyForm> {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
     _cexProvider ??= Provider.of<CexProvider>(context);
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildCoin(),
-        SizedBox(height: 6),
-        _buildAmt(),
-        SizedBox(height: 2),
-        BuildRateSimple(),
-      ],
+    return Container(
+      padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildCoin(),
+          SizedBox(height: 6),
+          _buildAmt(),
+          SizedBox(height: 2),
+          BuildRateSimple(),
+        ],
+      ),
     );
   }
 

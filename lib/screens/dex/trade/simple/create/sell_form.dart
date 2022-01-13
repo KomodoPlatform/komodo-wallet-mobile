@@ -47,13 +47,14 @@ class _SellFormState extends State<SellForm> {
     _cexProvider ??= context.watch<CexProvider>();
 
     return Padding(
-      padding: EdgeInsets.only(right: 8),
+      padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildCoin(),
           SizedBox(height: 6),
           _buildAmt(),
+          SizedBox(height: 6),
           _buildButtons(),
         ],
       ),
@@ -94,17 +95,17 @@ class _SellFormState extends State<SellForm> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2),
             color: disabled
-                ? Theme.of(context).disabledColor
+                ? Theme.of(context).disabledColor.withOpacity(0.4)
                 : isActive
                     ? Theme.of(context).colorScheme.secondary
-                    : Theme.of(context).unselectedWidgetColor,
+                    : Theme.of(context).unselectedWidgetColor.withOpacity(0.3),
           ),
           alignment: Alignment.center,
           child: Text(
             '${cutTrailingZeros(pct.toString())}%',
             style: Theme.of(context).textTheme.caption.copyWith(
                   color: disabled
-                      ? Theme.of(context).colorScheme.onSurface
+                      ? Theme.of(context).disabledColor.withOpacity(0.5)
                       : isActive
                           ? Theme.of(context).colorScheme.onSecondary
                           : Theme.of(context).colorScheme.onSurface,
