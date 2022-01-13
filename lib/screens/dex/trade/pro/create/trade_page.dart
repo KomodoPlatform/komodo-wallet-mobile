@@ -72,7 +72,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         _buildProgressBar(),
         Expanded(
           child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             children: [
               _buildExchange(),
               SizedBox(height: 8),

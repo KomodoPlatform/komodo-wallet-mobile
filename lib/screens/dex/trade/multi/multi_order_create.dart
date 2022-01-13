@@ -23,7 +23,7 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
         _buildProgressBar(),
         Expanded(
           child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             children: <Widget>[
               MultiOrderBase(),
               const SizedBox(height: 8),
