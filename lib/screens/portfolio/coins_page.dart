@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -380,23 +381,25 @@ class ListCoinsState extends State<ListCoins> {
 
                 datas.addAll(_sorted);
                 datas.add(true);
-                return ListView.separated(
-                  key: const Key('list-view-coins'),
-                  itemCount: datas.length,
-                  padding: const EdgeInsets.all(0),
-                  itemBuilder: (BuildContext context, int index) {
-                    if (datas[index] is bool) {
-                      return const AddCoinButton(key: Key('add-coin'));
-                    } else {
-                      return ItemCoin(
-                        key: Key('coin-list-${datas[index].coin.abbr}'),
-                        mContext: context,
-                        coinBalance: datas[index],
-                      );
-                    }
-                  },
-                  separatorBuilder: (context, _) =>
-                      Divider(color: Theme.of(context).colorScheme.surface),
+                return SlidableAutoCloseBehavior(
+                  child: ListView.separated(
+                    key: const Key('list-view-coins'),
+                    itemCount: datas.length,
+                    padding: const EdgeInsets.all(0),
+                    itemBuilder: (BuildContext context, int index) {
+                      if (datas[index] is bool) {
+                        return const AddCoinButton(key: Key('add-coin'));
+                      } else {
+                        return ItemCoin(
+                          key: Key('coin-list-${datas[index].coin.abbr}'),
+                          mContext: context,
+                          coinBalance: datas[index],
+                        );
+                      }
+                    },
+                    separatorBuilder: (context, _) =>
+                        Divider(color: Theme.of(context).colorScheme.surface),
+                  ),
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();
