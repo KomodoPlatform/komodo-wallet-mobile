@@ -50,6 +50,7 @@ class _NewsTabState extends State<NewsTab> {
         _buildUpdateIndicator(),
         Expanded(
           child: RefreshIndicator(
+            color: Theme.of(context).colorScheme.secondary,
             onRefresh: () async {
               final String updateResponse = await _feedProvider.updateNews();
               String message;

@@ -41,6 +41,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
           title: Text(AppLocalizations.of(context).updatesTitle),
         ),
         body: RefreshIndicator(
+          color: Theme.of(context).colorScheme.secondary,
           onRefresh: () async {
             updatesProvider.check();
           },

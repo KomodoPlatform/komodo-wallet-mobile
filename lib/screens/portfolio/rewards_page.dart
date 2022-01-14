@@ -36,6 +36,7 @@ class _RewardsPageState extends State<RewardsPage> {
                 child: CircularProgressIndicator(),
               )
             : RefreshIndicator(
+                color: Theme.of(context).colorScheme.secondary,
                 onRefresh: () async {
                   rewardsProvider.update();
                 },

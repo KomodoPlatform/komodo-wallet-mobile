@@ -370,6 +370,7 @@ class ListCoinsState extends State<ListCoins> {
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         return RefreshIndicator(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            color: Theme.of(context).colorScheme.secondary,
             key: _refreshIndicatorKey,
             onRefresh: () => coinsBloc.updateCoinBalances(),
             child: Builder(builder: (BuildContext context) {
