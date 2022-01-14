@@ -22,7 +22,7 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
           final CoinToActivate coinToActivate = snapshot.data
               .firstWhere((item) => item.coin.abbr == widget.coin.abbr);
 
-          // TODO(MRC): Optimize this to use CheckboxListTile in a future point in time
+          // todo(MRC): Optimize this to use CheckboxListTile in a future point in time
           return InkWell(
             onTap: () => coinsBloc.setCoinBeforeActivation(
                 widget.coin, !coinToActivate.isActive),
@@ -34,9 +34,14 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                   Container(
                     height: 15,
                     width: 15,
-                    color: coinToActivate.isActive
-                        ? Theme.of(context).toggleableActiveColor
-                        : Theme.of(context).unselectedWidgetColor,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2),
+                        color: coinToActivate.isActive
+                            ? Theme.of(context).toggleableActiveColor
+                            : Colors.transparent,
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.secondary,
+                        )),
                   ),
                   const SizedBox(width: 24),
                   Image.asset(

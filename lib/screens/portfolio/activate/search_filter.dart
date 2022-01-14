@@ -42,8 +42,12 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
           LengthLimitingTextInputFormatter(50),
         ],
         decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(0),
           isDense: true,
-          prefixIcon: Icon(Icons.search),
+          prefixIcon: Icon(
+            Icons.search,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           hintText: AppLocalizations.of(context).searchFilterCoin,
           border: InputBorder.none,
           suffixIcon: !isEmptyQuery

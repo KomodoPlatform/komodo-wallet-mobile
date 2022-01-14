@@ -119,12 +119,13 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   List<Widget> _buildListView() {
     return [
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
         child: Text(
           AppLocalizations.of(context).selectCoinInfo,
-          style: Theme.of(context).textTheme.headline6.copyWith(
-                color: Colors.grey,
-              ),
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1
+              .copyWith(color: Theme.of(context).colorScheme.onBackground),
         ),
       ),
       const SizedBox(

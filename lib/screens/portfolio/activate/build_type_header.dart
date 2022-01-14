@@ -21,7 +21,7 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
         builder: (context, snapshot) {
           final bool isActive = _areAllActive(snapshot.data);
 
-          // TODO(MRC): Optimize this to use CheckboxListTile in a future point in time
+          // todo(MRC): Optimize this to use CheckboxListTile in a future point in time
           return InkWell(
             onTap: () => coinsBloc.setCoinsBeforeActivationByType(
                 widget.type, !isActive),
@@ -30,12 +30,16 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
               child: Row(
                 children: <Widget>[
                   Container(
-                    height: 15,
-                    width: 15,
-                    color: isActive
-                        ? Theme.of(context).toggleableActiveColor
-                        : Theme.of(context).unselectedWidgetColor,
-                  ),
+                      height: 15,
+                      width: 15,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(2),
+                          color: isActive
+                              ? Theme.of(context).toggleableActiveColor
+                              : Colors.transparent,
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ))),
                   const SizedBox(width: 24),
                   Text(
                     _getTitleText(),
