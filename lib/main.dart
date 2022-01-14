@@ -428,7 +428,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                 ),
                               ),
                               const Expanded(child: SizedBox()),
-                              // TODO:(MRC): Redo connectivity checker UI
+                              // todo:(MRC): Redo connectivity checker UI
                               InkWell(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),

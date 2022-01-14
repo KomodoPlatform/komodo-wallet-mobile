@@ -109,7 +109,7 @@ void main() {
     });
   });
 
-  /* TODO: fix after ci/cd setup
+  /* todo: fix after ci/cd setup
   group('withdraw', () {
     final MockClient client = MockClient();
 
@@ -384,7 +384,7 @@ void main() {
           const TypeMatcher<ActiveCoin>());
     });
 
-    /* TODO: fix after ci/cd setup
+    /* todo: fix after ci/cd setup
     test('returns an ActiveCoin', () async {
       const mock = 'active_coin/active_coin.json';
       when(client.post(Uri.parse(url), body: MM.enableCoinImpl(coinToActive)))
@@ -522,7 +522,7 @@ void main() {
     });
   });
 
-  /* TODO: fix after ci/cd setup
+  /* todo: fix after ci/cd setup
   group('orderbook', () {
     final MockClient client = MockClient();
 

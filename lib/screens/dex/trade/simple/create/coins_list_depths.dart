@@ -124,11 +124,6 @@ class _CoinsListDepthsState extends State<CoinsListDepths> {
     });
 
     available.sort((a, b) {
-      // TODO(yurii): Not sure if we should sort active coins before inactive
-      // Will decide later
-      // if (a.coin.isActive && !b.coin.isActive) return -1;
-      // if (!a.coin.isActive && b.coin.isActive) return 1;
-
       if (a.matchingOrders > b.matchingOrders) return -1;
       if (a.matchingOrders < b.matchingOrders) return 1;
 

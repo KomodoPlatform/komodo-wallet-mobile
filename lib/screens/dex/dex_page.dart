@@ -110,7 +110,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
     );
   }
 
-  // TODO(MRC): Cosnider moving this to its own widget
+  // todo(MRC): Cosnider moving this to its own widget
   // I had to move it here so to try to properly integrate it with the app bar
   // by using its "bottom" porperty, otherwise I wouldn't be able to make it
   // have the same color as the app bar

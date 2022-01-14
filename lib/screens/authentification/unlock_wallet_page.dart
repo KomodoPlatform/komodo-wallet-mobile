@@ -159,7 +159,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                       );
               },
             ),
-            //TODO(MRC): Convert to a fitting Button widget
+            //todo(MRC): Convert to a fitting Button widget
             if (widget.isSignWithSeedIsEnabled) ...[
               SizedBox(height: 24),
               Center(

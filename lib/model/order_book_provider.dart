@@ -63,7 +63,7 @@ class OrderBookProvider extends ChangeNotifier {
 
   void updateActivePair() => syncOrderbook.updateActivePair();
 
-  // TODO(AG): historical swap data for [coinsPair]
+  // todo(AG): historical swap data for [coinsPair]
   List<Swap> getSwapHistory(CoinsPair coinsPair) {
     if (coinsPair.sell.abbr.startsWith('VOTE') ||
         coinsPair.buy.abbr.startsWith('VOTE')) {

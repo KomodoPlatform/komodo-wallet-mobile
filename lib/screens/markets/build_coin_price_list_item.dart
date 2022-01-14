@@ -26,7 +26,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
   Coin coin;
   Balance balance;
   bool expanded = false;
-  bool fetching = false; // TODO(yurii): will get flag from CexProvider
+  bool fetching = false; // todo(yurii): will get flag from CexProvider
   bool quotedChart = false;
   String chartDuration = '3600';
   CexProvider cexProvider;

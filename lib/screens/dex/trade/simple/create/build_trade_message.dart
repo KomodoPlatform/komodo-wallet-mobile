@@ -65,7 +65,7 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
                   .copyWith(color: color, fontSize: 13),
             ),
           ),
-          // TODO(MRC): Port to IconButton
+          // todo(MRC): Port to IconButton
           InkWell(
             onTap: () => _constrProvider.warning = null,
             child: Container(

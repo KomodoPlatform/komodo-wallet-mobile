@@ -185,7 +185,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
   Widget _buildToggle() {
     return Row(
       children: <Widget>[
-        //TODO(MRC): Figure out whether this can be safely replaced with a checkbox
+        // todo(MRC): Figure out whether this can be safely replaced with a checkbox
         InkWell(
           onTap: () {
             setState(() {

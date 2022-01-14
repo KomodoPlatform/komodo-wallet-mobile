@@ -77,7 +77,7 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
                   ),
                 ),
         ),
-        // TODO(MRC): Switch to IconButton
+        // todo(MRC): Switch to IconButton
         InkWell(
           borderRadius: BorderRadius.circular(20),
           child: Container(

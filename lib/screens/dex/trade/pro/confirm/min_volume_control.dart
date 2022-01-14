@@ -70,21 +70,17 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 7,
-                          backgroundImage: AssetImage('assets/coin-icons/'
-                              '${widget.base.toLowerCase()}.png'),
-                        ),
-                        SizedBox(width: 2),
-                        Text(widget.base),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 7,
+                        backgroundImage: AssetImage('assets/coin-icons/'
+                            '${widget.base.toLowerCase()}.png'),
+                      ),
+                      SizedBox(width: 2),
+                      Text(widget.base),
+                    ],
                   ),
                   SizedBox(width: 6),
                   Expanded(
@@ -129,8 +125,7 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
         builder: (context, snapshot) {
           if (!snapshot.hasData) return SizedBox();
 
-          // TODO(MRC): Figure out whatever this looks like
-          // Also check if it is possible to port to a better widget
+          // todo(MRC): check if it is possible to port to a better widget
           return InkWell(
             onTap: () {
               setState(() {

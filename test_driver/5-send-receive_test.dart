@@ -12,7 +12,7 @@ void main() {
 
   var mortysRickAddress = '';
   var ricksMortyAddress = '';
-  const String sendAmount = '0.1'; // TODO(dth): make rnd.nextFloat
+  const String sendAmount = '0.1'; // todo(dth): make rnd.nextFloat
   const password = '           a';
   int globalDelay() => 700 + rnd.nextInt(500);
   bool isAndroid = false;

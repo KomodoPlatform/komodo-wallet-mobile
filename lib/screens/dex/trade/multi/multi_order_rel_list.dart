@@ -115,7 +115,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
           return Container(
             padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
             alignment: Alignment.center,
-            //TODO(MRC): Try to switch this to either a IconButton or a Switch
+            // todo(MRC): Try to switch this to either a IconButton or a Switch
             child: InkWell(
               onTap: () {
                 final bool val = !allSelected;

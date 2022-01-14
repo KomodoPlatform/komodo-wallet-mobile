@@ -310,7 +310,7 @@ void main() {
       expect(await driver.getText(marketsOrderBookScreen), 'ORDER BOOK');
     });
 
-    // TODO(dth): enhancement - get values from both fields and make sure they ,indeed, swap.
+    // todo(dth): enhancement - get values from both fields and make sure they ,indeed, swap.
     test('| -4.16- | Confirm coin-swap-btn works.', () async {
       expect(await driver.getText(marketsPriceScreen), 'PRICE');
       expect(await driver.getText(marketsOrderBookScreen), 'ORDER BOOK');
