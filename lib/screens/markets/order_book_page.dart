@@ -245,15 +245,18 @@ class _OrderBookPageState extends State<OrderBookPage> {
               });
             });
 
-            return CandleChart(
-                data: snapshot.data.data[_chartDuration],
-                duration: int.parse(_chartDuration),
-                textColor: Theme.of(context).brightness == Brightness.light
-                    ? Colors.black
-                    : Colors.white,
-                gridColor: Theme.of(context).brightness == Brightness.light
-                    ? Colors.black.withOpacity(.2)
-                    : Colors.white.withOpacity(.4));
+            return ClipRect(
+              clipBehavior: Clip.hardEdge,
+              child: CandleChart(
+                  data: snapshot.data.data[_chartDuration],
+                  duration: int.parse(_chartDuration),
+                  textColor: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
+                  gridColor: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black.withOpacity(.2)
+                      : Colors.white.withOpacity(.4)),
+            );
           },
         ),
       ),
