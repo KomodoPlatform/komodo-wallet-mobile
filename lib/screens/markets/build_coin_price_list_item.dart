@@ -253,8 +253,11 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    Container(
                         height: chartHeight,
+                        clipBehavior: Clip.hardEdge,
+                        // `decoration` required if `clipBehavior != null`
+                        decoration: BoxDecoration(),
                         child: snapshot.hasData
                             ? CandleChart(
                                 data: candles,
