@@ -241,13 +241,13 @@ class SyncOrderbook {
   }
 
   List<OrderbookDepth> depthForCoin([Coin coin, Market type]) {
-    coin ??= activePair.sell;
+    coin ??= activePair?.sell;
     type ??= Market.SELL;
 
     final List<OrderbookDepth> list = [];
     _orderbooksDepth.forEach((ticker, orderbookDepth) {
       final int coinIndex = type == Market.SELL ? 0 : 1;
-      if (ticker.split('/')[coinIndex] == coin.abbr) {
+      if (ticker.split('/')[coinIndex] == coin?.abbr) {
         list.add(orderbookDepth);
       }
     });
