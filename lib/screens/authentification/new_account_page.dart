@@ -13,24 +13,7 @@ class NewAccountPage extends StatefulWidget {
 }
 
 String getSeed() {
-  int i = 0;
-  String seed = '';
-  while (i == 0) {
-    seed = bip39.generateMnemonic();
-    i = 1;
-    for (String word in seed.split(' ')) {
-      try {
-        seed
-            .split(' ')
-            .singleWhere((String seedelement) => seedelement == word);
-      } catch (e) {
-        if (e.toString().contains('Too many elements')) {
-          i = 0;
-        }
-      }
-    }
-  }
-  return seed;
+  return bip39.generateMnemonic();
 }
 
 class _NewAccountPageState extends State<NewAccountPage> {
