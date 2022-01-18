@@ -14,17 +14,14 @@ import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 
 class TradePageSimple extends StatefulWidget {
+  const TradePageSimple({Key key}) : super(key: key);
+
   @override
-  _TradePageSimpleState createState() => _TradePageSimpleState();
+  State<TradePageSimple> createState() => _TradePageSimpleState();
 }
 
 class _TradePageSimpleState extends State<TradePageSimple> {
-  final _sellSearchCtrl = TextEditingController();
-  final _buySearchCtrl = TextEditingController();
-  final _sellFocusNode = FocusNode();
-  final _buyFocusNode = FocusNode();
-  String _sellSearchTerm = '';
-  String _buySearchTerm = '';
+  final _key = GlobalKey();
   OrderBookProvider _obProvider;
   ConstructorProvider _constrProvider;
 
@@ -38,16 +35,60 @@ class _TradePageSimpleState extends State<TradePageSimple> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return _buildProgress();
 
-        return _anyLists()
-            ? _buildContent(snapshot.data)
-            : SingleChildScrollView(
-                child: _buildContent(snapshot.data),
-              );
+        final page = TradePageSimpleContent(key: _key, known: snapshot.data);
+        return _constrProvider.anyLists()
+            ? page
+            : SingleChildScrollView(child: page);
       },
     );
   }
 
-  Widget _buildContent(LinkedHashMap<String, Coin> known) {
+  Future<LinkedHashMap<String, Coin>> _subscribeDepths() async {
+    final LinkedHashMap<String, Coin> known = await coins;
+
+    final List<Map<String, CoinType>> coinsList = [];
+    for (String abbr in known.keys) {
+      coinsList.add({abbr: CoinType.base});
+      coinsList.add({abbr: CoinType.rel});
+    }
+
+    await _obProvider.subscribeDepth(coinsList);
+    return known;
+  }
+
+  Widget _buildProgress() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+}
+
+class TradePageSimpleContent extends StatefulWidget {
+  const TradePageSimpleContent({Key key, @required this.known})
+      : super(key: key);
+
+  final LinkedHashMap<String, Coin> known;
+
+  @override
+  _TradePageSimpleContentState createState() => _TradePageSimpleContentState();
+}
+
+class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
+  final _sellSearchCtrl = TextEditingController();
+  final _buySearchCtrl = TextEditingController();
+  final _sellFocusNode = FocusNode();
+  final _buyFocusNode = FocusNode();
+  String _sellSearchTerm = '';
+  String _buySearchTerm = '';
+  ConstructorProvider _constrProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    _constrProvider ??= Provider.of<ConstructorProvider>(context);
+
     return Container(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 12),
       child: Column(
@@ -56,12 +97,12 @@ class _TradePageSimpleState extends State<TradePageSimple> {
           _buildProgressBar(),
           SizedBox(height: 12),
           Flexible(
-            flex: _anyLists() ? 1 : 0,
+            flex: _constrProvider.anyLists() ? 1 : 0,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(child: _buildSell(known)),
-                Expanded(child: _buildBuy(known)),
+                Expanded(child: _buildSell(widget.known)),
+                Expanded(child: _buildBuy(widget.known)),
               ],
             ),
           ),
@@ -93,7 +134,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
         ),
         SizedBox(height: 6),
         Flexible(
-          flex: _anyLists() ? 1 : 0,
+          flex: _constrProvider.anyLists() ? 1 : 0,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -138,7 +179,7 @@ class _TradePageSimpleState extends State<TradePageSimple> {
         ),
         SizedBox(height: 6),
         Flexible(
-          flex: _anyLists() ? 1 : 0,
+          flex: _constrProvider.anyLists() ? 1 : 0,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -163,46 +204,6 @@ class _TradePageSimpleState extends State<TradePageSimple> {
         ),
       ],
     );
-  }
-
-  Widget _buildProgress() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
-  Future<LinkedHashMap<String, Coin>> _subscribeDepths() async {
-    final LinkedHashMap<String, Coin> known = await coins;
-
-    final List<Map<String, CoinType>> coinsList = [];
-    for (String abbr in known.keys) {
-      coinsList.add({abbr: CoinType.base});
-      coinsList.add({abbr: CoinType.rel});
-    }
-
-    await _obProvider.subscribeDepth(coinsList);
-    return known;
-  }
-
-  bool _anyLists() {
-    if (_constrProvider.buyCoin != null && _constrProvider.sellCoin != null) {
-      return false;
-    }
-
-    if (_constrProvider.sellCoin != null &&
-        (_constrProvider.sellAmount?.toDouble() ?? 0) == 0) {
-      return false;
-    }
-
-    if (_constrProvider.buyCoin != null &&
-        (_constrProvider.buyAmount?.toDouble() ?? 0) == 0) {
-      return false;
-    }
-
-    return true;
   }
 
   Widget _buildSearchField(Market type) {

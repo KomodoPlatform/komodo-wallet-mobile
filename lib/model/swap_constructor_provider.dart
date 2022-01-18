@@ -342,6 +342,14 @@ class ConstructorProvider extends ChangeNotifier {
     return sorted.isNotEmpty ? sorted[0] : null;
   }
 
+  bool anyLists() {
+    if (buyCoin != null && sellCoin != null) return false;
+    if (sellCoin != null && (sellAmount?.toDouble() ?? 0) == 0) return false;
+    if (buyCoin != null && (buyAmount?.toDouble() ?? 0) == 0) return false;
+
+    return true;
+  }
+
   void reset() {
     _sellCoin = null;
     _buyCoin = null;
