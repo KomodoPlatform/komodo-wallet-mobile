@@ -283,8 +283,8 @@ class _ImportPageState extends State<ImportPage> {
   Widget _buildSwaps() {
     final List<ExportImportListItem> items = [];
 
-    _all.swaps.forEach((String id, dynamic swap) {
-      final myInfo = extractMyInfoFromSwap(swap.result);
+    _all.swaps.forEach((String id, MmSwap swap) {
+      final myInfo = extractMyInfoFromSwap(swap);
       final myCoin = myInfo['myCoin'];
       final myAmount = myInfo['myAmount'];
       final otherCoin = myInfo['otherCoin'];
@@ -314,7 +314,7 @@ class _ImportPageState extends State<ImportPage> {
                   Text(
                     DateFormat('dd MMM yyyy HH:mm').format(
                         DateTime.fromMillisecondsSinceEpoch(
-                            (swap.myInfo.startedAt ?? 0) * 1000)),
+                            (swap.myInfo?.startedAt ?? 0) * 1000)),
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                           fontSize: 14,
                           color: Theme.of(context)

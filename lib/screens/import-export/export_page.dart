@@ -251,7 +251,7 @@ class _ExportPageState extends State<ExportPage> {
                 Text(
                   DateFormat('dd MMM yyyy HH:mm').format(
                       DateTime.fromMillisecondsSinceEpoch(
-                          (swap.myInfo.startedAt ?? 0) * 1000)),
+                          (swap.myInfo?.startedAt ?? 0) * 1000)),
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontSize: 14,
                         color: Theme.of(context)
