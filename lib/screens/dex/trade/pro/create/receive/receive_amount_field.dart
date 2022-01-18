@@ -65,7 +65,7 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   void _onDataChange(Rational value) {
     if (!mounted) return;
     if (value == null) {
-      _ctrl.text = '';
+      _ctrl.clear();
       return;
     }
 
@@ -74,8 +74,8 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
     final String currentFormatted = cutTrailingZeros(_ctrl.text);
 
     if (newFormatted != currentFormatted) {
-      //_ctrl.setTextAndPosition(newFormatted);
       _ctrl.text = newFormatted;
+      moveCursorToEnd(_ctrl);
     }
   }
 }

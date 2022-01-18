@@ -67,7 +67,7 @@ class _SellAmountFieldState extends State<SellAmountField> {
   void _onDataChange(Rational value) {
     if (!mounted) return;
     if (value == null) {
-      _ctrl.text = '';
+      _ctrl.clear();
       return;
     }
 
@@ -76,12 +76,8 @@ class _SellAmountFieldState extends State<SellAmountField> {
     final String currentFormatted = cutTrailingZeros(_ctrl.text);
 
     if (newFormatted != currentFormatted) {
-      // MRC: Using TextEditingControllerWorkaround breaks stuff,
-      // so disabling this
-
-      //_ctrl.setTextAndPosition(newFormatted);
-
       _ctrl.text = newFormatted;
+      moveCursorToEnd(_ctrl);
     }
   }
 }
