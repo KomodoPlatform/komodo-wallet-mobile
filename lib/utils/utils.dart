@@ -15,6 +15,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
@@ -841,4 +842,29 @@ String generatePassword(bool _isWithLetters, bool _isWithUppercase,
   }
 
   return _result;
+}
+
+Map<String, String> extractMyInfoFromSwap(MmSwap swap) {
+  String myCoin, myAmount, otherCoin, otherAmount;
+
+  if (swap.myInfo != null) {
+    myCoin = swap.myInfo.myCoin;
+    myAmount = swap.myInfo.myAmount;
+    otherCoin = swap.myInfo.otherCoin;
+    otherAmount = swap.myInfo.otherAmount;
+  } else {
+    myCoin = swap.type == 'Maker' ? swap.makerCoin : swap.takerCoin;
+    myAmount = swap.type == 'Maker' ? swap.makerAmount : swap.takerAmount;
+
+    // Same as previous, just swapped around
+    otherCoin = swap.type == 'Maker' ? swap.takerCoin : swap.makerCoin;
+    otherAmount = swap.type == 'Maker' ? swap.takerAmount : swap.makerAmount;
+  }
+
+  return <String, String>{
+    'myCoin': myCoin,
+    'myAmount': myAmount,
+    'otherCoin': otherCoin,
+    'otherAmount': otherAmount,
+  };
 }
