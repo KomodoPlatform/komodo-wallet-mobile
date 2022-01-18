@@ -120,6 +120,8 @@ class _DetailSwapState extends State<DetailSwap> {
 
   Widget _buildNote(String title) {
     return Row(
+      crossAxisAlignment:
+          isNoteEdit ? CrossAxisAlignment.center : CrossAxisAlignment.end,
       children: <Widget>[
         Expanded(
           child: InkWell(
@@ -175,10 +177,14 @@ class _DetailSwapState extends State<DetailSwap> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(0, 24, 16, 0),
-          child: IconButton(
-            icon: Icon(isNoteEdit ? Icons.check : Icons.edit),
-            onPressed: () {
+          padding: const EdgeInsets.only(right: 24),
+          child: InkWell(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(isNoteEdit ? Icons.check : Icons.edit),
+            ),
+            borderRadius: BorderRadius.circular(20),
+            onTap: () {
               setState(
                 () {
                   if (isNoteEdit) {
@@ -255,56 +261,66 @@ class _DetailSwapState extends State<DetailSwap> {
 
   Widget _buildAmountSwap() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _buildTextAmount(widget.swap.result.myInfo.myCoin,
-                  widget.swap.result.myInfo.myAmount),
-              Text(
-                AppLocalizations.of(context).sell,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    .copyWith(fontWeight: FontWeight.w400),
-              )
-            ],
-          ),
-          Expanded(
-            child: Container(),
-          ),
-          _buildIcon(widget.swap.result.myInfo.myCoin),
-          Icon(Icons.sync, size: 20),
-          _buildIcon(widget.swap.result.myInfo.otherCoin),
-          Expanded(
-            child: Container(),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              _buildTextAmount(
-                widget.swap.result.myInfo.otherCoin,
-                widget.swap.result.myInfo.otherAmount,
-              ),
-              Text(
-                AppLocalizations.of(context).receive.toUpperCase(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    .copyWith(fontWeight: FontWeight.w400),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Table(
+          columnWidths: const {
+            0: IntrinsicColumnWidth(flex: 1),
+            1: IntrinsicColumnWidth(),
+            2: IntrinsicColumnWidth(flex: 1),
+          },
+          defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+          children: [
+            TableRow(
+              children: [
+                TableCell(
+                  verticalAlignment: TableCellVerticalAlignment.middle,
+                  child: _buildTextAmount(widget.swap.result.myInfo.myCoin,
+                      widget.swap.result.myInfo.myAmount),
+                ),
+                TableCell(
+                  verticalAlignment: TableCellVerticalAlignment.middle,
+                  child: Row(
+                    children: [
+                      _buildIcon(widget.swap.result.myInfo.myCoin),
+                      Icon(Icons.sync, size: 20),
+                      _buildIcon(widget.swap.result.myInfo.otherCoin),
+                    ],
+                  ),
+                ),
+                TableCell(
+                  verticalAlignment: TableCellVerticalAlignment.middle,
+                  child: _buildTextAmount(widget.swap.result.myInfo.otherCoin,
+                      widget.swap.result.myInfo.otherAmount,
+                      textAlign: TextAlign.right),
+                ),
+              ],
+            ),
+            TableRow(
+              children: [
+                Text(
+                  AppLocalizations.of(context).sell.toUpperCase(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(fontWeight: FontWeight.w400),
+                ),
+                SizedBox(),
+                Text(
+                  AppLocalizations.of(context).receive.toUpperCase(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(fontWeight: FontWeight.w400),
+                  textAlign: TextAlign.right,
+                ),
+              ],
+            ),
+          ],
+        ));
   }
 
-  Widget _buildTextAmount(String coin, String amount) {
+  Widget _buildTextAmount(String coin, String amount,
+      {TextAlign textAlign = TextAlign.left}) {
     // Only apply camouflage to swap history,
     // show current active swaps as is
     final bool shouldCamouflage = camoBloc.isCamoActive &&
@@ -324,6 +340,7 @@ class _DetailSwapState extends State<DetailSwap> {
           .textTheme
           .bodyText2
           .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+      textAlign: textAlign,
     );
   }
 
