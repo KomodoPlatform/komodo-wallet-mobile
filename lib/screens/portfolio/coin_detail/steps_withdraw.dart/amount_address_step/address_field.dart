@@ -88,7 +88,10 @@ class _AddressFieldState extends State<AddressField> {
                               coin: widget.coin,
                             ),
                           )).then((dynamic _) => _updateAddressFromClipboard()),
-                      icon: Icon(Icons.import_contacts),
+                      icon: Icon(
+                        Icons.import_contacts,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ),
                   // The validator receives the text the user has typed in

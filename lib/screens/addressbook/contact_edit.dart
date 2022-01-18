@@ -370,7 +370,10 @@ class _ContactEditState extends State<ContactEdit> {
                             Theme.of(context).brightness == Brightness.light
                                 ? defaultUnderlineInputBorderLabelStyleLight
                                 : defaultUnderlineInputBorderLabelStyle,
-                        prefixIcon: Icon(Icons.search),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                         hintText: 'Search for Ticker',
                       ),
                       inputFormatters: [

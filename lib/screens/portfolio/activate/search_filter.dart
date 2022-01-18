@@ -62,7 +62,10 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
                   },
                   icon: RotationTransition(
                     turns: const AlwaysStoppedAnimation<double>(45 / 360),
-                    child: Icon(Icons.add_circle),
+                    child: Icon(
+                      Icons.add_circle,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                 )
               : null,
