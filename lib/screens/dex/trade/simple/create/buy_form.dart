@@ -183,7 +183,7 @@ class _BuyFormState extends State<BuyForm> {
     if (!mounted) return;
 
     if (_constrProvider.buyAmount == null) {
-      _amtCtrl.text = '';
+      _amtCtrl.clear();
       return;
     }
 

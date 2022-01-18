@@ -447,7 +447,9 @@ class ConstructorProvider extends ChangeNotifier {
 
       // if < than order min volume
       final Rational minOrderVolume = _matchingOrder.minVolume;
-      if (minOrderVolume != null && minOrderVolume > _buyAmount) {
+      if (minOrderVolume != null &&
+          _buyAmount != null &&
+          minOrderVolume > _buyAmount) {
         isValid = false;
         final Rational price = _matchingOrder.action == Market.SELL
             ? _matchingOrder.price

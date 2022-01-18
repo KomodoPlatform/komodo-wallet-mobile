@@ -186,7 +186,7 @@ class _SellFormState extends State<SellForm> {
     if (!mounted) return;
 
     if (_constrProvider.sellAmount == null) {
-      _amtCtrl.text = '';
+      _amtCtrl.clear();
       return;
     }
 
