@@ -174,7 +174,7 @@ ThemeData getThemeLight() => ThemeData(
       scaffoldBackgroundColor: _colorSchemeLight.background,
       errorColor: _colorSchemeLight.error,
       brightness: _colorSchemeLight.brightness,
-      hintColor: _colorScheme.onSurface.withOpacity(0.4),
+      hintColor: _colorSchemeLight.onSurface.withOpacity(0.7),
       dialogBackgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       disabledColor: const Color.fromRGBO(201, 201, 201, 1),
       dividerColor: _dividerThemeData.color,
