@@ -264,7 +264,7 @@ class ApiProvider {
       return json.encode(MmEnable(
               userpass: mmSe.userpass,
               coin: coin.abbr,
-              txHistory: true,
+              txHistory: false,
               swapContractAddress: coin.swapContractAddress,
               fallbackSwapContract: coin.fallbackSwapContract,
               urls: coin.serverList)
