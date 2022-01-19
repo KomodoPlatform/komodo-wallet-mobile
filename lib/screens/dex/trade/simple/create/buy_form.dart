@@ -77,7 +77,6 @@ class _BuyFormState extends State<BuyForm> {
             FilteringTextInputFormatter.allow(RegExp(
                 '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?'))
           ],
-          style: TextStyle(height: 1),
           decoration: InputDecoration(
             isDense: true,
           ),
@@ -93,42 +92,24 @@ class _BuyFormState extends State<BuyForm> {
 
   Widget _buildCoin() {
     return Card(
-        margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(4),
-          onTap: () => _constrProvider.buyCoin = null,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 50),
-            child: Container(
-              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundImage: AssetImage('assets/coin-icons/'
-                              '${_constrProvider.buyCoin.toLowerCase()}.png'),
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          _constrProvider.buyCoin,
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(
-                    Icons.clear,
-                    size: 16,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ));
+      margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
+      child: ListTile(
+        visualDensity: VisualDensity.compact,
+        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+        horizontalTitleGap: 0,
+        onTap: () => _constrProvider.buyCoin = null,
+        leading: CircleAvatar(
+          radius: 8,
+          backgroundImage: AssetImage('assets/coin-icons/'
+              '${_constrProvider.buyCoin.toLowerCase()}.png'),
+        ),
+        title: Text(_constrProvider.buyCoin),
+        trailing: Icon(
+          Icons.clear,
+          size: 16,
+        ),
+      ),
+    );
   }
 
   Widget _buildFiatAmt() {
