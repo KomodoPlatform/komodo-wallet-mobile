@@ -297,7 +297,7 @@ class _ExportPageState extends State<ExportPage> {
                 Text(
                   cutTrailingZeros(formatPrice(otherAmount, 4)) +
                       ' ' +
-                      swap.myInfo.otherCoin,
+                      otherCoin,
                 ),
                 SizedBox(width: 4),
                 Image.asset(
