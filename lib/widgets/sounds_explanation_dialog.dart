@@ -66,8 +66,6 @@ Future<void> showSoundsDialog(BuildContext context) async {
               children: <Widget>[
                 TextButton(
                   onPressed: () {
-                    dialogBloc.dialog = null;
-                    Navigator.of(context).pop();
                     Navigator.push<dynamic>(
                       context,
                       MaterialPageRoute<dynamic>(
