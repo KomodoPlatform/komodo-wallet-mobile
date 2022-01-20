@@ -181,7 +181,8 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                           onPressed: () =>
                               ordersBloc.cancelOrder(widget.order.uuid),
                           style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.white),
+                            side: BorderSide(
+                                color: Theme.of(context).colorScheme.onSurface),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
