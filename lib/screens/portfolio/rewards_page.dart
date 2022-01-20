@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -248,7 +250,8 @@ class _RewardsPageState extends State<RewardsPage> {
           ),
         ),
         Table(
-          border: TableBorder.all(color: Colors.white.withAlpha(15)),
+          border: TableBorder.all(
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3)),
           columnWidths: const {
             0: IntrinsicColumnWidth(),
             3: IntrinsicColumnWidth(),
@@ -288,12 +291,21 @@ class _RewardsPageState extends State<RewardsPage> {
                 Container(
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 8, bottom: 8),
-                  child: Text(
-                    AppLocalizations.of(context).rewardsTableFiat,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  child: Row(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context).rewardsTableFiat,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(width: 2),
+                      CexMarker(
+                        context,
+                        size: const Size.fromHeight(12),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -357,7 +369,9 @@ class _RewardsPageState extends State<RewardsPage> {
                   ),
                 )
               : Container(
-                  color: const Color.fromARGB(60, 1, 102, 129),
+                  color: settingsBloc.isLightTheme
+                      ? const Color.fromARGB(30, 1, 102, 129)
+                      : const Color.fromARGB(60, 1, 102, 129),
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 12, bottom: 12),
                   child: Text(
@@ -388,22 +402,17 @@ class _RewardsPageState extends State<RewardsPage> {
 
                   final amountUsd = item.reward * price;
                   return Container(
-                    color: const Color.fromARGB(60, 1, 102, 129),
                     padding: const EdgeInsets.only(
                         left: 8, right: 8, top: 12, bottom: 12),
                     child: Row(
                       children: [
-                        CexMarker(
-                          context,
-                          size: const Size.fromHeight(12),
-                        ),
-                        const SizedBox(width: 2),
-                        Text(
-                          cexProvider.convert(amountUsd),
-                          maxLines: 1,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
+                        Flexible(
+                          child: AutoScrollText(
+                            text: cexProvider.convert(amountUsd),
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                       ],
