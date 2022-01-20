@@ -137,7 +137,8 @@ class Swap {
 
   /// 'Started' event data
   SwapEL get started =>
-      result?.events?.firstWhere((SwapEL ev) => ev.event.type == 'Started');
+      result?.events?.firstWhere((SwapEL ev) => ev.event.type == 'Started',
+          orElse: () => null);
 
   /// Maker ticker abbriviation
   String get makerAbbr => started?.event?.data?.makerCoin;

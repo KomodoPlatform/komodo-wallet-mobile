@@ -30,6 +30,12 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
         swapHistoryBloc.getColorStatus(widget.swap.status);
     final String stepStatus = swapHistoryBloc.getStepStatus(widget.swap.status);
 
+    final myInfo = extractMyInfoFromSwap(widget.swap.result);
+    final myCoin = myInfo['myCoin'];
+    final myAmount = myInfo['myAmount'];
+    final otherCoin = myInfo['otherCoin'];
+    final otherAmount = myInfo['otherAmount'];
+
     return Card(
         child: InkWell(
       borderRadius: const BorderRadius.all(Radius.circular(4)),
@@ -59,15 +65,15 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                         Row(
                           children: <Widget>[
                             Text(
-                              widget.swap.result.myInfo.myCoin,
+                              myCoin,
                               style: const TextStyle(fontSize: 20),
                             ),
                             const SizedBox(width: 4),
-                            _buildIcon(widget.swap.result.myInfo.myCoin),
+                            _buildIcon(myCoin),
                           ],
                         ),
                         Text(
-                          '${formatPrice(widget.swap.result.myInfo.myAmount, 8)}',
+                          '${formatPrice(myAmount, 8)}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -83,16 +89,16 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            _buildIcon(widget.swap.result.myInfo.otherCoin),
+                            _buildIcon(otherCoin),
                             const SizedBox(width: 4),
                             Text(
-                              widget.swap.result.myInfo.otherCoin,
+                              otherCoin,
                               style: const TextStyle(fontSize: 20),
                             ),
                           ],
                         ),
                         Text(
-                          '${formatPrice(widget.swap.result.myInfo.otherAmount, 8)}',
+                          '${formatPrice(otherAmount, 8)}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -147,7 +153,8 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                     Text(
                       DateFormat('dd MMM yyyy HH:mm').format(
                           DateTime.fromMillisecondsSinceEpoch(
-                              widget.swap.result.myInfo.startedAt * 1000)),
+                              (widget.swap.result.myInfo?.startedAt ?? 0) *
+                                  1000)),
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
