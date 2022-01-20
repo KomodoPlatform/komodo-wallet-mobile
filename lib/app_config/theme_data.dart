@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 SnackBarThemeData _snackBarTheme = const SnackBarThemeData(
   behavior: SnackBarBehavior.floating,
@@ -230,16 +231,30 @@ ButtonStyle elevatedButtonSmallButtonStyle({EdgeInsets padding}) =>
 
 // Some variables to simplify the non-Outlined TextFields
 
-UnderlineInputBorder get defaultUnderlineInputBorder => UnderlineInputBorder();
-UnderlineInputBorder get defaultFocusedUnderlineInputBorder =>
-    UnderlineInputBorder(borderSide: BorderSide(color: _colorScheme.secondary));
-TextStyle get defaultUnderlineInputBorderLabelStyle =>
-    TextStyle(color: _colorScheme.secondary);
-
-UnderlineInputBorder get defaultUnderlineInputBorderLight =>
-    UnderlineInputBorder();
-UnderlineInputBorder get defaultFocusedUnderlineInputBorderLight =>
-    UnderlineInputBorder(
-        borderSide: BorderSide(color: _colorSchemeLight.secondary));
-TextStyle get defaultUnderlineInputBorderLabelStyleLight =>
-    TextStyle(color: _colorSchemeLight.secondary);
+InputDecorationTheme get gefaultUnderlineInputTheme {
+  return settingsBloc.isLightTheme
+      ? InputDecorationTheme(
+          enabledBorder: UnderlineInputBorder(
+            borderSide:
+                BorderSide(color: _colorSchemeLight.secondary.withOpacity(0.3)),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: _colorSchemeLight.secondary),
+          ),
+          errorBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: _colorSchemeLight.error),
+          ),
+        )
+      : InputDecorationTheme(
+          enabledBorder: UnderlineInputBorder(
+            borderSide:
+                BorderSide(color: _colorScheme.secondary.withOpacity(0.3)),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: _colorScheme.secondary),
+          ),
+          errorBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: _colorScheme.error),
+          ),
+        );
+}

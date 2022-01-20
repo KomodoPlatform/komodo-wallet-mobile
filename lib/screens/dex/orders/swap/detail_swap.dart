@@ -149,26 +149,17 @@ class _DetailSwapState extends State<DetailSwap> {
                     ),
                   ),
                   isNoteEdit
-                      ? TextField(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            border:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? defaultUnderlineInputBorderLight
-                                    : defaultUnderlineInputBorder,
-                            focusedBorder:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? defaultFocusedUnderlineInputBorderLight
-                                    : defaultFocusedUnderlineInputBorder,
-                            labelStyle:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? defaultUnderlineInputBorderLabelStyleLight
-                                    : defaultUnderlineInputBorderLabelStyle,
+                      ? Theme(
+                          data: Theme.of(context).copyWith(
+                            inputDecorationTheme: gefaultUnderlineInputTheme,
                           ),
-                          controller: noteTextController,
-                          maxLength: 200,
-                          maxLines: 7,
-                          minLines: 1,
+                          child: TextField(
+                            decoration: InputDecoration(isDense: true),
+                            controller: noteTextController,
+                            maxLength: 200,
+                            maxLines: 7,
+                            minLines: 1,
+                          ),
                         )
                       : Text(
                           (noteText == null || noteText.isEmpty)

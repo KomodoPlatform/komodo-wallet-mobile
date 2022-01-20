@@ -25,6 +25,11 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme.background;
+    final border = OutlineInputBorder(
+        borderRadius: BorderRadius.circular(32),
+        borderSide: BorderSide(color: color));
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(32),
@@ -42,6 +47,9 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
           LengthLimitingTextInputFormatter(50),
         ],
         decoration: InputDecoration(
+          border: border,
+          enabledBorder: border,
+          focusedBorder: border,
           contentPadding: const EdgeInsets.all(0),
           isDense: true,
           prefixIcon: Icon(
@@ -49,7 +57,8 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
             color: Theme.of(context).colorScheme.onSurface,
           ),
           hintText: AppLocalizations.of(context).searchFilterCoin,
-          border: InputBorder.none,
+          fillColor: color,
+          filled: true,
           suffixIcon: !isEmptyQuery
               ? IconButton(
                   splashRadius: 24,

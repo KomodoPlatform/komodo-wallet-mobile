@@ -158,28 +158,20 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
               title: Text(AppLocalizations.of(context).warning),
               children: [
                 Text(AppLocalizations.of(context).customSeedWarning),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    border: Theme.of(context).brightness == Brightness.light
-                        ? defaultUnderlineInputBorderLight
-                        : defaultUnderlineInputBorder,
-                    focusedBorder:
-                        Theme.of(context).brightness == Brightness.light
-                            ? defaultFocusedUnderlineInputBorderLight
-                            : defaultFocusedUnderlineInputBorder,
-                    labelStyle: Theme.of(context).brightness == Brightness.light
-                        ? defaultUnderlineInputBorderLabelStyleLight
-                        : defaultUnderlineInputBorderLabelStyle,
+                Theme(
+                  data: Theme.of(context).copyWith(
+                      inputDecorationTheme: gefaultUnderlineInputTheme),
+                  child: TextField(
+                    autofocus: true,
+                    onChanged: (String text) {
+                      setState(() {
+                        enabled = text.trim().toLowerCase() ==
+                            AppLocalizations.of(context)
+                                .iUnderstand
+                                .toLowerCase();
+                      });
+                    },
                   ),
-                  onChanged: (String text) {
-                    setState(() {
-                      enabled = text.trim().toLowerCase() ==
-                          AppLocalizations.of(context)
-                              .iUnderstand
-                              .toLowerCase();
-                    });
-                  },
                 ),
                 SizedBox(height: 20),
                 Row(

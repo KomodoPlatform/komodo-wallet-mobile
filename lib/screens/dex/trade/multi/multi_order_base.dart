@@ -297,43 +297,37 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                   Container(
                     height: 38,
                     padding: const EdgeInsets.only(top: 4),
-                    child: TextFormField(
-                      controller: amountCtrl,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      textAlign: TextAlign.right,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        hintText: AppLocalizations.of(context)
-                            .multiBaseAmtPlaceholder,
-                        border: Theme.of(context).brightness == Brightness.light
-                            ? defaultUnderlineInputBorderLight
-                            : defaultUnderlineInputBorder,
-                        focusedBorder:
-                            Theme.of(context).brightness == Brightness.light
-                                ? defaultFocusedUnderlineInputBorderLight
-                                : defaultFocusedUnderlineInputBorder,
-                        labelStyle:
-                            Theme.of(context).brightness == Brightness.light
-                                ? defaultUnderlineInputBorderLabelStyleLight
-                                : defaultUnderlineInputBorderLabelStyle,
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        inputDecorationTheme: gefaultUnderlineInputTheme,
                       ),
-                      onChanged: (String value) {
-                        double amnt;
-                        try {
-                          amnt = double.parse(value);
-                        } catch (_) {}
+                      child: TextFormField(
+                        controller: amountCtrl,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        textAlign: TextAlign.right,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          hintText: AppLocalizations.of(context)
+                              .multiBaseAmtPlaceholder,
+                        ),
+                        onChanged: (String value) {
+                          double amnt;
+                          try {
+                            amnt = double.parse(value);
+                          } catch (_) {}
 
-                        multiOrderProvider.baseAmt =
-                            value.isEmpty ? null : amnt;
-                        multiOrderProvider.isMax = false;
-                      },
-                      enabled: multiOrderProvider.baseCoin != null,
-                      maxLines: 1,
-                      inputFormatters: <TextInputFormatter>[
-                        LengthLimitingTextInputFormatter(16),
-                        DecimalTextInputFormatter(decimalRange: 8),
-                      ],
+                          multiOrderProvider.baseAmt =
+                              value.isEmpty ? null : amnt;
+                          multiOrderProvider.isMax = false;
+                        },
+                        enabled: multiOrderProvider.baseCoin != null,
+                        maxLines: 1,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(16),
+                          DecimalTextInputFormatter(decimalRange: 8),
+                        ],
+                      ),
                     ),
                   ),
                   if (convertedAmt != null)

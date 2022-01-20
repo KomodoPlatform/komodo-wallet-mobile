@@ -39,23 +39,16 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
       children: <Widget>[
         Expanded(
           child: isEdit
-              ? TextField(
-                  decoration: InputDecoration(
-                    border: Theme.of(context).brightness == Brightness.light
-                        ? defaultUnderlineInputBorderLight
-                        : defaultUnderlineInputBorder,
-                    focusedBorder:
-                        Theme.of(context).brightness == Brightness.light
-                            ? defaultFocusedUnderlineInputBorderLight
-                            : defaultFocusedUnderlineInputBorder,
-                    labelStyle: Theme.of(context).brightness == Brightness.light
-                        ? defaultUnderlineInputBorderLabelStyleLight
-                        : defaultUnderlineInputBorderLabelStyle,
+              ? Theme(
+                  data: Theme.of(context).copyWith(
+                    inputDecorationTheme: gefaultUnderlineInputTheme,
                   ),
-                  controller: noteTextController,
-                  maxLength: 200,
-                  minLines: 1,
-                  maxLines: 8,
+                  child: TextField(
+                    controller: noteTextController,
+                    maxLength: 200,
+                    minLines: 1,
+                    maxLines: 8,
+                  ),
                 )
               : InkWell(
                   onTap: noteText != null && noteText.isNotEmpty

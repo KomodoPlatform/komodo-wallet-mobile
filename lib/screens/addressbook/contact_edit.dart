@@ -355,30 +355,24 @@ class _ContactEditState extends State<ContactEdit> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8.0),
-                    child: TextField(
-                      controller: searchTextController,
-                      onChanged: (_) => setState(() {}),
-                      decoration: InputDecoration(
-                        border: Theme.of(context).brightness == Brightness.light
-                            ? defaultUnderlineInputBorderLight
-                            : defaultUnderlineInputBorder,
-                        focusedBorder:
-                            Theme.of(context).brightness == Brightness.light
-                                ? defaultFocusedUnderlineInputBorderLight
-                                : defaultFocusedUnderlineInputBorder,
-                        labelStyle:
-                            Theme.of(context).brightness == Brightness.light
-                                ? defaultUnderlineInputBorderLabelStyleLight
-                                : defaultUnderlineInputBorderLabelStyle,
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        hintText: 'Search for Ticker',
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        inputDecorationTheme: gefaultUnderlineInputTheme,
                       ),
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(16),
-                      ],
+                      child: TextField(
+                        controller: searchTextController,
+                        onChanged: (_) => setState(() {}),
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                          hintText: 'Search for Ticker',
+                        ),
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(16),
+                        ],
+                      ),
                     ),
                   ),
                   ..._buildCoinDialogOption(

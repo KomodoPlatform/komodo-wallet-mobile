@@ -247,33 +247,30 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
           Container(
             height: 32,
             padding: const EdgeInsets.only(top: 8),
-            child: TextField(
-              controller: widget.controller,
-              focusNode: widget.focusNode,
-              textAlign: TextAlign.right,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                isDense: true,
-                border: Theme.of(context).brightness == Brightness.light
-                    ? defaultUnderlineInputBorderLight
-                    : defaultUnderlineInputBorder,
-                focusedBorder: Theme.of(context).brightness == Brightness.light
-                    ? defaultFocusedUnderlineInputBorderLight
-                    : defaultFocusedUnderlineInputBorder,
-                labelStyle: Theme.of(context).brightness == Brightness.light
-                    ? defaultUnderlineInputBorderLabelStyleLight
-                    : defaultUnderlineInputBorderLabelStyle,
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                inputDecorationTheme: gefaultUnderlineInputTheme,
               ),
-              maxLines: 1,
-              inputFormatters: <TextInputFormatter>[
-                LengthLimitingTextInputFormatter(16),
-                DecimalTextInputFormatter(decimalRange: 8),
-              ],
-              onChanged: (String value) {
-                final double amnt = double.tryParse(value ?? '');
-                _multiOrderProvider.setRelCoinAmt(widget.item.coin.abbr, amnt);
-              },
+              child: TextField(
+                controller: widget.controller,
+                focusNode: widget.focusNode,
+                textAlign: TextAlign.right,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  isDense: true,
+                ),
+                maxLines: 1,
+                inputFormatters: <TextInputFormatter>[
+                  LengthLimitingTextInputFormatter(16),
+                  DecimalTextInputFormatter(decimalRange: 8),
+                ],
+                onChanged: (String value) {
+                  final double amnt = double.tryParse(value ?? '');
+                  _multiOrderProvider.setRelCoinAmt(
+                      widget.item.coin.abbr, amnt);
+                },
+              ),
             ),
           ),
           if (convertedAmt != null)

@@ -35,31 +35,26 @@ class _SellAmountFieldState extends State<SellAmountField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      key: Key('input-text-sell'),
-      scrollPadding: const EdgeInsets.only(left: 35),
-      inputFormatters: <TextInputFormatter>[
-        DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),
-        FilteringTextInputFormatter.allow(RegExp(
-            '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
-      ],
-      controller: _ctrl,
-      onChanged: tradeForm.onSellAmountFieldChange,
-      enabled: swapBloc.enabledSellField,
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      style: Theme.of(context).textTheme.subtitle2,
-      textInputAction: TextInputAction.done,
-      decoration: InputDecoration(
-        border: Theme.of(context).brightness == Brightness.light
-            ? defaultUnderlineInputBorderLight
-            : defaultUnderlineInputBorder,
-        focusedBorder: Theme.of(context).brightness == Brightness.light
-            ? defaultFocusedUnderlineInputBorderLight
-            : defaultFocusedUnderlineInputBorder,
-        labelStyle: Theme.of(context).brightness == Brightness.light
-            ? defaultUnderlineInputBorderLabelStyleLight
-            : defaultUnderlineInputBorderLabelStyle,
-        hintText: AppLocalizations.of(context).amountToSell,
+    return Theme(
+      data: Theme.of(context)
+          .copyWith(inputDecorationTheme: gefaultUnderlineInputTheme),
+      child: TextFormField(
+        key: Key('input-text-sell'),
+        scrollPadding: const EdgeInsets.only(left: 35),
+        inputFormatters: <TextInputFormatter>[
+          DecimalTextInputFormatter(decimalRange: appConfig.tradeFormPrecision),
+          FilteringTextInputFormatter.allow(RegExp(
+              '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
+        ],
+        controller: _ctrl,
+        onChanged: tradeForm.onSellAmountFieldChange,
+        enabled: swapBloc.enabledSellField,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        style: Theme.of(context).textTheme.subtitle2,
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          hintText: AppLocalizations.of(context).amountToSell,
+        ),
       ),
     );
   }
