@@ -20,12 +20,16 @@ class EncryptionTool {
   Future<bool> isPasswordValid(
       KeyEncryption key, Wallet wallet, String password) async {
     if (key == KeyEncryption.SEED) {
-      final onValue = argon2.verifyHashStringSync(
-        password,
-        await storage.read(key: keyPassword(key, wallet)),
-        type: Argon2Type.id,
-      );
-      return onValue ? onValue : throw Exception('Invalid password.');
+      bool isValid = false;
+      try {
+        isValid = argon2.verifyHashStringSync(
+          password,
+          await storage.read(key: keyPassword(key, wallet)),
+          type: Argon2Type.id,
+        );
+      } catch (_) {}
+
+      return isValid;
     } else {
       return true;
     }
