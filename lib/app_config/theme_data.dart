@@ -100,6 +100,26 @@ ProgressIndicatorThemeData get _progressIndicatorThemeDataLight =>
       color: _colorSchemeLight.secondary,
     );
 
+SliderThemeData get _sliderThemeData => SliderThemeData(
+      inactiveTrackColor: _colorScheme.secondary.withOpacity(0.3),
+      activeTrackColor: _colorScheme.secondary,
+      activeTickMarkColor: _colorScheme.onSurface,
+      inactiveTickMarkColor: _colorScheme.secondary,
+      valueIndicatorTextStyle: TextStyle(color: _colorScheme.primary),
+      overlayColor: _colorScheme.secondary.withOpacity(0.2),
+      thumbColor: _colorScheme.secondary,
+    );
+
+SliderThemeData get _sliderThemeDataLight => SliderThemeData(
+      inactiveTrackColor: _colorSchemeLight.secondary.withOpacity(0.3),
+      activeTrackColor: _colorSchemeLight.secondary,
+      activeTickMarkColor: _colorSchemeLight.onSurface,
+      inactiveTickMarkColor: _colorSchemeLight.secondary,
+      valueIndicatorTextStyle: TextStyle(color: _colorSchemeLight.primary),
+      overlayColor: _colorSchemeLight.secondary.withOpacity(0.2),
+      thumbColor: _colorSchemeLight.secondary,
+    );
+
 // Color scheme dark adapted from current dev
 ColorScheme get _colorScheme => const ColorScheme(
       primary: Color.fromRGBO(42, 54, 71, 1),
@@ -162,6 +182,7 @@ ThemeData getThemeDark() => ThemeData(
       textButtonTheme: _textButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
       progressIndicatorTheme: _progressIndicatorThemeData,
+      sliderTheme: _sliderThemeData,
     );
 
 ThemeData getThemeLight() => ThemeData(
@@ -189,6 +210,7 @@ ThemeData getThemeLight() => ThemeData(
       textButtonTheme: _textButtonThemeDataLight,
       outlinedButtonTheme: _outlinedButtonThemeDataLight,
       progressIndicatorTheme: _progressIndicatorThemeDataLight,
+      sliderTheme: _sliderThemeDataLight,
     );
 
 const Color cexColor = Color.fromARGB(200, 253, 247, 227);
