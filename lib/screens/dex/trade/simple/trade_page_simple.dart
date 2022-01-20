@@ -211,13 +211,13 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
     FocusNode focusNode;
     String currentTerm;
     if (type == Market.SELL) {
-      if (_constrProvider.sellCoin != null) return SizedBox();
+      if (_constrProvider.sellCoin != null) return SizedBox(height: 18);
 
       controller = _sellSearchCtrl;
       focusNode = _sellFocusNode;
       currentTerm = _sellSearchTerm;
     } else {
-      if (_constrProvider.buyCoin != null) return SizedBox();
+      if (_constrProvider.buyCoin != null) return SizedBox(height: 18);
 
       controller = _buySearchCtrl;
       focusNode = _buyFocusNode;

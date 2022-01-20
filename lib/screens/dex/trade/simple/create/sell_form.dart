@@ -149,7 +149,7 @@ class _SellFormState extends State<SellForm> {
       margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
       child: ListTile(
         visualDensity: VisualDensity.compact,
-        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+        contentPadding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
         horizontalTitleGap: 0,
         onTap: () => _constrProvider.sellCoin = null,
         leading: CircleAvatar(

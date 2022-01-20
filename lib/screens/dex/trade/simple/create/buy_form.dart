@@ -95,7 +95,7 @@ class _BuyFormState extends State<BuyForm> {
       margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
       child: ListTile(
         visualDensity: VisualDensity.compact,
-        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+        contentPadding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
         horizontalTitleGap: 0,
         onTap: () => _constrProvider.buyCoin = null,
         leading: CircleAvatar(
