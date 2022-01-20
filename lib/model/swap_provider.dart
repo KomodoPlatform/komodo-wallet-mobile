@@ -200,8 +200,10 @@ class SwapMonitor {
 
     final List<Swap> swapList = List.from(swaps.values);
     swapList.sort((a, b) {
-      if (b.result.myInfo.startedAt != null) {
-        return b.result.myInfo.startedAt.compareTo(a.result.myInfo.startedAt);
+      if (b.result.myInfo?.startedAt != null) {
+        return b.result.myInfo?.startedAt
+                ?.compareTo(a.result.myInfo?.startedAt) ??
+            true;
       }
       return 0;
     });
