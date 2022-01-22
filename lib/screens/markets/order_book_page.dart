@@ -82,8 +82,6 @@ class _OrderBookPageState extends State<OrderBookPage> {
                   value: _orderBookProvider.activePair?.sell,
                   type: CoinType.base,
                   pairedCoin: _orderBookProvider.activePair?.buy,
-                  autoOpen: _orderBookProvider.activePair?.sell == null &&
-                      _orderBookProvider.activePair?.buy != null,
                   compact: MediaQuery.of(context).size.width < 360,
                   onChange: (Coin value) {
                     setState(() {
@@ -117,8 +115,6 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 value: _orderBookProvider.activePair?.buy,
                 type: CoinType.rel,
                 pairedCoin: _orderBookProvider.activePair?.sell,
-                autoOpen: _orderBookProvider.activePair?.buy == null &&
-                    _orderBookProvider.activePair?.sell != null,
                 compact: MediaQuery.of(context).size.width < 360,
                 onChange: (Coin value) {
                   setState(() {

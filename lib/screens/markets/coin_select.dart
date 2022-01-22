@@ -23,7 +23,6 @@ class CoinSelect extends StatefulWidget {
     this.value,
     this.type,
     this.pairedCoin,
-    this.autoOpen = false,
     this.compact = false,
     this.onChange,
   }) : super(key: key);
@@ -31,7 +30,6 @@ class CoinSelect extends StatefulWidget {
   final Coin value;
   final CoinType type;
   final Coin pairedCoin;
-  final bool autoOpen;
   final bool compact;
   final Function(Coin) onChange;
 
@@ -47,12 +45,6 @@ class _CoinSelectState extends State<CoinSelect> {
     super.initState();
 
     if (mmSe.running) coinsBloc.updateCoinBalances();
-
-    if (widget.autoOpen) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showDialog();
-      });
-    }
   }
 
   @override
