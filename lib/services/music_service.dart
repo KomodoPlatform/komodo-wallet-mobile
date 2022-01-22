@@ -64,7 +64,7 @@ class MusicService {
     if (!Platform.isAndroid) return;
 
     _audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
-    _player = AudioCache(prefix: 'audio/', fixedPlayer: _audioPlayer);
+    _player = AudioCache(prefix: 'assets/audio/', fixedPlayer: _audioPlayer);
 
     _audioPlayer.onPlayerError.listen((String ev) {
       Log('music_service:72', 'onPlayerError: ' + ev);
