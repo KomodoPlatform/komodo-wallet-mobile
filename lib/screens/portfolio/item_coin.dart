@@ -250,7 +250,7 @@ class _ItemCoinState extends State<ItemCoin>
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
           textStyle:
               Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
-          //side: BorderSide(color: Theme.of(context).colorScheme.secondary),
+          side: BorderSide(color: Theme.of(context).colorScheme.secondary),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
