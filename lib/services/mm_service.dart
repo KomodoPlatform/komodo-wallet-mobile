@@ -143,7 +143,8 @@ class MMService {
   }
 
   Future<void> init(String passphrase) async {
-    await mmSe.runBin();
+    final String rpcPass = _createRpcPass();
+    await mmSe.runBin(rpcPass);
     metrics();
 
     jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
@@ -159,7 +160,7 @@ class MMService {
     });
   }
 
-  void initUsername(String passphrase) {
+  String _createRpcPass() {
     // MRC: Instead of the previous algortihm (uuid -> base64 -> substring, etc.)
     // It was decided to use just a password generator.
 
@@ -169,7 +170,7 @@ class MMService {
     for (var i = 0; i < numAttempts; i++) {
       pass = generatePassword(true, true, true, true, 32);
 
-      if (validateRpcPassword(pass)) {
+      if (_validateRpcPassword(pass)) {
         Log(
             'mm_service] initUsername',
             'Number of tries that were needed for generating a password that'
@@ -178,14 +179,14 @@ class MMService {
       }
     }
 
-    if (!validateRpcPassword(pass)) {
+    if (!_validateRpcPassword(pass)) {
       Log(
           'mm_service] initUsername',
           "Couldn't generate valid rpcPassword in $numAttempts attempts."
               'Please report this problem!');
     }
 
-    userpass = pass;
+    return pass;
   }
 
   // MRC: Since the app now uses an actual password generator for rpcPassword,
@@ -195,7 +196,7 @@ class MMService {
   // the old criteria.
   //
   // Current criteria explained in comments.
-  bool validateRpcPassword(String src) {
+  bool _validateRpcPassword(String src) {
     if (src == null || src.isEmpty) return false;
 
     // Password can't contain word 'password'
@@ -293,9 +294,8 @@ class MMService {
     return ret;
   }
 
-  Future<void> runBin() async {
+  Future<void> runBin(String rpcPass) async {
     final String passphrase = await EncryptionTool().read('passphrase');
-    initUsername(passphrase);
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
     gui = 'atomicDEX ${packageInfo.version} $os';
@@ -303,13 +303,14 @@ class MMService {
       final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
       gui += '; BT=${buildTime ~/ 1000}';
     }
+
     final String startParam = configMm2ToJson(ConfigMm2(
         gui: gui,
         netid: netid,
         client: 1,
         userhome: filesPath,
         passphrase: passphrase,
-        rpcPassword: userpass,
+        rpcPassword: rpcPass,
         coins: await readJsonCoinInit(),
         dbdir: filesPath));
 
@@ -325,7 +326,7 @@ class MMService {
         if (error == Mm2Error.already_runs) {
           Log('mm_service', '$error, restarting mm2');
           await stopmm2();
-          await runBin();
+          await runBin(rpcPass);
         } else {
           throw Exception('Error on start mm2: $error');
         }
@@ -333,19 +334,20 @@ class MMService {
 
       // check when mm2 is ready then load coins
       final int timerTmp = DateTime.now().millisecondsSinceEpoch;
-      Timer.periodic(const Duration(seconds: 2), (_) {
+      Timer.periodic(const Duration(seconds: 2), (timer) {
         final int t1 = timerTmp + 20000;
         final int t2 = DateTime.now().millisecondsSinceEpoch;
         if (t1 <= t2) {
-          _.cancel();
+          timer.cancel();
         }
 
         checkStatusMm2().then((int onValue) {
           final status = mm2StatusFrom(onValue);
           Log('mm_service:313', 'mm2_main_status: $status');
           if (status == Mm2Status.ready) {
+            userpass = rpcPass;
             _running = true;
-            _.cancel();
+            timer.cancel();
             initCoinsAndLoad();
             coinsBloc.startCheckBalance();
           }
@@ -461,27 +463,9 @@ class MMService {
   }
 
   Future<void> stopmm2() async {
-    if (Platform.isIOS) {
-      await _stopmm2Ios();
-      Log('mm_service', 'stopmm2: done');
-      return;
-    }
-
-    try {
-      final BaseService baseService =
-          BaseService(userpass: userpass, method: 'stop');
-      await client.post(url, body: baseServiceToJson(baseService));
-
-      _running = false;
-    } catch (e) {
-      Log('mm_service', 'stopmm2: $e');
-    }
-  }
-
-  Future<void> _stopmm2Ios() async {
     final int errorCode = await nativeC.invokeMethod<int>('stop');
     final Mm2StopError error = mm2StopErrorFrom(errorCode);
-    Log('mm_service', 'stopmm2Ios: $error');
+    Log('mm_service', 'stopmm2: $error');
 
     await pauseUntil(() async => await _mm2status() == Mm2Status.not_running);
     _running = false;
