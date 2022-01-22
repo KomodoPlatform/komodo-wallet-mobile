@@ -1,4 +1,5 @@
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class Order {
   Order(
@@ -34,9 +35,9 @@ class Order {
   int compareToSwap(Swap other) {
     int order = 0;
     if (other.result.myInfo != null) {
-      order = other.result.myInfo.startedAt.compareTo(createdAt);
+      order = extractStartedAtFromSwap(other.result).compareTo(createdAt);
       if (order == 0)
-        order = createdAt.compareTo(other.result.myInfo.startedAt);
+        order = createdAt.compareTo(extractStartedAtFromSwap(other.result));
     }
 
     return order;

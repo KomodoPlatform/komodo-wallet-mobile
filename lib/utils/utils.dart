@@ -868,3 +868,17 @@ Map<String, String> extractMyInfoFromSwap(MmSwap swap) {
     'otherAmount': otherAmount,
   };
 }
+
+int extractStartedAtFromSwap(MmSwap swap) {
+  final startEvent = swap.events.firstWhere(
+      (ev) => ev.event.type == 'Started' || ev.event.type == 'StartFailed',
+      orElse: () => null);
+  if (startEvent != null) {
+    // MRC: I believe, for now, it's easier to just divide the timestamp by 1000
+    // rather than switching the logic on all uses of StartedAt
+    return startEvent.event.data.startedAt != 0
+        ? startEvent.event.data.startedAt
+        : (startEvent.timestamp / 1000).floor();
+  }
+  return 0;
+}

@@ -289,6 +289,7 @@ class _ImportPageState extends State<ImportPage> {
       final myAmount = myInfo['myAmount'];
       final otherCoin = myInfo['otherCoin'];
       final otherAmount = myInfo['otherAmount'];
+      final startedAt = extractStartedAtFromSwap(swap);
 
       items.add(
         ExportImportListItem(
@@ -313,8 +314,7 @@ class _ImportPageState extends State<ImportPage> {
                 children: <Widget>[
                   Text(
                     DateFormat('dd MMM yyyy HH:mm').format(
-                        DateTime.fromMillisecondsSinceEpoch(
-                            (swap.myInfo?.startedAt ?? 0) * 1000)),
+                        DateTime.fromMillisecondsSinceEpoch(startedAt * 1000)),
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                           fontSize: 14,
                           color: Theme.of(context)

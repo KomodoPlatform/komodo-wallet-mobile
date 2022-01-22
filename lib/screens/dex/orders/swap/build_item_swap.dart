@@ -35,6 +35,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
     final myAmount = myInfo['myAmount'];
     final otherCoin = myInfo['otherCoin'];
     final otherAmount = myInfo['otherAmount'];
+    final startedAt = extractStartedAtFromSwap(widget.swap.result);
 
     return Card(
         child: InkWell(
@@ -153,8 +154,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                     Text(
                       DateFormat('dd MMM yyyy HH:mm').format(
                           DateTime.fromMillisecondsSinceEpoch(
-                              (widget.swap.result.myInfo?.startedAt ?? 0) *
-                                  1000)),
+                              startedAt * 1000)),
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
