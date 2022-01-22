@@ -520,6 +520,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   void onTabTapped(int index) {
+    /// [unfocusTextField] doesn't work here,
+    /// probably because drawer has different context
+    FocusScope.of(context).requestFocus(FocusNode());
+
     if (index < _children.length) {
       mainBloc.setCurrentIndexTab(index);
     } else {
