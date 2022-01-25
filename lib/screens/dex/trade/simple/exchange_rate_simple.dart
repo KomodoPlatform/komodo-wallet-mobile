@@ -74,7 +74,11 @@ class _ExchangeRateSimpleState extends State<ExchangeRateSimple> {
 
   Widget _buildHeader() {
     return InkWell(
-      onTap: () => setState(() => _showDetails = !_showDetails),
+      onTap: () {
+        setState(() {
+          _showDetails = !_showDetails;
+        });
+      },
       child: Container(
         padding: EdgeInsets.fromLTRB(6, 2, 6, 6),
         child: Row(
@@ -119,7 +123,7 @@ class _ExchangeRateSimpleState extends State<ExchangeRateSimple> {
               .copyWith(color: Theme.of(context).textTheme.bodyText2.color),
         ),
         Text(
-          '$_buyAbbr',
+          _buyAbbr,
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ],

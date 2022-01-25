@@ -110,7 +110,7 @@ class NotifService {
               limit: 5,
               fromId: null,
             ));
-        if (!(res is Transactions)) continue;
+        if (res is! Transactions) continue;
 
         for (Transaction tx in res.result.transactions) {
           if (tx.to.contains(address)) {

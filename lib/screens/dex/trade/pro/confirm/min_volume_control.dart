@@ -70,21 +70,17 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 7,
-                          backgroundImage: AssetImage('assets/coin-icons/'
-                              '${widget.base.toLowerCase()}.png'),
-                        ),
-                        SizedBox(width: 2),
-                        Text(widget.base),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 7,
+                        backgroundImage: AssetImage('assets/coin-icons/'
+                            '${widget.base.toLowerCase()}.png'),
+                      ),
+                      SizedBox(width: 2),
+                      Text(widget.base),
+                    ],
                   ),
                   SizedBox(width: 6),
                   Expanded(
@@ -94,10 +90,6 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
                           TextInputType.numberWithOptions(decimal: true),
                       decoration: InputDecoration(
                         isDense: true,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor),
-                        ),
                       ),
                       maxLines: 1,
                       inputFormatters: <TextInputFormatter>[
@@ -133,13 +125,16 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
         builder: (context, snapshot) {
           if (!snapshot.hasData) return SizedBox();
 
+          // todo(MRC): check if it is possible to port to a better widget
           return InkWell(
             onTap: () {
-              setState(() => _isActive = !_isActive);
+              setState(() {
+                _isActive = !_isActive;
+              });
 
               if (_isActive) {
-                setState(() => _value ??=
-                    '${cutTrailingZeros(formatPrice(snapshot.data))}');
+                setState(() =>
+                    _value ??= cutTrailingZeros(formatPrice(snapshot.data)));
                 _valueCtrl.text = _value;
                 widget.onChange(_value, _validate(_value) == null);
               } else {

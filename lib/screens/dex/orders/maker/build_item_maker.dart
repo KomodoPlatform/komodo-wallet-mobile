@@ -7,7 +7,6 @@ import 'package:komodo_dex/screens/dex/orders/maker/maker_order_details_page.dar
 import 'package:komodo_dex/screens/dex/orders/maker/order_fill.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class BuildItemMaker extends StatefulWidget {
   const BuildItemMaker(this.order);
@@ -26,10 +25,12 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
     return InkWell(
       onTap: () {
         Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) =>
-                    MakerOrderDetailsPage(widget.order.uuid)));
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) =>
+                MakerOrderDetailsPage(widget.order.uuid),
+          ),
+        );
       },
       child: Card(
         child: Padding(
@@ -110,7 +111,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                   builder:
                       (BuildContext context, AsyncSnapshot<String> snapshot) {
                     if (!snapshot.hasData) {
-                      return Container();
+                      return SizedBox();
                     }
 
                     return InkWell(
@@ -147,15 +148,19 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                     size: 15,
                   ),
                   widget.order.cancelable
-                      ? Container(
+                      ? SizedBox(
                           height: 30,
-                          child: OutlineButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0)),
-                            borderSide: BorderSide(
-                                color: settingsBloc.isLightTheme
-                                    ? Colors.black.withOpacity(0.8)
-                                    : Colors.white.withOpacity(0.8)),
+                          child: OutlinedButton(
+                            onPressed: () =>
+                                ordersBloc.cancelOrder(widget.order.uuid),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 6, horizontal: 12),
@@ -176,12 +181,9 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                                 ],
                               ),
                             ),
-                            onPressed: () {
-                              ordersBloc.cancelOrder(widget.order.uuid);
-                            },
                           ),
                         )
-                      : Container()
+                      : SizedBox()
                 ],
               ),
             ],

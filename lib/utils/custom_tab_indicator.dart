@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CustomTabIndicator extends Decoration {
   const CustomTabIndicator({this.context});
@@ -33,7 +32,7 @@ class _CustomPainter extends BoxPainter {
         Size(configuration.size.width + 2, indicatorHeight);
 
     final Paint paint = Paint();
-    paint.color = Theme.of(context).accentColor;
+    paint.color = Theme.of(context).colorScheme.secondary;
     paint.style = PaintingStyle.stroke;
     paint.strokeWidth = 2.0;
 

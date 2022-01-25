@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
@@ -36,11 +35,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
     cexProvider ??= Provider.of<CexProvider>(context);
     addressBookProvider ??= Provider.of<AddressBookProvider>(context);
 
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 8,
-        right: 8,
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Table(
         key: const Key('order-book-table'),
         columnWidths: const {
@@ -217,8 +213,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
               style: const TextStyle(color: Colors.green, fontSize: 14),
             ),
           ),
-          Container(),
-          Container(),
+          SizedBox(),
+          SizedBox(),
         ],
       ));
     }
@@ -330,8 +326,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
               style: const TextStyle(color: Colors.red, fontSize: 14),
             ),
           ),
-          Container(),
-          Container(),
+          SizedBox(),
+          SizedBox(),
         ],
       ));
     }
@@ -345,10 +341,10 @@ class _OrderBookTableState extends State<OrderBookTable> {
     return TableRow(
       children: [
         cexRate > 0
-            ? Container(
+            ? SizedBox(
                 height: 26,
                 child: Stack(
-                  overflow: Overflow.visible,
+                  clipBehavior: Clip.none,
                   children: <Widget>[
                     Positioned(
                       top: 0,
@@ -358,7 +354,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
                         children: <Widget>[
                           Container(
                             decoration: BoxDecoration(
-                              color: settingsBloc.isLightTheme
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
                                   ? cexColorLight.withAlpha(50)
                                   : cexColor.withAlpha(50),
                               borderRadius:
@@ -388,7 +385,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
                                 ),
                                 CexMarker(
                                   context,
-                                  color: settingsBloc.isLightTheme
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
                                       ? cexColorLight
                                       : cexColor,
                                   size: const Size.fromHeight(12),
@@ -402,7 +400,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
                           Text(
                             '≈ ${cexProvider.convert(cexRate, from: orderBookProvider.activePair.buy.abbr)}',
                             style: TextStyle(
-                                color: settingsBloc.isLightTheme
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
                                     ? cexColorLight
                                     : cexColor,
                                 fontSize: 14),
@@ -413,7 +412,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
                   ],
                 ),
               )
-            : Container(),
+            : SizedBox(),
         const SizedBox(height: 26),
         const SizedBox(height: 26),
       ],

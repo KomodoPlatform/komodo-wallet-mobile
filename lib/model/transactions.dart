@@ -95,8 +95,7 @@ class SyncStatus {
   String state;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'additional_info':
-            additionalInfo == null ? null : additionalInfo.toJson(),
+        'additional_info': additionalInfo?.toJson(),
         'state': state ?? '',
       };
 }

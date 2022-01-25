@@ -58,13 +58,11 @@ class _PaginationState extends State<Pagination> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       controller: _scrollCtrl,
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            ...buttons,
-          ],
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ...buttons,
+        ],
       ),
     );
   }
@@ -85,7 +83,7 @@ class _PaginationState extends State<Pagination> {
               borderRadius: BorderRadius.circular(4),
               border: Border.all(
                   color: i == _currentPage
-                      ? Theme.of(context).accentColor.withAlpha(120)
+                      ? Theme.of(context).colorScheme.secondary.withAlpha(120)
                       : Theme.of(context).primaryColor),
               color: i == _currentPage ? null : Theme.of(context).primaryColor,
             ),
@@ -101,7 +99,7 @@ class _PaginationState extends State<Pagination> {
                   style: TextStyle(
                     fontSize: 13,
                     color: i == _currentPage
-                        ? Theme.of(context).accentColor
+                        ? Theme.of(context).colorScheme.secondary
                         : null,
                     fontWeight: i == _currentPage ? FontWeight.bold : null,
                   ),
@@ -113,7 +111,7 @@ class _PaginationState extends State<Pagination> {
                     style: TextStyle(
                       fontSize: 7,
                       color: i == _currentPage
-                          ? Theme.of(context).accentColor
+                          ? Theme.of(context).colorScheme.secondary
                           : null,
                       fontWeight: i == _currentPage ? FontWeight.bold : null,
                     ),

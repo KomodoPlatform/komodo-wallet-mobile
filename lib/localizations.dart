@@ -28,7 +28,7 @@ class AppLocalizations {
 
   // --- Branding ---
 
-  String get appName => Intl.message('${appConfig.appName}', name: 'appName');
+  String get appName => Intl.message(appConfig.appName, name: 'appName');
 
   String get articleFrom =>
       Intl.message('${toInitialUpper(appConfig.appName)} NEWS',
@@ -49,7 +49,7 @@ class AppLocalizations {
 
   String get welcomeTitle => Intl.message('WELCOME', name: 'welcomeTitle');
   String get welcomeName =>
-      Intl.message('${toInitialUpper(appConfig.appName)}', name: 'welcomeName');
+      Intl.message(toInitialUpper(appConfig.appName), name: 'welcomeName');
   String get welcomeWallet => Intl.message('wallet', name: 'welcomeWallet');
   String get welcomeInfo => Intl.message(
       '${toInitialUpper(appConfig.appName)} mobile is a next generation multi-coin wallet with native third generation DEX functionality and more.',

@@ -51,18 +51,13 @@ class _BuildNewsItemState extends State<BuildNewsItem>
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
-      child: Container(
-        padding: const EdgeInsets.only(left: 12, right: 12, top: 20),
-        width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 24, bottom: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _buildHeader(),
-            Divider(
-              color: Theme.of(context).hintColor,
-              height: 40,
-            ),
+            Divider(height: 40),
             _buildContent(),
           ],
         ),
@@ -99,12 +94,12 @@ class _BuildNewsItemState extends State<BuildNewsItem>
                 child: Text(
                   _source.name,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).accentColor,
-                  ),
+                  style: Theme.of(context).textTheme.subtitle1.copyWith(
+                        color: Colors.blue,
+                      ),
                 ),
               ),
+              SizedBox(height: 4),
               _buildDate(),
             ],
           ),
@@ -120,60 +115,50 @@ class _BuildNewsItemState extends State<BuildNewsItem>
           DateTime.parse(widget.newsItem.date).millisecondsSinceEpoch);
     } catch (_) {}
 
-    return _date == null
-        ? Container(width: 0)
-        : Text(
-            _date,
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).textTheme.caption.color,
-            ),
-          );
+    return _date == null ? Container(width: 0) : Text(_date);
   }
 
   Widget _buildContent() {
     if (widget.newsItem.content == null || widget.newsItem.content.isEmpty) {
-      return Container();
+      return SizedBox();
     }
     final NewsArticle _article = NewsArticle(widget.newsItem.content);
     _recognizers = _article.recognizers;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         RichText(
           text: TextSpan(
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).textTheme.caption.color,
-            ),
+            style: Theme.of(context).textTheme.bodyText2,
             children: _article.lead,
           ),
         ),
-        if (_article.body != null && _collapsed)
-          GestureDetector(
+        if (_article.body != null && _collapsed) ...[
+          SizedBox(height: 16),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: GestureDetector(
               onTap: () {
                 setState(() {
                   _collapsed = false;
                   expandController.forward();
                 });
               },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.only(top: 12, bottom: 20, right: 12),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 16, right: 16),
                 child: Text(AppLocalizations.of(context).feedReadMore,
                     style: TextStyle(fontSize: 16, color: Colors.blue)),
-              )),
+              ),
+            ),
+          ),
+        ],
         if (_article.body != null && !_collapsed)
           SizeTransition(
             axisAlignment: -1,
             sizeFactor: expandAnimation,
             child: RichText(
               text: TextSpan(
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).textTheme.caption.color,
-                ),
+                style: Theme.of(context).textTheme.bodyText2,
                 children: _article.body,
               ),
             ),

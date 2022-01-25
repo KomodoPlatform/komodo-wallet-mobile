@@ -6,7 +6,6 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
@@ -48,97 +47,87 @@ class _OrderBookPageState extends State<OrderBookPage> {
         : null;
     _hasChartsData = _hasBothCoins && _cexProvider.isChartAvailable(_pairStr);
 
-    return Container(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 8,
-                left: 8,
-                right: 8,
-              ),
-              child: _buildPairSelect(),
-            ),
-            if (_hasChartsData)
-              Padding(
-                padding: const EdgeInsets.only(left: 8, right: 8),
-                child: _buildTabsButtons(),
-              ),
-            if (_showChart) _buildCandleChart(),
-            if (!_showChart) _buildOrderBook(),
-          ],
+    return ListView(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
+          child: _buildPairSelect(),
         ),
-      ),
+        if (_hasChartsData)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: _buildTabsButtons(),
+          ),
+        if (_showChart) _buildCandleChart(),
+        if (!_showChart) _buildOrderBook(),
+      ],
     );
   }
 
   Widget _buildPairSelect() {
-    return Container(
-      child: Card(
-        elevation: 8,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Expanded(
-                child: CoinSelect(
-                    key: const Key('coin-select-left'),
-                    value: _orderBookProvider.activePair?.sell,
-                    type: CoinType.base,
-                    pairedCoin: _orderBookProvider.activePair?.buy,
-                    autoOpen: _orderBookProvider.activePair?.sell == null &&
-                        _orderBookProvider.activePair?.buy != null,
-                    compact: MediaQuery.of(context).size.width < 360,
-                    onChange: (Coin value) {
-                      setState(() {
-                        _showChart = false;
-                      });
-                      _orderBookProvider.activePair = CoinsPair(
-                        sell: value,
-                        buy: _orderBookProvider.activePair?.buy,
-                      );
-                    }),
-              ),
-              const SizedBox(width: 4),
-              ButtonTheme(
-                minWidth: 40,
-                child: FlatButton(
-                    key: const Key('coin-select-swap'),
-                    padding: const EdgeInsets.all(0),
-                    onPressed: () {
-                      _orderBookProvider.activePair = CoinsPair(
-                        buy: _orderBookProvider.activePair?.sell,
-                        sell: _orderBookProvider.activePair?.buy,
-                      );
-                    },
-                    child: Icon(Icons.swap_horiz)),
-              ),
-              const SizedBox(width: 4),
-              Expanded(
-                child: CoinSelect(
-                  key: const Key('coin-select-right'),
-                  value: _orderBookProvider.activePair?.buy,
-                  type: CoinType.rel,
-                  pairedCoin: _orderBookProvider.activePair?.sell,
-                  autoOpen: _orderBookProvider.activePair?.buy == null &&
-                      _orderBookProvider.activePair?.sell != null,
+    return Card(
+      elevation: 8,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Expanded(
+              child: CoinSelect(
+                  key: const Key('coin-select-left'),
+                  value: _orderBookProvider.activePair?.sell,
+                  type: CoinType.base,
+                  pairedCoin: _orderBookProvider.activePair?.buy,
                   compact: MediaQuery.of(context).size.width < 360,
                   onChange: (Coin value) {
                     setState(() {
                       _showChart = false;
                     });
                     _orderBookProvider.activePair = CoinsPair(
-                      buy: value,
-                      sell: _orderBookProvider.activePair?.sell,
+                      sell: value,
+                      buy: _orderBookProvider.activePair?.buy,
                     );
-                  },
-                ),
+                  }),
+            ),
+            const SizedBox(width: 4),
+            TextButton(
+              key: const Key('coin-select-swap'),
+              onPressed: () {
+                _orderBookProvider.activePair = CoinsPair(
+                  buy: _orderBookProvider.activePair?.sell,
+                  sell: _orderBookProvider.activePair?.buy,
+                );
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(0),
+                minimumSize: Size(40, 0),
               ),
-            ],
-          ),
+              child: Icon(Icons.swap_horiz),
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: CoinSelect(
+                key: const Key('coin-select-right'),
+                value: _orderBookProvider.activePair?.buy,
+                type: CoinType.rel,
+                pairedCoin: _orderBookProvider.activePair?.sell,
+                compact: MediaQuery.of(context).size.width < 360,
+                onChange: (Coin value) {
+                  setState(() {
+                    _showChart = false;
+                  });
+                  _orderBookProvider.activePair = CoinsPair(
+                    buy: value,
+                    sell: _orderBookProvider.activePair?.sell,
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -159,53 +148,60 @@ class _OrderBookPageState extends State<OrderBookPage> {
               });
             },
           ),
-        Expanded(child: Container()),
-        FlatButton(
-            onPressed: () {
-              setState(() {
-                _showChart = true;
-              });
-            },
+        Expanded(child: SizedBox()),
+        InkWell(
+          onTap: () {
+            setState(() {
+              _showChart = true;
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Row(
-              children: <Widget>[
-                CandlesIcon(
-                    size: 14,
-                    color: !_showChart
-                        ? settingsBloc.isLightTheme
-                            ? cexColorLight
-                            : cexColor.withOpacity(0.8)
-                        : Theme.of(context).accentColor),
-                const SizedBox(width: 2),
+              children: [
                 Text(
                   AppLocalizations.of(context).marketsChart,
-                  style: !_showChart
-                      ? TextStyle(
-                          color: settingsBloc.isLightTheme
-                              ? cexColorLight
-                              : cexColor.withOpacity(0.8))
-                      : TextStyle(
-                          color: Theme.of(context).accentColor,
-                        ),
+                  style: Theme.of(context).textTheme.button.copyWith(
+                        color: !_showChart
+                            ? Theme.of(context).brightness == Brightness.light
+                                ? cexColorLight
+                                : cexColor.withOpacity(0.8)
+                            : Theme.of(context).colorScheme.secondary,
+                      ),
+                ),
+                SizedBox(width: 8),
+                CandlesIcon(
+                  size: 14,
+                  color: !_showChart
+                      ? Theme.of(context).brightness == Brightness.light
+                          ? cexColorLight
+                          : cexColor.withOpacity(0.8)
+                      : Theme.of(context).colorScheme.secondary,
                 ),
               ],
-            )),
-        FlatButton(
-            onPressed: () {
-              setState(() {
-                _showChart = false;
-              });
-            },
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            setState(() {
+              _showChart = false;
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8),
             child: Text(
               AppLocalizations.of(context).marketsDepth,
-              style: _showChart
-                  ? TextStyle(
-                      color: settingsBloc.isLightTheme
-                          ? cexColorLight
-                          : cexColor.withOpacity(0.8))
-                  : TextStyle(
-                      color: Theme.of(context).accentColor,
-                    ),
-            )),
+              style: Theme.of(context).textTheme.button.copyWith(
+                    color: _showChart
+                        ? Theme.of(context).brightness == Brightness.light
+                            ? cexColorLight
+                            : cexColor.withOpacity(0.8)
+                        : Theme.of(context).colorScheme.secondary,
+                  ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -216,7 +212,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
         top: 20.0,
         bottom: 20.0,
       ),
-      child: Container(
+      child: SizedBox(
         height: MediaQuery.of(context).size.height / 2,
         child: FutureBuilder<ChartData>(
           future: _cexProvider.getCandles(
@@ -245,18 +241,18 @@ class _OrderBookPageState extends State<OrderBookPage> {
               });
             });
 
-            return StreamBuilder<Object>(
-                initialData: settingsBloc.isLightTheme,
-                stream: settingsBloc.outLightTheme,
-                builder: (context, light) {
-                  return CandleChart(
-                      data: snapshot.data.data[_chartDuration],
-                      duration: int.parse(_chartDuration),
-                      textColor: light.data ? Colors.black : Colors.white,
-                      gridColor: light.data
-                          ? Colors.black.withOpacity(.2)
-                          : Colors.white.withOpacity(.4));
-                });
+            return ClipRect(
+              clipBehavior: Clip.hardEdge,
+              child: CandleChart(
+                  data: snapshot.data.data[_chartDuration],
+                  duration: int.parse(_chartDuration),
+                  textColor: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
+                  gridColor: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black.withOpacity(.2)
+                      : Colors.white.withOpacity(.4)),
+            );
           },
         ),
       ),
@@ -339,7 +335,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                     'Less',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 )),
@@ -356,7 +352,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                     'More',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 )),

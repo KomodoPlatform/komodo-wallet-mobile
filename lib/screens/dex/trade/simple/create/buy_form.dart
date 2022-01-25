@@ -6,7 +6,6 @@ import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
-import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +15,7 @@ class BuyForm extends StatefulWidget {
 }
 
 class _BuyFormState extends State<BuyForm> {
-  final _amtCtrl = TextEditingControllerWorkaroud();
+  final _amtCtrl = TextEditingController();
   final _focusNode = FocusNode();
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
@@ -25,16 +24,22 @@ class _BuyFormState extends State<BuyForm> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _constrProvider.addListener(_onDataChange);
-      _amtCtrl.addListener(_onAmtFieldChange);
 
-      _fillForm();
+      _onDataChange(); // fill the form with current data on page load
       if (_constrProvider.sellCoin == null) {
         _focusNode.requestFocus();
       } else {
-        FocusScope.of(context).requestFocus(FocusNode());
+        unfocusTextField(context);
       }
     });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _constrProvider.removeListener(_onDataChange);
+    super.dispose();
   }
 
   @override
@@ -62,29 +67,20 @@ class _BuyFormState extends State<BuyForm> {
     return Stack(
       children: [
         TextFormField(
-            controller: _amtCtrl,
-            focusNode: _focusNode,
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: <TextInputFormatter>[
-              DecimalTextInputFormatter(
-                  decimalRange: appConfig.tradeFormPrecision),
-              FilteringTextInputFormatter.allow(RegExp(
-                  '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
-            ],
-            style: TextStyle(height: 1),
-            decoration: InputDecoration(
-              isDense: true,
-              contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 22),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
-                  borderSide: BorderSide(
-                      color: Theme.of(context).highlightColor, width: 1)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                width: 1,
-                color: Theme.of(context).accentColor,
-              )),
-            )),
+          controller: _amtCtrl,
+          focusNode: _focusNode,
+          keyboardType: TextInputType.numberWithOptions(decimal: true),
+          onChanged: _constrProvider.onBuyAmtFieldChange,
+          inputFormatters: <TextInputFormatter>[
+            DecimalTextInputFormatter(
+                decimalRange: appConfig.tradeFormPrecision),
+            FilteringTextInputFormatter.allow(RegExp(
+                '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?'))
+          ],
+          decoration: InputDecoration(
+            isDense: true,
+          ),
+        ),
         Positioned(
           right: 4,
           bottom: 2,
@@ -96,46 +92,24 @@ class _BuyFormState extends State<BuyForm> {
 
   Widget _buildCoin() {
     return Card(
-        margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(4),
-          onTap: () {
-            _constrProvider.buyCoin = null;
-          },
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 50),
-            child: Container(
-              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundImage: AssetImage('assets/coin-icons/'
-                              '${_constrProvider.buyCoin.toLowerCase()}.png'),
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          _constrProvider.buyCoin,
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(
-                    Icons.clear,
-                    size: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  ),
-                  SizedBox(width: 10),
-                ],
-              ),
-            ),
-          ),
-        ));
+      margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
+      child: ListTile(
+        visualDensity: VisualDensity.compact,
+        contentPadding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
+        horizontalTitleGap: 0,
+        onTap: () => _constrProvider.buyCoin = null,
+        leading: CircleAvatar(
+          radius: 8,
+          backgroundImage: AssetImage('assets/coin-icons/'
+              '${_constrProvider.buyCoin.toLowerCase()}.png'),
+        ),
+        title: Text(_constrProvider.buyCoin),
+        trailing: Icon(
+          Icons.clear,
+          size: 16,
+        ),
+      ),
+    );
   }
 
   Widget _buildFiatAmt() {
@@ -187,8 +161,10 @@ class _BuyFormState extends State<BuyForm> {
   }
 
   void _onDataChange() {
+    if (!mounted) return;
+
     if (_constrProvider.buyAmount == null) {
-      _amtCtrl.text = '';
+      _amtCtrl.clear();
       return;
     }
 
@@ -197,24 +173,8 @@ class _BuyFormState extends State<BuyForm> {
     final String currentFormatted = cutTrailingZeros(_amtCtrl.text);
 
     if (currentFormatted != newFormatted) {
-      _amtCtrl.setTextAndPosition(newFormatted);
-
-      Future<dynamic>.delayed(Duration.zero).then((dynamic _) {
-        if (!_focusNode.hasFocus) {
-          _amtCtrl.selection = TextSelection.collapsed(offset: 0);
-        }
-      });
+      _amtCtrl.text = newFormatted;
+      moveCursorToEnd(_amtCtrl);
     }
-  }
-
-  void _onAmtFieldChange() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _constrProvider.onBuyAmtFieldChange(_amtCtrl.text);
-    });
-  }
-
-  void _fillForm() {
-    _onDataChange();
-    setState(() {});
   }
 }

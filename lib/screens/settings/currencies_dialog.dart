@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -43,7 +42,7 @@ void showCurrenciesDialog(BuildContext context) {
           currency == current
               ? Icon(
                   Icons.radio_button_checked,
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                   size: 14,
                 )
               : Icon(Icons.radio_button_unchecked, size: 14),
@@ -61,7 +60,9 @@ void showCurrenciesDialog(BuildContext context) {
           Text(
             currency,
             style: TextStyle(
-              color: currency == current ? Theme.of(context).accentColor : null,
+              color: currency == current
+                  ? Theme.of(context).colorScheme.secondary
+                  : null,
             ),
           ),
         ],

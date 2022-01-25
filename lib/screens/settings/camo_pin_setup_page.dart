@@ -28,18 +28,17 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         initialData: camoBloc.isCamoActive,
         stream: camoBloc.outIsCamoActive,
         builder: (context, AsyncSnapshot<bool> snapshot) {
-          if (!snapshot.hasData) return Container();
+          if (!snapshot.hasData) return SizedBox();
           if (snapshot.data) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.popUntil(context, ModalRoute.withName('/'));
             });
-            return Container();
+            return SizedBox();
           }
 
           return LockScreen(
             context: context,
             child: Scaffold(
-              backgroundColor: Theme.of(context).backgroundColor,
               appBar: AppBar(
                 title: Text(AppLocalizations.of(context).camoPinTitle),
               ),
@@ -68,13 +67,13 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
       initialData: camoBloc.camoFraction,
       stream: camoBloc.outCamoFraction,
       builder: (context, AsyncSnapshot<int> camoFraction) {
-        if (!camoFraction.hasData) return Container();
+        if (!camoFraction.hasData) return SizedBox();
 
         return StreamBuilder<bool>(
             initialData: camoBloc.isCamoEnabled,
             stream: camoBloc.outCamoEnabled,
             builder: (context, AsyncSnapshot<bool> camoEnabled) {
-              if (!camoEnabled.hasData) return Container();
+              if (!camoEnabled.hasData) return SizedBox();
 
               return Opacity(
                 opacity: camoEnabled.data ? 1 : 0.5,
@@ -93,7 +92,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                             Text(
                               '${camoFraction.data}%',
                               style: TextStyle(
-                                color: Theme.of(context).accentColor,
+                                color: Theme.of(context).colorScheme.secondary,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -101,24 +100,18 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                           ],
                         ),
                       ),
-                      SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          valueIndicatorTextStyle: TextStyle(
-                              color: Theme.of(context).backgroundColor),
-                        ),
-                        child: Slider(
-                            activeColor: Theme.of(context).accentColor,
-                            divisions: 50,
-                            label: camoFraction.data.toString(),
-                            min: 1,
-                            max: 50,
-                            value: camoFraction.data.toDouble(),
-                            onChanged: camoEnabled.data
-                                ? (double value) {
-                                    camoBloc.camoFraction = value.round();
-                                  }
-                                : null),
-                      ),
+                      Slider(
+                          activeColor: Theme.of(context).colorScheme.secondary,
+                          divisions: 50,
+                          label: camoFraction.data.toString(),
+                          min: 1,
+                          max: 50,
+                          value: camoFraction.data.toDouble(),
+                          onChanged: camoEnabled.data
+                              ? (double value) {
+                                  camoBloc.camoFraction = value.round();
+                                }
+                              : null),
                     ],
                   ),
                 ),
@@ -133,26 +126,26 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         initialData: camoBloc.isCamoEnabled,
         stream: camoBloc.outCamoEnabled,
         builder: (context, camoEnabled) {
-          if (camoEnabled.data != true) return Container();
+          if (camoEnabled.data != true) return SizedBox();
 
           return FutureBuilder<String>(
               future: EncryptionTool().read('pin'),
               builder: (context, AsyncSnapshot<String> normalPin) {
-                if (!normalPin.hasData) return Container();
+                if (!normalPin.hasData) return SizedBox();
 
                 return SharedPreferencesBuilder<dynamic>(
                     pref: 'switch_pin',
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> normalPinEnabled) {
-                      if (!normalPinEnabled.hasData) return Container();
+                      if (!normalPinEnabled.hasData) return SizedBox();
 
                       if (normalPinEnabled.data) {
                         return FutureBuilder<String>(
                             future: EncryptionTool().read('camoPin'),
                             builder: (context, AsyncSnapshot<String> camoPin) {
-                              if (!camoPin.hasData) return Container();
+                              if (!camoPin.hasData) return SizedBox();
                               if (camoPin.data != normalPin.data)
-                                return Container();
+                                return SizedBox();
 
                               return Container(
                                 padding: const EdgeInsets.all(18),
@@ -193,7 +186,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
               initialData: camoBloc.isCamoEnabled,
               stream: camoBloc.outCamoEnabled,
               builder: (context, AsyncSnapshot<bool> camoEnabledSnapshot) {
-                if (!camoEnabledSnapshot.hasData) return Container();
+                if (!camoEnabledSnapshot.hasData) return SizedBox();
 
                 final bool isEnabled = camoEnabledSnapshot.data;
                 return Opacity(
@@ -246,7 +239,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                                 AsyncSnapshot<String>
                                                     normalPin) {
                                               if (!normalPin.hasData)
-                                                return Container();
+                                                return SizedBox();
 
                                               if (normalPin.data !=
                                                   camoPinSnapshot.data)
@@ -336,42 +329,16 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         initialData: camoBloc.isCamoEnabled,
         stream: camoBloc.outCamoEnabled,
         builder: (context, AsyncSnapshot<bool> snapshot) {
-          if (!snapshot.hasData) return Container();
+          if (!snapshot.hasData) return SizedBox();
 
           final bool isEnabled = snapshot.data;
           return Card(
-            child: InkWell(
-              onTap: () {
-                _switchEnabled(!isEnabled);
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  top: 8,
-                  bottom: 8,
-                  right: 8,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        isEnabled
-                            ? AppLocalizations.of(context).camoPinOn
-                            : AppLocalizations.of(context).camoPinOff,
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                    Switch(
-                      value: isEnabled,
-                      onChanged: (bool value) {
-                        _switchEnabled(value);
-                      },
-                    ),
-                  ],
-                ),
-              ),
+            child: SwitchListTile(
+              title: Text(isEnabled
+                  ? AppLocalizations.of(context).camoPinOn
+                  : AppLocalizations.of(context).camoPinOff),
+              value: isEnabled,
+              onChanged: (bool value) => _switchEnabled(value),
             ),
           );
         });

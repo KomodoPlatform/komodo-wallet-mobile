@@ -11,7 +11,7 @@ class Base91 {
     _encodingTable = utf8.encode(alphabet);
     assert(_encodingTable.length == base);
 
-    _decodingTable = List<int>(256);
+    _decodingTable = List.filled(256, 0);
     for (int i = 0; i < 256; i++) {
       _decodingTable[i] = -1;
     }

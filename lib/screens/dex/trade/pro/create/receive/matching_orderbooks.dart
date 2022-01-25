@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
@@ -46,23 +47,21 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: TextField(
-              controller: searchTextController,
-              onChanged: (_) => setState(() {}),
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Theme.of(context).textTheme.bodyText2.color,
+            child: Theme(
+              data: Theme.of(context)
+                  .copyWith(inputDecorationTheme: gefaultUnderlineInputTheme),
+              child: TextField(
+                controller: searchTextController,
+                onChanged: (_) => setState(() {}),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  hintText: 'Search for Ticker',
                 ),
-                hintText: 'Search for Ticker',
-                hintStyle: TextStyle(
-                    color: Theme.of(context).hintColor.withAlpha(180)),
-                counterText: '',
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor),
-                ),
+                maxLength: 16,
               ),
-              maxLength: 16,
             ),
           ),
           ...orderbooksDepth
@@ -121,7 +120,7 @@ class CreateOrder extends StatelessWidget {
               Icon(
                 Icons.add_circle,
                 size: 30,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               const SizedBox(
                 width: 16,
@@ -131,7 +130,7 @@ class CreateOrder extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyText2
-                    .copyWith(color: Theme.of(context).accentColor),
+                    .copyWith(color: Theme.of(context).colorScheme.secondary),
               )
             ],
           ),

@@ -33,15 +33,14 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
     return Card(
         child: InkWell(
       borderRadius: const BorderRadius.all(Radius.circular(4)),
-      onTap: () {
-        Navigator.push<dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => SwapDetailPage(
-                    swap: widget.swap,
-                  )),
-        );
-      },
+      onTap: () => Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => SwapDetailPage(
+            swap: widget.swap,
+          ),
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
@@ -67,7 +66,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                           ],
                         ),
                         Text(
-                          '${formatPrice(widget.swap.result.myInfo.myAmount, 8)}',
+                          formatPrice(widget.swap.result.myInfo.myAmount, 8),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -92,7 +91,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                           ],
                         ),
                         Text(
-                          '${formatPrice(widget.swap.result.myInfo.otherAmount, 8)}',
+                          formatPrice(widget.swap.result.myInfo.otherAmount, 8),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -109,7 +108,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                     builder:
                         (BuildContext context, AsyncSnapshot<String> snapshot) {
                       if (!snapshot.hasData) {
-                        return Container();
+                        return SizedBox();
                       }
 
                       return InkWell(
@@ -156,7 +155,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Expanded(
-                      child: Container(),
+                      child: SizedBox(),
                     ),
                     Container(
                       padding: const EdgeInsets.only(bottom: 16),
@@ -196,7 +195,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                   recoverIsLoading
                       ? Padding(
                           padding: const EdgeInsets.all(16),
-                          child: Container(
+                          child: SizedBox(
                               height: 25,
                               width: 25,
                               child: const CircularProgressIndicator(
@@ -204,18 +203,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                               )))
                       : Padding(
                           padding: const EdgeInsets.only(right: 16, bottom: 16),
-                          child: FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0)),
-                            color: const Color.fromRGBO(191, 191, 191, 1),
-                            child: Text(
-                              'Unlock Funds',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .button
-                                  .copyWith(
-                                      color: Theme.of(context).primaryColor),
-                            ),
+                          child: TextButton(
                             onPressed: () async {
                               // recover call
                               setState(() {
@@ -238,7 +226,17 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                         recoverIsLoading = false;
                                       }));
                             },
-                          )),
+                            style: TextButton.styleFrom(
+                              primary: Theme.of(context).primaryColor,
+                              backgroundColor:
+                                  const Color.fromRGBO(191, 191, 191, 1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
+                            child: Text('Unlock Funds'),
+                          ),
+                        ),
               ],
             ),
           ),
@@ -248,7 +246,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
   }
 
   Widget _buildIcon(String coin) {
-    return Container(
+    return SizedBox(
       height: 25,
       width: 25,
       child: Image.asset(

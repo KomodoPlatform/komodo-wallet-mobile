@@ -69,7 +69,7 @@ class _ProgressStepState extends State<ProgressStep> {
               widthFactor: getActualShare(),
               child: Container(
                 height: 2,
-                color: Theme.of(context).accentColor.withOpacity(0.6),
+                color: Theme.of(context).colorScheme.secondary.withOpacity(0.6),
               ),
             ),
             const SizedBox(height: 3),

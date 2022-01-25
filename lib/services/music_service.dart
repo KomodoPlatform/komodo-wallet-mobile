@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -65,7 +64,7 @@ class MusicService {
     if (!Platform.isAndroid) return;
 
     _audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
-    _player = AudioCache(prefix: 'audio/', fixedPlayer: _audioPlayer);
+    _player = AudioCache(prefix: 'assets/audio/', fixedPlayer: _audioPlayer);
 
     _audioPlayer.onPlayerError.listen((String ev) {
       Log('music_service:72', 'onPlayerError: ' + ev);
@@ -207,7 +206,7 @@ class MusicService {
       if (Platform.isAndroid) {
         _audioPlayer.stop();
         _audioPlayer.release();
-        _player.clearCache();
+        _player.clearAll();
         makePlayer();
       }
       changes = true;
@@ -244,7 +243,8 @@ class MusicService {
 
     if (Platform.isAndroid) {
       // Tell the player how to access the file directly instead of trying to copy it from the assets.
-      if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
+      if (customFile != null)
+        _player.loadedFiles[customFile.path] = Uri.file(customFile.path);
 
       if (newMode == MusicMode.TAKER) {
         _player.loop(path, volume: volume());

@@ -81,20 +81,23 @@ class CamoBloc implements BlocBase {
   void camouflageTransaction(Transaction transaction) {
     if (_isNewTransaction(transaction)) return;
 
-    if (transaction.spentByMe.isNotEmpty)
+    if (transaction.spentByMe.isNotEmpty) {
       transaction.spentByMe =
           (double.parse(transaction.spentByMe) * _camoFraction / 100)
               .toString();
+    }
 
-    if (transaction.receivedByMe.isNotEmpty)
+    if (transaction.receivedByMe.isNotEmpty) {
       transaction.receivedByMe =
           (double.parse(transaction.receivedByMe) * _camoFraction / 100)
               .toString();
+    }
 
-    if (transaction.myBalanceChange.isNotEmpty)
+    if (transaction.myBalanceChange.isNotEmpty) {
       transaction.myBalanceChange =
           (double.parse(transaction.myBalanceChange) * _camoFraction / 100)
               .toString();
+    }
   }
 
   bool _isNewTransaction(Transaction transaction) {

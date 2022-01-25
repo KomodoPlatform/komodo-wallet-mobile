@@ -231,7 +231,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     } else {
       return Text(AppLocalizations.of(context).simpleTradeNotActive(_coin),
           style: Theme.of(context).textTheme.caption.copyWith(
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ));
     }
   }
@@ -258,7 +258,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     disabled ??= false;
     color = disabled
         ? Theme.of(context).disabledColor.withAlpha(150)
-        : color ?? Theme.of(context).accentColor;
+        : color ?? Theme.of(context).colorScheme.secondary;
 
     return Opacity(
       opacity: disabled ? 0.5 : 1,
@@ -269,7 +269,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
             border: Border.all(
                 color: disabled
                     ? Colors.transparent
-                    : Theme.of(context).accentColor.withAlpha(100)),
+                    : Theme.of(context).colorScheme.secondary.withAlpha(100)),
             borderRadius: BorderRadius.circular(4),
             color: color,
           ),

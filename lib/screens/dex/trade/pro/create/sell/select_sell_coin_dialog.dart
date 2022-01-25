@@ -52,7 +52,7 @@ void openSelectSellCoinDialog({
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      RaisedButton(
+                      ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                           mainBloc.setCurrentIndexTab(0);
@@ -83,15 +83,13 @@ List<SimpleDialogOption> _coinItemsList({
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
+            SizedBox(
                 height: 30,
                 width: 30,
                 child: Image.asset(
                   'assets/coin-icons/${coin.coin.abbr.toLowerCase()}.png',
                 )),
-            Expanded(
-              child: Container(),
-            ),
+            Expanded(child: SizedBox()),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[

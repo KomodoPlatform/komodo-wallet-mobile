@@ -19,19 +19,20 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 /// Protective layer: MyApp | LockScreen | MyHomePage.
 /// Also handles the application startup.
 class LockScreen extends StatefulWidget {
-  const LockScreen(
-      {this.pinStatus = PinStatus.NORMAL_PIN,
-      this.child,
-      this.onSuccess,
-      @required this.context});
+  const LockScreen({
+    Key key,
+    this.pinStatus = PinStatus.NORMAL_PIN,
+    this.child,
+    this.onSuccess,
+    @required this.context,
+  }) : super(key: key);
 
   final PinStatus pinStatus;
   final Widget child;
@@ -141,14 +142,15 @@ class _LockScreenState extends State<LockScreen> {
 
     Widget _buildSplash(String message) {
       return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Image.asset(settingsBloc.isLightTheme
-                  ? 'assets/branding/logo_app_light.png'
-                  : 'assets/branding/logo_app.png'),
+              Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                    ? 'assets/branding/logo_app_light.png'
+                    : 'assets/branding/logo_app.png',
+              ),
               const SizedBox(height: 12),
               Text(message,
                   style: TextStyle(
@@ -210,9 +212,9 @@ class _LockScreenState extends State<LockScreen> {
                                           authenticateBiometrics(
                                               context, widget.pinStatus);
                                         }
-                                        return Container();
+                                        return SizedBox();
                                       }
-                                      return Container();
+                                      return SizedBox();
                                     },
                                   ),
                                   shouldUpdate
@@ -283,7 +285,7 @@ class _LockScreenState extends State<LockScreen> {
                       );
                     });
               } else {
-                return AuthenticatePage();
+                return const AuthenticatePage();
               }
             } else {
               return PinPage(
@@ -303,8 +305,11 @@ class _LockScreenState extends State<LockScreen> {
 }
 
 class BiometricPage extends StatefulWidget {
-  const BiometricPage({Key key, this.pinStatus, this.onSuccess})
-      : super(key: key);
+  const BiometricPage({
+    Key key,
+    this.pinStatus,
+    this.onSuccess,
+  }) : super(key: key);
 
   final PinStatus pinStatus;
   final Function onSuccess;
@@ -340,32 +345,29 @@ class _BiometricPageState extends State<BiometricPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBarStatus(
         context: context,
         pinStatus: PinStatus.NORMAL_PIN,
         title: 'Fingerprint',
       ),
-      body: Container(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                iconData,
-                size: 56,
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              RaisedButton(
-                child: Text(
-                    AppLocalizations.of(context).authenticate.toUpperCase()),
-                onPressed: () =>
-                    authenticateBiometrics(context, widget.pinStatus),
-              )
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              iconData,
+              size: 56,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            ElevatedButton(
+              onPressed: () =>
+                  authenticateBiometrics(context, widget.pinStatus),
+              child:
+                  Text(AppLocalizations.of(context).authenticate.toUpperCase()),
+            )
+          ],
         ),
       ),
     );

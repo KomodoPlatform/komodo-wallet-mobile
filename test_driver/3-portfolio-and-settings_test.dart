@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 /*
   group('Activate coins |', () {
     test('Activates all coins', () async {

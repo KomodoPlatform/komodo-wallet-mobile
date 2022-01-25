@@ -1,3 +1,4 @@
+/*
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -109,3 +110,4 @@ void main() {
   runApp(
       const MaterialApp(home: Scaffold(body: Text('EdDSA test in progress'))));
 }
+*/

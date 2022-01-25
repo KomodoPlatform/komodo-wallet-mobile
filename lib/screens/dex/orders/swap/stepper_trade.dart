@@ -24,11 +24,10 @@ class _StepperTradeState extends State<StepperTrade> {
       children: <Widget>[
         ProgressSwap(
             uuid: widget.swap.result.uuid, onFinished: widget.onStepFinish),
-        widget.swap != null
-            ? DetailSwap(
-                swap: widget.swap,
-              )
-            : Container()
+        if (widget.swap != null)
+          DetailSwap(
+            swap: widget.swap,
+          ),
       ],
     );
   }

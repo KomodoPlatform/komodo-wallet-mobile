@@ -33,17 +33,23 @@ cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
 ## Flutter version
 
-Currently using flutter 1.22.4 in order to enjoy some recent UI fixes/updates, ref: https://github.com/ca333/komodoDEX/issues/913
+Currently using flutter 2.8.1
 
-Upgrading from v1.12.13+hotfix.7
+### Upgrading from 1.22.4
 
-    flutter channel stable
-    flutter version v1.22.4
-    flutter pub get
-    flutter clean
-    (cd ios && rm -rf Podfile.lock Podfile Pods)
+In your flutter directory:
 
-(If the "flutter version" doesn't have the required version in the list yet then one way to get it is to go to the flutter directory (cf. `which flutter`) and invoke `git pull` there).
+```
+git checkout 2.8.1
+flutter doctor
+```
+
+In the project directory:
+
+```
+flutter clean
+flutter pub get
+```
 
 ### beta Flutter
 

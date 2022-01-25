@@ -5,12 +5,11 @@ import 'package:komodo_dex/blocs/check_passphrase_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/custom_textfield.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class CheckPassphrasePage extends StatefulWidget {
-  const CheckPassphrasePage({this.seed});
+  const CheckPassphrasePage({Key key, this.seed}) : super(key: key);
 
   final String seed;
 
@@ -53,32 +52,27 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
-      backgroundColor: Theme.of(context).backgroundColor,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).checkSeedPhrase),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Theme.of(context).colorScheme.onBackground,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(32.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         children: <Widget>[
           Text(
             AppLocalizations.of(context).checkSeedPhraseTitle,
             style: Theme.of(context).textTheme.headline6,
           ),
-          const SizedBox(
-            height: 16,
-          ),
+          const SizedBox(height: 16),
           Text(
             AppLocalizations.of(context).checkSeedPhraseInfo,
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          const SizedBox(
-            height: 48,
-          ),
+          const SizedBox(height: 48),
           wordsWidget[stepper],
-          const SizedBox(
-            height: 16,
-          ),
+          const SizedBox(height: 16),
           StreamBuilder<bool>(
               initialData: checkPassphraseBloc.isWordGood,
               stream: checkPassphraseBloc.outIsWordGoodLogin,
@@ -124,7 +118,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
 }
 
 class SeedRandom extends StatefulWidget {
-  const SeedRandom({this.data});
+  const SeedRandom({Key key, this.data}) : super(key: key);
 
   final WordData data;
 
@@ -147,22 +141,21 @@ class _SeedRandomState extends State<SeedRandom> {
   }
 
   Widget _buildSeedWord(String word) {
-    return InkWell(
-      onTap: () {
-        _controller.text = word;
+    return ElevatedButton(
+        onPressed: () {
+          _controller.text = word;
 
-        checkPassphraseBloc.setWord(_controller.text);
-        checkPassphraseBloc.setIsWordGood(
-            const CheckPassphrasePage().checkSeedWord(widget.data));
-      },
-      child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).buttonColor,
+          checkPassphraseBloc.setWord(_controller.text);
+          checkPassphraseBloc.setIsWordGood(
+              const CheckPassphrasePage().checkSeedWord(widget.data));
+        },
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 2),
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          child: Text(word)),
-    );
+        ),
+        child: Text(word));
   }
 
   final TextEditingController _controller = TextEditingController();
@@ -196,7 +189,7 @@ class _SeedRandomState extends State<SeedRandom> {
               if (snapshot.data) {
                 _controller.text = '';
               }
-              return CustomTextField(
+              return TextField(
                 key: const Key('which-word-field'),
                 controller: _controller,
                 onChanged: (String text) {
@@ -204,8 +197,10 @@ class _SeedRandomState extends State<SeedRandom> {
                   checkPassphraseBloc.setIsWordGood(
                       const CheckPassphrasePage().checkSeedWord(widget.data));
                 },
-                hintText: AppLocalizations.of(context)
-                    .checkSeedPhraseHint((widget.data.index + 1).toString()),
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)
+                      .checkSeedPhraseHint((widget.data.index + 1).toString()),
+                ),
               );
             }),
       ],

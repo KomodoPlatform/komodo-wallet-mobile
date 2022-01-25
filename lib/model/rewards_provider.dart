@@ -152,7 +152,7 @@ class RewardsProvider extends ChangeNotifier {
       _setError(e);
     }
 
-    if (!(res is WithdrawResponse)) {
+    if (res is! WithdrawResponse) {
       _setError();
       claimInProgress = false;
       return;
@@ -167,7 +167,7 @@ class RewardsProvider extends ChangeNotifier {
       _setError(e);
     }
 
-    if (!(tx is SendRawTransactionResponse) || tx.txHash.isEmpty) {
+    if (tx is! SendRawTransactionResponse || tx.txHash.isEmpty) {
       _setError();
       claimInProgress = false;
       return;

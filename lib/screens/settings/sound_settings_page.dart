@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -21,79 +20,66 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(
-            AppLocalizations.of(context).soundSettingsTitle.toUpperCase(),
-            textAlign: TextAlign.center,
-          ),
-          centerTitle: true,
-          elevation: 0,
+              AppLocalizations.of(context).soundSettingsTitle.toUpperCase()),
         ),
-        body: Container(
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-                child: Text(AppLocalizations.of(context).soundsExplanation,
-                    style: TextStyle(
-                      height: 1.3,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          .color
-                          .withOpacity(0.7),
-                    )),
-              ),
-              CustomTile(
-                child: ListTile(
-                  title: Text(
-                    AppLocalizations.of(context).soundOption,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        fontWeight: FontWeight.w300,
-                        color: Theme.of(context).textTheme.bodyText2.color),
-                  ),
-                  trailing: const SoundVolumeButton(
-                      key: Key('settings-sound-button')),
-                ),
-              ),
-              const SizedBox(
-                height: 1,
-              ),
-              SoundPicker(
-                  MusicMode.TAKER,
-                  AppLocalizations.of(context).soundTaker,
-                  AppLocalizations.of(context).soundTakerDesc),
-              const SizedBox(
-                height: 1,
-              ),
-              SoundPicker(
-                  MusicMode.MAKER,
-                  AppLocalizations.of(context).soundMaker,
-                  AppLocalizations.of(context).soundMakerDesc),
-              const SizedBox(
-                height: 1,
-              ),
-              SoundPicker(
-                  MusicMode.ACTIVE,
-                  AppLocalizations.of(context).soundActive,
-                  AppLocalizations.of(context).soundActiveDesc),
-              const SizedBox(
-                height: 1,
-              ),
-              SoundPicker(
-                  MusicMode.FAILED,
-                  AppLocalizations.of(context).soundFailed,
-                  AppLocalizations.of(context).soundFailedDesc),
-              const SizedBox(
-                height: 1,
-              ),
-              SoundPicker(
-                  MusicMode.APPLAUSE,
-                  AppLocalizations.of(context).soundApplause,
-                  AppLocalizations.of(context).soundApplauseDesc),
-            ],
-          ),
+        body: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
+              child: Text(AppLocalizations.of(context).soundsExplanation,
+                  style: TextStyle(
+                    height: 1.3,
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .color
+                        .withOpacity(0.7),
+                  )),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context).soundOption),
+              trailing:
+                  const SoundVolumeButton(key: Key('settings-sound-button')),
+              tileColor: Theme.of(context).primaryColor,
+            ),
+            const SizedBox(
+              height: 1,
+            ),
+            SoundPicker(
+                MusicMode.TAKER,
+                AppLocalizations.of(context).soundTaker,
+                AppLocalizations.of(context).soundTakerDesc),
+            const SizedBox(
+              height: 1,
+            ),
+            SoundPicker(
+                MusicMode.MAKER,
+                AppLocalizations.of(context).soundMaker,
+                AppLocalizations.of(context).soundMakerDesc),
+            const SizedBox(
+              height: 1,
+            ),
+            SoundPicker(
+                MusicMode.ACTIVE,
+                AppLocalizations.of(context).soundActive,
+                AppLocalizations.of(context).soundActiveDesc),
+            const SizedBox(
+              height: 1,
+            ),
+            SoundPicker(
+                MusicMode.FAILED,
+                AppLocalizations.of(context).soundFailed,
+                AppLocalizations.of(context).soundFailedDesc),
+            const SizedBox(
+              height: 1,
+            ),
+            SoundPicker(
+                MusicMode.APPLAUSE,
+                AppLocalizations.of(context).soundApplause,
+                AppLocalizations.of(context).soundApplauseDesc),
+          ],
         ),
       ),
     );
@@ -113,7 +99,8 @@ class FilePickerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        key: const Key('file-picker-button'),
+        key: const Key('file-picker-button'), //
+        splashRadius: 24,
         icon: Icon(Icons.folder_open),
         color: Theme.of(context).toggleableActiveColor,
         onPressed: () async {
@@ -154,17 +141,9 @@ class FilePickerButton extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      RaisedButton(
-                        child: Text(
-                          AppLocalizations.of(context).warningOkBtn,
-                          style: Theme.of(context)
-                              .textTheme
-                              .button
-                              .copyWith(color: Colors.white),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                      ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(AppLocalizations.of(context).warningOkBtn),
                       ),
                     ],
                   ),
@@ -184,21 +163,12 @@ class SoundPicker extends StatelessWidget {
   final String name, description;
   @override
   Widget build(BuildContext context) {
-    return CustomTile(
-        child: Tooltip(
-            message: AppLocalizations.of(context).soundPlayedWhen(description),
-            child: ListTile(
-              title: Text(
-                name,
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .color
-                        .withOpacity(0.7)),
-              ),
-              trailing: FilePickerButton(musicMode, description),
-            )));
+    return Tooltip(
+        message: AppLocalizations.of(context).soundPlayedWhen(description),
+        child: ListTile(
+          title: Text(name, style: Theme.of(context).textTheme.bodyText2),
+          trailing: FilePickerButton(musicMode, description),
+          tileColor: Theme.of(context).primaryColor,
+        ));
   }
 }

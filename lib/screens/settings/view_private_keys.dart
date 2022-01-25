@@ -18,7 +18,7 @@ class ViewPrivateKeys extends StatelessWidget {
       stream: coinsBloc.outCoins,
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
-        if (!snapshot.hasData) return Container();
+        if (!snapshot.hasData) return SizedBox();
         final data = snapshot.data;
         data.sort((a, b) => a.coin.abbr.compareTo(b.coin.abbr));
         final zebra = <String, bool>{};
@@ -81,7 +81,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
 
     return Material(
         color: widget.zebra
-            ? Theme.of(context).backgroundColor
+            ? Theme.of(context).scaffoldBackgroundColor
             : Theme.of(context).cardColor,
         child: InkWell(
           onTap: () {
@@ -128,7 +128,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
   }
 
   Widget _buildDialogContent() {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.5,
       width: MediaQuery.of(context).size.width * 0.9,
       child: FutureBuilder<PrivKey>(
@@ -173,7 +173,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                   onTap: () {
                     copyToClipBoard(mContext, privKey);
                     Future.delayed(Duration(seconds: 2), () {
-                      Scaffold.of(mContext).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(mContext).hideCurrentSnackBar();
                     });
                   },
                   child: Text(privKey,
@@ -186,17 +186,9 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    RaisedButton(
-                      child: Text(
-                        AppLocalizations.of(context).close,
-                        style: Theme.of(context)
-                            .textTheme
-                            .button
-                            .copyWith(color: Colors.white),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
+                    ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(AppLocalizations.of(context).close),
                     ),
                   ],
                 ),

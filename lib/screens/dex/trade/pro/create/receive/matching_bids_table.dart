@@ -1,6 +1,5 @@
 import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/receive/bid_details_dialog.dart';
@@ -145,7 +144,7 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
                   formatPrice(1 / double.parse(bid.price)),
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontSize: 13,
-                        color: settingsBloc.isLightTheme
+                        color: Theme.of(context).brightness == Brightness.light
                             ? Colors.green
                             : Colors.greenAccent,
                       ),

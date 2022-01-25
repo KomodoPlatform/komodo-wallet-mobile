@@ -61,7 +61,7 @@ class Transaction {
         'block_height': blockHeight ?? 0.0,
         'coin': coin ?? '',
         'confirmations': confirmations ?? 0,
-        'fee_details': feeDetails == null ? null : feeDetails.toJson(),
+        'fee_details': feeDetails?.toJson(),
         'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
             <String>[],
         'internal_id': internalId ?? '',

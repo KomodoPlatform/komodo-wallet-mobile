@@ -17,7 +17,7 @@ Future<void> showSoundsDialog(BuildContext context) async {
             children: <Widget>[
               Icon(
                 Icons.audiotrack,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               SizedBox(width: 4),
               Text(AppLocalizations.of(context).soundsDialogTitle),
@@ -39,7 +39,7 @@ Future<void> showSoundsDialog(BuildContext context) async {
                     initialData: settingsBloc.showSoundsExplanationDialog,
                     stream: settingsBloc.outShowSoundsDialog,
                     builder: (context, snapshot) {
-                      if (!snapshot.hasData) return Container();
+                      if (!snapshot.hasData) return SizedBox();
 
                       return Checkbox(
                           value: !snapshot.data,
@@ -54,10 +54,8 @@ Future<void> showSoundsDialog(BuildContext context) async {
                       settingsBloc.setShowSoundsDialog(
                           !settingsBloc.showSoundsExplanationDialog);
                     },
-                    child: Text(
-                      AppLocalizations.of(context).soundsDoNotShowAgain,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
+                    child:
+                        Text(AppLocalizations.of(context).soundsDoNotShowAgain),
                   ),
                 ),
               ],
@@ -66,28 +64,24 @@ Future<void> showSoundsDialog(BuildContext context) async {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   onPressed: () {
-                    dialogBloc.dialog = null;
-                    Navigator.of(context).pop();
                     Navigator.push<dynamic>(
                       context,
                       MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) =>
-                              SoundSettingsPage()),
+                        builder: (BuildContext context) => SoundSettingsPage(),
+                      ),
                     );
                   },
                   child: Text(AppLocalizations.of(context).settings),
                 ),
                 SizedBox(width: 12),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     dialogBloc.dialog = null;
                     Navigator.of(context).pop();
                   },
-                  child: Text(
-                    AppLocalizations.of(context).close,
-                  ),
+                  child: Text(AppLocalizations.of(context).close),
                 ),
               ],
             ),

@@ -26,7 +26,6 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).makerDetailsTitle),
           actions: const <Widget>[
@@ -47,7 +46,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (mounted) Navigator.of(context).pop();
                 });
-                return Container();
+                return SizedBox();
               }
 
               return SingleChildScrollView(
@@ -172,11 +171,12 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
           ),
           Builder(builder: (context) {
             return InkWell(
-                onTap: () {
-                  copyToClipBoard(context, order.uuid);
-                },
-                child: Container(
-                    padding: const EdgeInsets.all(8), child: Text(order.uuid)));
+              onTap: () => copyToClipBoard(context, order.uuid),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Text(order.uuid),
+              ),
+            );
           }),
         ],
       ),
@@ -188,9 +188,13 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
       padding: const EdgeInsets.fromLTRB(8, 20, 8, 20),
       child: SizedBox(
         height: 30,
-        child: OutlineButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        child: OutlinedButton(
+          onPressed: () => ordersBloc.cancelOrder(order.uuid),
+          style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             decoration: BoxDecoration(
@@ -200,17 +204,12 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                    AppLocalizations.of(context)
-                        .makerDetailsCancel
-                        .toUpperCase(),
-                    style: Theme.of(context).textTheme.bodyText1)
+                Text(AppLocalizations.of(context)
+                    .makerDetailsCancel
+                    .toUpperCase()),
               ],
             ),
           ),
-          onPressed: () {
-            ordersBloc.cancelOrder(order.uuid);
-          },
         ),
       ),
     );

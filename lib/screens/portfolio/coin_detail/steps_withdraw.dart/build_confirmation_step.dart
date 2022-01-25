@@ -170,40 +170,41 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                 ),
               ],
             ),
-            needGas && isGasActive && notEnoughGas
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).notEnoughGas(fee.coin),
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            .copyWith(color: Theme.of(context).errorColor),
-                      ),
-                    ],
-                  )
-                : Container(),
-            needGas && !isGasActive
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).gasNotActive(fee.coin),
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            .copyWith(color: Theme.of(context).errorColor),
-                      ),
-                    ],
-                  )
-                : Container(),
+            if (needGas && isGasActive && notEnoughGas)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context).notEnoughGas(fee.coin),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Theme.of(context).errorColor),
+                  ),
+                ],
+              ),
+            if (needGas && !isGasActive)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context).gasNotActive(fee.coin),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Theme.of(context).errorColor),
+                  ),
+                ],
+              ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Container(
                 height: 1,
                 width: double.infinity,
-                color: Theme.of(context).textSelectionColor.withOpacity(0.4),
+                color: Theme.of(context)
+                    .textSelectionTheme
+                    .selectionColor
+                    .withOpacity(0.4),
               ),
             ),
             Row(
@@ -236,12 +237,10 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
             const SizedBox(
               height: 24,
             ),
-            Container(
-              child: AutoSizeText(
-                widget.addressToSend,
-                style: Theme.of(context).textTheme.bodyText2,
-                maxLines: 1,
-              ),
+            AutoSizeText(
+              widget.addressToSend,
+              style: Theme.of(context).textTheme.bodyText2,
+              maxLines: 1,
             ),
             const SizedBox(
               height: 24,

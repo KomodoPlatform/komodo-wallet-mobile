@@ -14,10 +14,11 @@ import 'package:provider/provider.dart';
 class ContactListItem extends StatefulWidget {
   const ContactListItem(
     this.contact, {
+    Key key,
     this.shouldPop = false,
     this.coin,
     this.expanded = false,
-  });
+  }) : super(key: key);
 
   final Contact contact;
   final bool shouldPop;
@@ -45,51 +46,31 @@ class _ContactListItemState extends State<ContactListItem> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        InkWell(
+        ListTile(
           onTap: () {
             setState(() {
               expanded = !expanded;
             });
           },
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              widget.contact.name,
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-            ),
-          ),
+          title: Text(widget.contact.name),
         ),
         if (expanded)
-          Container(
+          Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
             child: Column(
               children: <Widget>[
                 _buildAddressesList(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: FlatButton(
-                        onPressed: () {
-                          Navigator.push<dynamic>(
-                              context,
-                              MaterialPageRoute<dynamic>(
-                                builder: (BuildContext context) => ContactEdit(
-                                  contact: widget.contact,
-                                ),
-                              ));
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.edit, size: 16),
-                            const SizedBox(width: 4),
-                            Text(AppLocalizations.of(context).contactEdit),
-                          ],
-                        )),
+                SizedBox(height: 8),
+                TextButton.icon(
+                  onPressed: () => Navigator.push<dynamic>(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) =>
+                          ContactEdit(contact: widget.contact),
+                    ),
                   ),
+                  icon: const Icon(Icons.edit, size: 16),
+                  label: Text(AppLocalizations.of(context).contactEdit),
                 )
               ],
             ),
@@ -101,71 +82,71 @@ class _ContactListItemState extends State<ContactListItem> {
   Widget _buildAddressesList() {
     final List<Widget> addresses = [];
 
-    widget.contact.addresses?.forEach((String abbr, String value) {
-      if (widget.coin != null) {
-        String coinAbbr = widget.coin.abbr;
-        if (widget.coin.type == 'erc') coinAbbr = 'ETH';
-        if (widget.coin.type == 'bep') coinAbbr = 'BNB';
-        if (widget.coin.type == 'qrc') coinAbbr = 'QTUM';
-        if (widget.coin.type == 'smartChain') coinAbbr = 'KMD';
+    widget.contact.addresses?.forEach(
+      (String abbr, String value) {
+        if (widget.coin != null) {
+          String coinAbbr = widget.coin.abbr;
+          if (widget.coin.type == 'erc') coinAbbr = 'ETH';
+          if (widget.coin.type == 'bep') coinAbbr = 'BNB';
+          if (widget.coin.type == 'qrc') coinAbbr = 'QTUM';
+          if (widget.coin.type == 'smartChain') coinAbbr = 'KMD';
 
-        if (coinAbbr != abbr) return;
-      }
+          if (coinAbbr != abbr) return;
+        }
 
-      addresses.add(
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 8,
-            right: 8,
-          ),
-          child: Row(
-            children: <Widget>[
-              CircleAvatar(
-                maxRadius: 6,
-                backgroundImage:
-                    AssetImage('assets/coin-icons/${abbr.toLowerCase()}.png'),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                '$abbr: ',
-                style: const TextStyle(fontSize: 14),
-              ),
-              Flexible(
-                child: InkWell(
-                  onTap: () {
-                    _tryToSend(abbr, value);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 8,
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: truncateMiddle(
-                            value,
-                            style: TextStyle(
-                              color: Theme.of(context).accentColor,
-                              fontSize: 14,
+        addresses.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              children: <Widget>[
+                CircleAvatar(
+                  maxRadius: 6,
+                  foregroundImage:
+                      AssetImage('assets/coin-icons/${abbr.toLowerCase()}.png'),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '$abbr: ',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                Flexible(
+                  child: InkWell(
+                    onTap: () => _tryToSend(abbr, value),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 8,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: truncateMiddle(
+                              value,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2
+                                  .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
                             ),
                           ),
-                        ),
-                        Icon(
-                          Icons.chevron_right,
-                          color: Theme.of(context).accentColor,
-                          size: 20,
-                        ),
-                      ],
+                          Icon(
+                            Icons.chevron_right,
+                            color: Theme.of(context).colorScheme.secondary,
+                            size: 20,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
 
     if (addresses.isEmpty) {
       addresses.add(Padding(
@@ -226,9 +207,7 @@ class _ContactListItemState extends State<ContactListItem> {
         return CustomSimpleDialog(
           title: Row(
             children: <Widget>[
-              Icon(
-                Icons.warning,
-              ),
+              const Icon(Icons.warning),
               const SizedBox(width: 8),
               Text(title),
             ],
@@ -250,17 +229,9 @@ class _ContactListItemState extends State<ContactListItem> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                RaisedButton(
-                  onPressed: () {
-                    dialogBloc.closeDialog(context);
-                  },
-                  child: Text(
-                    AppLocalizations.of(context).warningOkBtn,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Colors.white),
-                  ),
+                ElevatedButton(
+                  onPressed: () => dialogBloc.closeDialog(context),
+                  child: Text(AppLocalizations.of(context).warningOkBtn),
                 ),
               ],
             ),

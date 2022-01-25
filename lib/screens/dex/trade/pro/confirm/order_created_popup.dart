@@ -14,27 +14,19 @@ void showOrderCreatedDialog(BuildContext context) {
                 SizedBox(height: 16),
               ],
               verticalButtons: [
-                RaisedButton(
-                  child: Text(
-                    AppLocalizations.of(context).showMyOrders,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Colors.white),
-                  ),
+                ElevatedButton(
                   onPressed: () {
                     swapBloc.setIndexTabDex(1);
                     Navigator.of(context).pop();
                   },
+                  child: Text(AppLocalizations.of(context).showMyOrders),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
-                FlatButton(
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
                   child: Text(AppLocalizations.of(context).close),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
                 )
               ],
             );

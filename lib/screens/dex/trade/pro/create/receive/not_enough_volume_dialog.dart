@@ -77,7 +77,7 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text(AppLocalizations.of(context).close),
                 ),

@@ -65,7 +65,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          FlatButton(
+          TextButton(
             onPressed: inProgress
                 ? null
                 : () {
@@ -73,7 +73,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                   },
             child: Text(AppLocalizations.of(context).multiConfirmCancel),
           ),
-          RaisedButton(
+          ElevatedButton(
             onPressed: inProgress
                 ? null
                 : () async {
@@ -89,7 +89,6 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                       }
                     });
                   },
-            disabledColor: Theme.of(context).disabledColor.withAlpha(100),
             child: Text(AppLocalizations.of(context).multiConfirmConfirm),
           ),
         ],
@@ -227,7 +226,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                     const SizedBox(width: 4),
                   ],
                 ),
-                Expanded(child: Container()),
+                Expanded(child: SizedBox()),
                 Icon(expanded.contains(coin)
                     ? Icons.arrow_drop_up
                     : Icons.arrow_drop_down)
@@ -242,7 +241,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
 
   Widget _buildError(String coin) {
     final String error = multiOrderProvider.getError(coin);
-    if (error == null) return Container();
+    if (error == null) return SizedBox();
 
     return Container(
       padding: const EdgeInsets.only(top: 4),
@@ -263,7 +262,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
             Column(
               children: <Widget>[
                 Container(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   height: 32,
                 ),
                 ClipRRect(
@@ -301,7 +300,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                   child: Container(
                     height: 52,
                     width: 52,
-                    color: Theme.of(context).backgroundColor,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     child: Icon(
                       Icons.info,
                       size: 48,

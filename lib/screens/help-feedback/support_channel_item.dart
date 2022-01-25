@@ -8,12 +8,8 @@ class SupportChannelItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      onPressed: data.link == null
-          ? null
-          : () {
-              launchURL(data.link);
-            },
+    return TextButton(
+      onPressed: data.link == null ? null : () => launchURL(data.link),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(

@@ -34,11 +34,8 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
       context: context,
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).importSingleSwapTitle,
-          ),
+          title: Text(AppLocalizations.of(context).importSingleSwapTitle),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -329,9 +326,9 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
   }
 
   void _showError(String e) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-      '$e',
+      e,
       style: TextStyle(color: Theme.of(context).errorColor),
     )));
   }

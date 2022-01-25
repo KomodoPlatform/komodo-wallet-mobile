@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
-class SecondaryButton extends StatefulWidget {
+class SecondaryButton extends StatelessWidget {
   const SecondaryButton({
     @required this.onPressed,
     this.text,
@@ -23,42 +22,41 @@ class SecondaryButton extends StatefulWidget {
   final double width;
 
   @override
-  _SecondaryButtonState createState() => _SecondaryButtonState();
-}
-
-class _SecondaryButtonState extends State<SecondaryButton> {
-  @override
   Widget build(BuildContext context) {
     Widget child;
     bool isSend = false;
-    if (widget.text != null) {
-      if (widget.text == 'SEND') {
+    if (text != null) {
+      if (text == 'SEND') {
         isSend = true;
       }
       child = Text(
-        widget.text.toUpperCase(),
+        text.toUpperCase(),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.button.copyWith(
-            color: settingsBloc.isLightTheme ? widget.textColor : Colors.white),
       );
     } else {
-      child = widget.child;
+      child = child;
     }
-    return Container(
-      height: widget.height,
+    return SizedBox(
+      height: height,
       width: double.infinity,
-      child: OutlineButton(
+      child: OutlinedButton(
         key: isSend ? const Key('secondary-button-send') : null,
-        borderSide: BorderSide(
-            color:
-                settingsBloc.isLightTheme ? widget.borderColor : Colors.white),
-        highlightedBorderColor:
-            settingsBloc.isLightTheme ? Colors.black : Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        onPressed: widget.onPressed,
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          primary: Theme.of(context).brightness == Brightness.light
+              ? textColor
+              : Theme.of(context).colorScheme.onSurface,
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          side: BorderSide(
+            color: Theme.of(context).brightness == Brightness.light
+                ? borderColor
+                : Colors.white,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+        ),
         child: child,
       ),
     );
