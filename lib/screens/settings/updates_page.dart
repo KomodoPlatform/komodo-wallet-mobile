@@ -6,7 +6,6 @@ import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class UpdatesPage extends StatefulWidget {
   const UpdatesPage({this.refresh = false, this.onSkip});
@@ -37,19 +36,19 @@ class _UpdatesPageState extends State<UpdatesPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).updatesTitle),
         ),
         body: RefreshIndicator(
+          color: Theme.of(context).colorScheme.secondary,
           onRefresh: () async {
             updatesProvider.check();
           },
           child: ListView(
             padding: const EdgeInsets.all(12),
             children: <Widget>[
-              Container(
+              SizedBox(
                 height: MediaQuery.of(context).size.height / 3,
                 child: Container(
                     width: double.infinity,
@@ -58,9 +57,10 @@ class _UpdatesPageState extends State<UpdatesPage> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Image.asset(settingsBloc.isLightTheme
-                            ? 'assets/branding/logo_app_light.png'
-                            : 'assets/branding/logo_app.png'),
+                        Image.asset(
+                            Theme.of(context).brightness == Brightness.light
+                                ? 'assets/branding/logo_app_light.png'
+                                : 'assets/branding/logo_app.png'),
                         const SizedBox(height: 12),
                         Text(AppLocalizations.of(context).updatesCurrentVersion(
                             updatesProvider.currentVersion)),
@@ -85,7 +85,9 @@ class _UpdatesPageState extends State<UpdatesPage> {
                                 : Text(
                                     AppLocalizations.of(context)
                                             .updatesAvailable +
-                                        '${updatesProvider.newVersion == null ? '' : ': ${updatesProvider.newVersion}'}',
+                                        (updatesProvider.newVersion == null
+                                            ? ''
+                                            : ': ${updatesProvider.newVersion}'),
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   )
@@ -102,7 +104,6 @@ class _UpdatesPageState extends State<UpdatesPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Divider(
-                        color: Theme.of(context).hintColor,
                         height: 60,
                       ),
                       Text(updatesProvider.message),
@@ -111,19 +112,12 @@ class _UpdatesPageState extends State<UpdatesPage> {
                 ),
               if (updatesProvider.status != UpdateStatus.upToDate &&
                   !updatesProvider.isFetching)
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height / 5,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      RaisedButton(
-                        color: Theme.of(context).dialogBackgroundColor,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              color: Theme.of(context).textTheme.caption.color),
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
+                      ElevatedButton(
                         onPressed: () {
                           Platform.isIOS
                               ? launchURL(
@@ -131,24 +125,33 @@ class _UpdatesPageState extends State<UpdatesPage> {
                               : launchURL(
                                   'https://play.google.com/store/apps/details?id=com.komodoplatform.atomicdex');
                         },
+                        style: ElevatedButton.styleFrom(
+                          primary: Theme.of(context).dialogBackgroundColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
                         child: Text(AppLocalizations.of(context).updatesUpdate),
                       ),
                       if (updatesProvider.status == UpdateStatus.available ||
                           updatesProvider.status ==
                               UpdateStatus.recommended) ...[
                         const SizedBox(width: 12),
-                        RaisedButton(
-                          color: Theme.of(context).dialogBackgroundColor,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                                color:
-                                    Theme.of(context).textTheme.caption.color),
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
+                        ElevatedButton(
                           onPressed: () {
                             if (widget.onSkip != null) widget.onSkip();
                           },
+                          style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).dialogBackgroundColor,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .caption
+                                      .color),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
                           child: Text(AppLocalizations.of(context).updatesSkip),
                         )
                       ]

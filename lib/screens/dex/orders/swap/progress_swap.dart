@@ -43,14 +43,14 @@ class _ProgressSwapState extends State<ProgressSwap>
     _progressAnimation = Tween<double>(begin: progressDegrees, end: end)
         .animate(CurvedAnimation(
             parent: _radialProgressAnimationController, curve: Curves.easeIn))
-          ..addListener(() {
-            setState(() {
-              progressDegrees = _progressAnimation?.value ?? progressDegrees;
-              if (progressDegrees == 360) {
-                widget.onFinished();
-              }
-            });
-          });
+      ..addListener(() {
+        setState(() {
+          progressDegrees = _progressAnimation?.value ?? progressDegrees;
+          if (progressDegrees == 360) {
+            widget.onFinished();
+          }
+        });
+      });
 
     _radialProgressAnimationController.forward();
   }
@@ -78,7 +78,7 @@ class _ProgressSwapState extends State<ProgressSwap>
     if (widthScreen > 250) {
       widthScreen = 250;
     }
-    return Container(
+    return SizedBox(
       height: 300,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -86,13 +86,13 @@ class _ProgressSwapState extends State<ProgressSwap>
           const SizedBox(
             height: 16,
           ),
-          Container(
+          SizedBox(
             height: heightScreen,
             width: widthScreen,
             child: CustomPaint(
               painter: RadialPainter(
                   context: context, progressInDegrees: progressDegrees),
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.6,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -103,10 +103,8 @@ class _ProgressSwapState extends State<ProgressSwap>
                     ),
                     Text(
                       swap.statusStep.toString(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle2
-                          .copyWith(color: Theme.of(context).accentColor),
+                      style: Theme.of(context).textTheme.subtitle2.copyWith(
+                          color: Theme.of(context).colorScheme.secondary),
                     ),
                     Text('/${swap.statusSteps}',
                         style: Theme.of(context).textTheme.subtitle2),
@@ -154,7 +152,7 @@ class RadialPainter extends CustomPainter {
     final Paint progressPaint = Paint()
       ..shader = LinearGradient(colors: <Color>[
         const Color.fromARGB(255, 40, 80, 114),
-        Theme.of(context).accentColor
+        Theme.of(context).colorScheme.secondary
       ]).createShader(Rect.fromCircle(center: center, radius: size.width / 2))
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke

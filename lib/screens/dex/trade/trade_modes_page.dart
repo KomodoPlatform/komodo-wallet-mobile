@@ -13,69 +13,73 @@ class TradeModesPage extends StatefulWidget {
 
 class _TradeModesPageState extends State<TradeModesPage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  TabController _tabController;
+  @override
+  bool get wantKeepAlive => true;
+  TabController _tradeTabController;
 
   @override
   void initState() {
-    _tabController = TabController(
+    _tradeTabController = TabController(
       length: 3,
       vsync: this,
       initialIndex: mainBloc.tradeMode,
     );
-    _tabController.addListener(() {
-      mainBloc.tradeMode = _tabController.index;
+    _tradeTabController.addListener(() {
+      mainBloc.tradeMode = _tradeTabController.index;
     });
+
     super.initState();
   }
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     return Column(
+      mainAxisSize: MainAxisSize.max,
       children: [
-        _buildModeSwitcher(),
-        SizedBox(height: 8),
-        _buildView(),
+        _buildSwitcher(),
+        Expanded(child: _buildView()),
       ],
     );
   }
 
-  Widget _buildModeSwitcher() {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      child: Row(
-        children: [
-          SizedBox(width: 16),
-          Expanded(
-              child: Text(
-            'Trading Mode:',
-            style: Theme.of(context).textTheme.caption.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1.color,
-                ),
-          )),
-          Flexible(
-            flex: 2,
-            child: TabBar(
-              controller: _tabController,
-              indicator: TradeModeIndicator(context: context),
-              labelStyle: Theme.of(context).textTheme.caption,
-              labelPadding: EdgeInsets.symmetric(horizontal: 0),
-              indicatorPadding: EdgeInsets.symmetric(horizontal: 0),
-              tabs: [
-                Tab(text: 'Simple'),
-                Tab(text: 'Advanced'),
-                Tab(
-                  text: AppLocalizations.of(context).multiTab,
-                ),
-              ],
+  Widget _buildSwitcher() {
+    final style = Theme.of(context)
+        .textTheme
+        .caption
+        .copyWith(color: Theme.of(context).colorScheme.onPrimary);
+
+    return PreferredSize(
+      preferredSize: Size.fromHeight(kToolbarHeight),
+      child: Container(
+        color: Theme.of(context).colorScheme.surface,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Expanded(
+                child: Text(
+              'Trading Mode:',
+              style: style,
+            )),
+            Flexible(
+              flex: 2,
+              child: TabBar(
+                controller: _tradeTabController,
+                indicator: TradeModeIndicator(context: context),
+                labelPadding: EdgeInsets.symmetric(horizontal: 0),
+                indicatorPadding: EdgeInsets.symmetric(horizontal: 0),
+                tabs: [
+                  Tab(child: Text('Simple', style: style)),
+                  Tab(child: Text('Advanced', style: style)),
+                  Tab(
+                      child: Text(AppLocalizations.of(context).multiTab,
+                          style: style)),
+                ],
+              ),
             ),
-          ),
-          SizedBox(width: 16),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -90,7 +94,7 @@ class _TradeModesPageState extends State<TradeModesPage>
       initialData: mainBloc.tradeMode,
       stream: mainBloc.outTradeMode,
       builder: (context, snapshot) {
-        return Flexible(child: views[snapshot.data]);
+        return views[snapshot.data];
       },
     );
   }

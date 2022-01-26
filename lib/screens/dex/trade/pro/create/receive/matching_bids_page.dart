@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_bids_chart.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_bids_table.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_orderbooks.dart';
@@ -15,13 +14,14 @@ import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 
 class MatchingBidsPage extends StatefulWidget {
-  const MatchingBidsPage(
-      {Key key,
-      this.sellAmount,
-      this.onCreateOrder,
-      this.onCreateNoOrder,
-      this.baseCoin})
-      : super(key: key);
+  const MatchingBidsPage({
+    Key key,
+    this.sellAmount,
+    this.onCreateOrder,
+    this.onCreateNoOrder,
+    this.baseCoin,
+  }) : super(key: key);
+
   final double sellAmount;
   final Function(Ask) onCreateOrder;
   final Function(String) onCreateNoOrder;
@@ -60,7 +60,6 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Row(
             children: <Widget>[
@@ -72,7 +71,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
               ),
               _buildCexRate(),
               const SizedBox(width: 4),
-              Container(
+              SizedBox(
                   height: 30,
                   width: 30,
                   child: Image.asset(
@@ -168,10 +167,9 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                   padding: EdgeInsets.all(6),
                   child: Text(
                     'Less',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).accentColor,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
                   ),
                 )),
           if (_listLength > _listLimit)
@@ -185,10 +183,9 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                   padding: EdgeInsets.all(6),
                   child: Text(
                     'More',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).accentColor,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
                   ),
                 )),
         ],
@@ -199,7 +196,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
   Widget _buildCexRate() {
     final double cexRate = _cexProvider.getCexRate() ?? 0.0;
 
-    if (cexRate == 0.0) return Container();
+    if (cexRate == 0.0) return SizedBox();
 
     return Row(
       children: <Widget>[
@@ -212,7 +209,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
           formatPrice(cexRate),
           style: TextStyle(
               fontSize: 14,
-              color: settingsBloc.isLightTheme
+              color: Theme.of(context).brightness == Brightness.light
                   ? cexColorLight.withAlpha(150)
                   : cexColor.withAlpha(150),
               fontWeight: FontWeight.w400),

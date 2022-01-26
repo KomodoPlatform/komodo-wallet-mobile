@@ -107,30 +107,14 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
               return Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  FlatButton(
-                    child: Text(AppLocalizations.of(context).cancel),
+                  TextButton(
                     onPressed: () => Navigator.of(context).pop(),
+                    child: Text(AppLocalizations.of(context).cancel),
                   ),
                   const SizedBox(
                     width: 12,
                   ),
-                  RaisedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (loading) ...{
-                          SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 1,
-                            ),
-                          ),
-                          SizedBox(width: 4),
-                        },
-                        Text(AppLocalizations.of(context).delete),
-                      ],
-                    ),
+                  ElevatedButton(
                     key: const Key('delete-wallet'),
                     onPressed: loading
                         ? null
@@ -142,6 +126,22 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
 
                             Navigator.of(context).pop();
                           },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (loading) ...{
+                          const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 1,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                        },
+                        Text(AppLocalizations.of(context).delete),
+                      ],
+                    ),
                   )
                 ],
               );

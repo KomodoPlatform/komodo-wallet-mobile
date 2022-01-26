@@ -71,7 +71,7 @@ class FillPainter extends CustomPainter {
       final Swap swap = swapMonitor.swap(swapId);
       if (swap == null) continue;
 
-      fillPaint..color = swapHistoryBloc.getColorStatus(swap.status);
+      fillPaint.color = swapHistoryBloc.getColorStatus(swap.status);
 
       final double swapFill = double.parse(swap.result.myInfo.myAmount) /
           double.parse(order.baseAmount);

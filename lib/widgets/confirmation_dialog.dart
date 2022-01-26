@@ -21,7 +21,7 @@ void showConfirmationDialog({
             children: <Widget>[
               Icon(
                 icon,
-                color: iconColor ?? Theme.of(context).textTheme.bodyText2.color,
+                color: iconColor ?? Theme.of(context).colorScheme.onSurface,
               ),
               const SizedBox(width: 12),
               Text(title),
@@ -33,17 +33,15 @@ void showConfirmationDialog({
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                FlatButton(
-                  onPressed: () {
-                    dialogBloc.closeDialog(context);
-                  },
+                TextButton(
+                  onPressed: () => dialogBloc.closeDialog(context),
                   child: Text(
                     AppLocalizations.of(context).cancel,
                     maxLines: 1,
                   ),
                 ),
                 const SizedBox(width: 12),
-                RaisedButton(
+                ElevatedButton(
                   key: key ?? const Key('confirm-button-key'),
                   onPressed: () {
                     dialogBloc.closeDialog(context);

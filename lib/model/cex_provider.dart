@@ -76,7 +76,7 @@ class CexProvider extends ChangeNotifier {
   }
 
   final String _chartsUrl = appConfig.candlestickData;
-  final String _tickersListUrl = appConfig.candlestickTickersList;
+  final Uri _tickersListUrl = Uri.parse(appConfig.candlestickTickersList);
   final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
   bool _updatingChart = false;
   List<String> _tickers;
@@ -246,7 +246,9 @@ class CexProvider extends ChangeNotifier {
     http.Response _res;
     String _body;
     try {
-      _res = await http.get('$_chartsUrl/${pair.toLowerCase()}').timeout(
+      _res = await http
+          .get(Uri.parse('$_chartsUrl/${pair.toLowerCase()}'))
+          .timeout(
         const Duration(seconds: 60),
         onTimeout: () {
           Log('cex_provider', 'Fetching $pair data timed out');
@@ -406,7 +408,7 @@ class CexPrices {
     http.Response _res;
     String _body;
     try {
-      _res = await http.get(appConfig.fiatPricesEndpoint).timeout(
+      _res = await http.get(Uri.parse(appConfig.fiatPricesEndpoint)).timeout(
         const Duration(seconds: 60),
         onTimeout: () {
           throw 'Fetching rates timed out';
@@ -573,7 +575,7 @@ class CexPrices {
     http.Response _res;
     String _body;
     try {
-      _res = await http.get(url).timeout(
+      _res = await http.get(Uri.parse(url)).timeout(
         const Duration(seconds: 60),
         onTimeout: () {
           Log('cex_provider', 'Fetching usd prices timed out');

@@ -20,7 +20,7 @@ import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
-import 'package:komodo_dex/screens/authentification/showDeleteWalletConfirmation.dart';
+import 'package:komodo_dex/screens/authentification/show_delete_wallet_confirmation.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/import-export/export_page.dart';
 import 'package:komodo_dex/screens/import-export/import_page.dart';
@@ -32,13 +32,13 @@ import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/buildRedDot.dart';
+import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -73,74 +73,56 @@ class _SettingPageState extends State<SettingPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(
             AppLocalizations.of(context).settings.toUpperCase(),
             key: const Key('settings-title'),
           ),
-          centerTitle: true,
-          elevation: settingsBloc.isLightTheme ? 3 : 0,
+          elevation: Theme.of(context).brightness == Brightness.light ? 3 : 0,
         ),
-        body: Theme(
-          data: Theme.of(context).copyWith(
-              canvasColor: Theme.of(context).primaryColor,
-              textTheme: Theme.of(context).textTheme),
-          child: Container(
-            child: ListView(
-              key: const Key('settings-scrollable'),
-              children: <Widget>[
-                _buildTitle(AppLocalizations.of(context).logoutsettings),
-                _buildLogOutOnExit(),
-                _buildTitle(AppLocalizations.of(context).soundTitle),
-                _buildSound(),
-                _buildTitle(AppLocalizations.of(context).security),
-                _buildActivatePIN(),
-                const SizedBox(
-                  height: 1,
-                ),
-                _buildActivateBiometric(),
-                _buildCamouflagePin(),
-                const SizedBox(
-                  height: 1,
-                ),
-                _buildChangePIN(),
-                const SizedBox(
-                  height: 1,
-                ),
-                _buildSendFeedback(),
-                walletBloc.currentWallet != null
-                    ? _buildTitle(AppLocalizations.of(context).backupTitle)
-                    : Container(),
-                walletBloc.currentWallet != null
-                    ? _buildViewSeed()
-                    : Container(),
-                _buildExport(),
-                _buildImport(),
-                _buildImportSwap(),
-                const SizedBox(
-                  height: 1,
-                ),
-                _buildTitle(AppLocalizations.of(context).oldLogsTitle),
-                BuildOldLogs(),
-                _buildTitle(AppLocalizations.of(context).legalTitle),
-                _buildDisclaimerToS(),
-                _buildTitle(AppLocalizations.of(context).developerTitle),
-                _buildEnableTestCoins(),
-                _buildTitle(version),
-                if (appConfig.isUpdateCheckerEnabled) _buildUpdate(),
-                const SizedBox(
-                  height: 48,
-                ),
-                walletBloc.currentWallet != null
-                    ? _buildDeleteWallet()
-                    : Container(),
-                const SizedBox(
-                  height: 24,
-                ),
-              ],
+        body: ListView(
+          key: const Key('settings-scrollable'),
+          children: <Widget>[
+            _buildTitle(AppLocalizations.of(context).logoutsettings),
+            _buildLogOutOnExit(),
+            _buildTitle(AppLocalizations.of(context).soundTitle),
+            _buildSound(),
+            _buildTitle(AppLocalizations.of(context).security),
+            _buildActivatePIN(),
+            const SizedBox(height: 1),
+            _buildActivateBiometric(),
+            const SizedBox(height: 1),
+            _buildCamouflagePin(),
+            const SizedBox(height: 1),
+            _buildChangePIN(),
+            const SizedBox(height: 1),
+            _buildSendFeedback(),
+            if (walletBloc.currentWallet != null) ...[
+              _buildTitle(AppLocalizations.of(context).backupTitle),
+              _buildViewSeed(),
+              const SizedBox(height: 1),
+            ],
+            _buildExport(),
+            const SizedBox(height: 1),
+            _buildImport(),
+            const SizedBox(height: 1),
+            _buildImportSwap(),
+            const SizedBox(
+              height: 1,
             ),
-          ),
+            _buildTitle(AppLocalizations.of(context).oldLogsTitle),
+            BuildOldLogs(),
+            _buildTitle(AppLocalizations.of(context).legalTitle),
+            _buildDisclaimerToS(),
+            _buildTitle(AppLocalizations.of(context).developerTitle),
+            _buildEnableTestCoins(),
+            _buildTitle(version),
+            if (appConfig.isUpdateCheckerEnabled) _buildUpdate(),
+            const SizedBox(
+              height: 48,
+            ),
+            if (walletBloc.currentWallet != null) _buildDeleteWallet(),
+          ],
         ),
       ),
     );
@@ -157,23 +139,12 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildSound() {
-    return CustomTile(
-      onPressed: () {
-        Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => SoundSettingsPage()));
-      },
-      child: ListTile(
-        trailing: Icon(Icons.chevron_right,
-            color:
-                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        title: Text(
-          AppLocalizations.of(context).soundSettingsTitle,
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-              fontWeight: FontWeight.w300,
-              color:
-                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
+    return _chevronListTileHelper(
+      title: Text(AppLocalizations.of(context).soundSettingsTitle),
+      onTap: () => Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => SoundSettingsPage(),
         ),
       ),
     );
@@ -190,195 +161,146 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildActivatePIN() {
-    return CustomTile(
-      child: ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                AppLocalizations.of(
-                  context,
-                ).activateAccessPin,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyText2.copyWith(
-                      fontWeight: FontWeight.w300,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          .color
-                          .withOpacity(0.7),
-                    ),
-              ),
-            ),
-            SharedPreferencesBuilder<dynamic>(
-              pref: 'switch_pin',
-              builder: (
-                BuildContext context,
-                AsyncSnapshot<dynamic> snapshot,
+    return SharedPreferencesBuilder<dynamic>(
+      pref: 'switch_pin',
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<dynamic> snapshot,
+      ) {
+        return SwitchListTile(
+          title: Text(AppLocalizations.of(
+            context,
+          ).activateAccessPin),
+          tileColor: Theme.of(context).primaryColor,
+          value: snapshot.data ?? false,
+          onChanged: (
+            bool switchValue,
+          ) {
+            Log(
+              'setting_page:262',
+              'switchValue $switchValue',
+            );
+            if (snapshot.data) {
+              // We want to deactivate biometrics here
+              // together with a regular pin protection,
+              // so that user would not leave himself
+              // only with biometrics one - thinking that
+              // he is "protected", truth be told
+              // without any fallback to regular pin
+              // protection, this biometrics widget is
+              // not very reliable (read very not)
+              // and it does not take too much time to
+              // break it, and get access to users funds.
+              SharedPreferences.getInstance().then((
+                SharedPreferences data,
               ) {
-                return snapshot.hasData
-                    ? Switch(
-                        value: snapshot.data,
-                        key: const Key(
-                          'settings-activate-pin',
-                        ),
-                        onChanged: (
-                          bool switchValue,
-                        ) {
-                          Log(
-                            'setting_page:262',
-                            'switchValue $switchValue',
-                          );
-                          if (snapshot.data) {
-                            // We want to deactivate biometrics here
-                            // together with a regular pin protection,
-                            // so that user would not leave himself
-                            // only with biometrics one - thinking that
-                            // he is "protected", truth be told
-                            // without any fallback to regular pin
-                            // protection, this biometrics widget is
-                            // not very reliable (read very not)
-                            // and it does not take too much time to
-                            // break it, and get access to users funds.
-                            SharedPreferences.getInstance().then((
-                              SharedPreferences data,
-                            ) {
-                              data.setBool(
-                                'switch_pin_biometric',
-                                false,
-                              );
-                            });
-                            Navigator.push<dynamic>(
-                              context,
-                              MaterialPageRoute<dynamic>(
-                                builder: (
-                                  BuildContext context,
-                                ) =>
-                                    LockScreen(
-                                  context: context,
-                                  pinStatus: PinStatus.DISABLED_PIN,
-                                ),
-                              ),
-                            ).then((dynamic _) => setState(() {}));
-                          } else {
-                            SharedPreferences.getInstance().then((
-                              SharedPreferences data,
-                            ) {
-                              data.setBool(
-                                'switch_pin',
-                                switchValue,
-                              );
-                            });
-                            setState(() {});
-                          }
-                        })
-                    : Container();
-              },
-            )
-          ],
-        ),
-      ),
+                data.setBool(
+                  'switch_pin_biometric',
+                  false,
+                );
+              });
+              Navigator.push<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                  builder: (
+                    BuildContext context,
+                  ) =>
+                      LockScreen(
+                    context: context,
+                    pinStatus: PinStatus.DISABLED_PIN,
+                  ),
+                ),
+              ).then((dynamic _) => setState(() {}));
+            } else {
+              SharedPreferences.getInstance().then((
+                SharedPreferences data,
+              ) {
+                data.setBool(
+                  'switch_pin',
+                  switchValue,
+                );
+              });
+              setState(() {});
+            }
+          },
+        );
+      },
     );
   }
 
   Widget _buildActivateBiometric() {
     return FutureBuilder<bool>(
-        initialData: false,
-        future: canCheckBiometrics,
-        builder: (
-          BuildContext context,
-          AsyncSnapshot<bool> snapshot,
-        ) {
-          if (snapshot.hasData && snapshot.data) {
-            return CustomTile(
-              child: ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        AppLocalizations.of(
-                          context,
-                        ).activateAccessBiometric,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodyText2.copyWith(
-                              fontWeight: FontWeight.w300,
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2
-                                  .color
-                                  .withOpacity(0.7),
-                            ),
-                      ),
-                    ),
-                    SharedPreferencesBuilder<dynamic>(
-                      pref: 'switch_pin_biometric',
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot,
-                      ) {
-                        return snapshot.hasData
-                            ? Switch(
-                                value: snapshot.data,
-                                onChanged: (
-                                  bool switchValue,
-                                ) {
-                                  if (snapshot.data) {
-                                    authenticateBiometrics(
-                                      context,
-                                      PinStatus.DISABLED_PIN_BIOMETRIC,
-                                    ).then((
-                                      bool passedBioCheck,
-                                    ) {
-                                      if (passedBioCheck) {
-                                        SharedPreferences.getInstance().then((
-                                          SharedPreferences data,
-                                        ) {
-                                          data.setBool(
-                                            'switch_pin_biometric',
-                                            false,
-                                          );
-                                          setState(() {});
-                                        });
-                                      }
-                                    });
-                                  } else {
-                                    SharedPreferences.getInstance().then((
-                                      SharedPreferences data,
-                                    ) {
-                                      data.setBool(
-                                        'switch_pin_biometric',
-                                        switchValue,
-                                      );
-                                      if (switchValue) {
-                                        // Same situation here as above
-                                        // on line 244 but from a
-                                        // different angle. Just trying
-                                        // to protect users from unreliable
-                                        // !biometrics only! state.
-                                        data.setBool(
-                                          'switch_pin',
-                                          true,
-                                        );
-                                      }
-                                    });
-                                    setState(() {});
-                                  }
-                                })
-                            : Container();
-                      },
-                    )
-                  ],
-                ),
-              ),
-            );
-          } else {
-            return Container();
-          }
-        });
+      initialData: false,
+      future: canCheckBiometrics,
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<bool> snapshot,
+      ) {
+        if (snapshot.hasData && snapshot.data) {
+          return SharedPreferencesBuilder<dynamic>(
+            pref: 'switch_pin_biometric',
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<dynamic> snapshot,
+            ) {
+              return SwitchListTile(
+                title: Text(AppLocalizations.of(
+                  context,
+                ).activateAccessBiometric),
+                tileColor: Theme.of(context).primaryColor,
+                value: snapshot.data ?? false,
+                onChanged: (
+                  bool switchValue,
+                ) {
+                  if (snapshot.data) {
+                    authenticateBiometrics(
+                      context,
+                      PinStatus.DISABLED_PIN_BIOMETRIC,
+                    ).then((
+                      bool passedBioCheck,
+                    ) {
+                      if (passedBioCheck) {
+                        SharedPreferences.getInstance().then((
+                          SharedPreferences data,
+                        ) {
+                          data.setBool(
+                            'switch_pin_biometric',
+                            false,
+                          );
+                          setState(() {});
+                        });
+                      }
+                    });
+                  } else {
+                    SharedPreferences.getInstance().then((
+                      SharedPreferences data,
+                    ) {
+                      data.setBool(
+                        'switch_pin_biometric',
+                        switchValue,
+                      );
+                      if (switchValue) {
+                        // Same situation here as above
+                        // on line 244 but from a
+                        // different angle. Just trying
+                        // to protect users from unreliable
+                        // !biometrics only! state.
+                        data.setBool(
+                          'switch_pin',
+                          true,
+                        );
+                      }
+                    });
+                    setState(() {});
+                  }
+                },
+              );
+            },
+          );
+        }
+        return SizedBox();
+      },
+    );
   }
 
   Widget _buildCamouflagePin() {
@@ -386,49 +308,25 @@ class _SettingPageState extends State<SettingPage> {
         initialData: camoBloc.isCamoActive,
         stream: camoBloc.outIsCamoActive,
         builder: (context, AsyncSnapshot<bool> snapshot) {
-          if (snapshot.data == true) return Container();
+          if (snapshot.data == true) return SizedBox();
 
-          return Column(
-            children: <Widget>[
-              const SizedBox(
-                height: 1,
-              ),
-              CustomTile(
-                onPressed: () {
-                  Navigator.push<dynamic>(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                          settings: const RouteSettings(name: '/camoSetup'),
-                          builder: (BuildContext context) =>
-                              CamoPinSetupPage()));
-                },
-                child: ListTile(
-                  trailing: Icon(Icons.chevron_right,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          .color
-                          .withOpacity(0.7)),
-                  title: Text(
-                    AppLocalizations.of(context).camoPinLink,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        fontWeight: FontWeight.w300,
-                        color: Theme.of(context)
-                            .textTheme
-                            .bodyText2
-                            .color
-                            .withOpacity(0.7)),
-                  ),
-                ),
-              ),
-            ],
+          return _chevronListTileHelper(
+            title: Text(AppLocalizations.of(context).camoPinLink),
+            onTap: () {
+              Navigator.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      settings: const RouteSettings(name: '/camoSetup'),
+                      builder: (BuildContext context) => CamoPinSetupPage()));
+            },
           );
         });
   }
 
   Widget _buildChangePIN() {
-    return CustomTile(
-      onPressed: () => Navigator.push<dynamic>(
+    return _chevronListTileHelper(
+      title: Text(AppLocalizations.of(context).changePin),
+      onTap: () => Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
               builder: (BuildContext context) => UnlockWalletPage(
@@ -448,150 +346,68 @@ class _SettingPageState extends State<SettingPage> {
                                   password: password)));
                     },
                   ))),
-      child: ListTile(
-        trailing: Icon(Icons.chevron_right,
-            color:
-                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        title: Text(
-          AppLocalizations.of(context).changePin,
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-              fontWeight: FontWeight.w300,
-              color:
-                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        ),
-      ),
     );
   }
 
   Widget _buildSendFeedback() {
-    return CustomTile(
-      onPressed: () => _shareFileDialog(),
-      child: ListTile(
-        key: const Key('setting-title-feedback'),
-        trailing: Icon(Icons.chevron_right,
-            color:
-                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        title: Text(
-          AppLocalizations.of(context).feedback,
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-              fontWeight: FontWeight.w300,
-              color:
-                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        ),
-      ),
+    return _chevronListTileHelper(
+      title: Text(AppLocalizations.of(context).feedback),
+      onTap: () => _shareFileDialog(),
     );
   }
 
   Widget _buildViewSeed() {
-    return CustomTile(
-      onPressed: () {
+    return _chevronListTileHelper(
+      title: Text(AppLocalizations.of(context).viewSeedAndKeys),
+      onTap: () {
         Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => ViewSeedUnlockPage()));
       },
-      child: ListTile(
-        trailing: Icon(Icons.chevron_right,
-            color:
-                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        title: Text(
-          AppLocalizations.of(context).viewSeedAndKeys,
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-              fontWeight: FontWeight.w300,
-              color:
-                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        ),
-      ),
     );
   }
 
   Widget _buildExport() {
-    return CustomTile(
-      onPressed: () {
+    return _chevronListTileHelper(
+      title: Text(AppLocalizations.of(context).exportLink),
+      onTap: () {
         Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => ExportPage()));
       },
-      child: ListTile(
-        trailing: Icon(Icons.chevron_right,
-            color:
-                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        title: Text(
-          AppLocalizations.of(context).exportLink,
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-              fontWeight: FontWeight.w300,
-              color:
-                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        ),
-      ),
     );
   }
 
   Widget _buildImport() {
-    return CustomTile(
-      onPressed: () {
+    return _chevronListTileHelper(
+      title: Text(AppLocalizations.of(context).importLink),
+      onTap: () {
         Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => ImportPage()));
       },
-      child: ListTile(
-        trailing: Icon(Icons.chevron_right,
-            color:
-                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        title: Text(
-          AppLocalizations.of(context).importLink,
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-              fontWeight: FontWeight.w300,
-              color:
-                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        ),
-      ),
     );
   }
 
   Widget _buildImportSwap() {
-    return CustomTile(
-      onPressed: () {
+    return _chevronListTileHelper(
+      title: Text(AppLocalizations.of(context).importSingleSwapLink),
+      onTap: () {
         Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => ImportSwapPage()));
       },
-      child: ListTile(
-        trailing: Icon(Icons.chevron_right,
-            color:
-                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        title: Text(
-          AppLocalizations.of(context).importSingleSwapLink,
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-              fontWeight: FontWeight.w300,
-              color:
-                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        ),
-      ),
     );
   }
 
   Widget _buildDisclaimerToS() {
-    return CustomTile(
-        child: ListTile(
-          trailing: Icon(Icons.chevron_right,
-              color:
-                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-          title: Text(
-            AppLocalizations.of(context).disclaimerAndTos,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                fontWeight: FontWeight.w300,
-                color: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .color
-                    .withOpacity(0.7)),
-          ),
-        ),
-        onPressed: () {
+    return _chevronListTileHelper(
+        title: Text(AppLocalizations.of(context).disclaimerAndTos),
+        onTap: () {
           Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
@@ -606,143 +422,95 @@ class _SettingPageState extends State<SettingPage> {
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
 
-    return CustomTile(
-        child: ListTile(
-          trailing: Icon(Icons.chevron_right,
-              color:
-                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-          title: Row(
-            children: <Widget>[
-              Stack(
-                overflow: Overflow.visible,
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).checkForUpdates,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        fontWeight: FontWeight.w300,
-                        color: Theme.of(context)
-                            .textTheme
-                            .bodyText2
-                            .color
-                            .withOpacity(0.7)),
-                  ),
-                  if (updatesProvider.status != UpdateStatus.upToDate)
-                    buildRedDot(context, right: -12),
-                ],
-              ),
-            ],
-          ),
-        ),
-        onPressed: () {
-          Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => UpdatesPage(
-                      refresh: true,
-                      onSkip: () => Navigator.pop(context),
-                    )),
-          );
-        });
+    return _chevronListTileHelper(
+      title: Stack(
+        clipBehavior: Clip.none,
+        children: <Widget>[
+          Text(AppLocalizations.of(context).checkForUpdates),
+          if (updatesProvider.status != UpdateStatus.upToDate)
+            buildRedDot(context, right: -12),
+        ],
+      ),
+      onTap: () {
+        Navigator.push<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => UpdatesPage(
+                    refresh: true,
+                    onSkip: () => Navigator.pop(context),
+                  )),
+        );
+      },
+    );
   }
 
   Widget _buildLogOutOnExit() {
-    return CustomTile(
-      child: ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                AppLocalizations.of(context).logoutOnExit,
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .color
-                        .withOpacity(0.7)),
-              ),
-            ),
-            SharedPreferencesBuilder<dynamic>(
-              pref: 'switch_pin_log_out_on_exit',
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return snapshot.hasData
-                    ? Switch(
-                        value: snapshot.data,
-                        onChanged: (bool dataSwitch) {
-                          setState(() {
-                            SharedPreferences.getInstance()
-                                .then((SharedPreferences data) {
-                              data.setBool(
-                                  'switch_pin_log_out_on_exit', dataSwitch);
-                            });
-                          });
-                        })
-                    : Container();
-              },
-            )
-          ],
-        ),
-      ),
+    return SharedPreferencesBuilder<dynamic>(
+      pref: 'switch_pin_log_out_on_exit',
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return SwitchListTile(
+          value: snapshot.data ?? false,
+          onChanged: (bool dataSwitch) {
+            setState(() {
+              SharedPreferences.getInstance().then((SharedPreferences data) {
+                data.setBool('switch_pin_log_out_on_exit', dataSwitch);
+              });
+            });
+          },
+          title: Text(AppLocalizations.of(context).logoutOnExit),
+          tileColor: Theme.of(context).primaryColor,
+        );
+      },
     );
   }
 
   Widget _buildDeleteWallet() {
-    return CustomTile(
-      onPressed: () => _showDialogDeleteWallet(),
-      backgroundColor: Theme.of(context).errorColor.withOpacity(0.8),
-      child: ListTile(
-        leading: Padding(
-          padding: const EdgeInsets.all(6.0),
-          child: SvgPicture.asset('assets/svg/delete_setting.svg'),
+    return ListTile(
+      tileColor: Theme.of(context).errorColor,
+      leading: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: SvgPicture.asset(
+          'assets/svg/delete_setting.svg',
+          color: Theme.of(context).colorScheme.onError,
         ),
-        title: Text(AppLocalizations.of(context).deleteWallet,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                fontWeight: FontWeight.w300,
-                color: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .color
-                    .withOpacity(0.8))),
       ),
+      title: Text(
+        AppLocalizations.of(context).deleteWallet,
+        style: Theme.of(context)
+            .textTheme
+            .subtitle1
+            .copyWith(color: Theme.of(context).colorScheme.onError),
+      ),
+      onTap: () => _showDialogDeleteWallet(),
+    );
+  }
+
+  ListTile _chevronListTileHelper({
+    @required Widget title,
+    GestureTapCallback onTap,
+  }) {
+    return ListTile(
+      onTap: onTap,
+      trailing: Icon(Icons.chevron_right),
+      title: title,
+      tileColor: Theme.of(context).primaryColor,
     );
   }
 
   Widget _buildEnableTestCoins() {
-    return CustomTile(
-      child: ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                AppLocalizations.of(context).enableTestCoins,
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .color
-                        .withOpacity(0.7)),
-              ),
-            ),
-            StreamBuilder(
-              initialData: settingsBloc.enableTestCoins,
-              stream: settingsBloc.outEnableTestCoins,
-              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                return snapshot.hasData
-                    ? Switch(
-                        value: snapshot.data,
-                        onChanged: (bool dataSwitch) {
-                          settingsBloc.setEnableTestCoins(dataSwitch);
-                        },
-                      )
-                    : Container();
-              },
-            ),
-          ],
-        ),
-      ),
+    return StreamBuilder(
+      initialData: settingsBloc.enableTestCoins,
+      stream: settingsBloc.outEnableTestCoins,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return SwitchListTile(
+          title: Text(AppLocalizations.of(context).enableTestCoins),
+          value: snapshot.data ?? false,
+          onChanged: (bool dataSwitch) {
+            settingsBloc.setEnableTestCoins(dataSwitch);
+          },
+          tileColor: Theme.of(context).primaryColor,
+        );
+      },
     );
   }
 
@@ -836,13 +604,14 @@ class _SettingPageState extends State<SettingPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  FlatButton(
-                    child: Text(AppLocalizations.of(context).cancel),
+                  TextButton(
                     onPressed: () => Navigator.of(context).pop(),
+                    child: Text(AppLocalizations.of(context).cancel),
                   ),
                   const SizedBox(width: 12),
-                  RaisedButton(
+                  ElevatedButton(
                     key: const Key('setting-share-button'),
+                    onPressed: _shareLogs,
                     child: Text(
                       AppLocalizations.of(context).share,
                       style: Theme.of(context)
@@ -850,7 +619,6 @@ class _SettingPageState extends State<SettingPage> {
                           .button
                           .copyWith(color: Colors.white),
                     ),
-                    onPressed: () => _shareLogs(),
                   )
                 ],
               ),
@@ -859,41 +627,6 @@ class _SettingPageState extends State<SettingPage> {
         }).then((dynamic _) {
       dialogBloc.dialog = null;
     });
-  }
-}
-
-class CustomTile extends StatefulWidget {
-  const CustomTile({Key key, this.onPressed, this.backgroundColor, this.child})
-      : super(key: key);
-
-  final Widget child;
-  final Function onPressed;
-  final Color backgroundColor;
-
-  @override
-  _CustomTileState createState() => _CustomTileState();
-}
-
-class _CustomTileState extends State<CustomTile> {
-  Color backgroundColor;
-
-  @override
-  Widget build(BuildContext context) {
-    if (widget.backgroundColor == null) {
-      backgroundColor = Theme.of(context).primaryColor;
-    } else {
-      backgroundColor = widget.backgroundColor;
-    }
-    return Container(
-      color: backgroundColor,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: widget.onPressed,
-          child: widget.child,
-        ),
-      ),
-    );
   }
 }
 
@@ -942,28 +675,22 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomTile(
-      child: ListTile(
-        trailing: RaisedButton(
-            child: Text(AppLocalizations.of(context).oldLogsDelete),
-            onPressed: () {
-              for (File f in _listLogs) {
-                f.deleteSync();
-              }
-              _update();
-            }),
-        title: Text(
-          AppLocalizations.of(context).oldLogsUsed +
-              ': ' +
-              (_sizeMb >= 1000
-                  ? '${(_sizeMb / 1000).toStringAsFixed(2)} GB'
-                  : ' ${_sizeMb.toStringAsFixed(2)} MB'),
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-              fontWeight: FontWeight.w300,
-              color:
-                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
-        ),
+    return ListTile(
+      trailing: ElevatedButton(
+        onPressed: () {
+          for (File f in _listLogs) {
+            f.deleteSync();
+          }
+          _update();
+        },
+        child: Text(AppLocalizations.of(context).oldLogsDelete),
       ),
+      title: Text(AppLocalizations.of(context).oldLogsUsed +
+          ': ' +
+          (_sizeMb >= 1000
+              ? '${(_sizeMb / 1000).toStringAsFixed(2)} GB'
+              : ' ${_sizeMb.toStringAsFixed(2)} MB')),
+      tileColor: Theme.of(context).primaryColor,
     );
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -44,7 +43,7 @@ class BuildFiatAmount extends StatelessWidget {
           cexProvider.convert(amountUsd),
           style: TextStyle(
               fontSize: 12,
-              color: settingsBloc.isLightTheme
+              color: Theme.of(context).brightness == Brightness.light
                   ? cexColorLight.withAlpha(150)
                   : cexColor.withAlpha(150)),
         ),
@@ -53,8 +52,6 @@ class BuildFiatAmount extends StatelessWidget {
   }
 
   Widget _spacer() {
-    return Container(
-      child: Text(String.fromCharCode(0x00A0), style: TextStyle(fontSize: 12)),
-    );
+    return Text(String.fromCharCode(0x00A0), style: TextStyle(fontSize: 12));
   }
 }

@@ -22,20 +22,15 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
       children: [
         _buildProgressBar(),
         Expanded(
-          child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              child: Column(
-                children: <Widget>[
-                  MultiOrderBase(),
-                  const SizedBox(height: 6),
-                  MultiOrderRelList(),
-                  const SizedBox(height: 10),
-                  _buildButton(),
-                  const SizedBox(height: 100),
-                ],
-              ),
-            ),
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            children: <Widget>[
+              MultiOrderBase(),
+              const SizedBox(height: 8),
+              MultiOrderRelList(),
+              const SizedBox(height: 16),
+              _buildButton(),
+            ],
           ),
         ),
       ],
@@ -59,21 +54,19 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
 
     final int qtt = multiOrderProvider.relCoins.length;
 
-    return RaisedButton(
-      disabledColor: Theme.of(context).disabledColor.withAlpha(100),
+    return ElevatedButton(
       onPressed: allowCreate
           ? () async {
               if (await multiOrderProvider.validate()) {
                 multiOrderProvider.validated = true;
               } else {
-                Scaffold.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Theme.of(context).backgroundColor,
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(
-                      AppLocalizations.of(context).multiFixErrors,
-                      style: TextStyle(
-                        color: Theme.of(context).errorColor,
-                      ),
-                    )));
+                  AppLocalizations.of(context).multiFixErrors,
+                  style: TextStyle(
+                    color: Theme.of(context).errorColor,
+                  ),
+                )));
               }
             }
           : null,

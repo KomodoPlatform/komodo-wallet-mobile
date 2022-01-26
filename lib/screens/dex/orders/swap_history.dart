@@ -60,11 +60,12 @@ class _SwapHistoryState extends State<SwapHistory> {
               .sublist(start, end);
 
           return ListView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
             controller: widget.scrollCtrl,
             children: [
               if (widget.showFilters) _buildFilters(swaps),
               if (swapsFiltered.isEmpty) ...{
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height / 4,
                   child:
                       Center(child: Text(AppLocalizations.of(context).noSwaps)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -56,7 +57,7 @@ class _DetailSwapState extends State<DetailSwap> {
                 child: Text(
                   AppLocalizations.of(context).tradeDetail + ':',
                   style: Theme.of(context).textTheme.subtitle2.copyWith(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -148,18 +149,17 @@ class _DetailSwapState extends State<DetailSwap> {
                     ),
                   ),
                   isNoteEdit
-                      ? TextField(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).accentColor),
-                            ),
+                      ? Theme(
+                          data: Theme.of(context).copyWith(
+                            inputDecorationTheme: gefaultUnderlineInputTheme,
                           ),
-                          controller: noteTextController,
-                          maxLength: 200,
-                          maxLines: 7,
-                          minLines: 1,
+                          child: TextField(
+                            decoration: InputDecoration(isDense: true),
+                            controller: noteTextController,
+                            maxLength: 200,
+                            maxLines: 7,
+                            minLines: 1,
+                          ),
                         )
                       : Text(
                           (noteText == null || noteText.isEmpty)
@@ -231,24 +231,14 @@ class _DetailSwapState extends State<DetailSwap> {
             ),
           ),
           InkWell(
-            onTap: () {
-              copyToClipBoard(
-                context,
-                id,
-              );
-            },
+            onTap: () => copyToClipBoard(context, id),
             child: Row(
               children: [
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: Text(
-                      id,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                    ),
+                    child:
+                        Text(id, style: Theme.of(context).textTheme.bodyText2),
                   ),
                 ),
               ],
@@ -268,7 +258,6 @@ class _DetailSwapState extends State<DetailSwap> {
             1: IntrinsicColumnWidth(),
             2: IntrinsicColumnWidth(flex: 1),
           },
-          defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
           children: [
             TableRow(
               children: [
@@ -345,7 +334,7 @@ class _DetailSwapState extends State<DetailSwap> {
   }
 
   Widget _buildIcon(String coin) {
-    return Container(
+    return SizedBox(
       height: 25,
       width: 25,
       child: Image.asset(

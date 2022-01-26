@@ -34,49 +34,35 @@ void openBidDetailsDialog({
                         Expanded(
                             child: Text(AppLocalizations.of(context)
                                 .orderDetailsTitle)),
-                        InkWell(
-                          onTap: () {
+                        IconButton(
+                          onPressed: () {
                             setState(() {
                               showSettings = !showSettings;
                             });
                           },
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            child: Icon(
-                              Icons.settings,
-                              size: 16,
-                            ),
-                          ),
+                          splashRadius: 16,
+                          iconSize: 16,
+                          icon: Icon(Icons.settings),
                         ),
                       ],
                     ),
                     children: <Widget>[
                       if (showSettings)
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(14, 12, 6, 0),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .orderDetailsSettings,
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                              ),
-                              Switch(
-                                  value: showOrderDetailsByTap,
-                                  onChanged: (bool val) async {
-                                    (await SharedPreferences.getInstance())
-                                        .setBool(
-                                      'showOrderDetailsByTap',
-                                      val,
-                                    );
-                                    setState(() {
-                                      showOrderDetailsByTap = val;
-                                    });
-                                  }),
-                            ],
+                        SwitchListTile(
+                          title: Text(
+                            AppLocalizations.of(context).orderDetailsSettings,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
+                          value: showOrderDetailsByTap,
+                          onChanged: (bool val) async {
+                            (await SharedPreferences.getInstance()).setBool(
+                              'showOrderDetailsByTap',
+                              val,
+                            );
+                            setState(() {
+                              showOrderDetailsByTap = val;
+                            });
+                          },
                         ),
                       BuildOrderDetails(
                         bid,
@@ -87,13 +73,13 @@ void openBidDetailsDialog({
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
-                            FlatButton(
+                            TextButton(
                               onPressed: () => dialogBloc.closeDialog(context),
                               child: Text(AppLocalizations.of(context)
                                   .orderDetailsCancel),
                             ),
                             const SizedBox(width: 12),
-                            RaisedButton(
+                            ElevatedButton(
                               onPressed: () {
                                 dialogBloc.closeDialog(context);
                                 onSelect();

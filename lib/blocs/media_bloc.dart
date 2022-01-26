@@ -34,7 +34,7 @@ class MediaBloc implements BlocBase {
   Future<void> getArticles() async {
     try {
       final Response response =
-          await http.get('https://composer.kmd.io/api/dex/news/all');
+          await http.get(Uri.parse('https://composer.kmd.io/api/dex/news/all'));
       final List<Article> articlesSaved = await Db.getAllArticlesSaved();
       final List<Article> articles = articleFromJson(response.body);
 

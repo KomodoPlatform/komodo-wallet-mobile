@@ -48,7 +48,7 @@ class FeedProvider extends ChangeNotifier {
     http.Response response;
 
     try {
-      response = await http.get(appConfig.feedProviderSourceUrl);
+      response = await http.get(Uri.parse(appConfig.feedProviderSourceUrl));
     } catch (e) {
       Log('feed_provider:44', '_updateNews] $e');
     }

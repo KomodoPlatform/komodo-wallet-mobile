@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
@@ -15,7 +14,7 @@ class SellForm extends StatefulWidget {
 }
 
 class _SellFormState extends State<SellForm> {
-  final _amtCtrl = TextEditingControllerWorkaroud();
+  final _amtCtrl = TextEditingController();
   final _focusNode = FocusNode();
   ConstructorProvider _constrProvider;
   CexProvider _cexProvider;
@@ -24,22 +23,28 @@ class _SellFormState extends State<SellForm> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _constrProvider.addListener(_onDataChange);
-      _amtCtrl.addListener(_onAmtFieldChange);
+      _onDataChange(); // fill the form with current data on page load
 
-      _fillForm();
       if (_constrProvider.buyCoin == null) {
         _focusNode.requestFocus();
       } else {
-        FocusScope.of(context).requestFocus(FocusNode());
+        unfocusTextField(context);
       }
     });
+
     super.initState();
   }
 
   @override
+  void dispose() {
+    _constrProvider?.removeListener(_onDataChange);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _constrProvider ??= Provider.of<ConstructorProvider>(context);
-    _cexProvider ??= Provider.of<CexProvider>(context);
+    _constrProvider ??= context.watch<ConstructorProvider>();
+    _cexProvider ??= context.watch<CexProvider>();
 
     return Padding(
       padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
@@ -49,6 +54,7 @@ class _SellFormState extends State<SellForm> {
           _buildCoin(),
           SizedBox(height: 6),
           _buildAmt(),
+          SizedBox(height: 6),
           _buildButtons(),
         ],
       ),
@@ -80,40 +86,31 @@ class _SellFormState extends State<SellForm> {
     final bool disabled = (_constrProvider.maxSellAmt?.toDouble() ?? 0) == 0;
 
     return Expanded(
-      child: GestureDetector(
+      child: InkWell(
         onTap: isActive || disabled
             ? null
-            : () {
-                _constrProvider.sellAmount = buttonAmt;
-              },
+            : () => _constrProvider.sellAmount = buttonAmt,
         child: Container(
-          padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(2),
-              color: disabled
-                  ? Theme.of(context).primaryColor.withAlpha(200)
-                  : isActive
-                      ? Theme.of(context).accentColor.withAlpha(200)
-                      : Theme.of(context).primaryColor,
-            ),
-            alignment: Alignment(0, 0),
-            padding: EdgeInsets.fromLTRB(1, 3, 1, 3),
-            child: Text(
-              '${cutTrailingZeros(pct.toString())}%',
-              style: TextStyle(
-                  fontSize: 11,
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      .color
-                      .withAlpha(disabled
-                          ? 100
-                          : isActive
-                              ? 255
-                              : 180)),
-              maxLines: 1,
-            ),
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            color: disabled
+                ? Theme.of(context).disabledColor.withOpacity(0.4)
+                : isActive
+                    ? Theme.of(context).colorScheme.secondary
+                    : Theme.of(context).unselectedWidgetColor.withOpacity(0.3),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            '${cutTrailingZeros(pct.toString())}%',
+            style: Theme.of(context).textTheme.caption.copyWith(
+                  color: disabled
+                      ? Theme.of(context).disabledColor.withOpacity(0.5)
+                      : isActive
+                          ? Theme.of(context).colorScheme.onSecondary
+                          : Theme.of(context).colorScheme.onSurface,
+                ),
+            maxLines: 1,
           ),
         ),
       ),
@@ -124,29 +121,20 @@ class _SellFormState extends State<SellForm> {
     return Stack(
       children: [
         TextFormField(
-            controller: _amtCtrl,
-            focusNode: _focusNode,
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: <TextInputFormatter>[
-              DecimalTextInputFormatter(
-                  decimalRange: appConfig.tradeFormPrecision),
-              FilteringTextInputFormatter.allow(RegExp(
-                  '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?\$'))
-            ],
-            style: TextStyle(height: 1),
-            decoration: InputDecoration(
-              isDense: true,
-              contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 22),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
-                  borderSide: BorderSide(
-                      color: Theme.of(context).highlightColor, width: 1)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                width: 1,
-                color: Theme.of(context).accentColor,
-              )),
-            )),
+          controller: _amtCtrl,
+          onChanged: _constrProvider.onSellAmtFieldChange,
+          focusNode: _focusNode,
+          keyboardType: TextInputType.numberWithOptions(decimal: true),
+          inputFormatters: <TextInputFormatter>[
+            DecimalTextInputFormatter(
+                decimalRange: appConfig.tradeFormPrecision),
+            FilteringTextInputFormatter.allow(RegExp(
+                '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${appConfig.tradeFormPrecision}})?'))
+          ],
+          decoration: InputDecoration(
+            isDense: true,
+          ),
+        ),
         Positioned(
           right: 4,
           bottom: 2,
@@ -158,46 +146,24 @@ class _SellFormState extends State<SellForm> {
 
   Widget _buildCoin() {
     return Card(
-        margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(4),
-          onTap: () {
-            _constrProvider.sellCoin = null;
-          },
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 50),
-            child: Container(
-              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundImage: AssetImage('assets/coin-icons/'
-                              '${_constrProvider.sellCoin.toLowerCase()}.png'),
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          _constrProvider.sellCoin,
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(
-                    Icons.clear,
-                    size: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  ),
-                  SizedBox(width: 10),
-                ],
-              ),
-            ),
-          ),
-        ));
+      margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
+      child: ListTile(
+        visualDensity: VisualDensity.compact,
+        contentPadding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
+        horizontalTitleGap: 0,
+        onTap: () => _constrProvider.sellCoin = null,
+        leading: CircleAvatar(
+          radius: 8,
+          backgroundImage: AssetImage('assets/coin-icons/'
+              '${_constrProvider.sellCoin.toLowerCase()}.png'),
+        ),
+        title: Text(_constrProvider.sellCoin),
+        trailing: Icon(
+          Icons.clear,
+          size: 16,
+        ),
+      ),
+    );
   }
 
   Widget _buildFiatAmt() {
@@ -209,7 +175,6 @@ class _SellFormState extends State<SellForm> {
     }
 
     if (usdAmt == 0) return SizedBox();
-
     return Text(
       _cexProvider.convert(usdAmt),
       style: Theme.of(context).textTheme.caption.copyWith(
@@ -218,8 +183,10 @@ class _SellFormState extends State<SellForm> {
   }
 
   void _onDataChange() {
+    if (!mounted) return;
+
     if (_constrProvider.sellAmount == null) {
-      _amtCtrl.text = '';
+      _amtCtrl.clear();
       return;
     }
 
@@ -228,24 +195,8 @@ class _SellFormState extends State<SellForm> {
     final String currentFormatted = cutTrailingZeros(_amtCtrl.text);
 
     if (currentFormatted != newFormatted) {
-      _amtCtrl.setTextAndPosition(newFormatted);
-
-      Future<dynamic>.delayed(Duration.zero).then((dynamic _) {
-        if (!_focusNode.hasFocus) {
-          _amtCtrl.selection = TextSelection.collapsed(offset: 0);
-        }
-      });
+      _amtCtrl.text = newFormatted;
+      moveCursorToEnd(_amtCtrl);
     }
-  }
-
-  void _onAmtFieldChange() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _constrProvider.onSellAmtFieldChange(_amtCtrl.text);
-    });
-  }
-
-  void _fillForm() {
-    _onDataChange();
-    setState(() {});
   }
 }

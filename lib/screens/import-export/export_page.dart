@@ -52,27 +52,22 @@ class _ExportPageState extends State<ExportPage> {
       context: context,
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).exportTitle,
-          ),
+          title: Text(AppLocalizations.of(context).exportTitle),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              if (_done) ...{
-                _buildSuccess(),
-              } else ...{
-                _buildHeader(),
-                _buildNotes(),
-                _buildContacts(),
-                _buildSwaps(),
-                _buildPass(),
-                _buildButton(),
-              }
-            ],
-          ),
+        body: ListView(
+          children: [
+            if (_done) ...{
+              _buildSuccess(),
+            } else ...{
+              _buildHeader(),
+              _buildNotes(),
+              _buildContacts(),
+              _buildSwaps(),
+              _buildPass(),
+              _buildButton(),
+            }
+          ],
         ),
       ),
     );
@@ -401,20 +396,7 @@ class _ExportPageState extends State<ExportPage> {
           style: Theme.of(context).textTheme.bodyText2,
           decoration: InputDecoration(
             errorMaxLines: 6,
-            errorStyle: Theme.of(context)
-                .textTheme
-                .bodyText2
-                .copyWith(fontSize: 12, color: Theme.of(context).errorColor),
-            border: const OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).primaryColorLight)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor)),
-            hintStyle: Theme.of(context).textTheme.bodyText1,
-            labelStyle: Theme.of(context).textTheme.bodyText2,
             hintText: AppLocalizations.of(context).hintCreatePassword,
-            labelText: null,
             suffixIcon: PasswordVisibilityControl(
               onVisibilityChange: (bool isPasswordObscured) {
                 setState(() {
@@ -441,16 +423,7 @@ class _ExportPageState extends State<ExportPage> {
           ),
           style: Theme.of(context).textTheme.bodyText2,
           decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).primaryColorLight)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor)),
-            hintStyle: Theme.of(context).textTheme.bodyText1,
-            labelStyle: Theme.of(context).textTheme.bodyText2,
             hintText: AppLocalizations.of(context).hintConfirmPassword,
-            labelText: null,
           ),
         ),
       ]),
@@ -458,9 +431,9 @@ class _ExportPageState extends State<ExportPage> {
   }
 
   void _showError(String e) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-      '$e',
+      e,
       style: TextStyle(color: Theme.of(context).errorColor),
     )));
   }

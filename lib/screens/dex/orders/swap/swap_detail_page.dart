@@ -45,13 +45,11 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
             context: context,
             onSuccess: () {},
             child: Scaffold(
-              backgroundColor: Theme.of(context).backgroundColor,
               appBar: AppBar(
-                  elevation: 0,
-                  backgroundColor: Theme.of(context).backgroundColor,
-                  leading: IconButton(
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Theme.of(context).colorScheme.onBackground,
+                  leading: BackButton(
                     key: const Key('swap-detail-back-button'),
-                    icon: Icon(Icons.arrow_back),
                     onPressed: () => Navigator.pop(context, false),
                   ),
                   actions: const <Widget>[

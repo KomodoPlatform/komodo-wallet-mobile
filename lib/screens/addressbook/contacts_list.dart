@@ -7,11 +7,12 @@ import 'package:komodo_dex/screens/addressbook/contact_list_item.dart';
 class ContactsList extends StatefulWidget {
   const ContactsList(
     this.contacts, {
+    Key key,
     this.shouldPop = false,
     this.coin,
     this.contact,
     this.searchPhrase,
-  });
+  }) : super(key: key);
 
   final List<Contact> contacts;
   final bool shouldPop;
@@ -33,18 +34,8 @@ class _ContactsListState extends State<ContactsList> {
         child: Text(AppLocalizations.of(context).contactNotFound),
       );
 
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.only(
-          top: 8,
-          left: 16,
-          right: 16,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: list,
-        ),
-      ),
+    return ListView(
+      children: list,
     );
   }
 
@@ -105,14 +96,12 @@ class _ContactsListState extends State<ContactsList> {
         if (needIndexes) {
           list.add(
             Padding(
-              padding: const EdgeInsets.only(left: 14.0),
+              padding: const EdgeInsets.only(left: 24),
               child: Text(
                 indexLetter,
-                style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.headline5.copyWith(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
               ),
             ),
           );
@@ -146,7 +135,7 @@ class _ContactsListState extends State<ContactsList> {
             indent: 10,
             endIndent: 10,
             height: 1,
-            color: Theme.of(context).primaryColorLight,
+            color: Theme.of(context).primaryColor,
           ),
         );
       }
@@ -154,12 +143,11 @@ class _ContactsListState extends State<ContactsList> {
 
     list.add(
       Padding(
-        padding: EdgeInsets.only(
-          top: widget.searchPhrase == '' ? 16 : 4,
-          bottom: widget.searchPhrase == '' ? 16 : 4,
+        padding: EdgeInsets.symmetric(
+          vertical: widget.searchPhrase == '' ? 16 : 4,
         ),
         child: Card(
-          margin: const EdgeInsets.all(0),
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           elevation: 3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

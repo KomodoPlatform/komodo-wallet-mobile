@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -32,32 +33,30 @@ class _RewardsPageState extends State<RewardsPage> {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).rewardsTitle),
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
         body: rewards == null
             ? const Center(
                 child: CircularProgressIndicator(),
               )
             : RefreshIndicator(
+                color: Theme.of(context).colorScheme.secondary,
                 onRefresh: () async {
                   rewardsProvider.update();
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        rewardsProvider.updateInProgress
-                            ? const SizedBox(
-                                height: 1,
-                                child: LinearProgressIndicator(),
-                              )
-                            : Container(height: 1),
-                        _buildHeader(),
-                        _buildButtons(),
-                        _buildLink(),
-                        _buildTable(),
-                      ],
-                    ),
+                  child: Column(
+                    children: <Widget>[
+                      rewardsProvider.updateInProgress
+                          ? const SizedBox(
+                              height: 1,
+                              child: LinearProgressIndicator(),
+                            )
+                          : Container(height: 1),
+                      _buildHeader(),
+                      _buildButtons(),
+                      _buildLink(),
+                      _buildTable(),
+                    ],
                   ),
                 ),
               ),
@@ -66,7 +65,7 @@ class _RewardsPageState extends State<RewardsPage> {
   }
 
   Widget _buildErrorMessage() {
-    if (rewardsProvider.errorMessage == null) return Container();
+    if (rewardsProvider.errorMessage == null) return SizedBox();
 
     return Container(
       alignment: const Alignment(0, 0),
@@ -80,32 +79,28 @@ class _RewardsPageState extends State<RewardsPage> {
   }
 
   Widget _buildLink() {
-    return Container(
-      child: InkWell(
-        onTap: () {
-          launchURL('https://support.komodoplatform.com/support/'
-              'solutions/articles/'
-              '29000024428-komodo-5-active-user-reward-all-you-need-to-know');
-        },
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: <Widget>[
-              Text(
-                AppLocalizations.of(context).rewardsReadMore,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.blue,
-                ),
-              ),
-              const SizedBox(width: 4),
-              Icon(
-                Icons.open_in_new,
-                size: 12,
+    return InkWell(
+      onTap: () => launchURL('https://support.komodoplatform.com/support/'
+          'solutions/articles/'
+          '29000024428-komodo-5-active-user-reward-all-you-need-to-know'),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: <Widget>[
+            Text(
+              AppLocalizations.of(context).rewardsReadMore,
+              style: TextStyle(
+                fontSize: 14,
                 color: Colors.blue,
-              )
-            ],
-          ),
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(
+              Icons.open_in_new,
+              size: 12,
+              color: Colors.blue,
+            )
+          ],
         ),
       ),
     );
@@ -190,7 +185,8 @@ class _RewardsPageState extends State<RewardsPage> {
                               CexMarker(
                                 context,
                                 size: const Size.fromHeight(12),
-                                color: settingsBloc.isLightTheme
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
                                     ? cexColorLight
                                     : cexColor,
                               ),
@@ -213,7 +209,7 @@ class _RewardsPageState extends State<RewardsPage> {
                           height: 1,
                           child: rewardsProvider.claimInProgress
                               ? const LinearProgressIndicator()
-                              : Container(),
+                              : SizedBox(),
                         )
                       ],
                     )
@@ -236,7 +232,7 @@ class _RewardsPageState extends State<RewardsPage> {
       rows.add(_buildTableRow(i, item));
     }
 
-    if (rows.isEmpty) return Container();
+    if (rows.isEmpty) return SizedBox();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,7 +250,8 @@ class _RewardsPageState extends State<RewardsPage> {
           ),
         ),
         Table(
-          border: TableBorder.all(color: Colors.white.withAlpha(15)),
+          border: TableBorder.all(
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3)),
           columnWidths: const {
             0: IntrinsicColumnWidth(),
             3: IntrinsicColumnWidth(),
@@ -294,12 +291,21 @@ class _RewardsPageState extends State<RewardsPage> {
                 Container(
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 8, bottom: 8),
-                  child: Text(
-                    AppLocalizations.of(context).rewardsTableFiat,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  child: Row(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context).rewardsTableFiat,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(width: 2),
+                      CexMarker(
+                        context,
+                        size: const Size.fromHeight(12),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -363,7 +369,9 @@ class _RewardsPageState extends State<RewardsPage> {
                   ),
                 )
               : Container(
-                  color: const Color.fromARGB(60, 1, 102, 129),
+                  color: settingsBloc.isLightTheme
+                      ? const Color.fromARGB(30, 1, 102, 129)
+                      : const Color.fromARGB(60, 1, 102, 129),
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 12, bottom: 12),
                   child: Text(
@@ -394,22 +402,17 @@ class _RewardsPageState extends State<RewardsPage> {
 
                   final amountUsd = item.reward * price;
                   return Container(
-                    color: const Color.fromARGB(60, 1, 102, 129),
                     padding: const EdgeInsets.only(
                         left: 8, right: 8, top: 12, bottom: 12),
                     child: Row(
                       children: [
-                        CexMarker(
-                          context,
-                          size: const Size.fromHeight(12),
-                        ),
-                        const SizedBox(width: 2),
-                        Text(
-                          cexProvider.convert(amountUsd),
-                          maxLines: 1,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
+                        Flexible(
+                          child: AutoScrollText(
+                            text: cexProvider.convert(amountUsd),
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                       ],
@@ -421,7 +424,7 @@ class _RewardsPageState extends State<RewardsPage> {
             padding:
                 const EdgeInsets.only(left: 8, right: 8, top: 12, bottom: 12),
             child: item.stopAt == null || item.stopAt == null
-                ? Container()
+                ? SizedBox()
                 : Builder(builder: (context) {
                     final duration = Duration(
                         milliseconds: item.stopAt * 1000 -
@@ -449,9 +452,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   ),
                 )
               : TableRowInkWell(
-                  onTap: () {
-                    _showStatusHint(item);
-                  },
+                  onTap: () => _showStatusHint(item),
                   child: Container(
                     alignment: const Alignment(1, 0),
                     padding: const EdgeInsets.only(
@@ -485,17 +486,10 @@ class _RewardsPageState extends State<RewardsPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      RaisedButton(
-                        onPressed: () {
-                          dialogBloc.closeDialog(context);
-                        },
-                        child: Text(
-                          AppLocalizations.of(context).rewardsPopupOk,
-                          style: Theme.of(context)
-                              .textTheme
-                              .button
-                              .copyWith(color: Colors.white),
-                        ),
+                      ElevatedButton(
+                        onPressed: () => dialogBloc.closeDialog(context),
+                        child:
+                            Text(AppLocalizations.of(context).rewardsPopupOk),
                       )
                     ],
                   )

@@ -147,7 +147,7 @@ class Contact {
       Contact(
         name: name,
         addresses: addresses,
-        uid: Uuid().v1(),
+        uid: const Uuid().v1(),
       );
 
   Map<String, dynamic> toJson() {

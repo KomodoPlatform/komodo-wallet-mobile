@@ -13,7 +13,7 @@ import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-// TODO(AG): at "_goToNextScreen] swap started…" create a virtual
+// todo(AG): at "_goToNextScreen] swap started…" create a virtual
 // swap that would allow the UI to better track
 // them before they're "Started"
 

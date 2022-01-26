@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:komodo_dex/model/wallet.dart';
-import 'package:flutter_sodium/flutter_sodium.dart';
+import 'package:dargon2_flutter/dargon2_flutter.dart';
 
 class EncryptionTool {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -11,21 +11,38 @@ class EncryptionTool {
   String keyData(KeyEncryption key, Wallet wallet, String password) =>
       '${key.toString()}$password${wallet.name}${wallet.id}';
 
+  // MRC: It seems our previous version of flutter_sodium was using Argon2id,
+  // so I am setting it here as well to keep compatibility
+  // On my testing it allows unlocking the wallet with the old password
+  // Apparently libsodium started using Argon2id since 1.0.15, according to
+  // https://libsodium.gitbook.io/doc/password_hashing/default_phf#notes
+
   Future<bool> isPasswordValid(
       KeyEncryption key, Wallet wallet, String password) async {
     if (key == KeyEncryption.SEED) {
-      return await PasswordHash.verifyStorage(
-              await storage.read(key: keyPassword(key, wallet)), password)
-          .then((bool onValue) =>
-              onValue ? onValue : throw Exception('Invalid password.'))
-          .catchError((dynamic e) => true);
+      bool isValid = false;
+      try {
+        isValid = argon2.verifyHashStringSync(
+          password,
+          await storage.read(key: keyPassword(key, wallet)),
+          type: Argon2Type.id,
+        );
+      } catch (_) {}
+
+      return isValid;
     } else {
       return true;
     }
   }
 
-  Future<String> _computeHash(String data) async =>
-      await PasswordHash.hashStorage(data).catchError((dynamic e) => data);
+  String _computeHash(String data) {
+    final s = Salt.newSalt();
+
+    final result =
+        argon2.hashPasswordStringSync(data, salt: s, type: Argon2Type.id);
+
+    return result.encodedString;
+  }
 
   Future<void> writeData(KeyEncryption key, Wallet wallet, String password,
           String data) async =>
@@ -34,8 +51,7 @@ class EncryptionTool {
           .then((_) async {
         if (key == KeyEncryption.SEED) {
           await storage.write(
-              key: keyPassword(key, wallet),
-              value: await _computeHash(password));
+              key: keyPassword(key, wallet), value: _computeHash(password));
         }
       });
 

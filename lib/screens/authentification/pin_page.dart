@@ -12,20 +12,21 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PinPage extends StatefulWidget {
-  const PinPage(
-      {this.firstCreationPin,
-      this.title,
-      this.subTitle,
-      this.pinStatus,
-      this.isFromChangingPin,
-      this.password,
-      this.onSuccess,
-      this.code});
+  const PinPage({
+    Key key,
+    this.firstCreationPin,
+    this.title,
+    this.subTitle,
+    this.pinStatus,
+    this.isFromChangingPin,
+    this.password,
+    this.onSuccess,
+    this.code,
+  }) : super(key: key);
 
   final bool firstCreationPin;
   @required
@@ -198,10 +199,10 @@ class _PinPageState extends State<PinPage> {
               context: context,
             )
           : null,
-      backgroundColor: Theme.of(context).backgroundColor,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: !isLoading
           ? PinCode(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               title: Text(
                 widget.subTitle,
                 style: Theme.of(context).textTheme.subtitle2,
@@ -212,10 +213,10 @@ class _PinPageState extends State<PinPage> {
               obscurePin: true,
               error: _error,
               errorDelayProgressColor:
-                  settingsBloc.isLightTheme ? Colors.black : Colors.white,
-              keyTextStyle: TextStyle(
-                  color: Theme.of(context).textTheme.headline6.color,
-                  fontSize: Theme.of(context).textTheme.headline6.fontSize),
+                  Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
+              keyTextStyle: Theme.of(context).textTheme.headline6,
               errorDelaySeconds:
                   widget.pinStatus == PinStatus.NORMAL_PIN ? 5 : null,
               codeLength: 6,
@@ -301,9 +302,8 @@ class _PinPageState extends State<PinPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Theme(
-            data: Theme.of(context).copyWith(accentColor: Colors.red),
-            child: CircularProgressIndicator(),
+          CircularProgressIndicator(
+            color: Theme.of(context).errorColor,
           ),
           const SizedBox(
             height: 8,
@@ -322,12 +322,12 @@ class _PinPageState extends State<PinPage> {
 }
 
 class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
-  AppBarStatus(
-      {Key key,
-      @required this.pinStatus,
-      @required this.context,
-      @required this.title})
-      : super(key: key);
+  AppBarStatus({
+    Key key,
+    @required this.pinStatus,
+    @required this.context,
+    @required this.title,
+  }) : super(key: key);
 
   final PinStatus pinStatus;
   final BuildContext context;
@@ -341,39 +341,30 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
       case PinStatus.CREATE_CAMO_PIN:
       case PinStatus.CONFIRM_CAMO_PIN:
         return AppBar(
-          centerTitle: true,
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
           title: Text(title),
         );
         break;
       default:
         return AppBar(
-          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
           automaticallyImplyLeading: pinStatus != PinStatus.NORMAL_PIN,
           actions: <Widget>[
-            InkWell(
-                onTap: () {
-                  showLogoutConfirmation(context);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 12.0,
-                    left: 12,
-                  ),
-                  child: Icon(
-                    Icons.exit_to_app,
-                    key: const Key('settings-pin-logout'),
-                    color: Colors.red,
-                  ),
-                )),
+            IconButton(
+              key: Key('settings-pin-logout'),
+              onPressed: () => showLogoutConfirmation(context),
+              color: Theme.of(context).errorColor,
+              icon: Icon(Icons.exit_to_app),
+              splashRadius: 24,
+            ),
           ],
-          backgroundColor: Theme.of(context).backgroundColor,
           title: Text(title),
-          elevation: 0,
         );
     }
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

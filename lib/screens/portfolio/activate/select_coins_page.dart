@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
@@ -59,13 +58,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       context: context,
       child: Scaffold(
           appBar: AppBar(
-            titleSpacing: 6.0,
-            backgroundColor: Theme.of(context).backgroundColor,
-            elevation: 0,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
             title: SearchFieldFilterCoin(
-              clear: () {
-                _initCoinList();
-              },
+              clear: () => _initCoinList(),
               onFilterCoins: (List<Coin> coinsFiltered) {
                 setState(() {
                   _currentCoins = coinsFiltered;
@@ -76,18 +71,13 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
             leading: Builder(
               builder: (BuildContext context) {
                 return IconButton(
-                  icon: Icon(
-                    Icons.close,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  icon: Icon(Icons.close),
+                  splashRadius: 24,
+                  onPressed: () => Navigator.of(context).pop(),
                 );
               },
             ),
           ),
-          backgroundColor: Theme.of(context).backgroundColor,
           body: StreamBuilder<CoinToActivate>(
               initialData: coinsBloc.currentActiveCoin,
               stream: coinsBloc.outcurrentActiveCoin,
@@ -98,14 +88,14 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 } else {
                   return _isDone
                       ? LoadingCoin()
-                      : Stack(
-                          alignment: AlignmentDirectional.bottomCenter,
-                          children: <Widget>[
-                            ListView.builder(
-                              padding: const EdgeInsets.only(bottom: 100),
-                              itemCount: _listViewItems.length,
-                              itemBuilder: (BuildContext context, int i) =>
-                                  _listViewItems[i],
+                      : Column(
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: _listViewItems.length,
+                                itemBuilder: (BuildContext context, int i) =>
+                                    _listViewItems[i],
+                              ),
                             ),
                             _buildDoneButton(),
                           ],
@@ -129,10 +119,13 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   List<Widget> _buildListView() {
     return [
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
         child: Text(
           AppLocalizations.of(context).selectCoinInfo,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1
+              .copyWith(color: Theme.of(context).colorScheme.onBackground),
         ),
       ),
       const SizedBox(
@@ -205,36 +198,31 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   }
 
   Widget _buildDoneButton() {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      child: SafeArea(
-        child: Container(
-          height: 60,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: StreamBuilder<List<CoinToActivate>>(
-                  initialData: coinsBloc.coinBeforeActivation,
-                  stream: coinsBloc.outCoinBeforeActivation,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<CoinToActivate>> snapshot) {
-                    bool isButtonActive = false;
-                    if (snapshot.hasData) {
-                      for (CoinToActivate coinToActivate in snapshot.data) {
-                        if (coinToActivate.isActive) {
-                          isButtonActive = true;
-                        }
-                      }
+    return SizedBox(
+      height: 60,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: StreamBuilder<List<CoinToActivate>>(
+              initialData: coinsBloc.coinBeforeActivation,
+              stream: coinsBloc.outCoinBeforeActivation,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<CoinToActivate>> snapshot) {
+                bool isButtonActive = false;
+                if (snapshot.hasData) {
+                  for (CoinToActivate coinToActivate in snapshot.data) {
+                    if (coinToActivate.isActive) {
+                      isButtonActive = true;
                     }
-                    return PrimaryButton(
-                      key: const Key('done-activate-coins'),
-                      text: AppLocalizations.of(context).done,
-                      isLoading: _isDone,
-                      onPressed: isButtonActive ? _pressDoneButton : null,
-                    );
-                  }),
-            ),
-          ),
+                  }
+                }
+                return PrimaryButton(
+                  key: const Key('done-activate-coins'),
+                  text: AppLocalizations.of(context).done,
+                  isLoading: _isDone,
+                  onPressed: isButtonActive ? _pressDoneButton : null,
+                );
+              }),
         ),
       ),
     );
@@ -267,11 +255,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  RaisedButton(
+                  ElevatedButton(
+                    onPressed: () => dialogBloc.closeDialog(context),
                     child: Text(AppLocalizations.of(context).warningOkBtn),
-                    onPressed: () {
-                      dialogBloc.closeDialog(context);
-                    },
                   ),
                 ],
               ),

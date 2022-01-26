@@ -28,145 +28,143 @@ dependencies:
   # https://pub.dev/packages/cupertino_icons
   # https://github.com/flutter/cupertino_icons
   # Secure code reviewed
-  cupertino_icons: 0.1.3 # flutter.dev
+  cupertino_icons: 1.0.4 # flutter.dev (Note: Supports null safety)
 
   # flutter_cupertino_localizations: ^1.0.1
 
   # https://pub.dev/packages/audioplayers
-  audioplayers: # 0.14.0 - DONE: Secure code reviewed 859c88c
-    git:
-      url: git://github.com/KomodoPlatform/audioplayers.git
-      ref: 859c88c2c3fe926bdbb6e5e729d3c16d088be76a
+  audioplayers: 0.20.1 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/audioplayers.git
+      #ref: 859c88c2c3fe926bdbb6e5e729d3c16d088be76a
 
   # https://pub.dev/packages/file_picker
-  file_picker: # 2.1.7 - DONE: Secure code reviewed diff b68ee11c6ac117460ffa0c96b13ac4b89f2386f7 627c0a31b22026809cea3c5cb3c0a81d2a632117
-    git:
-      url: git://github.com/KomodoPlatform/flutter_file_picker.git
-      ref: 627c0a31b22026809cea3c5cb3c0a81d2a632117
+  file_picker: 4.2.3 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/flutter_file_picker.git
+      #ref: 627c0a31b22026809cea3c5cb3c0a81d2a632117
 
   # https://pub.dev/packages/path_provider
   # https://github.com/flutter/plugins
-  path_provider: 1.6.22 # flutter.dev
+  path_provider: 2.0.7 # flutter.dev (Note: Supports null safety)
 
   # https://pub.dev/packages/provider
-  provider: # 4.0.4 - DONE: Secure code reviewed 0c1394a
-    git:
-      url: https://github.com/KomodoPlatform/provider
-      ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
+  provider: 6.0.1 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: https://github.com/KomodoPlatform/provider
+      #ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
 
   # origin https://pub.dev/packages/encrypt
-  encrypt: # 4.0.3 - DONE: Secure code reviewed b17327a
-    git:
-      url: https://github.com/KomodoPlatform/encrypt
-      ref: 4.0.3
+  encrypt: 5.0.1 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: https://github.com/KomodoPlatform/encrypt
+      #ref: 4.0.3
 
 dev_dependencies:
   flutter_driver: # flutter.dev
     sdk: flutter
   flutter_test: # flutter.dev
     sdk: flutter
-  test: 1.16.0-nullsafety.5 # dart.dev
-  mockito: 4.1.1 # dart.dev
-  http: 0.12.0+4 # dart.dev
-  qr_flutter: # 3.2.0 - DONE: Secure code reviewed diff 60b20d1 (2.0.0) 587c969 (3.2.0) - DONE: sub dependencies reviewed: qr-dart (7a1d379)
-    git:
-      url: git://github.com/KomodoPlatform/qr.flutter.git
-      ref: 587c969052f37d9fc0f14801aba241bffbc1ea84
-  auto_size_text: # 2.1.0 - DONE: Secure code reviewed diff 2b3ed87 ( 1.1.2) a2cb00 (2.1.0)
-    git:
-      url: git://github.com/KomodoPlatform/auto_size_text.git
-      ref: a2cb00e548916731f5c4c241d79a93419a4f9447
-  barcode_scan: # 2.0.1 - DONE: Secure code reviewed diff b2900df (1.0.0) a4a010c (2.0.1)
-    git:
-      url: git://github.com/KomodoPlatform/flutter_barcode_reader.git
-      ref: a4a010ca31b67d6ef331786bb93d79cb71f1f327
-  shared_preferences: 0.5.12+2 # flutter.dev
-  bip39: # 1.0.3 - DONE: Secure code reviewed dbd846b (1.0.3) - DONE: sub dependencies reviewed
-    git:
-      url: git://github.com/ca333/bip39-dart.git
-      ref: 3bee3eedb28ba5ae1af82873c8e5b6f32038b8a1
-  pin_code_view: # SECURE REVIEW REQUIRED: reviewed c0b6516
+
+  # recommended linter rules
+  flutter_lints: 1.0.4 # flutter.dev (Note: Supports null safety)
+
+  test: 1.17.12 # dart.dev (Note: Supports null safety)
+
+  mockito: 5.0.16 # dart.dev (Note: Supports null safety)
+  http: 0.13.4 # dart.dev (Note: Supports null safety)
+  qr_flutter: 4.0.0 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/qr.flutter.git
+      #ref: 587c969052f37d9fc0f14801aba241bffbc1ea84
+  auto_size_text: 3.0.0 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/auto_size_text.git
+      #ref: a2cb00e548916731f5c4c241d79a93419a4f9447
+
+  # barcode_scan was discontinued, I was originally going to replace it with a fork
+  # but instead decided to replace with a completely new plugin
+  qr_code_scanner: 0.6.1 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+
+  shared_preferences: 2.0.8 # flutter.dev (Note: Supports null safety)
+  bip39: 1.0.6 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/ca333/bip39-dart.git
+      #ref: 3bee3eedb28ba5ae1af82873c8e5b6f32038b8a1
+  pin_code_view: # SECURE REVIEW REQUIRED: reviewed c0b6516 (Note: DOES NOT support null safety)
     git:
       url: git://github.com/KomodoPlatform/pin_code_view.git
       ref: d471b040206870b002cf0154772c1bca4c5dfe46
-  crypto: 2.1.5 # dart.dev
-  intl_translation: 0.17.10+1 # dart.dev
-  bs58check: # 1.0.1 - DONE: Secure code reviewed 2889fa8 (1.0.1)
-    git:
-      url: git://github.com/KomodoPlatform/bs58check-dart.git
-      ref: e313f58289d5f4be711a6b430b7f3bb96712c6cc
-  url_launcher: 5.4.1 # flutter.dev
-  share: 0.6.5+4 # flutter.dev
+  crypto: 3.0.1 # dart.dev (Note: Supports null safety)
+  # intl_translation causes version solving problems
+  # it also seems to haven't been updated in a while
+  # therefore it was switched for a fork that is more up-to-date
+  intl_generator: 0.2.1 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+
+  bs58check: 1.0.2 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/bs58check-dart.git
+      #ref: e313f58289d5f4be711a6b430b7f3bb96712c6cc
+  url_launcher: 6.0.13 # flutter.dev (Note: Supports null safety)
+  share: 2.0.4 # flutter.dev (Note: Supports null safety)
   # https://pub.dev/packages/local_auth, canCheckBiometrics, getAvailableBiometrics
-  local_auth: 0.6.3+3 # flutter.dev
-  flutter_svg: # 0.18.1 - DONE: Secure code reviewed diff a05263d (0.13.1) 03ed93a (0.18.1) - DONE: sub dependencies reviewed: path_drawing(05be72d), xml(d161771), dart_path_parsing(59916eb)
-    git:
-      url: git://github.com/KomodoPlatform/flutter_svg.git
-      ref: 03ed93a576381f2369bd05f8b833a2273705fe69
-  keccak: # 1.0.3 - DONE: Secure code reviewed 4202080 (1.0.3)
-    git:
-      url: git://github.com/KomodoPlatform/keccak.git
-      ref: 420208090228f49237e080a31d1b627ec454d1cd
-  timeago: # 2.0.26 - DONE: Secure code reviewed 9aeb585 (2.0.26)
-    git:
-      url: git://github.com/KomodoPlatform/timeago.dart.git
-      path: timeago/
-      ref: 9aeb58544067d4a2cc480da3741db9c35d1f36f3
-  sqflite: # 1.2.2+1 - DONE: Secure code reviewed diff 3cd583b (1.1.2-dev) 8da4eef (1.2.2+1) - DONE: sub dependencies reviewed: process_run(129f744), tekartik_travis_ci_flutter(83a30d5)
-    git:
-      url: git://github.com/KomodoPlatform/sqflite.git
-      path: sqflite/
-      ref: 8da4eefdd8b13dfe7eedbd5dea1c1dded7d04acf
-  carousel_slider: # 1.4.1 - DONE: Secure code reviewed diff cec5240 (1.3.1) 115ce46 (1.4.1)
-    git:
-      url: git://github.com/KomodoPlatform/flutter_carousel_slider.git
-      ref: 115ce460e6d6e8382e97f6f2e2ad39d90d6485d7
-  flutter_secure_storage: # 3.3.1+2 - DONE: Secure code reviewed diff 31c34d6 (3.2.1+1) eef67d3 (3.3.1+2)
-    git:
-      url: git://github.com/KomodoPlatform/flutter_secure_storage.git
-      ref: eef67d3d006b2c53453df183f7d4ac081948e110
-  uuid: # 2.0.4 - DONE: Secure code reviewed diff 1b7db8f (2.0.1) 981adca (2.0.4)
-    git:
-      url: git://github.com/KomodoPlatform/dart-uuid.git
-      ref: 981adcac181443e3def4ced76a43b96c534e68ce
-  connectivity: 0.4.6+2 # flutter.dev
-  flutter_slidable: # 0.5.4 - DONE: Secure code reviewed diff 9bf12c (0.5.3) 27bbe0d (0.5.4)
-    git:
-      url: https://github.com/KomodoPlatform/flutter_slidable.git
-      ref: 27bbe0dfa9866ae01e8001267e873221ef5fbd67
-  package_info: 0.4.3 # flutter.dev
-  flutter_launcher_icons: # 0.7.4 - DONE: Secure code reviewed diff 869b629 (0.7.2+1) c2584ef (0.7.4)
-    git:
-      url: git://github.com/KomodoPlatform/flutter_launcher_icons.git
-      ref: c2584ef5b381e7343dfa18acddae9becdabd9727
-  decimal: # 0.3.5 - DONE: Secure code reviewed 93fcaab (0.3.5)
-    git:
-      url: git://github.com/KomodoPlatform/dart-decimal.git
-      ref: 93fcaabe2da686b1987a351a03a70e86edf6504f
+  local_auth: 1.1.8 # flutter.dev (Note: Supports null safety)
+  flutter_svg: 0.23.0+1 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/flutter_svg.git
+      #ref: 03ed93a576381f2369bd05f8b833a2273705fe69
 
-  # AG: Error `value of type 'UnsafePointer<_>' has no member 'bindMemory'`
-  # means that flutter_sodium is using SWIFT 5 code
-  # (merged in https://github.com/firstfloorsoftware/flutter_sodium/pull/16).
-  # Downgrade to "0.0.9" to fix.
-  # I thought about upgrading the flutter project to Swift 5,
-  # but Xcode 10.1 on our Mac CI server only supports Swift 4.2
-  # (cf. https://www.swiftprogrammer.info/swift5_high_sierra.html: "your best bet is to upgrade your Mac")
-  #flutter_sodium: 0.0.9
-  #flutter_sodium: 0.0.10
+  # keccak hasn't been updated since 2019 and its dependencies can't be solved
+  # keccak: 1.0.3 # 1.0.3 - DONE: Secure code reviewed 4202080 (1.0.3)
+    #git:
+      #url: git://github.com/KomodoPlatform/keccak.git
+      #ref: 420208090228f49237e080a31d1b627ec454d1cd
+  timeago: 3.1.0 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/timeago.dart.git
+      #path: timeago/
+      #ref: 9aeb58544067d4a2cc480da3741db9c35d1f36f3
+  sqflite: 2.0.0+4 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/sqflite.git
+      #path: sqflite/
+      #ref: 8da4eefdd8b13dfe7eedbd5dea1c1dded7d04acf
+  carousel_slider: 4.0.0 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/flutter_carousel_slider.git
+      #ref: 115ce460e6d6e8382e97f6f2e2ad39d90d6485d7
+  flutter_secure_storage: 5.0.2 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/flutter_secure_storage.git
+      #ref: eef67d3d006b2c53453df183f7d4ac081948e110
+  uuid: 3.0.5 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/dart-uuid.git
+      #ref: 981adcac181443e3def4ced76a43b96c534e68ce
+  # connectivity has been deprecated and replaced by a Flutter Community Plus Plugin
+  connectivity_plus: 2.0.3 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+  flutter_slidable: 1.1.0 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: https://github.com/KomodoPlatform/flutter_slidable.git
+      #ref: 27bbe0dfa9866ae01e8001267e873221ef5fbd67
+  # package_info has been deprecated and replaced by a Flutter Community Plus Plugin
+  package_info_plus: 1.3.0 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+  flutter_launcher_icons: 0.9.2 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/flutter_launcher_icons.git
+      #ref: c2584ef5b381e7343dfa18acddae9becdabd9727
+  decimal: 1.3.0 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+    #git:
+      #url: git://github.com/KomodoPlatform/dart-decimal.git
+      #ref: 93fcaabe2da686b1987a351a03a70e86edf6504f
 
-  # flutter_sodium 0.0.11 still has error with latest flutter version 1.14.3
-  # while assembling android release:
-  # "Execution failed for task ':flutter_sodium:verifyReleaseResources'"
-  # This error is caused by using old compileSdkVersion - 27
-  # https://github.com/firstfloorsoftware/flutter_sodium/issues/28
-  # Our fork has a fixed compileSdkVersion - 28:
-  # https://github.com/KomodoPlatform/flutter_sodium
-  #flutter_sodium: ^0.0.11
-  # TODO: selfhost libsodium-jni (android implementation depends on AAR library from https://github.com/joshjdevl/libsodium-jni)
-  flutter_sodium: # 0.0.11 - DONE: Secure code reviewed 3d6f8d8 (0.0.11) - TODO: read ^
-    git:
-      url: git://github.com/KomodoPlatform/flutter_sodium.git
-      ref: 3d6f8d89b4e5f5fbb46b0f230a760b3930c57a39
+  # MRC: Argon2 was our only remaining use of flutter_sodium, so I'm now switching
+  # to a plugin that only does Argon2, therefore dropping our dependency on
+  # flutter_sodium completely
+
+  dargon2_flutter: 2.1.0 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+
+  #flutter_sodium: 0.2.0 # needs secure code review
 
 flutter_icons:
   android: true

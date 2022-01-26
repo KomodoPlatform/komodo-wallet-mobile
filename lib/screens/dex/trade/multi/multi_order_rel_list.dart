@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -101,7 +100,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
         initialData: coinsBloc.coinBalance,
         stream: coinsBloc.outCoins,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return Container();
+          if (!snapshot.hasData) return SizedBox();
 
           bool allSelected = true;
           for (CoinBalance item in snapshot.data) {
@@ -116,6 +115,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
           return Container(
             padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
             alignment: Alignment.center,
+            // todo(MRC): Try to switch this to either a IconButton or a Switch
             child: InkWell(
               onTap: () {
                 final bool val = !allSelected;
@@ -130,7 +130,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                 _updateAmtFields();
                 _calculateAmts();
               },
-              child: Container(
+              child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Container(
                   padding: const EdgeInsets.all(1),
@@ -138,14 +138,14 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       borderRadius: BorderRadius.circular(2),
                       border: Border.all(
                         color: allSelected
-                            ? Theme.of(context).accentColor
+                            ? Theme.of(context).colorScheme.secondary
                             : Theme.of(context).textTheme.bodyText1.color,
                       )),
                   child: Icon(
                     Icons.done_all,
                     size: 11,
                     color: allSelected
-                        ? Theme.of(context).accentColor
+                        ? Theme.of(context).colorScheme.secondary
                         : Theme.of(context).textTheme.bodyText1.color,
                   ),
                 ),
@@ -157,7 +157,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -166,18 +166,13 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
-          InkWell(
-            onTap: () {
-              _showAutoFillDialog();
-            },
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
-              child: Icon(
-                Icons.flash_auto,
-                size: 14,
-                color: Theme.of(context).textTheme.bodyText1.color,
-              ),
-            ),
+          IconButton(
+            onPressed: () => _showAutoFillDialog(),
+            iconSize: 16,
+            constraints: BoxConstraints(maxHeight: 24, maxWidth: 24),
+            splashRadius: 16,
+            padding: EdgeInsets.all(0),
+            icon: Icon(Icons.flash_auto),
           ),
         ],
       ),
@@ -203,12 +198,6 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
                       maxLines: 1,
-                      decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor),
-                        ),
-                      ),
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(16),
                         DecimalTextInputFormatter(decimalRange: 8),
@@ -221,7 +210,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  FlatButton(
+                  TextButton(
                     onPressed: () {
                       fiatAmtCtrl.text = '';
                       dialogBloc.closeDialog(context);
@@ -229,7 +218,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                     child: Text(AppLocalizations.of(context).multiFiatCancel),
                   ),
                   const SizedBox(width: 12),
-                  RaisedButton(
+                  ElevatedButton(
                     onPressed: () {
                       double fiatAmt;
                       try {

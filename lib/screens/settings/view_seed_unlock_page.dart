@@ -7,7 +7,6 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/settings/view_private_keys.dart';
 import 'package:komodo_dex/screens/settings/view_seed.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
@@ -25,20 +24,15 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).backgroundColor,
-          elevation: 0,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
           title:
               Text(AppLocalizations.of(context).viewSeedAndKeys.toUpperCase()),
-          centerTitle: true,
           actions: <Widget>[
-            InkWell(
-              onTap: () => Navigator.of(context).pop(),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Center(child: Text(AppLocalizations.of(context).done)),
-              ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(AppLocalizations.of(context).done.toUpperCase()),
             )
           ],
         ),
@@ -55,9 +49,10 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                 )
               : UnlockPassword(
                   currentWallet: walletBloc.currentWallet,
-                  icon: SvgPicture.asset(settingsBloc.isLightTheme
-                      ? 'assets/svg_light/seed_logo.svg'
-                      : 'assets/svg/seed_logo.svg'),
+                  icon: SvgPicture.asset(
+                      Theme.of(context).brightness == Brightness.light
+                          ? 'assets/svg_light/seed_logo.svg'
+                          : 'assets/svg/seed_logo.svg'),
                   onSuccess: (String data) {
                     setState(() {
                       seed = data;
@@ -65,7 +60,7 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                     });
                   },
                   onError: (String data) {
-                    Scaffold.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: const Duration(seconds: 2),
                       backgroundColor: Theme.of(context).errorColor,
                       content: Text(data),
@@ -120,9 +115,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
           maxLength: 40,
           controller: controller,
           textInputAction: TextInputAction.done,
-          onSubmitted: (String data) {
-            _checkPassword(data);
-          },
+          onSubmitted: (String data) => _checkPassword(data),
           onChanged: (String data) {
             setState(() {
               data.isNotEmpty
@@ -141,16 +134,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
           ),
           style: Theme.of(context).textTheme.bodyText2,
           decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).primaryColorLight)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor)),
-            hintStyle: Theme.of(context).textTheme.bodyText1,
-            labelStyle: Theme.of(context).textTheme.bodyText2,
             hintText: AppLocalizations.of(context).hintCurrentPassword,
-            labelText: null,
             suffixIcon: PasswordVisibilityControl(
               isFocused: isFocus,
               onVisibilityChange: (bool isPasswordObscured) {

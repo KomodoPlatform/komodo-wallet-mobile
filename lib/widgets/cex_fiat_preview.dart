@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
@@ -29,7 +28,7 @@ class CexFiatPreview extends StatelessWidget {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.baseline,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CexMarker(
           context,
@@ -44,7 +43,7 @@ class CexFiatPreview extends StatelessWidget {
             style: textStyle ??
                 TextStyle(
                   fontSize: 14,
-                  color: settingsBloc.isLightTheme
+                  color: Theme.of(context).brightness == Brightness.light
                       ? cexColorLight.withAlpha(150)
                       : cexColor.withAlpha(150),
                 ),

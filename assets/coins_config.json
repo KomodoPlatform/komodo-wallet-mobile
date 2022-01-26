@@ -424,16 +424,17 @@
     {
         "name": "Navcoin",
         "type": "utxo",
-        "address": "electrum1.cipig.net",
-        "port": 10056,
-        "proto": "tcp",
+        "address": "electrum.nav.community",
+        "port": 40002,
+        "proto": "SSL",
         "abbr": "NAV",
         "coingeckoId": "nav-coin",
         "colorCoin": "0xFFA83BAB",
         "serverList": [
-            "electrum1.cipig.net:10056",
-            "electrum2.cipig.net:10056",
-            "electrum3.cipig.net:10056"
+            "electrum.nav.community:40002",
+            "electrum2.nav.community:40002",
+            "electrum3.nav.community:40002",
+            "electrum4.nav.community:40002"
         ],
         "explorerUrl": [
             "https://www.navexplorer.com/"

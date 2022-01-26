@@ -153,11 +153,11 @@ class Match {
   Request reserved;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'connect': connect == null ? null : connect.toJson(),
-        'connected': connected == null ? null : connected.toJson(),
+        'connect': connect?.toJson(),
+        'connected': connected?.toJson(),
         'last_updated': lastUpdated ?? 0,
-        'request': request == null ? null : request.toJson(),
-        'reserved': reserved == null ? null : reserved.toJson(),
+        'request': request?.toJson(),
+        'reserved': reserved?.toJson(),
       };
 }
 

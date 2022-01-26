@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
+//import 'dart:typed_data';
 
-import 'package:convert/convert.dart';
+//import 'package:convert/convert.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bip39/bip39.dart' as bip39;
-import 'package:keccak/keccak.dart';
+//import 'package:keccak/keccak.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -22,23 +22,25 @@ import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
+import 'package:komodo_dex/widgets/qr_view.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rational/rational.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../localizations.dart';
 
 void copyToClipBoard(BuildContext context, String str) {
-  ScaffoldState scaffold;
+  ScaffoldMessengerState scaffoldMessenger;
   try {
-    scaffold = Scaffold.of(context);
+    scaffoldMessenger = ScaffoldMessenger.of(context);
   } catch (_) {}
 
-  if (scaffold != null) {
-    scaffold.showSnackBar(SnackBar(
+  if (scaffoldMessenger != null) {
+    scaffoldMessenger.showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       content: Text(AppLocalizations.of(context).clipboard),
     ));
@@ -46,6 +48,10 @@ void copyToClipBoard(BuildContext context, String str) {
   Clipboard.setData(ClipboardData(text: str));
 }
 
+// MRC: This is apparently unused and uses the keccak plugin that we aren't
+// aren't able to use
+
+/*
 bool isAddress(String address) {
   if (RegExp('!/^(0x)?[0-9a-f]{40}\$/i').hasMatch(address)) {
     return false;
@@ -76,6 +82,7 @@ bool isChecksumAddress(String address) {
   }
   return true;
 }
+*/
 
 /// Convers a null, a string or a double into a Decimal.
 Decimal deci(dynamic dv) {
@@ -166,7 +173,7 @@ bool isNumeric(String s) {
 }
 
 void showMessage(BuildContext mContext, String error) {
-  Scaffold.of(mContext).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
     duration: const Duration(seconds: 3),
     backgroundColor: Theme.of(mContext).primaryColor,
     content: Text(
@@ -177,7 +184,7 @@ void showMessage(BuildContext mContext, String error) {
 }
 
 void showErrorMessage(BuildContext mContext, String error) {
-  Scaffold.of(mContext).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
     duration: const Duration(seconds: 2),
     backgroundColor: Theme.of(mContext).errorColor,
     content: Text(
@@ -231,7 +238,8 @@ Future<bool> authenticateBiometrics(
     final int lockCookie = lockService.enteringBiometrics();
 
     try {
-      didAuthenticate = await localAuth.authenticateWithBiometrics(
+      didAuthenticate = await localAuth.authenticate(
+          biometricOnly: true,
           stickyAuth: true,
           localizedReason: AppLocalizations.of(context).lockScreenAuth);
     } on PlatformException catch (e) {
@@ -278,7 +286,7 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
                 style: Theme.of(context).textTheme.bodyText2,
                 children: <TextSpan>[
                   TextSpan(
-                      text: '${coin.name}',
+                      text: coin.name,
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2
@@ -293,16 +301,10 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                RaisedButton(
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
                   child: Text(
-                    AppLocalizations.of(context).cantDeleteDefaultCoinOk,
-                    style: Theme.of(context).textTheme.button.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                      AppLocalizations.of(context).cantDeleteDefaultCoinOk),
                 ),
               ],
             ),
@@ -327,7 +329,7 @@ Future<void> showConfirmationRemoveCoin(
                     children: <TextSpan>[
                   TextSpan(text: AppLocalizations.of(context).deleteSpan1),
                   TextSpan(
-                      text: '${coin.name}',
+                      text: coin.name,
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2
@@ -338,25 +340,12 @@ Future<void> showConfirmationRemoveCoin(
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                FlatButton(
-                  child: Text(
-                    AppLocalizations.of(context).cancel,
-                    style: Theme.of(context).textTheme.button,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(AppLocalizations.of(context).cancel),
                 ),
                 const SizedBox(width: 12),
-                RaisedButton(
-                  color: Theme.of(context).errorColor,
-                  child: Text(
-                    AppLocalizations.of(context).confirm,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Colors.white),
-                  ),
+                ElevatedButton(
                   onPressed: () async {
                     try {
                       await coinsBloc.removeCoin(coin);
@@ -365,6 +354,10 @@ Future<void> showConfirmationRemoveCoin(
                     }
                     Navigator.of(context).pop();
                   },
+                  style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).errorColor,
+                  ),
+                  child: Text(AppLocalizations.of(context).confirm),
                 )
               ],
             ),
@@ -729,17 +722,12 @@ void showUriDetailsDialog(
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                AppLocalizations.of(context).paymentUriDetailsAddressSpan + ':',
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
+              Text(AppLocalizations.of(context).paymentUriDetailsAddressSpan +
+                  ':'),
             ],
           ),
           SizedBox(height: 6),
-          Text(
-            address,
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
+          Text(address),
           SizedBox(height: 24),
           if (!isActivated) ...{
             Text(
@@ -750,11 +738,9 @@ void showUriDetailsDialog(
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                RaisedButton(
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
                   child: Text(AppLocalizations.of(context).okButton),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
                 )
               ],
             )
@@ -762,20 +748,18 @@ void showUriDetailsDialog(
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                FlatButton(
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
                   child:
                       Text(AppLocalizations.of(context).paymentUriDetailsDeny),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
                 ),
-                RaisedButton(
-                  child: Text(
-                      AppLocalizations.of(context).paymentUriDetailsAccept),
+                ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                     callbackIfAccepted();
                   },
+                  child: Text(
+                      AppLocalizations.of(context).paymentUriDetailsAccept),
                 )
               ],
             )
@@ -805,6 +789,18 @@ List<Coin> filterCoinsByQuery(List<Coin> coins, String query) {
           coin.name.toLowerCase().contains(query.trim().toLowerCase()))
       .toList();
   return list;
+}
+
+Future<String> scanQr(BuildContext context) async {
+  unfocusTextField(context);
+  await Future.delayed(const Duration(milliseconds: 200));
+  final barcode = await Navigator.of(context).push<Barcode>(
+    MaterialPageRoute(builder: (context) => AppQRView()),
+  );
+
+  if (barcode == null) return null;
+
+  return barcode.code;
 }
 
 /// Function to generate password based on some criteria
@@ -881,4 +877,21 @@ int extractStartedAtFromSwap(MmSwap swap) {
         : (startEvent.timestamp / 1000).floor();
   }
   return 0;
+}
+
+// According to https://flutterigniter.com/dismiss-keyboard-form-lose-focus/
+// this is the correct way to unfocus a TextField (so the keyboard is dismissed)
+// it's recommended over `FocusScope.of(context).requestFocus(new FocusNode())`
+void unfocusTextField(BuildContext context) {
+  FocusScopeNode currentFocus = FocusScope.of(context);
+
+  if (!currentFocus.hasPrimaryFocus) {
+    currentFocus.unfocus();
+  }
+}
+
+void moveCursorToEnd(TextEditingController controller) {
+  controller.selection = TextSelection.fromPosition(
+    TextPosition(offset: controller.text.length),
+  );
 }

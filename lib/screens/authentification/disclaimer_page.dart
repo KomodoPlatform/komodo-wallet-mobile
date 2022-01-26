@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/wallet.dart';
@@ -13,13 +12,14 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DisclaimerPage extends StatefulWidget {
-  const DisclaimerPage(
-      {Key key,
-      this.password,
-      this.seed,
-      this.onSuccess,
-      this.readOnly = false})
-      : super(key: key);
+  const DisclaimerPage({
+    Key key,
+    this.password,
+    this.seed,
+    this.onSuccess,
+    this.readOnly = false,
+  }) : super(key: key);
+
   final String password;
   final String seed;
   final Function onSuccess;
@@ -233,53 +233,51 @@ class _DisclaimerPageState extends State<DisclaimerPage>
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: <Widget>[
-          widget.readOnly
-              ? Container()
-              : Column(
+          if (!widget.readOnly)
+            Column(
+              children: <Widget>[
+                Row(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Checkbox(
-                          key: const Key('checkbox-eula'),
-                          value: _checkBoxEULA,
-                          onChanged: (bool value) {
-                            setState(() {
-                              _checkBoxEULA = !_checkBoxEULA;
-                            });
-                          },
-                        ),
-                        Flexible(
-                            child:
-                                Text(AppLocalizations.of(context).accepteula)),
-                      ],
+                    Checkbox(
+                      key: const Key('checkbox-eula'),
+                      value: _checkBoxEULA,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _checkBoxEULA = !_checkBoxEULA;
+                        });
+                      },
                     ),
-                    Row(
-                      children: <Widget>[
-                        Checkbox(
-                          key: const Key('checkbox-toc'),
-                          value: _checkBoxTOC,
-                          onChanged: (bool value) {
-                            setState(() {
-                              _checkBoxTOC = !_checkBoxTOC;
-                            });
-                          },
-                        ),
-                        Flexible(
-                            child: Text(
-                          AppLocalizations.of(context).accepttac,
-                        )),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
-                      child: Text(
-                        AppLocalizations.of(context).confirmeula,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ),
+                    Flexible(
+                        child: Text(AppLocalizations.of(context).accepteula)),
                   ],
                 ),
+                Row(
+                  children: <Widget>[
+                    Checkbox(
+                      key: const Key('checkbox-toc'),
+                      value: _checkBoxTOC,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _checkBoxTOC = !_checkBoxTOC;
+                        });
+                      },
+                    ),
+                    Flexible(
+                        child: Text(
+                      AppLocalizations.of(context).accepttac,
+                    )),
+                  ],
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  child: Text(
+                    AppLocalizations.of(context).confirmeula,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ),
+              ],
+            ),
           PrimaryButton(
             key: const Key('next-disclaimer'),
             onPressed: (widget.readOnly
@@ -292,17 +290,15 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                 : AppLocalizations.of(context).next,
             isLoading: isLoading,
           ),
-          isLoading
-              ? const SizedBox(
-                  height: 8,
-                )
-              : Container(),
-          isLoading
-              ? Text(
-                  AppLocalizations.of(context).encryptingWallet,
-                  style: Theme.of(context).textTheme.bodyText2,
-                )
-              : Container()
+          if (isLoading) ...[
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              AppLocalizations.of(context).encryptingWallet,
+              style: Theme.of(context).textTheme.bodyText2,
+            )
+          ]
         ],
       ),
     );
@@ -328,7 +324,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                 });
               },
               child: FloatingActionButton(
-                child: Icon(Icons.arrow_downward),
+                child: const Icon(Icons.arrow_downward),
                 onPressed: () {
                   if (isEndOfScroll) {
                     timer.cancel();
@@ -346,14 +342,10 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).disclaimerAndTos,
-            style: Theme.of(context).textTheme.headline6,
-          ),
+          title: Text(AppLocalizations.of(context).disclaimerAndTos),
           backgroundColor: Colors.transparent,
-          elevation: 0,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
         body: SafeArea(
           // On small screens and in split-screen mode
           // page controls (checkboxes, button) should not be docked

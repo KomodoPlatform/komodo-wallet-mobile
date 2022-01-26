@@ -91,7 +91,7 @@ class MultiOrderProvider extends ChangeNotifier {
   }
 
   double getRelCoinAmt(String coin) {
-    return _relCoins[coin] == null ? null : _relCoins[coin].amount;
+    return _relCoins[coin]?.amount;
   }
 
   TradePreimage getPreimage(String coin) => _relCoins[coin]?.preimage;

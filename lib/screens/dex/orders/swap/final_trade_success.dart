@@ -9,7 +9,6 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/detail_swap.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/share_preview_overlay.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/swap_share_card.dart';
@@ -76,10 +75,10 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 35),
-                    child: Container(
+                    child: SizedBox(
                       height: 200,
                       child: SvgPicture.asset(
-                          settingsBloc.isLightTheme
+                          Theme.of(context).brightness == Brightness.light
                               ? 'assets/svg_light/trade_success.svg'
                               : 'assets/svg/trade_success.svg',
                           semanticsLabel: 'Trade Success'),
@@ -103,7 +102,10 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6
-                                .copyWith(color: Theme.of(context).accentColor),
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
                           ),
                           Expanded(
                             child: appConfig.isSwapShareCardEnabled

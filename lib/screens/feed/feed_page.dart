@@ -68,17 +68,12 @@ class _FeedPageState extends State<FeedPage>
               ),
             )
           : AppBar(
-              title: Center(
-                  child: Text(
-                AppLocalizations.of(context).feedTitle.toUpperCase(),
-                style: Theme.of(context).textTheme.subtitle2,
-              )),
+              title: Text(AppLocalizations.of(context).feedTitle.toUpperCase()),
               automaticallyImplyLeading: false,
             );
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: _buildAppBar(),
       body: TabBarView(
         controller: _controllerTabs,

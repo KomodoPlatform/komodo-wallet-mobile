@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
@@ -30,7 +29,7 @@ import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
-import 'package:komodo_dex/widgets/buildRedDot.dart';
+import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
@@ -180,15 +179,20 @@ class _CoinDetailState extends State<CoinDetail> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        backgroundColor: Theme.of(context).backgroundColor,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: elevationHeader,
+          foregroundColor: ThemeData.estimateBrightnessForColor(
+                      Color(int.parse(currentCoinBalance.coin.colorCoin))) ==
+                  Brightness.dark
+              ? Colors.white
+              : Colors.black,
           actions: <Widget>[
             IconButton(
+              splashRadius: 24,
               key: const Key('coin-deactivate'),
               icon: isDeleteLoading
-                  ? Container(
+                  ? SizedBox(
                       height: 20,
                       width: 20,
                       child: const CircularProgressIndicator(
@@ -196,11 +200,6 @@ class _CoinDetailState extends State<CoinDetail> {
                       ),
                     )
                   : Icon(Icons.delete),
-              color: ThemeData.estimateBrightnessForColor(Color(
-                          int.parse(currentCoinBalance.coin.colorCoin))) ==
-                      Brightness.dark
-                  ? Colors.white
-                  : Colors.black,
               onPressed: () async {
                 if (widget.coinBalance.coin.isDefault) {
                   await showCantRemoveDefaultCoin(
@@ -223,11 +222,6 @@ class _CoinDetailState extends State<CoinDetail> {
             ),
             IconButton(
               icon: Icon(Icons.share),
-              color: ThemeData.estimateBrightnessForColor(Color(
-                          int.parse(currentCoinBalance.coin.colorCoin))) ==
-                      Brightness.dark
-                  ? Colors.white
-                  : Colors.black,
               onPressed: () async {
                 mainBloc.isUrlLaucherIsOpen = true;
                 await Share.share(AppLocalizations.of(context).shareAddress(
@@ -236,13 +230,6 @@ class _CoinDetailState extends State<CoinDetail> {
               },
             )
           ],
-          leading: BackButton(
-            color: ThemeData.estimateBrightnessForColor(
-                        Color(int.parse(currentCoinBalance.coin.colorCoin))) ==
-                    Brightness.dark
-                ? Colors.white
-                : Colors.black,
-          ),
           title: Row(
             children: <Widget>[
               PhotoHero(
@@ -256,13 +243,6 @@ class _CoinDetailState extends State<CoinDetail> {
               Expanded(
                 child: AutoScrollText(
                   text: currentCoinBalance.coin.name.toUpperCase(),
-                  style: TextStyle(
-                    color: ThemeData.estimateBrightnessForColor(Color(int.parse(
-                                currentCoinBalance.coin.colorCoin))) ==
-                            Brightness.dark
-                        ? Colors.white
-                        : Colors.black,
-                  ),
                 ),
               ),
             ],
@@ -276,7 +256,7 @@ class _CoinDetailState extends State<CoinDetail> {
             children: <Widget>[
               _buildForm(),
               _buildHeaderCoinDetail(context),
-              _shouldRefresh ? _buildNewTransactionsButton() : const SizedBox(),
+              if (_shouldRefresh) _buildNewTransactionsButton(),
               _buildSyncChain(),
               _buildTransactionsList(context),
             ],
@@ -294,7 +274,7 @@ class _CoinDetailState extends State<CoinDetail> {
     // for erc20 tokens
     if (widget.coinBalance.coin.type == 'erc' ||
         widget.coinBalance.coin.type == 'bep') {
-      return Container();
+      return SizedBox();
     }
 
     return StreamBuilder<dynamic>(
@@ -303,8 +283,8 @@ class _CoinDetailState extends State<CoinDetail> {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData && snapshot.data is Transactions) {
             final Transactions tx = snapshot.data;
-            final String syncState =
-                '${StateOfSync.InProgress.toString().substring(StateOfSync.InProgress.toString().indexOf('.') + 1)}';
+            final String syncState = StateOfSync.InProgress.toString()
+                .substring(StateOfSync.InProgress.toString().indexOf('.') + 1);
             if (tx.result != null &&
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
@@ -332,12 +312,12 @@ class _CoinDetailState extends State<CoinDetail> {
                 return Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Center(
-                          child: Container(
+                          child: SizedBox(
                         height: 20,
                         width: 20,
                         child: const CircularProgressIndicator(
@@ -348,9 +328,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         width: 8,
                       ),
                       const Text('Loading...'),
-                      Expanded(
-                        child: Container(),
-                      ),
+                      Expanded(child: SizedBox()),
                       Text('Transactions left $txLeft'),
                     ],
                   ),
@@ -358,74 +336,70 @@ class _CoinDetailState extends State<CoinDetail> {
               }
             }
           }
-          return Container();
+          return SizedBox();
         });
   }
 
   Widget _buildTransactionsList(BuildContext context) {
     return Expanded(
       child: RefreshIndicator(
-        backgroundColor: Theme.of(context).backgroundColor,
-        color: Theme.of(context).accentColor,
-        key: _refreshIndicatorKey,
-        onRefresh: _refresh,
-        child: ListView(
-          controller: _scrollController,
-          children: <Widget>[
-            StreamBuilder<dynamic>(
-                stream: coinsBloc.outTransactions,
-                initialData: coinsBloc.transactions,
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    _isWaiting = true;
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    _isWaiting = false;
-                  }
-                  if (snapshot.data is Transactions) {
-                    final Transactions transactions = snapshot.data;
-                    final String syncState =
-                        '${StateOfSync.InProgress.toString().substring(StateOfSync.InProgress.toString().indexOf('.') + 1)}';
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          color: Theme.of(context).colorScheme.secondary,
+          key: _refreshIndicatorKey,
+          onRefresh: _refresh,
+          child: StreamBuilder<dynamic>(
+              stream: coinsBloc.outTransactions,
+              initialData: coinsBloc.transactions,
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  _isWaiting = true;
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  _isWaiting = false;
+                }
+                if (snapshot.data is Transactions) {
+                  final Transactions transactions = snapshot.data;
+                  final String syncState = StateOfSync.InProgress.toString()
+                      .substring(
+                          StateOfSync.InProgress.toString().indexOf('.') + 1);
 
-                    if (snapshot.hasData &&
-                        transactions.result != null &&
-                        transactions.result.transactions != null) {
-                      if (transactions.result.transactions.isNotEmpty) {
-                        //@Slyris plz clean up
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 8),
-                          child: _buildTransactions(
-                              context, transactions.result.transactions),
-                        );
-                      } else if (transactions.result.transactions.isEmpty &&
-                          !(transactions.result.syncStatus.state ==
-                              syncState)) {
-                        return Center(
-                            child: Text(
-                          AppLocalizations.of(context).noTxs,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ));
-                      }
-                    }
-                  } else if (snapshot.data is ErrorCode &&
-                      snapshot.data.error != null) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
+                  if (snapshot.hasData &&
+                      transactions.result != null &&
+                      transactions.result.transactions != null) {
+                    if (transactions.result.transactions.isNotEmpty) {
+                      //@Slyris plz clean up
+                      return ListView.builder(
+                        itemCount: transactions.result.transactions.length,
+                        itemBuilder: (context, i) => _buildTransactionItem(
+                          transactions.result.transactions[i],
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                        controller: _scrollController,
+                      );
+                    } else if (transactions.result.transactions.isEmpty &&
+                        !(transactions.result.syncStatus.state == syncState)) {
+                      return Center(
                           child: Text(
-                        snapshot.data.error.message,
+                        AppLocalizations.of(context).noTxs,
                         style: Theme.of(context).textTheme.bodyText1,
-                        textAlign: TextAlign.center,
-                      )),
-                    );
+                      ));
+                    }
                   }
-                  return Container();
-                })
-          ],
-        ),
-      ),
+                } else if (snapshot.data is ErrorCode &&
+                    snapshot.data.error != null) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                        child: Text(
+                      snapshot.data.error.message,
+                      style: Theme.of(context).textTheme.bodyText1,
+                      textAlign: TextAlign.center,
+                    )),
+                  );
+                }
+                return SizedBox();
+              })),
     );
   }
 
@@ -438,31 +412,12 @@ class _CoinDetailState extends State<CoinDetail> {
     }
   }
 
-  Widget _buildTransactions(
-      BuildContext context, List<Transaction> transactionsData) {
-    final List<Widget> transactionsWidget = [];
+  Widget _buildTransactionItem(Transaction transaction) {
+    fromId = transaction.internalId;
 
-    for (Transaction transaction in transactionsData) {
-      fromId = transaction.internalId;
-
-      transactionsWidget.add(TransactionListItem(
-        transaction: transaction,
-        currentCoinBalance: currentCoinBalance,
-      ));
-    }
-
-    transactionsWidget.add(Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Opacity(
-          opacity: isLoading ? 1.0 : 00,
-          child: const CircularProgressIndicator(),
-        ),
-      ),
-    ));
-
-    return Column(
-      children: transactionsWidget,
+    return TransactionListItem(
+      transaction: transaction,
+      currentCoinBalance: currentCoinBalance,
     );
   }
 
@@ -505,7 +460,7 @@ class _CoinDetailState extends State<CoinDetail> {
                               coinBalance +
                                   ' ' +
                                   currentCoinBalance.balance.coin,
-                              style: Theme.of(context).textTheme.headline6,
+                              style: Theme.of(context).textTheme.headline5,
                               textAlign: TextAlign.center,
                             ),
                             if (double.tryParse(unspendableBalance ?? '0') > 0)
@@ -526,7 +481,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         );
                       });
                 } else {
-                  return Container();
+                  return SizedBox();
                 }
               }),
         ),
@@ -602,7 +557,7 @@ class _CoinDetailState extends State<CoinDetail> {
             SecondaryButton(
               text: text,
               textColor: Theme.of(context).textTheme.button.color,
-              borderColor: Theme.of(context).accentColor,
+              borderColor: Theme.of(context).colorScheme.secondary,
               onPressed: () {
                 rewardsProvider.update();
                 Navigator.push<dynamic>(
@@ -625,9 +580,9 @@ class _CoinDetailState extends State<CoinDetail> {
 
     return SecondaryButton(
       text: text,
-      isDarkMode: !settingsBloc.isLightTheme,
-      textColor: Theme.of(context).accentColor,
-      borderColor: Theme.of(context).accentColor,
+      isDarkMode: Theme.of(context).brightness != Brightness.light,
+      textColor: Theme.of(context).colorScheme.secondary,
+      borderColor: Theme.of(context).colorScheme.secondary,
       onPressed: () {
         switch (statusButton) {
           case StatusButton.RECEIVE:
@@ -676,10 +631,10 @@ class _CoinDetailState extends State<CoinDetail> {
       crossFadeState:
           isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
       duration: const Duration(milliseconds: 200),
-      firstChild: Container(),
+      firstChild: SizedBox(),
       secondChild: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          unfocusTextField(context);
         },
         child: Card(
             margin:
@@ -694,14 +649,23 @@ class _CoinDetailState extends State<CoinDetail> {
     return InkWell(
       child: Container(
         padding: const EdgeInsets.all(8.0),
-        color: Colors.blue,
+        color: Theme.of(context).colorScheme.secondary,
         child: Row(
           children: <Widget>[
-            Icon(Icons.refresh),
-            const SizedBox(
+            Icon(
+              Icons.refresh,
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
+            SizedBox(
               width: 8.0,
             ),
-            const Text('Latest Transactions'),
+            Text(
+              'Latest Transactions',
+              style: Theme.of(context)
+                  .textTheme
+                  .button
+                  .copyWith(color: Theme.of(context).colorScheme.onSecondary),
+            ),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),
@@ -715,7 +679,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   void catchError(BuildContext mContext) {
     resetSend();
-    Scaffold.of(mContext).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
       content: Text(AppLocalizations.of(mContext).errorTryLater),
@@ -778,7 +742,7 @@ class _CoinDetailState extends State<CoinDetail> {
               });
             },
             onNoInternet: () {
-              Scaffold.of(mainContext).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(mainContext).showSnackBar(SnackBar(
                 duration: const Duration(seconds: 2),
                 backgroundColor: Theme.of(context).errorColor,
                 content: Text(AppLocalizations.of(mainContext).noInternet),
@@ -792,7 +756,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 isSendIsActive = false;
               });
 
-              listSteps.add(Container(
+              listSteps.add(SizedBox(
                   height: 100,
                   width: double.infinity,
                   child: const Center(
@@ -837,7 +801,7 @@ class _CoinDetailState extends State<CoinDetail> {
                           dataRawTx.error
                               .indexOf(r',', dataRawTx.error.indexOf(r'"')))
                       .trim();
-                  Scaffold.of(mainContext).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(mainContext).showSnackBar(SnackBar(
                     duration: const Duration(seconds: 2),
                     backgroundColor: Theme.of(context).errorColor,
                     content: Text(

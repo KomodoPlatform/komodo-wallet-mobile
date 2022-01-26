@@ -22,8 +22,8 @@ import 'package:komodo_dex/model/coin_balance.dart';
 
 class ConstructorProvider extends ChangeNotifier {
   ConstructorProvider() {
-    _timer ??=
-        Timer.periodic(Duration(seconds: 5), (_) => _updateMatchingOrder());
+    _timer ??= Timer.periodic(
+        const Duration(seconds: 5), (_) => _updateMatchingOrder());
   }
 
   String _sellCoin;
@@ -342,6 +342,14 @@ class ConstructorProvider extends ChangeNotifier {
     return sorted.isNotEmpty ? sorted[0] : null;
   }
 
+  bool anyLists() {
+    if (buyCoin != null && sellCoin != null) return false;
+    if (sellCoin != null && (sellAmount?.toDouble() ?? 0) == 0) return false;
+    if (buyCoin != null && (buyAmount?.toDouble() ?? 0) == 0) return false;
+
+    return true;
+  }
+
   void reset() {
     _sellCoin = null;
     _buyCoin = null;
@@ -439,7 +447,9 @@ class ConstructorProvider extends ChangeNotifier {
 
       // if < than order min volume
       final Rational minOrderVolume = _matchingOrder.minVolume;
-      if (minOrderVolume != null && minOrderVolume > _buyAmount) {
+      if (minOrderVolume != null &&
+          _buyAmount != null &&
+          minOrderVolume > _buyAmount) {
         isValid = false;
         final Rational price = _matchingOrder.action == Market.SELL
             ? _matchingOrder.price

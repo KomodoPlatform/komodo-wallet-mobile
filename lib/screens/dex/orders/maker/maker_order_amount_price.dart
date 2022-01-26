@@ -5,7 +5,6 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/screens/dex/orders/maker/order_fill.dart';
@@ -213,7 +212,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
       ),
       TableRow(
         children: [
-          Container(),
+          SizedBox(),
           Container(
             padding: const EdgeInsets.only(left: 6),
             child: Row(
@@ -275,7 +274,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
       default:
         {
           message = AppLocalizations.of(context).orderDetailsIdentical;
-          color = settingsBloc.isLightTheme
+          color = Theme.of(context).brightness == Brightness.light
               ? cexColorLight.withAlpha(150)
               : cexColor.withAlpha(150);
         }

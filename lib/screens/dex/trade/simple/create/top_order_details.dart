@@ -35,7 +35,11 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
 
   Widget _buildHeader() {
     return InkWell(
-      onTap: () => setState(() => _showDetails = !_showDetails),
+      onTap: () {
+        setState(() {
+          _showDetails = !_showDetails;
+        });
+      },
       child: Container(
         padding: EdgeInsets.fromLTRB(0, 2, 0, 6),
         child: Row(
@@ -250,7 +254,7 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
         CexMarker(context, size: Size.fromRadius(6)),
         SizedBox(width: 2),
         Text(
-          '$fiatPrice',
+          fiatPrice,
           style: style,
         ),
         Text(

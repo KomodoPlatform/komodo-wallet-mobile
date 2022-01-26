@@ -16,20 +16,15 @@ class RoundButton extends StatelessWidget {
     return SizedBox(
       width: size,
       height: size,
-      child: RaisedButton(
-        padding: const EdgeInsets.all(0),
+      child: ElevatedButton(
         onPressed: onPressed,
-        child: child,
-        color: Theme.of(context).dialogBackgroundColor,
-        disabledColor: Theme.of(context).dialogBackgroundColor,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-            color: Theme.of(context).primaryColorDark,
-            width: 1,
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.all(0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
           ),
-          borderRadius: BorderRadius.circular(30.0),
         ),
+        child: child,
       ),
     );
   }

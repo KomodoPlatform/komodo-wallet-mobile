@@ -8,7 +8,6 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -78,8 +77,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
     final String myAddress =
         coinsBloc.getBalanceByAbbr(widget.order.coin)?.balance?.address;
 
-    if (orderAdress.toLowerCase() != myAddress.toLowerCase())
-      return Container();
+    if (orderAdress.toLowerCase() != myAddress.toLowerCase()) return SizedBox();
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -119,8 +117,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             child: Row(
               children: <Widget>[
                 Text(
-                  formatPrice(
-                      '${_isAsk ? widget.order.price : (1 / double.parse(widget.order.price)).toString()}'),
+                  formatPrice(_isAsk
+                      ? widget.order.price
+                      : (1 / double.parse(widget.order.price)).toString()),
                   style: TextStyle(color: _isAsk ? Colors.red : Colors.green),
                 ),
                 const SizedBox(width: 6),
@@ -134,14 +133,15 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
       ),
       TableRow(
         children: [
-          Container(),
-          Container(
+          SizedBox(),
+          Padding(
             padding: const EdgeInsets.only(left: 6),
             child: Row(
               children: <Widget>[
                 Text(
-                  formatPrice(
-                      '${!_isAsk ? widget.order.price : (1 / double.parse(widget.order.price)).toString()}'),
+                  formatPrice(!_isAsk
+                      ? widget.order.price
+                      : (1 / double.parse(widget.order.price)).toString()),
                   style: const TextStyle(
                     fontSize: 13,
                   ),
@@ -205,7 +205,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             child: Text(
               message,
               style: TextStyle(
-                  color: settingsBloc.isLightTheme
+                  color: Theme.of(context).brightness == Brightness.light
                       ? cexColorLight.withAlpha(150)
                       : cexColor.withAlpha(150)),
             ),
@@ -332,7 +332,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                   fontWeight: FontWeight.w400,
                   color: _isEnoughVolume()
                       ? null
-                      : settingsBloc.isLightTheme
+                      : Theme.of(context).brightness == Brightness.light
                           ? Colors.white
                           : Theme.of(context).primaryColorDark,
                 ),
@@ -449,9 +449,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
 
   Widget _buildAddressButton() {
     return InkWell(
-      onTap: () {
-        copyToClipBoard(context, widget.order.address);
-      },
+      onTap: () => copyToClipBoard(context, widget.order.address),
       child: Container(
         padding: const EdgeInsets.only(left: 6, right: 12),
         height: 40,
@@ -462,15 +460,14 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
 
   Widget _buildContactButton() {
     return InkWell(
-      onTap: () {
-        Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => AddressBookPage(
-                contact: _contact,
-              ),
-            ));
-      },
+      onTap: () => Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => AddressBookPage(
+            contact: _contact,
+          ),
+        ),
+      ),
       child: Container(
         padding: const EdgeInsets.only(left: 6),
         height: 40,
@@ -480,7 +477,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
               Icons.account_circle,
               size: 14,
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: 8),
             Text(
               _contact.name,
             )

@@ -37,7 +37,6 @@ class _MarketsPageState extends State<MarketsPage>
 
     Widget _buildAppBar() {
       final bool _isSmallScreen = MediaQuery.of(context).size.height < 680;
-
       final Widget _tabsPanel = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Container(
@@ -81,7 +80,6 @@ class _MarketsPageState extends State<MarketsPage>
                   child: Text(
                 AppLocalizations.of(context).marketsTitle,
                 key: const Key('markets-title'),
-                style: Theme.of(context).textTheme.subtitle2,
               )),
               bottom: PreferredSize(
                 preferredSize: const Size(200.0, 70.0),
@@ -97,7 +95,6 @@ class _MarketsPageState extends State<MarketsPage>
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: _buildAppBar(),
       body: Builder(builder: (BuildContext context) {
         return TabBarView(

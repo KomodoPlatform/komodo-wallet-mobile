@@ -9,7 +9,6 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -63,91 +62,90 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
     cexProvider ??= Provider.of<CexProvider>(context);
     baseCoin = multiOrderProvider.baseCoin;
 
-    return Container(
-      width: double.infinity,
-      child: Card(
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(15, 10, 15, 6),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.fromLTRB(6, 6, 0, 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Table(
+              columnWidths: const {
+                1: FixedColumnWidth(16),
+              },
+              children: [
+                TableRow(
+                  children: [
                     Text(
                       AppLocalizations.of(context).multiSellTitle,
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
-                    _buildResetButton(),
+                    SizedBox(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: _buildResetButton(),
+                    )
                   ],
                 ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(flex: 5, child: _buildCoinSelect()),
-                  const SizedBox(width: 20),
-                  Expanded(flex: 5, child: _buildSellAmount()),
-                ],
-              ),
-              const SizedBox(height: 12),
-              _buildErrors(),
-            ],
-          ),
+                TableRow(
+                  children: [
+                    _buildCoinSelect(),
+                    SizedBox(),
+                    _buildSellAmount(),
+                  ],
+                )
+              ],
+            ),
+            ..._buildErrors(),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildErrors() {
+  List<Widget> _buildErrors() {
     final String error =
         baseCoin == null ? null : multiOrderProvider.getError(baseCoin);
-    if (error == null) return Container();
+    if (error == null) return [SizedBox()];
 
-    return Container(
-      child: Text(
+    return [
+      const SizedBox(height: 16),
+      Text(
         error,
         style: Theme.of(context).textTheme.caption.copyWith(
               color: Theme.of(context).errorColor,
             ),
       ),
-    );
+    ];
   }
 
   Widget _buildResetButton() {
-    return InkWell(
-      onTap: multiOrderProvider.baseCoin == null
+    return IconButton(
+      onPressed: multiOrderProvider.baseCoin == null
           ? null
           : () {
               multiOrderProvider.reset();
               amountCtrl.text = '';
             },
-      child: Opacity(
+      constraints: BoxConstraints(maxHeight: 16, maxWidth: 16),
+      padding: EdgeInsets.all(0),
+      iconSize: 16,
+      splashRadius: 16,
+      visualDensity: VisualDensity.compact,
+      icon: Opacity(
         opacity: multiOrderProvider.baseCoin == null ? 0.3 : 1,
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
-          child: Icon(
-            Icons.clear,
-            size: 13,
-          ),
-        ),
+        child: Icon(Icons.clear),
       ),
     );
   }
 
   Widget _buildCoinSelect() {
     return InkWell(
-      onTap: () {
-        _showCoinSelectDialog();
-      },
+      onTap: () => _showCoinSelectDialog(),
       child: Container(
-        padding: const EdgeInsets.fromLTRB(4, 4, 4, 8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-          color: Theme.of(context).highlightColor,
+          color: Theme.of(context).focusColor,
         ))),
         child: Opacity(
           opacity: baseCoin == null ? 0.3 : 1,
@@ -155,8 +153,9 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
             children: <Widget>[
               CircleAvatar(
                 maxRadius: 12,
-                backgroundColor:
-                    baseCoin == null ? Theme.of(context).accentColor : null,
+                backgroundColor: baseCoin == null
+                    ? Theme.of(context).colorScheme.secondary
+                    : null,
                 backgroundImage: baseCoin == null
                     ? null
                     : AssetImage(
@@ -183,7 +182,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         builder: (context) {
           if (coins == null)
             return CustomSimpleDialog(
-              children: [
+              children: const [
                 Center(
                   child: CircularProgressIndicator(),
                 ),
@@ -265,7 +264,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            RaisedButton(
+            ElevatedButton(
               child: Text(AppLocalizations.of(context).goToPorfolio),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -298,39 +297,37 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                   Container(
                     height: 38,
                     padding: const EdgeInsets.only(top: 4),
-                    child: TextFormField(
-                      controller: amountCtrl,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      textAlign: TextAlign.right,
-                      decoration: InputDecoration(
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        inputDecorationTheme: gefaultUnderlineInputTheme,
+                      ),
+                      child: TextFormField(
+                        controller: amountCtrl,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        textAlign: TextAlign.right,
+                        decoration: InputDecoration(
                           isDense: true,
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).accentColor),
-                          ),
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(0, 4, 0, 10),
                           hintText: AppLocalizations.of(context)
                               .multiBaseAmtPlaceholder,
-                          hintStyle: TextStyle(
-                              color: Theme.of(context).disabledColor)),
-                      onChanged: (String value) {
-                        double amnt;
-                        try {
-                          amnt = double.parse(value);
-                        } catch (_) {}
+                        ),
+                        onChanged: (String value) {
+                          double amnt;
+                          try {
+                            amnt = double.parse(value);
+                          } catch (_) {}
 
-                        multiOrderProvider.baseAmt =
-                            value.isEmpty ? null : amnt;
-                        multiOrderProvider.isMax = false;
-                      },
-                      enabled: multiOrderProvider.baseCoin != null,
-                      maxLines: 1,
-                      inputFormatters: <TextInputFormatter>[
-                        LengthLimitingTextInputFormatter(16),
-                        DecimalTextInputFormatter(decimalRange: 8),
-                      ],
+                          multiOrderProvider.baseAmt =
+                              value.isEmpty ? null : amnt;
+                          multiOrderProvider.isMax = false;
+                        },
+                        enabled: multiOrderProvider.baseCoin != null,
+                        maxLines: 1,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(16),
+                          DecimalTextInputFormatter(decimalRange: 8),
+                        ],
+                      ),
                     ),
                   ),
                   if (convertedAmt != null)
@@ -340,41 +337,32 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                         convertedAmt,
                         textAlign: TextAlign.right,
                         style: Theme.of(context).textTheme.caption.copyWith(
-                            color: settingsBloc.isLightTheme
-                                ? cexColorLight
-                                : cexColor),
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? cexColorLight
+                                  : cexColor,
+                            ),
                       ),
                     ),
                 ],
               ),
             ),
             if (multiOrderProvider.baseCoin != null)
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                child: InkWell(
-                  onTap: multiOrderProvider.baseCoin == null
-                      ? null
-                      : () async {
-                          multiOrderProvider.isMax = true;
-                          multiOrderProvider.baseAmt =
-                              multiOrderProvider.getMaxSellAmt();
-                          amountCtrl.text = cutTrailingZeros(
-                                  formatPrice(multiOrderProvider.baseAmt)) ??
-                              '';
-                        },
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
-                    child: Text(
-                      'MAX',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: multiOrderProvider.isMax
-                            ? Theme.of(context).accentColor
-                            : null,
-                      ),
-                    ),
-                  ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
                 ),
+                onPressed: multiOrderProvider.baseCoin == null
+                    ? null
+                    : () async {
+                        multiOrderProvider.isMax = true;
+                        multiOrderProvider.baseAmt =
+                            multiOrderProvider.getMaxSellAmt();
+                        amountCtrl.text = cutTrailingZeros(
+                                formatPrice(multiOrderProvider.baseAmt)) ??
+                            '';
+                      },
+                child: Text('MAX'),
               ),
           ],
         ),

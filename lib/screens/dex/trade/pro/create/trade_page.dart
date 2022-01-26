@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -72,22 +71,20 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       children: <Widget>[
         _buildProgressBar(),
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildExchange(),
-                SizedBox(height: 8),
-                _buildFeesOrError(),
-                SizedBox(height: 8),
-                ExchangeRate(alignCenter: true),
-                SizedBox(height: 8),
-                Evaluation(alignCenter: true),
-                SizedBox(height: 20),
-                BuildTradeButton(),
-                BuildResetButton(),
-                SizedBox(height: 50),
-              ],
-            ),
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            children: [
+              _buildExchange(),
+              SizedBox(height: 8),
+              _buildFeesOrError(),
+              SizedBox(height: 8),
+              ExchangeRate(alignCenter: true),
+              SizedBox(height: 8),
+              Evaluation(alignCenter: true),
+              SizedBox(height: 20),
+              BuildTradeButton(),
+              BuildResetButton(),
+            ],
           ),
         ),
       ],
@@ -108,109 +105,89 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildExchange() {
-    return Column(
-      children: <Widget>[
-        _buildCard(Market.SELL),
-        _buildCard(Market.BUY),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Column(
+          children: <Widget>[
+            _buildCard(Market.SELL),
+            _buildCard(Market.BUY),
+          ],
+        ),
+        Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(32)),
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            child: SvgPicture.asset(
+              Theme.of(context).brightness == Brightness.light
+                  ? 'assets/svg_light/icon_swap.svg'
+                  : 'assets/svg/icon_swap.svg',
+              height: 40,
+            ))
       ],
     );
   }
 
   Widget _buildCard(Market market) {
     return Stack(
-      overflow: Overflow.visible,
+      clipBehavior: Clip.none,
       children: <Widget>[
-        Container(
-          width: double.infinity,
-          child: Card(
-            elevation: 8,
-            margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
-            child: Stack(
-              children: <Widget>[
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 24, right: 24, top: 28, bottom: 28),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+        Card(
+          child: Padding(
+            padding: EdgeInsets.only(left: 24, right: 24, top: 28, bottom: 28),
+            child: Table(
+              columnWidths: const {
+                1: FixedColumnWidth(16),
+              },
+              children: [
+                TableRow(
+                  children: [
+                    Text(
+                      AppLocalizations.of(context).selectCoin,
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    SizedBox(),
+                    Text(
+                      market == Market.SELL
+                          ? AppLocalizations.of(context).sell
+                          : AppLocalizations.of(context).receiveLower,
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    SizedBox(
+                      width: 130,
+                      child: _buildCoinSelect(market),
+                    ),
+                    SizedBox(),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
-                              Text(
-                                AppLocalizations.of(context).selectCoin,
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                              Container(
-                                width: 130,
-                                child: _buildCoinSelect(market),
-                              ),
+                              market == Market.SELL
+                                  ? SellAmountField()
+                                  : ReceiveAmountField(),
+                              const SizedBox(height: 2),
+                              BuildFiatAmount(market),
                             ],
                           ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  market == Market.SELL
-                                      ? AppLocalizations.of(context).sell
-                                      : AppLocalizations.of(context)
-                                          .receiveLower,
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          market == Market.SELL
-                                              ? SellAmountField()
-                                              : ReceiveAmountField(),
-                                          const SizedBox(height: 2),
-                                          BuildFiatAmount(market),
-                                        ],
-                                      ),
-                                    ),
-                                    _buildMaxButton(market),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                        ),
+                        _buildMaxButton(market),
+                      ],
+                    ),
+                  ],
+                )
               ],
             ),
           ),
         ),
-        if (market == Market.BUY)
-          Positioned(
-            top: -21,
-            left: MediaQuery.of(context).size.width / 2 - 60,
-            child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(32)),
-                  color: Theme.of(context).backgroundColor,
-                ),
-                child: SvgPicture.asset(
-                  settingsBloc.isLightTheme
-                      ? 'assets/svg_light/icon_swap.svg'
-                      : 'assets/svg/icon_swap.svg',
-                  height: 40,
-                )),
-          )
       ],
     );
   }
@@ -265,25 +242,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       stream: swapBloc.outEnabledSellField,
       builder: (context, enabledSnapshot) {
         return market == Market.SELL && enabledSnapshot.data
-            ? InkWell(
-                onTap: tradeForm.setMaxSellAmount,
+            ? TextButton(
+                style: TextButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
+                ),
+                onPressed: tradeForm.setMaxSellAmount,
                 child: StreamBuilder<bool>(
                     initialData: swapBloc.isSellMaxActive,
                     stream: swapBloc.outIsMaxActive,
                     builder: (context, maxSnapshot) {
-                      return Container(
-                        padding: EdgeInsets.fromLTRB(12, 18, 0, 12),
-                        child: Text(
-                          AppLocalizations.of(context).max,
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            color: maxSnapshot.data
-                                ? Theme.of(context).accentColor
-                                : null,
-                          ),
-                        ),
-                      );
+                      return Text(AppLocalizations.of(context).max);
                     }),
               )
             : SizedBox();
@@ -294,68 +262,58 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Widget _buildCoinSelect(Market market) {
     Log.println(
         'trade_page:719', 'coin-select-${market.toString().toLowerCase()}');
-    return Padding(
-      padding: const EdgeInsets.only(top: 5),
-      child: InkWell(
-        key: Key('coin-select-${market.toString().toLowerCase()}'),
-        borderRadius: BorderRadius.circular(4),
-        onTap: () async {
-          _openSelectCoinDialog(market);
-        },
-        child: market == Market.BUY
-            ? StreamBuilder<CoinBalance>(
-                initialData: swapBloc.receiveCoinBalance,
-                stream: swapBloc.outReceiveCoinBalance,
-                builder: (context, snapshot) =>
-                    _buildSelectorCoin(snapshot.data?.coin),
-              )
-            : StreamBuilder<CoinBalance>(
-                initialData: swapBloc.sellCoinBalance,
-                stream: swapBloc.outSellCoinBalance,
-                builder: (context, snapshot) =>
-                    _buildSelectorCoin(snapshot.data?.coin)),
-      ),
+    return SizedBox(
+      key: Key('coin-select-${market.toString().toLowerCase()}'),
+      child: market == Market.BUY
+          ? StreamBuilder<CoinBalance>(
+              initialData: swapBloc.receiveCoinBalance,
+              stream: swapBloc.outReceiveCoinBalance,
+              builder: (context, snapshot) => _buildSelectorCoin(
+                coin: snapshot.data?.coin,
+                onTap: () async => _openSelectCoinDialog(market),
+              ),
+            )
+          : StreamBuilder<CoinBalance>(
+              initialData: swapBloc.sellCoinBalance,
+              stream: swapBloc.outSellCoinBalance,
+              builder: (context, snapshot) => _buildSelectorCoin(
+                coin: snapshot.data?.coin,
+                onTap: () async => _openSelectCoinDialog(market),
+              ),
+            ),
     );
   }
 
-  Widget _buildSelectorCoin(Coin coin) {
+  Widget _buildSelectorCoin({
+    @required Coin coin,
+    @required GestureTapCallback onTap,
+  }) {
     return Opacity(
       opacity: coin == null ? 0.2 : 1,
-      child: Column(
-        children: <Widget>[
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: <Widget>[
-              coin != null
-                  ? Image.asset(
-                      'assets/coin-icons/${coin.abbr.toLowerCase()}.png',
-                      height: 25,
-                    )
-                  : CircleAvatar(
-                      backgroundColor: Theme.of(context).accentColor,
-                      radius: 12,
-                    ),
-              SizedBox(width: 4),
-              Expanded(
-                child: AutoScrollText(
-                  text: coin?.abbr ?? '-',
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
+      child: ListTile(
+        onTap: onTap,
+        shape: Border(
+          bottom: BorderSide(color: Theme.of(context).focusColor, width: 1),
+        ),
+        horizontalTitleGap: 8,
+        minLeadingWidth: 16,
+        visualDensity: VisualDensity.compact,
+        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+        minVerticalPadding: 0,
+        leading: coin != null
+            ? Image.asset(
+                'assets/coin-icons/${coin.abbr.toLowerCase()}.png',
+                height: 25,
+              )
+            : CircleAvatar(
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                radius: 12,
               ),
-              Icon(Icons.arrow_drop_down),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            color: Colors.grey,
-            height: 1,
-            width: double.infinity,
-          )
-        ],
+        title: AutoScrollText(
+          text: coin?.abbr ?? '-',
+          style: Theme.of(context).textTheme.subtitle2,
+        ),
+        trailing: Icon(Icons.arrow_drop_down),
       ),
     );
   }
@@ -394,7 +352,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log('trade_page', 'receive coin selected: $coin...');
     Log('trade_page', 'performing maker order');
 
-    FocusScope.of(context).requestFocus(FocusNode());
+    unfocusTextField(context);
     swapBloc.updateMatchingBid(null);
     if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
 
@@ -407,7 +365,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log('trade_page', 'receive coin selected: ${bid.coin}...');
     Log('trade_page', 'performing taker order');
 
-    FocusScope.of(context).requestFocus(FocusNode());
+    unfocusTextField(context);
     swapBloc.updateMatchingBid(bid);
     if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
 
@@ -428,7 +386,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void _showSnackbar(String text) {
     if (context == null) return;
 
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       content: Text(text),
     ));

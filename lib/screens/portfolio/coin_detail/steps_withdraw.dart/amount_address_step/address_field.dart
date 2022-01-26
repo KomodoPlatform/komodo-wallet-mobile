@@ -51,32 +51,17 @@ class _AddressFieldState extends State<AddressField> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Container(
+              SizedBox(
                 height: 60,
-                child: ButtonTheme(
-                  minWidth: 50,
-                  child: FlatButton(
-                    padding: const EdgeInsets.only(
-                      left: 6,
-                      right: 6,
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0)),
-                    onPressed: widget.onScan,
-                    child: Icon(
-                      Icons.add_a_photo,
-                      color: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          .color
-                          .withOpacity(0.45),
-                    ),
-                  ),
+                child: IconButton(
+                  splashRadius: 24,
+                  padding: EdgeInsets.all(0),
+                  visualDensity: VisualDensity.compact,
+                  onPressed: widget.onScan,
+                  icon: Icon(Icons.add_a_photo),
                 ),
               ),
-              const SizedBox(
-                width: 8,
-              ),
+              const SizedBox(width: 8),
               Expanded(
                 child: TextFormField(
                   key: const Key('send-address-field'),
@@ -92,30 +77,21 @@ class _AddressFieldState extends State<AddressField> {
                   style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColorLight)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).accentColor)),
-                    hintStyle: Theme.of(context).textTheme.bodyText2,
-                    labelStyle: Theme.of(context).textTheme.bodyText2,
                     labelText: AppLocalizations.of(context).addressSend,
-                    suffixIcon: InkWell(
-                      onTap: () {
-                        Navigator.push<dynamic>(
-                                context,
-                                MaterialPageRoute<dynamic>(
-                                  builder: (BuildContext context) =>
-                                      AddressBookPage(
-                                    shouldPop: true,
-                                    coin: widget.coin,
-                                  ),
-                                ))
-                            .then((dynamic _) => _updateAddressFromClipboard());
-                      },
-                      child: Icon(Icons.import_contacts),
+                    suffixIcon: IconButton(
+                      splashRadius: 24,
+                      onPressed: () => Navigator.push<dynamic>(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => AddressBookPage(
+                              shouldPop: true,
+                              coin: widget.coin,
+                            ),
+                          )).then((dynamic _) => _updateAddressFromClipboard()),
+                      icon: Icon(
+                        Icons.import_contacts,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ),
                   // The validator receives the text the user has typed in
@@ -152,7 +128,7 @@ class _AddressFieldState extends State<AddressField> {
   }
 
   Widget _buildConvertButton() {
-    if (convertMessage == null) return Container();
+    if (convertMessage == null) return SizedBox();
 
     return Row(
       children: <Widget>[
@@ -162,9 +138,9 @@ class _AddressFieldState extends State<AddressField> {
           style: Theme.of(context)
               .textTheme
               .caption
-              .copyWith(color: Theme.of(context).accentColor),
+              .copyWith(color: Theme.of(context).colorScheme.secondary),
         )),
-        RaisedButton(
+        ElevatedButton(
           onPressed: () async {
             final String converted = await MM.convertLegacyAddress(
               address: widget.controller.text,
