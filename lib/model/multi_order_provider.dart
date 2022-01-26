@@ -216,7 +216,7 @@ class MultiOrderProvider extends ChangeNotifier {
         final double gasBalance =
             coinsBloc.getBalanceByAbbr(gasCoin).balance.balance.toDouble();
         if (totalGasAmount > gasBalance) {
-          return _localizations.swapGasAmount(
+          return _localizations.swapGasAmountRequired(
               gasCoin, cutTrailingZeros(formatPrice(totalGasAmount, 4)));
         }
       }

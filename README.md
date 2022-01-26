@@ -70,6 +70,13 @@ In Android Studio (3.6.2) the latest Kotlin plugin (1.3.71) doesn't work with Fl
     adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
     sqlite3 AtomicDEX.db
 
+## Localization
+
+1. Extract messages to .arb file:
+```bash
+flutter pub run intl_generator:extract_to_arb --output-dir=lib/l10n lib/localizations.dart
+```
+
 ## Audio samples sources
 
  - [ticking sound](https://freesound.org/people/FoolBoyMedia/sounds/264498/)

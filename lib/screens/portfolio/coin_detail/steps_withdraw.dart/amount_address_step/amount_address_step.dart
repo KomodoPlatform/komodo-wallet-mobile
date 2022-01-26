@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -272,7 +273,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
           title: Text(AppLocalizations.of(context).withdrawCameraAccessTitle),
           children: [
             Text(
-              AppLocalizations.of(context).withdrawCameraAccessText,
+              AppLocalizations.of(context)
+                  .withdrawCameraAccessText(appConfig.appName),
               style: TextStyle(fontSize: 13),
             ),
             SizedBox(height: 12),
