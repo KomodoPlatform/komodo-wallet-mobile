@@ -153,7 +153,6 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
           SizedBox(height: 2),
           Builder(builder: (context) {
             final myInfo = extractMyInfoFromSwap(_swap);
-
             final myCoin = myInfo['myCoin'];
             final myAmount = myInfo['myAmount'];
             final otherCoin = myInfo['otherCoin'];

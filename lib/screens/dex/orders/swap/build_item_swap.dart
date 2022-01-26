@@ -264,6 +264,8 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
   }
 
   String getAmountToBuy(Swap swap) {
-    return swap.result.myInfo.otherAmount;
+    final myInfo = extractMyInfoFromSwap(widget.swap.result);
+    final otherAmount = myInfo['otherAmount'];
+    return otherAmount;
   }
 }

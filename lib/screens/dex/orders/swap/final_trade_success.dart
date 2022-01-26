@@ -159,8 +159,10 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
     final imgFile = File('$directory/screenshot.png');
     await imgFile.writeAsBytes(pngBytes);
 
-    final myCoin = widget.swap.result.myInfo.myCoin;
-    final otherCoin = widget.swap.result.myInfo.otherCoin;
+    final myInfo = extractMyInfoFromSwap(widget.swap.result);
+    final myCoin = myInfo['myCoin'];
+    final otherCoin = myInfo['otherCoin'];
+
     final shareText = "I've just atomic swapped $myCoin/$otherCoin"
         ' on my phone! You can try it too: https://atomicdex.io\n'
         '#blockchain #dex #atomicdex #komodoplatform #atomicswap';

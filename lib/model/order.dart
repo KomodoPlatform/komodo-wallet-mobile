@@ -34,11 +34,9 @@ class Order {
 
   int compareToSwap(Swap other) {
     int order = 0;
-    if (other.result.myInfo != null) {
-      order = extractStartedAtFromSwap(other.result).compareTo(createdAt);
-      if (order == 0)
-        order = createdAt.compareTo(extractStartedAtFromSwap(other.result));
-    }
+    order = extractStartedAtFromSwap(other.result).compareTo(createdAt);
+    if (order == 0)
+      order = createdAt.compareTo(extractStartedAtFromSwap(other.result));
 
     return order;
   }
