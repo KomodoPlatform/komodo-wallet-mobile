@@ -485,6 +485,9 @@ class ConstructorProvider extends ChangeNotifier {
             'Min volume is ${cutTrailingZeros(formatPrice(error.data['threshold']))}'
             ' ${error.data['coin']}';
         break;
+      case RpcErrorType.Transport:
+        str = 'The requested failed due to a network error: ${error.data}';
+        break;
       default:
         str = error.message ?? 'Something went wrong. Please try again.';
     }
