@@ -15,6 +15,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
@@ -25,10 +26,10 @@ import 'package:komodo_dex/widgets/qr_view.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rational/rational.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:provider/provider.dart';
 
 import '../localizations.dart';
 
@@ -215,6 +216,8 @@ Future<bool> get canCheckBiometrics async {
 /// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
 Future<bool> authenticateBiometrics(
     BuildContext context, PinStatus pinStatus) async {
+  final walletSecuritySettingsProvider =
+      context.read<WalletSecuritySettingsProvider>();
   if (mainBloc.isInBackground) {
     StreamSubscription listener;
     listener = mainBloc.outIsInBackground.listen((bool isInBackground) {
@@ -225,8 +228,7 @@ Future<bool> authenticateBiometrics(
   }
 
   Log.println('utils:291', 'authenticateBiometrics');
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (prefs.getBool('switch_pin_biometric')) {
+  if (walletSecuritySettingsProvider.activateBioProtection) {
     final LocalAuthentication localAuth = LocalAuthentication();
     bool didAuthenticate = false;
 
@@ -255,9 +257,7 @@ Future<bool> authenticateBiometrics(
 
     if (didAuthenticate) {
       if (pinStatus == PinStatus.DISABLED_PIN) {
-        SharedPreferences.getInstance().then((SharedPreferences data) {
-          data.setBool('switch_pin', false);
-        });
+        walletSecuritySettingsProvider.activatePinProtection = false;
         Navigator.pop(context);
       }
       authBloc.showLock = false;

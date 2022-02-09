@@ -9,6 +9,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/startup_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/model/wallet.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
@@ -21,7 +22,6 @@ import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Protective layer: MyApp | LockScreen | MyHomePage.
 /// Also handles the application startup.
@@ -51,8 +51,8 @@ class _LockScreenState extends State<LockScreen> {
   bool shouldUpdate = false;
 
   Future<void> _initScreen() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool isPinIsCreated = prefs.getBool('isPinIsCreated');
+    final _walletSecuritySettingsProvider = WalletSecuritySettingsProvider();
+    final bool isPinIsCreated = _walletSecuritySettingsProvider.isPinCreated;
     final Wallet currentWallet = await Db.getCurrentWallet();
 
     if (password == null &&

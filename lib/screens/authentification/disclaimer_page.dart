@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/wallet.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class DisclaimerPage extends StatefulWidget {
   const DisclaimerPage({
@@ -42,6 +43,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
   AnimationController _controllerScale;
   double _scrollPosition = 0.0;
   Timer timer;
+  WalletSecuritySettingsProvider walletSecuritySettingsProvider;
 
   @override
   void initState() {
@@ -409,8 +411,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
       await Db.saveWallet(wallet);
       await Db.saveCurrentWallet(wallet);
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('isPinIsCreated', true);
+
+      context.read<WalletSecuritySettingsProvider>().isPinCreated = true;
 
       await authBloc.loginUI(true, widget.seed, widget.password).then((_) {
         setState(() {

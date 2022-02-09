@@ -6,6 +6,7 @@ import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/wallet.dart';
+import 'package:komodo_dex/model/wallet_security_settings.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:path/path.dart';
@@ -30,10 +31,13 @@ class Db {
   static Future<Database> _initDB() async {
     final Directory documentsDirectory = await applicationDocumentsDirectory;
     final String path = join(documentsDirectory.path, 'AtomicDEX.db');
-    final db = await openDatabase(path, version: 1, onOpen: (Database db) {},
-        onCreate: (Database db, int version) async {
-      Log('database:35', 'initDB, onCreate');
-      await db.execute('''
+    final db = await openDatabase(
+      path,
+      version: 2,
+      onOpen: (Database db) {},
+      onCreate: (Database db, int version) async {
+        Log('database:35', 'initDB, onCreate version $version');
+        await db.execute('''
       CREATE TABLE ArticlesSaved (
           id TEXT PRIMARY KEY,
           media TEXT,
@@ -47,21 +51,121 @@ class Db {
           v INTEGER
         )
       ''');
-      await db.execute('''
+        await db.execute('''
       CREATE TABLE Wallet (
           id TEXT PRIMARY KEY,
           name TEXT,
-          is_fast_encryption BIT
+          is_passphrase_saved BIT,
+          log_out_on_exit BIT,
+          activate_pin_protection BIT,
+          is_pin_created BIT,
+          created_pin TEXT,
+          activate_bio_protection BIT,
+          enable_camo BIT,
+          is_camo_pin_created BIT,
+          camo_pin TEXT,
+          is_camo_active BIT,
+          camo_fraction INTEGER,
+          camo_balance TEXT,
+          camo_session_started_at INTEGER
         )
       ''');
-      await db.execute('''
+        await db.execute('''
       CREATE TABLE CurrentWallet (
           id TEXT PRIMARY KEY,
           name TEXT,
-          is_fast_encryption BIT
+          is_passphrase_saved BIT,
+          log_out_on_exit BIT,
+          activate_pin_protection BIT,
+          is_pin_created BIT,
+          created_pin TEXT,
+          activate_bio_protection BIT,
+          enable_camo BIT,
+          is_camo_pin_created BIT,
+          camo_pin TEXT,
+          is_camo_active BIT,
+          camo_fraction INTEGER,
+          camo_balance TEXT,
+          camo_session_started_at INTEGER
         )
       ''');
-    });
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        Log('database',
+            'initDB, onUpgrade, oldVersion: $oldVersion newVersion: $newVersion');
+        if (newVersion >= 2) {
+          Log('database', 'initDB, onUpgrade, upgrading to version 2');
+          // MRC: I could have simply added the new fields to the table,
+          // but I'm opting to recreating the tables
+          // The sqlite docs recommend doings a transation and doing things in a specific order
+          // See https://www.sqlite.org/lang_altertable.html for info
+          try {
+            final batch = db.batch();
+
+            batch.execute('''
+      CREATE TABLE new_Wallet (
+          id TEXT PRIMARY KEY,
+          name TEXT,
+          is_passphrase_saved BIT,
+          log_out_on_exit BIT,
+          activate_pin_protection BIT,
+          is_pin_created BIT,
+          created_pin TEXT,
+          activate_bio_protection BIT,
+          enable_camo BIT,
+          is_camo_pin_created BIT,
+          camo_pin TEXT,
+          is_camo_active BIT,
+          camo_fraction INTEGER,
+          camo_balance TEXT,
+          camo_session_started_at INTEGER
+        )
+      ''');
+            batch.execute('''
+      CREATE TABLE new_CurrentWallet (
+          id TEXT PRIMARY KEY,
+          name TEXT,
+          is_passphrase_saved BIT,
+          log_out_on_exit BIT,
+          activate_pin_protection BIT,
+          is_pin_created BIT,
+          created_pin TEXT,
+          activate_bio_protection BIT,
+          enable_camo BIT,
+          is_camo_pin_created BIT,
+          camo_pin TEXT,
+          is_camo_active BIT,
+          camo_fraction INTEGER,
+          camo_balance TEXT,
+          camo_session_started_at INTEGER
+        )
+      ''');
+            batch.execute('''
+      INSERT INTO
+      new_Wallet(id, name)
+      SELECT id, name
+      FROM Wallet
+      ''');
+            batch.execute('''
+      INSERT INTO new_CurrentWallet(id, name)
+      SELECT id, name
+      FROM CurrentWallet
+      ''');
+            batch.execute('DROP TABLE Wallet');
+            batch.execute('DROP TABLE CurrentWallet');
+            batch.execute('ALTER TABLE new_Wallet RENAME TO Wallet');
+            batch.execute(
+                'ALTER TABLE new_CurrentWallet RENAME TO CurrentWallet');
+            batch.commit();
+            Log('database',
+                'initDB, onUpgrade, upgraded database to version 2 successfully');
+          } catch (e) {
+            Log('database',
+                'initDB, onUpgrade, unable to upgrade database to version 2, error ${e.toString()}');
+          }
+        }
+      },
+    );
 
     // Drop tables no longer in use.
     await db.execute('DROP TABLE IF EXISTS CoinsDefault');
@@ -368,5 +472,77 @@ class Db {
 
     if (entry == null) return null;
     return entry['snapshot'];
+  }
+
+  static Future<WalletSecuritySettings>
+      getCurrentWalletSecuritySettings() async {
+    final Database db = await Db.db;
+
+    final List<Map<String, dynamic>> maps = await db.query('CurrentWallet');
+
+    final List<WalletSecuritySettings> walletsSecuritySettings =
+        List<WalletSecuritySettings>.generate(maps.length, (int i) {
+      return WalletSecuritySettings(
+        isPassphraseSaved: maps[i]['is_passphrase_saved'] ?? false,
+        logOutOnExit: maps[i]['log_out_on_exit'] ?? false,
+        activatePinProtection: maps[i]['activate_pin_protection'] ?? false,
+        isPinCreated: maps[i]['is_pin_created'] ?? false,
+        createdPin: maps[i]['created_pin'],
+        activateBioProtection: maps[i]['activate_pin_protection'] ?? false,
+        enableCamo: maps[i]['enable_camo'] ?? false,
+        isCamoPinCreated: maps[i]['is_camo_pin_created'] ?? false,
+        camoPin: maps[i]['camo_pin'],
+        isCamoActive: maps[i]['is_camo_active'] ?? false,
+        camoFraction: maps[i]['camo_fraction'],
+        camoBalance: maps[i]['camo_balance'],
+        camoSessionStartedAt: maps[i]['camo_session_started_at'],
+      );
+    });
+    if (walletsSecuritySettings.isEmpty) {
+      return null;
+    } else {
+      return walletsSecuritySettings[0];
+    }
+  }
+
+  static Future<void> updateWalletSecuritySettings(
+      WalletSecuritySettings walletSecuritySettings,
+      {bool allWallets = false}) async {
+    final Database db = await Db.db;
+
+    Wallet currenWallet = await getCurrentWallet();
+
+    final batch = db.batch();
+
+    final updateMap = {
+      'is_passphrase_saved': walletSecuritySettings.isPassphraseSaved,
+      'log_out_on_exit': walletSecuritySettings.logOutOnExit,
+      'activate_pin_protection': walletSecuritySettings.activatePinProtection,
+      'is_pin_created': walletSecuritySettings.isPinCreated,
+      'created_pin': walletSecuritySettings.createdPin,
+      'activate_bio_protection': walletSecuritySettings.activateBioProtection,
+      'enable_camo': walletSecuritySettings.enableCamo,
+      'is_camo_pin_created': walletSecuritySettings.isCamoPinCreated,
+      'camo_pin': walletSecuritySettings.camoPin,
+      'is_camo_active': walletSecuritySettings.isCamoActive,
+      'camo_fraction': walletSecuritySettings.camoFraction,
+      'camo_balance': walletSecuritySettings.camoBalance,
+      'camo_session_started_at': walletSecuritySettings.camoSessionStartedAt,
+    };
+
+    await db.update(
+      'Wallet',
+      updateMap,
+      where: allWallets ? null : 'id = ?',
+      whereArgs: allWallets ? null : [currenWallet.id],
+    );
+    await db.update(
+      'CurrentWallet',
+      updateMap,
+      where: allWallets ? null : 'id = ?',
+      whereArgs: allWallets ? null : [currenWallet.id],
+    );
+
+    batch.commit();
   }
 }

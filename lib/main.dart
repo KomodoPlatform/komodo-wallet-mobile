@@ -21,6 +21,7 @@ import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/dex_page.dart';
 import 'package:komodo_dex/screens/feed/feed_page.dart';
@@ -98,6 +99,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ChangeNotifierProvider(
               create: (context) => ConstructorProvider(),
             ),
+            ChangeNotifierProvider(
+              create: (context) => WalletSecuritySettingsProvider(),
+            )
           ],
           child: const MyApp(),
         ));

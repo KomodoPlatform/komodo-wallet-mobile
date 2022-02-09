@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -11,19 +11,20 @@ import 'package:komodo_dex/model/transaction_data.dart';
 CamoBloc camoBloc = CamoBloc();
 
 class CamoBloc implements BlocBase {
+  final _walletSecuritySettingsProvider = WalletSecuritySettingsProvider();
+
   Future<void> init() => _loadPrefs();
 
   Future<void> _loadPrefs() async {
-    _prefs = await SharedPreferences.getInstance();
-
-    _isCamoEnabled = _prefs.getBool('isCamoEnabled') ?? _isCamoEnabled;
-    _isCamoActive = _prefs.getBool('isCamoActive') ?? _isCamoActive;
-    _camoFraction = _prefs.getInt('camoFraction') ?? _camoFraction;
-    _sessionStartedAt =
-        _prefs.getInt('camoSessionStartedAt') ?? _sessionStartedAt;
+    _isCamoEnabled =
+        _walletSecuritySettingsProvider.enableCamo ?? _isCamoEnabled;
+    _isCamoActive =
+        _walletSecuritySettingsProvider.isCamoActive ?? _isCamoActive;
+    _camoFraction =
+        _walletSecuritySettingsProvider.camoFraction ?? _camoFraction;
+    _sessionStartedAt = _walletSecuritySettingsProvider.camoSessionStartedAt ??
+        _sessionStartedAt;
   }
-
-  SharedPreferences _prefs;
 
   bool _isCamoActive = false;
   bool _isCamoEnabled = false;
@@ -54,7 +55,7 @@ class CamoBloc implements BlocBase {
   }
 
   void camouflageBalance(Balance balance) {
-    final String balanceStr = _prefs.getString('camoBalance');
+    final String balanceStr = _walletSecuritySettingsProvider.camoBalance;
     dynamic json;
     try {
       json = jsonDecode(balanceStr);
@@ -65,7 +66,7 @@ class CamoBloc implements BlocBase {
     double fakeBalance;
     if (json[balance.coin] == null) {
       json[balance.coin] = balance.balance.toString();
-      _prefs.setString('camoBalance', jsonEncode(json));
+      _walletSecuritySettingsProvider.camoBalance = jsonEncode(json);
       fakeBalance = balance.balance.toDouble() * _camoFraction / 100;
     } else {
       final double balanceDelta =
@@ -115,12 +116,12 @@ class CamoBloc implements BlocBase {
     _inIsCamoActive.add(val);
     Log('authenticate_bloc', 'switchCamoActive] Camouflage mode set to $val');
 
-    _prefs.setBool('isCamoActive', val);
+    _walletSecuritySettingsProvider.isCamoActive = val;
 
     if (val) {
       _sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
-      _prefs.setInt('camoSessionStartedAt', _sessionStartedAt);
-      _prefs.remove('camoBalance');
+      _walletSecuritySettingsProvider.camoSessionStartedAt = _sessionStartedAt;
+      _walletSecuritySettingsProvider.camoBalance = null;
     }
   }
 
@@ -128,13 +129,13 @@ class CamoBloc implements BlocBase {
   set isCamoEnabled(bool val) {
     _isCamoEnabled = val;
     _inCamoEnabled.add(val);
-    _prefs.setBool('isCamoEnabled', val);
+    _walletSecuritySettingsProvider.enableCamo = val;
   }
 
   int get camoFraction => _camoFraction;
   set camoFraction(int val) {
     _camoFraction = val;
     _inCamoFraction.add(val);
-    _prefs.setInt('camoFraction', val);
+    _walletSecuritySettingsProvider.camoFraction = val;
   }
 }
