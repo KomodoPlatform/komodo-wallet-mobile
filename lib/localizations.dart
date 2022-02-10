@@ -1215,9 +1215,7 @@ class AppLocalizations {
       Intl.message('OFF', name: 'protectionCtrlOff');
   String get protectionCtrlConfirmations =>
       Intl.message('Confirmations', name: 'protectionCtrlConfirmations');
-  String dPow(String appCompanyShort) =>
-      Intl.message('$appCompanyShort dPoW security',
-          name: 'dPow', args: [appCompanyShort]);
+  String get dPow => Intl.message('Komodo dPoW security', name: 'dPow');
   String get protectionCtrlCustom =>
       Intl.message('Use custom protection settings',
           name: 'protectionCtrlCustom');

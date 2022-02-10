@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2022-01-26T14:22:42.652598",
+  "@@last_modified": "2022-02-10T08:37:58.271467",
   "mobileDataWarning": "Please note that now you're using cellular data and participation in {appName} P2P network consume internet traffic. It's better to use a WiFi network if your cellular data plan is costly.",
   "@mobileDataWarning": {
     "type": "text",
@@ -3470,15 +3470,11 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "dPow": "{appCompanyShort} dPoW security",
+  "dPow": "Komodo dPoW security",
   "@dPow": {
     "type": "text",
-    "placeholders_order": [
-      "appCompanyShort"
-    ],
-    "placeholders": {
-      "appCompanyShort": {}
-    }
+    "placeholders_order": [],
+    "placeholders": {}
   },
   "protectionCtrlCustom": "Use custom protection settings",
   "@protectionCtrlCustom": {

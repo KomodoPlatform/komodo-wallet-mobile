@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -168,7 +167,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Text(
-            AppLocalizations.of(context).dPow(appConfig.appCompanyShort) + ' ',
+            AppLocalizations.of(context).dPow + ' ',
           ),
           Icon(
             Icons.open_in_new,
