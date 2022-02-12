@@ -87,12 +87,12 @@
     "@shareAddress": {
         "type": "text",
         "placeholders_order": [
-          "coinName",
-          "address"
+            "coinName",
+            "address"
         ],
         "placeholders": {
-          "coinName": {},
-          "address": {}
+            "coinName": {},
+            "address": {}
         }
     },
     "withdraw": "Вывести",
@@ -123,12 +123,12 @@
     "@withdrawValue": {
         "type": "text",
         "placeholders_order": [
-          "amount",
-          "coinName"
+            "amount",
+            "coinName"
         ],
         "placeholders": {
-          "amount": {},
-          "coinName": {}
+            "amount": {},
+            "coinName": {}
         }
     },
     "withdrawConfirm": "Подтвердите вывод",
@@ -267,10 +267,10 @@
     "@buySuccessWaitingError": {
         "type": "text",
         "placeholders_order": [
-          "seconde"
+            "seconde"
         ],
         "placeholders": {
-          "seconde": {}
+            "seconde": {}
         }
     },
     "networkFee": "Комиссия сети",
@@ -729,25 +729,26 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "checkSeedPhraseSubtile": "Какое {index} слово в вашем seed-ключе?","@checkSeedPhraseSubtile": {
+    "checkSeedPhraseSubtile": "Какое {index} слово в вашем seed-ключе?",
+    "@checkSeedPhraseSubtile": {
         "type": "text",
         "placeholders_order": [
-          "index"
+            "index"
         ],
         "placeholders": {
-          "index": {}
+            "index": {}
         }
-      },
+    },
     "checkSeedPhraseHint": "Введите {index} слово",
     "@checkSeedPhraseHint": {
         "type": "text",
         "placeholders_order": [
-          "index"
+            "index"
         ],
         "placeholders": {
-          "index": {}
+            "index": {}
         }
-      },
+    },
     "checkSeedPhraseButton1": "ПРОДОЛЖИТЬ",
     "@checkSeedPhraseButton1": {
         "type": "text",
@@ -984,13 +985,13 @@
     },
     "welcomeInfo": "{appName} mobile - это мульти-монетный кошелек с функциональностью DEX третьего поколения и многим другим.",
     "@welcomeInfo": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "welcomeLetSetUp": "ДАВАЙТЕ ВСЕ НАСТРОИМ!",
     "@welcomeLetSetUp": {
@@ -1006,15 +1007,15 @@
     },
     "noOrder": "Пожалуйста, введите сумму {coinName}.",
     "@noOrder": {
-      "type": "text",
-      "placeholders_order": [
-        "minValue",
-        "coin"
-      ],
-      "placeholders": {
-        "minValue": {},
-        "coin": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "minValue",
+            "coin"
+        ],
+        "placeholders": {
+            "minValue": {},
+            "coin": {}
+        }
     },
     "bestAvailableRate": "Обменный курс",
     "@bestAvailableRate": {
@@ -1098,14 +1099,14 @@
     "@minValue": {
         "type": "text",
         "placeholders_order": [
-          "number",
-          "coinName"
+            "number",
+            "coinName"
         ],
         "placeholders": {
-          "number": {},
-          "coinName": {}
+            "number": {},
+            "coinName": {}
         }
-      },
+    },
     "titleCreatePassword": "СОЗДАТЬ ПАРОЛЬ",
     "@titleCreatePassword": {
         "type": "text",
@@ -1116,14 +1117,14 @@
     "@minVolumeInput": {
         "type": "text",
         "placeholders_order": [
-          "number",
-          "coinName"
+            "number",
+            "coinName"
         ],
         "placeholders": {
-          "number": {},
-          "coinName": {}
+            "number": {},
+            "coinName": {}
         }
-      },
+    },
     "encryptingWallet": "Шифрую кошелек",
     "@encryptingWallet": {
         "type": "text",
@@ -1204,25 +1205,25 @@
     },
     "youWillReceiveClaim": "Вы получите {amount} {coin}",
     "@youWillReceiveClaim": {
-      "type": "text",
-      "placeholders_order": [
-        "amount",
-        "coin"
-      ],
-      "placeholders": {
-        "amount": {},
-        "coin": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "amount",
+            "coin"
+        ],
+        "placeholders": {
+            "amount": {},
+            "coin": {}
+        }
     },
     "seeOrders": "Нажмите, чтобы увидеть {amount} ордеров",
     "@seeOrders": {
-      "type": "text",
-      "placeholders_order": [
-        "amount"
-      ],
-      "placeholders": {
-        "seeOrders": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "amount"
+        ],
+        "placeholders": {
+            "seeOrders": {}
+        }
     },
     "clickToSee": "Нажмите, чтобы увидеть ",
     "@clickToSee": {
@@ -1274,13 +1275,13 @@
     },
     "swapErcAmount": "Для этого свопа нужно {amount} ETH для комиссий сети.",
     "@swapErcAmount": {
-      "type": "text",
-      "placeholders_order": [
-        "amount"
-      ],
-      "placeholders": {
-        "amount": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "amount"
+        ],
+        "placeholders": {
+            "amount": {}
+        }
     },
     "remove": "Отключить",
     "@remove": {
@@ -1352,20 +1353,20 @@
     "@errorNotEnoughtGas": {
         "type": "text",
         "placeholders_order": [
-          "gas"
+            "gas"
         ],
         "placeholders": {
-          "gas": {}
+            "gas": {}
         }
     },
     "orderCancel": "Все {coin} ордеры будут отменены.",
     "@orderCancel": {
         "type": "text",
         "placeholders_order": [
-          "coin"
+            "coin"
         ],
         "placeholders": {
-          "gas": {}
+            "gas": {}
         }
     },
     "deleteConfirm": "Подтвердить деактивацию",
@@ -1508,23 +1509,23 @@
     },
     "soundCantPlayThatMsg": "Выберите файл в формате mp3 или wav. Воспроизводится, когда {description}.",
     "@soundCantPlayThatMsg": {
-      "type": "text",
-      "placeholders_order": [
-        "description"
-      ],
-      "placeholders": {
-        "description": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "description"
+        ],
+        "placeholders": {
+            "description": {}
+        }
     },
     "soundPlayedWhen": "Воспроизводится, когда {description}",
     "@soundPlayedWhen": {
-      "type": "text",
-      "placeholders_order": [
-        "description"
-      ],
-      "placeholders": {
-        "description": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "description"
+        ],
+        "placeholders": {
+            "description": {}
+        }
     },
     "marketsTab": "Рынки",
     "@marketsTab": {
@@ -1588,23 +1589,23 @@
     },
     "orderDetailsExpedient": "На -{delta}% ниже цен CEX",
     "@orderDetailsExpedient": {
-      "type": "text",
-      "placeholders_order": [
-        "delta"
-      ],
-      "placeholders": {
-        "delta": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "delta"
+        ],
+        "placeholders": {
+            "delta": {}
+        }
     },
     "orderDetailsExpensive": "На +{delta}% выше цен CEX",
     "@orderDetailsExpensive": {
-      "type": "text",
-      "placeholders_order": [
-        "delta"
-      ],
-      "placeholders": {
-        "delta": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "delta"
+        ],
+        "placeholders": {
+            "delta": {}
+        }
     },
     "orderDetailsIdentical": "Совпадает с СЕХ",
     "@orderDetailsIdentical": {
@@ -1656,33 +1657,33 @@
     },
     "ordersTablePrice": "Цена ({coin})",
     "@ordersTablePrice": {
-      "type": "text",
-      "placeholders_order": [
-        "coin"
-      ],
-      "placeholders": {
-        "coin": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
     },
     "ordersTableAmount": "Сумма ({coin})",
     "@ordersTableAmount": {
-      "type": "text",
-      "placeholders_order": [
-        "coin"
-      ],
-      "placeholders": {
-        "coin": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
     },
     "ordersTableTotal": "Всего ({coin})",
     "@ordersTableTotal": {
-      "type": "text",
-      "placeholders_order": [
-        "coin"
-      ],
-      "placeholders": {
-        "coin": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
     },
     "marketsNoBids": "Нет бидов",
     "@marketsNoBids": {
@@ -1848,45 +1849,45 @@
     },
     "rewardsTimeDays": "{dd} дней}",
     "@rewardsTimeDays": {
-      "type": "text",
-      "placeholders_order": [
-        "dd"
-      ],
-      "placeholders": {
-        "dd": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "dd"
+        ],
+        "placeholders": {
+            "dd": {}
+        }
     },
     "rewardsTimeHours": "{hh}ч {minutes}мин",
     "@rewardsTimeHours": {
-      "type": "text",
-      "placeholders_order": [
-        "hh",
-        "minutes"
-      ],
-      "placeholders": {
-        "hh": {},
-        "minutes": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "hh",
+            "minutes"
+        ],
+        "placeholders": {
+            "hh": {},
+            "minutes": {}
+        }
     },
     "rewardsTimeMin": "мин {mm}",
     "@rewardsTimeMin": {
-      "type": "text",
-      "placeholders_order": [
-        "mm"
-      ],
-      "placeholders": {
-        "mm": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "mm"
+        ],
+        "placeholders": {
+            "mm": {}
+        }
     },
     "rewardsSuccess": "Получено {amount} KMD.",
     "@rewardsSuccess": {
-      "type": "text",
-      "placeholders_order": [
-        "amount"
-      ],
-      "placeholders": {
-        "amount": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "amount"
+        ],
+        "placeholders": {
+            "amount": {}
+        }
     },
     "rewardsError": "Что-то пошло не так. Попробуйте позже.",
     "@rewardsError": {
@@ -2028,13 +2029,13 @@
     },
     "multiConfirmTitle": "Создать {number} ордер(ов):",
     "@multiConfirmTitle": {
-      "type": "text",
-      "placeholders_order": [
-        "number"
-      ],
-      "placeholders": {
-        "number": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "number"
+        ],
+        "placeholders": {
+            "number": {}
+        }
     },
     "multiConfirmCancel": "Отменить",
     "@multiConfirmCancel": {
@@ -2092,23 +2093,23 @@
     },
     "updatesTitle": "Обновление {appName}",
     "@updatesTitle": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "updatesCurrentVersion": "Установлена версия {version}",
     "@updatesCurrentVersion": {
-      "type": "text",
-      "placeholders_order": [
-        "version"
-      ],
-      "placeholders": {
-        "version": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "version"
+        ],
+        "placeholders": {
+            "version": {}
+        }
     },
     "updatesChecking": "Проверка обновлений...",
     "@updatesChecking": {
@@ -2154,13 +2155,13 @@
     },
     "updatesNotifAvailableVersion": "Доступна версия {version}. Пожалуйста, обновитесь.",
     "@updatesNotifAvailableVersion": {
-      "type": "text",
-      "placeholders_order": [
-        "version"
-      ],
-      "placeholders": {
-        "version": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "version"
+        ],
+        "placeholders": {
+            "version": {}
+        }
     },
     "addressBook": "Адресная книга",
     "@addressBook": {
@@ -2188,13 +2189,13 @@
     },
     "addressBookFilter": "Отображаются только контакты с {title} адресами",
     "@addressBookFilter": {
-      "type": "text",
-      "placeholders_order": [
-        "title"
-      ],
-      "placeholders": {
-        "title": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "title"
+        ],
+        "placeholders": {
+            "title": {}
+        }
     },
     "createContact": "Добавить контакт",
     "@createContact": {
@@ -2258,13 +2259,13 @@
     },
     "contactDeleteWarning": "Вы уверены, что хотите удалить {name}?",
     "@contactDeleteWarning": {
-      "type": "text",
-      "placeholders_order": [
-        "name"
-      ],
-      "placeholders": {
-        "name": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "name"
+        ],
+        "placeholders": {
+            "name": {}
+        }
     },
     "contactDeleteBtn": "Удалить",
     "@contactDeleteBtn": {
@@ -2298,13 +2299,13 @@
     },
     "addressCoinInactive": "Вы не можете отправить средства на адрес {abbr}, потому что {abbr} не активирован. Пожалуйста, перейдите в портфолио.",
     "@addressCoinInactive": {
-      "type": "text",
-      "placeholders_order": [
-        "abbr"
-      ],
-      "placeholders": {
-        "abbr": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "abbr"
+        ],
+        "placeholders": {
+            "abbr": {}
+        }
     },
     "warningOkBtn": "OK",
     "@warningOkBtn": {
@@ -2434,13 +2435,13 @@
     },
     "dPow": "Защита {appCompanyShort} dPoW",
     "@dPow": {
-      "type": "text",
-      "placeholders_order": [
-        "appCompanyShort"
-      ],
-      "placeholders": {
-        "appCompanyShort": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyShort"
+        ],
+        "placeholders": {
+            "appCompanyShort": {}
+        }
     },
     "protectionCtrlCustom": "Установить свои настройки защиты",
     "@protectionCtrlCustom": {
@@ -2554,13 +2555,13 @@
     },
     "supportLinksDesc": "Если у вас есть какие-либо вопросы или вы считаете, что обнаружили техническую проблему с приложением {appName}, вы можете сообщить об этом и получить поддержку от нашей команды.",
     "@supportLinksDesc": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "question_1": "Вы храните мои приватные ключи?",
     "@question_1": {
@@ -2576,23 +2577,23 @@
     },
     "question_2": "Чем торговля на {appName} отличается от торговли на других DEX?",
     "@question_2": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "answer_2": "Другие DEX обычно позволяют торговать только активами, принадлежащими к одному блокчейну, используют прокси-токены и разрешают размещать только один ордер, использующий ваш баланс. \n\n{appName} позволяет вам торговать между разными блокчейнами без использования прокси-токенов. Вы также можете разместить несколько заказов, используя одни и те же средства. Например, вы можете выставить ордера на продажу 0,1 BTC за KMD, QTUM и VRSC - первый исполненный ордер автоматически отменит все остальные ордера.",
     "@answer_2": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "question_3": "Сколько времени занимает каждый атомарный своп?",
     "@question_3": {
@@ -2602,13 +2603,13 @@
     },
     "answer_3": "Есть несколько факторов, определяющих время обработки каждого свопа. Время блокировки торгуемых активов зависит от каждой сети (биткоин блокчейн обычно является самым медленным). Кроме того, пользователь может редактировать параметры безопасности. Например, в {appName} можно установить количество подтверждений, после которых KMD транзакция считается успешной, равным 3, что сокращает время обмена по сравнению с транзакциями, ожидающими<a href = \"https:\/\/komodoplatform.com\/security-delayed-proof-of -work-dpow \/ \"> нотариального заверения<\/a>.",
     "@answer_3": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "question_4": "Необходимо ли мне быть в сети во время свопа?",
     "@question_4": {
@@ -2624,23 +2625,23 @@
     },
     "question_5": "Как рассчитываются комиссии на {appName}?",
     "@question_5": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "answer_5": "При торговле на {appName} необходимо учитывать две категории комиссий. \n\n1. {appName} взимает приблизительно 0,13% (1\/777 объема торгов, но не ниже 0,0001) в качестве комиссии за торговлю для тейкер ордеров, а для ордеров-мейкеров комиссия равна нулю. \n\n2. Как мейкеры, так и тейкеры должны платят обычные комиссии за транзакции в используемых блокчейнах при совершении атомарного свопа .\n\nКомиссиии сети могут сильно различаться в зависимости от выбранной вами торговой пары.",
     "@answer_5": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "question_6": "Предоставляете ли вы поддержку пользователей?",
     "@question_6": {
@@ -2650,19 +2651,19 @@
     },
     "answer_6": "Да! {appName} предлагает поддержку через <a href=\"{link}\"> {name} сервер {appCompanyShort} <\/a>. Команда и сообщество всегда рады помочь!",
     "@answer_6": {
-      "type": "text",
-      "placeholders_order": [
-        "name",
-        "link",
-        "appName",
-        "appCompanyShort"
-      ],
-      "placeholders": {
-        "name": {},
-        "link": {},
-        "appName": {},
-        "appCompanyShort": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "name",
+            "link",
+            "appName",
+            "appCompanyShort"
+        ],
+        "placeholders": {
+            "name": {},
+            "link": {},
+            "appName": {},
+            "appCompanyShort": {}
+        }
     },
     "question_7": "Есть ли у вас какие-либо географические ограничения?",
     "@question_7": {
@@ -2672,75 +2673,75 @@
     },
     "answer_7": "Нет! {appName} полностью децентрализована. Ограничить доступ пользователей третьими лицами невозможно.",
     "@answer_7": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "question_8": "Кто стоит за {appName}?",
     "@question_8": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "answer_8": "{appName} разработан командой {appCompanyShort}. {appCompanyShort} - один из наиболее авторитетных блокчейн-проектов, работающих над инновационными решениями, такими как атомарные свопы, delayed Proof of Work и совместимая многоцепочечная архитектура.",
     "@answer_8": {
-      "type": "text",
-      "placeholders_order": [
-        "appName",
-        "appCompanyShort"
-      ],
-      "placeholders": {
-        "appName": {},
-        "appCompanyShort": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName",
+            "appCompanyShort"
+        ],
+        "placeholders": {
+            "appName": {},
+            "appCompanyShort": {}
+        }
     },
     "question_9": "Можно ли разработать собственную white-label биржу на технологии {appName}?",
     "@question_9": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "answer_9": "Конечно! Вы можете обратиться к нашей документации для разработчиков для получения более подробной информации или связаться с нами по вопросам партнерства. У вас есть конкретный технический вопрос? Разработчики сообщества {appName} всегда готовы помочь!",
     "@answer_9": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "question_10": "На каких устройствах я могу использовать {appName}?",
     "@question_10": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "answer_10": "{appName} доступен для мобильных устройств на Android и iPhone, а также как десктопное приложение на операционных системах Windows, Mac и Linux.",
     "@answer_10": {
-      "type": "text",
-      "placeholders_order": [
-        "appName"
-      ],
-      "placeholders": {
-        "appName": {}
-      }
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
     },
     "swapActual": "факт",
     "@swapActual": {
