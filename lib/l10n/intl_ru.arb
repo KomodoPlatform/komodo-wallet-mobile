@@ -2433,15 +2433,11 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Защита {appCompanyShort} dPoW",
+    "dPow": "Защита Komodo dPoW",
     "@dPow": {
         "type": "text",
-        "placeholders_order": [
-            "appCompanyShort"
-        ],
-        "placeholders": {
-            "appCompanyShort": {}
-        }
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "protectionCtrlCustom": "Установить свои настройки защиты",
     "@protectionCtrlCustom": {
@@ -2461,25 +2457,17 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "exchangeExpedient": "На -{delta}% ниже цен CEX",
+    "exchangeExpedient": "Ниже цен CEX",
     "@exchangeExpedient": {
         "type": "text",
-        "placeholders_order": [
-            "delta"
-        ],
-        "placeholders": {
-            "delta": {}
-        }
+        "placeholders_order": [],
+        "placeholders": {}
     },
-    "exchangeExpensive": "На +{delta}% выше цен CEX",
+    "exchangeExpensive": "Выше цен CEX",
     "@exchangeExpensive": {
         "type": "text",
-        "placeholders_order": [
-            "delta"
-        ],
-        "placeholders": {
-            "delta": {}
-        }
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "echangeIdentical": "Совпадает с СЕХ",
     "@echangeIdentical": {
