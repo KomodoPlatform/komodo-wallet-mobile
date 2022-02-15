@@ -76,8 +76,12 @@ In Android Studio (3.6.2) the latest Kotlin plugin (1.3.71) doesn't work with Fl
 ```bash
 flutter pub run intl_generator:extract_to_arb --output-dir=lib/l10n lib/localizations.dart
 ```
-2. ARB file can be used for input to translation tools like [Arbify](https://github.com/Arbify/Arbify), [Localizely](https://localizely.com/) etc.
-3. The resulting translations can be used to generate a set of libraries:
+2. Sync generated `intl_messages.arb` with existing locale `intl_*.arb` files:
+```bash
+dart run sync_arb_files.dart
+```
+3. ARB files can be used for input to translation tools like [Arbify](https://github.com/Arbify/Arbify), [Localizely](https://localizely.com/) etc.
+4. The resulting translations can be used to generate a set of libraries:
 ```bash
 flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/localizations.dart lib/l10n/intl_*.arb
 ```
