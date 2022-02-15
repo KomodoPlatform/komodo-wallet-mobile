@@ -1,720 +1,4 @@
 {
-    "mobileDataWarning": "",
-    "@mobileDataWarning": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "withdrawCameraAccessTitle": "",
-    "@withdrawCameraAccessTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "withdrawCameraAccessText": "",
-    "@withdrawCameraAccessText": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "welcomeTitle": "Добро пожаловать",
-    "@welcomeTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "welcomeWallet": "кошелек",
-    "@welcomeWallet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "welcomeInfo": "{appName} mobile - это мульти-монетный кошелек с функциональностью DEX третьего поколения и многим другим.",
-    "@welcomeInfo": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "welcomeLetSetUp": "ДАВАЙТЕ ВСЕ НАСТРОИМ!",
-    "@welcomeLetSetUp": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle1": "",
-    "@eulaTitle1": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "eulaTitle2": "TERMS and CONDITIONS: (ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ)\n\n",
-    "@eulaTitle2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle3": "",
-    "@eulaTitle3": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle4": "",
-    "@eulaTitle4": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle5": "",
-    "@eulaTitle5": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle6": "",
-    "@eulaTitle6": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle7": "",
-    "@eulaTitle7": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle8": "",
-    "@eulaTitle8": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle9": "",
-    "@eulaTitle9": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle10": "",
-    "@eulaTitle10": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle11": "",
-    "@eulaTitle11": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle12": "",
-    "@eulaTitle12": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle13": "",
-    "@eulaTitle13": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle14": "",
-    "@eulaTitle14": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle15": "",
-    "@eulaTitle15": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle16": "",
-    "@eulaTitle16": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle17": "",
-    "@eulaTitle17": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle18": "",
-    "@eulaTitle18": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle19": "",
-    "@eulaTitle19": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle20": "",
-    "@eulaTitle20": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe1": "",
-    "@eulaParagraphe1": {
-        "type": "text",
-        "placeholders_order": [
-            "appName",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appName": {},
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe2": "",
-    "@eulaParagraphe2": {
-        "type": "text",
-        "placeholders_order": [
-            "appName",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appName": {},
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe3": "",
-    "@eulaParagraphe3": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe4": "",
-    "@eulaParagraphe4": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe5": "",
-    "@eulaParagraphe5": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "eulaParagraphe6": "",
-    "@eulaParagraphe6": {
-        "type": "text",
-        "placeholders_order": [
-            "appName",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appName": {},
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe7": "",
-    "@eulaParagraphe7": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe8": "",
-    "@eulaParagraphe8": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe9": "",
-    "@eulaParagraphe9": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe10": "",
-    "@eulaParagraphe10": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe11": "",
-    "@eulaParagraphe11": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyShort",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyShort": {},
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe12": "",
-    "@eulaParagraphe12": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe13": "",
-    "@eulaParagraphe13": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe14": "",
-    "@eulaParagraphe14": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe15": "",
-    "@eulaParagraphe15": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe16": "",
-    "@eulaParagraphe16": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyShort",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyShort": {},
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe17": "",
-    "@eulaParagraphe17": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe18": "",
-    "@eulaParagraphe18": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe19": "",
-    "@eulaParagraphe19": {
-        "type": "text",
-        "placeholders_order": [
-            "appName",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appName": {},
-            "appCompanyLong": {}
-        }
-    },
-    "updatesTitle": "Обновление {appName}",
-    "@updatesTitle": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "updatesCurrentVersion": "Установлена версия {version}",
-    "@updatesCurrentVersion": {
-        "type": "text",
-        "placeholders_order": [
-            "version"
-        ],
-        "placeholders": {
-            "version": {}
-        }
-    },
-    "updatesChecking": "Проверка обновлений...",
-    "@updatesChecking": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesUpToDate": "Установлена последняя версия",
-    "@updatesUpToDate": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesAvailable": "Доступна новая версия",
-    "@updatesAvailable": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesUpdate": "Обновление",
-    "@updatesUpdate": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesSkip": "Пропустить",
-    "@updatesSkip": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesNotifTitle": "Доступно обновление",
-    "@updatesNotifTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesNotifAvailable": "Доступна новая версия. Пожалуйста, обновитесь.",
-    "@updatesNotifAvailable": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesNotifAvailableVersion": "Доступна версия {version}. Пожалуйста, обновитесь.",
-    "@updatesNotifAvailableVersion": {
-        "type": "text",
-        "placeholders_order": [
-            "version"
-        ],
-        "placeholders": {
-            "version": {}
-        }
-    },
-    "helpLink": "Поддержка",
-    "@helpLink": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "helpTitle": "Помощь и поддержка",
-    "@helpTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "faqTitle": "Часто задаваемые вопросы",
-    "@faqTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "support": "Поддержка",
-    "@support": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "supportLinksDesc": "Если у вас есть какие-либо вопросы или вы считаете, что обнаружили техническую проблему с приложением {appName}, вы можете сообщить об этом и получить поддержку от нашей команды.",
-    "@supportLinksDesc": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_1": "Вы храните мои приватные ключи?",
-    "@question_1": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "answer_1": "",
-    "@answer_1": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_2": "Чем торговля на {appName} отличается от торговли на других DEX?",
-    "@question_2": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "answer_2": "Другие DEX обычно позволяют торговать только активами, принадлежащими к одному блокчейну, используют прокси-токены и разрешают размещать только один ордер, использующий ваш баланс. \n\n{appName} позволяет вам торговать между разными блокчейнами без использования прокси-токенов. Вы также можете разместить несколько заказов, используя одни и те же средства. Например, вы можете выставить ордера на продажу 0,1 BTC за KMD, QTUM и VRSC - первый исполненный ордер автоматически отменит все остальные ордера.",
-    "@answer_2": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_3": "Сколько времени занимает каждый атомарный своп?",
-    "@question_3": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "answer_3": "Есть несколько факторов, определяющих время обработки каждого свопа. Время блокировки торгуемых активов зависит от каждой сети (биткоин блокчейн обычно является самым медленным). Кроме того, пользователь может редактировать параметры безопасности. Например, в {appName} можно установить количество подтверждений, после которых KMD транзакция считается успешной, равным 3, что сокращает время обмена по сравнению с транзакциями, ожидающими<a href = \"https://komodoplatform.com/security-delayed-proof-of -work-dpow / \"> нотариального заверения</a>.",
-    "@answer_3": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_4": "Необходимо ли мне быть в сети во время свопа?",
-    "@question_4": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "answer_4": "Да. Приложение appName должно оставаться подключенным к Интернету для успешного завершения каждого атомарного свопа (очень короткие перерывы в подключении обычно допустимы). В противном случае существует риск отмены сделки, если вы являетесь мейкером, и риск потери средств, если вы тейкер. Протокол атомарного свопа требует, чтобы оба участника оставались в сети и контролировали задействованные блокчейны, чтобы процесс оставался атомарным.",
-    "@answer_4": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "question_5": "Как рассчитываются комиссии на {appName}?",
-    "@question_5": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "answer_5": "При торговле на {appName} необходимо учитывать две категории комиссий. \n\n1. {appName} взимает приблизительно 0,13% (1/777 объема торгов, но не ниже 0,0001) в качестве комиссии за торговлю для тейкер ордеров, а для ордеров-мейкеров комиссия равна нулю. \n\n2. Как мейкеры, так и тейкеры должны платят обычные комиссии за транзакции в используемых блокчейнах при совершении атомарного свопа .\n\nКомиссиии сети могут сильно различаться в зависимости от выбранной вами торговой пары.",
-    "@answer_5": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_6": "Предоставляете ли вы поддержку пользователей?",
-    "@question_6": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "answer_6": "Да! {appName} предлагает поддержку через <a href=\"{link}\"> {name} сервер {appCompanyShort} </a>. Команда и сообщество всегда рады помочь!",
-    "@answer_6": {
-        "type": "text",
-        "placeholders_order": [
-            "name",
-            "link",
-            "appName",
-            "appCompanyShort"
-        ],
-        "placeholders": {
-            "name": {},
-            "link": {},
-            "appName": {},
-            "appCompanyShort": {}
-        }
-    },
-    "question_7": "Есть ли у вас какие-либо географические ограничения?",
-    "@question_7": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "answer_7": "Нет! {appName} полностью децентрализована. Ограничить доступ пользователей третьими лицами невозможно.",
-    "@answer_7": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_8": "Кто стоит за {appName}?",
-    "@question_8": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "answer_8": "{appName} разработан командой {appCompanyShort}. {appCompanyShort} - один из наиболее авторитетных блокчейн-проектов, работающих над инновационными решениями, такими как атомарные свопы, delayed Proof of Work и совместимая многоцепочечная архитектура.",
-    "@answer_8": {
-        "type": "text",
-        "placeholders_order": [
-            "appName",
-            "appCompanyShort"
-        ],
-        "placeholders": {
-            "appName": {},
-            "appCompanyShort": {}
-        }
-    },
-    "question_9": "Можно ли разработать собственную white-label биржу на технологии {appName}?",
-    "@question_9": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "answer_9": "Конечно! Вы можете обратиться к нашей документации для разработчиков для получения более подробной информации или связаться с нами по вопросам партнерства. У вас есть конкретный технический вопрос? Разработчики сообщества {appName} всегда готовы помочь!",
-    "@answer_9": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_10": "На каких устройствах я могу использовать {appName}?",
-    "@question_10": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "answer_10": "{appName} доступен для мобильных устройств на Android и iPhone, а также как десктопное приложение на операционных системах Windows, Mac и Linux.",
-    "@answer_10": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "feedTab": "Лента",
-    "@feedTab": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedTitle": "Лента новостей",
-    "@feedTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedReadMore": "Узнать больше",
-    "@feedReadMore": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedNotFound": "Здесь ничего нет",
-    "@feedNotFound": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedUpdated": "Лента новостей обновлена",
-    "@feedUpdated": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "snackbarDismiss": "Убрать",
-    "@snackbarDismiss": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedNewsTab": "Новости",
-    "@feedNewsTab": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedUnableToUpdate": "Невозможно обновить ленту новостей",
-    "@feedUnableToUpdate": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedUnableToProceed": "Невозможно обновить ленту новостей",
-    "@feedUnableToProceed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedUpToDate": "Новых новостей нет",
-    "@feedUpToDate": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedNotifTitle": "",
-    "@feedNotifTitle": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyShort"
-        ],
-        "placeholders": {
-            "appCompanyShort": {}
-        }
-    },
     "createPin": "Задать PIN",
     "@createPin": {
         "type": "text",
@@ -748,12 +32,8 @@
     "addingCoinSuccess": "{name} активирован успешно!",
     "@addingCoinSuccess": {
         "type": "text",
-        "placeholders_order": [
-            "name"
-        ],
-        "placeholders": {
-            "name": {}
-        }
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "connecting": "Соединение...",
     "@connecting": {
@@ -770,12 +50,8 @@
     "numberAssets": "{assets} Активов",
     "@numberAssets": {
         "type": "text",
-        "placeholders_order": [
-            "assets"
-        ],
-        "placeholders": {
-            "assets": {}
-        }
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "enterSeedPhrase": "Введите свою seed-фразу",
     "@enterSeedPhrase": {
@@ -791,44 +67,6 @@
     },
     "confirm": "подтвердить",
     "@confirm": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "buyTestCoinWarning": "",
-    "@buyTestCoinWarning": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "batteryCriticalError": "",
-    "@batteryCriticalError": {
-        "type": "text",
-        "placeholders_order": [
-            "batteryLevelCritical"
-        ],
-        "placeholders": {
-            "batteryLevelCritical": {}
-        }
-    },
-    "batteryLowWarning": "",
-    "@batteryLowWarning": {
-        "type": "text",
-        "placeholders_order": [
-            "batteryLevelLow"
-        ],
-        "placeholders": {
-            "batteryLevelLow": {}
-        }
-    },
-    "batterySavingWarning": "",
-    "@batterySavingWarning": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "sellTestCoinWarning": "",
-    "@sellTestCoinWarning": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -895,12 +133,6 @@
     },
     "withdrawConfirm": "Подтвердите вывод",
     "@withdrawConfirm": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "withdrawConfirmError": "",
-    "@withdrawConfirmError": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -1066,7 +298,7 @@
         "placeholders": {}
     },
     "estimateValue": "Расчетная общая стоимость",
-    "@estimateValue": {
+    "@buySuccesestimateValuesWaiting": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -1143,12 +375,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "errorNotAValidAddressSegWit": "Segwit адреса не поддерживаются",
-    "@errorNotAValidAddressSegWit": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "toAddress": "На адрес:",
     "@toAddress": {
         "type": "text",
@@ -1167,12 +393,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "pubkey": "",
-    "@pubkey": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "back": "назад",
     "@back": {
         "type": "text",
@@ -1181,18 +401,6 @@
     },
     "cancel": "отменить",
     "@cancel": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "details": "",
-    "@details": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "unspendable": "",
-    "@unspendable": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -1389,18 +597,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "reset": "",
-    "@reset": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "resetTitle": "",
-    "@resetTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "tradeCompleted": "Обмен завершен!",
     "@tradeCompleted": {
         "type": "text",
@@ -1425,8 +621,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "swapUUID": "",
-    "@swapUUID": {
+    "swapID": "ID Обмена",
+    "@swapID": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -1515,42 +711,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "minVolumeTitle": "",
-    "@minVolumeTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "minVolumeToggle": "",
-    "@minVolumeToggle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "nonNumericInput": "",
-    "@nonNumericInput": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "minVolumeIsTDH": "",
-    "@minVolumeIsTDH": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "minVolumeInput": "",
-    "@minVolumeInput": {
-        "type": "text",
-        "placeholders_order": [
-            "minValue",
-            "coin"
-        ],
-        "placeholders": {
-            "minValue": {},
-            "coin": {}
-        }
-    },
     "checkSeedPhrase": "Проверьте seed-ключ",
     "@checkSeedPhrase": {
         "type": "text",
@@ -1601,8 +761,14 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "viewInExplorerButton": "",
-    "@viewInExplorerButton": {
+    "takerpaymentsID": "ID платежа Тейкера",
+    "@takerpaymentsID": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makerpaymentID": "ID платежа Мейкера",
+    "@makerpaymentID": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -1618,28 +784,6 @@
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
-    },
-    "warning": "",
-    "@warning": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "iUnderstand": "",
-    "@iUnderstand": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "customSeedWarning": "",
-    "@customSeedWarning": {
-        "type": "text",
-        "placeholders_order": [
-            "iUnderstand"
-        ],
-        "placeholders": {
-            "iUnderstand": {}
-        }
     },
     "hintEnterPassword": "Введите свой пароль",
     "@hintEnterPassword": {
@@ -1731,12 +875,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "hintCreatePassword": "",
-    "@hintCreatePassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "hintConfirmPassword": "Подтвердите Пароль",
     "@hintConfirmPassword": {
         "type": "text",
@@ -1815,26 +953,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "viewSeedAndKeys": "",
-    "@viewSeedAndKeys": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "seedPhrase": "",
-    "@seedPhrase": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "privateKeys": "",
-    "@privateKeys": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "privateKey": "",
-    "@privateKey": {
+    "viewSeed": "Посмотреть seed-ключ",
+    "@viewSeed": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -1851,6 +971,34 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "welcomeTitle": "Добро пожаловать",
+    "@welcomeTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "welcomeWallet": "кошелек",
+    "@welcomeWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "welcomeInfo": "{appName} mobile - это мульти-монетный кошелек с функциональностью DEX третьего поколения и многим другим.",
+    "@welcomeInfo": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "welcomeLetSetUp": "ДАВАЙТЕ ВСЕ НАСТРОИМ!",
+    "@welcomeLetSetUp": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
     "unlock": "разблокировать",
     "@unlock": {
         "type": "text",
@@ -1861,10 +1009,12 @@
     "@noOrder": {
         "type": "text",
         "placeholders_order": [
-            "coinName"
+            "minValue",
+            "coin"
         ],
         "placeholders": {
-            "coinName": {}
+            "minValue": {},
+            "coin": {}
         }
     },
     "bestAvailableRate": "Обменный курс",
@@ -1927,18 +1077,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "insufficientTitle": "",
-    "@insufficientTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "insufficientText": "",
-    "@insufficientText": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "orderCreated": "Ордер создан",
     "@orderCreated": {
         "type": "text",
@@ -1961,12 +1099,12 @@
     "@minValue": {
         "type": "text",
         "placeholders_order": [
-            "coinName",
-            "number"
+            "number",
+            "coinName"
         ],
         "placeholders": {
-            "coinName": {},
-            "number": {}
+            "number": {},
+            "coinName": {}
         }
     },
     "titleCreatePassword": "СОЗДАТЬ ПАРОЛЬ",
@@ -1976,50 +1114,16 @@
         "placeholders": {}
     },
     "minValueBuy": "Минимальная сумма покупки: {number} {coinName}",
-    "@minValueBuy": {
+    "@minVolumeInput": {
         "type": "text",
         "placeholders_order": [
-            "coinName",
-            "number"
+            "number",
+            "coinName"
         ],
         "placeholders": {
-            "coinName": {},
-            "number": {}
+            "number": {},
+            "coinName": {}
         }
-    },
-    "minValueSell": "",
-    "@minValueSell": {
-        "type": "text",
-        "placeholders_order": [
-            "coinName",
-            "number"
-        ],
-        "placeholders": {
-            "coinName": {},
-            "number": {}
-        }
-    },
-    "minValueOrder": "",
-    "@minValueOrder": {
-        "type": "text",
-        "placeholders_order": [
-            "buyCoin",
-            "buyAmount",
-            "sellCoin",
-            "sellAmount"
-        ],
-        "placeholders": {
-            "buyCoin": {},
-            "buyAmount": {},
-            "sellCoin": {},
-            "sellAmount": {}
-        }
-    },
-    "enterSellAmount": "",
-    "@enterSellAmount": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
     },
     "encryptingWallet": "Шифрую кошелек",
     "@encryptingWallet": {
@@ -2041,18 +1145,6 @@
     },
     "noInternet": "Подключение к Интернету отсутствует",
     "@noInternet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "internetRestored": "",
-    "@internetRestored": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "internetRefreshButton": "",
-    "@internetRefreshButton": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2087,35 +1179,29 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "gasFee": "",
-    "@gasFee": {
+    "eulaTitle2": "TERMS and CONDITIONS: (ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ)\n\n",
+    "@eulaTitle2": {
         "type": "text",
-        "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
+        "placeholders_order": [],
+        "placeholders": {}
     },
-    "notEnoughGas": "",
-    "@notEnoughGas": {
+    "ethFee": "ETH комиссия",
+    "@ethFee": {
         "type": "text",
-        "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
+        "placeholders_order": [],
+        "placeholders": {}
     },
-    "gasNotActive": "",
-    "@gasNotActive": {
+    "notEnoughEth": "Недостаточно ETH для транзакции!",
+    "@notEnoughEth": {
         "type": "text",
-        "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "ethNotActive": "Пожалуйста, активируйте ETH.",
+    "@ethNotActive": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "youWillReceiveClaim": "Вы получите {amount} {coin}",
     "@youWillReceiveClaim": {
@@ -2136,7 +1222,7 @@
             "amount"
         ],
         "placeholders": {
-            "amount": {}
+            "seeOrders": {}
         }
     },
     "clickToSee": "Нажмите, чтобы увидеть ",
@@ -2153,6 +1239,12 @@
     },
     "availableVolume": "макс объем",
     "@availableVolume": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorNotAValidAddressSegWit": "Segwit адреса не поддерживаются",
+    "@errorNotAValidAddressSegWit": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2181,70 +1273,18 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "swapGasAmount": "",
-    "@swapGasAmount": {
+    "swapErcAmount": "Для этого свопа нужно {amount} ETH для комиссий сети.",
+    "@swapErcAmount": {
         "type": "text",
         "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
-    },
-    "swapGasAmountRequired": "",
-    "@swapGasAmountRequired": {
-        "type": "text",
-        "placeholders_order": [
-            "coin",
             "amount"
         ],
         "placeholders": {
-            "coin": {},
             "amount": {}
         }
     },
-    "invalidSwap": "",
-    "@invalidSwap": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "invalidSwapDetailsLink": "",
-    "@invalidSwapDetailsLink": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "swapGasActivate": "",
-    "@swapGasActivate": {
-        "type": "text",
-        "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
-    },
-    "tradePreimageError": "",
-    "@tradePreimageError": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "remove": "Отключить",
     "@remove": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "walletOnly": "",
-    "@walletOnly": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "dexIsNotAvailable": "",
-    "@dexIsNotAvailable": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2261,26 +1301,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "searchFilterSubtitleTestCoins": "",
-    "@searchFilterSubtitleTestCoins": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "searchFilterSubtitleERC": "Выбрать все ERC токены",
     "@searchFilterSubtitleERC": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "searchFilterSubtitleBEP": "",
-    "@searchFilterSubtitleBEP": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "searchFilterSubtitleQRC": "",
-    "@searchFilterSubtitleQRC": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2291,8 +1313,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "gasLimit": "",
-    "@gasLimit": {
+    "gas": "Gas",
+    "@gas": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2321,26 +1343,14 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "tagBEP20": "",
-    "@tagBEP20": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "tagQRC20": "",
-    "@tagQRC20": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "tagKMD": "KMD",
     "@tagKMD": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "errorNotEnoughGas": "",
-    "@errorNotEnoughGas": {
+    "errorNotEnoughtGas": "Установитье как минимум {gas} Gwei",
+    "@errorNotEnoughtGas": {
         "type": "text",
         "placeholders_order": [
             "gas"
@@ -2356,7 +1366,7 @@
             "coin"
         ],
         "placeholders": {
-            "coin": {}
+            "gas": {}
         }
     },
     "deleteConfirm": "Подтвердить деактивацию",
@@ -2373,24 +1383,6 @@
     },
     "deleteSpan2": "из вашего портфолио? Все несовпавшие ордеры будут отменены.",
     "@deleteSpan2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "cantDeleteDefaultCoinTitle": "",
-    "@cantDeleteDefaultCoinTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "cantDeleteDefaultCoinSpan": "",
-    "@cantDeleteDefaultCoinSpan": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "cantDeleteDefaultCoinOk": "",
-    "@cantDeleteDefaultCoinOk": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2431,93 +1423,11 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "englishLanguage": "",
-    "@englishLanguage": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "frenchLanguage": "",
-    "@frenchLanguage": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "deutscheLanguage": "",
-    "@deutscheLanguage": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "chineseLanguage": "",
-    "@chineseLanguage": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "traditionalChinese": "",
-    "@traditionalChinese": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "russianLanguage": "",
-    "@russianLanguage": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "japaneseLanguage": "",
-    "@japaneseLanguage": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "turkishLanguage": "",
-    "@turkishLanguage": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "hungarianLanguage": "",
-    "@hungarianLanguage": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "faucetName": "FAUCET",
     "@faucetName": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
-    },
-    "faucetSuccess": "",
-    "@faucetSuccess": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "faucetError": "",
-    "@faucetError": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "faucetTimedOut": "",
-    "@faucetTimedOut": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "faucetInProgress": "",
-    "@faucetInProgress": {
-        "type": "text",
-        "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
     },
     "Sound": "Звук",
     "@Sound": {
@@ -2604,9 +1514,7 @@
             "description"
         ],
         "placeholders": {
-            "description": {
-                "example": "a swap runs to completion"
-            }
+            "description": {}
         }
     },
     "soundPlayedWhen": "Воспроизводится, когда {description}",
@@ -2616,46 +1524,8 @@
             "description"
         ],
         "placeholders": {
-            "description": {
-                "example": "a swap runs to completion"
-            }
+            "description": {}
         }
-    },
-    "soundsDialogTitle": "",
-    "@soundsDialogTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "soundsExplanation": "",
-    "@soundsExplanation": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "soundsNote": "",
-    "@soundsNote": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "soundsDoNotShowAgain": "",
-    "@soundsDoNotShowAgain": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "soundSettingsTitle": "",
-    "@soundSettingsTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "soundSettingsLink": "",
-    "@soundSettingsLink": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
     },
     "marketsTab": "Рынки",
     "@marketsTab": {
@@ -2707,12 +1577,6 @@
     },
     "orderDetailsFor": "на",
     "@orderDetailsFor": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "orderDetailsMin": "",
-    "@orderDetailsMin": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2845,6 +1709,72 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "feedTab": "Лента",
+    "@feedTab": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedTitle": "Лента новостей",
+    "@feedTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedReadMore": "Узнать больше",
+    "@feedReadMore": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedNotFound": "Здесь ничего нет",
+    "@feedNotFound": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUpdated": "Лента новостей обновлена",
+    "@feedUpdated": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "snackbarDismiss": "Убрать",
+    "@snackbarDismiss": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedNewsTab": "Новости",
+    "@feedNewsTab": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUnableToUpdate": "Невозможно обновить ленту новостей",
+    "@feedUnableToUpdate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUnableToProceed": "Невозможно обновить ленту новостей",
+    "@feedUnableToProceed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUpToDate": "Новых новостей нет",
+    "@feedUpToDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedNotifTitle": "Новости Комодо",
+    "@feedNotifTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
     "rewardsTitle": "Инфо о вознаграждениях:",
     "@rewardsTitle": {
         "type": "text",
@@ -2889,12 +1819,6 @@
     },
     "rewardsTableRewards": "Вознаграждений \nKMD",
     "@rewardsTableRewards": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "rewardsTableFiat": "",
-    "@rewardsTableFiat": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -3007,12 +1931,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "rewardsButton": "",
-    "@rewardsButton": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "multiTab": "Мульти",
     "@multiTab": {
         "type": "text",
@@ -3073,7 +1991,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "multiTablePrice": "Цена/СЕХ",
+    "multiTablePrice": "Цена\/СЕХ",
     "@multiTablePrice": {
         "type": "text",
         "placeholders_order": [],
@@ -3108,18 +2026,6 @@
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
-    },
-    "multiLowerThanFee": "",
-    "@multiLowerThanFee": {
-        "type": "text",
-        "placeholders_order": [
-            "coin",
-            "fee"
-        ],
-        "placeholders": {
-            "coin": {},
-            "fee": {}
-        }
     },
     "multiConfirmTitle": "Создать {number} ордер(ов):",
     "@multiConfirmTitle": {
@@ -3167,31 +2073,95 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "multiActivateGas": "",
-    "@multiActivateGas": {
+    "multiActivateEth": "Активируйте ETH и пополните баланс",
+    "@multiActivateEth": {
         "type": "text",
-        "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
+        "placeholders_order": [],
+        "placeholders": {}
     },
-    "multiLowGas": "",
-    "@multiLowGas": {
+    "multiLowEth": "Баланс ETH недостаточен",
+    "@multiLowEth": {
         "type": "text",
-        "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "multiMinReceiveAmt": "Мин сумма к получению",
     "@multiMinReceiveAmt": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
+    },
+    "updatesTitle": "Обновление {appName}",
+    "@updatesTitle": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "updatesCurrentVersion": "Установлена версия {version}",
+    "@updatesCurrentVersion": {
+        "type": "text",
+        "placeholders_order": [
+            "version"
+        ],
+        "placeholders": {
+            "version": {}
+        }
+    },
+    "updatesChecking": "Проверка обновлений...",
+    "@updatesChecking": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesUpToDate": "Установлена последняя версия",
+    "@updatesUpToDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesAvailable": "Доступна новая версия",
+    "@updatesAvailable": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesUpdate": "Обновление",
+    "@updatesUpdate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesSkip": "Пропустить",
+    "@updatesSkip": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesNotifTitle": "Доступно обновление",
+    "@updatesNotifTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesNotifAvailable": "Доступна новая версия. Пожалуйста, обновитесь.",
+    "@updatesNotifAvailable": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesNotifAvailableVersion": "Доступна версия {version}. Пожалуйста, обновитесь.",
+    "@updatesNotifAvailableVersion": {
+        "type": "text",
+        "placeholders_order": [
+            "version"
+        ],
+        "placeholders": {
+            "version": {}
+        }
     },
     "addressBook": "Адресная книга",
     "@addressBook": {
@@ -3229,12 +2199,6 @@
     },
     "createContact": "Добавить контакт",
     "@createContact": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "contactTitleName": "",
-    "@contactTitleName": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -3288,7 +2252,7 @@
         "placeholders": {}
     },
     "contactDelete": "Удалить контакт",
-    "@contactDelete": {
+    "@addressBcontactDeleteookEmpty": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -3487,12 +2451,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "buyOrderType": "",
-    "@buyOrderType": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "cexChangeRate": "Цена CEXchange",
     "@cexChangeRate": {
         "type": "text",
@@ -3511,14 +2469,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "exchangeIdentical": "",
-    "@exchangeIdentical": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "comparedToCex": "",
-    "@comparedToCex": {
+    "echangeIdentical": "Совпадает с СЕХ",
+    "@echangeIdentical": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -3565,20 +2517,222 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "makerOrder": "",
-    "@makerOrder": {
+    "helpLink": "Поддержка",
+    "@helpLink": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "takerOrder": "",
-    "@takerOrder": {
+    "helpTitle": "Помощь и поддержка",
+    "@helpTitle": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "swapCurrent": "",
-    "@swapCurrent": {
+    "faqTitle": "Часто задаваемые вопросы",
+    "@faqTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "support": "Поддержка",
+    "@support": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "supportLinksDesc": "Если у вас есть какие-либо вопросы или вы считаете, что обнаружили техническую проблему с приложением {appName}, вы можете сообщить об этом и получить поддержку от нашей команды.",
+    "@supportLinksDesc": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_1": "Вы храните мои приватные ключи?",
+    "@question_1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_1": "Нет! Мы никогда не храним конфиденциальные данные, включая ваши приватные ключи, seed ключи или PIN-код. Эти данные хранятся только на устройстве пользователя и никуда не передаются. Вы полностью контролируете свои активы.",
+    "@answer_1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "question_2": "Чем торговля на {appName} отличается от торговли на других DEX?",
+    "@question_2": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_2": "Другие DEX обычно позволяют торговать только активами, принадлежащими к одному блокчейну, используют прокси-токены и разрешают размещать только один ордер, использующий ваш баланс. \n\n{appName} позволяет вам торговать между разными блокчейнами без использования прокси-токенов. Вы также можете разместить несколько заказов, используя одни и те же средства. Например, вы можете выставить ордера на продажу 0,1 BTC за KMD, QTUM и VRSC - первый исполненный ордер автоматически отменит все остальные ордера.",
+    "@answer_2": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_3": "Сколько времени занимает каждый атомарный своп?",
+    "@question_3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_3": "Есть несколько факторов, определяющих время обработки каждого свопа. Время блокировки торгуемых активов зависит от каждой сети (биткоин блокчейн обычно является самым медленным). Кроме того, пользователь может редактировать параметры безопасности. Например, в {appName} можно установить количество подтверждений, после которых KMD транзакция считается успешной, равным 3, что сокращает время обмена по сравнению с транзакциями, ожидающими<a href = \"https:\/\/komodoplatform.com\/security-delayed-proof-of -work-dpow \/ \"> нотариального заверения<\/a>.",
+    "@answer_3": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_4": "Необходимо ли мне быть в сети во время свопа?",
+    "@question_4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_4": "Да. Приложение appName должно оставаться подключенным к Интернету для успешного завершения каждого атомарного свопа (очень короткие перерывы в подключении обычно допустимы). В противном случае существует риск отмены сделки, если вы являетесь мейкером, и риск потери средств, если вы тейкер. Протокол атомарного свопа требует, чтобы оба участника оставались в сети и контролировали задействованные блокчейны, чтобы процесс оставался атомарным.",
+    "@answer_4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "question_5": "Как рассчитываются комиссии на {appName}?",
+    "@question_5": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_5": "При торговле на {appName} необходимо учитывать две категории комиссий. \n\n1. {appName} взимает приблизительно 0,13% (1\/777 объема торгов, но не ниже 0,0001) в качестве комиссии за торговлю для тейкер ордеров, а для ордеров-мейкеров комиссия равна нулю. \n\n2. Как мейкеры, так и тейкеры должны платят обычные комиссии за транзакции в используемых блокчейнах при совершении атомарного свопа .\n\nКомиссиии сети могут сильно различаться в зависимости от выбранной вами торговой пары.",
+    "@answer_5": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_6": "Предоставляете ли вы поддержку пользователей?",
+    "@question_6": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_6": "Да! {appName} предлагает поддержку через <a href=\"{link}\"> {name} сервер {appCompanyShort} <\/a>. Команда и сообщество всегда рады помочь!",
+    "@answer_6": {
+        "type": "text",
+        "placeholders_order": [
+            "name",
+            "link",
+            "appName",
+            "appCompanyShort"
+        ],
+        "placeholders": {
+            "name": {},
+            "link": {},
+            "appName": {},
+            "appCompanyShort": {}
+        }
+    },
+    "question_7": "Есть ли у вас какие-либо географические ограничения?",
+    "@question_7": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_7": "Нет! {appName} полностью децентрализована. Ограничить доступ пользователей третьими лицами невозможно.",
+    "@answer_7": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_8": "Кто стоит за {appName}?",
+    "@question_8": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_8": "{appName} разработан командой {appCompanyShort}. {appCompanyShort} - один из наиболее авторитетных блокчейн-проектов, работающих над инновационными решениями, такими как атомарные свопы, delayed Proof of Work и совместимая многоцепочечная архитектура.",
+    "@answer_8": {
+        "type": "text",
+        "placeholders_order": [
+            "appName",
+            "appCompanyShort"
+        ],
+        "placeholders": {
+            "appName": {},
+            "appCompanyShort": {}
+        }
+    },
+    "question_9": "Можно ли разработать собственную white-label биржу на технологии {appName}?",
+    "@question_9": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_9": "Конечно! Вы можете обратиться к нашей документации для разработчиков для получения более подробной информации или связаться с нами по вопросам партнерства. У вас есть конкретный технический вопрос? Разработчики сообщества {appName} всегда готовы помочь!",
+    "@answer_9": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_10": "На каких устройствах я могу использовать {appName}?",
+    "@question_10": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_10": "{appName} доступен для мобильных устройств на Android и iPhone, а также как десктопное приложение на операционных системах Windows, Mac и Linux.",
+    "@answer_10": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "swapActual": "факт",
+    "@swapActual": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -3601,8 +2755,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "swapProgress": "",
-    "@swapProgress": {
+    "swappProgress": "Детали прогресса",
+    "@swappProgress": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -3629,17 +2783,11 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "notifSwapCompletedText": "Своп {sell}/{buy} успешно завершен",
+    "notifSwapCompletedText": "Своп {sell}\/{buy} успешно завершен",
     "@notifSwapCompletedText": {
         "type": "text",
-        "placeholders_order": [
-            "sell",
-            "buy"
-        ],
-        "placeholders": {
-            "sell": {},
-            "buy": {}
-        }
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "notifSwapFailedTitle": "Своп не был завершен",
     "@notifSwapFailedTitle": {
@@ -3647,7 +2795,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "notifSwapFailedText": "Своп {sell}/{buy} не прошел",
+    "notifSwapFailedText": "Своп {sell}\/{buy} не прошел",
     "@notifSwapFailedText": {
         "type": "text",
         "placeholders_order": [
@@ -3665,7 +2813,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "notifSwapTimeoutText": "Превышен тайм-аут свопа {sell}/{buy}",
+    "notifSwapTimeoutText": "Превышен тайм-аут свопа {sell}\/{buy}",
     "@notifSwapTimeoutText": {
         "type": "text",
         "placeholders_order": [
@@ -3689,7 +2837,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "notifSwapStartedText": "Своп {sell}/{buy} начат",
+    "notifSwapStartedText": "Своп {sell}\/{buy} начат",
     "@notifSwapStartedText": {
         "type": "text",
         "placeholders_order": [
@@ -3719,25 +2867,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "switchTheme": "",
-    "@switchTheme": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "cex": "",
-    "@cex": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "cexData": "Данные CEX",
     "@cexData": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "cexDataDesc": "Данные (цены, графики и т.д.), отмеченные этим значком, получены из сторонних источников (<a href=\"https://www.coingecko.com/\"> coingecko.com </a>, <a href = \" https://openrates.io/\">openrates.io </a>).",
+    "cexDataDesc": "Данные (цены, графики и т.д.), отмеченные этим значком, получены из сторонних источников (<a href=\"https:\/\/www.coingecko.com\/\"> coingecko.com <\/a>, <a href = \" https:\/\/openrates.io\/\">openrates.io <\/a>).",
     "@cexDataDesc": {
         "type": "text",
         "placeholders_order": [],
@@ -3799,682 +2935,6 @@
     },
     "moreTab": "Ещё",
     "@moreTab": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "oldLogsTitle": "",
-    "@oldLogsTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "oldLogsDelete": "",
-    "@oldLogsDelete": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "oldLogsUsed": "",
-    "@oldLogsUsed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "okButton": "",
-    "@okButton": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "closePreview": "",
-    "@closePreview": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "cancelButton": "",
-    "@cancelButton": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "developerTitle": "",
-    "@developerTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "enableTestCoins": "",
-    "@enableTestCoins": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "makerDetailsTitle": "",
-    "@makerDetailsTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "makerDetailsSell": "",
-    "@makerDetailsSell": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "makerDetailsFor": "",
-    "@makerDetailsFor": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "makerDetailsPrice": "",
-    "@makerDetailsPrice": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "makerDetailsCancel": "",
-    "@makerDetailsCancel": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "makerDetailsId": "",
-    "@makerDetailsId": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "makerDetailsCreated": "",
-    "@makerDetailsCreated": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "makerDetailsNoSwaps": "",
-    "@makerDetailsNoSwaps": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "makerDetailsSwaps": "",
-    "@makerDetailsSwaps": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "orderFilled": "",
-    "@orderFilled": {
-        "type": "text",
-        "placeholders_order": [
-            "fill"
-        ],
-        "placeholders": {
-            "fill": {}
-        }
-    },
-    "noteTitle": "",
-    "@noteTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "notePlaceholder": "",
-    "@notePlaceholder": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importLink": "",
-    "@importLink": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importSingleSwapLink": "",
-    "@importSingleSwapLink": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "exportLink": "",
-    "@exportLink": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importTitle": "",
-    "@importTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importSingleSwapTitle": "",
-    "@importSingleSwapTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "exportTitle": "",
-    "@exportTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "exportDesc": "",
-    "@exportDesc": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importLoadDesc": "",
-    "@importLoadDesc": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importLoadSwapDesc": "",
-    "@importLoadSwapDesc": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importLoading": "",
-    "@importLoading": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importDesc": "",
-    "@importDesc": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "exportNotesTitle": "",
-    "@exportNotesTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "exportContactsTitle": "",
-    "@exportContactsTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "exportSwapsTitle": "",
-    "@exportSwapsTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "nothingFound": "",
-    "@nothingFound": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "exportButton": "",
-    "@exportButton": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importButton": "",
-    "@importButton": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "emptyExportPass": "",
-    "@emptyExportPass": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "emptyImportPass": "",
-    "@emptyImportPass": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "matchExportPass": "",
-    "@matchExportPass": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noItemsToExport": "",
-    "@noItemsToExport": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noItemsToImport": "",
-    "@noItemsToImport": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "selectFileImport": "",
-    "@selectFileImport": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importFileNotFound": "",
-    "@importFileNotFound": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importPassword": "",
-    "@importPassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importPassCancel": "",
-    "@importPassCancel": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importPassOk": "",
-    "@importPassOk": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "exportSuccessTitle": "",
-    "@exportSuccessTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importSuccessTitle": "",
-    "@importSuccessTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importDecryptError": "",
-    "@importDecryptError": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importSwapJsonDecodingError": "",
-    "@importSwapJsonDecodingError": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "orderTypePartial": "",
-    "@orderTypePartial": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "orderTypeUnknown": "",
-    "@orderTypeUnknown": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "couldntImportError": "",
-    "@couldntImportError": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importSomeItemsSkippedWarning": "",
-    "@importSomeItemsSkippedWarning": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importSwapFailed": "",
-    "@importSwapFailed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "importInvalidSwapData": "",
-    "@importInvalidSwapData": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersButton": "",
-    "@filtersButton": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersStatus": "",
-    "@filtersStatus": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersAll": "",
-    "@filtersAll": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersSuccessful": "",
-    "@filtersSuccessful": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersFailed": "",
-    "@filtersFailed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersFrom": "",
-    "@filtersFrom": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersTo": "",
-    "@filtersTo": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersType": "",
-    "@filtersType": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersMaker": "",
-    "@filtersMaker": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersTaker": "",
-    "@filtersTaker": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersSell": "",
-    "@filtersSell": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersReceive": "",
-    "@filtersReceive": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "filtersClearAll": "",
-    "@filtersClearAll": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "uriInsufficientBalanceTitle": "",
-    "@uriInsufficientBalanceTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "uriInsufficientBalanceSpan1": "",
-    "@uriInsufficientBalanceSpan1": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "uriInsufficientBalanceSpan2": "",
-    "@uriInsufficientBalanceSpan2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "enablingTooManyAssetsTitle": "",
-    "@enablingTooManyAssetsTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "enablingTooManyAssetsSpan1": "",
-    "@enablingTooManyAssetsSpan1": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "enablingTooManyAssetsSpan2": "",
-    "@enablingTooManyAssetsSpan2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "enablingTooManyAssetsSpan3": "",
-    "@enablingTooManyAssetsSpan3": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "enablingTooManyAssetsSpan4": "",
-    "@enablingTooManyAssetsSpan4": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "tooManyAssetsEnabledTitle": "",
-    "@tooManyAssetsEnabledTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "tooManyAssetsEnabledSpan1": "",
-    "@tooManyAssetsEnabledSpan1": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "tooManyAssetsEnabledSpan2": "",
-    "@tooManyAssetsEnabledSpan2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "tooManyAssetsEnabledSpan3": "",
-    "@tooManyAssetsEnabledSpan3": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "paymentUriDetailsTitle": "",
-    "@paymentUriDetailsTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "paymentUriDetailsCoinSpan": "",
-    "@paymentUriDetailsCoinSpan": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "paymentUriDetailsAddressSpan": "",
-    "@paymentUriDetailsAddressSpan": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "paymentUriDetailsAmountSpan": "",
-    "@paymentUriDetailsAmountSpan": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "paymentUriDetailsAcceptQuestion": "",
-    "@paymentUriDetailsAcceptQuestion": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "paymentUriDetailsAccept": "",
-    "@paymentUriDetailsAccept": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "paymentUriDetailsDeny": "",
-    "@paymentUriDetailsDeny": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "paymentUriInactiveCoin": "",
-    "@paymentUriInactiveCoin": {
-        "type": "text",
-        "placeholders_order": [
-            "abbr"
-        ],
-        "placeholders": {
-            "abbr": {}
-        }
-    },
-    "wrongCoinTitle": "",
-    "@wrongCoinTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "wrongCoinSpan1": "",
-    "@wrongCoinSpan1": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "wrongCoinSpan2": "",
-    "@wrongCoinSpan2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "wrongCoinSpan3": "",
-    "@wrongCoinSpan3": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "simpleTradeSellTitle": "",
-    "@simpleTradeSellTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "simpleTradeBuyTitle": "",
-    "@simpleTradeBuyTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "simpleTradeRecieve": "",
-    "@simpleTradeRecieve": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "simpleTradeSend": "",
-    "@simpleTradeSend": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "simpleTradeClose": "",
-    "@simpleTradeClose": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "simpleTradeActivate": "",
-    "@simpleTradeActivate": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "simpleTradeMaxActiveCoins": "",
-    "@simpleTradeMaxActiveCoins": {
-        "type": "text",
-        "placeholders_order": [
-            "maxCoins"
-        ],
-        "placeholders": {
-            "maxCoins": {}
-        }
-    },
-    "simpleTradeUnableActivate": "",
-    "@simpleTradeUnableActivate": {
-        "type": "text",
-        "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
-    },
-    "simpleTradeNotActive": "",
-    "@simpleTradeNotActive": {
-        "type": "text",
-        "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
-    },
-    "simpleTradeBuyHint": "",
-    "@simpleTradeBuyHint": {
-        "type": "text",
-        "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
-    },
-    "simpleTradeSellHint": "",
-    "@simpleTradeSellHint": {
-        "type": "text",
-        "placeholders_order": [
-            "coin"
-        ],
-        "placeholders": {
-            "coin": {}
-        }
-    },
-    "simpleTradeShowLess": "",
-    "@simpleTradeShowLess": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "simpleTradeShowMore": "",
-    "@simpleTradeShowMore": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noCoinFound": "",
-    "@noCoinFound": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
