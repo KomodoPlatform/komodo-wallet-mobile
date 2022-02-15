@@ -1,4 +1,398 @@
 {
+    "welcomeTitle": "Добро пожаловать",
+    "@welcomeTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "welcomeWallet": "кошелек",
+    "@welcomeWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "welcomeInfo": "{appName} mobile - это мульти-монетный кошелек с функциональностью DEX третьего поколения и многим другим.",
+    "@welcomeInfo": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "welcomeLetSetUp": "ДАВАЙТЕ ВСЕ НАСТРОИМ!",
+    "@welcomeLetSetUp": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle2": "TERMS and CONDITIONS: (ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ)\n\n",
+    "@eulaTitle2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesTitle": "Обновление {appName}",
+    "@updatesTitle": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "updatesCurrentVersion": "Установлена версия {version}",
+    "@updatesCurrentVersion": {
+        "type": "text",
+        "placeholders_order": [
+            "version"
+        ],
+        "placeholders": {
+            "version": {}
+        }
+    },
+    "updatesChecking": "Проверка обновлений...",
+    "@updatesChecking": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesUpToDate": "Установлена последняя версия",
+    "@updatesUpToDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesAvailable": "Доступна новая версия",
+    "@updatesAvailable": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesUpdate": "Обновление",
+    "@updatesUpdate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesSkip": "Пропустить",
+    "@updatesSkip": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesNotifTitle": "Доступно обновление",
+    "@updatesNotifTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesNotifAvailable": "Доступна новая версия. Пожалуйста, обновитесь.",
+    "@updatesNotifAvailable": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesNotifAvailableVersion": "Доступна версия {version}. Пожалуйста, обновитесь.",
+    "@updatesNotifAvailableVersion": {
+        "type": "text",
+        "placeholders_order": [
+            "version"
+        ],
+        "placeholders": {
+            "version": {}
+        }
+    },
+    "helpLink": "Поддержка",
+    "@helpLink": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "helpTitle": "Помощь и поддержка",
+    "@helpTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "faqTitle": "Часто задаваемые вопросы",
+    "@faqTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "support": "Поддержка",
+    "@support": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "supportLinksDesc": "Если у вас есть какие-либо вопросы или вы считаете, что обнаружили техническую проблему с приложением {appName}, вы можете сообщить об этом и получить поддержку от нашей команды.",
+    "@supportLinksDesc": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_1": "Вы храните мои приватные ключи?",
+    "@question_1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_1": "Нет! Мы никогда не храним конфиденциальные данные, включая ваши приватные ключи, seed ключи или PIN-код. Эти данные хранятся только на устройстве пользователя и никуда не передаются. Вы полностью контролируете свои активы.",
+    "@answer_1": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_2": "Чем торговля на {appName} отличается от торговли на других DEX?",
+    "@question_2": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_2": "Другие DEX обычно позволяют торговать только активами, принадлежащими к одному блокчейну, используют прокси-токены и разрешают размещать только один ордер, использующий ваш баланс. \n\n{appName} позволяет вам торговать между разными блокчейнами без использования прокси-токенов. Вы также можете разместить несколько заказов, используя одни и те же средства. Например, вы можете выставить ордера на продажу 0,1 BTC за KMD, QTUM и VRSC - первый исполненный ордер автоматически отменит все остальные ордера.",
+    "@answer_2": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_3": "Сколько времени занимает каждый атомарный своп?",
+    "@question_3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_3": "Есть несколько факторов, определяющих время обработки каждого свопа. Время блокировки торгуемых активов зависит от каждой сети (биткоин блокчейн обычно является самым медленным). Кроме того, пользователь может редактировать параметры безопасности. Например, в {appName} можно установить количество подтверждений, после которых KMD транзакция считается успешной, равным 3, что сокращает время обмена по сравнению с транзакциями, ожидающими<a href = \"https://komodoplatform.com/security-delayed-proof-of -work-dpow / \"> нотариального заверения</a>.",
+    "@answer_3": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_4": "Необходимо ли мне быть в сети во время свопа?",
+    "@question_4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_4": "Да. Приложение appName должно оставаться подключенным к Интернету для успешного завершения каждого атомарного свопа (очень короткие перерывы в подключении обычно допустимы). В противном случае существует риск отмены сделки, если вы являетесь мейкером, и риск потери средств, если вы тейкер. Протокол атомарного свопа требует, чтобы оба участника оставались в сети и контролировали задействованные блокчейны, чтобы процесс оставался атомарным.",
+    "@answer_4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "question_5": "Как рассчитываются комиссии на {appName}?",
+    "@question_5": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_5": "При торговле на {appName} необходимо учитывать две категории комиссий. \n\n1. {appName} взимает приблизительно 0,13% (1/777 объема торгов, но не ниже 0,0001) в качестве комиссии за торговлю для тейкер ордеров, а для ордеров-мейкеров комиссия равна нулю. \n\n2. Как мейкеры, так и тейкеры должны платят обычные комиссии за транзакции в используемых блокчейнах при совершении атомарного свопа .\n\nКомиссиии сети могут сильно различаться в зависимости от выбранной вами торговой пары.",
+    "@answer_5": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_6": "Предоставляете ли вы поддержку пользователей?",
+    "@question_6": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_6": "Да! {appName} предлагает поддержку через <a href=\"{link}\"> {name} сервер {appCompanyShort} </a>. Команда и сообщество всегда рады помочь!",
+    "@answer_6": {
+        "type": "text",
+        "placeholders_order": [
+            "name",
+            "link",
+            "appName",
+            "appCompanyShort"
+        ],
+        "placeholders": {
+            "name": {},
+            "link": {},
+            "appName": {},
+            "appCompanyShort": {}
+        }
+    },
+    "question_7": "Есть ли у вас какие-либо географические ограничения?",
+    "@question_7": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_7": "Нет! {appName} полностью децентрализована. Ограничить доступ пользователей третьими лицами невозможно.",
+    "@answer_7": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_8": "Кто стоит за {appName}?",
+    "@question_8": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_8": "{appName} разработан командой {appCompanyShort}. {appCompanyShort} - один из наиболее авторитетных блокчейн-проектов, работающих над инновационными решениями, такими как атомарные свопы, delayed Proof of Work и совместимая многоцепочечная архитектура.",
+    "@answer_8": {
+        "type": "text",
+        "placeholders_order": [
+            "appName",
+            "appCompanyShort"
+        ],
+        "placeholders": {
+            "appName": {},
+            "appCompanyShort": {}
+        }
+    },
+    "question_9": "Можно ли разработать собственную white-label биржу на технологии {appName}?",
+    "@question_9": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_9": "Конечно! Вы можете обратиться к нашей документации для разработчиков для получения более подробной информации или связаться с нами по вопросам партнерства. У вас есть конкретный технический вопрос? Разработчики сообщества {appName} всегда готовы помочь!",
+    "@answer_9": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_10": "На каких устройствах я могу использовать {appName}?",
+    "@question_10": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_10": "{appName} доступен для мобильных устройств на Android и iPhone, а также как десктопное приложение на операционных системах Windows, Mac и Linux.",
+    "@answer_10": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "feedTab": "Лента",
+    "@feedTab": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedTitle": "Лента новостей",
+    "@feedTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedReadMore": "Узнать больше",
+    "@feedReadMore": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedNotFound": "Здесь ничего нет",
+    "@feedNotFound": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUpdated": "Лента новостей обновлена",
+    "@feedUpdated": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "snackbarDismiss": "Убрать",
+    "@snackbarDismiss": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedNewsTab": "Новости",
+    "@feedNewsTab": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUnableToUpdate": "Невозможно обновить ленту новостей",
+    "@feedUnableToUpdate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUnableToProceed": "Невозможно обновить ленту новостей",
+    "@feedUnableToProceed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUpToDate": "Новых новостей нет",
+    "@feedUpToDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedNotifTitle": "Новости Комодо",
+    "@feedNotifTitle": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyShort"
+        ],
+        "placeholders": {
+            "appCompanyShort": {}
+        }
+    },
     "createPin": "Задать PIN",
     "@createPin": {
         "type": "text",
@@ -32,8 +426,12 @@
     "addingCoinSuccess": "{name} активирован успешно!",
     "@addingCoinSuccess": {
         "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
+        "placeholders_order": [
+            "name"
+        ],
+        "placeholders": {
+            "name": {}
+        }
     },
     "connecting": "Соединение...",
     "@connecting": {
@@ -50,8 +448,12 @@
     "numberAssets": "{assets} Активов",
     "@numberAssets": {
         "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
+        "placeholders_order": [
+            "assets"
+        ],
+        "placeholders": {
+            "assets": {}
+        }
     },
     "enterSeedPhrase": "Введите свою seed-фразу",
     "@enterSeedPhrase": {
@@ -298,7 +700,7 @@
         "placeholders": {}
     },
     "estimateValue": "Расчетная общая стоимость",
-    "@buySuccesestimateValuesWaiting": {
+    "@estimateValue": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -371,6 +773,12 @@
     },
     "errorNotAValidAddress": "Невалидный адрес",
     "@errorNotAValidAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorNotAValidAddressSegWit": "Segwit адреса не поддерживаются",
+    "@errorNotAValidAddressSegWit": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -621,12 +1029,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "swapID": "ID Обмена",
-    "@swapID": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "mediaBrowse": "ПРОСМАТРИВАТЬ",
     "@mediaBrowse": {
         "type": "text",
@@ -757,18 +1159,6 @@
     },
     "checkSeedPhraseButton2": "ВЕРНУТЬСЯ И ПРОВЕРИТЬ СНОВА",
     "@checkSeedPhraseButton2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "takerpaymentsID": "ID платежа Тейкера",
-    "@takerpaymentsID": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "makerpaymentID": "ID платежа Мейкера",
-    "@makerpaymentID": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -953,12 +1343,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "viewSeed": "Посмотреть seed-ключ",
-    "@viewSeed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "enterpassword": "Пожалуйста, введите Ваш пароль чтобы продолжить.",
     "@enterpassword": {
         "type": "text",
@@ -967,34 +1351,6 @@
     },
     "clipboardCopy": "Скопировать",
     "@clipboardCopy": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "welcomeTitle": "Добро пожаловать",
-    "@welcomeTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "welcomeWallet": "кошелек",
-    "@welcomeWallet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "welcomeInfo": "{appName} mobile - это мульти-монетный кошелек с функциональностью DEX третьего поколения и многим другим.",
-    "@welcomeInfo": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "welcomeLetSetUp": "ДАВАЙТЕ ВСЕ НАСТРОИМ!",
-    "@welcomeLetSetUp": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -1009,12 +1365,10 @@
     "@noOrder": {
         "type": "text",
         "placeholders_order": [
-            "minValue",
-            "coin"
+            "coinName"
         ],
         "placeholders": {
-            "minValue": {},
-            "coin": {}
+            "coinName": {}
         }
     },
     "bestAvailableRate": "Обменный курс",
@@ -1099,12 +1453,12 @@
     "@minValue": {
         "type": "text",
         "placeholders_order": [
-            "number",
-            "coinName"
+            "coinName",
+            "number"
         ],
         "placeholders": {
-            "number": {},
-            "coinName": {}
+            "coinName": {},
+            "number": {}
         }
     },
     "titleCreatePassword": "СОЗДАТЬ ПАРОЛЬ",
@@ -1114,15 +1468,15 @@
         "placeholders": {}
     },
     "minValueBuy": "Минимальная сумма покупки: {number} {coinName}",
-    "@minVolumeInput": {
+    "@minValueBuy": {
         "type": "text",
         "placeholders_order": [
-            "number",
-            "coinName"
+            "coinName",
+            "number"
         ],
         "placeholders": {
-            "number": {},
-            "coinName": {}
+            "coinName": {},
+            "number": {}
         }
     },
     "encryptingWallet": "Шифрую кошелек",
@@ -1179,30 +1533,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "eulaTitle2": "TERMS and CONDITIONS: (ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ)\n\n",
-    "@eulaTitle2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "ethFee": "ETH комиссия",
-    "@ethFee": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "notEnoughEth": "Недостаточно ETH для транзакции!",
-    "@notEnoughEth": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "ethNotActive": "Пожалуйста, активируйте ETH.",
-    "@ethNotActive": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "youWillReceiveClaim": "Вы получите {amount} {coin}",
     "@youWillReceiveClaim": {
         "type": "text",
@@ -1222,7 +1552,7 @@
             "amount"
         ],
         "placeholders": {
-            "seeOrders": {}
+            "amount": {}
         }
     },
     "clickToSee": "Нажмите, чтобы увидеть ",
@@ -1239,12 +1569,6 @@
     },
     "availableVolume": "макс объем",
     "@availableVolume": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "errorNotAValidAddressSegWit": "Segwit адреса не поддерживаются",
-    "@errorNotAValidAddressSegWit": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -1273,16 +1597,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "swapErcAmount": "Для этого свопа нужно {amount} ETH для комиссий сети.",
-    "@swapErcAmount": {
-        "type": "text",
-        "placeholders_order": [
-            "amount"
-        ],
-        "placeholders": {
-            "amount": {}
-        }
-    },
     "remove": "Отключить",
     "@remove": {
         "type": "text",
@@ -1309,12 +1623,6 @@
     },
     "customFee": "Свои комиссии",
     "@customFee": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "gas": "Gas",
-    "@gas": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -1349,16 +1657,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "errorNotEnoughtGas": "Установитье как минимум {gas} Gwei",
-    "@errorNotEnoughtGas": {
-        "type": "text",
-        "placeholders_order": [
-            "gas"
-        ],
-        "placeholders": {
-            "gas": {}
-        }
-    },
     "orderCancel": "Все {coin} ордеры будут отменены.",
     "@orderCancel": {
         "type": "text",
@@ -1366,7 +1664,7 @@
             "coin"
         ],
         "placeholders": {
-            "gas": {}
+            "coin": {}
         }
     },
     "deleteConfirm": "Подтвердить деактивацию",
@@ -1514,7 +1812,9 @@
             "description"
         ],
         "placeholders": {
-            "description": {}
+            "description": {
+                "example": "a swap runs to completion"
+            }
         }
     },
     "soundPlayedWhen": "Воспроизводится, когда {description}",
@@ -1524,7 +1824,9 @@
             "description"
         ],
         "placeholders": {
-            "description": {}
+            "description": {
+                "example": "a swap runs to completion"
+            }
         }
     },
     "marketsTab": "Рынки",
@@ -1705,72 +2007,6 @@
     },
     "candleChartError": "Что-то пошло не так. Попробуйте позже.",
     "@candleChartError": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedTab": "Лента",
-    "@feedTab": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedTitle": "Лента новостей",
-    "@feedTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedReadMore": "Узнать больше",
-    "@feedReadMore": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedNotFound": "Здесь ничего нет",
-    "@feedNotFound": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedUpdated": "Лента новостей обновлена",
-    "@feedUpdated": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "snackbarDismiss": "Убрать",
-    "@snackbarDismiss": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedNewsTab": "Новости",
-    "@feedNewsTab": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedUnableToUpdate": "Невозможно обновить ленту новостей",
-    "@feedUnableToUpdate": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedUnableToProceed": "Невозможно обновить ленту новостей",
-    "@feedUnableToProceed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedUpToDate": "Новых новостей нет",
-    "@feedUpToDate": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedNotifTitle": "Новости Комодо",
-    "@feedNotifTitle": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -1991,7 +2227,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "multiTablePrice": "Цена\/СЕХ",
+    "multiTablePrice": "Цена/СЕХ",
     "@multiTablePrice": {
         "type": "text",
         "placeholders_order": [],
@@ -2073,95 +2309,11 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "multiActivateEth": "Активируйте ETH и пополните баланс",
-    "@multiActivateEth": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "multiLowEth": "Баланс ETH недостаточен",
-    "@multiLowEth": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "multiMinReceiveAmt": "Мин сумма к получению",
     "@multiMinReceiveAmt": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
-    },
-    "updatesTitle": "Обновление {appName}",
-    "@updatesTitle": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "updatesCurrentVersion": "Установлена версия {version}",
-    "@updatesCurrentVersion": {
-        "type": "text",
-        "placeholders_order": [
-            "version"
-        ],
-        "placeholders": {
-            "version": {}
-        }
-    },
-    "updatesChecking": "Проверка обновлений...",
-    "@updatesChecking": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesUpToDate": "Установлена последняя версия",
-    "@updatesUpToDate": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesAvailable": "Доступна новая версия",
-    "@updatesAvailable": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesUpdate": "Обновление",
-    "@updatesUpdate": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesSkip": "Пропустить",
-    "@updatesSkip": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesNotifTitle": "Доступно обновление",
-    "@updatesNotifTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesNotifAvailable": "Доступна новая версия. Пожалуйста, обновитесь.",
-    "@updatesNotifAvailable": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "updatesNotifAvailableVersion": "Доступна версия {version}. Пожалуйста, обновитесь.",
-    "@updatesNotifAvailableVersion": {
-        "type": "text",
-        "placeholders_order": [
-            "version"
-        ],
-        "placeholders": {
-            "version": {}
-        }
     },
     "addressBook": "Адресная книга",
     "@addressBook": {
@@ -2252,7 +2404,7 @@
         "placeholders": {}
     },
     "contactDelete": "Удалить контакт",
-    "@addressBcontactDeleteookEmpty": {
+    "@contactDelete": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2469,12 +2621,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "echangeIdentical": "Совпадает с СЕХ",
-    "@echangeIdentical": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "ordersActive": "Активные",
     "@ordersActive": {
         "type": "text",
@@ -2517,226 +2663,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "helpLink": "Поддержка",
-    "@helpLink": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "helpTitle": "Помощь и поддержка",
-    "@helpTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "faqTitle": "Часто задаваемые вопросы",
-    "@faqTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "support": "Поддержка",
-    "@support": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "supportLinksDesc": "Если у вас есть какие-либо вопросы или вы считаете, что обнаружили техническую проблему с приложением {appName}, вы можете сообщить об этом и получить поддержку от нашей команды.",
-    "@supportLinksDesc": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_1": "Вы храните мои приватные ключи?",
-    "@question_1": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "answer_1": "Нет! Мы никогда не храним конфиденциальные данные, включая ваши приватные ключи, seed ключи или PIN-код. Эти данные хранятся только на устройстве пользователя и никуда не передаются. Вы полностью контролируете свои активы.",
-    "@answer_1": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "question_2": "Чем торговля на {appName} отличается от торговли на других DEX?",
-    "@question_2": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "answer_2": "Другие DEX обычно позволяют торговать только активами, принадлежащими к одному блокчейну, используют прокси-токены и разрешают размещать только один ордер, использующий ваш баланс. \n\n{appName} позволяет вам торговать между разными блокчейнами без использования прокси-токенов. Вы также можете разместить несколько заказов, используя одни и те же средства. Например, вы можете выставить ордера на продажу 0,1 BTC за KMD, QTUM и VRSC - первый исполненный ордер автоматически отменит все остальные ордера.",
-    "@answer_2": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_3": "Сколько времени занимает каждый атомарный своп?",
-    "@question_3": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "answer_3": "Есть несколько факторов, определяющих время обработки каждого свопа. Время блокировки торгуемых активов зависит от каждой сети (биткоин блокчейн обычно является самым медленным). Кроме того, пользователь может редактировать параметры безопасности. Например, в {appName} можно установить количество подтверждений, после которых KMD транзакция считается успешной, равным 3, что сокращает время обмена по сравнению с транзакциями, ожидающими<a href = \"https:\/\/komodoplatform.com\/security-delayed-proof-of -work-dpow \/ \"> нотариального заверения<\/a>.",
-    "@answer_3": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_4": "Необходимо ли мне быть в сети во время свопа?",
-    "@question_4": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "answer_4": "Да. Приложение appName должно оставаться подключенным к Интернету для успешного завершения каждого атомарного свопа (очень короткие перерывы в подключении обычно допустимы). В противном случае существует риск отмены сделки, если вы являетесь мейкером, и риск потери средств, если вы тейкер. Протокол атомарного свопа требует, чтобы оба участника оставались в сети и контролировали задействованные блокчейны, чтобы процесс оставался атомарным.",
-    "@answer_4": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "question_5": "Как рассчитываются комиссии на {appName}?",
-    "@question_5": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "answer_5": "При торговле на {appName} необходимо учитывать две категории комиссий. \n\n1. {appName} взимает приблизительно 0,13% (1\/777 объема торгов, но не ниже 0,0001) в качестве комиссии за торговлю для тейкер ордеров, а для ордеров-мейкеров комиссия равна нулю. \n\n2. Как мейкеры, так и тейкеры должны платят обычные комиссии за транзакции в используемых блокчейнах при совершении атомарного свопа .\n\nКомиссиии сети могут сильно различаться в зависимости от выбранной вами торговой пары.",
-    "@answer_5": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_6": "Предоставляете ли вы поддержку пользователей?",
-    "@question_6": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "answer_6": "Да! {appName} предлагает поддержку через <a href=\"{link}\"> {name} сервер {appCompanyShort} <\/a>. Команда и сообщество всегда рады помочь!",
-    "@answer_6": {
-        "type": "text",
-        "placeholders_order": [
-            "name",
-            "link",
-            "appName",
-            "appCompanyShort"
-        ],
-        "placeholders": {
-            "name": {},
-            "link": {},
-            "appName": {},
-            "appCompanyShort": {}
-        }
-    },
-    "question_7": "Есть ли у вас какие-либо географические ограничения?",
-    "@question_7": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "answer_7": "Нет! {appName} полностью децентрализована. Ограничить доступ пользователей третьими лицами невозможно.",
-    "@answer_7": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_8": "Кто стоит за {appName}?",
-    "@question_8": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "answer_8": "{appName} разработан командой {appCompanyShort}. {appCompanyShort} - один из наиболее авторитетных блокчейн-проектов, работающих над инновационными решениями, такими как атомарные свопы, delayed Proof of Work и совместимая многоцепочечная архитектура.",
-    "@answer_8": {
-        "type": "text",
-        "placeholders_order": [
-            "appName",
-            "appCompanyShort"
-        ],
-        "placeholders": {
-            "appName": {},
-            "appCompanyShort": {}
-        }
-    },
-    "question_9": "Можно ли разработать собственную white-label биржу на технологии {appName}?",
-    "@question_9": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "answer_9": "Конечно! Вы можете обратиться к нашей документации для разработчиков для получения более подробной информации или связаться с нами по вопросам партнерства. У вас есть конкретный технический вопрос? Разработчики сообщества {appName} всегда готовы помочь!",
-    "@answer_9": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "question_10": "На каких устройствах я могу использовать {appName}?",
-    "@question_10": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "answer_10": "{appName} доступен для мобильных устройств на Android и iPhone, а также как десктопное приложение на операционных системах Windows, Mac и Linux.",
-    "@answer_10": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "swapActual": "факт",
-    "@swapActual": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "swapEstimated": "прибл",
     "@swapEstimated": {
         "type": "text",
@@ -2751,12 +2677,6 @@
     },
     "swapTotal": "Всего",
     "@swapTotal": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "swappProgress": "Детали прогресса",
-    "@swappProgress": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2783,11 +2703,17 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "notifSwapCompletedText": "Своп {sell}\/{buy} успешно завершен",
+    "notifSwapCompletedText": "Своп {sell}/{buy} успешно завершен",
     "@notifSwapCompletedText": {
         "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
+        "placeholders_order": [
+            "sell",
+            "buy"
+        ],
+        "placeholders": {
+            "sell": {},
+            "buy": {}
+        }
     },
     "notifSwapFailedTitle": "Своп не был завершен",
     "@notifSwapFailedTitle": {
@@ -2795,7 +2721,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "notifSwapFailedText": "Своп {sell}\/{buy} не прошел",
+    "notifSwapFailedText": "Своп {sell}/{buy} не прошел",
     "@notifSwapFailedText": {
         "type": "text",
         "placeholders_order": [
@@ -2813,7 +2739,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "notifSwapTimeoutText": "Превышен тайм-аут свопа {sell}\/{buy}",
+    "notifSwapTimeoutText": "Превышен тайм-аут свопа {sell}/{buy}",
     "@notifSwapTimeoutText": {
         "type": "text",
         "placeholders_order": [
@@ -2837,7 +2763,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "notifSwapStartedText": "Своп {sell}\/{buy} начат",
+    "notifSwapStartedText": "Своп {sell}/{buy} начат",
     "@notifSwapStartedText": {
         "type": "text",
         "placeholders_order": [
@@ -2873,7 +2799,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "cexDataDesc": "Данные (цены, графики и т.д.), отмеченные этим значком, получены из сторонних источников (<a href=\"https:\/\/www.coingecko.com\/\"> coingecko.com <\/a>, <a href = \" https:\/\/openrates.io\/\">openrates.io <\/a>).",
+    "cexDataDesc": "Данные (цены, графики и т.д.), отмеченные этим значком, получены из сторонних источников (<a href=\"https://www.coingecko.com/\"> coingecko.com </a>, <a href = \" https://openrates.io/\">openrates.io </a>).",
     "@cexDataDesc": {
         "type": "text",
         "placeholders_order": [],

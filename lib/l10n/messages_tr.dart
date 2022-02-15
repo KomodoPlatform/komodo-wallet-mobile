@@ -350,7 +350,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "sell": MessageLookupByLibrary.simpleMessage("Sat"),
         "send": MessageLookupByLibrary.simpleMessage("GÖNDER"),
         "setUpPassword": MessageLookupByLibrary.simpleMessage("PAROLA BELİRLE"),
-        "settingDialogSpan1": MessageLookupByLibrary.simpleMessage(""),
         "settingDialogSpan2": MessageLookupByLibrary.simpleMessage(
             " cüzdanını silmek istediğinizden emin misiniz?"),
         "settingDialogSpan3":
