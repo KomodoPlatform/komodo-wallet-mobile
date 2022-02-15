@@ -17,45 +17,58 @@ void main() {
     final Map<String, dynamic> currentLocaleJson = getJsonFromFile(path);
     final Map<String, dynamic> newLocaleJson = {};
 
-    int updatesCounter = 0;
+    int deletionsCounter = 0;
 
     messagesJson.forEach((key, message) {
       if (key.startsWith('@')) return;
 
       final String currentLocaleMessage = currentLocaleJson[key];
-      final String newLocaleMessage =
-          isLocaleMessageValid(message, currentLocaleMessage)
-              ? currentLocaleMessage
-              : '';
+      final isCurrentLocaleMessageValid =
+          isLocaleMessageValid(message, currentLocaleMessage);
 
-      if (currentLocaleMessage != newLocaleMessage) updatesCounter++;
+      if (!isCurrentLocaleMessageValid) {
+        deletionsCounter++;
+        return;
+      }
 
-      newLocaleJson[key] = newLocaleMessage;
+      newLocaleJson[key] = currentLocaleMessage;
       newLocaleJson['@$key'] = messagesJson['@$key'];
     });
 
     writeJsonToFile(newLocaleJson, path);
 
-    print('Done. $updatesCounter keys updated.');
+    print('Done. $deletionsCounter keys need to be translated.');
   });
 }
 
 bool isLocaleMessageValid(String message, String localeMessage) {
   if (localeMessage == null) return false;
+  if (localeMessage.isEmpty) return false;
+  if (!arePlaceholdersValid(message, localeMessage)) return false;
 
-  return placeholdersEqual(message, localeMessage);
+  return true;
 }
 
-bool placeholdersEqual(String message, String localeMessage) {
+bool arePlaceholdersValid(String message, String localeMessage) {
+  bool areValid = true;
+
   final RegExp regExp = RegExp(r'{(.*?)}');
   final List<Match> messageMatches = regExp.allMatches(message).toList();
   final List<Match> localeMessageMatches =
       regExp.allMatches(localeMessage).toList();
 
-  final bool isEqual = extractPlaceholders(messageMatches).join('') ==
-      extractPlaceholders(localeMessageMatches).join('');
+  final List<String> messagePlaceholders = extractPlaceholders(messageMatches);
+  final List<String> localeMessagePlaceholders =
+      extractPlaceholders(localeMessageMatches);
 
-  return isEqual;
+  for (String localePlaceholder in localeMessagePlaceholders) {
+    if (!messagePlaceholders.contains(localePlaceholder)) {
+      areValid = false;
+      break;
+    }
+  }
+
+  return areValid;
 }
 
 List<String> extractPlaceholders(List<Match> matches) {

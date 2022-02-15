@@ -85,6 +85,7 @@ dart run sync_arb_files.dart
 ```bash
 flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/localizations.dart lib/l10n/intl_*.arb
 ```
+5. Manual editing of generated `messages_*.dart` files might be needed to delete nullable syntax (`?` symbol), since the app doesn't support it yet.
 
 ## Audio samples sources
 
