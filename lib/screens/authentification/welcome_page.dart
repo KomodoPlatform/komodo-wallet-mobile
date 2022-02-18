@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/new_account_page.dart';
 import 'package:komodo_dex/screens/settings/restore_seed_page.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -46,7 +48,7 @@ class _WelcomePageState extends State<WelcomePage> {
               Text(AppLocalizations.of(context).to + ' ',
                   style: Theme.of(context).textTheme.subtitle1),
               Text(
-                AppLocalizations.of(context).welcomeName + ' ',
+                toInitialUpper(appConfig.appName) + ' ',
                 style: Theme.of(context)
                     .textTheme
                     .subtitle1
@@ -58,7 +60,8 @@ class _WelcomePageState extends State<WelcomePage> {
           ),
           SizedBox(height: 24),
           Text(
-            AppLocalizations.of(context).welcomeInfo,
+            AppLocalizations.of(context)
+                .welcomeInfo(toInitialUpper(appConfig.appName)),
             style: Theme.of(context).textTheme.bodyText1,
           ),
           SizedBox(height: 24),

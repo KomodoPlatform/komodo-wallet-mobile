@@ -347,7 +347,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         if (snapshot.data == ConnectivityResult.wifi) return SizedBox();
 
         return _buildWarning(
-          text: AppLocalizations.of(context).mobileDataWarning,
+          text:
+              AppLocalizations.of(context).mobileDataWarning(appConfig.appName),
           iconData: Icons.network_check,
         );
       },
@@ -367,10 +368,12 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     Color color;
 
     if (_isBatteryCritical()) {
-      message = AppLocalizations.of(context).batteryCriticalError;
+      message = AppLocalizations.of(context)
+          .batteryCriticalError('${appConfig.batteryLevelCritical}');
       color = Theme.of(context).errorColor;
     } else if (level < appConfig.batteryLevelLow / 100) {
-      message = AppLocalizations.of(context).batteryLowWarning;
+      message = AppLocalizations.of(context)
+          .batteryLowWarning('${appConfig.batteryLevelLow}');
     } else if (isInLowPowerMode) {
       message = AppLocalizations.of(context).batterySavingWarning;
     }
