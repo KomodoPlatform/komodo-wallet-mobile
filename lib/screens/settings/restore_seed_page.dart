@@ -157,7 +157,8 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
             return CustomSimpleDialog(
               title: Text(AppLocalizations.of(context).warning),
               children: [
-                Text(AppLocalizations.of(context).customSeedWarning),
+                Text(AppLocalizations.of(context).customSeedWarning(
+                    AppLocalizations.of(context).iUnderstand)),
                 Theme(
                   data: Theme.of(context).copyWith(
                       inputDecorationTheme: gefaultUnderlineInputTheme),

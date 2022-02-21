@@ -1,18 +1,17 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-//import 'dart:typed_data';
 
-//import 'package:convert/convert.dart';
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:bip39/bip39.dart' as bip39;
-//import 'package:keccak/keccak.dart';
+import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
@@ -20,18 +19,15 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/qr_view.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:rational/rational.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:intl/intl.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:provider/provider.dart';
-
-import '../localizations.dart';
 
 void copyToClipBoard(BuildContext context, String str) {
   ScaffoldMessengerState scaffoldMessenger;
@@ -47,42 +43,6 @@ void copyToClipBoard(BuildContext context, String str) {
   }
   Clipboard.setData(ClipboardData(text: str));
 }
-
-// MRC: This is apparently unused and uses the keccak plugin that we aren't
-// aren't able to use
-
-/*
-bool isAddress(String address) {
-  if (RegExp('!/^(0x)?[0-9a-f]{40}\$/i').hasMatch(address)) {
-    return false;
-  } else if (RegExp('/^(0x)?[0-9a-f]{40}\$/').hasMatch(address) ||
-      RegExp('/^(0x)?[0-9A-F]{40}\$/').hasMatch(address)) {
-    return true;
-  } else {
-    return isChecksumAddress(address);
-  }
-}
-
-bool isChecksumAddress(String address) {
-  // Check each case
-  address = address.replaceFirst('0x', '');
-  final Uint8List inputData =
-      Uint8List.fromList(address.toLowerCase().codeUnits);
-  final Uint8List addressHash = keccak(inputData);
-  final String output = hex.encode(addressHash);
-  for (int i = 0; i < 40; i++) {
-    // the nth letter should be uppercase if the nth digit of casemap is 1
-    // int.parse(addressHash[i].toString(), radix: 16)
-    if ((int.parse(output[i].toString(), radix: 16) > 7 &&
-            address[i].toUpperCase() != address[i]) ||
-        (int.parse(output[i].toString(), radix: 16) <= 7 &&
-            address[i].toLowerCase() != address[i])) {
-      return false;
-    }
-  }
-  return true;
-}
-*/
 
 /// Convers a null, a string or a double into a Decimal.
 Decimal deci(dynamic dv) {
@@ -854,4 +814,11 @@ void moveCursorToEnd(TextEditingController controller) {
   controller.selection = TextSelection.fromPosition(
     TextPosition(offset: controller.text.length),
   );
+}
+
+String toInitialUpper(String val) {
+  if (val == null || val.isEmpty) return '';
+  final String initial = val.substring(0, 1);
+  final String rest = val.substring(1);
+  return initial.toUpperCase() + rest;
 }

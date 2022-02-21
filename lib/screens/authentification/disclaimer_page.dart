@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/wallet.dart';
@@ -101,16 +102,18 @@ class _DisclaimerPageState extends State<DisclaimerPage>
   Widget build(BuildContext context) {
     final List<TextSpan> _disclaimerToSText = <TextSpan>[
       TextSpan(
-          text: AppLocalizations.of(context).eulaTitle1,
+          text: AppLocalizations.of(context).eulaTitle1(appConfig.appName),
           style: Theme.of(context).textTheme.headline6),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe1,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe1(appConfig.appName, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle2,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe2,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe2(appConfig.appName, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle3,
@@ -131,13 +134,14 @@ class _DisclaimerPageState extends State<DisclaimerPage>
           text: AppLocalizations.of(context).eulaTitle6,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe5,
+          text: AppLocalizations.of(context).eulaParagraphe5(appConfig.appName),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle7,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe6,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe6(appConfig.appName, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle8,
@@ -161,13 +165,15 @@ class _DisclaimerPageState extends State<DisclaimerPage>
           text: AppLocalizations.of(context).eulaTitle11,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe10,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe10(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle12,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe11,
+          text: AppLocalizations.of(context).eulaParagraphe11(
+              appConfig.appCompanyShort, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle13,
@@ -179,43 +185,50 @@ class _DisclaimerPageState extends State<DisclaimerPage>
           text: AppLocalizations.of(context).eulaTitle14,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe13,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe13(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle15,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe14,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe14(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle16,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe15,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe15(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle17,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe16,
+          text: AppLocalizations.of(context).eulaParagraphe16(
+              appConfig.appCompanyShort, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle18,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe17,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe17(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle19,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe18,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe18(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle20,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe19,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe19(appConfig.appName, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2)
     ];
 
