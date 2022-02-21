@@ -37,8 +37,6 @@ class Startup {
   bool get live => _live;
   String get log => _log;
 
-  final _walletSecuritySettingsProvider = WalletSecuritySettingsProvider();
-
   /// Initiate the startup sequence
   void start() {
     if (_started) return;
@@ -58,7 +56,7 @@ class Startup {
     // So invoking this method here might be seen as a wishful thinking.
     await startMmIfUnlocked();
 
-    await _walletSecuritySettingsProvider.migrateSecuritySettings();
+    await walletSecuritySettingsProvider.migrateSecuritySettings();
 
     _live = true;
     _notifyListeners();
@@ -73,13 +71,11 @@ class Startup {
     if ((now - _startingMM).abs() < 3141) return;
     _startingMM = now;
 
-    if (_walletSecuritySettingsProvider.isPassphraseSaved != null &&
-        _walletSecuritySettingsProvider.isPassphraseSaved == true) {
-      await authBloc.initSwitchPref();
-
+    if (walletSecuritySettingsProvider.isPassphraseSaved != null &&
+        walletSecuritySettingsProvider.isPassphraseSaved == true) {
       // If the screen is currently unlocked then proceed with MM initialization
       if (!(authBloc.showLock &&
-          _walletSecuritySettingsProvider.activatePinProtection)) {
+          walletSecuritySettingsProvider.activatePinProtection)) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
     }

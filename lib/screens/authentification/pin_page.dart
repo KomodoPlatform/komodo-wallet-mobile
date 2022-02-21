@@ -14,6 +14,8 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:pin_code_view/pin_code_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class PinPage extends StatefulWidget {
   const PinPage({
@@ -49,8 +51,6 @@ class _PinPageState extends State<PinPage> {
   bool isLoading = false;
   String _correctPin;
   String _camoPin;
-  WalletSecuritySettingsProvider walletSecuritySettingsProvider =
-      WalletSecuritySettingsProvider();
 
   @override
   void initState() {
@@ -73,6 +73,7 @@ class _PinPageState extends State<PinPage> {
   }
 
   Future<void> _initCorrectPin(PinStatus pinStatus) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (pinStatus == PinStatus.CREATE_PIN) {
       setState(() {
         _correctPin = null;
@@ -80,7 +81,7 @@ class _PinPageState extends State<PinPage> {
     } else if (pinStatus == PinStatus.CONFIRM_PIN) {
       authBloc.showLock = false;
       setState(() {
-        _correctPin = walletSecuritySettingsProvider.createdPin;
+        _correctPin = prefs.getString('pin_create');
       });
     } else if (pinStatus == PinStatus.CREATE_CAMO_PIN) {
       setState(() {
@@ -89,17 +90,21 @@ class _PinPageState extends State<PinPage> {
     } else if (pinStatus == PinStatus.CONFIRM_CAMO_PIN) {
       authBloc.showLock = false;
       setState(() {
-        _correctPin = walletSecuritySettingsProvider.camoPin;
+        _correctPin = prefs.getString('camo_pin_create');
       });
     } else {
       await setNormalPin();
     }
   }
 
-  Future<void> _onCodeSuccess(PinStatus pinStatus, String code) async {
+  Future<void> _onCodeSuccess(
+      PinStatus pinStatus, String code, BuildContext context) async {
+    final walletSecuritySettingsProvider =
+        context.read<WalletSecuritySettingsProvider>();
     switch (pinStatus) {
       case PinStatus.CREATE_PIN:
-        walletSecuritySettingsProvider.isPinCreated = true;
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('is_pin_creation_in_progress', true);
         break;
 
       case PinStatus.CONFIRM_PIN:
@@ -127,7 +132,9 @@ class _PinPageState extends State<PinPage> {
         }
         Navigator.pop(context);
 
-        walletSecuritySettingsProvider.isPinCreated = false;
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.remove('pin_create');
+        await prefs.remove('is_pin_creation_in_progress');
 
         setState(() {
           isLoading = false;
@@ -135,14 +142,16 @@ class _PinPageState extends State<PinPage> {
         break;
 
       case PinStatus.CREATE_CAMO_PIN:
-        walletSecuritySettingsProvider.isCamoPinCreated = true;
-
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('is_camo_pin_creation_in_progress', true);
         break;
 
       case PinStatus.CONFIRM_CAMO_PIN:
         await EncryptionTool().write('camoPin', code.toString());
 
-        walletSecuritySettingsProvider.isCamoPinCreated = false;
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.remove('camo_pin_create');
+        await prefs.remove('is_camo_pin_creation_in_progress');
 
         camoBloc.shouldWarnBadCamoPin = true;
         Navigator.popUntil(context, ModalRoute.withName('/camoSetup'));
@@ -217,10 +226,10 @@ class _PinPageState extends State<PinPage> {
               correctPin: _correctPin,
               onCodeFail: (dynamic code) async {
                 if (widget.pinStatus == PinStatus.CREATE_PIN) {
-                  walletSecuritySettingsProvider.isPinCreated = true;
-
-                  walletSecuritySettingsProvider.createdPin = code;
-
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.setBool('is_pin_creation_in_progress', true);
+                  await prefs.setString('pin_create', code);
                   final MaterialPageRoute<dynamic> materialPage =
                       MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => PinPage(
@@ -241,10 +250,10 @@ class _PinPageState extends State<PinPage> {
                         context, materialPage);
                   }
                 } else if (widget.pinStatus == PinStatus.CREATE_CAMO_PIN) {
-                  walletSecuritySettingsProvider.isCamoPinCreated = true;
-
-                  walletSecuritySettingsProvider.camoPin = code;
-
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.setBool('is_camo_pin_creation_in_progress', true);
+                  await prefs.setString('camo_pin_create', code);
                   final MaterialPageRoute<dynamic> materialPage =
                       MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => PinPage(
@@ -271,7 +280,7 @@ class _PinPageState extends State<PinPage> {
                       Navigator.popUntil(context, ModalRoute.withName('/'));
                     }
 
-                    _onCodeSuccess(widget.pinStatus, code);
+                    _onCodeSuccess(widget.pinStatus, code, context);
                   } else {
                     _errorPin();
                     camoBloc.isCamoActive = false;
@@ -284,7 +293,7 @@ class _PinPageState extends State<PinPage> {
                   coinsBloc.resetCoinBalance();
                   camoBloc.isCamoActive = false;
                 }
-                _onCodeSuccess(widget.pinStatus, code);
+                _onCodeSuccess(widget.pinStatus, code, context);
               },
             )
           : _buildLoading(),

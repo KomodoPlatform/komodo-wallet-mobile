@@ -56,14 +56,9 @@ class Db {
           id TEXT PRIMARY KEY,
           name TEXT,
           is_passphrase_saved BIT,
-          log_out_on_exit BIT,
           activate_pin_protection BIT,
-          is_pin_created BIT,
-          created_pin TEXT,
           activate_bio_protection BIT,
           enable_camo BIT,
-          is_camo_pin_created BIT,
-          camo_pin TEXT,
           is_camo_active BIT,
           camo_fraction INTEGER,
           camo_balance TEXT,
@@ -75,14 +70,9 @@ class Db {
           id TEXT PRIMARY KEY,
           name TEXT,
           is_passphrase_saved BIT,
-          log_out_on_exit BIT,
           activate_pin_protection BIT,
-          is_pin_created BIT,
-          created_pin TEXT,
           activate_bio_protection BIT,
           enable_camo BIT,
-          is_camo_pin_created BIT,
-          camo_pin TEXT,
           is_camo_active BIT,
           camo_fraction INTEGER,
           camo_balance TEXT,
@@ -107,14 +97,9 @@ class Db {
           id TEXT PRIMARY KEY,
           name TEXT,
           is_passphrase_saved BIT,
-          log_out_on_exit BIT,
           activate_pin_protection BIT,
-          is_pin_created BIT,
-          created_pin TEXT,
           activate_bio_protection BIT,
           enable_camo BIT,
-          is_camo_pin_created BIT,
-          camo_pin TEXT,
           is_camo_active BIT,
           camo_fraction INTEGER,
           camo_balance TEXT,
@@ -126,14 +111,9 @@ class Db {
           id TEXT PRIMARY KEY,
           name TEXT,
           is_passphrase_saved BIT,
-          log_out_on_exit BIT,
           activate_pin_protection BIT,
-          is_pin_created BIT,
-          created_pin TEXT,
           activate_bio_protection BIT,
           enable_camo BIT,
-          is_camo_pin_created BIT,
-          camo_pin TEXT,
           is_camo_active BIT,
           camo_fraction INTEGER,
           camo_balance TEXT,
@@ -295,7 +275,9 @@ class Db {
     await db.delete('Wallet', where: 'id = ?', whereArgs: <dynamic>[wallet.id]);
   }
 
-  static Future<int> saveCurrentWallet(Wallet currentWallet) async {
+  static Future<int> saveCurrentWallet(
+    Wallet currentWallet,
+  ) async {
     await deleteCurrentWallet();
     walletBloc.setCurrentWallet(currentWallet);
     final Database db = await Db.db;
@@ -483,16 +465,13 @@ class Db {
     final List<WalletSecuritySettings> walletsSecuritySettings =
         List<WalletSecuritySettings>.generate(maps.length, (int i) {
       return WalletSecuritySettings(
-        isPassphraseSaved: maps[i]['is_passphrase_saved'] ?? false,
-        logOutOnExit: maps[i]['log_out_on_exit'] ?? false,
-        activatePinProtection: maps[i]['activate_pin_protection'] ?? false,
-        isPinCreated: maps[i]['is_pin_created'] ?? false,
-        createdPin: maps[i]['created_pin'],
-        activateBioProtection: maps[i]['activate_pin_protection'] ?? false,
-        enableCamo: maps[i]['enable_camo'] ?? false,
-        isCamoPinCreated: maps[i]['is_camo_pin_created'] ?? false,
-        camoPin: maps[i]['camo_pin'],
-        isCamoActive: maps[i]['is_camo_active'] ?? false,
+        isPassphraseSaved: maps[i]['is_passphrase_saved'] == 1 ? true : false,
+        activatePinProtection:
+            maps[i]['activate_pin_protection'] == 1 ? true : false,
+        activateBioProtection:
+            maps[i]['activate_pin_protection'] == 1 ? true : false,
+        enableCamo: maps[i]['enable_camo'] == 1 ? true : false,
+        isCamoActive: maps[i]['is_camo_active'] == 1 ? true : false,
         camoFraction: maps[i]['camo_fraction'],
         camoBalance: maps[i]['camo_balance'],
         camoSessionStartedAt: maps[i]['camo_session_started_at'],
@@ -510,21 +489,18 @@ class Db {
       {bool allWallets = false}) async {
     final Database db = await Db.db;
 
-    Wallet currenWallet = await getCurrentWallet();
+    Wallet currentWallet = await getCurrentWallet();
 
     final batch = db.batch();
 
     final updateMap = {
-      'is_passphrase_saved': walletSecuritySettings.isPassphraseSaved,
-      'log_out_on_exit': walletSecuritySettings.logOutOnExit,
-      'activate_pin_protection': walletSecuritySettings.activatePinProtection,
-      'is_pin_created': walletSecuritySettings.isPinCreated,
-      'created_pin': walletSecuritySettings.createdPin,
-      'activate_bio_protection': walletSecuritySettings.activateBioProtection,
-      'enable_camo': walletSecuritySettings.enableCamo,
-      'is_camo_pin_created': walletSecuritySettings.isCamoPinCreated,
-      'camo_pin': walletSecuritySettings.camoPin,
-      'is_camo_active': walletSecuritySettings.isCamoActive,
+      'is_passphrase_saved': walletSecuritySettings.isPassphraseSaved ? 1 : 0,
+      'activate_pin_protection':
+          walletSecuritySettings.activatePinProtection ? 1 : 0,
+      'activate_bio_protection':
+          walletSecuritySettings.activateBioProtection ? 1 : 0,
+      'enable_camo': walletSecuritySettings.enableCamo ? 1 : 0,
+      'is_camo_active': walletSecuritySettings.isCamoActive ? 1 : 0,
       'camo_fraction': walletSecuritySettings.camoFraction,
       'camo_balance': walletSecuritySettings.camoBalance,
       'camo_session_started_at': walletSecuritySettings.camoSessionStartedAt,
@@ -534,13 +510,13 @@ class Db {
       'Wallet',
       updateMap,
       where: allWallets ? null : 'id = ?',
-      whereArgs: allWallets ? null : [currenWallet.id],
+      whereArgs: allWallets ? null : [currentWallet.id],
     );
     await db.update(
       'CurrentWallet',
       updateMap,
       where: allWallets ? null : 'id = ?',
-      whereArgs: allWallets ? null : [currenWallet.id],
+      whereArgs: allWallets ? null : [currentWallet.id],
     );
 
     batch.commit();

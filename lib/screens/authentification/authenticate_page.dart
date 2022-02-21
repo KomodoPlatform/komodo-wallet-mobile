@@ -4,12 +4,12 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/screens/authentification/show_delete_wallet_confirmation.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/select_language_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {
   const AuthenticatePage({Key key}) : super(key: key);
@@ -27,8 +27,8 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
   }
 
   Future<void> initPinCreated() async {
-    final _walletSecuritySettingsProvider = WalletSecuritySettingsProvider();
-    _walletSecuritySettingsProvider.isPinCreated = false;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('is_pin_creation_in_progress');
   }
 
   @override

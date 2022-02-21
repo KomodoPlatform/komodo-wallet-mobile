@@ -100,7 +100,7 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
               create: (context) => ConstructorProvider(),
             ),
             ChangeNotifierProvider(
-              create: (context) => WalletSecuritySettingsProvider(),
+              create: (context) => walletSecuritySettingsProvider,
             )
           ],
           child: const MyApp(),

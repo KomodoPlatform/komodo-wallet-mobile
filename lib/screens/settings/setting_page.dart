@@ -35,6 +35,7 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -405,13 +406,22 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildLogOutOnExit() {
-    return SwitchListTile(
-      value: walletSecuritySettingsProvider.logOutOnExit ?? false,
-      onChanged: (bool dataSwitch) {
-        walletSecuritySettingsProvider.logOutOnExit = dataSwitch;
+    return SharedPreferencesBuilder<dynamic>(
+      pref: 'switch_pin_log_out_on_exit',
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return SwitchListTile(
+          value: snapshot.data ?? false,
+          onChanged: (bool dataSwitch) {
+            setState(() {
+              SharedPreferences.getInstance().then((SharedPreferences data) {
+                data.setBool('switch_pin_log_out_on_exit', dataSwitch);
+              });
+            });
+          },
+          title: Text(AppLocalizations.of(context).logoutOnExit),
+          tileColor: Theme.of(context).primaryColor,
+        );
       },
-      title: Text(AppLocalizations.of(context).logoutOnExit),
-      tileColor: Theme.of(context).primaryColor,
     );
   }
 

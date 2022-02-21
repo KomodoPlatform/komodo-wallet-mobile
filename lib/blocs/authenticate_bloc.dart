@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
@@ -38,11 +37,9 @@ class AuthenticateBloc extends BlocBase {
   Sink<PinStatus> get _inpinStatus => _pinStatusController.sink;
   Stream<PinStatus> get outpinStatus => _pinStatusController.stream;
 
-  final _walletSecuritySettingsProvider = WalletSecuritySettingsProvider();
-
   Future<void> init() async {
-    if (_walletSecuritySettingsProvider.isPassphraseSaved != null &&
-        _walletSecuritySettingsProvider.isPassphraseSaved) {
+    if (walletSecuritySettingsProvider.isPassphraseSaved != null &&
+        walletSecuritySettingsProvider.isPassphraseSaved) {
       isLogin = true;
       _inIsLogin.add(true);
     } else {
@@ -52,13 +49,13 @@ class AuthenticateBloc extends BlocBase {
     pinStatus = PinStatus.NORMAL_PIN;
     _inpinStatus.add(PinStatus.NORMAL_PIN);
 
-    if (_walletSecuritySettingsProvider.isPinCreated != null &&
-        _walletSecuritySettingsProvider.isPinCreated) {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('is_pin_creation_in_progress')) {
       pinStatus = PinStatus.CREATE_PIN;
       _inpinStatus.add(PinStatus.CREATE_PIN);
     }
 
-    if (_walletSecuritySettingsProvider.activatePinProtection == false) {
+    if (walletSecuritySettingsProvider.activatePinProtection == false) {
       showLock = false;
     }
   }
@@ -73,13 +70,14 @@ class AuthenticateBloc extends BlocBase {
   Future<void> login(String passphrase, String password) async {
     mainBloc.setCurrentIndexTab(0);
     walletBloc.setCurrentWallet(await Db.getCurrentWallet());
+    await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
 
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     await _checkPINStatus(password);
     await EncryptionTool().write('passphrase', passphrase);
-    _walletSecuritySettingsProvider.isPassphraseSaved = true;
-    await initSwitchPref();
+    walletSecuritySettingsProvider.isPassphraseSaved = true;
 
-    _walletSecuritySettingsProvider.logOutOnExit = false;
+    await prefs.setBool('switch_pin_log_out_on_exit', false);
 
     await coinsBloc.loadWalletSnapshot();
 
@@ -89,18 +87,6 @@ class AuthenticateBloc extends BlocBase {
 
     isLogin = true;
     _inIsLogin.add(true);
-  }
-
-  Future<void> initSwitchPref() async {
-    _walletSecuritySettingsProvider.activatePinProtection = true;
-    _walletSecuritySettingsProvider.activateBioProtection = false;
-  }
-
-  Future<void> initSwitch(String key, bool defaultSwitch) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.getBool(key) != null
-        ? await prefs.setBool(key, prefs.getBool(key))
-        : await prefs.setBool(key, defaultSwitch);
   }
 
   Future<void> _checkPINStatus(String password) async {
@@ -115,8 +101,8 @@ class AuthenticateBloc extends BlocBase {
       await entryptionTool.write('pin', pin);
       updateStatusPin(PinStatus.NORMAL_PIN);
     } else {
-      if (_walletSecuritySettingsProvider.isPassphraseSaved != null &&
-          _walletSecuritySettingsProvider.isPassphraseSaved) {
+      if (walletSecuritySettingsProvider.isPassphraseSaved != null &&
+          walletSecuritySettingsProvider.isPassphraseSaved) {
         updateStatusPin(PinStatus.NORMAL_PIN);
       } else {
         updateStatusPin(PinStatus.CREATE_PIN);
@@ -128,7 +114,8 @@ class AuthenticateBloc extends BlocBase {
   Future<void> loginUI(bool isLogin, String passphrase, String password) async {
     await _checkPINStatus(password);
     await EncryptionTool().write('passphrase', passphrase);
-    _walletSecuritySettingsProvider.isPassphraseSaved = true;
+    await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
+    walletSecuritySettingsProvider.isPassphraseSaved = true;
     this.isLogin = isLogin;
     _inIsLogin.add(isLogin);
   }
@@ -140,11 +127,8 @@ class AuthenticateBloc extends BlocBase {
     coinsBloc.stopCheckBalance();
     await mmSe.stopmm2();
     await EncryptionTool().delete('passphrase');
-    _walletSecuritySettingsProvider.isPassphraseSaved = false;
 
-    camoBloc.isCamoActive = false;
     await EncryptionTool().delete('camoPin');
-    camoBloc.isCamoEnabled = false;
 
     updateStatusPin(PinStatus.NORMAL_PIN);
     await EncryptionTool().delete('pin');

@@ -183,7 +183,7 @@ class LockService {
     Log.println('lock_service:178', 'Unfocus and lock..');
     unfocusTextField(context);
 
-    if (walletSecuritySettingsProvider.logOutOnExit) authBloc.logout();
+    if (_prefs.getBool('switch_pin_log_out_on_exit')) authBloc.logout();
     authBloc.showLock = true;
   }
 }
