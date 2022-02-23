@@ -4,6 +4,7 @@ import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Shares the progress on startup tasks with the UI
 class StartupProvider extends ChangeNotifier {
@@ -71,8 +72,9 @@ class Startup {
     if ((now - _startingMM).abs() < 3141) return;
     _startingMM = now;
 
-    if (walletSecuritySettingsProvider.isPassphraseSaved != null &&
-        walletSecuritySettingsProvider.isPassphraseSaved == true) {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('isPassphraseIsSaved') != null &&
+        prefs.getBool('isPassphraseIsSaved') == true) {
       // If the screen is currently unlocked then proceed with MM initialization
       if (!(authBloc.showLock &&
           walletSecuritySettingsProvider.activatePinProtection)) {

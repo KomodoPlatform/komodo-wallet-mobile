@@ -465,7 +465,6 @@ class Db {
     final List<WalletSecuritySettings> walletsSecuritySettings =
         List<WalletSecuritySettings>.generate(maps.length, (int i) {
       return WalletSecuritySettings(
-        isPassphraseSaved: maps[i]['is_passphrase_saved'] == 1 ? true : false,
         activatePinProtection:
             maps[i]['activate_pin_protection'] == 1 ? true : false,
         activateBioProtection:
@@ -494,7 +493,6 @@ class Db {
     final batch = db.batch();
 
     final updateMap = {
-      'is_passphrase_saved': walletSecuritySettings.isPassphraseSaved ? 1 : 0,
       'activate_pin_protection':
           walletSecuritySettings.activatePinProtection ? 1 : 0,
       'activate_bio_protection':

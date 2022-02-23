@@ -1,5 +1,4 @@
 class WalletSecuritySettings {
-  bool isPassphraseSaved;
   bool activatePinProtection;
   bool activateBioProtection;
   bool enableCamo;
@@ -9,7 +8,6 @@ class WalletSecuritySettings {
   int camoSessionStartedAt;
 
   WalletSecuritySettings({
-    this.isPassphraseSaved = false,
     this.activatePinProtection = false,
     this.activateBioProtection = false,
     this.enableCamo = false,

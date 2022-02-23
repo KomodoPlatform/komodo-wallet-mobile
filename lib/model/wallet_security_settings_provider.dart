@@ -27,7 +27,6 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       await _prefs.setBool(
           'wallet_security_settings_migration_in_progress', true);
 
-      final tmpIsPassphraseSaved = _prefs.getBool('isPassphraseIsSaved');
       final tmpPinProtection = _prefs.getBool('switch_pin');
       final tmpBioProtection = _prefs.getBool('switch_pin_biometric');
       final tmpCamoEnabled = _prefs.getBool('isCamoEnabled');
@@ -40,7 +39,6 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       // migrating only the current one, the user can change each of them later
 
       final tmpWalletSecuritySettings = WalletSecuritySettings(
-        isPassphraseSaved: tmpIsPassphraseSaved ?? false,
         activatePinProtection: tmpPinProtection ?? false,
         activateBioProtection: tmpBioProtection ?? false,
         enableCamo: tmpCamoEnabled ?? false,
@@ -100,13 +98,6 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   Future<void> _updateDb({bool allWallets = false}) async {
     await Db.updateWalletSecuritySettings(_walletSecuritySettings,
         allWallets: allWallets);
-  }
-
-  bool get isPassphraseSaved => _walletSecuritySettings.isPassphraseSaved;
-
-  set isPassphraseSaved(bool v) {
-    _walletSecuritySettings.isPassphraseSaved = v;
-    _updateDb().then((value) => notifyListeners());
   }
 
   bool get activatePinProtection =>

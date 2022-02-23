@@ -38,8 +38,9 @@ class AuthenticateBloc extends BlocBase {
   Stream<PinStatus> get outpinStatus => _pinStatusController.stream;
 
   Future<void> init() async {
-    if (walletSecuritySettingsProvider.isPassphraseSaved != null &&
-        walletSecuritySettingsProvider.isPassphraseSaved) {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('isPassphraseIsSaved') != null &&
+        prefs.getBool('isPassphraseIsSaved')) {
       isLogin = true;
       _inIsLogin.add(true);
     } else {
@@ -49,7 +50,6 @@ class AuthenticateBloc extends BlocBase {
     pinStatus = PinStatus.NORMAL_PIN;
     _inpinStatus.add(PinStatus.NORMAL_PIN);
 
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey('is_pin_creation_in_progress')) {
       pinStatus = PinStatus.CREATE_PIN;
       _inpinStatus.add(PinStatus.CREATE_PIN);
@@ -75,7 +75,7 @@ class AuthenticateBloc extends BlocBase {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await _checkPINStatus(password);
     await EncryptionTool().write('passphrase', passphrase);
-    walletSecuritySettingsProvider.isPassphraseSaved = true;
+    prefs.setBool('isPassphraseIsSaved', true);
 
     await prefs.setBool('switch_pin_log_out_on_exit', false);
 
@@ -101,8 +101,10 @@ class AuthenticateBloc extends BlocBase {
       await entryptionTool.write('pin', pin);
       updateStatusPin(PinStatus.NORMAL_PIN);
     } else {
-      if (walletSecuritySettingsProvider.isPassphraseSaved != null &&
-          walletSecuritySettingsProvider.isPassphraseSaved) {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      if (prefs.getBool('isPassphraseIsSaved') != null &&
+          prefs.getBool('isPassphraseIsSaved')) {
         updateStatusPin(PinStatus.NORMAL_PIN);
       } else {
         updateStatusPin(PinStatus.CREATE_PIN);
@@ -114,8 +116,9 @@ class AuthenticateBloc extends BlocBase {
   Future<void> loginUI(bool isLogin, String passphrase, String password) async {
     await _checkPINStatus(password);
     await EncryptionTool().write('passphrase', passphrase);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isPassphraseIsSaved', true);
     await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
-    walletSecuritySettingsProvider.isPassphraseSaved = true;
     this.isLogin = isLogin;
     _inIsLogin.add(isLogin);
   }
@@ -126,8 +129,10 @@ class AuthenticateBloc extends BlocBase {
 
     coinsBloc.stopCheckBalance();
     await mmSe.stopmm2();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     await EncryptionTool().delete('passphrase');
 
+    await prefs.setBool('isPassphraseIsSaved', false);
     await EncryptionTool().delete('camoPin');
 
     updateStatusPin(PinStatus.NORMAL_PIN);
