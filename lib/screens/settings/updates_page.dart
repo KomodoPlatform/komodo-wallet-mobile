@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
@@ -38,7 +39,8 @@ class _UpdatesPageState extends State<UpdatesPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).updatesTitle),
+          title: Text(
+              AppLocalizations.of(context).updatesTitle(appConfig.appName)),
         ),
         body: RefreshIndicator(
           color: Theme.of(context).colorScheme.secondary,
