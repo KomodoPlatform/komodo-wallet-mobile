@@ -478,7 +478,8 @@ class _CoinDetailState extends State<CoinDetail> {
                               double.parse(coinBalanceUsd),
                               hidden: hidden,
                             )),
-                            if (currentCoinBalance.coin.protocol.protocolData !=
+                            if (widget
+                                    .coinBalance.coin.protocol?.protocolData !=
                                 null)
                               OutlinedButton(
                                   style: OutlinedButton.styleFrom(
