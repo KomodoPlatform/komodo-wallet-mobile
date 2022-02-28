@@ -10,7 +10,6 @@ WalletSecuritySettingsProvider walletSecuritySettingsProvider =
 class WalletSecuritySettingsProvider extends ChangeNotifier {
   // MRC: Needed to support using in Blocs
   // Should prefer using Provider when possible.
-
   WalletSecuritySettings _walletSecuritySettings = WalletSecuritySettings();
 
   WalletSecuritySettingsProvider();
@@ -51,9 +50,15 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       _walletSecuritySettings = tmpWalletSecuritySettings;
       await _updateDb(allWallets: true);
 
+      // Guarantee that pin creation is always done,
+      // even if user doesn't complete it before update
+      final tmpPinCreate = _prefs.getBool('isPinIsCreated');
+      if (tmpPinCreate != null && tmpPinCreate)
+        await _prefs.setBool('is_pin_creation_in_progress', true);
+      await _prefs.remove('isPinIsCreated');
+
       // Clean up shared preferences
 
-      await _prefs.remove('isPassphraseIsSaved');
       await _prefs.remove('switch_pin');
       await _prefs.remove('pin_create');
       await _prefs.remove('switch_pin_biometric');
@@ -69,8 +74,6 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       // unused, was renamed to isPinIsCreated previously
       await _prefs.remove('isPinIsSet');
 
-      // renamed to is_pin_creation_in_progress for better name
-      await _prefs.remove('isPinIsCreated');
       // should have been deleted after finishing pin setup
       await _prefs.remove('pin_create');
       // renamed to is_camo_pin_creation_in_progress for better name

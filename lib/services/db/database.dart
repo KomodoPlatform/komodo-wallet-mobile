@@ -55,7 +55,6 @@ class Db {
       CREATE TABLE Wallet (
           id TEXT PRIMARY KEY,
           name TEXT,
-          is_passphrase_saved BIT,
           activate_pin_protection BIT,
           activate_bio_protection BIT,
           enable_camo BIT,
@@ -69,7 +68,6 @@ class Db {
       CREATE TABLE CurrentWallet (
           id TEXT PRIMARY KEY,
           name TEXT,
-          is_passphrase_saved BIT,
           activate_pin_protection BIT,
           activate_bio_protection BIT,
           enable_camo BIT,
@@ -96,7 +94,6 @@ class Db {
       CREATE TABLE new_Wallet (
           id TEXT PRIMARY KEY,
           name TEXT,
-          is_passphrase_saved BIT,
           activate_pin_protection BIT,
           activate_bio_protection BIT,
           enable_camo BIT,
@@ -110,7 +107,6 @@ class Db {
       CREATE TABLE new_CurrentWallet (
           id TEXT PRIMARY KEY,
           name TEXT,
-          is_passphrase_saved BIT,
           activate_pin_protection BIT,
           activate_bio_protection BIT,
           enable_camo BIT,
@@ -238,12 +234,24 @@ class Db {
     await db.rawDelete('DELETE FROM ArticlesSaved');
   }
 
-  static Future<int> saveWallet(Wallet newWallet) async {
+  static Future<int> saveWallet(Wallet newWallet,
+      [WalletSecuritySettings walletSecuritySettings]) async {
     final Database db = await Db.db;
+
+    walletSecuritySettings ??= WalletSecuritySettings();
 
     final Map<String, dynamic> row = <String, dynamic>{
       'id': newWallet.id,
       'name': newWallet.name,
+      'activate_pin_protection':
+          walletSecuritySettings.activatePinProtection ? 1 : 0,
+      'activate_bio_protection':
+          walletSecuritySettings.activateBioProtection ? 1 : 0,
+      'enable_camo': walletSecuritySettings.enableCamo ? 1 : 0,
+      'is_camo_active': walletSecuritySettings.isCamoActive ? 1 : 0,
+      'camo_fraction': walletSecuritySettings.camoFraction,
+      'camo_balance': walletSecuritySettings.camoBalance,
+      'camo_session_started_at': walletSecuritySettings.camoSessionStartedAt,
     };
 
     return await db.insert('Wallet ', row);
@@ -275,16 +283,26 @@ class Db {
     await db.delete('Wallet', where: 'id = ?', whereArgs: <dynamic>[wallet.id]);
   }
 
-  static Future<int> saveCurrentWallet(
-    Wallet currentWallet,
-  ) async {
+  static Future<int> saveCurrentWallet(Wallet currentWallet,
+      [WalletSecuritySettings walletSecuritySettings]) async {
     await deleteCurrentWallet();
     walletBloc.setCurrentWallet(currentWallet);
     final Database db = await Db.db;
 
+    walletSecuritySettings ??= WalletSecuritySettings();
+
     final Map<String, dynamic> row = <String, dynamic>{
       'id': currentWallet.id,
       'name': currentWallet.name,
+      'activate_pin_protection':
+          walletSecuritySettings.activatePinProtection ? 1 : 0,
+      'activate_bio_protection':
+          walletSecuritySettings.activateBioProtection ? 1 : 0,
+      'enable_camo': walletSecuritySettings.enableCamo ? 1 : 0,
+      'is_camo_active': walletSecuritySettings.isCamoActive ? 1 : 0,
+      'camo_fraction': walletSecuritySettings.camoFraction,
+      'camo_balance': walletSecuritySettings.camoBalance,
+      'camo_session_started_at': walletSecuritySettings.camoSessionStartedAt,
     };
 
     return await db.insert('CurrentWallet ', row);
@@ -461,6 +479,37 @@ class Db {
     final Database db = await Db.db;
 
     final List<Map<String, dynamic>> maps = await db.query('CurrentWallet');
+
+    final List<WalletSecuritySettings> walletsSecuritySettings =
+        List<WalletSecuritySettings>.generate(maps.length, (int i) {
+      return WalletSecuritySettings(
+        activatePinProtection:
+            maps[i]['activate_pin_protection'] == 1 ? true : false,
+        activateBioProtection:
+            maps[i]['activate_pin_protection'] == 1 ? true : false,
+        enableCamo: maps[i]['enable_camo'] == 1 ? true : false,
+        isCamoActive: maps[i]['is_camo_active'] == 1 ? true : false,
+        camoFraction: maps[i]['camo_fraction'],
+        camoBalance: maps[i]['camo_balance'],
+        camoSessionStartedAt: maps[i]['camo_session_started_at'],
+      );
+    });
+    if (walletsSecuritySettings.isEmpty) {
+      return null;
+    } else {
+      return walletsSecuritySettings[0];
+    }
+  }
+
+  static Future<WalletSecuritySettings> getWalletSecuritySettings(
+      Wallet wallet) async {
+    final Database db = await Db.db;
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      'Wallet',
+      where: 'id = ?',
+      whereArgs: [wallet.id],
+    );
 
     final List<WalletSecuritySettings> walletsSecuritySettings =
         List<WalletSecuritySettings>.generate(maps.length, (int i) {

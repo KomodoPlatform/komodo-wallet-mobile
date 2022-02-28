@@ -48,7 +48,8 @@ class WalletBloc implements BlocBase {
         await entryptionTool.readData(KeyEncryption.SEED, wallet, password);
 
     if (seedPhrase != null) {
-      await Db.saveCurrentWallet(wallet);
+      final securitySettings = await Db.getWalletSecuritySettings(wallet);
+      await Db.saveCurrentWallet(wallet, securitySettings);
       return seedPhrase;
     } else {
       throw AppLocalizations.of(context).wrongPassword;

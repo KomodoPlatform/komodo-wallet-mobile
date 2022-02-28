@@ -8,7 +8,7 @@ class WalletSecuritySettings {
   int camoSessionStartedAt;
 
   WalletSecuritySettings({
-    this.activatePinProtection = false,
+    this.activatePinProtection = true,
     this.activateBioProtection = false,
     this.enableCamo = false,
     this.isCamoActive = false,
