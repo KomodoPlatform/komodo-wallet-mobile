@@ -75,5 +75,6 @@ class WalletBloc implements BlocBase {
     final EncryptionTool entryptionTool = EncryptionTool();
     await entryptionTool.deleteData(KeyEncryption.SEED, wallet, password);
     await entryptionTool.deleteData(KeyEncryption.PIN, wallet, password);
+    await entryptionTool.deleteData(KeyEncryption.CAMOPIN, wallet, password);
   }
 }

@@ -93,12 +93,16 @@ class AuthenticateBloc extends BlocBase {
     final Wallet wallet = await Db.getCurrentWallet();
     final EncryptionTool entryptionTool = EncryptionTool();
 
-    String pin;
+    String pin, camoPin;
     if (wallet != null && password != null) {
       pin = await entryptionTool.readData(KeyEncryption.PIN, wallet, password);
+      camoPin = await entryptionTool.readData(
+          KeyEncryption.CAMOPIN, wallet, password);
     }
     if (pin != null) {
       await entryptionTool.write('pin', pin);
+      if (camoPin != null) await entryptionTool.write('camoPin', camoPin);
+
       updateStatusPin(PinStatus.NORMAL_PIN);
     } else {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -109,6 +113,7 @@ class AuthenticateBloc extends BlocBase {
       } else {
         updateStatusPin(PinStatus.CREATE_PIN);
         await entryptionTool.delete('pin');
+        await entryptionTool.delete('camoPin');
       }
     }
   }

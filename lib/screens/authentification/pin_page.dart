@@ -147,6 +147,14 @@ class _PinPageState extends State<PinPage> {
         break;
 
       case PinStatus.CONFIRM_CAMO_PIN:
+        final Wallet wallet = await Db.getCurrentWallet();
+        if (wallet != null) {
+          await EncryptionTool()
+              .writeData(KeyEncryption.CAMOPIN, wallet, widget.password,
+                  code.toString())
+              .catchError((dynamic e) => Log.println('pin_page:90', e));
+        }
+
         await EncryptionTool().write('camoPin', code.toString());
 
         final SharedPreferences prefs = await SharedPreferences.getInstance();
