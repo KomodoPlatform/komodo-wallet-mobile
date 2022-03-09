@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
@@ -304,7 +305,7 @@ class CoinsBloc implements BlocBase {
         Log('coins_bloc:278', '!success: $ans');
         continue;
       }
-      await Db.coinActive(coin);
+      await Db.coinActive(coin, walletBloc.currentWallet);
       final bal = Balance(
           address: acc.address,
           balance: deci(acc.balance),
@@ -349,7 +350,7 @@ class CoinsBloc implements BlocBase {
                 ', requested: ${coin.requiresNotarization}'
                 ', received: ${coin.requiresNotarization}');
       }
-      await Db.coinActive(coin);
+      await Db.coinActive(coin, walletBloc.currentWallet);
       return CoinToActivate(coin: coin, isActive: true);
     } on TimeoutException catch (te) {
       Log('coins_bloc:325', '${coin.abbr} enableCoin timeout, $te');
@@ -378,7 +379,8 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> deactivateCoins(List<Coin> coinsToRemove) async {
-    for (Coin coin in coinsToRemove) await Db.coinInactive(coin.abbr);
+    for (Coin coin in coinsToRemove)
+      await Db.coinInactive(coin.abbr, walletBloc.currentWallet);
   }
 
   Future<void> resetCoinDefault() async {
@@ -389,7 +391,7 @@ class CoinsBloc implements BlocBase {
     final ret = <Coin>[];
     final known = await coins;
     final List<String> deactivate = [];
-    for (String ticker in await Db.activeCoins) {
+    for (String ticker in await Db.activeCoins(walletBloc.currentWallet)) {
       final coin = known[ticker];
       if (coin == null) {
         deactivate.add(ticker);
@@ -399,7 +401,7 @@ class CoinsBloc implements BlocBase {
     }
     for (final String ticker in deactivate) {
       Log('coins_bloc:371', '$ticker is unknown, removing from active coins');
-      await Db.coinInactive(ticker);
+      await Db.coinInactive(ticker, walletBloc.currentWallet);
       await removeCoinBalance(Coin(abbr: ticker));
     }
 
@@ -410,7 +412,7 @@ class CoinsBloc implements BlocBase {
 
   Future<List<Coin>> getAllNotActiveCoins() async {
     final all = (await coins).values.toList();
-    final active = await Db.activeCoins;
+    final active = await Db.activeCoins(walletBloc.currentWallet);
     final notActive = <Coin>[];
 
     for (Coin coin in all) {
@@ -521,7 +523,7 @@ class CoinsBloc implements BlocBase {
       for (String ticker in ctks.result) {
         final coin = known[ticker];
         if (coin == null) continue;
-        await Db.coinActive(coin);
+        await Db.coinActive(coin, walletBloc.currentWallet);
       }
     }
   }

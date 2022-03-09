@@ -77,6 +77,12 @@ class Db {
           camo_session_started_at INTEGER
         )
       ''');
+        await db.execute('''
+      CREATE TABLE ListOfCoinsActivated (
+          wallet_id TEXT PRIMARY KEY,
+          coins TEXT
+        )
+      ''');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         Log('database',
@@ -116,6 +122,13 @@ class Db {
           camo_session_started_at INTEGER
         )
       ''');
+
+            batch.execute('''
+      CREATE TABLE ListOfCoinsActivated (
+          wallet_id TEXT PRIMARY KEY,
+          coins TEXT
+        )
+      ''');
             batch.execute('''
       INSERT INTO
       new_Wallet(id, name)
@@ -129,6 +142,7 @@ class Db {
       ''');
             batch.execute('DROP TABLE Wallet');
             batch.execute('DROP TABLE CurrentWallet');
+            batch.execute('DROP TABLE CoinsActivated');
             batch.execute('ALTER TABLE new_Wallet RENAME TO Wallet');
             batch.execute(
                 'ALTER TABLE new_CurrentWallet RENAME TO CurrentWallet');
@@ -147,14 +161,6 @@ class Db {
     await db.execute('DROP TABLE IF EXISTS CoinsDefault');
     await db.execute('DROP TABLE IF EXISTS CoinsConfig');
     await db.execute('DROP TABLE IF EXISTS TxNotes');
-
-    // We're temporarily using a part of the CoinsActivated table but going to drop it in the future.
-    await db.execute('''
-      CREATE TABLE IF NOT EXISTS CoinsActivated (
-        name TEXT PRIMARY KEY,
-        abbr TEXT
-      )
-    ''');
 
     // id is the tx_hash for transactions and the swap id for swaps
     await db.execute('''
@@ -334,14 +340,37 @@ class Db {
   static final Set<String> _active = {};
   static bool _activeFromDb = false;
 
-  static Future<Set<String>> get activeCoins async {
+  static Future<List<String>> getCoinsFromDb(Wallet wallet) async {
+    final Database db = await Db.db;
+
+    final r = await db.query(
+      'ListOfCoinsActivated',
+      columns: ['coins'],
+      where: 'wallet_id = ?',
+      whereArgs: [wallet.id],
+    );
+    if (r != null && r.isNotEmpty) {
+      final row = r.first;
+      final String coins = row['coins'];
+      if (coins != null && coins != '') {
+        final listOfCoins = coins.split(',');
+        if (listOfCoins != null && listOfCoins.isNotEmpty) {
+          return listOfCoins.map((c) => c.trim()).toList();
+        }
+      }
+    }
+    return null;
+  }
+
+  static Future<Set<String>> activeCoins(Wallet wallet) async {
     if (_active.isNotEmpty && _activeFromDb) return _active;
 
-    final Database db = await Db.db;
-    for (final row in await db.rawQuery('SELECT abbr FROM CoinsActivated')) {
-      final String ticker = row['abbr'];
-      if (ticker != null) _active.add(ticker);
+    final listOfCoins = await getCoinsFromDb(wallet);
+
+    if (listOfCoins != null && listOfCoins.isNotEmpty) {
+      _active.addAll(listOfCoins);
     }
+
     _activeFromDb = true;
     if (_active.isNotEmpty) return _active;
 
@@ -361,21 +390,35 @@ class Db {
   }
 
   /// Add the coin to the list of activated coins.
-  static Future<void> coinActive(Coin coin) async {
+  static Future<void> coinActive(Coin coin, Wallet wallet) async {
     _active.add(coin.abbr);
+    final listOfCoins = await getCoinsFromDb(wallet);
+    listOfCoins.add(coin.abbr);
+    final coinsString = listOfCoins.join(',');
     final Database db = await Db.db;
-    await db.insert('CoinsActivated',
-        <String, dynamic>{'name': coin.name, 'abbr': coin.abbr},
-        conflictAlgorithm: ConflictAlgorithm.ignore);
+    await db.update(
+      'CoinsActivated',
+      <String, String>{'coins': coinsString},
+      where: 'wallet_id = ?',
+      whereArgs: [wallet.id],
+    );
   }
 
   /// Remove the coin from the list of activated coins.
-  static Future<void> coinInactive(String ticker) async {
+  static Future<void> coinInactive(String ticker, Wallet wallet) async {
     Log('database:246', 'coinInactive] $ticker');
     _active.remove(ticker);
+
+    final listOfCoins = await getCoinsFromDb(wallet);
+    listOfCoins.remove(ticker);
+    final coinsString = listOfCoins.join(',');
     final Database db = await Db.db;
-    await db.delete('CoinsActivated',
-        where: 'abbr = ?', whereArgs: <dynamic>[ticker]);
+    await db.update(
+      'CoinsActivated',
+      <String, String>{'coins': coinsString},
+      where: 'wallet_id = ?',
+      whereArgs: [wallet.id],
+    );
   }
 
   static Future<void> deleteNote(String id) async {
