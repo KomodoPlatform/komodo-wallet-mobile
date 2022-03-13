@@ -335,6 +335,7 @@ class Db {
   static Future<void> deleteCurrentWallet() async {
     final Database db = await Db.db;
     await db.rawDelete('DELETE FROM CurrentWallet');
+    _active.clear();
   }
 
   static final Set<String> _active = {};
@@ -359,7 +360,7 @@ class Db {
         }
       }
     }
-    return null;
+    return [];
   }
 
   static Future<Set<String>> activeCoins(Wallet wallet) async {
@@ -392,16 +393,24 @@ class Db {
   /// Add the coin to the list of activated coins.
   static Future<void> coinActive(Coin coin, Wallet wallet) async {
     _active.add(coin.abbr);
-    final listOfCoins = await getCoinsFromDb(wallet);
-    listOfCoins.add(coin.abbr);
+    final listOfCoins = _active.toList();
     final coinsString = listOfCoins.join(',');
     final Database db = await Db.db;
-    await db.update(
-      'CoinsActivated',
-      <String, String>{'coins': coinsString},
-      where: 'wallet_id = ?',
-      whereArgs: [wallet.id],
-    );
+    final currentWallet = await db.query('ListOfCoinsActivated',
+        where: 'wallet_id = ?', whereArgs: [wallet.id]);
+    if (currentWallet.isNotEmpty) {
+      await db.update(
+        'ListOfCoinsActivated',
+        <String, String>{'coins': coinsString},
+        where: 'wallet_id = ?',
+        whereArgs: [wallet.id],
+      );
+    } else {
+      await db.insert(
+        'ListOfCoinsActivated',
+        <String, String>{'wallet_id': wallet.id, 'coins': coinsString},
+      );
+    }
   }
 
   /// Remove the coin from the list of activated coins.
@@ -409,12 +418,11 @@ class Db {
     Log('database:246', 'coinInactive] $ticker');
     _active.remove(ticker);
 
-    final listOfCoins = await getCoinsFromDb(wallet);
-    listOfCoins.remove(ticker);
+    final listOfCoins = _active.toList();
     final coinsString = listOfCoins.join(',');
     final Database db = await Db.db;
     await db.update(
-      'CoinsActivated',
+      'ListOfCoinsActivated',
       <String, String>{'coins': coinsString},
       where: 'wallet_id = ?',
       whereArgs: [wallet.id],
