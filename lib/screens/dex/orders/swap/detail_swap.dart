@@ -250,6 +250,12 @@ class _DetailSwapState extends State<DetailSwap> {
   }
 
   Widget _buildAmountSwap() {
+    final myInfo = extractMyInfoFromSwap(widget.swap.result);
+    final myCoin = myInfo['myCoin'];
+    final myAmount = myInfo['myAmount'];
+    final otherCoin = myInfo['otherCoin'];
+    final otherAmount = myInfo['otherAmount'];
+
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Table(
@@ -263,23 +269,21 @@ class _DetailSwapState extends State<DetailSwap> {
               children: [
                 TableCell(
                   verticalAlignment: TableCellVerticalAlignment.middle,
-                  child: _buildTextAmount(widget.swap.result.myInfo.myCoin,
-                      widget.swap.result.myInfo.myAmount),
+                  child: _buildTextAmount(myCoin, myAmount),
                 ),
                 TableCell(
                   verticalAlignment: TableCellVerticalAlignment.middle,
                   child: Row(
                     children: [
-                      _buildIcon(widget.swap.result.myInfo.myCoin),
+                      _buildIcon(myCoin),
                       Icon(Icons.sync, size: 20),
-                      _buildIcon(widget.swap.result.myInfo.otherCoin),
+                      _buildIcon(otherCoin),
                     ],
                   ),
                 ),
                 TableCell(
                   verticalAlignment: TableCellVerticalAlignment.middle,
-                  child: _buildTextAmount(widget.swap.result.myInfo.otherCoin,
-                      widget.swap.result.myInfo.otherAmount,
+                  child: _buildTextAmount(otherCoin, otherAmount,
                       textAlign: TextAlign.right),
                 ),
               ],

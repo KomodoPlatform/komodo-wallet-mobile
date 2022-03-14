@@ -109,7 +109,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       if (index == 0) {
         // yurii: for some reason swap.result.myInfo.startedAt
         // returns seconds since epoch instead of milliseconds
-        fromTimestamp = swap.result.myInfo.startedAt * 1000;
+        fromTimestamp = extractStartedAtFromSwap(swap.result) * 1000;
       } else {
         fromTimestamp = swap.result.events[index - 1].timestamp;
       }
