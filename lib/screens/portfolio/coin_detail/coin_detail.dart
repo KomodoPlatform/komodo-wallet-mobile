@@ -8,6 +8,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -481,28 +482,8 @@ class _CoinDetailState extends State<CoinDetail> {
                             if (widget
                                     .coinBalance.coin.protocol?.protocolData !=
                                 null)
-                              OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    visualDensity: VisualDensity.compact,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return CustomSimpleDialog(
-                                            title: Text(
-                                                '${currentCoinBalance.coin.protocol.protocolData.platform} contract'),
-                                            children: [
-                                              Text(currentCoinBalance
-                                                  .coin
-                                                  .protocol
-                                                  .protocolData
-                                                  .contractAddress),
-                                            ],
-                                          );
-                                        });
-                                  },
-                                  child: Text('Show Contract Address'))
+                              _buildContractAddress(widget
+                                  .coinBalance.coin.protocol?.protocolData),
                           ],
                         );
                       });
@@ -551,6 +532,47 @@ class _CoinDetailState extends State<CoinDetail> {
           height: 16,
         )
       ],
+    );
+  }
+
+  Widget _buildContractAddress(ProtocolData protocolData) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 3 / 5,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: InkWell(
+          onTap: () => copyToClipBoard(context, protocolData.contractAddress),
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Contract Address'),
+                SizedBox(height: 4),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      'assets/coin-icons/${protocolData.platform.toLowerCase()}.png',
+                      width: 16,
+                      height: 16,
+                    ),
+                    SizedBox(width: 4),
+                    Text(protocolData.platform),
+                    SizedBox(width: 4),
+                    Expanded(
+                      child: truncateMiddle(protocolData.contractAddress),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
