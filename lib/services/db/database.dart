@@ -537,7 +537,7 @@ class Db {
         activatePinProtection:
             maps[i]['activate_pin_protection'] == 1 ? true : false,
         activateBioProtection:
-            maps[i]['activate_pin_protection'] == 1 ? true : false,
+            maps[i]['activate_bio_protection'] == 1 ? true : false,
         enableCamo: maps[i]['enable_camo'] == 1 ? true : false,
         isCamoActive: maps[i]['is_camo_active'] == 1 ? true : false,
         camoFraction: maps[i]['camo_fraction'],
@@ -568,7 +568,7 @@ class Db {
         activatePinProtection:
             maps[i]['activate_pin_protection'] == 1 ? true : false,
         activateBioProtection:
-            maps[i]['activate_pin_protection'] == 1 ? true : false,
+            maps[i]['activate_bio_protection'] == 1 ? true : false,
         enableCamo: maps[i]['enable_camo'] == 1 ? true : false,
         isCamoActive: maps[i]['is_camo_active'] == 1 ? true : false,
         camoFraction: maps[i]['camo_fraction'],
