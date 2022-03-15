@@ -219,6 +219,13 @@ class _ExportPageState extends State<ExportPage> {
     final List<ExportImportListItem> items = [];
 
     _all.swaps.forEach((uuid, swap) {
+      final myInfo = extractMyInfoFromSwap(swap);
+      final myCoin = myInfo['myCoin'];
+      final myAmount = myInfo['myAmount'];
+      final otherCoin = myInfo['otherCoin'];
+      final otherAmount = myInfo['otherAmount'];
+      final startedAt = extractStartedAtFromSwap(swap);
+
       items.add(ExportImportListItem(
         checked: _selected.swaps.containsKey(uuid),
         onChange: (val) {
@@ -239,8 +246,7 @@ class _ExportPageState extends State<ExportPage> {
               children: <Widget>[
                 Text(
                   DateFormat('dd MMM yyyy HH:mm').format(
-                      DateTime.fromMillisecondsSinceEpoch(
-                          swap.myInfo.startedAt * 1000)),
+                      DateTime.fromMillisecondsSinceEpoch(startedAt * 1000)),
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontSize: 14,
                         color: Theme.of(context)
@@ -273,26 +279,24 @@ class _ExportPageState extends State<ExportPage> {
             Row(
               children: <Widget>[
                 Text(
-                  cutTrailingZeros(formatPrice(swap.myInfo.myAmount, 4)) +
-                      ' ' +
-                      swap.myInfo.myCoin,
+                  cutTrailingZeros(formatPrice(myAmount, 4)) + ' ' + myCoin,
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${swap.myInfo.myCoin.toLowerCase()}.png',
+                  'assets/coin-icons/${myCoin.toLowerCase()}.png',
                   height: 20,
                 ),
                 SizedBox(width: 8),
                 Icon(Icons.swap_horiz),
                 SizedBox(width: 8),
                 Text(
-                  cutTrailingZeros(formatPrice(swap.myInfo.otherAmount, 4)) +
+                  cutTrailingZeros(formatPrice(otherAmount, 4)) +
                       ' ' +
-                      swap.myInfo.otherCoin,
+                      otherCoin,
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${swap.myInfo.otherCoin.toLowerCase()}.png',
+                  'assets/coin-icons/${otherCoin.toLowerCase()}.png',
                   height: 20,
                 ),
               ],

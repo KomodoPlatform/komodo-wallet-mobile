@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 enum Status {
   ORDER_MATCHING,
@@ -41,22 +42,21 @@ class Swap {
 
   int compareToSwap(Swap other) {
     int order = 0;
-    if (other.result.myInfo != null && result.myInfo != null) {
-      order = other.result.myInfo.startedAt.compareTo(result.myInfo.startedAt);
-      if (order == 0)
-        order =
-            result.myInfo.startedAt.compareTo(other.result.myInfo.startedAt);
-    }
+
+    order = extractStartedAtFromSwap(other.result)
+        .compareTo(extractStartedAtFromSwap(result));
+    if (order == 0)
+      order = extractStartedAtFromSwap(result)
+          .compareTo(extractStartedAtFromSwap(other.result));
+
     return order;
   }
 
   int compareToOrder(Order other) {
     int order = 0;
-    if (result.myInfo != null) {
-      order = other.createdAt.compareTo(result.myInfo.startedAt);
-      if (order == 0)
-        order = result.myInfo.startedAt.compareTo(other.createdAt);
-    }
+    order = other.createdAt.compareTo(extractStartedAtFromSwap(result));
+    if (order == 0)
+      order = extractStartedAtFromSwap(result).compareTo(other.createdAt);
 
     return order;
   }
@@ -137,7 +137,8 @@ class Swap {
 
   /// 'Started' event data
   SwapEL get started =>
-      result?.events?.firstWhere((SwapEL ev) => ev.event.type == 'Started');
+      result?.events?.firstWhere((SwapEL ev) => ev.event.type == 'Started',
+          orElse: () => null);
 
   /// Maker ticker abbriviation
   String get makerAbbr => started?.event?.data?.makerCoin;

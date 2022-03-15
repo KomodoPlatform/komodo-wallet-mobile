@@ -29,6 +29,12 @@ class SwapShareCard extends StatelessWidget {
 
       dateFormatted = formatter.format(finalTime);
     }
+
+    final myInfo = extractMyInfoFromSwap(swap.result);
+    final myCoin = myInfo['myCoin'];
+    final myAmount = myInfo['myAmount'];
+    final otherCoin = myInfo['otherCoin'];
+    final otherAmount = myInfo['otherAmount'];
     return DefaultTextStyle.merge(
       style: TextStyle(color: Colors.white),
       child: SizedBox(
@@ -70,9 +76,9 @@ class SwapShareCard extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  swap.result.myInfo.myCoin +
+                                  myCoin +
                                       '/' +
-                                      swap.result.myInfo.otherCoin +
+                                      otherCoin +
                                       ' '
                                           'Swap Complete!',
                                   style: TextStyle(fontSize: 8),
@@ -93,18 +99,15 @@ class SwapShareCard extends StatelessWidget {
                                             children: [
                                               Image.asset(
                                                 'assets/coin-icons/' +
-                                                    swap.result.myInfo.myCoin
-                                                        .toLowerCase() +
+                                                    myCoin.toLowerCase() +
                                                     '.png',
                                                 height: 18,
                                               ),
                                               Text(
                                                 cutTrailingZeros(formatPrice(
-                                                        swap.result.myInfo
-                                                            .myAmount,
-                                                        4)) +
+                                                        myAmount, 4)) +
                                                     ' ' +
-                                                    swap.result.myInfo.myCoin,
+                                                    myCoin,
                                                 style: TextStyle(fontSize: 6),
                                               ),
                                             ],
@@ -128,19 +131,15 @@ class SwapShareCard extends StatelessWidget {
                                             children: [
                                               Image.asset(
                                                 'assets/coin-icons/' +
-                                                    swap.result.myInfo.otherCoin
-                                                        .toLowerCase() +
+                                                    otherCoin.toLowerCase() +
                                                     '.png',
                                                 height: 18,
                                               ),
                                               Text(
                                                 cutTrailingZeros(formatPrice(
-                                                        swap.result.myInfo
-                                                            .otherAmount,
-                                                        4)) +
+                                                        otherAmount, 4)) +
                                                     ' ' +
-                                                    swap.result.myInfo
-                                                        .otherCoin,
+                                                    otherCoin,
                                                 style: const TextStyle(
                                                     fontSize: 6),
                                               ),

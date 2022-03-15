@@ -39,10 +39,9 @@ class _SwapHistoryState extends State<SwapHistory> {
           final List<Swap> swaps = snapshot.data.toList();
 
           swaps.removeWhere((Swap swap) =>
-              swap.result.myInfo == null ||
-              (swap.status != Status.SWAP_FAILED &&
-                  swap.status != Status.SWAP_SUCCESSFUL &&
-                  swap.status != Status.TIME_OUT));
+              swap.status != Status.SWAP_FAILED &&
+              swap.status != Status.SWAP_SUCCESSFUL &&
+              swap.status != Status.TIME_OUT);
 
           final List<Swap> swapsFiltered = _filter(swaps);
 
