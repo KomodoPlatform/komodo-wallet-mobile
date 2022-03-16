@@ -228,7 +228,7 @@ class _SettingPageState extends State<SettingPage> {
             onChanged: (
               bool switchValue,
             ) {
-              if (snapshot.data) {
+              if (walletSecuritySettingsProvider.activateBioProtection) {
                 authenticateBiometrics(
                   context,
                   PinStatus.DISABLED_PIN_BIOMETRIC,
