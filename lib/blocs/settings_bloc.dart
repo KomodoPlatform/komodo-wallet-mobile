@@ -89,6 +89,9 @@ class SettingsBloc implements BlocBase {
       case 'hu':
         return AppLocalizations.of(context).hungarianLanguage;
         break;
+      case 'es':
+        return AppLocalizations.of(context).spanishLanguage;
+        break;
       default:
         return AppLocalizations.of(context).englishLanguage;
     }

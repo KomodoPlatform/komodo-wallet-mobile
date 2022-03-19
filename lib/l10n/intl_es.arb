@@ -2313,6 +2313,12 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "spanishLanguage": "Español",
+    "@spanishLanguage": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
     "faucetName": "GRIFO",
     "@faucetName": {
         "type": "text",

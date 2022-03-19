@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2022-02-10T08:37:58.271467",
+  "@@last_modified": "2022-03-19T14:38:15.046583",
   "mobileDataWarning": "Please note that now you're using cellular data and participation in {appName} P2P network consume internet traffic. It's better to use a WiFi network if your cellular data plan is costly.",
   "@mobileDataWarning": {
     "type": "text",
@@ -2482,6 +2482,12 @@
   },
   "hungarianLanguage": "Hungarian",
   "@hungarianLanguage": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "spanishLanguage": "Spanish",
+  "@spanishLanguage": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
