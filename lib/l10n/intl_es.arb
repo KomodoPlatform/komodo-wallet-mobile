@@ -1,0 +1,4154 @@
+{
+    "mobileDataWarning": "Tenga en cuenta que ahora está utilizando datos móviles y la participación en la red P2P de {appName} consume tráfico de Internet. Es mejor usar una red WiFi si su plan de datos móviles es costoso.",
+    "@mobileDataWarning": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "withdrawCameraAccessTitle": "Acceso Denegado",
+    "@withdrawCameraAccessTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "withdrawCameraAccessText": "Previamente le has negado a {appName} el acceso a la cámara.\nCambia manualmente el permiso de la cámara en la configuración de tu teléfono para continuar con el escaneo del código QR.",
+    "@withdrawCameraAccessText": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "welcomeTitle": "BIENVENIDO",
+    "@welcomeTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "welcomeWallet": "wallet",
+    "@welcomeWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "welcomeInfo": "{appName} móvil es una billetera multimoneda de próxima generación con funcionalidad DEX nativa de tercera generación y más.",
+    "@welcomeInfo": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "welcomeLetSetUp": "¡VAMOS A PREPARARNOS!",
+    "@welcomeLetSetUp": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle1": "Acuerdo de licencia de usuario final (EULA) de {appName} móvil:\n\n",
+    "@eulaTitle1": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "eulaTitle2": "TÉRMINOS y CONDICIONES: (ACUERDO DE USUARIO DE LA APLICACIÓN)\n\n",
+    "@eulaTitle2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle3": "TÉRMINOS Y CONDICIONES DE USO Y EXENCIÓN DE RESPONSABILIDAD\n\n",
+    "@eulaTitle3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle4": "USO GENERAL\n\n",
+    "@eulaTitle4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle5": "MODIFICACIONES\n\n",
+    "@eulaTitle5": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle6": "LIMITACIONES DE USO\n\n",
+    "@eulaTitle6": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle7": "Cuentas y membresía\n\n",
+    "@eulaTitle7": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle8": "Copias de Seguridad\n\n",
+    "@eulaTitle8": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle9": "ADVERTENCIA GENERAL\n\n",
+    "@eulaTitle9": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle10": "ACCESO Y SEGURIDAD\n\n",
+    "@eulaTitle10": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle11": "DERECHOS DE PROPIEDAD INTELECTUAL\n\n",
+    "@eulaTitle11": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle12": "DESCARGO DE RESPONSABILIDAD\n\n",
+    "@eulaTitle12": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle13": "DECLARACIONES Y GARANTÍAS, INDEMNIZACIÓN Y LIMITACIÓN DE RESPONSABILIDAD\n\n",
+    "@eulaTitle13": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle14": "FACTORES DE RIESGO GENERALES\n\n",
+    "@eulaTitle14": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle15": "INDEMNIZACIÓN\n\n",
+    "@eulaTitle15": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle16": "DIVULGACIONES DE RIESGO RELACIONADAS CON LA CARTERA\n\n",
+    "@eulaTitle16": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle17": "SIN ASESORÍA DE INVERSIÓN NI INTERMEDIACIÓN\n\n",
+    "@eulaTitle17": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle18": "TERMINACIÓN\n\n",
+    "@eulaTitle18": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle19": "DERECHOS DE TERCEROS\n\n",
+    "@eulaTitle19": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle20": "NUESTRAS OBLIGACIONES LEGALES\n\n",
+    "@eulaTitle20": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe2": "Este descargo de responsabilidad se aplica a los contenidos y servicios de la aplicación {appName} y es válido para todos los usuarios de la 'Aplicación' ('Software', 'Aplicación móvil', 'Aplicación' o 'Aplicación').\n\nLa Aplicación es propiedad de {appCompanyLong}.\n\nNos reservamos el derecho de modificar los siguientes Términos y condiciones (que rigen el uso de la aplicación '{appName} móvil') en cualquier momento sin previo aviso y a nuestro exclusivo criterio. Es su responsabilidad revisar periódicamente estos Términos y Condiciones para cualquier actualización de estos Términos, que entrarán en vigor una vez que se publiquen.\nEl uso continuado de la aplicación se considerará como la aceptación de los siguientes Términos. \nSomos una empresa constituida en Vietnam y estos Términos y condiciones se rigen y están sujetos a las leyes de Vietnam. \nSi no está de acuerdo con estos Términos y condiciones, no debe usar ni acceder a este software.\n\n",
+    "@eulaParagraphe2": {
+        "type": "text",
+        "placeholders_order": [
+            "appName",
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appName": {},
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe3": "Al celebrar este Acuerdo de usuario (cada sujeto que accede o utiliza el sitio) (este escrito), usted declara que es una persona mayor de edad (al menos 18 años o más) y tiene la capacidad de celebrar este Acuerdo de usuario y aceptar estar legalmente obligado por los términos y condiciones de este Acuerdo de usuario, tal como se incorpora aquí y se modifica ocasionalmente. \n\n",
+    "@eulaParagraphe3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe4": "Podemos cambiar los términos de este Acuerdo de usuario en cualquier momento. Dichos cambios entrarán en vigencia cuando se publiquen en la aplicación o cuando utilice los Servicios.\n\n\nLea atentamente las Condiciones de uso cada vez que utilice nuestros Servicios. Su uso continuado de los Servicios significa su aceptación de estar sujeto al Acuerdo de usuario actual. Nuestra falla o demora en hacer cumplir o hacer cumplir parcialmente cualquier disposición de este Acuerdo de usuario no se interpretará como una renuncia a ninguna.\n\n",
+    "@eulaParagraphe4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe5": "No está permitido descompilar, decodificar, desensamblar, alquilar, arrendar, prestar, vender, otorgar sublicencias o crear trabajos derivados de la aplicación móvil {appName} o el contenido del usuario. Tampoco se le permite usar ningún software de monitoreo o detección de red para determinar la arquitectura del software, o extraer información sobre el uso o las identidades de las personas o los usuarios. \nNo tiene permitido copiar, modificar, reproducir, volver a publicar, distribuir, exhibir o transmitir con fines comerciales, sin fines de lucro o públicos, la totalidad o parte de la aplicación o el contenido del usuario sin nuestra autorización previa por escrito.\n\n",
+    "@eulaParagraphe5": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "eulaParagraphe6": "Si crea una cuenta en la Aplicación móvil, usted es responsable de mantener la seguridad de su cuenta y es completamente responsable de todas las actividades que ocurran en la cuenta y cualquier otra acción realizada en relación con ella. No seremos responsables de ningún acto u omisión por su parte, incluidos los daños de cualquier tipo incurridos como resultado de dichos actos u omisiones. \n\n {appName} móvil es una implementación de billetera sin custodia y, por lo tanto, {appCompanyLong} no puede acceder ni restaurar su cuenta en caso de pérdida (de datos).\n\n",
+    "@eulaParagraphe6": {
+        "type": "text",
+        "placeholders_order": [
+            "appName",
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appName": {},
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe7": "No somos responsables de las frases semilla que residen en la aplicación móvil. En ningún caso seremos responsables de ninguna pérdida de ningún tipo. Es su exclusiva responsabilidad mantener copias de seguridad adecuadas de sus cuentas y sus semillas.\n\n",
+    "@eulaParagraphe7": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe8": "No debe actuar ni abstenerse de actuar únicamente sobre la base del contenido de esta aplicación. \nSu acceso a esta aplicación no crea en sí mismo una relación de asesor-cliente entre usted y nosotros. \nEl contenido de esta aplicación no constituye una solicitud o incentivo para invertir en ningún producto o servicio financiero que ofrecemos. \nCualquier consejo incluido en esta aplicación ha sido elaborado sin tener en cuenta sus objetivos, situación financiera o necesidades. Debe considerar nuestro Aviso de divulgación de riesgos antes de tomar cualquier decisión sobre si adquirir el producto descrito en ese documento.\n\n",
+    "@eulaParagraphe8": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe9": "No garantizamos su acceso continuo a la aplicación o que su acceso o uso esté libre de errores. \nNo seremos responsables en caso de que la aplicación no esté disponible para usted por cualquier motivo (por ejemplo, debido a un tiempo de inactividad de la computadora atribuible a fallas en el funcionamiento, actualizaciones, problemas del servidor, actividades de mantenimiento preventivo o correctivo o interrupción en los suministros de telecomunicaciones). \n\n",
+    "@eulaParagraphe9": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe10": "{appCompanyLong} es el propietario y/o usuario autorizado de todas las marcas comerciales, marcas de servicio, marcas de diseño, patentes, derechos de autor, derechos de bases de datos y toda otra propiedad intelectual que aparezca o esté contenida en la aplicación, a menos que se indique lo contrario. Toda la información, texto, material, gráficos, software y anuncios en la interfaz de la aplicación son propiedad intelectual de {appCompanyLong}, sus proveedores y licenciantes, a menos que {appCompanyLong} indique expresamente lo contrario. \nExcepto por lo dispuesto en los Términos, el uso de la aplicación no le otorga ningún derecho, título, interés o licencia sobre dicha propiedad intelectual a la que pueda tener acceso en la aplicación. \nSomos propietarios de los derechos, o tenemos permiso para usar, las marcas registradas que figuran en nuestra aplicación. No está autorizado a usar ninguna de esas marcas comerciales sin nuestra autorización por escrito; hacerlo constituiría una violación de nuestros derechos de propiedad intelectual o de terceros. \nAlternativamente, podemos autorizarlo a usar el contenido de nuestra aplicación si se comunica con nosotros previamente y aceptamos por escrito.\n\n",
+    "@eulaParagraphe10": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe11": "{appCompanyLong} no puede garantizar la seguridad de sus sistemas informáticos. No aceptamos responsabilidad por ninguna pérdida o corrupción de los datos almacenados electrónicamente o cualquier daño a cualquier sistema informático que se produzca en relación con el uso de la aplicación o del contenido del usuario.\n{appCompanyLong} no hace ninguna representación ni garantía de ningún tipo, expresa o implícita, en cuanto al funcionamiento de la aplicación o el contenido del usuario. Usted acepta expresamente que su uso de la aplicación es bajo su propio riesgo.\nUsted acepta que el contenido proporcionado en la aplicación y el contenido del usuario no constituyen un producto financiero, asesoramiento legal o fiscal, y acepta no representar el contenido del usuario o la aplicación como tal.\nEn la medida en que lo permita la legislación vigente, la aplicación se proporciona 'tal cual, según disponibilidad'.\n\n{appCompanyLong} renuncia expresamente a toda responsabilidad por cualquier pérdida, lesión, reclamación, responsabilidad , o daño, o cualquier daño indirecto, incidental, especial o consecuente o pérdida de ganancias que resulte de, surja o esté relacionado de alguna manera con: \n(a) cualquier error u omisión en la aplicación y/o el usuario contenido, incluidos, entre otros, inexactitudes técnicas y errores tipográficos; \n(b) cualquier sitio web, aplicación o contenido de terceros al que se acceda directa o indirectamente a través de enlaces en la aplicación, incluidos, entre otros, los errores u omisiones; \n(c) la falta de disponibilidad de la aplicación o cualquier parte de ella; \n(d) su uso de la aplicación;\n(e) su uso de cualquier equipo o software en relación con la aplicación. \nTodos los Servicios ofrecidos en relación con la Plataforma se proporcionan 'tal cual', sin ninguna representación o garantía, ya sea expresa, implícita o legal. En la medida máxima permitida por la ley aplicable, renunciamos específicamente a cualquier garantía implícita de título, comerciabilidad, idoneidad para un propósito particular y/o no infracción. No hacemos ninguna representación ni garantizamos que el uso de la Plataforma será continuo, ininterrumpido, oportuno o libre de errores.\nNo garantizamos que ninguna Plataforma esté libre de virus, malware u otro material dañino relacionado y que su la capacidad de acceder a cualquier Plataforma será ininterrumpida. Cualquier defecto o mal funcionamiento del producto debe dirigirse al tercero que ofrece la Plataforma, no a {appCompanyShort}. \nNo seremos responsables ante Usted por ninguna pérdida de ningún tipo, por acción tomada o tomada en función del material o la información contenida en o a través de la Plataforma.\nEste es un software experimental e inacabado. Úselo bajo su propio riesgo. No hay garantía por cualquier tipo de daño. Al utilizar esta aplicación, usted acepta estos términos y condiciones.\n\n",
+    "@eulaParagraphe11": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyShort",
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyShort": {},
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe12": "Al acceder o utilizar los Servicios, usted acepta que es el único responsable de su conducta al acceder y utilizar nuestros Servicios. Sin limitar la generalidad de lo anterior, usted acepta que no:\n(a) utilizará los Servicios de ninguna manera que pueda interferir, interrumpir, afectar negativamente o impedir que otros usuarios disfruten plenamente de los Servicios, o que pueda dañar, deshabilitar, sobrecargar o perjudicar el funcionamiento de nuestros Servicios de cualquier manera;\n(b) usar los Servicios para pagar, apoyar o participar en actividades ilegales, incluidas, entre otras, apuestas ilegales, fraude, lavado de dinero o actividades terroristas;\n(c) Usar cualquier robot, araña, rastreador, raspador u otro medio o interfaz automatizado no proporcionado por nosotros para acceder a nuestros Servicios o para extraer datos;\n(d) Usar o intentar usar la Cartera de otro usuario o credenciales sin autorización;\n(e) intentar eludir cualquier técnica de filtrado de contenido que empleemos, o intentar acceder a cualquier servicio o área de nuestros Servicios a los que no esté autorizado a acceder;\n(f) introducir en los Servicios cualquier virus, Troyanos, gusanos, bombas lógicas u otros elementos dañinos serie;\n(g) Desarrollar aplicaciones de terceros que interactúen con nuestros Servicios sin nuestro consentimiento previo por escrito;\n(h) Proporcionar información falsa, inexacta o engañosa; \n(i) Alentar o inducir a cualquier otra persona a participar en cualquiera de las actividades prohibidas en virtud de esta Sección.\n\n\n",
+    "@eulaParagraphe12": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe13": "Usted acepta y comprende que existen riesgos asociados con la utilización de Servicios que involucran Monedas virtuales, incluidos, entre otros, el riesgo de fallas en el hardware, el software y las conexiones a Internet, el riesgo de introducción de software malicioso y el riesgo de que terceros puedan obtener información no autorizada. acceso a la información almacenada en su Wallet, incluidas, entre otras, sus claves públicas y privadas. Usted acepta y comprende que {appCompanyLong} no será responsable de las fallas de comunicación, las interrupciones, los errores, las distorsiones o los retrasos que pueda experimentar al usar los Servicios, cualquiera que sea la causa.\nUsted acepta y reconoce que existen riesgos asociados con el uso de cualquier moneda virtual red, incluido, entre otros, el riesgo de vulnerabilidades desconocidas o cambios imprevistos en el protocolo de red. Usted reconoce y acepta que {appCompanyLong} no tiene control sobre ninguna red de criptomonedas y no será responsable de ningún daño que ocurra como resultado de dichos riesgos, incluida, entre otros, la incapacidad de revertir una transacción y cualquier pérdida en conexión. con ello debido a acciones erróneas o fraudulentas.\nEl riesgo de pérdida en el uso de Servicios que involucran Monedas Virtuales puede ser sustancial y las pérdidas pueden ocurrir en un corto período de tiempo. Además, el precio y la liquidez están sujetos a fluctuaciones significativas que pueden ser impredecibles.\nLas monedas virtuales no son moneda de curso legal y no están respaldadas por ningún gobierno soberano. Además, el panorama legislativo y reglamentario en torno a las monedas virtuales cambia constantemente y puede afectar su capacidad para usar, transferir o intercambiar monedas virtuales.\nLos CFD son instrumentos complejos y conllevan un alto riesgo de perder dinero rápidamente debido al apalancamiento. El 80,6 % de las cuentas de inversores minoristas pierden dinero al operar con CFD con este proveedor. Debe considerar si comprende cómo funcionan los CFD y si puede permitirse asumir el alto riesgo de perder su dinero.\n\n",
+    "@eulaParagraphe13": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe14": "Usted acepta indemnizar, defender y eximir de responsabilidad a {appCompanyLong}, sus funcionarios, directores, empleados, agentes, otorgantes de licencias, proveedores y cualquier tercero proveedor de información de la aplicación de todas las pérdidas, gastos, daños y costos, incluidos los honorarios razonables de los abogados. , como resultado de cualquier violación de los Términos por su parte.\nTambién acepta indemnizar a {appCompanyLong} contra cualquier reclamo de que la información o el material que ha enviado a {appCompanyLong} viola cualquier ley o viola los derechos de terceros ( incluyendo, pero no limitado a, reclamos con respecto a difamación, invasión de privacidad, abuso de confianza, infracción de derechos de autor o infracción de cualquier otro derecho de propiedad intelectual).\n\n",
+    "@eulaParagraphe14": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe15": "Para completarse, cualquier transacción de moneda virtual creada con {appCompanyLong} debe confirmarse y registrarse en el libro mayor de moneda virtual asociado con la red de moneda virtual correspondiente. Dichas redes son redes descentralizadas de igual a igual respaldadas por terceros independientes, que no son propiedad de {appCompanyLong} ni están controladas ni operadas por esta.\n{appCompanyLong} no tiene control sobre ninguna red de moneda virtual y, por lo tanto, no puede y no garantiza que cualquier detalle de transacción que envíe a través de nuestros Servicios se confirmará en la red de moneda virtual correspondiente. Usted acepta y comprende que los detalles de la transacción que envía a través de nuestros Servicios pueden no completarse, o pueden retrasarse sustancialmente, por la red de moneda virtual utilizada para procesar la transacción. No garantizamos que Wallet pueda transferir títulos o derechos en cualquier moneda virtual ni otorgamos ninguna garantía con respecto al título.\nUna vez que los detalles de la transacción se hayan enviado a una red de moneda virtual, no podemos ayudarlo a cancelar o modificar su transacción. o detalles de la transacción. {appCompanyLong} no tiene control sobre ninguna red de moneda virtual y no tiene la capacidad de facilitar ninguna solicitud de cancelación o modificación.\nEn el caso de una bifurcación, es posible que {appCompanyLong} no pueda respaldar la actividad relacionada con su moneda virtual. Usted acepta y comprende que, en el caso de una bifurcación, es posible que las transacciones no se completen, se completen parcialmente, se completen incorrectamente o se retrasen sustancialmente. {appCompanyLong} no es responsable de ninguna pérdida sufrida por Usted causada en su totalidad o en parte, directa o indirectamente, por un Fork.\nEn ningún caso {appCompanyLong}, sus afiliados y proveedores de servicios, o cualquiera de sus respectivos funcionarios, directores , agentes, empleados o representantes, serán responsables de cualquier pérdida de ganancias o daños especiales, incidentales, indirectos, intangibles o consecuentes, ya sea que se basen en un contrato, agravio, negligencia, responsabilidad estricta o de otro modo, que surja de o en conexión con autorizado o uso no autorizado de los servicios, o este acuerdo, incluso si un representante autorizado de {appCompanyLong} ha sido informado, ha sabido o debería haber sabido de la posibilidad de tales daños. \nPor ejemplo (y sin limitar el alcance de la oración anterior), es posible que no se recupere por pérdida de ganancias, pérdida de oportunidades comerciales u otros tipos de daños especiales, incidentales, indirectos, intangibles o consecuentes. Algunas jurisdicciones no permiten la exclusión o limitación de daños incidentales o consecuentes, por lo que es posible que la limitación anterior no se aplique a usted. \nNo seremos responsables ante Usted por ninguna pérdida y no asumimos ninguna responsabilidad por daños o reclamos que surjan en su totalidad o en parte, directa o indirectamente de: (a) error del usuario, como contraseñas olvidadas, transacciones construidas incorrectamente o Virtual Direcciones de divisas; (b) falla del servidor o pérdida de datos; (c) Monederos o archivos de Monedero corruptos o que no funcionen; (d) acceso no autorizado a las aplicaciones; (e) cualquier actividad no autorizada, incluido, entre otros, el uso de piratería informática, virus, phishing, fuerza bruta u otros medios de ataque contra los Servicios.\n\n",
+    "@eulaParagraphe15": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe16": "Para evitar dudas, {appCompanyLong} no brinda asesoramiento legal, impositivo o de inversión, ni {appCompanyLong} realiza operaciones de corretaje en su nombre. Todas las operaciones de {appCompanyLong} se ejecutan automáticamente, según los parámetros de las instrucciones de su pedido y de acuerdo con los procedimientos de ejecución de operaciones publicados, y usted es el único responsable de determinar si cualquier inversión, estrategia de inversión o transacción relacionada es apropiada para usted en función de su información personal. objetivos de inversión, circunstancias financieras y tolerancia al riesgo. Debe consultar a su profesional legal o fiscal con respecto a su situación específica. Ni {appCompanyShort} ni sus propietarios, miembros, funcionarios, directores, socios, consultores ni ninguna persona involucrada en la publicación de esta aplicación es un asesor de inversiones registrado o corredor de bolsa. o persona asociada con un asesor de inversiones o corredor de bolsa registrado y ninguno de los anteriores hace ninguna recomendación de que la compra o venta de criptoactivos o valores de cualquier empresa perfilada en la Aplicación móvil es adecuada o aconsejable para cualquier persona o que una inversión o la transacción en dichos criptoactivos o valores será rentable. La información contenida en la Aplicación móvil no pretende ser, y no constituirá, una oferta de venta o la solicitud de ninguna oferta para comprar ningún criptoactivo o valor. La información presentada en la Aplicación móvil se proporciona únicamente con fines informativos y no debe tratarse como un consejo o una recomendación para realizar una inversión o transacción específica. Por favor, consulte con un profesional calificado antes de tomar cualquier decisión. Las opiniones y análisis incluidos en esta solicitud se basan en información de fuentes consideradas confiables y se proporcionan 'tal cual' de buena fe. {appCompanyShort} no representa ni garantiza, de forma expresa, implícita o legal, la exactitud o integridad de dicha información, que puede estar sujeta a cambios sin previo aviso. {appCompanyShort} no será responsable de ningún error o acción realizada en relación con lo anterior. Las declaraciones de opinión y creencia son las de los autores y/o editores que contribuyen a esta aplicación, y se basan únicamente en la información que poseen dichos autores y/o editores. No se debe inferir que {appCompanyShort} o dichos autores o editores tienen un conocimiento especial o mayor sobre los criptoactivos o las empresas perfiladas o cualquier experiencia particular en las industrias o mercados en los que operan y compiten los criptoactivos y las empresas perfiladas. La información sobre esta solicitud se obtiene de fuentes consideradas confiables; sin embargo, {appCompanyShort} no se hace responsable de verificar la precisión de dicha información y no garantiza que dicha información sea precisa o completa. Ciertas declaraciones incluidas en esta solicitud pueden ser declaraciones prospectivas basadas en las expectativas actuales. {appCompanyShort} no representa ni garantiza que dichas declaraciones prospectivas serán precisas. Se insta a las personas que usan la aplicación {appCompanyShort} a consultar con un profesional calificado con respecto a una inversión o transacción en cualquier cripto- activo o empresa perfilada en este documento. Además, las personas que utilizan esta aplicación declaran expresamente que el contenido de esta aplicación no es y no será una consideración en las decisiones de inversión o transacción de dichas personas. Los comerciantes deben verificar de forma independiente la información provista en la aplicación {appCompanyShort} completando su propia diligencia debida en cualquier criptoactivo o empresa en la que estén contemplando una inversión o transacción de cualquier tipo y revisar un paquete completo de información sobre ese criptoactivo o empresa. , que debe incluir, entre otros, actualizaciones de blogs y comunicados de prensa relacionados. El rendimiento pasado de los criptoactivos y valores perfilados no es indicativo de resultados futuros. Los criptoactivos y las empresas descritas en este sitio pueden carecer de un mercado comercial activo e invertir en un criptoactivo o valor que carece de un mercado comercial activo o negociar en ciertos medios, plataformas y mercados se consideran altamente especulativos y conllevan un alto grado de riesgo. . Cualquier persona que posea dichos criptoactivos y valores debe estar financieramente capacitado y preparado para asumir el riesgo de pérdida y la pérdida real de toda su operación. La información de esta solicitud no está diseñada para ser utilizada como base para una decisión de inversión. Las personas que utilicen la aplicación {appCompanyShort} deben confirmar a su entera satisfacción la veracidad de cualquier información antes de realizar cualquier inversión o transacción. La decisión de comprar o vender cualquier criptoactivo o valor que pueda presentar {appCompanyShort} se toma pura y completamente bajo el propio riesgo del lector. Como lector y usuario de esta aplicación, usted acepta que bajo ninguna circunstancia buscará responsabilizar a los propietarios, miembros, funcionarios, directores, socios, consultores u otras personas involucradas en la publicación de esta aplicación por las pérdidas sufridas por el uso de la información contenida en esta aplicación\\{appCompanyShort} y sus contratistas y afiliados pueden beneficiarse en caso de que los activos criptográficos y los valores aumenten o disminuyan en valor. Dichos criptoactivos y valores pueden comprarse o venderse de vez en cuando, incluso después de que {appCompanyShort} haya distribuido información positiva sobre los criptoactivos y las empresas. \\{appCompanyShort} no tiene la obligación de informar a los lectores sobre sus actividades comerciales o las actividades comerciales de cualquiera de sus propietarios, miembros, funcionarios, directores, contratistas y afiliados y/o cualquier empresa afiliada a los propietarios, miembros, funcionarios, directores, contratistas y afiliados.\\{appCompanyShort} y sus afiliados pueden ocasionalmente celebrar acuerdos para comprar criptoactivos o valores para proporcionar un método para alcanzar sus objetivos.\n\n",
+    "@eulaParagraphe16": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyShort",
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyShort": {},
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe17": "Los Términos son efectivos hasta que sean rescindidos por {appCompanyLong}. \nEn caso de rescisión, ya no estará autorizado a acceder a la Aplicación, pero todas las restricciones que se le impongan y las renuncias y limitaciones de responsabilidad establecidas en los Términos sobrevivirán a la rescisión. \nDicha rescisión no afectará ningún derecho legal que pueda haber acumulado {appCompanyLong} contra usted hasta la fecha de rescisión. \n{appCompanyLong} también puede eliminar la Aplicación en su totalidad o cualquier sección o característica de la Aplicación en cualquier momento. \n\n",
+    "@eulaParagraphe17": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe18": "Las disposiciones de los párrafos anteriores son para el beneficio de {appCompanyLong} y sus funcionarios, directores, empleados, agentes, otorgantes de licencias, proveedores y cualquier tercero que proporcione información a la Aplicación. Cada una de estas personas o entidades tendrá derecho a hacer valer y hacer cumplir esas disposiciones directamente contra usted en su propio nombre.\n\n",
+    "@eulaParagraphe18": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe19": "{appName} mobile es una aplicación sin custodia, descentralizada y basada en blockchain y, como tal, {appCompanyLong} nunca almacena ningún dato de usuario (cuentas y datos de autenticación). \nTambién recopilamos y procesamos datos anónimos no personales con fines estadísticos y de análisis, y para ayudarnos a brindar un mejor servicio.\n\nEste documento se actualizó por última vez el 31 de Enero de 2020\n\n",
+    "@eulaParagraphe19": {
+        "type": "text",
+        "placeholders_order": [
+            "appName",
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appName": {},
+            "appCompanyLong": {}
+        }
+    },
+    "updatesTitle": "{appName} actualizar",
+    "@updatesTitle": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "updatesChecking": "Comprobando actualizaciones...",
+    "@updatesChecking": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesUpToDate": "Ya está actualizado",
+    "@updatesUpToDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesAvailable": "Nueva versión disponible",
+    "@updatesAvailable": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesUpdate": "Actualizar",
+    "@updatesUpdate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesSkip": "Saltar por ahora",
+    "@updatesSkip": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesNotifTitle": "Actualización disponible",
+    "@updatesNotifTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "updatesNotifAvailable": "Nueva versión disponible. Por favor actualice.",
+    "@updatesNotifAvailable": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "helpLink": "Ayuda",
+    "@helpLink": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "helpTitle": "Ayuda y apoyo",
+    "@helpTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "faqTitle": "Preguntas frecuentes",
+    "@faqTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "support": "Apoyo",
+    "@support": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "supportLinksDesc": "Si tiene alguna pregunta o cree que ha encontrado un problema técnico con la aplicación {appName}, puede informar y obtener asistencia de nuestro equipo.",
+    "@supportLinksDesc": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_1": "¿Guardás mis llaves privadas?",
+    "@question_1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_1": "¡No! {appName} no tiene custodia. Nunca almacenamos datos confidenciales, incluidas sus claves privadas, frases iniciales o PIN. Estos datos solo se almacenan en el dispositivo del usuario y nunca lo abandonan. Usted tiene el control total de sus activos.",
+    "@answer_1": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_2": "¿En qué se diferencia el comercio en {appName} del comercio en otros DEX?",
+    "@question_2": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_2": "Por lo general, otros DEX solo le permiten intercambiar monedas digitales que se basan en una sola red blockchain y solo permiten realizar un solo pedido con los mismos fondos.\n\n{appName} le permite intercambiar de forma nativa en blockchains diferentes. También puede realizar varios pedidos con los mismos fondos. Por ejemplo, puede vender 0.1 BTC por KMD, QTUM o VRSC: el primer pedido que se ejecuta automáticamente cancela todos los demás pedidos.",
+    "@answer_2": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_3": "¿Cuánto tiempo toma cada intercambio atómico?",
+    "@question_3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_3": "Varios factores determinan el tiempo de procesamiento de cada intercambio. El tiempo de procesar una transacción depende de cada red (Bitcoin suele ser la más lenta). Además, el usuario puede personalizar las preferencias de seguridad. Por ejemplo, puede pedirle a {appName} que considere una transacción KMD procesada despues de solo 3 confirmaciones, lo que hace que el tiempo de intercambio sea más corto en comparación con la espera de una <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">notarization</a>.",
+    "@answer_3": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_4": "¿Necesito estar en línea durante la duración del intercambio?",
+    "@question_4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_4": "Si. Debe permanecer conectado al Internet y tener su aplicación ejecutándose para completar con éxito cada intercambio (las interrupciones muy breves en la conectividad generalmente no causan problemas). De lo contrario, existe el riesgo de cancelación de la operación y el riesgo de pérdida de fondos si es un comprador. El protocolo de intercambio atómico requiere que ambos participantes permanezcan en línea y monitoreen los blockchains involucrados para que el proceso permanezca atómico.",
+    "@answer_4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "question_5": "¿Cómo se calculan las tarifas de {appName}?",
+    "@question_5": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_5": "Hay dos categorías de tarifas a tener en cuenta al intercambiar en {appName}.\n\n1. {appName} cobra aproximadamente un 0,13 % (1/777 del volumen de la transacción, pero no menos de 0,0001) como tarifa de transacción para las órdenes del comprador, y las órdenes del vendedor no tienen tarifas.\n\n2. Tanto los vendedores como los compradores deberán pagar tarifas de red normales a las blockchains involucradas al realizar transacciones de intercambio atómico.\n\nLas tarifas de red pueden variar mucho según el par de monedas seleccionadas.",
+    "@answer_5": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_6": "¿Ofrecen soporte al usuario?",
+    "@question_6": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_6": "¡Sí! {appName} ofrece soporte a través de <a href=\"{link}\">{appCompanyShort} {name}</a>. ¡El equipo y la comunidad siempre están dispuestos a ayudar!",
+    "@answer_6": {
+        "type": "text",
+        "placeholders_order": [
+            "name",
+            "link",
+            "appName",
+            "appCompanyShort"
+        ],
+        "placeholders": {
+            "name": {},
+            "link": {},
+            "appName": {},
+            "appCompanyShort": {}
+        }
+    },
+    "question_7": "¿Tiene restricciones de país?",
+    "@question_7": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "answer_7": "¡No! {appName} es completamente descentralizado. No es posible limitar el acceso de los usuarios por parte de ningún tercero.",
+    "@answer_7": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_8": "¿Quién está detrás de {appName}?",
+    "@question_8": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_8": "{appName} está desarrollado por el equipo de {appCompanyShort}. {appCompanyShort} es uno de los proyectos de blockchain más consolidados que trabaja en soluciones innovadoras como intercambios decentralizados, seguridad de blockchains y una arquitectura multicadena interoperable.",
+    "@answer_8": {
+        "type": "text",
+        "placeholders_order": [
+            "appName",
+            "appCompanyShort"
+        ],
+        "placeholders": {
+            "appName": {},
+            "appCompanyShort": {}
+        }
+    },
+    "question_9": "¿Es posible desarrollar mi propio intercambio con {appName}?",
+    "@question_9": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_9": "¡Absolutamente! Puede leer nuestra <a href=\"https://developers.atomicdex.io/\">documentación para desarrolladores</a> para obtener más detalles o comunicarse con nosotros si tiene alguna consulta sobre su asociación. ¿Tiene una pregunta técnica específica? ¡La comunidad de desarrolladores de {appName} siempre está lista para ayudar!",
+    "@answer_9": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "question_10": "¿En qué dispositivos puedo usar {appName}?",
+    "@question_10": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "answer_10": "{appName} está disponible para dispositivos móviles en Android y iPhone, y para computadoras de escritorio en los sistemas operativos Windows, Mac y Linux.",
+    "@answer_10": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "feedTab": "Informacion",
+    "@feedTab": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedTitle": "Noticias",
+    "@feedTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedReadMore": "Leer más...",
+    "@feedReadMore": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedNotFound": "Nada aquí",
+    "@feedNotFound": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUpdated": "Fuente de noticias actualizada",
+    "@feedUpdated": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "snackbarDismiss": "Descartar",
+    "@snackbarDismiss": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedNewsTab": "Noticias",
+    "@feedNewsTab": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUnableToUpdate": "No se puede obtener la actualización de noticias",
+    "@feedUnableToUpdate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUnableToProceed": "No se puede continuar con la actualización de noticias",
+    "@feedUnableToProceed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedUpToDate": "Ya está actualizado",
+    "@feedUpToDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedNotifTitle": "{appCompanyShort} noticias",
+    "@feedNotifTitle": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyShort"
+        ],
+        "placeholders": {
+            "appCompanyShort": {}
+        }
+    },
+    "createPin": "Crear numero PIN",
+    "@createPin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enterPinCode": "Ingresa tu numero PIN",
+    "@enterPinCode": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "login": "acceso",
+    "@login": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "newAccount": "nueva cuenta",
+    "@newAccount": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "newAccountUpper": "Nueva Cuenta",
+    "@newAccountUpper": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "connecting": "Conectando...",
+    "@connecting": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addCoin": "Activar moneda",
+    "@addCoin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enterSeedPhrase": "Ingrese su Semilla de 12 palabras",
+    "@enterSeedPhrase": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exampleHintSeed": "Ejemplo: compilar nivel de caso...",
+    "@exampleHintSeed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "confirm": "Confirmar",
+    "@confirm": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "buyTestCoinWarning": "¡Advertencia, estás dispuesto a comprar monedas de prueba SIN valor real!",
+    "@buyTestCoinWarning": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "batteryCriticalError": "La carga de su batería es crítica ({batteryLevelCritical}%) para realizar un intercambio de manera segura. Póngalo a cargar y vuelva a intentarlo.",
+    "@batteryCriticalError": {
+        "type": "text",
+        "placeholders_order": [
+            "batteryLevelCritical"
+        ],
+        "placeholders": {
+            "batteryLevelCritical": {}
+        }
+    },
+    "batteryLowWarning": "La carga de la batería es inferior al {batteryLevelLow}%. Considere la posibilidad de cargar el teléfono.",
+    "@batteryLowWarning": {
+        "type": "text",
+        "placeholders_order": [
+            "batteryLevelLow"
+        ],
+        "placeholders": {
+            "batteryLevelLow": {}
+        }
+    },
+    "batterySavingWarning": "Su teléfono está en modo de ahorro de batería. Deshabilite este modo o NO ponga la aplicación en segundo plano, de lo contrario, el sistema operativo podría eliminar la aplicación y fallar el intercambio.",
+    "@batterySavingWarning": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "sellTestCoinWarning": "¡Advertencia, estás dispuesto a vender monedas de prueba SIN valor real!",
+    "@sellTestCoinWarning": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "buy": "Comprar",
+    "@buy": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "sell": "Vender",
+    "@sell": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "withdraw": "Retirar",
+    "@withdraw": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorValueEmpty": "El valor es demasiado alto o bajo",
+    "@errorValueEmpty": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "amount": "Cantidad",
+    "@amount": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addressSend": "Dirección de los destinatarios",
+    "@addressSend": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "withdrawConfirm": "Confirmar Retiro",
+    "@withdrawConfirm": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "withdrawConfirmError": "Algo salió mal. Vuelva a intentarlo más tarde.",
+    "@withdrawConfirmError": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "close": "Cerrar",
+    "@close": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "confirmSeed": "Confirmar frase semilla",
+    "@confirmSeed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "seedPhraseTitle": "Tu nueva frase semilla",
+    "@seedPhraseTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "getBackupPhrase": "Importante: ¡Haz una copia de seguridad de tu frase inicial antes de continuar!",
+    "@getBackupPhrase": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "recommendSeedMessage": "Recomendamos almacenarlo fuera de línea.",
+    "@recommendSeedMessage": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "next": "próximo",
+    "@next": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "confirmPin": "Confirmar código PIN",
+    "@confirmPin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorTryAgain": "Error, inténtalo de nuevo",
+    "@errorTryAgain": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settings": "Ajustes",
+    "@settings": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "security": "Seguridad",
+    "@security": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "activateAccessPin": "Activar la protección con PIN",
+    "@activateAccessPin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "lockScreen": "La pantalla está bloqueada",
+    "@lockScreen": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "changePin": "Cambiar código PIN",
+    "@changePin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "logout": "Cerrar sesión",
+    "@logout": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "max": "MAXIMO",
+    "@max": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "amountToSell": "Cantidad a Vender",
+    "@amountToSell": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "youWillReceived": "Usted recibirá: ",
+    "@youWillReceived": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectCoinToSell": "Seleccione la moneda que desea VENDER",
+    "@selectCoinToSell": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectCoinToBuy": "Seleccione la moneda que desea COMPRAR",
+    "@selectCoinToBuy": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swap": "intercambio",
+    "@swap": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "buySuccessWaiting": "Intercambio emitido, por favor espere!",
+    "@buySuccessWaiting": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "networkFee": "Tarifa de red",
+    "@networkFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "commissionFee": "cuota de comisión",
+    "@commissionFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "portfolio": "Portfolio",
+    "@portfolio": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkOut": "Verificar",
+    "@checkOut": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "estimateValue": "Valor total estimado",
+    "@estimateValue": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectPaymentMethod": "Selecciona tu forma de pago",
+    "@selectPaymentMethod": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "volumes": "Volumenes",
+    "@volumes": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "placeOrder": "Haga su pedido",
+    "@placeOrder": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "comingSoon": "Próximamente...",
+    "@comingSoon": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "marketplace": "Mercado",
+    "@marketplace": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "youAreSending": "Usted está enviando:",
+    "@youAreSending": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "code": "Código: ",
+    "@code": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "value": "Valor: ",
+    "@value": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "paidWith": "Pagado con ",
+    "@paidWith": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorValueNotEmpty": "Por favor ingrese datos",
+    "@errorValueNotEmpty": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorAmountBalance": "No hay suficiente equilibrio",
+    "@errorAmountBalance": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorNotAValidAddress": "No es una dirección válida",
+    "@errorNotAValidAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorNotAValidAddressSegWit": "Las direcciones de Segwit no son compatibles (todavía)",
+    "@errorNotAValidAddressSegWit": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "toAddress": "Hacia:",
+    "@toAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "receive": "RECIBIR",
+    "@receive": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "send": "ENVIAR",
+    "@send": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "pubkey": "Llave Publica",
+    "@pubkey": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "back": "back",
+    "@back": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancel": "Cancelar",
+    "@cancel": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "details": "detalles",
+    "@details": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "unspendable": "ingastable",
+    "@unspendable": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "commingsoon": "Detalles de TX próximamente!",
+    "@commingsoon": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "history": "historia",
+    "@history": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "create": "intercambiar",
+    "@create": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "commingsoonGeneral": "¡Detalles muy pronto!",
+    "@commingsoonGeneral": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderMatching": "Triangulación de órdenes",
+    "@orderMatching": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderMatched": "Orden Triangulada",
+    "@orderMatched": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapOngoing": "Intercambio en curso",
+    "@swapOngoing": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapSucceful": "Intercambio exitoso",
+    "@swapSucceful": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "timeOut": "Se acabó el tiempo",
+    "@timeOut": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapFailed": "Intercambio fallido",
+    "@swapFailed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorTryLater": "Error, intente más tarde",
+    "@errorTryLater": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedback": "Compartir archivo de registro",
+    "@feedback": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "loadingOrderbook": "Cargando libro de ordenes...",
+    "@loadingOrderbook": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "claim": "afirmar",
+    "@claim": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "claimTitle": "¿Reclamar su recompensa KMD?",
+    "@claimTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "success": "¡Éxito!",
+    "@success": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noRewardYet": "No se puede reclamar ninguna recompensa. Vuelva a intentarlo en 1 hora.",
+    "@noRewardYet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "loading": "Cargando...",
+    "@loading": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "dex": "DEX",
+    "@dex": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "media": "Noticias",
+    "@media": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "newsFeed": "Noticias",
+    "@newsFeed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "clipboard": "Copiado al portapapeles",
+    "@clipboard": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "from": "Desde",
+    "@from": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "to": "Para",
+    "@to": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txConfirmed": "CONFIRMADO",
+    "@txConfirmed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txNotConfirmed": "INCONFIRMADO",
+    "@txNotConfirmed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txBlock": "Bloque",
+    "@txBlock": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txConfirmations": "Confirmaciones",
+    "@txConfirmations": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txFee": "Tarifa",
+    "@txFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txHash": "ID de transacción",
+    "@txHash": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noSwaps": "No historia.",
+    "@noSwaps": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "trade": "INTERCAMBIO",
+    "@trade": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "reset": "RESETEAR",
+    "@reset": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "resetTitle": "Restablecer formulario",
+    "@resetTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tradeCompleted": "¡CAMBIO COMPLETADO!",
+    "@tradeCompleted": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "step": "Paso",
+    "@step": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tradeDetail": "DETALLES INTERCAMBIO",
+    "@tradeDetail": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "requestedTrade": "Comercio solicitado",
+    "@requestedTrade": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapUUID": "Intercambiar UUID",
+    "@swapUUID": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "mediaBrowse": "NAVEGAR",
+    "@mediaBrowse": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "mediaSaved": "GUARDADO",
+    "@mediaSaved": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "mediaNotSavedDescription": "NO TIENES ARTÍCULOS GUARDADOS",
+    "@mediaNotSavedDescription": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "mediaBrowseFeed": "NAVEGAR RSS",
+    "@mediaBrowseFeed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "mediaBy": "By",
+    "@mediaBy": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "lockScreenAuth": "¡Por favor, autentícate!",
+    "@lockScreenAuth": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noTxs": "Sin transacciones",
+    "@noTxs": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "done": "Hecho",
+    "@done": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectCoinTitle": "Activar monedas:",
+    "@selectCoinTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectCoinInfo": "Seleccione las monedas que desea agregar a su cartera.",
+    "@selectCoinInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noArticles": "No hay noticias. Vuelva a consultar más tarde.",
+    "@noArticles": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "infoTrade1": "¡La solicitud de intercambio no se puede deshacer y es un evento final!",
+    "@infoTrade1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "infoTrade2": "El intercambio puede tardar hasta 60 minutos. ¡NO cierres esta aplicación!",
+    "@infoTrade2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapDetailTitle": "CONFIRMAR DETALLES DE CAMBIO",
+    "@swapDetailTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minVolumeTitle": "Volumen mínimo requerido",
+    "@minVolumeTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minVolumeToggle": "Usar volumen mínimo personalizado",
+    "@minVolumeToggle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "nonNumericInput": "El valor debe ser numérico.",
+    "@nonNumericInput": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minVolumeIsTDH": "Debe ser menor que el monto de venta",
+    "@minVolumeIsTDH": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkSeedPhrase": "Comprobar la frase inicial",
+    "@checkSeedPhrase": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkSeedPhraseTitle": "VAMOS A VERIFICAR DOS VECES TU FRASE SEMILLA",
+    "@checkSeedPhraseTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkSeedPhraseInfo": "Tu frase semilla es importante, por eso nos gusta asegurarnos de que sea correcta. Le haremos tres preguntas diferentes sobre su frase semilla para asegurarnos de que podrá restaurar fácilmente su billetera cuando lo desee.",
+    "@checkSeedPhraseInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkSeedPhraseSubtile": "¿Cuál es la palabra {index} en su frase inicial?",
+    "@checkSeedPhraseSubtile": {
+        "type": "text",
+        "placeholders_order": [
+            "index"
+        ],
+        "placeholders": {
+            "index": {}
+        }
+    },
+    "checkSeedPhraseButton1": "SEGUIR",
+    "@checkSeedPhraseButton1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkSeedPhraseButton2": "VOLVER Y VERIFICAR DE NUEVO",
+    "@checkSeedPhraseButton2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "viewInExplorerButton": "Explorador",
+    "@viewInExplorerButton": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "activateAccessBiometric": "Activar protección biométrica",
+    "@activateAccessBiometric": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "allowCustomSeed": "Permitir semilla personalizada",
+    "@allowCustomSeed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "warning": "¡Advertencia!",
+    "@warning": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "iUnderstand": "Entiendo",
+    "@iUnderstand": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "customSeedWarning": "Las frases semilla personalizadas pueden ser menos seguras y más fáciles de descifrar que una frase semilla o clave privada (WIF) compatible con BIP39 generada. Para confirmar que comprende el riesgo y sabe lo que está haciendo, escriba \"{iUnderstand}\" en el cuadro a continuación.",
+    "@customSeedWarning": {
+        "type": "text",
+        "placeholders_order": [
+            "iUnderstand"
+        ],
+        "placeholders": {
+            "iUnderstand": {}
+        }
+    },
+    "hintEnterPassword": "Ingresa tu contraseña",
+    "@hintEnterPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "signInWithSeedPhrase": "¿Olvidó la contraseña? Restaurar billetera desde semilla",
+    "@signInWithSeedPhrase": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "signInWithPassword": "Iniciar sesión con contraseña",
+    "@signInWithPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintEnterSeedPhrase": "Ingrese su frase inicial",
+    "@hintEnterSeedPhrase": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "wrongPassword": "Las contraseñas no coinciden. Inténtalo de nuevo.",
+    "@wrongPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintNameYourWallet": "Nombra tu billetera",
+    "@hintNameYourWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "infoWalletPassword": "Debe proporcionar una contraseña para el cifrado de la billetera por razones de seguridad.",
+    "@infoWalletPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "confirmPassword": "Confirmar contraseña",
+    "@confirmPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "dontWantPassword": "no quiero una contraseña",
+    "@dontWantPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "areYouSure": "ESTAS SEGURO?",
+    "@areYouSure": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "infoPasswordDialog": "Utilice una contraseña segura y no la almacene en el mismo dispositivo",
+    "@infoPasswordDialog": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "setUpPassword": "CONFIGURAR UNA CONTRASEÑA",
+    "@setUpPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "createAWallet": "CREAR UNA CARTERA",
+    "@createAWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "restoreWallet": "RESTAURAR",
+    "@restoreWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintPassword": "Clave",
+    "@hintPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintCreatePassword": "Crear contraseña",
+    "@hintCreatePassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintConfirmPassword": "Confirmar contraseña",
+    "@hintConfirmPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintCurrentPassword": "Contraseña actual",
+    "@hintCurrentPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "logoutsettings": "Configuración de cierre de sesión",
+    "@logoutsettings": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "logoutOnExit": "Cerrar sesión al salir",
+    "@logoutOnExit": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "deleteWallet": "Eliminar Billetera",
+    "@deleteWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "delete": "Borrar",
+    "@delete": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settingDialogSpan1": "Estás seguro de que quieres eliminar ",
+    "@settingDialogSpan1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settingDialogSpan2": " billetera?",
+    "@settingDialogSpan2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settingDialogSpan3": "Si es así, asegúrese de ",
+    "@settingDialogSpan3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settingDialogSpan4": " guardar su frase inicial.",
+    "@settingDialogSpan4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settingDialogSpan5": " Para restaurar su billetera en el futuro.",
+    "@settingDialogSpan5": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "backupTitle": "Respaldo",
+    "@backupTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "version": "version",
+    "@version": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "viewSeedAndKeys": "Semilla y Claves Privadas",
+    "@viewSeedAndKeys": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "seedPhrase": "Frase Semilla",
+    "@seedPhrase": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "privateKeys": "Llaves Privadas",
+    "@privateKeys": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "privateKey": "Llave Privada",
+    "@privateKey": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enterpassword": "Por favor ingrese su contraseña para continuar.",
+    "@enterpassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "clipboardCopy": "Copiar al portapapeles",
+    "@clipboardCopy": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "unlock": "desbloquear",
+    "@unlock": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noOrder": "Ingrese la cantidad de {coinName}.",
+    "@noOrder": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "bestAvailableRate": "Tipo de cambio",
+    "@bestAvailableRate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "receiveLower": "Recibir",
+    "@receiveLower": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makeAorder": "hacer un pedido",
+    "@makeAorder": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exchangeTitle": "INTERCAMBIO",
+    "@exchangeTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orders": "ordenes",
+    "@orders": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectCoin": "Seleccionar moneda",
+    "@selectCoin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noFunds": "Sin Fondos",
+    "@noFunds": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noFundsDetected": "No hay fondos disponibles, por favor deposite.",
+    "@noFundsDetected": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "goToPorfolio": "Ir al portafolio",
+    "@goToPorfolio": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noOrderAvailable": "Haga clic para crear un pedido",
+    "@noOrderAvailable": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "insufficientTitle": "Volumen insuficiente",
+    "@insufficientTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "insufficientText": "El volumen mínimo requerido por este pedido es",
+    "@insufficientText": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderCreated": "Pedido creado",
+    "@orderCreated": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderCreatedInfo": "Pedido creado con éxito",
+    "@orderCreatedInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "showMyOrders": "Mostrar mis pedidos",
+    "@showMyOrders": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minValue": "La cantidad mínima para vender es {number} {coinName}",
+    "@minValue": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName",
+            "number"
+        ],
+        "placeholders": {
+            "coinName": {},
+            "number": {}
+        }
+    },
+    "titleCreatePassword": "CREA UNA CONTRASEÑA",
+    "@titleCreatePassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minValueBuy": "La cantidad mínima para comprar es {number}{coinName}",
+    "@minValueBuy": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName",
+            "number"
+        ],
+        "placeholders": {
+            "coinName": {},
+            "number": {}
+        }
+    },
+    "minValueSell": "La cantidad mínima para vender es {number}{coinName}",
+    "@minValueSell": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName",
+            "number"
+        ],
+        "placeholders": {
+            "coinName": {},
+            "number": {}
+        }
+    },
+    "minValueOrder": "El monto mínimo del pedido es {buyAmount}{buyCoin}\n({sellAmount}{sellCoin})",
+    "@minValueOrder": {
+        "type": "text",
+        "placeholders_order": [
+            "buyCoin",
+            "buyAmount",
+            "sellCoin",
+            "sellAmount"
+        ],
+        "placeholders": {
+            "buyCoin": {},
+            "buyAmount": {},
+            "sellCoin": {},
+            "sellAmount": {}
+        }
+    },
+    "enterSellAmount": "Primero debe ingresar el monto de la venta",
+    "@enterSellAmount": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "encryptingWallet": "Billetera cifrada",
+    "@encryptingWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "decryptingWallet": "Billetera de descifrado",
+    "@decryptingWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "notEnoughtBalanceForFee": "No hay suficiente saldo para las tarifas: opere con una cantidad menor",
+    "@notEnoughtBalanceForFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noInternet": "Sin conexión a Internet",
+    "@noInternet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "internetRestored": "Conexión a Internet restaurada",
+    "@internetRestored": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "internetRefreshButton": "Actualizar",
+    "@internetRefreshButton": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "legalTitle": "Legal",
+    "@legalTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "disclaimerAndTos": "Descargo de responsabilidad y condiciones de servicio",
+    "@disclaimerAndTos": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "accepteula": "Aceptar EULA",
+    "@accepteula": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "accepttac": "Aceptar TERMINOS y CONDICIONES",
+    "@accepttac": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "confirmeula": "Al hacer clic en los botones a continuación, confirma haber leído el 'EULA' y los 'Términos y condiciones' y acepta estos",
+    "@confirmeula": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "clickToSee": "Clic para ver ",
+    "@clickToSee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "price": "price",
+    "@price": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "availableVolume": "volumen máximo",
+    "@availableVolume": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "configureWallet": "Configurando su billetera, por favor espere...",
+    "@configureWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "titleCurrentAsk": "Pedido seleccionado",
+    "@titleCurrentAsk": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txFeeTitle": "tarifa de transacción:",
+    "@txFeeTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tradingFee": "tarifa de negociación:",
+    "@tradingFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapGasAmount": "El saldo de {coin} no es suficiente para pagar las tarifas de transacción.",
+    "@swapGasAmount": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "invalidSwap": "No se puede continuar con el intercambio",
+    "@invalidSwap": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "invalidSwapDetailsLink": "Detalles",
+    "@invalidSwapDetailsLink": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapGasActivate": "Activa {coin} y recarga el saldo primero",
+    "@swapGasActivate": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "tradePreimageError": "Error al calcular las tarifas comerciales",
+    "@tradePreimageError": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "remove": "Desactivar",
+    "@remove": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "walletOnly": "Solo billetera",
+    "@walletOnly": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "dexIsNotAvailable": "DEX no está disponible para esta moneda",
+    "@dexIsNotAvailable": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "searchFilterCoin": "Buscar una moneda",
+    "@searchFilterCoin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "searchFilterSubtitleSmartChain": "Seleccione todos los SmartChains",
+    "@searchFilterSubtitleSmartChain": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "searchFilterSubtitleTestCoins": "Seleccionar todos los activos de prueba",
+    "@searchFilterSubtitleTestCoins": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "searchFilterSubtitleERC": "Seleccionar todos los tokens ERC",
+    "@searchFilterSubtitleERC": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "searchFilterSubtitleBEP": "Seleccionar todos los tokens BEP",
+    "@searchFilterSubtitleBEP": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "searchFilterSubtitleQRC": "Seleccionar todos los tokens QRC",
+    "@searchFilterSubtitleQRC": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "customFee": "Costo de Transacción Personalizado",
+    "@customFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "gasLimit": "Limite de Gas",
+    "@gasLimit": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "gasPrice": "Precio de Gas",
+    "@gasPrice": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "customFeeWarning": "¡Solo use tarifas personalizadas si sabe lo que está haciendo!",
+    "@customFeeWarning": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "searchFilterSubtitleutxo": "Seleccione todas las monedas UTXO",
+    "@searchFilterSubtitleutxo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tagERC20": "ERC20",
+    "@tagERC20": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tagBEP20": "BEP20",
+    "@tagBEP20": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tagQRC20": "QRC20",
+    "@tagQRC20": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tagKMD": "KMD",
+    "@tagKMD": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorNotEnoughGas": "No hay suficiente gas: usa al menos {gas} Gwei",
+    "@errorNotEnoughGas": {
+        "type": "text",
+        "placeholders_order": [
+            "gas"
+        ],
+        "placeholders": {
+            "gas": {}
+        }
+    },
+    "orderCancel": "Todos los pedidos de {coin} serán cancelados.",
+    "@orderCancel": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "deleteConfirm": "Confirmar desactivación",
+    "@deleteConfirm": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "deleteSpan1": "¿Quieres eliminar ",
+    "@deleteSpan1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "deleteSpan2": " de tu cartera? Todos los pedidos no emparejados serán cancelados.",
+    "@deleteSpan2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cantDeleteDefaultCoinTitle": "No se puede deshabilitar ",
+    "@cantDeleteDefaultCoinTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cantDeleteDefaultCoinSpan": " es una moneda predeterminada. Las monedas predeterminadas no se pueden desactivar.",
+    "@cantDeleteDefaultCoinSpan": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cantDeleteDefaultCoinOk": "Ok",
+    "@cantDeleteDefaultCoinOk": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "share": "Compartir",
+    "@share": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "warningShareLogs": "Advertencia: en casos especiales, estos datos de registro contienen información confidencial que se puede usar para gastar monedas de intercambios fallidos.",
+    "@warningShareLogs": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enterOldPinCode": "Ingrese su antiguo PIN",
+    "@enterOldPinCode": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enterNewPinCode": "Ingrese su nuevo PIN",
+    "@enterNewPinCode": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "authenticate": "autenticar",
+    "@authenticate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settingLanguageTitle": "Idiomas",
+    "@settingLanguageTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "englishLanguage": "Inglés",
+    "@englishLanguage": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "frenchLanguage": "Francés",
+    "@frenchLanguage": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "deutscheLanguage": "Alemán",
+    "@deutscheLanguage": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "chineseLanguage": "Chino",
+    "@chineseLanguage": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "traditionalChinese": "tradicional",
+    "@traditionalChinese": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "russianLanguage": "Ruso",
+    "@russianLanguage": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "japaneseLanguage": "Japonés",
+    "@japaneseLanguage": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "turkishLanguage": "Turco",
+    "@turkishLanguage": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hungarianLanguage": "Húngaro",
+    "@hungarianLanguage": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "faucetName": "GRIFO",
+    "@faucetName": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "faucetSuccess": "Éxito",
+    "@faucetSuccess": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "faucetError": "Error",
+    "@faucetError": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "faucetTimedOut": "Tiempo de espera agotado",
+    "@faucetTimedOut": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "faucetInProgress": "Enviando solicitud a la llave {coin}...",
+    "@faucetInProgress": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "Sound": "Sonido",
+    "@Sound": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "Play at full volume": "Juega a todo volumen",
+    "@Play at full volume": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "Taker": "Comprador",
+    "@Taker": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "Maker": "Vendedor",
+    "@Maker": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "Active": "Activo",
+    "@Active": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "Failed": "Fallido",
+    "@Failed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "a swap fails": "un intercambio falla",
+    "@a swap fails": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "Applause": "Aplausos",
+    "@Applause": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "a swap runs to completion": "un intercambio se ejecuta hasta su finalización",
+    "@a swap runs to completion": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "Can't play that": "no puedo escuchar eso",
+    "@Can't play that": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "soundCantPlayThatMsg": "Elija un archivo mp3 o wav, por favor. Lo reproduciremos cuando {description}.",
+    "@soundCantPlayThatMsg": {
+        "type": "text",
+        "placeholders_order": [
+            "description"
+        ],
+        "placeholders": {
+            "description": {
+                "example": "a swap runs to completion"
+            }
+        }
+    },
+    "soundsDialogTitle": "Sonidos",
+    "@soundsDialogTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "soundsExplanation": "Escuchará notificaciones de sonido durante el proceso de intercambio y cuando tenga un pedido de fabricante activo.\nEl protocolo de intercambios atómicos requiere que los participantes estén en línea para un intercambio exitoso, y las notificaciones de sonido ayudan a lograrlo.",
+    "@soundsExplanation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "soundsNote": "Tenga en cuenta que puede configurar sus sonidos personalizados en la configuración de la aplicación.",
+    "@soundsNote": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "soundsDoNotShowAgain": "Entendido, no lo muestres más.",
+    "@soundsDoNotShowAgain": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "soundSettingsTitle": "Ajustes de sonido",
+    "@soundSettingsTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "soundSettingsLink": "Sonido",
+    "@soundSettingsLink": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "marketsTab": "Mercados",
+    "@marketsTab": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "marketsTitle": "MERCADOS",
+    "@marketsTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "marketsPrice": "PRECIO",
+    "@marketsPrice": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "marketsOrderbook": "LIBRO DE ORDENES",
+    "@marketsOrderbook": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "marketsChart": "Gráfico",
+    "@marketsChart": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "marketsDepth": "Profundidad",
+    "@marketsDepth": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsPrice": "Precio",
+    "@orderDetailsPrice": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsSells": "Ventas",
+    "@orderDetailsSells": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsFor": "for",
+    "@orderDetailsFor": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsMin": "min.",
+    "@orderDetailsMin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsAddress": "Direccion",
+    "@orderDetailsAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsExpedient": "Expediente: CEX +{delta}%",
+    "@orderDetailsExpedient": {
+        "type": "text",
+        "placeholders_order": [
+            "delta"
+        ],
+        "placeholders": {
+            "delta": {}
+        }
+    },
+    "orderDetailsExpensive": "Caro: CEX {delta}%",
+    "@orderDetailsExpensive": {
+        "type": "text",
+        "placeholders_order": [
+            "delta"
+        ],
+        "placeholders": {
+            "delta": {}
+        }
+    },
+    "orderDetailsIdentical": "Idéntico a CEX",
+    "@orderDetailsIdentical": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsReceive": "Recibir",
+    "@orderDetailsReceive": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsSpend": "Gastar",
+    "@orderDetailsSpend": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "ownOrder": " Esta es tu propia orden!",
+    "@ownOrder": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "marketsSelectCoins": "Por favor seleccione monedas",
+    "@marketsSelectCoins": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinSelectTitle": "Seleccionar moneda",
+    "@coinSelectTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinSelectNotFound": "No hay monedas activas",
+    "@coinSelectNotFound": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinSelectClear": "Remover",
+    "@coinSelectClear": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "ordersTableAmount": "Cantidad ({coin})",
+    "@ordersTableAmount": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "ordersTableTotal": "Total ({coin})",
+    "@ordersTableTotal": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "marketsNoBids": "No se encontraron ofertas",
+    "@marketsNoBids": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "marketsNoAsks": "No se encontraron solicitudes",
+    "@marketsNoAsks": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "marketsOrderDetails": "Detalles del Pedido",
+    "@marketsOrderDetails": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "candleChartError": "Algo salió mal. Vuelve a intentarlo más tarde.",
+    "@candleChartError": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsTitle": "Información de recompensas",
+    "@rewardsTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsReadMore": "Obtenga más información sobre las recompensas para usuarios activos de KMD",
+    "@rewardsReadMore": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsCancel": "Cancelar",
+    "@rewardsCancel": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsReceive": "Recibir",
+    "@rewardsReceive": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noRewards": "No hay recompensas reclamables",
+    "@noRewards": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsTableTitle": "Información de recompensas:",
+    "@rewardsTableTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsTableUXTO": "UTXO cantidad,\nKMD",
+    "@rewardsTableUXTO": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsTableRewards": "Recompensas,\nKMD",
+    "@rewardsTableRewards": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsTableFiat": "Fiat",
+    "@rewardsTableFiat": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsTableTime": "Tiempo restante",
+    "@rewardsTableTime": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsTableStatus": "Estado",
+    "@rewardsTableStatus": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsPopupTitle": "Estado de recompensas:",
+    "@rewardsPopupTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsPopupOk": "Ok",
+    "@rewardsPopupOk": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsTimeDays": "{dd} dias(s)",
+    "@rewardsTimeDays": {
+        "type": "text",
+        "placeholders_order": [
+            "dd"
+        ],
+        "placeholders": {
+            "dd": {}
+        }
+    },
+    "rewardsTimeHours": "{hh}h {minutes}m",
+    "@rewardsTimeHours": {
+        "type": "text",
+        "placeholders_order": [
+            "hh",
+            "minutes"
+        ],
+        "placeholders": {
+            "hh": {},
+            "minutes": {}
+        }
+    },
+    "rewardsTimeMin": "{mm}min",
+    "@rewardsTimeMin": {
+        "type": "text",
+        "placeholders_order": [
+            "mm"
+        ],
+        "placeholders": {
+            "mm": {}
+        }
+    },
+    "rewardsError": "Algo salió mal. Por favor, inténtelo de nuevo más tarde.",
+    "@rewardsError": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsLowAmountShort": "<10 KMD",
+    "@rewardsLowAmountShort": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsLowAmountLong": "Cantidad de UTXO inferior a 10 KMD",
+    "@rewardsLowAmountLong": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsInProgressShort": "procesando",
+    "@rewardsInProgressShort": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsInProgressLong": "La transacción está en curso",
+    "@rewardsInProgressLong": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsOneHourShort": "<1 hora",
+    "@rewardsOneHourShort": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsOneHourLong": "Aún no ha pasado una hora",
+    "@rewardsOneHourLong": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "rewardsButton": "Reclama tus recompensas",
+    "@rewardsButton": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiTab": "Multi",
+    "@multiTab": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiFixErrors": "Corrija todos los errores antes de continuar",
+    "@multiFixErrors": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiCreate": "Crear",
+    "@multiCreate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiCreateOrder": "Orden",
+    "@multiCreateOrder": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiCreateOrders": "Ordenes",
+    "@multiCreateOrders": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiBasePlaceholder": "Moneda",
+    "@multiBasePlaceholder": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiSellTitle": "Vender:",
+    "@multiSellTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiBaseSelectTitle": "Vender",
+    "@multiBaseSelectTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiBaseAmtPlaceholder": "Cantidad",
+    "@multiBaseAmtPlaceholder": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiReceiveTitle": "Recibir:",
+    "@multiReceiveTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiTablePrice": "Precio/CEX",
+    "@multiTablePrice": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiTableAmt": "Recibir Cntd.",
+    "@multiTableAmt": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiFiatDesc": "Ingrese la cantidad de dinero para recibir:",
+    "@multiFiatDesc": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiFiatCancel": "Cancelar",
+    "@multiFiatCancel": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiFiatFill": "Autollenarl",
+    "@multiFiatFill": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiEthFee": "costo",
+    "@multiEthFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiConfirmCancel": "Cancelar",
+    "@multiConfirmCancel": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiConfirmConfirm": "Confirmar",
+    "@multiConfirmConfirm": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiInvalidSellAmt": "Cantidad de venta no válido",
+    "@multiInvalidSellAmt": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiMaxSellAmt": "La cantidad máxima de venta es",
+    "@multiMaxSellAmt": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiMinSellAmt": "La cantidad mínima de venta es",
+    "@multiMinSellAmt": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiInvalidAmt": "Monto invalido",
+    "@multiInvalidAmt": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "multiActivateGas": "Active {coin} y añada saldo primero",
+    "@multiActivateGas": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "multiMinReceiveAmt": "La cantidad mínima recibida es",
+    "@multiMinReceiveAmt": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addressBook": "Directorio",
+    "@addressBook": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addressBookTitle": "Directorio",
+    "@addressBookTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contactTitle": "Detalles de contacto",
+    "@contactTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addressBookEmpty": "La libreta de direcciones está vacía",
+    "@addressBookEmpty": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addressBookFilter": "Solo mostrar contactos con direcciones {title}",
+    "@addressBookFilter": {
+        "type": "text",
+        "placeholders_order": [
+            "title"
+        ],
+        "placeholders": {
+            "title": {}
+        }
+    },
+    "createContact": "Crear Contacto",
+    "@createContact": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contactTitleName": "Nombre",
+    "@contactTitleName": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "editContact": "Editar contacto",
+    "@editContact": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contactCancel": "Cancelar",
+    "@contactCancel": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contactSave": "Guardar",
+    "@contactSave": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contactDiscardBtn": "Descartar",
+    "@contactDiscardBtn": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contactExit": "Salir",
+    "@contactExit": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contactExitWarning": "Descartar tus cambios?",
+    "@contactExitWarning": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addressAdd": "Añadir Direccion",
+    "@addressAdd": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addressSelectCoin": "Seleccionar Moneda",
+    "@addressSelectCoin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contactDelete": "Borrar Contacto",
+    "@contactDelete": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contactDeleteBtn": "Borrar",
+    "@contactDeleteBtn": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contactNotFound": "No se encontraron contactos",
+    "@contactNotFound": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contactEdit": "Editar",
+    "@contactEdit": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addressNotFound": "Nada Encontrado",
+    "@addressNotFound": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noSuchCoin": "No hay tal moneda",
+    "@noSuchCoin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addressCoinInactive": "No puede enviar fondos a la dirección {abbr} porque {abbr} no está activado. Por favor, vaya a la cartera.",
+    "@addressCoinInactive": {
+        "type": "text",
+        "placeholders_order": [
+            "abbr"
+        ],
+        "placeholders": {
+            "abbr": {}
+        }
+    },
+    "warningOkBtn": "Ok",
+    "@warningOkBtn": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoPinTitle": "Camuflajear el PIN",
+    "@camoPinTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoPinLink": "Camuflajear PIN",
+    "@camoPinLink": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoPinOn": "Activado",
+    "@camoPinOn": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoPinOff": "Desactivado",
+    "@camoPinOff": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "matchingCamoTitle": "PIN Invalido",
+    "@matchingCamoTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "matchingCamoChange": "Cambiar",
+    "@matchingCamoChange": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoPinDesc": "Si desbloquea la aplicación con el PIN de camuflaje, se mostrará un saldo BAJO falso y la opción de configuración del PIN de camuflaje NO estará visible en la configuración",
+    "@camoPinDesc": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "matchingCamoPinError": "Su PIN general y el PIN de camuflaje son los mismos.\nEl modo de camuflaje no estará disponible.\nCambie el PIN de camuflaje.",
+    "@matchingCamoPinError": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "generalPinNotActive": "La protección general con PIN no está activa.\nEl modo de camuflaje no estará disponible.\nActive la protección con PIN.",
+    "@generalPinNotActive": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "fakeBalanceAmt": "Cantidad de saldo falso:",
+    "@fakeBalanceAmt": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoPinNotFound": "PIN de camuflaje no encontrado",
+    "@camoPinNotFound": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoPinCreate": "Crear PIN de camuflaje",
+    "@camoPinCreate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoPinSaved": "PIN de camuflaje guardado",
+    "@camoPinSaved": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoPinInvalid": "PIN de camuflaje no válido",
+    "@camoPinInvalid": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoPinChange": "Cambiar PIN de camuflaje",
+    "@camoPinChange": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoSetupTitle": "Configuración de PIN de camuflaje",
+    "@camoSetupTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "camoSetupSubtitle": "Ingrese el nuevo PIN de camuflaje",
+    "@camoSetupSubtitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "protectionCtrlOn": "ACTIVADO",
+    "@protectionCtrlOn": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "protectionCtrlOff": "DESACTIVADO",
+    "@protectionCtrlOff": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "protectionCtrlConfirmations": "Confirmaciones",
+    "@protectionCtrlConfirmations": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "protectionCtrlCustom": "Usar configuraciones de protección personalizadas",
+    "@protectionCtrlCustom": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "protectionCtrlWarning": "Advertencia, este intercambio atómico no está protegido por dPoW. ",
+    "@protectionCtrlWarning": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "buyOrderType": "Convertir a Vendedor si no coincide",
+    "@buyOrderType": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cexChangeRate": "Tasa de Cambio CEX",
+    "@cexChangeRate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exchangeExpedient": "Expediente",
+    "@exchangeExpedient": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exchangeExpensive": "Caro",
+    "@exchangeExpensive": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exchangeIdentical": "Identico a CEX",
+    "@exchangeIdentical": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "comparedToCex": "comparable a CEX",
+    "@comparedToCex": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "ordersActive": "Activo",
+    "@ordersActive": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "ordersHistory": "Historial",
+    "@ordersHistory": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsTitle": "Detalles",
+    "@orderDetailsTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsSettings": "Abra detalles con un solo toque y seleccione Ordenar con un toque largo",
+    "@orderDetailsSettings": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsCancel": "Cancelar",
+    "@orderDetailsCancel": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderDetailsSelect": "Seleccione",
+    "@orderDetailsSelect": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noMatchingOrders": "No se encontraron pedidos coincidentes",
+    "@noMatchingOrders": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makerOrder": "Orden de Vendedor",
+    "@makerOrder": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "takerOrder": "Orden de Comprador",
+    "@takerOrder": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapCurrent": "Actual",
+    "@swapCurrent": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapEstimated": "Estimado",
+    "@swapEstimated": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapStarted": "Iniciado",
+    "@swapStarted": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapTotal": "Total",
+    "@swapTotal": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapProgress": "Detalles del Progreso",
+    "@swapProgress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "notifTxTitle": "Transaccion entrante",
+    "@notifTxTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "notifTxText": "¡Ha recibido una transacción de {coin}!",
+    "@notifTxText": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "notifSwapCompletedTitle": "Intercambio completado",
+    "@notifSwapCompletedTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "notifSwapFailedTitle": "Intercambio fallido",
+    "@notifSwapFailedTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "notifSwapTimeoutTitle": "Se agotó el tiempo de intercambio",
+    "@notifSwapTimeoutTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "notifSwapStatusTitle": "Cambio de estado cambiado",
+    "@notifSwapStatusTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "notifSwapStartedTitle": "Nuevo intercambio iniciado",
+    "@notifSwapStartedTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "language": "Idioma",
+    "@language": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "currency": "Moneda",
+    "@currency": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hideBalance": "Ocultar saldos",
+    "@hideBalance": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "switchTheme": "Cambiar Tema",
+    "@switchTheme": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cex": "CEX",
+    "@cex": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cexData": "data de CEX",
+    "@cexData": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cexDataDesc": "Los datos de mercados (precios, gráficos, etc.) marcados con este ícono provienen de fuentes de terceros (<a href=\"https://www.coingecko.com/\">coingecko.com</a>, <a href =\"https://openrates.io/\">openrates.io</a>).",
+    "@cexDataDesc": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkingUpdates": "Comprobando actualizaciones...",
+    "@checkingUpdates": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkForUpdates": "Buscar actualizaciones",
+    "@checkForUpdates": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "logoutWarning": "¿Estás seguro de que quieres cerrar sesión ahora?",
+    "@logoutWarning": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "currencyDialogTitle": "Moneda",
+    "@currencyDialogTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txLimitExceeded": "Demasiadas solicitudes.\nSe excedió el límite de solicitudes del historial de transacciones.\nVuelva a intentarlo más tarde.",
+    "@txLimitExceeded": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "milliseconds": "ms",
+    "@milliseconds": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "seconds": "s",
+    "@seconds": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minutes": "m",
+    "@minutes": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hours": "h",
+    "@hours": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "moreTab": "Mas",
+    "@moreTab": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "oldLogsTitle": "Registros antiguos",
+    "@oldLogsTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "oldLogsDelete": "Borrar",
+    "@oldLogsDelete": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "oldLogsUsed": "Espacio usado",
+    "@oldLogsUsed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "okButton": "Ok",
+    "@okButton": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "closePreview": "Cerrar prevista",
+    "@closePreview": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancelButton": "Cancelar",
+    "@cancelButton": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "developerTitle": "Desarrollador",
+    "@developerTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enableTestCoins": "Habilitar monedas de prueba",
+    "@enableTestCoins": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makerDetailsTitle": "Detalles del pedido del fabricante",
+    "@makerDetailsTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makerDetailsSell": "Vender",
+    "@makerDetailsSell": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makerDetailsFor": "Recibir",
+    "@makerDetailsFor": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makerDetailsPrice": "Precio",
+    "@makerDetailsPrice": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makerDetailsCancel": "Cancelar orden",
+    "@makerDetailsCancel": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makerDetailsId": "ID de Orden",
+    "@makerDetailsId": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makerDetailsCreated": "Createdo en",
+    "@makerDetailsCreated": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makerDetailsNoSwaps": "Este pedido no inició intercambios",
+    "@makerDetailsNoSwaps": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makerDetailsSwaps": "Intercambios iniciados por este pedido",
+    "@makerDetailsSwaps": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderFilled": "{fill}% llenado",
+    "@orderFilled": {
+        "type": "text",
+        "placeholders_order": [
+            "fill"
+        ],
+        "placeholders": {
+            "fill": {}
+        }
+    },
+    "noteTitle": "Nota",
+    "@noteTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "notePlaceholder": "Añadir Nota",
+    "@notePlaceholder": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importLink": "Importar",
+    "@importLink": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importSingleSwapLink": "Importar un Intercambio",
+    "@importSingleSwapLink": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exportLink": "Exportar",
+    "@exportLink": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importTitle": "Importar",
+    "@importTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importSingleSwapTitle": "Importar Intercambio",
+    "@importSingleSwapTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exportTitle": "Exportar",
+    "@exportTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exportDesc": "Seleccione elementos para exportar a un archivo cifrado.",
+    "@exportDesc": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importLoadDesc": "Seleccione el archivo cifrado para importar.",
+    "@importLoadDesc": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importLoadSwapDesc": "Seleccione el archivo de intercambio de texto sin formato para importar.",
+    "@importLoadSwapDesc": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importLoading": "Abriendo...",
+    "@importLoading": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importDesc": "Elementos a importar:",
+    "@importDesc": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exportNotesTitle": "Notas",
+    "@exportNotesTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exportContactsTitle": "Contactos",
+    "@exportContactsTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exportSwapsTitle": "Intercambios",
+    "@exportSwapsTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "nothingFound": "Nada Encontrado",
+    "@nothingFound": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exportButton": "Exportar",
+    "@exportButton": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importButton": "Importar",
+    "@importButton": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "emptyExportPass": "La contraseña de cifrado no puede estar vacía",
+    "@emptyExportPass": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "emptyImportPass": "La contraseña no puede estar vacía",
+    "@emptyImportPass": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "matchExportPass": "Las contraseñas deben coincidir",
+    "@matchExportPass": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noItemsToExport": "No hay artículos seleccionados",
+    "@noItemsToExport": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noItemsToImport": "No hay artículos seleccionados",
+    "@noItemsToImport": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectFileImport": "Seleccione Archivo",
+    "@selectFileImport": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importFileNotFound": "Archivo no encontrado",
+    "@importFileNotFound": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importPassword": "Clave",
+    "@importPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importPassCancel": "Cancelar",
+    "@importPassCancel": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importPassOk": "Ok",
+    "@importPassOk": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exportSuccessTitle": "Los elementos se han exportado correctamente:",
+    "@exportSuccessTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importSuccessTitle": "Los elementos se han importado correctamente:",
+    "@importSuccessTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importDecryptError": "Contraseña no válida o datos dañados",
+    "@importDecryptError": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importSwapJsonDecodingError": "Error al decodificar el archivo json",
+    "@importSwapJsonDecodingError": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderTypePartial": " Orden",
+    "@orderTypePartial": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderTypeUnknown": "Orden desconocida",
+    "@orderTypeUnknown": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "couldntImportError": "No se pudo importar: ",
+    "@couldntImportError": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importSomeItemsSkippedWarning": "Se han saltado algunos elementos",
+    "@importSomeItemsSkippedWarning": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importSwapFailed": "No se pudo importar el intercambio",
+    "@importSwapFailed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "importInvalidSwapData": "Datos de intercambio no válidos. Proporcione un archivo JSON de estado de intercambio válido.",
+    "@importInvalidSwapData": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersButton": "Filtro",
+    "@filtersButton": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersStatus": "Estado",
+    "@filtersStatus": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersAll": "Todo",
+    "@filtersAll": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersSuccessful": "Exitoso",
+    "@filtersSuccessful": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersFailed": "Fallido",
+    "@filtersFailed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersFrom": "Partir de la fecha",
+    "@filtersFrom": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersTo": "Hasta la fecha",
+    "@filtersTo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersType": "Comprador/Vendedor",
+    "@filtersType": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersMaker": "Vendedor",
+    "@filtersMaker": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersTaker": "Comprador",
+    "@filtersTaker": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersSell": "Vender moneda",
+    "@filtersSell": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersReceive": "Recibir moneda",
+    "@filtersReceive": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "filtersClearAll": "Borrar todos los filtros",
+    "@filtersClearAll": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "uriInsufficientBalanceTitle": "Saldo insuficiente",
+    "@uriInsufficientBalanceTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "uriInsufficientBalanceSpan1": "No hay suficiente saldo para escaneado ",
+    "@uriInsufficientBalanceSpan1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "uriInsufficientBalanceSpan2": " solicitud de pago.",
+    "@uriInsufficientBalanceSpan2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enablingTooManyAssetsTitle": "Intentando habilitar demasiados activos",
+    "@enablingTooManyAssetsTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enablingTooManyAssetsSpan1": "Tu tienes ",
+    "@enablingTooManyAssetsSpan1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enablingTooManyAssetsSpan2": " activos habilitados y tratando de habilitar ",
+    "@enablingTooManyAssetsSpan2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enablingTooManyAssetsSpan3": " más. El límite máximo de activos habilitados es ",
+    "@enablingTooManyAssetsSpan3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enablingTooManyAssetsSpan4": ". Desactive algunos antes de agregar otros nuevos.",
+    "@enablingTooManyAssetsSpan4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tooManyAssetsEnabledTitle": "Demasiados recursos habilitados",
+    "@tooManyAssetsEnabledTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tooManyAssetsEnabledSpan1": "Tu tienes ",
+    "@tooManyAssetsEnabledSpan1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tooManyAssetsEnabledSpan2": " activos habilitados. El límite máximo de activos habilitados es ",
+    "@tooManyAssetsEnabledSpan2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tooManyAssetsEnabledSpan3": ". Desactive algunos antes de agregar otros nuevos.",
+    "@tooManyAssetsEnabledSpan3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "paymentUriDetailsTitle": "Pago solicitado",
+    "@paymentUriDetailsTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "paymentUriDetailsCoinSpan": "Moneda: ",
+    "@paymentUriDetailsCoinSpan": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "paymentUriDetailsAddressSpan": "A Direccion ",
+    "@paymentUriDetailsAddressSpan": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "paymentUriDetailsAmountSpan": "Monto: ",
+    "@paymentUriDetailsAmountSpan": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "paymentUriDetailsAcceptQuestion": "¿Acepta esta transacción?",
+    "@paymentUriDetailsAcceptQuestion": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "paymentUriDetailsAccept": "Pagar",
+    "@paymentUriDetailsAccept": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "paymentUriDetailsDeny": "Cancelar",
+    "@paymentUriDetailsDeny": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "paymentUriInactiveCoin": "{abbr} no está activo. Activa e inténtalo de nuevo..",
+    "@paymentUriInactiveCoin": {
+        "type": "text",
+        "placeholders_order": [
+            "abbr"
+        ],
+        "placeholders": {
+            "abbr": {}
+        }
+    },
+    "wrongCoinTitle": "Moneda equivocada",
+    "@wrongCoinTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "wrongCoinSpan1": "Está intentando escanear un código QR de pago para ",
+    "@wrongCoinSpan1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "wrongCoinSpan2": " pero tu estas en la ",
+    "@wrongCoinSpan2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "wrongCoinSpan3": " pantalla de retirar",
+    "@wrongCoinSpan3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "simpleTradeSellTitle": "Vender",
+    "@simpleTradeSellTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "simpleTradeBuyTitle": "Comprar",
+    "@simpleTradeBuyTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "simpleTradeRecieve": "Recibir",
+    "@simpleTradeRecieve": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "simpleTradeSend": "Enviar",
+    "@simpleTradeSend": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "simpleTradeClose": "Cerrar",
+    "@simpleTradeClose": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "simpleTradeActivate": "Activar",
+    "@simpleTradeActivate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "simpleTradeMaxActiveCoins": "El número máximo de monedas activas es {maxCoins}. Por favor, desactive algunos.",
+    "@simpleTradeMaxActiveCoins": {
+        "type": "text",
+        "placeholders_order": [
+            "maxCoins"
+        ],
+        "placeholders": {
+            "maxCoins": {}
+        }
+    },
+    "simpleTradeNotActive": "{coin} no está activo!",
+    "@simpleTradeNotActive": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "simpleTradeBuyHint": "Ingrese la cantidad de {coin} para comprar",
+    "@simpleTradeBuyHint": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "simpleTradeSellHint": "Ingrese la cantidad de {coin} para vender",
+    "@simpleTradeSellHint": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "simpleTradeShowLess": "Muestra menos",
+    "@simpleTradeShowLess": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "simpleTradeShowMore": "Mostrar mas",
+    "@simpleTradeShowMore": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noCoinFound": "No se encontró ninguna moneda",
+    "@noCoinFound": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    }
+}
