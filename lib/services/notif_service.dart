@@ -166,6 +166,10 @@ class NotifService {
       String title;
       String text;
 
+      final myInfo = extractMyInfoFromSwap(swap.result);
+      final myCoin = myInfo['myCoin'];
+      final otherCoin = myInfo['otherCoin'];
+
       if (_swaps.containsKey(uuid)) {
         if (_swaps[uuid]?.status == swap.status) return;
 
@@ -173,29 +177,26 @@ class NotifService {
           case Status.SWAP_SUCCESSFUL:
             {
               title = _localizations.notifSwapCompletedTitle;
-              text = _localizations.notifSwapCompletedText(
-                  swap.result.myInfo.myCoin, swap.result.myInfo.otherCoin);
+              text = _localizations.notifSwapCompletedText(myCoin, otherCoin);
               break;
             }
           case Status.SWAP_FAILED:
             {
               title = _localizations.notifSwapFailedTitle;
-              text = _localizations.notifSwapFailedText(
-                  swap.result.myInfo.myCoin, swap.result.myInfo.otherCoin);
+              text = _localizations.notifSwapFailedText(myCoin, otherCoin);
               break;
             }
           case Status.TIME_OUT:
             {
               title = _localizations.notifSwapTimeoutTitle;
-              text = _localizations.notifSwapTimeoutText(
-                  swap.result.myInfo.myCoin, swap.result.myInfo.otherCoin);
+              text = _localizations.notifSwapTimeoutText(myCoin, otherCoin);
               break;
             }
           default:
             {
               title = _localizations.notifSwapStatusTitle;
-              text = '${swap.result.myInfo.myCoin}/'
-                  '${swap.result.myInfo.otherCoin}'
+              text = '$myCoin/'
+                  '$otherCoin'
                   ' ${_translateSwapStatus(swap.status)}';
               break;
             }
@@ -205,8 +206,7 @@ class NotifService {
           case Status.ORDER_MATCHED:
             {
               title = _localizations.notifSwapStartedTitle;
-              text = _localizations.notifSwapStartedText(
-                  swap.result.myInfo.myCoin, swap.result.myInfo.otherCoin);
+              text = _localizations.notifSwapStartedText(myCoin, otherCoin);
               break;
             }
           default:
