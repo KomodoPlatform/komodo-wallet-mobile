@@ -425,6 +425,8 @@ class _CoinDetailState extends State<CoinDetail> {
   Widget _buildHeaderCoinDetail(BuildContext mContext) {
     return Column(
       children: <Widget>[
+        if (widget.coinBalance.coin.protocol?.protocolData != null)
+          _buildContractAddress(widget.coinBalance.coin.protocol?.protocolData),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 48),
           child: StreamBuilder<List<CoinBalance>>(
@@ -478,11 +480,6 @@ class _CoinDetailState extends State<CoinDetail> {
                               double.parse(coinBalanceUsd),
                               hidden: hidden,
                             )),
-                            if (widget
-                                    .coinBalance.coin.protocol?.protocolData !=
-                                null)
-                              _buildContractAddress(widget
-                                  .coinBalance.coin.protocol?.protocolData),
                           ],
                         );
                       });
@@ -543,53 +540,57 @@ class _CoinDetailState extends State<CoinDetail> {
     final explorerUrl = platformCoin.explorerUrl.first;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 20),
-        Text('Contract Address:'),
-        SizedBox(height: 4),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 3 / 5,
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: InkWell(
-              onTap: () => launchURL('$explorerUrl/address/$contractAddress'),
-              borderRadius: BorderRadius.circular(12),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      'assets/coin-icons/${platform.toLowerCase()}.png',
-                      width: 16,
-                      height: 16,
+        SizedBox(height: 10),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: 12),
+            Text('Contract:'),
+            SizedBox(width: 8),
+            Flexible(
+              child: Card(
+                color: Theme.of(context).cardColor.withAlpha(200),
+                child: InkWell(
+                  onTap: () =>
+                      launchURL('$explorerUrl/address/$contractAddress'),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/coin-icons/${platform.toLowerCase()}.png',
+                          width: 16,
+                          height: 16,
+                        ),
+                        SizedBox(width: 4),
+                        Text('$platform:'),
+                        SizedBox(width: 4),
+                        Expanded(
+                          child: truncateMiddle(contractAddress),
+                        ),
+                        SizedBox(width: 4),
+                        IconButton(
+                          visualDensity: VisualDensity.compact,
+                          iconSize: 16,
+                          splashRadius: 12,
+                          constraints:
+                              BoxConstraints.tightFor(width: 16, height: 16),
+                          padding: EdgeInsets.all(0),
+                          icon: Icon(Icons.copy_rounded),
+                          onPressed: () =>
+                              copyToClipBoard(context, contractAddress),
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 4),
-                    Text('$platform:'),
-                    SizedBox(width: 4),
-                    Expanded(
-                      child: truncateMiddle(contractAddress),
-                    ),
-                    SizedBox(width: 4),
-                    IconButton(
-                      visualDensity: VisualDensity.compact,
-                      iconSize: 16,
-                      splashRadius: 12,
-                      constraints:
-                          BoxConstraints.tightFor(width: 16, height: 16),
-                      padding: EdgeInsets.all(0),
-                      icon: Icon(Icons.copy_rounded),
-                      onPressed: () =>
-                          copyToClipBoard(context, contractAddress),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
+            SizedBox(width: 12),
+          ],
         ),
       ],
     );
