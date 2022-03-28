@@ -533,11 +533,18 @@ class _CoinDetailState extends State<CoinDetail> {
 
   Widget _buildContractAddress(ProtocolData protocolData) {
     final platform = protocolData.platform;
-    final contractAddress = protocolData.contractAddress;
+    String contractAddress = protocolData.contractAddress;
+    String middleUrl = 'address';
+    if (platform == 'QTUM') {
+      contractAddress = contractAddress.replaceFirst('0x', '');
+      middleUrl = 'contract';
+    }
 
     final allCoins = coinsBloc.knownCoins;
     final platformCoin = allCoins[platform];
     final explorerUrl = platformCoin.explorerUrl.first;
+
+    final baseUrl = '$explorerUrl/$middleUrl/$contractAddress';
 
     return Column(
       children: [
@@ -552,8 +559,7 @@ class _CoinDetailState extends State<CoinDetail> {
               child: Card(
                 color: Theme.of(context).cardColor.withAlpha(200),
                 child: InkWell(
-                  onTap: () =>
-                      launchURL('$explorerUrl/address/$contractAddress'),
+                  onTap: () => launchURL(baseUrl.replaceAll('//', '/')),
                   borderRadius: BorderRadius.circular(12),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
