@@ -525,6 +525,7 @@ Widget truncateMiddle(String string, {TextStyle style}) {
           string.substring(0, string.length - 5),
           overflow: TextOverflow.ellipsis,
           style: style,
+          textAlign: TextAlign.right,
         ),
       ),
       Text(
