@@ -851,6 +851,7 @@ class AppLocalizations {
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
+  String get tagPLG20 => Intl.message('PLG20', name: 'tagPLG20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
