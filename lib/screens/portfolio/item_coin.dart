@@ -309,10 +309,12 @@ class _ItemCoinState extends State<ItemCoin>
     final bool needLabel = (widget.coinBalance.coin.type == 'erc' ||
             widget.coinBalance.coin.type == 'qrc' ||
             widget.coinBalance.coin.type == 'bep' ||
+            widget.coinBalance.coin.type == 'plg' ||
             widget.coinBalance.coin.type == 'smartChain') &&
         widget.coinBalance.coin.abbr != 'KMD' &&
         widget.coinBalance.coin.abbr != 'ETH' &&
         widget.coinBalance.coin.abbr != 'BNB' &&
+        widget.coinBalance.coin.abbr != 'MATIC' &&
         widget.coinBalance.coin.abbr != 'QTUM';
 
     if (!needLabel) return SizedBox();
