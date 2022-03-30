@@ -535,7 +535,10 @@ class CoinsBloc implements BlocBase {
       if (a.balance.balance < b.balance.balance) return 1;
       if (a.balance.balance > b.balance.balance) return -1;
 
-      return a.coin.name.compareTo(b.coin.name);
+      final int namesCompared = a.coin.name.compareTo(b.coin.name);
+      if (namesCompared != 0) return namesCompared;
+
+      return a.coin.abbr.compareTo(b.coin.abbr);
     });
 
     return _sorted;
