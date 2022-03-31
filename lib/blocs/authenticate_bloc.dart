@@ -123,7 +123,6 @@ class AuthenticateBloc extends BlocBase {
     await EncryptionTool().write('passphrase', passphrase);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isPassphraseIsSaved', true);
-    await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
     this.isLogin = isLogin;
     _inIsLogin.add(isLogin);
   }
@@ -139,6 +138,9 @@ class AuthenticateBloc extends BlocBase {
 
     await prefs.setBool('isPassphraseIsSaved', false);
     await EncryptionTool().delete('camoPin');
+
+    await prefs.remove('switch_pin');
+    await prefs.remove('switch_pin_biometric');
 
     updateStatusPin(PinStatus.NORMAL_PIN);
     await EncryptionTool().delete('pin');

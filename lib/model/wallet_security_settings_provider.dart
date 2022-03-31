@@ -11,11 +11,17 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   // MRC: Needed to support using in Blocs
   // Should prefer using Provider when possible.
   WalletSecuritySettings _walletSecuritySettings = WalletSecuritySettings();
+  SharedPreferences _prefs;
 
-  WalletSecuritySettingsProvider();
+  WalletSecuritySettingsProvider() {
+    _init();
+  }
+
+  Future<void> _init() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
 
   Future<void> migrateSecuritySettings() async {
-    final _prefs = await SharedPreferences.getInstance();
     Log('security_settings_provider', 'Migrating wallet security settings');
 
     // MRC: If this key isn't present, we didn't do the migration yet,
@@ -96,6 +102,12 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
 
   Future<void> getCurrentSettingsFromDb() async {
     _walletSecuritySettings = await Db.getCurrentWalletSecuritySettings();
+
+    final pinProtection = _walletSecuritySettings.activatePinProtection;
+    final bioProtection = _walletSecuritySettings.activateBioProtection;
+
+    await _prefs.setBool('switch_pin', pinProtection);
+    await _prefs.setBool('switch_pin_biometric', bioProtection);
   }
 
   Future<void> _updateDb({bool allWallets = false}) async {
@@ -104,19 +116,23 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   }
 
   bool get activatePinProtection =>
+      _prefs.getBool('switch_pin') ??
       _walletSecuritySettings.activatePinProtection;
 
   set activatePinProtection(bool v) {
     _walletSecuritySettings.activatePinProtection = v;
+    _prefs.setBool('switch_pin', v);
 
     _updateDb().then((value) => notifyListeners());
   }
 
   bool get activateBioProtection =>
+      _prefs.getBool('switch_pin_biometric') ??
       _walletSecuritySettings.activateBioProtection;
 
   set activateBioProtection(bool v) {
     _walletSecuritySettings.activateBioProtection = v;
+    _prefs.setBool('switch_pin_biometric', v);
 
     _updateDb().then((value) => notifyListeners());
   }
