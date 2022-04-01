@@ -335,7 +335,7 @@ class Db {
   static Future<void> deleteCurrentWallet() async {
     final Database db = await Db.db;
     await db.rawDelete('DELETE FROM CurrentWallet');
-    _active.clear();
+    _clearActiveCoins();
   }
 
   static final Set<String> _active = {};
@@ -363,8 +363,14 @@ class Db {
     return [];
   }
 
+  static void _clearActiveCoins() {
+    _active.clear();
+  }
+
   static Future<Set<String>> activeCoins(Wallet wallet) async {
     if (_active.isNotEmpty && _activeFromDb) return _active;
+
+    _clearActiveCoins();
 
     final listOfCoins = await getCoinsFromDb(wallet);
 
