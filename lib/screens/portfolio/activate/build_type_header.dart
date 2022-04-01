@@ -41,9 +41,11 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
                             color: Theme.of(context).colorScheme.secondary,
                           ))),
                   const SizedBox(width: 24),
-                  Text(
-                    _getTitleText(),
-                    style: Theme.of(context).textTheme.headline6,
+                  Flexible(
+                    child: Text(
+                      _getTitleText(),
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   )
                 ],
               ),
