@@ -2675,7 +2675,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "rewardsTableUXTO": "UTXO cantidad,\nKMD",
+    "rewardsTableUXTO": "UTXO \ncantidad,\nKMD",
     "@rewardsTableUXTO": {
         "type": "text",
         "placeholders_order": [],
@@ -2693,7 +2693,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "rewardsTableTime": "Tiempo restante",
+    "rewardsTableTime": "Tiempo \nrestante",
     "@rewardsTableTime": {
         "type": "text",
         "placeholders_order": [],

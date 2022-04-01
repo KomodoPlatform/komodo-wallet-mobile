@@ -943,11 +943,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Recompensas,\nKMD"),
         "rewardsTableStatus": MessageLookupByLibrary.simpleMessage("Estado"),
         "rewardsTableTime":
-            MessageLookupByLibrary.simpleMessage("Tiempo restante"),
+            MessageLookupByLibrary.simpleMessage("Tiempo \nrestante"),
         "rewardsTableTitle":
             MessageLookupByLibrary.simpleMessage("Información de recompensas:"),
         "rewardsTableUXTO":
-            MessageLookupByLibrary.simpleMessage("UTXO cantidad,\nKMD"),
+            MessageLookupByLibrary.simpleMessage("UTXO \ncantidad,\nKMD"),
         "rewardsTimeDays": m51,
         "rewardsTimeHours": m52,
         "rewardsTimeMin": m53,
