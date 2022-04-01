@@ -88,6 +88,7 @@ class _ContactListItemState extends State<ContactListItem> {
           String coinAbbr = widget.coin.abbr;
           if (widget.coin.type == 'erc') coinAbbr = 'ETH';
           if (widget.coin.type == 'bep') coinAbbr = 'BNB';
+          if (widget.coin.type == 'plg') coinAbbr = 'MATIC';
           if (widget.coin.type == 'qrc') coinAbbr = 'QTUM';
           if (widget.coin.type == 'smartChain') coinAbbr = 'KMD';
 

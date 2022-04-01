@@ -273,8 +273,8 @@ class _CoinDetailState extends State<CoinDetail> {
     // Since we currently fetching erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
-    if (widget.coinBalance.coin.type == 'erc' ||
-        widget.coinBalance.coin.type == 'bep') {
+    final String coinType = widget.coinBalance.coin.type;
+    if (coinType == 'erc' || coinType == 'bep' || coinType == 'plg') {
       return SizedBox();
     }
 
@@ -852,17 +852,17 @@ class _CoinDetailState extends State<CoinDetail> {
                   .then((dynamic dataRawTx) {
                 if (dataRawTx is SendRawTransactionResponse &&
                     dataRawTx.txHash.isNotEmpty) {
-                  setState(() {
+                  coinsBloc.updateCoinBalances();
+                  Future<dynamic>.delayed(const Duration(seconds: 5), () {
                     coinsBloc.updateCoinBalances();
-                    Future<dynamic>.delayed(const Duration(seconds: 5), () {
-                      coinsBloc.updateCoinBalances();
-                    });
+                  });
+
+                  setState(() {
                     listSteps.add(SuccessStep(
                       txHash: dataRawTx.txHash,
                     ));
-                    setState(() {
-                      currentIndex = 3;
-                    });
+
+                    currentIndex = 3;
                   });
                 } else if (dataRawTx is ErrorString &&
                     dataRawTx.error.contains('gas is too low')) {

@@ -835,6 +835,9 @@ class AppLocalizations {
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
   String get searchFilterSubtitleBEP =>
       Intl.message('Select all BEP tokens', name: 'searchFilterSubtitleBEP');
+  String get searchFilterSubtitlePLG =>
+      Intl.message('Select all Polygon tokens',
+          name: 'searchFilterSubtitlePLG');
   String get searchFilterSubtitleQRC =>
       Intl.message('Select all QRC tokens', name: 'searchFilterSubtitleQRC');
   String get customFee => Intl.message('Custom fee', name: 'customFee');
@@ -848,6 +851,7 @@ class AppLocalizations {
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
+  String get tagPLG20 => Intl.message('PLG20', name: 'tagPLG20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
