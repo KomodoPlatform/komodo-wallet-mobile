@@ -57,7 +57,9 @@ class _CustomFeeState extends State<CustomFee> {
                       .bodyText2
                       .copyWith(color: Theme.of(context).errorColor),
                 ),
-                widget.coin.type == 'erc' || widget.coin.type == 'bep'
+                widget.coin.type == 'erc' ||
+                        widget.coin.type == 'bep' ||
+                        widget.coin.type == 'plg'
                     ? CustomFeeFieldERC(
                         coin: widget.coin,
                         isCustomFeeActive: isCustomFeeActive,

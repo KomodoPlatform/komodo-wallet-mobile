@@ -8,6 +8,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -272,8 +273,8 @@ class _CoinDetailState extends State<CoinDetail> {
     // Since we currently fetching erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
-    if (widget.coinBalance.coin.type == 'erc' ||
-        widget.coinBalance.coin.type == 'bep') {
+    final String coinType = widget.coinBalance.coin.type;
+    if (coinType == 'erc' || coinType == 'bep' || coinType == 'plg') {
       return SizedBox();
     }
 
@@ -424,6 +425,8 @@ class _CoinDetailState extends State<CoinDetail> {
   Widget _buildHeaderCoinDetail(BuildContext mContext) {
     return Column(
       children: <Widget>[
+        if (widget.coinBalance.coin.protocol?.protocolData != null)
+          _buildContractAddress(widget.coinBalance.coin.protocol?.protocolData),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 48),
           child: StreamBuilder<List<CoinBalance>>(
@@ -476,7 +479,7 @@ class _CoinDetailState extends State<CoinDetail> {
                             Text(cexProvider.convert(
                               double.parse(coinBalanceUsd),
                               hidden: hidden,
-                            ))
+                            )),
                           ],
                         );
                       });
@@ -524,6 +527,77 @@ class _CoinDetailState extends State<CoinDetail> {
         const SizedBox(
           height: 16,
         )
+      ],
+    );
+  }
+
+  Widget _buildContractAddress(ProtocolData protocolData) {
+    final platform = protocolData.platform;
+    String contractAddress = protocolData.contractAddress;
+    String middleUrl = 'address';
+    if (platform == 'QTUM') {
+      contractAddress = contractAddress.replaceFirst('0x', '');
+      middleUrl = 'contract';
+    }
+
+    final allCoins = coinsBloc.knownCoins;
+    final platformCoin = allCoins[platform];
+    final explorerUrl = platformCoin.explorerUrl.first;
+
+    final baseUrl = '$explorerUrl/$middleUrl/$contractAddress';
+
+    return Column(
+      children: [
+        SizedBox(height: 10),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: 12),
+            Text('Contract:'),
+            SizedBox(width: 8),
+            Flexible(
+              child: Card(
+                color: Theme.of(context).cardColor.withAlpha(200),
+                child: InkWell(
+                  onTap: () => launchURL(baseUrl.replaceAll('//', '/')),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/coin-icons/${platform.toLowerCase()}.png',
+                          width: 16,
+                          height: 16,
+                        ),
+                        SizedBox(width: 4),
+                        Text('$platform:'),
+                        SizedBox(width: 4),
+                        Expanded(
+                          child: truncateMiddle(contractAddress),
+                        ),
+                        SizedBox(width: 4),
+                        IconButton(
+                          visualDensity: VisualDensity.compact,
+                          iconSize: 16,
+                          splashRadius: 12,
+                          constraints:
+                              BoxConstraints.tightFor(width: 16, height: 16),
+                          padding: EdgeInsets.all(0),
+                          icon: Icon(Icons.copy_rounded),
+                          onPressed: () =>
+                              copyToClipBoard(context, contractAddress),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 12),
+          ],
+        ),
       ],
     );
   }
@@ -778,17 +852,17 @@ class _CoinDetailState extends State<CoinDetail> {
                   .then((dynamic dataRawTx) {
                 if (dataRawTx is SendRawTransactionResponse &&
                     dataRawTx.txHash.isNotEmpty) {
-                  setState(() {
+                  coinsBloc.updateCoinBalances();
+                  Future<dynamic>.delayed(const Duration(seconds: 5), () {
                     coinsBloc.updateCoinBalances();
-                    Future<dynamic>.delayed(const Duration(seconds: 5), () {
-                      coinsBloc.updateCoinBalances();
-                    });
+                  });
+
+                  setState(() {
                     listSteps.add(SuccessStep(
                       txHash: dataRawTx.txHash,
                     ));
-                    setState(() {
-                      currentIndex = 3;
-                    });
+
+                    currentIndex = 3;
                   });
                 } else if (dataRawTx is ErrorString &&
                     dataRawTx.error.contains('gas is too low')) {

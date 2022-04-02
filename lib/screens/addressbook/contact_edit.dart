@@ -46,6 +46,7 @@ class _ContactEditState extends State<ContactEdit> {
       'erc': AppLocalizations.of(context).tagERC20,
       'bep': AppLocalizations.of(context).tagBEP20,
       'qrc': AppLocalizations.of(context).tagQRC20,
+      'plg': AppLocalizations.of(context).tagPLG20,
     };
 
     provider = Provider.of<AddressBookProvider>(context);
@@ -434,6 +435,8 @@ class _ContactEditState extends State<ContactEdit> {
       abbr = 'ETH';
     } else if (coin.type == 'bep' && coin.abbr != 'SMTF') {
       abbr = 'BNB';
+    } else if (coin.type == 'plg') {
+      abbr = 'MATIC';
     } else if (coin.type == 'qrc') {
       abbr = 'QTUM';
     }
