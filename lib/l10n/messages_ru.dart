@@ -317,9 +317,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteConfirm":
             MessageLookupByLibrary.simpleMessage("Подтвердить деактивацию"),
         "deleteSpan1":
-            MessageLookupByLibrary.simpleMessage("Вы хотите удалить"),
+            MessageLookupByLibrary.simpleMessage("Вы хотите удалить "),
         "deleteSpan2": MessageLookupByLibrary.simpleMessage(
-            "из вашего портфолио? Все несовпавшие ордеры будут отменены."),
+            " из вашего портфолио? Все несовпавшие ордеры будут отменены."),
         "deleteWallet": MessageLookupByLibrary.simpleMessage("Удалить кошелек"),
         "dex": MessageLookupByLibrary.simpleMessage("DEX"),
         "disclaimerAndTos":
