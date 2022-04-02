@@ -26,6 +26,7 @@ import 'messages_tr.dart' deferred as messages_tr;
 import 'messages_zh.dart' deferred as messages_zh;
 import 'messages_zh_Hans.dart' deferred as messages_zh_hans;
 import 'messages_zh_TW.dart' deferred as messages_zh_tw;
+import 'messages_es.dart' deferred as messages_es;
 
 typedef Future<dynamic> LibraryLoader();
 Map<String, LibraryLoader> _deferredLibraries = {
@@ -39,6 +40,7 @@ Map<String, LibraryLoader> _deferredLibraries = {
   'zh': messages_zh.loadLibrary,
   'zh_Hans': messages_zh_hans.loadLibrary,
   'zh_TW': messages_zh_tw.loadLibrary,
+  'es': messages_es.loadLibrary,
 };
 
 MessageLookupByLibrary _findExact(String localeName) {
@@ -63,6 +65,8 @@ MessageLookupByLibrary _findExact(String localeName) {
       return messages_zh_hans.messages;
     case 'zh_TW':
       return messages_zh_tw.messages;
+    case 'es':
+      return messages_es.messages;
     default:
       return null;
   }

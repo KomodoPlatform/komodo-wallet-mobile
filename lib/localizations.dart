@@ -901,6 +901,8 @@ class AppLocalizations {
       Intl.message('Turkish', name: 'turkishLanguage');
   String get hungarianLanguage =>
       Intl.message('Hungarian', name: 'hungarianLanguage');
+  String get spanishLanguage =>
+      Intl.message('Spanish', name: 'spanishLanguage');
   String get faucetName => Intl.message('FAUCET', name: 'faucetName');
   String get faucetSuccess => Intl.message('Success', name: 'faucetSuccess');
   String get faucetError => Intl.message('Error', name: 'faucetError');
@@ -1579,8 +1581,18 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) {
-    return <String>['en', 'fr', 'de', 'zh', 'zh_TW', 'ru', 'ja', 'tr', 'hu']
-        .contains(locale.languageCode);
+    return <String>[
+      'en',
+      'fr',
+      'de',
+      'zh',
+      'zh_TW',
+      'ru',
+      'ja',
+      'tr',
+      'hu',
+      'es'
+    ].contains(locale.languageCode);
   }
 
   @override
