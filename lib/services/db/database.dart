@@ -146,6 +146,10 @@ class Db {
             batch.execute('ALTER TABLE new_Wallet RENAME TO Wallet');
             batch.execute(
                 'ALTER TABLE new_CurrentWallet RENAME TO CurrentWallet');
+            // MRC: We need to remove the WalletSnapshot because it causes coins to show up
+            // even though they aren't in the db due to the ListOfCoinsActivated migration
+            batch.execute('DELETE FROM WalletSnapshot');
+
             batch.commit();
             Log('database',
                 'initDB, onUpgrade, upgraded database to version 2 successfully');
@@ -335,14 +339,17 @@ class Db {
   static Future<void> deleteCurrentWallet() async {
     final Database db = await Db.db;
     await db.rawDelete('DELETE FROM CurrentWallet');
-    _clearActiveCoins();
+
+    // Needed so coins aren't accidentally reused between wallets
+    _active.clear();
   }
 
   static final Set<String> _active = {};
   static bool _activeFromDb = false;
 
-  static Future<List<String>> getCoinsFromDb(Wallet wallet) async {
+  static Future<List<String>> getCoinsFromDb() async {
     final Database db = await Db.db;
+    final wallet = await getCurrentWallet();
 
     final r = await db.query(
       'ListOfCoinsActivated',
@@ -363,16 +370,10 @@ class Db {
     return [];
   }
 
-  static void _clearActiveCoins() {
-    _active.clear();
-  }
-
-  static Future<Set<String>> activeCoins(Wallet wallet) async {
+  static Future<Set<String>> get activeCoins async {
     if (_active.isNotEmpty && _activeFromDb) return _active;
 
-    _clearActiveCoins();
-
-    final listOfCoins = await getCoinsFromDb(wallet);
+    final listOfCoins = await getCoinsFromDb();
 
     if (listOfCoins != null && listOfCoins.isNotEmpty) {
       _active.addAll(listOfCoins);
@@ -397,11 +398,14 @@ class Db {
   }
 
   /// Add the coin to the list of activated coins.
-  static Future<void> coinActive(Coin coin, Wallet wallet) async {
+  static Future<void> coinActive(Coin coin) async {
     _active.add(coin.abbr);
-    final listOfCoins = _active.toList();
-    final coinsString = listOfCoins.join(',');
+    final coinsString = _active.join(',');
+
     final Database db = await Db.db;
+    final wallet = await getCurrentWallet();
+
+    // Check if coins for current wallet are saved
     final currentWallet = await db.query('ListOfCoinsActivated',
         where: 'wallet_id = ?', whereArgs: [wallet.id]);
     if (currentWallet.isNotEmpty) {
@@ -414,19 +418,24 @@ class Db {
     } else {
       await db.insert(
         'ListOfCoinsActivated',
-        <String, String>{'wallet_id': wallet.id, 'coins': coinsString},
+        <String, String>{
+          'wallet_id': wallet.id,
+          'coins': coinsString,
+        },
       );
     }
   }
 
   /// Remove the coin from the list of activated coins.
-  static Future<void> coinInactive(String ticker, Wallet wallet) async {
+  static Future<void> coinInactive(String ticker) async {
     Log('database:246', 'coinInactive] $ticker');
-    _active.remove(ticker);
 
-    final listOfCoins = _active.toList();
-    final coinsString = listOfCoins.join(',');
+    _active.remove(ticker);
+    final coinsString = _active.join(',');
+
     final Database db = await Db.db;
+    final wallet = await getCurrentWallet();
+
     await db.update(
       'ListOfCoinsActivated',
       <String, String>{'coins': coinsString},

@@ -10,7 +10,6 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -548,7 +547,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
 
   /// Returns `true` if there are coins we can still activate, `false` if all of them activated.
   Future<bool> _buildAddCoinButton() async {
-    final active = await Db.activeCoins(walletBloc.currentWallet);
+    final active = await Db.activeCoins;
     final known = await coins;
     return active.length < known.length;
   }
