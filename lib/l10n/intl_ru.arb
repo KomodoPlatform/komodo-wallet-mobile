@@ -1673,13 +1673,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "deleteSpan1": "Вы хотите удалить",
+    "deleteSpan1": "Вы хотите удалить ",
     "@deleteSpan1": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "deleteSpan2": "из вашего портфолио? Все несовпавшие ордеры будут отменены.",
+    "deleteSpan2": " из вашего портфолио? Все несовпавшие ордеры будут отменены.",
     "@deleteSpan2": {
         "type": "text",
         "placeholders_order": [],
