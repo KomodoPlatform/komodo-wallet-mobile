@@ -510,7 +510,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 padding: const EdgeInsets.only(right: 8),
                 child: _buildButtonLight(StatusButton.FAUCET, mContext),
               )),
-            if (currentCoinBalance.coin.abbr == 'TKL')
+            if (currentCoinBalance.coin.abbr == 'TKL' || currentCoinBalance.coin.abbr == 'MCL' )
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.only(right: 8),
