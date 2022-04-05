@@ -37,6 +37,7 @@ class Db {
       onOpen: (Database db) {},
       onCreate: (Database db, int version) async {
         Log('database:35', 'initDB, onCreate version $version');
+
         await db.execute('''
       CREATE TABLE ArticlesSaved (
           id TEXT PRIMARY KEY,
@@ -94,6 +95,33 @@ class Db {
           // The sqlite docs recommend doings a transation and doing things in a specific order
           // See https://www.sqlite.org/lang_altertable.html for info
           try {
+            // MRC: I figured out that one of the possible ways to successfully migrate
+            // the activated coins was some relatively complex SQL on db upgrade,
+            // and it was accepted over clearing completely the coins list
+            //
+            // So, please look at the code below carrefully
+
+            List<String> listOfCoins = <String>[];
+            String walletId;
+
+            final currentWallet =
+                await db.query('CurrentWallet', columns: ['id'], limit: 1);
+
+            if (currentWallet != null && currentWallet.isNotEmpty) {
+              walletId = currentWallet.first['id'];
+
+              if (walletId != null && walletId.isNotEmpty) {
+                final coinsQuery =
+                    await db.query('CoinsActivated', columns: ['abbr']);
+
+                if (coinsQuery != null && coinsQuery.isNotEmpty) {
+                  listOfCoins =
+                      coinsQuery.map((c) => c['abbr'].toString()).toList();
+                }
+              }
+            }
+            //
+
             final batch = db.batch();
 
             batch.execute('''
@@ -149,6 +177,20 @@ class Db {
             // MRC: We need to remove the WalletSnapshot because it causes coins to show up
             // even though they aren't in the db due to the ListOfCoinsActivated migration
             batch.execute('DELETE FROM WalletSnapshot');
+
+            if ((walletId != null && walletId.isNotEmpty) &&
+                listOfCoins.isNotEmpty) {
+              Log('database',
+                  'initDB, onUpgrade, Attempting to migrate previously activated coins');
+              final coinsString = listOfCoins.join(',');
+              batch.insert(
+                'ListOfCoinsActivated',
+                <String, String>{
+                  'wallet_id': walletId,
+                  'coins': coinsString,
+                },
+              );
+            }
 
             batch.commit();
             Log('database',
