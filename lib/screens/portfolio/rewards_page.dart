@@ -87,11 +87,13 @@ class _RewardsPageState extends State<RewardsPage> {
         padding: const EdgeInsets.all(12),
         child: Row(
           children: <Widget>[
-            Text(
-              AppLocalizations.of(context).rewardsReadMore,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.blue,
+            Flexible(
+              child: Text(
+                AppLocalizations.of(context).rewardsReadMore,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blue,
+                ),
               ),
             ),
             const SizedBox(width: 4),

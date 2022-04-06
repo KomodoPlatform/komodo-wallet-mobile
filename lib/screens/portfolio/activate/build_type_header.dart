@@ -41,9 +41,11 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
                             color: Theme.of(context).colorScheme.secondary,
                           ))),
                   const SizedBox(width: 24),
-                  Text(
-                    _getTitleText(),
-                    style: Theme.of(context).textTheme.headline6,
+                  Flexible(
+                    child: Text(
+                      _getTitleText(),
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   )
                 ],
               ),
@@ -59,6 +61,9 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
         break;
       case 'bep':
         return AppLocalizations.of(context).searchFilterSubtitleBEP;
+        break;
+      case 'plg':
+        return AppLocalizations.of(context).searchFilterSubtitlePLG;
         break;
       case 'qrc':
         return AppLocalizations.of(context).searchFilterSubtitleQRC;
