@@ -11,20 +11,26 @@ class CexFiatPreview extends StatelessWidget {
     this.coinAbbr,
     this.colorCex,
     this.textStyle,
+    this.isInCrypto = true,
   }) : super(key: key);
 
   final String amount;
   final String coinAbbr;
   final Color colorCex;
   final TextStyle textStyle;
+  final bool isInCrypto;
 
   @override
   Widget build(BuildContext context) {
     final cexProvider = Provider.of<CexProvider>(context);
-
+    double amountUsd = 0;
     final double price = cexProvider.getUsdPrice(coinAbbr);
     final amountParsed = double.tryParse(amount) ?? 0.0;
-    final amountUsd = amountParsed * price;
+    if (!isInCrypto) {
+      amountUsd = amountParsed / price;
+    } else {
+      amountUsd = amountParsed * price;
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -36,18 +42,15 @@ class CexFiatPreview extends StatelessWidget {
           color: colorCex,
         ),
         SizedBox(width: 2),
-        Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Text(
-            cexProvider.convert(amountUsd),
-            style: textStyle ??
-                TextStyle(
-                  fontSize: 14,
-                  color: Theme.of(context).brightness == Brightness.light
-                      ? cexColorLight.withAlpha(150)
-                      : cexColor.withAlpha(150),
-                ),
-          ),
+        Text(
+          cexProvider.convert(amountUsd, hideSymbol: !isInCrypto) + (isInCrypto ? '': ' '+coinAbbr),
+          style: textStyle ??
+              TextStyle(
+                fontSize: 14,
+                color: Theme.of(context).brightness == Brightness.light
+                    ? cexColorLight.withAlpha(150)
+                    : cexColor.withAlpha(150),
+              ),
         ),
       ],
     );

@@ -18,18 +18,18 @@ import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:decimal/decimal.dart';
 
 class AmountAddressStep extends StatefulWidget {
-  const AmountAddressStep(
-      {Key key,
-      this.onMaxValue,
-      this.focusNode,
-      this.amountController,
-      this.addressController,
-      this.autoFocus = false,
-      this.onWithdrawPressed,
-      this.onCancel,
-      this.coin,
-      this.paymentUriInfo})
-      : super(key: key);
+  const AmountAddressStep({
+    Key key,
+    this.onMaxValue,
+    this.focusNode,
+    this.amountController,
+    this.addressController,
+    this.autoFocus = false,
+    this.onWithdrawPressed,
+    this.onCancel,
+    this.coin,
+    this.paymentUriInfo,this.isInCrypto,
+  }) : super(key: key);
 
   final Function onCancel;
   final Function onMaxValue;
@@ -40,6 +40,7 @@ class AmountAddressStep extends StatefulWidget {
   final bool autoFocus;
   final Coin coin;
   final PaymentUriInfo paymentUriInfo;
+  final Function isInCrypto;
 
   @override
   _AmountAddressStepState createState() => _AmountAddressStepState();
@@ -73,6 +74,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               controller: widget.amountController,
               autoFocus: widget.autoFocus,
               coinAbbr: widget.coin.abbr,
+              isInCrypto: widget.isInCrypto,
             ),
             AddressField(
               addressFormat: widget.coin.addressFormat,

@@ -4,18 +4,20 @@ import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
+import 'package:provider/provider.dart';
 
 class AmountField extends StatefulWidget {
-  const AmountField(
+     const AmountField(
       {Key key,
       this.onMaxValue,
       this.focusNode,
       this.controller,
       this.autoFocus = false,
-      this.coinAbbr})
+      this.coinAbbr, this.isInCrypto,})
       : super(key: key);
 
   final Function onMaxValue;
@@ -23,6 +25,7 @@ class AmountField extends StatefulWidget {
   final TextEditingController controller;
   final bool autoFocus;
   final String coinAbbr;
+  final Function isInCrypto;
 
   @override
   _AmountFieldState createState() => _AmountFieldState();
@@ -30,7 +33,9 @@ class AmountField extends StatefulWidget {
 
 class _AmountFieldState extends State<AmountField> {
   String amountPreview = '';
+  CexProvider cexProvider;
 
+  bool isInCrypto = true;
   @override
   void initState() {
     super.initState();
@@ -51,6 +56,8 @@ class _AmountFieldState extends State<AmountField> {
 
   @override
   Widget build(BuildContext context) {
+    cexProvider = Provider.of<CexProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: SingleChildScrollView(
@@ -61,7 +68,12 @@ class _AmountFieldState extends State<AmountField> {
                 SizedBox(
                   height: 60,
                   child: TextButton(
-                    onPressed: widget.onMaxValue,
+                    onPressed: (){
+                      widget.onMaxValue();
+                      if(isInCrypto){
+
+                      }
+                    },
                     style: TextButton.styleFrom(
                       visualDensity: VisualDensity.compact,
                       primary: Theme.of(context).colorScheme.secondary,
@@ -112,6 +124,7 @@ class _AmountFieldState extends State<AmountField> {
                           },
                           decoration: InputDecoration(
                             labelText: AppLocalizations.of(context).amount,
+                            suffixText:  isInCrypto ? widget.coinAbbr: cexProvider.selectedFiatSymbol.toUpperCase()
                           ),
                           // The validator receives the text the user has typed in
                           validator: (String value) {
@@ -140,10 +153,35 @@ class _AmountFieldState extends State<AmountField> {
                 ),
               ],
             ),
-            CexFiatPreview(
-              amount: amountPreview,
-              coinAbbr: widget.coinAbbr,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(children: [
+                  Checkbox(
+                    key: const Key('specify-in-fiat'),
+                    value:  isInCrypto,
+                    onChanged: (a){
+                      widget.isInCrypto;
+                        setState(() {
+                          isInCrypto =  ! isInCrypto;
+                        });
+                    },
+                  ),
+                  Text(
+                    AppLocalizations.of(context).specifyInFiat( isInCrypto ? 'Crypto':'Fiat'),
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+
+                ],),
+                CexFiatPreview(
+                  amount: amountPreview,
+                  coinAbbr: widget.coinAbbr,
+                  isInCrypto: isInCrypto,
+                ),
+
+              ],
             ),
+
           ],
         ),
       ),

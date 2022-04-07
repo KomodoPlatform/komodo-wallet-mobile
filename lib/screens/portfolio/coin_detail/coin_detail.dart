@@ -77,6 +77,7 @@ class _CoinDetailState extends State<CoinDetail> {
   bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
+  bool isInCrypto = false;
 
   @override
   void initState() {
@@ -146,12 +147,26 @@ class _CoinDetailState extends State<CoinDetail> {
     final String text = _amountController.text.replaceAll(',', '.');
     if (text.isNotEmpty) {
       setState(() {
-        if (currentCoinBalance != null &&
-            text.isNotEmpty &&
-            double.parse(text) >
-                double.parse(currentCoinBalance.balance.getBalance())) {
-          setMaxValue();
+        if(isInCrypto){
+          if (currentCoinBalance != null &&
+              double.parse(text) >
+                  double.parse(currentCoinBalance.balance.getBalance())) {
+            setMaxValue();
+          }
+        }else{
+          final double price = cexProvider.getUsdPrice(currentCoinBalance.coin.abbr);
+          final amountParsed = double.tryParse(currentCoinBalance.balance.getBalance()) ?? 0.0;
+
+          print(amountParsed);
+        double   amountUsd = amountParsed / price;
+        double amountConverted = double.parse(cexProvider.convert(amountUsd, hideSymbol: true));
+
+          if (currentCoinBalance != null &&
+              double.parse(text) >amountConverted) {
+            setMaxValue();
+          }
         }
+
       });
     }
   }
@@ -159,7 +174,15 @@ class _CoinDetailState extends State<CoinDetail> {
   Future<void> setMaxValue() async {
     _focus.unfocus();
     setState(() {
-      _amountController.text = currentCoinBalance.balance.getBalance();
+      if(isInCrypto){
+        _amountController.text = currentCoinBalance.balance.getBalance();
+      }else{
+        final double price = cexProvider.getUsdPrice(currentCoinBalance.coin.abbr);
+        final amountParsed = double.tryParse(currentCoinBalance.balance.getBalance()) ?? 0.0;
+        double amountUsd = amountParsed / price;
+
+        _amountController.text =cexProvider.convert(amountUsd, hideSymbol: true);
+      }
     });
     await Future<dynamic>.delayed(const Duration(milliseconds: 0), () {
       setState(() {
@@ -796,6 +819,12 @@ class _CoinDetailState extends State<CoinDetail> {
     listSteps.add(AmountAddressStep(
       coin: widget.coinBalance.coin,
       paymentUriInfo: widget.paymentUriInfo,
+      isInCrypto: (){
+        isInCrypto = !isInCrypto;
+        setState(() {
+
+        });
+      },
       onCancel: () {
         setState(() {
           isExpanded = false;
