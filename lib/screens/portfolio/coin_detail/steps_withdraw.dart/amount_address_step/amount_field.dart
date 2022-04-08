@@ -11,21 +11,21 @@ import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
 import 'package:provider/provider.dart';
 
 class AmountField extends StatefulWidget {
-     const AmountField(
-      {Key key,
-      this.onMaxValue,
-      this.focusNode,
-      this.controller,
-      this.autoFocus = false,
-      this.coinAbbr, this.isInCrypto,})
-      : super(key: key);
+  const AmountField({
+    Key key,
+    this.onMaxValue,
+    this.focusNode,
+    this.controller,
+    this.autoFocus = false,
+    this.coinBalance, this.cryptoListener,
+  }) : super(key: key);
 
-  final Function onMaxValue;
-  final FocusNode focusNode;
-  final TextEditingController controller;
   final bool autoFocus;
-  final String coinAbbr;
-  final Function isInCrypto;
+  final CoinBalance coinBalance;
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final Function onMaxValue;
+  final TextEditingController cryptoListener;
 
   @override
   _AmountFieldState createState() => _AmountFieldState();
@@ -34,18 +34,66 @@ class AmountField extends StatefulWidget {
 class _AmountFieldState extends State<AmountField> {
   String amountPreview = '';
   CexProvider cexProvider;
-
+  bool hasIsCryptoCheckboxBeenToggled = false;
   bool isInCrypto = true;
+  bool isLastPressedMax = false;
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_amountPreviewListener);
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
     widget.controller.addListener(_amountPreviewListener);
   }
 
-  @override
-  void dispose() {
-    widget.controller.removeListener(_amountPreviewListener);
-    super.dispose();
+  void onChange() {
+    final String text = widget.controller.text.replaceAll(',', '.');
+    if (text.isNotEmpty) {
+      setState(() {
+        if (isInCrypto) {
+          if ((isLastPressedMax && hasIsCryptoCheckboxBeenToggled) ||
+              (widget.coinBalance != null &&
+                  double.parse(text) >
+                      double.parse(widget.coinBalance.balance.getBalance()))) {
+            setMaxValue();
+          }
+        } else {
+          final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
+
+          if ((isLastPressedMax && hasIsCryptoCheckboxBeenToggled) ||
+              (widget.coinBalance != null &&
+                  double.parse(text) > double.parse(coinBalanceUsd))) {
+            setMaxValue();
+          }
+        }
+        isLastPressedMax = false;
+        hasIsCryptoCheckboxBeenToggled = false;
+      });
+    }
+  }
+
+  Future<void> setMaxValue() async {
+    widget.focusNode.unfocus();
+    setState(() {
+      if (isInCrypto) {
+        widget.controller.text = widget.coinBalance.balance.getBalance();
+      } else {
+        final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
+
+        widget.controller.text =
+            cexProvider.convert(double.parse(coinBalanceUsd), hideSymbol: true);
+      }
+    });
+    await Future<dynamic>.delayed(const Duration(milliseconds: 0), () {
+      setState(() {
+        FocusScope.of(context).requestFocus(widget.focusNode);
+      });
+    });
+    coinsDetailBloc.setAmountToSend(widget.controller.text);
   }
 
   void _amountPreviewListener() {
@@ -68,11 +116,10 @@ class _AmountFieldState extends State<AmountField> {
                 SizedBox(
                   height: 60,
                   child: TextButton(
-                    onPressed: (){
-                      widget.onMaxValue();
-                      if(isInCrypto){
-
-                      }
+                    onPressed: () {
+                      isLastPressedMax = true;
+                      setMaxValue();
+                      if (isInCrypto) {}
                     },
                     style: TextButton.styleFrom(
                       visualDensity: VisualDensity.compact,
@@ -97,13 +144,14 @@ class _AmountFieldState extends State<AmountField> {
                         CoinBalance currentCoinBalance;
                         if (snapshot.hasData) {
                           for (CoinBalance coinBalance in snapshot.data) {
-                            if (coinBalance.coin.abbr == widget.coinAbbr) {
+                            if (coinBalance.coin.abbr ==
+                                widget.coinBalance.coin.abbr) {
                               currentCoinBalance = coinBalance;
                             }
                           }
                         }
                         return TextFormField(
-                          key: const Key('send-amount-field'),
+                        //  key: const Key('send-amount-field'),
                           inputFormatters: <TextInputFormatter>[
                             DecimalTextInputFormatter(
                                 decimalRange: appConfig.tradeFormPrecision),
@@ -121,11 +169,14 @@ class _AmountFieldState extends State<AmountField> {
                           textAlign: TextAlign.end,
                           onChanged: (String amount) {
                             coinsDetailBloc.setAmountToSend(amount);
+                            onChange();
                           },
                           decoration: InputDecoration(
-                            labelText: AppLocalizations.of(context).amount,
-                            suffixText:  isInCrypto ? widget.coinAbbr: cexProvider.selectedFiatSymbol.toUpperCase()
-                          ),
+                              labelText: AppLocalizations.of(context).amount,
+                              suffixText: isInCrypto
+                                  ? widget.coinBalance.coin.abbr
+                                  : cexProvider.selectedFiatSymbol
+                                      .toUpperCase()),
                           // The validator receives the text the user has typed in
                           validator: (String value) {
                             if (value.isEmpty && coinsDetailBloc.isCancel) {
@@ -153,35 +204,41 @@ class _AmountFieldState extends State<AmountField> {
                 ),
               ],
             ),
+            
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Row(children: [
-                  Checkbox(
-                    key: const Key('specify-in-fiat'),
-                    value:  isInCrypto,
-                    onChanged: (a){
-                      widget.isInCrypto;
-                        setState(() {
-                          isInCrypto =  ! isInCrypto;
-                        });
-                    },
+                Expanded(
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        key: const Key('specify-in-fiat'),
+                        value: isInCrypto,
+                        onChanged: (a) {
+                          setState(() {
+                            hasIsCryptoCheckboxBeenToggled = true;
+                            isInCrypto = !isInCrypto;
+                            widget.cryptoListener.text = isInCrypto.toString();
+                          });
+                          onChange();
+                        },
+                      ),
+                      Expanded(
+                        child: Text(
+                          AppLocalizations.of(context)
+                              .specifyInFiat(isInCrypto ? 'Crypto' : 'Fiat'),
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      )
+                    ],
                   ),
-                  Text(
-                    AppLocalizations.of(context).specifyInFiat( isInCrypto ? 'Crypto':'Fiat'),
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-
-                ],),
+                ),
                 CexFiatPreview(
                   amount: amountPreview,
-                  coinAbbr: widget.coinAbbr,
+                  coinAbbr: widget.coinBalance.coin.abbr,
                   isInCrypto: isInCrypto,
                 ),
-
               ],
             ),
-
           ],
         ),
       ),

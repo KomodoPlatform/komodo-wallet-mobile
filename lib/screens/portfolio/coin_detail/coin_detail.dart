@@ -77,7 +77,7 @@ class _CoinDetailState extends State<CoinDetail> {
   bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
-  bool isInCrypto = false;
+  TextEditingController _cryptoListener = TextEditingController(text: 'true');
 
   @override
   void initState() {
@@ -106,7 +106,6 @@ class _CoinDetailState extends State<CoinDetail> {
         .then((Transaction t) {
       if (t != null) latestTransaction = t;
     });
-    _amountController.addListener(onChange);
     super.initState();
 
     _scrollController.addListener(() {
@@ -134,6 +133,7 @@ class _CoinDetailState extends State<CoinDetail> {
     _amountController.dispose();
     _addressController.dispose();
     _scrollController.dispose();
+    _cryptoListener.dispose();
     coinsBloc.resetTransactions();
     if (timer != null) {
       timer.cancel();
@@ -143,54 +143,7 @@ class _CoinDetailState extends State<CoinDetail> {
     super.dispose();
   }
 
-  void onChange() {
-    final String text = _amountController.text.replaceAll(',', '.');
-    if (text.isNotEmpty) {
-      setState(() {
-        if(isInCrypto){
-          if (currentCoinBalance != null &&
-              double.parse(text) >
-                  double.parse(currentCoinBalance.balance.getBalance())) {
-            setMaxValue();
-          }
-        }else{
-          final double price = cexProvider.getUsdPrice(currentCoinBalance.coin.abbr);
-          final amountParsed = double.tryParse(currentCoinBalance.balance.getBalance()) ?? 0.0;
 
-          print(amountParsed);
-        double   amountUsd = amountParsed / price;
-        double amountConverted = double.parse(cexProvider.convert(amountUsd, hideSymbol: true));
-
-          if (currentCoinBalance != null &&
-              double.parse(text) >amountConverted) {
-            setMaxValue();
-          }
-        }
-
-      });
-    }
-  }
-
-  Future<void> setMaxValue() async {
-    _focus.unfocus();
-    setState(() {
-      if(isInCrypto){
-        _amountController.text = currentCoinBalance.balance.getBalance();
-      }else{
-        final double price = cexProvider.getUsdPrice(currentCoinBalance.coin.abbr);
-        final amountParsed = double.tryParse(currentCoinBalance.balance.getBalance()) ?? 0.0;
-        double amountUsd = amountParsed / price;
-
-        _amountController.text =cexProvider.convert(amountUsd, hideSymbol: true);
-      }
-    });
-    await Future<dynamic>.delayed(const Duration(milliseconds: 0), () {
-      setState(() {
-        FocusScope.of(context).requestFocus(_focus);
-      });
-    });
-    coinsDetailBloc.setAmountToSend(_amountController.text);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -737,7 +690,7 @@ class _CoinDetailState extends State<CoinDetail> {
             margin:
                 const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
             elevation: 8.0,
-            child: SingleChildScrollView(child: listSteps[currentIndex])),
+            child:   listSteps[currentIndex]),
       ),
     );
   }
@@ -812,19 +765,22 @@ class _CoinDetailState extends State<CoinDetail> {
     });
   }
 
+String convertToCryptoFromFiat(){
+  final double price = cexProvider.getUsdPrice(widget.coinBalance.coin.abbr);
+  final amountParsed = double.tryParse(_amountController.text) ?? 0.0;
+  double amount = amountParsed / price;
+  double balance = double.parse(widget.coinBalance.balance.getBalance());
+  return  balance < amount ? balance.toString(): amount.toString();  
+}
+
   void initSteps() {
     _amountController.clear();
     _addressController.clear();
     listSteps.clear();
     listSteps.add(AmountAddressStep(
-      coin: widget.coinBalance.coin,
+      coinBalance: widget.coinBalance,
       paymentUriInfo: widget.paymentUriInfo,
-      isInCrypto: (){
-        isInCrypto = !isInCrypto;
-        setState(() {
-
-        });
-      },
+      cryptoListener:_cryptoListener,
       onCancel: () {
         setState(() {
           isExpanded = false;
@@ -836,7 +792,7 @@ class _CoinDetailState extends State<CoinDetail> {
           isExpanded = false;
           listSteps.add(BuildConfirmationStep(
             coinBalance: currentCoinBalance,
-            amountToPay: _amountController.text,
+            amountToPay:_cryptoListener.text == 'true'? _amountController.text: convertToCryptoFromFiat(),
             addressToSend: _addressController.text,
             onCancel: () {
               setState(() {
@@ -930,7 +886,7 @@ class _CoinDetailState extends State<CoinDetail> {
           isExpanded = true;
         });
       },
-      onMaxValue: setMaxValue,
+    //  onMaxValue: setMaxValue,
       focusNode: _focus,
       addressController: _addressController,
       amountController: _amountController,
