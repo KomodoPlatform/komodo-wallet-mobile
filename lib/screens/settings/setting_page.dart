@@ -17,6 +17,7 @@ import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
@@ -48,6 +49,7 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   String version = '';
   CexProvider cexProvider;
+  WalletSecuritySettingsProvider walletSecuritySettingsProvider;
 
   @override
   void initState() {
@@ -68,6 +70,8 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     cexProvider = Provider.of<CexProvider>(context);
+    walletSecuritySettingsProvider =
+        context.watch<WalletSecuritySettingsProvider>();
     // final Locale myLocale = Localizations.localeOf(context);
     // Log('setting_page:67', 'current locale: $myLocale');
     return LockScreen(
@@ -161,69 +165,46 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildActivatePIN() {
-    return SharedPreferencesBuilder<dynamic>(
-      pref: 'switch_pin',
-      builder: (
-        BuildContext context,
-        AsyncSnapshot<dynamic> snapshot,
+    return SwitchListTile(
+      title: Text(AppLocalizations.of(
+        context,
+      ).activateAccessPin),
+      tileColor: Theme.of(context).primaryColor,
+      value: walletSecuritySettingsProvider.activatePinProtection ?? false,
+      onChanged: (
+        bool switchValue,
       ) {
-        return SwitchListTile(
-          title: Text(AppLocalizations.of(
-            context,
-          ).activateAccessPin),
-          tileColor: Theme.of(context).primaryColor,
-          value: snapshot.data ?? false,
-          onChanged: (
-            bool switchValue,
-          ) {
-            Log(
-              'setting_page:262',
-              'switchValue $switchValue',
-            );
-            if (snapshot.data) {
-              // We want to deactivate biometrics here
-              // together with a regular pin protection,
-              // so that user would not leave himself
-              // only with biometrics one - thinking that
-              // he is "protected", truth be told
-              // without any fallback to regular pin
-              // protection, this biometrics widget is
-              // not very reliable (read very not)
-              // and it does not take too much time to
-              // break it, and get access to users funds.
-              SharedPreferences.getInstance().then((
-                SharedPreferences data,
-              ) {
-                data.setBool(
-                  'switch_pin_biometric',
-                  false,
-                );
-              });
-              Navigator.push<dynamic>(
-                context,
-                MaterialPageRoute<dynamic>(
-                  builder: (
-                    BuildContext context,
-                  ) =>
-                      LockScreen(
-                    context: context,
-                    pinStatus: PinStatus.DISABLED_PIN,
-                  ),
-                ),
-              ).then((dynamic _) => setState(() {}));
-            } else {
-              SharedPreferences.getInstance().then((
-                SharedPreferences data,
-              ) {
-                data.setBool(
-                  'switch_pin',
-                  switchValue,
-                );
-              });
-              setState(() {});
-            }
-          },
+        Log(
+          'setting_page:262',
+          'switchValue $switchValue',
         );
+        if (walletSecuritySettingsProvider.activatePinProtection) {
+          // We want to deactivate biometrics here
+          // together with a regular pin protection,
+          // so that user would not leave himself
+          // only with biometrics one - thinking that
+          // he is "protected", truth be told
+          // without any fallback to regular pin
+          // protection, this biometrics widget is
+          // not very reliable (read very not)
+          // and it does not take too much time to
+          // break it, and get access to users funds.
+          walletSecuritySettingsProvider.activateBioProtection = false;
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (
+                BuildContext context,
+              ) =>
+                  LockScreen(
+                context: context,
+                pinStatus: PinStatus.DISABLED_PIN,
+              ),
+            ),
+          ).then((dynamic _) => setState(() {}));
+        } else {
+          walletSecuritySettingsProvider.activatePinProtection = switchValue;
+        }
       },
     );
   }
@@ -237,64 +218,44 @@ class _SettingPageState extends State<SettingPage> {
         AsyncSnapshot<bool> snapshot,
       ) {
         if (snapshot.hasData && snapshot.data) {
-          return SharedPreferencesBuilder<dynamic>(
-            pref: 'switch_pin_biometric',
-            builder: (
-              BuildContext context,
-              AsyncSnapshot<dynamic> snapshot,
+          return SwitchListTile(
+            title: Text(AppLocalizations.of(
+              context,
+            ).activateAccessBiometric),
+            tileColor: Theme.of(context).primaryColor,
+            value:
+                walletSecuritySettingsProvider.activateBioProtection ?? false,
+            onChanged: (
+              bool switchValue,
             ) {
-              return SwitchListTile(
-                title: Text(AppLocalizations.of(
+              if (walletSecuritySettingsProvider.activateBioProtection) {
+                authenticateBiometrics(
                   context,
-                ).activateAccessBiometric),
-                tileColor: Theme.of(context).primaryColor,
-                value: snapshot.data ?? false,
-                onChanged: (
-                  bool switchValue,
+                  PinStatus.DISABLED_PIN_BIOMETRIC,
+                ).then((
+                  bool passedBioCheck,
                 ) {
-                  if (snapshot.data) {
-                    authenticateBiometrics(
-                      context,
-                      PinStatus.DISABLED_PIN_BIOMETRIC,
-                    ).then((
-                      bool passedBioCheck,
-                    ) {
-                      if (passedBioCheck) {
-                        SharedPreferences.getInstance().then((
-                          SharedPreferences data,
-                        ) {
-                          data.setBool(
-                            'switch_pin_biometric',
-                            false,
-                          );
-                          setState(() {});
-                        });
-                      }
-                    });
-                  } else {
-                    SharedPreferences.getInstance().then((
-                      SharedPreferences data,
-                    ) {
-                      data.setBool(
-                        'switch_pin_biometric',
-                        switchValue,
-                      );
-                      if (switchValue) {
-                        // Same situation here as above
-                        // on line 244 but from a
-                        // different angle. Just trying
-                        // to protect users from unreliable
-                        // !biometrics only! state.
-                        data.setBool(
-                          'switch_pin',
-                          true,
-                        );
-                      }
-                    });
-                    setState(() {});
+                  if (passedBioCheck) {
+                    walletSecuritySettingsProvider.activateBioProtection =
+                        false;
                   }
-                },
-              );
+                });
+              } else {
+                SharedPreferences.getInstance().then((
+                  SharedPreferences data,
+                ) {
+                  walletSecuritySettingsProvider.activateBioProtection =
+                      switchValue;
+                  if (switchValue) {
+                    // Same situation here as above
+                    // on line 244 but from a
+                    // different angle. Just trying
+                    // to protect users from unreliable
+                    // !biometrics only! state.
+                    walletSecuritySettingsProvider.activatePinProtection = true;
+                  }
+                });
+              }
             },
           );
         }

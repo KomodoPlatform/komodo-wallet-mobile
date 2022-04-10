@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/camo_bloc.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,6 +57,8 @@ class Startup {
     // So invoking this method here might be seen as a wishful thinking.
     await startMmIfUnlocked();
 
+    await walletSecuritySettingsProvider.migrateSecuritySettings();
+
     _live = true;
     _notifyListeners();
   }
@@ -72,10 +75,9 @@ class Startup {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('isPassphraseIsSaved') != null &&
         prefs.getBool('isPassphraseIsSaved') == true) {
-      await authBloc.initSwitchPref();
-
       // If the screen is currently unlocked then proceed with MM initialization
-      if (!(authBloc.showLock && prefs.getBool('switch_pin'))) {
+      if (!(authBloc.showLock &&
+          walletSecuritySettingsProvider.activatePinProtection)) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
     }

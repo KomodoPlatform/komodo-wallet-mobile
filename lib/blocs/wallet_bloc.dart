@@ -48,7 +48,8 @@ class WalletBloc implements BlocBase {
         await entryptionTool.readData(KeyEncryption.SEED, wallet, password);
 
     if (seedPhrase != null) {
-      await Db.saveCurrentWallet(wallet);
+      final securitySettings = await Db.getWalletSecuritySettings(wallet);
+      await Db.saveCurrentWallet(wallet, securitySettings);
       return seedPhrase;
     } else {
       throw AppLocalizations.of(context).wrongPassword;
@@ -74,5 +75,6 @@ class WalletBloc implements BlocBase {
     final EncryptionTool entryptionTool = EncryptionTool();
     await entryptionTool.deleteData(KeyEncryption.SEED, wallet, password);
     await entryptionTool.deleteData(KeyEncryption.PIN, wallet, password);
+    await entryptionTool.deleteData(KeyEncryption.CAMOPIN, wallet, password);
   }
 }

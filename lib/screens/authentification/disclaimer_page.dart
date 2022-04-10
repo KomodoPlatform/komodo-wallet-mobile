@@ -422,8 +422,9 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
       await Db.saveWallet(wallet);
       await Db.saveCurrentWallet(wallet);
+
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('isPinIsCreated', true);
+      prefs.setBool('is_pin_creation_in_progress', true);
 
       await authBloc.loginUI(true, widget.seed, widget.password).then((_) {
         setState(() {

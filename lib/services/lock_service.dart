@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 LockService lockService = LockService();
 
@@ -153,9 +155,12 @@ class LockService {
   }
 
   void _lock(BuildContext context) {
+    final walletSecuritySettingsProvider =
+        context.read<WalletSecuritySettingsProvider>();
     if (authBloc.showLock) return; // Already showing the lock.
     if (inQrScanner) return; // Don't lock while we're scanning QR.
-    if (_prefs.getBool('switch_pin') == false) return; // PIN turned off
+    if (walletSecuritySettingsProvider.activatePinProtection == false)
+      return; // PIN turned off
 
     // Lock signals are coming *concurrently and in parallel* with the returns
     // and might arrive both before and *after* them.
