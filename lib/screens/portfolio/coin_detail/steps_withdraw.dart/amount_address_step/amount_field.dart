@@ -17,7 +17,8 @@ class AmountField extends StatefulWidget {
     this.focusNode,
     this.controller,
     this.autoFocus = false,
-    this.coinBalance, this.cryptoListener,
+    this.coinBalance,
+    this.cryptoListener,
   }) : super(key: key);
 
   final bool autoFocus;
@@ -151,7 +152,7 @@ class _AmountFieldState extends State<AmountField> {
                           }
                         }
                         return TextFormField(
-                        //  key: const Key('send-amount-field'),
+                          //  key: const Key('send-amount-field'),
                           inputFormatters: <TextInputFormatter>[
                             DecimalTextInputFormatter(
                                 decimalRange: appConfig.tradeFormPrecision),
@@ -204,7 +205,6 @@ class _AmountFieldState extends State<AmountField> {
                 ),
               ],
             ),
-            
             Row(
               children: <Widget>[
                 Expanded(

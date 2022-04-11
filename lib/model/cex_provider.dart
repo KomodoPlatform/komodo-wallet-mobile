@@ -525,7 +525,7 @@ class CexPrices {
     final NumberFormat format = NumberFormat.simpleCurrency(name: to);
     final String currencySymbol = format.currencySymbol;
 
-    if(hideSymbol){
+    if (hideSymbol) {
       return converted;
     }
     if (_isFiat(to)) {

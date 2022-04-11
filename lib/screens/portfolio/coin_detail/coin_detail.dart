@@ -77,7 +77,8 @@ class _CoinDetailState extends State<CoinDetail> {
   bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
-  final TextEditingController _cryptoListener = TextEditingController(text: 'true');
+  final TextEditingController _cryptoListener =
+      TextEditingController(text: 'true');
 
   @override
   void initState() {
@@ -142,8 +143,6 @@ class _CoinDetailState extends State<CoinDetail> {
     coinsDetailBloc.resetCustomFee();
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -486,7 +485,8 @@ class _CoinDetailState extends State<CoinDetail> {
                 padding: const EdgeInsets.only(right: 8),
                 child: _buildButtonLight(StatusButton.FAUCET, mContext),
               )),
-            if (currentCoinBalance.coin.abbr == 'TKL' || currentCoinBalance.coin.abbr == 'MCL' )
+            if (currentCoinBalance.coin.abbr == 'TKL' ||
+                currentCoinBalance.coin.abbr == 'MCL')
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.only(right: 8),
@@ -690,7 +690,7 @@ class _CoinDetailState extends State<CoinDetail> {
             margin:
                 const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
             elevation: 8.0,
-            child:   listSteps[currentIndex]),
+            child: listSteps[currentIndex]),
       ),
     );
   }
@@ -765,13 +765,13 @@ class _CoinDetailState extends State<CoinDetail> {
     });
   }
 
-String convertToCryptoFromFiat(){
-  final double price = cexProvider.getUsdPrice(widget.coinBalance.coin.abbr);
-  final amountParsed = double.tryParse(_amountController.text) ?? 0.0;
-  double amount = amountParsed / price;
-  double balance = double.parse(widget.coinBalance.balance.getBalance());
-  return  balance < amount ? balance.toString(): amount.toString();  
-}
+  String convertToCryptoFromFiat() {
+    final double price = cexProvider.getUsdPrice(widget.coinBalance.coin.abbr);
+    final amountParsed = double.tryParse(_amountController.text) ?? 0.0;
+    double amount = amountParsed / price;
+    double balance = double.parse(widget.coinBalance.balance.getBalance());
+    return balance < amount ? balance.toString() : amount.toString();
+  }
 
   void initSteps() {
     _amountController.clear();
@@ -780,7 +780,7 @@ String convertToCryptoFromFiat(){
     listSteps.add(AmountAddressStep(
       coinBalance: widget.coinBalance,
       paymentUriInfo: widget.paymentUriInfo,
-      cryptoListener:_cryptoListener,
+      cryptoListener: _cryptoListener,
       onCancel: () {
         setState(() {
           isExpanded = false;
@@ -792,7 +792,9 @@ String convertToCryptoFromFiat(){
           isExpanded = false;
           listSteps.add(BuildConfirmationStep(
             coinBalance: currentCoinBalance,
-            amountToPay:_cryptoListener.text == 'true'? _amountController.text: convertToCryptoFromFiat(),
+            amountToPay: _cryptoListener.text == 'true'
+                ? _amountController.text
+                : convertToCryptoFromFiat(),
             addressToSend: _addressController.text,
             onCancel: () {
               setState(() {
@@ -886,7 +888,7 @@ String convertToCryptoFromFiat(){
           isExpanded = true;
         });
       },
-    //  onMaxValue: setMaxValue,
+      //  onMaxValue: setMaxValue,
       focusNode: _focus,
       addressController: _addressController,
       amountController: _amountController,

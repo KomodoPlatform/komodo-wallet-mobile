@@ -43,7 +43,8 @@ class CexFiatPreview extends StatelessWidget {
         ),
         SizedBox(width: 2),
         Text(
-          cexProvider.convert(amountUsd, hideSymbol: !isInCrypto) + (isInCrypto ? '': ' '+coinAbbr),
+          cexProvider.convert(amountUsd, hideSymbol: !isInCrypto) +
+              (isInCrypto ? '' : ' ' + coinAbbr),
           style: textStyle ??
               TextStyle(
                 fontSize: 14,

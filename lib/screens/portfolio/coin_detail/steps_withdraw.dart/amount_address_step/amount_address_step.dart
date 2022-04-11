@@ -28,7 +28,8 @@ class AmountAddressStep extends StatefulWidget {
     this.onWithdrawPressed,
     this.onCancel,
     this.coinBalance,
-    this.paymentUriInfo, this.cryptoListener,
+    this.paymentUriInfo,
+    this.cryptoListener,
   }) : super(key: key);
 
   final Function onCancel;
@@ -41,7 +42,6 @@ class AmountAddressStep extends StatefulWidget {
   final bool autoFocus;
   final CoinBalance coinBalance;
   final PaymentUriInfo paymentUriInfo;
-
 
   @override
   _AmountAddressStepState createState() => _AmountAddressStepState();
@@ -70,13 +70,12 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             AmountField(
-              onMaxValue: widget.onMaxValue,
-              focusNode: widget.focusNode,
-              controller: widget.amountController,
-              autoFocus: widget.autoFocus,
-              coinBalance: widget.coinBalance,
-              cryptoListener:widget.cryptoListener
-            ),
+                onMaxValue: widget.onMaxValue,
+                focusNode: widget.focusNode,
+                controller: widget.amountController,
+                autoFocus: widget.autoFocus,
+                coinBalance: widget.coinBalance,
+                cryptoListener: widget.cryptoListener),
             AddressField(
               addressFormat: widget.coinBalance.coin.addressFormat,
               controller: widget.addressController,
@@ -218,7 +217,6 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
             // Validate will return true if the form is valid, or false if
             // the form is invalid.
             setState(() {
-             
               widget.amountController.text =
                   widget.amountController.text.replaceAll(',', '.');
             });

@@ -1013,7 +1013,8 @@ class AppLocalizations {
   String get candleChartError =>
       Intl.message('Something went wrong. Try again later.',
           name: 'candleChartError');
-  String specifyInFiat(String type) => Intl.message('Specify In $type', name: 'specifyInFiat');
+  String specifyInFiat(String type) =>
+      Intl.message('Specify In $type', name: 'specifyInFiat');
 
   // --- Rewards ---
 
