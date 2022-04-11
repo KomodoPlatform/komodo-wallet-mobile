@@ -77,7 +77,7 @@ class _CoinDetailState extends State<CoinDetail> {
   bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
-  TextEditingController _cryptoListener = TextEditingController(text: 'true');
+  final TextEditingController _cryptoListener = TextEditingController(text: 'true');
 
   @override
   void initState() {
