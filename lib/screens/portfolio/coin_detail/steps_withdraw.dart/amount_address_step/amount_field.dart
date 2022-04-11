@@ -210,7 +210,12 @@ class _AmountFieldState extends State<AmountField> {
                 Expanded(
                   child: Row(
                     children: [
-                      Checkbox(
+                      Text(
+                        AppLocalizations.of(context)
+                            .specifyInFiat(isInCrypto ? 'Crypto' : 'Fiat'),
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      Switch(
                         key: const Key('specify-in-fiat'),
                         value: isInCrypto,
                         onChanged: (a) {
@@ -222,13 +227,6 @@ class _AmountFieldState extends State<AmountField> {
                           onChange();
                         },
                       ),
-                      Expanded(
-                        child: Text(
-                          AppLocalizations.of(context)
-                              .specifyInFiat(isInCrypto ? 'Crypto' : 'Fiat'),
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      )
                     ],
                   ),
                 ),
