@@ -36,7 +36,7 @@ class _AmountFieldState extends State<AmountField> {
   String amountPreview = '';
   CexProvider cexProvider;
   bool hasIsCryptoCheckboxBeenToggled = false;
-  bool isInCrypto = true;
+  String currencyType;
   bool isLastPressedMax = false;
 
   @override
@@ -48,6 +48,7 @@ class _AmountFieldState extends State<AmountField> {
   @override
   void initState() {
     super.initState();
+    currencyType = widget.coinBalance.coin.abbr.toUpperCase();
     widget.controller.addListener(_amountPreviewListener);
   }
 
@@ -55,19 +56,21 @@ class _AmountFieldState extends State<AmountField> {
     final String text = widget.controller.text.replaceAll(',', '.');
     if (text.isNotEmpty) {
       setState(() {
-        if (isInCrypto) {
-          if ((isLastPressedMax && hasIsCryptoCheckboxBeenToggled) ||
-              (widget.coinBalance != null &&
-                  double.parse(text) >
-                      double.parse(widget.coinBalance.balance.getBalance()))) {
-            setMaxValue();
-          }
-        } else {
+        if (currencyType == 'USD') {
           final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
 
           if ((isLastPressedMax && hasIsCryptoCheckboxBeenToggled) ||
               (widget.coinBalance != null &&
                   double.parse(text) > double.parse(coinBalanceUsd))) {
+            setMaxValue();
+          }
+        } else if (currencyType ==
+            cexProvider.selectedFiatSymbol.toUpperCase()) {
+        } else {
+          if ((isLastPressedMax && hasIsCryptoCheckboxBeenToggled) ||
+              (widget.coinBalance != null &&
+                  double.parse(text) >
+                      double.parse(widget.coinBalance.balance.getBalance()))) {
             setMaxValue();
           }
         }
@@ -80,13 +83,14 @@ class _AmountFieldState extends State<AmountField> {
   Future<void> setMaxValue() async {
     widget.focusNode.unfocus();
     setState(() {
-      if (isInCrypto) {
-        widget.controller.text = widget.coinBalance.balance.getBalance();
-      } else {
+      if (currencyType == 'USD') {
         final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
 
         widget.controller.text =
             cexProvider.convert(double.parse(coinBalanceUsd), hideSymbol: true);
+      } else if (currencyType == cexProvider.selectedFiatSymbol.toUpperCase()) {
+      } else {
+        widget.controller.text = widget.coinBalance.balance.getBalance();
       }
     });
     await Future<dynamic>.delayed(const Duration(milliseconds: 0), () {
@@ -120,7 +124,6 @@ class _AmountFieldState extends State<AmountField> {
                     onPressed: () {
                       isLastPressedMax = true;
                       setMaxValue();
-                      if (isInCrypto) {}
                     },
                     style: TextButton.styleFrom(
                       visualDensity: VisualDensity.compact,
@@ -174,10 +177,45 @@ class _AmountFieldState extends State<AmountField> {
                           },
                           decoration: InputDecoration(
                               labelText: AppLocalizations.of(context).amount,
-                              suffixText: isInCrypto
-                                  ? widget.coinBalance.coin.abbr
-                                  : cexProvider.selectedFiatSymbol
-                                      .toUpperCase()),
+                              suffixIcon: Padding(
+                                padding: EdgeInsets.only(right: 6.0),
+                                child: DropdownButton<String>(
+                                  underline: SizedBox(),
+                                  alignment: Alignment.centerRight,
+                                  value: currencyType,
+                                  items: (cexProvider.selectedFiatSymbol == '\$'
+                                          ? [
+                                              'USD',
+                                              widget.coinBalance.coin.abbr
+                                                  .toUpperCase(),
+                                            ]
+                                          : [
+                                              'USD',
+                                              cexProvider.selectedFiatSymbol,
+                                              widget.coinBalance.coin.abbr
+                                                  .toUpperCase(),
+                                            ])
+                                      .map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (a) {
+                                    setState(() {
+                                      hasIsCryptoCheckboxBeenToggled = true;
+                                      currencyType = a;
+                                      widget.cryptoListener.text = currencyType;
+                                    });
+                                    onChange();
+                                  },
+                                ),
+                              )),
                           // The validator receives the text the user has typed in
                           validator: (String value) {
                             if (value.isEmpty && coinsDetailBloc.isCancel) {
@@ -206,34 +244,12 @@ class _AmountFieldState extends State<AmountField> {
               ],
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Expanded(
-                  child: Row(
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)
-                            .specifyInFiat(isInCrypto ? 'Crypto' : 'Fiat'),
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      Switch(
-                        key: const Key('specify-in-fiat'),
-                        value: isInCrypto,
-                        onChanged: (a) {
-                          setState(() {
-                            hasIsCryptoCheckboxBeenToggled = true;
-                            isInCrypto = !isInCrypto;
-                            widget.cryptoListener.text = isInCrypto.toString();
-                          });
-                          onChange();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
                 CexFiatPreview(
                   amount: amountPreview,
                   coinAbbr: widget.coinBalance.coin.abbr,
-                  isInCrypto: isInCrypto,
+                  currencyType: currencyType,
                 ),
               ],
             ),

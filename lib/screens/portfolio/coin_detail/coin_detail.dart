@@ -78,7 +78,7 @@ class _CoinDetailState extends State<CoinDetail> {
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
   final TextEditingController _cryptoListener =
-      TextEditingController(text: 'true');
+      TextEditingController(text: 'USD');
 
   @override
   void initState() {
@@ -792,7 +792,8 @@ class _CoinDetailState extends State<CoinDetail> {
           isExpanded = false;
           listSteps.add(BuildConfirmationStep(
             coinBalance: currentCoinBalance,
-            amountToPay: _cryptoListener.text == 'true'
+            amountToPay: _cryptoListener.text !=
+                    currentCoinBalance.coin.abbr.toUpperCase()
                 ? _amountController.text
                 : convertToCryptoFromFiat(),
             addressToSend: _addressController.text,
