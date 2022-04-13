@@ -35,7 +35,6 @@ class AmountField extends StatefulWidget {
 class _AmountFieldState extends State<AmountField> {
   String amountPreview = '';
   CexProvider cexProvider;
-  bool hasIsCryptoCheckboxBeenToggled = false;
   String currencyType;
   bool isLastPressedMax = false;
 
@@ -52,30 +51,39 @@ class _AmountFieldState extends State<AmountField> {
     widget.controller.addListener(_amountPreviewListener);
   }
 
-  void onChange() {
+  void onChange({bool isDropdownChange = false}) {
     final String text = widget.controller.text.replaceAll(',', '.');
     if (text.isNotEmpty) {
       setState(() {
         if (currencyType == 'USD') {
           final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
 
-          if ((isLastPressedMax && hasIsCryptoCheckboxBeenToggled) ||
+          if ((isLastPressedMax) ||
               (widget.coinBalance != null &&
                   double.parse(text) > double.parse(coinBalanceUsd))) {
             setMaxValue();
           }
         } else if (currencyType ==
             cexProvider.selectedFiatSymbol.toUpperCase()) {
+          final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
+
+          final String convertedBalance = cexProvider
+              .convert(double.parse(coinBalanceUsd), hideSymbol: true);
+
+          if ((isLastPressedMax) ||
+              (widget.coinBalance != null &&
+                  double.parse(text) > double.parse(convertedBalance))) {
+            setMaxValue();
+          }
         } else {
-          if ((isLastPressedMax && hasIsCryptoCheckboxBeenToggled) ||
+          if ((isLastPressedMax) ||
               (widget.coinBalance != null &&
                   double.parse(text) >
                       double.parse(widget.coinBalance.balance.getBalance()))) {
             setMaxValue();
           }
         }
-        isLastPressedMax = false;
-        hasIsCryptoCheckboxBeenToggled = false;
+        if (!isDropdownChange) isLastPressedMax = false;
       });
     }
   }
@@ -86,9 +94,11 @@ class _AmountFieldState extends State<AmountField> {
       if (currencyType == 'USD') {
         final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
 
+        widget.controller.text = coinBalanceUsd;
+      } else if (currencyType == cexProvider.selectedFiat.toUpperCase()) {
+        final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
         widget.controller.text =
             cexProvider.convert(double.parse(coinBalanceUsd), hideSymbol: true);
-      } else if (currencyType == cexProvider.selectedFiatSymbol.toUpperCase()) {
       } else {
         widget.controller.text = widget.coinBalance.balance.getBalance();
       }
@@ -183,19 +193,12 @@ class _AmountFieldState extends State<AmountField> {
                                   underline: SizedBox(),
                                   alignment: Alignment.centerRight,
                                   value: currencyType,
-                                  items: (cexProvider.selectedFiatSymbol == '\$'
-                                          ? [
-                                              'USD',
-                                              widget.coinBalance.coin.abbr
-                                                  .toUpperCase(),
-                                            ]
-                                          : [
-                                              'USD',
-                                              cexProvider.selectedFiatSymbol,
-                                              widget.coinBalance.coin.abbr
-                                                  .toUpperCase(),
-                                            ])
-                                      .map((String value) {
+                                  items: [
+                                    'USD',
+                                    widget.coinBalance.coin.abbr.toUpperCase(),
+                                    if (cexProvider.selectedFiat != 'USD')
+                                      cexProvider.selectedFiat,
+                                  ].map((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
                                       child: Text(
@@ -208,7 +211,6 @@ class _AmountFieldState extends State<AmountField> {
                                   }).toList(),
                                   onChanged: (a) {
                                     setState(() {
-                                      hasIsCryptoCheckboxBeenToggled = true;
                                       currencyType = a;
                                       widget.cryptoListener.text = currencyType;
                                     });

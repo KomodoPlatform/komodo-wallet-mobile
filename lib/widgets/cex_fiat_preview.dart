@@ -23,14 +23,15 @@ class CexFiatPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cexProvider = Provider.of<CexProvider>(context);
-    double amountUsd = 0;
-    final double price = cexProvider.getUsdPrice(coinAbbr);
     final amountParsed = double.tryParse(amount) ?? 0.0;
-    if (currencyType == 'USD') {
-      amountUsd = amountParsed / price;
-    } else if (currencyType == cexProvider.selectedFiatSymbol.toUpperCase()) {
+    String convertedValue;
+
+    if (currencyType != coinAbbr) {
+      convertedValue =
+          cexProvider.convert(amountParsed, from: currencyType, to: coinAbbr);
     } else {
-      amountUsd = amountParsed * price;
+      convertedValue = cexProvider.convert(amountParsed,
+          from: coinAbbr, to: cexProvider.selectedFiat);
     }
 
     return Row(
@@ -44,8 +45,7 @@ class CexFiatPreview extends StatelessWidget {
         ),
         SizedBox(width: 2),
         Text(
-          cexProvider.convert(amountUsd, hideSymbol: currencyType != coinAbbr) +
-              (currencyType == coinAbbr ? '' : ' ' + coinAbbr),
+          convertedValue,
           style: textStyle ??
               TextStyle(
                 fontSize: 14,

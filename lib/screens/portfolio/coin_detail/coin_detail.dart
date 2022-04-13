@@ -766,11 +766,20 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   String convertToCryptoFromFiat() {
-    final double price = cexProvider.getUsdPrice(widget.coinBalance.coin.abbr);
     final amountParsed = double.tryParse(_amountController.text) ?? 0.0;
-    double amount = amountParsed / price;
-    double balance = double.parse(widget.coinBalance.balance.getBalance());
-    return balance < amount ? balance.toString() : amount.toString();
+    if (_cryptoListener.text == widget.coinBalance.coin.abbr.toUpperCase()) {
+      return _amountController.text;
+    } else if (_cryptoListener.text == cexProvider.selectedFiat) {
+      return cexProvider.convert(amountParsed,
+          from: _cryptoListener.text.toUpperCase(),
+          to: widget.coinBalance.coin.abbr.toLowerCase(),
+          hideSymbol: true);
+    } else {
+      return cexProvider.convert(amountParsed,
+          from: _cryptoListener.text.toUpperCase(),
+          to: widget.coinBalance.coin.abbr.toLowerCase(),
+          hideSymbol: true);
+    }
   }
 
   void initSteps() {
@@ -792,10 +801,7 @@ class _CoinDetailState extends State<CoinDetail> {
           isExpanded = false;
           listSteps.add(BuildConfirmationStep(
             coinBalance: currentCoinBalance,
-            amountToPay: _cryptoListener.text !=
-                    currentCoinBalance.coin.abbr.toUpperCase()
-                ? _amountController.text
-                : convertToCryptoFromFiat(),
+            amountToPay: convertToCryptoFromFiat(),
             addressToSend: _addressController.text,
             onCancel: () {
               setState(() {
