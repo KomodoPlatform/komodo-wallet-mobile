@@ -52,6 +52,7 @@ class _AmountFieldState extends State<AmountField> {
   }
 
   void onChange({bool isDropdownChange = false}) {
+    if (!isDropdownChange) isLastPressedMax = false;
     final String text = widget.controller.text.replaceAll(',', '.');
     if (text.isNotEmpty) {
       setState(() {
@@ -83,7 +84,6 @@ class _AmountFieldState extends State<AmountField> {
             setMaxValue();
           }
         }
-        if (!isDropdownChange) isLastPressedMax = false;
       });
     }
   }
@@ -183,7 +183,7 @@ class _AmountFieldState extends State<AmountField> {
                           textAlign: TextAlign.end,
                           onChanged: (String amount) {
                             coinsDetailBloc.setAmountToSend(amount);
-                            onChange();
+                            onChange(isDropdownChange: true);
                           },
                           decoration: InputDecoration(
                               labelText: AppLocalizations.of(context).amount,
