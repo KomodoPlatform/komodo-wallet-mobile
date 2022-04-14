@@ -57,7 +57,8 @@ class _AmountFieldState extends State<AmountField> {
     if (text.isNotEmpty) {
       setState(() {
         if (currencyType == 'USD') {
-          final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
+          final String coinBalanceUsd = cexProvider
+              .convert(widget.coinBalance.balanceUSD, hideSymbol: true);
 
           if ((isLastPressedMax) ||
               (widget.coinBalance != null &&
@@ -66,7 +67,8 @@ class _AmountFieldState extends State<AmountField> {
           }
         } else if (currencyType ==
             cexProvider.selectedFiatSymbol.toUpperCase()) {
-          final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
+          final String coinBalanceUsd = cexProvider
+              .convert(widget.coinBalance.balanceUSD, hideSymbol: true);
 
           final String convertedBalance = cexProvider
               .convert(double.parse(coinBalanceUsd), hideSymbol: true);
@@ -80,7 +82,9 @@ class _AmountFieldState extends State<AmountField> {
           if ((isLastPressedMax) ||
               (widget.coinBalance != null &&
                   double.parse(text) >
-                      double.parse(widget.coinBalance.balance.getBalance()))) {
+                      double.parse(cexProvider.convert(
+                          widget.coinBalance.balanceUSD,
+                          hideSymbol: true)))) {
             setMaxValue();
           }
         }
@@ -92,11 +96,13 @@ class _AmountFieldState extends State<AmountField> {
     widget.focusNode.unfocus();
     setState(() {
       if (currencyType == 'USD') {
-        final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
+        final String coinBalanceUsd = cexProvider
+            .convert(widget.coinBalance.balanceUSD, hideSymbol: true);
 
         widget.controller.text = coinBalanceUsd;
       } else if (currencyType == cexProvider.selectedFiat.toUpperCase()) {
-        final String coinBalanceUsd = widget.coinBalance.getBalanceUSD();
+        final String coinBalanceUsd = cexProvider
+            .convert(widget.coinBalance.balanceUSD, hideSymbol: true);
         widget.controller.text =
             cexProvider.convert(double.parse(coinBalanceUsd), hideSymbol: true);
       } else {

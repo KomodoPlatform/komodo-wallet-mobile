@@ -425,8 +425,6 @@ class _CoinDetailState extends State<CoinDetail> {
                             currentCoinBalance.balance.getBalance();
                         final String unspendableBalance =
                             currentCoinBalance.balance.getUnspendableBalance();
-                        final String coinBalanceUsd =
-                            currentCoinBalance.getBalanceUSD();
                         bool hidden = false;
                         if (showBalance.hasData && showBalance.data == false) {
                           coinBalance = '**.**';
@@ -452,7 +450,7 @@ class _CoinDetailState extends State<CoinDetail> {
                                 ),
                               ),
                             Text(cexProvider.convert(
-                              double.parse(coinBalanceUsd),
+                              currentCoinBalance.balanceUSD,
                               hidden: hidden,
                             )),
                           ],
