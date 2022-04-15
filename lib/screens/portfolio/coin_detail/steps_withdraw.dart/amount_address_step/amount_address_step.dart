@@ -73,12 +73,14 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               controller: widget.amountController,
               autoFocus: widget.autoFocus,
               coinAbbr: widget.coin.abbr,
+              formKey: formKey,
             ),
             AddressField(
               addressFormat: widget.coin.addressFormat,
               controller: widget.addressController,
               onScan: scan,
               coin: widget.coin,
+              formKey: formKey,
             ),
             // Temporary disable custom fee for qrc20 tokens
             if (!(widget.coin.type == 'qrc'))
@@ -218,7 +220,9 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               widget.amountController.text =
                   widget.amountController.text.replaceAll(',', '.');
             });
-            if (formKey.currentState.validate()) {
+            if (formKey.currentState.validate() &&
+                widget.addressController.text.isNotEmpty &&
+                widget.amountController.text.isNotEmpty) {
               widget.onWithdrawPressed();
             }
           },

@@ -15,7 +15,8 @@ class AmountField extends StatefulWidget {
       this.focusNode,
       this.controller,
       this.autoFocus = false,
-      this.coinAbbr})
+      this.coinAbbr,
+      this.formKey})
       : super(key: key);
 
   final Function onMaxValue;
@@ -23,6 +24,7 @@ class AmountField extends StatefulWidget {
   final TextEditingController controller;
   final bool autoFocus;
   final String coinAbbr;
+  final GlobalKey<FormState> formKey;
 
   @override
   _AmountFieldState createState() => _AmountFieldState();
@@ -101,6 +103,9 @@ class _AmountFieldState extends State<AmountField> {
                           focusNode: widget.focusNode,
                           controller: widget.controller,
                           autofocus: widget.autoFocus,
+                          autovalidateMode: widget.controller.text.isNotEmpty
+                              ? AutovalidateMode.always
+                              : AutovalidateMode.disabled,
                           textInputAction: TextInputAction.done,
                           keyboardType: const TextInputType.numberWithOptions(
                             decimal: true,
@@ -115,6 +120,9 @@ class _AmountFieldState extends State<AmountField> {
                           ),
                           // The validator receives the text the user has typed in
                           validator: (String value) {
+                            if (value.isEmpty) {
+                              return null;
+                            }
                             if (value.isEmpty && coinsDetailBloc.isCancel) {
                               return null;
                             }
