@@ -120,9 +120,6 @@ class _AmountFieldState extends State<AmountField> {
                           ),
                           // The validator receives the text the user has typed in
                           validator: (String value) {
-                            if (value.isEmpty) {
-                              return null;
-                            }
                             if (value.isEmpty && coinsDetailBloc.isCancel) {
                               return null;
                             }

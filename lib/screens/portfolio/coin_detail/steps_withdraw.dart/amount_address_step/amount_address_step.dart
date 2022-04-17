@@ -49,6 +49,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   String barcode = '';
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool isCancel = false;
+  bool autovalidate = false;
+  bool isWithdrawPressed = false;
 
   @override
   void initState() {
@@ -64,6 +66,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       padding: const EdgeInsets.all(16),
       child: Form(
         key: formKey,
+        autovalidateMode:
+            autovalidate ? AutovalidateMode.always : AutovalidateMode.disabled,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -80,7 +84,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               controller: widget.addressController,
               onScan: scan,
               coin: widget.coin,
-              formKey: formKey,
+              onChanged: onAddressChanged,
             ),
             // Temporary disable custom fee for qrc20 tokens
             if (!(widget.coin.type == 'qrc'))
@@ -217,6 +221,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
             // Validate will return true if the form is valid, or false if
             // the form is invalid.
             setState(() {
+              isWithdrawPressed = true;
               widget.amountController.text =
                   widget.amountController.text.replaceAll(',', '.');
             });
@@ -229,6 +234,17 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
         );
       },
     );
+  }
+
+  onAddressChanged(String a) {
+    if (isWithdrawPressed && a.isEmpty) {
+      autovalidate = false;
+      formKey.currentState.validate();
+    } else if (isWithdrawPressed) {
+      autovalidate = true;
+    }
+
+    setState(() {});
   }
 
   Future<void> scan() async {

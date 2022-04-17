@@ -14,14 +14,14 @@ class AddressField extends StatefulWidget {
     this.controller,
     this.addressFormat,
     this.coin,
-    this.formKey,
+    this.onChanged,
   }) : super(key: key);
 
   final Function onScan;
   final TextEditingController controller;
   final Map<String, dynamic> addressFormat;
   final Coin coin;
-  final GlobalKey<FormState> formKey;
+  final Function(String) onChanged;
 
   @override
   _AddressFieldState createState() => _AddressFieldState();
@@ -73,11 +73,7 @@ class _AddressFieldState extends State<AddressField> {
                       ? AutovalidateMode.always
                       : AutovalidateMode.disabled,
                   autocorrect: false,
-                  onChanged: (a) {
-                    if (a.isEmpty) {
-                      widget.formKey.currentState.validate();
-                    }
-                  },
+                  onChanged: widget.onChanged,
                   enableSuggestions: false,
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.text,
@@ -103,7 +99,7 @@ class _AddressFieldState extends State<AddressField> {
                   ),
                   // The validator receives the text the user has typed in
                   validator: (String value) {
-                    if (value.isEmpty) {
+                    if (!autovalidate && value.isEmpty) {
                       return null;
                     }
                     if (value.isEmpty && coinsDetailBloc.isCancel) {
@@ -209,6 +205,7 @@ class _AddressFieldState extends State<AddressField> {
         convertMessage = null;
       });
     }
+
     if (widget.controller.text.isEmpty) {
       setState(() {
         autovalidate = false;
