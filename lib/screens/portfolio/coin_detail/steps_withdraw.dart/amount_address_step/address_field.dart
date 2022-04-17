@@ -99,9 +99,6 @@ class _AddressFieldState extends State<AddressField> {
                   ),
                   // The validator receives the text the user has typed in
                   validator: (String value) {
-                    if (!autovalidate && value.isEmpty) {
-                      return null;
-                    }
                     if (value.isEmpty && coinsDetailBloc.isCancel) {
                       return null;
                     }
