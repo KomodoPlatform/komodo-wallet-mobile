@@ -77,11 +77,12 @@ class _CoinDetailState extends State<CoinDetail> {
   bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
-  final TextEditingController _cryptoListener =
-      TextEditingController(text: 'USD');
+  TextEditingController _cryptoListener;
 
   @override
   void initState() {
+    _cryptoListener =
+        TextEditingController(text: widget.coinBalance.coin.abbr.toUpperCase());
     isSendIsActive = widget.isSendIsActive;
     currentCoinBalance = widget.coinBalance;
     if (isSendIsActive) {
@@ -764,20 +765,22 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   String convertToCryptoFromFiat() {
+    String convertedVal;
     final amountParsed = double.tryParse(_amountController.text) ?? 0.0;
     if (_cryptoListener.text == widget.coinBalance.coin.abbr.toUpperCase()) {
-      return _amountController.text;
+      convertedVal = _amountController.text;
     } else if (_cryptoListener.text == cexProvider.selectedFiat) {
-      return cexProvider.convert(amountParsed,
-          from: _cryptoListener.text.toUpperCase(),
-          to: widget.coinBalance.coin.abbr.toLowerCase(),
+      convertedVal = cexProvider.convert(amountParsed,
+          from: _cryptoListener.text,
+          to: widget.coinBalance.coin.abbr,
           hideSymbol: true);
     } else {
-      return cexProvider.convert(amountParsed,
-          from: _cryptoListener.text.toUpperCase(),
-          to: widget.coinBalance.coin.abbr.toLowerCase(),
+      convertedVal = cexProvider.convert(amountParsed,
+          from: _cryptoListener.text,
+          to: widget.coinBalance.coin.abbr,
           hideSymbol: true);
     }
+    return convertedVal;
   }
 
   void initSteps() {
