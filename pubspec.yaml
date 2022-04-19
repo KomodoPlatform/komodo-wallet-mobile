@@ -162,7 +162,15 @@ dev_dependencies:
   # to a plugin that only does Argon2, therefore dropping our dependency on
   # flutter_sodium completely
 
-  dargon2_flutter: 2.1.0 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
+#  dargon2_flutter:
+#    path: /Users/*/*/*/dargon2/dargon2_flutter/dargon2_flutter
+
+
+  dargon2_flutter:
+    git:
+      url: https://github.com/KomodoPlatform/dargon2
+      ref: update-dependencies
+      path: dargon2_flutter/dargon2_flutter/
 
   #flutter_sodium: 0.2.0 # needs secure code review
 
