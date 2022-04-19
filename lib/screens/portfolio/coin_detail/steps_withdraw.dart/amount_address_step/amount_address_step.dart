@@ -77,7 +77,6 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               controller: widget.amountController,
               autoFocus: widget.autoFocus,
               coinAbbr: widget.coin.abbr,
-              formKey: formKey,
             ),
             AddressField(
               addressFormat: widget.coin.addressFormat,
@@ -237,14 +236,14 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   }
 
   onAddressChanged(String a) {
-    if (isWithdrawPressed && a.isEmpty) {
-      autovalidate = false;
-      formKey.currentState.validate();
-    } else if (isWithdrawPressed) {
-      autovalidate = true;
-    }
-
-    setState(() {});
+    setState(() {
+      if (isWithdrawPressed && a.isEmpty) {
+        autovalidate = false;
+        formKey.currentState.validate();
+      } else if (isWithdrawPressed) {
+        autovalidate = true;
+      }
+    });
   }
 
   Future<void> scan() async {

@@ -9,22 +9,20 @@ import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
 
 class AmountField extends StatefulWidget {
-  const AmountField(
-      {Key key,
-      this.onMaxValue,
-      this.focusNode,
-      this.controller,
-      this.autoFocus = false,
-      this.coinAbbr,
-      this.formKey})
-      : super(key: key);
+  const AmountField({
+    Key key,
+    this.onMaxValue,
+    this.focusNode,
+    this.controller,
+    this.autoFocus = false,
+    this.coinAbbr,
+  }) : super(key: key);
 
   final Function onMaxValue;
   final FocusNode focusNode;
   final TextEditingController controller;
   final bool autoFocus;
   final String coinAbbr;
-  final GlobalKey<FormState> formKey;
 
   @override
   _AmountFieldState createState() => _AmountFieldState();
