@@ -221,17 +221,48 @@ packages:
   dargon2_core:
     dependency: transitive
     description:
-      name: dargon2_core
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
+      path: dargon2_core
+      ref: update-dependencies
+      resolved-ref: "4bc2386a665da0e754b6a3d04d0860ea08ad079c"
+      url: "https://github.com/KomodoPlatform/dargon2"
+    source: git
+    version: "2.1.0"
   dargon2_flutter:
     dependency: "direct dev"
     description:
-      name: dargon2_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
+      path: "dargon2_flutter/dargon2_flutter"
+      ref: update-dependencies
+      resolved-ref: "4bc2386a665da0e754b6a3d04d0860ea08ad079c"
+      url: "https://github.com/KomodoPlatform/dargon2"
+    source: git
+    version: "3.1.0"
+  dargon2_flutter_mobile:
+    dependency: transitive
+    description:
+      path: "dargon2_flutter/dargon2_flutter_mobile"
+      ref: update-dependencies
+      resolved-ref: "4bc2386a665da0e754b6a3d04d0860ea08ad079c"
+      url: "https://github.com/KomodoPlatform/dargon2"
+    source: git
+    version: "3.1.0"
+  dargon2_flutter_platform_interface:
+    dependency: transitive
+    description:
+      path: "dargon2_flutter/dargon2_flutter_platform_interface"
+      ref: update-dependencies
+      resolved-ref: "4bc2386a665da0e754b6a3d04d0860ea08ad079c"
+      url: "https://github.com/KomodoPlatform/dargon2"
+    source: git
+    version: "3.1.0"
+  dargon2_interface:
+    dependency: transitive
+    description:
+      path: dargon2_interface
+      ref: update-dependencies
+      resolved-ref: "4bc2386a665da0e754b6a3d04d0860ea08ad079c"
+      url: "https://github.com/KomodoPlatform/dargon2"
+    source: git
+    version: "1.1.0"
   dart_style:
     dependency: transitive
     description:
