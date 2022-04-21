@@ -29,7 +29,6 @@ class AmountAddressStep extends StatefulWidget {
     this.onCancel,
     this.coinBalance,
     this.paymentUriInfo,
-    this.cryptoListener,
   }) : super(key: key);
 
   final Function onCancel;
@@ -38,7 +37,6 @@ class AmountAddressStep extends StatefulWidget {
   final Function onWithdrawPressed;
   final TextEditingController amountController;
   final TextEditingController addressController;
-  final TextEditingController cryptoListener;
   final bool autoFocus;
   final CoinBalance coinBalance;
   final PaymentUriInfo paymentUriInfo;
@@ -70,12 +68,12 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             AmountField(
-                onMaxValue: widget.onMaxValue,
-                focusNode: widget.focusNode,
-                controller: widget.amountController,
-                autoFocus: widget.autoFocus,
-                coinBalance: widget.coinBalance,
-                cryptoListener: widget.cryptoListener),
+              onMaxValue: widget.onMaxValue,
+              focusNode: widget.focusNode,
+              controller: widget.amountController,
+              autoFocus: widget.autoFocus,
+              coinBalance: widget.coinBalance,
+            ),
             AddressField(
               addressFormat: widget.coinBalance.coin.addressFormat,
               controller: widget.addressController,

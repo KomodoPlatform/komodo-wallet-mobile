@@ -18,7 +18,6 @@ class AmountField extends StatefulWidget {
     this.controller,
     this.autoFocus = false,
     this.coinBalance,
-    this.cryptoListener,
   }) : super(key: key);
 
   final bool autoFocus;
@@ -26,7 +25,6 @@ class AmountField extends StatefulWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final Function onMaxValue;
-  final TextEditingController cryptoListener;
 
   @override
   _AmountFieldState createState() => _AmountFieldState();
@@ -124,7 +122,7 @@ class _AmountFieldState extends State<AmountField> {
   _onCurrencyTypeChange(String a) {
     setState(() {
       currencyType = a;
-      widget.cryptoListener.text = currencyType;
+      cexProvider.setSelectedCurrencyType(currencyType);
     });
     _onChange(isDropdownChange: true);
   }

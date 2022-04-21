@@ -77,12 +77,14 @@ class _CoinDetailState extends State<CoinDetail> {
   bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
-  TextEditingController _currencyType;
 
   @override
   void initState() {
-    _currencyType =
-        TextEditingController(text: widget.coinBalance.coin.abbr.toUpperCase());
+    cexProvider ??= Provider.of<CexProvider>(context, listen: false);
+    // set default coin
+    cexProvider
+        .setSelectedCurrencyType(widget.coinBalance.coin.abbr.toUpperCase());
+
     isSendIsActive = widget.isSendIsActive;
     currentCoinBalance = widget.coinBalance;
     if (isSendIsActive) {
@@ -135,7 +137,6 @@ class _CoinDetailState extends State<CoinDetail> {
     _amountController.dispose();
     _addressController.dispose();
     _scrollController.dispose();
-    _currencyType.dispose();
     coinsBloc.resetTransactions();
     if (timer != null) {
       timer.cancel();
@@ -767,16 +768,17 @@ class _CoinDetailState extends State<CoinDetail> {
   String _getWithdrawAmountCrypto() {
     String convertedVal;
     final amountParsed = double.tryParse(_amountController.text) ?? 0.0;
-    if (_currencyType.text == widget.coinBalance.coin.abbr.toUpperCase()) {
+    if (cexProvider.selectedCurrencyType ==
+        widget.coinBalance.coin.abbr.toUpperCase()) {
       convertedVal = _amountController.text;
-    } else if (_currencyType.text == cexProvider.selectedFiat) {
+    } else if (cexProvider.selectedCurrencyType == cexProvider.selectedFiat) {
       convertedVal = cexProvider.convert(amountParsed,
-          from: _currencyType.text,
+          from: cexProvider.selectedCurrencyType,
           to: widget.coinBalance.coin.abbr,
           showSymbol: false);
     } else {
       convertedVal = cexProvider.convert(amountParsed,
-          from: _currencyType.text,
+          from: cexProvider.selectedCurrencyType,
           to: widget.coinBalance.coin.abbr,
           showSymbol: false);
     }
@@ -790,7 +792,6 @@ class _CoinDetailState extends State<CoinDetail> {
     listSteps.add(AmountAddressStep(
       coinBalance: widget.coinBalance,
       paymentUriInfo: widget.paymentUriInfo,
-      cryptoListener: _currencyType,
       onCancel: () {
         setState(() {
           isExpanded = false;
