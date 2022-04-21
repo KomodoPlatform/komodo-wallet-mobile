@@ -126,6 +126,7 @@ class _AmountFieldState extends State<AmountField> {
       currencyType = a;
       widget.cryptoListener.text = currencyType;
     });
+    _onChange(isDropdownChange: true);
   }
 
   @override
@@ -220,10 +221,7 @@ class _AmountFieldState extends State<AmountField> {
                                       ),
                                     );
                                   }).toList(),
-                                  onChanged: (a) {
-                                    _onCurrencyTypeChange(a);
-                                    _onChange(isDropdownChange: true);
-                                  },
+                                  onChanged: _onCurrencyTypeChange,
                                 ),
                               )),
                           // The validator receives the text the user has typed in
