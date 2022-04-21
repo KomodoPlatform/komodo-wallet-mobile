@@ -48,7 +48,6 @@ class AmountAddressStep extends StatefulWidget {
 class _AmountAddressStepState extends State<AmountAddressStep> {
   String barcode = '';
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  bool isCancel = false;
   bool autovalidate = false;
   bool isWithdrawPressed = false;
 
@@ -77,13 +76,14 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               controller: widget.amountController,
               autoFocus: widget.autoFocus,
               coinAbbr: widget.coin.abbr,
+              onChanged: onChanged,
             ),
             AddressField(
               addressFormat: widget.coin.addressFormat,
               controller: widget.addressController,
               onScan: scan,
               coin: widget.coin,
-              onChanged: onAddressChanged,
+              onChanged: onChanged,
             ),
             // Temporary disable custom fee for qrc20 tokens
             if (!(widget.coin.type == 'qrc'))
@@ -235,7 +235,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     );
   }
 
-  onAddressChanged(String a) {
+  onChanged(String a) {
     setState(() {
       if (isWithdrawPressed && a.isEmpty) {
         autovalidate = false;

@@ -16,6 +16,7 @@ class AmountField extends StatefulWidget {
     this.controller,
     this.autoFocus = false,
     this.coinAbbr,
+    this.onChanged,
   }) : super(key: key);
 
   final Function onMaxValue;
@@ -23,6 +24,7 @@ class AmountField extends StatefulWidget {
   final TextEditingController controller;
   final bool autoFocus;
   final String coinAbbr;
+  final Function(String) onChanged;
 
   @override
   _AmountFieldState createState() => _AmountFieldState();
@@ -112,6 +114,7 @@ class _AmountFieldState extends State<AmountField> {
                           textAlign: TextAlign.end,
                           onChanged: (String amount) {
                             coinsDetailBloc.setAmountToSend(amount);
+                            widget.onChanged(amount);
                           },
                           decoration: InputDecoration(
                             labelText: AppLocalizations.of(context).amount,
