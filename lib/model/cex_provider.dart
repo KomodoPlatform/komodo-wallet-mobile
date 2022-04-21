@@ -46,14 +46,14 @@ class CexProvider extends ChangeNotifier {
     String from,
     String to,
     bool hidden = false,
-    bool hideSymbol = false,
+    bool showSymbol = true,
   }) =>
       cexPrices.convert(
         volume,
         from: from,
         to: to,
         hidden: hidden,
-        hideSymbol: hideSymbol,
+        showSymbol: showSymbol,
       );
 
   List<String> get fiatList => cexPrices.fiatList;
@@ -475,7 +475,7 @@ class CexPrices {
     String from,
     String to,
     bool hidden = false,
-    bool hideSymbol = false,
+    bool showSymbol = true,
   }) {
     from ??= 'USD';
     to ??= currencies == null ? null : currencies[_activeCurrency];
@@ -525,7 +525,7 @@ class CexPrices {
     final NumberFormat format = NumberFormat.simpleCurrency(name: to);
     final String currencySymbol = format.currencySymbol;
 
-    if (hideSymbol) {
+    if (!showSymbol) {
       return converted;
     }
     if (_isFiat(to)) {

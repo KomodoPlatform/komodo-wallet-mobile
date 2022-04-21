@@ -77,11 +77,11 @@ class _CoinDetailState extends State<CoinDetail> {
   bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
-  TextEditingController _cryptoListener;
+  TextEditingController _currencyType;
 
   @override
   void initState() {
-    _cryptoListener =
+    _currencyType =
         TextEditingController(text: widget.coinBalance.coin.abbr.toUpperCase());
     isSendIsActive = widget.isSendIsActive;
     currentCoinBalance = widget.coinBalance;
@@ -135,7 +135,7 @@ class _CoinDetailState extends State<CoinDetail> {
     _amountController.dispose();
     _addressController.dispose();
     _scrollController.dispose();
-    _cryptoListener.dispose();
+    _currencyType.dispose();
     coinsBloc.resetTransactions();
     if (timer != null) {
       timer.cancel();
@@ -764,21 +764,21 @@ class _CoinDetailState extends State<CoinDetail> {
     });
   }
 
-  String convertToCryptoFromFiat() {
+  String _getWithdrawAmountCrypto() {
     String convertedVal;
     final amountParsed = double.tryParse(_amountController.text) ?? 0.0;
-    if (_cryptoListener.text == widget.coinBalance.coin.abbr.toUpperCase()) {
+    if (_currencyType.text == widget.coinBalance.coin.abbr.toUpperCase()) {
       convertedVal = _amountController.text;
-    } else if (_cryptoListener.text == cexProvider.selectedFiat) {
+    } else if (_currencyType.text == cexProvider.selectedFiat) {
       convertedVal = cexProvider.convert(amountParsed,
-          from: _cryptoListener.text,
+          from: _currencyType.text,
           to: widget.coinBalance.coin.abbr,
-          hideSymbol: true);
+          showSymbol: false);
     } else {
       convertedVal = cexProvider.convert(amountParsed,
-          from: _cryptoListener.text,
+          from: _currencyType.text,
           to: widget.coinBalance.coin.abbr,
-          hideSymbol: true);
+          showSymbol: false);
     }
     return convertedVal;
   }
@@ -790,7 +790,7 @@ class _CoinDetailState extends State<CoinDetail> {
     listSteps.add(AmountAddressStep(
       coinBalance: widget.coinBalance,
       paymentUriInfo: widget.paymentUriInfo,
-      cryptoListener: _cryptoListener,
+      cryptoListener: _currencyType,
       onCancel: () {
         setState(() {
           isExpanded = false;
@@ -802,7 +802,7 @@ class _CoinDetailState extends State<CoinDetail> {
           isExpanded = false;
           listSteps.add(BuildConfirmationStep(
             coinBalance: currentCoinBalance,
-            amountToPay: convertToCryptoFromFiat(),
+            amountToPay: _getWithdrawAmountCrypto(),
             addressToSend: _addressController.text,
             onCancel: () {
               setState(() {
@@ -896,7 +896,6 @@ class _CoinDetailState extends State<CoinDetail> {
           isExpanded = true;
         });
       },
-      //  onMaxValue: setMaxValue,
       focusNode: _focus,
       addressController: _addressController,
       amountController: _amountController,
