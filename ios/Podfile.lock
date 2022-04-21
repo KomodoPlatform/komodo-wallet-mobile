@@ -90,7 +90,7 @@ DEPENDENCIES:
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
 SPEC REPOS:
-  https://github.com/MateusRodCosta/KomodoSpecs.git:
+  https://github.com/KomodoPlatform/KomodoSpecs:
     - Argon2Swift
   trunk:
     - DKImagePickerController
@@ -155,6 +155,6 @@ SPEC CHECKSUMS:
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   url_launcher: b6e016d912f04be9f5bf6e8e82dc599b7ba59649
 
-PODFILE CHECKSUM: 312b9abd0adc6252f6a94b17d5dc9c003488563e
+PODFILE CHECKSUM: 27a6c267a3008439b348635e7a45262538d04644
 
 COCOAPODS: 1.11.3
