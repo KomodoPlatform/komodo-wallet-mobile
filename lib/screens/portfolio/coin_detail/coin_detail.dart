@@ -82,8 +82,7 @@ class _CoinDetailState extends State<CoinDetail> {
   void initState() {
     cexProvider ??= Provider.of<CexProvider>(context, listen: false);
     // set default coin
-    cexProvider
-        .setSelectedCurrencyType(widget.coinBalance.coin.abbr.toUpperCase());
+    cexProvider.withdrawCurrency = widget.coinBalance.coin.abbr.toUpperCase();
 
     isSendIsActive = widget.isSendIsActive;
     currentCoinBalance = widget.coinBalance;
@@ -768,17 +767,17 @@ class _CoinDetailState extends State<CoinDetail> {
   String _getWithdrawAmountCrypto() {
     String convertedVal;
     final amountParsed = double.tryParse(_amountController.text) ?? 0.0;
-    if (cexProvider.selectedCurrencyType ==
+    if (cexProvider.withdrawCurrency ==
         widget.coinBalance.coin.abbr.toUpperCase()) {
       convertedVal = _amountController.text;
-    } else if (cexProvider.selectedCurrencyType == cexProvider.selectedFiat) {
+    } else if (cexProvider.withdrawCurrency == cexProvider.selectedFiat) {
       convertedVal = cexProvider.convert(amountParsed,
-          from: cexProvider.selectedCurrencyType,
+          from: cexProvider.withdrawCurrency,
           to: widget.coinBalance.coin.abbr,
           showSymbol: false);
     } else {
       convertedVal = cexProvider.convert(amountParsed,
-          from: cexProvider.selectedCurrencyType,
+          from: cexProvider.withdrawCurrency,
           to: widget.coinBalance.coin.abbr,
           showSymbol: false);
     }

@@ -62,9 +62,12 @@ class CexProvider extends ChangeNotifier {
   String get selectedFiatSymbol => cexPrices.selectedFiatSymbol;
   set selectedFiat(String value) => cexPrices.selectedFiat = value;
 
-  String _currencyType;
-  String get selectedCurrencyType => _currencyType;
-  void setSelectedCurrencyType(String value) => _currencyType = value;
+  String _withdrawCurrency;
+  String get withdrawCurrency => _withdrawCurrency;
+  set withdrawCurrency(String value) {
+    _withdrawCurrency = value;
+    notifyListeners();
+  }
 
   void switchCurrency() {
     int idx = cexPrices.activeCurrency;

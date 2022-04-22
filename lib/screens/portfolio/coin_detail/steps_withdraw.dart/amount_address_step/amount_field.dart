@@ -33,7 +33,6 @@ class AmountField extends StatefulWidget {
 class _AmountFieldState extends State<AmountField> {
   String amountPreview = '';
   CexProvider cexProvider;
-  String currencyType;
   bool isLastPressedMax = false;
 
   @override
@@ -45,71 +44,57 @@ class _AmountFieldState extends State<AmountField> {
   @override
   void initState() {
     super.initState();
-    currencyType = widget.coinBalance.coin.abbr.toUpperCase();
     widget.controller.addListener(_amountPreviewListener);
   }
 
-  void _onChange({bool isDropdownChange = false}) {
-    if (!isDropdownChange) isLastPressedMax = false;
-    final String text = widget.controller.text.replaceAll(',', '.');
-    if (text.isNotEmpty) {
-      setState(() {
-        if (currencyType == 'USD') {
-          final String coinBalanceUsd =
-              widget.coinBalance.balanceUSD.toString();
+  void _onChange() {
+    if (widget.controller.text.isEmpty) return;
+    final double amount =
+        double.parse(widget.controller.text.replaceAll(',', '.'));
+    if (cexProvider.withdrawCurrency == 'USD') {
+      if (isLastPressedMax || (amount > widget.coinBalance.balanceUSD)) {
+        _setMaxValue();
+      }
+    } else if (cexProvider.withdrawCurrency ==
+        cexProvider.selectedFiat.toUpperCase()) {
+      final double convertedBalance = double.parse(cexProvider.convert(
+          widget.coinBalance.balanceUSD,
+          showSymbol: false,
+          to: cexProvider.selectedFiat.toUpperCase()));
 
-          if ((isLastPressedMax) ||
-              (widget.coinBalance != null &&
-                  double.parse(text) > double.parse(coinBalanceUsd))) {
-            _setMaxValue();
-          }
-        } else if (currencyType == cexProvider.selectedFiat.toUpperCase()) {
-          final String convertedBalance = cexProvider.convert(
-              widget.coinBalance.balanceUSD,
-              showSymbol: false,
-              to: cexProvider.selectedFiat.toUpperCase());
-
-          if ((isLastPressedMax) ||
-              (widget.coinBalance != null &&
-                  double.parse(text) > double.parse(convertedBalance))) {
-            _setMaxValue();
-          }
-        } else {
-          if ((isLastPressedMax) ||
-              (widget.coinBalance != null &&
-                  double.parse(text) >
-                      double.parse(widget.coinBalance.balance.getBalance()))) {
-            _setMaxValue();
-          }
-        }
-      });
+      if (isLastPressedMax || (amount > convertedBalance)) {
+        _setMaxValue();
+      }
+    } else {
+      if (isLastPressedMax ||
+          amount > widget.coinBalance.balance.balance.toDouble()) {
+        _setMaxValue();
+      }
     }
   }
 
   Future<void> _setMaxValue() async {
     widget.focusNode.unfocus();
-    setState(() {
-      if (currencyType == 'USD') {
-        final String coinBalanceUsd = cexProvider.convert(
-            widget.coinBalance.balanceUSD,
-            showSymbol: false,
-            to: 'USD');
 
-        widget.controller.text = coinBalanceUsd;
-      } else if (currencyType == cexProvider.selectedFiat.toUpperCase()) {
-        widget.controller.text = cexProvider.convert(
-            widget.coinBalance.balanceUSD,
-            showSymbol: false,
-            to: cexProvider.selectedFiat);
-      } else {
-        widget.controller.text = widget.coinBalance.balance.getBalance();
-      }
-    });
+    if (cexProvider.withdrawCurrency == 'USD') {
+      final String coinBalanceUsd = cexProvider
+          .convert(widget.coinBalance.balanceUSD, showSymbol: false, to: 'USD');
+
+      widget.controller.text = coinBalanceUsd;
+    } else if (cexProvider.withdrawCurrency ==
+        cexProvider.selectedFiat.toUpperCase()) {
+      widget.controller.text = cexProvider.convert(
+          widget.coinBalance.balanceUSD,
+          showSymbol: false,
+          to: cexProvider.selectedFiat);
+    } else {
+      widget.controller.text = widget.coinBalance.balance.getBalance();
+    }
+
     await Future<dynamic>.delayed(const Duration(milliseconds: 0), () {
-      setState(() {
-        FocusScope.of(context).requestFocus(widget.focusNode);
-      });
+      FocusScope.of(context).requestFocus(widget.focusNode);
     });
+
     coinsDetailBloc.setAmountToSend(widget.controller.text);
   }
 
@@ -121,10 +106,10 @@ class _AmountFieldState extends State<AmountField> {
 
   _onCurrencyTypeChange(String a) {
     setState(() {
-      currencyType = a;
-      cexProvider.setSelectedCurrencyType(currencyType);
+      isLastPressedMax = false;
+      cexProvider.withdrawCurrency = a;
     });
-    _onChange(isDropdownChange: true);
+    _onChange();
   }
 
   @override
@@ -193,6 +178,7 @@ class _AmountFieldState extends State<AmountField> {
                           textAlign: TextAlign.end,
                           onChanged: (String amount) {
                             coinsDetailBloc.setAmountToSend(amount);
+                            setState(() => isLastPressedMax = false);
                             _onChange();
                           },
                           decoration: InputDecoration(
@@ -202,7 +188,7 @@ class _AmountFieldState extends State<AmountField> {
                                 child: DropdownButton<String>(
                                   underline: SizedBox(),
                                   alignment: Alignment.centerRight,
-                                  value: currencyType,
+                                  value: cexProvider.withdrawCurrency,
                                   items: [
                                     'USD',
                                     widget.coinBalance.coin.abbr.toUpperCase(),
@@ -237,12 +223,12 @@ class _AmountFieldState extends State<AmountField> {
                             final double currentAmount = double.parse(value);
                             double coinBalanceUsd;
 
-                            if (currencyType == 'USD') {
+                            if (cexProvider.withdrawCurrency == 'USD') {
                               final String convertedBalance = cexProvider
                                   .convert(currentCoinBalance.balanceUSD,
                                       showSymbol: false, to: 'USD');
                               coinBalanceUsd = double.parse(convertedBalance);
-                            } else if (currencyType ==
+                            } else if (cexProvider.withdrawCurrency ==
                                 cexProvider.selectedFiat.toUpperCase()) {
                               final String convertedBalance = cexProvider
                                   .convert(currentCoinBalance.balanceUSD,
@@ -275,7 +261,7 @@ class _AmountFieldState extends State<AmountField> {
                 CexFiatPreview(
                   amount: amountPreview,
                   coinAbbr: widget.coinBalance.coin.abbr,
-                  currencyType: currencyType,
+                  currencyType: cexProvider.withdrawCurrency,
                 ),
               ],
             ),
