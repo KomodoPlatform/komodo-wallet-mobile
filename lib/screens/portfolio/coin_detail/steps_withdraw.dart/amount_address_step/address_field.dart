@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -34,6 +36,7 @@ class _AddressFieldState extends State<AddressField> {
 
   @override
   void initState() {
+    _isCoinActive();
     widget.controller.addListener(() {
       if (!mounted) return;
       _validate();
@@ -42,6 +45,30 @@ class _AddressFieldState extends State<AddressField> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _updateAddressFromClipboard();
+    });
+  }
+
+  @override
+  void dispose() {
+    _coinIsActiveCountdown?.cancel();
+    super.dispose();
+  }
+
+  Timer _coinIsActiveCountdown;
+
+  Future<void> _isCoinActive() async {
+    _coinIsActiveCountdown =
+        Timer.periodic(Duration(milliseconds: 300), (_) async {
+      final dynamic error = await MM.validateAddress(
+        address: widget.controller.text,
+        coin: widget.coin.abbr,
+      );
+      if (error == null) {
+        _coinIsActiveCountdown.cancel();
+        _validate();
+      } else {
+        await Future.delayed(Duration(milliseconds: 300));
+      }
     });
   }
 
