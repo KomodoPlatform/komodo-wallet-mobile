@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -14,12 +16,14 @@ class AddressField extends StatefulWidget {
     this.controller,
     this.addressFormat,
     this.coin,
+    this.onChanged,
   }) : super(key: key);
 
   final Function onScan;
   final TextEditingController controller;
   final Map<String, dynamic> addressFormat;
   final Coin coin;
+  final Function(String) onChanged;
 
   @override
   _AddressFieldState createState() => _AddressFieldState();
@@ -32,6 +36,7 @@ class _AddressFieldState extends State<AddressField> {
 
   @override
   void initState() {
+    _isCoinActive();
     widget.controller.addListener(() {
       if (!mounted) return;
       _validate();
@@ -40,6 +45,30 @@ class _AddressFieldState extends State<AddressField> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _updateAddressFromClipboard();
+    });
+  }
+
+  @override
+  void dispose() {
+    _coinIsActiveCountdown?.cancel();
+    super.dispose();
+  }
+
+  Timer _coinIsActiveCountdown;
+
+  Future<void> _isCoinActive() async {
+    _coinIsActiveCountdown =
+        Timer.periodic(Duration(milliseconds: 300), (_) async {
+      final dynamic error = await MM.validateAddress(
+        address: widget.controller.text,
+        coin: widget.coin.abbr,
+      );
+      if (error == null) {
+        _coinIsActiveCountdown.cancel();
+        _validate();
+      } else {
+        await Future.delayed(Duration(milliseconds: 300));
+      }
     });
   }
 
@@ -71,6 +100,7 @@ class _AddressFieldState extends State<AddressField> {
                       ? AutovalidateMode.always
                       : AutovalidateMode.disabled,
                   autocorrect: false,
+                  onChanged: widget.onChanged,
                   enableSuggestions: false,
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.text,
@@ -197,6 +227,12 @@ class _AddressFieldState extends State<AddressField> {
     } else {
       setState(() {
         convertMessage = null;
+      });
+    }
+
+    if (widget.controller.text.isEmpty) {
+      setState(() {
+        autovalidate = false;
       });
     }
   }
