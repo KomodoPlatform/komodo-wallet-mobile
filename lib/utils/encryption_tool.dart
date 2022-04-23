@@ -79,4 +79,4 @@ class EncryptionTool {
   Future<void> delete(String key) async => await storage.delete(key: key);
 }
 
-enum KeyEncryption { SEED, PIN }
+enum KeyEncryption { SEED, PIN, CAMOPIN }

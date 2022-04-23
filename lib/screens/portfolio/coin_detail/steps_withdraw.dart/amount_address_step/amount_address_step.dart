@@ -48,7 +48,8 @@ class AmountAddressStep extends StatefulWidget {
 class _AmountAddressStepState extends State<AmountAddressStep> {
   String barcode = '';
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  bool isCancel = false;
+  bool autovalidate = false;
+  bool isWithdrawPressed = false;
 
   @override
   void initState() {
@@ -64,6 +65,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       padding: const EdgeInsets.all(16),
       child: Form(
         key: formKey,
+        autovalidateMode:
+            autovalidate ? AutovalidateMode.always : AutovalidateMode.disabled,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -73,12 +76,14 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               controller: widget.amountController,
               autoFocus: widget.autoFocus,
               coinBalance: widget.coinBalance,
+              onChanged: onChanged,
             ),
             AddressField(
               addressFormat: widget.coinBalance.coin.addressFormat,
               controller: widget.addressController,
               onScan: scan,
               coin: widget.coinBalance.coin,
+              onChanged: onChanged,
             ),
             // Temporary disable custom fee for qrc20 tokens
             if (!(widget.coinBalance.coin.type == 'qrc'))
@@ -215,16 +220,30 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
             // Validate will return true if the form is valid, or false if
             // the form is invalid.
             setState(() {
+              isWithdrawPressed = true;
               widget.amountController.text =
                   widget.amountController.text.replaceAll(',', '.');
             });
-            if (formKey.currentState.validate()) {
+            if (formKey.currentState.validate() &&
+                widget.addressController.text.isNotEmpty &&
+                widget.amountController.text.isNotEmpty) {
               widget.onWithdrawPressed();
             }
           },
         );
       },
     );
+  }
+
+  onChanged(String a) {
+    setState(() {
+      if (isWithdrawPressed && a.isEmpty) {
+        autovalidate = false;
+        formKey.currentState.validate();
+      } else if (isWithdrawPressed) {
+        autovalidate = true;
+      }
+    });
   }
 
   Future<void> scan() async {

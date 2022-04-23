@@ -18,6 +18,7 @@ class AmountField extends StatefulWidget {
     this.controller,
     this.autoFocus = false,
     this.coinBalance,
+    this.onChanged,
   }) : super(key: key);
 
   final bool autoFocus;
@@ -25,6 +26,7 @@ class AmountField extends StatefulWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final Function onMaxValue;
+  final Function(String) onChanged;
 
   @override
   _AmountFieldState createState() => _AmountFieldState();
@@ -170,6 +172,9 @@ class _AmountFieldState extends State<AmountField> {
                           focusNode: widget.focusNode,
                           controller: widget.controller,
                           autofocus: widget.autoFocus,
+                          autovalidateMode: widget.controller.text.isNotEmpty
+                              ? AutovalidateMode.always
+                              : AutovalidateMode.disabled,
                           textInputAction: TextInputAction.done,
                           keyboardType: const TextInputType.numberWithOptions(
                             decimal: true,
@@ -180,6 +185,8 @@ class _AmountFieldState extends State<AmountField> {
                             coinsDetailBloc.setAmountToSend(amount);
                             setState(() => isMaxPressed = false);
                             _onChange();
+                            widget.onChanged(amount);
+
                           },
                           decoration: InputDecoration(
                               labelText: AppLocalizations.of(context).amount,

@@ -3,12 +3,13 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/confirmation_dialog.dart';
-import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
+import 'package:provider/provider.dart';
 
 class CamoPinSetupPage extends StatefulWidget {
   @override
@@ -17,9 +18,13 @@ class CamoPinSetupPage extends StatefulWidget {
 
 class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
   String _matchingPinErrorMessage;
+  WalletSecuritySettingsProvider walletSecuritySettingsProvider;
 
   @override
   Widget build(BuildContext context) {
+    walletSecuritySettingsProvider =
+        context.read<WalletSecuritySettingsProvider>();
+
     _matchingPinErrorMessage =
         AppLocalizations.of(context).matchingCamoPinError;
     _showMatchingPinPopupIfNeeded();
@@ -133,44 +138,36 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
               builder: (context, AsyncSnapshot<String> normalPin) {
                 if (!normalPin.hasData) return SizedBox();
 
-                return SharedPreferencesBuilder<dynamic>(
-                    pref: 'switch_pin',
-                    builder: (BuildContext context,
-                        AsyncSnapshot<dynamic> normalPinEnabled) {
-                      if (!normalPinEnabled.hasData) return SizedBox();
+                if (walletSecuritySettingsProvider.activatePinProtection) {
+                  return FutureBuilder<String>(
+                      future: EncryptionTool().read('camoPin'),
+                      builder: (context, AsyncSnapshot<String> camoPin) {
+                        if (!camoPin.hasData) return SizedBox();
+                        if (camoPin.data != normalPin.data) return SizedBox();
 
-                      if (normalPinEnabled.data) {
-                        return FutureBuilder<String>(
-                            future: EncryptionTool().read('camoPin'),
-                            builder: (context, AsyncSnapshot<String> camoPin) {
-                              if (!camoPin.hasData) return SizedBox();
-                              if (camoPin.data != normalPin.data)
-                                return SizedBox();
-
-                              return Container(
-                                padding: const EdgeInsets.all(18),
-                                child: Text(
-                                  _matchingPinErrorMessage,
-                                  style: TextStyle(
-                                    color: Theme.of(context).errorColor,
-                                    height: 1.2,
-                                  ),
-                                ),
-                              );
-                            });
-                      } else {
                         return Container(
                           padding: const EdgeInsets.all(18),
                           child: Text(
-                            AppLocalizations.of(context).generalPinNotActive,
+                            _matchingPinErrorMessage,
                             style: TextStyle(
                               color: Theme.of(context).errorColor,
                               height: 1.2,
                             ),
                           ),
                         );
-                      }
-                    });
+                      });
+                } else {
+                  return Container(
+                    padding: const EdgeInsets.all(18),
+                    child: Text(
+                      AppLocalizations.of(context).generalPinNotActive,
+                      style: TextStyle(
+                        color: Theme.of(context).errorColor,
+                        height: 1.2,
+                      ),
+                    ),
+                  );
+                }
               });
         });
   }
