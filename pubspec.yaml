@@ -158,21 +158,15 @@ dev_dependencies:
       #url: git://github.com/KomodoPlatform/dart-decimal.git
       #ref: 93fcaabe2da686b1987a351a03a70e86edf6504f
 
-  # MRC: Argon2 was our only remaining use of flutter_sodium, so I'm now switching
-  # to a plugin that only does Argon2, therefore dropping our dependency on
+  # MRC: Argon2 algo was our only remaining use of flutter_sodium, so I have switched
+  # to dargon2_flutter, which does only Argon2, therefore dropping our dependency on
   # flutter_sodium completely
-
-#  dargon2_flutter:
-#    path: /Users/*/*/*/dargon2/dargon2_flutter/dargon2_flutter
-
 
   dargon2_flutter:
     git:
       url: https://github.com/KomodoPlatform/dargon2
       ref: update-dependencies
       path: dargon2_flutter/dargon2_flutter/
-
-  #flutter_sodium: 0.2.0 # needs secure code review
 
 flutter_icons:
   android: true
