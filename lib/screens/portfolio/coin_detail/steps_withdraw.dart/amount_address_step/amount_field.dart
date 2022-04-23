@@ -104,11 +104,11 @@ class _AmountFieldState extends State<AmountField> {
     });
   }
 
-  _onCurrencyTypeChange(String a) {
+  _onCurrencyTypeChange(String currency) {
     setState(() {
       isMaxPressed = false;
     });
-    cexProvider.withdrawCurrency = a;
+    cexProvider.withdrawCurrency = currency;
     _onChange();
   }
 
