@@ -491,12 +491,11 @@ class _CoinDetailState extends State<CoinDetail> {
                 padding: const EdgeInsets.only(right: 8),
                 child: _buildButtonLight(StatusButton.PUBKEY, mContext),
               )),
-            if (double.parse(currentCoinBalance.balance.getBalance()) > 0)
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.only(right: 16),
-                child: _buildButtonLight(StatusButton.SEND, mContext),
-              )),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: _buildButtonLight(StatusButton.SEND, mContext),
+            )),
           ],
         ),
         const SizedBox(
@@ -645,6 +644,12 @@ class _CoinDetailState extends State<CoinDetail> {
                 address: currentCoinBalance.balance.address);
             break;
           case StatusButton.SEND:
+            if (double.parse(currentCoinBalance.balance.getBalance()) == 0) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(AppLocalizations.of(context).noFundsDetected),
+              ));
+              return;
+            }
             if (currentIndex == 3) {
               setState(() {
                 isExpanded = false;
