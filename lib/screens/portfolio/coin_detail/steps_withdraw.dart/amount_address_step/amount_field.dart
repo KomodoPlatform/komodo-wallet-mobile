@@ -33,7 +33,7 @@ class AmountField extends StatefulWidget {
 class _AmountFieldState extends State<AmountField> {
   String amountPreview = '';
   CexProvider cexProvider;
-  bool isLastPressedMax = false;
+  bool isMaxPressed = false;
 
   @override
   void dispose() {
@@ -52,7 +52,7 @@ class _AmountFieldState extends State<AmountField> {
     final double amount =
         double.parse(widget.controller.text.replaceAll(',', '.'));
     if (cexProvider.withdrawCurrency == 'USD') {
-      if (isLastPressedMax || (amount > widget.coinBalance.balanceUSD)) {
+      if (isMaxPressed || (amount > widget.coinBalance.balanceUSD)) {
         _setMaxValue();
       }
     } else if (cexProvider.withdrawCurrency ==
@@ -62,11 +62,11 @@ class _AmountFieldState extends State<AmountField> {
           showSymbol: false,
           to: cexProvider.selectedFiat.toUpperCase()));
 
-      if (isLastPressedMax || (amount > convertedBalance)) {
+      if (isMaxPressed || (amount > convertedBalance)) {
         _setMaxValue();
       }
     } else {
-      if (isLastPressedMax ||
+      if (isMaxPressed ||
           amount > widget.coinBalance.balance.balance.toDouble()) {
         _setMaxValue();
       }
@@ -106,9 +106,9 @@ class _AmountFieldState extends State<AmountField> {
 
   _onCurrencyTypeChange(String a) {
     setState(() {
-      isLastPressedMax = false;
-      cexProvider.withdrawCurrency = a;
+      isMaxPressed = false;
     });
+    cexProvider.withdrawCurrency = a;
     _onChange();
   }
 
@@ -127,7 +127,7 @@ class _AmountFieldState extends State<AmountField> {
                   height: 60,
                   child: TextButton(
                     onPressed: () {
-                      isLastPressedMax = true;
+                      isMaxPressed = true;
                       _setMaxValue();
                     },
                     style: TextButton.styleFrom(
@@ -178,7 +178,7 @@ class _AmountFieldState extends State<AmountField> {
                           textAlign: TextAlign.end,
                           onChanged: (String amount) {
                             coinsDetailBloc.setAmountToSend(amount);
-                            setState(() => isLastPressedMax = false);
+                            setState(() => isMaxPressed = false);
                             _onChange();
                           },
                           decoration: InputDecoration(
@@ -189,6 +189,7 @@ class _AmountFieldState extends State<AmountField> {
                                   underline: SizedBox(),
                                   alignment: Alignment.centerRight,
                                   value: cexProvider.withdrawCurrency,
+                                  dropdownColor: Theme.of(context).primaryColor,
                                   items: [
                                     'USD',
                                     widget.coinBalance.coin.abbr.toUpperCase(),
