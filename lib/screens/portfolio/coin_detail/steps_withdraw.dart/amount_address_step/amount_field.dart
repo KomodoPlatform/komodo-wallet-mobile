@@ -186,7 +186,6 @@ class _AmountFieldState extends State<AmountField> {
                             setState(() => isMaxPressed = false);
                             _onChange();
                             widget.onChanged(amount);
-
                           },
                           decoration: InputDecoration(
                               labelText: AppLocalizations.of(context).amount,
@@ -198,9 +197,11 @@ class _AmountFieldState extends State<AmountField> {
                                   value: cexProvider.withdrawCurrency,
                                   dropdownColor: Theme.of(context).primaryColor,
                                   items: [
-                                    'USD',
+                                    if (widget.coinBalance.balanceUSD != 0)
+                                      'USD',
                                     widget.coinBalance.coin.abbr.toUpperCase(),
-                                    if (cexProvider.selectedFiat != 'USD')
+                                    if (cexProvider.selectedFiat != 'USD' &&
+                                        widget.coinBalance.balanceUSD != 0)
                                       cexProvider.selectedFiat,
                                   ].map((String value) {
                                     return DropdownMenuItem<String>(
