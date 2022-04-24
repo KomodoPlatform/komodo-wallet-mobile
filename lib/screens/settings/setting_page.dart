@@ -190,6 +190,8 @@ class _SettingPageState extends State<SettingPage> {
           // and it does not take too much time to
           // break it, and get access to users funds.
           walletSecuritySettingsProvider.activateBioProtection = false;
+          walletSecuritySettingsProvider.activatePinProtection = false;
+        } else {
           Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
@@ -199,11 +201,13 @@ class _SettingPageState extends State<SettingPage> {
                   LockScreen(
                 context: context,
                 pinStatus: PinStatus.DISABLED_PIN,
+                onSuccess: () {
+                  walletSecuritySettingsProvider.activatePinProtection =
+                      switchValue;
+                },
               ),
             ),
           ).then((dynamic _) => setState(() {}));
-        } else {
-          walletSecuritySettingsProvider.activatePinProtection = switchValue;
         }
       },
     );
