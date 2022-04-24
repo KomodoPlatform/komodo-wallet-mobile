@@ -190,32 +190,46 @@ class _AmountFieldState extends State<AmountField> {
                           decoration: InputDecoration(
                               labelText: AppLocalizations.of(context).amount,
                               suffixIcon: Padding(
-                                padding: EdgeInsets.only(right: 6.0),
-                                child: DropdownButton<String>(
-                                  underline: SizedBox(),
-                                  alignment: Alignment.centerRight,
-                                  value: cexProvider.withdrawCurrency,
-                                  dropdownColor: Theme.of(context).primaryColor,
-                                  items: [
-                                    if (widget.coinBalance.balanceUSD != 0)
-                                      'USD',
-                                    widget.coinBalance.coin.abbr.toUpperCase(),
-                                    if (cexProvider.selectedFiat != 'USD' &&
-                                        widget.coinBalance.balanceUSD != 0)
-                                      cexProvider.selectedFiat,
-                                  ].map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1,
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: widget.coinBalance.balanceUSD == 0
+                                    ? Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            widget.coinBalance.coin.abbr
+                                                .toUpperCase(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          )
+                                        ],
+                                      )
+                                    : DropdownButton<String>(
+                                        underline: SizedBox(),
+                                        alignment: Alignment.centerRight,
+                                        value: cexProvider.withdrawCurrency,
+                                        dropdownColor:
+                                            Theme.of(context).primaryColor,
+                                        items: [
+                                          'USD',
+                                          widget.coinBalance.coin.abbr
+                                              .toUpperCase(),
+                                          if (cexProvider.selectedFiat != 'USD')
+                                            cexProvider.selectedFiat,
+                                        ].map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1,
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: _onCurrencyTypeChange,
                                       ),
-                                    );
-                                  }).toList(),
-                                  onChanged: _onCurrencyTypeChange,
-                                ),
                               )),
                           // The validator receives the text the user has typed in
                           validator: (String value) {
