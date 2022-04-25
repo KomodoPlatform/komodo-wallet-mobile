@@ -80,6 +80,10 @@ class _CoinDetailState extends State<CoinDetail> {
 
   @override
   void initState() {
+    cexProvider ??= Provider.of<CexProvider>(context, listen: false);
+    // set default coin
+    cexProvider.withdrawCurrency = widget.coinBalance.coin.abbr.toUpperCase();
+
     isSendIsActive = widget.isSendIsActive;
     currentCoinBalance = widget.coinBalance;
     if (isSendIsActive) {
@@ -105,7 +109,6 @@ class _CoinDetailState extends State<CoinDetail> {
         .then((Transaction t) {
       if (t != null) latestTransaction = t;
     });
-    _amountController.addListener(onChange);
     super.initState();
 
     _scrollController.addListener(() {
@@ -140,33 +143,6 @@ class _CoinDetailState extends State<CoinDetail> {
     mainBloc.isUrlLaucherIsOpen = false;
     coinsDetailBloc.resetCustomFee();
     super.dispose();
-  }
-
-  void onChange() {
-    final String text = _amountController.text.replaceAll(',', '.');
-    if (text.isNotEmpty) {
-      setState(() {
-        if (currentCoinBalance != null &&
-            text.isNotEmpty &&
-            double.parse(text) >
-                double.parse(currentCoinBalance.balance.getBalance())) {
-          setMaxValue();
-        }
-      });
-    }
-  }
-
-  Future<void> setMaxValue() async {
-    _focus.unfocus();
-    setState(() {
-      _amountController.text = currentCoinBalance.balance.getBalance();
-    });
-    await Future<dynamic>.delayed(const Duration(milliseconds: 0), () {
-      setState(() {
-        FocusScope.of(context).requestFocus(_focus);
-      });
-    });
-    coinsDetailBloc.setAmountToSend(_amountController.text);
   }
 
   @override
@@ -450,8 +426,6 @@ class _CoinDetailState extends State<CoinDetail> {
                             currentCoinBalance.balance.getBalance();
                         final String unspendableBalance =
                             currentCoinBalance.balance.getUnspendableBalance();
-                        final String coinBalanceUsd =
-                            currentCoinBalance.getBalanceUSD();
                         bool hidden = false;
                         if (showBalance.hasData && showBalance.data == false) {
                           coinBalance = '**.**';
@@ -477,7 +451,7 @@ class _CoinDetailState extends State<CoinDetail> {
                                 ),
                               ),
                             Text(cexProvider.convert(
-                              double.parse(coinBalanceUsd),
+                              currentCoinBalance.balanceUSD,
                               hidden: hidden,
                             )),
                           ],
@@ -720,7 +694,7 @@ class _CoinDetailState extends State<CoinDetail> {
             margin:
                 const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
             elevation: 8.0,
-            child: SingleChildScrollView(child: listSteps[currentIndex])),
+            child: listSteps[currentIndex]),
       ),
     );
   }
@@ -795,12 +769,32 @@ class _CoinDetailState extends State<CoinDetail> {
     });
   }
 
+  String _getWithdrawAmountCrypto() {
+    String convertedVal;
+    final amountParsed = double.tryParse(_amountController.text) ?? 0.0;
+    if (cexProvider.withdrawCurrency ==
+        widget.coinBalance.coin.abbr.toUpperCase()) {
+      convertedVal = _amountController.text;
+    } else if (cexProvider.withdrawCurrency == cexProvider.selectedFiat) {
+      convertedVal = cexProvider.convert(amountParsed,
+          from: cexProvider.withdrawCurrency,
+          to: widget.coinBalance.coin.abbr,
+          showSymbol: false);
+    } else {
+      convertedVal = cexProvider.convert(amountParsed,
+          from: cexProvider.withdrawCurrency,
+          to: widget.coinBalance.coin.abbr,
+          showSymbol: false);
+    }
+    return convertedVal;
+  }
+
   void initSteps() {
     _amountController.clear();
     _addressController.clear();
     listSteps.clear();
     listSteps.add(AmountAddressStep(
-      coin: widget.coinBalance.coin,
+      coinBalance: widget.coinBalance,
       paymentUriInfo: widget.paymentUriInfo,
       onCancel: () {
         setState(() {
@@ -813,7 +807,7 @@ class _CoinDetailState extends State<CoinDetail> {
           isExpanded = false;
           listSteps.add(BuildConfirmationStep(
             coinBalance: currentCoinBalance,
-            amountToPay: _amountController.text,
+            amountToPay: _getWithdrawAmountCrypto(),
             addressToSend: _addressController.text,
             onCancel: () {
               setState(() {
@@ -907,7 +901,6 @@ class _CoinDetailState extends State<CoinDetail> {
           isExpanded = true;
         });
       },
-      onMaxValue: setMaxValue,
       focusNode: _focus,
       addressController: _addressController,
       amountController: _amountController,

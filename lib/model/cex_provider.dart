@@ -46,12 +46,14 @@ class CexProvider extends ChangeNotifier {
     String from,
     String to,
     bool hidden = false,
+    bool showSymbol = true,
   }) =>
       cexPrices.convert(
         volume,
         from: from,
         to: to,
         hidden: hidden,
+        showSymbol: showSymbol,
       );
 
   List<String> get fiatList => cexPrices.fiatList;
@@ -59,6 +61,13 @@ class CexProvider extends ChangeNotifier {
   String get selectedFiat => cexPrices.selectedFiat;
   String get selectedFiatSymbol => cexPrices.selectedFiatSymbol;
   set selectedFiat(String value) => cexPrices.selectedFiat = value;
+
+  String _withdrawCurrency;
+  String get withdrawCurrency => _withdrawCurrency;
+  set withdrawCurrency(String value) {
+    _withdrawCurrency = value;
+    notifyListeners();
+  }
 
   void switchCurrency() {
     int idx = cexPrices.activeCurrency;
@@ -473,6 +482,7 @@ class CexPrices {
     String from,
     String to,
     bool hidden = false,
+    bool showSymbol = true,
   }) {
     from ??= 'USD';
     to ??= currencies == null ? null : currencies[_activeCurrency];
@@ -522,6 +532,9 @@ class CexPrices {
     final NumberFormat format = NumberFormat.simpleCurrency(name: to);
     final String currencySymbol = format.currencySymbol;
 
+    if (!showSymbol) {
+      return converted;
+    }
     if (_isFiat(to)) {
       if (currencySymbol.length > 1) {
         return '$sign$converted $currencySymbol';

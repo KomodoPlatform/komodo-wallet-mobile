@@ -4,9 +4,11 @@ import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
+import 'package:provider/provider.dart';
 
 class AmountField extends StatefulWidget {
   const AmountField({
@@ -15,15 +17,15 @@ class AmountField extends StatefulWidget {
     this.focusNode,
     this.controller,
     this.autoFocus = false,
-    this.coinAbbr,
+    this.coinBalance,
     this.onChanged,
   }) : super(key: key);
 
-  final Function onMaxValue;
-  final FocusNode focusNode;
-  final TextEditingController controller;
   final bool autoFocus;
-  final String coinAbbr;
+  final CoinBalance coinBalance;
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final Function onMaxValue;
   final Function(String) onChanged;
 
   @override
@@ -32,6 +34,14 @@ class AmountField extends StatefulWidget {
 
 class _AmountFieldState extends State<AmountField> {
   String amountPreview = '';
+  CexProvider cexProvider;
+  bool isMaxPressed = false;
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_amountPreviewListener);
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -39,10 +49,55 @@ class _AmountFieldState extends State<AmountField> {
     widget.controller.addListener(_amountPreviewListener);
   }
 
-  @override
-  void dispose() {
-    widget.controller.removeListener(_amountPreviewListener);
-    super.dispose();
+  void _onChange() {
+    if (widget.controller.text.isEmpty) return;
+    final double amount =
+        double.parse(widget.controller.text.replaceAll(',', '.'));
+    if (cexProvider.withdrawCurrency == 'USD') {
+      if (isMaxPressed || (amount > widget.coinBalance.balanceUSD)) {
+        _setMaxValue();
+      }
+    } else if (cexProvider.withdrawCurrency ==
+        cexProvider.selectedFiat.toUpperCase()) {
+      final double convertedBalance = double.parse(cexProvider.convert(
+          widget.coinBalance.balanceUSD,
+          showSymbol: false,
+          to: cexProvider.selectedFiat.toUpperCase()));
+
+      if (isMaxPressed || (amount > convertedBalance)) {
+        _setMaxValue();
+      }
+    } else {
+      if (isMaxPressed ||
+          amount > widget.coinBalance.balance.balance.toDouble()) {
+        _setMaxValue();
+      }
+    }
+  }
+
+  Future<void> _setMaxValue() async {
+    widget.focusNode.unfocus();
+
+    if (cexProvider.withdrawCurrency == 'USD') {
+      final String coinBalanceUsd = cexProvider
+          .convert(widget.coinBalance.balanceUSD, showSymbol: false, to: 'USD');
+
+      widget.controller.text = coinBalanceUsd;
+    } else if (cexProvider.withdrawCurrency ==
+        cexProvider.selectedFiat.toUpperCase()) {
+      widget.controller.text = cexProvider.convert(
+          widget.coinBalance.balanceUSD,
+          showSymbol: false,
+          to: cexProvider.selectedFiat);
+    } else {
+      widget.controller.text = widget.coinBalance.balance.getBalance();
+    }
+
+    await Future<dynamic>.delayed(const Duration(milliseconds: 0), () {
+      FocusScope.of(context).requestFocus(widget.focusNode);
+    });
+
+    coinsDetailBloc.setAmountToSend(widget.controller.text);
   }
 
   void _amountPreviewListener() {
@@ -51,8 +106,18 @@ class _AmountFieldState extends State<AmountField> {
     });
   }
 
+  _onCurrencyTypeChange(String currency) {
+    setState(() {
+      isMaxPressed = false;
+    });
+    cexProvider.withdrawCurrency = currency;
+    _onChange();
+  }
+
   @override
   Widget build(BuildContext context) {
+    cexProvider = Provider.of<CexProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: SingleChildScrollView(
@@ -63,7 +128,10 @@ class _AmountFieldState extends State<AmountField> {
                 SizedBox(
                   height: 60,
                   child: TextButton(
-                    onPressed: widget.onMaxValue,
+                    onPressed: () {
+                      isMaxPressed = true;
+                      _setMaxValue();
+                    },
                     style: TextButton.styleFrom(
                       visualDensity: VisualDensity.compact,
                       primary: Theme.of(context).colorScheme.secondary,
@@ -87,7 +155,8 @@ class _AmountFieldState extends State<AmountField> {
                         CoinBalance currentCoinBalance;
                         if (snapshot.hasData) {
                           for (CoinBalance coinBalance in snapshot.data) {
-                            if (coinBalance.coin.abbr == widget.coinAbbr) {
+                            if (coinBalance.coin.abbr ==
+                                widget.coinBalance.coin.abbr) {
                               currentCoinBalance = coinBalance;
                             }
                           }
@@ -114,11 +183,54 @@ class _AmountFieldState extends State<AmountField> {
                           textAlign: TextAlign.end,
                           onChanged: (String amount) {
                             coinsDetailBloc.setAmountToSend(amount);
+                            setState(() => isMaxPressed = false);
+                            _onChange();
                             widget.onChanged(amount);
                           },
                           decoration: InputDecoration(
-                            labelText: AppLocalizations.of(context).amount,
-                          ),
+                              labelText: AppLocalizations.of(context).amount,
+                              suffixIcon: Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: widget.coinBalance.balanceUSD == 0
+                                    ? Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            widget.coinBalance.coin.abbr
+                                                .toUpperCase(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          )
+                                        ],
+                                      )
+                                    : DropdownButton<String>(
+                                        underline: SizedBox(),
+                                        alignment: Alignment.centerRight,
+                                        value: cexProvider.withdrawCurrency,
+                                        dropdownColor:
+                                            Theme.of(context).primaryColor,
+                                        items: [
+                                          'USD',
+                                          widget.coinBalance.coin.abbr
+                                              .toUpperCase(),
+                                          if (cexProvider.selectedFiat != 'USD')
+                                            cexProvider.selectedFiat,
+                                        ].map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1,
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: _onCurrencyTypeChange,
+                                      ),
+                              )),
                           // The validator receives the text the user has typed in
                           validator: (String value) {
                             if (value.isEmpty && coinsDetailBloc.isCancel) {
@@ -132,10 +244,30 @@ class _AmountFieldState extends State<AmountField> {
                             }
 
                             final double currentAmount = double.parse(value);
+                            double coinBalanceUsd;
 
-                            if (currentAmount >
-                                double.parse(
-                                    currentCoinBalance.balance.getBalance())) {
+                            if (cexProvider.withdrawCurrency == 'USD') {
+                              final String convertedBalance = cexProvider
+                                  .convert(currentCoinBalance.balanceUSD,
+                                      showSymbol: false, to: 'USD');
+                              coinBalanceUsd = double.parse(convertedBalance);
+                            } else if (cexProvider.withdrawCurrency ==
+                                cexProvider.selectedFiat.toUpperCase()) {
+                              final String convertedBalance = cexProvider
+                                  .convert(currentCoinBalance.balanceUSD,
+                                      showSymbol: false,
+                                      to: cexProvider.selectedFiat);
+                              print(convertedBalance);
+
+                              coinBalanceUsd = double.parse(convertedBalance);
+                            } else {
+                              final String convertedBalance =
+                                  currentCoinBalance.balance.getBalance();
+
+                              coinBalanceUsd = double.parse(convertedBalance);
+                            }
+
+                            if (currentAmount > coinBalanceUsd) {
                               return AppLocalizations.of(context)
                                   .errorAmountBalance;
                             }
@@ -146,9 +278,15 @@ class _AmountFieldState extends State<AmountField> {
                 ),
               ],
             ),
-            CexFiatPreview(
-              amount: amountPreview,
-              coinAbbr: widget.coinAbbr,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                CexFiatPreview(
+                  amount: amountPreview,
+                  coinAbbr: widget.coinBalance.coin.abbr,
+                  currencyType: cexProvider.withdrawCurrency,
+                ),
+              ],
             ),
           ],
         ),
