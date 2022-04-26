@@ -40,8 +40,8 @@ class BuildConfirmationStep extends StatefulWidget {
 class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   bool _showDetailedError = false;
   dynamic _withdrawResponse;
+  bool _closeStep = false;
 
-  bool closeStep = false;
   @override
   void initState() {
     super.initState();
@@ -120,7 +120,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
         isButtonActive = amountToPay > 0;
       }
 
-      return closeStep
+      return _closeStep
           ? SizedBox()
           : Padding(
               padding: const EdgeInsets.all(16.0),
@@ -256,7 +256,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                               AppLocalizations.of(context).cancel.toUpperCase(),
                           onPressed: () {
                             setState(() {
-                              closeStep = true;
+                              _closeStep = true;
                             });
                             widget.onCancel();
                           },
