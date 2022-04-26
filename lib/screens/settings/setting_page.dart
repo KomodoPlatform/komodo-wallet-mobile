@@ -201,10 +201,6 @@ class _SettingPageState extends State<SettingPage> {
                   LockScreen(
                 context: context,
                 pinStatus: PinStatus.DISABLED_PIN,
-                onSuccess: () {
-                  walletSecuritySettingsProvider.activatePinProtection =
-                      switchValue;
-                },
               ),
             ),
           ).then((dynamic _) => setState(() {}));
