@@ -189,7 +189,7 @@ Future<bool> authenticateBiometrics(
   }
 
   Log.println('utils:291', 'authenticateBiometrics');
-  if (walletSecuritySettingsProvider.activateBioProtection) {
+  if (!walletSecuritySettingsProvider.activateBioProtection) {
     final LocalAuthentication localAuth = LocalAuthentication();
     bool didAuthenticate = false;
 

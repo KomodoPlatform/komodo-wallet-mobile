@@ -233,6 +233,8 @@ class _SettingPageState extends State<SettingPage> {
               bool switchValue,
             ) {
               if (walletSecuritySettingsProvider.activateBioProtection) {
+                walletSecuritySettingsProvider.activateBioProtection = false;
+              } else {
                 authenticateBiometrics(
                   context,
                   PinStatus.DISABLED_PIN_BIOMETRIC,
@@ -240,23 +242,7 @@ class _SettingPageState extends State<SettingPage> {
                   bool passedBioCheck,
                 ) {
                   if (passedBioCheck) {
-                    walletSecuritySettingsProvider.activateBioProtection =
-                        false;
-                  }
-                });
-              } else {
-                SharedPreferences.getInstance().then((
-                  SharedPreferences data,
-                ) {
-                  walletSecuritySettingsProvider.activateBioProtection =
-                      switchValue;
-                  if (switchValue) {
-                    // Same situation here as above
-                    // on line 244 but from a
-                    // different angle. Just trying
-                    // to protect users from unreliable
-                    // !biometrics only! state.
-                    walletSecuritySettingsProvider.activatePinProtection = true;
+                    walletSecuritySettingsProvider.activateBioProtection = true;
                   }
                 });
               }
