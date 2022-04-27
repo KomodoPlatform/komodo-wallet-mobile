@@ -840,6 +840,8 @@ class AppLocalizations {
           name: 'searchFilterSubtitlePLG');
   String get searchFilterSubtitleQRC =>
       Intl.message('Select all QRC tokens', name: 'searchFilterSubtitleQRC');
+  String get searchFilterSubtitleFTM =>
+      Intl.message('Select all Fantom tokens', name: 'searchFilterSubtitleFTM');
   String get customFee => Intl.message('Custom fee', name: 'customFee');
   String get gasLimit => Intl.message('Gas limit', name: 'gasLimit');
   String get gasPrice => Intl.message('Gas price', name: 'gasPrice');
@@ -852,6 +854,7 @@ class AppLocalizations {
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagPLG20 => Intl.message('PLG20', name: 'tagPLG20');
+  String get tagFTM20 => Intl.message('FTM20', name: 'tagFTM20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',

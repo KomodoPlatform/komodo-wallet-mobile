@@ -250,7 +250,10 @@ class _CoinDetailState extends State<CoinDetail> {
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
     final String coinType = widget.coinBalance.coin.type;
-    if (coinType == 'erc' || coinType == 'bep' || coinType == 'plg') {
+    if (coinType == 'erc' ||
+        coinType == 'bep' ||
+        coinType == 'plg' ||
+        coinType == 'ftm') {
       return SizedBox();
     }
 

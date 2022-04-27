@@ -55,6 +55,7 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
   }
 
   String _getTitleText() {
+    print(widget.type);
     switch (widget.type) {
       case 'erc':
         return AppLocalizations.of(context).searchFilterSubtitleERC;
@@ -70,6 +71,9 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
         break;
       case 'utxo':
         return AppLocalizations.of(context).searchFilterSubtitleutxo;
+        break;
+      case 'ftm':
+        return AppLocalizations.of(context).searchFilterSubtitleFTM;
         break;
       case 'smartChain':
         return AppLocalizations.of(context).searchFilterSubtitleSmartChain;

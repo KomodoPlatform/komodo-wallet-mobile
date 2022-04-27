@@ -17,8 +17,10 @@ class GetConvertAddress {
   Map<String, dynamic> toJson() {
     final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
     final String coinType = coinBalance.coin.type;
-    final bool isERC =
-        coinType == 'erc' || coinType == 'bep' || coinType == 'plg';
+    final bool isERC = coinType == 'erc' ||
+        coinType == 'bep' ||
+        coinType == 'plg' ||
+        coinType == 'ftm';
 
     return <String, dynamic>{
       'method': method,

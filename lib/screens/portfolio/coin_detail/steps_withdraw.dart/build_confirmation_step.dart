@@ -49,7 +49,10 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
       Fee customFee;
       if (coinsDetailBloc.customFee != null) {
         final String coinType = widget.coinBalance.coin.type;
-        if (coinType == 'erc' || coinType == 'bep' || coinType == 'plg') {
+        if (coinType == 'erc' ||
+            coinType == 'bep' ||
+            coinType == 'plg' ||
+            coinType == 'ftm') {
           customFee = Fee(
             type: 'EthGas',
             gas: coinsDetailBloc.customFee.gas,

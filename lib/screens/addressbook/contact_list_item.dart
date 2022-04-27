@@ -90,6 +90,7 @@ class _ContactListItemState extends State<ContactListItem> {
           if (widget.coin.type == 'bep') coinAbbr = 'BNB';
           if (widget.coin.type == 'plg') coinAbbr = 'MATIC';
           if (widget.coin.type == 'qrc') coinAbbr = 'QTUM';
+          if (widget.coin.type == 'ftm') coinAbbr = 'FTM';
           if (widget.coin.type == 'smartChain') coinAbbr = 'KMD';
 
           if (coinAbbr != abbr) return;

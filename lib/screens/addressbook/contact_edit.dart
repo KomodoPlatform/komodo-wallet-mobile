@@ -47,6 +47,7 @@ class _ContactEditState extends State<ContactEdit> {
       'bep': AppLocalizations.of(context).tagBEP20,
       'qrc': AppLocalizations.of(context).tagQRC20,
       'plg': AppLocalizations.of(context).tagPLG20,
+      'ftm': AppLocalizations.of(context).tagFTM20,
     };
 
     provider = Provider.of<AddressBookProvider>(context);
@@ -439,6 +440,8 @@ class _ContactEditState extends State<ContactEdit> {
       abbr = 'MATIC';
     } else if (coin.type == 'qrc') {
       abbr = 'QTUM';
+    } else if (coin.type == 'ftm') {
+      abbr = 'FTM';
     }
 
     setState(() {

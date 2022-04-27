@@ -66,6 +66,9 @@ class _ContactsListState extends State<ContactsList> {
             contact.addresses.containsKey('MATIC')) {
           return true;
         }
+        if (widget.coin.type == 'ftm' && contact.addresses.containsKey('FTM')) {
+          return true;
+        }
         if ((widget.coin.type == 'qrc' || widget.coin.abbr == 'QTUM') &&
             contact.addresses.containsKey('QTUM')) {
           return true;

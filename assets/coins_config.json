@@ -1986,7 +1986,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xff9C64A6",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2001,7 +2001,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xff526BFF",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2016,7 +2016,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xffB68900",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2031,7 +2031,7 @@
     "explorerUrl": [
       "https://testnet.ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xff13B5EC",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2046,7 +2046,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xff13B5EC",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2061,7 +2061,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xff687DE3",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2076,7 +2076,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xff317BCB",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2091,7 +2091,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xff26A17B",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2106,7 +2106,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xff356CE4",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2121,7 +2121,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xffE25DA8",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2136,7 +2136,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xff00D1FF",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2151,7 +2151,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xff006BE6",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2166,7 +2166,7 @@
     "explorerUrl": [
       "https://ftmscan.com/"
     ],
-    "type": "FTM-20",
+    "type": "ftm",
     "colorCoin": "0xff517AB5",
     "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"

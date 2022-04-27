@@ -59,7 +59,8 @@ class _CustomFeeState extends State<CustomFee> {
                 ),
                 widget.coin.type == 'erc' ||
                         widget.coin.type == 'bep' ||
-                        widget.coin.type == 'plg'
+                        widget.coin.type == 'plg' ||
+                        widget.coin.type == 'ftm'
                     ? CustomFeeFieldERC(
                         coin: widget.coin,
                         isCustomFeeActive: isCustomFeeActive,

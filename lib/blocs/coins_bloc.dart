@@ -240,7 +240,10 @@ class CoinsBloc implements BlocBase {
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
       dynamic transactions;
-      if (coin.type == 'erc' || coin.type == 'bep' || coin.type == 'plg') {
+      if (coin.type == 'erc' ||
+          coin.type == 'bep' ||
+          coin.type == 'plg' ||
+          coin.type == 'ftm') {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else {
@@ -549,7 +552,10 @@ class CoinsBloc implements BlocBase {
     const String fromId = null;
     try {
       dynamic transactions;
-      if (coin.type == 'erc' || coin.type == 'bep' || coin.type == 'plg') {
+      if (coin.type == 'erc' ||
+          coin.type == 'bep' ||
+          coin.type == 'plg' ||
+          coin.type == 'plg') {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else {

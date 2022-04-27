@@ -21,7 +21,10 @@ class GetErcTransactions {
   final String plgUrl = appConfig.plgUrl;
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
-    if (coin.type != 'erc' && coin.type != 'bep' && coin.type != 'plg') return;
+    if (coin.type != 'erc' &&
+        coin.type != 'bep' &&
+        coin.type != 'plg' &&
+        coin.type != 'ftm') return;
 
     // Endpoint returns all tx at ones, and `fromId` only has value
     // if some txs was already fetched, so no need to fetch same txs again
@@ -50,6 +53,12 @@ class GetErcTransactions {
         break;
       case 'plg':
         url = (coin.protocol?.type == 'ETH' // 'MATIC', 'MATICTEST'
+                ? '$maticUrl/$address'
+                : '$plgUrl/${coin.protocol.protocolData.contractAddress}/$address') +
+            (coin.testCoin ? '&testnet=true' : '');
+        break;
+      case 'ftm':
+        url = (coin.protocol?.type == 'ETH' // 'FTM', 'FTMT'
                 ? '$maticUrl/$address'
                 : '$plgUrl/${coin.protocol.protocolData.contractAddress}/$address') +
             (coin.testCoin ? '&testnet=true' : '');
@@ -107,6 +116,9 @@ class GetErcTransactions {
           break;
         case 'MATICTEST':
           feeCoin = 'MATICTEST';
+          break;
+        case 'FTMT':
+          feeCoin = 'FTMT';
           break;
         default:
       }

@@ -101,6 +101,7 @@ class NotifService {
       for (CoinBalance coin in coins) {
         if (coin.coin.type == 'erc' ||
             coin.coin.type == 'bep' ||
+            coin.coin.type == 'ftm' ||
             coin.coin.type == 'plg') {
           continue;
         }

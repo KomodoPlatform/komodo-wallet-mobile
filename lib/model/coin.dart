@@ -98,7 +98,7 @@ class Coin {
     chainId = init['chain_id'];
   }
 
-  String type; // 'other', 'erc', 'bep', 'qrc', 'plg' or 'smartChain'
+  String type; // 'other', 'erc', 'bep', 'qrc', 'plg', 'ftm' or 'smartChain'
   String name;
   String address;
   int port;
