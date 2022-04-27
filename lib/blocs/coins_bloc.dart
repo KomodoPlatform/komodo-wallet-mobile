@@ -554,7 +554,7 @@ class CoinsBloc implements BlocBase {
       dynamic transactions;
       if (coin.type == 'erc' ||
           coin.type == 'bep' ||
-          coin.type == 'plg' ||
+          coin.type == 'ftm' ||
           coin.type == 'plg') {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
