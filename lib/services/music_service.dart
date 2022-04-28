@@ -148,17 +148,7 @@ class MusicService {
     return haveNew;
   }
 
-  String _customName(MusicMode mode) => mode == MusicMode.TAKER
-      ? 'tick-tock.mp3'
-      : mode == MusicMode.MAKER
-          ? 'maker_order_placed.mp3'
-          : mode == MusicMode.ACTIVE
-              ? 'swap_in_progress.mp3'
-              : mode == MusicMode.FAILED
-                  ? 'swap_failed.mp3'
-                  : mode == MusicMode.APPLAUSE
-                      ? 'swap_successful.mp3'
-                      : null;
+  String _customName(MusicMode mode) => 'none.mp3';
 
   Future<void> setSoundPath(MusicMode mode, String path) async {
     final String name = _customName(mode);
