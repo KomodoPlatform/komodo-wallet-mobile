@@ -478,7 +478,7 @@ class CoinsBloc implements BlocBase {
       if (!coinToActivate.isActive) continue;
 
       if (coinToActivate.coin.testCoin && !settingsBloc.enableTestCoins) {
-        if (appConfig.defaultTestCoins.contains(coinToActivate.coin.abbr))
+        if (!appConfig.defaultTestCoins.contains(coinToActivate.coin.abbr))
           continue;
       }
 
