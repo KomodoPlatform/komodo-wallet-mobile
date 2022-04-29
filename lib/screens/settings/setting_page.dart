@@ -240,6 +240,7 @@ class _SettingPageState extends State<SettingPage> {
                 ) {
                   if (passedBioCheck) {
                     walletSecuritySettingsProvider.activateBioProtection = true;
+                    walletSecuritySettingsProvider.activatePinProtection = true;
                   }
                 });
               }
