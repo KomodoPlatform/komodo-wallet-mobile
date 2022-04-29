@@ -234,6 +234,7 @@ class _SettingPageState extends State<SettingPage> {
                 authenticateBiometrics(
                   context,
                   PinStatus.DISABLED_PIN_BIOMETRIC,
+                  authorize: true,
                 ).then((
                   bool passedBioCheck,
                 ) {
