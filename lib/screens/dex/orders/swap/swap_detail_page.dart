@@ -46,13 +46,15 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
             onSuccess: () {},
             child: Scaffold(
               appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                foregroundColor: Theme.of(context).colorScheme.onBackground,
-                leading: BackButton(
-                  key: const Key('swap-detail-back-button'),
-                  onPressed: () => Navigator.pop(context, false),
-                ),
-              ),
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Theme.of(context).colorScheme.onBackground,
+                  leading: BackButton(
+                    key: const Key('swap-detail-back-button'),
+                    onPressed: () => Navigator.pop(context, false),
+                  ),
+                  actions: const <Widget>[
+                    SoundVolumeButton(key: Key('swap-detail-sound-button'))
+                  ]),
               body: StreamBuilder<Iterable<Swap>>(
                   stream: swapHistoryBloc.outSwaps,
                   initialData: swapMonitor.swaps,

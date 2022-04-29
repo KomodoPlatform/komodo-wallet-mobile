@@ -148,7 +148,8 @@ class MusicService {
     return haveNew;
   }
 
-  String _customName(MusicMode mode) => 'none.mp3';
+  String _customName(MusicMode mode) =>
+      mode == MusicMode.MAKER ? 'maker_order_placed.mp3' : 'none.mp3';
 
   Future<void> setSoundPath(MusicMode mode, String path) async {
     final String name = _customName(mode);
