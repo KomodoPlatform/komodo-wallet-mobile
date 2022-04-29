@@ -148,8 +148,17 @@ class MusicService {
     return haveNew;
   }
 
-  String _customName(MusicMode mode) =>
-      mode == MusicMode.MAKER ? 'maker_order_placed.mp3' : 'none.mp3';
+  String _customName(MusicMode mode) => mode == MusicMode.TAKER
+      ? 'tick-tock.mp3'
+      : mode == MusicMode.MAKER
+          ? 'maker_order_placed.mp3'
+          : mode == MusicMode.ACTIVE
+              ? 'swap_in_progress.mp3'
+              : mode == MusicMode.FAILED
+                  ? 'swap_failed.mp3'
+                  : mode == MusicMode.APPLAUSE
+                      ? 'swap_successful.mp3'
+                      : null;
 
   Future<void> setSoundPath(MusicMode mode, String path) async {
     final String name = _customName(mode);
@@ -213,19 +222,17 @@ class MusicService {
       if (custom.existsSync()) customFile = custom;
     }
 
-    final String defaultPath = newMode == MusicMode.TAKER
-        ? 'tick-tock.mp3'
-        : newMode == MusicMode.MAKER
-            ? 'maker_order_placed.mp3'
-            : newMode == MusicMode.ACTIVE
-                ? 'swap_in_progress.mp3'
-                : newMode == MusicMode.FAILED
-                    ? 'swap_failed.mp3'
-                    : newMode == MusicMode.APPLAUSE
-                        ? 'swap_successful.mp3'
-                        : newMode == MusicMode.SILENT
-                            ? 'none.mp3'
-                            : null;
+    final String defaultPath = newMode == MusicMode.MAKER
+        ? 'maker_order_placed.mp3'
+        : [
+            MusicMode.TAKER,
+            MusicMode.ACTIVE,
+            MusicMode.FAILED,
+            MusicMode.APPLAUSE,
+            MusicMode.SILENT
+          ].contains(newMode)
+            ? 'none.mp3'
+            : null;
 
     final String path = customFile != null
         ? (Platform.isAndroid ? customFile.path : customName)
