@@ -19,6 +19,8 @@ class GetErcTransactions {
   final String bepUrl = appConfig.bepUrl;
   final String maticUrl = appConfig.maticUrl;
   final String plgUrl = appConfig.plgUrl;
+  final String fantomUrl = appConfig.fantomUrl;
+  final String ftmUrl = appConfig.ftmUrl;
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
     if (coin.type != 'erc' &&
@@ -59,8 +61,8 @@ class GetErcTransactions {
         break;
       case 'ftm':
         url = (coin.protocol?.type == 'ETH' // 'FTM', 'FTMT'
-                ? '$maticUrl/$address'
-                : '$plgUrl/${coin.protocol.protocolData.contractAddress}/$address') +
+                ? '$fantomUrl/$address'
+                : '$ftmUrl/${coin.protocol.protocolData.contractAddress}/$address') +
             (coin.testCoin ? '&testnet=true' : '');
         break;
       default:
