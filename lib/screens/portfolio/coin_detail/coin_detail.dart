@@ -686,6 +686,9 @@ class _CoinDetailState extends State<CoinDetail> {
           isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
       duration: const Duration(milliseconds: 200),
       firstChild: SizedBox(),
+      firstCurve: Curves.easeIn,
+      secondCurve: Curves.easeIn,
+      alignment: Alignment.topRight,
       secondChild: GestureDetector(
         onTap: () {
           unfocusTextField(context);
