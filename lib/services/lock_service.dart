@@ -159,6 +159,7 @@ class LockService {
         context.read<WalletSecuritySettingsProvider>();
     if (authBloc.showLock) return; // Already showing the lock.
     if (inQrScanner) return; // Don't lock while we're scanning QR.
+    if (_prefs.getBool('switch_pin_log_out_on_exit')) authBloc.logout();
     if (walletSecuritySettingsProvider.activatePinProtection == false)
       return; // PIN turned off
 
@@ -183,7 +184,6 @@ class LockService {
     Log.println('lock_service:178', 'Unfocus and lock..');
     unfocusTextField(context);
 
-    if (_prefs.getBool('switch_pin_log_out_on_exit')) authBloc.logout();
     authBloc.showLock = true;
   }
 }
