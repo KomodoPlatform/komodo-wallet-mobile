@@ -177,7 +177,7 @@ class _PinPageState extends State<PinPage> {
         break;
 
       case PinStatus.DISABLED_PIN:
-        walletSecuritySettingsProvider.activatePinProtection = false;
+        walletSecuritySettingsProvider.activatePinProtection = true;
         Navigator.pop(context);
         break;
       case PinStatus.DISABLED_PIN_BIOMETRIC:
