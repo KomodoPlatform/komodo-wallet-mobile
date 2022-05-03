@@ -174,12 +174,10 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       }
     }
 
-    const List<String> defaultTestCoins = ['RICK', 'MORTY'];
-
     final List<Coin> testCoins = _currentCoins
         .where((Coin c) =>
             (c.testCoin && settingsBloc.enableTestCoins) ||
-            defaultTestCoins.contains(c.abbr))
+            appConfig.defaultTestCoins.contains(c.abbr))
         .toList();
     if (testCoins.isNotEmpty) {
       list.add(BuildTypeHeader(

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
@@ -475,6 +476,12 @@ class CoinsBloc implements BlocBase {
     final List<Coin> coins = <Coin>[];
     for (CoinToActivate coinToActivate in coinBeforeActivation) {
       if (!coinToActivate.isActive) continue;
+
+      if (coinToActivate.coin.testCoin && !settingsBloc.enableTestCoins) {
+        if (!appConfig.defaultTestCoins.contains(coinToActivate.coin.abbr))
+          continue;
+      }
+
       coins.add(coinToActivate.coin);
     }
     await coinsBloc.enableCoins(coins);

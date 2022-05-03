@@ -185,8 +185,8 @@ Future<bool> get canCheckBiometrics async {
 /// Widget tree builders would often invoke this function several times in a row
 /// (due to poor BLoC optimization perhaps?), leading to a flickering prompt on iOS.
 /// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
-Future<bool> authenticateBiometrics(
-    BuildContext context, PinStatus pinStatus) async {
+Future<bool> authenticateBiometrics(BuildContext context, PinStatus pinStatus,
+    {bool authorize = false}) async {
   final walletSecuritySettingsProvider =
       context.read<WalletSecuritySettingsProvider>();
   if (mainBloc.isInBackground) {
@@ -199,7 +199,7 @@ Future<bool> authenticateBiometrics(
   }
 
   Log.println('utils:291', 'authenticateBiometrics');
-  if (walletSecuritySettingsProvider.activateBioProtection) {
+  if (walletSecuritySettingsProvider.activateBioProtection || authorize) {
     final LocalAuthentication localAuth = LocalAuthentication();
     bool didAuthenticate = false;
 

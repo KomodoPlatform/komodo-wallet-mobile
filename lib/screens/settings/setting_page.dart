@@ -190,6 +190,8 @@ class _SettingPageState extends State<SettingPage> {
           // and it does not take too much time to
           // break it, and get access to users funds.
           walletSecuritySettingsProvider.activateBioProtection = false;
+          walletSecuritySettingsProvider.activatePinProtection = false;
+        } else {
           Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
@@ -202,8 +204,6 @@ class _SettingPageState extends State<SettingPage> {
               ),
             ),
           ).then((dynamic _) => setState(() {}));
-        } else {
-          walletSecuritySettingsProvider.activatePinProtection = switchValue;
         }
       },
     );
@@ -229,29 +229,17 @@ class _SettingPageState extends State<SettingPage> {
               bool switchValue,
             ) {
               if (walletSecuritySettingsProvider.activateBioProtection) {
+                walletSecuritySettingsProvider.activateBioProtection = false;
+              } else {
                 authenticateBiometrics(
                   context,
                   PinStatus.DISABLED_PIN_BIOMETRIC,
+                  authorize: true,
                 ).then((
                   bool passedBioCheck,
                 ) {
                   if (passedBioCheck) {
-                    walletSecuritySettingsProvider.activateBioProtection =
-                        false;
-                  }
-                });
-              } else {
-                SharedPreferences.getInstance().then((
-                  SharedPreferences data,
-                ) {
-                  walletSecuritySettingsProvider.activateBioProtection =
-                      switchValue;
-                  if (switchValue) {
-                    // Same situation here as above
-                    // on line 244 but from a
-                    // different angle. Just trying
-                    // to protect users from unreliable
-                    // !biometrics only! state.
+                    walletSecuritySettingsProvider.activateBioProtection = true;
                     walletSecuritySettingsProvider.activatePinProtection = true;
                   }
                 });
