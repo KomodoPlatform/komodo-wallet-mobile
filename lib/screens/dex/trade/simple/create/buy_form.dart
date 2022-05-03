@@ -101,7 +101,7 @@ class _BuyFormState extends State<BuyForm> {
         leading: CircleAvatar(
           radius: 8,
           backgroundImage: AssetImage('assets/coin-icons/'
-              '${_constrProvider.buyCoin.toLowerCase()}.png'),
+              '${abbr2Ticker(_constrProvider.buyCoin.toLowerCase())}.png'),
         ),
         title: Text(_constrProvider.buyCoin),
         trailing: Icon(

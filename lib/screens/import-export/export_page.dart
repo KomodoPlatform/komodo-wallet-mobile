@@ -283,7 +283,7 @@ class _ExportPageState extends State<ExportPage> {
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${myCoin.toLowerCase()}.png',
+                  'assets/coin-icons/${abbr2Ticker(myCoin.toLowerCase())}.png',
                   height: 20,
                 ),
                 SizedBox(width: 8),
@@ -296,7 +296,7 @@ class _ExportPageState extends State<ExportPage> {
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${otherCoin.toLowerCase()}.png',
+                  'assets/coin-icons/${abbr2Ticker(otherCoin.toLowerCase())}.png',
                   height: 20,
                 ),
               ],

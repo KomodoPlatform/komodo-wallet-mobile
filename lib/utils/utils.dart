@@ -67,6 +67,16 @@ Rational tryParseRat(String text) {
   }
 }
 
+String abbr2Ticker(String abbr) {
+  // anchor: protocols support
+  return abbr
+      .replaceAll('-erc20', '')
+      .replaceAll('-bep20', '')
+      .replaceAll('-plg20', '')
+      .replaceAll('-qrc20', '')
+      .replaceAll('-ftm20', '');
+}
+
 Rational deci2rat(Decimal decimal) {
   try {
     return Rational.parse(decimal.toString());
@@ -658,7 +668,7 @@ void showUriDetailsDialog(
                   CircleAvatar(
                     radius: 11,
                     backgroundImage: AssetImage(
-                        'assets/coin-icons/${abbr.toLowerCase()}.png'),
+                        'assets/coin-icons/${abbr2Ticker(abbr.toLowerCase())}.png'),
                   ),
                   SizedBox(width: 6),
                   Text(

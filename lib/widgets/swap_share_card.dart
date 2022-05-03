@@ -99,7 +99,8 @@ class SwapShareCard extends StatelessWidget {
                                             children: [
                                               Image.asset(
                                                 'assets/coin-icons/' +
-                                                    myCoin.toLowerCase() +
+                                                    abbr2Ticker(
+                                                        myCoin.toLowerCase()) +
                                                     '.png',
                                                 height: 18,
                                               ),
@@ -131,7 +132,8 @@ class SwapShareCard extends StatelessWidget {
                                             children: [
                                               Image.asset(
                                                 'assets/coin-icons/' +
-                                                    otherCoin.toLowerCase() +
+                                                    abbr2Ticker(otherCoin
+                                                        .toLowerCase()) +
                                                     '.png',
                                                 height: 18,
                                               ),

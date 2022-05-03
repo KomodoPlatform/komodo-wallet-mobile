@@ -198,7 +198,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
       maxRadius: 12,
       backgroundColor: Colors.transparent,
       backgroundImage: AssetImage(
-        'assets/coin-icons/${coin.toLowerCase()}.png',
+        'assets/coin-icons/${abbr2Ticker(coin.toLowerCase())}.png',
       ),
     );
   }

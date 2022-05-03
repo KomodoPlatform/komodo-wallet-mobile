@@ -76,7 +76,7 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
                       CircleAvatar(
                         radius: 7,
                         backgroundImage: AssetImage('assets/coin-icons/'
-                            '${widget.base.toLowerCase()}.png'),
+                            '${abbr2Ticker(widget.base.toLowerCase())}.png'),
                       ),
                       SizedBox(width: 2),
                       Text(widget.base),

@@ -138,7 +138,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                   CircleAvatar(
                     maxRadius: 6,
                     backgroundImage: AssetImage(
-                        'assets/coin-icons/${widget.item.coin.abbr.toLowerCase()}.png'),
+                        'assets/coin-icons/${abbr2Ticker(widget.item.coin.abbr.toLowerCase())}.png'),
                   ),
                   const SizedBox(width: 8),
                   Text(

@@ -34,7 +34,7 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
                       CircleAvatar(
                         radius: 7,
                         backgroundImage: AssetImage('assets/coin-icons/'
-                            '${ask.coin.toLowerCase()}.png'),
+                            '${abbr2Ticker(ask.coin.toLowerCase())}.png'),
                       ),
                       SizedBox(width: 4),
                       Text(
@@ -55,7 +55,7 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
                 CircleAvatar(
                   radius: 5,
                   backgroundImage: AssetImage('assets/coin-icons/'
-                      '${baseCoin.toLowerCase()}.png'),
+                      '${abbr2Ticker(baseCoin.toLowerCase())}.png'),
                 ),
                 SizedBox(width: 3),
                 Text(baseCoin,

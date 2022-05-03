@@ -238,9 +238,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                       radius: 7,
                       backgroundImage: _isAsk
                           ? AssetImage('assets/coin-icons/'
-                              '${_activePair.sell.abbr.toLowerCase()}.png')
+                              '${abbr2Ticker(_activePair.sell.abbr.toLowerCase())}.png')
                           : AssetImage('assets/coin-icons/'
-                              '${_activePair.buy.abbr.toLowerCase()}.png'),
+                              '${abbr2Ticker(_activePair.buy.abbr.toLowerCase())}.png'),
                     ),
                     const SizedBox(width: 4),
                     Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
@@ -276,9 +276,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                   radius: 7,
                   backgroundImage: _isAsk
                       ? AssetImage('assets/coin-icons/'
-                          '${_activePair.buy.abbr.toLowerCase()}.png')
+                          '${abbr2Ticker(_activePair.buy.abbr.toLowerCase())}.png')
                       : AssetImage('assets/coin-icons/'
-                          '${_activePair.sell.abbr.toLowerCase()}.png'),
+                          '${abbr2Ticker(_activePair.sell.abbr.toLowerCase())}.png'),
                 ),
                 const SizedBox(width: 4),
                 Text(_isAsk ? _activePair.buy.abbr : _activePair.sell.abbr),
@@ -367,9 +367,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                       radius: 7,
                       backgroundImage: _isAsk
                           ? AssetImage('assets/coin-icons/'
-                              '${_activePair.sell.abbr.toLowerCase()}.png')
+                              '${abbr2Ticker(_activePair.sell.abbr.toLowerCase())}.png')
                           : AssetImage('assets/coin-icons/'
-                              '${_activePair.buy.abbr.toLowerCase()}.png'),
+                              '${abbr2Ticker(_activePair.buy.abbr.toLowerCase())}.png'),
                     ),
                     const SizedBox(width: 4),
                     Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
@@ -406,9 +406,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                   radius: 7,
                   backgroundImage: _isAsk
                       ? AssetImage('assets/coin-icons/'
-                          '${_activePair.buy.abbr.toLowerCase()}.png')
+                          '${abbr2Ticker(_activePair.buy.abbr.toLowerCase())}.png')
                       : AssetImage('assets/coin-icons/'
-                          '${_activePair.sell.abbr.toLowerCase()}.png'),
+                          '${abbr2Ticker(_activePair.sell.abbr.toLowerCase())}.png'),
                 ),
                 const SizedBox(width: 4),
                 Text(_isAsk ? _activePair.buy.abbr : _activePair.sell.abbr),

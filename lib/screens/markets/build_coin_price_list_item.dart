@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/candles_icon.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/duration_select.dart';
@@ -76,7 +77,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                   radius: 18,
                                   backgroundColor: Colors.transparent,
                                   backgroundImage: AssetImage(
-                                      'assets/coin-icons/${balance.coin.toLowerCase()}.png'),
+                                      'assets/coin-icons/${abbr2Ticker(balance.coin.toLowerCase())}.png'),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
