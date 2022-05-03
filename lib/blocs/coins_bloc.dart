@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
@@ -240,10 +241,7 @@ class CoinsBloc implements BlocBase {
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
       dynamic transactions;
-      if (coin.type == 'erc' ||
-          coin.type == 'bep' ||
-          coin.type == 'plg' ||
-          coin.type == 'ftm') {
+      if (appConfig.coinTypes.contains(coin.type)) {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else {
@@ -552,10 +550,7 @@ class CoinsBloc implements BlocBase {
     const String fromId = null;
     try {
       dynamic transactions;
-      if (coin.type == 'erc' ||
-          coin.type == 'bep' ||
-          coin.type == 'ftm' ||
-          coin.type == 'plg') {
+      if (appConfig.coinTypes.contains(coin.type)) {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else {

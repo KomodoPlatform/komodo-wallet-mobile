@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -57,10 +58,7 @@ class _CustomFeeState extends State<CustomFee> {
                       .bodyText2
                       .copyWith(color: Theme.of(context).errorColor),
                 ),
-                widget.coin.type == 'erc' ||
-                        widget.coin.type == 'bep' ||
-                        widget.coin.type == 'plg' ||
-                        widget.coin.type == 'ftm'
+                appConfig.coinTypes.contains(widget.coin.type)
                     ? CustomFeeFieldERC(
                         coin: widget.coin,
                         isCustomFeeActive: isCustomFeeActive,
