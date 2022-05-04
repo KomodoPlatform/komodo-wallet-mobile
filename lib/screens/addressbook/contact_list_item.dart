@@ -103,8 +103,8 @@ class _ContactListItemState extends State<ContactListItem> {
               children: <Widget>[
                 CircleAvatar(
                   maxRadius: 6,
-                  foregroundImage: AssetImage(
-                      'assets/coin-icons/${abbr2Ticker(abbr.toLowerCase())}.png'),
+                  foregroundImage:
+                      AssetImage('assets/coin-icons/${removeSuffix(abbr)}.png'),
                 ),
                 const SizedBox(width: 8),
                 Text(

@@ -25,9 +25,9 @@ class AppConfig {
   List<String> get walletOnlyCoins => ['USDT-ERC20'];
 
   List<String> get coinTypes => ['erc', 'bep', 'plg', 'ftm'];
+  final List<String> protocolSuffixes = ['ERC20', 'BEP20', 'PLG20', 'FTM20'];
 
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
-
 
   bool get isSwapShareCardEnabled => true;
 

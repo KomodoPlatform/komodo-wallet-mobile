@@ -302,7 +302,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         minVerticalPadding: 0,
         leading: coin != null
             ? Image.asset(
-                'assets/coin-icons/${abbr2Ticker(coin.abbr.toLowerCase())}.png',
+                'assets/coin-icons/${removeSuffix(coin.abbr)}.png',
                 height: 25,
               )
             : CircleAvatar(

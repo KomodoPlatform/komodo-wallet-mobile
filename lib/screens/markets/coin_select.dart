@@ -59,7 +59,7 @@ class _CoinSelectState extends State<CoinSelect> {
       leading: widget.value != null
           ? Image.asset(
               'assets/coin-icons/'
-              '${abbr2Ticker(widget.value.abbr.toLowerCase())}.png',
+              '${removeSuffix(widget.value.abbr)}.png',
               height: widget.compact ? 16 : 24,
             )
           : CircleAvatar(
@@ -213,7 +213,7 @@ class _CoinSelectState extends State<CoinSelect> {
                     PhotoHero(
                       radius: widget.compact ? 8 : 12,
                       tag: 'assets/coin-icons/'
-                          '${abbr2Ticker(coinBalance.balance.coin.toLowerCase())}.png',
+                          '${removeSuffix(coinBalance.balance.coin)}.png',
                     ),
                     SizedBox(width: widget.compact ? 6 : 8),
                     Text(
@@ -260,7 +260,7 @@ class _CoinSelectState extends State<CoinSelect> {
                     PhotoHero(
                       radius: widget.compact ? 8 : 12,
                       tag: 'assets/coin-icons/'
-                          '${abbr2Ticker(coinBalance.balance.coin.toLowerCase())}.png',
+                          '${removeSuffix(coinBalance.balance.coin)}.png',
                     ),
                     SizedBox(width: widget.compact ? 6 : 8),
                     Text(
@@ -289,7 +289,7 @@ class _CoinSelectState extends State<CoinSelect> {
                 PhotoHero(
                   radius: widget.compact ? 8 : 12,
                   tag: 'assets/coin-icons/'
-                      '${abbr2Ticker(coinBalance.balance.coin.toLowerCase())}.png',
+                      '${removeSuffix(coinBalance.balance.coin)}.png',
                 ),
                 SizedBox(width: widget.compact ? 6 : 8),
                 Text(

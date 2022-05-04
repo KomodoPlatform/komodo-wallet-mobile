@@ -84,7 +84,7 @@ class _CoinsListAllState extends State<CoinsListAll> {
           leading: CircleAvatar(
             radius: 8,
             backgroundImage: AssetImage(
-                'assets/coin-icons/${abbr2Ticker(item.coin.abbr.toLowerCase())}.png'),
+                'assets/coin-icons/${removeSuffix(item.coin.abbr)}.png'),
           ),
           title: Text(
             item.coin.abbr,

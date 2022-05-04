@@ -88,7 +88,7 @@ List<SimpleDialogOption> _coinItemsList({
                 height: 30,
                 width: 30,
                 child: Image.asset(
-                  'assets/coin-icons/${abbr2Ticker(coin.coin.abbr.toLowerCase())}.png',
+                  'assets/coin-icons/${removeSuffix(coin.coin.abbr)}.png',
                 )),
             Expanded(child: SizedBox()),
             Row(

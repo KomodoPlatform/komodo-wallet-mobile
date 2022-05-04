@@ -155,7 +155,7 @@ class _SellFormState extends State<SellForm> {
         leading: CircleAvatar(
           radius: 8,
           backgroundImage: AssetImage('assets/coin-icons/'
-              '${abbr2Ticker(_constrProvider.sellCoin.toLowerCase())}.png'),
+              '${removeSuffix(_constrProvider.sellCoin)}.png'),
         ),
         title: Text(_constrProvider.sellCoin),
         trailing: Icon(

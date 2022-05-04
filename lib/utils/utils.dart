@@ -7,6 +7,7 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -67,14 +68,12 @@ Rational tryParseRat(String text) {
   }
 }
 
-String abbr2Ticker(String abbr) {
-  // anchor: protocols support
-  return abbr
-      .replaceAll('-erc20', '')
-      .replaceAll('-bep20', '')
-      .replaceAll('-plg20', '')
-      .replaceAll('-qrc20', '')
-      .replaceAll('-ftm20', '');
+String removeSuffix(String abbr) {
+  for (String suffix in appConfig.protocolSuffixes) {
+    abbr = abbr.replaceAll('-$suffix', '');
+  }
+
+  return abbr.toLowerCase();
 }
 
 Rational deci2rat(Decimal decimal) {
@@ -668,7 +667,7 @@ void showUriDetailsDialog(
                   CircleAvatar(
                     radius: 11,
                     backgroundImage: AssetImage(
-                        'assets/coin-icons/${abbr2Ticker(abbr.toLowerCase())}.png'),
+                        'assets/coin-icons/${removeSuffix(abbr.toLowerCase())}.png'),
                   ),
                   SizedBox(width: 6),
                   Text(

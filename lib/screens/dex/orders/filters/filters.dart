@@ -480,8 +480,7 @@ class _FiltersState extends State<Filters> {
               radius: 7,
               backgroundColor: color?.withAlpha(50),
               backgroundImage: current != null
-                  ? AssetImage(
-                      'assets/coin-icons/${abbr2Ticker(current.toLowerCase())}.png')
+                  ? AssetImage('assets/coin-icons/${removeSuffix(current)}.png')
                   : null,
             ),
             SizedBox(width: 4),
@@ -534,8 +533,8 @@ class _FiltersState extends State<Filters> {
             children: [
               CircleAvatar(
                 radius: 8,
-                backgroundImage: AssetImage(
-                    'assets/coin-icons/${abbr2Ticker(coin.toLowerCase())}.png'),
+                backgroundImage:
+                    AssetImage('assets/coin-icons/${removeSuffix(coin)}.png'),
               ),
               SizedBox(width: 4),
               Text(coin),

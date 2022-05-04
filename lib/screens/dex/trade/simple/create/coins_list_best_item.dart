@@ -93,8 +93,8 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
         SizedBox(width: 2),
         CircleAvatar(
           radius: 8,
-          backgroundImage: AssetImage(
-              'assets/coin-icons/${abbr2Ticker(_coin.toLowerCase())}.png'),
+          backgroundImage:
+              AssetImage('assets/coin-icons/${removeSuffix(_coin)}.png'),
         ),
         SizedBox(width: 4),
         Text(_coin),

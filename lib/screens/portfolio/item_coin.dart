@@ -155,7 +155,7 @@ class _ItemCoinState extends State<ItemCoin>
                         radius: 28,
                         backgroundColor: Colors.transparent,
                         backgroundImage: AssetImage('assets/coin-icons/'
-                            '${abbr2Ticker(balance.coin.toLowerCase())}.png'),
+                            '${removeSuffix(balance.coin)}.png'),
                       ),
                       const SizedBox(height: 8),
                       Text(

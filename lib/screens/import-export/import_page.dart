@@ -348,7 +348,7 @@ class _ImportPageState extends State<ImportPage> {
                   ),
                   SizedBox(width: 4),
                   Image.asset(
-                    'assets/coin-icons/${abbr2Ticker(myCoin.toLowerCase())}.png',
+                    'assets/coin-icons/${removeSuffix(myCoin)}.png',
                     height: 20,
                   ),
                   SizedBox(width: 8),
@@ -361,7 +361,7 @@ class _ImportPageState extends State<ImportPage> {
                   ),
                   SizedBox(width: 4),
                   Image.asset(
-                    'assets/coin-icons/${abbr2Ticker(otherCoin.toLowerCase())}.png',
+                    'assets/coin-icons/${removeSuffix(otherCoin)}.png',
                     height: 20,
                   ),
                 ],

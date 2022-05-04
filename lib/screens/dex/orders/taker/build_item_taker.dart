@@ -221,7 +221,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
       height: 25,
       width: 25,
       child: Image.asset(
-        'assets/coin-icons/${abbr2Ticker(coin.toLowerCase())}.png',
+        'assets/coin-icons/${removeSuffix(coin)}.png',
         fit: BoxFit.cover,
       ),
     );
