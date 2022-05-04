@@ -90,6 +90,19 @@ class MusicService {
       return MusicMode.FAILED;
     }
 
+    for (final Order order in orders) {
+      final String shortId = order.uuid.substring(0, 4);
+      if (order.orderType == OrderType.MAKER) {
+        Log('music_service:118',
+            'pickMode] maker order $shortId, MusicMode.MAKER');
+        return MusicMode.MAKER;
+      } else if (order.orderType == OrderType.TAKER) {
+        Log('music_service:114',
+            'pickMode] taker order $shortId, MusicMode.TAKER');
+        return MusicMode.TAKER;
+      }
+    }
+
     for (final Swap swap in swapMonitor.swaps) {
       final String uuid = swap.result.uuid;
       final String shortId = uuid.substring(0, 4);
@@ -101,19 +114,6 @@ class MusicService {
         Log('music_service:92',
             'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
         return MusicMode.ACTIVE;
-      }
-    }
-
-    for (final Order order in orders) {
-      final String shortId = order.uuid.substring(0, 4);
-      if (order.orderType == OrderType.TAKER) {
-        Log('music_service:114',
-            'pickMode] taker order $shortId, MusicMode.TAKER');
-        return MusicMode.TAKER;
-      } else if (order.orderType == OrderType.MAKER) {
-        Log('music_service:118',
-            'pickMode] maker order $shortId, MusicMode.MAKER');
-        return MusicMode.MAKER;
       }
     }
 
