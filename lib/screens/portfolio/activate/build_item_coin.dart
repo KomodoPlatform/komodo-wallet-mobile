@@ -46,7 +46,7 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                   ),
                   const SizedBox(width: 24),
                   Image.asset(
-                    'assets/coin-icons/${getCoinIconPath(widget.coin.abbr)}.png',
+                    getCoinIconPath(widget.coin.abbr),
                     height: 40,
                     width: 40,
                   ),

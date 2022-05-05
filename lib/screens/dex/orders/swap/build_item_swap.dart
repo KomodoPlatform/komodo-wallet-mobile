@@ -257,7 +257,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
       height: 25,
       width: 25,
       child: Image.asset(
-        'assets/coin-icons/${getCoinIconPath(coin)}.png',
+        getCoinIconPath(coin),
         fit: BoxFit.cover,
       ),
     );

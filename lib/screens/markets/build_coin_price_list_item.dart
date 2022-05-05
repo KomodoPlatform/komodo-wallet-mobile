@@ -76,8 +76,8 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                 CircleAvatar(
                                   radius: 18,
                                   backgroundColor: Colors.transparent,
-                                  backgroundImage: AssetImage(
-                                      'assets/coin-icons/${getCoinIconPath(balance.coin)}.png'),
+                                  backgroundImage:
+                                      AssetImage(getCoinIconPath(balance.coin)),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(

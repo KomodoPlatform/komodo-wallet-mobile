@@ -57,7 +57,7 @@ class MatchingOrderbookItem extends StatelessWidget {
               height: 20,
               width: 20,
               child: Image.asset(
-                'assets/coin-icons/${getCoinIconPath(orderbookDepth.pair.rel)}.png',
+                getCoinIconPath(orderbookDepth.pair.rel),
               ),
             ),
             SizedBox(width: 4),

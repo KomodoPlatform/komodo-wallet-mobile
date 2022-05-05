@@ -58,8 +58,7 @@ class _CoinSelectState extends State<CoinSelect> {
       onTap: () => _showDialog(),
       leading: widget.value != null
           ? Image.asset(
-              'assets/coin-icons/'
-              '${getCoinIconPath(widget.value.abbr)}.png',
+              getCoinIconPath(widget.value.abbr),
               height: widget.compact ? 16 : 24,
             )
           : CircleAvatar(
@@ -212,8 +211,7 @@ class _CoinSelectState extends State<CoinSelect> {
                   children: <Widget>[
                     PhotoHero(
                       radius: widget.compact ? 8 : 12,
-                      tag: 'assets/coin-icons/'
-                          '${getCoinIconPath(coinBalance.balance.coin)}.png',
+                      tag: getCoinIconPath(coinBalance.balance.coin),
                     ),
                     SizedBox(width: widget.compact ? 6 : 8),
                     Text(
@@ -259,8 +257,7 @@ class _CoinSelectState extends State<CoinSelect> {
                   children: <Widget>[
                     PhotoHero(
                       radius: widget.compact ? 8 : 12,
-                      tag: 'assets/coin-icons/'
-                          '${getCoinIconPath(coinBalance.balance.coin)}.png',
+                      tag: getCoinIconPath(coinBalance.balance.coin),
                     ),
                     SizedBox(width: widget.compact ? 6 : 8),
                     Text(
@@ -288,8 +285,7 @@ class _CoinSelectState extends State<CoinSelect> {
               children: <Widget>[
                 PhotoHero(
                   radius: widget.compact ? 8 : 12,
-                  tag: 'assets/coin-icons/'
-                      '${getCoinIconPath(coinBalance.balance.coin)}.png',
+                  tag: getCoinIconPath(coinBalance.balance.coin),
                 ),
                 SizedBox(width: widget.compact ? 6 : 8),
                 Text(

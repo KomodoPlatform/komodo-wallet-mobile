@@ -107,7 +107,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                     Row(
                       children: [
                         Image.asset(
-                          'assets/coin-icons/${getCoinIconPath(widget.coin)}.png',
+                          getCoinIconPath(widget.coin),
                           width: 32,
                           height: 32,
                         ),
@@ -146,7 +146,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/coin-icons/${getCoinIconPath(widget.coin)}.png',
+                      getCoinIconPath(widget.coin),
                       width: 16,
                       height: 16,
                     ),

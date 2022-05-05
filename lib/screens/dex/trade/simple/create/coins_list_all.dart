@@ -83,8 +83,7 @@ class _CoinsListAllState extends State<CoinsListAll> {
           horizontalTitleGap: 8,
           leading: CircleAvatar(
             radius: 8,
-            backgroundImage: AssetImage(
-                'assets/coin-icons/${getCoinIconPath(item.coin.abbr)}.png'),
+            backgroundImage: AssetImage(getCoinIconPath(item.coin.abbr)),
           ),
           title: Text(
             item.coin.abbr,

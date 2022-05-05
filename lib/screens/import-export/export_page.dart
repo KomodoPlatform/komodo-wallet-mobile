@@ -283,7 +283,7 @@ class _ExportPageState extends State<ExportPage> {
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${getCoinIconPath(myCoin)}.png',
+                  getCoinIconPath(myCoin),
                   height: 20,
                 ),
                 SizedBox(width: 8),
@@ -296,7 +296,7 @@ class _ExportPageState extends State<ExportPage> {
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${getCoinIconPath(otherCoin)}.png',
+                  getCoinIconPath(otherCoin),
                   height: 20,
                 ),
               ],

@@ -88,7 +88,7 @@ List<SimpleDialogOption> _coinItemsList({
                 height: 30,
                 width: 30,
                 child: Image.asset(
-                  'assets/coin-icons/${getCoinIconPath(coin.coin.abbr)}.png',
+                  getCoinIconPath(coin.coin.abbr),
                 )),
             Expanded(child: SizedBox()),
             Row(

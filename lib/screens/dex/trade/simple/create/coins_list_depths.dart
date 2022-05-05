@@ -66,8 +66,8 @@ class _CoinsListDepthsState extends State<CoinsListDepths> {
                 children: [
                   CircleAvatar(
                     radius: 8,
-                    backgroundImage: AssetImage(
-                        'assets/coin-icons/${getCoinIconPath(item.coin.abbr)}.png'),
+                    backgroundImage:
+                        AssetImage(getCoinIconPath(item.coin.abbr)),
                   ),
                   SizedBox(width: 4),
                   Text(

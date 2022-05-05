@@ -154,8 +154,8 @@ class _ItemCoinState extends State<ItemCoin>
                       CircleAvatar(
                         radius: 28,
                         backgroundColor: Colors.transparent,
-                        backgroundImage: AssetImage('assets/coin-icons/'
-                            '${getCoinIconPath(balance.coin)}.png'),
+                        backgroundImage:
+                            AssetImage(getCoinIconPath(balance.coin)),
                       ),
                       const SizedBox(height: 8),
                       Text(

@@ -73,7 +73,7 @@ String getCoinIconPath(String abbr) {
     abbr = abbr.replaceAll('-$suffix', '');
   }
 
-  return abbr.toLowerCase();
+  return 'assets/coin-icons/' + abbr.toLowerCase() + '.png';
 }
 
 Rational deci2rat(Decimal decimal) {
@@ -666,8 +666,8 @@ void showUriDetailsDialog(
                 children: [
                   CircleAvatar(
                     radius: 11,
-                    backgroundImage: AssetImage(
-                        'assets/coin-icons/${getCoinIconPath(abbr.toLowerCase())}.png'),
+                    backgroundImage:
+                        AssetImage(getCoinIconPath(abbr.toLowerCase())),
                   ),
                   SizedBox(width: 6),
                   Text(
