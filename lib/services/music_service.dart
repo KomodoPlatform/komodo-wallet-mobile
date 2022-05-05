@@ -96,7 +96,8 @@ class MusicService {
         Log('music_service:118',
             'pickMode] maker order $shortId, MusicMode.MAKER');
         return MusicMode.MAKER;
-      } else if (order.orderType == OrderType.TAKER) {
+      } else if (prevMode != MusicMode.MAKER &&
+          order.orderType == OrderType.TAKER) {
         Log('music_service:114',
             'pickMode] taker order $shortId, MusicMode.TAKER');
         return MusicMode.TAKER;
