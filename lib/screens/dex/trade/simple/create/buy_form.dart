@@ -101,7 +101,7 @@ class _BuyFormState extends State<BuyForm> {
         leading: CircleAvatar(
           radius: 8,
           backgroundImage: AssetImage('assets/coin-icons/'
-              '${removeSuffix(_constrProvider.buyCoin)}.png'),
+              '${getCoinIconPath(_constrProvider.buyCoin)}.png'),
         ),
         title: Text(_constrProvider.buyCoin),
         trailing: Icon(

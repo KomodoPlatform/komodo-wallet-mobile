@@ -262,7 +262,7 @@ class _ContactEditState extends State<ContactEdit> {
     return CircleAvatar(
       maxRadius: 8,
       backgroundImage:
-          AssetImage('assets/coin-icons/${removeSuffix(abbr)}.png'),
+          AssetImage('assets/coin-icons/${getCoinIconPath(abbr)}.png'),
     );
   }
 

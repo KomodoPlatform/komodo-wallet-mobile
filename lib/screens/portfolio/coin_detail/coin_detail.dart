@@ -212,7 +212,7 @@ class _CoinDetailState extends State<CoinDetail> {
             children: <Widget>[
               PhotoHero(
                 tag: 'assets/coin-icons/'
-                    '${removeSuffix(currentCoinBalance.balance.coin)}.png',
+                    '${getCoinIconPath(currentCoinBalance.balance.coin)}.png',
                 radius: 16,
               ),
               const SizedBox(
@@ -541,7 +541,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(
-                          'assets/coin-icons/${removeSuffix(platform)}.png',
+                          'assets/coin-icons/${getCoinIconPath(platform)}.png',
                           width: 16,
                           height: 16,
                         ),

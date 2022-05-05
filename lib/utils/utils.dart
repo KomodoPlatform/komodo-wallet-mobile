@@ -68,7 +68,7 @@ Rational tryParseRat(String text) {
   }
 }
 
-String removeSuffix(String abbr) {
+String getCoinIconPath(String abbr) {
   for (String suffix in appConfig.protocolSuffixes) {
     abbr = abbr.replaceAll('-$suffix', '');
   }
@@ -667,7 +667,7 @@ void showUriDetailsDialog(
                   CircleAvatar(
                     radius: 11,
                     backgroundImage: AssetImage(
-                        'assets/coin-icons/${removeSuffix(abbr.toLowerCase())}.png'),
+                        'assets/coin-icons/${getCoinIconPath(abbr.toLowerCase())}.png'),
                   ),
                   SizedBox(width: 6),
                   Text(

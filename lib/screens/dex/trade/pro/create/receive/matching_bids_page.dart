@@ -75,7 +75,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                   height: 30,
                   width: 30,
                   child: Image.asset(
-                      'assets/coin-icons/${removeSuffix(receiveCoin)}.png')),
+                      'assets/coin-icons/${getCoinIconPath(receiveCoin)}.png')),
             ],
           ),
         ),

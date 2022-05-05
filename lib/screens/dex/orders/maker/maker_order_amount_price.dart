@@ -65,7 +65,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
                     radius: 12,
                     backgroundColor: Colors.transparent,
                     backgroundImage: AssetImage('assets/coin-icons/'
-                        '${removeSuffix(widget.order.base)}.png'),
+                        '${getCoinIconPath(widget.order.base)}.png'),
                   ),
                   const SizedBox(width: 4),
                   Text(
@@ -150,7 +150,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
                 radius: 12,
                 backgroundColor: Colors.transparent,
                 backgroundImage: AssetImage('assets/coin-icons/'
-                    '${removeSuffix(widget.order.rel)}.png'),
+                    '${getCoinIconPath(widget.order.rel)}.png'),
               ),
               const SizedBox(width: 4),
               Text(
