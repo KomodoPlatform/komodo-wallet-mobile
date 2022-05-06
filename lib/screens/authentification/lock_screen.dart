@@ -32,14 +32,12 @@ class LockScreen extends StatefulWidget {
     this.child,
     this.onSuccess,
     @required this.context,
-    this.fromStartup = false,
   }) : super(key: key);
 
   final PinStatus pinStatus;
   final Widget child;
   final Function onSuccess;
   final BuildContext context;
-  final bool fromStartup;
 
   @override
   _LockScreenState createState() => _LockScreenState();
@@ -57,10 +55,6 @@ class _LockScreenState extends State<LockScreen> {
     final bool isPinCreationInProgress =
         prefs.containsKey('is_pin_creation_in_progress');
     final Wallet currentWallet = await Db.getCurrentWallet();
-
-    if (prefs.getBool('switch_pin_log_out_on_exit') && widget.fromStartup) {
-      await authBloc.logout();
-    }
 
     if (password == null && isPinCreationInProgress && currentWallet != null) {
       Navigator.push<dynamic>(

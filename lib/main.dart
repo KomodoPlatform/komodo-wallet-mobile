@@ -236,7 +236,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                               '/': (BuildContext context) => LockScreen(
                                     context: context,
                                     child: const MyHomePage(),
-                                    fromStartup: true,
                                   ),
                             });
                       },
