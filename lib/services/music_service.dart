@@ -90,6 +90,20 @@ class MusicService {
       return MusicMode.FAILED;
     }
 
+    for (final Order order in orders) {
+      final String shortId = order.uuid.substring(0, 4);
+      if (order.orderType == OrderType.MAKER) {
+        Log('music_service:118',
+            'pickMode] maker order $shortId, MusicMode.MAKER');
+        return MusicMode.MAKER;
+      } else if (prevMode != MusicMode.MAKER &&
+          order.orderType == OrderType.TAKER) {
+        Log('music_service:114',
+            'pickMode] taker order $shortId, MusicMode.TAKER');
+        return MusicMode.TAKER;
+      }
+    }
+
     for (final Swap swap in swapMonitor.swaps) {
       final String uuid = swap.result.uuid;
       final String shortId = uuid.substring(0, 4);
@@ -101,19 +115,6 @@ class MusicService {
         Log('music_service:92',
             'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
         return MusicMode.ACTIVE;
-      }
-    }
-
-    for (final Order order in orders) {
-      final String shortId = order.uuid.substring(0, 4);
-      if (order.orderType == OrderType.TAKER) {
-        Log('music_service:114',
-            'pickMode] taker order $shortId, MusicMode.TAKER');
-        return MusicMode.TAKER;
-      } else if (order.orderType == OrderType.MAKER) {
-        Log('music_service:118',
-            'pickMode] maker order $shortId, MusicMode.MAKER');
-        return MusicMode.MAKER;
       }
     }
 
@@ -222,19 +223,17 @@ class MusicService {
       if (custom.existsSync()) customFile = custom;
     }
 
-    final String defaultPath = newMode == MusicMode.TAKER
-        ? 'tick-tock.mp3'
-        : newMode == MusicMode.MAKER
-            ? 'maker_order_placed.mp3'
-            : newMode == MusicMode.ACTIVE
-                ? 'swap_in_progress.mp3'
-                : newMode == MusicMode.FAILED
-                    ? 'swap_failed.mp3'
-                    : newMode == MusicMode.APPLAUSE
-                        ? 'swap_successful.mp3'
-                        : newMode == MusicMode.SILENT
-                            ? 'none.mp3'
-                            : null;
+    final String defaultPath = newMode == MusicMode.MAKER
+        ? 'maker_order_placed.mp3'
+        : [
+            MusicMode.TAKER,
+            MusicMode.ACTIVE,
+            MusicMode.FAILED,
+            MusicMode.APPLAUSE,
+            MusicMode.SILENT
+          ].contains(newMode)
+            ? 'none.mp3'
+            : null;
 
     final String path = customFile != null
         ? (Platform.isAndroid ? customFile.path : customName)
