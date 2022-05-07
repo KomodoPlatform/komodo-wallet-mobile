@@ -155,7 +155,7 @@ class LockService {
     if (_inFilePicker == 0) _lock(context);
   }
 
-  Future<void> _lock(BuildContext context) async {
+  void _lock(BuildContext context) {
     final walletSecuritySettingsProvider =
         context.read<WalletSecuritySettingsProvider>();
     if (authBloc.showLock) return; // Already showing the lock.
