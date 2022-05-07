@@ -407,14 +407,22 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildLogOutOnExit() {
     return SharedPreferencesBuilder<dynamic>(
-      pref: 'switch_pin_log_out_on_exit',
+      pref: 'switch_pin_log_out_on_exit_list',
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         return SwitchListTile(
-          value: snapshot.data ?? false,
+          value: snapshot.data?.contains(walletBloc.currentWallet.id) ?? false,
           onChanged: (bool dataSwitch) {
             setState(() {
               SharedPreferences.getInstance().then((SharedPreferences data) {
-                data.setBool('switch_pin_log_out_on_exit', dataSwitch);
+                List<String> presentList =
+                    data.getStringList('switch_pin_log_out_on_exit_list') ?? [];
+                if (presentList.contains(walletBloc.currentWallet.id)) {
+                  presentList.remove(walletBloc.currentWallet.id);
+                } else {
+                  presentList.add(walletBloc.currentWallet.id);
+                }
+                data.setStringList(
+                    'switch_pin_log_out_on_exit_list', presentList);
               });
             });
           },

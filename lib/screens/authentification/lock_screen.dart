@@ -111,8 +111,8 @@ class _LockScreenState extends State<LockScreen> {
         ModalRoute.of(widget.context).settings.arguments;
     password = args?.password;
     _initScreen();
-    initConnectivity();
 
+    initConnectivity();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       pinScreenOrientation(context);
 

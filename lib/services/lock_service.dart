@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -154,13 +155,20 @@ class LockService {
     if (_inFilePicker == 0) _lock(context);
   }
 
-  void _lock(BuildContext context) {
+  Future<void> _lock(BuildContext context) async {
     final walletSecuritySettingsProvider =
         context.read<WalletSecuritySettingsProvider>();
     if (authBloc.showLock) return; // Already showing the lock.
     if (inQrScanner) return; // Don't lock while we're scanning QR.
-    if (_prefs?.getBool('switch_pin_log_out_on_exit') ?? false)
-      authBloc.logout();
+    if (walletBloc.currentWallet != null) {
+      bool toLogout = _prefs
+          .getStringList('switch_pin_log_out_on_exit_list')
+          .contains(walletBloc.currentWallet.id);
+      if (toLogout) {
+        authBloc.logout();
+      }
+    }
+
     if (walletSecuritySettingsProvider.activatePinProtection == false)
       return; // PIN turned off
 
