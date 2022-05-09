@@ -1625,5 +1625,21 @@
         "explorerUrl": [
             "https://testnet.bscscan.com/"
         ]
+    },
+    {
+        "name": "VOTE2022",
+        "type": "smartChain",
+        "proto": "SSL",
+        "abbr": "VOTE2022",
+        "coingeckoId": "test-token",
+        "colorCoin": "0xFF326464",
+        "serverList": [
+            "electrum1.cipig.net:20002",
+            "electrum2.cipig.net:20002",
+            "electrum3.cipig.net:20002"
+        ],
+        "explorerUrl": [
+            "https://vote.kmdexplorer.io/"
+        ]
     }
 ]
