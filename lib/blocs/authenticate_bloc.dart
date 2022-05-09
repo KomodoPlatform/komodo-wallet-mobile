@@ -55,7 +55,7 @@ class AuthenticateBloc extends BlocBase {
       _inpinStatus.add(PinStatus.CREATE_PIN);
     }
 
-    if (walletSecuritySettingsProvider.activatePinProtection == false) {
+    if (!(prefs.getBool('switch_pin') ?? false)) {
       showLock = false;
     }
   }

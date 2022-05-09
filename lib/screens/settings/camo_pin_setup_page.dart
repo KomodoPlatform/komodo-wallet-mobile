@@ -139,8 +139,9 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                 if (!normalPin.hasData) return SizedBox();
 
                 if (walletSecuritySettingsProvider.activatePinProtection) {
-                  return FutureBuilder<String>(
-                      future: EncryptionTool().read('camoPin'),
+                  return StreamBuilder<String>(
+                      initialData: camoBloc.camoPinValue,
+                      stream: camoBloc.outCamoPinValue,
                       builder: (context, AsyncSnapshot<String> camoPin) {
                         if (!camoPin.hasData) return SizedBox();
                         if (camoPin.data != normalPin.data) return SizedBox();
@@ -173,8 +174,9 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
   }
 
   Widget _buildPinSetup() {
-    return FutureBuilder<String>(
-        future: EncryptionTool().read('camoPin'),
+    return StreamBuilder<String>(
+        initialData: camoBloc.camoPinValue,
+        stream: camoBloc.outCamoPinValue,
         builder: (context, AsyncSnapshot<String> camoPinSnapshot) {
           final String camoPin =
               camoPinSnapshot.hasData ? camoPinSnapshot.data : null;
@@ -304,7 +306,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                 pinStatus: PinStatus.CREATE_CAMO_PIN,
                                 password: password)));
                   },
-                )));
+                ))).then((value) => camoBloc.getCamoPinValue());
   }
 
   Widget _buildDescription() {
