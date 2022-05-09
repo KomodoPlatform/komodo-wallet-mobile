@@ -1975,5 +1975,21 @@
         "colorCoin": "0xff38c1a4",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "name": "VOTE2022",
+        "type": "smartChain",
+        "proto": "SSL",
+        "abbr": "VOTE2022",
+        "coingeckoId": "test-token",
+        "colorCoin": "0xFF326464",
+        "serverList": [
+            "electrum1.cipig.net:20002",
+            "electrum2.cipig.net:20002",
+            "electrum3.cipig.net:20002"
+        ],
+        "explorerUrl": [
+            "https://vote.kmdexplorer.io/"
+        ]
     }
 ]
