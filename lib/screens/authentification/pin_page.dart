@@ -277,7 +277,7 @@ class _PinPageState extends State<PinPage> {
                 } else {
                   final bool shouldEnterCamoMode = widget.pinStatus ==
                           PinStatus.NORMAL_PIN &&
-                      (walletSecuritySettingsProvider.activateBioProtection &&
+                      (!walletSecuritySettingsProvider.activateBioProtection &&
                           camoBloc.isCamoEnabled) &&
                       _camoPin != null &&
                       code == _camoPin;
