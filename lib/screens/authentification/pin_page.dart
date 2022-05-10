@@ -275,11 +275,12 @@ class _PinPageState extends State<PinPage> {
                   Navigator.pushReplacement<dynamic, dynamic>(
                       context, materialPage);
                 } else {
-                  final bool shouldEnterCamoMode =
-                      widget.pinStatus == PinStatus.NORMAL_PIN &&
-                          camoBloc.isCamoEnabled &&
-                          _camoPin != null &&
-                          code == _camoPin;
+                  final bool shouldEnterCamoMode = widget.pinStatus ==
+                          PinStatus.NORMAL_PIN &&
+                      (walletSecuritySettingsProvider.activateBioProtection &&
+                          camoBloc.isCamoEnabled) &&
+                      _camoPin != null &&
+                      code == _camoPin;
 
                   if (shouldEnterCamoMode) {
                     if (!camoBloc.isCamoActive) {
