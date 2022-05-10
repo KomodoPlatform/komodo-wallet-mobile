@@ -158,14 +158,12 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
     _updateDb().then((value) => notifyListeners());
   }
 
-  bool get isCamoActive =>
-      _prefs.getBool('isCamoActive') ?? _walletSecuritySettings.isCamoActive;
+  bool get isCamoActive => _prefs.getBool('isCamoActive') ?? false;
 
   set isCamoActive(bool v) {
-    _walletSecuritySettings.isCamoActive = v;
     _prefs.setBool('isCamoActive', v);
 
-    _updateDb().then((value) => notifyListeners());
+    notifyListeners();
   }
 
   int get camoFraction =>
