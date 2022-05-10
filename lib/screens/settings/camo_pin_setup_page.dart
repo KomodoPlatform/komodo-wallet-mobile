@@ -29,6 +29,10 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         AppLocalizations.of(context).matchingCamoPinError;
     _showMatchingPinPopupIfNeeded();
 
+    if (walletSecuritySettingsProvider.activateBioProtection &&
+        camoBloc.isCamoEnabled) {
+      camoBloc.isCamoEnabled = false;
+    }
     return StreamBuilder<bool>(
         initialData: camoBloc.isCamoActive,
         stream: camoBloc.outIsCamoActive,
@@ -127,6 +131,19 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
   }
 
   Widget _buildWarnings() {
+    if (walletSecuritySettingsProvider.activateBioProtection) {
+      return Container(
+        padding: const EdgeInsets.all(18),
+        child: Text(
+          AppLocalizations.of(context).camoPinBioProtectionConflict,
+          style: TextStyle(
+            color: Theme.of(context).errorColor,
+            height: 1.2,
+          ),
+        ),
+      );
+    }
+
     return StreamBuilder<bool>(
         initialData: camoBloc.isCamoEnabled,
         stream: camoBloc.outCamoEnabled,
@@ -337,7 +354,9 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                   ? AppLocalizations.of(context).camoPinOn
                   : AppLocalizations.of(context).camoPinOff),
               value: isEnabled,
-              onChanged: (bool value) => _switchEnabled(value),
+              onChanged: walletSecuritySettingsProvider.activateBioProtection
+                  ? null
+                  : (bool value) => _switchEnabled(value),
             ),
           );
         });
