@@ -24,6 +24,9 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   Future<void> migrateSecuritySettings() async {
     Log('security_settings_provider', 'Migrating wallet security settings');
 
+    // isCamoActive should always be removed on cold boot
+    await _prefs.remove('isCamoActive');
+
     // MRC: If this key isn't present, we didn't do the migration yet,
     // this key also should be present on newly created wallets.
     if (_prefs.containsKey('wallet_security_settings_migrated')) return;
@@ -35,7 +38,6 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       final tmpPinProtection = _prefs.getBool('switch_pin');
       final tmpBioProtection = _prefs.getBool('switch_pin_biometric');
       final tmpCamoEnabled = _prefs.getBool('isCamoEnabled');
-      final tmpIsCamoActive = _prefs.getBool('isCamoActive');
       final tmpCamoFraction = _prefs.getInt('camoFraction');
       final tmpCamoBalance = _prefs.getString('camoBalance');
       final tmpCamoSessionStartedAt = _prefs.getInt('camoSessionStartedAt');
@@ -47,7 +49,7 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
         activatePinProtection: tmpPinProtection ?? false,
         activateBioProtection: tmpBioProtection ?? false,
         enableCamo: tmpCamoEnabled ?? false,
-        isCamoActive: tmpIsCamoActive ?? false,
+        isCamoActive: false,
         camoFraction: tmpCamoFraction,
         camoBalance: tmpCamoBalance,
         camoSessionStartedAt: tmpCamoSessionStartedAt,
@@ -64,17 +66,6 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       await _prefs.remove('isPinIsCreated');
 
       // Clean up shared preferences
-
-      await _prefs.remove('switch_pin');
-      await _prefs.remove('pin_create');
-      await _prefs.remove('switch_pin_biometric');
-      await _prefs.remove('isCamoEnabled');
-      await _prefs.remove('isCamoPinCreated');
-      await _prefs.remove('camo_pin_create');
-      await _prefs.remove('isCamoActive');
-      await _prefs.remove('camoFraction');
-      await _prefs.remove('camoBalance');
-      await _prefs.remove('camoSessionStartedAt');
 
       // Old shared prefs
       // unused, was renamed to isPinIsCreated previously
