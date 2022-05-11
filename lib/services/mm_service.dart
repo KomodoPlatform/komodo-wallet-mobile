@@ -311,7 +311,7 @@ class MMService {
       rpcPassword: rpcPass,
       coins: await readJsonCoinInit(),
       dbdir: filesPath,
-      allowWeakPassword: true, // remove after vote2022 patch released
+      allowWeakPassword: false,
     ));
 
     logC
