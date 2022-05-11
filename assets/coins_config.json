@@ -2023,6 +2023,7 @@
     "abbr": "FTMT",
     "name": "Fantom Testnet",
     "coingeckoId": "test-coin",
+    "testCoin": true,
     "serverList": [
       "https://rpc.testnet.fantom.network/"
     ],

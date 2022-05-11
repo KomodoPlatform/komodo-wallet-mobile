@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -50,7 +49,9 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Fee customFee;
       if (coinsDetailBloc.customFee != null) {
-        if (appConfig.coinTypes.contains(widget.coinBalance.coin.type)) {
+        bool isERC = widget.coinBalance.coin.protocol?.type == 'ERC20' ||
+            widget.coinBalance.coin.protocol?.type == 'ETH';
+        if (isERC) {
           customFee = Fee(
             type: 'EthGas',
             gas: coinsDetailBloc.customFee.gas,

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -249,7 +248,8 @@ class _CoinDetailState extends State<CoinDetail> {
     // Since we currently fetching erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
-    if (appConfig.coinTypes.contains(widget.coinBalance.coin.type)) {
+    final String protocolType = widget.coinBalance.coin?.protocol?.type;
+    if (protocolType == 'ERC20' || protocolType == 'ETH') {
       return SizedBox();
     }
 

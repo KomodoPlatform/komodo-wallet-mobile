@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -100,7 +99,8 @@ class NotifService {
       final List<Transaction> transactions = [];
 
       for (CoinBalance coin in coins) {
-        if (appConfig.coinTypes.contains(coin.coin.type)) {
+        if (coin.coin.protocol?.type == 'ERC20' ||
+            coin.coin.protocol?.type == 'ETH') {
           continue;
         }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -58,7 +57,8 @@ class _CustomFeeState extends State<CustomFee> {
                       .bodyText2
                       .copyWith(color: Theme.of(context).errorColor),
                 ),
-                appConfig.coinTypes.contains(widget.coin.type)
+                widget.coin.protocol?.type == 'ERC20' ||
+                        widget.coin.protocol?.type == 'ETH'
                     ? CustomFeeFieldERC(
                         coin: widget.coin,
                         isCustomFeeActive: isCustomFeeActive,

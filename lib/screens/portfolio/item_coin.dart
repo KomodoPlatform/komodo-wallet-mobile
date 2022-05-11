@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -307,16 +306,13 @@ class _ItemCoinState extends State<ItemCoin>
   }
 
   Widget _buildNetworkLabel() {
-    final bool needLabel =
-        (appConfig.coinTypes.contains(widget.coinBalance.coin.type) ||
-                widget.coinBalance.coin.type == 'qrc' ||
-                widget.coinBalance.coin.type == 'smartChain') &&
-            widget.coinBalance.coin.abbr != 'KMD' &&
-            widget.coinBalance.coin.abbr != 'ETH' &&
-            widget.coinBalance.coin.abbr != 'BNB' &&
-            widget.coinBalance.coin.abbr != 'MATIC' &&
-            widget.coinBalance.coin.abbr != 'FTM' &&
-            widget.coinBalance.coin.abbr != 'QTUM';
+    Coin coin = widget.coinBalance.coin;
+    final bool needLabel = (coin.protocol?.type == 'ERC20' ||
+            coin.type == 'qrc' ||
+            coin.type == 'smartChain') &&
+        coin.abbr != 'KMD' &&
+        coin.protocol?.type != 'ETH' &&
+        coin.abbr != 'QTUM';
 
     if (!needLabel) return SizedBox();
 
@@ -325,7 +321,8 @@ class _ItemCoinState extends State<ItemCoin>
       child: Container(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(16)),
-          color: appConfig.coinTypes.contains(widget.coinBalance.coin.type) ||
+          color: coin.protocol.type == 'ERC20' ||
+                  coin.protocol.type == 'ETH' ||
                   widget.coinBalance.coin.type == 'qrc'
               ? const Color.fromRGBO(20, 117, 186, 1)
               : Theme.of(context).scaffoldBackgroundColor,

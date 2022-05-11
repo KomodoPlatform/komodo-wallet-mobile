@@ -245,11 +245,8 @@ class _AddressFieldState extends State<AddressField> {
   }
 
   bool _isErcNonMixedCase(String error) {
-    final String coinType = widget.coin.type;
-    if (coinType != 'erc' &&
-        coinType != 'bep' &&
-        coinType != 'plg' &&
-        coinType != 'ftm') {
+    final String protocolType = widget.coin.protocol?.type;
+    if (protocolType != 'ERC20' || protocolType != 'ETH') {
       return false;
     }
     if (!error.contains('Invalid address checksum')) return false;
