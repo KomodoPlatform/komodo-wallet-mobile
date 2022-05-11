@@ -303,14 +303,16 @@ class MMService {
     }
 
     final String startParam = configMm2ToJson(ConfigMm2(
-        gui: gui,
-        netid: netid,
-        client: 1,
-        userhome: filesPath,
-        passphrase: passphrase,
-        rpcPassword: rpcPass,
-        coins: await readJsonCoinInit(),
-        dbdir: filesPath));
+      gui: gui,
+      netid: netid,
+      client: 1,
+      userhome: filesPath,
+      passphrase: passphrase,
+      rpcPassword: rpcPass,
+      coins: await readJsonCoinInit(),
+      dbdir: filesPath,
+      allowWeakPassword: true, // remove after vote2022 patch released
+    ));
 
     logC
         .receiveBroadcastStream()
