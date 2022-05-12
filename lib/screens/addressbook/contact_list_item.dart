@@ -79,22 +79,19 @@ class _ContactListItemState extends State<ContactListItem> {
     );
   }
 
+  String _getCoinTypeAbbr() {
+    if (widget.coin.type == 'smartChain') return 'KMD';
+
+    final String platform = widget.coin.protocol?.protocolData?.platform;
+    return platform ?? widget.coin.abbr;
+  }
+
   Widget _buildAddressesList() {
     final List<Widget> addresses = [];
 
     widget.contact.addresses?.forEach(
       (String abbr, String value) {
-        if (widget.coin != null) {
-          String coinAbbr = widget.coin.abbr;
-          if (widget.coin.type == 'erc') coinAbbr = 'ETH';
-          if (widget.coin.type == 'bep') coinAbbr = 'BNB';
-          if (widget.coin.type == 'plg') coinAbbr = 'MATIC';
-          if (widget.coin.type == 'qrc') coinAbbr = 'QTUM';
-          if (widget.coin.type == 'ftm') coinAbbr = 'FTM';
-          if (widget.coin.type == 'smartChain') coinAbbr = 'KMD';
-
-          if (coinAbbr != abbr) return;
-        }
+        if (widget.coin != null && _getCoinTypeAbbr() != abbr) return;
 
         addresses.add(
           Padding(
