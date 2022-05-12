@@ -299,11 +299,13 @@ class CoinsBloc implements BlocBase {
       final err = ErrorString.fromJson(ans);
       if (err.error.isNotEmpty) {
         Log('coins_bloc:273', 'Error activating ${coin.abbr}: ${err.error}');
+        Db.coinInactive(coin.abbr);
         continue;
       }
       final acc = ActiveCoin.fromJson(ans);
       if (acc.result != 'success') {
         Log('coins_bloc:278', '!success: $ans');
+        Db.coinInactive(coin.abbr);
         continue;
       }
       await Db.coinActive(coin);
@@ -610,7 +612,9 @@ class CoinsBloc implements BlocBase {
 
     final List<CoinBalance> list = [];
     for (dynamic item in items) {
-      list.add(CoinBalance.fromJson(item));
+      final tmp = CoinBalance.fromJson(item);
+      final currentCoins = await Db.activeCoins;
+      if (currentCoins.contains(tmp.coin.abbr)) list.add(tmp);
     }
 
     coinBalance = list;
