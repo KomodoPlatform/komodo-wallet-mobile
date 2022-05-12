@@ -305,25 +305,25 @@ class _ItemCoinState extends State<ItemCoin>
     return SizedBox();
   }
 
+  bool _isLabelNeeded(Coin coin) {
+    if (coin.abbr == 'KMD') return false;
+    if (coin.type == 'smartChain') return true;
+
+    return coin.protocol?.protocolData?.platform != null;
+  }
+
   Widget _buildNetworkLabel() {
     Coin coin = widget.coinBalance.coin;
-    final bool needLabel = (coin.protocol?.type == 'ERC20' ||
-            coin.type == 'qrc' ||
-            coin.type == 'smartChain') &&
-        coin.abbr != 'KMD' &&
-        coin.protocol?.type != 'ETH' &&
-        coin.abbr != 'QTUM';
-
-    if (!needLabel) return SizedBox();
+    if (!_isLabelNeeded(coin)) return SizedBox();
 
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(16)),
-          color: coin.protocol.type == 'ERC20' ||
-                  coin.protocol.type == 'ETH' ||
-                  widget.coinBalance.coin.type == 'qrc'
+          color: coin.protocol?.type == 'ERC20' ||
+                  coin.protocol?.type == 'ETH' ||
+                  coin.type == 'qrc'
               ? const Color.fromRGBO(20, 117, 186, 1)
               : Theme.of(context).scaffoldBackgroundColor,
         ),
