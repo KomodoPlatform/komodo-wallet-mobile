@@ -297,15 +297,22 @@ class CoinsBloc implements BlocBase {
       final coin = coins[ix];
       final Map<String, dynamic> ans = replies[ix];
       final err = ErrorString.fromJson(ans);
+      final abbr = coin.abbr;
       if (err.error.isNotEmpty) {
-        Log('coins_bloc:273', 'Error activating ${coin.abbr}: ${err.error}');
-        Db.coinInactive(coin.abbr);
+        Log('coins_bloc:273', 'Error activating $abbr: ${err.error}');
+        Log('coins_bloc:273',
+            '$abbr WILL BE disabled due to error during activation');
+        Db.coinInactive(abbr);
+        Log('coins_bloc:273',
+            '$abbr WAS disabled due to error during activation');
         continue;
       }
       final acc = ActiveCoin.fromJson(ans);
       if (acc.result != 'success') {
         Log('coins_bloc:278', '!success: $ans');
-        Db.coinInactive(coin.abbr);
+        Log('coins_bloc:278', '$abbr WILL BE disabled due to !success result');
+        Db.coinInactive(abbr);
+        Log('coins_bloc:278', '$abbr WAS disabled due to !success result');
         continue;
       }
       await Db.coinActive(coin);
@@ -614,7 +621,13 @@ class CoinsBloc implements BlocBase {
     for (dynamic item in items) {
       final tmp = CoinBalance.fromJson(item);
       final currentCoins = await Db.activeCoins;
-      if (currentCoins.contains(tmp.coin.abbr)) list.add(tmp);
+      final abbr = tmp.coin.abbr;
+      if (!currentCoins.contains(abbr)) {
+        Log('coins_bloc',
+            ' loadWalletSnapshot] $abbr is PRESENT on walletSnapshot but IS NOT ACTIVE, therefore ignoring stored data...');
+        continue;
+      }
+      list.add(tmp);
     }
 
     coinBalance = list;
