@@ -624,7 +624,7 @@ class CoinsBloc implements BlocBase {
       final abbr = tmp.coin.abbr;
       if (!currentCoins.contains(abbr)) {
         Log('coins_bloc',
-            ' loadWalletSnapshot] $abbr is PRESENT on walletSnapshot but IS NOT ACTIVE, therefore ignoring stored data...');
+            ' loadWalletSnapshot] $abbr IS PRESENT on SNAPSHOT but $abbr IS NOT ACTIVE, therefore ignoring stored data...');
         continue;
       }
       list.add(tmp);
