@@ -82,7 +82,9 @@ class _CoinDetailState extends State<CoinDetail> {
   void initState() {
     cexProvider ??= Provider.of<CexProvider>(context, listen: false);
     // set default coin
-    cexProvider.withdrawCurrency = widget.coinBalance.coin.abbr.toUpperCase();
+    Future.delayed(Duration.zero, () {
+      cexProvider.withdrawCurrency = widget.coinBalance.coin.abbr.toUpperCase();
+    });
 
     isSendIsActive = widget.isSendIsActive;
     currentCoinBalance = widget.coinBalance;
