@@ -59,6 +59,7 @@ class _AddressFieldState extends State<AddressField> {
   Future<void> _isCoinActive() async {
     _coinIsActiveCountdown =
         Timer.periodic(Duration(milliseconds: 300), (_) async {
+      if (widget.controller.text.isEmpty) return;
       final dynamic error = await MM.validateAddress(
         address: widget.controller.text,
         coin: widget.coin.abbr,
