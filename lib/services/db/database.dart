@@ -470,7 +470,7 @@ class Db {
 
   /// Remove the coin from the list of activated coins.
   static Future<void> coinInactive(String ticker) async {
-    Log('database', 'coinInactive] $ticker IS BEING disabled');
+    Log('database', 'coinInactive] removing $ticker from active coins');
 
     _active.remove(ticker);
     final coinsString = _active.join(',');
