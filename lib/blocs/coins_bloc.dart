@@ -297,13 +297,20 @@ class CoinsBloc implements BlocBase {
       final coin = coins[ix];
       final Map<String, dynamic> ans = replies[ix];
       final err = ErrorString.fromJson(ans);
+      final abbr = coin.abbr;
       if (err.error.isNotEmpty) {
-        Log('coins_bloc:273', 'Error activating ${coin.abbr}: ${err.error}');
+        Log('coins_bloc:273', 'Error activating $abbr: ${err.error}');
+        Log('coins_bloc:273',
+            '$abbr had an eror during activation, removing from active coins');
+        Db.coinInactive(abbr);
         continue;
       }
       final acc = ActiveCoin.fromJson(ans);
       if (acc.result != 'success') {
         Log('coins_bloc:278', '!success: $ans');
+        Log('coins_bloc:278',
+            '$abbr had a !success result, removing from active coins');
+        Db.coinInactive(abbr);
         continue;
       }
       await Db.coinActive(coin);
@@ -610,7 +617,15 @@ class CoinsBloc implements BlocBase {
 
     final List<CoinBalance> list = [];
     for (dynamic item in items) {
-      list.add(CoinBalance.fromJson(item));
+      final tmp = CoinBalance.fromJson(item);
+      final currentCoins = await Db.activeCoins;
+      final abbr = tmp.coin.abbr;
+      if (!currentCoins.contains(abbr)) {
+        Log('coins_bloc',
+            'loadWalletSnapshot] $abbr IS PRESENT on SNAPSHOT but IS NOT ACTIVE, ignoring stored data...');
+        continue;
+      }
+      list.add(tmp);
     }
 
     coinBalance = list;
