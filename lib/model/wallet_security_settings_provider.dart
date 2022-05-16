@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/model/wallet_security_settings.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 WalletSecuritySettingsProvider walletSecuritySettingsProvider =
@@ -12,6 +13,9 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   // Should prefer using Provider when possible.
   WalletSecuritySettings _walletSecuritySettings = WalletSecuritySettings();
   SharedPreferences _prefs;
+  bool _isInitialized = false;
+
+  bool get isInitialized => _isInitialized;
 
   WalletSecuritySettingsProvider() {
     _init();
@@ -19,9 +23,12 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
 
   Future<void> _init() async {
     _prefs = await SharedPreferences.getInstance();
+
+    _isInitialized = true;
   }
 
   Future<void> migrateSecuritySettings() async {
+    await pauseUntil(() => _isInitialized);
     Log('security_settings_provider', 'Migrating wallet security settings');
 
     // MRC: If this key isn't present, we didn't do the migration yet,
@@ -101,6 +108,7 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   }
 
   Future<void> getCurrentSettingsFromDb() async {
+    await pauseUntil(() => _isInitialized);
     _walletSecuritySettings = await Db.getCurrentWalletSecuritySettings();
 
     final pinProtection = _walletSecuritySettings.activatePinProtection;
