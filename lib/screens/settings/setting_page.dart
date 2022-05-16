@@ -225,31 +225,67 @@ class _SettingPageState extends State<SettingPage> {
             tileColor: Theme.of(context).primaryColor,
             value:
                 walletSecuritySettingsProvider.activateBioProtection ?? false,
-            onChanged: (
-              bool switchValue,
-            ) {
-              if (walletSecuritySettingsProvider.activateBioProtection) {
-                walletSecuritySettingsProvider.activateBioProtection = false;
-              } else {
-                authenticateBiometrics(
-                  context,
-                  PinStatus.DISABLED_PIN_BIOMETRIC,
-                  authorize: true,
-                ).then((
-                  bool passedBioCheck,
-                ) {
-                  if (passedBioCheck) {
-                    walletSecuritySettingsProvider.activateBioProtection = true;
-                    walletSecuritySettingsProvider.activatePinProtection = true;
-                  }
-                });
-              }
-            },
+            onChanged: camoBloc.isCamoActive
+                ? null
+                : (
+                    bool switchValue,
+                  ) {
+                    if (camoBloc.isCamoEnabled) {
+                      _showCamoPinBioProtectionConflictDialog();
+                      return;
+                    }
+                    if (walletSecuritySettingsProvider.activateBioProtection) {
+                      walletSecuritySettingsProvider.activateBioProtection =
+                          false;
+                    } else {
+                      authenticateBiometrics(
+                        context,
+                        PinStatus.DISABLED_PIN_BIOMETRIC,
+                        authorize: true,
+                      ).then((
+                        bool passedBioCheck,
+                      ) {
+                        if (passedBioCheck) {
+                          walletSecuritySettingsProvider.activateBioProtection =
+                              true;
+                          walletSecuritySettingsProvider.activatePinProtection =
+                              true;
+                          //
+                        }
+                      });
+                    }
+                  },
           );
         }
         return SizedBox();
       },
     );
+  }
+
+  void _showCamoPinBioProtectionConflictDialog() {
+    dialogBloc.dialog = showDialog<dynamic>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CustomSimpleDialog(
+            title: Text(
+                AppLocalizations.of(context).camoPinBioProtectionConflictTitle),
+            children: <Widget>[
+              Text(AppLocalizations.of(context).camoPinBioProtectionConflict),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(AppLocalizations.of(context).warningOkBtn),
+                  ),
+                ],
+              ),
+            ],
+          );
+        }).then((dynamic _) {
+      dialogBloc.dialog = null;
+    });
   }
 
   Widget _buildCamouflagePin() {

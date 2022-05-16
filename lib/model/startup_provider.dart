@@ -46,9 +46,6 @@ class Startup {
   }
 
   Future<void> _start() async {
-    // restore saved camouflage session if any
-    await camoBloc.init();
-
     // delete old logs
     await Log.maintain();
 
@@ -58,6 +55,9 @@ class Startup {
     await startMmIfUnlocked();
 
     await walletSecuritySettingsProvider.migrateSecuritySettings();
+
+    // restore saved camouflage session if any
+    await camoBloc.init();
 
     _live = true;
     _notifyListeners();

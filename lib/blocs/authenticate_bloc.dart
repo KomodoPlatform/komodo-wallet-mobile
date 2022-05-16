@@ -55,7 +55,7 @@ class AuthenticateBloc extends BlocBase {
       _inpinStatus.add(PinStatus.CREATE_PIN);
     }
 
-    if (walletSecuritySettingsProvider.activatePinProtection == false) {
+    if (!(prefs.getBool('switch_pin') ?? false)) {
       showLock = false;
     }
   }
@@ -141,6 +141,11 @@ class AuthenticateBloc extends BlocBase {
 
     await prefs.remove('switch_pin');
     await prefs.remove('switch_pin_biometric');
+    await prefs.remove('isCamoEnabled');
+    await prefs.remove('isCamoActive');
+    await prefs.remove('camoFraction');
+    await prefs.remove('camoBalance');
+    await prefs.remove('camoSessionStartedAt');
 
     updateStatusPin(PinStatus.NORMAL_PIN);
     await EncryptionTool().delete('pin');

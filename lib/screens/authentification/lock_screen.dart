@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/camo_bloc.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/startup_provider.dart';
@@ -204,8 +206,18 @@ class _LockScreenState extends State<LockScreen> {
                                     widget.pinStatus == PinStatus.NORMAL_PIN) {
                                   Log.println('lock_screen:141', snapshot.data);
                                   if (isLogin.hasData && isLogin.data) {
-                                    authenticateBiometrics(
+                                    final r = authenticateBiometrics(
                                         context, widget.pinStatus);
+                                    // Due to how the "isActivePin" is currently saved
+                                    // this should guarantee that the app doesn't try
+                                    // to use camo mode on bio login if last login
+                                    // was camo mode
+                                    r.then((v) {
+                                      if (v) {
+                                        coinsBloc.resetCoinBalance();
+                                        camoBloc.isCamoActive = false;
+                                      }
+                                    });
                                   }
                                   return SizedBox();
                                 }
