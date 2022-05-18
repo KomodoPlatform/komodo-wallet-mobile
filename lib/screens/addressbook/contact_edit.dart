@@ -467,8 +467,36 @@ class _ContactEditState extends State<ContactEdit> {
     Navigator.of(context).pop();
   }
 
+  bool _validateEmptyFields() {
+    setState(() {
+      invalidFields.clear();
+    });
+    bool valid = true;
+    if (editContact.name == null || editContact.name.isEmpty) {
+      valid = false;
+      setState(() {
+        invalidFields.add('name');
+      });
+
+      showMessage(context, AppLocalizations.of(context).emptyName);
+      return false;
+    }
+    editContact.addresses?.forEach((String abbr, String address) {
+      if (address.isEmpty) {
+        showMessage(context, AppLocalizations.of(context).emptyCoin(abbr));
+        valid = false;
+        setState(() {
+          invalidFields.add(abbr);
+        });
+        return;
+      }
+    });
+
+    return valid;
+  }
+
   void _saveContact() {
-    if (!_validate()) return;
+    if (!_validateEmptyFields()) return;
 
     if (widget.contact != null) {
       provider.updateContact(editContact);

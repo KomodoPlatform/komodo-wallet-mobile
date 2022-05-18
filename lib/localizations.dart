@@ -1169,7 +1169,10 @@ class AppLocalizations {
       args: <Object>[abbr],
       name: 'addressCoinInactive');
   String get warningOkBtn => Intl.message('Ok', name: 'warningOkBtn');
-
+  String get emptyName =>
+      Intl.message('Contact name cannot be empty', name: 'emptyName');
+  String emptyCoin(String abbr) =>
+      Intl.message('$abbr address your cannot be empty', name: 'emptyCoin');
   // --- Camouflage Pin ---
 
   String get camoPinTitle =>
