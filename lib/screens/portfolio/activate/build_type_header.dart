@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 
 class BuildTypeHeader extends StatefulWidget {
   const BuildTypeHeader({Key key, this.type}) : super(key: key);
@@ -55,26 +56,26 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
   }
 
   String _getTitleText() {
-    switch (widget.type) {
-      case 'erc':
+    switch (coinTypeFromString(widget.type)) {
+      case CoinType.erc:
         return AppLocalizations.of(context).searchFilterSubtitleERC;
         break;
-      case 'bep':
+      case CoinType.bep:
         return AppLocalizations.of(context).searchFilterSubtitleBEP;
         break;
-      case 'plg':
+      case CoinType.plg:
         return AppLocalizations.of(context).searchFilterSubtitlePLG;
         break;
-      case 'qrc':
+      case CoinType.qrc:
         return AppLocalizations.of(context).searchFilterSubtitleQRC;
         break;
-      case 'utxo':
+      case CoinType.utxo:
         return AppLocalizations.of(context).searchFilterSubtitleutxo;
         break;
-      case 'ftm':
+      case CoinType.ftm:
         return AppLocalizations.of(context).searchFilterSubtitleFTM;
         break;
-      case 'smartChain':
+      case CoinType.smartChain:
         return AppLocalizations.of(context).searchFilterSubtitleSmartChain;
         break;
       default:

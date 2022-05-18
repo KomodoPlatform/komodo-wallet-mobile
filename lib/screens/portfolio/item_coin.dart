@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -307,7 +308,7 @@ class _ItemCoinState extends State<ItemCoin>
 
   bool _isLabelNeeded(Coin coin) {
     if (coin.abbr == 'KMD') return false;
-    if (coin.type == 'smartChain') return true;
+    if (coin.type == CoinType.smartChain.name) return true;
 
     return coin.protocol?.protocolData?.platform != null;
   }
@@ -323,15 +324,15 @@ class _ItemCoinState extends State<ItemCoin>
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           color: coin.protocol?.type == 'ERC20' ||
                   coin.protocol?.type == 'ETH' ||
-                  coin.type == 'qrc'
+                  coin.type == CoinType.qrc.name
               ? const Color.fromRGBO(20, 117, 186, 1)
               : Theme.of(context).scaffoldBackgroundColor,
         ),
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: Builder(
           builder: (context) {
-            switch (widget.coinBalance.coin.type) {
-              case 'erc':
+            switch (coinTypeFromString(widget.coinBalance.coin.type)) {
+              case CoinType.erc:
                 {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -347,7 +348,7 @@ class _ItemCoinState extends State<ItemCoin>
                     ],
                   );
                 }
-              case 'bep':
+              case CoinType.bep:
                 {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -362,7 +363,7 @@ class _ItemCoinState extends State<ItemCoin>
                     ],
                   );
                 }
-              case 'plg':
+              case CoinType.plg:
                 {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -377,7 +378,7 @@ class _ItemCoinState extends State<ItemCoin>
                     ],
                   );
                 }
-              case 'ftm':
+              case CoinType.ftm:
                 {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -392,7 +393,7 @@ class _ItemCoinState extends State<ItemCoin>
                     ],
                   );
                 }
-              case 'qrc':
+              case CoinType.qrc:
                 {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.center,

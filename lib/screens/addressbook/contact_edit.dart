@@ -7,6 +7,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit_field.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -43,11 +44,11 @@ class _ContactEditState extends State<ContactEdit> {
   @override
   Widget build(BuildContext context) {
     networkChipLabels ??= {
-      'erc': AppLocalizations.of(context).tagERC20,
-      'bep': AppLocalizations.of(context).tagBEP20,
-      'qrc': AppLocalizations.of(context).tagQRC20,
-      'plg': AppLocalizations.of(context).tagPLG20,
-      'ftm': AppLocalizations.of(context).tagFTM20,
+      CoinType.erc.name: AppLocalizations.of(context).tagERC20,
+      CoinType.bep.name: AppLocalizations.of(context).tagBEP20,
+      CoinType.qrc.name: AppLocalizations.of(context).tagQRC20,
+      CoinType.plg.name: AppLocalizations.of(context).tagPLG20,
+      CoinType.ftm.name: AppLocalizations.of(context).tagFTM20,
     };
 
     provider = Provider.of<AddressBookProvider>(context);
@@ -429,17 +430,17 @@ class _ContactEditState extends State<ContactEdit> {
     String abbr = coin.abbr;
     editContact.addresses ??= {};
 
-    if (coin.type == 'smartChain') {
+    if (coin.type == CoinType.smartChain.name) {
       abbr = 'KMD';
-    } else if (coin.type == 'erc') {
+    } else if (coin.type == CoinType.erc.name) {
       abbr = 'ETH';
-    } else if (coin.type == 'bep' && coin.abbr != 'SMTF') {
+    } else if (coin.type == CoinType.bep.name && coin.abbr != 'SMTF') {
       abbr = 'BNB';
-    } else if (coin.type == 'plg') {
+    } else if (coin.type == CoinType.plg.name) {
       abbr = 'MATIC';
-    } else if (coin.type == 'qrc') {
+    } else if (coin.type == CoinType.qrc.name) {
       abbr = 'QTUM';
-    } else if (coin.type == 'ftm') {
+    } else if (coin.type == CoinType.ftm.name) {
       abbr = 'FTM';
     }
 
