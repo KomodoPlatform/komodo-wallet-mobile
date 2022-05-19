@@ -400,7 +400,14 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                         : Icons.keyboard_arrow_down,
                     color: Colors.red,
                     size: 20,
-                  )
+                  ),
+                  Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      copyToClipBoard(context, swapDesc);
+                    },
+                    icon: Icon(Icons.copy),
+                  ),
                 ],
               ),
             ),
