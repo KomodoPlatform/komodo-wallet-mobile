@@ -298,21 +298,19 @@ class CoinsBloc implements BlocBase {
       final Map<String, dynamic> ans = replies[ix];
       final err = ErrorString.fromJson(ans);
       final abbr = coin.abbr;
+
       if (err.error.isNotEmpty) {
         Log('coins_bloc:273', 'Error activating $abbr: ${err.error}');
-        Log('coins_bloc:273',
-            '$abbr had an eror during activation, removing from active coins');
-        Db.coinInactive(abbr);
+
         continue;
       }
       final acc = ActiveCoin.fromJson(ans);
       if (acc.result != 'success') {
         Log('coins_bloc:278', '!success: $ans');
-        Log('coins_bloc:278',
-            '$abbr had a !success result, removing from active coins');
-        Db.coinInactive(abbr);
+
         continue;
       }
+
       await Db.coinActive(coin);
       final bal = Balance(
           address: acc.address,
@@ -329,8 +327,27 @@ class CoinsBloc implements BlocBase {
       updateOneCoin(cb);
     }
 
+    await _syncCoinsStateWithApi();
+
     currentCoinActivate(null);
     _coinsLock = false;
+  }
+
+  Future<void> _syncCoinsStateWithApi() async {
+    final List<dynamic> apiCoinsJson = await MM.getEnabledCoins();
+    final List<String> apiCoins = [];
+    for (dynamic item in apiCoinsJson) {
+      apiCoins.add(item['ticker']);
+    }
+
+    for (CoinBalance coinBalance in coinsBloc.coinBalance) {
+      coinBalance.coin.suspended = !apiCoins.contains(coinBalance.coin.abbr);
+
+      if (coinBalance.coin.suspended) {
+        Log('coins_bloc]',
+            '${coinBalance.coin.abbr} had an error during activation and was suspended');
+      }
+    }
   }
 
   /// Activate a given coin.
