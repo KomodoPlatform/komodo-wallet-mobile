@@ -191,7 +191,9 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
 
           final List<CoinBalance> availableForSell =
               coins.where((CoinBalance coin) {
-            return !coin.coin.walletOnly && coin.balance.balance.toDouble() > 0;
+            return (!coin.coin.walletOnly) &&
+                (!coin.coin.suspended) &&
+                coin.balance.balance.toDouble() > 0;
           }).toList();
 
           if (availableForSell.isEmpty) {
