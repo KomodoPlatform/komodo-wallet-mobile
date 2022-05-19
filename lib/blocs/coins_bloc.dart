@@ -206,7 +206,22 @@ class CoinsBloc implements BlocBase {
     }
   }
 
+  Future<void> _removeSuspendedCoin(Coin coin) async {
+    if (!coin.suspended) {
+      Log('coins_bloc] _removeSuspendedCoin]', '${coin.abbr} is not suspended');
+      return;
+    }
+
+    await removeCoinBalance(coin);
+    await deactivateCoins(<Coin>[coin]);
+  }
+
   Future<void> removeCoin(Coin coin) async {
+    if (coin.suspended) {
+      _removeSuspendedCoin(coin);
+      return;
+    }
+
     await removeCoinBalance(coin);
     final res = await MM.disableCoin(GetDisableCoin(coin: coin.abbr));
     removeCoinLocal(coin, res);
