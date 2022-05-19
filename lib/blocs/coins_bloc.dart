@@ -350,54 +350,6 @@ class CoinsBloc implements BlocBase {
     }
   }
 
-  /// Activate a given coin.
-  /// Used from UI and during the application startup.
-  Future<CoinToActivate> enableCoin(Coin coin) async {
-    currentCoinActivate(
-        CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
-    try {
-      final ActiveCoin ac =
-          await MM.enableCoin(coin).timeout(const Duration(seconds: 30));
-      currentCoinActivate(
-          CoinToActivate(currentStatus: '${coin.name} activated.'));
-      if (ac.requiredConfirmations != coin.requiredConfirmations) {
-        Log(
-            'coins_bloc:308',
-            'enableCoin, ${coin.abbr}, unexpected required_confirmations'
-                ', requested: ${coin.requiredConfirmations}'
-                ', received: ${ac.requiredConfirmations}');
-        coin.requiredConfirmations ??= ac.requiredConfirmations;
-      }
-      if (ac.requiresNotarization != coin.requiresNotarization) {
-        Log(
-            'coins_bloc:316',
-            'enableCoin, ${coin.abbr}, unexpected requires_notarization'
-                ', requested: ${coin.requiresNotarization}'
-                ', received: ${coin.requiresNotarization}');
-      }
-      await Db.coinActive(coin);
-      return CoinToActivate(coin: coin, isActive: true);
-    } on TimeoutException catch (te) {
-      Log('coins_bloc:325', '${coin.abbr} enableCoin timeout, $te');
-      currentCoinActivate(
-          CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
-      await sleepMs(2000);
-      currentCoinActivate(null);
-      return CoinToActivate(coin: coin, isActive: false);
-    } catch (ex) {
-      if (ex.toString().contains('already initialized')) {
-        currentCoinActivate(CoinToActivate(
-            currentStatus: 'Coin ${coin.abbr} already initialized'));
-        return CoinToActivate(coin: coin, isActive: true);
-      } else {
-        Log('coins_bloc:337', '!enableCoin: $ex');
-        currentCoinActivate(CoinToActivate(
-            currentStatus: 'Sorry, ${coin.abbr} not available.'));
-        return CoinToActivate(coin: coin, isActive: false);
-      }
-    }
-  }
-
   void currentCoinActivate(CoinToActivate coinToActivate) {
     currentActiveCoin = coinToActivate;
     _inCurrentActiveCoin.add(currentActiveCoin);
