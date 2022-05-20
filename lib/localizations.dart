@@ -1172,7 +1172,7 @@ class AppLocalizations {
   String get emptyName =>
       Intl.message('Contact name cannot be empty', name: 'emptyName');
   String emptyCoin(String abbr) =>
-      Intl.message('$abbr address your cannot be empty', name: 'emptyCoin');
+      Intl.message('Input $abbr address', name: 'emptyCoin');
   // --- Camouflage Pin ---
 
   String get camoPinTitle =>
