@@ -282,7 +282,7 @@ class _ItemCoinState extends State<ItemCoin>
         ),
         child: Row(
           children: <Widget>[
-            if (rewardsProvider.needClaim)
+            if (!widget.coinBalance.coin.suspended && rewardsProvider.needClaim)
               Container(
                 padding: const EdgeInsets.only(right: 4),
                 child: Stack(

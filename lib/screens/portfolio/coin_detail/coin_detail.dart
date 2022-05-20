@@ -32,6 +32,7 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -77,6 +78,8 @@ class _CoinDetailState extends State<CoinDetail> {
   bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
+
+  bool isRetryingActivation = false;
 
   @override
   void initState() {
@@ -397,17 +400,43 @@ class _CoinDetailState extends State<CoinDetail> {
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('We failed to activate ${currentCoinBalance.coin.abbr}'),
-              SizedBox(height: 32),
-              Text(
-                'Please restart the app to try again, or press the button below.',
-                textAlign: TextAlign.center,
-                softWrap: true,
-              ),
-              SizedBox(height: 32),
-              Text('Retry'),
-            ],
+            children: isRetryingActivation
+                ? [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 32),
+                    Text('Retrying activating all coins..'),
+                  ]
+                : [
+                    Icon(
+                      Icons.warning_rounded,
+                      size: 128,
+                      color: Colors.yellow[600],
+                    ),
+                    SizedBox(height: 32),
+                    Text(
+                        'We failed to activate ${currentCoinBalance.coin.abbr}'),
+                    SizedBox(height: 32),
+                    Text(
+                      'Please restart the app to try again, or press the button below.',
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
+                    SizedBox(height: 32),
+                    PrimaryButton(
+                      onPressed: () async {
+                        setState(() {
+                          isRetryingActivation = true;
+                        });
+
+                        await coinsBloc.retryActivatingSuspendedCoins();
+
+                        setState(() {
+                          isRetryingActivation = false;
+                        });
+                      },
+                      text: 'Retry activating all',
+                    ),
+                  ],
           ),
         ),
       ),
@@ -638,16 +667,18 @@ class _CoinDetailState extends State<CoinDetail> {
               text: text,
               textColor: Theme.of(context).textTheme.button.color,
               borderColor: Theme.of(context).colorScheme.secondary,
-              onPressed: () {
-                rewardsProvider.update();
-                Navigator.push<dynamic>(
-                  context,
-                  MaterialPageRoute<dynamic>(
-                      builder: (BuildContext context) => RewardsPage()),
-                );
-              },
+              onPressed: currentCoinBalance.coin.suspended
+                  ? null
+                  : () {
+                      rewardsProvider.update();
+                      Navigator.push<dynamic>(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => RewardsPage()),
+                      );
+                    },
             ),
-            if (rewardsProvider.needClaim)
+            if (!currentCoinBalance.coin.suspended && rewardsProvider.needClaim)
               buildRedDot(
                 context,
                 right: null,
@@ -663,46 +694,50 @@ class _CoinDetailState extends State<CoinDetail> {
       isDarkMode: Theme.of(context).brightness != Brightness.light,
       textColor: Theme.of(context).colorScheme.secondary,
       borderColor: Theme.of(context).colorScheme.secondary,
-      onPressed: () {
-        switch (statusButton) {
-          case StatusButton.RECEIVE:
-            showCopyDialog(mContext, currentCoinBalance.balance.address,
-                currentCoinBalance.coin);
-            break;
-          case StatusButton.FAUCET:
-            showFaucetDialog(
-                context: mContext,
-                coin: currentCoinBalance.coin.abbr,
-                address: currentCoinBalance.balance.address);
-            break;
-          case StatusButton.SEND:
-            if (double.parse(currentCoinBalance.balance.getBalance()) == 0) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(AppLocalizations.of(context).noFundsDetected),
-              ));
-              return;
-            }
-            if (currentIndex == 3) {
-              setState(() {
-                isExpanded = false;
-                _waitForInit();
-              });
-            } else {
-              setState(() {
-                elevationHeader == 8.0
-                    ? elevationHeader = 8.0
-                    : elevationHeader = 0.0;
-                isExpanded = !isExpanded;
-              });
-            }
-            break;
-          case StatusButton.PUBKEY:
-            getPublicKey().then(
-                (v) => showCopyDialog(mContext, v, currentCoinBalance.coin));
-            break;
-          default:
-        }
-      },
+      onPressed: currentCoinBalance.coin.suspended
+          ? null
+          : () {
+              switch (statusButton) {
+                case StatusButton.RECEIVE:
+                  showCopyDialog(mContext, currentCoinBalance.balance.address,
+                      currentCoinBalance.coin);
+                  break;
+                case StatusButton.FAUCET:
+                  showFaucetDialog(
+                      context: mContext,
+                      coin: currentCoinBalance.coin.abbr,
+                      address: currentCoinBalance.balance.address);
+                  break;
+                case StatusButton.SEND:
+                  if (double.parse(currentCoinBalance.balance.getBalance()) ==
+                      0) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content:
+                          Text(AppLocalizations.of(context).noFundsDetected),
+                    ));
+                    return;
+                  }
+                  if (currentIndex == 3) {
+                    setState(() {
+                      isExpanded = false;
+                      _waitForInit();
+                    });
+                  } else {
+                    setState(() {
+                      elevationHeader == 8.0
+                          ? elevationHeader = 8.0
+                          : elevationHeader = 0.0;
+                      isExpanded = !isExpanded;
+                    });
+                  }
+                  break;
+                case StatusButton.PUBKEY:
+                  getPublicKey().then((v) =>
+                      showCopyDialog(mContext, v, currentCoinBalance.coin));
+                  break;
+                default:
+              }
+            },
     );
   }
 

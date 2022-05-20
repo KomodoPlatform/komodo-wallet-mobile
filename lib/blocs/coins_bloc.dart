@@ -103,6 +103,7 @@ class CoinsBloc implements BlocBase {
   bool _coinsLock = false;
 
   final Set<Coin> _suspendedCoins = <Coin>{};
+  bool _isRetryActivatingRunning = false;
 
   @override
   void dispose() {
@@ -300,7 +301,12 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> retryActivatingSuspendedCoins() async {
+    // Already running
+    if (_isRetryActivatingRunning) return;
+    //No coins to un-suspend
     if (_suspendedCoins.isEmpty) return;
+
+    _isRetryActivatingRunning = true;
 
     for (int i = 0; i < 3; i++) {
       final formattedAbbrs = _suspendedCoins.map((c) => c.abbr).join(', ');
@@ -308,13 +314,20 @@ class CoinsBloc implements BlocBase {
           'retryActivatingSuspendedCoins] Retrying activating suspended coins: $formattedAbbrs');
       Log('coins_bloc', 'retryActivatingSuspendedCoins] Attempt ${i + 1}');
       await enableCoins(_suspendedCoins.toList());
-      await Future.delayed(Duration(seconds: 5));
-      if (_suspendedCoins.isEmpty) return;
+      if (_suspendedCoins.isEmpty) {
+        Log('coins_bloc',
+            'retryActivatingSuspendedCoins] All suspended coins were successfully activated and un-suspended');
+        _isRetryActivatingRunning = false;
+        return;
+      }
+      // 5 seconds delay so next retry attempt don't run immediately
+      await Future.delayed(Duration(seconds: 3));
     }
 
     final remaining = _suspendedCoins.join(', ');
     Log('coins_bloc',
         'retryActivatingSuspendedCoins] After 3 tries the following coins remain suspended: $remaining');
+    _isRetryActivatingRunning = false;
   }
 
   /// Handle the coins user has picked for activation.
