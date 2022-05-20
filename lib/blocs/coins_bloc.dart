@@ -37,6 +37,11 @@ class CoinsBloc implements BlocBase {
 
       _saveWalletSnapshot();
     });
+
+    jobService.install(
+        'retryActivatingSuspended',
+        Duration(minutes: 1).inSeconds.toDouble(),
+        (j) => retryActivatingSuspendedCoins());
   }
 
   LinkedHashMap<String, Coin> _knownCoins;
@@ -96,6 +101,8 @@ class CoinsBloc implements BlocBase {
       _coinBeforeActivationController.stream;
 
   bool _coinsLock = false;
+
+  final Set<Coin> _suspendedCoins = <Coin>{};
 
   @override
   void dispose() {
@@ -292,6 +299,24 @@ class CoinsBloc implements BlocBase {
     }
   }
 
+  Future<void> retryActivatingSuspendedCoins() async {
+    if (_suspendedCoins.isEmpty) return;
+
+    for (int i = 0; i < 3; i++) {
+      final formattedAbbrs = _suspendedCoins.map((c) => c.abbr).join(', ');
+      Log('coins_bloc',
+          'retryActivatingSuspendedCoins] Retrying activating suspended coins: $formattedAbbrs');
+      Log('coins_bloc', 'retryActivatingSuspendedCoins] Attempt ${i + 1}');
+      await enableCoins(_suspendedCoins.toList());
+      await Future.delayed(Duration(seconds: 5));
+      if (_suspendedCoins.isEmpty) return;
+    }
+
+    final remaining = _suspendedCoins.join(', ');
+    Log('coins_bloc',
+        'retryActivatingSuspendedCoins] After 3 tries the following coins remain suspended: $remaining');
+  }
+
   /// Handle the coins user has picked for activation.
   /// Also used for coin activations during the application startup.
   Future<void> enableCoins(List<Coin> coins) async {
@@ -351,16 +376,28 @@ class CoinsBloc implements BlocBase {
   Future<void> _syncCoinsStateWithApi() async {
     final List<dynamic> apiCoinsJson = await MM.getEnabledCoins();
     final List<String> apiCoins = [];
+
     for (dynamic item in apiCoinsJson) {
       apiCoins.add(item['ticker']);
     }
 
     for (CoinBalance coinBalance in coinsBloc.coinBalance) {
-      coinBalance.coin.suspended = !apiCoins.contains(coinBalance.coin.abbr);
+      bool shouldSuspend = !apiCoins.contains(coinBalance.coin.abbr);
 
-      if (coinBalance.coin.suspended) {
+      // USE THIS FOR DEBUGGING
+      //if (['KMD', 'RICK', 'BCH'].contains(coinBalance.coin.abbr))
+      //  shouldSuspend = true;
+
+      if (shouldSuspend) {
+        coinBalance.coin.suspended = true;
+        _suspendedCoins.add(coinBalance.coin);
         Log('coins_bloc]',
             '${coinBalance.coin.abbr} had an error during activation and was suspended');
+      } else if (coinBalance.coin.suspended) {
+        coinBalance.coin.suspended = false;
+        _suspendedCoins.remove(coinBalance.coin);
+        Log('coins_bloc]',
+            '${coinBalance.coin.abbr} did successfully activate and was un-suspended');
       }
     }
   }

@@ -128,10 +128,10 @@ class _ItemCoinState extends State<ItemCoin>
             borderRadius: const BorderRadius.all(Radius.circular(4)),
             onLongPress: () => Slidable.of(context).openCurrentActionPane(),
             onTap: () {
-              if (coin.suspended) {
-                showSuspendedDilog(context, coin: coin);
-                return;
-              }
+              //if (coin.suspended) {
+              //showSuspendedDilog(context, coin: coin);
+              //return;
+              //}
 
               final slidableController = Slidable.of(context);
               if (slidableController != null) {
@@ -160,11 +160,22 @@ class _ItemCoinState extends State<ItemCoin>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        CircleAvatar(
-                          radius: 28,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage('assets/coin-icons/'
-                              '${balance.coin.toLowerCase()}.png'),
+                        Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 28,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: AssetImage('assets/coin-icons/'
+                                  '${balance.coin.toLowerCase()}.png'),
+                            ),
+                            if (coin.suspended)
+                              Icon(
+                                Icons.warning_rounded,
+                                size: 20,
+                                color: Colors.yellow[600],
+                              ),
+                          ],
+                          alignment: Alignment.bottomRight,
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -250,14 +261,16 @@ class _ItemCoinState extends State<ItemCoin>
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: OutlinedButton(
-        onPressed: () async {
-          rewardsProvider.update();
-          Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => RewardsPage()),
-          );
-        },
+        onPressed: !widget.coinBalance.coin.suspended
+            ? () async {
+                rewardsProvider.update();
+                Navigator.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => RewardsPage()),
+                );
+              }
+            : null,
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
           textStyle:
@@ -295,12 +308,14 @@ class _ItemCoinState extends State<ItemCoin>
       return Padding(
         padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
         child: OutlinedButton(
-          onPressed: () async {
-            showFaucetDialog(
-                context: context,
-                coin: widget.coinBalance.coin.abbr,
-                address: widget.coinBalance.balance.address);
-          },
+          onPressed: !widget.coinBalance.coin.suspended
+              ? () async {
+                  showFaucetDialog(
+                      context: context,
+                      coin: widget.coinBalance.coin.abbr,
+                      address: widget.coinBalance.balance.address);
+                }
+              : null,
           style: OutlinedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
             textStyle:
