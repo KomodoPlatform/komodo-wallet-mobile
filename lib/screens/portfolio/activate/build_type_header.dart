@@ -93,7 +93,7 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
       if (widget.type == null) {
         if (item.coin.testCoin) areAllActive = false;
       } else {
-        if (item.coin.type == widget.type && !item.coin.testCoin)
+        if (item.coin.type.name == widget.type && !item.coin.testCoin)
           areAllActive = false;
       }
     }

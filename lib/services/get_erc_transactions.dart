@@ -3,6 +3,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -40,25 +41,25 @@ class GetErcTransactions {
 
     String url;
     switch (coin.type) {
-      case 'erc':
+      case CoinType.erc:
         url = (coin.protocol?.type == 'ETH' // 'ETH', 'ETHR'
                 ? '$ethUrl/$address'
                 : '$ercUrl/${coin.protocol.protocolData.contractAddress}/$address') +
             (coin.testCoin ? '&testnet=true' : '');
         break;
-      case 'bep':
+      case CoinType.bep:
         url = (coin.protocol?.type == 'ETH' // 'BNB', 'BNBT'
                 ? '$bnbUrl/$address'
                 : '$bepUrl/${coin.protocol.protocolData.contractAddress}/$address') +
             (coin.testCoin ? '&testnet=true' : '');
         break;
-      case 'plg':
+      case CoinType.plg:
         url = (coin.protocol?.type == 'ETH' // 'MATIC', 'MATICTEST'
                 ? '$maticUrl/$address'
                 : '$plgUrl/${coin.protocol.protocolData.contractAddress}/$address') +
             (coin.testCoin ? '&testnet=true' : '');
         break;
-      case 'ftm':
+      case CoinType.ftm:
         url = (coin.protocol?.type == 'ETH' // 'FTM', 'FTMT'
                 ? '$fantomUrl/$address'
                 : '$ftmUrl/${coin.protocol.protocolData.contractAddress}/$address') +

@@ -9,6 +9,7 @@ import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_balance.dart';
@@ -359,7 +360,7 @@ void main() {
     final MockClient client = MockClient();
 
     final Coin coinToActiveERC = Coin(
-        type: 'erc',
+        type: coinTypeFromString('erc'),
         abbr: 'ETH',
         swapContractAddress: '0x8500AFc0bc5214728082163326C2FF0C73f4a871',
         serverList: <String>[

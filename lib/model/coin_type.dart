@@ -8,12 +8,11 @@ enum CoinType {
   plg,
   ftm,
   qrc,
-  unknown,
 }
 
 CoinType coinTypeFromString(String value) {
   return CoinType.values.firstWhere(
     (e) => e.name.toUpperCase() == value?.toUpperCase(),
-    orElse: () => CoinType.unknown,
+    orElse: () => null,
   );
 }

@@ -301,11 +301,11 @@ class _ContactEditState extends State<ContactEdit> {
                     style: const TextStyle(fontSize: 18),
                   ),
                 ),
-                if (networkChipLabels.containsKey(coin.type)) ...{
+                if (networkChipLabels.containsKey(coin.type.name)) ...{
                   _buildNetworkChip(
-                    networkChipLabels[coin.type],
+                    networkChipLabels[coin.type.name],
                   )
-                } else if (coin.type == 'smartChain') ...{
+                } else if (coin.type == CoinType.smartChain) ...{
                   _buildKmdChip()
                 }
               ],
@@ -430,17 +430,17 @@ class _ContactEditState extends State<ContactEdit> {
     String abbr = coin.abbr;
     editContact.addresses ??= {};
 
-    if (coin.type == CoinType.smartChain.name) {
+    if (coin.type == CoinType.smartChain) {
       abbr = 'KMD';
-    } else if (coin.type == CoinType.erc.name) {
+    } else if (coin.type == CoinType.erc) {
       abbr = 'ETH';
-    } else if (coin.type == CoinType.bep.name && coin.abbr != 'SMTF') {
+    } else if (coin.type == CoinType.bep && coin.abbr != 'SMTF') {
       abbr = 'BNB';
-    } else if (coin.type == CoinType.plg.name) {
+    } else if (coin.type == CoinType.plg) {
       abbr = 'MATIC';
-    } else if (coin.type == CoinType.qrc.name) {
+    } else if (coin.type == CoinType.qrc) {
       abbr = 'QTUM';
-    } else if (coin.type == CoinType.ftm.name) {
+    } else if (coin.type == CoinType.ftm) {
       abbr = 'FTM';
     }
 

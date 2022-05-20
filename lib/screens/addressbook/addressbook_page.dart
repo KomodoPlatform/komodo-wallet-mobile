@@ -161,12 +161,12 @@ class _AddressBookState extends State<AddressBookPage> {
 
     String title = coin.abbr;
 
-    if (coin.type == CoinType.smartChain.name) title = 'KMD & SmartChains';
-    if (coin.type == CoinType.erc.name) title = 'ETH & ERC tokens';
-    if (coin.type == CoinType.bep.name) title = 'BNB & BEP tokens';
-    if (coin.type == CoinType.plg.name) title = 'Polygon & PLG tokens';
-    if (coin.type == CoinType.ftm.name) title = 'Fantom & FTM tokens';
-    if (coin.type == CoinType.qrc.name || coin.abbr == 'QTUM')
+    if (coin.type == CoinType.smartChain) title = 'KMD & SmartChains';
+    if (coin.type == CoinType.erc) title = 'ETH & ERC tokens';
+    if (coin.type == CoinType.bep) title = 'BNB & BEP tokens';
+    if (coin.type == CoinType.plg) title = 'Polygon & PLG tokens';
+    if (coin.type == CoinType.ftm) title = 'Fantom & FTM tokens';
+    if (coin.type == CoinType.qrc || coin.abbr == 'QTUM')
       title = 'QTUM & QRC tokens';
 
     return Padding(

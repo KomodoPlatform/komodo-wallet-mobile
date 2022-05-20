@@ -81,7 +81,7 @@ class _ContactListItemState extends State<ContactListItem> {
   }
 
   String _getCoinTypeAbbr() {
-    if (widget.coin.type == CoinType.smartChain.name) return 'KMD';
+    if (widget.coin.type == CoinType.smartChain) return 'KMD';
 
     final String platform = widget.coin.protocol?.protocolData?.platform;
     return platform ?? widget.coin.abbr;

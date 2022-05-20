@@ -308,7 +308,7 @@ class _ItemCoinState extends State<ItemCoin>
 
   bool _isLabelNeeded(Coin coin) {
     if (coin.abbr == 'KMD') return false;
-    if (coin.type == CoinType.smartChain.name) return true;
+    if (coin.type == CoinType.smartChain) return true;
 
     return coin.protocol?.protocolData?.platform != null;
   }
@@ -324,14 +324,14 @@ class _ItemCoinState extends State<ItemCoin>
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           color: coin.protocol?.type == 'ERC20' ||
                   coin.protocol?.type == 'ETH' ||
-                  coin.type == CoinType.qrc.name
+                  coin.type == CoinType.qrc
               ? const Color.fromRGBO(20, 117, 186, 1)
               : Theme.of(context).scaffoldBackgroundColor,
         ),
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: Builder(
           builder: (context) {
-            switch (coinTypeFromString(widget.coinBalance.coin.type)) {
+            switch (widget.coinBalance.coin.type) {
               case CoinType.erc:
                 {
                   return Row(

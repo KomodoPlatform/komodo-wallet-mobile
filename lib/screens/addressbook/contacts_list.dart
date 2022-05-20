@@ -109,7 +109,7 @@ class _ContactsListState extends State<ContactsList> {
         return true;
       }
 
-      if (coin.type == CoinType.smartChain.name &&
+      if (coin.type == CoinType.smartChain &&
           contact.addresses.containsKey('KMD')) {
         return true;
       }

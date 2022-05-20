@@ -152,10 +152,10 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
     for (Coin c in _currentCoins) {
       if (c.testCoin) continue;
-      if (!coinsMap.containsKey(c.type)) {
-        coinsMap.putIfAbsent(c.type, () => [c]);
+      if (!coinsMap.containsKey(c.type.name)) {
+        coinsMap.putIfAbsent(c.type.name, () => [c]);
       } else {
-        coinsMap[c.type].add(c);
+        coinsMap[c.type.name].add(c);
       }
     }
 

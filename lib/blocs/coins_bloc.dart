@@ -154,7 +154,7 @@ class CoinsBloc implements BlocBase {
       if (type == null) {
         shouldChange = item.coin.testCoin;
       } else {
-        shouldChange = item.coin.type == type && !item.coin.testCoin;
+        shouldChange = item.coin.type.name == type && !item.coin.testCoin;
       }
 
       if (shouldChange) {
