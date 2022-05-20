@@ -17,6 +17,7 @@ class ContactEditField extends StatefulWidget {
     this.padding,
     this.icon,
     this.invalid = false,
+    this.validator,
   }) : super(key: key);
 
   final String name;
@@ -26,6 +27,7 @@ class ContactEditField extends StatefulWidget {
   final String value;
   final Color color;
   final Function(String) onChange;
+  final Function(String) validator;
   final Function onRemove;
   final EdgeInsets padding;
   final Widget icon;
@@ -98,7 +100,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                             ),
                           ],
                           Expanded(
-                            child: TextField(
+                            child: TextFormField(
                               controller: controller,
                               focusNode: focusNode,
                               textCapitalization: TextCapitalization.words,
@@ -107,6 +109,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                                 if (widget.onChange == null) return;
                                 widget.onChange(value);
                               },
+                              validator: widget.validator,
                               autocorrect: false,
                               enableInteractiveSelection: true,
                             ),

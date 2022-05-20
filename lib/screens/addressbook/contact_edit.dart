@@ -40,6 +40,9 @@ class _ContactEditState extends State<ContactEdit> {
     hashBeforeEdit = jsonEncode(editContact.toJson());
   }
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _autovalidate = false;
+
   @override
   Widget build(BuildContext context) {
     networkChipLabels ??= {
@@ -79,73 +82,89 @@ class _ContactEditState extends State<ContactEdit> {
                   ),
               ],
             ),
-            body: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: ListView(
-                      children: <Widget>[
-                        ContactEditField(
-                          name: 'name',
-                          label: AppLocalizations.of(context).contactTitleName,
-                          invalid: invalidFields.contains('name'),
-                          icon: Icon(
-                            Icons.account_circle,
-                            size: 16,
-                          ),
-                          value: editContact.name,
-                          removable: false,
-                          autofocus: widget.contact == null && focusOn == null,
-                          onChange: (String value) {
-                            setState(() {
-                              editContact.name = value;
-                            });
-                            _validate();
-                          },
-                        ),
-                        SizedBox(height: 16),
-                        _buildAddButton(),
-                        FutureBuilder<Widget>(
-                          future: _buildAddresses(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<Widget> snapshot) {
-                            if (!snapshot.hasData)
-                              return const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 16),
-                                  child: SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                        strokeWidth: 1),
-                                  ),
-                                ),
-                              );
+            body: Form(
+              key: _formKey,
+              autovalidateMode: _autovalidate
+                  ? AutovalidateMode.always
+                  : AutovalidateMode.disabled,
+              child: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: ListView(
+                        children: <Widget>[
+                          ContactEditField(
+                            name: 'name',
+                            label:
+                                AppLocalizations.of(context).contactTitleName,
+                            invalid: invalidFields.contains('name'),
+                            icon: Icon(
+                              Icons.account_circle,
+                              size: 16,
+                            ),
+                            value: editContact.name,
+                            removable: false,
+                            autofocus:
+                                widget.contact == null && focusOn == null,
+                            onChange: (String value) {
+                              setState(() {
+                                editContact.name = value;
+                              });
+                              _validate();
+                            },
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return AppLocalizations.of(context).emptyName;
+                              }
 
-                            return snapshot.data;
-                          },
-                        ),
-                      ],
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 16),
+                          _buildAddButton(),
+                          FutureBuilder<Widget>(
+                            future: _buildAddresses(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<Widget> snapshot) {
+                              if (!snapshot.hasData)
+                                return const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 16),
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 1),
+                                    ),
+                                  ),
+                                );
+
+                              return snapshot.data;
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    color: Theme.of(context).primaryColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        TextButton(
-                          onPressed: _exitPage,
-                          child:
-                              Text(AppLocalizations.of(context).contactCancel),
-                        ),
-                        TextButton(
-                          onPressed: _saveContact,
-                          child: Text(AppLocalizations.of(context).contactSave),
-                        ),
-                      ],
+                    Container(
+                      color: Theme.of(context).primaryColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          TextButton(
+                            onPressed: _exitPage,
+                            child: Text(
+                                AppLocalizations.of(context).contactCancel),
+                          ),
+                          TextButton(
+                            onPressed: _saveContact,
+                            child:
+                                Text(AppLocalizations.of(context).contactSave),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -174,6 +193,9 @@ class _ContactEditState extends State<ContactEdit> {
   }
 
   bool _validate() {
+    if (_autovalidate) {
+      _formKey.currentState.validate();
+    }
     setState(() {
       invalidFields.clear();
     });
@@ -223,7 +245,8 @@ class _ContactEditState extends State<ContactEdit> {
           padding: const EdgeInsets.only(
             top: 10,
             left: 16,
-            right: 4,
+            right: 6,
+            bottom: 6,
           ),
           icon: abbr == null ? null : _buildCoinIcon(abbr),
           removable: true,
@@ -234,6 +257,13 @@ class _ContactEditState extends State<ContactEdit> {
             _validate();
           },
           invalid: invalidFields.contains(abbr),
+          validator: (String value) {
+            if (value.isEmpty) {
+              return AppLocalizations.of(context).emptyCoin(abbr);
+            }
+
+            return null;
+          },
           onRemove: () {
             setState(() {
               focusOn = '';
@@ -467,36 +497,14 @@ class _ContactEditState extends State<ContactEdit> {
     Navigator.of(context).pop();
   }
 
-  bool _validateEmptyFields() {
-    setState(() {
-      invalidFields.clear();
-    });
-    bool valid = true;
-    if (editContact.name == null || editContact.name.isEmpty) {
-      valid = false;
-      setState(() {
-        invalidFields.add('name');
-      });
-
-      showMessage(context, AppLocalizations.of(context).emptyName);
-      return false;
-    }
-    editContact.addresses?.forEach((String abbr, String address) {
-      if (address.isEmpty) {
-        showMessage(context, AppLocalizations.of(context).emptyCoin(abbr));
-        valid = false;
-        setState(() {
-          invalidFields.add(abbr);
-        });
-        return;
-      }
-    });
-
-    return valid;
-  }
-
   void _saveContact() {
-    if (!_validateEmptyFields()) return;
+    if (!_formKey.currentState.validate()) {
+      setState(() {
+        _autovalidate = true;
+      });
+      return;
+    }
+    if (!_validate()) return;
 
     if (widget.contact != null) {
       provider.updateContact(editContact);
