@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
 void showCancelOrderDialog({
@@ -46,12 +45,8 @@ void showCancelOrderDialog({
                 ElevatedButton(
                   key: key ?? const Key('confirm-button-key'),
                   onPressed: () {
+                    onConfirm();
                     dialogBloc.closeDialog(context);
-                    try {
-                      onConfirm();
-                    } catch (e) {
-                      showMessage(context, 'Order has been matched');
-                    }
                   },
                   child: Text(
                     AppLocalizations.of(context).yes,
