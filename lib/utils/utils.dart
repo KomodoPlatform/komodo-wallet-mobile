@@ -742,13 +742,16 @@ String getRandomWord() {
   return words[Random().nextInt(words.length)];
 }
 
-List<Coin> filterCoinsByQuery(List<Coin> coins, String query) {
+List<Coin> filterCoinsByQuery(List<Coin> coins, String query,
+    {String type = ''}) {
   if (coins == null || coins.isEmpty) return [];
-  final list = coins
+  List<Coin> list = coins
       .where((Coin coin) =>
-          coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
-          coin.name.toLowerCase().contains(query.trim().toLowerCase()))
+          (coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
+              coin.name.toLowerCase().contains(query.trim().toLowerCase())) &&
+          coin.type.toLowerCase().contains(type.trim().toLowerCase()))
       .toList();
+
   return list;
 }
 

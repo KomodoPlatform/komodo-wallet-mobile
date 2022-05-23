@@ -432,9 +432,10 @@ class CoinsBloc implements BlocBase {
     return notActive;
   }
 
-  Future<List<Coin>> getAllNotActiveCoinsWithFilter(String query) async {
+  Future<List<Coin>> getAllNotActiveCoinsWithFilter(
+      String query, String type) async {
     List<Coin> coinsActivate = await getAllNotActiveCoins();
-    coinsActivate = filterCoinsByQuery(coinsActivate, query);
+    coinsActivate = filterCoinsByQuery(coinsActivate, query, type: type);
     return coinsActivate;
   }
 

@@ -52,6 +52,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     super.dispose();
   }
 
+  String typeFilter = '';
+  final TextEditingController controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return LockScreen(
@@ -59,8 +62,12 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       child: Scaffold(
           appBar: AppBar(
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            flexibleSpace: SizedBox(),
+            titleSpacing: 0,
             title: SearchFieldFilterCoin(
               clear: () => _initCoinList(),
+              type: typeFilter,
+              controller: controller,
               onFilterCoins: (List<Coin> coinsFiltered) {
                 setState(() {
                   _currentCoins = coinsFiltered;
@@ -68,10 +75,11 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 });
               },
             ),
+            actions: _buildFilterIcon(),
             leading: Builder(
               builder: (BuildContext context) {
                 return IconButton(
-                  icon: Icon(Icons.close),
+                  icon: Icon(Icons.arrow_back_ios_new_rounded),
                   splashRadius: 24,
                   onPressed: () => Navigator.of(context).pop(),
                 );
@@ -113,6 +121,10 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         _currentCoins.add(coinToActivate.coin);
       }
       _listViewItems = _buildListView();
+
+      final Map<String, List<Coin>> coinsMap = getCoinsMap();
+      allCoinsTypes = coinsMap.keys.toList()
+        ..sort((String a, String b) => b.compareTo(a));
     });
   }
 
@@ -135,6 +147,23 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     ];
   }
 
+  List<String> allCoinsTypes = [];
+
+  Map<String, List<Coin>> getCoinsMap() {
+    final Map<String, List<Coin>> coinsMap = <String, List<Coin>>{};
+
+    for (Coin c in _currentCoins) {
+      if (c.testCoin) continue;
+      if (!coinsMap.containsKey(c.type)) {
+        coinsMap.putIfAbsent(c.type, () => [c]);
+      } else {
+        coinsMap[c.type].add(c);
+      }
+    }
+
+    return coinsMap;
+  }
+
   List<Widget> _buildCoinListItems() {
     if (_currentCoins.isEmpty) {
       return [
@@ -148,18 +177,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     }
 
     final List<Widget> list = <Widget>[];
-    final Map<String, List<Coin>> coinsMap = <String, List<Coin>>{};
+    final Map<String, List<Coin>> coinsMap = getCoinsMap();
 
-    for (Coin c in _currentCoins) {
-      if (c.testCoin) continue;
-      if (!coinsMap.containsKey(c.type)) {
-        coinsMap.putIfAbsent(c.type, () => [c]);
-      } else {
-        coinsMap[c.type].add(c);
-      }
-    }
-
-    final List<String> sortedTypes = coinsMap.keys.toList()
+    List<String> sortedTypes = coinsMap.keys.toList()
       ..sort((String a, String b) => b.compareTo(a));
 
     for (String type in sortedTypes) {
@@ -193,6 +213,67 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     }
 
     return list;
+  }
+
+  List<Widget> _buildFilterIcon() {
+    return [
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(right: 8.0, left: 4),
+            child: PopupMenuButton(
+              tooltip: 'Filter by Protocols',
+              onSelected: (String type) async {
+                typeFilter = type;
+                List<Coin> coinsFiltered = await coinsBloc
+                    .getAllNotActiveCoinsWithFilter(controller.text, type);
+                _currentCoins = coinsFiltered;
+                _listViewItems = _buildListView();
+                setState(() {});
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 3, left: 6),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      typeFilter.toUpperCase(),
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    SizedBox(width: 8),
+                    typeFilter != ''
+                        ? InkWell(
+                            onTap: () async {
+                              typeFilter = '';
+                              List<Coin> coinsFiltered = await coinsBloc
+                                  .getAllNotActiveCoinsWithFilter(
+                                      controller.text, typeFilter);
+                              _currentCoins = coinsFiltered;
+                              _listViewItems = _buildListView();
+                              setState(() {});
+                            },
+                            child: Icon(Icons.close, color: Colors.white),
+                          )
+                        : Icon(Icons.filter_list, color: Colors.white),
+                  ],
+                ),
+              ),
+              itemBuilder: (_) => allCoinsTypes
+                  .map(
+                    (e) => PopupMenuItem<String>(
+                      value: e,
+                      child: Text(
+                        e.toUpperCase(),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          )
+        ],
+      )
+    ];
   }
 
   Widget _buildDoneButton() {
