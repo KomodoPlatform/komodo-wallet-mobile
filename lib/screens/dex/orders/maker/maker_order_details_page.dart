@@ -9,6 +9,7 @@ import 'package:komodo_dex/screens/dex/orders/maker/maker_order_note.dart';
 import 'package:komodo_dex/screens/dex/orders/maker/maker_order_swaps.dart';
 import 'package:komodo_dex/screens/dex/orders/maker/order_fill.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cancel_order_dialog.dart';
 import 'package:komodo_dex/widgets/sound_volume_button.dart';
 
 class MakerOrderDetailsPage extends StatefulWidget {
@@ -189,7 +190,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
       child: SizedBox(
         height: 30,
         child: OutlinedButton(
-          onPressed: () => ordersBloc.cancelOrder(order.uuid),
+          onPressed: () => showCancelConfirmation(context, order.uuid),
           style: OutlinedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
@@ -214,4 +215,12 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
       ),
     );
   }
+}
+
+void showCancelConfirmation(BuildContext mContext, String uuid) {
+  showCancelOrderDialog(
+    context: mContext,
+    key: const Key('settings-cancel-order-yes'),
+    onConfirm: () => ordersBloc.cancelOrder(uuid),
+  );
 }

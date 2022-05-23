@@ -9,6 +9,7 @@ import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/orders/taker/build_taker_countdown.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cancel_order_dialog.dart';
 
 class BuildItemTaker extends StatefulWidget {
   const BuildItemTaker(this.order);
@@ -178,8 +179,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                       SizedBox(
                         height: 30,
                         child: OutlinedButton(
-                          onPressed: () =>
-                              ordersBloc.cancelOrder(widget.order.uuid),
+                          onPressed: () => showCancelConfirmation(context),
                           style: OutlinedButton.styleFrom(
                             side: BorderSide(
                                 color: Theme.of(context).colorScheme.onSurface),
@@ -214,6 +214,14 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
         ],
       ),
     ));
+  }
+
+  void showCancelConfirmation(BuildContext mContext) {
+    showCancelOrderDialog(
+      context: mContext,
+      key: const Key('settings-cancel-order-yes'),
+      onConfirm: () => ordersBloc.cancelOrder(widget.order.uuid),
+    );
   }
 
   Widget _buildIcon(String coin) {

@@ -478,6 +478,17 @@ class AppLocalizations {
   String get back => Intl.message('back', name: 'back');
   String get cancel => Intl.message('Cancel', name: 'cancel');
   String get details => Intl.message('details', name: 'details');
+  String get yes => Intl.message('Yes', name: 'yes');
+  String get no => Intl.message('No', name: 'no');
+  String get dontAskAgain =>
+      Intl.message('Don’t ask again', name: 'dontAskAgain');
+  String get noteOnOrder =>
+      Intl.message('Note: Matched Order cannot be cancelled again',
+          name: 'noteOnOrder');
+  String get cancelOrder => Intl.message('Cancel Order', name: 'cancelOrder');
+  String get confirmCancel =>
+      Intl.message('Are you sure you want to cancel the order',
+          name: 'confirmCancel');
   String get unspendable => Intl.message('unspendable', name: 'unspendable');
   String get commingsoon =>
       Intl.message('TX details coming soon!', name: 'commingsoon');
