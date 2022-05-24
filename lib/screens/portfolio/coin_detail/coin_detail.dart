@@ -408,7 +408,7 @@ class _CoinDetailState extends State<CoinDetail> {
                   ]
                 : [
                     Icon(
-                      Icons.warning_rounded,
+                      Icons.warning_amber_rounded,
                       size: 128,
                       color: Colors.yellow[600],
                     ),
