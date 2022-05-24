@@ -393,6 +393,10 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
+  void _goToPreviousPage(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
   Widget _buildErrorMessage(BuildContext context) {
     return Expanded(
       child: Padding(
@@ -403,8 +407,24 @@ class _CoinDetailState extends State<CoinDetail> {
             children: isRetryingActivation
                 ? [
                     CircularProgressIndicator(),
-                    SizedBox(height: 32),
-                    Text('Retrying activating all coins..'),
+                    SizedBox(height: 24),
+                    Text(
+                      'Retrying activating all coins...',
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
+                    SizedBox(height: 24),
+                    Text(
+                      'You will be redirected to portfolio page on completion.',
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
+                    SizedBox(height: 24),
+                    Text(
+                      'If even then some coins are still not activated, try restarting the app.',
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
                   ]
                 : [
                     Icon(
@@ -412,29 +432,32 @@ class _CoinDetailState extends State<CoinDetail> {
                       size: 128,
                       color: Colors.yellow[600],
                     ),
-                    SizedBox(height: 32),
+                    SizedBox(height: 24),
                     Text(
                         'We failed to activate ${currentCoinBalance.coin.abbr}'),
-                    SizedBox(height: 32),
+                    SizedBox(height: 24),
                     Text(
                       'Please restart the app to try again, or press the button below.',
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
-                    SizedBox(height: 32),
+                    SizedBox(height: 24),
                     PrimaryButton(
-                      onPressed: () async {
+                      onPressed: () {
                         setState(() {
                           isRetryingActivation = true;
                         });
-
-                        await coinsBloc.retryActivatingSuspendedCoins();
-
-                        setState(() {
-                          isRetryingActivation = false;
-                        });
+                        coinsBloc
+                            .retryActivatingSuspendedCoins()
+                            .whenComplete(() => _goToPreviousPage(context));
                       },
                       text: 'Retry activating all',
+                    ),
+                    SizedBox(height: 24),
+                    Text(
+                      'You will be automatically redirected to portfolio page when the retry activation process completes.',
+                      textAlign: TextAlign.center,
+                      softWrap: true,
                     ),
                   ],
           ),
