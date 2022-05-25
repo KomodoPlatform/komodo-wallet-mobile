@@ -99,8 +99,7 @@ class NotifService {
       final List<Transaction> transactions = [];
 
       for (CoinBalance coin in coins) {
-        if (coin.coin.protocol?.type == 'ERC20' ||
-            coin.coin.protocol?.type == 'ETH') {
+        if (isErcType(coin.coin.protocol?.type)) {
           continue;
         }
 

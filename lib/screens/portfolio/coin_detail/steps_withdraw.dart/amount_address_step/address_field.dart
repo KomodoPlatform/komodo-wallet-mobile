@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 import 'package:komodo_dex/services/mm.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class AddressField extends StatefulWidget {
@@ -246,8 +247,7 @@ class _AddressFieldState extends State<AddressField> {
   }
 
   bool _isErcNonMixedCase(String error) {
-    final String protocolType = widget.coin.protocol?.type;
-    if (protocolType != 'ERC20' || protocolType != 'ETH') {
+    if (isErcType(widget.coin.protocol?.type)) {
       return false;
     }
     if (!error.contains('Invalid address checksum')) return false;

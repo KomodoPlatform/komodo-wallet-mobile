@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 GetErcTransactions getErcTransactions = GetErcTransactions();
 
@@ -24,7 +25,7 @@ class GetErcTransactions {
   final String ftmUrl = appConfig.ftmUrl;
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
-    if (coin.protocol?.type != 'ETH' && coin.protocol?.type != 'ERC20') {
+    if (isErcType(coin.protocol?.type)) {
       return;
     }
 

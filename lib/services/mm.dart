@@ -260,7 +260,7 @@ class ApiProvider {
             disableCertVerification: false))
         .toList();
 
-    if (coin.protocol?.type == 'ERC20' || coin.protocol?.type == 'ETH')
+    if (isErcType(coin.protocol?.type))
       return json.encode(MmEnable(
               userpass: mmSe.userpass,
               coin: coin.abbr,

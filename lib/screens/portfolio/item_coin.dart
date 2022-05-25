@@ -322,9 +322,7 @@ class _ItemCoinState extends State<ItemCoin>
       child: Container(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(16)),
-          color: coin.protocol?.type == 'ERC20' ||
-                  coin.protocol?.type == 'ETH' ||
-                  coin.type == CoinType.qrc
+          color: isErcType(coin.protocol?.type) || coin.type == CoinType.qrc
               ? const Color.fromRGBO(20, 117, 186, 1)
               : Theme.of(context).scaffoldBackgroundColor,
         ),

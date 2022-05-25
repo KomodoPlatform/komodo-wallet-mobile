@@ -462,6 +462,10 @@ bool get isInDebugMode {
   return inDebugMode;
 }
 
+bool isErcType(String type) {
+  return type == 'ERC20' || type == 'ETH';
+}
+
 String humanDate(int epoch) {
   DateTime _dateTime;
   try {

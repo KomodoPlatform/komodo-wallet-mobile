@@ -430,18 +430,28 @@ class _ContactEditState extends State<ContactEdit> {
     String abbr = coin.abbr;
     editContact.addresses ??= {};
 
-    if (coin.type == CoinType.smartChain) {
-      abbr = 'KMD';
-    } else if (coin.type == CoinType.erc) {
-      abbr = 'ETH';
-    } else if (coin.type == CoinType.bep && coin.abbr != 'SMTF') {
-      abbr = 'BNB';
-    } else if (coin.type == CoinType.plg) {
-      abbr = 'MATIC';
-    } else if (coin.type == CoinType.qrc) {
-      abbr = 'QTUM';
-    } else if (coin.type == CoinType.ftm) {
-      abbr = 'FTM';
+    switch (coin.type) {
+      case CoinType.smartChain:
+        abbr = 'KMD';
+        break;
+      case CoinType.erc:
+        abbr = 'ETH';
+        break;
+      case CoinType.bep:
+        if (coin.abbr != 'SMTF') abbr = 'BNB';
+        break;
+      case CoinType.plg:
+        abbr = 'MATIC';
+        break;
+      case CoinType.qrc:
+        abbr = 'QTUM';
+        break;
+      case CoinType.ftm:
+        abbr = 'FTM';
+        break;
+      case CoinType.utxo:
+        // TODO: Handle this case.
+        break;
     }
 
     setState(() {

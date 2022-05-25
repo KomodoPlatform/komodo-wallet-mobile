@@ -160,14 +160,30 @@ class _AddressBookState extends State<AddressBookPage> {
     if (coin == null) return SizedBox();
 
     String title = coin.abbr;
+    switch (coin.type) {
+      case CoinType.smartChain:
+        title = 'KMD & SmartChains';
+        break;
+      case CoinType.erc:
+        title = 'ETH & ERC tokens';
+        break;
+      case CoinType.bep:
+        title = 'BNB & BEP tokens';
+        break;
+      case CoinType.plg:
+        title = 'Polygon & PLG tokens';
+        break;
+      case CoinType.ftm:
+        title = 'Fantom & FTM tokens';
+        break;
+      case CoinType.qrc:
+        title = 'QTUM & QRC tokens';
+        break;
+      default:
+        if (coin.abbr == 'QTUM') title = 'QTUM & QRC tokens';
 
-    if (coin.type == CoinType.smartChain) title = 'KMD & SmartChains';
-    if (coin.type == CoinType.erc) title = 'ETH & ERC tokens';
-    if (coin.type == CoinType.bep) title = 'BNB & BEP tokens';
-    if (coin.type == CoinType.plg) title = 'Polygon & PLG tokens';
-    if (coin.type == CoinType.ftm) title = 'Fantom & FTM tokens';
-    if (coin.type == CoinType.qrc || coin.abbr == 'QTUM')
-      title = 'QTUM & QRC tokens';
+        break;
+    }
 
     return Padding(
       padding: const EdgeInsets.all(12),
