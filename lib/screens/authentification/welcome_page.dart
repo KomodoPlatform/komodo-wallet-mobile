@@ -77,7 +77,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     isButtonLoginEnabled = false;
                   });
                 });
-                return 'Wallet name must not be empty';
+                return AppLocalizations.of(context).emptyWallet;
               }
               if (str.length > 40) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -85,7 +85,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     isButtonLoginEnabled = false;
                   });
                 });
-                return 'Wallet name must have a max of 40 characters';
+                return AppLocalizations.of(context).walletMaxChar;
               }
 
               final allWallets = walletBloc.wallets;
@@ -98,7 +98,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       isButtonLoginEnabled = false;
                     });
                   });
-                  return 'Wallet name is already in use';
+                  return AppLocalizations.of(context).walletInUse;
                 }
               }
               WidgetsBinding.instance.addPostFrameCallback((_) {

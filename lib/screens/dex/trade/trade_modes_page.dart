@@ -59,7 +59,7 @@ class _TradeModesPageState extends State<TradeModesPage>
           children: [
             Expanded(
                 child: Text(
-              'Trading Mode:',
+              AppLocalizations.of(context).tradingMode,
               style: style,
             )),
             Flexible(

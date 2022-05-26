@@ -629,12 +629,12 @@ class _ShowLoadingDeleteState extends State<ShowLoadingDelete> {
             child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const <Widget>[
+          children: <Widget>[
             CircularProgressIndicator(),
             SizedBox(
               width: 16,
             ),
-            Text('Deleting wallet...')
+            Text(AppLocalizations.of(context).deletingWallet)
           ],
         ))
       ],

@@ -8,6 +8,8 @@ import 'package:komodo_dex/screens/dex/orders/maker/build_item_maker.dart';
 import 'package:komodo_dex/screens/dex/orders/taker/build_item_taker.dart';
 import 'package:komodo_dex/widgets/pagination.dart';
 
+import '../../../localizations.dart';
+
 class ActiveOrders extends StatefulWidget {
   const ActiveOrders({
     this.scrollCtrl,
@@ -83,8 +85,8 @@ class _ActiveOrdersState extends State<ActiveOrders> {
               if (orderSwapsFiltered.isEmpty) ...{
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 4,
-                  child: const Center(
-                      child: Text('No orders, please go to trade.')),
+                  child: Center(
+                      child: Text(AppLocalizations.of(context).noOrders)),
                 )
               },
               const SizedBox(height: 10),

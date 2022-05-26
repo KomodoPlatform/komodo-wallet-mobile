@@ -407,9 +407,10 @@ class _ItemCoinState extends State<ItemCoin>
                       } catch (_) {}
 
                       if (scaffoldMessenger != null) {
-                        scaffoldMessenger.showSnackBar(const SnackBar(
+                        scaffoldMessenger.showSnackBar(SnackBar(
                           duration: Duration(seconds: 2),
-                          content: Text('Built on Komodo'),
+                          content:
+                              Text(AppLocalizations.of(context).builtKomodo),
                         ));
                       }
                     },

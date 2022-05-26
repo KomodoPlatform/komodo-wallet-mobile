@@ -863,3 +863,13 @@ String toInitialUpper(String val) {
   final String rest = val.substring(1);
   return initial.toUpperCase() + rest;
 }
+
+String toCapitalized(String val) => val.isNotEmpty
+    ? '${val[0].toUpperCase()}${val.substring(1).toLowerCase()}'
+    : '';
+
+String toTitleCase(String val) => val
+    .replaceAll(RegExp(' +'), ' ')
+    .split(' ')
+    .map((str) => toCapitalized(val))
+    .join(' ');

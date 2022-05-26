@@ -10,6 +10,8 @@ import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../localizations.dart';
+
 class TopOrderDetails extends StatefulWidget {
   @override
   _TopOrderDetailsState createState() => _TopOrderDetailsState();
@@ -46,7 +48,7 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Selected order:',
+              AppLocalizations.of(context).selectedOrder,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             SizedBox(width: 4),
@@ -109,7 +111,7 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
           padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
           color: Theme.of(context).highlightColor.withAlpha(25),
           child: Text(
-            'Min order volume:',
+            AppLocalizations.of(context).minOrder,
             style: Theme.of(context).textTheme.caption,
           ),
         ),
@@ -119,8 +121,9 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
           child: Row(
             children: [
               Text(
-                'Min ${order.otherCoin}: '
-                '${cutTrailingZeros((order.minVolume / price).toStringAsFixed(appConfig.tradeFormPrecision))}',
+                toTitleCase(AppLocalizations.of(context).min) +
+                    ' ${order.otherCoin}: '
+                        '${cutTrailingZeros((order.minVolume / price).toStringAsFixed(appConfig.tradeFormPrecision))}',
                 style: Theme.of(context).textTheme.caption,
               ),
               _buildFiatAmount(order.otherCoin, order.minVolume / price),
@@ -132,8 +135,9 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
           child: Row(
             children: [
               Text(
-                'Min ${order.coin}: '
-                '${cutTrailingZeros(order.minVolume.toStringAsFixed(appConfig.tradeFormPrecision))}',
+                toTitleCase(AppLocalizations.of(context).min) +
+                    ' ${order.coin}: '
+                        '${cutTrailingZeros(order.minVolume.toStringAsFixed(appConfig.tradeFormPrecision))}',
                 style: Theme.of(context).textTheme.caption,
               ),
               _buildFiatAmount(order.coin, order.minVolume),
@@ -156,7 +160,7 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
           padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
           color: Theme.of(context).highlightColor.withAlpha(25),
           child: Text(
-            'Max order volume:',
+            AppLocalizations.of(context).maxOrder,
             style: Theme.of(context).textTheme.caption,
           ),
         ),
@@ -166,8 +170,9 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
           child: Row(
             children: [
               Text(
-                'Max ${order.otherCoin}: '
-                '${cutTrailingZeros((order.maxVolume / price).toStringAsFixed(appConfig.tradeFormPrecision))}',
+                toTitleCase(AppLocalizations.of(context).max) +
+                    ' ${order.otherCoin}: '
+                        '${cutTrailingZeros((order.maxVolume / price).toStringAsFixed(appConfig.tradeFormPrecision))}',
                 style: Theme.of(context).textTheme.caption,
               ),
               _buildFiatAmount(order.otherCoin, order.maxVolume / price),
@@ -179,8 +184,9 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
           child: Row(
             children: [
               Text(
-                'Max ${order.coin}: '
-                '${cutTrailingZeros(order.maxVolume.toStringAsFixed(appConfig.tradeFormPrecision))}',
+                toTitleCase(AppLocalizations.of(context).max) +
+                    ' ${order.coin}: '
+                        '${cutTrailingZeros(order.maxVolume.toStringAsFixed(appConfig.tradeFormPrecision))}',
                 style: Theme.of(context).textTheme.caption,
               ),
               _buildFiatAmount(order.coin, order.maxVolume),
@@ -203,7 +209,7 @@ class _TopOrderDetailsState extends State<TopOrderDetails> {
           padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
           color: Theme.of(context).highlightColor.withAlpha(25),
           child: Text(
-            'Exchange rate:',
+            AppLocalizations.of(context).exchangeRate,
             style: Theme.of(context).textTheme.caption,
           ),
         ),

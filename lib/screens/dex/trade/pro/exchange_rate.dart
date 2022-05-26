@@ -5,6 +5,8 @@ import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../localizations.dart';
+
 class ExchangeRate extends StatefulWidget {
   const ExchangeRate({
     this.alignCenter = false,
@@ -39,7 +41,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
                   : MainAxisAlignment.start,
               children: [
                 Text(
-                  'Exchange rate:',
+                  AppLocalizations.of(context).exchangeRate,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],

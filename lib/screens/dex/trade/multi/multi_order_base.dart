@@ -362,7 +362,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                                 formatPrice(multiOrderProvider.baseAmt)) ??
                             '';
                       },
-                child: Text('MAX'),
+                child: Text(AppLocalizations.of(context).max),
               ),
           ],
         ),

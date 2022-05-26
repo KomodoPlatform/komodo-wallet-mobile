@@ -407,9 +407,9 @@ class ListCoinsState extends State<ListCoins> {
               } else if (snapshot.data.isEmpty) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
+                  children: <Widget>[
                     AddCoinButton(),
-                    Text('Please Add A Coin'),
+                    Text(AppLocalizations.of(context).pleaseAddCoin),
                   ],
                 );
               } else {

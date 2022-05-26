@@ -173,7 +173,7 @@ class _ImportPageState extends State<ImportPage> {
         context: context,
         builder: (context) {
           return CustomSimpleDialog(
-            title: const Text('Already exists'),
+            title: Text(AppLocalizations.of(context).tradingMode),
             children: <Widget>[
               OverwriteDialogContent(
                   currentValue: existingNote,

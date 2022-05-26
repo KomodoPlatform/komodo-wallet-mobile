@@ -717,7 +717,7 @@ class _CoinDetailState extends State<CoinDetail> {
               width: 8.0,
             ),
             Text(
-              'Latest Transactions',
+              AppLocalizations.of(context).latestTxs,
               style: Theme.of(context)
                   .textTheme
                   .button

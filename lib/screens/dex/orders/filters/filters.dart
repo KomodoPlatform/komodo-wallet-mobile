@@ -377,7 +377,7 @@ class _FiltersState extends State<Filters> {
                 },
                 child: Container(
                     padding: const EdgeInsets.all(12),
-                    child: const Text('All')),
+                    child: Text(AppLocalizations.of(context).all)),
               ),
               InkWell(
                 onTap: () {
