@@ -102,7 +102,16 @@ class CoinsBloc implements BlocBase {
 
   bool _coinsLock = false;
 
-  final Set<Coin> _suspendedCoins = <Coin>{};
+  Set<Coin> get _suspendedCoins {
+    final Set<Coin> suspendedCoins = {};
+
+    for (CoinBalance balance in coinBalance) {
+      if (balance.coin.suspended) suspendedCoins.add(balance.coin);
+    }
+
+    return suspendedCoins;
+  }
+
   bool _isRetryActivatingRunning = false;
 
   @override
@@ -301,32 +310,26 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> retryActivatingSuspendedCoins() async {
-    // Already running
     if (_isRetryActivatingRunning) return;
-    //No coins to un-suspend
     if (_suspendedCoins.isEmpty) return;
 
     _isRetryActivatingRunning = true;
 
-    for (int i = 0; i < 3; i++) {
-      final formattedAbbrs = _suspendedCoins.map((c) => c.abbr).join(', ');
+    final formattedAbbrs = _suspendedCoins.map((c) => c.abbr).join(', ');
+    Log('coins_bloc',
+        'retryActivatingSuspendedCoins] Retrying activating suspended coins: $formattedAbbrs');
+
+    await enableCoins(_suspendedCoins.toList());
+
+    if (_suspendedCoins.isEmpty) {
       Log('coins_bloc',
-          'retryActivatingSuspendedCoins] Retrying activating suspended coins: $formattedAbbrs');
-      Log('coins_bloc', 'retryActivatingSuspendedCoins] Attempt ${i + 1}');
-      await enableCoins(_suspendedCoins.toList());
-      if (_suspendedCoins.isEmpty) {
-        Log('coins_bloc',
-            'retryActivatingSuspendedCoins] All suspended coins were successfully activated and un-suspended');
-        _isRetryActivatingRunning = false;
-        return;
-      }
-      // 5 seconds delay so next retry attempt don't run immediately
-      await Future.delayed(Duration(seconds: 3));
+          'retryActivatingSuspendedCoins] All suspended coins were successfully activated and un-suspended');
+    } else {
+      final remaining = _suspendedCoins.join(', ');
+      Log('coins_bloc',
+          'retryActivatingSuspendedCoins] After 3 tries the following coins remain suspended: $remaining');
     }
 
-    final remaining = _suspendedCoins.join(', ');
-    Log('coins_bloc',
-        'retryActivatingSuspendedCoins] After 3 tries the following coins remain suspended: $remaining');
     _isRetryActivatingRunning = false;
   }
 
@@ -394,24 +397,22 @@ class CoinsBloc implements BlocBase {
       apiCoins.add(item['ticker']);
     }
 
-    for (CoinBalance coinBalance in coinsBloc.coinBalance) {
-      bool shouldSuspend = !apiCoins.contains(coinBalance.coin.abbr);
-
-      // USE THIS FOR DEBUGGING
-      //if (['KMD', 'RICK', 'BCH'].contains(coinBalance.coin.abbr))
-      //  shouldSuspend = true;
+    for (CoinBalance balance in coinBalance) {
+      bool shouldSuspend = !apiCoins.contains(balance.coin.abbr);
 
       if (shouldSuspend) {
-        coinBalance.coin.suspended = true;
-        _suspendedCoins.add(coinBalance.coin);
+        balance.coin.suspended = true;
+
         Log('coins_bloc]',
-            '${coinBalance.coin.abbr} had an error during activation and was suspended');
-      } else if (coinBalance.coin.suspended) {
-        coinBalance.coin.suspended = false;
-        _suspendedCoins.remove(coinBalance.coin);
+            '${balance.coin.abbr} had an error during activation and was suspended');
+      } else if (balance.coin.suspended) {
+        balance.coin.suspended = false;
+
         Log('coins_bloc]',
-            '${coinBalance.coin.abbr} did successfully activate and was un-suspended');
+            '${balance.coin.abbr} did successfully activate and was un-suspended');
       }
+
+      _inCoins.add(coinBalance);
     }
   }
 

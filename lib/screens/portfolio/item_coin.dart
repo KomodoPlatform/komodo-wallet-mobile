@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
-import 'package:komodo_dex/screens/portfolio/show_suspended_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
