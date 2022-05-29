@@ -118,6 +118,7 @@ class _ExportPageState extends State<ExportPage> {
         AppLocalizations.of(context).exportNotesTitle: _selected.notes.length,
         AppLocalizations.of(context).exportContactsTitle:
             _selected.contacts.length,
+        AppLocalizations.of(context).exportSwapsTitle: _selected.swaps.length,
       },
     );
   }
