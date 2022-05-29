@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2022-05-10T16:51:15.988276",
+  "@@last_modified": "2022-05-27T10:03:50.010786",
   "mobileDataWarning": "Please note that now you're using cellular data and participation in {appName} P2P network consume internet traffic. It's better to use a WiFi network if your cellular data plan is costly.",
   "@mobileDataWarning": {
     "type": "text",
@@ -948,6 +948,18 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "camouflageSetup": "Camouflage PIN Setup",
+  "@camouflageSetup": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "confirmCamouflageSetup": "Confirm Camouflage PIN",
+  "@confirmCamouflageSetup": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "errorTryAgain": "Error, please try again",
   "@errorTryAgain": {
     "type": "text",
@@ -992,6 +1004,96 @@
   },
   "max": "MAX",
   "@max": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "min": "MIN",
+  "@min": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "totalFees": "Total Fees:",
+  "@totalFees": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "paidFromBalance": "Paid from balance:",
+  "@paidFromBalance": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "tradingMode": "Trading Mode:",
+  "@tradingMode": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "skip": "Skip",
+  "@skip": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "merge": "Merge",
+  "@merge": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "overwrite": "Overwrite",
+  "@overwrite": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "currentValue": "Current value:",
+  "@currentValue": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "newValue": "New value:",
+  "@newValue": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "mergedValue": "Merged value:",
+  "@mergedValue": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "saveMerged": "Save merged",
+  "@saveMerged": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "alreadyExists": "Already exists",
+  "@alreadyExists": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "simple": "Simple",
+  "@simple": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "advanced": "Advanced",
+  "@advanced": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "paidFromVolume": "Paid from received volume:",
+  "@paidFromVolume": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -1252,6 +1354,12 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "convert": "Convert",
+  "@convert": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "swapFailed": "Swap failed",
   "@swapFailed": {
     "type": "text",
@@ -1260,6 +1368,12 @@
   },
   "errorTryLater": "Error, please try later",
   "@errorTryLater": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "latestTxs": "Latest Transactions",
+  "@latestTxs": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -1648,6 +1762,12 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "yourWallet": "your wallet",
+  "@yourWallet": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "signInWithSeedPhrase": "Forgot the password? Restore wallet from seed",
   "@signInWithSeedPhrase": {
     "type": "text",
@@ -1728,6 +1848,12 @@
   },
   "hintPassword": "Password",
   "@hintPassword": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "passwordRequirement": "Password must contain at least 12 characters, with one lower-case, one upper-case and one special symbol.",
+  "@passwordRequirement": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -1854,6 +1980,24 @@
   },
   "unlock": "unlock",
   "@unlock": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "unlockSuccess": "Successfully unlocked",
+  "@unlockSuccess": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "unlockFunds": "Unlock Funds",
+  "@unlockFunds": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "noOrders": "No orders, please go to trade.",
+  "@noOrders": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -2046,6 +2190,18 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "builtKomodo": "Built on Komodo",
+  "@builtKomodo": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "pleaseAddCoin": "Please Add A Coin",
+  "@pleaseAddCoin": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "internetRestored": "Internet Connection Restored",
   "@internetRestored": {
     "type": "text",
@@ -2210,6 +2366,36 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "showDetails": "Show Details",
+  "@showDetails": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "exchangeRate": "Exchange rate:",
+  "@exchangeRate": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "selectedOrder": "Selected order:",
+  "@selectedOrder": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "minOrder": "Min order volume:",
+  "@minOrder": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "maxOrder": "Max order volume:",
+  "@maxOrder": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "invalidSwapDetailsLink": "Details",
   "@invalidSwapDetailsLink": {
     "type": "text",
@@ -2240,6 +2426,24 @@
   },
   "walletOnly": "Wallet only",
   "@walletOnly": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "emptyWallet": "Wallet name must not be empty",
+  "@emptyWallet": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "walletMaxChar": "Wallet name must have a max of 40 characters",
+  "@walletMaxChar": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "walletInUse": "Wallet name is already in use",
+  "@walletInUse": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -3306,6 +3510,12 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "searchForTicker": "Search for Ticker",
+  "@searchForTicker": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "contactDelete": "Delete Contact",
   "@contactDelete": {
     "type": "text",
@@ -3834,6 +4044,12 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "less": "Less",
+  "@less": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "oldLogsTitle": "Old logs",
   "@oldLogsTitle": {
     "type": "text",
@@ -4230,6 +4446,12 @@
   },
   "filtersMaker": "Maker",
   "@filtersMaker": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "all": "All",
+  "@all": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
