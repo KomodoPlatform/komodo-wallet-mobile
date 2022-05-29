@@ -371,7 +371,6 @@ class _ExportPageState extends State<ExportPage> {
 
   bool isValidPassword = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _autoValidate = false;
 
   void _onChange() {
     final String text = _ctrlPass1.text;
@@ -391,29 +390,12 @@ class _ExportPageState extends State<ExportPage> {
     }
   }
 
-  bool _validateInputs() {
-    _formKey.currentState.validate();
-    if (_formKey.currentState.validate()) {
-//    If all data are correct then save data to out variables
-      _formKey.currentState.save();
-      return true;
-    } else {
-//    If all data are not valid then start auto validation.
-      setState(() {
-        _autoValidate = true;
-      });
-      return false;
-    }
-  }
-
   Widget _buildPass() {
     return Container(
       color: Theme.of(context).primaryColor,
       padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
       child: Form(
         key: _formKey,
-        autovalidateMode:
-            _autoValidate ? AutovalidateMode.always : AutovalidateMode.disabled,
         child: Column(children: [
           TextFormField(
             controller: _ctrlPass1,
