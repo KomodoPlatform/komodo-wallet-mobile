@@ -320,9 +320,11 @@ class _ExportPageState extends State<ExportPage> {
           Expanded(child: SizedBox()),
           Expanded(
             child: PrimaryButton(
-              onPressed: () async {
-                if (_validate()) _export();
-              },
+              onPressed: isValidPassword
+                  ? () async {
+                      if (_validate()) _export();
+                    }
+                  : null,
               text: AppLocalizations.of(context).exportButton,
             ),
           ),
@@ -337,16 +339,6 @@ class _ExportPageState extends State<ExportPage> {
         _selected.contacts.isEmpty &&
         _selected.swaps.isEmpty) {
       _showError(AppLocalizations.of(context).noItemsToExport);
-      return false;
-    }
-
-    if (_ctrlPass1.text.isEmpty) {
-      _showError(AppLocalizations.of(context).emptyExportPass);
-      return false;
-    }
-
-    if (_ctrlPass1.text != _ctrlPass2.text) {
-      _showError(AppLocalizations.of(context).matchExportPass);
       return false;
     }
 
@@ -377,57 +369,125 @@ class _ExportPageState extends State<ExportPage> {
     });
   }
 
+  bool isValidPassword = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
+
+  void _onChange() {
+    final String text = _ctrlPass1.text;
+    final String text2 = _ctrlPass2.text;
+    _formKey.currentState.validate();
+    if (text.isEmpty ||
+        text2.isEmpty ||
+        !_formKey.currentState.validate() ||
+        _ctrlPass1.text != _ctrlPass2.text) {
+      setState(() {
+        isValidPassword = false;
+      });
+    } else {
+      setState(() {
+        isValidPassword = true;
+      });
+    }
+  }
+
+  bool _validateInputs() {
+    _formKey.currentState.validate();
+    if (_formKey.currentState.validate()) {
+//    If all data are correct then save data to out variables
+      _formKey.currentState.save();
+      return true;
+    } else {
+//    If all data are not valid then start auto validation.
+      setState(() {
+        _autoValidate = true;
+      });
+      return false;
+    }
+  }
+
   Widget _buildPass() {
     return Container(
       color: Theme.of(context).primaryColor,
       padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-      child: Column(children: [
-        TextField(
-          controller: _ctrlPass1,
-          textInputAction: TextInputAction.next,
-          autocorrect: false,
-          enableInteractiveSelection: true,
-          toolbarOptions: ToolbarOptions(
-            paste: _ctrlPass1.text.isEmpty,
-            copy: false,
-            cut: false,
-            selectAll: false,
-          ),
-          obscureText: _isPassObscured,
-          style: Theme.of(context).textTheme.bodyText2,
-          decoration: InputDecoration(
-            errorMaxLines: 6,
-            hintText: AppLocalizations.of(context).hintCreatePassword,
-            suffixIcon: PasswordVisibilityControl(
-              onVisibilityChange: (bool isPasswordObscured) {
-                setState(() {
-                  _isPassObscured = isPasswordObscured;
-                });
-              },
+      child: Form(
+        key: _formKey,
+        autovalidateMode:
+            _autoValidate ? AutovalidateMode.always : AutovalidateMode.disabled,
+        child: Column(children: [
+          TextFormField(
+            controller: _ctrlPass1,
+            textInputAction: TextInputAction.next,
+            autocorrect: false,
+            enableInteractiveSelection: true,
+            onChanged: (a) {
+              if (_ctrlPass2.text.isNotEmpty) {
+                _onChange();
+              }
+            },
+            toolbarOptions: ToolbarOptions(
+              paste: _ctrlPass1.text.isEmpty,
+              copy: false,
+              cut: false,
+              selectAll: false,
+            ),
+            obscureText: _isPassObscured,
+            style: Theme.of(context).textTheme.bodyText2,
+            validator: (a) {
+              if (a.isEmpty) {
+                return AppLocalizations.of(context).hintEnterPassword;
+              } else {
+                return null;
+              }
+            },
+            decoration: InputDecoration(
+              errorMaxLines: 6,
+              hintText: AppLocalizations.of(context).hintCreatePassword,
+              suffixIcon: PasswordVisibilityControl(
+                onVisibilityChange: (bool isPasswordObscured) {
+                  setState(() {
+                    _isPassObscured = isPasswordObscured;
+                  });
+                },
+              ),
             ),
           ),
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        TextField(
-          controller: _ctrlPass2,
-          textInputAction: TextInputAction.done,
-          autocorrect: false,
-          obscureText: _isPassObscured,
-          enableInteractiveSelection: true,
-          toolbarOptions: ToolbarOptions(
-            paste: _ctrlPass2.text.isEmpty,
-            copy: false,
-            cut: false,
-            selectAll: false,
+          const SizedBox(
+            height: 8,
           ),
-          style: Theme.of(context).textTheme.bodyText2,
-          decoration: InputDecoration(
-            hintText: AppLocalizations.of(context).hintConfirmPassword,
+          TextFormField(
+            controller: _ctrlPass2,
+            textInputAction: TextInputAction.done,
+            autocorrect: false,
+            obscureText: _isPassObscured,
+            enableInteractiveSelection: true,
+            onChanged: (a) {
+              if (_ctrlPass1.text.isNotEmpty) {
+                _onChange();
+              }
+            },
+            toolbarOptions: ToolbarOptions(
+              paste: _ctrlPass2.text.isEmpty,
+              copy: false,
+              cut: false,
+              selectAll: false,
+            ),
+            style: Theme.of(context).textTheme.bodyText2,
+            validator: (a) {
+              if (a.isEmpty) {
+                return AppLocalizations.of(context).hintEnterPassword;
+              } else if (_ctrlPass1.text != _ctrlPass2.text) {
+                return AppLocalizations.of(context).matchExportPass;
+              } else {
+                return null;
+              }
+            },
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context).hintConfirmPassword,
+            ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 
