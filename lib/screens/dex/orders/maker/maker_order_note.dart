@@ -19,6 +19,7 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
   final noteTextController = TextEditingController();
   bool isEdit = false;
   bool isExpanded = false;
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -48,6 +49,7 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
                     maxLength: 200,
                     minLines: 1,
                     maxLines: 8,
+                    focusNode: focusNode,
                   ),
                 )
               : InkWell(
@@ -89,6 +91,9 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
                   setState(() {
                     isExpanded = false;
                   });
+                }
+                if (!isEdit) {
+                  focusNode.requestFocus();
                 }
                 setState(() {
                   isEdit = !isEdit;

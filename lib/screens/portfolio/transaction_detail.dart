@@ -354,6 +354,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
   final noteTextController = TextEditingController();
   bool isEdit = false;
   bool isExpanded = false;
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -387,6 +388,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                     maxLength: 200,
                     minLines: 1,
                     maxLines: 8,
+                    focusNode: focusNode,
                   )
                 : InkWell(
                     onTap: () {
@@ -426,6 +428,9 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                     setState(() {
                       isExpanded = false;
                     });
+                  }
+                  if (!isEdit) {
+                    focusNode.requestFocus();
                   }
                   setState(() {
                     isEdit = !isEdit;

@@ -21,6 +21,7 @@ class _DetailSwapState extends State<DetailSwap> {
   bool isNoteEdit = false;
   bool isNoteExpanded = false;
   final noteTextController = TextEditingController();
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -159,6 +160,7 @@ class _DetailSwapState extends State<DetailSwap> {
                             maxLength: 200,
                             maxLines: 7,
                             minLines: 1,
+                            focusNode: focusNode,
                           ),
                         )
                       : Text(
@@ -199,7 +201,9 @@ class _DetailSwapState extends State<DetailSwap> {
                       isNoteExpanded = false;
                     });
                   }
-
+                  if (!isNoteEdit) {
+                    focusNode.requestFocus();
+                  }
                   setState(() {
                     isNoteEdit = !isNoteEdit;
                   });
