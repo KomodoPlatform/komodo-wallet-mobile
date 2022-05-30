@@ -104,7 +104,7 @@ class _ContactEditState extends State<ContactEdit> {
                           },
                         ),
                         SizedBox(height: 16),
-                        _buildAddButton(),
+                        if (editContact.addresses.isEmpty) _buildAddButton(),
                         FutureBuilder<Widget>(
                           future: _buildAddresses(),
                           builder: (BuildContext context,
