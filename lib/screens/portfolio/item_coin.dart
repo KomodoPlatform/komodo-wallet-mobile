@@ -92,140 +92,162 @@ class _ItemCoinState extends State<ItemCoin>
       ));
     }
 
-    return Slidable(
-      startActionPane: ActionPane(
-        motion: const DrawerMotion(),
-        extentRatio: (actions != null && actions.isNotEmpty)
-            ? (actions.length * 0.3).clamp(0.3, 1.0)
-            : null,
-        children: actions,
-      ),
-      endActionPane: ActionPane(
-        motion: const DrawerMotion(),
-        extentRatio: 0.4,
-        children: [
-          SlidableAction(
-            label: AppLocalizations.of(context).remove.toUpperCase(),
-            backgroundColor: Theme.of(context).errorColor,
-            icon: Icons.delete,
-            onPressed: (context) async {
-              if (coin.isDefault) {
-                await showCantRemoveDefaultCoin(context, coin);
-              } else {
-                await showConfirmationRemoveCoin(context, coin);
-              }
-            },
-          ),
-        ],
-      ),
-      child: Builder(builder: (BuildContext context) {
-        return InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
-          onLongPress: () => Slidable.of(context).openCurrentActionPane(),
-          onTap: () {
-            final slidableController = Slidable.of(context);
-            if (slidableController != null) {
-              slidableController.close();
-            }
-            Navigator.push<dynamic>(
-              context,
-              MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) =>
-                    CoinDetail(coinBalance: widget.coinBalance),
+    return Opacity(
+      opacity: coin.suspended ? 0.3 : 1,
+      child: Slidable(
+        startActionPane: coin.suspended
+            ? null
+            : ActionPane(
+                motion: const DrawerMotion(),
+                extentRatio: (actions != null && actions.isNotEmpty)
+                    ? (actions.length * 0.3).clamp(0.3, 1.0)
+                    : null,
+                children: actions,
               ),
-            );
-          },
-          child: Container(
-            color: Theme.of(context).colorScheme.surface,
-            child: Row(
-              children: <Widget>[
-                Container(
-                  height: 128,
-                  color: Color(int.parse(coin.colorCoin)),
-                  width: 8,
-                ),
-                const SizedBox(width: 14),
-                SizedBox(
-                  width: 110,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 28,
-                        backgroundColor: Colors.transparent,
-                        backgroundImage: AssetImage('assets/coin-icons/'
-                            '${balance.coin.toLowerCase()}.png'),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        coin.name.toUpperCase(),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(child: SizedBox()),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8, right: 12),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      StreamBuilder<bool>(
-                          initialData: settingsBloc.showBalance,
-                          stream: settingsBloc.outShowBalance,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<bool> snapshot) {
-                            String amount =
-                                f.format(double.parse(balance.getBalance()));
-                            if (snapshot.hasData && !snapshot.data)
-                              amount = '**.**';
-                            return AutoSizeText(
-                              '$amount ${coin.abbr}',
-                              maxLines: 1,
-                              style: Theme.of(context).textTheme.headline6,
-                            );
-                          }),
-                      const SizedBox(height: 8),
-                      StreamBuilder(
-                          initialData: settingsBloc.showBalance,
-                          stream: settingsBloc.outShowBalance,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<bool> snapshot) {
-                            bool hidden = false;
-                            if (snapshot.hasData && !snapshot.data)
-                              hidden = true;
-                            return Text(
-                              cexProvider.convert(
-                                widget.coinBalance.balanceUSD,
-                                hidden: hidden,
-                              ),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(
-                                    color: Colors.grey,
-                                  ),
-                            );
-                          }),
-                      _buildClaimButton(),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          _buildFaucetButton(),
-                          _buildWalletOnly(),
-                          _buildNetworkLabel(),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+        endActionPane: ActionPane(
+          motion: const DrawerMotion(),
+          extentRatio: 0.4,
+          children: [
+            SlidableAction(
+              label: AppLocalizations.of(context).remove.toUpperCase(),
+              backgroundColor: Theme.of(context).errorColor,
+              icon: Icons.delete,
+              onPressed: (context) async {
+                if (coin.isDefault) {
+                  await showCantRemoveDefaultCoin(context, coin);
+                } else {
+                  await showConfirmationRemoveCoin(context, coin);
+                }
+              },
             ),
-          ),
-        );
-      }),
+          ],
+        ),
+        child: Builder(builder: (BuildContext context) {
+          return InkWell(
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
+            onLongPress: () => Slidable.of(context).openCurrentActionPane(),
+            onTap: () {
+              //if (coin.suspended) {
+              //showSuspendedDilog(context, coin: coin);
+              //return;
+              //}
+
+              final slidableController = Slidable.of(context);
+              if (slidableController != null) {
+                slidableController.close();
+              }
+              Navigator.push<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) =>
+                      CoinDetail(coinBalance: widget.coinBalance),
+                ),
+              );
+            },
+            child: Container(
+              color: Theme.of(context).colorScheme.surface,
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    height: 128,
+                    color: Color(int.parse(coin.colorCoin)),
+                    width: 8,
+                  ),
+                  const SizedBox(width: 14),
+                  SizedBox(
+                    width: 110,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 28,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: AssetImage('assets/coin-icons/'
+                                  '${balance.coin.toLowerCase()}.png'),
+                            ),
+                            if (coin.suspended)
+                              Icon(
+                                Icons.warning_rounded,
+                                size: 20,
+                                color: Colors.yellow[600],
+                              ),
+                          ],
+                          alignment: Alignment.bottomRight,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          coin.name.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(child: SizedBox()),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 8, bottom: 8, right: 12),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        StreamBuilder<bool>(
+                            initialData: settingsBloc.showBalance,
+                            stream: settingsBloc.outShowBalance,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<bool> snapshot) {
+                              String amount =
+                                  f.format(double.parse(balance.getBalance()));
+                              if (snapshot.hasData && !snapshot.data)
+                                amount = '**.**';
+                              return AutoSizeText(
+                                '$amount ${coin.abbr}',
+                                maxLines: 1,
+                                style: Theme.of(context).textTheme.headline6,
+                              );
+                            }),
+                        const SizedBox(height: 8),
+                        StreamBuilder(
+                            initialData: settingsBloc.showBalance,
+                            stream: settingsBloc.outShowBalance,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<bool> snapshot) {
+                              bool hidden = false;
+                              if (snapshot.hasData && !snapshot.data)
+                                hidden = true;
+                              return Text(
+                                cexProvider.convert(
+                                  widget.coinBalance.balanceUSD,
+                                  hidden: hidden,
+                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(
+                                      color: Colors.grey,
+                                    ),
+                              );
+                            }),
+                        _buildClaimButton(),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            _buildFaucetButton(),
+                            _buildWalletOnly(),
+                            _buildNetworkLabel(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
+      ),
     );
   }
 
@@ -238,14 +260,16 @@ class _ItemCoinState extends State<ItemCoin>
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: OutlinedButton(
-        onPressed: () async {
-          rewardsProvider.update();
-          Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => RewardsPage()),
-          );
-        },
+        onPressed: !widget.coinBalance.coin.suspended
+            ? () async {
+                rewardsProvider.update();
+                Navigator.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => RewardsPage()),
+                );
+              }
+            : null,
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
           textStyle:
@@ -257,7 +281,7 @@ class _ItemCoinState extends State<ItemCoin>
         ),
         child: Row(
           children: <Widget>[
-            if (rewardsProvider.needClaim)
+            if (!widget.coinBalance.coin.suspended && rewardsProvider.needClaim)
               Container(
                 padding: const EdgeInsets.only(right: 4),
                 child: Stack(
@@ -283,12 +307,14 @@ class _ItemCoinState extends State<ItemCoin>
       return Padding(
         padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
         child: OutlinedButton(
-          onPressed: () async {
-            showFaucetDialog(
-                context: context,
-                coin: widget.coinBalance.coin.abbr,
-                address: widget.coinBalance.balance.address);
-          },
+          onPressed: !widget.coinBalance.coin.suspended
+              ? () async {
+                  showFaucetDialog(
+                      context: context,
+                      coin: widget.coinBalance.coin.abbr,
+                      address: widget.coinBalance.balance.address);
+                }
+              : null,
           style: OutlinedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
             textStyle:
