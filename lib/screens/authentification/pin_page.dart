@@ -13,6 +13,7 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -51,11 +52,10 @@ class _PinPageState extends State<PinPage> {
   bool isLoading = false;
   String _correctPin;
   String _camoPin;
-  Timer _isCorrectPinCountdown;
 
   @override
   void initState() {
-    _setCorrectPin();
+    _initCorrectPin();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.pinStatus == PinStatus.NORMAL_PIN) {
         dialogBloc.closeDialog(context);
@@ -65,34 +65,21 @@ class _PinPageState extends State<PinPage> {
   }
 
   Future<void> setNormalPin() async {
-    final String normalPin = await EncryptionTool().read('pin');
-    final String camoPin = await EncryptionTool().read('camoPin');
+    final EncryptionTool encryptionTool = EncryptionTool();
+    await pauseUntil(() async => await encryptionTool.read('pin') != null);
+
+    final String normalPin = await encryptionTool.read('pin');
+    final String camoPin = await encryptionTool.read('camoPin');
     setState(() {
       _correctPin = normalPin;
       _camoPin = camoPin;
     });
   }
 
-  Future<void> _setCorrectPin() async {
-    _isCorrectPinCountdown =
-        Timer.periodic(Duration(milliseconds: 300), (_) async {
-      if (widget.pinStatus == PinStatus.NORMAL_PIN && _correctPin == null) {
-        _initCorrectPin(widget.pinStatus);
-      } else {
-        _initCorrectPin(widget.pinStatus);
-        _isCorrectPinCountdown?.cancel();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _isCorrectPinCountdown?.cancel();
-    super.dispose();
-  }
-
-  Future<void> _initCorrectPin(PinStatus pinStatus) async {
+  Future<void> _initCorrectPin() async {
+    final PinStatus pinStatus = widget.pinStatus;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (pinStatus == PinStatus.CREATE_PIN) {
       setState(() {
         _correctPin = null;
