@@ -325,15 +325,21 @@ class _DetailSwapState extends State<DetailSwap> {
       amount = (double.parse(amount) * camoBloc.camoFraction / 100).toString();
     }
 
-    return Text(
-      (double.parse(amount) % 1) == 0
-          ? double.parse(amount).toString() + ' ' + coin
-          : double.parse(amount).toStringAsFixed(4) + ' ' + coin,
-      style: Theme.of(context)
-          .textTheme
-          .bodyText2
-          .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
-      textAlign: textAlign,
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            (double.parse(amount) % 1) == 0
+                ? double.parse(amount).toString() + ' ' + coin
+                : double.parse(amount).toStringAsFixed(4) + ' ' + coin,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText2
+                .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+            textAlign: textAlign,
+          ),
+        )
+      ],
     );
   }
 
