@@ -103,7 +103,7 @@ class Coin {
   // but failed to activate during current session startup
   bool suspended = false;
 
-  String type; // 'other', 'erc', 'bep', 'qrc', 'plg' or 'smartChain'
+  CoinType type; // 'other', 'erc', 'bep', 'qrc', 'plg' or 'smartChain'
 
   String name;
   String address;
