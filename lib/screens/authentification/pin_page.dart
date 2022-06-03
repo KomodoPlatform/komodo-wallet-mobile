@@ -13,6 +13,7 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +55,7 @@ class _PinPageState extends State<PinPage> {
 
   @override
   void initState() {
-    _initCorrectPin(widget.pinStatus);
+    _initCorrectPin();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.pinStatus == PinStatus.NORMAL_PIN) {
         dialogBloc.closeDialog(context);
@@ -64,16 +65,21 @@ class _PinPageState extends State<PinPage> {
   }
 
   Future<void> setNormalPin() async {
-    final String normalPin = await EncryptionTool().read('pin');
-    final String camoPin = await EncryptionTool().read('camoPin');
+    final EncryptionTool encryptionTool = EncryptionTool();
+    await pauseUntil(() async => await encryptionTool.read('pin') != null);
+
+    final String normalPin = await encryptionTool.read('pin');
+    final String camoPin = await encryptionTool.read('camoPin');
     setState(() {
       _correctPin = normalPin;
       _camoPin = camoPin;
     });
   }
 
-  Future<void> _initCorrectPin(PinStatus pinStatus) async {
+  Future<void> _initCorrectPin() async {
+    final PinStatus pinStatus = widget.pinStatus;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (pinStatus == PinStatus.CREATE_PIN) {
       setState(() {
         _correctPin = null;
@@ -177,7 +183,7 @@ class _PinPageState extends State<PinPage> {
         break;
 
       case PinStatus.DISABLED_PIN:
-        walletSecuritySettingsProvider.activatePinProtection = false;
+        walletSecuritySettingsProvider.activatePinProtection = true;
         Navigator.pop(context);
         break;
       case PinStatus.DISABLED_PIN_BIOMETRIC:
@@ -275,11 +281,12 @@ class _PinPageState extends State<PinPage> {
                   Navigator.pushReplacement<dynamic, dynamic>(
                       context, materialPage);
                 } else {
-                  final bool shouldEnterCamoMode =
-                      widget.pinStatus == PinStatus.NORMAL_PIN &&
-                          camoBloc.isCamoEnabled &&
-                          _camoPin != null &&
-                          code == _camoPin;
+                  final bool shouldEnterCamoMode = widget.pinStatus ==
+                          PinStatus.NORMAL_PIN &&
+                      (!walletSecuritySettingsProvider.activateBioProtection &&
+                          camoBloc.isCamoEnabled) &&
+                      _camoPin != null &&
+                      code == _camoPin;
 
                   if (shouldEnterCamoMode) {
                     if (!camoBloc.isCamoActive) {

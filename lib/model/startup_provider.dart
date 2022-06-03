@@ -4,6 +4,7 @@ import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Shares the progress on startup tasks with the UI
@@ -46,9 +47,6 @@ class Startup {
   }
 
   Future<void> _start() async {
-    // restore saved camouflage session if any
-    await camoBloc.init();
-
     // delete old logs
     await Log.maintain();
 
@@ -58,6 +56,9 @@ class Startup {
     await startMmIfUnlocked();
 
     await walletSecuritySettingsProvider.migrateSecuritySettings();
+
+    // restore saved camouflage session if any
+    await camoBloc.init();
 
     _live = true;
     _notifyListeners();
@@ -76,6 +77,7 @@ class Startup {
     if (prefs.getBool('isPassphraseIsSaved') != null &&
         prefs.getBool('isPassphraseIsSaved') == true) {
       // If the screen is currently unlocked then proceed with MM initialization
+      await pauseUntil(() => walletSecuritySettingsProvider.isInitialized);
       if (!(authBloc.showLock &&
           walletSecuritySettingsProvider.activatePinProtection)) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);

@@ -303,14 +303,16 @@ class MMService {
     }
 
     final String startParam = configMm2ToJson(ConfigMm2(
-        gui: gui,
-        netid: netid,
-        client: 1,
-        userhome: filesPath,
-        passphrase: passphrase,
-        rpcPassword: rpcPass,
-        coins: await readJsonCoinInit(),
-        dbdir: filesPath));
+      gui: gui,
+      netid: netid,
+      client: 1,
+      userhome: filesPath,
+      passphrase: passphrase,
+      rpcPassword: rpcPass,
+      coins: await readJsonCoinInit(),
+      dbdir: filesPath,
+      allowWeakPassword: false,
+    ));
 
     logC
         .receiveBroadcastStream()
@@ -428,11 +430,16 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
       await coinsBloc.enableCoins(active);
-      Log('mm_service:432', 'All coins activated');
+
+      for (int i = 0; i < 2; i++) {
+        await coinsBloc.retryActivatingSuspendedCoins();
+      }
+
+      Log('mm_service]', 'All coins activated');
       await coinsBloc.updateCoinBalances();
-      Log('mm_service:434', 'loadCoin finished');
+      Log('mm_service]', 'loadCoin finished');
     } catch (e) {
-      Log('mm_service', 'initCoinsAndLoad: $e');
+      Log('mm_service]', 'initCoinsAndLoad error: $e');
     }
   }
 

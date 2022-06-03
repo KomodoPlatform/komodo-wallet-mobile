@@ -24,7 +24,6 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
-import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:provider/provider.dart';
 
 class SwapConfirmationPageSimple extends StatefulWidget {
@@ -500,8 +499,6 @@ class _SwapConfirmationPageSimpleState
                         ? null
                         : () async {
                             setState(() => _inProgress = true);
-
-                            await showSoundsDialog(context);
 
                             await _constrProvider.makeSwap(
                               buyOrderType: BuyOrderType.FillOrKill,

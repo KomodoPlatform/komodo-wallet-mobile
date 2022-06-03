@@ -26,7 +26,6 @@ import 'package:komodo_dex/screens/dex/trade/pro/exchange_rate.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:provider/provider.dart';
 
 class SwapConfirmationPage extends StatefulWidget {
@@ -552,8 +551,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                       ? null
                       : () async {
                           setState(() => _inProgress = true);
-
-                          await showSoundsDialog(context);
 
                           await tradeForm.makeSwap(
                             buyOrderType: _buyOrderType,
