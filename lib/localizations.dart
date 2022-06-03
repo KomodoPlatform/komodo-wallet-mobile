@@ -1195,6 +1195,12 @@ class AppLocalizations {
       'Camouflage mode will not be available.\n'
       'Please change Camouflage PIN.',
       name: 'matchingCamoPinError');
+  String get camoPinBioProtectionConflict => Intl.message(
+      "Camouflage PIN and Bio protection can't be enabled at the same time.",
+      name: 'camoPinBioProtectionConflict');
+  String get camoPinBioProtectionConflictTitle =>
+      Intl.message('Camo PIN and Bio protection conflict.',
+          name: 'camoPinBioProtectionConflictTitle');
   String get generalPinNotActive => Intl.message(
       'General PIN protection is not active.\n'
       'Camouflage mode will not be available.'

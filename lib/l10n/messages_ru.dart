@@ -21,120 +21,120 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m0(name) => "${name} активирован успешно!";
 
-  static m27(title) => "Отображаются только контакты с ${title} адресами";
+  static m24(title) => "Отображаются только контакты с ${title} адресами";
 
-  static m28(abbr) =>
+  static m25(abbr) =>
       "Вы не можете отправить средства на адрес ${abbr}, потому что ${abbr} не активирован. Пожалуйста, перейдите в портфолио.";
 
-  static m29(appName) =>
+  static m26(appName) =>
       "Нет! Мы никогда не храним конфиденциальные данные, включая ваши приватные ключи, seed ключи или PIN-код. Эти данные хранятся только на устройстве пользователя и никуда не передаются. Вы полностью контролируете свои активы.";
 
-  static m30(appName) =>
+  static m27(appName) =>
       "${appName} доступен для мобильных устройств на Android и iPhone, а также как десктопное приложение на операционных системах Windows, Mac и Linux.";
 
-  static m31(appName) =>
+  static m28(appName) =>
       "Другие DEX обычно позволяют торговать только активами, принадлежащими к одному блокчейну, используют прокси-токены и разрешают размещать только один ордер, использующий ваш баланс. \n\n${appName} позволяет вам торговать между разными блокчейнами без использования прокси-токенов. Вы также можете разместить несколько заказов, используя одни и те же средства. Например, вы можете выставить ордера на продажу 0,1 BTC за KMD, QTUM и VRSC - первый исполненный ордер автоматически отменит все остальные ордера.";
 
-  static m32(appName) =>
+  static m29(appName) =>
       "Есть несколько факторов, определяющих время обработки каждого свопа. Время блокировки торгуемых активов зависит от каждой сети (биткоин блокчейн обычно является самым медленным). Кроме того, пользователь может редактировать параметры безопасности. Например, в ${appName} можно установить количество подтверждений, после которых KMD транзакция считается успешной, равным 3, что сокращает время обмена по сравнению с транзакциями, ожидающими<a href = \"https://komodoplatform.com/security-delayed-proof-of -work-dpow / \"> нотариального заверения</a>.";
 
-  static m33(appName) =>
+  static m30(appName) =>
       "При торговле на ${appName} необходимо учитывать две категории комиссий. \n\n1. ${appName} взимает приблизительно 0,13% (1/777 объема торгов, но не ниже 0,0001) в качестве комиссии за торговлю для тейкер ордеров, а для ордеров-мейкеров комиссия равна нулю. \n\n2. Как мейкеры, так и тейкеры должны платят обычные комиссии за транзакции в используемых блокчейнах при совершении атомарного свопа .\n\nКомиссиии сети могут сильно различаться в зависимости от выбранной вами торговой пары.";
 
-  static m34(name, link, appName, appCompanyShort) =>
+  static m31(name, link, appName, appCompanyShort) =>
       "Да! ${appName} предлагает поддержку через <a href=\"${link}\"> ${name} сервер ${appCompanyShort} </a>. Команда и сообщество всегда рады помочь!";
 
-  static m35(appName) =>
+  static m32(appName) =>
       "Нет! ${appName} полностью децентрализована. Ограничить доступ пользователей третьими лицами невозможно.";
 
-  static m36(appName, appCompanyShort) =>
+  static m33(appName, appCompanyShort) =>
       "${appName} разработан командой ${appCompanyShort}. ${appCompanyShort} - один из наиболее авторитетных блокчейн-проектов, работающих над инновационными решениями, такими как атомарные свопы, delayed Proof of Work и совместимая многоцепочечная архитектура.";
 
-  static m37(appName) =>
+  static m34(appName) =>
       "Конечно! Вы можете обратиться к нашей документации для разработчиков для получения более подробной информации или связаться с нами по вопросам партнерства. У вас есть конкретный технический вопрос? Разработчики сообщества ${appName} всегда готовы помочь!";
 
-  static m24(seconde) =>
+  static m73(seconde) =>
       "Поиск сделки в процессе, пожалуйста , подождите ${seconde} секунд!";
 
   static m1(index) => "Введите ${index} слово";
 
   static m2(index) => "Какое ${index} слово в вашем seed-ключе?";
 
-  static m40(name) => "Вы уверены, что хотите удалить ${name}?";
+  static m74(name) => "Вы уверены, что хотите удалить ${name}?";
 
-  static m44(appCompanyShort) => "Новости Комодо";
+  static m40(appCompanyShort) => "Новости Комодо";
 
-  static m25(coinName, number) =>
+  static m41(coinName, number) =>
       "Минимальная сумма продажи составляет ${number} ${coinName}.";
 
-  static m26(coinName, number) =>
+  static m42(coinName, number) =>
       "Минимальная сумма покупки: ${number} ${coinName}";
 
-  static m52(number) => "Создать ${number} ордер(ов):";
+  static m78(number) => "Создать ${number} ордер(ов):";
 
   static m17(coinName) => "Пожалуйста, введите сумму ${coinName}.";
 
-  static m56(sell, buy) => "Своп ${sell}/${buy} успешно завершен";
+  static m82(sell, buy) => "Своп ${sell}/${buy} успешно завершен";
 
-  static m57(sell, buy) => "Своп ${sell}/${buy} не прошел";
+  static m83(sell, buy) => "Своп ${sell}/${buy} не прошел";
 
-  static m58(sell, buy) => "Своп ${sell}/${buy} начат";
+  static m84(sell, buy) => "Своп ${sell}/${buy} начат";
 
-  static m59(sell, buy) => "Превышен тайм-аут свопа ${sell}/${buy}";
+  static m85(sell, buy) => "Превышен тайм-аут свопа ${sell}/${buy}";
 
-  static m60(coin) => "Вы получили ${coin} транзакцию";
+  static m47(coin) => "Вы получили ${coin} транзакцию";
 
   static m18(assets) => "${assets} Активов";
 
-  static m61(coin) => "Все ${coin} ордеры будут отменены.";
+  static m48(coin) => "Все ${coin} ордеры будут отменены.";
 
-  static m62(delta) => "На -${delta}% ниже цен CEX";
+  static m49(delta) => "На -${delta}% ниже цен CEX";
 
-  static m63(delta) => "На +${delta}% выше цен CEX";
+  static m50(delta) => "На +${delta}% выше цен CEX";
 
-  static m65(coin) => "Сумма (${coin})";
+  static m52(coin) => "Сумма (${coin})";
 
-  static m66(coin) => "Цена (${coin})";
+  static m86(coin) => "Цена (${coin})";
 
-  static m67(coin) => "Всего (${coin})";
+  static m53(coin) => "Всего (${coin})";
 
-  static m69(appName) => "На каких устройствах я могу использовать ${appName}?";
+  static m55(appName) => "На каких устройствах я могу использовать ${appName}?";
 
-  static m70(appName) =>
+  static m56(appName) =>
       "Чем торговля на ${appName} отличается от торговли на других DEX?";
 
-  static m71(appName) => "Как рассчитываются комиссии на ${appName}?";
+  static m57(appName) => "Как рассчитываются комиссии на ${appName}?";
 
-  static m72(appName) => "Кто стоит за ${appName}?";
+  static m58(appName) => "Кто стоит за ${appName}?";
 
-  static m73(appName) =>
+  static m59(appName) =>
       "Можно ли разработать собственную white-label биржу на технологии ${appName}?";
 
-  static m74(amount) => "Получено ${amount} KMD.";
+  static m87(amount) => "Получено ${amount} KMD.";
 
-  static m75(dd) => "${dd} дней}";
+  static m60(dd) => "${dd} дней}";
 
-  static m76(hh, minutes) => "${hh}ч ${minutes}мин";
+  static m61(hh, minutes) => "${hh}ч ${minutes}мин";
 
-  static m77(mm) => "мин ${mm}";
+  static m62(mm) => "мин ${mm}";
 
   static m19(amount) => "Нажмите, чтобы увидеть ${amount} ордеров";
 
   static m20(coinName, address) => "Мой ${coinName} адрес: ${address}";
 
-  static m83(description) =>
+  static m67(description) =>
       "Выберите файл в формате mp3 или wav. Воспроизводится, когда ${description}.";
 
-  static m84(description) => "Воспроизводится, когда ${description}";
+  static m89(description) => "Воспроизводится, когда ${description}";
 
-  static m85(appName) =>
+  static m68(appName) =>
       "Если у вас есть какие-либо вопросы или вы считаете, что обнаружили техническую проблему с приложением ${appName}, вы можете сообщить об этом и получить поддержку от нашей команды.";
 
-  static m89(version) => "Установлена версия ${version}";
+  static m91(version) => "Установлена версия ${version}";
 
-  static m90(version) => "Доступна версия ${version}. Пожалуйста, обновитесь.";
+  static m92(version) => "Доступна версия ${version}. Пожалуйста, обновитесь.";
 
-  static m91(appName) => "Обновление ${appName}";
+  static m71(appName) => "Обновление ${appName}";
 
   static m21(appName) =>
       "${appName} mobile - это мульти-монетный кошелек с функциональностью DEX третьего поколения и многим другим.";
@@ -170,10 +170,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressAdd": MessageLookupByLibrary.simpleMessage("Добавить адрес"),
         "addressBook": MessageLookupByLibrary.simpleMessage("Адресная книга"),
         "addressBookEmpty": MessageLookupByLibrary.simpleMessage("Нет записей"),
-        "addressBookFilter": m27,
+        "addressBookFilter": m24,
         "addressBookTitle":
             MessageLookupByLibrary.simpleMessage("Адресная книга"),
-        "addressCoinInactive": m28,
+        "addressCoinInactive": m25,
         "addressNotFound": MessageLookupByLibrary.simpleMessage("Не найдено"),
         "addressSelectCoin":
             MessageLookupByLibrary.simpleMessage("Выбрать валюту"),
@@ -183,17 +183,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "amount": MessageLookupByLibrary.simpleMessage("Количество"),
         "amountToSell":
             MessageLookupByLibrary.simpleMessage("Сумма для продажи"),
-        "answer_1": m29,
-        "answer_10": m30,
-        "answer_2": m31,
-        "answer_3": m32,
+        "answer_1": m26,
+        "answer_10": m27,
+        "answer_2": m28,
+        "answer_3": m29,
         "answer_4": MessageLookupByLibrary.simpleMessage(
             "Да. Приложение appName должно оставаться подключенным к Интернету для успешного завершения каждого атомарного свопа (очень короткие перерывы в подключении обычно допустимы). В противном случае существует риск отмены сделки, если вы являетесь мейкером, и риск потери средств, если вы тейкер. Протокол атомарного свопа требует, чтобы оба участника оставались в сети и контролировали задействованные блокчейны, чтобы процесс оставался атомарным."),
-        "answer_5": m33,
-        "answer_6": m34,
-        "answer_7": m35,
-        "answer_8": m36,
-        "answer_9": m37,
+        "answer_5": m30,
+        "answer_6": m31,
+        "answer_7": m32,
+        "answer_8": m33,
+        "answer_9": m34,
         "areYouSure": MessageLookupByLibrary.simpleMessage("ВЫ УВЕРЕНЫ?"),
         "authenticate": MessageLookupByLibrary.simpleMessage("аутентификация"),
         "availableVolume": MessageLookupByLibrary.simpleMessage("макс объем"),
@@ -204,7 +204,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "buy": MessageLookupByLibrary.simpleMessage("Купить"),
         "buySuccessWaiting": MessageLookupByLibrary.simpleMessage(
             "Обмен начался, пожалуйста подождите!"),
-        "buySuccessWaitingError": m24,
+        "buySuccessWaitingError": m73,
         "camoPinChange":
             MessageLookupByLibrary.simpleMessage("Изменить маскировочный PIN"),
         "camoPinCreate":
@@ -288,7 +288,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "contactDelete":
             MessageLookupByLibrary.simpleMessage("Удалить контакт"),
         "contactDeleteBtn": MessageLookupByLibrary.simpleMessage("Удалить"),
-        "contactDeleteWarning": m40,
+        "contactDeleteWarning": m74,
         "contactDiscardBtn": MessageLookupByLibrary.simpleMessage("Сбросить"),
         "contactEdit": MessageLookupByLibrary.simpleMessage("Изменить"),
         "contactExit": MessageLookupByLibrary.simpleMessage("Выйти"),
@@ -373,7 +373,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "feedNewsTab": MessageLookupByLibrary.simpleMessage("Новости"),
         "feedNotFound":
             MessageLookupByLibrary.simpleMessage("Здесь ничего нет"),
-        "feedNotifTitle": m44,
+        "feedNotifTitle": m40,
         "feedReadMore": MessageLookupByLibrary.simpleMessage("Узнать больше"),
         "feedTab": MessageLookupByLibrary.simpleMessage("Лента"),
         "feedTitle": MessageLookupByLibrary.simpleMessage("Лента новостей"),
@@ -464,8 +464,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "У вас нет сохраненных статей"),
         "mediaSaved": MessageLookupByLibrary.simpleMessage("СОХРАНЕННЫЕ"),
         "milliseconds": MessageLookupByLibrary.simpleMessage("мс"),
-        "minValue": m25,
-        "minValueBuy": m26,
+        "minValue": m41,
+        "minValueBuy": m42,
         "minutes": MessageLookupByLibrary.simpleMessage("мин"),
         "moreTab": MessageLookupByLibrary.simpleMessage("Ещё"),
         "multiBaseAmtPlaceholder":
@@ -475,7 +475,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "multiConfirmCancel": MessageLookupByLibrary.simpleMessage("Отменить"),
         "multiConfirmConfirm":
             MessageLookupByLibrary.simpleMessage("Подтвердить"),
-        "multiConfirmTitle": m52,
+        "multiConfirmTitle": m78,
         "multiCreate": MessageLookupByLibrary.simpleMessage("Создать"),
         "multiCreateOrder": MessageLookupByLibrary.simpleMessage("Ордер"),
         "multiCreateOrders": MessageLookupByLibrary.simpleMessage("Ордеры"),
@@ -528,32 +528,32 @@ class MessageLookup extends MessageLookupByLibrary {
         "noTxs": MessageLookupByLibrary.simpleMessage("Нет транзакций"),
         "notEnoughtBalanceForFee": MessageLookupByLibrary.simpleMessage(
             "Недостаточно баланса для комиссий - выполните сделку на меньшую сумму"),
-        "notifSwapCompletedText": m56,
+        "notifSwapCompletedText": m82,
         "notifSwapCompletedTitle":
             MessageLookupByLibrary.simpleMessage("Своп завершен"),
-        "notifSwapFailedText": m57,
+        "notifSwapFailedText": m83,
         "notifSwapFailedTitle":
             MessageLookupByLibrary.simpleMessage("Своп не был завершен"),
-        "notifSwapStartedText": m58,
+        "notifSwapStartedText": m84,
         "notifSwapStartedTitle":
             MessageLookupByLibrary.simpleMessage("Новый своп начался"),
         "notifSwapStatusTitle":
             MessageLookupByLibrary.simpleMessage("Статус свопа изменен"),
-        "notifSwapTimeoutText": m59,
+        "notifSwapTimeoutText": m85,
         "notifSwapTimeoutTitle":
             MessageLookupByLibrary.simpleMessage("Превышен тайм-аут свопа"),
-        "notifTxText": m60,
+        "notifTxText": m47,
         "notifTxTitle":
             MessageLookupByLibrary.simpleMessage("Входящая транзакция"),
         "numberAssets": m18,
-        "orderCancel": m61,
+        "orderCancel": m48,
         "orderCreated": MessageLookupByLibrary.simpleMessage("Ордер создан"),
         "orderCreatedInfo":
             MessageLookupByLibrary.simpleMessage("Ордер успешно создан"),
         "orderDetailsAddress": MessageLookupByLibrary.simpleMessage("Адрес"),
         "orderDetailsCancel": MessageLookupByLibrary.simpleMessage("Отменить"),
-        "orderDetailsExpedient": m62,
-        "orderDetailsExpensive": m63,
+        "orderDetailsExpedient": m49,
+        "orderDetailsExpensive": m50,
         "orderDetailsFor": MessageLookupByLibrary.simpleMessage("на"),
         "orderDetailsIdentical":
             MessageLookupByLibrary.simpleMessage("Совпадает с СЕХ"),
@@ -573,9 +573,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders": MessageLookupByLibrary.simpleMessage("ордера"),
         "ordersActive": MessageLookupByLibrary.simpleMessage("Активные"),
         "ordersHistory": MessageLookupByLibrary.simpleMessage("История"),
-        "ordersTableAmount": m65,
-        "ordersTablePrice": m66,
-        "ordersTableTotal": m67,
+        "ordersTableAmount": m52,
+        "ordersTablePrice": m86,
+        "ordersTableTotal": m53,
         "ownOrder": MessageLookupByLibrary.simpleMessage("Это ваш ордер!"),
         "paidWith": MessageLookupByLibrary.simpleMessage("Оплачено "),
         "placeOrder": MessageLookupByLibrary.simpleMessage("Разместить ордер"),
@@ -591,19 +591,19 @@ class MessageLookup extends MessageLookupByLibrary {
             "Внимание, этот своп не защищен dPoW!"),
         "question_1": MessageLookupByLibrary.simpleMessage(
             "Вы храните мои приватные ключи?"),
-        "question_10": m69,
-        "question_2": m70,
+        "question_10": m55,
+        "question_2": m56,
         "question_3": MessageLookupByLibrary.simpleMessage(
             "Сколько времени занимает каждый атомарный своп?"),
         "question_4": MessageLookupByLibrary.simpleMessage(
             "Необходимо ли мне быть в сети во время свопа?"),
-        "question_5": m71,
+        "question_5": m57,
         "question_6": MessageLookupByLibrary.simpleMessage(
             "Предоставляете ли вы поддержку пользователей?"),
         "question_7": MessageLookupByLibrary.simpleMessage(
             "Есть ли у вас какие-либо географические ограничения?"),
-        "question_8": m72,
-        "question_9": m73,
+        "question_8": m58,
+        "question_9": m59,
         "receive": MessageLookupByLibrary.simpleMessage("ПОЛУЧИТЬ"),
         "receiveLower": MessageLookupByLibrary.simpleMessage("Получить"),
         "recommendSeedMessage": MessageLookupByLibrary.simpleMessage(
@@ -633,7 +633,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsReadMore": MessageLookupByLibrary.simpleMessage(
             "Узнать больше о KMD вознаграждениях"),
         "rewardsReceive": MessageLookupByLibrary.simpleMessage("Получить"),
-        "rewardsSuccess": m74,
+        "rewardsSuccess": m87,
         "rewardsTableRewards":
             MessageLookupByLibrary.simpleMessage("Вознаграждений \nKMD"),
         "rewardsTableStatus": MessageLookupByLibrary.simpleMessage("Статус"),
@@ -641,9 +641,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsTableTitle":
             MessageLookupByLibrary.simpleMessage("Инфо о вознаграждениях:"),
         "rewardsTableUXTO": MessageLookupByLibrary.simpleMessage("UTXO, \nKMD"),
-        "rewardsTimeDays": m75,
-        "rewardsTimeHours": m76,
-        "rewardsTimeMin": m77,
+        "rewardsTimeDays": m60,
+        "rewardsTimeHours": m61,
+        "rewardsTimeMin": m62,
         "rewardsTitle":
             MessageLookupByLibrary.simpleMessage("Инфо о вознаграждениях:"),
         "searchFilterCoin":
@@ -694,12 +694,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "signInWithSeedPhrase":
             MessageLookupByLibrary.simpleMessage("Войти с помощью seed-ключа"),
         "snackbarDismiss": MessageLookupByLibrary.simpleMessage("Убрать"),
-        "soundCantPlayThatMsg": m83,
-        "soundPlayedWhen": m84,
+        "soundCantPlayThatMsg": m67,
+        "soundPlayedWhen": m89,
         "step": MessageLookupByLibrary.simpleMessage("Шаг"),
         "success": MessageLookupByLibrary.simpleMessage("Успех!"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
-        "supportLinksDesc": m85,
+        "supportLinksDesc": m68,
         "swap": MessageLookupByLibrary.simpleMessage("обмен"),
         "swapDetailTitle":
             MessageLookupByLibrary.simpleMessage("ПОДТВЕРДИТЕ ДЕТАЛИ ОБМЕНА"),
@@ -739,14 +739,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Доступна новая версия"),
         "updatesChecking":
             MessageLookupByLibrary.simpleMessage("Проверка обновлений..."),
-        "updatesCurrentVersion": m89,
+        "updatesCurrentVersion": m91,
         "updatesNotifAvailable": MessageLookupByLibrary.simpleMessage(
             "Доступна новая версия. Пожалуйста, обновитесь."),
-        "updatesNotifAvailableVersion": m90,
+        "updatesNotifAvailableVersion": m92,
         "updatesNotifTitle":
             MessageLookupByLibrary.simpleMessage("Доступно обновление"),
         "updatesSkip": MessageLookupByLibrary.simpleMessage("Пропустить"),
-        "updatesTitle": m91,
+        "updatesTitle": m71,
         "updatesUpToDate": MessageLookupByLibrary.simpleMessage(
             "Установлена последняя версия"),
         "updatesUpdate": MessageLookupByLibrary.simpleMessage("Обновление"),

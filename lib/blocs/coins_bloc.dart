@@ -37,6 +37,11 @@ class CoinsBloc implements BlocBase {
 
       _saveWalletSnapshot();
     });
+
+    jobService.install(
+        'retryActivatingSuspended',
+        Duration(minutes: 1).inSeconds.toDouble(),
+        (j) => retryActivatingSuspendedCoins());
   }
 
   LinkedHashMap<String, Coin> _knownCoins;
@@ -96,6 +101,18 @@ class CoinsBloc implements BlocBase {
       _coinBeforeActivationController.stream;
 
   bool _coinsLock = false;
+
+  Set<Coin> get _suspendedCoins {
+    final Set<Coin> suspendedCoins = {};
+
+    for (CoinBalance balance in coinBalance) {
+      if (balance.coin.suspended) suspendedCoins.add(balance.coin);
+    }
+
+    return suspendedCoins;
+  }
+
+  bool _isRetryActivatingRunning = false;
 
   @override
   void dispose() {
@@ -206,7 +223,22 @@ class CoinsBloc implements BlocBase {
     }
   }
 
+  Future<void> _removeSuspendedCoin(Coin coin) async {
+    if (!coin.suspended) {
+      Log('coins_bloc] _removeSuspendedCoin]', '${coin.abbr} is not suspended');
+      return;
+    }
+
+    await removeCoinBalance(coin);
+    await deactivateCoins(<Coin>[coin]);
+  }
+
   Future<void> removeCoin(Coin coin) async {
+    if (coin.suspended) {
+      _removeSuspendedCoin(coin);
+      return;
+    }
+
     await removeCoinBalance(coin);
     final res = await MM.disableCoin(GetDisableCoin(coin: coin.abbr));
     removeCoinLocal(coin, res);
@@ -278,6 +310,30 @@ class CoinsBloc implements BlocBase {
     }
   }
 
+  Future<void> retryActivatingSuspendedCoins() async {
+    if (_isRetryActivatingRunning) return;
+    if (_suspendedCoins.isEmpty) return;
+
+    _isRetryActivatingRunning = true;
+
+    final formattedAbbrs = _suspendedCoins.map((c) => c.abbr).join(', ');
+    Log('coins_bloc',
+        'retryActivatingSuspendedCoins] Retrying activating suspended coins: $formattedAbbrs');
+
+    await enableCoins(_suspendedCoins.toList());
+
+    if (_suspendedCoins.isEmpty) {
+      Log('coins_bloc',
+          'retryActivatingSuspendedCoins] All suspended coins were successfully activated and un-suspended');
+    } else {
+      final remaining = _suspendedCoins.join(', ');
+      Log('coins_bloc',
+          'retryActivatingSuspendedCoins] After 3 tries the following coins remain suspended: $remaining');
+    }
+
+    _isRetryActivatingRunning = false;
+  }
+
   /// Handle the coins user has picked for activation.
   /// Also used for coin activations during the application startup.
   Future<void> enableCoins(List<Coin> coins) async {
@@ -298,15 +354,20 @@ class CoinsBloc implements BlocBase {
       final coin = coins[ix];
       final Map<String, dynamic> ans = replies[ix];
       final err = ErrorString.fromJson(ans);
+      final abbr = coin.abbr;
+
       if (err.error.isNotEmpty) {
-        Log('coins_bloc:273', 'Error activating ${coin.abbr}: ${err.error}');
+        Log('coins_bloc:273', 'Error activating $abbr: ${err.error}');
+
         continue;
       }
       final acc = ActiveCoin.fromJson(ans);
       if (acc.result != 'success') {
         Log('coins_bloc:278', '!success: $ans');
+
         continue;
       }
+
       await Db.coinActive(coin);
       final bal = Balance(
           address: acc.address,
@@ -323,55 +384,36 @@ class CoinsBloc implements BlocBase {
       updateOneCoin(cb);
     }
 
+    await _syncCoinsStateWithApi();
+
     currentCoinActivate(null);
     _coinsLock = false;
   }
 
-  /// Activate a given coin.
-  /// Used from UI and during the application startup.
-  Future<CoinToActivate> enableCoin(Coin coin) async {
-    currentCoinActivate(
-        CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
-    try {
-      final ActiveCoin ac =
-          await MM.enableCoin(coin).timeout(const Duration(seconds: 30));
-      currentCoinActivate(
-          CoinToActivate(currentStatus: '${coin.name} activated.'));
-      if (ac.requiredConfirmations != coin.requiredConfirmations) {
-        Log(
-            'coins_bloc:308',
-            'enableCoin, ${coin.abbr}, unexpected required_confirmations'
-                ', requested: ${coin.requiredConfirmations}'
-                ', received: ${ac.requiredConfirmations}');
-        coin.requiredConfirmations ??= ac.requiredConfirmations;
+  Future<void> _syncCoinsStateWithApi() async {
+    final List<dynamic> apiCoinsJson = await MM.getEnabledCoins();
+    final List<String> apiCoins = [];
+
+    for (dynamic item in apiCoinsJson) {
+      apiCoins.add(item['ticker']);
+    }
+
+    for (CoinBalance balance in coinBalance) {
+      bool shouldSuspend = !apiCoins.contains(balance.coin.abbr);
+
+      if (shouldSuspend) {
+        balance.coin.suspended = true;
+
+        Log('coins_bloc]',
+            '${balance.coin.abbr} had an error during activation and was suspended');
+      } else if (balance.coin.suspended) {
+        balance.coin.suspended = false;
+
+        Log('coins_bloc]',
+            '${balance.coin.abbr} did successfully activate and was un-suspended');
       }
-      if (ac.requiresNotarization != coin.requiresNotarization) {
-        Log(
-            'coins_bloc:316',
-            'enableCoin, ${coin.abbr}, unexpected requires_notarization'
-                ', requested: ${coin.requiresNotarization}'
-                ', received: ${coin.requiresNotarization}');
-      }
-      await Db.coinActive(coin);
-      return CoinToActivate(coin: coin, isActive: true);
-    } on TimeoutException catch (te) {
-      Log('coins_bloc:325', '${coin.abbr} enableCoin timeout, $te');
-      currentCoinActivate(
-          CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
-      await sleepMs(2000);
-      currentCoinActivate(null);
-      return CoinToActivate(coin: coin, isActive: false);
-    } catch (ex) {
-      if (ex.toString().contains('already initialized')) {
-        currentCoinActivate(CoinToActivate(
-            currentStatus: 'Coin ${coin.abbr} already initialized'));
-        return CoinToActivate(coin: coin, isActive: true);
-      } else {
-        Log('coins_bloc:337', '!enableCoin: $ex');
-        currentCoinActivate(CoinToActivate(
-            currentStatus: 'Sorry, ${coin.abbr} not available.'));
-        return CoinToActivate(coin: coin, isActive: false);
-      }
+
+      _inCoins.add(coinBalance);
     }
   }
 
@@ -611,7 +653,15 @@ class CoinsBloc implements BlocBase {
 
     final List<CoinBalance> list = [];
     for (dynamic item in items) {
-      list.add(CoinBalance.fromJson(item));
+      final tmp = CoinBalance.fromJson(item);
+      final currentCoins = await Db.activeCoins;
+      final abbr = tmp.coin.abbr;
+      if (!currentCoins.contains(abbr)) {
+        Log('coins_bloc',
+            'loadWalletSnapshot] $abbr IS PRESENT on SNAPSHOT but was disabled by user, ignoring stored data...');
+        continue;
+      }
+      list.add(tmp);
     }
 
     coinBalance = list;

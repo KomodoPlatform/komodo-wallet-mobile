@@ -99,7 +99,12 @@ class Coin {
     chainId = init['chain_id'];
   }
 
-  CoinType type; // 'other', 'erc', 'bep', 'qrc', 'plg', 'ftm' or 'smartChain'
+  // Coin suspended if was activated by user earlier,
+  // but failed to activate during current session startup
+  bool suspended = false;
+
+  String type; // 'other', 'erc', 'bep', 'qrc', 'plg' or 'smartChain'
+
   String name;
   String address;
   int port;

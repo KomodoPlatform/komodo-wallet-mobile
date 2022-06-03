@@ -125,6 +125,7 @@ class _CoinsListAllState extends State<CoinsListAll> {
     for (CoinBalance coinBalance in active) {
       final int matchingCoins = _getMatchingCoinsNumber(coinBalance.coin);
       if (coinBalance.coin.walletOnly) continue;
+      if (coinBalance.coin.suspended) continue;
       if (!includeEmpty && matchingCoins == 0) continue;
 
       final String term = widget.searchTerm.trim().toLowerCase();

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/model/balance.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -22,6 +23,7 @@ class CamoBloc implements BlocBase {
         walletSecuritySettingsProvider.camoFraction ?? _camoFraction;
     _sessionStartedAt = walletSecuritySettingsProvider.camoSessionStartedAt ??
         _sessionStartedAt;
+    getCamoPinValue();
   }
 
   bool _isCamoActive = false;
@@ -29,6 +31,7 @@ class CamoBloc implements BlocBase {
   int _camoFraction = 10; // % of real balance
   int _sessionStartedAt; // milliseconds since Epoch
   bool shouldWarnBadCamoPin = false;
+  String _camoPinValue;
 
   final StreamController<bool> _isCamoActiveController =
       StreamController<bool>.broadcast();
@@ -45,11 +48,17 @@ class CamoBloc implements BlocBase {
   Sink<int> get _inCamoFraction => _camoFractionController.sink;
   Stream<int> get outCamoFraction => _camoFractionController.stream;
 
+  final StreamController<String> _camoPinValueController =
+      StreamController<String>.broadcast();
+  Sink<String> get _inCamoPinValue => _camoPinValueController.sink;
+  Stream<String> get outCamoPinValue => _camoPinValueController.stream;
+
   @override
   void dispose() {
     _isCamoActiveController?.close();
     _isCamoEnabledController?.close();
     _camoFractionController?.close();
+    _camoPinValueController?.close();
   }
 
   void camouflageBalance(Balance balance) {
@@ -135,5 +144,13 @@ class CamoBloc implements BlocBase {
     _camoFraction = val;
     _inCamoFraction.add(val);
     walletSecuritySettingsProvider.camoFraction = val;
+  }
+
+  String get camoPinValue => _camoPinValue;
+
+  void getCamoPinValue() async {
+    final camoPin = await EncryptionTool().read('camoPin');
+    _camoPinValue = camoPin;
+    _inCamoPinValue.add(camoPin);
   }
 }

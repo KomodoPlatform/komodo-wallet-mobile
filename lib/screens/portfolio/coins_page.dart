@@ -405,12 +405,16 @@ class ListCoinsState extends State<ListCoins> {
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();
               } else if (snapshot.data.isEmpty) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
-                    AddCoinButton(),
-                    Text('Please Add A Coin'),
-                  ],
+                // MRC: Add center to fix random UI glitch
+                // due to loading Add Button
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const <Widget>[
+                      AddCoinButton(),
+                      Text('Please Add A Coin'),
+                    ],
+                  ),
                 );
               } else {
                 return SizedBox();

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/model/wallet_security_settings.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 WalletSecuritySettingsProvider walletSecuritySettingsProvider =
@@ -12,6 +13,9 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   // Should prefer using Provider when possible.
   WalletSecuritySettings _walletSecuritySettings = WalletSecuritySettings();
   SharedPreferences _prefs;
+  bool _isInitialized = false;
+
+  bool get isInitialized => _isInitialized;
 
   WalletSecuritySettingsProvider() {
     _init();
@@ -19,9 +23,12 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
 
   Future<void> _init() async {
     _prefs = await SharedPreferences.getInstance();
+
+    _isInitialized = true;
   }
 
   Future<void> migrateSecuritySettings() async {
+    await pauseUntil(() => _isInitialized);
     Log('security_settings_provider', 'Migrating wallet security settings');
 
     // MRC: If this key isn't present, we didn't do the migration yet,
@@ -101,13 +108,25 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   }
 
   Future<void> getCurrentSettingsFromDb() async {
+    await pauseUntil(() => _isInitialized);
     _walletSecuritySettings = await Db.getCurrentWalletSecuritySettings();
 
     final pinProtection = _walletSecuritySettings.activatePinProtection;
     final bioProtection = _walletSecuritySettings.activateBioProtection;
+    final camoEnabled = _walletSecuritySettings.enableCamo;
+    final camoActive = _walletSecuritySettings.isCamoActive;
+    final camoFraction = _walletSecuritySettings.camoFraction;
+    final camoBalance = _walletSecuritySettings.camoBalance;
+    final camoSessionStartedAt = _walletSecuritySettings.camoSessionStartedAt;
 
     await _prefs.setBool('switch_pin', pinProtection);
     await _prefs.setBool('switch_pin_biometric', bioProtection);
+    await _prefs.setBool('isCamoEnabled', camoEnabled);
+    await _prefs.setBool('isCamoActive', camoActive);
+    if (camoFraction != null) await _prefs.setInt('camoFraction', camoFraction);
+    if (camoBalance != null) await _prefs.setString('camoBalance', camoBalance);
+    if (camoSessionStartedAt != null)
+      await _prefs.setInt('camoSessionStartedAt', camoSessionStartedAt);
   }
 
   Future<void> _updateDb({bool allWallets = false}) async {
@@ -137,42 +156,54 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
     _updateDb().then((value) => notifyListeners());
   }
 
-  bool get enableCamo => _walletSecuritySettings.enableCamo;
+  bool get enableCamo =>
+      _prefs.getBool('isCamoEnabled') ?? _walletSecuritySettings.enableCamo;
 
   set enableCamo(bool v) {
     _walletSecuritySettings.enableCamo = v;
+    _prefs.setBool('isCamoEnabled', v);
 
     _updateDb().then((value) => notifyListeners());
   }
 
-  bool get isCamoActive => _walletSecuritySettings.isCamoActive;
+  bool get isCamoActive => _prefs.getBool('isCamoActive') ?? false;
 
   set isCamoActive(bool v) {
-    _walletSecuritySettings.isCamoActive = v;
+    _prefs.setBool('isCamoActive', v);
 
-    _updateDb().then((value) => notifyListeners());
+    notifyListeners();
   }
 
-  int get camoFraction => _walletSecuritySettings.camoFraction;
+  int get camoFraction =>
+      _prefs.getInt('camoFraction') ?? _walletSecuritySettings.camoFraction;
 
   set camoFraction(int v) {
     _walletSecuritySettings.camoFraction = v;
+    _prefs.setInt('camoFraction', v);
 
     _updateDb().then((value) => notifyListeners());
   }
 
-  String get camoBalance => _walletSecuritySettings.camoBalance;
+  String get camoBalance =>
+      _prefs.getString('camoBalance') ?? _walletSecuritySettings.camoBalance;
 
   set camoBalance(String v) {
     _walletSecuritySettings.camoBalance = v;
-
+    if (v == null) {
+      _prefs.remove('camoBalance');
+    } else {
+      _prefs.setString('camoBalance', v);
+    }
     _updateDb().then((value) => notifyListeners());
   }
 
-  int get camoSessionStartedAt => _walletSecuritySettings.camoSessionStartedAt;
+  int get camoSessionStartedAt =>
+      _prefs.getInt('camoSessionStartedAt') ??
+      _walletSecuritySettings.camoSessionStartedAt;
 
   set camoSessionStartedAt(int v) {
     _walletSecuritySettings.camoSessionStartedAt = v;
+    _prefs.setInt('camoSessionStartedAt', v);
 
     _updateDb().then((value) => notifyListeners());
   }
