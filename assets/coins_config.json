@@ -718,24 +718,6 @@
         ]
     },
     {
-        "name": "GleecBTC-OLD",
-        "type": "utxo",
-        "address": "electrum1.cipig.net",
-        "port": 10069,
-        "proto": "tcp",
-        "abbr": "GLEEC-OLD",
-        "coingeckoId": "gleec-coin",
-        "colorCoin": "0xFFA13FFF",
-        "serverList": [
-            "electrum1.cipig.net:10069",
-            "electrum2.cipig.net:10069",
-            "electrum3.cipig.net:10069"
-        ],
-        "explorerUrl": [
-            "https://gleechain.com/"
-        ]
-    },
-    {
         "name": "SmartUSD",
         "type": "utxo",
         "address": "electrum1.cipig.net",
