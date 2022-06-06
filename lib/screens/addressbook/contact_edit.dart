@@ -28,7 +28,6 @@ class _ContactEditState extends State<ContactEdit> {
   String hashBeforeEdit;
   AddressBookProvider provider;
   String focusOn;
-  final List<String> invalidFields = [];
   Map<String, String> networkChipLabels;
 
   @override
@@ -97,7 +96,6 @@ class _ContactEditState extends State<ContactEdit> {
                             name: 'name',
                             label:
                                 AppLocalizations.of(context).contactTitleName,
-                            invalid: invalidFields.contains('name'),
                             icon: Icon(
                               Icons.account_circle,
                               size: 16,
@@ -196,22 +194,14 @@ class _ContactEditState extends State<ContactEdit> {
     if (_autovalidate) {
       _formKey.currentState.validate();
     }
-    setState(() {
-      invalidFields.clear();
-    });
+
     bool valid = true;
     if (editContact.name == null || editContact.name.isEmpty) {
       valid = false;
-      setState(() {
-        invalidFields.add('name');
-      });
     }
     editContact.addresses?.forEach((String abbr, String address) {
       if (address.isEmpty) {
         valid = false;
-        setState(() {
-          invalidFields.add(abbr);
-        });
       }
     });
 
@@ -256,7 +246,6 @@ class _ContactEditState extends State<ContactEdit> {
             });
             _validate();
           },
-          invalid: invalidFields.contains(abbr),
           validator: (String value) {
             if (value.isEmpty) {
               return AppLocalizations.of(context).emptyCoin(abbr);
