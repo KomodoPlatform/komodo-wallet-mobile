@@ -378,7 +378,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
           _buildFirstStep(),
           ..._buildFollowingSteps(),
           const SizedBox(height: 12),
-          if (swapDesc.contains('error')) ...[
+          if (swap.status == Status.SWAP_FAILED) ...[
             InkWell(
               onTap: () => setState(() => _openSpoiler = !_openSpoiler),
               child: Row(
