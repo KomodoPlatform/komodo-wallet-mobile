@@ -46,6 +46,7 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       final tmpCamoFraction = _prefs.getInt('camoFraction');
       final tmpCamoBalance = _prefs.getString('camoBalance');
       final tmpCamoSessionStartedAt = _prefs.getInt('camoSessionStartedAt');
+      final tmpLogOutOnExitList = _prefs.getBool('switch_pin_log_out_on_exit');
 
       // MRC: We should migrate all wallets at once, this should be safer than
       // migrating only the current one, the user can change each of them later
@@ -58,6 +59,7 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
         camoFraction: tmpCamoFraction,
         camoBalance: tmpCamoBalance,
         camoSessionStartedAt: tmpCamoSessionStartedAt,
+        logOutOnExit: tmpLogOutOnExitList,
       );
 
       _walletSecuritySettings = tmpWalletSecuritySettings;
@@ -82,6 +84,7 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       await _prefs.remove('camoFraction');
       await _prefs.remove('camoBalance');
       await _prefs.remove('camoSessionStartedAt');
+      await _prefs.remove('switch_pin_log_out_on_exit');
 
       // Old shared prefs
       // unused, was renamed to isPinIsCreated previously
