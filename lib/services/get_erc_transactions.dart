@@ -25,7 +25,7 @@ class GetErcTransactions {
   final String ftmUrl = appConfig.ftmUrl;
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
-    if (isErcType(coin.protocol?.type)) {
+    if (!isErcType(coin.protocol?.type)) {
       return;
     }
 
