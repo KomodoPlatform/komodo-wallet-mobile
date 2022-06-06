@@ -161,10 +161,7 @@ class LockService {
     if (authBloc.showLock) return; // Already showing the lock.
     if (inQrScanner) return; // Don't lock while we're scanning QR.
     if (walletBloc.currentWallet != null) {
-      bool toLogout = _prefs
-          .getStringList('switch_pin_log_out_on_exit_list')
-          .contains(walletBloc.currentWallet.id);
-      if (toLogout) {
+      if (walletSecuritySettingsProvider.logOutOnExit) {
         authBloc.logout();
       }
     }

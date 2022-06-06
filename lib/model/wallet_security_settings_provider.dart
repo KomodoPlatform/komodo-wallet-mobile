@@ -118,11 +118,13 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
     final camoFraction = _walletSecuritySettings.camoFraction;
     final camoBalance = _walletSecuritySettings.camoBalance;
     final camoSessionStartedAt = _walletSecuritySettings.camoSessionStartedAt;
+    final logOutOnExitList = _walletSecuritySettings.logOutOnExit;
 
     await _prefs.setBool('switch_pin', pinProtection);
     await _prefs.setBool('switch_pin_biometric', bioProtection);
     await _prefs.setBool('isCamoEnabled', camoEnabled);
     await _prefs.setBool('isCamoActive', camoActive);
+    await _prefs.setBool('switch_pin_log_out_on_exit', logOutOnExitList);
     if (camoFraction != null) await _prefs.setInt('camoFraction', camoFraction);
     if (camoBalance != null) await _prefs.setString('camoBalance', camoBalance);
     if (camoSessionStartedAt != null)
@@ -142,6 +144,16 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
     _walletSecuritySettings.activatePinProtection = v;
     _prefs.setBool('switch_pin', v);
 
+    _updateDb().then((value) => notifyListeners());
+  }
+
+  bool get logOutOnExit =>
+      _prefs.getBool('switch_pin_log_out_on_exit') ??
+      _walletSecuritySettings.logOutOnExit;
+
+  set logOutOnExit(bool v) {
+    _walletSecuritySettings.logOutOnExit = v;
+    _prefs.setBool('switch_pin_log_out_on_exit', v);
     _updateDb().then((value) => notifyListeners());
   }
 

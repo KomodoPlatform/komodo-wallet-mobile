@@ -33,7 +33,7 @@ class Db {
     final String path = join(documentsDirectory.path, 'AtomicDEX.db');
     final db = await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onOpen: (Database db) {},
       onCreate: (Database db, int version) async {
         Log('database:35', 'initDB, onCreate version $version');
@@ -58,6 +58,7 @@ class Db {
           name TEXT,
           activate_pin_protection BIT,
           activate_bio_protection BIT,
+          switch_pin_log_out_on_exit BIT,
           enable_camo BIT,
           is_camo_active BIT,
           camo_fraction INTEGER,
@@ -71,6 +72,7 @@ class Db {
           name TEXT,
           activate_pin_protection BIT,
           activate_bio_protection BIT,
+          switch_pin_log_out_on_exit BIT,
           enable_camo BIT,
           is_camo_active BIT,
           camo_fraction INTEGER,
@@ -130,6 +132,7 @@ class Db {
           name TEXT,
           activate_pin_protection BIT,
           activate_bio_protection BIT,
+          switch_pin_log_out_on_exit BIT,
           enable_camo BIT,
           is_camo_active BIT,
           camo_fraction INTEGER,
@@ -143,6 +146,7 @@ class Db {
           name TEXT,
           activate_pin_protection BIT,
           activate_bio_protection BIT,
+          switch_pin_log_out_on_exit BIT,
           enable_camo BIT,
           is_camo_active BIT,
           camo_fraction INTEGER,
@@ -304,6 +308,7 @@ class Db {
       'camo_fraction': walletSecuritySettings.camoFraction,
       'camo_balance': walletSecuritySettings.camoBalance,
       'camo_session_started_at': walletSecuritySettings.camoSessionStartedAt,
+      'switch_pin_log_out_on_exit': walletSecuritySettings.logOutOnExit ? 1 : 0,
     };
 
     return await db.insert('Wallet ', row);
@@ -355,6 +360,7 @@ class Db {
       'camo_fraction': walletSecuritySettings.camoFraction,
       'camo_balance': walletSecuritySettings.camoBalance,
       'camo_session_started_at': walletSecuritySettings.camoSessionStartedAt,
+      'switch_pin_log_out_on_exit': walletSecuritySettings.logOutOnExit ? 1 : 0,
     };
 
     return await db.insert('CurrentWallet ', row);
@@ -600,6 +606,7 @@ class Db {
         camoFraction: maps[i]['camo_fraction'],
         camoBalance: maps[i]['camo_balance'],
         camoSessionStartedAt: maps[i]['camo_session_started_at'],
+        logOutOnExit: maps[i]['switch_pin_log_out_on_exit'] == 1 ? true : false,
       );
     });
     if (walletsSecuritySettings.isEmpty) {
@@ -631,6 +638,7 @@ class Db {
         camoFraction: maps[i]['camo_fraction'],
         camoBalance: maps[i]['camo_balance'],
         camoSessionStartedAt: maps[i]['camo_session_started_at'],
+        logOutOnExit: maps[i]['switch_pin_log_out_on_exit'] == 1 ? true : false,
       );
     });
     if (walletsSecuritySettings.isEmpty) {
@@ -659,6 +667,7 @@ class Db {
       'camo_fraction': walletSecuritySettings.camoFraction,
       'camo_balance': walletSecuritySettings.camoBalance,
       'camo_session_started_at': walletSecuritySettings.camoSessionStartedAt,
+      'switch_pin_log_out_on_exit': walletSecuritySettings.logOutOnExit ? 1 : 0,
     };
 
     await db.update(

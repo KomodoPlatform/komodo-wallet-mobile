@@ -35,10 +35,8 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingPage extends StatefulWidget {
@@ -430,30 +428,16 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildLogOutOnExit() {
-    return SharedPreferencesBuilder<dynamic>(
-      pref: 'switch_pin_log_out_on_exit_list',
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return SwitchListTile(
-          value: snapshot.data?.contains(walletBloc.currentWallet.id) ?? false,
-          onChanged: (bool dataSwitch) {
-            setState(() {
-              SharedPreferences.getInstance().then((SharedPreferences data) {
-                List<String> presentList =
-                    data.getStringList('switch_pin_log_out_on_exit_list') ?? [];
-                if (presentList.contains(walletBloc.currentWallet.id)) {
-                  presentList.remove(walletBloc.currentWallet.id);
-                } else {
-                  presentList.add(walletBloc.currentWallet.id);
-                }
-                data.setStringList(
-                    'switch_pin_log_out_on_exit_list', presentList);
-              });
-            });
-          },
-          title: Text(AppLocalizations.of(context).logoutOnExit),
-          tileColor: Theme.of(context).primaryColor,
-        );
+    return SwitchListTile(
+      value: walletSecuritySettingsProvider.logOutOnExit ?? false,
+      onChanged: (bool dataSwitch) {
+        setState(() {
+          walletSecuritySettingsProvider.logOutOnExit =
+              !walletSecuritySettingsProvider.logOutOnExit;
+        });
       },
+      title: Text(AppLocalizations.of(context).logoutOnExit),
+      tileColor: Theme.of(context).primaryColor,
     );
   }
 
