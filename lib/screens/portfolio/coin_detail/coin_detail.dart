@@ -32,6 +32,7 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -77,6 +78,8 @@ class _CoinDetailState extends State<CoinDetail> {
   bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
+
+  bool isRetryingActivation = false;
 
   @override
   void initState() {
@@ -172,20 +175,18 @@ class _CoinDetailState extends State<CoinDetail> {
                   ? SizedBox(
                       height: 20,
                       width: 20,
-                      child: const CircularProgressIndicator(
-                        strokeWidth: 1.5,
-                      ),
+                      child: const CircularProgressIndicator(strokeWidth: 1.5),
                     )
                   : Icon(Icons.delete),
               onPressed: () async {
-                if (widget.coinBalance.coin.isDefault) {
+                if (currentCoinBalance.coin.isDefault) {
                   await showCantRemoveDefaultCoin(
-                      context, widget.coinBalance.coin);
+                      context, currentCoinBalance.coin);
                 } else {
                   setState(() {
                     isDeleteLoading = true;
                   });
-                  showConfirmationRemoveCoin(context, widget.coinBalance.coin)
+                  showConfirmationRemoveCoin(context, currentCoinBalance.coin)
                       .then((_) {
                     setState(() {
                       isDeleteLoading = false;
@@ -209,14 +210,23 @@ class _CoinDetailState extends State<CoinDetail> {
           ],
           title: Row(
             children: <Widget>[
-              PhotoHero(
-                tag: 'assets/coin-icons/'
-                    '${currentCoinBalance.balance.coin.toLowerCase()}.png',
-                radius: 16,
+              Stack(
+                children: [
+                  PhotoHero(
+                    tag: 'assets/coin-icons/'
+                        '${currentCoinBalance.coin.abbr.toLowerCase()}.png',
+                    radius: 16,
+                  ),
+                  if (currentCoinBalance.coin.suspended)
+                    Icon(
+                      Icons.warning_rounded,
+                      size: 12,
+                      color: Colors.yellow[600],
+                    ),
+                ],
+                alignment: Alignment.bottomRight,
               ),
-              const SizedBox(
-                width: 8,
-              ),
+              const SizedBox(width: 8),
               Expanded(
                 child: AutoScrollText(
                   text: currentCoinBalance.coin.name.toUpperCase(),
@@ -231,11 +241,14 @@ class _CoinDetailState extends State<CoinDetail> {
           mainContext = context;
           return Column(
             children: <Widget>[
-              _buildForm(),
+              if (!currentCoinBalance.coin.suspended) _buildForm(),
               _buildHeaderCoinDetail(context),
-              if (_shouldRefresh) _buildNewTransactionsButton(),
-              _buildSyncChain(),
-              _buildTransactionsList(context),
+              if (_shouldRefresh && !currentCoinBalance.coin.suspended)
+                _buildNewTransactionsButton(),
+              if (!currentCoinBalance.coin.suspended) _buildSyncChain(),
+              !currentCoinBalance.coin.suspended
+                  ? _buildTransactionsList(context)
+                  : _buildErrorMessage(context)
             ],
           );
         }),
@@ -249,7 +262,7 @@ class _CoinDetailState extends State<CoinDetail> {
     // Since we currently fetching erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
-    final String coinType = widget.coinBalance.coin.type;
+    final String coinType = currentCoinBalance.coin.type;
     if (coinType == 'erc' || coinType == 'bep' || coinType == 'plg') {
       return SizedBox();
     }
@@ -380,6 +393,79 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
+  void _goToPreviousPage(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
+  Widget _buildErrorMessage(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 64, vertical: 16),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: isRetryingActivation
+                ? [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 24),
+                    Text(
+                      'Retrying activating all coins...',
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
+                    SizedBox(height: 24),
+                    Text(
+                      'You will be redirected to portfolio page on completion.',
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
+                    SizedBox(height: 24),
+                    Text(
+                      'If even then some coins are still not activated, try restarting the app.',
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
+                  ]
+                : [
+                    Icon(
+                      Icons.warning_amber_rounded,
+                      size: 128,
+                      color: Colors.yellow[600],
+                    ),
+                    SizedBox(height: 24),
+                    Text(
+                        'We failed to activate ${currentCoinBalance.coin.abbr}'),
+                    SizedBox(height: 24),
+                    Text(
+                      'Please restart the app to try again, or press the button below.',
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
+                    SizedBox(height: 24),
+                    PrimaryButton(
+                      onPressed: () {
+                        setState(() {
+                          isRetryingActivation = true;
+                        });
+                        coinsBloc
+                            .retryActivatingSuspendedCoins()
+                            .whenComplete(() => _goToPreviousPage(context));
+                      },
+                      text: 'Retry activating all',
+                    ),
+                    SizedBox(height: 24),
+                    Text(
+                      'You will be automatically redirected to portfolio page when the retry activation process completes.',
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
+                  ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Future<void> _refresh() async {
     await coinsBloc.updateTransactions(currentCoinBalance.coin, limit, null);
     if (mounted) {
@@ -401,8 +487,8 @@ class _CoinDetailState extends State<CoinDetail> {
   Widget _buildHeaderCoinDetail(BuildContext mContext) {
     return Column(
       children: <Widget>[
-        if (widget.coinBalance.coin.protocol?.protocolData != null)
-          _buildContractAddress(widget.coinBalance.coin.protocol?.protocolData),
+        if (currentCoinBalance.coin.protocol?.protocolData != null)
+          _buildContractAddress(currentCoinBalance.coin.protocol?.protocolData),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 48),
           child: StreamBuilder<List<CoinBalance>>(
@@ -434,9 +520,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         return Column(
                           children: <Widget>[
                             Text(
-                              coinBalance +
-                                  ' ' +
-                                  currentCoinBalance.balance.coin,
+                              coinBalance + ' ' + currentCoinBalance.coin.abbr,
                               style: Theme.of(context).textTheme.headline5,
                               textAlign: TextAlign.center,
                             ),
@@ -445,7 +529,7 @@ class _CoinDetailState extends State<CoinDetail> {
                                 padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
                                 child: Text(
                                   '(+${hidden ? '**.**' : unspendableBalance}'
-                                  ' ${currentCoinBalance.balance.coin}'
+                                  ' ${currentCoinBalance.coin.abbr}'
                                   ' ${AppLocalizations.of(context).unspendable})',
                                   style: Theme.of(context).textTheme.caption,
                                 ),
@@ -606,16 +690,18 @@ class _CoinDetailState extends State<CoinDetail> {
               text: text,
               textColor: Theme.of(context).textTheme.button.color,
               borderColor: Theme.of(context).colorScheme.secondary,
-              onPressed: () {
-                rewardsProvider.update();
-                Navigator.push<dynamic>(
-                  context,
-                  MaterialPageRoute<dynamic>(
-                      builder: (BuildContext context) => RewardsPage()),
-                );
-              },
+              onPressed: currentCoinBalance.coin.suspended
+                  ? null
+                  : () {
+                      rewardsProvider.update();
+                      Navigator.push<dynamic>(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => RewardsPage()),
+                      );
+                    },
             ),
-            if (rewardsProvider.needClaim)
+            if (!currentCoinBalance.coin.suspended && rewardsProvider.needClaim)
               buildRedDot(
                 context,
                 right: null,
@@ -631,46 +717,50 @@ class _CoinDetailState extends State<CoinDetail> {
       isDarkMode: Theme.of(context).brightness != Brightness.light,
       textColor: Theme.of(context).colorScheme.secondary,
       borderColor: Theme.of(context).colorScheme.secondary,
-      onPressed: () {
-        switch (statusButton) {
-          case StatusButton.RECEIVE:
-            showCopyDialog(mContext, currentCoinBalance.balance.address,
-                widget.coinBalance.coin);
-            break;
-          case StatusButton.FAUCET:
-            showFaucetDialog(
-                context: mContext,
-                coin: currentCoinBalance.coin.abbr,
-                address: currentCoinBalance.balance.address);
-            break;
-          case StatusButton.SEND:
-            if (double.parse(currentCoinBalance.balance.getBalance()) == 0) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(AppLocalizations.of(context).noFundsDetected),
-              ));
-              return;
-            }
-            if (currentIndex == 3) {
-              setState(() {
-                isExpanded = false;
-                _waitForInit();
-              });
-            } else {
-              setState(() {
-                elevationHeader == 8.0
-                    ? elevationHeader = 8.0
-                    : elevationHeader = 0.0;
-                isExpanded = !isExpanded;
-              });
-            }
-            break;
-          case StatusButton.PUBKEY:
-            getPublicKey().then(
-                (v) => showCopyDialog(mContext, v, widget.coinBalance.coin));
-            break;
-          default:
-        }
-      },
+      onPressed: currentCoinBalance.coin.suspended
+          ? null
+          : () {
+              switch (statusButton) {
+                case StatusButton.RECEIVE:
+                  showCopyDialog(mContext, currentCoinBalance.balance.address,
+                      currentCoinBalance.coin);
+                  break;
+                case StatusButton.FAUCET:
+                  showFaucetDialog(
+                      context: mContext,
+                      coin: currentCoinBalance.coin.abbr,
+                      address: currentCoinBalance.balance.address);
+                  break;
+                case StatusButton.SEND:
+                  if (double.parse(currentCoinBalance.balance.getBalance()) ==
+                      0) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content:
+                          Text(AppLocalizations.of(context).noFundsDetected),
+                    ));
+                    return;
+                  }
+                  if (currentIndex == 3) {
+                    setState(() {
+                      isExpanded = false;
+                      _waitForInit();
+                    });
+                  } else {
+                    setState(() {
+                      elevationHeader == 8.0
+                          ? elevationHeader = 8.0
+                          : elevationHeader = 0.0;
+                      isExpanded = !isExpanded;
+                    });
+                  }
+                  break;
+                case StatusButton.PUBKEY:
+                  getPublicKey().then((v) =>
+                      showCopyDialog(mContext, v, currentCoinBalance.coin));
+                  break;
+                default:
+              }
+            },
     );
   }
 
@@ -776,17 +866,17 @@ class _CoinDetailState extends State<CoinDetail> {
     String convertedVal;
     final amountParsed = double.tryParse(_amountController.text) ?? 0.0;
     if (cexProvider.withdrawCurrency ==
-        widget.coinBalance.coin.abbr.toUpperCase()) {
+        currentCoinBalance.coin.abbr.toUpperCase()) {
       convertedVal = _amountController.text;
     } else if (cexProvider.withdrawCurrency == cexProvider.selectedFiat) {
       convertedVal = cexProvider.convert(amountParsed,
           from: cexProvider.withdrawCurrency,
-          to: widget.coinBalance.coin.abbr,
+          to: currentCoinBalance.coin.abbr,
           showSymbol: false);
     } else {
       convertedVal = cexProvider.convert(amountParsed,
           from: cexProvider.withdrawCurrency,
-          to: widget.coinBalance.coin.abbr,
+          to: currentCoinBalance.coin.abbr,
           showSymbol: false);
     }
     return convertedVal;
@@ -797,7 +887,7 @@ class _CoinDetailState extends State<CoinDetail> {
     _addressController.clear();
     listSteps.clear();
     listSteps.add(AmountAddressStep(
-      coinBalance: widget.coinBalance,
+      coinBalance: currentCoinBalance,
       paymentUriInfo: widget.paymentUriInfo,
       onCancel: () {
         setState(() {
@@ -850,7 +940,7 @@ class _CoinDetailState extends State<CoinDetail> {
                   .postRawTransaction(
                       mmSe.client,
                       GetSendRawTransaction(
-                          coin: widget.coinBalance.coin.abbr,
+                          coin: currentCoinBalance.coin.abbr,
                           txHex: response.txHex))
                   .then((dynamic dataRawTx) {
                 if (dataRawTx is SendRawTransactionResponse &&
