@@ -255,6 +255,10 @@ class ConstructorProvider extends ChangeNotifier {
       if (appConfig.walletOnlyCoins.contains(ticker)) {
         bestOrders.result.remove(ticker);
       }
+      final Coin coin = coinsBloc.getCoinByAbbr(ticker);
+      if (coin?.suspended == true) {
+        bestOrders.result.remove(ticker);
+      }
     }
 
     return bestOrders;
