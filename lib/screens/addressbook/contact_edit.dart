@@ -427,37 +427,27 @@ class _ContactEditState extends State<ContactEdit> {
   }
 
   void _createAddress(Coin coin) {
-    String abbr = coin.abbr;
     editContact.addresses ??= {};
 
-    switch (coin.type) {
-      case CoinType.smartChain:
-        abbr = 'KMD';
-        break;
-      case CoinType.erc:
-        abbr = 'ETH';
-        break;
-      case CoinType.bep:
-        if (coin.abbr != 'SMTF') abbr = 'BNB';
-        break;
-      case CoinType.plg:
-        abbr = 'MATIC';
-        break;
-      case CoinType.qrc:
-        abbr = 'QTUM';
-        break;
-      case CoinType.ftm:
-        abbr = 'FTM';
-        break;
-      case CoinType.utxo:
-        // TODO: Handle this case.
-        break;
+    String addressKey;
+    if (coin.type == CoinType.smartChain) {
+      addressKey = 'KMD';
+    } else if (coin.abbr == 'SMTF-v2') {
+      // Special case, biz-devs request
+      addressKey = 'SMTF-v2';
+    } else if (coin.protocol?.protocolData?.platform != null) {
+      // All 'children' assets have same address as 'parent' coin
+      addressKey = coin.protocol.protocolData.platform;
+    } else {
+      // All 'parent' coins and UTXO's
+      addressKey = coin.abbr;
     }
 
     setState(() {
-      editContact.addresses[abbr] = editContact.addresses[abbr] ?? '';
-      focusOn = abbr;
+      editContact.addresses[addressKey] ??= '';
+      focusOn = addressKey;
     });
+
     dialogBloc.closeDialog(context);
   }
 
