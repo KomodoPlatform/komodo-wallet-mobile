@@ -73,7 +73,7 @@ class _ItemCoinState extends State<ItemCoin>
       label: AppLocalizations.of(context).receive,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       icon: Icons.arrow_downward,
-      onPressed: (context) {
+      onPressed: (mContext) {
         showCopyDialog(context, balance.address, coin);
       },
     ));
