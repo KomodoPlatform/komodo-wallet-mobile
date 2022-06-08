@@ -42,6 +42,11 @@ class GetErcTransactions {
 
     String url;
     switch (coin.type) {
+      case CoinType.utxo:
+      case CoinType.smartChain:
+      case CoinType.qrc:
+        break;
+
       case CoinType.erc:
         url = (coin.protocol?.type == 'ETH' // 'ETH', 'ETHR'
                 ? '$ethUrl/$address'
@@ -66,8 +71,6 @@ class GetErcTransactions {
                 : '$ftmUrl/${coin.protocol.protocolData.contractAddress}/$address') +
             (coin.testCoin ? '&testnet=true' : '');
         break;
-      default:
-        return;
     }
 
     String body;
