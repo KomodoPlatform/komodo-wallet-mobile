@@ -56,7 +56,9 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
   }
 
   String _getTitleText() {
-    switch (coinTypeFromString(widget.type)) {
+    final CoinType titleType = coinTypeFromString(widget.type);
+
+    switch (titleType) {
       case CoinType.erc:
         return AppLocalizations.of(context).searchFilterSubtitleERC;
         break;
@@ -78,9 +80,10 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
       case CoinType.smartChain:
         return AppLocalizations.of(context).searchFilterSubtitleSmartChain;
         break;
-      default:
-        return AppLocalizations.of(context).searchFilterSubtitleTestCoins;
     }
+
+    // titleType == null for test assets
+    return AppLocalizations.of(context).searchFilterSubtitleTestCoins;
   }
 
   bool _areAllActive(List<CoinToActivate> coinsBeforeActivation) {
