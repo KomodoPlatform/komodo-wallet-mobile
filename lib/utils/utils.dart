@@ -462,8 +462,9 @@ bool get isInDebugMode {
   return inDebugMode;
 }
 
-bool isErcType(String type) {
-  return type == 'ERC20' || type == 'ETH';
+bool isErcType(Coin coin) {
+  final String protocolType = coin?.protocol?.type;
+  return protocolType == 'ERC20' || protocolType == 'ETH';
 }
 
 String humanDate(int epoch) {

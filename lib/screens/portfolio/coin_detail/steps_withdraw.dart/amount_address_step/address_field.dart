@@ -247,7 +247,7 @@ class _AddressFieldState extends State<AddressField> {
   }
 
   bool _isErcNonMixedCase(String error) {
-    if (isErcType(widget.coin.protocol?.type)) {
+    if (!isErcType(widget.coin)) {
       return false;
     }
     if (!error.contains('Invalid address checksum')) return false;

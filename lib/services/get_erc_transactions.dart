@@ -25,9 +25,7 @@ class GetErcTransactions {
   final String ftmUrl = appConfig.ftmUrl;
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
-    if (!isErcType(coin.protocol?.type)) {
-      return;
-    }
+    if (!isErcType(coin)) return;
 
     // Endpoint returns all tx at ones, and `fromId` only has value
     // if some txs was already fetched, so no need to fetch same txs again

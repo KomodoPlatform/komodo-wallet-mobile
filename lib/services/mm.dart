@@ -260,7 +260,7 @@ class ApiProvider {
             disableCertVerification: false))
         .toList();
 
-    if (isErcType(coin.protocol?.type))
+    if (isErcType(coin))
       return json.encode(MmEnable(
               userpass: mmSe.userpass,
               coin: coin.abbr,

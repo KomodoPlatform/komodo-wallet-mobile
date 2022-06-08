@@ -50,7 +50,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Fee customFee;
       if (coinsDetailBloc.customFee != null) {
-        bool isERC = isErcType(widget.coinBalance.coin.protocol?.type);
+        bool isERC = isErcType(widget.coinBalance.coin);
         if (isERC) {
           customFee = Fee(
             type: 'EthGas',

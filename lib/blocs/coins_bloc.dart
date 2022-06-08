@@ -275,7 +275,7 @@ class CoinsBloc implements BlocBase {
     try {
       dynamic transactions;
 
-      if (isErcType(coin.protocol?.type)) {
+      if (isErcType(coin)) {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else {
@@ -600,7 +600,7 @@ class CoinsBloc implements BlocBase {
     const String fromId = null;
     try {
       dynamic transactions;
-      if (isErcType(coin.protocol?.type)) {
+      if (isErcType(coin)) {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else {

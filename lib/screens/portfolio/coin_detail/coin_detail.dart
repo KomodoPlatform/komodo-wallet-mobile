@@ -226,7 +226,6 @@ class _CoinDetailState extends State<CoinDetail> {
                     ),
                 ],
                 alignment: Alignment.bottomRight,
-
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -264,8 +263,8 @@ class _CoinDetailState extends State<CoinDetail> {
     // Since we currently fetching erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
- 
-    if (isErcType(widget.coinBalance.coin?.protocol?.type)) {
+
+    if (isErcType(widget.coinBalance.coin)) {
       return SizedBox();
     }
 
