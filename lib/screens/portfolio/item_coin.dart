@@ -1,23 +1,24 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
-import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
-import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
-import 'package:komodo_dex/widgets/build_red_dot.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/build_protocol_chip.dart';
+import 'package:komodo_dex/widgets/build_red_dot.dart';
+import 'package:provider/provider.dart';
+
 import 'coin_detail/coin_detail.dart';
 import 'copy_dialog.dart';
 import 'rewards_page.dart';
@@ -143,7 +144,6 @@ class _ItemCoinState extends State<ItemCoin>
                   builder: (BuildContext context) =>
                       CoinDetail(coinBalance: widget.coinBalance),
                 ),
- 
               );
             },
             child: Container(
@@ -166,7 +166,8 @@ class _ItemCoinState extends State<ItemCoin>
                             CircleAvatar(
                               radius: 28,
                               backgroundColor: Colors.transparent,
-                              backgroundImage: AssetImage(getCoinIconPath(balance.coin)),
+                              backgroundImage:
+                                  AssetImage(getCoinIconPath(balance.coin)),
                             ),
                             if (coin.suspended)
                               Icon(
@@ -237,7 +238,7 @@ class _ItemCoinState extends State<ItemCoin>
                           children: <Widget>[
                             _buildFaucetButton(),
                             _buildWalletOnly(),
-                            _buildNetworkLabel(),
+                            _buildProtocolChip(coin),
                           ],
                         ),
                       ],
@@ -332,134 +333,10 @@ class _ItemCoinState extends State<ItemCoin>
     return SizedBox();
   }
 
-  bool _isLabelNeeded(Coin coin) {
-    if (coin.abbr == 'KMD') return false;
-    if (coin.type == CoinType.smartChain) return true;
-
-    return coin.protocol?.protocolData?.platform != null;
-  }
-
-  Widget _buildNetworkLabel() {
-    Coin coin = widget.coinBalance.coin;
-    if (!_isLabelNeeded(coin)) return SizedBox();
-
+  Widget _buildProtocolChip(Coin coin) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          color: isErcType(coin.protocol?.type) || coin.type == CoinType.qrc
-              ? const Color.fromRGBO(20, 117, 186, 1)
-              : Theme.of(context).scaffoldBackgroundColor,
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: Builder(
-          builder: (context) {
-            switch (widget.coinBalance.coin.type) {
-              case CoinType.erc:
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagERC20,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
-                  );
-                }
-              case CoinType.bep:
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagBEP20,
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              color: Colors.white,
-                            ),
-                      ),
-                    ],
-                  );
-                }
-              case CoinType.plg:
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagPLG20,
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              color: Colors.white,
-                            ),
-                      ),
-                    ],
-                  );
-                }
-              case CoinType.ftm:
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagFTM20,
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              color: Colors.white,
-                            ),
-                      ),
-                    ],
-                  );
-                }
-              case CoinType.qrc:
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagQRC20,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
-                  );
-                }
-              default:
-                {
-                  return InkWell(
-                    onTap: () {
-                      ScaffoldMessengerState scaffoldMessenger;
-                      try {
-                        scaffoldMessenger = ScaffoldMessenger.of(context);
-                      } catch (_) {}
-
-                      if (scaffoldMessenger != null) {
-                        scaffoldMessenger.showSnackBar(const SnackBar(
-                          duration: Duration(seconds: 2),
-                          content: Text('Built on Komodo'),
-                        ));
-                      }
-                    },
-                    child: Image.asset(
-                      'assets/coin-icons/kmd.png',
-                      width: 18,
-                      height: 18,
-                    ),
-                  );
-                }
-            }
-          },
-        ),
-      ),
+      padding: const EdgeInsets.only(top: 8, left: 4),
+      child: BuildProtocolChip(coin),
     );
   }
 

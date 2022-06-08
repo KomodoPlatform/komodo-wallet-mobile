@@ -11,6 +11,7 @@ import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit_field.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/build_protocol_chip.dart';
 import 'package:komodo_dex/widgets/confirmation_dialog.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,6 @@ class _ContactEditState extends State<ContactEdit> {
   AddressBookProvider provider;
   String focusOn;
   final List<String> invalidFields = [];
-  Map<String, String> networkChipLabels;
 
   @override
   void initState() {
@@ -43,14 +43,6 @@ class _ContactEditState extends State<ContactEdit> {
 
   @override
   Widget build(BuildContext context) {
-    networkChipLabels ??= {
-      CoinType.erc.name: AppLocalizations.of(context).tagERC20,
-      CoinType.bep.name: AppLocalizations.of(context).tagBEP20,
-      CoinType.qrc.name: AppLocalizations.of(context).tagQRC20,
-      CoinType.plg.name: AppLocalizations.of(context).tagPLG20,
-      CoinType.ftm.name: AppLocalizations.of(context).tagFTM20,
-    };
-
     provider = Provider.of<AddressBookProvider>(context);
 
     return WillPopScope(
@@ -301,13 +293,7 @@ class _ContactEditState extends State<ContactEdit> {
                     style: const TextStyle(fontSize: 18),
                   ),
                 ),
-                if (networkChipLabels.containsKey(coin.type.name)) ...{
-                  _buildNetworkChip(
-                    networkChipLabels[coin.type.name],
-                  )
-                } else if (coin.type == CoinType.smartChain) ...{
-                  _buildKmdChip()
-                }
+                BuildProtocolChip(coin)
               ],
             ),
           ),
@@ -385,45 +371,6 @@ class _ContactEditState extends State<ContactEdit> {
             },
           );
         }).then((dynamic _) => dialogBloc.dialog = null);
-  }
-
-  Widget _buildNetworkChip(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 2,
-      ),
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(20, 117, 186, 1),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(text),
-    );
-  }
-
-  Widget _buildKmdChip() {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 2,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: <Widget>[
-          const CircleAvatar(
-            maxRadius: 6,
-            backgroundImage: AssetImage('assets/coin-icons/kmd.png'),
-          ),
-          const SizedBox(width: 4),
-          Text(
-            AppLocalizations.of(context).tagKMD,
-          ),
-        ],
-      ),
-    );
   }
 
   void _createAddress(Coin coin) {
