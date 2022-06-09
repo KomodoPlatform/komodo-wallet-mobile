@@ -108,7 +108,6 @@ class _ContactEditState extends State<ContactEdit> {
                               setState(() {
                                 editContact.name = value;
                               });
-                              _validate();
                             },
                             validator: (String value) {
                               if (value.isEmpty) {
@@ -190,24 +189,6 @@ class _ContactEditState extends State<ContactEdit> {
     return false;
   }
 
-  bool _validate() {
-    if (_autovalidate) {
-      _formKey.currentState.validate();
-    }
-
-    bool valid = true;
-    if (editContact.name == null || editContact.name.isEmpty) {
-      valid = false;
-    }
-    editContact.addresses?.forEach((String abbr, String address) {
-      if (address.isEmpty) {
-        valid = false;
-      }
-    });
-
-    return valid;
-  }
-
   Future<Widget> _buildAddresses() async {
     if (editContact.addresses == null || editContact.addresses.isEmpty)
       return SizedBox();
@@ -244,7 +225,6 @@ class _ContactEditState extends State<ContactEdit> {
             setState(() {
               editContact.addresses[abbr] = value;
             });
-            _validate();
           },
           validator: (String value) {
             if (value.isEmpty) {
@@ -493,7 +473,6 @@ class _ContactEditState extends State<ContactEdit> {
       });
       return;
     }
-    if (!_validate()) return;
 
     if (widget.contact != null) {
       provider.updateContact(editContact);
