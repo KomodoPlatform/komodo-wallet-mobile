@@ -16,7 +16,6 @@ class ContactEditField extends StatefulWidget {
     this.color,
     this.padding,
     this.icon,
-    this.invalid = false,
     this.validator,
   }) : super(key: key);
 
@@ -31,7 +30,6 @@ class ContactEditField extends StatefulWidget {
   final Function onRemove;
   final EdgeInsets padding;
   final Widget icon;
-  final bool invalid;
 
   @override
   _ContactEditFieldState createState() => _ContactEditFieldState();
