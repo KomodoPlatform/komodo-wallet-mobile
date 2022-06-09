@@ -52,100 +52,80 @@ class SwapShareCard extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        Expanded(
-                          flex: 1,
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              Image.asset(
-                                'assets/swap_share/swap_share_atomicdex_logo.png',
-                                height: 24,
-                              ),
-                              Text(
-                                'Powered by Komodo',
-                                style: TextStyle(fontSize: 4),
-                              ),
-                            ],
-                          ),
+                        Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Image.asset(
+                              'assets/swap_share/swap_share_atomicdex_logo.png',
+                              height: 24,
+                            ),
+                            Text(
+                              'Powered by Komodo',
+                              style: TextStyle(fontSize: 4),
+                            ),
+                          ],
                         ),
+                        Text(
+                          myCoin +
+                              '/' +
+                              otherCoin +
+                              ' '
+                                  'Swap Complete!',
+                          style: TextStyle(fontSize: 8),
+                        ),
+                        SizedBox(height: 6),
                         Expanded(
-                          flex: 2,
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
+                          child: Container(
+                            alignment: Alignment(0, 0),
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  myCoin +
-                                      '/' +
-                                      otherCoin +
-                                      ' '
-                                          'Swap Complete!',
-                                  style: TextStyle(fontSize: 8),
-                                ),
-                                SizedBox(height: 6),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                  child: Row(
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                'assets/coin-icons/' +
-                                                    getCoinIconPath(myCoin) +
-                                                    '.png',
-                                                height: 18,
-                                              ),
-                                              Text(
-                                                cutTrailingZeros(formatPrice(
-                                                        myAmount, 4)) +
-                                                    ' ' +
-                                                    myCoin,
-                                                style: TextStyle(fontSize: 6),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                      Image.asset(
+                                        getCoinIconPath(myCoin),
+                                        height: 18,
                                       ),
-                                      Expanded(
-                                        child: Icon(
-                                          Icons.swap_horiz_rounded,
-                                          size: 18,
-                                          color: Colors.white,
-                                        ),
+                                      Text(
+                                        cutTrailingZeros(
+                                                formatPrice(myAmount, 4)) +
+                                            ' ' +
+                                            myCoin,
+                                        style: TextStyle(fontSize: 6),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                'assets/coin-icons/' +
-                                                    getCoinIconPath(otherCoin) +
-                                                    '.png',
-                                                height: 18,
-                                              ),
-                                              Text(
-                                                cutTrailingZeros(formatPrice(
-                                                        otherAmount, 4)) +
-                                                    ' ' +
-                                                    otherCoin,
-                                                style: const TextStyle(
-                                                    fontSize: 6),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Icon(
+                                    Icons.swap_horiz_rounded,
+                                    size: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Image.asset(
+                                        getCoinIconPath(otherCoin),
+                                        height: 18,
+                                      ),
+                                      Text(
+                                        cutTrailingZeros(
+                                                formatPrice(otherAmount, 4)) +
+                                            ' ' +
+                                            otherCoin,
+                                        style: const TextStyle(fontSize: 6),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ],
                                   ),
@@ -154,81 +134,78 @@ class SwapShareCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Table(
-                            defaultVerticalAlignment:
-                                TableCellVerticalAlignment.baseline,
-                            textBaseline: TextBaseline.alphabetic,
-                            columnWidths: const {
-                              0: IntrinsicColumnWidth(),
-                              1: FixedColumnWidth(8),
-                            },
-                            children: [
-                              const TableRow(
-                                children: [
-                                  Text(
-                                    'Details',
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 6,
-                                    ),
+                        Table(
+                          defaultVerticalAlignment:
+                              TableCellVerticalAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          columnWidths: const {
+                            0: IntrinsicColumnWidth(),
+                            1: FixedColumnWidth(8),
+                          },
+                          children: [
+                            const TableRow(
+                              children: [
+                                Text(
+                                  'Details',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 6,
                                   ),
-                                  SizedBox(),
-                                  SizedBox(),
-                                ],
-                              ),
-                              const TableRow(
-                                children: [
-                                  SizedBox(height: 8),
-                                  SizedBox(height: 8),
-                                  SizedBox(height: 8),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text(
-                                    'Date',
-                                    style: TextStyle(fontSize: 6),
-                                  ),
-                                  const SizedBox(),
-                                  Text(
-                                    dateFormatted,
-                                    style: const TextStyle(fontSize: 6),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text(
-                                    'Duration',
-                                    style: TextStyle(fontSize: 6),
-                                  ),
-                                  const SizedBox(),
-                                  Text(
-                                    '$durationMinutes Minutes',
-                                    style: const TextStyle(fontSize: 6),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text(
-                                    'UUID',
-                                    style: TextStyle(fontSize: 6),
-                                  ),
-                                  const SizedBox(),
-                                  Text(
-                                    swap.result.myOrderUuid,
-                                    style: const TextStyle(fontSize: 4),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                ),
+                                SizedBox(),
+                                SizedBox(),
+                              ],
+                            ),
+                            const TableRow(
+                              children: [
+                                SizedBox(height: 8),
+                                SizedBox(height: 8),
+                                SizedBox(height: 8),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                const Text(
+                                  'Date',
+                                  style: TextStyle(fontSize: 6),
+                                ),
+                                const SizedBox(),
+                                Text(
+                                  dateFormatted,
+                                  style: const TextStyle(fontSize: 6),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                const Text(
+                                  'Duration',
+                                  style: TextStyle(fontSize: 6),
+                                ),
+                                const SizedBox(),
+                                Text(
+                                  '$durationMinutes Minutes',
+                                  style: const TextStyle(fontSize: 6),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                const Text(
+                                  'UUID',
+                                  style: TextStyle(fontSize: 6),
+                                ),
+                                const SizedBox(),
+                                Text(
+                                  swap.result.myOrderUuid,
+                                  style: const TextStyle(fontSize: 4),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
