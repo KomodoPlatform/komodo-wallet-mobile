@@ -80,7 +80,8 @@ class _PinPageState extends State<PinPage> {
     final PinStatus pinStatus = widget.pinStatus;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (pinStatus == PinStatus.CREATE_PIN) {
+    if (pinStatus == PinStatus.CREATE_PIN ||
+        pinStatus == PinStatus.CHANGE_PIN) {
       setState(() {
         _correctPin = null;
       });
@@ -108,6 +109,7 @@ class _PinPageState extends State<PinPage> {
     final walletSecuritySettingsProvider =
         context.read<WalletSecuritySettingsProvider>();
     switch (pinStatus) {
+      case PinStatus.CHANGE_PIN:
       case PinStatus.CREATE_PIN:
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('is_pin_creation_in_progress', true);
@@ -190,19 +192,6 @@ class _PinPageState extends State<PinPage> {
         walletSecuritySettingsProvider.activateBioProtection = false;
         Navigator.pop(context);
         break;
-
-      case PinStatus.CHANGE_PIN:
-        Navigator.pushReplacement<dynamic, dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => PinPage(
-                      title: AppLocalizations.of(context).createPin,
-                      subTitle: AppLocalizations.of(context).enterNewPinCode,
-                      pinStatus: PinStatus.CREATE_PIN,
-                      password: widget.password,
-                      isFromChangingPin: true,
-                    )));
-        break;
     }
   }
 
@@ -239,7 +228,8 @@ class _PinPageState extends State<PinPage> {
               codeLength: 6,
               correctPin: _correctPin,
               onCodeFail: (dynamic code) async {
-                if (widget.pinStatus == PinStatus.CREATE_PIN) {
+                if (widget.pinStatus == PinStatus.CREATE_PIN ||
+                    widget.pinStatus == PinStatus.CHANGE_PIN) {
                   final SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   await prefs.setBool('is_pin_creation_in_progress', true);
@@ -253,7 +243,8 @@ class _PinPageState extends State<PinPage> {
                                 code: code,
                                 pinStatus: PinStatus.CONFIRM_PIN,
                                 password: widget.password,
-                                isFromChangingPin: widget.isFromChangingPin,
+                                isFromChangingPin:
+                                    widget.pinStatus == PinStatus.CHANGE_PIN,
                               ));
 
                   if (widget.firstCreationPin != null &&
@@ -355,6 +346,7 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     switch (pinStatus) {
       case PinStatus.CREATE_PIN:
+      case PinStatus.CHANGE_PIN:
       case PinStatus.CONFIRM_PIN:
       case PinStatus.CREATE_CAMO_PIN:
       case PinStatus.CONFIRM_CAMO_PIN:
