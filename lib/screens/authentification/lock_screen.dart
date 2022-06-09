@@ -286,7 +286,7 @@ class _LockScreenState extends State<LockScreen> {
             } else {
               return PinPage(
                 title: AppLocalizations.of(context).createPin,
-                subTitle: AppLocalizations.of(context).enterPinCode,
+                subTitle: AppLocalizations.of(context).enterNewPinCode,
                 firstCreationPin: true,
                 pinStatus: PinStatus.CREATE_PIN,
                 password: password,
