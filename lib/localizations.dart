@@ -1169,7 +1169,10 @@ class AppLocalizations {
       args: <Object>[abbr],
       name: 'addressCoinInactive');
   String get warningOkBtn => Intl.message('Ok', name: 'warningOkBtn');
-
+  String get emptyName =>
+      Intl.message('Contact name cannot be empty', name: 'emptyName');
+  String emptyCoin(String abbr) =>
+      Intl.message('Input $abbr address', name: 'emptyCoin');
   // --- Camouflage Pin ---
 
   String get camoPinTitle =>
@@ -1275,6 +1278,10 @@ class AppLocalizations {
   String get swapTotal => Intl.message('Total', name: 'swapTotal');
   String get swapProgress =>
       Intl.message('Progress details', name: 'swapProgress');
+  String get closeMessage =>
+      Intl.message('Close Error Message', name: 'closeMessage');
+  String get openMessage =>
+      Intl.message('Open Error Message', name: 'openMessage');
 
   // -- Notifications --
 
