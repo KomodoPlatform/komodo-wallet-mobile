@@ -26,31 +26,33 @@ class ContactEdit extends StatefulWidget {
 }
 
 class _ContactEditState extends State<ContactEdit> {
-  Contact editContact;
-  String hashBeforeEdit;
-  AddressBookProvider provider;
-  String focusOn;
-  final List<String> invalidFields = [];
+  Contact _editContact;
+  String _hashBeforeEdit;
+  AddressBookProvider _provider;
+  String _focusOn;
 
   @override
   void initState() {
     super.initState();
-    editContact = widget.contact != null
+    _editContact = widget.contact != null
         ? Contact.fromJson(widget.contact.toJson())
         : Contact();
-    hashBeforeEdit = jsonEncode(editContact.toJson());
+    _hashBeforeEdit = jsonEncode(_editContact.toJson());
   }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _autovalidate = false;
 
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<AddressBookProvider>(context);
+    _provider = Provider.of<AddressBookProvider>(context);
 
     return WillPopScope(
       onWillPop: () => _exitPage(),
       child: GestureDetector(
         onTapDown: (_) {
           setState(() {
-            focusOn = '';
+            _focusOn = '';
             unfocusTextField(context);
           });
         },
@@ -73,73 +75,87 @@ class _ContactEditState extends State<ContactEdit> {
                   ),
               ],
             ),
-            body: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: ListView(
-                      children: <Widget>[
-                        ContactEditField(
-                          name: 'name',
-                          label: AppLocalizations.of(context).contactTitleName,
-                          invalid: invalidFields.contains('name'),
-                          icon: Icon(
-                            Icons.account_circle,
-                            size: 16,
-                          ),
-                          value: editContact.name,
-                          removable: false,
-                          autofocus: widget.contact == null && focusOn == null,
-                          onChange: (String value) {
-                            setState(() {
-                              editContact.name = value;
-                            });
-                            _validate();
-                          },
-                        ),
-                        SizedBox(height: 16),
-                        _buildAddButton(),
-                        FutureBuilder<Widget>(
-                          future: _buildAddresses(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<Widget> snapshot) {
-                            if (!snapshot.hasData)
-                              return const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 16),
-                                  child: SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                        strokeWidth: 1),
-                                  ),
-                                ),
-                              );
+            body: Form(
+              key: _formKey,
+              autovalidateMode: _autovalidate
+                  ? AutovalidateMode.always
+                  : AutovalidateMode.disabled,
+              child: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: ListView(
+                        children: <Widget>[
+                          ContactEditField(
+                            name: 'name',
+                            label:
+                                AppLocalizations.of(context).contactTitleName,
+                            icon: Icon(
+                              Icons.account_circle,
+                              size: 16,
+                            ),
+                            value: _editContact.name,
+                            removable: false,
+                            autofocus:
+                                widget.contact == null && _focusOn == null,
+                            onChange: (String value) {
+                              setState(() {
+                                _editContact.name = value;
+                              });
+                            },
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return AppLocalizations.of(context).emptyName;
+                              }
 
-                            return snapshot.data;
-                          },
-                        ),
-                      ],
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 16),
+                          _buildAddButton(),
+                          FutureBuilder<Widget>(
+                            future: _buildAddresses(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<Widget> snapshot) {
+                              if (!snapshot.hasData)
+                                return const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 16),
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 1),
+                                    ),
+                                  ),
+                                );
+
+                              return snapshot.data;
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    color: Theme.of(context).primaryColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        TextButton(
-                          onPressed: _exitPage,
-                          child:
-                              Text(AppLocalizations.of(context).contactCancel),
-                        ),
-                        TextButton(
-                          onPressed: _saveContact,
-                          child: Text(AppLocalizations.of(context).contactSave),
-                        ),
-                      ],
+                    Container(
+                      color: Theme.of(context).primaryColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          TextButton(
+                            onPressed: _exitPage,
+                            child: Text(
+                                AppLocalizations.of(context).contactCancel),
+                          ),
+                          TextButton(
+                            onPressed: _saveContact,
+                            child:
+                                Text(AppLocalizations.of(context).contactSave),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -149,7 +165,7 @@ class _ContactEditState extends State<ContactEdit> {
   }
 
   Future<bool> _exitPage() async {
-    final bool wasEdited = hashBeforeEdit != jsonEncode(editContact.toJson());
+    final bool wasEdited = _hashBeforeEdit != jsonEncode(_editContact.toJson());
     if (wasEdited) {
       showConfirmationDialog(
           confirmButtonText: AppLocalizations.of(context).contactDiscardBtn,
@@ -167,38 +183,15 @@ class _ContactEditState extends State<ContactEdit> {
     return false;
   }
 
-  bool _validate() {
-    setState(() {
-      invalidFields.clear();
-    });
-    bool valid = true;
-    if (editContact.name == null || editContact.name.isEmpty) {
-      valid = false;
-      setState(() {
-        invalidFields.add('name');
-      });
-    }
-    editContact.addresses?.forEach((String abbr, String address) {
-      if (address.isEmpty) {
-        valid = false;
-        setState(() {
-          invalidFields.add(abbr);
-        });
-      }
-    });
-
-    return valid;
-  }
-
   Future<Widget> _buildAddresses() async {
-    if (editContact.addresses == null || editContact.addresses.isEmpty)
+    if (_editContact.addresses == null || _editContact.addresses.isEmpty)
       return SizedBox();
 
     final List<Widget> addresses = [];
     final List<Coin> all = (await coins).values.toList();
 
-    for (var abbr in editContact.addresses.keys) {
-      final String value = editContact.addresses[abbr];
+    for (var abbr in _editContact.addresses.keys) {
+      final String value = _editContact.addresses[abbr];
 
       final String name = all
           .firstWhere((Coin coin) => coin.abbr == abbr, orElse: () => null)
@@ -217,25 +210,31 @@ class _ContactEditState extends State<ContactEdit> {
           padding: const EdgeInsets.only(
             top: 10,
             left: 16,
-            right: 4,
+            right: 6,
+            bottom: 6,
           ),
           icon: abbr == null ? null : _buildCoinIcon(abbr),
           removable: true,
           onChange: (String value) {
             setState(() {
-              editContact.addresses[abbr] = value;
+              _editContact.addresses[abbr] = value;
             });
-            _validate();
           },
-          invalid: invalidFields.contains(abbr),
+          validator: (String value) {
+            if (value.isEmpty) {
+              return AppLocalizations.of(context).emptyCoin(abbr);
+            }
+
+            return null;
+          },
           onRemove: () {
             setState(() {
-              focusOn = '';
+              _focusOn = '';
               unfocusTextField(context);
             });
-            editContact.addresses.removeWhere((k, v) => k == abbr);
+            _editContact.addresses.removeWhere((k, v) => k == abbr);
           },
-          autofocus: abbr == focusOn,
+          autofocus: abbr == _focusOn,
         ),
       );
     }
@@ -306,7 +305,7 @@ class _ContactEditState extends State<ContactEdit> {
     final searchTextController = TextEditingController();
 
     setState(() {
-      focusOn = '';
+      _focusOn = '';
     });
     unfocusTextField(context);
 
@@ -325,9 +324,9 @@ class _ContactEditState extends State<ContactEdit> {
     dialogBloc.closeDialog(context);
     await Future<dynamic>.delayed(const Duration(seconds: 0));
 
-    final coinsList = editContact.addresses != null
+    final coinsList = _editContact.addresses != null
         ? all
-            .where((Coin c) => !editContact.addresses.containsKey(c.abbr))
+            .where((Coin c) => !_editContact.addresses.containsKey(c.abbr))
             .toList()
         : all;
 
@@ -374,7 +373,7 @@ class _ContactEditState extends State<ContactEdit> {
   }
 
   void _createAddress(Coin coin) {
-    editContact.addresses ??= {};
+    _editContact.addresses ??= {};
 
     String addressKey;
     if (coin.type == CoinType.smartChain) {
@@ -391,8 +390,8 @@ class _ContactEditState extends State<ContactEdit> {
     }
 
     setState(() {
-      editContact.addresses[addressKey] ??= '';
-      focusOn = addressKey;
+      _editContact.addresses[addressKey] ??= '';
+      _focusOn = addressKey;
     });
 
     dialogBloc.closeDialog(context);
@@ -405,7 +404,7 @@ class _ContactEditState extends State<ContactEdit> {
       icon: Icons.delete,
       iconColor: Theme.of(context).errorColor,
       message:
-          AppLocalizations.of(context).contactDeleteWarning(editContact.name),
+          AppLocalizations.of(context).contactDeleteWarning(_editContact.name),
       confirmButtonText: AppLocalizations.of(context).contactDeleteBtn,
       onConfirm: () => _deleteContact(),
     );
@@ -413,19 +412,24 @@ class _ContactEditState extends State<ContactEdit> {
 
   void _deleteContact() {
     if (widget.contact == null) return;
-    provider.deleteContact(widget.contact);
+    _provider.deleteContact(widget.contact);
     Navigator.of(context).pop();
   }
 
   void _saveContact() {
-    if (!_validate()) return;
+    if (!_formKey.currentState.validate()) {
+      setState(() {
+        _autovalidate = true;
+      });
+      return;
+    }
 
     if (widget.contact != null) {
-      provider.updateContact(editContact);
+      _provider.updateContact(_editContact);
     } else {
-      provider.createContact(
-        name: editContact.name,
-        addresses: editContact.addresses,
+      _provider.createContact(
+        name: _editContact.name,
+        addresses: _editContact.addresses,
       );
     }
 
