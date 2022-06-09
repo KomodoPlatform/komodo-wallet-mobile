@@ -1,5 +1,6 @@
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class GetConvertAddress {
   GetConvertAddress({
@@ -16,9 +17,7 @@ class GetConvertAddress {
 
   Map<String, dynamic> toJson() {
     final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
-    final String coinType = coinBalance.coin.type;
-    final bool isERC =
-        coinType == 'erc' || coinType == 'bep' || coinType == 'plg';
+    final bool isERC = isErcType(coinBalance.coin);
 
     return <String, dynamic>{
       'method': method,

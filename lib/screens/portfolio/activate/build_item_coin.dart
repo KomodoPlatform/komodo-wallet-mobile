@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 
 class BuildItemCoin extends StatefulWidget {
@@ -45,7 +46,7 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                   ),
                   const SizedBox(width: 24),
                   Image.asset(
-                    'assets/coin-icons/${widget.coin.abbr.toLowerCase()}.png',
+                    getCoinIconPath(widget.coin.abbr),
                     height: 40,
                     width: 40,
                   ),

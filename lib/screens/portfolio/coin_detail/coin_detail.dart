@@ -85,7 +85,9 @@ class _CoinDetailState extends State<CoinDetail> {
   void initState() {
     cexProvider ??= Provider.of<CexProvider>(context, listen: false);
     // set default coin
-    cexProvider.withdrawCurrency = widget.coinBalance.coin.abbr.toUpperCase();
+    Future.delayed(Duration.zero, () {
+      cexProvider.withdrawCurrency = widget.coinBalance.coin.abbr.toUpperCase();
+    });
 
     isSendIsActive = widget.isSendIsActive;
     currentCoinBalance = widget.coinBalance;
@@ -213,8 +215,7 @@ class _CoinDetailState extends State<CoinDetail> {
               Stack(
                 children: [
                   PhotoHero(
-                    tag: 'assets/coin-icons/'
-                        '${currentCoinBalance.coin.abbr.toLowerCase()}.png',
+                    tag: getCoinIconPath(currentCoinBalance.balance.coin),
                     radius: 16,
                   ),
                   if (currentCoinBalance.coin.suspended)
@@ -262,8 +263,8 @@ class _CoinDetailState extends State<CoinDetail> {
     // Since we currently fetching erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
-    final String coinType = currentCoinBalance.coin.type;
-    if (coinType == 'erc' || coinType == 'bep' || coinType == 'plg') {
+
+    if (isErcType(widget.coinBalance.coin)) {
       return SizedBox();
     }
 
@@ -625,7 +626,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(
-                          'assets/coin-icons/${platform.toLowerCase()}.png',
+                          getCoinIconPath(platform),
                           width: 16,
                           height: 16,
                         ),

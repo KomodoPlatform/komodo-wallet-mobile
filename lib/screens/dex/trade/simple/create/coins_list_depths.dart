@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -65,8 +66,8 @@ class _CoinsListDepthsState extends State<CoinsListDepths> {
                 children: [
                   CircleAvatar(
                     radius: 8,
-                    backgroundImage: AssetImage(
-                        'assets/coin-icons/${item.coin.abbr.toLowerCase()}.png'),
+                    backgroundImage:
+                        AssetImage(getCoinIconPath(item.coin.abbr)),
                   ),
                   SizedBox(width: 4),
                   Text(
