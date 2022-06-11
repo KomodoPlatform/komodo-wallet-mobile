@@ -92,3 +92,12 @@ flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/loca
  - [ticking sound](https://freesound.org/people/FoolBoyMedia/sounds/264498/)
  - [silence](https://freesound.org/people/Mullabfuhr/sounds/540483/)
  - [start (iOs)](https://freesound.org/people/pizzaiolo/sounds/320664/)
+
+## Integration Test
+
+Run the execute_integration.sh file:
+```bash
+/bin/zsh /Users/temitopedaniel/atomicdex_mobile/execute_integration.sh
+```
+### Test Coverage:
+1. Auth Flow
