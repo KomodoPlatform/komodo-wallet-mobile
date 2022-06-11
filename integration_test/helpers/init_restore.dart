@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'enter_pin.dart';
+
 Future<void> restoreWalletToTest(WidgetTester tester) async {
   // Restores wallet to be used in following tests
   try {
@@ -63,6 +65,10 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     await tester.tap(disclaimerButton);
     await tester.pump(Duration(seconds: 1));
     // pin_page.dart
+    await tester.pumpAndSettle();
+    await enterPinCode(tester, pin: pin);
+    await tester.pumpAndSettle();
+    await enterPinCode(tester, pin: pin);
 
     await tester.pumpAndSettle();
   } catch (e) {
