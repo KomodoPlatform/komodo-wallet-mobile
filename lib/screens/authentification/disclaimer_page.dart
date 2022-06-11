@@ -367,11 +367,16 @@ class _DisclaimerPageState extends State<DisclaimerPage>
               ? Stack(
                   children: <Widget>[
                     SingleChildScrollView(
+                      key: const Key('scroll-disclaimer'),
                       controller: _scrollController,
                       child: Column(
                         children: <Widget>[
                           _tosContent,
                           _tosControls,
+                          const Text(
+                            '',
+                            key: Key('end-list-disclaimer'),
+                          ),
                         ],
                       ),
                     ),

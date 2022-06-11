@@ -12,7 +12,7 @@ void main() {
     tester.testTextInput.register();
     app.main();
     // delay for splash screen and checking updates
-    await tester.pumpAndSettle(Duration(seconds: 8));
+    await tester.pumpAndSettle(Duration(seconds: 5));
 
     print('RESTORE WALLET TO TEST');
     await restoreWalletToTest(tester);
