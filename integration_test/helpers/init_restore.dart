@@ -10,7 +10,9 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
         'hazard slam top rail jacket ecology trash first stock nut swift thought youth rack slot regular wasp bulk spatial legal staff change way brush';
     const String walletName = 'my-wallet';
     const String password = 'pppaaasssDDD555444@@@';
-    const String pin = '123456';
+    const String confirmPassword = 'pppaaasssDDD555444@@@';
+    const String correctPin = '123456';
+    const String wrongPin = '123457';
     final Finder restoreWalletButton = find.byKey(const Key('restoreWallet'));
     final Finder nameField = find.byKey(const Key('name-wallet-field'));
     final Finder importSeedField = find.byKey(const Key('restore-seed-field'));
@@ -49,7 +51,7 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     await tester.tap(passwordField);
     await tester.enterText(passwordField, password);
     await tester.tap(passwordConfirmField);
-    await tester.enterText(passwordConfirmField, password);
+    await tester.enterText(passwordConfirmField, confirmPassword);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(confirmPasswordButton);
     await tester.pump(Duration(seconds: 1));
@@ -66,10 +68,14 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     await tester.pump(Duration(seconds: 1));
     // pin_page.dart
     await tester.pumpAndSettle();
-    await enterPinCode(tester, pin: pin);
+    await enterPinCode(tester, pin: correctPin);
     await tester.pumpAndSettle();
-    await enterPinCode(tester, pin: pin);
-
+    //check for wrong pin
+    await enterPinCode(tester, pin: wrongPin);
+    await tester.pumpAndSettle();
+    expect(wrongPin, correctPin, reason: 'Wrong PIN', skip: true);
+    await tester.pump(Duration(seconds: 1));
+    await enterPinCode(tester, pin: correctPin);
     await tester.pumpAndSettle();
   } catch (e) {
     print(e?.message ?? e);
