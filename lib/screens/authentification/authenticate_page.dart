@@ -141,6 +141,7 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
 
   Widget _buildItemWallet(Wallet wallet, BuildContext context) {
     return ListTile(
+      key: const Key('logged-out-wallet'),
       contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
       tileColor: Colors.transparent,
       onTap: () => Navigator.push<dynamic>(
