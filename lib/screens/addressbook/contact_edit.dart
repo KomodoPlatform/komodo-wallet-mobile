@@ -111,32 +111,22 @@ class _ContactEditState extends State<ContactEdit> {
                               return null;
                             },
                           ),
-                          value: editContact.name,
-                          removable: false,
-                          autofocus: widget.contact == null && focusOn == null,
-                          onChange: (String value) {
-                            setState(() {
-                              editContact.name = value;
-                            });
-                            _validate();
-                          },
-                        ),
-                        SizedBox(height: 16),
-                        if (editContact.addresses.isEmpty) _buildAddButton(),
-                        FutureBuilder<Widget>(
-                          future: _buildAddresses(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<Widget> snapshot) {
-                            if (!snapshot.hasData)
-                              return const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 16),
-                                  child: SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                        strokeWidth: 1),
-
+                          SizedBox(height: 16),
+                          if (_editContact.addresses.isEmpty) _buildAddButton(),
+                          FutureBuilder<Widget>(
+                            future: _buildAddresses(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<Widget> snapshot) {
+                              if (!snapshot.hasData)
+                                return const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 16),
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 1),
+                                    ),
                                   ),
                                 );
 
