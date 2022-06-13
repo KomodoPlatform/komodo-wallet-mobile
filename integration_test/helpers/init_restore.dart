@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'check_button.dart';
 import 'enter_pin.dart';
 
 Future<void> restoreWalletToTest(WidgetTester tester) async {
@@ -8,8 +9,11 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
   try {
     const String testSeed =
         'hazard slam top rail jacket ecology trash first stock nut swift thought youth rack slot regular wasp bulk spatial legal staff change way brush';
+    const String invalidSeed = 'hazard slam top';
     const String walletName = 'my-wallet';
+    const String invalidPassword = 'abcd';
     const String password = 'pppaaasssDDD555444@@@';
+    const String wrongPassword = '';
     const String confirmPassword = 'pppaaasssDDD555444@@@';
     const String correctPin = '123456';
     const String wrongPin = '123457';
@@ -30,7 +34,7 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
         find.byKey(const Key('end-list-disclaimer'));
     final Finder disclaimerButton = find.byKey(const Key('next-disclaimer'));
 
-    // authenticate_page.dart
+    // =========== authenticate_page.dart =============== //
     await tester.ensureVisible(restoreWalletButton);
     await tester.tap(restoreWalletButton);
     await tester.pumpAndSettle();
@@ -39,15 +43,44 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     await tester.enterText(nameField, walletName);
     await tester.pump();
     await tester.testTextInput.receiveAction(TextInputAction.done);
-    // restore_seed_page.dart
+    // =========== restore_seed_page.dart =============== //
+    // test wrong seed
     await tester.pump(Duration(seconds: 1));
+    await tester.enterText(importSeedField, invalidSeed);
+    await tester.testTextInput.receiveAction(TextInputAction.done);
+    await tester.pump(Duration(seconds: 1));
+    await tester.tap(confirmSeedButton);
+    await tester.pump(Duration(seconds: 1));
+    expect(testSeed, testSeed, reason: 'Invalid Seed', skip: true);
+    checkButtonStatus(tester, confirmSeedButton);
+    // test correct seed
     await tester.enterText(importSeedField, testSeed);
     await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pump(Duration(seconds: 1));
-    await tester.ensureVisible(confirmSeedButton);
     await tester.tap(confirmSeedButton);
     await tester.pump(Duration(seconds: 1));
-    // create_password_page.dart
+    // =========== create_password_page.dart =============== //
+    // test invalid password
+    await tester.tap(passwordField);
+    await tester.enterText(passwordField, invalidPassword);
+    await tester.tap(passwordConfirmField);
+    await tester.enterText(passwordConfirmField, invalidPassword);
+    await tester.pump(Duration(seconds: 1));
+    await tester.tap(confirmPasswordButton);
+    await tester.pump(Duration(seconds: 1));
+    expect(invalidPassword, password, reason: 'Invalid Password', skip: true);
+    checkButtonStatus(tester, confirmPasswordButton);
+    // test wrong password
+    await tester.tap(passwordField);
+    await tester.enterText(passwordField, password);
+    await tester.tap(passwordConfirmField);
+    await tester.enterText(passwordConfirmField, wrongPassword);
+    await tester.pump(Duration(seconds: 1));
+    await tester.tap(confirmPasswordButton);
+    await tester.pump(Duration(seconds: 1));
+    expect(wrongPassword, password, reason: 'Wrong Password', skip: true);
+    checkButtonStatus(tester, confirmPasswordButton);
+    //  correct password
     await tester.tap(passwordField);
     await tester.enterText(passwordField, password);
     await tester.tap(passwordConfirmField);
@@ -55,7 +88,7 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     await tester.pump(Duration(seconds: 1));
     await tester.tap(confirmPasswordButton);
     await tester.pump(Duration(seconds: 1));
-    // disclaimer_page.dart
+    // =========== disclaimer_page.dart =============== //
     await tester.tap(eulaCheckBox);
     await tester.tap(tocCheckBox);
     await tester.dragUntilVisible(
@@ -66,7 +99,7 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     await tester.pump(Duration(seconds: 1));
     await tester.tap(disclaimerButton);
     await tester.pump(Duration(seconds: 1));
-    // pin_page.dart
+    // ============== pin_page.dart ================== //
     await tester.pumpAndSettle();
     await enterPinCode(tester, pin: correctPin);
     await tester.pumpAndSettle();
