@@ -6,6 +6,7 @@ Future<void> logOut(WidgetTester tester) async {
   final Finder logOutButton = find.byKey(const Key('side-nav-logout'));
   final Finder confirmLogoutButton =
       find.byKey(const Key('settings-logout-yes'));
+  await tester.pumpAndSettle();
   await tester.tap(settingsMenu);
   await tester.pumpAndSettle();
   await tester.tap(logOutButton);

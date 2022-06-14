@@ -337,6 +337,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                 });
               },
               child: FloatingActionButton(
+                key: const Key('disclaimer-scroll-button'),
                 child: const Icon(Icons.arrow_downward),
                 onPressed: () {
                   if (isEndOfScroll) {
