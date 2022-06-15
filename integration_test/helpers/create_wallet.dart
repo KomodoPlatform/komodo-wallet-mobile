@@ -121,6 +121,9 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     await tester.tap(confirmPasswordButton);
     await tester.pump(Duration(seconds: 1));
     // ============ disclaimer_page.dart =============== //
+    await tester.tap(disclaimerButton);
+    checkButtonStatus(tester, disclaimerButton);
+    await tester.pump(Duration(seconds: 1));
     await tester.tap(eulaCheckBox);
     await tester.tap(tocCheckBox);
     await tester.longPress(scrollButton);
