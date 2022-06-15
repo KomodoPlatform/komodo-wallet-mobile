@@ -32,6 +32,7 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     final Finder scrollButton =
         find.byKey(const Key('disclaimer-scroll-button'));
     final Finder disclaimerButton = find.byKey(const Key('next-disclaimer'));
+    final Finder viewPasswordBtn = find.byKey(const Key('password-visibility'));
 
     // =========== authenticate_page.dart =============== //
     await tester.ensureVisible(restoreWalletButton);
@@ -55,6 +56,8 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     // test correct seed
     await tester.enterText(importSeedField, testSeed);
     await tester.testTextInput.receiveAction(TextInputAction.done);
+    await tester.pump(Duration(seconds: 1));
+    await tester.tap(viewPasswordBtn);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(confirmSeedButton);
     await tester.pump(Duration(seconds: 1));
@@ -82,12 +85,17 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     //  correct password
     await tester.tap(passwordField);
     await tester.enterText(passwordField, password);
+    await tester.tap(viewPasswordBtn);
+    await tester.pump(Duration(seconds: 1));
     await tester.tap(passwordConfirmField);
     await tester.enterText(passwordConfirmField, confirmPassword);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(confirmPasswordButton);
     await tester.pump(Duration(seconds: 1));
-    // =========== disclaimer_page.dart =============== //
+    // ============ disclaimer_page.dart =============== //
+    await tester.tap(disclaimerButton);
+    checkButtonStatus(tester, disclaimerButton);
+    await tester.pump(Duration(seconds: 1));
     await tester.tap(eulaCheckBox);
     await tester.tap(tocCheckBox);
     await tester.longPress(scrollButton);
