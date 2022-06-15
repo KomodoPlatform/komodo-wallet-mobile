@@ -154,11 +154,11 @@ class _LockScreenState extends State<LockScreen> {
                     : 'assets/branding/logo_app.png',
               ),
               const SizedBox(height: 12),
-              Text(message,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  )),
+              SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
             ],
           ),
         ),

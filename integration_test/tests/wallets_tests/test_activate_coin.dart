@@ -27,24 +27,24 @@ Future<void> testActivateCoins(WidgetTester tester) async {
 
     // Try to find non-existent coin
     await tester.enterText(searchCoinsField, 'NOSUCHCOINEVER');
-    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
     expect(ethCoinItem, findsNothing);
     // Try to find and activate ETH and DOGE coins
     await tester.enterText(searchCoinsField, ethByTicker);
-    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
     expect(ethCoinItem, findsOneWidget);
     await tester.tap(ethCoinItem);
     await tester.pumpAndSettle();
 
     await tester.enterText(searchCoinsField, dogeByName);
-    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
     expect(dogeCoinItem, findsOneWidget);
     await tester.tap(dogeCoinItem);
     await tester.pumpAndSettle();
     // Try to find and activate KMD-BEP20
     // (and auto-activate parent coin - BNB)
     await tester.enterText(searchCoinsField, kmdBep20ByTicker);
-    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
     expect(kmdBep20CoinItem, findsOneWidget);
     await tester.tap(kmdBep20CoinItem);
     await tester.pumpAndSettle();
@@ -55,7 +55,7 @@ Future<void> testActivateCoins(WidgetTester tester) async {
     print(1);
 
     await tester.tap(confirmAddAssetsButton);
-    await tester.pumpAndSettle(Duration(seconds: 1));
+    await tester.pumpAndSettle();
     await tester.dragUntilVisible(
         ethCoinHomeItem, homeList, const Offset(0, -15));
   } catch (e) {
