@@ -93,11 +93,15 @@ flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/loca
  - [silence](https://freesound.org/people/Mullabfuhr/sounds/540483/)
  - [start (iOs)](https://freesound.org/people/pizzaiolo/sounds/320664/)
 
-## Integration Test
+ ## Testing
 
-Run the execute_integration.sh file:
-```bash
-/bin/zsh /Users/temitopedaniel/atomicdex_mobile/execute_integration.sh
-```
-### Test Coverage:
-1. Auth Flow
+ ### 1. Manual testing
+ Manual testing plan:
+ https://docs.google.com/spreadsheets/d/15LAphQydTn5ljS64twfbqIMcDOUMFV_kEmMkNiHbSGc
+
+ ### 2. Integration testing
+ [Guide and coverage](integration_test/README.md)
+
+ ### 3. Unit/Widget testing
+ Not supported
+
