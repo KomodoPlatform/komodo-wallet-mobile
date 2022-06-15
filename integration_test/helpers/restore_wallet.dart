@@ -29,9 +29,8 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
         find.byKey(const Key('confirm-password'));
     final Finder eulaCheckBox = find.byKey(const Key('checkbox-eula'));
     final Finder tocCheckBox = find.byKey(const Key('checkbox-toc'));
-    final Finder disclaimerScroll = find.byKey(const Key('scroll-disclaimer'));
-    final Finder endListDisclaimer =
-        find.byKey(const Key('end-list-disclaimer'));
+    final Finder scrollButton =
+        find.byKey(const Key('disclaimer-scroll-button'));
     final Finder disclaimerButton = find.byKey(const Key('next-disclaimer'));
 
     // =========== authenticate_page.dart =============== //
@@ -91,11 +90,7 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     // =========== disclaimer_page.dart =============== //
     await tester.tap(eulaCheckBox);
     await tester.tap(tocCheckBox);
-    await tester.dragUntilVisible(
-      endListDisclaimer,
-      disclaimerScroll,
-      const Offset(0, -1500),
-    );
+    await tester.longPress(scrollButton);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(disclaimerButton);
     await tester.pump(Duration(seconds: 1));
