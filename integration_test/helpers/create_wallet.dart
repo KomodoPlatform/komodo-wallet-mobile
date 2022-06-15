@@ -32,6 +32,7 @@ Future<void> createWalletToTest(WidgetTester tester) async {
         find.byKey(const Key('create-password-field-confirm'));
     final Finder confirmPasswordButton =
         find.byKey(const Key('confirm-password'));
+    final Finder viewPasswordBtn = find.byKey(const Key('password-visibility'));
     final Finder eulaCheckBox = find.byKey(const Key('checkbox-eula'));
     final Finder tocCheckBox = find.byKey(const Key('checkbox-toc'));
     final Finder scrollButton =
@@ -112,6 +113,8 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     //  correct password
     await tester.tap(passwordField);
     await tester.enterText(passwordField, password);
+    await tester.tap(viewPasswordBtn);
+    await tester.pump(Duration(seconds: 1));
     await tester.tap(passwordConfirmField);
     await tester.enterText(passwordConfirmField, confirmPassword);
     await tester.pump(Duration(seconds: 1));
