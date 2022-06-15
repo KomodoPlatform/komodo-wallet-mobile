@@ -22,6 +22,8 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     final Finder seedPhraseText = find.byKey(const Key('seed-phrase'));
     final Finder confirmSeedButton =
         find.byKey(const Key('create-seed-button'));
+    final Finder copySeedButton = find.byKey(const Key('seed-copy'));
+    final Finder reloadSeedButton = find.byKey(const Key('seed-refresh'));
     final Finder continueCheckButton = find.byKey(const Key('continue-check'));
     final Finder passwordField = find.byKey(const Key('create-password-field'));
     final Finder passwordConfirmField =
@@ -45,11 +47,14 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     await tester.testTextInput.receiveAction(TextInputAction.done);
     // ============= new_account_page.dart ================ //
     await tester.pump(Duration(seconds: 1));
+    await tester.tap(reloadSeedButton);
+    await tester.pump(Duration(seconds: 1));
+    await tester.tap(copySeedButton);
+    await tester.pump(Duration(seconds: 1));
     List<String> seedPhrase =
         tester.widget<Text>(seedPhraseText).data.split(' ');
     await tester.tap(confirmSeedButton);
     await tester.pump(Duration(seconds: 1));
-
     // =========== check_passphrase_page.dart =============== //
     List chosenWords =
         jsonDecode(tester.widget<Text>(find.byKey(Key('chosenWords'))).data);
