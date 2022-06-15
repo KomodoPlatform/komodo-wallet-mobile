@@ -24,6 +24,7 @@ Future<void> createWalletToTest(WidgetTester tester) async {
         find.byKey(const Key('create-seed-button'));
     final Finder copySeedButton = find.byKey(const Key('seed-copy'));
     final Finder reloadSeedButton = find.byKey(const Key('seed-refresh'));
+    final Finder seedPhraseField = find.byKey(const Key('which-word-field'));
     final Finder continueCheckButton = find.byKey(const Key('continue-check'));
     final Finder pressBackButton = find.byKey(const Key('check-phrase-again'));
     final Finder passwordField = find.byKey(const Key('create-password-field'));
@@ -69,8 +70,15 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     await tester.tap(continueCheckButton);
     await tester.pump(Duration(seconds: 1));
     seedPhrase.remove(seedPhrase[chosenWords[0]]);
-    // enter second seed
-    await tester.tap(find.byKey(Key(seedPhrase[chosenWords[1]])));
+    // wrong second seed
+    await tester.enterText(seedPhraseField, seedPhrase[chosenWords[0]]);
+    await tester.pump(Duration(seconds: 1));
+    await tester.tap(continueCheckButton);
+    await tester.pump(Duration(seconds: 1));
+    expect(seedPhrase[chosenWords[0]], seedPhrase[chosenWords[1]],
+        reason: 'Invalid Seed Phrase', skip: true);
+    // right second seed
+    await tester.enterText(seedPhraseField, seedPhrase[chosenWords[1]]);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(continueCheckButton);
     await tester.pump(Duration(seconds: 1));
