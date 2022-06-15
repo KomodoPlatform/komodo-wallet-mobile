@@ -95,6 +95,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
             height: 16,
           ),
           SecondaryButton(
+            key: const Key('check-phrase-again'),
             text: AppLocalizations.of(context).checkSeedPhraseButton2,
             onPressed: () {
               Navigator.of(context).pop();
