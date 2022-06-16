@@ -16,6 +16,8 @@ import 'package:komodo_dex/screens/portfolio/loading_coin.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
+import 'build_filter_coin.dart';
+
 class SelectCoinsPage extends StatefulWidget {
   const SelectCoinsPage({this.coinsToActivate});
 
@@ -75,7 +77,20 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 });
               },
             ),
-            actions: _buildFilterIcon(),
+            actions: [
+              BuildFilterCoin(
+                typeFilter: typeFilter,
+                allCoinsTypes: allCoinsTypes,
+                onSelected: (String aType) async {
+                  typeFilter = aType;
+                  List<Coin> coinsFiltered = await coinsBloc
+                      .getAllNotActiveCoinsWithFilter(controller.text, aType);
+                  _currentCoins = coinsFiltered;
+                  _listViewItems = _buildListView();
+                  setState(() {});
+                },
+              )
+            ],
             leading: Builder(
               builder: (BuildContext context) {
                 return IconButton(
@@ -213,67 +228,6 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     }
 
     return list;
-  }
-
-  List<Widget> _buildFilterIcon() {
-    return [
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(right: 8.0, left: 4),
-            child: PopupMenuButton(
-              tooltip: 'Filter by Protocols',
-              onSelected: (String type) async {
-                typeFilter = type;
-                List<Coin> coinsFiltered = await coinsBloc
-                    .getAllNotActiveCoinsWithFilter(controller.text, type);
-                _currentCoins = coinsFiltered;
-                _listViewItems = _buildListView();
-                setState(() {});
-              },
-              child: Padding(
-                padding: EdgeInsets.only(right: 3, left: 6),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      typeFilter.toUpperCase(),
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    SizedBox(width: 8),
-                    typeFilter != ''
-                        ? InkWell(
-                            onTap: () async {
-                              typeFilter = '';
-                              List<Coin> coinsFiltered = await coinsBloc
-                                  .getAllNotActiveCoinsWithFilter(
-                                      controller.text, typeFilter);
-                              _currentCoins = coinsFiltered;
-                              _listViewItems = _buildListView();
-                              setState(() {});
-                            },
-                            child: Icon(Icons.close, color: Colors.white),
-                          )
-                        : Icon(Icons.filter_list, color: Colors.white),
-                  ],
-                ),
-              ),
-              itemBuilder: (_) => allCoinsTypes
-                  .map(
-                    (e) => PopupMenuItem<String>(
-                      value: e,
-                      child: Text(
-                        e.toUpperCase(),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          )
-        ],
-      )
-    ];
   }
 
   Widget _buildDoneButton() {
