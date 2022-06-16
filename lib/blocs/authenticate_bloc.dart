@@ -146,6 +146,7 @@ class AuthenticateBloc extends BlocBase {
     await prefs.remove('camoFraction');
     await prefs.remove('camoBalance');
     await prefs.remove('camoSessionStartedAt');
+    await prefs.remove('showCancelOrderDialog1');
 
     updateStatusPin(PinStatus.NORMAL_PIN);
     await EncryptionTool().delete('pin');
