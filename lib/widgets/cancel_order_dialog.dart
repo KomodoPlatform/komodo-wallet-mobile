@@ -32,34 +32,6 @@ void showCancelOrderDialog({
             Text(AppLocalizations.of(context).confirmCancel),
             const SizedBox(height: 12),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                TextButton(
-                  onPressed: () => dialogBloc.closeDialog(context),
-                  child: Text(
-                    AppLocalizations.of(context).no,
-                    maxLines: 1,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                ElevatedButton(
-                  key: key ?? const Key('confirm-button-key'),
-                  onPressed: () {
-                    onConfirm();
-                    dialogBloc.closeDialog(context);
-                  },
-                  child: Text(
-                    AppLocalizations.of(context).yes,
-                    maxLines: 1,
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12.0, top: 6.0),
-              child: Text(AppLocalizations.of(context).noteOnOrder),
-            ),
-            Row(
               children: [
                 StreamBuilder<bool>(
                     initialData: settingsBloc.showCancelOrderDialog,
@@ -84,7 +56,32 @@ void showCancelOrderDialog({
                     },
                     child: Text(AppLocalizations.of(context).dontAskAgain)),
               ],
-            )
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                TextButton(
+                  onPressed: () => dialogBloc.closeDialog(context),
+                  child: Text(
+                    AppLocalizations.of(context).no,
+                    maxLines: 1,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton(
+                  key: key ?? const Key('confirm-button-key'),
+                  onPressed: () {
+                    onConfirm();
+                    dialogBloc.closeDialog(context);
+                  },
+                  child: Text(
+                    AppLocalizations.of(context).yes,
+                    maxLines: 1,
+                  ),
+                ),
+              ],
+            ),
           ],
         );
       }).then((dynamic _) => dialogBloc.dialog = null);

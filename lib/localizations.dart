@@ -482,9 +482,6 @@ class AppLocalizations {
   String get no => Intl.message('No', name: 'no');
   String get dontAskAgain =>
       Intl.message('Don’t ask again', name: 'dontAskAgain');
-  String get noteOnOrder =>
-      Intl.message('Note: Matched Order cannot be cancelled again',
-          name: 'noteOnOrder');
   String get cancelOrder => Intl.message('Cancel Order', name: 'cancelOrder');
   String get confirmCancel =>
       Intl.message('Are you sure you want to cancel the order',
