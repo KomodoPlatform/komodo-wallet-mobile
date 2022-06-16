@@ -2,10 +2,10 @@ import 'package:komodo_dex/main.dart' as app;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import '../../helpers/create_wallet.dart';
-import '../../helpers/restore_wallet.dart';
-import '../../helpers/logout.dart';
-import '../../helpers/restore_old_wallet.dart';
+import 'create_wallet.dart';
+import 'logout_wallet.dart';
+import 'restore_old_wallet.dart';
+import 'restore_wallet.dart';
 import 'test_activate_coin.dart';
 
 void main() {
@@ -29,12 +29,5 @@ void main() {
     print('TEST COINS ACTIVATION');
     await testActivateCoins(tester);
     await tester.pumpAndSettle();
-
-/*
-    print('TEST CEX PRICES');
-    await testCexPrices(tester);
-
-    print('TEST COINS DEACTIVATION');
-    await testDisableCoin(tester);*/
   }, semanticsEnabled: false);
 }

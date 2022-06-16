@@ -96,7 +96,7 @@
  - Open terminal 
  - Type and run the test file in the terminal:
 ```bash
-flutter test integration_test/tests/runners/create_wallet.dart
+flutter test integration_test/runners/create_wallet.dart
 ```
  - The test build and opens AtomicDEX from the Splash Screen.
  
@@ -127,7 +127,7 @@ flutter test integration_test/tests/runners/create_wallet.dart
  - Open terminal 
  - Type and run the test file in the terminal:
 ```bash
-flutter test integration_test/tests/runners/restore_wallet.dart
+flutter test integration_test/runners/restore_wallet.dart
 ```
  - The test build and opens AtomicDEX from the Splash Screen.
  
