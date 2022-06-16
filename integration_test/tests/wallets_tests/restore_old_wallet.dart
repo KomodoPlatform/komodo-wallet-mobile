@@ -3,7 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 Future<void> restoreOldWallet(WidgetTester tester) async {
   try {
-    final Finder walletItem = find.byKey(const Key('logged-out-wallet'));
+    final Finder walletItem =
+        find.byKey(const Key('logged-out-wallet-my-wallet'));
     final Finder passwordField = find.byKey(const Key('enter-password-field'));
     const String password = 'pppaaasssDDD555444@@@';
     await tester.tap(walletItem);
