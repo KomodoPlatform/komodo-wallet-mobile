@@ -107,20 +107,20 @@ flutter test integration_test/runners/create_wallet.dart
  - Press the reload icon to generate new Seed Phrase
  - Press the copy icon to copy the newly generated Seed Phrase
  - Press "NEXT" button to open the "check seed phrase" page
- - Press the "GO BACK AND CHACK AGAIN" and returns to "your new seed phrase" page 
+ - Press the "GO BACK AND CHECK AGAIN" and returns to "your new seed phrase" page 
  - Press "NEXT" button to open the "check seed phrase" page
- - Choose the wrong word, nothing will hepen, user can't continue
+ - Choose the wrong word, nothing will happen, user can't continue
  - Choose the right word, the "CONTINUE" button changed color (activated), user can go to the next step
- - Enter password under 12 characters, or without one lower-case or on upper-case, or without  one spetial symbol, but it    is impossible to create a password that does not meet the requirements
+ - Enter password under 12 characters, or without one lower-case or on upper-case, or without  one special symbol, but it is impossible to create a password that does not meet the requirements
  - Enter confirm password, An error opens shows in the enter password field
  - Enter correct password, and move to next input
- - Press eye icon, to hide and show passwod
+ - Press eye icon, to hide and show password
  - Press "confirm password" button and it opens "Disclaimer & ToS" page
  - Tries to press "NEXT" without all checkbox's, without one of them, but unable to continue without accepted
  - Accept all checkbox's and long presses the down icon to scroll the page down, then "next" button changed color (activated), you can go to the next step
  - Press "next" button and opened "create PIN" page 
  - Enter any 6 digits PIN and go to "confirm PIN code"
- - Enter discrepant PIN, and shows "Eror, please try again"
+ - Enter discrepant PIN, and shows "Error, please try again"
  - Enter correct PIN again and Wallet is successfully created. 
 
 #### 3.1.2. Restore Wallet
@@ -139,16 +139,16 @@ flutter test integration_test/runners/restore_wallet.dart
  - input your seed phrase, the "confirm" button color changed (activated), can go to the next step
  - Press eye icon, entered seed becomes either visible or hidden on the press, no animation issues present
  - Press confirm Seed Button, to go to the password page
- - Enter password under 12 characters, or without one lower-case or on upper-case, or without  one spetial symbol, but it    is impossible to create a password that does not meet the requirements
+ - Enter password under 12 characters, or without one lower-case or on upper-case, or without  one special symbol, but it is impossible to create a password that does not meet the requirements
  - Enter confirm password, An error opens shows in the enter password field
  - Enter correct password, and move to next input
- - Press eye icon, to hide and show passwod
+ - Press eye icon, to hide and show password
  - Press "confirm password" button and it opens "Disclaimer & ToS" page
  - Tries to press "NEXT" without all checkbox's, without one of them, but unable to continue without accepted
  - Accept all checkbox's and long presses the down icon to scroll the page down, then "next" button changed color (activated), you can go to the next step
  - Press "next" button and opened "create PIN" page 
  - Enter any 6 digits PIN and go to "confirm PIN code"
- - Enter discrepant PIN, and shows "Eror, please try again"
+ - Enter discrepant PIN, and shows "Error, please try again"
  - Enter correct PIN again and Wallet is successfully restored. 
 
 #### 3.2 Run all tests
