@@ -5,6 +5,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
 void openSelectSellCoinDialog({
@@ -72,7 +73,9 @@ List<SimpleDialogOption> _coinItemsList({
 }) {
   final List<SimpleDialogOption> listDialog = <SimpleDialogOption>[];
   for (CoinBalance coin in coinsBloc.coinBalance) {
-    if (!coin.coin.walletOnly && double.parse(coin.balance.getBalance()) > 0) {
+    if ((!coin.coin.suspended) &&
+        (!coin.coin.walletOnly) &&
+        double.parse(coin.balance.getBalance()) > 0) {
       final SimpleDialogOption dialogItem = SimpleDialogOption(
         key: Key('item-dialog-${coin.coin.abbr.toLowerCase()}-sell'),
         onPressed: () {
@@ -87,7 +90,7 @@ List<SimpleDialogOption> _coinItemsList({
                 height: 30,
                 width: 30,
                 child: Image.asset(
-                  'assets/coin-icons/${coin.coin.abbr.toLowerCase()}.png',
+                  getCoinIconPath(coin.coin.abbr),
                 )),
             Expanded(child: SizedBox()),
             Row(

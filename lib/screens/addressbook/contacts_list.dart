@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/screens/addressbook/contact_list_item.dart';
 
 class ContactsList extends StatefulWidget {
@@ -41,43 +42,14 @@ class _ContactsListState extends State<ContactsList> {
 
   List<Widget> _buildList() {
     final List<Widget> list = [];
-    final List<Contact> filteredContacts = widget.contacts.where(
-      (Contact contact) {
-        if (widget.coin == null) {
-          return true;
-        }
-        if (contact.addresses == null || contact.addresses.isEmpty) {
-          return false;
-        }
-        if (contact.addresses.containsKey(widget.coin.abbr)) {
-          return true;
-        }
-        if (widget.coin.type == 'smartChain' &&
-            contact.addresses.containsKey('KMD')) {
-          return true;
-        }
-        if (widget.coin.type == 'erc' && contact.addresses.containsKey('ETH')) {
-          return true;
-        }
-        if (widget.coin.type == 'bep' && contact.addresses.containsKey('BNB')) {
-          return true;
-        }
-        if (widget.coin.type == 'plg' &&
-            contact.addresses.containsKey('MATIC')) {
-          return true;
-        }
-        if ((widget.coin.type == 'qrc' || widget.coin.abbr == 'QTUM') &&
-            contact.addresses.containsKey('QTUM')) {
-          return true;
-        }
-        return false;
-      },
-    ).toList();
+    final List<Contact> contacts = widget.coin != null
+        ? _getContactsContainingCoinAddress()
+        : widget.contacts;
 
     String indexLetter = '';
     List<Widget> indexBlock;
 
-    for (Contact contact in filteredContacts) {
+    for (Contact contact in contacts) {
       if (widget.contact != null && contact != widget.contact) {
         continue;
       }
@@ -123,6 +95,32 @@ class _ContactsListState extends State<ContactsList> {
     _addBlockToList(indexBlock, list);
 
     return list;
+  }
+
+  List<Contact> _getContactsContainingCoinAddress() {
+    final Coin coin = widget.coin;
+    if (coin == null) return widget.contacts;
+
+    return widget.contacts.where((contact) {
+      if (contact.addresses == null || contact.addresses.isEmpty) {
+        return false;
+      }
+      if (contact.addresses.containsKey(coin.abbr)) {
+        return true;
+      }
+
+      if (coin.type == CoinType.smartChain &&
+          contact.addresses.containsKey('KMD')) {
+        return true;
+      }
+
+      final String platform = coin.protocol?.protocolData?.platform;
+      if (platform != null && contact.addresses.containsKey(platform)) {
+        return true;
+      }
+
+      return false;
+    }).toList();
   }
 
   void _addBlockToList(List<Widget> block, List<Widget> list) {

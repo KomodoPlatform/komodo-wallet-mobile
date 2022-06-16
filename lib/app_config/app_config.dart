@@ -23,6 +23,7 @@ class AppConfig {
   List<String> get defaultCoins => ['KMD', 'BTC'];
   List<String> get coinsFiat => ['BTC', 'KMD'];
   List<String> get walletOnlyCoins => ['USDT-ERC20', 'VOTE2022'];
+  final List<String> protocolSuffixes = ['ERC20', 'BEP20', 'PLG20', 'FTM20'];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
 
   bool get isSwapShareCardEnabled => true;
@@ -89,4 +90,6 @@ class AppConfig {
   String get bepUrl => 'https://komodo.live:3334/api/v2/bep_tx_history';
   String get maticUrl => 'https://komodo.live:3334/api/v1/plg_tx_history';
   String get plgUrl => 'https://komodo.live:3334/api/v2/plg_tx_history';
+  String get fantomUrl => 'https://komodo.live:3334/api/v1/ftm_tx_history';
+  String get ftmUrl => 'https://komodo.live:3334/api/v2/ftm_tx_history';
 }

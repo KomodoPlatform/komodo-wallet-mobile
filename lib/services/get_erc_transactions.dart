@@ -3,12 +3,14 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 GetErcTransactions getErcTransactions = GetErcTransactions();
 
@@ -19,9 +21,11 @@ class GetErcTransactions {
   final String bepUrl = appConfig.bepUrl;
   final String maticUrl = appConfig.maticUrl;
   final String plgUrl = appConfig.plgUrl;
+  final String fantomUrl = appConfig.fantomUrl;
+  final String ftmUrl = appConfig.ftmUrl;
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
-    if (coin.type != 'erc' && coin.type != 'bep' && coin.type != 'plg') return;
+    if (!isErcType(coin)) return;
 
     // Endpoint returns all tx at ones, and `fromId` only has value
     // if some txs was already fetched, so no need to fetch same txs again
@@ -36,26 +40,35 @@ class GetErcTransactions {
 
     String url;
     switch (coin.type) {
-      case 'erc':
+      case CoinType.utxo:
+      case CoinType.smartChain:
+      case CoinType.qrc:
+        break;
+
+      case CoinType.erc:
         url = (coin.protocol?.type == 'ETH' // 'ETH', 'ETHR'
                 ? '$ethUrl/$address'
                 : '$ercUrl/${coin.protocol.protocolData.contractAddress}/$address') +
             (coin.testCoin ? '&testnet=true' : '');
         break;
-      case 'bep':
+      case CoinType.bep:
         url = (coin.protocol?.type == 'ETH' // 'BNB', 'BNBT'
                 ? '$bnbUrl/$address'
                 : '$bepUrl/${coin.protocol.protocolData.contractAddress}/$address') +
             (coin.testCoin ? '&testnet=true' : '');
         break;
-      case 'plg':
+      case CoinType.plg:
         url = (coin.protocol?.type == 'ETH' // 'MATIC', 'MATICTEST'
                 ? '$maticUrl/$address'
                 : '$plgUrl/${coin.protocol.protocolData.contractAddress}/$address') +
             (coin.testCoin ? '&testnet=true' : '');
         break;
-      default:
-        return;
+      case CoinType.ftm:
+        url = (coin.protocol?.type == 'ETH' // 'FTM', 'FTMT'
+                ? '$fantomUrl/$address'
+                : '$ftmUrl/${coin.protocol.protocolData.contractAddress}/$address') +
+            (coin.testCoin ? '&testnet=true' : '');
+        break;
     }
 
     String body;
@@ -107,6 +120,9 @@ class GetErcTransactions {
           break;
         case 'MATICTEST':
           feeCoin = 'MATICTEST';
+          break;
+        case 'FTMT':
+          feeCoin = 'FTMT';
           break;
         default:
       }

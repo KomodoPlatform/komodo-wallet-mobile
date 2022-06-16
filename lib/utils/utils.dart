@@ -7,6 +7,7 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -65,6 +66,14 @@ Rational tryParseRat(String text) {
   } catch (_) {
     return null;
   }
+}
+
+String getCoinIconPath(String abbr) {
+  for (String suffix in appConfig.protocolSuffixes) {
+    abbr = abbr.replaceAll('-$suffix', '');
+  }
+
+  return 'assets/coin-icons/' + abbr.toLowerCase() + '.png';
 }
 
 Rational deci2rat(Decimal decimal) {
@@ -453,6 +462,11 @@ bool get isInDebugMode {
   return inDebugMode;
 }
 
+bool isErcType(Coin coin) {
+  final String protocolType = coin?.protocol?.type;
+  return protocolType == 'ERC20' || protocolType == 'ETH';
+}
+
 String humanDate(int epoch) {
   DateTime _dateTime;
   try {
@@ -657,8 +671,8 @@ void showUriDetailsDialog(
                 children: [
                   CircleAvatar(
                     radius: 11,
-                    backgroundImage: AssetImage(
-                        'assets/coin-icons/${abbr.toLowerCase()}.png'),
+                    backgroundImage:
+                        AssetImage(getCoinIconPath(abbr.toLowerCase())),
                   ),
                   SizedBox(width: 6),
                   Text(

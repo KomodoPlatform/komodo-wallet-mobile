@@ -192,7 +192,18 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     }
 
     final List<Widget> list = <Widget>[];
-    final Map<String, List<Coin>> coinsMap = getCoinsMap();
+
+    final Map<String, List<Coin>> coinsMap = <String, List<Coin>>{};
+
+    for (Coin c in _currentCoins) {
+      if (c.testCoin) continue;
+      if (!coinsMap.containsKey(c.type.name)) {
+        coinsMap.putIfAbsent(c.type.name, () => [c]);
+      } else {
+        coinsMap[c.type.name].add(c);
+      }
+    }
+
 
     List<String> sortedTypes = coinsMap.keys.toList()
       ..sort((String a, String b) => b.compareTo(a));
