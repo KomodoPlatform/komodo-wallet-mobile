@@ -38,6 +38,7 @@ class SettingsBloc implements BlocBase {
   bool isLightTheme = false;
   bool showSoundsExplanationDialog = true;
   bool showCancelOrderDialog = true;
+  bool askCancelOrderAgain = true;
   bool enableTestCoins = false;
 
   final StreamController<bool> _showBalanceController =
@@ -50,11 +51,10 @@ class SettingsBloc implements BlocBase {
   Sink<bool> get _inShowSoundsDialog => _showSoundsDialogCtrl.sink;
   Stream<bool> get outShowSoundsDialog => _showSoundsDialogCtrl.stream;
 
-  final StreamController<bool> _showCancelOrderDialogCtrl =
+  final StreamController<bool> _askCancelOrderAgainCtrl =
       StreamController<bool>.broadcast();
-  Sink<bool> get _inShowCancelOrderDialog => _showCancelOrderDialogCtrl.sink;
-  Stream<bool> get outShowCancelOrderDialog =>
-      _showCancelOrderDialogCtrl.stream;
+  Sink<bool> get _inAskCancelOrderAgain => _askCancelOrderAgainCtrl.sink;
+  Stream<bool> get outAskCancelOrderAgain => _askCancelOrderAgainCtrl.stream;
 
   final StreamController<bool> _isLightThemeController =
       StreamController<bool>.broadcast();
@@ -70,7 +70,7 @@ class SettingsBloc implements BlocBase {
   void dispose() {
     _showBalanceController?.close();
     _showSoundsDialogCtrl?.close();
-    _showCancelOrderDialogCtrl?.close();
+    _inAskCancelOrderAgain?.close();
     _enableTestCoinsController?.close();
   }
 
@@ -121,10 +121,13 @@ class SettingsBloc implements BlocBase {
   }
 
   void setShowCancelOrderDialog(bool val) {
-    if (!val) return;
     showCancelOrderDialog = val;
-    _inShowCancelOrderDialog.add(val);
     _prefs.setBool('showCancelOrderDialog1', val);
+  }
+
+  void askAgainOnChanged(bool val) {
+    askCancelOrderAgain = val;
+    _inAskCancelOrderAgain.add(val);
   }
 
   void setLightTheme(bool val) {

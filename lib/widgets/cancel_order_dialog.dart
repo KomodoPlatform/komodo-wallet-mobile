@@ -13,7 +13,7 @@ void showCancelOrderDialog({
     onConfirm();
     return;
   }
-
+  settingsBloc.askCancelOrderAgain = true;
   dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -34,8 +34,8 @@ void showCancelOrderDialog({
             Row(
               children: [
                 StreamBuilder<bool>(
-                    initialData: settingsBloc.showCancelOrderDialog,
-                    stream: settingsBloc.outShowCancelOrderDialog,
+                    initialData: settingsBloc.askCancelOrderAgain,
+                    stream: settingsBloc.outAskCancelOrderAgain,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) return SizedBox();
                       return SizedBox(
@@ -44,15 +44,15 @@ void showCancelOrderDialog({
                         child: Checkbox(
                             value: !snapshot.data,
                             onChanged: (val) {
-                              settingsBloc.setShowCancelOrderDialog(!val);
+                              settingsBloc.askAgainOnChanged(!val);
                             }),
                       );
                     }),
                 const SizedBox(width: 12),
                 GestureDetector(
                     onTap: () {
-                      settingsBloc.setShowCancelOrderDialog(
-                          !settingsBloc.showCancelOrderDialog);
+                      settingsBloc
+                          .askAgainOnChanged(!settingsBloc.askCancelOrderAgain);
                     },
                     child: Text(AppLocalizations.of(context).dontAskAgain)),
               ],
@@ -72,8 +72,10 @@ void showCancelOrderDialog({
                 ElevatedButton(
                   key: key ?? const Key('confirm-button-key'),
                   onPressed: () {
-                    onConfirm();
+                    settingsBloc.setShowCancelOrderDialog(
+                        settingsBloc.askCancelOrderAgain);
                     dialogBloc.closeDialog(context);
+                    onConfirm();
                   },
                   child: Text(
                     AppLocalizations.of(context).yes,
