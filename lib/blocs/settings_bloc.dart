@@ -121,6 +121,7 @@ class SettingsBloc implements BlocBase {
   }
 
   void setShowCancelOrderDialog(bool val) {
+    if (!val) return;
     showCancelOrderDialog = val;
     _inShowCancelOrderDialog.add(val);
     _prefs.setBool('showCancelOrderDialog1', val);
