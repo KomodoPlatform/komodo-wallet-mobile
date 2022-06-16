@@ -763,7 +763,7 @@ List<Coin> filterCoinsByQuery(List<Coin> coins, String query,
       .where((Coin coin) =>
           (coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
               coin.name.toLowerCase().contains(query.trim().toLowerCase())) &&
-          coin.type.toLowerCase().contains(type.trim().toLowerCase()))
+          coin.type.name.toLowerCase().contains(type.trim().toLowerCase()))
       .toList();
 
   return list;
