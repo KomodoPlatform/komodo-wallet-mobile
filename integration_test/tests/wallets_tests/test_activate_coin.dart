@@ -52,7 +52,6 @@ Future<void> testActivateCoins(WidgetTester tester) async {
     await tester.enterText(searchCoinsField, '');
     await tester.pumpAndSettle();
     // ETH, DOGE, KMD-BEP20 and BNB should be active
-    print(1);
 
     await tester.tap(confirmAddAssetsButton);
     await tester.pumpAndSettle();

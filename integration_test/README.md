@@ -94,9 +94,9 @@
 ### 3.1. Mac + iOS (physical iPhone)
 #### 3.1.1. Create Wallet
  - Open terminal 
- - Type and run the execute_integration.sh file in the terminal:
+ - Type and run the test file in the terminal:
 ```bash
-/bin/zsh ./execute_integration.sh
+flutter test integration_test/tests/runners/create_wallet.dart
 ```
  - The test build and opens AtomicDEX from the Splash Screen.
  
@@ -125,9 +125,9 @@
 
 #### 3.1.2. Restore Wallet
  - Open terminal 
- - Type and run the execute_integration.sh file in the terminal:
+ - Type and run the test file in the terminal:
 ```bash
-/bin/zsh ./execute_integration.sh
+flutter test integration_test/tests/runners/restore_wallet.dart
 ```
  - The test build and opens AtomicDEX from the Splash Screen.
  
@@ -151,3 +151,11 @@
  - Enter discrepant PIN, and shows "Eror, please try again"
  - Enter correct PIN again and Wallet is successfully restored. 
 
+#### 3.2 Run all tests
+
+- Open terminal
+- Type and run the execute_integration.sh file in the terminal:
+```bash
+/bin/zsh ./execute_integration.sh
+```
+- All the tests are run from 3.1.1 to 3.1.2
