@@ -18,8 +18,11 @@ void main() {
     await tester.pumpAndSettle();
     print('CREATE WALLET TO TEST');
     await createWalletToTest(tester);
+    print('LOGOUT WALLET TO WALLETS LIST');
+    await logOut(tester);
+    await tester.pumpAndSettle();
     print('RESTORE WALLET TO TEST');
-    await restoreWalletToTest(tester);
+    await restoreWalletToTest(tester, fromStart: false);
     await tester.pumpAndSettle();
     print('LOGOUT WALLET TO WALLETS LIST');
     await logOut(tester);

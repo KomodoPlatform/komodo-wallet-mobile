@@ -4,13 +4,15 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/check_button.dart';
 import '../../helpers/enter_pin.dart';
 
-Future<void> restoreWalletToTest(WidgetTester tester) async {
+Future<void> restoreWalletToTest(WidgetTester tester,
+    {bool fromStart = true}) async {
   // Restores wallet to be used in following tests
   try {
-    const String testSeed =
+    const String seedPhrase =
         'hazard slam top rail jacket ecology trash first stock nut swift thought youth rack slot regular wasp bulk spatial legal staff change way brush';
     const String invalidSeed = 'hazard slam top';
-    const String walletName = 'my-wallet';
+    const String usedWalletName = 'my-wallet';
+    const String walletName = 'restored-wallet';
     const String invalidPassword = 'abcd';
     const String password = 'pppaaasssDDD555444@@@';
     const String wrongPassword = '';
@@ -39,6 +41,15 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     await tester.tap(restoreWalletButton);
     await tester.pumpAndSettle();
     // welcome_page.dart
+    if (!fromStart) {
+      // already used name
+      await tester.tap(nameField);
+      await tester.enterText(nameField, usedWalletName);
+      await tester.pump();
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      expect(usedWalletName, walletName,
+          reason: 'Already used wallet name', skip: true);
+    }
     await tester.tap(nameField);
     await tester.enterText(nameField, walletName);
     await tester.pump();
@@ -47,14 +58,16 @@ Future<void> restoreWalletToTest(WidgetTester tester) async {
     // test wrong seed
     await tester.pump(Duration(seconds: 1));
     await tester.enterText(importSeedField, invalidSeed);
+    await tester.pump(Duration(seconds: 1));
+    await tester.tap(viewPasswordBtn);
     await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(confirmSeedButton);
     await tester.pump(Duration(seconds: 1));
-    expect(testSeed, testSeed, reason: 'Invalid Seed', skip: true);
+    expect(invalidSeed, seedPhrase, reason: 'Invalid Seed', skip: true);
     checkButtonStatus(tester, confirmSeedButton);
     // test correct seed
-    await tester.enterText(importSeedField, testSeed);
+    await tester.enterText(importSeedField, seedPhrase);
     await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(viewPasswordBtn);
