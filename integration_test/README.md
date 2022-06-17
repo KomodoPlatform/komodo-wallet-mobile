@@ -93,7 +93,8 @@
 
 ### 3.1. Mac + iOS (physical iPhone)
 #### 3.1.1. Create Wallet
- - Open terminal 
+ - Open terminal in the project's root folder 
+ - Connect real device and replace the `device_id` with the device's id in ./execute_integration.sh
  - Type and run the test file in the terminal:
 ```bash
 flutter test integration_test/runners/create_wallet.dart
@@ -124,8 +125,9 @@ flutter test integration_test/runners/create_wallet.dart
  - Enter correct PIN again and Wallet is successfully created. 
 
 #### 3.1.2. Restore Wallet
- - Open terminal 
- - Type and run the test file in the terminal:
+- Open terminal in the project's root folder
+-  - Connect real device and replace the `device_id` with the device's id in ./execute_integration.sh
+- Type and run the test file in the terminal:
 ```bash
 flutter test integration_test/runners/restore_wallet.dart
 ```
