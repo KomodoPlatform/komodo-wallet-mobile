@@ -1331,8 +1331,6 @@ class AppLocalizations {
 
   // --- Miscellaneous ---
 
-  String get checkingUpdates =>
-      Intl.message('Checking for updates...', name: 'checkingUpdates');
   String get checkForUpdates =>
       Intl.message('Check for updates', name: 'checkForUpdates');
   String get logoutWarning =>
