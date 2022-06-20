@@ -39,6 +39,7 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
         color: Theme.of(context).primaryColor,
       ),
       child: TextFormField(
+        key: const Key('coins-search-field'),
         textAlignVertical: TextAlignVertical.center,
         textInputAction: TextInputAction.search,
         autofocus: true,

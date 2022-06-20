@@ -144,6 +144,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
 
   Widget _buildNextButton() {
     return PrimaryButton(
+      key: const Key('create-seed-button'),
       text: AppLocalizations.of(context).next,
       onPressed: () => Navigator.push<dynamic>(
         context,

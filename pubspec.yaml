@@ -65,6 +65,7 @@ dev_dependencies:
     sdk: flutter
   flutter_test: # flutter.dev
     sdk: flutter
+  integration_test:
 
   # recommended linter rules
   flutter_lints: 1.0.4 # flutter.dev (Note: Supports null safety)

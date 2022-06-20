@@ -25,6 +25,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
   List<Widget> wordsWidget = <Widget>[];
   List<WordData> wordsDataRandom = <WordData>[];
   int stepper = 0;
+  List<int> chosenWords = [];
 
   @override
   void initState() {
@@ -41,11 +42,12 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
 
     for (int i = 0; i < 3; i++) {
       final int res = _random.nextInt(wordsData.length);
+      chosenWords.add(res);
+
       wordsWidget.add(SeedRandom(data: wordsData[res]));
       wordsDataRandom.add(wordsData[res]);
       wordsData.removeAt(res);
     }
-
     super.initState();
   }
 
@@ -61,6 +63,12 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         children: <Widget>[
+          Text(
+            chosenWords.toString(),
+            key: const Key('chosenWords'),
+            style: TextStyle(
+                fontSize: 1, color: Theme.of(context).backgroundColor),
+          ),
           Text(
             AppLocalizations.of(context).checkSeedPhraseTitle,
             style: Theme.of(context).textTheme.headline6,
@@ -78,6 +86,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
               stream: checkPassphraseBloc.outIsWordGoodLogin,
               builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                 return PrimaryButton(
+                  key: const Key('continue-check'),
                   text: AppLocalizations.of(context).checkSeedPhraseButton1,
                   onPressed: snapshot.data ? _onPressedNext : null,
                 );
@@ -86,6 +95,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
             height: 16,
           ),
           SecondaryButton(
+            key: const Key('check-phrase-again'),
             text: AppLocalizations.of(context).checkSeedPhraseButton2,
             onPressed: () {
               Navigator.of(context).pop();
@@ -142,9 +152,9 @@ class _SeedRandomState extends State<SeedRandom> {
 
   Widget _buildSeedWord(String word) {
     return ElevatedButton(
+        key: Key(word),
         onPressed: () {
           _controller.text = word;
-
           checkPassphraseBloc.setWord(_controller.text);
           checkPassphraseBloc.setIsWordGood(
               const CheckPassphrasePage().checkSeedWord(widget.data));
