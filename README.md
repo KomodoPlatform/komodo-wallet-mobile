@@ -92,3 +92,16 @@ flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/loca
  - [ticking sound](https://freesound.org/people/FoolBoyMedia/sounds/264498/)
  - [silence](https://freesound.org/people/Mullabfuhr/sounds/540483/)
  - [start (iOs)](https://freesound.org/people/pizzaiolo/sounds/320664/)
+
+ ## Testing
+
+ ### 1. Manual testing
+ Manual testing plan:
+ https://docs.google.com/spreadsheets/d/15LAphQydTn5ljS64twfbqIMcDOUMFV_kEmMkNiHbSGc
+
+ ### 2. Integration testing
+ [Guide and coverage](integration_test/README.md)
+
+ ### 3. Unit/Widget testing
+ Not supported
+

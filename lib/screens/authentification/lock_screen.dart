@@ -142,7 +142,7 @@ class _LockScreenState extends State<LockScreen> {
     final walletSecuritySettingsProvider =
         context.read<WalletSecuritySettingsProvider>();
 
-    Widget _buildSplash(String message) {
+    Widget _buildSplash({String message}) {
       return Scaffold(
         body: Center(
           child: Column(
@@ -154,11 +154,17 @@ class _LockScreenState extends State<LockScreen> {
                     : 'assets/branding/logo_app.png',
               ),
               const SizedBox(height: 12),
-              Text(message,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  )),
+              message == null
+                  ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : Text(message,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Theme.of(context).textTheme.caption.color,
+                      )),
             ],
           ),
         ),
@@ -169,10 +175,10 @@ class _LockScreenState extends State<LockScreen> {
       final RegExpMatch _tailMatch =
           RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
       final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
-      return _buildSplash(_logTail);
+      return _buildSplash(message: _logTail);
     } else if (updatesProvider.status == null &&
         mainBloc.networkStatus == NetworkStatus.Online) {
-      return _buildSplash(AppLocalizations.of(context).checkingUpdates);
+      return _buildSplash();
     }
 
     return StreamBuilder<bool>(
