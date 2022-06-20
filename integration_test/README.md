@@ -153,6 +153,28 @@ flutter test integration_test/runners/restore_wallet.dart
  - Enter discrepant PIN, and shows "Error, please try again"
  - Enter correct PIN again and Wallet is successfully restored. 
 
+#### 3.1.3. Filter coins by Protocol
+- Open terminal in the project's root folder
+-  - Connect real device and replace the `device_id` with the device's id in ./execute_integration.sh
+- Type and run the test file in the terminal:
+```bash
+flutter test integration_test/runners/protocol_filters.dart
+```
+- The test build and opens AtomicDEX from the Splash Screen and creates a wallet
+
+The tests:
+- From the Coins Page, press the Add Asset button
+- Press the Show filter icon and select UTXO, it filters the coins by only UTXO
+- Enter 'doge' into search field, and doge is selected
+- Press Clear Filter icon  and the filter is cleared and the search field is also cleared
+- Press the Show filter icon is pressed and select ERC, it filters the coins by only ERC
+- Enter 'ETH' into search field, and ETH is selected
+- Press the Clear Filter icon and the filter is cleared and the search field is also cleared
+- Enter 'Aave' into search field, and Aave Items with different protocols appears
+- Press the Show filter icon and select BEP, it filters the coins by only BEP, and only Aave-BEP20 appears
+- Select the Aave-BEP20 item
+- Press the confirm asset button and the coins are activated and directed back to Coins Page
+
 #### 3.2 Run all tests
 
 - Open terminal
