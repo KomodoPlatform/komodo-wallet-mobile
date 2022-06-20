@@ -49,6 +49,9 @@ Future<void> testCoinsProtocolFilter(WidgetTester tester) async {
     // clear filter
     await tester.tap(clearFilter);
     await tester.pumpAndSettle();
+    // clear text
+    await tester.enterText(searchCoinsField, '');
+    await tester.pumpAndSettle();
 
     //  Try to click on erc protocol, search and activate ETH and DOGE coins
     await tester.tap(showFilterDropdown);
@@ -63,6 +66,9 @@ Future<void> testCoinsProtocolFilter(WidgetTester tester) async {
 
     // clear filter
     await tester.tap(clearFilter);
+    await tester.pumpAndSettle();
+    // clear text
+    await tester.enterText(searchCoinsField, '');
     await tester.pumpAndSettle();
 
     // Try to search for aave and choose bep20 protocol
