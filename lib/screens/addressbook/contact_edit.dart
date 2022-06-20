@@ -340,6 +340,7 @@ class _ContactEditState extends State<ContactEdit> {
           return StatefulBuilder(
             builder: (context, setState) {
               return CustomSimpleDialog(
+                key: const Key('select-coin-list'),
                 hasHorizontalPadding: false,
                 title: Text(AppLocalizations.of(context).addressSelectCoin),
                 children: [

@@ -64,6 +64,7 @@ class _ContactListItemState extends State<ContactListItem> {
                 _buildAddressesList(),
                 SizedBox(height: 8),
                 TextButton.icon(
+                  key: Key('edit-address-${widget.contact.name}'),
                   onPressed: () => Navigator.push<dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(

@@ -153,6 +153,28 @@ flutter test integration_test/runners/restore_wallet.dart
  - Enter discrepant PIN, and shows "Error, please try again"
  - Enter correct PIN again and Wallet is successfully restored. 
 
+#### 3.1.4. Add/Edit address 
+Resolves `Remove address duplicate button`
+- Open terminal in the project's root folder
+- Connect real device and replace the `device_id` with the device's id in ./execute_integration.sh
+- Type and run the test file in the terminal:
+```bash
+flutter test integration_test/runners/add_address.dart
+```
+- The test build and opens AtomicDEX from the Splash Screen and restores a wallet
+- On the main page, Press the more icon on the bottom nav bar, and the drawer opens up
+- Press Address book button, and the address book page opens up
+- Click the add icon button to add an address on the page and the Add Address page opens up
+- Click the add address text-button to select the coin type on the page and the choose coins dialog comes up
+- Select 'AXE' as the coin type, and the drawer closes
+- Input the address name and the address field
+- Tap on save button, the Page goes back to the previous page with the item saved
+- Select on the Item, to make it expanded and click on the address, It opens up the edit address
+- Click the add address text-button to select the coin type on the page and the choose coins dialog comes up
+- Select 'AXE' as the coin type, and the drawer closes,
+- Edit the address name and the address field
+- Tap on save button, the Page goes back to the previous page with the item saved
+
 #### 3.2 Run all tests
 
 - Open terminal
