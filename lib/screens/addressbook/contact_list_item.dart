@@ -48,6 +48,7 @@ class _ContactListItemState extends State<ContactListItem> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         ListTile(
+          key: Key('address-item-${widget.contact.name}'),
           onTap: () {
             setState(() {
               expanded = !expanded;

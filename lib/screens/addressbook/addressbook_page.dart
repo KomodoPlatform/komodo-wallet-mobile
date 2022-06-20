@@ -142,6 +142,7 @@ class _AddressBookState extends State<AddressBookPage> {
                 ));
           },
           child: const Icon(Icons.add),
+          key: const Key('add-address-page-button'),
         ),
         const SizedBox(width: 4),
         RoundButton(
