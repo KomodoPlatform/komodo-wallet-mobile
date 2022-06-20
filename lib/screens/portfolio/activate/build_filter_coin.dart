@@ -20,6 +20,7 @@ class BuildFilterCoin extends StatelessWidget {
           padding: EdgeInsets.only(right: 8.0, left: 4),
           child: PopupMenuButton(
             tooltip: 'Filter by Protocols',
+            key: const Key('show-filter-protocol'),
             onSelected: onSelected,
             child: Padding(
               padding: EdgeInsets.only(right: 3, left: 6),
@@ -33,6 +34,7 @@ class BuildFilterCoin extends StatelessWidget {
                   SizedBox(width: 8),
                   typeFilter != ''
                       ? InkWell(
+                          key: const Key('clear-filter-protocol'),
                           onTap: () {
                             onSelected('');
                           },
@@ -45,6 +47,7 @@ class BuildFilterCoin extends StatelessWidget {
             itemBuilder: (_) => allCoinsTypes
                 .map(
                   (e) => PopupMenuItem<String>(
+                    key: Key('filter-item-' + e),
                     value: e,
                     child: Text(
                       e.toUpperCase(),
