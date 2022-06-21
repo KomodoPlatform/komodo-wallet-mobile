@@ -1,10 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/check_button.dart';
 import '../../helpers/enter_pin.dart';
+import '../../helpers/parsers.dart';
 
 Future<void> createWalletToTest(WidgetTester tester) async {
   // create wallet to be used in following tests
@@ -25,6 +24,7 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     final Finder copySeedButton = find.byKey(const Key('seed-copy'));
     final Finder reloadSeedButton = find.byKey(const Key('seed-refresh'));
     final Finder seedPhraseField = find.byKey(const Key('which-word-field'));
+    final Finder whichWord = find.byKey(const Key('which-word'));
     final Finder continueCheckButton = find.byKey(const Key('continue-check'));
     final Finder pressBackButton = find.byKey(const Key('check-phrase-again'));
     final Finder passwordField = find.byKey(const Key('create-password-field'));
@@ -54,7 +54,7 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     await tester.pump(Duration(seconds: 1));
     await tester.tap(copySeedButton);
     await tester.pump(Duration(seconds: 1));
-    List<String> seedPhrase =
+    final List<String> seedPhrase =
         tester.widget<Text>(seedPhraseText).data.split(' ');
     await tester.tap(confirmSeedButton);
     await tester.pump(Duration(seconds: 1));
@@ -63,32 +63,25 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     await tester.pump(Duration(seconds: 1));
     await tester.tap(confirmSeedButton);
     await tester.pump(Duration(seconds: 1));
-    List chosenWords =
-        jsonDecode(tester.widget<Text>(find.byKey(Key('chosenWords'))).data);
-    // enter first seed
-    await tester.tap(find.byKey(Key(seedPhrase[chosenWords[0]])));
+
+    int wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data);
+    await tester.enterText(seedPhraseField, seedPhrase[wordPosition - 1]);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(continueCheckButton);
     await tester.pump(Duration(seconds: 1));
-    seedPhrase.remove(seedPhrase[chosenWords[0]]);
-    // wrong second seed
-    await tester.enterText(seedPhraseField, seedPhrase[chosenWords[0]]);
+
+    wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data);
+    await tester.enterText(seedPhraseField, seedPhrase[wordPosition - 1]);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(continueCheckButton);
     await tester.pump(Duration(seconds: 1));
-    expect(seedPhrase[chosenWords[0]], seedPhrase[chosenWords[1]],
-        reason: 'Invalid Seed Phrase', skip: true);
-    // right second seed
-    await tester.enterText(seedPhraseField, seedPhrase[chosenWords[1]]);
+
+    wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data);
+    await tester.enterText(seedPhraseField, seedPhrase[wordPosition - 1]);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(continueCheckButton);
     await tester.pump(Duration(seconds: 1));
-    seedPhrase.remove(seedPhrase[chosenWords[1]]);
-    // enter third seed
-    await tester.tap(find.byKey(Key(seedPhrase[chosenWords[2]])));
-    await tester.pump(Duration(seconds: 1));
-    await tester.tap(continueCheckButton);
-    await tester.pump(Duration(seconds: 1));
+
     // =========== create_password_page.dart =============== //
     // test invalid password
     await tester.tap(passwordField);
