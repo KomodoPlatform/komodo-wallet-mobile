@@ -2,11 +2,11 @@ import 'package:komodo_dex/main.dart' as app;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import 'create_wallet.dart';
-import 'logout_wallet.dart';
-import 'restore_old_wallet.dart';
-import 'restore_wallet.dart';
-import 'test_activate_coin.dart';
+import 'wallet_tests/create_wallet.dart';
+import 'wallet_tests/logout_wallet.dart';
+import 'wallet_tests/restore_old_wallet.dart';
+import 'wallet_tests/restore_wallet.dart';
+import 'wallet_tests/test_activate_coin.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
