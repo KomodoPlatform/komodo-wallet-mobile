@@ -96,7 +96,7 @@
 
 #### 3.1.1. Create Wallet
  - Open terminal in the project's root folder 
- - Connect real device and replace the `device_id` with the device's id in ./execute_integration.sh
+ - Connect physical iPhone with cable
  - Type and run the test file in the terminal:
 ```bash
 flutter test integration_test/runners/create_wallet.dart
@@ -128,7 +128,6 @@ flutter test integration_test/runners/create_wallet.dart
 
 #### 3.1.2. Restore Wallet
 - Open terminal in the project's root folder
--  - Connect real device and replace the `device_id` with the device's id in ./execute_integration.sh
 - Type and run the test file in the terminal:
 ```bash
 flutter test integration_test/runners/restore_wallet.dart
@@ -158,6 +157,8 @@ flutter test integration_test/runners/restore_wallet.dart
 #### 3.2 Run all tests
 
 - Open terminal
+- Run `flutter devices` to obtain your iPhone's device id
+- Replace `YOUR_DEVICE_ID` with your device's id in ./execute_integration.sh
 - Type and run the execute_integration.sh file in the terminal:
 ```bash
 /bin/zsh ./execute_integration.sh
