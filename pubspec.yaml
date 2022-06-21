@@ -61,18 +61,12 @@ dependencies:
       #ref: 4.0.3
 
 dev_dependencies:
-  flutter_driver: # flutter.dev
-    sdk: flutter
-  flutter_test: # flutter.dev
-    sdk: flutter
   integration_test:
+    sdk: flutter
 
   # recommended linter rules
   flutter_lints: 1.0.4 # flutter.dev (Note: Supports null safety)
 
-  test: 1.17.12 # dart.dev (Note: Supports null safety)
-
-  mockito: 5.0.16 # dart.dev (Note: Supports null safety)
   http: 0.13.4 # dart.dev (Note: Supports null safety)
   qr_flutter: 4.0.0 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
     #git:
