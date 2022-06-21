@@ -158,8 +158,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                     : null,
                 backgroundImage: baseCoin == null
                     ? null
-                    : AssetImage(
-                        'assets/coin-icons/${baseCoin.toLowerCase()}.png'),
+                    : AssetImage(getCoinIconPath(baseCoin)),
               ),
               const SizedBox(width: 6),
               Expanded(
@@ -218,8 +217,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                     children: <Widget>[
                       CircleAvatar(
                         maxRadius: 12,
-                        backgroundImage: AssetImage(
-                            'assets/coin-icons/${item.coin.abbr.toLowerCase()}.png'),
+                        backgroundImage:
+                            AssetImage(getCoinIconPath(item.coin.abbr)),
                       ),
                       const SizedBox(width: 6),
                       Text(
