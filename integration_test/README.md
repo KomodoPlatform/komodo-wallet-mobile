@@ -92,6 +92,8 @@
 ## 3. How to run tests
 
 ### 3.1. Mac + iOS (physical iPhone)
+> Before you begin, delete all previously installed versions of application from device
+
 #### 3.1.1. Create Wallet
  - Open terminal in the project's root folder 
  - Connect real device and replace the `device_id` with the device's id in ./execute_integration.sh
