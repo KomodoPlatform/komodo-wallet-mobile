@@ -13,78 +13,77 @@ void showCancelOrderDialog({
     onConfirm();
     return;
   }
-  settingsBloc.askCancelOrderAgain = true;
+  bool askCancelOrderAgain = true;
   dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return CustomSimpleDialog(
-          title: Row(
-            children: <Widget>[
-              Icon(
-                Icons.warning,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-              const SizedBox(width: 12),
-              Text(AppLocalizations.of(context).cancelOrder),
-            ],
-          ),
-          children: <Widget>[
-            Text(AppLocalizations.of(context).confirmCancel),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                StreamBuilder<bool>(
-                    initialData: settingsBloc.askCancelOrderAgain,
-                    stream: settingsBloc.outAskCancelOrderAgain,
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) return SizedBox();
-                      return SizedBox(
-                        height: 24.0,
-                        width: 24.0,
-                        child: Checkbox(
-                            value: !snapshot.data,
-                            onChanged: (val) {
-                              settingsBloc.askAgainOnChanged(!val);
-                            }),
-                      );
-                    }),
-                const SizedBox(width: 12),
-                GestureDetector(
-                    onTap: () {
-                      settingsBloc
-                          .askAgainOnChanged(!settingsBloc.askCancelOrderAgain);
-                    },
-                    child: Text(AppLocalizations.of(context).dontAskAgain)),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+        return StatefulBuilder(builder: (context, setState) {
+          return CustomSimpleDialog(
+            title: Row(
               children: <Widget>[
-                TextButton(
-                  onPressed: () => dialogBloc.closeDialog(context),
-                  child: Text(
-                    AppLocalizations.of(context).no,
-                    maxLines: 1,
-                  ),
+                Icon(
+                  Icons.warning,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 const SizedBox(width: 12),
-                ElevatedButton(
-                  key: key ?? const Key('confirm-button-key'),
-                  onPressed: () {
-                    settingsBloc.setShowCancelOrderDialog(
-                        settingsBloc.askCancelOrderAgain);
-                    dialogBloc.closeDialog(context);
-                    onConfirm();
-                  },
-                  child: Text(
-                    AppLocalizations.of(context).yes,
-                    maxLines: 1,
-                  ),
-                ),
+                Text(AppLocalizations.of(context).cancelOrder),
               ],
             ),
-          ],
-        );
+            children: <Widget>[
+              Text(AppLocalizations.of(context).confirmCancel),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  SizedBox(
+                    height: 24.0,
+                    width: 24.0,
+                    child: Checkbox(
+                        value: !askCancelOrderAgain,
+                        onChanged: (val) {
+                          setState(() {
+                            askCancelOrderAgain = !askCancelOrderAgain;
+                          });
+                        }),
+                  ),
+                  const SizedBox(width: 12),
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          askCancelOrderAgain = !askCancelOrderAgain;
+                        });
+                      },
+                      child: Text(AppLocalizations.of(context).dontAskAgain)),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  TextButton(
+                    onPressed: () => dialogBloc.closeDialog(context),
+                    child: Text(
+                      AppLocalizations.of(context).no,
+                      maxLines: 1,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  ElevatedButton(
+                    key: key ?? const Key('confirm-button-key'),
+                    onPressed: () {
+                      settingsBloc
+                          .setShowCancelOrderDialog(askCancelOrderAgain);
+                      dialogBloc.closeDialog(context);
+                      onConfirm();
+                    },
+                    child: Text(
+                      AppLocalizations.of(context).yes,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
       }).then((dynamic _) => dialogBloc.dialog = null);
 }
