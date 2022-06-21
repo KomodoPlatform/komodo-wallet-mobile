@@ -16,5 +16,6 @@ Future<void> logOut(WidgetTester tester) async {
     await tester.pumpAndSettle();
   } catch (e) {
     print(e?.message ?? e);
+    rethrow;
   }
 }

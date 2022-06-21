@@ -128,5 +128,6 @@ Future<void> restoreWalletToTest(WidgetTester tester,
     await tester.pumpAndSettle();
   } catch (e) {
     print(e?.message ?? e);
+    rethrow;
   }
 }

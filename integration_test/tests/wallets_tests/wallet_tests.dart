@@ -14,7 +14,6 @@ void main() {
   testWidgets('Run wallet tests:', (WidgetTester tester) async {
     tester.testTextInput.register();
     app.main();
-    // delay for splash screen and checking updates
     await tester.pumpAndSettle();
     print('CREATE WALLET TO TEST');
     await createWalletToTest(tester);

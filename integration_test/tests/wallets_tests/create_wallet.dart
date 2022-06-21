@@ -143,5 +143,6 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     await tester.pumpAndSettle();
   } catch (e) {
     print(e?.message ?? e);
+    rethrow;
   }
 }
