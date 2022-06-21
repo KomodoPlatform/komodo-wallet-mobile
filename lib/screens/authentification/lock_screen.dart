@@ -142,7 +142,7 @@ class _LockScreenState extends State<LockScreen> {
     final walletSecuritySettingsProvider =
         context.read<WalletSecuritySettingsProvider>();
 
-    Widget _buildSplash(String message) {
+    Widget _buildSplash({String message}) {
       return Scaffold(
         body: Center(
           child: Column(
@@ -154,11 +154,17 @@ class _LockScreenState extends State<LockScreen> {
                     : 'assets/branding/logo_app.png',
               ),
               const SizedBox(height: 12),
-              Text(message,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  )),
+              message == null
+                  ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : Text(message,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Theme.of(context).textTheme.caption.color,
+                      )),
             ],
           ),
         ),
@@ -169,10 +175,10 @@ class _LockScreenState extends State<LockScreen> {
       final RegExpMatch _tailMatch =
           RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
       final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
-      return _buildSplash(_logTail);
+      return _buildSplash(message: _logTail);
     } else if (updatesProvider.status == null &&
         mainBloc.networkStatus == NetworkStatus.Online) {
-      return _buildSplash(AppLocalizations.of(context).checkingUpdates);
+      return _buildSplash();
     }
 
     return StreamBuilder<bool>(
@@ -206,16 +212,15 @@ class _LockScreenState extends State<LockScreen> {
                                     widget.pinStatus == PinStatus.NORMAL_PIN) {
                                   Log.println('lock_screen:141', snapshot.data);
                                   if (isLogin.hasData && isLogin.data) {
-                                    final r = authenticateBiometrics(
-                                        context, widget.pinStatus);
-                                    // Due to how the "isActivePin" is currently saved
-                                    // this should guarantee that the app doesn't try
-                                    // to use camo mode on bio login if last login
-                                    // was camo mode
-                                    r.then((v) {
-                                      if (v) {
-                                        coinsBloc.resetCoinBalance();
+                                    authenticateBiometrics(
+                                            context, widget.pinStatus)
+                                        .then((_) {
+                                      // If last login was camo and camo active value is kept,
+                                      // then reset coin balance, this should happen only once
+                                      // due to bio and camo between incompatible with each other
+                                      if (camoBloc.isCamoActive) {
                                         camoBloc.isCamoActive = false;
+                                        coinsBloc.resetCoinBalance();
                                       }
                                     });
                                   }

@@ -1283,6 +1283,10 @@ class AppLocalizations {
   String get swapTotal => Intl.message('Total', name: 'swapTotal');
   String get swapProgress =>
       Intl.message('Progress details', name: 'swapProgress');
+  String get closeMessage =>
+      Intl.message('Close Error Message', name: 'closeMessage');
+  String get openMessage =>
+      Intl.message('Open Error Message', name: 'openMessage');
 
   // -- Notifications --
 
@@ -1335,8 +1339,6 @@ class AppLocalizations {
 
   // --- Miscellaneous ---
 
-  String get checkingUpdates =>
-      Intl.message('Checking for updates...', name: 'checkingUpdates');
   String get checkForUpdates =>
       Intl.message('Check for updates', name: 'checkForUpdates');
   String get logoutWarning =>
