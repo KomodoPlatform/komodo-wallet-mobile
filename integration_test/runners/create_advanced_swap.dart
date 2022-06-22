@@ -3,13 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
 import '../tests/swaps/activate_test_coins.dart';
-import '../tests/swaps/create_simple_swap.dart';
+import '../tests/swaps/create_advanced_swap.dart';
 import '../tests/wallets_tests/restore_wallet.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Create a Simple Swap test', (WidgetTester tester) async {
+  testWidgets('Create an Advanced Swap test', (WidgetTester tester) async {
     tester.testTextInput.register();
     app.main();
     // delay for splash screen and checking updates
@@ -20,8 +20,8 @@ void main() {
     print('ACTIVATE TEST COINS');
     await activateTestCoins(tester);
     await tester.pumpAndSettle();
-    print('CREATE A SIMPLE SWAP');
-    await createSimpleSwap(tester);
+    print('CREATE AN ADVANCED SWAP');
+    await createAdvancedSwap(tester);
     await tester.pumpAndSettle();
   }, semanticsEnabled: false);
 }

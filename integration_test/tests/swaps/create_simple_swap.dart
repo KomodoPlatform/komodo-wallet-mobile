@@ -10,10 +10,13 @@ Future<void> createSimpleSwap(WidgetTester tester) async {
     final Finder amountField = find.byKey(const Key('amount-field'));
     final Finder buyRickCoin = find.byKey(const Key('sell-RICK-top-order'));
     final Finder backBtn = find.byTooltip('Back');
-    final Finder orderBtn = find.byKey(const Key('orders-tab'));
+    final Finder orderTabBtn = find.byKey(const Key('orders-tab'));
+    final Finder simpleTabBtn = find.byKey(const Key('simple-tab'));
 
     // Press dex menu
     await tester.tap(dexMenu);
+    await tester.pumpAndSettle();
+    await tester.tap(simpleTabBtn);
     await tester.pumpAndSettle();
     await tester.tap(sellMortyCoin);
     await tester.pumpAndSettle();
@@ -28,7 +31,7 @@ Future<void> createSimpleSwap(WidgetTester tester) async {
     await tester.pumpAndSettle();
     await tester.tap(backBtn);
     await tester.pumpAndSettle();
-    await tester.tap(orderBtn);
+    await tester.tap(orderTabBtn);
     await tester.pumpAndSettle();
     // Order has been created
   } catch (e) {
