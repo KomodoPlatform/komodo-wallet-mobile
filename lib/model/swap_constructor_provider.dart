@@ -378,8 +378,9 @@ class ConstructorProvider extends ChangeNotifier {
     if (bestOrders.error != null) return;
 
     final String coin =
-        type == Market.SELL ? _matchingOrder.otherCoin : _matchingOrder.coin;
+        type == Market.SELL ? _matchingOrder?.otherCoin : _matchingOrder?.coin;
 
+    if (coin == null) return;
     final BestOrder topOrder = getTickerTopOrder(bestOrders.result[coin], type);
     if (topOrder == null) return;
 
