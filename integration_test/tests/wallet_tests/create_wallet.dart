@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
 
 import '../../helpers/check_button.dart';
 import '../../helpers/enter_pin.dart';
@@ -64,20 +65,55 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     await tester.tap(confirmSeedButton);
     await tester.pump(Duration(seconds: 1));
 
+    // enter correct word
     int wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data);
     await tester.enterText(seedPhraseField, seedPhrase[wordPosition - 1]);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(continueCheckButton);
     await tester.pump(Duration(seconds: 1));
 
+    // enter incorrect word
     wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data);
-    await tester.enterText(seedPhraseField, seedPhrase[wordPosition - 1]);
+    await tester.enterText(seedPhraseField, 'incorrect_word');
+    await tester.pump(Duration(seconds: 1));
+    expect(
+      tester.widget<PrimaryButton>(continueCheckButton).onPressed == null,
+      true,
+      reason: 'Incorrect seed word entered,'
+          ' but \'Continue\' button is enabled.',
+    );
+
+    // press correct button
+    await tester.tap(find.text(seedPhrase[wordPosition - 1]));
     await tester.pump(Duration(seconds: 1));
     await tester.tap(continueCheckButton);
     await tester.pump(Duration(seconds: 1));
 
+    // press incorrect button
     wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data);
-    await tester.enterText(seedPhraseField, seedPhrase[wordPosition - 1]);
+    final allWordButtons = tester.widgetList<ElevatedButton>(
+      find.descendant(
+        of: find.byKey(const Key('seed-word-buttons')),
+        matching: find.byType(ElevatedButton),
+      ),
+    );
+    for (ElevatedButton button in allWordButtons) {
+      final text = button.child as Text;
+      if (text.data == seedPhrase[wordPosition - 1]) continue;
+
+      await tester.tap(find.text(text.data));
+      await tester.pump(Duration(seconds: 1));
+      expect(
+        tester.widget<PrimaryButton>(continueCheckButton).onPressed == null,
+        true,
+        reason: 'Incorrect word button pressed,'
+            ' but \'Continue\' button is enabled.',
+      );
+    }
+
+    // press correct button
+    wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data);
+    await tester.tap(find.text(seedPhrase[wordPosition - 1]));
     await tester.pump(Duration(seconds: 1));
     await tester.tap(continueCheckButton);
     await tester.pump(Duration(seconds: 1));

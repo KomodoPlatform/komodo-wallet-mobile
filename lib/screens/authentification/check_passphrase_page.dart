@@ -176,6 +176,7 @@ class _SeedRandomState extends State<SeedRandom> {
           height: 8,
         ),
         Wrap(
+          key: const Key('seed-word-buttons'),
           runSpacing: 8,
           spacing: 8,
           alignment: WrapAlignment.spaceBetween,
