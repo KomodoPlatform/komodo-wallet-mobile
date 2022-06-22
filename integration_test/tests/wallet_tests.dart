@@ -11,17 +11,19 @@ import 'wallet_tests/test_activate_coin.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  const String firstWalletName = 'my-wallet';
+
   testWidgets('Run wallet tests:', (WidgetTester tester) async {
     tester.testTextInput.register();
     app.main();
     await tester.pumpAndSettle();
     print('CREATE WALLET TO TEST');
-    await createWalletToTest(tester);
+    await createWalletToTest(tester, walletName: firstWalletName);
     print('LOGOUT WALLET TO WALLETS LIST');
     await logOut(tester);
     await tester.pumpAndSettle();
     print('RESTORE WALLET TO TEST');
-    await restoreWalletToTest(tester, fromStart: false);
+    await restoreWalletToTest(tester, existingWalletName: firstWalletName);
     await tester.pumpAndSettle();
     print('LOGOUT WALLET TO WALLETS LIST');
     await logOut(tester);
