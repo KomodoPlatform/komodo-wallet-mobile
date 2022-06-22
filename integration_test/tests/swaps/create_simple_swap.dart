@@ -17,8 +17,8 @@ Future<void> createSimpleSwap(WidgetTester tester) async {
     await tester.pumpAndSettle();
     await tester.tap(sellMortyCoin);
     await tester.pumpAndSettle();
-    // Enter 1 morty
-    await tester.enterText(amountField, '1');
+    // Enter 0.1 morty
+    await tester.enterText(amountField, '0.1');
     await tester.pumpAndSettle();
     await tester.tap(buyRickCoin);
     await tester.pumpAndSettle();

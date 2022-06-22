@@ -153,6 +153,55 @@ flutter test integration_test/runners/restore_wallet.dart
  - Enter discrepant PIN, and shows "Error, please try again"
  - Enter correct PIN again and Wallet is successfully restored. 
 
+#### 3.1.5. Create Simple Swap
+- Open terminal in the project's root folder
+-  - Connect real device and replace the `device_id` with the device's id in ./execute_integration.sh
+- Type and run the test file in the terminal:
+```bash
+flutter test integration_test/runners/create_simple_swap.dart
+```
+- The test build and opens AtomicDEX from the Splash Screen and restores a wallet
+
+The tests:
+- From the Coins Page, press the Add Asset button
+- Enter 'MORTY' into the search field, and MORTY is selected
+- Enter 'RICK' into the search field, and RICK is selected
+- Enter '' into the search field, and the field is cleared
+- Press the confirm asset button and the coins are activated and directed back to Coins Page
+- Press the dex icon on the bottom nav bar, and the dex page is opened
+- Press MORTY on the sell part and input 0.1 as amount and the buy section loads
+- Press RICK on the buy part and the amount equivalent generates
+- Press the 'Next' button and the swap summary generates
+- Press the 'Confirm Swap' button and the swap begins
+- Press the back button to go to the Dex page
+- Press the Order tab and the Order page is opened to see all swaps
+
+#### 3.1.6. Cancel a Simple Swap
+- Open terminal in the project's root folder
+-  - Connect real device and replace the `device_id` with the device's id in ./execute_integration.sh
+- Type and run the test file in the terminal:
+```bash
+flutter test integration_test/runners/cancel_swap.dart
+```
+- The test build and opens AtomicDEX from the Splash Screen and restores a wallet
+
+The tests:
+- The swap flow is repeated and a swap is created
+- From the Order Page, Press the Cancel button on the swap item and the dialog opens
+- Press the 'Yes' button and the Swap is cancelled
+- Press the Swap tab and the Swap page is opened to create a swap
+- The swap flow is repeated and a swap is created
+- From the Order Page, Press the Cancel button on the swap item and the dialog opens
+- Press the 'No' button and the Swap remains
+- Press the Swap tab and the Swap page is opened to create a swap
+- The swap flow is repeated and a swap is created
+- From the Order Page, Press the Cancel button on the swap item and the dialog opens
+- Select the 'Dont show again' checkbox and Press the 'Yes' button and the Swap is cancelled
+- Press the Swap tab and the Swap page is opened to create a swap
+- The swap flow is repeated and a swap is created
+- From the Order Page, Press the Cancel button on the swap item is cancelled immediately
+
+
 #### 3.2 Run all tests
 
 - Open terminal
