@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:pin_code_view/code_view.dart';
 
-import '../../helpers/check_button.dart';
 import '../../helpers/enter_pin.dart';
 import '../../helpers/parsers.dart';
 
@@ -13,7 +13,6 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     const String invalidPassword = 'abcd';
     const String password = 'pppaaasssDDD555444@@@';
     const String wrongPassword = 'teretet';
-    const String confirmPassword = 'pppaaasssDDD555444@@@';
     const String correctPin = '123456';
     const String wrongPin = '123457';
     final Finder createWalletButton =
@@ -38,7 +37,8 @@ Future<void> createWalletToTest(WidgetTester tester) async {
     final Finder tocCheckBox = find.byKey(const Key('checkbox-toc'));
     final Finder scrollButton =
         find.byKey(const Key('disclaimer-scroll-button'));
-    final Finder disclaimerButton = find.byKey(const Key('next-disclaimer'));
+    final Finder disclaimerNextButton =
+        find.byKey(const Key('next-disclaimer'));
 
     // =========== authenticate_page.dart =============== //
     await tester.ensureVisible(createWalletButton);
@@ -120,54 +120,74 @@ Future<void> createWalletToTest(WidgetTester tester) async {
 
     // =========== create_password_page.dart =============== //
     // test invalid password
-    await tester.tap(passwordField);
     await tester.enterText(passwordField, invalidPassword);
-    await tester.tap(passwordConfirmField);
     await tester.enterText(passwordConfirmField, invalidPassword);
     await tester.pump(Duration(seconds: 1));
-    await tester.tap(confirmPasswordButton);
-    await tester.pump(Duration(seconds: 1));
-    expect(invalidPassword, password, reason: 'Invalid Password', skip: true);
-    checkButtonStatus(tester, confirmPasswordButton);
+    expect(
+      tester.widget<PrimaryButton>(confirmPasswordButton).onPressed == null,
+      true,
+      reason: 'Invalid password entered, but \'Confirm\' button is enabled',
+    );
+
     // test wrong password
-    await tester.tap(passwordField);
     await tester.enterText(passwordField, password);
-    await tester.tap(passwordConfirmField);
     await tester.enterText(passwordConfirmField, wrongPassword);
     await tester.pump(Duration(seconds: 1));
-    await tester.tap(confirmPasswordButton);
     await tester.pump(Duration(seconds: 1));
-    expect(wrongPassword, password, reason: 'Wrong Password', skip: true);
-    checkButtonStatus(tester, confirmPasswordButton);
-    //  correct password
-    await tester.tap(passwordField);
+    expect(
+      tester.widget<PrimaryButton>(confirmPasswordButton).onPressed == null,
+      true,
+      reason: 'Passwords do not match, but \'Confirm\' button is enabled',
+    );
+
+    //  correct valid password
     await tester.enterText(passwordField, password);
     await tester.tap(viewPasswordBtn);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(passwordConfirmField);
-    await tester.enterText(passwordConfirmField, confirmPassword);
+    await tester.enterText(passwordConfirmField, password);
     await tester.pump(Duration(seconds: 1));
     await tester.tap(confirmPasswordButton);
     await tester.pump(Duration(seconds: 1));
+
     // ============ disclaimer_page.dart =============== //
-    await tester.tap(disclaimerButton);
-    checkButtonStatus(tester, disclaimerButton);
-    await tester.pump(Duration(seconds: 1));
+    expect(
+      tester.widget<PrimaryButton>(disclaimerNextButton).onPressed == null,
+      true,
+      reason: 'Disclaimer page \'Next\' button is enabled on page load.',
+    );
     await tester.tap(eulaCheckBox);
     await tester.tap(tocCheckBox);
+    await tester.pump(Duration(seconds: 1));
+    expect(
+      tester.widget<PrimaryButton>(disclaimerNextButton).onPressed == null,
+      true,
+      reason: 'Disclaimer page is not scrolled to the end,'
+          ' but  \'Next\' button is enabled.',
+    );
     await tester.longPress(scrollButton);
     await tester.pump(Duration(seconds: 1));
-    await tester.tap(disclaimerButton);
+    await tester.tap(disclaimerNextButton);
     await tester.pump(Duration(seconds: 1));
+
     // ============== pin_page.dart ================== //
     await tester.pumpAndSettle();
     await enterPinCode(tester, pin: correctPin);
     await tester.pumpAndSettle();
     //check for wrong pin
     await enterPinCode(tester, pin: wrongPin);
-    await tester.pumpAndSettle();
-    expect(wrongPin, correctPin, reason: 'Wrong PIN', skip: true);
     await tester.pump(Duration(seconds: 1));
+    final codeView = find.byType(CodeView);
+    final codeViewParent =
+        find.ancestor(of: codeView, matching: find.byType(Column)).first;
+    final errorText =
+        find.descendant(of: codeViewParent, matching: find.byType(Text));
+    expect(
+      tester.widget<Text>(errorText).data.isNotEmpty,
+      true,
+      reason: 'Wrong confirmation PIN entered, but no error message shown.',
+    );
+
     await enterPinCode(tester, pin: correctPin);
     await tester.pumpAndSettle();
   } catch (e) {
