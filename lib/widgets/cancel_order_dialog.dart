@@ -38,6 +38,7 @@ void showCancelOrderDialog({
                     height: 24.0,
                     width: 24.0,
                     child: Checkbox(
+                        key: const Key('cancel-order-ask-again'),
                         value: !askCancelOrderAgain,
                         onChanged: (val) {
                           setState(() {
@@ -60,6 +61,7 @@ void showCancelOrderDialog({
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   TextButton(
+                    key: const Key('settings-cancel-order-no'),
                     onPressed: () => dialogBloc.closeDialog(context),
                     child: Text(
                       AppLocalizations.of(context).no,
