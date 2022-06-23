@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
 
 Future<void> logOut(WidgetTester tester) async {
   final Finder settingsMenu = find.byKey(const Key('main-nav-more'));
@@ -15,8 +16,12 @@ Future<void> logOut(WidgetTester tester) async {
     await tester.pumpAndSettle();
     await tester.tap(confirmLogoutButton);
     await tester.pumpAndSettle();
-
-    // todo: check if we're on the auth screen
+    expect(
+      find.byType(AuthenticatePage),
+      findsOneWidget,
+      reason:
+          'Logout has been confirmed, but screen not on Authenticate Page',
+    );
   } catch (e) {
     print(e?.message ?? e);
     rethrow;
