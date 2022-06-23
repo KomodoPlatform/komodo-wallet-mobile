@@ -2,8 +2,8 @@ import 'package:komodo_dex/main.dart' as app;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import '../tests/wallets_tests/create_wallet.dart';
-import '../tests/wallets_tests/test_protocol_filter.dart';
+import '../tests/wallet_tests/create_wallet.dart';
+import '../tests/wallet_tests/test_protocol_filter.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
