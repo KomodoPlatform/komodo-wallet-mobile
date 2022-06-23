@@ -7,6 +7,7 @@ import 'wallet_tests/logout_wallet.dart';
 import 'wallet_tests/restore_old_wallet.dart';
 import 'wallet_tests/restore_wallet.dart';
 import 'wallet_tests/test_activate_coin.dart';
+import 'wallet_tests/test_protocol_filter.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,9 @@ void main() {
     await restoreOldWallet(tester);
     print('TEST COINS ACTIVATION');
     await testActivateCoins(tester);
+    await tester.pumpAndSettle();
+    print('TEST FILTER COINS BY PROTOCOL');
+    await testCoinsProtocolFilter(tester);
     await tester.pumpAndSettle();
   }, semanticsEnabled: false);
 }
