@@ -19,8 +19,7 @@ Future<void> logOut(WidgetTester tester) async {
     expect(
       find.byType(AuthenticatePage),
       findsOneWidget,
-      reason:
-          'Logout has been confirmed, but screen not on Authenticate Page',
+      reason: 'Logout has been confirmed, but screen not on Authenticate Page',
     );
   } catch (e) {
     print(e?.message ?? e);
