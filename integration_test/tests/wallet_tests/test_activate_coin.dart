@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> testActivateCoins(WidgetTester tester) async {
+  const String ethByTicker = 'ETH';
+  const String dogeByName = 'gecoi';
+  const String kmdBep20ByTicker = 'KMD-BEP20';
+
+  final Finder addAssetsButton = find.byKey(const Key('adding-coins'));
+  final Finder searchCoinsField = find.byKey(const Key('coins-search-field'));
+  final Finder confirmAddAssetsButton =
+      find.byKey(const Key('done-activate-coins'));
+
+  final Finder ethCoinItem = find.byKey(const Key('coin-activate-ETH'));
+  final Finder dogeCoinItem = find.byKey(const Key('coin-activate-DOGE'));
+  final Finder kmdBep20CoinItem =
+      find.byKey(const Key('coin-activate-KMD-BEP20'));
+
+  final Finder homeList = find.byKey(const Key('list-view-coins'));
+  final Finder ethCoinHomeItem = find.byKey(const Key('coin-list-ETH'));
+
   try {
-    const String ethByTicker = 'ETH';
-    const String dogeByName = 'gecoi';
-    const String kmdBep20ByTicker = 'KMD-BEP20';
-
-    final Finder addAssetsButton = find.byKey(const Key('adding-coins'));
-    final Finder searchCoinsField = find.byKey(const Key('coins-search-field'));
-    final Finder confirmAddAssetsButton =
-        find.byKey(const Key('done-activate-coins'));
-
-    final Finder ethCoinItem = find.byKey(const Key('coin-activate-ETH'));
-    final Finder dogeCoinItem = find.byKey(const Key('coin-activate-DOGE'));
-    final Finder kmdBep20CoinItem =
-        find.byKey(const Key('coin-activate-KMD-BEP20'));
-
-    final Finder homeList = find.byKey(const Key('list-view-coins'));
-    final Finder ethCoinHomeItem = find.byKey(const Key('coin-list-ETH'));
-
     // Press Add coins
     await tester.tap(addAssetsButton);
     await tester.pumpAndSettle();
@@ -29,6 +29,7 @@ Future<void> testActivateCoins(WidgetTester tester) async {
     await tester.enterText(searchCoinsField, 'NOSUCHCOINEVER');
     await tester.pumpAndSettle();
     expect(ethCoinItem, findsNothing);
+
     // Try to find and activate ETH and DOGE coins
     await tester.enterText(searchCoinsField, ethByTicker);
     await tester.pumpAndSettle();
@@ -41,6 +42,7 @@ Future<void> testActivateCoins(WidgetTester tester) async {
     expect(dogeCoinItem, findsOneWidget);
     await tester.tap(dogeCoinItem);
     await tester.pumpAndSettle();
+
     // Try to find and activate KMD-BEP20
     // (and auto-activate parent coin - BNB)
     await tester.enterText(searchCoinsField, kmdBep20ByTicker);
@@ -48,6 +50,7 @@ Future<void> testActivateCoins(WidgetTester tester) async {
     expect(kmdBep20CoinItem, findsOneWidget);
     await tester.tap(kmdBep20CoinItem);
     await tester.pumpAndSettle();
+
     // clear text
     await tester.enterText(searchCoinsField, '');
     await tester.pumpAndSettle();
