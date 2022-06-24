@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
 import '../tests/address/add_address_test.dart';
-import '../tests/wallets_tests/restore_wallet.dart';
+import '../tests/wallet_tests/restore_wallet.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

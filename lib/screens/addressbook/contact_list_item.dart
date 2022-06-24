@@ -54,7 +54,10 @@ class _ContactListItemState extends State<ContactListItem> {
               expanded = !expanded;
             });
           },
-          title: Text(widget.contact.name),
+          title: Text(
+            widget.contact.name,
+            key: Key(widget.contact.name),
+          ),
         ),
         if (expanded)
           Padding(

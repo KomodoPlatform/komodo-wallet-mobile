@@ -2,6 +2,7 @@ import 'package:komodo_dex/main.dart' as app;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
+import 'address/add_address_test.dart';
 import 'wallet_tests/create_wallet.dart';
 import 'wallet_tests/logout_wallet.dart';
 import 'wallet_tests/restore_old_wallet.dart';
@@ -32,6 +33,9 @@ void main() {
     await restoreOldWallet(tester);
     print('TEST COINS ACTIVATION');
     await testActivateCoins(tester);
+    await tester.pumpAndSettle();
+    print('ADD ADDRESS TO TEST');
+    await addAddressToTest(tester);
     await tester.pumpAndSettle();
   }, semanticsEnabled: false);
 }
