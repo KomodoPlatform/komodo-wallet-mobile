@@ -42,5 +42,6 @@ Future<void> activateTestCoins(WidgetTester tester) async {
     // RICK and MORTY should be active
   } catch (e) {
     print(e?.message ?? e);
+    rethrow;
   }
 }

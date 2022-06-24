@@ -73,6 +73,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
           return ListView(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
             controller: widget.scrollCtrl,
+            key: const Key('active-order-list'),
             children: [
               if (widget.showFilters) _buildFilters(orderSwaps),
               if (orderSwapsFiltered.isNotEmpty) ...{
