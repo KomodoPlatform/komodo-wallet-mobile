@@ -76,6 +76,7 @@ class BoxButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
           child: Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SvgPicture.asset(assetPath, height: 40),
                 const SizedBox(
@@ -83,6 +84,7 @@ class BoxButton extends StatelessWidget {
                 ),
                 Text(
                   text.toUpperCase(),
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyText2,
                 )
               ],
@@ -120,12 +122,14 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: const SelectLanguageButton()),
           SizedBox(height: 16),
-          Row(
-            children: const <Widget>[
-              Expanded(child: CreateWalletButton()),
-              SizedBox(width: 16),
-              Expanded(child: RestoreButton())
-            ],
+          IntrinsicHeight(
+            child: Row(
+              children: const <Widget>[
+                Expanded(child: CreateWalletButton()),
+                SizedBox(width: 16),
+                Expanded(child: RestoreButton())
+              ],
+            ),
           ),
           SizedBox(height: 16),
           ...wallets.map<Widget>((element) {

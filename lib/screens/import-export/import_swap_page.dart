@@ -165,7 +165,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${myCoin.toLowerCase()}.png',
+                  getCoinIconPath(myCoin),
                   height: 20,
                 ),
                 SizedBox(width: 8),
@@ -178,7 +178,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${otherCoin.toLowerCase()}.png',
+                  getCoinIconPath(otherCoin),
                   height: 20,
                 ),
               ],

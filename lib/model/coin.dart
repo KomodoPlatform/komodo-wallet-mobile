@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -70,7 +71,7 @@ class Coin {
     init ??= <String, dynamic>{};
     config ??= <String, dynamic>{};
 
-    type = config['type'] ?? '';
+    type = coinTypeFromString(config['type'] ?? '');
     name = config['name'] ?? init['fname'] ?? '';
     address = config['address'] ?? '';
     port = config['port'] ?? 0;
@@ -102,7 +103,8 @@ class Coin {
   // but failed to activate during current session startup
   bool suspended = false;
 
-  String type; // 'other', 'erc', 'bep', 'qrc', 'plg' or 'smartChain'
+  CoinType type;
+
   String name;
   String address;
   int port;
@@ -139,7 +141,7 @@ class Coin {
   int chainId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'type': type ?? '',
+        'type': type.name ?? '',
         'name': name ?? '',
         'address': address ?? '',
         'port': port ?? 0,

@@ -5,6 +5,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -79,21 +80,19 @@ class _ContactListItemState extends State<ContactListItem> {
     );
   }
 
+  String _getCoinTypeAbbr() {
+    if (widget.coin.type == CoinType.smartChain) return 'KMD';
+
+    final String platform = widget.coin.protocol?.protocolData?.platform;
+    return platform ?? widget.coin.abbr;
+  }
+
   Widget _buildAddressesList() {
     final List<Widget> addresses = [];
 
     widget.contact.addresses?.forEach(
       (String abbr, String value) {
-        if (widget.coin != null) {
-          String coinAbbr = widget.coin.abbr;
-          if (widget.coin.type == 'erc') coinAbbr = 'ETH';
-          if (widget.coin.type == 'bep') coinAbbr = 'BNB';
-          if (widget.coin.type == 'plg') coinAbbr = 'MATIC';
-          if (widget.coin.type == 'qrc') coinAbbr = 'QTUM';
-          if (widget.coin.type == 'smartChain') coinAbbr = 'KMD';
-
-          if (coinAbbr != abbr) return;
-        }
+        if (widget.coin != null && _getCoinTypeAbbr() != abbr) return;
 
         addresses.add(
           Padding(
@@ -102,8 +101,7 @@ class _ContactListItemState extends State<ContactListItem> {
               children: <Widget>[
                 CircleAvatar(
                   maxRadius: 6,
-                  foregroundImage:
-                      AssetImage('assets/coin-icons/${abbr.toLowerCase()}.png'),
+                  foregroundImage: AssetImage(getCoinIconPath(abbr)),
                 ),
                 const SizedBox(width: 8),
                 Text(

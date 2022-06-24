@@ -1,3 +1,1 @@
-flutter drive \
- --driver=test_driver/integration_test_driver.dart \
- --target=integration_test/tests/wallets_tests/wallet_tests.dart -d device_id
+flutter test ./integration_test/tests/wallet_tests.dart -d YOUR_DEVICE_ID

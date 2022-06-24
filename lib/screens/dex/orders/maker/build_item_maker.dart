@@ -205,9 +205,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
     return CircleAvatar(
       maxRadius: 12,
       backgroundColor: Colors.transparent,
-      backgroundImage: AssetImage(
-        'assets/coin-icons/${coin.toLowerCase()}.png',
-      ),
+      backgroundImage: AssetImage(getCoinIconPath(coin)),
     );
   }
 }

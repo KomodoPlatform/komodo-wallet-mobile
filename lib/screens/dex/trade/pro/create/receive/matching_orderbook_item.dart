@@ -5,6 +5,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_bids_page.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class MatchingOrderbookItem extends StatelessWidget {
@@ -56,7 +57,7 @@ class MatchingOrderbookItem extends StatelessWidget {
               height: 20,
               width: 20,
               child: Image.asset(
-                'assets/coin-icons/${orderbookDepth.pair.rel.toLowerCase()}.png',
+                getCoinIconPath(orderbookDepth.pair.rel),
               ),
             ),
             SizedBox(width: 4),
