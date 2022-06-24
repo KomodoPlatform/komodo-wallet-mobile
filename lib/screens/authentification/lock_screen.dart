@@ -154,17 +154,30 @@ class _LockScreenState extends State<LockScreen> {
                     : 'assets/branding/logo_app.png',
               ),
               const SizedBox(height: 12),
-              message == null
-                  ? SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text(message,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Theme.of(context).textTheme.caption.color,
-                      )),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(width: 20),
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 1),
+                  ),
+                  if (message != null) ...[
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        message,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Theme.of(context).textTheme.caption.color,
+                        ),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(width: 20),
+                ],
+              ),
             ],
           ),
         ),
