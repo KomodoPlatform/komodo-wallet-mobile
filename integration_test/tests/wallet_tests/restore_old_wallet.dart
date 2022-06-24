@@ -31,12 +31,12 @@ Future<void> _enterPassword(WidgetTester tester) async {
   await tester.enterText(passwordField, 'invalidPassword');
   await tester.pumpAndSettle();
   await tester.tap(loginButton);
-  await tester.pumpAndSettle();
   expect(
     find.byType(SnackBar),
     findsOneWidget,
     reason: 'Invalid password entered, but snackbar doesnt show',
   );
+  await tester.pumpAndSettle(Duration(seconds: 2));
 
 // test valid password
   await tester.enterText(passwordField, password);
