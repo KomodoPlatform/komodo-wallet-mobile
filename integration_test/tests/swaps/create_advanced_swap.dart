@@ -34,10 +34,10 @@ Future<void> createAdvancedSwap(WidgetTester tester) async {
     );
 
     // sell aspect
-    await _sellAspect(tester, amount: '0.1');
+    await _sellAspect(tester, amount: '1');
 
     // receive aspect
-    await _receiveAspect(tester, confirm: false);
+    await _receiveAspect(tester);
 
     // proceed, cancel and clear fields
     await tester.tap(nextBtn);
@@ -48,10 +48,10 @@ Future<void> createAdvancedSwap(WidgetTester tester) async {
     await tester.pumpAndSettle();
 
     // sell aspect
-    await _sellAspect(tester, amount: '0.2');
+    await _sellAspect(tester, amount: '1');
 
     // receive aspect
-    await _receiveAspect(tester);
+    await _receiveAspect(tester, confirm: false);
 
     // proceed and confirm order
     await tester.tap(nextBtn);

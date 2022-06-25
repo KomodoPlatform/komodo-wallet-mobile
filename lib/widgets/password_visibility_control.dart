@@ -41,6 +41,12 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
   }
 
   @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       // NB: Both the long press and the tap start with `onTabDown`.
