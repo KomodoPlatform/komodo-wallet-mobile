@@ -1,37 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 
-Future<void> activateTestCoins(WidgetTester tester) async {
+Future<void> activateTestCoins(WidgetTester tester, {List<String> list}) async {
+  list = list ?? const ['MORTY', 'RICK'];
+  final Finder addAssetsButton = find.byKey(const Key('adding-coins'));
+  final Finder portfolioTab = find.byKey(const Key('main-nav-portfolio'));
+  final Finder searchCoinsField = find.byKey(const Key('coins-search-field'));
+  final Finder confirmAddAssetsButton = find.byKey(Key('done-activate-coins'));
+
   try {
-    const String mortyByTicker = 'MORTY';
-    const String rickByName = 'RICK';
-
-    final Finder addAssetsButton = find.byKey(const Key('adding-coins'));
-    final Finder searchCoinsField = find.byKey(const Key('coins-search-field'));
-    final Finder confirmAddAssetsButton =
-        find.byKey(const Key('done-activate-coins'));
-
-    final Finder mortyCoinItem = find.byKey(const Key('coin-activate-MORTY'));
-    final Finder rickCoinItem = find.byKey(const Key('coin-activate-RICK'));
+    await tester.tap(portfolioTab);
+    await tester.pumpAndSettle();
+    expect(
+      find.byType(CoinsPage),
+      findsOneWidget,
+      reason: 'Screen is not on the Coins page',
+    );
 
     // Press Add coins
     await tester.tap(addAssetsButton);
     await tester.pumpAndSettle();
     expect(searchCoinsField, findsOneWidget);
 
-    // Try to find and activate MORTY coins
-    await tester.enterText(searchCoinsField, mortyByTicker);
-    await tester.pumpAndSettle();
-    expect(mortyCoinItem, findsOneWidget);
-    await tester.tap(mortyCoinItem);
-    await tester.pumpAndSettle();
-
-    // Try to find and activate RICK coins
-    await tester.enterText(searchCoinsField, rickByName);
-    await tester.pumpAndSettle();
-    expect(rickCoinItem, findsOneWidget);
-    await tester.tap(rickCoinItem);
-    await tester.pumpAndSettle();
+    // Try to find and activate  coins
+    for (String element in list) {
+      await tester.enterText(searchCoinsField, element);
+      await tester.pumpAndSettle();
+      final Finder elementCoinItem = find.byKey(Key('coin-activate-$element'));
+      expect(elementCoinItem, findsOneWidget);
+      await tester.tap(elementCoinItem);
+      await tester.pumpAndSettle();
+    }
 
     // clear text
     await tester.enterText(searchCoinsField, '');
