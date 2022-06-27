@@ -56,7 +56,7 @@ class BuildFilterCoin extends StatelessWidget {
                     key: Key('filter-item-' + e),
                     value: e,
                     child: Text(
-                      e.toUpperCase(),
+                      _typesName[e] ?? '',
                     ),
                   ),
                 )
@@ -66,4 +66,14 @@ class BuildFilterCoin extends StatelessWidget {
       ],
     );
   }
+
+  static final Map<String, String> _typesName = {
+    'utxo': 'UTXO',
+    'smartChain': 'Smart Chain',
+    'qrc': 'QTUM (QRC-20)',
+    'plg': 'Polygon (PLG-20)',
+    'ftm': 'Fantom (FTM-20)',
+    'erc': 'Ethereum (ERC-20)',
+    'bep': 'Binance (BEP-20)',
+  };
 }
