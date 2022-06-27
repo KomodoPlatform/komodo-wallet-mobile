@@ -74,8 +74,8 @@
    - [ ] Check for updates
    - [ ] Delete wallet
  - **Address book**
-    - [ ] Add/edit contact
-    - [ ] Add/edit address
+    - [x] Add/edit contact
+    - [x] Add/edit address
     - [ ] Search for contact/address
  - **Help**
    - [ ] Support link
