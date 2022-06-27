@@ -28,13 +28,14 @@ Future<void> _enterPassword(WidgetTester tester) async {
   final Finder passwordField = find.byKey(const Key('enter-password-field'));
   const String password = 'pppaaasssDDD555444@@@';
 // test invalid password
-  await tester.enterText(passwordField, 'invalidPassword');
+  await tester.enterText(passwordField, 'Invalid_Password');
   await tester.pumpAndSettle();
   await tester.tap(loginButton);
+  await tester.pumpAndSettle();
   expect(
-    find.byType(SnackBar),
+    loginButton,
     findsOneWidget,
-    reason: 'Invalid password entered, but snackbar doesnt show',
+    reason: 'Invalid password entered, but wallet unlocked',
   );
   await tester.pumpAndSettle(Duration(seconds: 2));
 

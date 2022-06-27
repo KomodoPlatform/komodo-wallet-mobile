@@ -91,6 +91,8 @@
 
 ## 3. How to run tests
 
+ For more detailed `flutter test` output add verbose flag after command (`-v` `-vv`)
+
 ### 3.1. Mac + iOS (physical iPhone)
 > Before you begin, delete all previously installed versions of application from device
 
