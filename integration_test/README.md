@@ -34,10 +34,10 @@
      - [ ] Rewards page (for KMD)
      - [ ] Faucet view (for RICK and MORTY)
  - **DEX**
-   - [ ] Simple form
-   - [ ] Advanced form
-   - [ ] Multi-order form
-   - [ ] Active orders list
+   - [x] Simple form
+   - [x] Advanced form
+   - [x] Multi-order form
+   - [x] Active orders list
     - [ ] Maker order details page
     - [ ] Active swap details page
    - [ ] History list
@@ -156,7 +156,6 @@ flutter test integration_test/runners/restore_wallet.dart
 
 #### 3.1.5. Create Simple Swap
 - Open terminal in the project's root folder
--  - Connect real device and replace the `device_id` with the device's id in ./execute_integration.sh
 - Type and run the test file in the terminal:
 ```bash
 flutter test integration_test/runners/create_simple_swap.dart
@@ -179,7 +178,6 @@ The tests:
 
 #### 3.1.6. Cancel a Simple Swap
 - Open terminal in the project's root folder
--  - Connect real device and replace the `device_id` with the device's id in ./execute_integration.sh
 - Type and run the test file in the terminal:
 ```bash
 flutter test integration_test/runners/cancel_swap.dart
@@ -202,14 +200,97 @@ The tests:
 - The swap flow is repeated and a swap is created
 - From the Order Page, Press the Cancel button on the swap item is cancelled immediately
 
+#### 3.1.7. Create an Advanced Swap
+- Open terminal in the project's root folder
+- Type and run the test file in the terminal:
+```bash
+flutter test integration_test/runners/create_advanced_swap.dart
+```
+- The test build and opens AtomicDEX from the Splash Screen and restores a wallet
 
-#### 3.2 Run all tests
+The tests:
+- From the Coins Page, press the Add Asset button
+- Enter 'MORTY' into the search field, and MORTY is selected
+- Enter 'RICK' into the search field, and RICK is selected
+- Enter '' into the search field, and the field is cleared
+- Press the confirm asset button and the coins are activated and directed back to Coins Page
+- Press the dex icon on the bottom nav bar, and the dex page is opened
+- Press the 'Advanced' tab to move to the Advanced section on dex page
+- Click on the sell button coin dropdown and a dialog is opened
+- Select MORTY from the list and it is entered in the drop down
+- Input 1 on the text field of the sell coin
+- Click on the receive button coin dropdown and a dialog is opened
+- Select RICK from the list of orders and the rick's order page is opened
+- Select the first one and a dialog to confirm the order is opened
+- Confirm the order and it is entered in the receive drop down
+- Input 1 on the text field of the sell coin
+- Press the next button to move to the confirm advanced order page
+- Press the cancel button to return to the advanced screen
+- Press clear to clear the whole order and every field and buttons are cleared
+- Click on the sell button coin dropdown and a dialog is opened
+- Select MORTY from the list and it is entered in the drop down
+- Input 1 on the text field of the sell coin
+- Click on the receive button coin dropdown and a dialog is opened
+- Select RICK from the list of orders and the rick's order page is opened
+- Select the first one and a dialog to confirm the order is opened
+- Confirm the order and it is entered in the receive drop down
+- Input 1 on the text field of the sell coin
+- Press the next button to move to the confirm advanced order page
+- Press the start button to confirm the order and the order moves to the details page
+- Press back button to go to the dex page
+- Press the Order tab to move to the orders page to see the newly created order
+
+#### 3.1.8. Create an Multi Swap
+- Open terminal in the project's root folder
+- Type and run the test file in the terminal:
+```bash
+flutter test integration_test/runners/create_advanced_swap.dart
+```
+- The test build and opens AtomicDEX from the Splash Screen and restores a wallet
+
+The tests:
+- From the Coins Page, Press the more icon on the bottom nav bar, and the drawer is opened
+- Press the settings button and the settings page is opened
+- Scroll down the page until the 'enable test coin' item is visible
+- Click on the 'enable test coin' item to enable the item
+- Press back button to go back to the Home page
+- From the Coins Page, Press the portfolio icon on the bottom nav bar to confirm we are on the Portfolio page
+- From the Coins Page, press the Add Asset button
+- Enter 'MORTY' into the search field, and MORTY is selected
+- Enter 'RICK' into the search field, and RICK is selected
+- Enter 'tQTUM' into the search field, and tQTUM is selected
+- Enter '' into the search field, and the field is cleared
+- Press the confirm asset button and the coins are activated and directed back to Coins Page with the 3 coins activated
+- Press the dex icon on the bottom nav bar, and the dex page is opened
+- Press the 'Multi' tab to move to the Advanced section on dex page
+- Click on the sell button coin dropdown and a dialog is opened
+- Select MORTY from the list and it is entered in the drop down
+- Input 1 on the text field of the sell coin
+- Click on 'Rick' item to enable the item
+- Enter 0.1 into 'Rick' item textfield
+- Click on 'tQTUM' item to enable the item
+- Enter 0.3 into 'tQTUM' item textfield
+- Press the next button to move to the confirm multi order page
+- Press the start button to confirm the order and the order moves to the order page immediately and the newly created order is seen
+
+#### 3.1.9 Run all wallet tests
 
 - Open terminal
 - Run `flutter devices` to obtain your iPhone's device id
 - Replace `YOUR_DEVICE_ID` with your device's id in ./execute_integration.sh
 - Type and run the execute_integration.sh file in the terminal:
 ```bash
-/bin/zsh ./execute_integration.sh
+flutter test integration_test/tests/wallet_tests.dart
 ```
 - All the tests are run from 3.1.1 to 3.1.2
+
+#### 3.2.0 Run all swap tests
+
+- Open terminal
+- Run `flutter devices` to obtain your iPhone's device id
+- Replace `YOUR_DEVICE_ID` with your device's id in ./execute_integration.sh
+- Type and run the execute_integration.sh file in the terminal:
+```bash
+flutter test integration_test/tests/swap_tests.dart
+```
+- All the tests are run from 3.1.5 to 3.1.8

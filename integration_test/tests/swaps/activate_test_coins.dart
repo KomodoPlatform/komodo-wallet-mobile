@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 
-Future<void> activateTestCoins(WidgetTester tester, {List<String> list}) async {
-  list = list ?? const ['MORTY', 'RICK'];
+Future<void> activateTestCoins(WidgetTester tester,
+    {List<String> coinsToActivate}) async {
+  coinsToActivate = coinsToActivate ?? const ['MORTY', 'RICK'];
   final Finder addAssetsButton = find.byKey(const Key('adding-coins'));
   final Finder portfolioTab = find.byKey(const Key('main-nav-portfolio'));
   final Finder searchCoinsField = find.byKey(const Key('coins-search-field'));
@@ -23,8 +24,8 @@ Future<void> activateTestCoins(WidgetTester tester, {List<String> list}) async {
     await tester.pumpAndSettle();
     expect(searchCoinsField, findsOneWidget);
 
-    // Try to find and activate  coins
-    for (String element in list) {
+    // Try to find and activate coins
+    for (String element in coinsToActivate) {
       await tester.enterText(searchCoinsField, element);
       await tester.pumpAndSettle();
       final Finder elementCoinItem = find.byKey(Key('coin-activate-$element'));

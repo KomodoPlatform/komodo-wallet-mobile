@@ -23,7 +23,8 @@ void main() {
     await enableTestCoin(tester);
     await tester.pumpAndSettle();
     print('ACTIVATE TEST COINS');
-    await activateTestCoins(tester, list: ['MORTY', 'RICK', 'tQTUM']);
+    await activateTestCoins(tester,
+        coinsToActivate: ['MORTY', 'RICK', 'tQTUM']);
     await tester.pumpAndSettle();
     print('CREATE AN MULTI SWAP');
     await createMultiSwap(tester);
