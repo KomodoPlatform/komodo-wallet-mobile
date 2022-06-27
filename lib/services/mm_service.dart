@@ -468,6 +468,8 @@ class MMService {
   }
 
   Future<void> stopmm2() async {
+    if (await _mm2status() == Mm2Status.not_running) return;
+
     final int errorCode = await nativeC.invokeMethod<int>('stop');
     final Mm2StopError error = mm2StopErrorFrom(errorCode);
     Log('mm_service', 'stopmm2: $error');
