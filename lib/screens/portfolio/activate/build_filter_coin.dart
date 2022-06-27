@@ -38,9 +38,15 @@ class BuildFilterCoin extends StatelessWidget {
                           onTap: () {
                             onSelected('');
                           },
-                          child: Icon(Icons.close, color: Colors.white),
+                          child: Icon(
+                            Icons.close,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                         )
-                      : Icon(Icons.filter_list, color: Colors.white),
+                      : Icon(
+                          Icons.filter_list,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                 ],
               ),
             ),
