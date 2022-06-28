@@ -85,9 +85,10 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                   typeFilter = aType;
                   List<Coin> coinsFiltered = await coinsBloc
                       .getAllNotActiveCoinsWithFilter(controller.text, aType);
-                  _currentCoins = coinsFiltered;
-                  _listViewItems = _buildListView();
-                  setState(() {});
+                  setState(() {
+                    _currentCoins = coinsFiltered;
+                    _listViewItems = _buildListView();
+                  });
                 },
               )
             ],

@@ -866,6 +866,15 @@ void unfocusTextField(BuildContext context) {
   if (!currentFocus.hasPrimaryFocus) {
     currentFocus.unfocus();
   }
+  currentFocus.unfocus();
+}
+
+void focusTextField(BuildContext context) {
+  FocusScopeNode currentFocus = FocusScope.of(context);
+  if (!currentFocus.hasPrimaryFocus) {
+    currentFocus.requestFocus();
+  }
+  currentFocus.requestFocus();
 }
 
 void moveCursorToEnd(TextEditingController controller) {

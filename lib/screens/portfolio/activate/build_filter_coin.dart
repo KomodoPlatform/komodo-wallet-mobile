@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/portfolio/activate/show_protocol_menu.dart'
     as menu;
+import 'package:komodo_dex/utils/utils.dart';
 
 class BuildFilterCoin extends StatefulWidget {
   const BuildFilterCoin({
@@ -27,7 +28,10 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
           child: menu.CustomPopupMenuButton(
             tooltip: 'Filter by Protocols',
             key: const Key('show-filter-protocol'),
-            onSelected: widget.onSelected,
+            onSelected: (a) {
+              widget.onSelected(a);
+              Future.delayed(Duration.zero, () => unfocusTextField(context));
+            },
             child: Padding(
               padding: EdgeInsets.only(right: 3, left: 6),
               child: Row(
@@ -41,7 +45,10 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
                   widget.typeFilter != ''
                       ? InkWell(
                           key: const Key('clear-filter-protocol'),
-                          onTap: () => widget.onSelected(''),
+                          onTap: () {
+                            widget.onSelected('');
+                            focusTextField(context);
+                          },
                           child: Icon(
                             Icons.close,
                             color: Theme.of(context).colorScheme.onSurface,
