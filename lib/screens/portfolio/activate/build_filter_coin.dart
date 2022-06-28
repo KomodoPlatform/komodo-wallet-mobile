@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/screens/portfolio/activate/show_protocol_menu.dart'
+    as menu;
 
-class BuildFilterCoin extends StatelessWidget {
+class BuildFilterCoin extends StatefulWidget {
   const BuildFilterCoin({
     Key key,
     this.typeFilter,
@@ -10,7 +12,11 @@ class BuildFilterCoin extends StatelessWidget {
   final String typeFilter;
   final List<String> allCoinsTypes;
   final Function(String) onSelected;
+  @override
+  State<BuildFilterCoin> createState() => _BuildFilterCoinState();
+}
 
+class _BuildFilterCoinState extends State<BuildFilterCoin> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,26 +24,24 @@ class BuildFilterCoin extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.only(right: 8.0, left: 4),
-          child: PopupMenuButton(
+          child: menu.CustomPopupMenuButton(
             tooltip: 'Filter by Protocols',
             key: const Key('show-filter-protocol'),
-            onSelected: onSelected,
+            onSelected: widget.onSelected,
             child: Padding(
               padding: EdgeInsets.only(right: 3, left: 6),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
-                    typeFilter.toUpperCase(),
+                    widget.typeFilter.toUpperCase(),
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   SizedBox(width: 8),
-                  typeFilter != ''
+                  widget.typeFilter != ''
                       ? InkWell(
                           key: const Key('clear-filter-protocol'),
-                          onTap: () {
-                            onSelected('');
-                          },
+                          onTap: () => widget.onSelected(''),
                           child: Icon(
                             Icons.close,
                             color: Theme.of(context).colorScheme.onSurface,
@@ -50,9 +54,9 @@ class BuildFilterCoin extends StatelessWidget {
                 ],
               ),
             ),
-            itemBuilder: (_) => allCoinsTypes
+            itemBuilder: (_) => widget.allCoinsTypes
                 .map(
-                  (e) => PopupMenuItem<String>(
+                  (e) => menu.PopupMenuItem<String>(
                     key: Key('filter-item-' + e),
                     value: e,
                     child: Text(
