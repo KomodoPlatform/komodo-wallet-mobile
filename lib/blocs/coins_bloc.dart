@@ -163,13 +163,22 @@ class CoinsBloc implements BlocBase {
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
-  void setCoinsBeforeActivationByType(String type, bool isActive) {
+  void setCoinsBeforeActivationByType(
+      String type, String filterType, bool isActive) {
     final List<CoinToActivate> list = [];
     for (CoinToActivate item in coinBeforeActivation) {
       bool shouldChange;
       // type == null when we're selecting/deselecting test coins
       if (type == null) {
-        shouldChange = item.coin.testCoin;
+        if (filterType.isNotEmpty) {
+          if (item.coin.type.name == filterType) {
+            shouldChange = item.coin.testCoin;
+          } else {
+            shouldChange = false;
+          }
+        } else {
+          shouldChange = item.coin.testCoin;
+        }
       } else {
         shouldChange = item.coin.type.name == type && !item.coin.testCoin;
       }

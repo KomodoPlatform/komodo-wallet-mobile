@@ -210,6 +210,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     for (String type in sortedTypes) {
       list.add(BuildTypeHeader(
         type: type,
+        filterType: typeFilter,
       ));
       for (Coin coin in coinsMap[type]) {
         list.add(BuildItemCoin(
@@ -227,6 +228,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     if (testCoins.isNotEmpty) {
       list.add(BuildTypeHeader(
         type: null,
+        filterType: typeFilter,
       ));
 
       for (Coin testCoin in testCoins) {

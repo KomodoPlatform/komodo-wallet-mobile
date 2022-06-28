@@ -4,10 +4,12 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_type.dart';
 
 class BuildTypeHeader extends StatefulWidget {
-  const BuildTypeHeader({Key key, this.type}) : super(key: key);
+  const BuildTypeHeader({Key key, this.type, this.filterType})
+      : super(key: key);
 
   // `null` for 'test coins' category
   final String type;
+  final String filterType;
 
   @override
   _BuildTypeHeaderState createState() => _BuildTypeHeaderState();
@@ -25,7 +27,7 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
           // todo(MRC): Optimize this to use CheckboxListTile in a future point in time
           return InkWell(
             onTap: () => coinsBloc.setCoinsBeforeActivationByType(
-                widget.type, !isActive),
+                widget.type, widget.filterType, !isActive),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
               child: Row(
