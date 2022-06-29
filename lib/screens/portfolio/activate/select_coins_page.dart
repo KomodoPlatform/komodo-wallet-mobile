@@ -129,13 +129,15 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     );
   }
 
-  void _initCoinList() {
+  void _initCoinList() async {
+    for (CoinToActivate coinToActivate in coinsBloc.coinBeforeActivation) {
+      _currentCoins
+          .removeWhere((Coin coin) => coin.abbr == coinToActivate.coin.abbr);
+      _currentCoins.add(coinToActivate.coin);
+    }
+    _currentCoins =
+        await coinsBloc.getAllNotActiveCoinsWithFilter('', typeFilter);
     setState(() {
-      for (CoinToActivate coinToActivate in coinsBloc.coinBeforeActivation) {
-        _currentCoins
-            .removeWhere((Coin coin) => coin.abbr == coinToActivate.coin.abbr);
-        _currentCoins.add(coinToActivate.coin);
-      }
       _listViewItems = _buildListView();
 
       final Map<String, List<Coin>> coinsMap = getCoinsMap();
