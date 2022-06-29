@@ -759,12 +759,8 @@ String getRandomWord() {
 List<Coin> filterCoinsByQuery(List<Coin> coins, String query,
     {String type = ''}) {
   if (coins == null || coins.isEmpty) return [];
-  List<Coin> list = coins
-      .where((Coin coin) =>
-          (coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
-              coin.name.toLowerCase().contains(query.trim().toLowerCase())) &&
-          coin.type.name.toLowerCase().contains(type.trim().toLowerCase()))
-      .toList();
+  List<Coin> list =
+      coins.where((Coin coin) => isCoinPresent(coin, query, type)).toList();
 
   return list;
 }
@@ -888,4 +884,10 @@ String toInitialUpper(String val) {
   final String initial = val.substring(0, 1);
   final String rest = val.substring(1);
   return initial.toUpperCase() + rest;
+}
+
+bool isCoinPresent(Coin coin, String query, String filter) {
+  return coin.type.name.toLowerCase().contains(filter.toLowerCase()) &&
+      (coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
+          coin.name.toLowerCase().contains(query.trim().toLowerCase()));
 }

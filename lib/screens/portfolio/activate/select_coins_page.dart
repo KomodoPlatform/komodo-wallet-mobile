@@ -211,6 +211,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     for (String type in sortedTypes) {
       list.add(BuildTypeHeader(
         type: type,
+        query: controller.text,
         filterType: typeFilter,
       ));
       for (Coin coin in coinsMap[type]) {
@@ -230,6 +231,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       list.add(BuildTypeHeader(
         type: null,
         filterType: typeFilter,
+        query: controller.text,
       ));
 
       for (Coin testCoin in testCoins) {

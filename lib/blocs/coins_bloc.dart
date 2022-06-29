@@ -164,14 +164,18 @@ class CoinsBloc implements BlocBase {
   }
 
   void setCoinsBeforeActivationByType(
-      String type, String filterType, bool isActive) {
+    String type,
+    bool isActive, {
+    String query,
+    String filterType,
+  }) {
     final List<CoinToActivate> list = [];
     for (CoinToActivate item in coinBeforeActivation) {
       bool shouldChange;
       // type == null when we're selecting/deselecting test coins
       if (type == null) {
-        if (filterType.isNotEmpty) {
-          if (item.coin.type.name == filterType) {
+        if (filterType.isNotEmpty || query.isNotEmpty) {
+          if (isCoinPresent(item.coin, query, filterType)) {
             shouldChange = item.coin.testCoin;
           } else {
             shouldChange = false;
@@ -180,7 +184,15 @@ class CoinsBloc implements BlocBase {
           shouldChange = item.coin.testCoin;
         }
       } else {
-        shouldChange = item.coin.type.name == type && !item.coin.testCoin;
+        if (filterType.isNotEmpty || query.isNotEmpty) {
+          if (isCoinPresent(item.coin, query, filterType)) {
+            shouldChange = !item.coin.testCoin;
+          } else {
+            shouldChange = false;
+          }
+        } else {
+          shouldChange = item.coin.type.name == type && !item.coin.testCoin;
+        }
       }
 
       if (shouldChange) {
