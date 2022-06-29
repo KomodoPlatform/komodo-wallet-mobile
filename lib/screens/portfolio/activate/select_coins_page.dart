@@ -135,14 +135,15 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
           .removeWhere((Coin coin) => coin.abbr == coinToActivate.coin.abbr);
       _currentCoins.add(coinToActivate.coin);
     }
+
+    final Map<String, List<Coin>> coinsMap = getCoinsMap();
+    allCoinsTypes = coinsMap.keys.toList()
+      ..sort((String a, String b) => b.compareTo(a));
+
     _currentCoins =
         await coinsBloc.getAllNotActiveCoinsWithFilter('', typeFilter);
     setState(() {
       _listViewItems = _buildListView();
-
-      final Map<String, List<Coin>> coinsMap = getCoinsMap();
-      allCoinsTypes = coinsMap.keys.toList()
-        ..sort((String a, String b) => b.compareTo(a));
     });
   }
 

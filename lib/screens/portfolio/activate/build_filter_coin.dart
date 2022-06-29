@@ -30,7 +30,8 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
             key: const Key('show-filter-protocol'),
             onSelected: (a) {
               widget.onSelected(a);
-              Future.delayed(Duration.zero, () => unfocusTextField(context));
+              Future.delayed(
+                  Duration(seconds: 1), () => unfocusTextField(context));
             },
             child: Padding(
               padding: EdgeInsets.only(right: 3, left: 6),
