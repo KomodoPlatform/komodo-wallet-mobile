@@ -12,6 +12,7 @@ import 'package:komodo_dex/model/startup_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
+import 'package:komodo_dex/screens/authentification/app_bar_status.dart';
 import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
@@ -306,7 +307,6 @@ class _LockScreenState extends State<LockScreen> {
               return PinPage(
                 title: AppLocalizations.of(context).createPin,
                 subTitle: AppLocalizations.of(context).enterNewPinCode,
-                firstCreationPin: true,
                 pinStatus: PinStatus.CREATE_PIN,
                 password: password,
                 isFromChangingPin: false,
