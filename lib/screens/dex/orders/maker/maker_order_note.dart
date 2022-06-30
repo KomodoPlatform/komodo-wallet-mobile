@@ -56,6 +56,14 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
                   onTap: noteText != null && noteText.isNotEmpty
                       ? () {
                           setState(() {
+                            isEdit = true;
+                          });
+
+                          noteTextController.text =
+                              noteTextController.text.trim();
+                          noteText = noteTextController.text;
+                          focusNode.requestFocus();
+                          setState(() {
                             isExpanded = !isExpanded;
                           });
                         }

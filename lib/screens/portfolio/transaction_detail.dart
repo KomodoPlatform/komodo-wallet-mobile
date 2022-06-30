@@ -392,6 +392,13 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                   )
                 : InkWell(
                     onTap: () {
+                      setState(() {
+                        isEdit = true;
+                      });
+
+                      noteTextController.text = noteTextController.text.trim();
+                      noteText = noteTextController.text;
+                      focusNode.requestFocus();
                       if (noteText != null && noteText.isNotEmpty)
                         setState(() {
                           isExpanded = !isExpanded;
