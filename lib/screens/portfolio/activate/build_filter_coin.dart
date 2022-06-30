@@ -28,11 +28,7 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
           child: menu.CustomPopupMenuButton(
             tooltip: 'Filter by Protocols',
             key: const Key('show-filter-protocol'),
-            onSelected: (a) {
-              widget.onSelected(a);
-              Future.delayed(
-                  Duration(seconds: 1), () => unfocusTextField(context));
-            },
+            onSelected: widget.onSelected,
             child: Padding(
               padding: EdgeInsets.only(right: 3, left: 6),
               child: Row(

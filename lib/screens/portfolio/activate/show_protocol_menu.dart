@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 const Duration _kMenuDuration = Duration(milliseconds: 300);
 const double _kMenuCloseIntervalEnd = 2.0 / 3.0;
@@ -1129,6 +1130,7 @@ class CustomPopupMenuButtonState<T> extends State<CustomPopupMenuButton<T>> {
     final List<PopupMenuEntry<T>> items = widget.itemBuilder(context);
     // Only show the menu if there is something to show
     if (items.isNotEmpty) {
+      unfocusTextField(context);
       dialogBloc.dialog = showMenu<T>(
         context: context,
         elevation: widget.elevation ?? popupMenuTheme.elevation,
