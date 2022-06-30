@@ -112,7 +112,8 @@ class _ContactEditState extends State<ContactEdit> {
                             },
                           ),
                           SizedBox(height: 16),
-                          _buildAddButton(),
+                          if (_editContact?.addresses?.isEmpty ?? true)
+                            _buildAddButton(),
                           FutureBuilder<Widget>(
                             future: _buildAddresses(),
                             builder: (BuildContext context,
@@ -147,6 +148,7 @@ class _ContactEditState extends State<ContactEdit> {
                                 AppLocalizations.of(context).contactCancel),
                           ),
                           TextButton(
+                            key: const Key('save-address'),
                             onPressed: _saveContact,
                             child:
                                 Text(AppLocalizations.of(context).contactSave),
@@ -262,6 +264,7 @@ class _ContactEditState extends State<ContactEdit> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         ElevatedButton.icon(
+          key: const Key('add-address'),
           onPressed: () => _showCoinSelectDialog(),
           style: elevatedButtonSmallButtonStyle(),
           icon: const Icon(Icons.add, size: 16),
@@ -275,6 +278,7 @@ class _ContactEditState extends State<ContactEdit> {
     return coins.map(
       (coin) {
         return SimpleDialogOption(
+          key: Key('selected-coin-${coin.abbr}'),
           onPressed: () => _createAddress(coin),
           child: Padding(
             padding: const EdgeInsets.only(
@@ -336,6 +340,7 @@ class _ContactEditState extends State<ContactEdit> {
           return StatefulBuilder(
             builder: (context, setState) {
               return CustomSimpleDialog(
+                key: const Key('select-coin-list'),
                 hasHorizontalPadding: false,
                 title: Text(AppLocalizations.of(context).addressSelectCoin),
                 children: [
