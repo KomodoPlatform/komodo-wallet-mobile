@@ -32,6 +32,11 @@ void showCancelOrderDialog({
             children: <Widget>[
               Text(AppLocalizations.of(context).confirmCancel),
               const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12.0, top: 6.0),
+                child: Text(AppLocalizations.of(context).noteOnOrder),
+              ),
+              const SizedBox(height: 12),
               Row(
                 children: [
                   SizedBox(
