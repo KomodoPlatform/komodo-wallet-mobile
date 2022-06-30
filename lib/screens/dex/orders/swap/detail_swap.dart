@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/detailed_swap_steps.dart';
-import 'package:komodo_dex/services/db/database.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_note.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class DetailSwap extends StatefulWidget {
@@ -17,29 +16,6 @@ class DetailSwap extends StatefulWidget {
 }
 
 class _DetailSwapState extends State<DetailSwap> {
-  String noteText;
-  bool isNoteEdit = false;
-  bool isNoteExpanded = false;
-  final noteTextController = TextEditingController();
-  FocusNode focusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    Db.getNote(widget.swap.result.uuid).then((n) {
-      setState(() {
-        noteText = n;
-        noteTextController.text = noteText;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    noteTextController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -78,7 +54,7 @@ class _DetailSwapState extends State<DetailSwap> {
           ),
         ),
         _buildAmountSwap(),
-        _buildNote(AppLocalizations.of(context).noteTitle),
+        SwapDetailNote(widget.swap.result.uuid),
         Padding(
           padding: const EdgeInsets.only(top: 16),
           child: _buildInfo(
@@ -117,110 +93,6 @@ class _DetailSwapState extends State<DetailSwap> {
           style: Theme.of(context).textTheme.caption,
         ),
       ),
-    );
-  }
-
-  Widget _buildNote(String title) {
-    return Row(
-      crossAxisAlignment:
-          isNoteEdit ? CrossAxisAlignment.center : CrossAxisAlignment.end,
-      children: <Widget>[
-        Expanded(
-          child: InkWell(
-            onTap: isNoteEdit
-                ? null
-                : () {
-                    setState(() {
-                      isNoteEdit = true;
-                    });
-
-                    noteTextController.text = noteTextController.text.trim();
-                    noteText = noteTextController.text;
-                    focusNode.requestFocus();
-
-                    if (noteText != null && noteText.isNotEmpty) {
-                      setState(() {
-                        isNoteExpanded = !isNoteExpanded;
-                      });
-                    }
-                  },
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 20, 0, 8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 6),
-                    child: Text(
-                      title + ':',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ),
-                  isNoteEdit
-                      ? Theme(
-                          data: Theme.of(context).copyWith(
-                            inputDecorationTheme: gefaultUnderlineInputTheme,
-                          ),
-                          child: TextField(
-                            decoration: InputDecoration(isDense: true),
-                            controller: noteTextController,
-                            maxLength: 200,
-                            maxLines: 7,
-                            minLines: 1,
-                            focusNode: focusNode,
-                          ),
-                        )
-                      : Text(
-                          (noteText == null || noteText.isEmpty)
-                              ? AppLocalizations.of(context).notePlaceholder
-                              : noteText,
-                          style: Theme.of(context).textTheme.bodyText2.copyWith(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                          maxLines: isNoteExpanded ? null : 1,
-                          overflow:
-                              isNoteExpanded ? null : TextOverflow.ellipsis,
-                        ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        IconButton(
-          icon: Icon(isNoteEdit ? Icons.check : Icons.edit),
-          onPressed: () {
-            setState(
-              () {
-                if (isNoteEdit) {
-                  noteTextController.text = noteTextController.text.trim();
-                  noteText = noteTextController.text;
-
-                  noteText.isNotEmpty
-                      ? Db.saveNote(widget.swap.result.uuid, noteText)
-                      : Db.deleteNote(widget.swap.result.uuid);
-
-                  setState(() {
-                    isNoteExpanded = false;
-                  });
-                } else {
-                  focusNode.requestFocus();
-                }
-
-                setState(() {
-                  isNoteEdit = !isNoteEdit;
-                });
-              },
-            );
-          },
-        ),
-        if (noteText?.isNotEmpty ?? false)
-          IconButton(
-            icon: Icon(Icons.copy),
-            onPressed: () {
-              copyToClipBoard(context, noteText);
-            },
-          ),
-      ],
     );
   }
 
