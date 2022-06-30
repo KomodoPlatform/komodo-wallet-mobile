@@ -40,78 +40,79 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Expanded(
-            child: Row(
-          children: [
-            Expanded(
-              child: isEdit
-                  ? Theme(
-                      data: Theme.of(context).copyWith(
-                        inputDecorationTheme: gefaultUnderlineInputTheme,
-                      ),
-                      child: TextField(
-                        controller: noteTextController,
-                        maxLength: 200,
-                        minLines: 1,
-                        maxLines: 8,
-                        focusNode: focusNode,
-                      ),
-                    )
-                  : InkWell(
-                      onTap: isEdit
-                          ? null
-                          : () {
-                              setState(() {
-                                isEdit = true;
-                              });
-
-                              noteTextController.text =
-                                  noteTextController.text.trim();
-                              noteText = noteTextController.text;
-                              focusNode.requestFocus();
-                              setState(() {
-                                isExpanded = !isExpanded;
-                              });
-                            },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          (noteText == null || noteText.isEmpty)
-                              ? AppLocalizations.of(context).notePlaceholder
-                              : noteText,
-                          maxLines: isExpanded ? null : 1,
-                          overflow: isExpanded ? null : TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-            ),
-            IconButton(
-              icon: Icon(isEdit ? Icons.check : Icons.edit, size: 18),
-              onPressed: () {
-                setState(
-                  () {
-                    if (isEdit) {
-                      noteTextController.text = noteTextController.text.trim();
-                      noteText = noteTextController.text;
-                      noteText.isNotEmpty
-                          ? Db.saveNote(noteId, noteText)
-                          : Db.deleteNote(noteId);
-
-                      setState(() {
-                        isExpanded = false;
-                      });
-                    } else {
-                      focusNode.requestFocus();
-                    }
-
+          child: InkWell(
+            onTap: isEdit
+                ? null
+                : () {
                     setState(() {
-                      isEdit = !isEdit;
+                      isEdit = true;
+                    });
+
+                    noteTextController.text = noteTextController.text.trim();
+                    noteText = noteTextController.text;
+                    focusNode.requestFocus();
+                    setState(() {
+                      isExpanded = !isExpanded;
                     });
                   },
-                );
-              },
+            child: Row(
+              children: [
+                Expanded(
+                  child: isEdit
+                      ? Theme(
+                          data: Theme.of(context).copyWith(
+                            inputDecorationTheme: gefaultUnderlineInputTheme,
+                          ),
+                          child: TextField(
+                            controller: noteTextController,
+                            maxLength: 200,
+                            minLines: 1,
+                            maxLines: 8,
+                            focusNode: focusNode,
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            (noteText == null || noteText.isEmpty)
+                                ? AppLocalizations.of(context).notePlaceholder
+                                : noteText,
+                            maxLines: isExpanded ? null : 1,
+                            overflow: isExpanded ? null : TextOverflow.ellipsis,
+                          ),
+                        ),
+                ),
+                IconButton(
+                  icon: Icon(isEdit ? Icons.check : Icons.edit, size: 18),
+                  onPressed: () {
+                    setState(
+                      () {
+                        if (isEdit) {
+                          noteTextController.text =
+                              noteTextController.text.trim();
+                          noteText = noteTextController.text;
+                          noteText.isNotEmpty
+                              ? Db.saveNote(noteId, noteText)
+                              : Db.deleteNote(noteId);
+
+                          setState(() {
+                            isExpanded = false;
+                          });
+                        } else {
+                          focusNode.requestFocus();
+                        }
+
+                        setState(() {
+                          isEdit = !isEdit;
+                        });
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
-          ],
-        )),
+          ),
+        ),
         // todo(MRC): Switch to IconButton
 
         if (noteText?.isNotEmpty ?? false)
