@@ -10,6 +10,7 @@ import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
@@ -49,8 +50,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Fee customFee;
       if (coinsDetailBloc.customFee != null) {
-        final String coinType = widget.coinBalance.coin.type;
-        if (coinType == 'erc' || coinType == 'bep' || coinType == 'plg') {
+        bool isERC = isErcType(widget.coinBalance.coin);
+        if (isERC) {
           customFee = Fee(
             type: 'EthGas',
             gas: coinsDetailBloc.customFee.gas,
