@@ -99,6 +99,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                           ],
                           Expanded(
                             child: TextFormField(
+                              key: Key(widget.name + '-address-field'),
                               controller: controller,
                               focusNode: focusNode,
                               textCapitalization: TextCapitalization.words,
