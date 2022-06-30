@@ -1,0 +1,1 @@
+flutter test ./integration_test/tests/wallet_tests.dart -d YOUR_DEVICE_ID

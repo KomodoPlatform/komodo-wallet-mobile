@@ -37,6 +37,7 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: TextFormField(
+        key: const Key('coins-search-field'),
         textAlignVertical: TextAlignVertical.center,
         textInputAction: TextInputAction.search,
         autofocus: true,

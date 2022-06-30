@@ -142,7 +142,7 @@ class _LockScreenState extends State<LockScreen> {
     final walletSecuritySettingsProvider =
         context.read<WalletSecuritySettingsProvider>();
 
-    Widget _buildSplash(String message) {
+    Widget _buildSplash({String message}) {
       return Scaffold(
         body: Center(
           child: Column(
@@ -154,11 +154,30 @@ class _LockScreenState extends State<LockScreen> {
                     : 'assets/branding/logo_app.png',
               ),
               const SizedBox(height: 12),
-              Text(message,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  )),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(width: 20),
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 1),
+                  ),
+                  if (message != null) ...[
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        message,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Theme.of(context).textTheme.caption.color,
+                        ),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(width: 20),
+                ],
+              ),
             ],
           ),
         ),
@@ -169,10 +188,10 @@ class _LockScreenState extends State<LockScreen> {
       final RegExpMatch _tailMatch =
           RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
       final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
-      return _buildSplash(_logTail);
+      return _buildSplash(message: _logTail);
     } else if (updatesProvider.status == null &&
         mainBloc.networkStatus == NetworkStatus.Online) {
-      return _buildSplash(AppLocalizations.of(context).checkingUpdates);
+      return _buildSplash();
     }
 
     return StreamBuilder<bool>(

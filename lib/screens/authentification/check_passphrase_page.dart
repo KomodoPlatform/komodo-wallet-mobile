@@ -41,11 +41,11 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
 
     for (int i = 0; i < 3; i++) {
       final int res = _random.nextInt(wordsData.length);
+
       wordsWidget.add(SeedRandom(data: wordsData[res]));
       wordsDataRandom.add(wordsData[res]);
       wordsData.removeAt(res);
     }
-
     super.initState();
   }
 
@@ -78,6 +78,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
               stream: checkPassphraseBloc.outIsWordGoodLogin,
               builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                 return PrimaryButton(
+                  key: const Key('continue-check'),
                   text: AppLocalizations.of(context).checkSeedPhraseButton1,
                   onPressed: snapshot.data ? _onPressedNext : null,
                 );
@@ -86,6 +87,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
             height: 16,
           ),
           SecondaryButton(
+            key: const Key('check-phrase-again'),
             text: AppLocalizations.of(context).checkSeedPhraseButton2,
             onPressed: () {
               Navigator.of(context).pop();
@@ -142,9 +144,9 @@ class _SeedRandomState extends State<SeedRandom> {
 
   Widget _buildSeedWord(String word) {
     return ElevatedButton(
+        key: Key(word),
         onPressed: () {
           _controller.text = word;
-
           checkPassphraseBloc.setWord(_controller.text);
           checkPassphraseBloc.setIsWordGood(
               const CheckPassphrasePage().checkSeedWord(widget.data));
@@ -174,6 +176,7 @@ class _SeedRandomState extends State<SeedRandom> {
           height: 8,
         ),
         Wrap(
+          key: const Key('seed-word-buttons'),
           runSpacing: 8,
           spacing: 8,
           alignment: WrapAlignment.spaceBetween,

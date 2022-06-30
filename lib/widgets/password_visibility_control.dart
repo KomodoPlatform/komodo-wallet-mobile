@@ -44,6 +44,7 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
   Widget build(BuildContext context) {
     return GestureDetector(
       // NB: Both the long press and the tap start with `onTabDown`.
+      key: const Key('password-visibility'),
       onTapDown: (TapDownDetails details) {
         _tapStartPosition = details.globalPosition;
         _setObscureTo(false);
