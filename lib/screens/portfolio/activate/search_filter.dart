@@ -42,7 +42,6 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
         key: const Key('coins-search-field'),
         textAlignVertical: TextAlignVertical.center,
         textInputAction: TextInputAction.search,
-        autofocus: true,
         controller: widget.controller,
         focusNode: _focus,
         maxLines: 1,
