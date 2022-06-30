@@ -3,6 +3,7 @@ import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/services/db/database.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class MakerOrderNote extends StatefulWidget {
   const MakerOrderNote(this.order);
@@ -81,12 +82,9 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
                 ),
         ),
         // todo(MRC): Switch to IconButton
-        InkWell(
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-              padding: const EdgeInsets.all(12),
-              child: Icon(isEdit ? Icons.check : Icons.edit, size: 18)),
-          onTap: () {
+        IconButton(
+          icon: Icon(isEdit ? Icons.check : Icons.edit, size: 18),
+          onPressed: () {
             setState(
               () {
                 if (isEdit) {
@@ -99,17 +97,24 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
                   setState(() {
                     isExpanded = false;
                   });
-                }
-                if (!isEdit) {
+                } else {
                   focusNode.requestFocus();
                 }
+
                 setState(() {
                   isEdit = !isEdit;
                 });
               },
             );
           },
-        )
+        ),
+        if (noteText?.isNotEmpty ?? false)
+          IconButton(
+            icon: Icon(Icons.copy),
+            onPressed: () {
+              copyToClipBoard(context, noteText);
+            },
+          ),
       ],
     );
   }

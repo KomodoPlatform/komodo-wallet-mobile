@@ -435,17 +435,24 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                     setState(() {
                       isExpanded = false;
                     });
-                  }
-                  if (!isEdit) {
+                  } else {
                     focusNode.requestFocus();
                   }
+
                   setState(() {
                     isEdit = !isEdit;
                   });
                 },
               );
             },
-          )
+          ),
+          if (noteText?.isNotEmpty ?? false)
+            IconButton(
+              icon: Icon(Icons.copy),
+              onPressed: () {
+                copyToClipBoard(context, noteText);
+              },
+            ),
         ],
       ),
     );

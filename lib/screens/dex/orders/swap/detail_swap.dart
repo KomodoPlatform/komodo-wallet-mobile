@@ -186,40 +186,40 @@ class _DetailSwapState extends State<DetailSwap> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(right: 24),
-          child: InkWell(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(isNoteEdit ? Icons.check : Icons.edit),
-            ),
-            borderRadius: BorderRadius.circular(20),
-            onTap: () {
-              setState(
-                () {
-                  if (isNoteEdit) {
-                    noteTextController.text = noteTextController.text.trim();
-                    noteText = noteTextController.text;
+        IconButton(
+          icon: Icon(isNoteEdit ? Icons.check : Icons.edit),
+          onPressed: () {
+            setState(
+              () {
+                if (isNoteEdit) {
+                  noteTextController.text = noteTextController.text.trim();
+                  noteText = noteTextController.text;
 
-                    noteText.isNotEmpty
-                        ? Db.saveNote(widget.swap.result.uuid, noteText)
-                        : Db.deleteNote(widget.swap.result.uuid);
+                  noteText.isNotEmpty
+                      ? Db.saveNote(widget.swap.result.uuid, noteText)
+                      : Db.deleteNote(widget.swap.result.uuid);
 
-                    setState(() {
-                      isNoteExpanded = false;
-                    });
-                  }
-                  if (!isNoteEdit) {
-                    focusNode.requestFocus();
-                  }
                   setState(() {
-                    isNoteEdit = !isNoteEdit;
+                    isNoteExpanded = false;
                   });
-                },
-              );
+                } else {
+                  focusNode.requestFocus();
+                }
+
+                setState(() {
+                  isNoteEdit = !isNoteEdit;
+                });
+              },
+            );
+          },
+        ),
+        if (noteText?.isNotEmpty ?? false)
+          IconButton(
+            icon: Icon(Icons.copy),
+            onPressed: () {
+              copyToClipBoard(context, noteText);
             },
           ),
-        )
       ],
     );
   }
