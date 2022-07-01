@@ -31,14 +31,7 @@ class Db {
   static Future<Database> _initDB() async {
     final Directory documentsDirectory = await applicationDocumentsDirectory;
     final String path = join(documentsDirectory.path, 'AtomicDEX.db');
-    final db = await openDatabase(
-      path,
-      version: 3,
-      onOpen: (Database db) {},
-      onCreate: (Database db, int version) async {
-        Log('database:35', 'initDB, onCreate version $version');
-
-        await db.execute('''
+    String _articleTable = '''
       CREATE TABLE ArticlesSaved (
           id TEXT PRIMARY KEY,
           media TEXT,
@@ -51,9 +44,9 @@ class Db {
           author TEXT,
           v INTEGER
         )
-      ''');
-        await db.execute('''
-      CREATE TABLE Wallet (
+      ''';
+    String _walletTable([bool newValue = false]) => '''
+      CREATE TABLE ${newValue ? 'new_' : ''}Wallet (
           id TEXT PRIMARY KEY,
           name TEXT,
           activate_pin_protection BIT,
@@ -65,9 +58,9 @@ class Db {
           camo_balance TEXT,
           camo_session_started_at INTEGER
         )
-      ''');
-        await db.execute('''
-      CREATE TABLE CurrentWallet (
+      ''';
+    String _currentWalletTable([bool newValue = false]) => '''
+      CREATE TABLE ${newValue ? 'new_' : ''}CurrentWallet (
           id TEXT PRIMARY KEY,
           name TEXT,
           activate_pin_protection BIT,
@@ -79,33 +72,48 @@ class Db {
           camo_balance TEXT,
           camo_session_started_at INTEGER
         )
-      ''');
-        await db.execute('''
+      ''';
+    String _listOfCoinActivatedTable = '''
       CREATE TABLE ListOfCoinsActivated (
           wallet_id TEXT PRIMARY KEY,
           coins TEXT
         )
-      ''');
+      ''';
+    final db = await openDatabase(
+      path,
+      version: 3,
+      onOpen: (Database db) {},
+      onCreate: (Database db, int version) async {
+        Log('database:35', 'initDB, onCreate version $version');
+        await db.execute(_articleTable);
+        await db.execute(_walletTable());
+        await db.execute(_currentWalletTable());
+        await db.execute(_listOfCoinActivatedTable);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         Log('database',
             'initDB, onUpgrade, oldVersion: $oldVersion newVersion: $newVersion');
-        if (newVersion >= 2) {
-          Log('database', 'initDB, onUpgrade, upgrading to version 2');
-          // MRC: I could have simply added the new fields to the table,
-          // but I'm opting to recreating the tables
-          // The sqlite docs recommend doings a transation and doing things in a specific order
-          // See https://www.sqlite.org/lang_altertable.html for info
-          try {
-            // MRC: I figured out that one of the possible ways to successfully migrate
-            // the activated coins was some relatively complex SQL on db upgrade,
-            // and it was accepted over clearing completely the coins list
-            //
-            // So, please look at the code below carrefully
 
-            List<String> listOfCoins = <String>[];
+        Log('database', 'initDB, onUpgrade, upgrading to version $newVersion');
+        // MRC: I could have simply added the new fields to the table,
+        // but I'm opting to recreating the tables
+        // The sqlite docs recommend doings a transation and doing things in a specific order
+        // See https://www.sqlite.org/lang_altertable.html for info
+        try {
+          // MRC: I figured out that one of the possible ways to successfully migrate
+          // the activated coins was some relatively complex SQL on db upgrade,
+          // and it was accepted over clearing completely the coins list
+          //
+          // So, please look at the code below carrefully
+
+          List<String> listOfCoins = <String>[];
+
+          //
+
+          final batch = db.batch();
+          // when migrating from version 1, run this for the coins activated migration
+          if (oldVersion == 1) {
             String walletId;
-
             final currentWallet =
                 await db.query('CurrentWallet', columns: ['id'], limit: 1);
 
@@ -122,66 +130,8 @@ class Db {
                 }
               }
             }
-            //
-
-            final batch = db.batch();
-
-            batch.execute('''
-      CREATE TABLE new_Wallet (
-          id TEXT PRIMARY KEY,
-          name TEXT,
-          activate_pin_protection BIT,
-          activate_bio_protection BIT,
-          switch_pin_log_out_on_exit BIT,
-          enable_camo BIT,
-          is_camo_active BIT,
-          camo_fraction INTEGER,
-          camo_balance TEXT,
-          camo_session_started_at INTEGER
-        )
-      ''');
-            batch.execute('''
-      CREATE TABLE new_CurrentWallet (
-          id TEXT PRIMARY KEY,
-          name TEXT,
-          activate_pin_protection BIT,
-          activate_bio_protection BIT,
-          switch_pin_log_out_on_exit BIT,
-          enable_camo BIT,
-          is_camo_active BIT,
-          camo_fraction INTEGER,
-          camo_balance TEXT,
-          camo_session_started_at INTEGER
-        )
-      ''');
-
-            batch.execute('''
-      CREATE TABLE ListOfCoinsActivated (
-          wallet_id TEXT PRIMARY KEY,
-          coins TEXT
-        )
-      ''');
-            batch.execute('''
-      INSERT INTO
-      new_Wallet(id, name)
-      SELECT id, name
-      FROM Wallet
-      ''');
-            batch.execute('''
-      INSERT INTO new_CurrentWallet(id, name)
-      SELECT id, name
-      FROM CurrentWallet
-      ''');
-            batch.execute('DROP TABLE Wallet');
-            batch.execute('DROP TABLE CurrentWallet');
+            batch.execute(_listOfCoinActivatedTable);
             batch.execute('DROP TABLE CoinsActivated');
-            batch.execute('ALTER TABLE new_Wallet RENAME TO Wallet');
-            batch.execute(
-                'ALTER TABLE new_CurrentWallet RENAME TO CurrentWallet');
-            // MRC: We need to remove the WalletSnapshot because it causes coins to show up
-            // even though they aren't in the db due to the ListOfCoinsActivated migration
-            batch.execute('DELETE FROM WalletSnapshot');
-
             if ((walletId != null && walletId.isNotEmpty) &&
                 listOfCoins.isNotEmpty) {
               Log('database',
@@ -195,14 +145,37 @@ class Db {
                 },
               );
             }
-
-            batch.commit();
-            Log('database',
-                'initDB, onUpgrade, upgraded database to version 2 successfully');
-          } catch (e) {
-            Log('database',
-                'initDB, onUpgrade, unable to upgrade database to version 2, error ${e.toString()}');
           }
+
+          batch.execute(_walletTable(true));
+          batch.execute(_currentWalletTable(true));
+          batch.execute('''
+      INSERT INTO
+      new_Wallet(id, name)
+      SELECT id, name
+      FROM Wallet
+      ''');
+          batch.execute('''
+      INSERT INTO new_CurrentWallet(id, name)
+      SELECT id, name
+      FROM CurrentWallet
+      ''');
+          batch.execute('DROP TABLE Wallet');
+          batch.execute('DROP TABLE CurrentWallet');
+          batch.execute('ALTER TABLE new_Wallet RENAME TO Wallet');
+          batch
+              .execute('ALTER TABLE new_CurrentWallet RENAME TO CurrentWallet');
+          // MRC: We need to remove the WalletSnapshot because it causes coins to show up
+          // even though they aren't in the db due to the ListOfCoinsActivated migration
+          batch.execute('DELETE FROM WalletSnapshot');
+
+          batch.commit();
+          Log('database',
+              'initDB, onUpgrade, upgraded database to version $newVersion successfully');
+        } catch (e) {
+          Log('database',
+              'initDB, onUpgrade, unable to upgrade database to version $newVersion, error ${e.toString()}');
+          rethrow;
         }
       },
     );

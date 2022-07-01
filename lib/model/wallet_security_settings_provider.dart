@@ -29,11 +29,17 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
 
   Future<void> migrateSecuritySettings() async {
     await pauseUntil(() => _isInitialized);
-    Log('security_settings_provider', 'Migrating wallet security settings');
+    Log('wallet_security_settings_provider',
+        'Migrating wallet security settings');
 
     // MRC: If this key isn't present, we didn't do the migration yet,
     // this key also should be present on newly created wallets.
-    if (_prefs.containsKey('wallet_security_settings_migrated')) return;
+    Log('security_settings_provider', 'Checking if db migration is needed');
+    if ((_prefs.getInt('db_version_migrated') ?? -1) == 3) {
+      Log('Checking if wallet settings need migration: ', 'false');
+      return;
+    }
+    Log('Checking if wallet settings need migration: ', 'true');
 
     try {
       await _prefs.setBool(
@@ -96,6 +102,7 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       await _prefs.remove('isCamoPinCreated');
       // should have been deleted after finishing camo pins etup
 
+      await _prefs.setInt('db_version_migrated', 3);
       await _prefs.setBool('wallet_security_settings_migrated', true);
 
       Log('security_settings_provider',
@@ -104,9 +111,11 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       await Future.delayed(const Duration(milliseconds: 100));
 
       await _prefs.remove('wallet_security_settings_migration_in_progress');
+      await _prefs.remove('wallet_security_settings_migrated');
     } catch (e) {
       Log('security_settings_provider',
           'Failed to migrate wallet security settings, error: ${e.toString()}');
+      rethrow;
     }
   }
 
