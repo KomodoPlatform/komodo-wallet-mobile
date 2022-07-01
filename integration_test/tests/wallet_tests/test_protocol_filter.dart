@@ -16,8 +16,6 @@ Future<void> testCoinsProtocolFilter(WidgetTester tester) async {
   final Finder mclCoinItem = find.byKey(const Key('coin-activate-MCL'));
   final Finder dashCoinItem = find.byKey(const Key('coin-activate-DASH'));
   final Finder batBep20CoinItem = find.byKey(Key('coin-activate-BAT-BEP20'));
-  final Finder homeList = find.byKey(const Key('list-view-coins'));
-  final Finder mclCoinHomeItem = find.byKey(const Key('coin-list-MCL'));
 
   try {
     // Press Add coins
@@ -94,8 +92,6 @@ Future<void> testCoinsProtocolFilter(WidgetTester tester) async {
 
     await tester.tap(confirmAddAssetsButton);
     await tester.pumpAndSettle();
-    await tester.dragUntilVisible(
-        mclCoinHomeItem, homeList, const Offset(0, -15));
   } catch (e) {
     print(e?.message ?? e);
     rethrow;

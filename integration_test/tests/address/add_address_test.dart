@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/main.dart';
 
 Future<void> addAddressToTest(WidgetTester tester) async {
-  print('ADD ADDRESS TO WALLET TEST');
   final Finder settingsMenu = find.byKey(const Key('main-nav-more'));
   final Finder addressBookButton = find.byKey(Key('side-nav-addressbook'));
 
