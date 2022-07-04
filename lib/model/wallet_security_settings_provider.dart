@@ -65,7 +65,7 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
         camoFraction: tmpCamoFraction,
         camoBalance: tmpCamoBalance,
         camoSessionStartedAt: tmpCamoSessionStartedAt,
-        logOutOnExit: tmpLogOutOnExitList,
+        logOutOnExit: tmpLogOutOnExitList ?? false,
       );
 
       _walletSecuritySettings = tmpWalletSecuritySettings;
