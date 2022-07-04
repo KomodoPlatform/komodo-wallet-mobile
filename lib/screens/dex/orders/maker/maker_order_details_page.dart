@@ -221,6 +221,6 @@ void showCancelConfirmation(BuildContext mContext, String uuid) {
   showCancelOrderDialog(
     context: mContext,
     key: const Key('settings-cancel-order-yes'),
-    onConfirm: () => ordersBloc.cancelOrder(uuid),
+    uuid: uuid,
   );
 }

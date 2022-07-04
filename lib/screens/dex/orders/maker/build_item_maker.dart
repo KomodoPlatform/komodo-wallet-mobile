@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/screens/dex/orders/maker/maker_order_details_page.dart';
@@ -197,7 +196,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
     showCancelOrderDialog(
       context: mContext,
       key: const Key('settings-cancel-order-yes'),
-      onConfirm: () => ordersBloc.cancelOrder(widget.order.uuid),
+      uuid: widget.order.uuid,
     );
   }
 
