@@ -1,0 +1,9 @@
+{
+  "utxo": "UTXO",
+  "smartChain": "Smart Chain",
+  "qrc": "QTUM (QRC-20)",
+  "plg": "Polygon (PLG-20)",
+  "ftm": "Fantom (FTM-20)",
+  "erc": "Ethereum (ERC-20)",
+  "bep": "Binance (BEP-20)"
+}

@@ -18,6 +18,20 @@ class BuildFilterCoin extends StatefulWidget {
 }
 
 class _BuildFilterCoinState extends State<BuildFilterCoin> {
+  static Map _typesName = {};
+  @override
+  void initState() {
+    readJson();
+    super.initState();
+  }
+
+  Future<void> readJson() async {
+    final String response =
+        await rootBundle.loadString('assets/protocol_names.json');
+    _typesName = await json.decode(response);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -74,14 +88,4 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
       ],
     );
   }
-
-  static final Map<String, String> _typesName = {
-    'utxo': 'UTXO',
-    'smartChain': 'Smart Chain',
-    'qrc': 'QTUM (QRC-20)',
-    'plg': 'Polygon (PLG-20)',
-    'ftm': 'Fantom (FTM-20)',
-    'erc': 'Ethereum (ERC-20)',
-    'bep': 'Binance (BEP-20)',
-  };
 }
