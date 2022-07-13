@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firo_dex/app_config/app_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:path/path.dart' as path;
@@ -41,7 +42,7 @@ class MMService {
   bool get running => _running;
   bool _running = false;
 
-  String url = 'http://localhost:7783';
+  String url = 'http://localhost:${appConfig.rpcPort}';
   String userpass = '';
   Stream<List<int>> streamSubscriptionStdout;
 
@@ -312,6 +313,7 @@ class MMService {
       coins: await readJsonCoinInit(),
       dbdir: filesPath,
       allowWeakPassword: false,
+      rpcPort: appConfig.rpcPort,
     ));
 
     logC

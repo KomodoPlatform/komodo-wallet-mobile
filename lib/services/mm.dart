@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firo_dex/app_config/app_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
@@ -80,7 +81,7 @@ class UserpassBody {
 ApiProvider MM = ApiProvider();
 
 class ApiProvider {
-  String url = 'http://localhost:7783';
+  String url = 'http://localhost:${appConfig.rpcPort}';
   Response res;
 
   Response _saveRes(String method, Response res) {
