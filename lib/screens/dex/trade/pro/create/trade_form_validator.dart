@@ -59,12 +59,12 @@ class TradeFormValidator {
     } else if (matchingBid != null && matchingBid.minVolume != null) {
       if (amountReceive != null && amountReceive < matchingBid.minVolume) {
         return appLocalizations.minValueOrder(
-            sellCoin: swapBloc.sellCoinBalance.coin.abbr,
-            sellAmount: cutTrailingZeros(formatPrice(
-                matchingBid.minVolume.toDouble() *
-                    double.parse(matchingBid.price))),
-            buyCoin: swapBloc.receiveCoinBalance.coin.abbr,
-            buyAmount: cutTrailingZeros(formatPrice(matchingBid.minVolume)));
+          swapBloc.receiveCoinBalance.coin.abbr,
+          cutTrailingZeros(formatPrice(matchingBid.minVolume)),
+          swapBloc.sellCoinBalance.coin.abbr,
+          cutTrailingZeros(formatPrice(matchingBid.minVolume.toDouble() *
+              double.parse(matchingBid.price))),
+        );
       }
       return null;
     } else {
@@ -104,7 +104,7 @@ class TradeFormValidator {
         final double gasBalance =
             coinsBloc.getBalanceByAbbr(gasCoin).balance.balance.toDouble();
         if (totalGasAmount > gasBalance) {
-          return appLocalizations.swapGasAmount(
+          return appLocalizations.swapGasAmountRequired(
               gasCoin, cutTrailingZeros(formatPrice(totalGasAmount, 4)));
         }
       }

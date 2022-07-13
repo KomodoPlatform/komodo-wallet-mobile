@@ -52,27 +52,22 @@ class _ExportPageState extends State<ExportPage> {
       context: context,
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).exportTitle,
-          ),
+          title: Text(AppLocalizations.of(context).exportTitle),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              if (_done) ...{
-                _buildSuccess(),
-              } else ...{
-                _buildHeader(),
-                _buildNotes(),
-                _buildContacts(),
-                _buildSwaps(),
-                _buildPass(),
-                _buildButton(),
-              }
-            ],
-          ),
+        body: ListView(
+          children: [
+            if (_done) ...{
+              _buildSuccess(),
+            } else ...{
+              _buildHeader(),
+              _buildNotes(),
+              _buildContacts(),
+              _buildSwaps(),
+              _buildPass(),
+              _buildButton(),
+            }
+          ],
         ),
       ),
     );
@@ -224,6 +219,13 @@ class _ExportPageState extends State<ExportPage> {
     final List<ExportImportListItem> items = [];
 
     _all.swaps.forEach((uuid, swap) {
+      final myInfo = extractMyInfoFromSwap(swap);
+      final myCoin = myInfo['myCoin'];
+      final myAmount = myInfo['myAmount'];
+      final otherCoin = myInfo['otherCoin'];
+      final otherAmount = myInfo['otherAmount'];
+      final startedAt = extractStartedAtFromSwap(swap);
+
       items.add(ExportImportListItem(
         checked: _selected.swaps.containsKey(uuid),
         onChange: (val) {
@@ -244,8 +246,7 @@ class _ExportPageState extends State<ExportPage> {
               children: <Widget>[
                 Text(
                   DateFormat('dd MMM yyyy HH:mm').format(
-                      DateTime.fromMillisecondsSinceEpoch(
-                          swap.myInfo.startedAt * 1000)),
+                      DateTime.fromMillisecondsSinceEpoch(startedAt * 1000)),
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontSize: 14,
                         color: Theme.of(context)
@@ -278,26 +279,24 @@ class _ExportPageState extends State<ExportPage> {
             Row(
               children: <Widget>[
                 Text(
-                  cutTrailingZeros(formatPrice(swap.myInfo.myAmount, 4)) +
-                      ' ' +
-                      swap.myInfo.myCoin,
+                  cutTrailingZeros(formatPrice(myAmount, 4)) + ' ' + myCoin,
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${swap.myInfo.myCoin.toLowerCase()}.png',
+                  'assets/coin-icons/${myCoin.toLowerCase()}.png',
                   height: 20,
                 ),
                 SizedBox(width: 8),
                 Icon(Icons.swap_horiz),
                 SizedBox(width: 8),
                 Text(
-                  cutTrailingZeros(formatPrice(swap.myInfo.otherAmount, 4)) +
+                  cutTrailingZeros(formatPrice(otherAmount, 4)) +
                       ' ' +
-                      swap.myInfo.otherCoin,
+                      otherCoin,
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${swap.myInfo.otherCoin.toLowerCase()}.png',
+                  'assets/coin-icons/${otherCoin.toLowerCase()}.png',
                   height: 20,
                 ),
               ],
@@ -397,20 +396,7 @@ class _ExportPageState extends State<ExportPage> {
           style: Theme.of(context).textTheme.bodyText2,
           decoration: InputDecoration(
             errorMaxLines: 6,
-            errorStyle: Theme.of(context)
-                .textTheme
-                .bodyText2
-                .copyWith(fontSize: 12, color: Theme.of(context).errorColor),
-            border: const OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).primaryColorLight)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor)),
-            hintStyle: Theme.of(context).textTheme.bodyText1,
-            labelStyle: Theme.of(context).textTheme.bodyText2,
             hintText: AppLocalizations.of(context).hintCreatePassword,
-            labelText: null,
             suffixIcon: PasswordVisibilityControl(
               onVisibilityChange: (bool isPasswordObscured) {
                 setState(() {
@@ -437,16 +423,7 @@ class _ExportPageState extends State<ExportPage> {
           ),
           style: Theme.of(context).textTheme.bodyText2,
           decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).primaryColorLight)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor)),
-            hintStyle: Theme.of(context).textTheme.bodyText1,
-            labelStyle: Theme.of(context).textTheme.bodyText2,
             hintText: AppLocalizations.of(context).hintConfirmPassword,
-            labelText: null,
           ),
         ),
       ]),
@@ -454,9 +431,9 @@ class _ExportPageState extends State<ExportPage> {
   }
 
   void _showError(String e) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-      '$e',
+      e,
       style: TextStyle(color: Theme.of(context).errorColor),
     )));
   }

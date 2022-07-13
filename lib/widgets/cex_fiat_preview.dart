@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
@@ -12,24 +11,32 @@ class CexFiatPreview extends StatelessWidget {
     this.coinAbbr,
     this.colorCex,
     this.textStyle,
+    this.currencyType,
   }) : super(key: key);
 
   final String amount;
   final String coinAbbr;
   final Color colorCex;
   final TextStyle textStyle;
+  final String currencyType;
 
   @override
   Widget build(BuildContext context) {
     final cexProvider = Provider.of<CexProvider>(context);
-
-    final double price = cexProvider.getUsdPrice(coinAbbr);
     final amountParsed = double.tryParse(amount) ?? 0.0;
-    final amountUsd = amountParsed * price;
+    String convertedValue;
+
+    if (currencyType != coinAbbr) {
+      convertedValue =
+          cexProvider.convert(amountParsed, from: currencyType, to: coinAbbr);
+    } else {
+      convertedValue = cexProvider.convert(amountParsed,
+          from: coinAbbr, to: cexProvider.selectedFiat);
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.baseline,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CexMarker(
           context,
@@ -37,18 +44,15 @@ class CexFiatPreview extends StatelessWidget {
           color: colorCex,
         ),
         SizedBox(width: 2),
-        Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Text(
-            cexProvider.convert(amountUsd),
-            style: textStyle ??
-                TextStyle(
-                  fontSize: 14,
-                  color: settingsBloc.isLightTheme
-                      ? cexColorLight.withAlpha(150)
-                      : cexColor.withAlpha(150),
-                ),
-          ),
+        Text(
+          convertedValue,
+          style: textStyle ??
+              TextStyle(
+                fontSize: 14,
+                color: Theme.of(context).brightness == Brightness.light
+                    ? cexColorLight.withAlpha(150)
+                    : cexColor.withAlpha(150),
+              ),
         ),
       ],
     );

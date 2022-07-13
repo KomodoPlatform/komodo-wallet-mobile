@@ -73,7 +73,8 @@ class MainBloc implements BlocBase {
         Locale('ru'),
         Locale('ja'),
         Locale('tr'),
-        Locale('hu')
+        Locale('hu'),
+        Locale('es')
       ];
 
   bool get isInBackground => _isInBackground;

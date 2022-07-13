@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -39,13 +40,20 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
       appBar: AppBar(
         title: Text(
             '${AppLocalizations.of(context).login[0].toUpperCase()}${AppLocalizations.of(context).login.substring(1)}'),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Theme.of(context).colorScheme.onBackground,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
       body: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         children: <Widget>[
+          const SizedBox(height: 32),
           _buildTitle(),
+          const SizedBox(height: 64),
+          SizedBox(height: 24),
           _buildInputSeed(),
+          SizedBox(height: 8),
           _buildCheckBoxCustomSeed(),
+          SizedBox(height: 24),
           _buildConfirmButton(),
         ],
       ),
@@ -53,64 +61,40 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   }
 
   Widget _buildTitle() {
-    return Column(
-      children: <Widget>[
-        const SizedBox(
-          height: 56,
-        ),
-        Center(
-          child: Text(
-            AppLocalizations.of(context).enterSeedPhrase,
-            style: Theme.of(context).textTheme.headline6,
-            textAlign: TextAlign.center,
-          ),
-        ),
-        const SizedBox(
-          height: 56,
-        ),
-      ],
+    return Text(
+      AppLocalizations.of(context).enterSeedPhrase,
+      style: Theme.of(context).textTheme.headline6,
+      textAlign: TextAlign.center,
     );
   }
 
   Widget _buildInputSeed() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      child: TextField(
-        key: const Key('restore-seed-field'),
-        controller: controllerSeed,
-        onChanged: (String str) {
-          _checkSeed(str);
-        },
-        autocorrect: false,
-        keyboardType: TextInputType.multiline,
-        obscureText: _isSeedHidden,
-        enableInteractiveSelection: true,
-        toolbarOptions: ToolbarOptions(
-          paste: controllerSeed.text.isEmpty,
-          copy: false,
-          cut: false,
-          selectAll: false,
-        ),
-        maxLines: _isSeedHidden ? 1 : null,
-        style: Theme.of(context).textTheme.bodyText2,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          enabledBorder: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: Theme.of(context).primaryColorLight)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).accentColor)),
-          hintStyle: Theme.of(context).textTheme.bodyText1,
-          labelStyle: Theme.of(context).textTheme.bodyText2,
-          hintText: AppLocalizations.of(context).exampleHintSeed,
-          labelText: null,
-          suffixIcon: PasswordVisibilityControl(
-            onVisibilityChange: (bool isObscured) {
-              setState(() {
-                _isSeedHidden = isObscured;
-              });
-            },
-          ),
+    return TextField(
+      key: const Key('restore-seed-field'),
+      controller: controllerSeed,
+      onChanged: (String str) {
+        _checkSeed(str);
+      },
+      autocorrect: false,
+      keyboardType: TextInputType.multiline,
+      obscureText: _isSeedHidden,
+      enableInteractiveSelection: true,
+      toolbarOptions: ToolbarOptions(
+        paste: controllerSeed.text.isEmpty,
+        copy: false,
+        cut: false,
+        selectAll: false,
+      ),
+      maxLines: _isSeedHidden ? 1 : null,
+      style: Theme.of(context).textTheme.bodyText2,
+      decoration: InputDecoration(
+        hintText: AppLocalizations.of(context).exampleHintSeed,
+        suffixIcon: PasswordVisibilityControl(
+          onVisibilityChange: (bool isObscured) {
+            setState(() {
+              _isSeedHidden = isObscured;
+            });
+          },
         ),
       ),
     );
@@ -141,25 +125,23 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   }
 
   Widget _buildCheckBoxCustomSeed() {
-    return Row(
-      children: <Widget>[
-        Checkbox(
-          key: const Key('checkbox-custom-seed'),
-          value: _checkBox,
-          onChanged: (bool data) async {
-            final bool confirmed = await _showCustomSeedWarning(data);
-            if (!confirmed) return;
-            setState(() {
-              _checkBox = !_checkBox;
-              _checkSeed(controllerSeed.text);
-            });
-          },
-        ),
-        Text(
-          AppLocalizations.of(context).allowCustomSeed,
-          style: Theme.of(context).textTheme.bodyText1,
-        )
-      ],
+    return CheckboxListTile(
+      key: const Key('checkbox-custom-seed'),
+      value: _checkBox,
+      onChanged: (bool data) async {
+        final bool confirmed = await _showCustomSeedWarning(data);
+        if (!confirmed) return;
+        setState(() {
+          _checkBox = !_checkBox;
+          _checkSeed(controllerSeed.text);
+        });
+      },
+      controlAffinity: ListTileControlAffinity.leading,
+      contentPadding: EdgeInsets.all(0),
+      title: Text(
+        AppLocalizations.of(context).allowCustomSeed,
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
     );
   }
 
@@ -175,41 +157,39 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
             return CustomSimpleDialog(
               title: Text(AppLocalizations.of(context).warning),
               children: [
-                Text(AppLocalizations.of(context).customSeedWarning),
-                TextField(
-                  autofocus: true,
-                  style: TextStyle(color: Theme.of(context).accentColor),
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).accentColor)),
+                Text(AppLocalizations.of(context).customSeedWarning(
+                    AppLocalizations.of(context).iUnderstand)),
+                Theme(
+                  data: Theme.of(context).copyWith(
+                      inputDecorationTheme: gefaultUnderlineInputTheme),
+                  child: TextField(
+                    autofocus: true,
+                    onChanged: (String text) {
+                      setState(() {
+                        enabled = text.trim().toLowerCase() ==
+                            AppLocalizations.of(context)
+                                .iUnderstand
+                                .toLowerCase();
+                      });
+                    },
                   ),
-                  onChanged: (String text) {
-                    setState(() {
-                      enabled = text.trim().toLowerCase() ==
-                          AppLocalizations.of(context)
-                              .iUnderstand
-                              .toLowerCase();
-                    });
-                  },
                 ),
                 SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    FlatButton(
-                        child: Text(AppLocalizations.of(context).cancelButton),
-                        onPressed: () {
-                          Navigator.pop(context, false);
-                        }),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: Text(AppLocalizations.of(context).cancelButton),
+                    ),
                     SizedBox(width: 12),
-                    RaisedButton(
-                      child: Text(AppLocalizations.of(context).okButton),
+                    ElevatedButton(
                       onPressed: !enabled
                           ? null
                           : () {
                               Navigator.pop(context, true);
                             },
+                      child: Text(AppLocalizations.of(context).okButton),
                     ),
                   ],
                 )
@@ -223,19 +203,12 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   }
 
   Widget _buildConfirmButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-      child: Container(
-        width: double.infinity,
-        height: 50,
-        child: _isLogin
-            ? const Center(child: CircularProgressIndicator())
-            : PrimaryButton(
-                key: const Key('confirm-seed-button'),
-                text: AppLocalizations.of(context).confirm,
-                onPressed: _isButtonDisabled ? null : _onLoginPressed),
-      ),
-    );
+    return _isLogin
+        ? const Center(child: CircularProgressIndicator())
+        : PrimaryButton(
+            key: const Key('confirm-seed-button'),
+            text: AppLocalizations.of(context).confirm,
+            onPressed: _isButtonDisabled ? null : _onLoginPressed);
   }
 
   void _onLoginPressed() {
@@ -243,7 +216,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
       _isButtonDisabled = true;
       _isLogin = true;
     });
-    FocusScope.of(context).requestFocus(FocusNode());
+    unfocusTextField(context);
 
     Navigator.pushReplacement<dynamic, dynamic>(
       context,

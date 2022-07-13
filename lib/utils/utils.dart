@@ -1,79 +1,48 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 
-import 'package:convert/convert.dart';
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:bip39/bip39.dart' as bip39;
-import 'package:keccak/keccak.dart';
+import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import 'package:komodo_dex/widgets/qr_view.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:rational/rational.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:intl/intl.dart';
-
-import '../localizations.dart';
+import 'package:provider/provider.dart';
 
 void copyToClipBoard(BuildContext context, String str) {
-  ScaffoldState scaffold;
+  ScaffoldMessengerState scaffoldMessenger;
   try {
-    scaffold = Scaffold.of(context);
+    scaffoldMessenger = ScaffoldMessenger.of(context);
   } catch (_) {}
 
-  if (scaffold != null) {
-    scaffold.showSnackBar(SnackBar(
+  if (scaffoldMessenger != null) {
+    scaffoldMessenger.showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       content: Text(AppLocalizations.of(context).clipboard),
     ));
   }
   Clipboard.setData(ClipboardData(text: str));
-}
-
-bool isAddress(String address) {
-  if (RegExp('!/^(0x)?[0-9a-f]{40}\$/i').hasMatch(address)) {
-    return false;
-  } else if (RegExp('/^(0x)?[0-9a-f]{40}\$/').hasMatch(address) ||
-      RegExp('/^(0x)?[0-9A-F]{40}\$/').hasMatch(address)) {
-    return true;
-  } else {
-    return isChecksumAddress(address);
-  }
-}
-
-bool isChecksumAddress(String address) {
-  // Check each case
-  address = address.replaceFirst('0x', '');
-  final Uint8List inputData =
-      Uint8List.fromList(address.toLowerCase().codeUnits);
-  final Uint8List addressHash = keccak(inputData);
-  final String output = hex.encode(addressHash);
-  for (int i = 0; i < 40; i++) {
-    // the nth letter should be uppercase if the nth digit of casemap is 1
-    // int.parse(addressHash[i].toString(), radix: 16)
-    if ((int.parse(output[i].toString(), radix: 16) > 7 &&
-            address[i].toUpperCase() != address[i]) ||
-        (int.parse(output[i].toString(), radix: 16) <= 7 &&
-            address[i].toLowerCase() != address[i])) {
-      return false;
-    }
-  }
-  return true;
 }
 
 /// Convers a null, a string or a double into a Decimal.
@@ -165,7 +134,7 @@ bool isNumeric(String s) {
 }
 
 void showMessage(BuildContext mContext, String error) {
-  Scaffold.of(mContext).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
     duration: const Duration(seconds: 3),
     backgroundColor: Theme.of(mContext).primaryColor,
     content: Text(
@@ -176,7 +145,7 @@ void showMessage(BuildContext mContext, String error) {
 }
 
 void showErrorMessage(BuildContext mContext, String error) {
-  Scaffold.of(mContext).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
     duration: const Duration(seconds: 2),
     backgroundColor: Theme.of(mContext).errorColor,
     content: Text(
@@ -206,8 +175,10 @@ Future<bool> get canCheckBiometrics async {
 /// Widget tree builders would often invoke this function several times in a row
 /// (due to poor BLoC optimization perhaps?), leading to a flickering prompt on iOS.
 /// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
-Future<bool> authenticateBiometrics(
-    BuildContext context, PinStatus pinStatus) async {
+Future<bool> authenticateBiometrics(BuildContext context, PinStatus pinStatus,
+    {bool authorize = false}) async {
+  final walletSecuritySettingsProvider =
+      context.read<WalletSecuritySettingsProvider>();
   if (mainBloc.isInBackground) {
     StreamSubscription listener;
     listener = mainBloc.outIsInBackground.listen((bool isInBackground) {
@@ -218,8 +189,7 @@ Future<bool> authenticateBiometrics(
   }
 
   Log.println('utils:291', 'authenticateBiometrics');
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (prefs.getBool('switch_pin_biometric')) {
+  if (walletSecuritySettingsProvider.activateBioProtection || authorize) {
     final LocalAuthentication localAuth = LocalAuthentication();
     bool didAuthenticate = false;
 
@@ -230,7 +200,8 @@ Future<bool> authenticateBiometrics(
     final int lockCookie = lockService.enteringBiometrics();
 
     try {
-      didAuthenticate = await localAuth.authenticateWithBiometrics(
+      didAuthenticate = await localAuth.authenticate(
+          biometricOnly: true,
           stickyAuth: true,
           localizedReason: AppLocalizations.of(context).lockScreenAuth);
     } on PlatformException catch (e) {
@@ -247,9 +218,7 @@ Future<bool> authenticateBiometrics(
 
     if (didAuthenticate) {
       if (pinStatus == PinStatus.DISABLED_PIN) {
-        SharedPreferences.getInstance().then((SharedPreferences data) {
-          data.setBool('switch_pin', false);
-        });
+        walletSecuritySettingsProvider.activatePinProtection = false;
         Navigator.pop(context);
       }
       authBloc.showLock = false;
@@ -277,7 +246,7 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
                 style: Theme.of(context).textTheme.bodyText2,
                 children: <TextSpan>[
                   TextSpan(
-                      text: '${coin.name}',
+                      text: coin.name,
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2
@@ -292,16 +261,10 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                RaisedButton(
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
                   child: Text(
-                    AppLocalizations.of(context).cantDeleteDefaultCoinOk,
-                    style: Theme.of(context).textTheme.button.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                      AppLocalizations.of(context).cantDeleteDefaultCoinOk),
                 ),
               ],
             ),
@@ -326,7 +289,7 @@ Future<void> showConfirmationRemoveCoin(
                     children: <TextSpan>[
                   TextSpan(text: AppLocalizations.of(context).deleteSpan1),
                   TextSpan(
-                      text: '${coin.name}',
+                      text: coin.name,
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2
@@ -337,25 +300,12 @@ Future<void> showConfirmationRemoveCoin(
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                FlatButton(
-                  child: Text(
-                    AppLocalizations.of(context).cancel,
-                    style: Theme.of(context).textTheme.button,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(AppLocalizations.of(context).cancel),
                 ),
                 const SizedBox(width: 12),
-                RaisedButton(
-                  color: Theme.of(context).errorColor,
-                  child: Text(
-                    AppLocalizations.of(context).confirm,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Colors.white),
-                  ),
+                ElevatedButton(
                   onPressed: () async {
                     try {
                       await coinsBloc.removeCoin(coin);
@@ -364,6 +314,10 @@ Future<void> showConfirmationRemoveCoin(
                     }
                     Navigator.of(context).pop();
                   },
+                  style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).errorColor,
+                  ),
+                  child: Text(AppLocalizations.of(context).confirm),
                 )
               ],
             ),
@@ -571,6 +525,7 @@ Widget truncateMiddle(String string, {TextStyle style}) {
           string.substring(0, string.length - 5),
           overflow: TextOverflow.ellipsis,
           style: style,
+          textAlign: TextAlign.right,
         ),
       ),
       Text(
@@ -728,17 +683,12 @@ void showUriDetailsDialog(
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                AppLocalizations.of(context).paymentUriDetailsAddressSpan + ':',
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
+              Text(AppLocalizations.of(context).paymentUriDetailsAddressSpan +
+                  ':'),
             ],
           ),
           SizedBox(height: 6),
-          Text(
-            address,
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
+          Text(address),
           SizedBox(height: 24),
           if (!isActivated) ...{
             Text(
@@ -749,11 +699,9 @@ void showUriDetailsDialog(
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                RaisedButton(
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
                   child: Text(AppLocalizations.of(context).okButton),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
                 )
               ],
             )
@@ -761,20 +709,18 @@ void showUriDetailsDialog(
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                FlatButton(
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
                   child:
                       Text(AppLocalizations.of(context).paymentUriDetailsDeny),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
                 ),
-                RaisedButton(
-                  child: Text(
-                      AppLocalizations.of(context).paymentUriDetailsAccept),
+                ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                     callbackIfAccepted();
                   },
+                  child: Text(
+                      AppLocalizations.of(context).paymentUriDetailsAccept),
                 )
               ],
             )
@@ -804,4 +750,116 @@ List<Coin> filterCoinsByQuery(List<Coin> coins, String query) {
           coin.name.toLowerCase().contains(query.trim().toLowerCase()))
       .toList();
   return list;
+}
+
+Future<String> scanQr(BuildContext context) async {
+  unfocusTextField(context);
+  await Future.delayed(const Duration(milliseconds: 200));
+  final barcode = await Navigator.of(context).push<Barcode>(
+    MaterialPageRoute(builder: (context) => AppQRView()),
+  );
+
+  if (barcode == null) return null;
+
+  return barcode.code;
+}
+
+/// Function to generate password based on some criteria
+///
+/// Adapted from code at https://blog.albertobonacina.com/password-generator-with-dart.
+/// Please review it very carefully!
+
+String generatePassword(bool _isWithLetters, bool _isWithUppercase,
+    bool _isWithNumbers, bool _isWithSpecial, int _numberCharPassword) {
+  //Define the allowed chars to use in the password
+  const String _lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+  const String _upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const String _numbers = '0123456789';
+  const String _special = r'@#=+!$%?[](){}';
+
+  //Create the empty string that will contain the allowed chars
+  String _allowedChars = '';
+
+  //Put chars on the allowed ones based on the input values
+  _allowedChars += _isWithLetters ? _lowerCaseLetters : '';
+  _allowedChars += _isWithUppercase ? _upperCaseLetters : '';
+  _allowedChars += _isWithNumbers ? _numbers : '';
+  _allowedChars += _isWithSpecial ? _special : '';
+
+  int i = 0;
+  String _result = '';
+
+  //Create password
+  while (i < _numberCharPassword) {
+    //Get random int
+    final int randomInt = Random.secure().nextInt(_allowedChars.length);
+    //Get random char and append it to the password
+    _result += _allowedChars[randomInt];
+    i++;
+  }
+
+  return _result;
+}
+
+Map<String, String> extractMyInfoFromSwap(MmSwap swap) {
+  String myCoin, myAmount, otherCoin, otherAmount;
+
+  if (swap.myInfo != null) {
+    myCoin = swap.myInfo.myCoin;
+    myAmount = swap.myInfo.myAmount;
+    otherCoin = swap.myInfo.otherCoin;
+    otherAmount = swap.myInfo.otherAmount;
+  } else {
+    myCoin = swap.type == 'Maker' ? swap.makerCoin : swap.takerCoin;
+    myAmount = swap.type == 'Maker' ? swap.makerAmount : swap.takerAmount;
+
+    // Same as previous, just swapped around
+    otherCoin = swap.type == 'Maker' ? swap.takerCoin : swap.makerCoin;
+    otherAmount = swap.type == 'Maker' ? swap.takerAmount : swap.makerAmount;
+  }
+
+  return <String, String>{
+    'myCoin': myCoin,
+    'myAmount': myAmount,
+    'otherCoin': otherCoin,
+    'otherAmount': otherAmount,
+  };
+}
+
+int extractStartedAtFromSwap(MmSwap swap) {
+  final startEvent = swap.events.firstWhere(
+      (ev) => ev.event.type == 'Started' || ev.event.type == 'StartFailed',
+      orElse: () => null);
+  if (startEvent != null) {
+    // MRC: I believe, for now, it's easier to just divide the timestamp by 1000
+    // rather than switching the logic on all uses of StartedAt
+    return startEvent.event.data.startedAt != 0
+        ? startEvent.event.data.startedAt
+        : (startEvent.timestamp / 1000).floor();
+  }
+  return 0;
+}
+
+// According to https://flutterigniter.com/dismiss-keyboard-form-lose-focus/
+// this is the correct way to unfocus a TextField (so the keyboard is dismissed)
+// it's recommended over `FocusScope.of(context).requestFocus(new FocusNode())`
+void unfocusTextField(BuildContext context) {
+  FocusScopeNode currentFocus = FocusScope.of(context);
+
+  if (!currentFocus.hasPrimaryFocus) {
+    currentFocus.unfocus();
+  }
+}
+
+void moveCursorToEnd(TextEditingController controller) {
+  controller.selection = TextSelection.fromPosition(
+    TextPosition(offset: controller.text.length),
+  );
+}
+
+String toInitialUpper(String val) {
+  if (val == null || val.isEmpty) return '';
+  final String initial = val.substring(0, 1);
+  final String rest = val.substring(1);
+  return initial.toUpperCase() + rest;
 }

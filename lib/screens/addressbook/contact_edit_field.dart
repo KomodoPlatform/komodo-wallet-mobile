@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/round_button.dart';
 import 'package:komodo_dex/services/lock_service.dart';
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class ContactEditField extends StatefulWidget {
   const ContactEditField({
+    Key key,
     this.name,
     this.label,
     this.value,
@@ -17,7 +17,7 @@ class ContactEditField extends StatefulWidget {
     this.padding,
     this.icon,
     this.invalid = false,
-  });
+  }) : super(key: key);
 
   final String name;
   final bool autofocus;
@@ -63,49 +63,40 @@ class _ContactEditFieldState extends State<ContactEditField> {
       children: <Widget>[
         Expanded(
             child: Card(
-                margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
-                color: widget.color ?? Theme.of(context).backgroundColor,
-                child: Container(
-                  padding: widget.padding ?? const EdgeInsets.all(16),
+                margin: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                color: widget.color ?? Theme.of(context).cardColor,
+                child: Padding(
+                  padding: widget.padding ??
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          if (widget.icon != null)
-                            Row(
-                              children: <Widget>[
-                                widget.icon,
-                                const SizedBox(width: 4),
-                              ],
-                            ),
-                          Text(
-                            '${widget.label}:',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
+                          if (widget.icon != null) ...[
+                            widget.icon,
+                            const SizedBox(width: 8),
+                          ],
+                          Text('${widget.label}:'),
                         ],
                       ),
                       const SizedBox(height: 16),
                       Row(
                         children: <Widget>[
-                          if (widget.name != 'name')
-                            ButtonTheme(
-                              minWidth: 0,
-                              child: FlatButton(
-                                padding: const EdgeInsets.only(
-                                  right: 6,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6.0)),
-                                onPressed: () => _scan(),
-                                child: Icon(
-                                  Icons.add_a_photo,
-                                  color: settingsBloc.isLightTheme
-                                      ? Colors.black45
-                                      : Colors.white,
-                                ),
+                          if (widget.name != 'name') ...[
+                            IconButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () => _scan(),
+                              icon: Icon(
+                                Icons.add_a_photo,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black45
+                                    : Colors.white,
                               ),
+                              splashRadius: 24,
                             ),
+                          ],
                           Expanded(
                             child: TextField(
                               controller: controller,
@@ -118,44 +109,21 @@ class _ContactEditFieldState extends State<ContactEditField> {
                               },
                               autocorrect: false,
                               enableInteractiveSelection: true,
-                              style: Theme.of(context).textTheme.bodyText2,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Theme.of(context).backgroundColor,
-                                border: const OutlineInputBorder(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: widget.invalid
-                                            ? Colors.red
-                                            : Theme.of(context)
-                                                .primaryColorLight)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: widget.invalid
-                                            ? Colors.red
-                                            : Theme.of(context).accentColor)),
-                                hintStyle:
-                                    Theme.of(context).textTheme.bodyText1,
-                                labelStyle:
-                                    Theme.of(context).textTheme.bodyText2,
-                                labelText: null,
-                              ),
                             ),
                           ),
-                          if (widget.removable)
-                            Container(
-                              padding: const EdgeInsets.only(left: 4, right: 4),
-                              child: RoundButton(
-                                  size: 24,
-                                  onPressed: () {
-                                    if (widget.onRemove != null)
-                                      widget.onRemove();
-                                  },
-                                  child: Icon(
-                                    Icons.remove,
-                                    size: 16,
-                                  )),
-                            ),
+                          if (widget.removable) ...[
+                            SizedBox(width: 8),
+                            RoundButton(
+                                size: 24,
+                                onPressed: () {
+                                  if (widget.onRemove != null)
+                                    widget.onRemove();
+                                },
+                                child: const Icon(
+                                  Icons.remove,
+                                  size: 16,
+                                )),
+                          ],
                         ],
                       ),
                     ],
@@ -167,13 +135,16 @@ class _ContactEditFieldState extends State<ContactEditField> {
 
   Future<void> _scan() async {
     final int lockCookie = lockService.enteringQrScanner();
-    try {
-      final String barcode = await BarcodeScanner.scan();
+
+    final result = await scanQr(context);
+
+    if (result != null) {
       setState(() {
-        controller.text = barcode;
+        controller.text = result;
       });
-      widget.onChange(barcode);
-    } catch (_) {}
+      widget.onChange(result);
+    }
+
     lockService.qrScannerReturned(lockCookie);
   }
 }

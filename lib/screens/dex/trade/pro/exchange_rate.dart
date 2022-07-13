@@ -89,7 +89,6 @@ class _ExchangeRateState extends State<ExchangeRate> {
             Icon(
               _showDetails ? Icons.arrow_drop_up : Icons.arrow_drop_down,
               size: 16,
-              color: Theme.of(context).textTheme.bodyText1.color,
             )
           ],
         ),
@@ -122,7 +121,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
               .copyWith(color: Theme.of(context).textTheme.bodyText2.color),
         ),
         Text(
-          '$_buyAbbr',
+          _buyAbbr,
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ],

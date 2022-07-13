@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -65,7 +64,7 @@ class MusicService {
     if (!Platform.isAndroid) return;
 
     _audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
-    _player = AudioCache(prefix: 'audio/', fixedPlayer: _audioPlayer);
+    _player = AudioCache(prefix: 'assets/audio/', fixedPlayer: _audioPlayer);
 
     _audioPlayer.onPlayerError.listen((String ev) {
       Log('music_service:72', 'onPlayerError: ' + ev);
@@ -91,6 +90,20 @@ class MusicService {
       return MusicMode.FAILED;
     }
 
+    for (final Order order in orders) {
+      final String shortId = order.uuid.substring(0, 4);
+      if (order.orderType == OrderType.MAKER) {
+        Log('music_service:118',
+            'pickMode] maker order $shortId, MusicMode.MAKER');
+        return MusicMode.MAKER;
+      } else if (prevMode != MusicMode.MAKER &&
+          order.orderType == OrderType.TAKER) {
+        Log('music_service:114',
+            'pickMode] taker order $shortId, MusicMode.TAKER');
+        return MusicMode.TAKER;
+      }
+    }
+
     for (final Swap swap in swapMonitor.swaps) {
       final String uuid = swap.result.uuid;
       final String shortId = uuid.substring(0, 4);
@@ -102,19 +115,6 @@ class MusicService {
         Log('music_service:92',
             'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
         return MusicMode.ACTIVE;
-      }
-    }
-
-    for (final Order order in orders) {
-      final String shortId = order.uuid.substring(0, 4);
-      if (order.orderType == OrderType.TAKER) {
-        Log('music_service:114',
-            'pickMode] taker order $shortId, MusicMode.TAKER');
-        return MusicMode.TAKER;
-      } else if (order.orderType == OrderType.MAKER) {
-        Log('music_service:118',
-            'pickMode] maker order $shortId, MusicMode.MAKER');
-        return MusicMode.MAKER;
       }
     }
 
@@ -207,7 +207,7 @@ class MusicService {
       if (Platform.isAndroid) {
         _audioPlayer.stop();
         _audioPlayer.release();
-        _player.clearCache();
+        _player.clearAll();
         makePlayer();
       }
       changes = true;
@@ -223,19 +223,17 @@ class MusicService {
       if (custom.existsSync()) customFile = custom;
     }
 
-    final String defaultPath = newMode == MusicMode.TAKER
-        ? 'tick-tock.mp3'
-        : newMode == MusicMode.MAKER
-            ? 'maker_order_placed.mp3'
-            : newMode == MusicMode.ACTIVE
-                ? 'swap_in_progress.mp3'
-                : newMode == MusicMode.FAILED
-                    ? 'swap_failed.mp3'
-                    : newMode == MusicMode.APPLAUSE
-                        ? 'swap_successful.mp3'
-                        : newMode == MusicMode.SILENT
-                            ? 'none.mp3'
-                            : null;
+    final String defaultPath = newMode == MusicMode.MAKER
+        ? 'maker_order_placed.mp3'
+        : [
+            MusicMode.TAKER,
+            MusicMode.ACTIVE,
+            MusicMode.FAILED,
+            MusicMode.APPLAUSE,
+            MusicMode.SILENT
+          ].contains(newMode)
+            ? 'none.mp3'
+            : null;
 
     final String path = customFile != null
         ? (Platform.isAndroid ? customFile.path : customName)
@@ -244,7 +242,8 @@ class MusicService {
 
     if (Platform.isAndroid) {
       // Tell the player how to access the file directly instead of trying to copy it from the assets.
-      if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
+      if (customFile != null)
+        _player.loadedFiles[customFile.path] = Uri.file(customFile.path);
 
       if (newMode == MusicMode.TAKER) {
         _player.loop(path, volume: volume());

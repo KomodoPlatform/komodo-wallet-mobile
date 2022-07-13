@@ -6,6 +6,7 @@ import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/wallet.dart';
+import 'package:komodo_dex/model/wallet_security_settings.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:path/path.dart';
@@ -30,10 +31,14 @@ class Db {
   static Future<Database> _initDB() async {
     final Directory documentsDirectory = await applicationDocumentsDirectory;
     final String path = join(documentsDirectory.path, 'AtomicDEX.db');
-    final db = await openDatabase(path, version: 1, onOpen: (Database db) {},
-        onCreate: (Database db, int version) async {
-      Log('database:35', 'initDB, onCreate');
-      await db.execute('''
+    final db = await openDatabase(
+      path,
+      version: 2,
+      onOpen: (Database db) {},
+      onCreate: (Database db, int version) async {
+        Log('database:35', 'initDB, onCreate version $version');
+
+        await db.execute('''
       CREATE TABLE ArticlesSaved (
           id TEXT PRIMARY KEY,
           media TEXT,
@@ -47,34 +52,161 @@ class Db {
           v INTEGER
         )
       ''');
-      await db.execute('''
+        await db.execute('''
       CREATE TABLE Wallet (
           id TEXT PRIMARY KEY,
           name TEXT,
-          is_fast_encryption BIT
+          activate_pin_protection BIT,
+          activate_bio_protection BIT,
+          enable_camo BIT,
+          is_camo_active BIT,
+          camo_fraction INTEGER,
+          camo_balance TEXT,
+          camo_session_started_at INTEGER
         )
       ''');
-      await db.execute('''
+        await db.execute('''
       CREATE TABLE CurrentWallet (
           id TEXT PRIMARY KEY,
           name TEXT,
-          is_fast_encryption BIT
+          activate_pin_protection BIT,
+          activate_bio_protection BIT,
+          enable_camo BIT,
+          is_camo_active BIT,
+          camo_fraction INTEGER,
+          camo_balance TEXT,
+          camo_session_started_at INTEGER
         )
       ''');
-    });
+        await db.execute('''
+      CREATE TABLE ListOfCoinsActivated (
+          wallet_id TEXT PRIMARY KEY,
+          coins TEXT
+        )
+      ''');
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        Log('database',
+            'initDB, onUpgrade, oldVersion: $oldVersion newVersion: $newVersion');
+        if (newVersion >= 2) {
+          Log('database', 'initDB, onUpgrade, upgrading to version 2');
+          // MRC: I could have simply added the new fields to the table,
+          // but I'm opting to recreating the tables
+          // The sqlite docs recommend doings a transation and doing things in a specific order
+          // See https://www.sqlite.org/lang_altertable.html for info
+          try {
+            // MRC: I figured out that one of the possible ways to successfully migrate
+            // the activated coins was some relatively complex SQL on db upgrade,
+            // and it was accepted over clearing completely the coins list
+            //
+            // So, please look at the code below carrefully
+
+            List<String> listOfCoins = <String>[];
+            String walletId;
+
+            final currentWallet =
+                await db.query('CurrentWallet', columns: ['id'], limit: 1);
+
+            if (currentWallet != null && currentWallet.isNotEmpty) {
+              walletId = currentWallet.first['id'];
+
+              if (walletId != null && walletId.isNotEmpty) {
+                final coinsQuery =
+                    await db.query('CoinsActivated', columns: ['abbr']);
+
+                if (coinsQuery != null && coinsQuery.isNotEmpty) {
+                  listOfCoins =
+                      coinsQuery.map((c) => c['abbr'].toString()).toList();
+                }
+              }
+            }
+            //
+
+            final batch = db.batch();
+
+            batch.execute('''
+      CREATE TABLE new_Wallet (
+          id TEXT PRIMARY KEY,
+          name TEXT,
+          activate_pin_protection BIT,
+          activate_bio_protection BIT,
+          enable_camo BIT,
+          is_camo_active BIT,
+          camo_fraction INTEGER,
+          camo_balance TEXT,
+          camo_session_started_at INTEGER
+        )
+      ''');
+            batch.execute('''
+      CREATE TABLE new_CurrentWallet (
+          id TEXT PRIMARY KEY,
+          name TEXT,
+          activate_pin_protection BIT,
+          activate_bio_protection BIT,
+          enable_camo BIT,
+          is_camo_active BIT,
+          camo_fraction INTEGER,
+          camo_balance TEXT,
+          camo_session_started_at INTEGER
+        )
+      ''');
+
+            batch.execute('''
+      CREATE TABLE ListOfCoinsActivated (
+          wallet_id TEXT PRIMARY KEY,
+          coins TEXT
+        )
+      ''');
+            batch.execute('''
+      INSERT INTO
+      new_Wallet(id, name)
+      SELECT id, name
+      FROM Wallet
+      ''');
+            batch.execute('''
+      INSERT INTO new_CurrentWallet(id, name)
+      SELECT id, name
+      FROM CurrentWallet
+      ''');
+            batch.execute('DROP TABLE Wallet');
+            batch.execute('DROP TABLE CurrentWallet');
+            batch.execute('DROP TABLE CoinsActivated');
+            batch.execute('ALTER TABLE new_Wallet RENAME TO Wallet');
+            batch.execute(
+                'ALTER TABLE new_CurrentWallet RENAME TO CurrentWallet');
+            // MRC: We need to remove the WalletSnapshot because it causes coins to show up
+            // even though they aren't in the db due to the ListOfCoinsActivated migration
+            batch.execute('DELETE FROM WalletSnapshot');
+
+            if ((walletId != null && walletId.isNotEmpty) &&
+                listOfCoins.isNotEmpty) {
+              Log('database',
+                  'initDB, onUpgrade, Attempting to migrate previously activated coins');
+              final coinsString = listOfCoins.join(',');
+              batch.insert(
+                'ListOfCoinsActivated',
+                <String, String>{
+                  'wallet_id': walletId,
+                  'coins': coinsString,
+                },
+              );
+            }
+
+            batch.commit();
+            Log('database',
+                'initDB, onUpgrade, upgraded database to version 2 successfully');
+          } catch (e) {
+            Log('database',
+                'initDB, onUpgrade, unable to upgrade database to version 2, error ${e.toString()}');
+          }
+        }
+      },
+    );
 
     // Drop tables no longer in use.
     await db.execute('DROP TABLE IF EXISTS CoinsDefault');
     await db.execute('DROP TABLE IF EXISTS CoinsConfig');
     await db.execute('DROP TABLE IF EXISTS TxNotes');
-
-    // We're temporarily using a part of the CoinsActivated table but going to drop it in the future.
-    await db.execute('''
-      CREATE TABLE IF NOT EXISTS CoinsActivated (
-        name TEXT PRIMARY KEY,
-        abbr TEXT
-      )
-    ''');
 
     // id is the tx_hash for transactions and the swap id for swaps
     await db.execute('''
@@ -154,12 +286,24 @@ class Db {
     await db.rawDelete('DELETE FROM ArticlesSaved');
   }
 
-  static Future<int> saveWallet(Wallet newWallet) async {
+  static Future<int> saveWallet(Wallet newWallet,
+      [WalletSecuritySettings walletSecuritySettings]) async {
     final Database db = await Db.db;
+
+    walletSecuritySettings ??= WalletSecuritySettings();
 
     final Map<String, dynamic> row = <String, dynamic>{
       'id': newWallet.id,
       'name': newWallet.name,
+      'activate_pin_protection':
+          walletSecuritySettings.activatePinProtection ? 1 : 0,
+      'activate_bio_protection':
+          walletSecuritySettings.activateBioProtection ? 1 : 0,
+      'enable_camo': walletSecuritySettings.enableCamo ? 1 : 0,
+      'is_camo_active': walletSecuritySettings.isCamoActive ? 1 : 0,
+      'camo_fraction': walletSecuritySettings.camoFraction,
+      'camo_balance': walletSecuritySettings.camoBalance,
+      'camo_session_started_at': walletSecuritySettings.camoSessionStartedAt,
     };
 
     return await db.insert('Wallet ', row);
@@ -191,14 +335,26 @@ class Db {
     await db.delete('Wallet', where: 'id = ?', whereArgs: <dynamic>[wallet.id]);
   }
 
-  static Future<int> saveCurrentWallet(Wallet currentWallet) async {
+  static Future<int> saveCurrentWallet(Wallet currentWallet,
+      [WalletSecuritySettings walletSecuritySettings]) async {
     await deleteCurrentWallet();
     walletBloc.setCurrentWallet(currentWallet);
     final Database db = await Db.db;
 
+    walletSecuritySettings ??= WalletSecuritySettings();
+
     final Map<String, dynamic> row = <String, dynamic>{
       'id': currentWallet.id,
       'name': currentWallet.name,
+      'activate_pin_protection':
+          walletSecuritySettings.activatePinProtection ? 1 : 0,
+      'activate_bio_protection':
+          walletSecuritySettings.activateBioProtection ? 1 : 0,
+      'enable_camo': walletSecuritySettings.enableCamo ? 1 : 0,
+      'is_camo_active': walletSecuritySettings.isCamoActive ? 1 : 0,
+      'camo_fraction': walletSecuritySettings.camoFraction,
+      'camo_balance': walletSecuritySettings.camoBalance,
+      'camo_session_started_at': walletSecuritySettings.camoSessionStartedAt,
     };
 
     return await db.insert('CurrentWallet ', row);
@@ -225,19 +381,46 @@ class Db {
   static Future<void> deleteCurrentWallet() async {
     final Database db = await Db.db;
     await db.rawDelete('DELETE FROM CurrentWallet');
+
+    // Needed so coins aren't accidentally reused between wallets
+    _active.clear();
   }
 
   static final Set<String> _active = {};
   static bool _activeFromDb = false;
 
+  static Future<List<String>> getCoinsFromDb() async {
+    final Database db = await Db.db;
+    final wallet = await getCurrentWallet();
+
+    final r = await db.query(
+      'ListOfCoinsActivated',
+      columns: ['coins'],
+      where: 'wallet_id = ?',
+      whereArgs: [wallet.id],
+    );
+    if (r != null && r.isNotEmpty) {
+      final row = r.first;
+      final String coins = row['coins'];
+      if (coins != null && coins != '') {
+        final listOfCoins = coins.split(',');
+        if (listOfCoins != null && listOfCoins.isNotEmpty) {
+          return listOfCoins.map((c) => c.trim()).toList();
+        }
+      }
+    }
+    return [];
+  }
+
   static Future<Set<String>> get activeCoins async {
     if (_active.isNotEmpty && _activeFromDb) return _active;
 
-    final Database db = await Db.db;
-    for (final row in await db.rawQuery('SELECT abbr FROM CoinsActivated')) {
-      final String ticker = row['abbr'];
-      if (ticker != null) _active.add(ticker);
+    final listOfCoins = await getCoinsFromDb();
+
+    if (listOfCoins != null && listOfCoins.isNotEmpty) {
+      _active.addAll(listOfCoins);
     }
+
     _activeFromDb = true;
     if (_active.isNotEmpty) return _active;
 
@@ -259,19 +442,48 @@ class Db {
   /// Add the coin to the list of activated coins.
   static Future<void> coinActive(Coin coin) async {
     _active.add(coin.abbr);
+    final coinsString = _active.join(',');
+
     final Database db = await Db.db;
-    await db.insert('CoinsActivated',
-        <String, dynamic>{'name': coin.name, 'abbr': coin.abbr},
-        conflictAlgorithm: ConflictAlgorithm.ignore);
+    final wallet = await getCurrentWallet();
+
+    // Check if coins for current wallet are saved
+    final currentWallet = await db.query('ListOfCoinsActivated',
+        where: 'wallet_id = ?', whereArgs: [wallet.id]);
+    if (currentWallet.isNotEmpty) {
+      await db.update(
+        'ListOfCoinsActivated',
+        <String, String>{'coins': coinsString},
+        where: 'wallet_id = ?',
+        whereArgs: [wallet.id],
+      );
+    } else {
+      await db.insert(
+        'ListOfCoinsActivated',
+        <String, String>{
+          'wallet_id': wallet.id,
+          'coins': coinsString,
+        },
+      );
+    }
   }
 
   /// Remove the coin from the list of activated coins.
   static Future<void> coinInactive(String ticker) async {
-    Log('database:246', 'coinInactive] $ticker');
+    Log('database', 'coinInactive] removing $ticker from active coins');
+
     _active.remove(ticker);
+    final coinsString = _active.join(',');
+
     final Database db = await Db.db;
-    await db.delete('CoinsActivated',
-        where: 'abbr = ?', whereArgs: <dynamic>[ticker]);
+    final wallet = await getCurrentWallet();
+
+    await db.update(
+      'ListOfCoinsActivated',
+      <String, String>{'coins': coinsString},
+      where: 'wallet_id = ?',
+      whereArgs: [wallet.id],
+    );
   }
 
   static Future<void> deleteNote(String id) async {
@@ -368,5 +580,100 @@ class Db {
 
     if (entry == null) return null;
     return entry['snapshot'];
+  }
+
+  static Future<WalletSecuritySettings>
+      getCurrentWalletSecuritySettings() async {
+    final Database db = await Db.db;
+
+    final List<Map<String, dynamic>> maps = await db.query('CurrentWallet');
+
+    final List<WalletSecuritySettings> walletsSecuritySettings =
+        List<WalletSecuritySettings>.generate(maps.length, (int i) {
+      return WalletSecuritySettings(
+        activatePinProtection:
+            maps[i]['activate_pin_protection'] == 1 ? true : false,
+        activateBioProtection:
+            maps[i]['activate_bio_protection'] == 1 ? true : false,
+        enableCamo: maps[i]['enable_camo'] == 1 ? true : false,
+        isCamoActive: maps[i]['is_camo_active'] == 1 ? true : false,
+        camoFraction: maps[i]['camo_fraction'],
+        camoBalance: maps[i]['camo_balance'],
+        camoSessionStartedAt: maps[i]['camo_session_started_at'],
+      );
+    });
+    if (walletsSecuritySettings.isEmpty) {
+      return null;
+    } else {
+      return walletsSecuritySettings[0];
+    }
+  }
+
+  static Future<WalletSecuritySettings> getWalletSecuritySettings(
+      Wallet wallet) async {
+    final Database db = await Db.db;
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      'Wallet',
+      where: 'id = ?',
+      whereArgs: [wallet.id],
+    );
+
+    final List<WalletSecuritySettings> walletsSecuritySettings =
+        List<WalletSecuritySettings>.generate(maps.length, (int i) {
+      return WalletSecuritySettings(
+        activatePinProtection:
+            maps[i]['activate_pin_protection'] == 1 ? true : false,
+        activateBioProtection:
+            maps[i]['activate_bio_protection'] == 1 ? true : false,
+        enableCamo: maps[i]['enable_camo'] == 1 ? true : false,
+        isCamoActive: maps[i]['is_camo_active'] == 1 ? true : false,
+        camoFraction: maps[i]['camo_fraction'],
+        camoBalance: maps[i]['camo_balance'],
+        camoSessionStartedAt: maps[i]['camo_session_started_at'],
+      );
+    });
+    if (walletsSecuritySettings.isEmpty) {
+      return null;
+    } else {
+      return walletsSecuritySettings[0];
+    }
+  }
+
+  static Future<void> updateWalletSecuritySettings(
+      WalletSecuritySettings walletSecuritySettings,
+      {bool allWallets = false}) async {
+    final Database db = await Db.db;
+
+    Wallet currentWallet = await getCurrentWallet();
+
+    final batch = db.batch();
+
+    final updateMap = {
+      'activate_pin_protection':
+          walletSecuritySettings.activatePinProtection ? 1 : 0,
+      'activate_bio_protection':
+          walletSecuritySettings.activateBioProtection ? 1 : 0,
+      'enable_camo': walletSecuritySettings.enableCamo ? 1 : 0,
+      'is_camo_active': walletSecuritySettings.isCamoActive ? 1 : 0,
+      'camo_fraction': walletSecuritySettings.camoFraction,
+      'camo_balance': walletSecuritySettings.camoBalance,
+      'camo_session_started_at': walletSecuritySettings.camoSessionStartedAt,
+    };
+
+    await db.update(
+      'Wallet',
+      updateMap,
+      where: allWallets ? null : 'id = ?',
+      whereArgs: allWallets ? null : [currentWallet.id],
+    );
+    await db.update(
+      'CurrentWallet',
+      updateMap,
+      where: allWallets ? null : 'id = ?',
+      whereArgs: allWallets ? null : [currentWallet.id],
+    );
+
+    batch.commit();
   }
 }

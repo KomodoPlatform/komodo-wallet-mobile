@@ -22,7 +22,7 @@ class _MakerOrderSwapsState extends State<MakerOrderSwaps> {
     swapProvider ??= Provider.of<SwapProvider>(context);
 
     if (widget.order.startedSwaps == null || widget.order.startedSwaps.isEmpty)
-      return Container();
+      return SizedBox();
 
     return Column(
       children: buildFilteredSwaps(),

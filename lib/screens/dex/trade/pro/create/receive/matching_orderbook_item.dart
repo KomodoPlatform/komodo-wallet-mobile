@@ -8,13 +8,13 @@ import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_bids_pa
 import 'package:provider/provider.dart';
 
 class MatchingOrderbookItem extends StatelessWidget {
-  const MatchingOrderbookItem(
-      {Key key,
-      this.orderbookDepth,
-      this.sellAmount,
-      this.onCreatePressed,
-      this.onBidSelected})
-      : super(key: key);
+  const MatchingOrderbookItem({
+    Key key,
+    this.orderbookDepth,
+    this.sellAmount,
+    this.onCreatePressed,
+    this.onBidSelected,
+  }) : super(key: key);
 
   final OrderbookDepth orderbookDepth;
   final double sellAmount;
@@ -52,7 +52,7 @@ class MatchingOrderbookItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
+            SizedBox(
               height: 20,
               width: 20,
               child: Image.asset(
@@ -87,10 +87,8 @@ class MatchingOrderbookItem extends StatelessWidget {
                   : Text(
                       AppLocalizations.of(context).noOrderAvailable,
                       textAlign: TextAlign.end,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          .copyWith(color: Theme.of(context).accentColor),
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          color: Theme.of(context).colorScheme.secondary),
                     ),
             )
           ],

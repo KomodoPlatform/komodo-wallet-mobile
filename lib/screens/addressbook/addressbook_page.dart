@@ -10,10 +10,11 @@ import 'package:provider/provider.dart';
 
 class AddressBookPage extends StatefulWidget {
   const AddressBookPage({
+    Key key,
     this.coin,
     this.shouldPop = false,
     this.contact,
-  });
+  }) : super(key: key);
 
   final Coin coin;
   final bool shouldPop;
@@ -42,7 +43,6 @@ class _AddressBookState extends State<AddressBookPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(
             widget.contact == null
@@ -50,8 +50,6 @@ class _AddressBookState extends State<AddressBookPage> {
                 : AppLocalizations.of(context).contactTitle,
             key: const Key('addressbook-title'),
           ),
-          centerTitle: true,
-          elevation: 0,
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +93,7 @@ class _AddressBookState extends State<AddressBookPage> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: isSearchOpen ? _buildSearchBar() : _buildToolBar(),
     );
   }
@@ -105,11 +103,6 @@ class _AddressBookState extends State<AddressBookPage> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Expanded(
-            child: Padding(
-          padding: const EdgeInsets.only(
-            left: 8,
-            right: 8,
-          ),
           child: TextField(
             autofocus: true,
             onChanged: (String value) {
@@ -118,8 +111,8 @@ class _AddressBookState extends State<AddressBookPage> {
               });
             },
           ),
-        )),
-        const SizedBox(width: 4),
+        ),
+        const SizedBox(width: 8),
         RoundButton(
           onPressed: () {
             setState(() {
@@ -127,7 +120,7 @@ class _AddressBookState extends State<AddressBookPage> {
               isSearchOpen = false;
             });
           },
-          child: Icon(Icons.close),
+          child: const Icon(Icons.close),
         ),
       ],
     );
@@ -147,7 +140,7 @@ class _AddressBookState extends State<AddressBookPage> {
                   ),
                 ));
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
         const SizedBox(width: 4),
         RoundButton(
@@ -156,20 +149,21 @@ class _AddressBookState extends State<AddressBookPage> {
               isSearchOpen = true;
             });
           },
-          child: Icon(Icons.search),
+          child: const Icon(Icons.search),
         ),
       ],
     );
   }
 
   Widget _buildActiveFilters() {
-    if (coin == null) return Container();
+    if (coin == null) return SizedBox();
 
     String title = coin.abbr;
 
     if (coin.type == 'smartChain') title = 'KMD & SmartChains';
     if (coin.type == 'erc') title = 'ETH & ERC tokens';
     if (coin.type == 'bep') title = 'BNB & BEP tokens';
+    if (coin.type == 'plg') title = 'Polygon & PLG tokens';
     if (coin.type == 'qrc' || coin.abbr == 'QTUM') title = 'QTUM & QRC tokens';
 
     return Padding(
@@ -178,10 +172,9 @@ class _AddressBookState extends State<AddressBookPage> {
         child: Text(
           AppLocalizations.of(context).addressBookFilter(title),
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 12,
-            color: Theme.of(context).accentColor,
-          ),
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
         ),
       ),
     );

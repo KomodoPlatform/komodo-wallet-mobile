@@ -14,6 +14,6 @@ class LanguageFlagIcon extends StatelessWidget {
             'assets/language-flags/${getLocaleFullName(loc).toLowerCase()}.png',
             width: size,
           )
-        : Container();
+        : SizedBox();
   }
 }

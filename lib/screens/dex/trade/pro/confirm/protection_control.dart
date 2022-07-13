@@ -93,7 +93,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
         _buildNotarizaton(),
         Container(
           height: 1,
-          color: Theme.of(context).backgroundColor,
+          color: Theme.of(context).colorScheme.surface,
         ),
         _buildConfirmations(),
       ],
@@ -163,6 +163,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
         launchURL(dPoWInfoUrl);
       },
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Text(
@@ -171,7 +172,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
           Icon(
             Icons.open_in_new,
             size: 14,
-            color: Theme.of(context).accentColor.withAlpha(180),
+            color: Theme.of(context).colorScheme.secondary.withAlpha(180),
           ),
           const Text(
             ': ',
@@ -184,6 +185,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
   Widget _buildToggle() {
     return Row(
       children: <Widget>[
+        // todo(MRC): Figure out whether this can be safely replaced with a checkbox
         InkWell(
           onTap: () {
             setState(() {
@@ -250,7 +252,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
         ],
       );
     } else {
-      return Container();
+      return SizedBox();
     }
   }
 
@@ -259,28 +261,21 @@ class _ProtectionControlState extends State<ProtectionControl> {
       padding: const EdgeInsets.only(left: 8),
       child: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: _builddPowLink(),
-              ),
-              Opacity(
-                opacity: dpowAvailable ? 1 : 0.5,
-                child: Switch(
-                  onChanged: dpowAvailable
-                      ? (bool value) {
-                          setState(() {
-                            dpowRequired = value;
-                          });
-                          _onChange();
-                        }
-                      : null,
-                  value: dpowRequired,
-                  inactiveThumbColor:
-                      dpowAvailable ? null : Theme.of(context).highlightColor,
-                ),
-              ),
-            ],
+          Opacity(
+            opacity: dpowAvailable ? 1 : 0.5,
+            child: SwitchListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 8),
+              value: dpowRequired,
+              onChanged: dpowAvailable
+                  ? (bool value) {
+                      setState(() {
+                        dpowRequired = value;
+                      });
+                      _onChange();
+                    }
+                  : null,
+              title: _builddPowLink(),
+            ),
           ),
         ],
       ),
@@ -313,7 +308,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
                       confs.toString(),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
             ],
@@ -325,27 +320,18 @@ class _ProtectionControlState extends State<ProtectionControl> {
   }
 
   Widget _buildSlider() {
-    return Container(
-      child: SliderTheme(
-        data: SliderTheme.of(context).copyWith(
-          valueIndicatorTextStyle:
-              TextStyle(color: Theme.of(context).backgroundColor),
-        ),
-        child: Slider(
-            activeColor: Theme.of(context).accentColor,
-            divisions: maxConfs - minConfs,
-            label: confs.toString(),
-            min: minConfs.toDouble(),
-            max: maxConfs.toDouble(),
-            value: confs.toDouble(),
-            onChanged: (double value) {
-              setState(() {
-                confs = value.round();
-              });
-              _onChange();
-            }),
-      ),
-    );
+    return Slider(
+        divisions: maxConfs - minConfs,
+        label: confs.toString(),
+        min: minConfs.toDouble(),
+        max: maxConfs.toDouble(),
+        value: confs.toDouble(),
+        onChanged: (double value) {
+          setState(() {
+            confs = value.round();
+          });
+          _onChange();
+        });
   }
 
   void _onChange() {

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/wallet.dart';
@@ -13,13 +13,14 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DisclaimerPage extends StatefulWidget {
-  const DisclaimerPage(
-      {Key key,
-      this.password,
-      this.seed,
-      this.onSuccess,
-      this.readOnly = false})
-      : super(key: key);
+  const DisclaimerPage({
+    Key key,
+    this.password,
+    this.seed,
+    this.onSuccess,
+    this.readOnly = false,
+  }) : super(key: key);
+
   final String password;
   final String seed;
   final Function onSuccess;
@@ -101,16 +102,18 @@ class _DisclaimerPageState extends State<DisclaimerPage>
   Widget build(BuildContext context) {
     final List<TextSpan> _disclaimerToSText = <TextSpan>[
       TextSpan(
-          text: AppLocalizations.of(context).eulaTitle1,
+          text: AppLocalizations.of(context).eulaTitle1(appConfig.appName),
           style: Theme.of(context).textTheme.headline6),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe1,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe1(appConfig.appName, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle2,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe2,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe2(appConfig.appName, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle3,
@@ -131,13 +134,14 @@ class _DisclaimerPageState extends State<DisclaimerPage>
           text: AppLocalizations.of(context).eulaTitle6,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe5,
+          text: AppLocalizations.of(context).eulaParagraphe5(appConfig.appName),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle7,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe6,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe6(appConfig.appName, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle8,
@@ -161,13 +165,15 @@ class _DisclaimerPageState extends State<DisclaimerPage>
           text: AppLocalizations.of(context).eulaTitle11,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe10,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe10(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle12,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe11,
+          text: AppLocalizations.of(context).eulaParagraphe11(
+              appConfig.appCompanyShort, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle13,
@@ -179,43 +185,50 @@ class _DisclaimerPageState extends State<DisclaimerPage>
           text: AppLocalizations.of(context).eulaTitle14,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe13,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe13(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle15,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe14,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe14(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle16,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe15,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe15(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle17,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe16,
+          text: AppLocalizations.of(context).eulaParagraphe16(
+              appConfig.appCompanyShort, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle18,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe17,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe17(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle19,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe18,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe18(appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2),
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle20,
           style: Theme.of(context).textTheme.subtitle2),
       TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe19,
+          text: AppLocalizations.of(context)
+              .eulaParagraphe19(appConfig.appName, appConfig.appCompanyLong),
           style: Theme.of(context).textTheme.bodyText2)
     ];
 
@@ -233,53 +246,51 @@ class _DisclaimerPageState extends State<DisclaimerPage>
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: <Widget>[
-          widget.readOnly
-              ? Container()
-              : Column(
+          if (!widget.readOnly)
+            Column(
+              children: <Widget>[
+                Row(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Checkbox(
-                          key: const Key('checkbox-eula'),
-                          value: _checkBoxEULA,
-                          onChanged: (bool value) {
-                            setState(() {
-                              _checkBoxEULA = !_checkBoxEULA;
-                            });
-                          },
-                        ),
-                        Flexible(
-                            child:
-                                Text(AppLocalizations.of(context).accepteula)),
-                      ],
+                    Checkbox(
+                      key: const Key('checkbox-eula'),
+                      value: _checkBoxEULA,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _checkBoxEULA = !_checkBoxEULA;
+                        });
+                      },
                     ),
-                    Row(
-                      children: <Widget>[
-                        Checkbox(
-                          key: const Key('checkbox-toc'),
-                          value: _checkBoxTOC,
-                          onChanged: (bool value) {
-                            setState(() {
-                              _checkBoxTOC = !_checkBoxTOC;
-                            });
-                          },
-                        ),
-                        Flexible(
-                            child: Text(
-                          AppLocalizations.of(context).accepttac,
-                        )),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
-                      child: Text(
-                        AppLocalizations.of(context).confirmeula,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ),
+                    Flexible(
+                        child: Text(AppLocalizations.of(context).accepteula)),
                   ],
                 ),
+                Row(
+                  children: <Widget>[
+                    Checkbox(
+                      key: const Key('checkbox-toc'),
+                      value: _checkBoxTOC,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _checkBoxTOC = !_checkBoxTOC;
+                        });
+                      },
+                    ),
+                    Flexible(
+                        child: Text(
+                      AppLocalizations.of(context).accepttac,
+                    )),
+                  ],
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  child: Text(
+                    AppLocalizations.of(context).confirmeula,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ),
+              ],
+            ),
           PrimaryButton(
             key: const Key('next-disclaimer'),
             onPressed: (widget.readOnly
@@ -292,17 +303,15 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                 : AppLocalizations.of(context).next,
             isLoading: isLoading,
           ),
-          isLoading
-              ? const SizedBox(
-                  height: 8,
-                )
-              : Container(),
-          isLoading
-              ? Text(
-                  AppLocalizations.of(context).encryptingWallet,
-                  style: Theme.of(context).textTheme.bodyText2,
-                )
-              : Container()
+          if (isLoading) ...[
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              AppLocalizations.of(context).encryptingWallet,
+              style: Theme.of(context).textTheme.bodyText2,
+            )
+          ]
         ],
       ),
     );
@@ -328,7 +337,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                 });
               },
               child: FloatingActionButton(
-                child: Icon(Icons.arrow_downward),
+                child: const Icon(Icons.arrow_downward),
                 onPressed: () {
                   if (isEndOfScroll) {
                     timer.cancel();
@@ -346,14 +355,10 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).disclaimerAndTos,
-            style: Theme.of(context).textTheme.headline6,
-          ),
+          title: Text(AppLocalizations.of(context).disclaimerAndTos),
           backgroundColor: Colors.transparent,
-          elevation: 0,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
         body: SafeArea(
           // On small screens and in split-screen mode
           // page controls (checkboxes, button) should not be docked
@@ -417,8 +422,9 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
       await Db.saveWallet(wallet);
       await Db.saveCurrentWallet(wallet);
+
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('isPinIsCreated', true);
+      prefs.setBool('is_pin_creation_in_progress', true);
 
       await authBloc.loginUI(true, widget.seed, widget.password).then((_) {
         setState(() {

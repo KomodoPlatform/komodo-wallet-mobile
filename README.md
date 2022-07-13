@@ -1,5 +1,5 @@
 [![Build Status](https://app.bitrise.io/app/bc464ad88d40bb68/status.svg?token=tnpzqFp_7vrcsQYqWSIVBQ&branch=dev)](https://app.bitrise.io/app/bc464ad88d40bb68)  
-# atomicDEX v0.5.2
+# atomicDEX v0.5.3
 Komodo Platform's hybrid mutlicoin DEX-wallet. 
 
 ## Getting Started
@@ -33,17 +33,23 @@ cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
 ## Flutter version
 
-Currently using flutter 1.22.4 in order to enjoy some recent UI fixes/updates, ref: https://github.com/ca333/komodoDEX/issues/913
+Currently using flutter 2.8.1
 
-Upgrading from v1.12.13+hotfix.7
+### Upgrading from 1.22.4
 
-    flutter channel stable
-    flutter version v1.22.4
-    flutter pub get
-    flutter clean
-    (cd ios && rm -rf Podfile.lock Podfile Pods)
+In your flutter directory:
 
-(If the "flutter version" doesn't have the required version in the list yet then one way to get it is to go to the flutter directory (cf. `which flutter`) and invoke `git pull` there).
+```
+git checkout 2.8.1
+flutter doctor
+```
+
+In the project directory:
+
+```
+flutter clean
+flutter pub get
+```
 
 ### beta Flutter
 
@@ -63,6 +69,23 @@ In Android Studio (3.6.2) the latest Kotlin plugin (1.3.71) doesn't work with Fl
 
     adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
     sqlite3 AtomicDEX.db
+
+## Localization
+
+1. Extract messages to .arb file:
+```bash
+flutter pub run intl_generator:extract_to_arb --output-dir=lib/l10n lib/localizations.dart
+```
+2. Sync generated `intl_messages.arb` with existing locale `intl_*.arb` files:
+```bash
+dart run sync_arb_files.dart
+```
+3. ARB files can be used for input to translation tools like [Arbify](https://github.com/Arbify/Arbify), [Localizely](https://localizely.com/) etc.
+4. The resulting translations can be used to generate a set of libraries:
+```bash
+flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/localizations.dart lib/l10n/intl_*.arb
+```
+5. Manual editing of generated `messages_*.dart` files might be needed to delete nullable syntax (`?` symbol), since the app doesn't support it yet.
 
 ## Audio samples sources
 

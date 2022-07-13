@@ -31,19 +31,21 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
         Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => SwapDetailPage(
-                    swap: Swap(
-                        status: Status.ORDER_MATCHING,
-                        result: MmSwap(
-                          uuid: widget.order.uuid,
-                          myInfo: SwapMyInfo(
-                              myAmount: widget.order.baseAmount,
-                              otherAmount: widget.order.relAmount,
-                              myCoin: widget.order.base,
-                              otherCoin: widget.order.rel,
-                              startedAt: DateTime.now().millisecondsSinceEpoch),
-                        )),
-                  )),
+            builder: (BuildContext context) => SwapDetailPage(
+              swap: Swap(
+                status: Status.ORDER_MATCHING,
+                result: MmSwap(
+                  uuid: widget.order.uuid,
+                  myInfo: SwapMyInfo(
+                      myAmount: widget.order.baseAmount,
+                      otherAmount: widget.order.relAmount,
+                      myCoin: widget.order.base,
+                      otherCoin: widget.order.rel,
+                      startedAt: DateTime.now().millisecondsSinceEpoch),
+                ),
+              ),
+            ),
+          ),
         );
       },
       child: Column(
@@ -71,7 +73,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                           ],
                         ),
                         Text(
-                          '${formatPrice(widget.order.baseAmount, 8)}',
+                          formatPrice(widget.order.baseAmount, 8),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -96,7 +98,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                           ],
                         ),
                         Text(
-                          '${formatPrice(widget.order.relAmount, 8)}',
+                          formatPrice(widget.order.relAmount, 8),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -113,7 +115,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                     builder:
                         (BuildContext context, AsyncSnapshot<String> snapshot) {
                       if (!snapshot.hasData) {
-                        return Container();
+                        return SizedBox();
                       }
 
                       return InkWell(
@@ -160,57 +162,50 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Expanded(
-                      child: Container(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context).orderMatching,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            BuildTakerCountdown(widget.order.uuid,
-                                style: Theme.of(context).textTheme.bodyText1),
-                          ],
-                        ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context).orderMatching,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          BuildTakerCountdown(widget.order.uuid,
+                              style: Theme.of(context).textTheme.bodyText1),
+                        ],
                       ),
                     ),
-                    widget.order.cancelable
-                        ? Container(
-                            height: 30,
-                            child: OutlineButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              borderSide: const BorderSide(color: Colors.white),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 6, horizontal: 12),
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(24)),
-                                  color: Colors.transparent,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                        AppLocalizations.of(context)
-                                            .cancel
-                                            .toUpperCase(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1
-                                            .copyWith(
-                                              color: Colors.white,
-                                            ))
-                                  ],
-                                ),
-                              ),
-                              onPressed: () {
-                                ordersBloc.cancelOrder(widget.order.uuid);
-                              },
+                    if (widget.order.cancelable)
+                      SizedBox(
+                        height: 30,
+                        child: OutlinedButton(
+                          onPressed: () =>
+                              ordersBloc.cancelOrder(widget.order.uuid),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                                color: Theme.of(context).colorScheme.onSurface),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
                             ),
-                          )
-                        : Container()
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(24)),
+                              color: Colors.transparent,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(AppLocalizations.of(context)
+                                    .cancel
+                                    .toUpperCase())
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ],
@@ -222,7 +217,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
   }
 
   Widget _buildIcon(String coin) {
-    return Container(
+    return SizedBox(
       height: 25,
       width: 25,
       child: Image.asset(

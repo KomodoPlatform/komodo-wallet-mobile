@@ -9,7 +9,6 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/detail_swap.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/share_preview_overlay.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/swap_share_card.dart';
@@ -74,13 +73,16 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                   const SizedBox(
                     height: 32,
                   ),
-                  Container(
-                    height: 200,
-                    child: SvgPicture.asset(
-                        settingsBloc.isLightTheme
-                            ? 'assets/svg_light/trade_success.svg'
-                            : 'assets/svg/trade_success.svg',
-                        semanticsLabel: 'Trade Success'),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 35),
+                    child: SizedBox(
+                      height: 200,
+                      child: SvgPicture.asset(
+                          Theme.of(context).brightness == Brightness.light
+                              ? 'assets/svg_light/trade_success.svg'
+                              : 'assets/svg/trade_success.svg',
+                          semanticsLabel: 'Trade Success'),
+                    ),
                   ),
                   const SizedBox(
                     height: 32,
@@ -89,12 +91,40 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                     children: <Widget>[
                       Text(AppLocalizations.of(context).trade,
                           style: Theme.of(context).textTheme.headline6),
-                      Text(
-                        AppLocalizations.of(context).tradeCompleted,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6
-                            .copyWith(color: Theme.of(context).accentColor),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: SizedBox(),
+                          ),
+                          Text(
+                            AppLocalizations.of(context).tradeCompleted,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
+                          ),
+                          Expanded(
+                            child: appConfig.isSwapShareCardEnabled
+                                ? Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(20),
+                                      onTap: () {
+                                        _shareCard();
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: Icon(Icons.share),
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox(),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -108,46 +138,6 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                   ),
                 ],
               ),
-              if (appConfig.isSwapShareCardEnabled)
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: IconButton(
-                    icon: Icon(Icons.share),
-                    onPressed: () async {
-                      final RenderRepaintBoundary boundary =
-                          repaintKey.currentContext.findRenderObject();
-                      final ui.Image image =
-                          await boundary.toImage(pixelRatio: 4);
-                      final byteData = await image.toByteData(
-                          format: ui.ImageByteFormat.png);
-                      final pngBytes = byteData.buffer.asUint8List();
-
-                      final String directory =
-                          (await applicationDocumentsDirectory).path;
-                      final imgFile = File('$directory/screenshot.png');
-                      await imgFile.writeAsBytes(pngBytes);
-
-                      final myCoin = widget.swap.result.myInfo.myCoin;
-                      final otherCoin = widget.swap.result.myInfo.otherCoin;
-                      final shareText =
-                          "I've just atomic swapped $myCoin/$otherCoin"
-                          ' on my phone! You can try it too: https://atomicdex.io\n'
-                          '#blockchain #dex #atomicdex #komodoplatform #atomicswap';
-
-                      await Share.shareFiles(
-                        [imgFile.path],
-                        text: shareText,
-                        mimeTypes: ['image/png'],
-                      );
-
-                      if (Platform.isIOS) {
-                        dialogBloc.dialog = Navigator.of(context)
-                            .push(SharePreviewOverlay(imgFile))
-                            .then((_) => dialogBloc.dialog = null);
-                      }
-                    },
-                  ),
-                ),
             ],
           ),
           DetailSwap(
@@ -156,5 +146,37 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
         ],
       ),
     );
+  }
+
+  Future<void> _shareCard() async {
+    final RenderRepaintBoundary boundary =
+        repaintKey.currentContext.findRenderObject();
+    final ui.Image image = await boundary.toImage(pixelRatio: 4);
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final pngBytes = byteData.buffer.asUint8List();
+
+    final String directory = (await applicationDocumentsDirectory).path;
+    final imgFile = File('$directory/screenshot.png');
+    await imgFile.writeAsBytes(pngBytes);
+
+    final myInfo = extractMyInfoFromSwap(widget.swap.result);
+    final myCoin = myInfo['myCoin'];
+    final otherCoin = myInfo['otherCoin'];
+
+    final shareText = "I've just atomic swapped $myCoin/$otherCoin"
+        ' on my phone! You can try it too: https://atomicdex.io\n'
+        '#blockchain #dex #atomicdex #komodoplatform #atomicswap';
+
+    await Share.shareFiles(
+      [imgFile.path],
+      text: shareText,
+      mimeTypes: ['image/png'],
+    );
+
+    if (Platform.isIOS) {
+      dialogBloc.dialog = Navigator.of(context)
+          .push(SharePreviewOverlay(imgFile))
+          .then((_) => dialogBloc.dialog = null);
+    }
   }
 }

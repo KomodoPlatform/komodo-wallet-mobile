@@ -39,10 +39,9 @@ class _SwapHistoryState extends State<SwapHistory> {
           final List<Swap> swaps = snapshot.data.toList();
 
           swaps.removeWhere((Swap swap) =>
-              swap.result.myInfo == null ||
-              (swap.status != Status.SWAP_FAILED &&
-                  swap.status != Status.SWAP_SUCCESSFUL &&
-                  swap.status != Status.TIME_OUT));
+              swap.status != Status.SWAP_FAILED &&
+              swap.status != Status.SWAP_SUCCESSFUL &&
+              swap.status != Status.TIME_OUT);
 
           final List<Swap> swapsFiltered = _filter(swaps);
 
@@ -61,11 +60,12 @@ class _SwapHistoryState extends State<SwapHistory> {
               .sublist(start, end);
 
           return ListView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
             controller: widget.scrollCtrl,
             children: [
               if (widget.showFilters) _buildFilters(swaps),
               if (swapsFiltered.isEmpty) ...{
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height / 4,
                   child:
                       Center(child: Text(AppLocalizations.of(context).noSwaps)),

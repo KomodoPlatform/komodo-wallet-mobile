@@ -50,7 +50,7 @@ class SharePreviewOverlay extends ModalRoute<void> {
           children: <Widget>[
             Image.file(file),
             SizedBox(height: 100),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => Navigator.pop(context),
               child: Text(AppLocalizations.of(context).closePreview),
             )

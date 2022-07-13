@@ -4,8 +4,8 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -68,7 +68,7 @@ class _CoinsPageState extends State<CoinsPage> {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
-                  backgroundColor: Theme.of(context).backgroundColor,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   expandedHeight: _heightSliver,
                   pinned: true,
                   flexibleSpace: Builder(
@@ -78,10 +78,9 @@ class _CoinsPageState extends State<CoinsPage> {
                           FlexibleSpaceBar(
                               collapseMode: CollapseMode.pin,
                               centerTitle: true,
-                              title: Container(
-                                padding: EdgeInsets.only(
-                                    top: 20 +
-                                        MediaQuery.of(context).padding.top),
+                              titlePadding:
+                                  EdgeInsetsDirectional.only(bottom: 10),
+                              title: SizedBox(
                                 width: _widthScreen * 0.5,
                                 child: Center(
                                   heightFactor: _heightFactor,
@@ -115,42 +114,36 @@ class _CoinsPageState extends State<CoinsPage> {
                                                 totalBalanceUSD,
                                                 hidden: hidden,
                                               );
-                                              return FlatButton(
-                                                  onPressed: () {
-                                                    _cexProvider
-                                                        .switchCurrency();
-                                                  },
-                                                  child: AutoSizeText(
-                                                    amountText,
-                                                    maxFontSize: 18,
-                                                    minFontSize: 12,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline6
-                                                        .copyWith(
-                                                            color: _heightFactor <
-                                                                    1.3
-                                                                ? settingsBloc
-                                                                        .isLightTheme
-                                                                    ? Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            0.8)
-                                                                    : Colors
-                                                                        .white
-                                                                : Colors.white
-                                                                    .withOpacity(
-                                                                        0.8)),
-                                                    maxLines: 1,
-                                                  ));
+                                              return TextButton(
+                                                onPressed: () => _cexProvider
+                                                    .switchCurrency(),
+                                                style: TextButton.styleFrom(
+                                                  primary: _heightFactor < 1.3
+                                                      ? Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness.light
+                                                          ? Colors.black
+                                                              .withOpacity(0.8)
+                                                          : Colors.white
+                                                      : Colors.white
+                                                          .withOpacity(0.8),
+                                                  textStyle: Theme.of(context)
+                                                      .textTheme
+                                                      .headline6,
+                                                ),
+                                                child: AutoSizeText(
+                                                  amountText,
+                                                  maxFontSize: 18,
+                                                  minFontSize: 12,
+                                                  maxLines: 1,
+                                                ),
+                                              );
                                             },
                                           );
                                         } else {
                                           return Center(
-                                              child: Container(
-                                            child:
-                                                const CircularProgressIndicator(),
-                                          ));
+                                              child:
+                                                  const CircularProgressIndicator());
                                         }
                                       }),
                                 ),
@@ -175,7 +168,7 @@ class _CoinsPageState extends State<CoinsPage> {
                                             return snapshot.hasData &&
                                                     snapshot.data
                                                 ? BarGraph()
-                                                : Container();
+                                                : SizedBox();
                                           })
                                     ],
                                   ),
@@ -207,7 +200,7 @@ class _CoinsPageState extends State<CoinsPage> {
               ];
             },
             body: Container(
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 child: const ListCoins())));
   }
 
@@ -217,14 +210,12 @@ class _CoinsPageState extends State<CoinsPage> {
         stream: coinsBloc.outcurrentActiveCoin,
         builder:
             (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-          if (snapshot.data != null) {
-            return const SizedBox(
-              height: 2,
-              child: LinearProgressIndicator(),
-            );
-          } else {
-            return Container();
-          }
+          return snapshot.data != null
+              ? const SizedBox(
+                  height: 2,
+                  child: LinearProgressIndicator(),
+                )
+              : SizedBox();
         });
   }
 }
@@ -273,7 +264,7 @@ class BarGraphState extends State<BarGraph> {
           duration: const Duration(milliseconds: 300),
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            child: Container(
+            child: SizedBox(
               width: _widthBar,
               height: 16,
               child: Row(
@@ -288,9 +279,7 @@ class BarGraphState extends State<BarGraph> {
 }
 
 class LoadAsset extends StatefulWidget {
-  const LoadAsset({
-    Key key,
-  }) : super(key: key);
+  const LoadAsset({Key key}) : super(key: key);
 
   @override
   LoadAssetState createState() {
@@ -299,6 +288,8 @@ class LoadAsset extends StatefulWidget {
 }
 
 class LoadAssetState extends State<LoadAsset> {
+  final Color color = Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<CoinBalance>>(
@@ -318,27 +309,27 @@ class LoadAssetState extends State<LoadAsset> {
 
           listRet.add(Icon(
             Icons.show_chart,
-            color: Colors.white.withOpacity(0.8),
+            color: color.withOpacity(0.8),
           ));
-          listRet.add(Text(
+          listRet.add(
+            Text(
               AppLocalizations.of(context).numberAssets(assetNumber.toString()),
-              style: Theme.of(context)
-                  .textTheme
-                  .caption
-                  .copyWith(color: Colors.white.withOpacity(0.8))));
+              style: Theme.of(context).textTheme.caption.copyWith(color: color),
+            ),
+          );
           listRet.add(Icon(
             Icons.chevron_right,
-            color: Colors.white.withOpacity(0.8),
+            color: color.withOpacity(0.8),
           ));
         } else {
-          listRet.add(Container(
+          listRet.add(SizedBox(
               height: 10,
               width: 10,
               child: const CircularProgressIndicator(
                 strokeWidth: 1.0,
               )));
         }
-        return Container(
+        return SizedBox(
           height: 30,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -352,9 +343,7 @@ class LoadAssetState extends State<LoadAsset> {
 }
 
 class ListCoins extends StatefulWidget {
-  const ListCoins({
-    Key key,
-  }) : super(key: key);
+  const ListCoins({Key key}) : super(key: key);
 
   @override
   ListCoinsState createState() {
@@ -365,7 +354,6 @@ class ListCoins extends StatefulWidget {
 class ListCoinsState extends State<ListCoins> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
-  final SlidableController slidableController = SlidableController();
 
   @override
   void initState() {
@@ -381,7 +369,8 @@ class ListCoinsState extends State<ListCoins> {
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         return RefreshIndicator(
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            color: Theme.of(context).colorScheme.secondary,
             key: _refreshIndicatorKey,
             onRefresh: () => coinsBloc.updateCoinBalances(),
             child: Builder(builder: (BuildContext context) {
@@ -393,35 +382,42 @@ class ListCoinsState extends State<ListCoins> {
 
                 datas.addAll(_sorted);
                 datas.add(true);
-                return ListView.builder(
-                  key: const Key('list-view-coins'),
-                  itemCount: datas.length,
-                  padding: const EdgeInsets.all(0),
-                  itemBuilder: (BuildContext context, int index) {
-                    if (datas[index] is bool) {
-                      return const AddCoinButton(key: Key('add-coin'));
-                    } else {
-                      return ItemCoin(
-                        key: Key('coin-list-${datas[index].coin.abbr}'),
-                        mContext: context,
-                        coinBalance: datas[index],
-                        slidableController: slidableController,
-                      );
-                    }
-                  },
+                return SlidableAutoCloseBehavior(
+                  child: ListView.separated(
+                    key: const Key('list-view-coins'),
+                    itemCount: datas.length,
+                    padding: const EdgeInsets.all(0),
+                    itemBuilder: (BuildContext context, int index) {
+                      if (datas[index] is bool) {
+                        return const AddCoinButton(key: Key('add-coin'));
+                      } else {
+                        return ItemCoin(
+                          key: Key('coin-list-${datas[index].coin.abbr}'),
+                          mContext: context,
+                          coinBalance: datas[index],
+                        );
+                      }
+                    },
+                    separatorBuilder: (context, _) =>
+                        Divider(color: Theme.of(context).colorScheme.surface),
+                  ),
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();
               } else if (snapshot.data.isEmpty) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
-                    AddCoinButton(),
-                    Text('Please Add A Coin'),
-                  ],
+                // MRC: Add center to fix random UI glitch
+                // due to loading Add Button
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const <Widget>[
+                      AddCoinButton(),
+                      Text('Please Add A Coin'),
+                    ],
+                  ),
                 );
               } else {
-                return Container();
+                return SizedBox();
               }
             }));
       },
@@ -476,15 +472,12 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                           child: Center(
                               child: FloatingActionButton(
                             key: const Key('adding-coins'),
-                            backgroundColor: Theme.of(context).primaryColor,
-                            foregroundColor: Theme.of(context).accentColor,
-                            child: Icon(
-                              Icons.add,
-                            ),
+                            child: Icon(Icons.add),
                             onPressed: () {
                               if (mainBloc.networkStatus !=
                                   NetworkStatus.Online) {
-                                Scaffold.of(context).showSnackBar(SnackBar(
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
                                   duration: const Duration(seconds: 2),
                                   backgroundColor: Theme.of(context).errorColor,
                                   content: Text(
@@ -518,14 +511,12 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              RaisedButton(
+                                              ElevatedButton(
+                                                onPressed: () => dialogBloc
+                                                    .closeDialog(context),
                                                 child: Text(
                                                     AppLocalizations.of(context)
                                                         .warningOkBtn),
-                                                onPressed: () {
-                                                  dialogBloc
-                                                      .closeDialog(context);
-                                                },
                                               ),
                                             ],
                                           ),
@@ -548,7 +539,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                         ),
                       );
                     } else {
-                      return Container();
+                      return SizedBox();
                     }
                   },
                 );

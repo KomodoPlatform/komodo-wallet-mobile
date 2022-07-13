@@ -424,16 +424,17 @@
     {
         "name": "Navcoin",
         "type": "utxo",
-        "address": "electrum1.cipig.net",
-        "port": 10056,
-        "proto": "tcp",
+        "address": "electrum.nav.community",
+        "port": 40002,
+        "proto": "SSL",
         "abbr": "NAV",
         "coingeckoId": "nav-coin",
         "colorCoin": "0xFFA83BAB",
         "serverList": [
-            "electrum1.cipig.net:10056",
-            "electrum2.cipig.net:10056",
-            "electrum3.cipig.net:10056"
+            "electrum.nav.community:40002",
+            "electrum2.nav.community:40002",
+            "electrum3.nav.community:40002",
+            "electrum4.nav.community:40002"
         ],
         "explorerUrl": [
             "https://www.navexplorer.com/"
@@ -552,6 +553,23 @@
         ]
     },
     {
+        "abbr": "THC-BEP20",
+        "name": "THC BEP20",
+        "type": "bep",
+        "coingeckoId": "hempcoin-thc",
+        "colorCoin": "0xFF447224",
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "serverList": [
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
+        ],
+        "explorerUrl": [
+            "https://bscscan.com/"
+        ]
+    },
+    {
         "name": "TOKEL",
         "type": "smartChain",
         "address": "1.eu.tokel.electrum.dexstats.info",
@@ -620,8 +638,7 @@
         "serverList": [
             "el0.verus.io:17485",
             "el1.verus.io:17485",
-            "el2.verus.io:17485",
-            "electrum.vrsc.0x03.services:17485"
+            "el2.verus.io:17485"
         ],
         "explorerUrl": [
             "https://explorer.verus.io/"
@@ -698,24 +715,6 @@
         ],
         "explorerUrl": [
             "https://blockstream.info/testnet/"
-        ]
-    },
-    {
-        "name": "GleecBTC-OLD",
-        "type": "utxo",
-        "address": "electrum1.cipig.net",
-        "port": 10069,
-        "proto": "tcp",
-        "abbr": "GLEEC-OLD",
-        "coingeckoId": "gleec-coin",
-        "colorCoin": "0xFFA13FFF",
-        "serverList": [
-            "electrum1.cipig.net:10069",
-            "electrum2.cipig.net:10069",
-            "electrum3.cipig.net:10069"
-        ],
-        "explorerUrl": [
-            "https://gleechain.com/"
         ]
     },
     {
@@ -1625,6 +1624,339 @@
         "explorerUrl": [
             "https://testnet.bscscan.com/"
         ]
+    },
+    {
+        "abbr": "MATIC",
+        "name": "Polygon",
+        "type": "plg",
+        "coingeckoId": "matic-network",
+        "colorCoin": "0xFF6F41D8",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "PGX-PLG20",
+        "name": "Pegaxystone",
+        "coingeckoId": "pegaxy-stone",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xffbb0000",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "1INCH-PLG20",
+        "name": "1inch",
+        "coingeckoId": "1inch",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xFFDCE5F4",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "AAVE-PLG20",
+        "name": "Aave",
+        "coingeckoId": "aave",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xFF519FBC",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "BAL-PLG20",
+        "name": "Balancer",
+        "coingeckoId": "balancer",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xff2d2d2d",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "BAND-PLG20",
+        "name": "Band Protocol",
+        "coingeckoId": "band-protocol",
+        "serverList": [
+            "https://polygon-rpc.com"
+
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+
+        ],
+        "type": "plg",
+        "colorCoin": "0xff6e8eff",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "BAT-PLG20",
+        "name": "BAT-PLG20",
+        "coingeckoId": "basic-attention-token",
+        "serverList": [
+            "https://polygon-rpc.com"
+
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xFFff5000",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "BNT-PLG20",
+        "name": "Bancor",
+        "coingeckoId": "bancor",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xff001542",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "BUSD-PLG20",
+        "name": "BUSD PLG20",
+        "coingeckoId": "binance-usd",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xFFF0BA01",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "COMP-PLG20",
+        "name": "Compound",
+        "coingeckoId": "compound-governance-token",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xff00dcaf",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "DAI-PLG20",
+        "name": "DAI",
+        "coingeckoId": "dai",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xFFF8B34F",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "ETH-PLG20",
+        "name": "Ethereum BEP20",
+        "coingeckoId": "ethereum",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xFF828384",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "IOTX-PLG20",
+        "name": "IoTeX",
+        "coingeckoId": "iotex",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xff00e5e7",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "LINK-PLG20",
+        "name": "Chainlink",
+        "coingeckoId": "chainlink",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xff4588eb",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "PAX-PLG20",
+        "name": "Paxos Standard",
+        "coingeckoId": "paxos-standard",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xfff5ee00",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "PAXG-PLG20",
+        "name": "PAX Gold",
+        "coingeckoId": "pax-gold",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xffe4ca22",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "SNX-PLG20",
+        "name": "Synthetix",
+        "coingeckoId": "havven",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xff1e126c",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "SUSHI-PLG20",
+        "name": "Sushi",
+        "coingeckoId": "sushi",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xffb58cc7",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "name": "TrueUSD",
+        "type": "plg",
+        "abbr": "TUSD-PLG20",
+        "coingeckoId": "true-usd",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "colorCoin": "0xFF1B1C5B",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ]
+    },
+    {
+        "abbr": "UNI-PLG20",
+        "name": "Uniswap",
+        "coingeckoId": "uniswap",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xffff309e",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDC-PLG20",
+        "name": "USDC PLG20",
+        "coingeckoId": "usd-coin",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xFF2775c9",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDT-PLG20",
+        "name": "Tether",
+        "coingeckoId": "tether",
+        "serverList": [
+            "https://polygon-rpc.com"
+        ],
+        "explorerUrl": [
+            "https://polygonscan.com/"
+        ],
+        "type": "plg",
+        "colorCoin": "0xff38c1a4",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
     {
         "name": "VOTE2022",

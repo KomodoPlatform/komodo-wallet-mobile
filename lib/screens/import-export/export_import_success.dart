@@ -18,9 +18,7 @@ class _ExportImportSuccessState extends State<ExportImportSuccess> {
       padding: EdgeInsets.fromLTRB(48, 24, 48, 24),
       child: Column(
         children: [
-          Container(
-            child: Text(widget.title),
-          ),
+          Text(widget.title),
           SizedBox(height: 24),
           Table(
             columnWidths: const {
@@ -29,10 +27,8 @@ class _ExportImportSuccessState extends State<ExportImportSuccess> {
             children: _buildItemRows(),
           ),
           SizedBox(height: 24),
-          RaisedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
             child: Text(
               AppLocalizations.of(context).okButton,
             ),

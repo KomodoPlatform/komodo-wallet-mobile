@@ -22,11 +22,10 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
           final CoinToActivate coinToActivate = snapshot.data
               .firstWhere((item) => item.coin.abbr == widget.coin.abbr);
 
+          // todo(MRC): Optimize this to use CheckboxListTile in a future point in time
           return InkWell(
-            onTap: () {
-              coinsBloc.setCoinBeforeActivation(
-                  widget.coin, !coinToActivate.isActive);
-            },
+            onTap: () => coinsBloc.setCoinBeforeActivation(
+                widget.coin, !coinToActivate.isActive),
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 16, bottom: 16, left: 50, right: 16),
@@ -35,9 +34,14 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                   Container(
                     height: 15,
                     width: 15,
-                    color: coinToActivate.isActive
-                        ? Theme.of(context).accentColor
-                        : Theme.of(context).primaryColor,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2),
+                        color: coinToActivate.isActive
+                            ? Theme.of(context).toggleableActiveColor
+                            : Colors.transparent,
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.secondary,
+                        )),
                   ),
                   const SizedBox(width: 24),
                   Image.asset(
@@ -48,7 +52,9 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                   const SizedBox(width: 24),
                   Expanded(
                     child: AutoScrollText(
-                        text: '${widget.coin.name} (${widget.coin.abbr})'),
+                      text: '${widget.coin.name} (${widget.coin.abbr})',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
                   )
                 ],
               ),

@@ -2,7 +2,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:rational/rational.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -139,24 +138,24 @@ class _EvaluationSimpleState extends State<EvaluationSimple> {
   }
 
   Widget _buildCexRate() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: widget.alignCenter
-            ? MainAxisAlignment.center
-            : MainAxisAlignment.start,
-        children: [
-          CexMarker(context, size: Size.fromRadius(6)),
-          SizedBox(width: 2),
-          Text(
-            'CEX Rate: 1 $_sellAbbr = '
-            '${cutTrailingZeros(formatPrice(_cexRate))} $_buyAbbr',
-            style: TextStyle(
-              fontSize: 12,
-              color: settingsBloc.isLightTheme ? cexColorLight : cexColor,
-            ),
-          )
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: widget.alignCenter
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.start,
+      children: [
+        CexMarker(context, size: Size.fromRadius(6)),
+        SizedBox(width: 2),
+        Text(
+          'CEX Rate: 1 $_sellAbbr = '
+          '${cutTrailingZeros(formatPrice(_cexRate))} $_buyAbbr',
+          style: TextStyle(
+            fontSize: 12,
+            color: Theme.of(context).brightness == Brightness.light
+                ? cexColorLight
+                : cexColor,
+          ),
+        )
+      ],
     );
   }
 
@@ -240,7 +239,7 @@ class _EvaluationSimpleState extends State<EvaluationSimple> {
           width: _sliderW,
           height: _sliderH * 2,
           child: Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: <Widget>[
               Positioned(
                   left: 0,
@@ -252,7 +251,7 @@ class _EvaluationSimpleState extends State<EvaluationSimple> {
                       gradient: LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
-                          colors: [Colors.orangeAccent, Colors.grey]),
+                          colors: const [Colors.orangeAccent, Colors.grey]),
                     ),
                   )),
               Positioned(
@@ -265,7 +264,7 @@ class _EvaluationSimpleState extends State<EvaluationSimple> {
                       gradient: LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
-                          colors: [Colors.grey, Colors.green]),
+                          colors: const [Colors.grey, Colors.green]),
                     ),
                   )),
               Positioned(
@@ -276,7 +275,7 @@ class _EvaluationSimpleState extends State<EvaluationSimple> {
                   height: _sliderH * 2,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   )),
             ],

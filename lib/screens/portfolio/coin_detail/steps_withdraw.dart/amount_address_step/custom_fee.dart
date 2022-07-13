@@ -47,7 +47,7 @@ class _CustomFeeState extends State<CustomFee> {
                 ? CrossFadeState.showSecond
                 : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 200),
-            firstChild: Container(),
+            firstChild: SizedBox(),
             secondChild: Column(
               children: <Widget>[
                 Text(
@@ -57,7 +57,9 @@ class _CustomFeeState extends State<CustomFee> {
                       .bodyText2
                       .copyWith(color: Theme.of(context).errorColor),
                 ),
-                widget.coin.type == 'erc' || widget.coin.type == 'bep'
+                widget.coin.type == 'erc' ||
+                        widget.coin.type == 'bep' ||
+                        widget.coin.type == 'plg'
                     ? CustomFeeFieldERC(
                         coin: widget.coin,
                         isCustomFeeActive: isCustomFeeActive,
@@ -110,16 +112,8 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                   style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColorLight)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor)),
-                      hintStyle: Theme.of(context).textTheme.bodyText2,
-                      labelStyle: Theme.of(context).textTheme.bodyText2,
-                      labelText: AppLocalizations.of(context).gasLimit),
+                    labelText: AppLocalizations.of(context).gasLimit,
+                  ),
                   validator: (String value) {
                     if (widget.isCustomFeeActive) {
                       value = value.replaceAll(',', '.');
@@ -154,16 +148,8 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
             style: Theme.of(context).textTheme.bodyText2,
             textAlign: TextAlign.end,
             decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).primaryColorLight)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).accentColor)),
-                hintStyle: Theme.of(context).textTheme.bodyText2,
-                labelStyle: Theme.of(context).textTheme.bodyText2,
-                labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]'),
+              labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]',
+            ),
             validator: (String value) {
               if (widget.isCustomFeeActive) {
                 value = value.replaceAll(',', '.');
@@ -215,19 +201,9 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
               style: Theme.of(context).textTheme.bodyText2,
               textAlign: TextAlign.end,
               decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColorLight)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Theme.of(context).accentColor)),
-                  hintStyle: Theme.of(context).textTheme.bodyText2,
-                  labelStyle: Theme.of(context).textTheme.bodyText2,
-                  labelText: AppLocalizations.of(context).customFee +
-                      ' [' +
-                      widget.coin.abbr +
-                      ']'),
+                labelText: AppLocalizations.of(context).customFee +
+                    '[${widget.coin.abbr}]',
+              ),
               // The validator receives the text the user has typed in
               validator: (String value) {
                 if (widget.isCustomFeeActive) {
@@ -249,9 +225,6 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
               },
             ),
           ),
-          const SizedBox(
-            width: 8,
-          )
         ],
       ),
     );

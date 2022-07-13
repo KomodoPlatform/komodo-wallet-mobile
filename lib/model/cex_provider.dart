@@ -46,12 +46,14 @@ class CexProvider extends ChangeNotifier {
     String from,
     String to,
     bool hidden = false,
+    bool showSymbol = true,
   }) =>
       cexPrices.convert(
         volume,
         from: from,
         to: to,
         hidden: hidden,
+        showSymbol: showSymbol,
       );
 
   List<String> get fiatList => cexPrices.fiatList;
@@ -59,6 +61,13 @@ class CexProvider extends ChangeNotifier {
   String get selectedFiat => cexPrices.selectedFiat;
   String get selectedFiatSymbol => cexPrices.selectedFiatSymbol;
   set selectedFiat(String value) => cexPrices.selectedFiat = value;
+
+  String _withdrawCurrency;
+  String get withdrawCurrency => _withdrawCurrency;
+  set withdrawCurrency(String value) {
+    _withdrawCurrency = value;
+    notifyListeners();
+  }
 
   void switchCurrency() {
     int idx = cexPrices.activeCurrency;
@@ -76,7 +85,7 @@ class CexProvider extends ChangeNotifier {
   }
 
   final String _chartsUrl = appConfig.candlestickData;
-  final String _tickersListUrl = appConfig.candlestickTickersList;
+  final Uri _tickersListUrl = Uri.parse(appConfig.candlestickTickersList);
   final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
   bool _updatingChart = false;
   List<String> _tickers;
@@ -246,7 +255,9 @@ class CexProvider extends ChangeNotifier {
     http.Response _res;
     String _body;
     try {
-      _res = await http.get('$_chartsUrl/${pair.toLowerCase()}').timeout(
+      _res = await http
+          .get(Uri.parse('$_chartsUrl/${pair.toLowerCase()}'))
+          .timeout(
         const Duration(seconds: 60),
         onTimeout: () {
           Log('cex_provider', 'Fetching $pair data timed out');
@@ -406,7 +417,7 @@ class CexPrices {
     http.Response _res;
     String _body;
     try {
-      _res = await http.get(appConfig.fiatPricesEndpoint).timeout(
+      _res = await http.get(Uri.parse(appConfig.fiatPricesEndpoint)).timeout(
         const Duration(seconds: 60),
         onTimeout: () {
           throw 'Fetching rates timed out';
@@ -471,6 +482,7 @@ class CexPrices {
     String from,
     String to,
     bool hidden = false,
+    bool showSymbol = true,
   }) {
     from ??= 'USD';
     to ??= currencies == null ? null : currencies[_activeCurrency];
@@ -520,6 +532,9 @@ class CexPrices {
     final NumberFormat format = NumberFormat.simpleCurrency(name: to);
     final String currencySymbol = format.currencySymbol;
 
+    if (!showSymbol) {
+      return converted;
+    }
     if (_isFiat(to)) {
       if (currencySymbol.length > 1) {
         return '$sign$converted $currencySymbol';
@@ -573,7 +588,7 @@ class CexPrices {
     http.Response _res;
     String _body;
     try {
-      _res = await http.get(url).timeout(
+      _res = await http.get(Uri.parse(url)).timeout(
         const Duration(seconds: 60),
         onTimeout: () {
           Log('cex_provider', 'Fetching usd prices timed out');

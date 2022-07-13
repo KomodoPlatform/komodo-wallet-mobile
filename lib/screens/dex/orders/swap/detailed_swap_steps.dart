@@ -109,7 +109,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       if (index == 0) {
         // yurii: for some reason swap.result.myInfo.startedAt
         // returns seconds since epoch instead of milliseconds
-        fromTimestamp = swap.result.myInfo.startedAt * 1000;
+        fromTimestamp = extractStartedAtFromSwap(swap.result) * 1000;
       } else {
         fromTimestamp = swap.result.events[index - 1].timestamp;
       }
@@ -159,7 +159,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     }
 
     List<Widget> _buildFollowingSteps() {
-      if (swap.step == 0) return [Container()];
+      if (swap.step == 0) return [SizedBox()];
 
       final List<Widget> list = [];
 
@@ -221,17 +221,17 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     }
 
     Widget _getSwapStatusIcon() {
-      Widget icon = Container();
+      Widget icon = SizedBox();
       switch (swap.status) {
         case Status.SWAP_SUCCESSFUL:
           icon = Icon(Icons.check_circle,
-              size: 15, color: Theme.of(context).accentColor);
+              size: 15, color: Theme.of(context).colorScheme.secondary);
           break;
         case Status.ORDER_MATCHED:
         case Status.SWAP_ONGOING:
         case Status.ORDER_MATCHING:
           icon = Icon(Icons.swap_horiz,
-              size: 15, color: Theme.of(context).accentColor);
+              size: 15, color: Theme.of(context).colorScheme.secondary);
           break;
         case Status.SWAP_FAILED:
           icon =
@@ -303,20 +303,19 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(AppLocalizations.of(context).swapTotal + ':'),
-                  estimatedTotalSpeed == null
-                      ? Container()
-                      : ProgressStep(
-                          actualTotalSpeed: actualTotalSpeed,
-                          estimatedTotalSpeed: estimatedTotalSpeed,
-                          actualStepSpeed: actualTotalSpeed,
-                          estimatedStepSpeed: estimatedTotalSpeed,
-                        ),
+                  if (estimatedTotalSpeed != null)
+                    ProgressStep(
+                      actualTotalSpeed: actualTotalSpeed,
+                      estimatedTotalSpeed: estimatedTotalSpeed,
+                      actualStepSpeed: actualTotalSpeed,
+                      estimatedStepSpeed: estimatedTotalSpeed,
+                    ),
                   Row(
                     children: <Widget>[
                       Text(AppLocalizations.of(context).swapCurrent + ': ',
                           style: TextStyle(
                             fontSize: 13,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           )),
                       Text(
                         durationFormat(actualTotalSpeed),
@@ -324,7 +323,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                       ),
                       const SizedBox(width: 4),
                       estimatedTotalSpeed == null
-                          ? Container()
+                          ? SizedBox()
                           : Row(
                               children: <Widget>[
                                 const Text('|',
@@ -337,7 +336,9 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                                         ': ',
                                     style: TextStyle(
                                       fontSize: 13,
-                                      color: Theme.of(context).accentColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     )),
                                 Text(
                                   durationFormat(estimatedTotalSpeed),
@@ -375,14 +376,12 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
           _buildFirstStep(),
           ..._buildFollowingSteps(),
           const SizedBox(height: 12),
-          Container(
-            child: Text(
-              _swapProvider.swapDescription(swap.result?.uuid),
-              style: TextStyle(
-                fontFamily: 'Monospace',
-                color: Theme.of(context).accentColor,
-                fontSize: 14,
-              ),
+          Text(
+            _swapProvider.swapDescription(swap.result?.uuid),
+            style: TextStyle(
+              fontFamily: 'Monospace',
+              color: Theme.of(context).colorScheme.secondary,
+              fontSize: 14,
             ),
           ),
         ],

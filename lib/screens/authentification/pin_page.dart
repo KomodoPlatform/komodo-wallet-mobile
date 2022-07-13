@@ -7,25 +7,29 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class PinPage extends StatefulWidget {
-  const PinPage(
-      {this.firstCreationPin,
-      this.title,
-      this.subTitle,
-      this.pinStatus,
-      this.isFromChangingPin,
-      this.password,
-      this.onSuccess,
-      this.code});
+  const PinPage({
+    Key key,
+    this.firstCreationPin,
+    this.title,
+    this.subTitle,
+    this.pinStatus,
+    this.isFromChangingPin,
+    this.password,
+    this.onSuccess,
+    this.code,
+  }) : super(key: key);
 
   final bool firstCreationPin;
   @required
@@ -51,7 +55,7 @@ class _PinPageState extends State<PinPage> {
 
   @override
   void initState() {
-    _initCorrectPin(widget.pinStatus);
+    _initCorrectPin();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.pinStatus == PinStatus.NORMAL_PIN) {
         dialogBloc.closeDialog(context);
@@ -61,16 +65,21 @@ class _PinPageState extends State<PinPage> {
   }
 
   Future<void> setNormalPin() async {
-    final String normalPin = await EncryptionTool().read('pin');
-    final String camoPin = await EncryptionTool().read('camoPin');
+    final EncryptionTool encryptionTool = EncryptionTool();
+    await pauseUntil(() async => await encryptionTool.read('pin') != null);
+
+    final String normalPin = await encryptionTool.read('pin');
+    final String camoPin = await encryptionTool.read('camoPin');
     setState(() {
       _correctPin = normalPin;
       _camoPin = camoPin;
     });
   }
 
-  Future<void> _initCorrectPin(PinStatus pinStatus) async {
+  Future<void> _initCorrectPin() async {
+    final PinStatus pinStatus = widget.pinStatus;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (pinStatus == PinStatus.CREATE_PIN) {
       setState(() {
         _correctPin = null;
@@ -94,11 +103,14 @@ class _PinPageState extends State<PinPage> {
     }
   }
 
-  Future<void> _onCodeSuccess(PinStatus pinStatus, String code) async {
+  Future<void> _onCodeSuccess(
+      PinStatus pinStatus, String code, BuildContext context) async {
+    final walletSecuritySettingsProvider =
+        context.read<WalletSecuritySettingsProvider>();
     switch (pinStatus) {
       case PinStatus.CREATE_PIN:
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('isPinIsCreated', true);
+        await prefs.setBool('is_pin_creation_in_progress', true);
         break;
 
       case PinStatus.CONFIRM_PIN:
@@ -127,7 +139,8 @@ class _PinPageState extends State<PinPage> {
         Navigator.pop(context);
 
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('isPinIsCreated', false);
+        await prefs.remove('pin_create');
+        await prefs.remove('is_pin_creation_in_progress');
 
         setState(() {
           isLoading = false;
@@ -136,14 +149,23 @@ class _PinPageState extends State<PinPage> {
 
       case PinStatus.CREATE_CAMO_PIN:
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('isCamoPinCreated', true);
+        await prefs.setBool('is_camo_pin_creation_in_progress', true);
         break;
 
       case PinStatus.CONFIRM_CAMO_PIN:
+        final Wallet wallet = await Db.getCurrentWallet();
+        if (wallet != null) {
+          await EncryptionTool()
+              .writeData(KeyEncryption.CAMOPIN, wallet, widget.password,
+                  code.toString())
+              .catchError((dynamic e) => Log.println('pin_page:90', e));
+        }
+
         await EncryptionTool().write('camoPin', code.toString());
 
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('isCamoPinCreated', false);
+        await prefs.remove('camo_pin_create');
+        await prefs.remove('is_camo_pin_creation_in_progress');
 
         camoBloc.shouldWarnBadCamoPin = true;
         Navigator.popUntil(context, ModalRoute.withName('/camoSetup'));
@@ -161,15 +183,11 @@ class _PinPageState extends State<PinPage> {
         break;
 
       case PinStatus.DISABLED_PIN:
-        SharedPreferences.getInstance().then((SharedPreferences data) {
-          data.setBool('switch_pin', false);
-        });
+        walletSecuritySettingsProvider.activatePinProtection = true;
         Navigator.pop(context);
         break;
       case PinStatus.DISABLED_PIN_BIOMETRIC:
-        SharedPreferences.getInstance().then((SharedPreferences data) {
-          data.setBool('switch_pin_biometric', false);
-        });
+        walletSecuritySettingsProvider.activateBioProtection = false;
         Navigator.pop(context);
         break;
 
@@ -198,10 +216,10 @@ class _PinPageState extends State<PinPage> {
               context: context,
             )
           : null,
-      backgroundColor: Theme.of(context).backgroundColor,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: !isLoading
           ? PinCode(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               title: Text(
                 widget.subTitle,
                 style: Theme.of(context).textTheme.subtitle2,
@@ -212,10 +230,10 @@ class _PinPageState extends State<PinPage> {
               obscurePin: true,
               error: _error,
               errorDelayProgressColor:
-                  settingsBloc.isLightTheme ? Colors.black : Colors.white,
-              keyTextStyle: TextStyle(
-                  color: Theme.of(context).textTheme.headline6.color,
-                  fontSize: Theme.of(context).textTheme.headline6.fontSize),
+                  Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
+              keyTextStyle: Theme.of(context).textTheme.headline6,
               errorDelaySeconds:
                   widget.pinStatus == PinStatus.NORMAL_PIN ? 5 : null,
               codeLength: 6,
@@ -224,7 +242,7 @@ class _PinPageState extends State<PinPage> {
                 if (widget.pinStatus == PinStatus.CREATE_PIN) {
                   final SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  prefs.setBool('isPinIsCreated', true);
+                  await prefs.setBool('is_pin_creation_in_progress', true);
                   await prefs.setString('pin_create', code);
                   final MaterialPageRoute<dynamic> materialPage =
                       MaterialPageRoute<dynamic>(
@@ -248,7 +266,7 @@ class _PinPageState extends State<PinPage> {
                 } else if (widget.pinStatus == PinStatus.CREATE_CAMO_PIN) {
                   final SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  prefs.setBool('isCamoPinCreated', true);
+                  await prefs.setBool('is_camo_pin_creation_in_progress', true);
                   await prefs.setString('camo_pin_create', code);
                   final MaterialPageRoute<dynamic> materialPage =
                       MaterialPageRoute<dynamic>(
@@ -263,11 +281,12 @@ class _PinPageState extends State<PinPage> {
                   Navigator.pushReplacement<dynamic, dynamic>(
                       context, materialPage);
                 } else {
-                  final bool shouldEnterCamoMode =
-                      widget.pinStatus == PinStatus.NORMAL_PIN &&
-                          camoBloc.isCamoEnabled &&
-                          _camoPin != null &&
-                          code == _camoPin;
+                  final bool shouldEnterCamoMode = widget.pinStatus ==
+                          PinStatus.NORMAL_PIN &&
+                      (!walletSecuritySettingsProvider.activateBioProtection &&
+                          camoBloc.isCamoEnabled) &&
+                      _camoPin != null &&
+                      code == _camoPin;
 
                   if (shouldEnterCamoMode) {
                     if (!camoBloc.isCamoActive) {
@@ -276,7 +295,7 @@ class _PinPageState extends State<PinPage> {
                       Navigator.popUntil(context, ModalRoute.withName('/'));
                     }
 
-                    _onCodeSuccess(widget.pinStatus, code);
+                    _onCodeSuccess(widget.pinStatus, code, context);
                   } else {
                     _errorPin();
                     camoBloc.isCamoActive = false;
@@ -289,7 +308,7 @@ class _PinPageState extends State<PinPage> {
                   coinsBloc.resetCoinBalance();
                   camoBloc.isCamoActive = false;
                 }
-                _onCodeSuccess(widget.pinStatus, code);
+                _onCodeSuccess(widget.pinStatus, code, context);
               },
             )
           : _buildLoading(),
@@ -301,9 +320,8 @@ class _PinPageState extends State<PinPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Theme(
-            data: Theme.of(context).copyWith(accentColor: Colors.red),
-            child: CircularProgressIndicator(),
+          CircularProgressIndicator(
+            color: Theme.of(context).errorColor,
           ),
           const SizedBox(
             height: 8,
@@ -322,12 +340,12 @@ class _PinPageState extends State<PinPage> {
 }
 
 class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
-  AppBarStatus(
-      {Key key,
-      @required this.pinStatus,
-      @required this.context,
-      @required this.title})
-      : super(key: key);
+  AppBarStatus({
+    Key key,
+    @required this.pinStatus,
+    @required this.context,
+    @required this.title,
+  }) : super(key: key);
 
   final PinStatus pinStatus;
   final BuildContext context;
@@ -341,39 +359,30 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
       case PinStatus.CREATE_CAMO_PIN:
       case PinStatus.CONFIRM_CAMO_PIN:
         return AppBar(
-          centerTitle: true,
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
           title: Text(title),
         );
         break;
       default:
         return AppBar(
-          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
           automaticallyImplyLeading: pinStatus != PinStatus.NORMAL_PIN,
           actions: <Widget>[
-            InkWell(
-                onTap: () {
-                  showLogoutConfirmation(context);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 12.0,
-                    left: 12,
-                  ),
-                  child: Icon(
-                    Icons.exit_to_app,
-                    key: const Key('settings-pin-logout'),
-                    color: Colors.red,
-                  ),
-                )),
+            IconButton(
+              key: Key('settings-pin-logout'),
+              onPressed: () => showLogoutConfirmation(context),
+              color: Theme.of(context).errorColor,
+              icon: Icon(Icons.exit_to_app),
+              splashRadius: 24,
+            ),
           ],
-          backgroundColor: Theme.of(context).backgroundColor,
           title: Text(title),
-          elevation: 0,
         );
     }
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

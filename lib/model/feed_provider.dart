@@ -48,7 +48,7 @@ class FeedProvider extends ChangeNotifier {
     http.Response response;
 
     try {
-      response = await http.get(appConfig.feedProviderSourceUrl);
+      response = await http.get(Uri.parse(appConfig.feedProviderSourceUrl));
     } catch (e) {
       Log('feed_provider:44', '_updateNews] $e');
     }
@@ -80,7 +80,7 @@ class FeedProvider extends ChangeNotifier {
     _news = news;
 
     notifService.show(NotifObj(
-      title: localizations.feedNotifTitle,
+      title: localizations.feedNotifTitle(appConfig.appCompanyShort),
       text: _news[0].content,
       uid: 'feed_${_news[0].date}',
     ));

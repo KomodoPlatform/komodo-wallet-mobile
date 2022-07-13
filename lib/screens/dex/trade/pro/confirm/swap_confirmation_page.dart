@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -27,8 +26,6 @@ import 'package:komodo_dex/screens/dex/trade/pro/exchange_rate.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:provider/provider.dart';
 
 class SwapConfirmationPage extends StatefulWidget {
@@ -71,7 +68,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).swapDetailTitle),
         ),
@@ -155,7 +151,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-              color: Theme.of(context).highlightColor,
+              color: Theme.of(context).colorScheme.secondary,
             )),
           ),
           child: Evaluation()),
@@ -248,7 +244,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                 top: 20,
               ),
               width: double.infinity,
-              color: settingsBloc.isLightTheme
+              color: Theme.of(context).brightness == Brightness.light
                   ? Colors.black.withOpacity(0.05)
                   : Colors.white.withOpacity(0.15),
               child: Column(
@@ -256,7 +252,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                 children: <Widget>[
                   Text(AppLocalizations.of(context).sell,
                       style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                             fontWeight: FontWeight.w100,
                           )),
                   Text(
@@ -276,7 +272,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: <Widget>[
               ClipRRect(
                 borderRadius: const BorderRadius.only(
@@ -290,7 +286,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                       top: 26,
                     ),
                     width: double.infinity,
-                    color: settingsBloc.isLightTheme
+                    color: Theme.of(context).brightness == Brightness.light
                         ? Colors.black.withOpacity(0.05)
                         : Colors.white.withOpacity(0.15),
                     child: Column(
@@ -310,11 +306,14 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                                     .receive
                                     .toLowerCase()
                                     .substring(1),
-                            style:
-                                Theme.of(context).textTheme.bodyText2.copyWith(
-                                      color: Theme.of(context).accentColor,
-                                      fontWeight: FontWeight.w100,
-                                    ))
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.w100,
+                                ))
                       ],
                     )),
               ),
@@ -326,10 +325,11 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     child: Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 4),
-                        color: Theme.of(context).backgroundColor,
-                        child: SvgPicture.asset(settingsBloc.isLightTheme
-                            ? 'assets/svg_light/icon_swap.svg'
-                            : 'assets/svg/icon_swap.svg')),
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: SvgPicture.asset(
+                            Theme.of(context).brightness == Brightness.light
+                                ? 'assets/svg_light/icon_swap.svg'
+                                : 'assets/svg/icon_swap.svg')),
                   ))
             ],
           ),
@@ -346,7 +346,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         if (snapshot.data == ConnectivityResult.wifi) return SizedBox();
 
         return _buildWarning(
-          text: AppLocalizations.of(context).mobileDataWarning,
+          text:
+              AppLocalizations.of(context).mobileDataWarning(appConfig.appName),
           iconData: Icons.network_check,
         );
       },
@@ -366,10 +367,12 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     Color color;
 
     if (_isBatteryCritical()) {
-      message = AppLocalizations.of(context).batteryCriticalError;
+      message = AppLocalizations.of(context)
+          .batteryCriticalError('${appConfig.batteryLevelCritical}');
       color = Theme.of(context).errorColor;
     } else if (level < appConfig.batteryLevelLow / 100) {
-      message = AppLocalizations.of(context).batteryLowWarning;
+      message = AppLocalizations.of(context)
+          .batteryLowWarning('${appConfig.batteryLevelLow}');
     } else if (isInLowPowerMode) {
       message = AppLocalizations.of(context).batterySavingWarning;
     }
@@ -403,9 +406,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildWarning({String text, IconData iconData, Color color}) {
-    color ??= settingsBloc.isLightTheme
-        ? Colors.yellow[700].withAlpha(200)
-        : Colors.yellow[100].withAlpha(200);
+    color ??= (Theme.of(context).brightness == Brightness.light
+            ? Colors.yellow[700]
+            : Colors.yellow[100])
+        .withAlpha(200);
 
     return Container(
       width: double.infinity,
@@ -442,11 +446,9 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         _cexProvider.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
     if (sellAmtUsd == 0) return SizedBox();
 
-    return Container(
-      child: Text(
-        _cexProvider.convert(sellAmtUsd),
-        style: Theme.of(context).textTheme.caption,
-      ),
+    return Text(
+      _cexProvider.convert(sellAmtUsd),
+      style: Theme.of(context).textTheme.caption,
     );
   }
 
@@ -455,11 +457,9 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         _cexProvider.getUsdPrice(swapBloc.receiveCoinBalance.coin.abbr);
     if (receiveeAmtUsd == 0) return SizedBox();
 
-    return Container(
-      child: Text(
-        _cexProvider.convert(receiveeAmtUsd),
-        style: Theme.of(context).textTheme.caption,
-      ),
+    return Text(
+      _cexProvider.convert(receiveeAmtUsd),
+      style: Theme.of(context).textTheme.caption,
     );
   }
 
@@ -470,8 +470,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                Container(
-                  color: Theme.of(context).backgroundColor,
+                SizedBox(
                   height: 32,
                 ),
                 ClipRRect(
@@ -485,14 +484,26 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context).infoTrade1,
-                            style: Theme.of(context).textTheme.subtitle2,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                           ),
                           const SizedBox(
                             height: 16,
                           ),
                           Text(
                             AppLocalizations.of(context).infoTrade2,
-                            style: Theme.of(context).textTheme.bodyText2,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                           )
                         ],
                       ),
@@ -509,7 +520,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                   child: Container(
                     height: 52,
                     width: 52,
-                    color: Theme.of(context).backgroundColor,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     child: Icon(
                       Icons.info,
                       size: 48,
@@ -534,20 +545,12 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           ),
           _inProgress
               ? const CircularProgressIndicator()
-              : RaisedButton(
+              : ElevatedButton(
                   key: const Key('confirm-swap-button'),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 52),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  child:
-                      Text(AppLocalizations.of(context).confirm.toUpperCase()),
                   onPressed: disabled
                       ? null
                       : () async {
                           setState(() => _inProgress = true);
-
-                          await showSoundsDialog(context);
 
                           await tradeForm.makeSwap(
                             buyOrderType: _buyOrderType,
@@ -561,18 +564,28 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
 
                           setState(() => _inProgress = false);
                         },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16, horizontal: 52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  child:
+                      Text(AppLocalizations.of(context).confirm.toUpperCase()),
                 ),
           const SizedBox(
             height: 8,
           ),
-          FlatButton(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 56),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0)),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 56),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
             child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
           ),
         ],
       );
@@ -590,7 +603,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     if (error.error.contains('is too low, required')) {
       errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
     }
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 4),
       backgroundColor: Theme.of(context).errorColor,
       content: Text(errorDisplay),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/small_button.dart';
 
 class DurationSelect extends StatefulWidget {
   const DurationSelect({
@@ -23,12 +23,13 @@ class DurationSelect extends StatefulWidget {
 class _DurationSelectState extends State<DurationSelect> {
   @override
   Widget build(BuildContext context) {
-    return SmallButton(
+    return ElevatedButton(
       onPressed: !widget.disabled
           ? () {
               _buildDurationDialog(widget.options);
             }
           : null,
+      style: elevatedButtonSmallButtonStyle(),
       child: Row(
         children: <Widget>[
           Text(
@@ -63,7 +64,7 @@ class _DurationSelectState extends State<DurationSelect> {
                       : Icons.radio_button_unchecked,
                   size: 16,
                   color: duration == widget.value
-                      ? Theme.of(context).accentColor
+                      ? Theme.of(context).colorScheme.secondary
                       : null,
                 ),
                 const SizedBox(width: 4),
@@ -71,7 +72,7 @@ class _DurationSelectState extends State<DurationSelect> {
                   _durations[duration] ?? '${duration}s',
                   style: TextStyle(
                       color: duration == widget.value
-                          ? Theme.of(context).accentColor
+                          ? Theme.of(context).colorScheme.secondary
                           : null),
                 ),
               ],

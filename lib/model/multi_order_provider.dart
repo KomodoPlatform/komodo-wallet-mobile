@@ -91,7 +91,7 @@ class MultiOrderProvider extends ChangeNotifier {
   }
 
   double getRelCoinAmt(String coin) {
-    return _relCoins[coin] == null ? null : _relCoins[coin].amount;
+    return _relCoins[coin]?.amount;
   }
 
   TradePreimage getPreimage(String coin) => _relCoins[coin]?.preimage;
@@ -216,7 +216,7 @@ class MultiOrderProvider extends ChangeNotifier {
         final double gasBalance =
             coinsBloc.getBalanceByAbbr(gasCoin).balance.balance.toDouble();
         if (totalGasAmount > gasBalance) {
-          return _localizations.swapGasAmount(
+          return _localizations.swapGasAmountRequired(
               gasCoin, cutTrailingZeros(formatPrice(totalGasAmount, 4)));
         }
       }

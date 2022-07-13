@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -19,20 +18,18 @@ import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class CoinSelect extends StatefulWidget {
-  const CoinSelect(
-      {this.value,
-      this.type,
-      this.pairedCoin,
-      this.autoOpen = false,
-      this.compact = false,
-      this.onChange,
-      Key key})
-      : super(key: key);
+  const CoinSelect({
+    Key key,
+    this.value,
+    this.type,
+    this.pairedCoin,
+    this.compact = false,
+    this.onChange,
+  }) : super(key: key);
 
   final Coin value;
   final CoinType type;
   final Coin pairedCoin;
-  final bool autoOpen;
   final bool compact;
   final Function(Coin) onChange;
 
@@ -48,62 +45,35 @@ class _CoinSelectState extends State<CoinSelect> {
     super.initState();
 
     if (mmSe.running) coinsBloc.updateCoinBalances();
-
-    if (widget.autoOpen) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showDialog();
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     _orderBookProvider = Provider.of<OrderBookProvider>(context);
-    return InkWell(
-      onTap: () {
-        _showDialog();
-      },
-      child: Container(
-          decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey))),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: <Widget>[
-                  widget.value != null
-                      ? Image.asset(
-                          'assets/coin-icons/'
-                          '${widget.value.abbr.toLowerCase()}.png',
-                          height: widget.compact ? 16 : 24,
-                        )
-                      : CircleAvatar(
-                          backgroundColor: Theme.of(context).accentColor,
-                          radius: widget.compact ? 8 : 12,
-                        ),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: AutoScrollText(
-                      text: widget.value != null ? widget.value.abbr : '-',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle2
-                          .copyWith(fontSize: widget.compact ? 14 : null),
-                    ),
-                  ),
-                  Icon(
-                    Icons.arrow_drop_down,
-                    size: widget.compact ? 14 : null,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 6,
-              ),
-            ],
-          )),
+    return ListTile(
+      contentPadding: EdgeInsets.all(0),
+      minLeadingWidth: 16,
+      horizontalTitleGap: 8,
+      onTap: () => _showDialog(),
+      leading: widget.value != null
+          ? Image.asset(
+              'assets/coin-icons/'
+              '${widget.value.abbr.toLowerCase()}.png',
+              height: widget.compact ? 16 : 24,
+            )
+          : CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              radius: widget.compact ? 8 : 12,
+            ),
+      title: AutoScrollText(
+        text: widget.value != null ? widget.value.abbr : '-',
+      ),
+      trailing: Icon(Icons.arrow_drop_down),
+      shape: Border(
+        bottom: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
     );
   }
 
@@ -154,10 +124,8 @@ class _CoinSelectState extends State<CoinSelect> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              RaisedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
                 child: Text(AppLocalizations.of(context).okButton),
               ),
             ],
@@ -252,22 +220,21 @@ class _CoinSelectState extends State<CoinSelect> {
                       style: TextStyle(
                         fontSize: widget.compact ? 14 : null,
                         color: coinBalance.coin == widget.value
-                            ? Theme.of(context).accentColor
+                            ? Theme.of(context).colorScheme.secondary
                             : null,
                       ),
                     ),
                   ],
                 ),
               ),
-              Opacity(
-                opacity: 0.4,
-                child: widget.pairedCoin != null
-                    ? Text(
-                        '  /  ${widget.pairedCoin.abbr}',
-                        style: TextStyle(fontSize: widget.compact ? 14 : null),
-                      )
-                    : Container(),
-              ),
+              if (widget.pairedCoin != null)
+                Opacity(
+                  opacity: 0.4,
+                  child: Text(
+                    '  /  ${widget.pairedCoin.abbr}',
+                    style: TextStyle(fontSize: widget.compact ? 14 : null),
+                  ),
+                ),
             ],
           );
           break;
@@ -277,15 +244,14 @@ class _CoinSelectState extends State<CoinSelect> {
         {
           _optionTitle = Row(
             children: <Widget>[
-              Opacity(
-                opacity: 0.4,
-                child: widget.pairedCoin != null
-                    ? Text(
-                        '${widget.pairedCoin.abbr}  /  ',
-                        style: TextStyle(fontSize: widget.compact ? 14 : null),
-                      )
-                    : Container(),
-              ),
+              if (widget.pairedCoin != null)
+                Opacity(
+                  opacity: 0.4,
+                  child: Text(
+                    '${widget.pairedCoin.abbr}  /  ',
+                    style: TextStyle(fontSize: widget.compact ? 14 : null),
+                  ),
+                ),
               Opacity(
                 opacity: _isOptionDisabled(coinBalance.coin) ? 0.4 : 1,
                 child: Row(
@@ -300,7 +266,7 @@ class _CoinSelectState extends State<CoinSelect> {
                       coinBalance.coin.abbr.toUpperCase(),
                       style: TextStyle(
                         color: coinBalance.coin == widget.value
-                            ? Theme.of(context).accentColor
+                            ? Theme.of(context).colorScheme.secondary
                             : null,
                         fontSize: widget.compact ? 14 : null,
                       ),
@@ -329,7 +295,7 @@ class _CoinSelectState extends State<CoinSelect> {
                   coinBalance.coin.name.toUpperCase(),
                   style: TextStyle(
                     color: coinBalance.coin == widget.value
-                        ? Theme.of(context).accentColor
+                        ? Theme.of(context).colorScheme.secondary
                         : null,
                     fontSize: widget.compact ? 14 : null,
                   ),
@@ -341,8 +307,8 @@ class _CoinSelectState extends State<CoinSelect> {
     }
 
     Widget _bildOrdersNumber() {
-      if (widget.pairedCoin == null) return Container();
-      if (widget.pairedCoin.abbr == coinBalance.coin.abbr) return Container();
+      if (widget.pairedCoin == null) return SizedBox();
+      if (widget.pairedCoin.abbr == coinBalance.coin.abbr) return SizedBox();
 
       final OrderbookDepth obDepth = _orderBookProvider.getDepth(CoinsPair(
         sell:
@@ -351,7 +317,7 @@ class _CoinSelectState extends State<CoinSelect> {
             widget.type == CoinType.base ? widget.pairedCoin : coinBalance.coin,
       ));
 
-      if (obDepth == null) return Container();
+      if (obDepth == null) return SizedBox();
 
       return Row(
         children: <Widget>[
@@ -370,7 +336,7 @@ class _CoinSelectState extends State<CoinSelect> {
             height: 10,
             color:
                 (obDepth.depth.asks ?? 0) > 0 && (obDepth.depth.bids ?? 0) > 0
-                    ? settingsBloc.isLightTheme
+                    ? Theme.of(context).brightness == Brightness.light
                         ? cexColorLight.withAlpha(100)
                         : cexColor.withAlpha(100)
                     : Theme.of(context).highlightColor,
@@ -390,22 +356,22 @@ class _CoinSelectState extends State<CoinSelect> {
     }
 
     Widget _buildCandlesIcon() {
-      if (widget.pairedCoin == null) return Container();
-      if (widget.pairedCoin.abbr == coinBalance.coin.abbr) return Container();
+      if (widget.pairedCoin == null) return SizedBox();
+      if (widget.pairedCoin.abbr == coinBalance.coin.abbr) return SizedBox();
 
       final CexProvider cexProvider = Provider.of<CexProvider>(context);
       final String pair =
           '${widget.pairedCoin.abbr.toLowerCase()}-${coinBalance.coin.abbr.toLowerCase()}';
       final bool available = cexProvider.isChartAvailable(pair);
 
-      if (!available) return Container();
+      if (!available) return SizedBox();
 
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           CandlesIcon(
             size: 14,
-            color: settingsBloc.isLightTheme
+            color: Theme.of(context).brightness == Brightness.light
                 ? cexColorLight.withAlpha(50)
                 : cexColor.withAlpha(50),
           ),

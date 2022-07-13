@@ -53,35 +53,35 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: merging
               ? <Widget>[
-                  RaisedButton(
-                    child: const Text('Save merged'),
+                  ElevatedButton(
                     onPressed: () => widget.onMerge(mergedValueController.text),
+                    child: const Text('Save merged'),
                   ),
-                  FlatButton(
-                    child: const Text('Back'),
+                  TextButton(
                     onPressed: () {
                       setState(() {
                         merging = false;
                       });
                     },
+                    child: const Text('Back'),
                   ),
                 ]
               : <Widget>[
-                  RaisedButton(
-                    child: const Text('Merge'),
+                  ElevatedButton(
                     onPressed: () {
                       setState(() {
                         merging = true;
                       });
                     },
+                    child: const Text('Merge'),
                   ),
-                  RaisedButton(
-                    child: const Text('Skip'),
+                  ElevatedButton(
                     onPressed: widget.onSkip,
+                    child: const Text('Skip'),
                   ),
-                  RaisedButton(
-                    child: const Text('Overwrite'),
+                  ElevatedButton(
                     onPressed: widget.onOverwrite,
+                    child: const Text('Overwrite'),
                   ),
                 ],
         )
@@ -100,10 +100,6 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
         SizedBox(height: 4),
         TextField(
           controller: mergedValueController,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(12),
-            border: OutlineInputBorder(),
-          ),
         ),
         SizedBox(height: 12),
       ],

@@ -38,7 +38,8 @@ class GetTransactionService {
     }
 
     if (coin != 'USDT' && coin != 'ETH') {
-      final Response response = await http.get(pubkeyApi + 'addr/' + pubkey);
+      final Response response =
+          await http.get(Uri.parse(pubkeyApi + 'addr/' + pubkey));
       final Map<dynamic, dynamic> decoded = jsonDecode(response.body);
       numTx = decoded['txApperances'];
       if (numTx > 10) {
@@ -46,8 +47,8 @@ class GetTransactionService {
       }
       for (int i = 0; i < numTx; i++) {
         out = false;
-        final Response response =
-            await http.get(pubkeyApi + 'tx/' + decoded['transactions'][i]);
+        final Response response = await http
+            .get(Uri.parse(pubkeyApi + 'tx/' + decoded['transactions'][i]));
         final Map<dynamic, dynamic> decoded2 = jsonDecode(response.body);
 
         for (int j = 0; j < decoded2['vin'].length; j++) {
@@ -83,7 +84,7 @@ class GetTransactionService {
       pubkeyApi = 'http://api.ethplorer.io/getAddressTransactions/' +
           pubkey +
           '?apiKey=freekey';
-      final Response response = await http.get(pubkeyApi);
+      final Response response = await http.get(Uri.parse(pubkeyApi));
       final List<dynamic> decoded = jsonDecode(response.body);
       numTx = decoded.length;
       for (int i = 0; i < numTx; i++) {

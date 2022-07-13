@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -24,9 +23,7 @@ import 'package:komodo_dex/screens/dex/trade/simple/exchange_rate_simple.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
-import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:provider/provider.dart';
 
 class SwapConfirmationPageSimple extends StatefulWidget {
@@ -76,7 +73,6 @@ class _SwapConfirmationPageSimpleState
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).swapDetailTitle),
         ),
@@ -167,100 +163,105 @@ class _SwapConfirmationPageSimpleState
     final String amountReceive = cutTrailingZeros(_constrProvider.buyAmount
         .toStringAsFixed(appConfig.tradeFormPrecision));
 
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-            child: Container(
-              padding: const EdgeInsets.only(
-                left: 8,
-                right: 8,
-                bottom: 30,
-                top: 20,
-              ),
-              width: double.infinity,
-              color: settingsBloc.isLightTheme
-                  ? Colors.black.withOpacity(0.05)
-                  : Colors.white.withOpacity(0.15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context).send,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            color: Theme.of(context).accentColor,
-                            fontWeight: FontWeight.w100,
-                          )),
-                  SizedBox(height: 8),
-                  AutoScrollText(
-                    text: '$amountSell ${_constrProvider.sellCoin}',
-                    style: Theme.of(context).textTheme.headline6,
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    left: 8,
+                    right: 8,
+                    bottom: 30,
+                    top: 20,
                   ),
-                  SizedBox(height: 8),
-                  _buildSellFiat(),
+                  width: double.infinity,
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black.withOpacity(0.05)
+                      : Colors.white.withOpacity(0.15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(AppLocalizations.of(context).send,
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w100,
+                              )),
+                      SizedBox(height: 8),
+                      AutoScrollText(
+                        text: '$amountSell ${_constrProvider.sellCoin}',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      SizedBox(height: 8),
+                      _buildSellFiat(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 2),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8)),
+                    child: Container(
+                        padding: const EdgeInsets.only(
+                          left: 8,
+                          right: 8,
+                          bottom: 20,
+                          top: 26,
+                        ),
+                        width: double.infinity,
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black.withOpacity(0.05)
+                            : Colors.white.withOpacity(0.15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            _buildReceiveFiat(),
+                            SizedBox(height: 4),
+                            AutoScrollText(
+                              text: '$amountReceive ${_constrProvider.buyCoin}',
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                            SizedBox(height: 8),
+                            Text(AppLocalizations.of(context).receive,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontWeight: FontWeight.w100,
+                                    ))
+                          ],
+                        )),
+                  ),
                 ],
               ),
             ),
-          ),
+          ],
         ),
-        const SizedBox(
-          height: 2,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(8),
-                    bottomRight: Radius.circular(8)),
-                child: Container(
-                    padding: const EdgeInsets.only(
-                      left: 8,
-                      right: 8,
-                      bottom: 20,
-                      top: 26,
-                    ),
-                    width: double.infinity,
-                    color: settingsBloc.isLightTheme
-                        ? Colors.black.withOpacity(0.05)
-                        : Colors.white.withOpacity(0.15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        _buildReceiveFiat(),
-                        SizedBox(height: 4),
-                        AutoScrollText(
-                          text: '$amountReceive ${_constrProvider.buyCoin}',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        SizedBox(height: 8),
-                        Text(AppLocalizations.of(context).receive,
-                            style:
-                                Theme.of(context).textTheme.bodyText2.copyWith(
-                                      color: Theme.of(context).accentColor,
-                                      fontWeight: FontWeight.w100,
-                                    ))
-                      ],
-                    )),
-              ),
-              Positioned(
-                  left: (MediaQuery.of(context).size.width / 2) - 60,
-                  top: -22,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(32)),
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 4),
-                        color: Theme.of(context).backgroundColor,
-                        child: SvgPicture.asset(settingsBloc.isLightTheme
-                            ? 'assets/svg_light/icon_swap.svg'
-                            : 'assets/svg/icon_swap.svg')),
-                  ))
-            ],
+        ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(32)),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: SvgPicture.asset(
+                Theme.of(context).brightness == Brightness.light
+                    ? 'assets/svg_light/icon_swap.svg'
+                    : 'assets/svg/icon_swap.svg'),
           ),
         ),
       ],
@@ -284,7 +285,8 @@ class _SwapConfirmationPageSimpleState
         if (snapshot.data == ConnectivityResult.wifi) return SizedBox();
 
         return _buildWarning(
-          text: AppLocalizations.of(context).mobileDataWarning,
+          text:
+              AppLocalizations.of(context).mobileDataWarning(appConfig.appName),
           iconData: Icons.network_check,
         );
       },
@@ -304,10 +306,12 @@ class _SwapConfirmationPageSimpleState
     Color color;
 
     if (_isBatteryCritical()) {
-      message = AppLocalizations.of(context).batteryCriticalError;
+      message = AppLocalizations.of(context)
+          .batteryCriticalError('${appConfig.batteryLevelCritical}');
       color = Theme.of(context).errorColor;
     } else if (level < appConfig.batteryLevelLow / 100) {
-      message = AppLocalizations.of(context).batteryLowWarning;
+      message = AppLocalizations.of(context)
+          .batteryLowWarning('${appConfig.batteryLevelLow}');
     } else if (isInLowPowerMode) {
       message = AppLocalizations.of(context).batterySavingWarning;
     }
@@ -338,9 +342,10 @@ class _SwapConfirmationPageSimpleState
   }
 
   Widget _buildWarning({String text, IconData iconData, Color color}) {
-    color ??= settingsBloc.isLightTheme
-        ? Colors.yellow[700].withAlpha(200)
-        : Colors.yellow[100].withAlpha(200);
+    color ??= (Theme.of(context).brightness == Brightness.light
+            ? Colors.yellow[700]
+            : Colors.yellow[100])
+        .withAlpha(200);
 
     return Container(
       width: double.infinity,
@@ -380,11 +385,9 @@ class _SwapConfirmationPageSimpleState
 
     if (_sellAmtUsd == 0) return SizedBox();
 
-    return Container(
-      child: Text(
-        _cexProvider.convert(_sellAmtUsd),
-        style: Theme.of(context).textTheme.caption,
-      ),
+    return Text(
+      _cexProvider.convert(_sellAmtUsd),
+      style: Theme.of(context).textTheme.caption,
     );
   }
 
@@ -399,11 +402,9 @@ class _SwapConfirmationPageSimpleState
       if (receiveeAmtUsd < _sellAmtUsd) color = Colors.orange;
     }
 
-    return Container(
-      child: Text(
-        _cexProvider.convert(receiveeAmtUsd),
-        style: Theme.of(context).textTheme.caption.copyWith(color: color),
-      ),
+    return Text(
+      _cexProvider.convert(receiveeAmtUsd),
+      style: Theme.of(context).textTheme.caption.copyWith(color: color),
     );
   }
 
@@ -417,7 +418,7 @@ class _SwapConfirmationPageSimpleState
               Column(
                 children: <Widget>[
                   Container(
-                    color: Theme.of(context).backgroundColor,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     height: 32,
                   ),
                   ClipRRect(
@@ -455,7 +456,7 @@ class _SwapConfirmationPageSimpleState
                     child: Container(
                       height: 52,
                       width: 52,
-                      color: Theme.of(context).backgroundColor,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       child: Icon(
                         Icons.info,
                         size: 48,
@@ -478,34 +479,26 @@ class _SwapConfirmationPageSimpleState
         children: <Widget>[
           Expanded(
             child: OutlinedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0))),
-                padding: MaterialStateProperty.all(
-                    EdgeInsets.symmetric(vertical: 16)),
+              onPressed: () => Navigator.of(context).pop(),
+              style: OutlinedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
               ),
               child: Text(AppLocalizations.of(context).back.toUpperCase()),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
             ),
           ),
           SizedBox(width: 12),
           Expanded(
             child: _inProgress
                 ? Center(child: CircularProgressIndicator())
-                : RaisedButton(
+                : ElevatedButton(
                     key: const Key('confirm-simple-swap-button'),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: Text('Start Swap !'.toUpperCase()),
                     onPressed: disabled
                         ? null
                         : () async {
                             setState(() => _inProgress = true);
-
-                            await showSoundsDialog(context);
 
                             await _constrProvider.makeSwap(
                               buyOrderType: BuyOrderType.FillOrKill,
@@ -518,6 +511,13 @@ class _SwapConfirmationPageSimpleState
 
                             setState(() => _inProgress = false);
                           },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    child: Text('Start Swap !'.toUpperCase()),
                   ),
           ),
         ],
@@ -536,7 +536,7 @@ class _SwapConfirmationPageSimpleState
     if (error.error.contains('is too low, required')) {
       errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
     }
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 4),
       backgroundColor: Theme.of(context).errorColor,
       content: Text(errorDisplay),

@@ -52,7 +52,7 @@ void openSelectSellCoinDialog({
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      RaisedButton(
+                      ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                           mainBloc.setCurrentIndexTab(0);
@@ -72,7 +72,9 @@ List<SimpleDialogOption> _coinItemsList({
 }) {
   final List<SimpleDialogOption> listDialog = <SimpleDialogOption>[];
   for (CoinBalance coin in coinsBloc.coinBalance) {
-    if (!coin.coin.walletOnly && double.parse(coin.balance.getBalance()) > 0) {
+    if ((!coin.coin.suspended) &&
+        (!coin.coin.walletOnly) &&
+        double.parse(coin.balance.getBalance()) > 0) {
       final SimpleDialogOption dialogItem = SimpleDialogOption(
         key: Key('item-dialog-${coin.coin.abbr.toLowerCase()}-sell'),
         onPressed: () {
@@ -83,15 +85,13 @@ List<SimpleDialogOption> _coinItemsList({
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
+            SizedBox(
                 height: 30,
                 width: 30,
                 child: Image.asset(
                   'assets/coin-icons/${coin.coin.abbr.toLowerCase()}.png',
                 )),
-            Expanded(
-              child: Container(),
-            ),
+            Expanded(child: SizedBox()),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[

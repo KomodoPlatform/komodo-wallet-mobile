@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -56,7 +57,7 @@ class _DetailSwapState extends State<DetailSwap> {
                 child: Text(
                   AppLocalizations.of(context).tradeDetail + ':',
                   style: Theme.of(context).textTheme.subtitle2.copyWith(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -120,6 +121,8 @@ class _DetailSwapState extends State<DetailSwap> {
 
   Widget _buildNote(String title) {
     return Row(
+      crossAxisAlignment:
+          isNoteEdit ? CrossAxisAlignment.center : CrossAxisAlignment.end,
       children: <Widget>[
         Expanded(
           child: InkWell(
@@ -146,18 +149,17 @@ class _DetailSwapState extends State<DetailSwap> {
                     ),
                   ),
                   isNoteEdit
-                      ? TextField(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).accentColor),
-                            ),
+                      ? Theme(
+                          data: Theme.of(context).copyWith(
+                            inputDecorationTheme: gefaultUnderlineInputTheme,
                           ),
-                          controller: noteTextController,
-                          maxLength: 200,
-                          maxLines: 7,
-                          minLines: 1,
+                          child: TextField(
+                            decoration: InputDecoration(isDense: true),
+                            controller: noteTextController,
+                            maxLength: 200,
+                            maxLines: 7,
+                            minLines: 1,
+                          ),
                         )
                       : Text(
                           (noteText == null || noteText.isEmpty)
@@ -175,10 +177,14 @@ class _DetailSwapState extends State<DetailSwap> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(0, 24, 16, 0),
-          child: IconButton(
-            icon: Icon(isNoteEdit ? Icons.check : Icons.edit),
-            onPressed: () {
+          padding: const EdgeInsets.only(right: 24),
+          child: InkWell(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(isNoteEdit ? Icons.check : Icons.edit),
+            ),
+            borderRadius: BorderRadius.circular(20),
+            onTap: () {
               setState(
                 () {
                   if (isNoteEdit) {
@@ -225,24 +231,14 @@ class _DetailSwapState extends State<DetailSwap> {
             ),
           ),
           InkWell(
-            onTap: () {
-              copyToClipBoard(
-                context,
-                id,
-              );
-            },
+            onTap: () => copyToClipBoard(context, id),
             child: Row(
               children: [
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: Text(
-                      id,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                    ),
+                    child:
+                        Text(id, style: Theme.of(context).textTheme.bodyText2),
                   ),
                 ),
               ],
@@ -254,57 +250,70 @@ class _DetailSwapState extends State<DetailSwap> {
   }
 
   Widget _buildAmountSwap() {
+    final myInfo = extractMyInfoFromSwap(widget.swap.result);
+    final myCoin = myInfo['myCoin'];
+    final myAmount = myInfo['myAmount'];
+    final otherCoin = myInfo['otherCoin'];
+    final otherAmount = myInfo['otherAmount'];
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _buildTextAmount(widget.swap.result.myInfo.myCoin,
-                  widget.swap.result.myInfo.myAmount),
-              Text(
-                AppLocalizations.of(context).sell,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    .copyWith(fontWeight: FontWeight.w400),
-              )
-            ],
-          ),
-          Expanded(
-            child: Container(),
-          ),
-          _buildIcon(widget.swap.result.myInfo.myCoin),
-          Icon(Icons.sync, size: 20),
-          _buildIcon(widget.swap.result.myInfo.otherCoin),
-          Expanded(
-            child: Container(),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              _buildTextAmount(
-                widget.swap.result.myInfo.otherCoin,
-                widget.swap.result.myInfo.otherAmount,
-              ),
-              Text(
-                AppLocalizations.of(context).receive.toUpperCase(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    .copyWith(fontWeight: FontWeight.w400),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Table(
+          columnWidths: const {
+            0: IntrinsicColumnWidth(flex: 1),
+            1: IntrinsicColumnWidth(),
+            2: IntrinsicColumnWidth(flex: 1),
+          },
+          children: [
+            TableRow(
+              children: [
+                TableCell(
+                  verticalAlignment: TableCellVerticalAlignment.middle,
+                  child: _buildTextAmount(myCoin, myAmount),
+                ),
+                TableCell(
+                  verticalAlignment: TableCellVerticalAlignment.middle,
+                  child: Row(
+                    children: [
+                      _buildIcon(myCoin),
+                      Icon(Icons.sync, size: 20),
+                      _buildIcon(otherCoin),
+                    ],
+                  ),
+                ),
+                TableCell(
+                  verticalAlignment: TableCellVerticalAlignment.middle,
+                  child: _buildTextAmount(otherCoin, otherAmount,
+                      textAlign: TextAlign.right),
+                ),
+              ],
+            ),
+            TableRow(
+              children: [
+                Text(
+                  AppLocalizations.of(context).sell.toUpperCase(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(fontWeight: FontWeight.w400),
+                ),
+                SizedBox(),
+                Text(
+                  AppLocalizations.of(context).receive.toUpperCase(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(fontWeight: FontWeight.w400),
+                  textAlign: TextAlign.right,
+                ),
+              ],
+            ),
+          ],
+        ));
   }
 
-  Widget _buildTextAmount(String coin, String amount) {
+  Widget _buildTextAmount(String coin, String amount,
+      {TextAlign textAlign = TextAlign.left}) {
     // Only apply camouflage to swap history,
     // show current active swaps as is
     final bool shouldCamouflage = camoBloc.isCamoActive &&
@@ -324,11 +333,12 @@ class _DetailSwapState extends State<DetailSwap> {
           .textTheme
           .bodyText2
           .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+      textAlign: textAlign,
     );
   }
 
   Widget _buildIcon(String coin) {
-    return Container(
+    return SizedBox(
       height: 25,
       width: 25,
       child: Image.asset(

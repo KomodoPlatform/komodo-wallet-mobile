@@ -50,11 +50,8 @@ class _ImportPageState extends State<ImportPage> {
       context: context,
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).importTitle,
-          ),
+          title: Text(AppLocalizations.of(context).importTitle),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -283,7 +280,14 @@ class _ImportPageState extends State<ImportPage> {
   Widget _buildSwaps() {
     final List<ExportImportListItem> items = [];
 
-    _all.swaps.forEach((String id, dynamic swap) {
+    _all.swaps.forEach((String id, MmSwap swap) {
+      final myInfo = extractMyInfoFromSwap(swap);
+      final myCoin = myInfo['myCoin'];
+      final myAmount = myInfo['myAmount'];
+      final otherCoin = myInfo['otherCoin'];
+      final otherAmount = myInfo['otherAmount'];
+      final startedAt = extractStartedAtFromSwap(swap);
+
       items.add(
         ExportImportListItem(
           checked: _selected.swaps.containsKey(id),
@@ -307,8 +311,7 @@ class _ImportPageState extends State<ImportPage> {
                 children: <Widget>[
                   Text(
                     DateFormat('dd MMM yyyy HH:mm').format(
-                        DateTime.fromMillisecondsSinceEpoch(
-                            swap.myInfo.startedAt * 1000)),
+                        DateTime.fromMillisecondsSinceEpoch(startedAt * 1000)),
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                           fontSize: 14,
                           color: Theme.of(context)
@@ -341,26 +344,24 @@ class _ImportPageState extends State<ImportPage> {
               Row(
                 children: <Widget>[
                   Text(
-                    cutTrailingZeros(formatPrice(swap.myInfo.myAmount, 4)) +
-                        ' ' +
-                        swap.myInfo.myCoin,
+                    cutTrailingZeros(formatPrice(myAmount, 4)) + ' ' + myCoin,
                   ),
                   SizedBox(width: 4),
                   Image.asset(
-                    'assets/coin-icons/${swap.myInfo.myCoin.toLowerCase()}.png',
+                    'assets/coin-icons/${myCoin.toLowerCase()}.png',
                     height: 20,
                   ),
                   SizedBox(width: 8),
                   Icon(Icons.swap_horiz),
                   SizedBox(width: 8),
                   Text(
-                    cutTrailingZeros(formatPrice(swap.myInfo.otherAmount, 4)) +
+                    cutTrailingZeros(formatPrice(otherAmount, 4)) +
                         ' ' +
-                        swap.myInfo.otherCoin,
+                        otherCoin,
                   ),
                   SizedBox(width: 4),
                   Image.asset(
-                    'assets/coin-icons/${swap.myInfo.otherCoin.toLowerCase()}.png',
+                    'assets/coin-icons/${otherCoin.toLowerCase()}.png',
                     height: 20,
                   ),
                 ],
@@ -493,19 +494,7 @@ class _ImportPageState extends State<ImportPage> {
               style: Theme.of(context).textTheme.bodyText2,
               decoration: InputDecoration(
                 errorMaxLines: 6,
-                errorStyle: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 12, color: Theme.of(context).errorColor),
-                border: const OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).primaryColorLight)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).accentColor)),
-                hintStyle: Theme.of(context).textTheme.bodyText1,
-                labelStyle: Theme.of(context).textTheme.bodyText2,
                 hintText: AppLocalizations.of(context).hintPassword,
-                labelText: null,
                 suffixIcon: PasswordVisibilityControl(
                   onVisibilityChange: (bool isPasswordObscured) {
                     setState(() {
@@ -519,20 +508,14 @@ class _ImportPageState extends State<ImportPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text(AppLocalizations.of(context).importPassCancel),
                 ),
                 SizedBox(width: 12),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () => Navigator.pop(context, _passController.text),
-                  child: Text(
-                    AppLocalizations.of(context).importPassOk,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Colors.white),
-                  ),
+                  child: Text(AppLocalizations.of(context).importPassOk),
                 ),
               ],
             ),
@@ -569,9 +552,9 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   void _showError(String e) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-      '$e',
+      e,
       style: TextStyle(color: Theme.of(context).errorColor),
     )));
   }

@@ -23,7 +23,7 @@ class _PreimageErrorState extends State<PreimageError> {
     _mainContext = context;
 
     return InkWell(
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width * 4 / 5,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -79,8 +79,8 @@ class _PreimageErrorState extends State<PreimageError> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      RaisedButton(
-                        onPressed: Navigator.of(context).pop,
+                      ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(),
                         child: Text(AppLocalizations.of(context).okButton),
                       ),
                     ],
@@ -103,7 +103,11 @@ class _PreimageErrorState extends State<PreimageError> {
           children: [
             SizedBox(height: 6),
             InkWell(
-              onTap: () => setState(() => _showDetails = !_showDetails),
+              onTap: () {
+                setState(() {
+                  _showDetails = !_showDetails;
+                });
+              },
               child: Container(
                 padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
                 child: Row(
@@ -130,9 +134,12 @@ class _PreimageErrorState extends State<PreimageError> {
                     onTap: () {
                       copyToClipBoard(_mainContext, widget.apiErrorMessage);
                       Future<dynamic>.delayed(Duration(seconds: 2))
-                          .then<dynamic>((dynamic _) {
-                        Scaffold.of(_mainContext).hideCurrentSnackBar();
-                      });
+                          .then<dynamic>(
+                        (dynamic _) {
+                          ScaffoldMessenger.of(_mainContext)
+                              .hideCurrentSnackBar();
+                        },
+                      );
                     },
                     child: ConstrainedBox(
                       constraints: BoxConstraints(

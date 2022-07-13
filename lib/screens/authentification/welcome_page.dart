@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/screens/authentification/new_account_page.dart';
 import 'package:komodo_dex/screens/settings/restore_seed_page.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -23,135 +24,103 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
-      backgroundColor: Theme.of(context).backgroundColor,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
+        foregroundColor: Theme.of(context).colorScheme.onBackground,
       ),
       body: ListView(
         key: const Key('welcome-scrollable'),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         children: <Widget>[
-          const SizedBox(
-            height: 16,
-          ),
-          SvgPicture.asset(settingsBloc.isLightTheme
+          SvgPicture.asset(Theme.of(context).brightness == Brightness.light
               ? 'assets/svg_light/welcome_wallet.svg'
               : 'assets/svg/welcome_wallet.svg'),
-          Center(
-            child: Text(
-              AppLocalizations.of(context).welcomeTitle,
-              key: const Key('titleCreateWallet'),
-              style:
-                  Theme.of(context).textTheme.headline6.copyWith(fontSize: 32),
-            ),
+          Text(
+            AppLocalizations.of(context).welcomeTitle,
+            key: const Key('titleCreateWallet'),
+            style: Theme.of(context).textTheme.headline5,
+            textAlign: TextAlign.center,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Text(AppLocalizations.of(context).to + ' ',
+                  style: Theme.of(context).textTheme.subtitle1),
               Text(
-                AppLocalizations.of(context).to + ' ',
+                toInitialUpper(appConfig.appName) + ' ',
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2
-                    .copyWith(fontSize: 18),
+                    .subtitle1
+                    .copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
-              Text(
-                AppLocalizations.of(context).welcomeName + ' ',
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 18, color: Theme.of(context).accentColor),
-              ),
-              Text(
-                AppLocalizations.of(context).welcomeWallet,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .copyWith(fontSize: 18),
-              ),
+              Text(AppLocalizations.of(context).welcomeWallet,
+                  style: Theme.of(context).textTheme.subtitle1),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Text(
-              AppLocalizations.of(context).welcomeInfo,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
+          SizedBox(height: 24),
+          Text(
+            AppLocalizations.of(context)
+                .welcomeInfo(toInitialUpper(appConfig.appName)),
+            style: Theme.of(context).textTheme.bodyText1,
           ),
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: TextFormField(
-                key: const Key('name-wallet-field'),
-                maxLength: 40,
-                controller: controller,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (String str) {
-                  if (str.isEmpty) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      setState(() {
-                        isButtonLoginEnabled = false;
-                      });
-                    });
-                    return 'Wallet name must not be empty';
-                  }
-                  if (str.length > 40) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      setState(() {
-                        isButtonLoginEnabled = false;
-                      });
-                    });
-                    return 'Wallet name must have a max of 40 characters';
-                  }
+          SizedBox(height: 24),
+          TextFormField(
+            key: const Key('name-wallet-field'),
+            maxLength: 40,
+            controller: controller,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (String str) {
+              if (str.isEmpty) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  setState(() {
+                    isButtonLoginEnabled = false;
+                  });
+                });
+                return 'Wallet name must not be empty';
+              }
+              if (str.length > 40) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  setState(() {
+                    isButtonLoginEnabled = false;
+                  });
+                });
+                return 'Wallet name must have a max of 40 characters';
+              }
 
-                  final allWallets = walletBloc.wallets;
-                  if (allWallets != null && allWallets.isNotEmpty) {
-                    final List<String> walletsNames =
-                        allWallets.map((w) => w.name).toList();
-                    if (walletsNames.contains(str)) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        setState(() {
-                          isButtonLoginEnabled = false;
-                        });
-                      });
-                      return 'Wallet name is already in use';
-                    }
-                  }
+              final allWallets = walletBloc.wallets;
+              if (allWallets != null && allWallets.isNotEmpty) {
+                final List<String> walletsNames =
+                    allWallets.map((w) => w.name).toList();
+                if (walletsNames.contains(str)) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     setState(() {
-                      isButtonLoginEnabled = true;
+                      isButtonLoginEnabled = false;
                     });
                   });
-                  return null;
-                },
-                onFieldSubmitted: (String data) {
-                  _newPage();
-                },
-                autocorrect: false,
-                enableInteractiveSelection: true,
-                style: Theme.of(context).textTheme.bodyText2,
-                decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColorLight)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).accentColor)),
-                    hintStyle: Theme.of(context).textTheme.bodyText1,
-                    labelStyle: Theme.of(context).textTheme.bodyText2,
-                    hintText: AppLocalizations.of(context).hintNameYourWallet,
-                    labelText: null)),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: PrimaryButton(
-              onPressed: isButtonLoginEnabled ? () => _newPage() : null,
-              text: AppLocalizations.of(context).welcomeLetSetUp,
-              key: const Key('welcome-setup'),
+                  return 'Wallet name is already in use';
+                }
+              }
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() {
+                  isButtonLoginEnabled = true;
+                });
+              });
+              return null;
+            },
+            onFieldSubmitted: (String data) => _newPage(),
+            autocorrect: false,
+            enableInteractiveSelection: true,
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context).hintNameYourWallet,
             ),
           ),
-          const SizedBox(
-            height: 16,
-          )
+          SizedBox(height: 24),
+          PrimaryButton(
+            onPressed: isButtonLoginEnabled ? () => _newPage() : null,
+            text: AppLocalizations.of(context).welcomeLetSetUp,
+            key: const Key('welcome-setup'),
+          ),
         ],
       ),
     );
@@ -170,7 +139,7 @@ class _WelcomePageState extends State<WelcomePage> {
         Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => NewAccountPage()),
+              builder: (BuildContext context) => const NewAccountPage()),
         );
       }
     }

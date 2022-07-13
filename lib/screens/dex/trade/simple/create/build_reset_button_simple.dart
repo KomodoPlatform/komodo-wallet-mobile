@@ -19,7 +19,7 @@ class _BuildResetButtonSimpleState extends State<BuildResetButtonSimple> {
 
     return Container(
       padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-      child: FlatButton(
+      child: TextButton(
         onPressed: _isEnabled() ? _constrProvider.reset : null,
         child: Text(AppLocalizations.of(context).reset),
       ),

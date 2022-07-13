@@ -4,7 +4,6 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/html_parser.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class CexMarker extends StatelessWidget {
   const CexMarker(
@@ -19,17 +18,15 @@ class CexMarker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GestureDetector(
-        excludeFromSemantics: true,
-        onTap: () => showCexDialog(context),
-        child: Icon(
-          Icons.info_outline,
-          size: size.height,
-          color: settingsBloc.isLightTheme
-              ? cexColorLight
-              : cexColor.withOpacity(0.8),
-        ),
+    return GestureDetector(
+      excludeFromSemantics: true,
+      onTap: () => showCexDialog(context),
+      child: Icon(
+        Icons.info_outline,
+        size: size.height,
+        color: Theme.of(context).brightness == Brightness.light
+            ? cexColorLight
+            : cexColor.withOpacity(0.8),
       ),
     );
   }
@@ -44,7 +41,7 @@ void showCexDialog(BuildContext context) {
           Icon(
             Icons.info_outline,
             size: 22,
-            color: settingsBloc.isLightTheme
+            color: Theme.of(context).brightness == Brightness.light
                 ? cexColorLight
                 : cexColor.withOpacity(0.8),
           ),
@@ -59,7 +56,7 @@ void showCexDialog(BuildContext context) {
           AppLocalizations.of(context).cexDataDesc,
           linkStyle: TextStyle(color: Colors.blue),
           textStyle: TextStyle(
-            color: settingsBloc.isLightTheme
+            color: Theme.of(context).brightness == Brightness.light
                 ? cexColorLight
                 : cexColor.withOpacity(0.8),
           ),

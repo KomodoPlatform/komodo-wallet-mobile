@@ -71,7 +71,7 @@ class _BuildTradeButtonState extends State<BuildTradeButton> {
     } else {
       Log('build_trade_button', 'form is invalid: $errorMessage');
 
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(errorMessage),
       ));

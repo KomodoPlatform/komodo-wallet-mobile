@@ -16,15 +16,12 @@ class _SuccessStepState extends State<SuccessStep> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Column(
           children: <Widget>[
-            Container(
-                child: InkWell(
-              onTap: () {
-                copyToClipBoard(context, widget.txHash);
-              },
+            InkWell(
+              onTap: () => copyToClipBoard(context, widget.txHash),
               child: Column(
                 children: <Widget>[
                   Text(AppLocalizations.of(context).success),
@@ -38,7 +35,7 @@ class _SuccessStepState extends State<SuccessStep> {
                   )
                 ],
               ),
-            )),
+            ),
             const SizedBox(
               height: 16,
             ),

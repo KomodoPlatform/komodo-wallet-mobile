@@ -1,1226 +1,1506 @@
 {
-  "createPin": "创建PIN码",
-  "@createPin": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "enterPinCode": "输入您的PIN码",
-  "@enterPinCode": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "login": "登入",
-  "@login": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "newAccount": "新帐户",
-  "@newAccount": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "newAccountUpper": "新帐户",
-  "@newAccountUpper": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "addingCoinSuccess": "成功新增 {name}!",
-  "@addingCoinSuccess": {
-    "type": "text",
-    "placeholders": {
-      "name": {}
+    "welcomeTitle": "欢迎使用",
+    "@welcomeTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "welcomeWallet": "钱包",
+    "@welcomeWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "welcomeInfo": "ATOMIC DEX 是次世代多币别钱包, 具有原生第三代的DEX功能等等。",
+    "@welcomeInfo": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "welcomeLetSetUp": "创建钱包!",
+    "@welcomeLetSetUp": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle1": "End-User License Agreement (EULA) of {appName} mobile:\n\n",
+    "@eulaTitle1": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "eulaTitle2": "TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)\n\n",
+    "@eulaTitle2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle3": "TERMS AND CONDITIONS OF USE AND DISCLAIMER\n\n",
+    "@eulaTitle3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle4": "GENERAL USE\n\n",
+    "@eulaTitle4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle5": "MODIFICATIONS\n\n",
+    "@eulaTitle5": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle6": "LIMITATIONS ON USE\n\n",
+    "@eulaTitle6": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle7": "ACCOUNTS AND MEMBERSHIP\n\n",
+    "@eulaTitle7": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle8": "BACKUPS\n\n",
+    "@eulaTitle8": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle9": "GENERAL WARNING\n\n",
+    "@eulaTitle9": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle10": "ACCESS AND SECURITY\n\n",
+    "@eulaTitle10": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle11": "INTELLECTUAL PROPERTY RIGHTS\n\n",
+    "@eulaTitle11": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle12": "DISCLAIMER\n\n",
+    "@eulaTitle12": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle13": "REPRESENTATIONS AND WARRANTIES, INDEMNIFICATION, AND LIMITATION OF LIABILITY\n\n",
+    "@eulaTitle13": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle14": "GENERAL RISK FACTORS\n\n",
+    "@eulaTitle14": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle15": "INDEMNIFICATION\n\n",
+    "@eulaTitle15": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle16": "RISK DISCLOSURES RELATING TO THE WALLET\n\n",
+    "@eulaTitle16": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle17": "NO INVESTMENT ADVICE OR BROKERAGE\n\n",
+    "@eulaTitle17": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle18": "TERMINATION\n\n",
+    "@eulaTitle18": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle19": "THIRD PARTY RIGHTS\n\n",
+    "@eulaTitle19": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaTitle20": "OUR LEGAL OBLIGATIONS\n\n",
+    "@eulaTitle20": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe1": "This End-User License Agreement ('EULA') is a legal agreement between you and {appCompanyLong}.\n\nThis EULA agreement governs your acquisition and use of our {appName} mobile software ('Software', 'Mobile Application', 'Application' or 'App') directly from {appCompanyLong} or indirectly through a {appCompanyLong} authorized entity, reseller or distributor (a 'Distributor').\nPlease read this EULA agreement carefully before completing the installation process and using the {appName} mobile software. It provides a license to use the {appName} mobile software and contains warranty information and liability disclaimers.\nIf you register for the beta program of the {appName} mobile software, this EULA agreement will also govern that trial. By clicking 'accept' or installing and/or using the {appName} mobile software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.\nIf you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.\nThis EULA agreement shall apply only to the Software supplied by {appCompanyLong} herewith regardless of whether other software is referred to or described herein. The terms also apply to any {appCompanyLong} updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.\n\nLICENSE GRANT\n\n{appCompanyLong} hereby grants you a personal, non-transferable, non-exclusive license to use the {appName} mobile software on your devices in accordance with the terms of this EULA agreement.\n\nYou are permitted to load the {appName} mobile software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the {appName} mobile software.\n\nYou are not permitted to:\n(a) edit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things;\n(b) reproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose;\n(c) use the Software in any way which breaches any applicable local, national or international law;\n(d) use the Software for any purpose that {appCompanyLong} considers is a breach of this EULA agreement.\n\nINTELLECTUAL PROPERTY AND OWNERSHIP\n\n{appCompanyLong} shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of {appCompanyLong}.\n\n{appCompanyLong} reserves the right to grant licenses to use the Software to third parties.\n\nTERMINATION\n\nThis EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to {appCompanyLong}.\nIt will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.\n\nGOVERNING LAW\n\nThis EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.\n\nThis document was last updated on January 31st, 2020\n\n",
+    "@eulaParagraphe1": {
+        "type": "text",
+        "placeholders_order": [
+            "appName",
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appName": {},
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe2": "This disclaimer applies to the contents and services of the app {appName} and is valid for all users of the “Application” ('Software', “Mobile Application”, “Application” or “App”).\n\nThe Application is owned by {appCompanyLong}.\n\nWe reserve the right to amend the following Terms and Conditions (governing the use of the application “{appName} mobile”) at any time without prior notice and at our sole discretion. It is your responsibility to periodically check this Terms and Conditions for any updates to these Terms, which shall come into force once published.\nYour continued use of the application shall be deemed as acceptance of the following Terms. \nWe are a company incorporated in Vietnam and these Terms and Conditions are governed by and subject to the laws of Vietnam. \nIf You do not agree with these Terms and Conditions, You must not use or access this software.\n\n",
+    "@eulaParagraphe2": {
+        "type": "text",
+        "placeholders_order": [
+            "appName",
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appName": {},
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe3": "By entering into this User (each subject accessing or using the site) Agreement (this writing) You declare that You are an individual over the age of majority (at least 18 or older) and have the capacity to enter into this User Agreement and accept to be legally bound by the terms and conditions of this User Agreement, as incorporated herein and amended from time to time. \n\n",
+    "@eulaParagraphe3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe4": "We may change the terms of this User Agreement at any time. Any such changes will take effect when published in the application, or when You use the Services.\n\nRead the User Agreement carefully every time You use our Services. Your continued use of the Services shall signify your acceptance to be bound by the current User Agreement. Our failure or delay in enforcing or partially enforcing any provision of this User Agreement shall not be construed as a waiver of any.\n\n",
+    "@eulaParagraphe4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe5": "You are not allowed to decompile, decode, disassemble, rent, lease, loan, sell, sublicense, or create derivative works from the {appName} mobile application or the user content. Nor are You allowed to use any network monitoring or detection software to determine the software architecture, or extract information about usage or individuals’ or users’ identities. \nYou are not allowed to copy, modify, reproduce, republish, distribute, display, or transmit for commercial, non-profit or public purposes all or any portion of the application or the user content without our prior written authorization.\n\n",
+    "@eulaParagraphe5": {
+        "type": "text",
+        "placeholders_order": [
+            "appName"
+        ],
+        "placeholders": {
+            "appName": {}
+        }
+    },
+    "eulaParagraphe6": "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions. \n\n{appName} mobile is a non-custodial wallet implementation and thus {appCompanyLong} can not access nor restore your account in case of (data) loss.\n\n",
+    "@eulaParagraphe6": {
+        "type": "text",
+        "placeholders_order": [
+            "appName",
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appName": {},
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe7": "We are not responsible for seed-phrases residing in the Mobile Application. In no event shall we be held liable for any loss of any kind. It is your sole responsibility to maintain appropriate backups of your accounts and their seedprases.\n\n",
+    "@eulaParagraphe7": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe8": "You should not act, or refrain from acting solely on the basis of the content of this application. \nYour access to this application does not itself create an adviser-client relationship between You and us. \nThe content of this application does not constitute a solicitation or inducement to invest in any financial products or services offered by us. \nAny advice included in this application has been prepared without taking into account your objectives, financial situation or needs. You should consider our Risk Disclosure Notice before making any decision on whether to acquire the product described in that document.\n\n",
+    "@eulaParagraphe8": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe9": "We do not guarantee your continuous access to the application or that your access or use will be error-free. \nWe will not be liable in the event that the application is unavailable to You for any reason (for example, due to computer downtime ascribable to malfunctions, upgrades, server problems, precautionary or corrective maintenance activities or interruption in telecommunication supplies). \n\n",
+    "@eulaParagraphe9": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe10": "{appCompanyLong} is the owner and/or authorised user of all trademarks, service marks, design marks, patents, copyrights, database rights and all other intellectual property appearing on or contained within the application, unless otherwise indicated. All information, text, material, graphics, software and advertisements on the application interface are copyright of {appCompanyLong}, its suppliers and licensors, unless otherwise expressly indicated by {appCompanyLong}. \nExcept as provided in the Terms, use of the application does not grant You any right, title, interest or license to any such intellectual property You may have access to on the application. \nWe own the rights, or have permission to use, the trademarks listed in our application. You are not authorised to use any of those trademarks without our written authorization – doing so would constitute a breach of our or another party’s intellectual property rights. \nAlternatively, we might authorise You to use the content in our application if You previously contact us and we agree in writing.\n\n",
+    "@eulaParagraphe10": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe11": "{appCompanyLong} cannot guarantee the safety or security of your computer systems. We do not accept liability for any loss or corruption of electronically stored data or any damage to any computer system occurred in connection with the use of the application or of the user content.\n{appCompanyLong} makes no representation or warranty of any kind, express or implied, as to the operation of the application or the user content. You expressly agree that your use of the application is entirely at your sole risk.\nYou agree that the content provided in the application and the user content do not constitute financial product, legal or taxation advice, and You agree on not representing the user content or the application as such.\nTo the extent permitted by current legislation, the application is provided on an “as is, as available” basis.\n\n{appCompanyLong} expressly disclaims all responsibility for any loss, injury, claim, liability, or damage, or any indirect, incidental, special or consequential damages or loss of profits whatsoever resulting from, arising out of or in any way related to: \n(a) any errors in or omissions of the application and/or the user content, including but not limited to technical inaccuracies and typographical errors; \n(b) any third party website, application or content directly or indirectly accessed through links in the application, including but not limited to any errors or omissions; \n(c) the unavailability of the application or any portion of it; \n(d) your use of the application;\n(e) your use of any equipment or software in connection with the application. \n\nAny Services offered in connection with the Platform are provided on an 'as is' basis, without any representation or warranty, whether express, implied or statutory. To the maximum extent permitted by applicable law, we specifically disclaim any implied warranties of title, merchantability, suitability for a particular purpose and/or non-infringement. We do not make any representations or warranties that use of the Platform will be continuous, uninterrupted, timely, or error-free.\nWe make no warranty that any Platform will be free from viruses, malware, or other related harmful material and that your ability to access any Platform will be uninterrupted. Any defects or malfunction in the product should be directed to the third party offering the Platform, not to {appCompanyShort}. \nWe will not be responsible or liable to You for any loss of any kind, from action taken, or taken in reliance on the material or information contained in or through the Platform.\nThis is experimental and unfinished software. Use at your own risk. No warranty for any kind of damage. By using this application you agree to this terms and conditions.\n\n",
+    "@eulaParagraphe11": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyShort",
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyShort": {},
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe12": "When accessing or using the Services, You agree that You are solely responsible for your conduct while accessing and using our Services. Without limiting the generality of the foregoing, You agree that You will not:\n(a) use the Services in any manner that could interfere with, disrupt, negatively affect or inhibit other users from fully enjoying the Services, or that could damage, disable, overburden or impair the functioning of our Services in any manner;\n(b) use the Services to pay for, support or otherwise engage in any illegal activities, including, but not limited to illegal gambling, fraud, money laundering, or terrorist activities;\n(c) use any robot, spider, crawler, scraper or other automated means or interface not provided by us to access our Services or to extract data;\n(d) use or attempt to use another user’s Wallet or credentials without authorization;\n(e) attempt to circumvent any content filtering techniques we employ, or attempt to access any service or area of our Services that You are not authorized to access;\n(f) introduce to the Services any virus, Trojan, worms, logic bombs or other harmful material;\n(g) develop any third-party applications that interact with our Services without our prior written consent;\n(h) provide false, inaccurate, or misleading information; \n(i) encourage or induce any other person to engage in any of the activities prohibited under this Section.\n\n",
+    "@eulaParagraphe12": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "eulaParagraphe13": "You agree and understand that there are risks associated with utilizing Services involving Virtual Currencies including, but not limited to, the risk of failure of hardware, software and internet connections, the risk of malicious software introduction, and the risk that third parties may obtain unauthorized access to information stored within your Wallet, including but not limited to your public and private keys. You agree and understand that {appCompanyLong} will not be responsible for any communication failures, disruptions, errors, distortions or delays You may experience when using the Services, however caused.\nYou accept and acknowledge that there are risks associated with utilizing any virtual currency network, including, but not limited to, the risk of unknown vulnerabilities in or unanticipated changes to the network protocol. You acknowledge and accept that {appCompanyLong} has no control over any cryptocurrency network and will not be responsible for any harm occurring as a result of such risks, including, but not limited to, the inability to reverse a transaction, and any losses in connection therewith due to erroneous or fraudulent actions.\nThe risk of loss in using Services involving Virtual Currencies may be substantial and losses may occur over a short period of time. In addition, price and liquidity are subject to significant fluctuations that may be unpredictable.\nVirtual Currencies are not legal tender and are not backed by any sovereign government. In addition, the legislative and regulatory landscape around Virtual Currencies is constantly changing and may affect your ability to use, transfer, or exchange Virtual Currencies.\nCFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 80.6% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether You understand how CFDs work and whether You can afford to take the high risk of losing your money.\n\n",
+    "@eulaParagraphe13": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe14": "You agree to indemnify, defend and hold harmless {appCompanyLong}, its officers, directors, employees, agents, licensors, suppliers and any third party information providers to the application from and against all losses, expenses, damages and costs, including reasonable lawyer fees, resulting from any violation of the Terms by You.\nYou also agree to indemnify {appCompanyLong} against any claims that information or material which You have submitted to {appCompanyLong} is in violation of any law or in breach of any third party rights (including, but not limited to, claims in respect of defamation, invasion of privacy, breach of confidence, infringement of copyright or infringement of any other intellectual property right).\n\n",
+    "@eulaParagraphe14": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe15": "In order to be completed, any Virtual Currency transaction created with the {appCompanyLong} must be confirmed and recorded in the Virtual Currency ledger associated with the relevant Virtual Currency network. Such networks are decentralized, peer-to-peer networks supported by independent third parties, which are not owned, controlled or operated by {appCompanyLong}.\n{appCompanyLong} has no control over any Virtual Currency network and therefore cannot and does not ensure that any transaction details You submit via our Services will be confirmed on the relevant Virtual Currency network. You agree and understand that the transaction details You submit via our Services may not be completed, or may be substantially delayed, by the Virtual Currency network used to process the transaction. We do not guarantee that the Wallet can transfer title or right in any Virtual Currency or make any warranties whatsoever with regard to title.\nOnce transaction details have been submitted to a Virtual Currency network, we cannot assist You to cancel or otherwise modify your transaction or transaction details. {appCompanyLong} has no control over any Virtual Currency network and does not have the ability to facilitate any cancellation or modification requests.\nIn the event of a Fork, {appCompanyLong} may not be able to support activity related to your Virtual Currency. You agree and understand that, in the event of a Fork, the transactions may not be completed, completed partially, incorrectly completed, or substantially delayed. {appCompanyLong} is not responsible for any loss incurred by You caused in whole or in part, directly or indirectly, by a Fork.\nIn no event shall {appCompanyLong}, its affiliates and service providers, or any of their respective officers, directors, agents, employees or representatives, be liable for any lost profits or any special, incidental, indirect, intangible, or consequential damages, whether based on contract, tort, negligence, strict liability, or otherwise, arising out of or in connection with authorized or unauthorized use of the services, or this agreement, even if an authorized representative of {appCompanyLong} has been advised of, has known of, or should have known of the possibility of such damages. \nFor example (and without limiting the scope of the preceding sentence), You may not recover for lost profits, lost business opportunities, or other types of special, incidental, indirect, intangible, or consequential damages. Some jurisdictions do not allow the exclusion or limitation of incidental or consequential damages, so the above limitation may not apply to You. \nWe will not be responsible or liable to You for any loss and take no responsibility for damages or claims arising in whole or in part, directly or indirectly from: \n(a) user error such as forgotten passwords, incorrectly constructed transactions, or mistyped Virtual Currency addresses; \n(b) server failure or data loss; \n(c) corrupted or otherwise non-performing Wallets or Wallet files; \n(d) unauthorized access to applications; \n(e) any unauthorized activities, including without limitation the use of hacking, viruses, phishing, brute forcing or other means of attack against the Services.\n\n",
+    "@eulaParagraphe15": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe16": "For the avoidance of doubt, {appCompanyLong} does not provide investment, tax or legal advice, nor does {appCompanyLong} broker trades on your behalf. All {appCompanyLong} trades are executed automatically, based on the parameters of your order instructions and in accordance with posted Trade execution procedures, and You are solely responsible for determining whether any investment, investment strategy or related transaction is appropriate for You based on your personal investment objectives, financial circumstances and risk tolerance. You should consult your legal or tax professional regarding your specific situation. Neither {appCompanyShort} nor its owners, members, officers, directors, partners, consultants, nor anyone involved in the publication of this application, is a registered investment adviser or broker-dealer or associated person with a registered investment adviser or broker-dealer and none of the foregoing make any recommendation that the purchase or sale of crypto-assets or securities of any company profiled in the mobile Application is suitable or advisable for any person or that an investment or transaction in such crypto-assets or securities will be profitable. The information contained in the mobile Application is not intended to be, and shall not constitute, an offer to sell or the solicitation of any offer to buy any crypto-asset or security. The information presented in the mobile Application is provided for informational purposes only and is not to be treated as advice or a recommendation to make any specific investment or transaction. Please, consult with a qualified professional before making any decisions. The opinions and analysis included in this applications are based on information from sources deemed to be reliable and are provided “as is” in good faith. {appCompanyShort} makes no representation or warranty, expressed, implied, or statutory, as to the accuracy or completeness of such information, which may be subject to change without notice. {appCompanyShort} shall not be liable for any errors or any actions taken in relation to the above. Statements of opinion and belief are those of the authors and/or editors who contribute to this application, and are based solely upon the information possessed by such authors and/or editors. No inference should be drawn that {appCompanyShort} or such authors or editors have any special or greater knowledge about the crypto-assets or companies profiled or any particular expertise in the industries or markets in which the profiled crypto-assets and companies operate and compete. Information on this application is obtained from sources deemed to be reliable; however, {appCompanyShort} takes no responsibility for verifying the accuracy of such information and makes no representation that such information is accurate or complete. Certain statements included in this application may be forward-looking statements based on current expectations. {appCompanyShort} makes no representation and provides no assurance or guarantee that such forward-looking statements will prove to be accurate. Persons using the {appCompanyShort} application are urged to consult with a qualified professional with respect to an investment or transaction in any crypto-asset or company profiled herein. Additionally, persons using this application expressly represent that the content in this application is not and will not be a consideration in such persons’ investment or transaction decisions. Traders should verify independently information provided in the {appCompanyShort} application by completing their own due diligence on any crypto-asset or company in which they are contemplating an investment or transaction of any kind and review a complete information package on that crypto-asset or company, which should include, but not be limited to, related blog updates and press releases. Past performance of profiled crypto-assets and securities is not indicative of future results. Crypto-assets and companies profiled on this site may lack an active trading market and invest in a crypto-asset or security that lacks an active trading market or trade on certain media, platforms and markets are deemed highly speculative and carry a high degree of risk. Anyone holding such crypto-assets and securities should be financially able and prepared to bear the risk of loss and the actual loss of his or her entire trade. The information in this application is not designed to be used as a basis for an investment decision. Persons using the {appCompanyShort} application should confirm to their own satisfaction the veracity of any information prior to entering into any investment or making any transaction. The decision to buy or sell any crypto-asset or security that may be featured by {appCompanyShort} is done purely and entirely at the reader’s own risk. As a reader and user of this application, You agree that under no circumstances will You seek to hold liable owners, members, officers, directors, partners, consultants or other persons involved in the publication of this application for any losses incurred by the use of information contained in this application {appCompanyShort} and its contractors and affiliates may profit in the event the crypto-assets and securities increase or decrease in value. Such crypto-assets and securities may be bought or sold from time to time, even after {appCompanyShort} has distributed positive information regarding the crypto-assets and companies. {appCompanyShort} has no obligation to inform readers of its trading activities or the trading activities of any of its owners, members, officers, directors, contractors and affiliates and/or any companies affiliated with BC Relations’ owners, members, officers, directors, contractors and affiliates. {appCompanyShort} and its affiliates may from time to time enter into agreements to purchase crypto-assets or securities to provide a method to reach their goals.\n\n",
+    "@eulaParagraphe16": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyShort",
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyShort": {},
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe17": "The Terms are effective until terminated by {appCompanyLong}. \nIn the event of termination, You are no longer authorized to access the Application, but all restrictions imposed on You and the disclaimers and limitations of liability set out in the Terms will survive termination. \nSuch termination shall not affect any legal right that may have accrued to {appCompanyLong} against You up to the date of termination. \n{appCompanyLong} may also remove the Application as a whole or any sections or features of the Application at any time. \n\n",
+    "@eulaParagraphe17": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe18": "The provisions of previous paragraphs are for the benefit of {appCompanyLong} and its officers, directors, employees, agents, licensors, suppliers, and any third party information providers to the Application. Each of these individuals or entities shall have the right to assert and enforce those provisions directly against You on its own behalf.\n\n",
+    "@eulaParagraphe18": {
+        "type": "text",
+        "placeholders_order": [
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appCompanyLong": {}
+        }
+    },
+    "eulaParagraphe19": "{appName} mobile is a non-custodial, decentralized and blockchain based application and as such does {appCompanyLong} never store any user-data (accounts and authentication data). \nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on January 31st, 2020\n\n",
+    "@eulaParagraphe19": {
+        "type": "text",
+        "placeholders_order": [
+            "appName",
+            "appCompanyLong"
+        ],
+        "placeholders": {
+            "appName": {},
+            "appCompanyLong": {}
+        }
+    },
+    "createPin": "创建PIN码",
+    "@createPin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enterPinCode": "输入您的PIN码",
+    "@enterPinCode": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "login": "登入",
+    "@login": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "newAccount": "新帐户",
+    "@newAccount": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "newAccountUpper": "新帐户",
+    "@newAccountUpper": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addingCoinSuccess": "成功新增 {name}!",
+    "@addingCoinSuccess": {
+        "type": "text",
+        "placeholders_order": [
+            "name"
+        ],
+        "placeholders": {
+            "name": {}
+        }
+    },
+    "connecting": "串接中。。。",
+    "@connecting": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addCoin": "新增代币",
+    "@addCoin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "numberAssets": "{assets}资产",
+    "@numberAssets": {
+        "type": "text",
+        "placeholders_order": [
+            "assets"
+        ],
+        "placeholders": {
+            "assets": {}
+        }
+    },
+    "enterSeedPhrase": "输入助记词",
+    "@enterSeedPhrase": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exampleHintSeed": "例如： build case level 。。。",
+    "@exampleHintSeed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "confirm": "确认",
+    "@confirm": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "buy": "买",
+    "@buy": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "sell": "卖",
+    "@sell": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "shareAddress": "我的 {coinName}地址: \\n{address}",
+    "@shareAddress": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName",
+            "address"
+        ],
+        "placeholders": {
+            "coinName": {},
+            "address": {}
+        }
+    },
+    "withdraw": "提领",
+    "@withdraw": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorValueEmpty": "金额太高或低",
+    "@errorValueEmpty": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "amount": "数量",
+    "@amount": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "addressSend": "收款人钱包地址",
+    "@addressSend": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "withdrawValue": "提领 {amount} {coinName}",
+    "@withdrawValue": {
+        "type": "text",
+        "placeholders_order": [
+            "amount",
+            "coinName"
+        ],
+        "placeholders": {
+            "amount": {},
+            "coinName": {}
+        }
+    },
+    "withdrawConfirm": "确认提领",
+    "@withdrawConfirm": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "close": "关闭",
+    "@close": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "confirmSeed": "确认助记词",
+    "@confirmSeed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "seedPhraseTitle": "您的新助记词",
+    "@seedPhraseTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "getBackupPhrase": "重要提醒: 在继续之前请记得备份助记词！",
+    "@getBackupPhrase": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "recommendSeedMessage": "我们强烈建议离线保管。",
+    "@recommendSeedMessage": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "next": "下一步",
+    "@next": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "confirmPin": "确认PIN码",
+    "@confirmPin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorTryAgain": "失败, 请再重新操作一次",
+    "@errorTryAgain": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settings": "设定",
+    "@settings": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "security": "安全",
+    "@security": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "activateAccessPin": "启动PIN码保护",
+    "@activateAccessPin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "lockScreen": "萤幕已锁定",
+    "@lockScreen": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "changePin": "变更PIN码",
+    "@changePin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "logout": "登出",
+    "@logout": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "max": "上限",
+    "@max": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "amountToSell": "欲出售数量",
+    "@amountToSell": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "youWillReceived": "可获得： ",
+    "@youWillReceived": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectCoinToSell": "请选择您要卖的代币",
+    "@selectCoinToSell": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectCoinToBuy": "请选择您要买的代币",
+    "@selectCoinToBuy": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swap": "兑换",
+    "@swap": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "buySuccessWaiting": "兑换需求发布, 请稍后！",
+    "@buySuccessWaiting": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "buySuccessWaitingError": "订单匹配中, 请稍等 {seconde}秒!",
+    "@buySuccessWaitingError": {
+        "type": "text",
+        "placeholders_order": [
+            "seconde"
+        ],
+        "placeholders": {
+            "seconde": {}
+        }
+    },
+    "networkFee": "矿工费用",
+    "@networkFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "commissionFee": "成交费用",
+    "@commissionFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "portfolio": "资产配置",
+    "@portfolio": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkOut": "Check Out",
+    "@checkOut": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "estimateValue": "预估总金额",
+    "@estimateValue": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectPaymentMethod": "请选择付款方式",
+    "@selectPaymentMethod": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "volumes": "Volumes",
+    "@volumes": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "placeOrder": "下单",
+    "@placeOrder": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "comingSoon": " 即将上线，敬请期待。。。",
+    "@comingSoon": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "marketplace": "Marketplace",
+    "@marketplace": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "youAreSending": "您正在发送：",
+    "@youAreSending": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "code": "Code: ",
+    "@code": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "value": "金额: ",
+    "@value": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "paidWith": "付款方式",
+    "@paidWith": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorValueNotEmpty": "请输入资料",
+    "@errorValueNotEmpty": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorAmountBalance": "余额不足",
+    "@errorAmountBalance": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorNotAValidAddress": "钱包地址错误",
+    "@errorNotAValidAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "toAddress": "收款地址:",
+    "@toAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "receive": "转入",
+    "@receive": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "send": "转出",
+    "@send": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "back": "上一步",
+    "@back": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancel": "取消",
+    "@cancel": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "commingsoon": "交易明细载入中！",
+    "@commingsoon": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "history": "历史",
+    "@history": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "create": "交易",
+    "@create": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "commingsoonGeneral": "细节戴入中！",
+    "@commingsoonGeneral": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderMatching": "订单匹配中",
+    "@orderMatching": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderMatched": "订单匹配成功",
+    "@orderMatched": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapOngoing": "兑换中",
+    "@swapOngoing": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapSucceful": "兑换成功",
+    "@swapSucceful": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "timeOut": "超时",
+    "@timeOut": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapFailed": "兑换失败",
+    "@swapFailed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "errorTryLater": "发生了错误，请稍后再试",
+    "@errorTryLater": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "feedback": "发送反馈",
+    "@feedback": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "loadingOrderbook": "委托订单载入中。。。",
+    "@loadingOrderbook": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "claim": "领取",
+    "@claim": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "claimTitle": "领取您的KMD奖励？",
+    "@claimTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "success": "成功!",
+    "@success": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noRewardYet": "没有奖励可领取 - 请一个小时后重试。",
+    "@noRewardYet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "loading": "载入中。。。",
+    "@loading": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "dex": "DEX",
+    "@dex": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "media": "新闻",
+    "@media": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "newsFeed": "新闻",
+    "@newsFeed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "clipboard": "已复制",
+    "@clipboard": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "from": "从",
+    "@from": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "to": "至",
+    "@to": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txConfirmed": "已确认",
+    "@txConfirmed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txNotConfirmed": "未确认",
+    "@txNotConfirmed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txBlock": "区块",
+    "@txBlock": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txConfirmations": "交易确认",
+    "@txConfirmations": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txFee": "手续费",
+    "@txFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "txHash": "交易 ID",
+    "@txHash": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noSwaps": "没有纪录",
+    "@noSwaps": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "trade": "交易",
+    "@trade": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tradeCompleted": "兑换成功！",
+    "@tradeCompleted": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "step": "步骤",
+    "@step": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tradeDetail": "交易明细",
+    "@tradeDetail": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "requestedTrade": "交易需求",
+    "@requestedTrade": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "mediaBrowse": "浏览",
+    "@mediaBrowse": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "mediaSaved": "已收藏",
+    "@mediaSaved": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "mediaNotSavedDescription": "您没有收藏的文章",
+    "@mediaNotSavedDescription": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "mediaBrowseFeed": "浏览新闻",
+    "@mediaBrowseFeed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "mediaBy": "--",
+    "@mediaBy": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "lockScreenAuth": "请登入！",
+    "@lockScreenAuth": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noTxs": "无交易",
+    "@noTxs": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "done": "完成",
+    "@done": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectCoinTitle": "新增代币:",
+    "@selectCoinTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectCoinInfo": "请选您想要添加的代币。",
+    "@selectCoinInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noArticles": "无新闻 - 请稍后再试！",
+    "@noArticles": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "infoTrade1": "兑换需求是无法撤销的！",
+    "@infoTrade1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "infoTrade2": "此交易时间可能长达 10 分钟 - 请勿关闭应用程式！",
+    "@infoTrade2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "swapDetailTitle": "请确认交易明细",
+    "@swapDetailTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkSeedPhrase": "请确认助记词",
+    "@checkSeedPhrase": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkSeedPhraseTitle": "请再次确认助记词",
+    "@checkSeedPhraseTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkSeedPhraseInfo": "您的助记词是很重要的所以我们要确认您有正确备份。我们将问您三个有关您的助记词的问题以确保您可以随时恢复钱包。",
+    "@checkSeedPhraseInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkSeedPhraseSubtile": "您助记词的第 {index}. 个字是什么？",
+    "@checkSeedPhraseSubtile": {
+        "type": "text",
+        "placeholders_order": [
+            "index"
+        ],
+        "placeholders": {
+            "index": {}
+        }
+    },
+    "checkSeedPhraseHint": "请输入第 {index}. 个字",
+    "@checkSeedPhraseHint": {
+        "type": "text",
+        "placeholders_order": [
+            "index"
+        ],
+        "placeholders": {
+            "index": {}
+        }
+    },
+    "checkSeedPhraseButton1": "继续",
+    "@checkSeedPhraseButton1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "checkSeedPhraseButton2": "返回并再次检查",
+    "@checkSeedPhraseButton2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "activateAccessBiometric": "开启生物识别功能",
+    "@activateAccessBiometric": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "allowCustomSeed": "允许自订助记词",
+    "@allowCustomSeed": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintEnterPassword": "请输入您的密码",
+    "@hintEnterPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "signInWithSeedPhrase": "汇入助记词",
+    "@signInWithSeedPhrase": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "signInWithPassword": "汇入密码",
+    "@signInWithPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintEnterSeedPhrase": "请输入您的助记词",
+    "@hintEnterSeedPhrase": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "wrongPassword": "密码不正确。请再重试一次。",
+    "@wrongPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintNameYourWallet": "钱包名称",
+    "@hintNameYourWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "infoWalletPassword": "您可以选择使用密码加密您的钱包。如果您选择不使用密码，则每次进入钱包时都需要输入助记词。",
+    "@infoWalletPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "confirmPassword": "确认密码",
+    "@confirmPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "dontWantPassword": "我不想要使用密码",
+    "@dontWantPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "areYouSure": "您确定吗？",
+    "@areYouSure": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "infoPasswordDialog": "如果您不使用密码，每次进入钱包时都需要输入助记词。",
+    "@infoPasswordDialog": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "setUpPassword": "设定密码",
+    "@setUpPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "createAWallet": "创建钱包",
+    "@createAWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "restoreWallet": "恢复钱包",
+    "@restoreWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintPassword": "密码",
+    "@hintPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintConfirmPassword": "确认密码",
+    "@hintConfirmPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "hintCurrentPassword": "当前密码",
+    "@hintCurrentPassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "logoutsettings": "登出设定",
+    "@logoutsettings": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "logoutOnExit": "离开时登出",
+    "@logoutOnExit": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "deleteWallet": "删除钱包",
+    "@deleteWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "delete": "删除",
+    "@delete": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settingDialogSpan1": "确定要删除",
+    "@settingDialogSpan1": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settingDialogSpan2": "钱包吗？",
+    "@settingDialogSpan2": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settingDialogSpan3": "如果是，确保您 ",
+    "@settingDialogSpan3": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settingDialogSpan4": " 纪录助记词。",
+    "@settingDialogSpan4": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "settingDialogSpan5": " 以便将来恢复钱包。",
+    "@settingDialogSpan5": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "backupTitle": "备份",
+    "@backupTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "version": "版本",
+    "@version": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enterpassword": "继续前请输入密码。",
+    "@enterpassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "clipboardCopy": "已复制",
+    "@clipboardCopy": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "unlock": "解锁您的钱包",
+    "@unlock": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noOrder": "当前无 {coinName} 匹配订单 - 请稍后再试, 或建立订单。",
+    "@noOrder": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "bestAvailableRate": "当前最佳汇率",
+    "@bestAvailableRate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "receiveLower": "收",
+    "@receiveLower": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "makeAorder": "建立订单",
+    "@makeAorder": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "exchangeTitle": "交易中心",
+    "@exchangeTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orders": "当前委托",
+    "@orders": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectCoin": "请选代币",
+    "@selectCoin": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noFunds": "无资产",
+    "@noFunds": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noFundsDetected": "当前无资产",
+    "@noFundsDetected": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "goToPorfolio": "前往资产配置",
+    "@goToPorfolio": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noOrderAvailable": "点击建立订单",
+    "@noOrderAvailable": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderCreated": "委托订单提交",
+    "@orderCreated": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderCreatedInfo": "委托订单成功建立",
+    "@orderCreatedInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "showMyOrders": "显示我的委托单",
+    "@showMyOrders": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minValue": "最低可卖出数量 {number} {coinName}",
+    "@minValue": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName",
+            "number"
+        ],
+        "placeholders": {
+            "coinName": {},
+            "number": {}
+        }
+    },
+    "titleCreatePassword": "创建一个密码",
+    "@titleCreatePassword": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minValueBuy": "最低可买入数量 {number} {coinName}",
+    "@minValueBuy": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName",
+            "number"
+        ],
+        "placeholders": {
+            "coinName": {},
+            "number": {}
+        }
+    },
+    "encryptingWallet": "钱包加密中",
+    "@encryptingWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "decryptingWallet": "钱包解密中",
+    "@decryptingWallet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "notEnoughtBalanceForFee": "余额不足以支付手续费 - 请调整交易数量。",
+    "@notEnoughtBalanceForFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "noInternet": "无法连上网路",
+    "@noInternet": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "legalTitle": "条款 (目前只提供英文版)",
+    "@legalTitle": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "disclaimerAndTos": "免责声明 & 使用条款",
+    "@disclaimerAndTos": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "accepteula": "同意接受终端使用者授权协议 (EULA)",
+    "@accepteula": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "accepttac": "接受条款与条件",
+    "@accepttac": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "confirmeula": "我了解点击以下的按钮，即表示我已阅读及接受终端使用者授权协议(EULA) & 使用条款与条件 。",
+    "@confirmeula": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "youWillReceiveClaim": "您将收到{amount} {coin}",
+    "@youWillReceiveClaim": {
+        "type": "text",
+        "placeholders_order": [
+            "amount",
+            "coin"
+        ],
+        "placeholders": {
+            "amount": {},
+            "coin": {}
+        }
+    },
+    "seeOrders": "点击查看{amount}订单",
+    "@seeOrders": {
+        "type": "text",
+        "placeholders_order": [
+            "amount"
+        ],
+        "placeholders": {
+            "amount": {}
+        }
+    },
+    "clickToSee": "点击查看",
+    "@clickToSee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "price": "价钱",
+    "@price": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "availableVolume": "最大卷",
+    "@availableVolume": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
     }
-  },
-  "connecting": "串接中。。。",
-  "@connecting": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "addCoin": "新增代币",
-  "@addCoin": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "numberAssets": "{assets}资产",
-  "@numberAssets": {
-    "type": "text",
-    "placeholders": {
-      "assets": {}
-    }
-  },
-  "enterSeedPhrase": "输入助记词",
-  "@enterSeedPhrase": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "exampleHintSeed": "例如： build case level 。。。",
-  "@exampleHintSeed": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "confirm": "确认",
-  "@confirm": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "buy": "买",
-  "@buy": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "sell": "卖",
-  "@sell": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "shareAddress": "我的 {coinName}地址: \\n{address}",
-  "@shareAddress": {
-    "type": "text",
-    "placeholders": {
-      "coinName": {},
-      "address": {}
-    }
-  },
-  "withdraw": "提领",
-  "@withdraw": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "errorValueEmpty": "金额太高或低",
-  "@errorValueEmpty": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "amount": "数量",
-  "@amount": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "addressSend": "收款人钱包地址",
-  "@addressSend": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "withdrawValue": "提领 {amount} {coinName}",
-  "@withdrawValue": {
-    "type": "text",
-    "placeholders": {
-      "amount": {},
-      "coinName": {}
-    }
-  },
-  "withdrawConfirm": "确认提领",
-  "@withdrawConfirm": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "close": "关闭",
-  "@close": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "confirmSeed": "确认助记词",
-  "@confirmSeed": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "seedPhraseTitle": "您的新助记词",
-  "@seedPhraseTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "getBackupPhrase": "重要提醒: 在继续之前请记得备份助记词！",
-  "@getBackupPhrase": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "recommendSeedMessage": "我们强烈建议离线保管。",
-  "@recommendSeedMessage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "next": "下一步",
-  "@next": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "confirmPin": "确认PIN码",
-  "@confirmPin": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "errorTryAgain": "失败, 请再重新操作一次",
-  "@errorTryAgain": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "settings": "设定",
-  "@settings": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "security": "安全",
-  "@security": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "activateAccessPin": "启动PIN码保护",
-  "@activateAccessPin": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "lockScreen": "萤幕已锁定",
-  "@lockScreen": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "changePin": "变更PIN码",
-  "@changePin": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "logout": "登出",
-  "@logout": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "max": "上限",
-  "@max": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "amountToSell": "欲出售数量",
-  "@amountToSell": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "youWillReceived": "可获得： ",
-  "@youWillReceived": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "selectCoinToSell": "请选择您要卖的代币",
-  "@selectCoinToSell": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "selectCoinToBuy": "请选择您要买的代币",
-  "@selectCoinToBuy": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "swap": "兑换",
-  "@swap": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "buySuccessWaiting": "兑换需求发布, 请稍后！",
-  "@buySuccessWaiting": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "buySuccessWaitingError": "订单匹配中, 请稍等 {seconde}秒!",
-  "@buySuccessWaitingError": {
-    "type": "text",
-    "placeholders": {
-      "seconde": {}
-    }
-  },
-  "networkFee": "矿工费用",
-  "@networkFee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "commissionFee": "成交费用",
-  "@commissionFee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "portfolio": "资产配置",
-  "@portfolio": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "checkOut": "Check Out",
-  "@checkOut": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "estimateValue": "预估总金额",
-  "@estimateValue": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "selectPaymentMethod": "请选择付款方式",
-  "@selectPaymentMethod": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "volumes": "Volumes",
-  "@volumes": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "placeOrder": "下单",
-  "@placeOrder": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "comingSoon": " 即将上线，敬请期待。。。",
-  "@comingSoon": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "marketplace": "Marketplace",
-  "@marketplace": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "youAreSending": "您正在发送：",
-  "@youAreSending": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "code": "Code: ",
-  "@code": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "value": "金额: ",
-  "@value": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "paidWith": "付款方式",
-  "@paidWith": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "errorValueNotEmpty": "请输入资料",
-  "@errorValueNotEmpty": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "errorAmountBalance": "余额不足",
-  "@errorAmountBalance": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "errorNotAValidAddress": "钱包地址错误",
-  "@errorNotAValidAddress": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "toAddress": "收款地址:",
-  "@toAddress": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "receive": "转入",
-  "@receive": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "send": "转出",
-  "@send": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "back": "上一步",
-  "@back": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "cancel": "取消",
-  "@cancel": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "commingsoon": "交易明细载入中！",
-  "@commingsoon": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "history": "历史",
-  "@history": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "create": "交易",
-  "@create": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "commingsoonGeneral": "细节戴入中！",
-  "@commingsoonGeneral": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "orderMatching": "订单匹配中",
-  "@orderMatching": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "orderMatched": "订单匹配成功",
-  "@orderMatched": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "swapOngoing": "兑换中",
-  "@swapOngoing": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "swapSucceful": "兑换成功",
-  "@swapSucceful": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "timeOut": "超时",
-  "@timeOut": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "swapFailed": "兑换失败",
-  "@swapFailed": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "errorTryLater": "发生了错误，请稍后再试",
-  "@errorTryLater": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "feedback": "发送反馈",
-  "@feedback": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "loadingOrderbook": "委托订单载入中。。。",
-  "@loadingOrderbook": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "claim": "领取",
-  "@claim": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "claimTitle": "领取您的KMD奖励？",
-  "@claimTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "success": "成功!",
-  "@success": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "noRewardYet": "没有奖励可领取 - 请一个小时后重试。",
-  "@noRewardYet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "loading": "载入中。。。",
-  "@loading": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "dex": "DEX",
-  "@dex": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "media": "新闻",
-  "@media": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "newsFeed": "新闻",
-  "@newsFeed": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "appName": "atomicDEX",
-  "@appName": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "clipboard": "已复制",
-  "@clipboard": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "from": "从",
-  "@from": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "to": "至",
-  "@to": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "txConfirmed": "已确认",
-  "@txConfirmed": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "txNotConfirmed": "未确认",
-  "@txNotConfirmed": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "txBlock": "区块",
-  "@txBlock": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "txConfirmations": "交易确认",
-  "@txConfirmations": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "txFee": "手续费",
-  "@txFee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "txHash": "交易 ID",
-  "@txHash": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "noSwaps": "没有纪录",
-  "@noSwaps": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "trade": "交易",
-  "@trade": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "tradeCompleted": "兑换成功！",
-  "@tradeCompleted": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "step": "步骤",
-  "@step": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "tradeDetail": "交易明细",
-  "@tradeDetail": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "requestedTrade": "交易需求",
-  "@requestedTrade": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "swapID": "兑换 ID",
-  "@swapID": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "mediaBrowse": "浏览",
-  "@mediaBrowse": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "mediaSaved": "已收藏",
-  "@mediaSaved": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "articleFrom": "AtomicDEX 新闻",
-  "@articleFrom": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "mediaNotSavedDescription": "您没有收藏的文章",
-  "@mediaNotSavedDescription": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "mediaBrowseFeed": "浏览新闻",
-  "@mediaBrowseFeed": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "mediaBy": "--",
-  "@mediaBy": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "lockScreenAuth": "请登入！",
-  "@lockScreenAuth": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "noTxs": "无交易",
-  "@noTxs": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "done": "完成",
-  "@done": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "selectCoinTitle": "新增代币:",
-  "@selectCoinTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "selectCoinInfo": "请选您想要添加的代币。",
-  "@selectCoinInfo": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "noArticles": "无新闻 - 请稍后再试！",
-  "@noArticles": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "infoTrade1": "兑换需求是无法撤销的！",
-  "@infoTrade1": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "infoTrade2": "此交易时间可能长达 10 分钟 - 请勿关闭应用程式！",
-  "@infoTrade2": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "swapDetailTitle": "请确认交易明细",
-  "@swapDetailTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "checkSeedPhrase": "请确认助记词",
-  "@checkSeedPhrase": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "checkSeedPhraseTitle": "请再次确认助记词",
-  "@checkSeedPhraseTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "checkSeedPhraseInfo": "您的助记词是很重要的所以我们要确认您有正确备份。我们将问您三个有关您的助记词的问题以确保您可以随时恢复钱包。",
-  "@checkSeedPhraseInfo": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "checkSeedPhraseSubtile": "您助记词的第 {index}. 个字是什么？",
-  "@checkSeedPhraseSubtile": {
-    "type": "text",
-    "placeholders": {
-      "index": {}
-    }
-  },
-  "checkSeedPhraseHint": "请输入第 {index}. 个字",
-  "@checkSeedPhraseHint": {
-    "type": "text",
-    "placeholders": {
-      "index": {}
-    }
-  },
-  "checkSeedPhraseButton1": "继续",
-  "@checkSeedPhraseButton1": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "checkSeedPhraseButton2": "返回并再次检查",
-  "@checkSeedPhraseButton2": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "takerpaymentsID": "吃单交易 ID",
-  "@takerpaymentsID": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "makerpaymentID": "挂单交易 ID",
-  "@makerpaymentID": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "activateAccessBiometric": "开启生物识别功能",
-  "@activateAccessBiometric": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "allowCustomSeed": "允许自订助记词",
-  "@allowCustomSeed": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "hintEnterPassword": "请输入您的密码",
-  "@hintEnterPassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "signInWithSeedPhrase": "汇入助记词",
-  "@signInWithSeedPhrase": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "signInWithPassword": "汇入密码",
-  "@signInWithPassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "hintEnterSeedPhrase": "请输入您的助记词",
-  "@hintEnterSeedPhrase": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "wrongPassword": "密码不正确。请再重试一次。",
-  "@wrongPassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "hintNameYourWallet": "钱包名称",
-  "@hintNameYourWallet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "infoWalletPassword": "您可以选择使用密码加密您的钱包。如果您选择不使用密码，则每次进入钱包时都需要输入助记词。",
-  "@infoWalletPassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "confirmPassword": "确认密码",
-  "@confirmPassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "dontWantPassword": "我不想要使用密码",
-  "@dontWantPassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "areYouSure": "您确定吗？",
-  "@areYouSure": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "infoPasswordDialog": "如果您不使用密码，每次进入钱包时都需要输入助记词。",
-  "@infoPasswordDialog": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "setUpPassword": "设定密码",
-  "@setUpPassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "createAWallet": "创建钱包",
-  "@createAWallet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "restoreWallet": "恢复钱包",
-  "@restoreWallet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "hintPassword": "密码",
-  "@hintPassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "hintConfirmPassword": "确认密码",
-  "@hintConfirmPassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "hintCurrentPassword": "当前密码",
-  "@hintCurrentPassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "logoutsettings": "登出设定",
-  "@logoutsettings": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "logoutOnExit": "离开时登出",
-  "@logoutOnExit": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "deleteWallet": "删除钱包",
-  "@deleteWallet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "delete": "删除",
-  "@delete": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "settingDialogSpan1": "确定要删除",
-  "@settingDialogSpan1": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "settingDialogSpan2": "钱包吗？",
-  "@settingDialogSpan2": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "settingDialogSpan3": "如果是，确保您 ",
-  "@settingDialogSpan3": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "settingDialogSpan4": " 纪录助记词。",
-  "@settingDialogSpan4": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "settingDialogSpan5": " 以便将来恢复钱包。",
-  "@settingDialogSpan5": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "backupTitle": "备份",
-  "@backupTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "version": "版本",
-  "@version": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "viewSeed": "导出助记词",
-  "@viewSeed": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "enterpassword": "继续前请输入密码。",
-  "@enterpassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "clipboardCopy": "已复制",
-  "@clipboardCopy": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "welcomeTitle": "欢迎使用",
-  "@welcomeTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "welcomeName": "AtomicDEX",
-  "@welcomeName": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "welcomeWallet": "钱包",
-  "@welcomeWallet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "welcomeInfo": "ATOMIC DEX 是次世代多币别钱包, 具有原生第三代的DEX功能等等。",
-  "@welcomeInfo": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "welcomeLetSetUp": "创建钱包!",
-  "@welcomeLetSetUp": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "unlock": "解锁您的钱包",
-  "@unlock": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "noOrder": "当前无 {coinName} 匹配订单 - 请稍后再试, 或建立订单。",
-  "@noOrder": {
-    "type": "text",
-    "placeholders": {
-      "coinName": {}
-    }
-  },
-  "bestAvailableRate": "当前最佳汇率",
-  "@bestAvailableRate": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "receiveLower": "收",
-  "@receiveLower": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "makeAorder": "建立订单",
-  "@makeAorder": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "exchangeTitle": "交易中心",
-  "@exchangeTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "orders": "当前委托",
-  "@orders": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "selectCoin": "请选代币",
-  "@selectCoin": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "noFunds": "无资产",
-  "@noFunds": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "noFundsDetected": "当前无资产",
-  "@noFundsDetected": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "goToPorfolio": "前往资产配置",
-  "@goToPorfolio": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "noOrderAvailable": "点击建立订单",
-  "@noOrderAvailable": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "orderCreated": "委托订单提交",
-  "@orderCreated": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "orderCreatedInfo": "委托订单成功建立",
-  "@orderCreatedInfo": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "showMyOrders": "显示我的委托单",
-  "@showMyOrders": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "minValue": "最低可卖出数量 {number} {coinName}",
-  "@minValue": {
-    "type": "text",
-    "placeholders": {
-      "coinName": {},
-      "number": {}
-    }
-  },
-  "titleCreatePassword": "创建一个密码",
-  "@titleCreatePassword": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "minValueBuy": "最低可买入数量 {number} {coinName}",
-  "@minValueBuy": {
-    "type": "text",
-    "placeholders": {
-      "coinName": {},
-      "number": {}
-    }
-  },
-  "encryptingWallet": "钱包加密中",
-  "@encryptingWallet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "decryptingWallet": "钱包解密中",
-  "@decryptingWallet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "notEnoughtBalanceForFee": "余额不足以支付手续费 - 请调整交易数量。",
-  "@notEnoughtBalanceForFee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "noInternet": "无法连上网路",
-  "@noInternet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "legalTitle": "条款 (目前只提供英文版)",
-  "@legalTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "disclaimerAndTos": "免责声明 & 使用条款",
-  "@disclaimerAndTos": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "accepteula": "同意接受终端使用者授权协议 (EULA)",
-  "@accepteula": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "accepttac": "接受条款与条件",
-  "@accepttac": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "confirmeula": "我了解点击以下的按钮，即表示我已阅读及接受终端使用者授权协议(EULA) & 使用条款与条件 。",
-  "@confirmeula": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle1": "End-User License Agreement (EULA) of atomicDEX mobile:\n",
-  "@eulaTitle1": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle2": "TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)\n",
-  "@eulaTitle2": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle3": "TERMS AND CONDITIONS OF USE AND DISCLAIMER\n",
-  "@eulaTitle3": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle4": "GENERAL USE\n",
-  "@eulaTitle4": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle5": "MODIFICATIONS\n",
-  "@eulaTitle5": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle6": "LIMITATIONS ON USE\n",
-  "@eulaTitle6": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle7": "Accounts and membership\n",
-  "@eulaTitle7": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle8": "Backups\n",
-  "@eulaTitle8": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle9": "GENERAL WARNING\n",
-  "@eulaTitle9": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle10": "ACCESS AND SECURITY\n",
-  "@eulaTitle10": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle11": "INTELLECTUAL PROPERTY RIGHTS\n",
-  "@eulaTitle11": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle12": "DISCLAIMER",
-  "@eulaTitle12": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle13": "REPRESENTATIONS AND WARRANTIES, INDEMNIFICATION, AND LIMITATION OF LIABILITY\n",
-  "@eulaTitle13": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle14": "GENERAL RISK FACTORS\n",
-  "@eulaTitle14": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle15": "INDEMNIFICATION\n",
-  "@eulaTitle15": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle16": "RISK DISCLOSURES RELATING TO THE WALLET\n",
-  "@eulaTitle16": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle17": "NO INVESTMENT ADVICE OR BROKERAGE\n",
-  "@eulaTitle17": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle18": "TERMINATION\n",
-  "@eulaTitle18": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle19": "THIRD PARTY RIGHTS\n",
-  "@eulaTitle19": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaTitle20": "OUR LEGAL OBLIGATIONS\n",
-  "@eulaTitle20": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe1": "This End-User License Agreement ('EULA') is a legal agreement between you and Komodo Platform.\n\nThis EULA agreement governs your acquisition and use of our atomicDEX mobile software ('Software', 'Mobile Application', 'Application' or 'App') directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a 'Distributor').\nPlease read this EULA agreement carefully before completing the installation process and using the atomicDEX mobile software. It provides a license to use the atomicDEX mobile software and contains warranty information and liability disclaimers.\nIf you register for the beta program of the atomicDEX mobile software, this EULA agreement will also govern that trial. By clicking 'accept' or installing and/or using the atomicDEX mobile software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.\nIf you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.\nThis EULA agreement shall apply only to the Software supplied by Komodo Platform herewith regardless of whether other software is referred to or described herein. The terms also apply to any Komodo Platform updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.\nLicense Grant\nKomodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the atomicDEX mobile software on your devices in accordance with the terms of this EULA agreement.\n\nYou are permitted to load the atomicDEX mobile software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the atomicDEX mobile software.\nYou are not permitted to:\nEdit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things\nReproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose\nUse the Software in any way which breaches any applicable local, national or international law\nuse the Software for any purpose that Komodo Platform considers is a breach of this EULA agreement\nIntellectual Property and Ownership\nKomodo Platform shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of Komodo Platform.\n\nKomodo Platform reserves the right to grant licences to use the Software to third parties.\nTermination\nThis EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to Komodo Platform.\nIt will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.\nGoverning Law\nThis EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.\n\nThis document was last updated on January 31st, 2020",
-  "@eulaParagraphe1": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe2": "This disclaimer applies to the contents and services of the app AtomicDEX and is valid for all users of the “Application” ('Software', “Mobile Application”, “Application” or “App”).\n\nThe Application is owned by Komodo Platform.\n\nWe reserve the right to amend the following Terms and Conditions (governing the use of the application “atomicDEX mobile”) at any time without prior notice and at our sole discretion. It is your responsibility to periodically check this Terms and Conditions for any updates to these Terms, which shall come into force once published.\nYour continued use of the application shall be deemed as acceptance of the following Terms. \nWe are a company incorporated in Vietnam and these Terms and Conditions are governed by and subject to the laws of Vietnam. \nIf You do not agree with these Terms and Conditions, You must not use or access this software.",
-  "@eulaParagraphe2": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe3": "By entering into this User (each subject accessing or using the site) Agreement (this writing) You declare that You are an individual over the age of majority (at least 18 or older) and have the capacity to enter into this User Agreement and accept to be legally bound by the terms and conditions of this User Agreement, as incorporated herein and amended from time to time. \nIn order to use the Services provided by Komodo Platform, You may be required to provide certain identification details pursuant to our know-your-customer and anti-money laundering compliance program.",
-  "@eulaParagraphe3": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe4": "We may change the terms of this User Agreement at any time. Any such changes will take effect when published in the application, or when You use the Services.\n\n\nRead the User Agreement carefully every time You use our Services. Your continued use of the Services shall signify your acceptance to be bound by the current User Agreement. Our failure or delay in enforcing or partially enforcing any provision of this User Agreement shall not be construed as a waiver of any.",
-  "@eulaParagraphe4": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe5": "You are not allowed to decompile, decode, disassemble, rent, lease, loan, sell, sublicense, or create derivative works from the atomicDEX mobile application or the user content. Nor are You allowed to use any network monitoring or detection software to determine the software architecture, or extract information about usage or individuals’ or users’ identities. \nYou are not allowed to copy, modify, reproduce, republish, distribute, display, or transmit for commercial, non-profit or public purposes all or any portion of the application or the user content without our prior written authorization.",
-  "@eulaParagraphe5": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe6": "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. You must immediately notify us of any unauthorized uses of your account or any other breaches of security. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions. \n\n AtomicDEX mobile is a non-custodial wallet implementation and thus Komodo Platform can not access nor restore your account in case of (data) loss.",
-  "@eulaParagraphe6": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe7": "We are not responsible for seed-phrases residing in the Mobile Application. In no event shall we be held liable for any loss of any kind. It is your sole responsibility to maintain appropriate backups of your accounts and their seedprases.",
-  "@eulaParagraphe7": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe8": "You should not act, or refrain from acting solely on the basis of the content of this application. \nYour access to this application does not itself create an adviser-client relationship between You and us. \nThe content of this application does not constitute a solicitation or inducement to invest in any financial products or services offered by us. \nAny advice included in this application has been prepared without taking into account your objectives, financial situation or needs. You should consider our Risk Disclosure Notice before making any decision on whether to acquire the product described in that document.",
-  "@eulaParagraphe8": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe9": "We do not guarantee your continuous access to the application or that your access or use will be error-free. \nWe will not be liable in the event that the application is unavailable to You for any reason (for example, due to computer downtime ascribable to malfunctions, upgrades, server problems, precautionary or corrective maintenance activities or interruption in telecommunication supplies). \n\nWe reserve the right at any time to: \n- deny or terminate all or part of your access to the application whereas in our opinion, there are concerns regarding unreasonable use, security issues or unauthorised access or You have breached any of these Terms;\n- block or suspend – in full or partially - your account, remove your default settings, or part thereof, without prior notice to You.",
-  "@eulaParagraphe9": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe10": "Komodo Platform is the owner and/or authorised user of all trademarks, service marks, design marks, patents, copyrights, database rights and all other intellectual property appearing on or contained within the application, unless otherwise indicated. All information, text, material, graphics, software and advertisements on the application interface are copyright of Komodo Platform, its suppliers and licensors, unless otherwise expressly indicated by Komodo Platform. \nExcept as provided in the Terms, use of the application does not grant You any right, title, interest or license to any such intellectual property You may have access to on the application. \nWe own the rights, or have permission to use, the trademarks listed in our application. You are not authorised to use any of those trademarks without our written authorization – doing so would constitute a breach of our or another party’s intellectual property rights. \nAlternatively, we might authorise You to use the content in our application if You previously contact us and we agree in writing.",
-  "@eulaParagraphe10": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe11": "Komodo Platform cannot guarantee the safety or security of your computer systems. We do not accept liability for any loss or corruption of electronically stored data or any damage to any computer system occurred in connection with the use of the application or of the user content.\nKomodo Platform makes no representation or warranty of any kind, express or implied, as to the operation of the application or the user content. You expressly agree that your use of the application is entirely at your sole risk.\nYou agree that the content provided in the application and the user content do not constitute financial product, legal or taxation advice, and You agree on not representing the user content or the application as such.\nTo the extent permitted by current legislation, the application is provided on an “as is, as available” basis.\n\nKomodo Platform expressly disclaims all responsibility for any loss, injury, claim, liability, or damage, or any indirect, incidental, special or consequential damages or loss of profits whatsoever resulting from, arising out of or in any way related to: \n(a) any errors in or omissions of the application and/or the user content, including but not limited to technical inaccuracies and typographical errors; \n(b) any third party website, application or content directly or indirectly accessed through links in the application, including but not limited to any errors or omissions; \n(c) the unavailability of the application or any portion of it; \n(d) your use of the application;\n(e) your use of any equipment or software in connection with the application. \nAny Services offered in connection with the Platform are provided on an 'as is' basis, without any representation or warranty, whether express, implied or statutory. To the maximum extent permitted by applicable law, we specifically disclaim any implied warranties of title, merchantability, suitability for a particular purpose and/or non-infringement. We do not make any representations or warranties that use of the Platform will be continuous, uninterrupted, timely, or error-free.\nWe make no warranty that any Platform will be free from viruses, malware, or other related harmful material and that your ability to access any Platform will be uninterrupted. Any defects or malfunction in the product should be directed to the third party offering the Platform, not to Komodo. \nWe will not be responsible or liable to You for any loss of any kind, from action taken, or taken in reliance on the material or information contained in or through the Platform.\nThis is experimental and unfinished software. Use at your own risk. No warranty for any kind of damage. By using this application you agree to this terms and conditions.",
-  "@eulaParagraphe11": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe12": "When accessing or using the Services, You agree that You are solely responsible for your conduct while accessing and using our Services. Without limiting the generality of the foregoing, You agree that You will not:\n(a) Use the Services in any manner that could interfere with, disrupt, negatively affect or inhibit other users from fully enjoying the Services, or that could damage, disable, overburden or impair the functioning of our Services in any manner;\n(b) Use the Services to pay for, support or otherwise engage in any illegal activities, including, but not limited to illegal gambling, fraud, money laundering, or terrorist activities;\n(c) Use any robot, spider, crawler, scraper or other automated means or interface not provided by us to access our Services or to extract data;\n(d) Use or attempt to use another user’s Wallet or credentials without authorization;\n(e) Attempt to circumvent any content filtering techniques we employ, or attempt to access any service or area of our Services that You are not authorized to access;\n(f) Introduce to the Services any virus, Trojan, worms, logic bombs or other harmful material;\n(g) Develop any third-party applications that interact with our Services without our prior written consent;\n(h) Provide false, inaccurate, or misleading information; \n(i) Encourage or induce any other person to engage in any of the activities prohibited under this Section.",
-  "@eulaParagraphe12": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe13": "You agree and understand that there are risks associated with utilizing Services involving Virtual Currencies including, but not limited to, the risk of failure of hardware, software and internet connections, the risk of malicious software introduction, and the risk that third parties may obtain unauthorized access to information stored within your Wallet, including but not limited to your public and private keys. You agree and understand that Komodo Platform will not be responsible for any communication failures, disruptions, errors, distortions or delays You may experience when using the Services, however caused.\nYou accept and acknowledge that there are risks associated with utilizing any virtual currency network, including, but not limited to, the risk of unknown vulnerabilities in or unanticipated changes to the network protocol. You acknowledge and accept that Komodo Platform has no control over any cryptocurrency network and will not be responsible for any harm occurring as a result of such risks, including, but not limited to, the inability to reverse a transaction, and any losses in connection therewith due to erroneous or fraudulent actions.\nThe risk of loss in using Services involving Virtual Currencies may be substantial and losses may occur over a short period of time. In addition, price and liquidity are subject to significant fluctuations that may be unpredictable.\nVirtual Currencies are not legal tender and are not backed by any sovereign government. In addition, the legislative and regulatory landscape around Virtual Currencies is constantly changing and may affect your ability to use, transfer, or exchange Virtual Currencies.\nCFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 80.6% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether You understand how CFDs work and whether You can afford to take the high risk of losing your money.",
-  "@eulaParagraphe13": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe14": "You agree to indemnify, defend and hold harmless Komodo Platform, its officers, directors, employees, agents, licensors, suppliers and any third party information providers to the application from and against all losses, expenses, damages and costs, including reasonable lawyer fees, resulting from any violation of the Terms by You.\nYou also agree to indemnify Komodo Platform against any claims that information or material which You have submitted to Komodo Platform is in violation of any law or in breach of any third party rights (including, but not limited to, claims in respect of defamation, invasion of privacy, breach of confidence, infringement of copyright or infringement of any other intellectual property right).",
-  "@eulaParagraphe14": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe15": "In order to be completed, any Virtual Currency transaction created with the Komodo Platform must be confirmed and recorded in the Virtual Currency ledger associated with the relevant Virtual Currency network. Such networks are decentralized, peer-to-peer networks supported by independent third parties, which are not owned, controlled or operated by Komodo Platform.\nKomodo Platform has no control over any Virtual Currency network and therefore cannot and does not ensure that any transaction details You submit via our Services will be confirmed on the relevant Virtual Currency network. You agree and understand that the transaction details You submit via our Services may not be completed, or may be substantially delayed, by the Virtual Currency network used to process the transaction. We do not guarantee that the Wallet can transfer title or right in any Virtual Currency or make any warranties whatsoever with regard to title.\nOnce transaction details have been submitted to a Virtual Currency network, we cannot assist You to cancel or otherwise modify your transaction or transaction details. Komodo Platform has no control over any Virtual Currency network and does not have the ability to facilitate any cancellation or modification requests.\nIn the event of a Fork, Komodo Platform may not be able to support activity related to your Virtual Currency. You agree and understand that, in the event of a Fork, the transactions may not be completed, completed partially, incorrectly completed, or substantially delayed. Komodo Platform is not responsible for any loss incurred by You caused in whole or in part, directly or indirectly, by a Fork.\nIn no event shall Komodo Platform, its affiliates and service providers, or any of their respective officers, directors, agents, employees or representatives, be liable for any lost profits or any special, incidental, indirect, intangible, or consequential damages, whether based on contract, tort, negligence, strict liability, or otherwise, arising out of or in connection with authorized or unauthorized use of the services, or this agreement, even if an authorized representative of Komodo Platform has been advised of, has known of, or should have known of the possibility of such damages. \nFor example (and without limiting the scope of the preceding sentence), You may not recover for lost profits, lost business opportunities, or other types of special, incidental, indirect, intangible, or consequential damages. Some jurisdictions do not allow the exclusion or limitation of incidental or consequential damages, so the above limitation may not apply to You. \nWe will not be responsible or liable to You for any loss and take no responsibility for damages or claims arising in whole or in part, directly or indirectly from: (a) user error such as forgotten passwords, incorrectly constructed transactions, or mistyped Virtual Currency addresses; (b) server failure or data loss; (c) corrupted or otherwise non-performing Wallets or Wallet files; (d) unauthorized access to applications; (e) any unauthorized activities, including without limitation the use of hacking, viruses, phishing, brute forcing or other means of attack against the Services.",
-  "@eulaParagraphe15": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe16": "For the avoidance of doubt, Komodo Platform does not provide investment, tax or legal advice, nor does Komodo Platform broker trades on your behalf. All Komodo Platform trades are executed automatically, based on the parameters of your order instructions and in accordance with posted Trade execution procedures, and You are solely responsible for determining whether any investment, investment strategy or related transaction is appropriate for You based on your personal investment objectives, financial circumstances and risk tolerance. You should consult your legal or tax professional regarding your specific situation.Neither Komodo nor its owners, members, officers, directors, partners, consultants, nor anyone involved in the publication of this application, is a registered investment adviser or broker-dealer or associated person with a registered investment adviser or broker-dealer and none of the foregoing make any recommendation that the purchase or sale of crypto-assets or securities of any company profiled in the mobile Application is suitable or advisable for any person or that an investment or transaction in such crypto-assets or securities will be profitable. The information contained in the mobile Application is not intended to be, and shall not constitute, an offer to sell or the solicitation of any offer to buy any crypto-asset or security. The information presented in the mobile Application is provided for informational purposes only and is not to be treated as advice or a recommendation to make any specific investment or transaction. Please, consult with a qualified professional before making any decisions.The opinions and analysis included in this applications are based on information from sources deemed to be reliable and are provided “as is” in good faith. Komodo makes no representation or warranty, expressed, implied, or statutory, as to the accuracy or completeness of such information, which may be subject to change without notice. Komodo shall not be liable for any errors or any actions taken in relation to the above. Statements of opinion and belief are those of the authors and/or editors who contribute to this application, and are based solely upon the information possessed by such authors and/or editors. No inference should be drawn that Komodo or such authors or editors have any special or greater knowledge about the crypto-assets or companies profiled or any particular expertise in the industries or markets in which the profiled crypto-assets and companies operate and compete.Information on this application is obtained from sources deemed to be reliable; however, Komodo takes no responsibility for verifying the accuracy of such information and makes no representation that such information is accurate or complete. Certain statements included in this application may be forward-looking statements based on current expectations. Komodo makes no representation and provides no assurance or guarantee that such forward-looking statements will prove to be accurate.Persons using the Komodo application are urged to consult with a qualified professional with respect to an investment or transaction in any crypto-asset or company profiled herein. Additionally, persons using this application expressly represent that the content in this application is not and will not be a consideration in such persons’ investment or transaction decisions. Traders should verify independently information provided in the Komodo application by completing their own due diligence on any crypto-asset or company in which they are contemplating an investment or transaction of any kind and review a complete information package on that crypto-asset or company, which should include, but not be limited to, related blog updates and press releases.Past performance of profiled crypto-assets and securities is not indicative of future results. Crypto-assets and companies profiled on this site may lack an active trading market and invest in a crypto-asset or security that lacks an active trading market or trade on certain media, platforms and markets are deemed highly speculative and carry a high degree of risk. Anyone holding such crypto-assets and securities should be financially able and prepared to bear the risk of loss and the actual loss of his or her entire trade. The information in this application is not designed to be used as a basis for an investment decision. Persons using the Komodo application should confirm to their own satisfaction the veracity of any information prior to entering into any investment or making any transaction. The decision to buy or sell any crypto-asset or security that may be featured by Komodo is done purely and entirely at the reader’s own risk. As a reader and user of this application, You agree that under no circumstances will You seek to hold liable owners, members, officers, directors, partners, consultants or other persons involved in the publication of this application for any losses incurred by the use of information contained in this applicationKomodo and its contractors and affiliates may profit in the event the crypto-assets and securities increase or decrease in value. Such crypto-assets and securities may be bought or sold from time to time, even after Komodo has distributed positive information regarding the crypto-assets and companies. Komodo has no obligation to inform readers of its trading activities or the trading activities of any of its owners, members, officers, directors, contractors and affiliates and/or any companies affiliated with BC Relations’ owners, members, officers, directors, contractors and affiliates.Komodo and its affiliates may from time to time enter into agreements to purchase crypto-assets or securities to provide a method to reach their goals.",
-  "@eulaParagraphe16": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe17": "The Terms are effective until terminated by Komodo Platform. \nIn the event of termination, You are no longer authorized to access the Application, but all restrictions imposed on You and the disclaimers and limitations of liability set out in the Terms will survive termination. \nSuch termination shall not affect any legal right that may have accrued to Komodo Platform against You up to the date of termination. \nKomodo Platform may also remove the Application as a whole or any sections or features of the Application at any time. ",
-  "@eulaParagraphe17": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe18": "The provisions of previous paragraphs are for the benefit of Komodo Platform and its officers, directors, employees, agents, licensors, suppliers, and any third party information providers to the Application. Each of these individuals or entities shall have the right to assert and enforce those provisions directly against You on its own behalf.",
-  "@eulaParagraphe18": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "eulaParagraphe19": "AtomicDEX mobile is a non-custodial, decentralized and blockchain based application and as such does Komodo Platform never store any user-data (accounts and authentication data). \nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on January 31st, 2020",
-  "@eulaParagraphe19": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "ethFee": "ETH费用",
-  "@ethFee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "notEnoughEth": "没有足够的交易ETH！",
-  "@notEnoughEth": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "ethNotActive": "请激活ETH。",
-  "@ethNotActive": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "youWillReceiveClaim": "您将收到{amount} {coin}",
-  "@youWillReceiveClaim": {
-    "type": "text",
-    "placeholders": {
-      "amount": {},
-      "coin": {}
-    }
-  },
-  "seeOrders": "点击查看{amount}订单",
-  "@seeOrders": {
-    "type": "text",
-    "placeholders": {
-      "amount": {}
-    }
-  },
-  "clickToSee": "点击查看",
-  "@clickToSee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "price": "价钱",
-  "@price": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "availableVolume": "最大卷",
-  "@availableVolume": {
-    "type": "text",
-    "placeholders": {}
-  }
 }

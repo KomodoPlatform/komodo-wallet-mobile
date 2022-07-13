@@ -21,7 +21,7 @@ class _HelpPageState extends State<HelpPage> {
       {
         'q': local.question_1,
         'a': Text(
-          local.answer_1,
+          local.answer_1(appConfig.appName),
           style: const TextStyle(
             height: 1.3,
             fontSize: 15,
@@ -30,9 +30,9 @@ class _HelpPageState extends State<HelpPage> {
         'isExpanded': false,
       },
       {
-        'q': local.question_2,
+        'q': local.question_2(appConfig.appName),
         'a': Text(
-          local.answer_2,
+          local.answer_2(appConfig.appName),
           style: const TextStyle(
             height: 1.3,
             fontSize: 15,
@@ -43,7 +43,7 @@ class _HelpPageState extends State<HelpPage> {
       {
         'q': local.question_3,
         'a': HtmlParser(
-          local.answer_3,
+          local.answer_3(appConfig.appName),
           textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
                 fontWeight: FontWeight.w300,
                 height: 1.3,
@@ -67,9 +67,9 @@ class _HelpPageState extends State<HelpPage> {
         'isExpanded': false,
       },
       {
-        'q': local.question_5,
+        'q': local.question_5(appConfig.appName),
         'a': Text(
-          local.answer_5,
+          local.answer_5(appConfig.appName),
           style: const TextStyle(
             height: 1.3,
             fontSize: 15,
@@ -85,7 +85,7 @@ class _HelpPageState extends State<HelpPage> {
       {
         'q': local.question_7,
         'a': Text(
-          local.answer_7,
+          local.answer_7(appConfig.appName),
           style: const TextStyle(
             height: 1.3,
             fontSize: 15,
@@ -94,9 +94,9 @@ class _HelpPageState extends State<HelpPage> {
         'isExpanded': false,
       },
       {
-        'q': local.question_8,
+        'q': local.question_8(appConfig.appName),
         'a': Text(
-          local.answer_8,
+          local.answer_8(appConfig.appName, appConfig.appCompanyShort),
           style: const TextStyle(
             height: 1.3,
             fontSize: 15,
@@ -105,9 +105,9 @@ class _HelpPageState extends State<HelpPage> {
         'isExpanded': false,
       },
       {
-        'q': local.question_9,
+        'q': local.question_9(appConfig.appName),
         'a': HtmlParser(
-          local.answer_9,
+          local.answer_9(appConfig.appName),
           textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
                 fontWeight: FontWeight.w300,
                 height: 1.3,
@@ -120,9 +120,9 @@ class _HelpPageState extends State<HelpPage> {
         'isExpanded': false,
       },
       {
-        'q': local.question_10,
+        'q': local.question_10(appConfig.appName),
         'a': Text(
-          local.answer_10,
+          local.answer_10(appConfig.appName),
           style: const TextStyle(
             height: 1.3,
             fontSize: 15,
@@ -138,16 +138,12 @@ class _HelpPageState extends State<HelpPage> {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).helpTitle),
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _buildLinks(),
-              _buildFAQ(),
-              const SizedBox(height: 50),
-            ],
-          ),
+        body: ListView(
+          padding: EdgeInsets.only(bottom: 56),
+          children: <Widget>[
+            _buildLinks(),
+            _buildFAQ(),
+          ],
         ),
       ),
     );
@@ -161,7 +157,8 @@ class _HelpPageState extends State<HelpPage> {
     if (name == null) return null;
 
     return HtmlParser(
-      local.answer_6(name, channels[0].link ?? ''),
+      local.answer_6(name, channels[0].link ?? '', appConfig.appName,
+          appConfig.appCompanyShort),
       textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
             fontWeight: FontWeight.w300,
             height: 1.3,
@@ -230,7 +227,7 @@ class _HelpPageState extends State<HelpPage> {
         Container(
           padding: const EdgeInsets.fromLTRB(15, 0, 20, 0),
           child: Text(
-            AppLocalizations.of(context).supportLinksDesc,
+            AppLocalizations.of(context).supportLinksDesc(appConfig.appName),
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),

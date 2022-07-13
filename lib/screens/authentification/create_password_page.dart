@@ -5,7 +5,7 @@ import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class CreatePasswordPage extends StatefulWidget {
-  const CreatePasswordPage({@required this.seed});
+  const CreatePasswordPage({Key key, @required this.seed}) : super(key: key);
 
   final String seed;
 
@@ -67,26 +67,20 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
+        foregroundColor: Theme.of(context).colorScheme.onBackground,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
       body: Form(
         key: _formKey,
         autovalidateMode:
             _autoValidate ? AutovalidateMode.always : AutovalidateMode.disabled,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
           children: <Widget>[
-            const SizedBox(
-              height: 16,
-            ),
             Text(
               AppLocalizations.of(context).titleCreatePassword,
               style: Theme.of(context).textTheme.headline6,
             ),
-            const SizedBox(
-              height: 24,
-            ),
+            const SizedBox(height: 24),
             TextFormField(
               key: const Key('create-password-field'),
               maxLength: 40,
@@ -116,19 +110,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
               style: Theme.of(context).textTheme.bodyText2,
               decoration: InputDecoration(
                 errorMaxLines: 6,
-                errorStyle: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 12, color: Theme.of(context).errorColor),
-                border: const OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).primaryColorLight)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).accentColor)),
-                hintStyle: Theme.of(context).textTheme.bodyText1,
-                labelStyle: Theme.of(context).textTheme.bodyText2,
                 hintText: AppLocalizations.of(context).hintPassword,
-                labelText: null,
                 suffixIcon: PasswordVisibilityControl(
                   onVisibilityChange: (bool isPasswordObscured) {
                     setState(() {
@@ -138,9 +120,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 8,
-            ),
+            const SizedBox(height: 8),
             Builder(builder: (BuildContext context) {
               return TextFormField(
                 key: const Key('create-password-field-confirm'),
@@ -162,38 +142,23 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 },
                 style: Theme.of(context).textTheme.bodyText2,
                 decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColorLight)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Theme.of(context).accentColor)),
-                  hintStyle: Theme.of(context).textTheme.bodyText1,
-                  labelStyle: Theme.of(context).textTheme.bodyText2,
                   hintText: AppLocalizations.of(context).hintConfirmPassword,
-                  labelText: null,
                 ),
               );
             }),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             Builder(builder: (BuildContext context) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  children: <Widget>[
-                    PrimaryButton(
-                      key: const Key('confirm-password'),
-                      text: AppLocalizations.of(context).confirmPassword,
-                      onPressed: isValidPassword
-                          ? () => _checkValidation(context)
-                          : null,
-                      isLoading: isLoading,
-                    ),
-                  ],
-                ),
+              return Column(
+                children: <Widget>[
+                  PrimaryButton(
+                    key: const Key('confirm-password'),
+                    text: AppLocalizations.of(context).confirmPassword,
+                    onPressed: isValidPassword
+                        ? () => _checkValidation(context)
+                        : null,
+                    isLoading: isLoading,
+                  ),
+                ],
               );
             }),
           ],
@@ -228,7 +193,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   }
 
   void _showError(BuildContext context, String data) {
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
       content: Text(data),

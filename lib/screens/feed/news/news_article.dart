@@ -183,7 +183,7 @@ class NewsArticle {
               .add(TapGestureRecognizer()..onTap = () => launchURL(_chunk));
 
           _parsed.add(TextSpan(
-            text: '$_chunk',
+            text: _chunk,
             style: _span.style == null
                 ? TextStyle(color: Colors.blue)
                 : _span.style.copyWith(color: Colors.blue),
@@ -191,7 +191,7 @@ class NewsArticle {
           ));
         } else {
           _parsed.add(TextSpan(
-            text: '$_chunk',
+            text: _chunk,
             style: _span.style,
           ));
         }
@@ -236,7 +236,7 @@ class NewsArticle {
 
           if (RegExp(_matcher).hasMatch(_chunk)) {
             _parsed.add(TextSpan(
-              text: '${_chunk.replaceAll(marker, '')}',
+              text: _chunk.replaceAll(marker, ''),
               style: _span.style == null
                   ? _styles[marker]
                   : _span.style.merge(_styles[marker]),
@@ -244,7 +244,7 @@ class NewsArticle {
             ));
           } else {
             _parsed.add(TextSpan(
-              text: '$_chunk',
+              text: _chunk,
               style: _span.style,
               recognizer: _span.recognizer,
             ));

@@ -17,9 +17,11 @@ class GetErcTransactions {
   final String ercUrl = appConfig.ercUrl;
   final String bnbUrl = appConfig.bnbUrl;
   final String bepUrl = appConfig.bepUrl;
+  final String maticUrl = appConfig.maticUrl;
+  final String plgUrl = appConfig.plgUrl;
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
-    if (coin.type != 'erc' && coin.type != 'bep') return;
+    if (coin.type != 'erc' && coin.type != 'bep' && coin.type != 'plg') return;
 
     // Endpoint returns all tx at ones, and `fromId` only has value
     // if some txs was already fetched, so no need to fetch same txs again
@@ -46,13 +48,19 @@ class GetErcTransactions {
                 : '$bepUrl/${coin.protocol.protocolData.contractAddress}/$address') +
             (coin.testCoin ? '&testnet=true' : '');
         break;
+      case 'plg':
+        url = (coin.protocol?.type == 'ETH' // 'MATIC', 'MATICTEST'
+                ? '$maticUrl/$address'
+                : '$plgUrl/${coin.protocol.protocolData.contractAddress}/$address') +
+            (coin.testCoin ? '&testnet=true' : '');
+        break;
       default:
         return;
     }
 
     String body;
     try {
-      final Response response = await http.get(url);
+      final Response response = await http.get(Uri.parse(url));
       body = response.body;
     } catch (e) {
       Log('get_erc_transactions', 'getTransactions/fetch] $e');
@@ -96,6 +104,9 @@ class GetErcTransactions {
           break;
         case 'JSTR':
           feeCoin = 'ETHR';
+          break;
+        case 'MATICTEST':
+          feeCoin = 'MATICTEST';
           break;
         default:
       }

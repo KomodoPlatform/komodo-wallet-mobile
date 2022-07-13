@@ -29,9 +29,15 @@ class SwapShareCard extends StatelessWidget {
 
       dateFormatted = formatter.format(finalTime);
     }
+
+    final myInfo = extractMyInfoFromSwap(swap.result);
+    final myCoin = myInfo['myCoin'];
+    final myAmount = myInfo['myAmount'];
+    final otherCoin = myInfo['otherCoin'];
+    final otherAmount = myInfo['otherAmount'];
     return DefaultTextStyle.merge(
       style: TextStyle(color: Colors.white),
-      child: Container(
+      child: SizedBox(
         width: 256,
         height: 144,
         child: Stack(
@@ -70,9 +76,9 @@ class SwapShareCard extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  swap.result.myInfo.myCoin +
+                                  myCoin +
                                       '/' +
-                                      swap.result.myInfo.otherCoin +
+                                      otherCoin +
                                       ' '
                                           'Swap Complete!',
                                   style: TextStyle(fontSize: 8),
@@ -93,18 +99,15 @@ class SwapShareCard extends StatelessWidget {
                                             children: [
                                               Image.asset(
                                                 'assets/coin-icons/' +
-                                                    swap.result.myInfo.myCoin
-                                                        .toLowerCase() +
+                                                    myCoin.toLowerCase() +
                                                     '.png',
                                                 height: 18,
                                               ),
                                               Text(
                                                 cutTrailingZeros(formatPrice(
-                                                        swap.result.myInfo
-                                                            .myAmount,
-                                                        4)) +
+                                                        myAmount, 4)) +
                                                     ' ' +
-                                                    swap.result.myInfo.myCoin,
+                                                    myCoin,
                                                 style: TextStyle(fontSize: 6),
                                               ),
                                             ],
@@ -128,20 +131,17 @@ class SwapShareCard extends StatelessWidget {
                                             children: [
                                               Image.asset(
                                                 'assets/coin-icons/' +
-                                                    swap.result.myInfo.otherCoin
-                                                        .toLowerCase() +
+                                                    otherCoin.toLowerCase() +
                                                     '.png',
                                                 height: 18,
                                               ),
                                               Text(
                                                 cutTrailingZeros(formatPrice(
-                                                        swap.result.myInfo
-                                                            .otherAmount,
-                                                        4)) +
+                                                        otherAmount, 4)) +
                                                     ' ' +
-                                                    swap.result.myInfo
-                                                        .otherCoin,
-                                                style: TextStyle(fontSize: 6),
+                                                    otherCoin,
+                                                style: const TextStyle(
+                                                    fontSize: 6),
                                               ),
                                             ],
                                           ),
@@ -159,12 +159,13 @@ class SwapShareCard extends StatelessWidget {
                           child: Table(
                             defaultVerticalAlignment:
                                 TableCellVerticalAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
                             columnWidths: const {
                               0: IntrinsicColumnWidth(),
-                              1: IntrinsicColumnWidth(),
+                              1: FixedColumnWidth(8),
                             },
                             children: [
-                              TableRow(
+                              const TableRow(
                                 children: [
                                   Text(
                                     'Details',
@@ -173,7 +174,7 @@ class SwapShareCard extends StatelessWidget {
                                       fontSize: 6,
                                     ),
                                   ),
-                                  SizedBox(width: 8),
+                                  SizedBox(),
                                   SizedBox(),
                                 ],
                               ),
@@ -186,42 +187,42 @@ class SwapShareCard extends StatelessWidget {
                               ),
                               TableRow(
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Date',
                                     style: TextStyle(fontSize: 6),
                                   ),
-                                  SizedBox(width: 8),
+                                  const SizedBox(),
                                   Text(
                                     dateFormatted,
-                                    style: TextStyle(fontSize: 6),
+                                    style: const TextStyle(fontSize: 6),
                                     textAlign: TextAlign.left,
                                   ),
                                 ],
                               ),
                               TableRow(
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Duration',
                                     style: TextStyle(fontSize: 6),
                                   ),
-                                  SizedBox(width: 8),
+                                  const SizedBox(),
                                   Text(
                                     '$durationMinutes Minutes',
-                                    style: TextStyle(fontSize: 6),
+                                    style: const TextStyle(fontSize: 6),
                                     textAlign: TextAlign.left,
                                   ),
                                 ],
                               ),
                               TableRow(
                                 children: [
-                                  Text(
+                                  const Text(
                                     'UUID',
                                     style: TextStyle(fontSize: 6),
                                   ),
-                                  SizedBox(width: 8),
+                                  const SizedBox(),
                                   Text(
-                                    '${swap.result.myOrderUuid}',
-                                    style: TextStyle(fontSize: 4),
+                                    swap.result.myOrderUuid,
+                                    style: const TextStyle(fontSize: 4),
                                     textAlign: TextAlign.left,
                                   ),
                                 ],
@@ -248,13 +249,13 @@ class SwapShareCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox()),
                             Image.asset(
                               'assets/swap_share/swap_share_qrcode.png',
                               height: 34,
                             ),
-                            SizedBox(height: 8),
-                            Text(
+                            const SizedBox(height: 8),
+                            const Text(
                               'Download AtomicDEX on atomicdex.io',
                               style: TextStyle(fontSize: 6),
                             ),

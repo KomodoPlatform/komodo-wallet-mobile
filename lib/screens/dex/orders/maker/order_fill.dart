@@ -71,10 +71,12 @@ class FillPainter extends CustomPainter {
       final Swap swap = swapMonitor.swap(swapId);
       if (swap == null) continue;
 
-      fillPaint..color = swapHistoryBloc.getColorStatus(swap.status);
+      fillPaint.color = swapHistoryBloc.getColorStatus(swap.status);
 
-      final double swapFill = double.parse(swap.result.myInfo.myAmount) /
-          double.parse(order.baseAmount);
+      final myInfo = extractMyInfoFromSwap(swap.result);
+      final myAmount = myInfo['myAmount'];
+      final double swapFill =
+          double.parse(myAmount) / double.parse(order.baseAmount);
 
       canvas.drawArc(
           Rect.fromCircle(center: center, radius: size.width / 4),
@@ -102,8 +104,10 @@ double getFill(Order order) {
   for (String swapId in order.startedSwaps) {
     final Swap swap = swapMonitor.swap(swapId);
     if (swap == null) continue;
-    fill += double.parse(swap.result.myInfo.myAmount) /
-        double.parse(order.baseAmount);
+
+    final myInfo = extractMyInfoFromSwap(swap.result);
+    final myAmount = myInfo['myAmount'];
+    fill += double.parse(myAmount) / double.parse(order.baseAmount);
   }
   return fill;
 }

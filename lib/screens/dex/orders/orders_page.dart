@@ -36,57 +36,69 @@ class _OrdersPageState extends State<OrdersPage> {
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(width: 8),
-            _buildFiltersButton(),
-            Expanded(child: SizedBox()),
-            FlatButton(
-                padding: EdgeInsets.all(4),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              _buildFiltersButton(),
+              Expanded(child: SizedBox()),
+              TextButton(
                 onPressed: () {
                   setState(() {
                     _currentTab = OrdersTab.active;
                   });
                 },
+                style: TextButton.styleFrom(
+                  primary: _currentTab == OrdersTab.active
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     Text(
                       AppLocalizations.of(context).ordersActive + ' ',
-                      style: TextStyle(
-                          color: _currentTab == OrdersTab.active
-                              ? Theme.of(context).accentColor
-                              : null),
+                      style: Theme.of(context).textTheme.button.copyWith(
+                            color: _currentTab == OrdersTab.active
+                                ? Theme.of(context).colorScheme.secondary
+                                : null,
+                          ),
                     ),
                     _buildActiveOrdersNumber(),
                   ],
-                )),
-            FlatButton(
-              padding: EdgeInsets.all(4),
-              onPressed: () {
-                setState(() {
-                  _currentTab = OrdersTab.history;
-                });
-              },
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).ordersHistory + ' ',
-                    style: TextStyle(
-                        color: _currentTab == OrdersTab.history
-                            ? Theme.of(context).accentColor
-                            : null),
-                  ),
-                  _buildHistoryNumber(),
-                ],
+                ),
               ),
-            ),
-            SizedBox(width: 8),
-          ],
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _currentTab = OrdersTab.history;
+                  });
+                },
+                style: TextButton.styleFrom(
+                  primary: _currentTab == OrdersTab.history
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context).ordersHistory + ' ',
+                      style: Theme.of(context).textTheme.button.copyWith(
+                            color: _currentTab == OrdersTab.history
+                                ? Theme.of(context).colorScheme.secondary
+                                : null,
+                          ),
+                    ),
+                    _buildHistoryNumber(),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
-        Flexible(
+        Expanded(
             child: _currentTab == OrdersTab.active
                 ? ActiveOrders(
                     scrollCtrl: _scrollCtrl[OrdersTab.active],
@@ -141,7 +153,7 @@ class _OrdersPageState extends State<OrdersPage> {
         initialData: swapMonitor.swaps,
         builder:
             (BuildContext context, AsyncSnapshot<Iterable<Swap>> snapshot) {
-          if (!snapshot.hasData) return Container();
+          if (!snapshot.hasData) return SizedBox();
 
           final List<Swap> completed = snapshot.data
               .where((Swap item) =>
@@ -152,13 +164,11 @@ class _OrdersPageState extends State<OrdersPage> {
 
           return Text(
             '(${completed.length})',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-              color: _currentTab == OrdersTab.history
-                  ? Theme.of(context).accentColor
-                  : null,
-            ),
+            style: Theme.of(context).textTheme.button.copyWith(
+                  color: _currentTab == OrdersTab.history
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                ),
           );
         });
   }
@@ -168,7 +178,7 @@ class _OrdersPageState extends State<OrdersPage> {
       initialData: ordersBloc.orderSwaps,
       stream: ordersBloc.outOrderSwaps,
       builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-        if (!snapshot.hasData) return Container();
+        if (!snapshot.hasData) return SizedBox();
 
         final List<dynamic> active = snapshot.data
             .where((dynamic item) => item is Order || item is Swap)
@@ -176,13 +186,13 @@ class _OrdersPageState extends State<OrdersPage> {
 
         return Text(
           '(${active.length})',
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w400,
-            color: _currentTab == OrdersTab.active
-                ? Theme.of(context).accentColor
-                : null,
-          ),
+          style: Theme.of(context).textTheme.button.copyWith(
+                color: _currentTab == OrdersTab.active
+                    ? Theme.of(context).colorScheme.secondary
+                    : null,
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+              ),
         );
       },
     );

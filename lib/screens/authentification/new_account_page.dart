@@ -6,29 +6,14 @@ import 'package:komodo_dex/screens/authentification/check_passphrase_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class NewAccountPage extends StatefulWidget {
+  const NewAccountPage({Key key}) : super(key: key);
+
   @override
   _NewAccountPageState createState() => _NewAccountPageState();
 }
 
 String getSeed() {
-  int i = 0;
-  String seed = '';
-  while (i == 0) {
-    seed = bip39.generateMnemonic();
-    i = 1;
-    for (String word in seed.split(' ')) {
-      try {
-        seed
-            .split(' ')
-            .singleWhere((String seedelement) => seedelement == word);
-      } catch (e) {
-        if (e.toString().contains('Too many elements')) {
-          i = 0;
-        }
-      }
-    }
-  }
-  return seed;
+  return bip39.generateMnemonic();
 }
 
 class _NewAccountPageState extends State<NewAccountPage> {
@@ -43,179 +28,131 @@ class _NewAccountPageState extends State<NewAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        backgroundColor: Theme.of(context).backgroundColor,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
           title: Text(AppLocalizations.of(context).newAccountUpper),
         ),
         body: ListView(
           key: const Key('new-account-scrollable'),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
           children: <Widget>[
+            const SizedBox(height: 32),
             _buildTitle(),
+            const SizedBox(height: 64),
             _buildSeedGenerator(),
+            SizedBox(height: 32),
             _buildWarningSaveSeed(),
+            SizedBox(height: 32),
             _buildNextButton(),
           ],
         ));
   }
 
   Widget _buildTitle() {
-    return Column(
-      children: <Widget>[
-        const SizedBox(
-          height: 56,
-        ),
-        Text(
-          AppLocalizations.of(context).seedPhraseTitle,
-          style: Theme.of(context).textTheme.headline6,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(
-          height: 56,
-        ),
-      ],
+    return Text(
+      AppLocalizations.of(context).seedPhraseTitle,
+      style: Theme.of(context).textTheme.headline6,
+      textAlign: TextAlign.center,
     );
   }
 
   Widget _buildSeedGenerator() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-      child: ClipRRect(
+    return ListTile(
+      shape: RoundedRectangleBorder(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              color: Colors.red.withOpacity(0.15),
-              border: Border.all(color: Colors.red)),
-          padding: const EdgeInsets.all(8.0),
-          // height: 100,
-          child: Row(
-            children: <Widget>[
-              InkWell(
-                key: const Key('seed-refresh'),
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Icon(
-                    Icons.refresh,
-                    color: Colors.red,
-                  ),
-                ),
-                onTap: () {
-                  setState(() {
-                    seed = getSeed();
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 6,
-              ),
-              Expanded(
-                  child: Text(
-                seed,
-                key: const Key('seed-phrase'),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .copyWith(color: Colors.red),
-                textAlign: TextAlign.center,
-              )),
-              const SizedBox(
-                width: 6,
-              ),
-              InkWell(
-                  key: const Key('seed-copy'),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  onTap: () {
-                    Clipboard.setData(ClipboardData(text: seed));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Icon(
-                      Icons.content_copy,
-                      color: Colors.red,
-                    ),
-                  )),
-            ],
-          ),
-        ),
+        side: BorderSide(color: Theme.of(context).errorColor),
       ),
+      tileColor: Theme.of(context).errorColor.withOpacity(0.15),
+      contentPadding: EdgeInsets.all(8),
+      leading: IconButton(
+        key: const Key('seed-refresh'),
+        color: Theme.of(context).errorColor,
+        icon: Icon(Icons.refresh),
+        onPressed: () {
+          setState(() {
+            seed = getSeed();
+          });
+        },
+      ),
+      title: Text(
+        seed,
+        key: const Key('seed-phrase'),
+        style: Theme.of(context)
+            .textTheme
+            .bodyText2
+            .copyWith(color: Theme.of(context).errorColor),
+        textAlign: TextAlign.center,
+      ),
+      trailing: IconButton(
+          key: const Key('seed-copy'),
+          onPressed: () => Clipboard.setData(ClipboardData(text: seed)),
+          color: Theme.of(context).errorColor,
+          icon: Icon(Icons.content_copy)),
     );
   }
 
   Widget _buildWarningSaveSeed() {
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: Row(
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            child: Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    Colors.pink,
-                    Colors.red.withOpacity(0.4),
-                  ],
-                )),
-                height: 45,
-                width: 45,
-                child: Center(
-                  child: Icon(
-                    Icons.warning,
-                    color: Colors.white,
-                  ),
-                )),
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  AppLocalizations.of(context).getBackupPhrase,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 6,
-                ),
-                Text(
-                  AppLocalizations.of(context).recommendSeedMessage,
-                  style: Theme.of(context).textTheme.bodyText1,
-                )
+    return Row(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[
+                Colors.pink,
+                Colors.red.withOpacity(0.4),
               ],
             ),
-          )
-        ],
-      ),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+          ),
+          height: 45,
+          width: 45,
+          child: const Center(
+            child: Icon(
+              Icons.warning,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 16,
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                AppLocalizations.of(context).getBackupPhrase,
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              Text(
+                AppLocalizations.of(context).recommendSeedMessage,
+                style: Theme.of(context).textTheme.bodyText2,
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 
   Widget _buildNextButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-      child: Container(
-          width: double.infinity,
-          height: 50,
-          child: PrimaryButton(
-            text: AppLocalizations.of(context).next,
-            onPressed: () {
-              Navigator.push<dynamic>(
-                context,
-                MaterialPageRoute<dynamic>(
-                    builder: (BuildContext context) => CheckPassphrasePage(
-                          seed: seed,
-                        )),
-              );
-            },
-          )),
+    return PrimaryButton(
+      text: AppLocalizations.of(context).next,
+      onPressed: () => Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => CheckPassphrasePage(
+            seed: seed,
+          ),
+        ),
+      ),
     );
   }
 }

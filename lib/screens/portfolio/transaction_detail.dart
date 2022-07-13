@@ -38,10 +38,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           actions: <Widget>[
             IconButton(
+              splashRadius: 24,
               icon: Icon(Icons.share),
               onPressed: () {
                 final String fromOrTo = double.parse(
@@ -62,15 +62,14 @@ class _TransactionDetailState extends State<TransactionDetail> {
               },
             ),
             IconButton(
+              splashRadius: 24,
               icon: Icon(Icons.open_in_browser),
-              onPressed: () {
-                launchURL(widget.coinBalance.coin.explorerUrl[0] +
-                    'tx/' +
-                    widget.transaction.txHash);
-              },
+              onPressed: () => launchURL(
+                  widget.coinBalance.coin.explorerUrl[0] +
+                      'tx/' +
+                      widget.transaction.txHash),
             )
           ],
-          elevation: 0,
         ),
         body: ListView(
           children: <Widget>[_buildHeader(), _buildListDetails()],
@@ -108,7 +107,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                             }
                             return AutoSizeText(
                               '$amountString ${tx.coin}',
-                              style: Theme.of(context).textTheme.headline6,
+                              style: Theme.of(context).textTheme.headline5,
                               maxLines: 1,
                               textAlign: TextAlign.center,
                             );
@@ -127,7 +126,9 @@ class _TransactionDetailState extends State<TransactionDetail> {
               children: <Widget>[
                 Text(
                   tx.getTimeFormat(),
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        color: Colors.grey,
+                      ),
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -164,7 +165,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
     Widget _usdAmount(String priceForOne) {
       if (priceForOne == null) return _progressIndicator;
 
-      if (double.parse(priceForOne) == 0) return Container();
+      if (double.parse(priceForOne) == 0) return SizedBox();
 
       return StreamBuilder<bool>(
           initialData: settingsBloc.showBalance,
@@ -206,11 +207,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
   Widget _buildListDetails() {
     return Column(
       children: <Widget>[
-        widget.transaction.blockHeight > 0
-            ? ItemTransationDetail(
-                title: AppLocalizations.of(context).txBlock,
-                data: widget.transaction.blockHeight.toString())
-            : Container(),
+        if (widget.transaction.blockHeight > 0)
+          ItemTransationDetail(
+              title: AppLocalizations.of(context).txBlock,
+              data: widget.transaction.blockHeight.toString()),
         ItemTransationDetail(
             title: AppLocalizations.of(context).txConfirmations,
             data: widget.transaction.confirmations.toString()),
@@ -279,7 +279,7 @@ class ItemTransationDetail extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: Theme.of(context).textTheme.subtitle2,
+            style: Theme.of(context).textTheme.subtitle1,
           ),
           const SizedBox(
             width: 16,
@@ -291,12 +291,13 @@ class ItemTransationDetail extends StatelessWidget {
                   copyToClipBoard(context, data);
                 } else {
                   Navigator.push<dynamic>(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) => AddressBookPage(
-                          contact: contact,
-                        ),
-                      ));
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => AddressBookPage(
+                        contact: contact,
+                      ),
+                    ),
+                  );
                 }
               },
               child: Padding(
@@ -304,7 +305,9 @@ class ItemTransationDetail extends StatelessWidget {
                 child: contact == null
                     ? AutoSizeText(
                         data,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyText1.copyWith(
+                              color: Colors.grey,
+                            ),
                         textAlign: TextAlign.end,
                       )
                     : Row(
@@ -398,7 +401,9 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                         (noteText == null || noteText.isEmpty)
                             ? AppLocalizations.of(context).notePlaceholder
                             : noteText,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              color: Colors.grey,
+                            ),
                         maxLines: isExpanded ? null : 1,
                         overflow: isExpanded ? null : TextOverflow.ellipsis,
                       ),
@@ -406,6 +411,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                   ),
           ),
           IconButton(
+            splashRadius: 24,
             icon: Icon(isEdit ? Icons.check : Icons.edit),
             onPressed: () {
               setState(
