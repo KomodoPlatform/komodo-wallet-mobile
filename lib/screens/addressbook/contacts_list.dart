@@ -36,6 +36,7 @@ class _ContactsListState extends State<ContactsList> {
       );
 
     return ListView(
+      key: const Key('address-list'),
       children: list,
     );
   }

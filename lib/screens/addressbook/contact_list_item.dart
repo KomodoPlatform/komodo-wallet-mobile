@@ -48,12 +48,16 @@ class _ContactListItemState extends State<ContactListItem> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         ListTile(
+          key: Key('address-item-${widget.contact.name}'),
           onTap: () {
             setState(() {
               expanded = !expanded;
             });
           },
-          title: Text(widget.contact.name),
+          title: Text(
+            widget.contact.name,
+            key: Key(widget.contact.name),
+          ),
         ),
         if (expanded)
           Padding(
@@ -63,6 +67,7 @@ class _ContactListItemState extends State<ContactListItem> {
                 _buildAddressesList(),
                 SizedBox(height: 8),
                 TextButton.icon(
+                  key: Key('edit-address-${widget.contact.name}'),
                   onPressed: () => Navigator.push<dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(
