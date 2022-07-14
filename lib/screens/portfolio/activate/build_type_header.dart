@@ -62,6 +62,9 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
       case CoinType.erc:
         return AppLocalizations.of(context).searchFilterSubtitleERC;
         break;
+      case CoinType.hrc:
+        return AppLocalizations.of(context).searchFilterSubtitleHRC;
+        break;
       case CoinType.bep:
         return AppLocalizations.of(context).searchFilterSubtitleBEP;
         break;
