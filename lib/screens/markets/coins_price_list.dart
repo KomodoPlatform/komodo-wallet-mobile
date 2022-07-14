@@ -52,6 +52,8 @@ class _CoinsPriceListState extends State<CoinsPriceList> {
                 itemCount: _sortedList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return BuildCoinPriceListItem(
+                    key: Key(
+                        'coin-' + _sortedList[index].coin.abbr.toUpperCase()),
                     coinBalance: _sortedList[index],
                     onTap: () {
                       widget.onItemTap(_sortedList[index].coin);
