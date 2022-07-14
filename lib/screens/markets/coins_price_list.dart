@@ -32,7 +32,7 @@ class _CoinsPriceListState extends State<CoinsPriceList> {
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         if (snapshot.data != null && snapshot.data.isNotEmpty) {
           final List<CoinBalance> _sortedList =
-              coinsBloc.sortCoins(snapshot.data);
+              coinsBloc.sortCoins(snapshot.data, removeTestCoins: true);
           return Listener(
             onPointerDown: (_) {
               setState(() {
