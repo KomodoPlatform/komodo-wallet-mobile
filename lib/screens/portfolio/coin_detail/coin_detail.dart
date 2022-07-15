@@ -341,6 +341,7 @@ class _CoinDetailState extends State<CoinDetail> {
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: OutlinedButton(
+              key: Key('tx-explorer-button'),
               onPressed: () => launchURL(link),
               style: OutlinedButton.styleFrom(
                 padding:
@@ -740,6 +741,7 @@ class _CoinDetailState extends State<CoinDetail> {
         return Stack(
           children: <Widget>[
             SecondaryButton(
+              key: Key('open-' + statusButton.name),
               text: text,
               textColor: Theme.of(context).textTheme.button.color,
               borderColor: Theme.of(context).colorScheme.secondary,
@@ -766,6 +768,7 @@ class _CoinDetailState extends State<CoinDetail> {
     }
 
     return SecondaryButton(
+      key: Key('open-' + statusButton.name),
       text: text,
       isDarkMode: Theme.of(context).brightness != Brightness.light,
       textColor: Theme.of(context).colorScheme.secondary,

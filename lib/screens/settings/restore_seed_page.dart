@@ -91,9 +91,10 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         hintText: AppLocalizations.of(context).exampleHintSeed,
         suffixIcon: PasswordVisibilityControl(
           onVisibilityChange: (bool isObscured) {
-            setState(() {
-              _isSeedHidden = isObscured;
-            });
+            if (mounted)
+              setState(() {
+                _isSeedHidden = isObscured;
+              });
           },
         ),
       ),
