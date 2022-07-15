@@ -1074,6 +1074,8 @@ class AppLocalizations {
       Intl.message('One hour not passed yet', name: 'rewardsOneHourLong');
   String get rewardsButton =>
       Intl.message('Claim your rewards', name: 'rewardsButton');
+  String get seeTxHistory =>
+      Intl.message('View Transaction History', name: 'viewTxHistory');
 
   // --- Multi Order---
 
