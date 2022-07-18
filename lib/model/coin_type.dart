@@ -8,6 +8,7 @@ enum CoinType {
   plg,
   ftm,
   qrc,
+  hrc,
 }
 
 CoinType coinTypeFromString(String value) {

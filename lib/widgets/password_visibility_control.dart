@@ -28,9 +28,10 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
 
   void _setObscureTo(bool isObscured) {
     if (_timer != null) _timer.cancel();
-    setState(() {
-      _isObscured = isObscured;
-    });
+    if (mounted)
+      setState(() {
+        _isObscured = isObscured;
+      });
     widget.onVisibilityChange(_isObscured);
   }
 
