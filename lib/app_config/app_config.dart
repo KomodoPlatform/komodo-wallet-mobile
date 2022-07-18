@@ -90,5 +90,7 @@ class AppConfig {
   String get maticUrl => 'https://komodo.live:3334/api/v1/plg_tx_history';
   String get plgUrl => 'https://komodo.live:3334/api/v2/plg_tx_history';
 
-  int get rpcPort => 7783;
+  /// We're using different rpc ports for different wallet packages
+  /// in order to allow multiple wallets to run simultaneously.
+  int get rpcPort => 7784;
 }
