@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:firo_dex/app_config/app_config.dart';
 import 'package:flutter/foundation.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart'
