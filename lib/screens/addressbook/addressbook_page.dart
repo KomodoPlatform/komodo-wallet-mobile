@@ -183,6 +183,9 @@ class _AddressBookState extends State<AddressBookPage> {
       case CoinType.qrc:
         title = 'QTUM & QRC tokens';
         break;
+      case CoinType.mvr:
+        title = 'Moonriver & MVR tokens';
+        break;
       case CoinType.utxo:
         if (coin.abbr == 'QTUM') title = 'QTUM & QRC tokens';
         break;

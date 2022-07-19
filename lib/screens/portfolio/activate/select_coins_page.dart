@@ -91,10 +91,12 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                       : Column(
                           children: [
                             Expanded(
-                              child: ListView.builder(
-                                itemCount: _listViewItems.length,
-                                itemBuilder: (BuildContext context, int i) =>
-                                    _listViewItems[i],
+                              child: Scrollbar(
+                                child: ListView.builder(
+                                  itemCount: _listViewItems.length,
+                                  itemBuilder: (BuildContext context, int i) =>
+                                      _listViewItems[i],
+                                ),
                               ),
                             ),
                             _buildDoneButton(),

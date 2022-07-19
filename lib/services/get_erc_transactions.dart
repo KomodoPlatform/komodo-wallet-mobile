@@ -25,6 +25,8 @@ class GetErcTransactions {
   final String ftmUrl = appConfig.ftmUrl;
   final String oneUrl = appConfig.oneUrl;
   final String hrcUrl = appConfig.hrcUrl;
+  final String movrUrl = appConfig.movrUrl;
+  final String mvrUrl = appConfig.mvrUrl;
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
     if (!isErcType(coin)) return;
@@ -75,6 +77,12 @@ class GetErcTransactions {
         url = (coin.protocol?.type == 'ETH' // 'HRC'
                 ? '$oneUrl/$address'
                 : '$hrcUrl/${coin.protocol.protocolData.contractAddress}/$address') +
+            (coin.testCoin ? '&testnet=true' : '');
+        break;
+      case CoinType.mvr:
+        url = (coin.protocol?.type == 'ETH' // 'MOVR'
+                ? '$movrUrl/$address'
+                : '$mvrUrl/${coin.protocol.protocolData.contractAddress}/$address') +
             (coin.testCoin ? '&testnet=true' : '');
         break;
     }
