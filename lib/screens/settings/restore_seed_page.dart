@@ -216,7 +216,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
       _isButtonDisabled = true;
       _isLogin = true;
     });
-    unfocusTextField(context);
+    unfocusEverything();
 
     Navigator.pushReplacement<dynamic, dynamic>(
       context,

@@ -22,6 +22,7 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 def keystoreProperties = new Properties()
@@ -31,7 +32,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     lintOptions {
         disable 'InvalidPackage'
@@ -51,6 +52,11 @@ android {
                 // mm2_lib.a requires libc++
                 cppFlags "-std=c++17 -stdlib=libc++"
             }
+        }
+
+        compileOptions {
+            sourceCompatibility 1.8
+            targetCompatibility 1.8
         }
 
         ndk {
