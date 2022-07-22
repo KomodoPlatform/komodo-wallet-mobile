@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/screens/portfolio/activate/show_protocol_menu.dart'
-    as menu;
 import 'package:komodo_dex/utils/utils.dart';
 
 class BuildFilterCoin extends StatefulWidget {
@@ -23,7 +21,7 @@ class BuildFilterCoin extends StatefulWidget {
 
 class _BuildFilterCoinState extends State<BuildFilterCoin> {
   static Map _typesName = {};
-  final GlobalKey globalKey = GlobalKey();
+  final GlobalKey _globalKey = GlobalKey();
 
   @override
   void initState() {
@@ -41,41 +39,42 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      key: globalKey,
+      key: _globalKey,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
           padding: EdgeInsets.only(right: 8.0, left: 4),
-          child: Padding(
-            padding: EdgeInsets.only(right: 3, left: 6),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  widget.typeFilter.toUpperCase(),
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                SizedBox(width: 8),
-                widget.typeFilter != ''
-                    ? InkWell(
-                        key: const Key('clear-filter-protocol'),
-                        onTap: () {
-                          widget.onSelected('');
-                          focusTextField(context);
-                        },
-                        child: Icon(
-                          Icons.close,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      )
-                    : InkWell(
-                        onTap: _showMenu,
-                        child: Icon(
+          child: InkWell(
+            key: const Key('show-filter-protocol'),
+            onTap: _showMenu,
+            child: Padding(
+              padding: EdgeInsets.only(right: 3, left: 6),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    widget.typeFilter.toUpperCase(),
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  SizedBox(width: 8),
+                  widget.typeFilter != ''
+                      ? InkWell(
+                          key: const Key('clear-filter-protocol'),
+                          onTap: () {
+                            widget.onSelected('');
+                            focusTextField(context);
+                          },
+                          child: Icon(
+                            Icons.close,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        )
+                      : Icon(
                           Icons.filter_list,
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
-                      ),
-              ],
+                ],
+              ),
             ),
           ),
         )
@@ -85,7 +84,7 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
 
   void _showMenu() {
     final RenderBox button =
-        globalKey.currentContext.findRenderObject() as RenderBox;
+        _globalKey.currentContext.findRenderObject() as RenderBox;
     final RenderBox overlay =
         Navigator.of(context).overlay.context.findRenderObject() as RenderBox;
     const Offset offset = Offset.zero;
@@ -111,6 +110,9 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
       return PopupMenuItem<String>(
         key: Key('filter-item-' + protocolType),
         value: protocolType,
+        onTap: () {
+          widget.onSelected(protocolType);
+        },
         child: Text(
           _typesName[protocolType] ?? '',
         ),
