@@ -11,19 +11,20 @@ class SearchFieldFilterCoin extends StatefulWidget {
     this.clear,
     this.type,
     this.controller,
+    this.focusNode,
   }) : super(key: key);
 
   final Function(List<Coin>) onFilterCoins;
   final Function clear;
   final String type;
   final TextEditingController controller;
+  final FocusNode focusNode;
 
   @override
   _SearchFieldFilterCoinState createState() => _SearchFieldFilterCoinState();
 }
 
 class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
-  final FocusNode _focus = FocusNode();
   bool isEmptyQuery = true;
 
   @override
@@ -43,7 +44,7 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
         textAlignVertical: TextAlignVertical.center,
         textInputAction: TextInputAction.search,
         controller: widget.controller,
-        focusNode: _focus,
+        focusNode: widget.focusNode,
         maxLines: 1,
         inputFormatters: [
           LengthLimitingTextInputFormatter(50),

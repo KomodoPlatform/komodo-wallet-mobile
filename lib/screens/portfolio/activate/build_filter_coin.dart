@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/utils/utils.dart';
 
 class BuildFilterCoin extends StatefulWidget {
   const BuildFilterCoin({
@@ -11,10 +10,13 @@ class BuildFilterCoin extends StatefulWidget {
     this.typeFilter,
     this.allCoinsTypes,
     this.onSelected,
+    this.focusNode,
   }) : super(key: key);
   final String typeFilter;
   final List<String> allCoinsTypes;
   final Function(String) onSelected;
+  final FocusNode focusNode;
+
   @override
   State<BuildFilterCoin> createState() => _BuildFilterCoinState();
 }
@@ -62,7 +64,7 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
                           key: const Key('clear-filter-protocol'),
                           onTap: () {
                             widget.onSelected('');
-                            focusTextField(context);
+                            widget.focusNode.requestFocus();
                           },
                           child: Icon(
                             Icons.close,

@@ -56,7 +56,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
   String typeFilter = '';
   final TextEditingController controller = TextEditingController();
-
+  FocusNode myFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return LockScreen(
@@ -69,6 +69,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
             title: SearchFieldFilterCoin(
               clear: () => _initCoinList(),
               type: typeFilter,
+              focusNode: myFocusNode,
               controller: controller,
               onFilterCoins: (List<Coin> coinsFiltered) {
                 setState(() {
@@ -81,6 +82,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
               BuildFilterCoin(
                 typeFilter: typeFilter,
                 allCoinsTypes: allCoinsTypes,
+                focusNode: myFocusNode,
                 onSelected: (String aType) async {
                   typeFilter = aType;
                   List<Coin> coinsFiltered = await coinsBloc
