@@ -242,11 +242,11 @@ The tests:
 - Press back button to go to the dex page
 - Press the Order tab to move to the orders page to see the newly created order
 
-#### 3.1.8. Create an Multi Swap
+#### 3.1.8. Create a Multi Swap
 - Open terminal in the project's root folder
 - Type and run the test file in the terminal:
 ```bash
-flutter test integration_test/runners/create_advanced_swap.dart
+flutter test integration_test/runners/create_multi_swap.dart
 ```
 - The test build and opens AtomicDEX from the Splash Screen and restores a wallet
 
