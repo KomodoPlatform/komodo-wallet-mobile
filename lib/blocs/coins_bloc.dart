@@ -171,28 +171,10 @@ class CoinsBloc implements BlocBase {
   }) {
     final List<CoinToActivate> list = [];
     for (CoinToActivate item in coinBeforeActivation) {
-      bool shouldChange;
-      // type == null when we're selecting/deselecting test coins
-      if (type == null) {
-        if (filterType.isNotEmpty || query.isNotEmpty) {
-          if (isCoinPresent(item.coin, query, filterType)) {
-            shouldChange = item.coin.testCoin;
-          } else {
-            shouldChange = false;
-          }
-        } else {
-          shouldChange = item.coin.testCoin;
-        }
-      } else {
-        if (filterType.isNotEmpty || query.isNotEmpty) {
-          if (isCoinPresent(item.coin, query, filterType)) {
-            shouldChange = !item.coin.testCoin;
-          } else {
-            shouldChange = false;
-          }
-        } else {
-          shouldChange = item.coin.type.name == type && !item.coin.testCoin;
-        }
+      bool shouldChange = false;
+
+      if (isCoinPresent(item.coin, query, filterType)) {
+        shouldChange = item.coin.testCoin ? true : item.coin.type.name == type;
       }
 
       if (shouldChange) {
