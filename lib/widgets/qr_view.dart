@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScan extends StatelessWidget {
+  bool gotQR = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,9 +14,11 @@ class QRScan extends StatelessWidget {
           allowDuplicates: false,
           controller: MobileScannerController(formats: [BarcodeFormat.qrCode]),
           onDetect: (barcode, args) async {
+            if (gotQR) return;
             if (barcode.rawValue == null) {
               debugPrint('Failed to scan Barcode');
             } else {
+              gotQR = true;
               final String code = barcode.rawValue;
               if (code != null) {
                 debugPrint('Barcode found! $code');
