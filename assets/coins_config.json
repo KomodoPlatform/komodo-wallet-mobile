@@ -1992,5 +1992,170 @@
         "colorCoin": "0xff5493F7",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "AAVE-HCO20",
+        "name": "Aave",
+        "coingeckoId": "aave",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff9C64A6",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "BCH-HCO20",
+        "name": "Bitcoin Cash",
+        "coingeckoId": "bitcoin-cash",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff8DC351",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "DAI-HCO20",
+        "name": "Dai",
+        "coingeckoId": "dai",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xffB68900",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "DOT-HCO20",
+        "name": "Polkadot",
+        "coingeckoId": "polkadot",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xffE80082",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "FIL-HCO20",
+        "name": "Filecoin",
+        "coingeckoId": "filecoin",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff4CCAD2",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "MATIC-HCO20",
+        "name": "Polygon",
+        "coingeckoId": "matic-network",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff804EE1",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "ETH-HCO20",
+        "name": "Ethereum",
+        "coingeckoId": "ethereum",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff687DE3",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDC-HCO20",
+        "name": "USD Coin",
+        "coingeckoId": "usd-coin",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff317BCB",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDT-HCO20",
+        "name": "Tether",
+        "coingeckoId": "tether",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff26A17B",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "LINK-HCO20",
+        "name": "Chainlink",
+        "coingeckoId": "chainlink",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff356CE4",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "REN-HCO20",
+        "name": "Ren",
+        "coingeckoId": "republic-protocol",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff595959",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "TUSD-HCO20",
+        "name": "TrueUSD",
+        "coingeckoId": "true-usd",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff2E3181",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "HT",
+        "name": "Huobi Token",
+        "coingeckoId": "huobi-token",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff00953F",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "HUSD-HCO20",
+        "name": "HUSD",
+        "coingeckoId": "husd",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff0075FB",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "UNI-HCO20",
+        "name": "Uniswap",
+        "coingeckoId": "uniswap",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xffFF007A",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     }
 ]

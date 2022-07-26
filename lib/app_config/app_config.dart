@@ -29,6 +29,7 @@ class AppConfig {
     'PLG20',
     'FTM20',
     'HRC20',
+    'HCO20'
   ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
 
@@ -100,4 +101,6 @@ class AppConfig {
   String get ftmUrl => 'https://komodo.live:3334/api/v2/ftm_tx_history';
   String get oneUrl => 'https://komodo.live:3334/api/v1/hrc_tx_history';
   String get hrcUrl => 'https://komodo.live:3334/api/v2/hrc_tx_history';
+  String get htUrl => 'https://komodo.live:3334/api/v1/heco_tx_history';
+  String get hcoUrl => 'https://komodo.live:3334/api/v2/heco_tx_history';
 }
