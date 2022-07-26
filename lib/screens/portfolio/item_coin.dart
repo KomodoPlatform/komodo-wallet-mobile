@@ -55,6 +55,7 @@ class _ItemCoinState extends State<ItemCoin>
           '${coin.abbr} balance: ${balance.balance}'
               '; locked_by_swaps: ${balance.lockedBySwaps}');
       actions.add(SlidableAction(
+        key: Key('send-coin'),
         label: AppLocalizations.of(context).send,
         backgroundColor: Colors.white,
         icon: Icons.arrow_upward,
@@ -71,6 +72,7 @@ class _ItemCoinState extends State<ItemCoin>
       ));
     }
     actions.add(SlidableAction(
+      key: Key('receive-coin'),
       label: AppLocalizations.of(context).receive,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       icon: Icons.arrow_downward,
@@ -80,6 +82,7 @@ class _ItemCoinState extends State<ItemCoin>
     ));
     if (!coin.walletOnly && double.parse(balance.getBalance()) > 0) {
       actions.add(SlidableAction(
+        key: Key('swap-coin'),
         label: AppLocalizations.of(context).swap.toUpperCase(),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         icon: Icons.swap_vert,
@@ -111,6 +114,7 @@ class _ItemCoinState extends State<ItemCoin>
           extentRatio: 0.4,
           children: [
             SlidableAction(
+              key: Key('disable-coin'),
               label: AppLocalizations.of(context).remove.toUpperCase(),
               backgroundColor: Theme.of(context).errorColor,
               icon: Icons.delete,
