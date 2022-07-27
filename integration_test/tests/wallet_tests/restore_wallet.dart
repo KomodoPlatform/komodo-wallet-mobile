@@ -10,7 +10,7 @@ Future<void> restoreWalletToTest(WidgetTester tester,
     {String existingWalletName}) async {
   // Restores wallet to be used in following tests
   const String seedPhrase =
-      'rail broken swamp that tumble ostrich first crisp rain price crunch riot';
+      'hazard slam top rail jacket ecology trash first stock nut swift thought youth rack slot regular wasp bulk spatial legal staff change way brush';
   const String customSeed = 'hazard slam top';
   const String walletName = 'restored-wallet';
   final Finder restoreWalletButton = find.byKey(const Key('restoreWallet'));

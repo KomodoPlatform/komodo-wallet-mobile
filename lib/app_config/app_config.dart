@@ -22,8 +22,14 @@ class AppConfig {
 
   List<String> get defaultCoins => ['KMD', 'BTC'];
   List<String> get coinsFiat => ['BTC', 'KMD'];
-  List<String> get walletOnlyCoins => ['USDT-ERC20'];
-  final List<String> protocolSuffixes = ['ERC20', 'BEP20', 'PLG20', 'FTM20'];
+  List<String> get walletOnlyCoins => ['USDT-ERC20', 'VOTE2022'];
+  final List<String> protocolSuffixes = [
+    'ERC20',
+    'BEP20',
+    'PLG20',
+    'FTM20',
+    'HRC20',
+  ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
 
   bool get isSwapShareCardEnabled => true;
@@ -92,8 +98,6 @@ class AppConfig {
   String get plgUrl => 'https://komodo.live:3334/api/v2/plg_tx_history';
   String get fantomUrl => 'https://komodo.live:3334/api/v1/ftm_tx_history';
   String get ftmUrl => 'https://komodo.live:3334/api/v2/ftm_tx_history';
-
-  /// We're using different rpc ports for different wallet packages
-  /// in order to allow multiple wallets to run simultaneously.
-  int get rpcPort => 7783;
+  String get oneUrl => 'https://komodo.live:3334/api/v1/hrc_tx_history';
+  String get hrcUrl => 'https://komodo.live:3334/api/v2/hrc_tx_history';
 }

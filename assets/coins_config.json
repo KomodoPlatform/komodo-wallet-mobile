@@ -28,9 +28,7 @@
             "electrum2.cipig.net:10000",
             "electrum3.cipig.net:10000"
         ],
-        "explorerUrl": [
-            "https://insight.bitpay.com/"
-        ]
+        "explorerUrl": ["https://insight.bitpay.com/"]
     },
     {
         "name": "AtomicWallet",
@@ -48,9 +46,7 @@
             "http://eth2.cipig.net:8555",
             "http://eth3.cipig.net:8555"
         ],
-        "explorerUrl": [
-            "https://etherscan.io/"
-        ]
+        "explorerUrl": ["https://etherscan.io/"]
     },
     {
         "name": "Axe",
@@ -66,9 +62,7 @@
             "electrum2.cipig.net:10057",
             "electrum1.cipig.net:10057"
         ],
-        "explorerUrl": [
-            "https://insight.axerunners.com/"
-        ]
+        "explorerUrl": ["https://insight.axerunners.com/"]
     },
     {
         "name": "BAT-ERC20",
@@ -86,9 +80,7 @@
             "http://eth2.cipig.net:8555",
             "http://eth3.cipig.net:8555"
         ],
-        "explorerUrl": [
-            "https://etherscan.io/"
-        ]
+        "explorerUrl": ["https://etherscan.io/"]
     },
     {
         "name": "BUSD-ERC20",
@@ -106,9 +98,7 @@
             "http://eth2.cipig.net:8555",
             "http://eth3.cipig.net:8555"
         ],
-        "explorerUrl": [
-            "https://etherscan.io/"
-        ]
+        "explorerUrl": ["https://etherscan.io/"]
     },
     {
         "name": "Bitcoin Cash",
@@ -124,9 +114,7 @@
             "electrum2.cipig.net:10055",
             "electrum3.cipig.net:10055"
         ],
-        "explorerUrl": [
-            "https://explorer.bitcoin.com/bch/"
-        ]
+        "explorerUrl": ["https://explorer.bitcoin.com/bch/"]
     },
     {
         "name": "CHIPS",
@@ -142,9 +130,7 @@
             "electrum2.cipig.net:10053",
             "electrum3.cipig.net:10053"
         ],
-        "explorerUrl": [
-            "https://explorer.chips.cash/"
-        ]
+        "explorerUrl": ["https://explorer.chips.cash/"]
     },
     {
         "name": "ChainZilla",
@@ -160,9 +146,7 @@
             "electrum2.cipig.net:10028",
             "electrum1.cipig.net:10028"
         ],
-        "explorerUrl": [
-            "https://zillaexplorer.io/"
-        ]
+        "explorerUrl": ["https://zillaexplorer.io/"]
     },
     {
         "name": "DAI-ERC20",
@@ -180,9 +164,7 @@
             "http://eth2.cipig.net:8555",
             "http://eth3.cipig.net:8555"
         ],
-        "explorerUrl": [
-            "https://etherscan.io/"
-        ]
+        "explorerUrl": ["https://etherscan.io/"]
     },
     {
         "name": "DASH",
@@ -198,9 +180,7 @@
             "electrum2.cipig.net:10061",
             "electrum3.cipig.net:10061"
         ],
-        "explorerUrl": [
-            "https://explorer.dash.org/"
-        ]
+        "explorerUrl": ["https://explorer.dash.org/"]
     },
     {
         "name": "Digibyte",
@@ -216,9 +196,7 @@
             "electrum2.cipig.net:10059",
             "electrum1.cipig.net:10059"
         ],
-        "explorerUrl": [
-            "https://digiexplorer.info/"
-        ]
+        "explorerUrl": ["https://digiexplorer.info/"]
     },
     {
         "name": "Dogecoin",
@@ -234,9 +212,7 @@
             "electrum2.cipig.net:10060",
             "electrum1.cipig.net:10060"
         ],
-        "explorerUrl": [
-            "https://dogechain.info/"
-        ]
+        "explorerUrl": ["https://dogechain.info/"]
     },
     {
         "name": "Electra",
@@ -252,9 +228,7 @@
             "electrum2.cipig.net:10052",
             "electrum3.cipig.net:10052"
         ],
-        "explorerUrl": [
-            "https://eca.ccore.online/"
-        ]
+        "explorerUrl": ["https://eca.ccore.online/"]
     },
     {
         "name": "Ethereum",
@@ -272,9 +246,7 @@
             "http://eth2.cipig.net:8555",
             "http://eth3.cipig.net:8555"
         ],
-        "explorerUrl": [
-            "https://etherscan.io/"
-        ]
+        "explorerUrl": ["https://etherscan.io/"]
     },
     {
         "name": "Ethereum (Ropsten)",
@@ -291,9 +263,7 @@
         "serverList": [
             "https://ropsten.infura.io/v3/1d059a9aca7d49a3a380c71068bffb1c"
         ],
-        "explorerUrl": [
-            "https://ropsten.etherscan.io/"
-        ]
+        "explorerUrl": ["https://ropsten.etherscan.io/"]
     },
     {
         "name": "JST (Ropsten)",
@@ -310,9 +280,7 @@
         "serverList": [
             "https://ropsten.infura.io/v3/1d059a9aca7d49a3a380c71068bffb1c"
         ],
-        "explorerUrl": [
-            "https://ropsten.etherscan.io/"
-        ]
+        "explorerUrl": ["https://ropsten.etherscan.io/"]
     },
     {
         "name": "Feathercoin",
@@ -328,9 +296,7 @@
             "electrum2.cipig.net:10054",
             "electrum3.cipig.net:10054"
         ],
-        "explorerUrl": [
-            "https://explorer.feathercoin.com/"
-        ]
+        "explorerUrl": ["https://explorer.feathercoin.com/"]
     },
     {
         "name": "KMDLABS",
@@ -346,9 +312,7 @@
             "electrum2.cipig.net:10019",
             "electrum1.cipig.net:10019"
         ],
-        "explorerUrl": [
-            "https://labs.explorer.dexstats.info/"
-        ]
+        "explorerUrl": ["https://labs.explorer.dexstats.info/"]
     },
     {
         "name": "KOINON",
@@ -364,9 +328,7 @@
             "electrum2.cipig.net:10024",
             "electrum1.cipig.net:10024"
         ],
-        "explorerUrl": [
-            "https://block.koinon.cloud/"
-        ]
+        "explorerUrl": ["https://block.koinon.cloud/"]
     },
     {
         "name": "Litecoin",
@@ -382,9 +344,7 @@
             "electrum2.cipig.net:10063",
             "electrum3.cipig.net:10063"
         ],
-        "explorerUrl": [
-            "https://blockexplorer.one/litecoin/mainnet/"
-        ]
+        "explorerUrl": ["https://blockexplorer.one/litecoin/mainnet/"]
     },
     {
         "name": "MCL",
@@ -400,9 +360,7 @@
             "electrum2.cipig.net:10023",
             "electrum1.cipig.net:10023"
         ],
-        "explorerUrl": [
-            "http://explorer.marmara.io/"
-        ]
+        "explorerUrl": ["http://explorer.marmara.io/"]
     },
     {
         "name": "Morty",
@@ -417,9 +375,7 @@
             "electrum2.cipig.net:20018",
             "electrum1.cipig.net:20018"
         ],
-        "explorerUrl": [
-            "https://morty.kmd.dev/"
-        ]
+        "explorerUrl": ["https://morty.kmd.dev/"]
     },
     {
         "name": "Navcoin",
@@ -436,9 +392,7 @@
             "electrum3.nav.community:40002",
             "electrum4.nav.community:40002"
         ],
-        "explorerUrl": [
-            "https://www.navexplorer.com/"
-        ]
+        "explorerUrl": ["https://www.navexplorer.com/"]
     },
     {
         "name": "Paxos",
@@ -456,9 +410,7 @@
             "http://eth2.cipig.net:8555",
             "http://eth3.cipig.net:8555"
         ],
-        "explorerUrl": [
-            "https://etherscan.io/"
-        ]
+        "explorerUrl": ["https://etherscan.io/"]
     },
     {
         "name": "QTUM",
@@ -474,9 +426,7 @@
             "electrum2.cipig.net:10050",
             "electrum3.cipig.net:10050"
         ],
-        "explorerUrl": [
-            "https://qtum.info/"
-        ]
+        "explorerUrl": ["https://qtum.info/"]
     },
     {
         "name": "Qcash",
@@ -494,9 +444,7 @@
             "electrum2.cipig.net:10050",
             "electrum3.cipig.net:10050"
         ],
-        "explorerUrl": [
-            "https://qtum.info/"
-        ]
+        "explorerUrl": ["https://qtum.info/"]
     },
     {
         "name": "Ravencoin",
@@ -512,9 +460,7 @@
             "electrum2.cipig.net:10051",
             "electrum1.cipig.net:10051"
         ],
-        "explorerUrl": [
-            "https://ravencoin.network/"
-        ]
+        "explorerUrl": ["https://ravencoin.network/"]
     },
     {
         "name": "Rick",
@@ -531,9 +477,7 @@
             "electrum2.cipig.net:20017",
             "electrum3.cipig.net:20017"
         ],
-        "explorerUrl": [
-            "https://rick.kmd.dev/"
-        ]
+        "explorerUrl": ["https://rick.kmd.dev/"]
     },
     {
         "name": "HempCoin",
@@ -548,9 +492,7 @@
             "1.eu.thc.electrum.dexstats.info:10020",
             "2.eu.thc.electrum.dexstats.info:10020"
         ],
-        "explorerUrl": [
-            "https://thc.explorer.dexstats.info/"
-        ]
+        "explorerUrl": ["https://thc.explorer.dexstats.info/"]
     },
     {
         "abbr": "THC-BEP20",
@@ -565,9 +507,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ]
+        "explorerUrl": ["https://bscscan.com/"]
     },
     {
         "name": "TOKEL",
@@ -582,9 +522,7 @@
             "1.eu.tokel.electrum.dexstats.info:10077",
             "2.eu.tokel.electrum.dexstats.info:10077"
         ],
-        "explorerUrl": [
-            "https://explorer.tokel.io/"
-        ]
+        "explorerUrl": ["https://explorer.tokel.io/"]
     },
     {
         "name": "TrueUSD",
@@ -602,9 +540,7 @@
             "http://eth2.cipig.net:8555",
             "http://eth3.cipig.net:8555"
         ],
-        "explorerUrl": [
-            "https://etherscan.io/"
-        ]
+        "explorerUrl": ["https://etherscan.io/"]
     },
     {
         "name": "USDC-ERC20",
@@ -622,9 +558,7 @@
             "http://eth2.cipig.net:8555",
             "http://eth3.cipig.net:8555"
         ],
-        "explorerUrl": [
-            "https://etherscan.io/"
-        ]
+        "explorerUrl": ["https://etherscan.io/"]
     },
     {
         "name": "VerusCoin",
@@ -640,9 +574,7 @@
             "el1.verus.io:17485",
             "el2.verus.io:17485"
         ],
-        "explorerUrl": [
-            "https://explorer.verus.io/"
-        ]
+        "explorerUrl": ["https://explorer.verus.io/"]
     },
     {
         "name": "ZCash",
@@ -658,9 +590,7 @@
             "electrum2.cipig.net:10058",
             "electrum1.cipig.net:10058"
         ],
-        "explorerUrl": [
-            "https://zcashnetwork.info/"
-        ]
+        "explorerUrl": ["https://zcashnetwork.info/"]
     },
     {
         "name": "Firo",
@@ -676,9 +606,7 @@
             "electrumx03.firo.org:50001",
             "electrumx01.firo.org:50001"
         ],
-        "explorerUrl": [
-            "https://explorer.firo.org/"
-        ]
+        "explorerUrl": ["https://explorer.firo.org/"]
     },
     {
         "name": "Zero",
@@ -694,9 +622,7 @@
             "electrum2.cipig.net:10065",
             "electrum3.cipig.net:10065"
         ],
-        "explorerUrl": [
-            "https://insight.zerocurrency.io/insight/"
-        ]
+        "explorerUrl": ["https://insight.zerocurrency.io/insight/"]
     },
     {
         "name": "tBitcoin-TEST",
@@ -713,9 +639,7 @@
             "electrum2.cipig.net:10068",
             "electrum3.cipig.net:10068"
         ],
-        "explorerUrl": [
-            "https://blockstream.info/testnet/"
-        ]
+        "explorerUrl": ["https://blockstream.info/testnet/"]
     },
     {
         "name": "SmartUSD",
@@ -731,9 +655,7 @@
             "electrum2.cipig.net:10070",
             "electrum3.cipig.net:10070"
         ],
-        "explorerUrl": [
-            "https://explorer.pbc.kmd.sh/"
-        ]
+        "explorerUrl": ["https://explorer.pbc.kmd.sh/"]
     },
     {
         "abbr": "SMTF-v2",
@@ -748,9 +670,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ]
+        "explorerUrl": ["https://bscscan.com/"]
     },
     {
         "abbr": "BNB",
@@ -765,9 +685,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ]
+        "explorerUrl": ["https://bscscan.com/"]
     },
     {
         "abbr": "KMD-BEP20",
@@ -782,9 +700,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ]
+        "explorerUrl": ["https://bscscan.com/"]
     },
     {
         "abbr": "AAVE-BEP20",
@@ -795,9 +711,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xFF519FBC",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -812,9 +726,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xFF0E1F32",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -829,9 +741,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xFFDCE5F4",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -846,9 +756,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff454a65",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -863,9 +771,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xffee5852",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -880,9 +786,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff2d2d2d",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -897,9 +801,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff6e8eff",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -914,9 +816,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff001542",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -931,9 +831,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xFFf7931a",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -948,9 +846,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xFFF0BA01",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -965,9 +861,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xffda9a61",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -982,9 +876,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff00dcaf",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -999,9 +891,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xFFF8B34F",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1016,9 +906,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xfffff500",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1033,9 +921,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xfff12e9a",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1050,9 +936,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff2462c2",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1067,9 +951,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff3a78ca",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1084,9 +966,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff454445",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1101,9 +981,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff4fa753",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1118,9 +996,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff5fd6de",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1135,9 +1011,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff3e3d3e",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1152,9 +1026,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff00e5e7",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1169,9 +1041,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff469af7",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1186,9 +1056,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff000000",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1203,9 +1071,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff4bc4d9",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1220,9 +1086,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xfff5ee00",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1237,9 +1101,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xffe4ca22",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1254,9 +1116,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xFF828384",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1271,9 +1131,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xFF2775c9",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1288,9 +1146,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff38c1a4",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1312,9 +1168,7 @@
             "http://eth2.cipig.net:8555",
             "http://eth3.cipig.net:8555"
         ],
-        "explorerUrl": [
-            "https://etherscan.io/"
-        ]
+        "explorerUrl": ["https://etherscan.io/"]
     },
     {
         "abbr": "BAT-BEP20",
@@ -1325,9 +1179,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xFFff5000",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1342,9 +1194,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff4588eb",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1359,9 +1209,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xfffe8137",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1383,9 +1231,7 @@
             "http://eth2.cipig.net:8555",
             "http://eth3.cipig.net:8555"
         ],
-        "explorerUrl": [
-            "https://etherscan.io/"
-        ]
+        "explorerUrl": ["https://etherscan.io/"]
     },
     {
         "abbr": "SUSHI-BEP20",
@@ -1396,9 +1242,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xffb58cc7",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1413,9 +1257,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff1fccc3",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1430,9 +1272,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff1e126c",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1447,9 +1287,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff384149",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1464,9 +1302,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xffc5e900",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1481,9 +1317,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xfff7cc77",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1498,9 +1332,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff0095f0",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1515,9 +1347,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xffff498f",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1532,9 +1362,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xff6cd9da",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1549,9 +1377,7 @@
             "http://bsc2.cipig.net:8655",
             "http://bsc3.cipig.net:8655"
         ],
-        "explorerUrl": [
-            "https://bscscan.com/"
-        ],
+        "explorerUrl": ["https://bscscan.com/"],
         "type": "bep",
         "colorCoin": "0xffff309e",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
@@ -1570,9 +1396,7 @@
             "electrum2.cipig.net:10071",
             "electrum3.cipig.net:10071"
         ],
-        "explorerUrl": [
-            "https://testnet.qtum.info/"
-        ]
+        "explorerUrl": ["https://testnet.qtum.info/"]
     },
     {
         "abbr": "BNBT",
@@ -1583,12 +1407,8 @@
         "colorCoin": "0xFFF0B90B",
         "swap_contract_address": "0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150",
         "fallback_swap_contract": "0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150",
-        "serverList": [
-            "https://data-seed-prebsc-1-s2.binance.org:8545"
-        ],
-        "explorerUrl": [
-            "https://testnet.bscscan.com/"
-        ]
+        "serverList": ["https://data-seed-prebsc-1-s2.binance.org:8545"],
+        "explorerUrl": ["https://testnet.bscscan.com/"]
     },
     {
         "name": "QRC20",
@@ -1605,9 +1425,7 @@
             "electrum2.cipig.net:10071",
             "electrum3.cipig.net:10071"
         ],
-        "explorerUrl": [
-            "https://testnet.qtum.info/"
-        ]
+        "explorerUrl": ["https://testnet.qtum.info/"]
     },
     {
         "abbr": "ADEXBSCT",
@@ -1618,12 +1436,8 @@
         "colorCoin": "0xFF4a7382",
         "swap_contract_address": "0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150",
         "fallback_swap_contract": "0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150",
-        "serverList": [
-            "https://data-seed-prebsc-1-s2.binance.org:8545"
-        ],
-        "explorerUrl": [
-            "https://testnet.bscscan.com/"
-        ]
+        "serverList": ["https://data-seed-prebsc-1-s2.binance.org:8545"],
+        "explorerUrl": ["https://testnet.bscscan.com/"]
     },
     {
         "abbr": "MATIC",
@@ -1631,12 +1445,8 @@
         "type": "plg",
         "coingeckoId": "matic-network",
         "colorCoin": "0xFF6F41D8",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
@@ -1644,12 +1454,8 @@
         "abbr": "PGX-PLG20",
         "name": "Pegaxystone",
         "coingeckoId": "pegaxy-stone",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xffbb0000",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1659,12 +1465,8 @@
         "abbr": "1INCH-PLG20",
         "name": "1inch",
         "coingeckoId": "1inch",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xFFDCE5F4",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1674,12 +1476,8 @@
         "abbr": "AAVE-PLG20",
         "name": "Aave",
         "coingeckoId": "aave",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xFF519FBC",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1689,12 +1487,8 @@
         "abbr": "BAL-PLG20",
         "name": "Balancer",
         "coingeckoId": "balancer",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xff2d2d2d",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1704,12 +1498,8 @@
         "abbr": "BAND-PLG20",
         "name": "Band Protocol",
         "coingeckoId": "band-protocol",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xff6e8eff",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1719,12 +1509,8 @@
         "abbr": "BAT-PLG20",
         "name": "BAT-PLG20",
         "coingeckoId": "basic-attention-token",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xFFff5000",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1734,12 +1520,8 @@
         "abbr": "BNT-PLG20",
         "name": "Bancor",
         "coingeckoId": "bancor",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xff001542",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1749,12 +1531,8 @@
         "abbr": "BUSD-PLG20",
         "name": "BUSD PLG20",
         "coingeckoId": "binance-usd",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xFFF0BA01",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1764,12 +1542,8 @@
         "abbr": "COMP-PLG20",
         "name": "Compound",
         "coingeckoId": "compound-governance-token",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xff00dcaf",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1779,12 +1553,8 @@
         "abbr": "DAI-PLG20",
         "name": "DAI",
         "coingeckoId": "dai",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xFFF8B34F",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1794,12 +1564,8 @@
         "abbr": "ETH-PLG20",
         "name": "Ethereum BEP20",
         "coingeckoId": "ethereum",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xFF828384",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1809,12 +1575,8 @@
         "abbr": "IOTX-PLG20",
         "name": "IoTeX",
         "coingeckoId": "iotex",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xff00e5e7",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1824,12 +1586,8 @@
         "abbr": "LINK-PLG20",
         "name": "Chainlink",
         "coingeckoId": "chainlink",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xff4588eb",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1839,12 +1597,8 @@
         "abbr": "PAX-PLG20",
         "name": "Paxos Standard",
         "coingeckoId": "paxos-standard",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xfff5ee00",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1854,12 +1608,8 @@
         "abbr": "PAXG-PLG20",
         "name": "PAX Gold",
         "coingeckoId": "pax-gold",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xffe4ca22",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1869,12 +1619,8 @@
         "abbr": "SNX-PLG20",
         "name": "Synthetix",
         "coingeckoId": "havven",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xff1e126c",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1884,12 +1630,8 @@
         "abbr": "SUSHI-PLG20",
         "name": "Sushi",
         "coingeckoId": "sushi",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xffb58cc7",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1903,23 +1645,15 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "colorCoin": "0xFF1B1C5B",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ]
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"]
     },
     {
         "abbr": "UNI-PLG20",
         "name": "Uniswap",
         "coingeckoId": "uniswap",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xffff309e",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1929,12 +1663,8 @@
         "abbr": "USDC-PLG20",
         "name": "USDC PLG20",
         "coingeckoId": "usd-coin",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xFF2775c9",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1944,12 +1674,8 @@
         "abbr": "USDT-PLG20",
         "name": "Tether",
         "coingeckoId": "tether",
-        "serverList": [
-            "https://polygon-rpc.com"
-        ],
-        "explorerUrl": [
-            "https://polygonscan.com/"
-        ],
+        "serverList": ["https://polygon-rpc.com"],
+        "explorerUrl": ["https://polygonscan.com/"],
         "type": "plg",
         "colorCoin": "0xff38c1a4",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1959,12 +1685,8 @@
         "abbr": "AAVE-FTM20",
         "name": "Aave",
         "coingeckoId": "aave",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xff9C64A6",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1974,12 +1696,8 @@
         "abbr": "BAND-FTM20",
         "name": "Band Protocol",
         "coingeckoId": "band-protocol",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xff526BFF",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -1989,12 +1707,8 @@
         "abbr": "DAI-FTM20",
         "name": "Dai",
         "coingeckoId": "dai",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xffB68900",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -2005,12 +1719,8 @@
         "name": "Fantom Testnet",
         "coingeckoId": "test-coin",
         "testCoin": true,
-        "serverList": [
-            "https://rpc.testnet.fantom.network/"
-        ],
-        "explorerUrl": [
-            "https://testnet.ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.testnet.fantom.network/"],
+        "explorerUrl": ["https://testnet.ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xff13B5EC",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -2020,12 +1730,8 @@
         "abbr": "FTM",
         "name": "Fantom",
         "coingeckoId": "fantom",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xff13B5EC",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -2035,12 +1741,8 @@
         "abbr": "ETH-FTM20",
         "name": "Ethereum",
         "coingeckoId": "ethereum",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xff687DE3",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -2050,12 +1752,8 @@
         "abbr": "USDC-FTM20",
         "name": "USD Coin",
         "coingeckoId": "usd-coin",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xff317BCB",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -2065,12 +1763,8 @@
         "abbr": "USDT-FTM20",
         "name": "Tether",
         "coingeckoId": "tether",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xff26A17B",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -2080,12 +1774,8 @@
         "abbr": "LINK-FTM20",
         "name": "Chainlink",
         "coingeckoId": "chainlink",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xff356CE4",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -2095,12 +1785,8 @@
         "abbr": "SUSHI-FTM20",
         "name": "Sushi",
         "coingeckoId": "sushi",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xffE25DA8",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -2110,12 +1796,8 @@
         "abbr": "SNX-FTM20",
         "name": "Synthetix",
         "coingeckoId": "havven",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xff00D1FF",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -2125,12 +1807,8 @@
         "abbr": "YFI-FTM20",
         "name": "yearn.finance",
         "coingeckoId": "yearn-finance",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xff006BE6",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
@@ -2140,14 +1818,178 @@
         "abbr": "CRV-FTM20",
         "name": "Curve DAO Token",
         "coingeckoId": "curve-dao-token",
-        "serverList": [
-            "https://rpc.ftm.tools/"
-        ],
-        "explorerUrl": [
-            "https://ftmscan.com/"
-        ],
+        "serverList": ["https://rpc.ftm.tools/"],
+        "explorerUrl": ["https://ftmscan.com/"],
         "type": "ftm",
         "colorCoin": "0xff517AB5",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "name": "VOTE2022",
+        "type": "smartChain",
+        "proto": "SSL",
+        "abbr": "VOTE2022",
+        "coingeckoId": "test-token",
+        "colorCoin": "0xFF326464",
+        "serverList": [
+            "electrum1.cipig.net:20002",
+            "electrum2.cipig.net:20002",
+            "electrum3.cipig.net:20002"
+        ],
+        "explorerUrl": ["https://vote.kmdexplorer.io/"]
+    },
+    {
+        "abbr": "1INCH-HRC20",
+        "name": "1inch",
+        "coingeckoId": "1inch",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xff95A7C5",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "AAVE-HRC20",
+        "name": "Aave",
+        "coingeckoId": "aave",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xff9C64A6",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "BUSD-HRC20",
+        "name": "Binance USD",
+        "coingeckoId": "binance-usd",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xffF0B90B",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "DAI-HRC20",
+        "name": "Dai",
+        "coingeckoId": "dai",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xffB68900",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "LUNA-HRC20",
+        "name": "Terra",
+        "coingeckoId": "terra-luna",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xffFFD83D",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "MATIC-HRC20",
+        "name": "Polygon",
+        "coingeckoId": "matic-network",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xff804EE1",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "ONE",
+        "name": "Harmony",
+        "coingeckoId": "harmony",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xff00BEEE",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "ETH-HRC20",
+        "name": "Ethereum",
+        "coingeckoId": "ethereum",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xff687DE3",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDC-HRC20",
+        "name": "USD Coin",
+        "coingeckoId": "usd-coin",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xff317BCB",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDT-HRC20",
+        "name": "Tether",
+        "coingeckoId": "tether",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xff26A17B",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "LINK-HRC20",
+        "name": "Chainlink",
+        "coingeckoId": "chainlink",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xff356CE4",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "SUSHI-HRC20",
+        "name": "Sushi",
+        "coingeckoId": "sushi",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xffE25DA8",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "REN-HRC20",
+        "name": "Ren",
+        "coingeckoId": "republic-protocol",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xff595959",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "UST-HRC20",
+        "name": "TerraUSD",
+        "coingeckoId": "terrausd",
+        "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+        "explorerUrl": ["https://explorer.harmony.one/"],
+        "type": "hrc",
+        "colorCoin": "0xff5493F7",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     }
