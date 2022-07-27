@@ -22,7 +22,7 @@ class AppConfig {
 
   List<String> get defaultCoins => ['KMD', 'BTC'];
   List<String> get coinsFiat => ['BTC', 'KMD'];
-  List<String> get walletOnlyCoins => ['USDT-ERC20', 'VOTE2022'];
+  List<String> get walletOnlyCoins => ['USDT-ERC20'];
   final List<String> protocolSuffixes = [
     'ERC20',
     'BEP20',
@@ -103,4 +103,8 @@ class AppConfig {
   String get hrcUrl => 'https://komodo.live:3334/api/v2/hrc_tx_history';
   String get movrUrl => 'https://komodo.live:3334/api/v1/moonriver_tx_history';
   String get mvrUrl => 'https://komodo.live:3334/api/v2/moonriver_tx_history';
+
+  /// We're using different rpc ports for different wallet packages
+  /// in order to allow multiple wallets to run simultaneously.
+  int get rpcPort => 7783;
 }
