@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart'
@@ -41,7 +42,7 @@ class MMService {
   bool get running => _running;
   bool _running = false;
 
-  String url = 'http://localhost:7783';
+  String url = 'http://localhost:${appConfig.rpcPort}';
   String userpass = '';
   Stream<List<int>> streamSubscriptionStdout;
 
@@ -312,6 +313,7 @@ class MMService {
       coins: await readJsonCoinInit(),
       dbdir: filesPath,
       allowWeakPassword: false,
+      rpcPort: appConfig.rpcPort,
     ));
 
     logC
@@ -468,6 +470,11 @@ class MMService {
   }
 
   Future<void> stopmm2() async {
+    if (await _mm2status() == Mm2Status.not_running) {
+      _running = false;
+      Log('mm_service', 'mm2 is not running, return');
+      return;
+    }
     final int errorCode = await nativeC.invokeMethod<int>('stop');
     final Mm2StopError error = mm2StopErrorFrom(errorCode);
     Log('mm_service', 'stopmm2: $error');
