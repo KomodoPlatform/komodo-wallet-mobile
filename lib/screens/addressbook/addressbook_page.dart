@@ -168,6 +168,9 @@ class _AddressBookState extends State<AddressBookPage> {
       case CoinType.erc:
         title = 'ETH & ERC tokens';
         break;
+      case CoinType.ubq:
+        title = 'Ubiq';
+        break;
       case CoinType.bep:
         title = 'BNB & BEP tokens';
         break;

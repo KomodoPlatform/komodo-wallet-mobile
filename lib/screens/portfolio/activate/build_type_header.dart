@@ -74,6 +74,9 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
       case CoinType.qrc:
         return AppLocalizations.of(context).searchFilterSubtitleQRC;
         break;
+      case CoinType.ubq:
+        return AppLocalizations.of(context).searchFilterSubtitleUBQ;
+        break;
       case CoinType.utxo:
         return AppLocalizations.of(context).searchFilterSubtitleutxo;
         break;
