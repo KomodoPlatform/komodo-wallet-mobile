@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 
 class BuildFilterCoin extends StatefulWidget {
   const BuildFilterCoin({
@@ -22,21 +20,7 @@ class BuildFilterCoin extends StatefulWidget {
 }
 
 class _BuildFilterCoinState extends State<BuildFilterCoin> {
-  static Map _typesName = {};
   final GlobalKey _globalKey = GlobalKey();
-
-  @override
-  void initState() {
-    readJson();
-    super.initState();
-  }
-
-  Future<void> readJson() async {
-    final String response =
-        await rootBundle.loadString('assets/protocol_names.json');
-    _typesName = await json.decode(response);
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +100,7 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
           widget.onSelected(protocolType);
         },
         child: Text(
-          _typesName[protocolType] ?? '',
+          appConfig.allProtocolNames[protocolType] ?? '',
         ),
       );
     }).toList();

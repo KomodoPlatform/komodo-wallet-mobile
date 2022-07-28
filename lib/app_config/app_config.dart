@@ -25,7 +25,15 @@ class AppConfig {
   List<String> get walletOnlyCoins => ['USDT-ERC20', 'VOTE2022'];
   final List<String> protocolSuffixes = ['ERC20', 'BEP20', 'PLG20', 'FTM20'];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
-
+  Map<String, String> allProtocolNames = {
+    'utxo': 'UTXO',
+    'smartChain': 'Smart Chain',
+    'qrc': 'QTUM (QRC-20)',
+    'plg': 'Polygon (PLG-20)',
+    'ftm': 'Fantom (FTM-20)',
+    'erc': 'Ethereum (ERC-20)',
+    'bep': 'Binance (BEP-20)',
+  };
   bool get isSwapShareCardEnabled => true;
 
   // support channels (showed on help page)
