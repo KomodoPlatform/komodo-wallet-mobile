@@ -174,7 +174,8 @@ class CoinsBloc implements BlocBase {
       bool shouldChange = false;
 
       if (isCoinPresent(item.coin, query, filterType)) {
-        shouldChange = item.coin.testCoin ? true : item.coin.type.name == type;
+        shouldChange =
+            item.coin.testCoin ? type == null : item.coin.type.name == type;
       }
 
       if (shouldChange) {
