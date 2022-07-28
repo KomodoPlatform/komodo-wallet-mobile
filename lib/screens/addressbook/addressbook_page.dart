@@ -177,6 +177,9 @@ class _AddressBookState extends State<AddressBookPage> {
       case CoinType.ftm:
         title = 'Fantom & FTM tokens';
         break;
+      case CoinType.etc:
+        title = 'Ethereum Classic';
+        break;
       case CoinType.hrc:
         title = 'Harmony & HRC tokens';
         break;
