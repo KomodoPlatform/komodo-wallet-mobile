@@ -174,6 +174,9 @@ class _AddressBookState extends State<AddressBookPage> {
       case CoinType.plg:
         title = 'Polygon & PLG tokens';
         break;
+      case CoinType.krc:
+        title = 'Kucoin & KRC tokens';
+        break;
       case CoinType.ftm:
         title = 'Fantom & FTM tokens';
         break;
