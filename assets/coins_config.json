@@ -1985,7 +1985,7 @@
         "coingeckoId": "terrausd",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff5493F7",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -1996,7 +1996,7 @@
         "coingeckoId": "aave",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff9C64A6",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2007,7 +2007,7 @@
         "coingeckoId": "balancer",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff4D4D4D",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2018,7 +2018,7 @@
         "coingeckoId": "compound-governance-token",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff00DBA3",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2029,7 +2029,7 @@
         "coingeckoId": "dodo",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xffFAF621",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2040,7 +2040,7 @@
         "coingeckoId": "the-graph",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff6E54DB",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2051,7 +2051,7 @@
         "coingeckoId": "matic-network",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff804EE1",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2062,7 +2062,7 @@
         "coingeckoId": "paxos-standard",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff408C69",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2073,7 +2073,7 @@
         "coingeckoId": "kucoin-shares",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff25AF90",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2084,7 +2084,7 @@
         "coingeckoId": "ethereum",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff687DE3",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2095,7 +2095,7 @@
         "coingeckoId": "usd-coin",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff317BCB",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2106,7 +2106,7 @@
         "coingeckoId": "basic-attention-token",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff26A17B",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2117,7 +2117,7 @@
         "coingeckoId": "terrausd",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xffFF5000",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2128,7 +2128,7 @@
         "coingeckoId": "chainlink",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff356CE4",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2139,7 +2139,7 @@
         "coingeckoId": "quant-network",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff000000",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2150,7 +2150,7 @@
         "coingeckoId": "sushi",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xffE25DA8",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2161,7 +2161,7 @@
         "coingeckoId": "maker",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff1BAF9F",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2172,7 +2172,7 @@
         "coingeckoId": "nexo",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xffA3B3D6",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2183,7 +2183,7 @@
         "coingeckoId": "havven",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff00D1FF",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2194,7 +2194,7 @@
         "coingeckoId": "telcoin",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff1BD8FF",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2205,7 +2205,7 @@
         "coingeckoId": "true-usd",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff2E3181",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2216,7 +2216,7 @@
         "coingeckoId": "yearn-finance",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff006BE6",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2227,7 +2227,7 @@
         "coingeckoId": "chiliz",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff5493F7",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2238,7 +2238,7 @@
         "coingeckoId": "crypto-com-chain",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff243565",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2249,7 +2249,7 @@
         "coingeckoId": "curve-dao-token",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff517AB5",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2260,7 +2260,7 @@
         "coingeckoId": "enjincoin",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff6752C3",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2271,7 +2271,7 @@
         "coingeckoId": "husd",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xff0075FB",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2282,7 +2282,7 @@
         "coingeckoId": "decentraland",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xffFF3C6C",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2293,7 +2293,7 @@
         "coingeckoId": "uniswap",
         "serverList": ["https://rpc-mainnet.kcc.network"],
         "explorerUrl": ["https://explorer.kcc.io/en/"],
-        "type": "kcs",
+        "type": "krc",
         "colorCoin": "0xffFF007A",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
