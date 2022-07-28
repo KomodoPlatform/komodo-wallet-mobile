@@ -1978,5 +1978,16 @@
         "colorCoin": "0xff5493F7",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "SBCH",
+        "name": "SmartBCH",
+        "coingeckoId": "bitcoin-cash",
+        "serverList": ["https://smartbch.fountainhead.cash/mainnet"],
+        "explorerUrl": ["https://www.smartscan.cash/"],
+        "type": "sbch",
+        "colorCoin": "0xff74dd54",
+        "swap_contract_address": "0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68",
+        "fallback_swap_contract": "0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68"
     }
 ]

@@ -116,6 +116,10 @@ flutter test integration_test/runners/add_address.dart
 flutter test integration_test/runners/add_harmony_protocol.dart
 ```
 
+```bash
+flutter test integration_test/runners/add_sbch_protocol.dart
+```
+
 #### 3.2 Run all tests
 
 - Open terminal
