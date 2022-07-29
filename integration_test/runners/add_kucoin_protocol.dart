@@ -7,12 +7,13 @@ import '../tests/protocols/activate_test_coins.dart';
 import '../tests/protocols/deactivate_test_coins.dart';
 import '../tests/protocols/receive_test_coins.dart';
 import '../tests/protocols/send_test_coins.dart';
+import '../tests/protocols/tx_history_link.dart';
 import '../tests/wallet_tests/restore_wallet.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Add harmony protocol test', (WidgetTester tester) async {
+  testWidgets('Add kucoin protocol test', (WidgetTester tester) async {
     tester.testTextInput.register();
     app.main();
     // delay for splash screen and checking updates
@@ -42,13 +43,19 @@ void main() {
       tester,
       address: '0x214FcA404a32AC668aec91Ca37D1A5F0BDB74736',
       coins: ['KCS'],
-      amount: '1',
+      amount: '0.001',
     );
     await tester.pumpAndSettle();
     print('ADD ADDRESS');
     await addAddressToTest(
       tester,
       coin: 'KCS',
+    );
+    await tester.pumpAndSettle();
+    print('OPEN EXPLORER LINK');
+    await openTxHistoryLink(
+      tester,
+      coins: ['KCS'],
     );
     await tester.pumpAndSettle();
   }, semanticsEnabled: false);
