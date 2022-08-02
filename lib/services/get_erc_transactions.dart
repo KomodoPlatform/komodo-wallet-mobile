@@ -47,7 +47,7 @@ class GetErcTransactions {
       case CoinType.smartChain:
       case CoinType.qrc:
         break;
-      case CoinType.ubq:
+      case CoinType.ubiq:
         url = '$ubqUrl/$address';
         break;
 
