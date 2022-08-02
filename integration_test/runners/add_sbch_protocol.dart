@@ -7,6 +7,7 @@ import '../tests/protocols/activate_test_coins.dart';
 import '../tests/protocols/deactivate_test_coins.dart';
 import '../tests/protocols/receive_test_coins.dart';
 import '../tests/protocols/send_test_coins.dart';
+import '../tests/protocols/tx_history_link.dart';
 import '../tests/wallet_tests/restore_wallet.dart';
 
 void main() {
@@ -42,6 +43,12 @@ void main() {
     await tester.pumpAndSettle();
     print('ADD ADDRESS');
     await addAddressToTest(tester, coin: 'SBCH');
+    await tester.pumpAndSettle();
+    print('OPEN EXPLORER LINK');
+    await openTxHistoryLink(
+      tester,
+      coins: ['SBCH'],
+    );
     await tester.pumpAndSettle();
   }, semanticsEnabled: false);
 }
