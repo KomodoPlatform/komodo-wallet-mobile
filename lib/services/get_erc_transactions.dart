@@ -38,44 +38,26 @@ class GetErcTransactions {
         orElse: () => null);
     if (coinBalance == null) return;
 
-    final String address = coinBalance.balance.address;
-
     String url;
     switch (coin.type) {
       case CoinType.utxo:
       case CoinType.smartChain:
       case CoinType.qrc:
         break;
-
       case CoinType.erc:
-        url = (coin.protocol?.type == 'ETH' // 'ETH', 'ETHR'
-                ? '$ethUrl/$address'
-                : '$ercUrl/${coin.protocol.protocolData.contractAddress}/$address') +
-            (coin.testCoin ? '&testnet=true' : '');
+        url = _getErcTransactionHistoryUrl(coin, ethUrl, ercUrl);
         break;
       case CoinType.bep:
-        url = (coin.protocol?.type == 'ETH' // 'BNB', 'BNBT'
-                ? '$bnbUrl/$address'
-                : '$bepUrl/${coin.protocol.protocolData.contractAddress}/$address') +
-            (coin.testCoin ? '&testnet=true' : '');
+        url = _getErcTransactionHistoryUrl(coin, bnbUrl, bepUrl);
         break;
       case CoinType.plg:
-        url = (coin.protocol?.type == 'ETH' // 'MATIC', 'MATICTEST'
-                ? '$maticUrl/$address'
-                : '$plgUrl/${coin.protocol.protocolData.contractAddress}/$address') +
-            (coin.testCoin ? '&testnet=true' : '');
+        url = _getErcTransactionHistoryUrl(coin, maticUrl, plgUrl);
         break;
       case CoinType.ftm:
-        url = (coin.protocol?.type == 'ETH' // 'FTM', 'FTMT'
-                ? '$fantomUrl/$address'
-                : '$ftmUrl/${coin.protocol.protocolData.contractAddress}/$address') +
-            (coin.testCoin ? '&testnet=true' : '');
+        url = _getErcTransactionHistoryUrl(coin, fantomUrl, ftmUrl);
         break;
       case CoinType.hrc:
-        url = (coin.protocol?.type == 'ETH' // 'HRC'
-                ? '$oneUrl/$address'
-                : '$hrcUrl/${coin.protocol.protocolData.contractAddress}/$address') +
-            (coin.testCoin ? '&testnet=true' : '');
+        url = _getErcTransactionHistoryUrl(coin, oneUrl, hrcUrl);
         break;
     }
 
@@ -110,6 +92,22 @@ class GetErcTransactions {
 
     _fixTestCoinsNaming(transactions, coin);
     return transactions;
+  }
+
+  String _getErcTransactionHistoryUrl(
+    Coin coin,
+    String mainUrl,
+    String protocolUrl,
+  ) {
+    CoinBalance coinBalance = coinsBloc.coinBalance.firstWhere(
+        (balance) => balance.coin.abbr == coin.abbr,
+        orElse: () => null);
+    final String address = coinBalance.balance.address;
+
+    return (coin.protocol?.type == 'ETH'
+            ? '$mainUrl/$address'
+            : '$protocolUrl/${coin.protocol.protocolData.contractAddress}/$address') +
+        (coin.testCoin ? '&testnet=true' : '');
   }
 
   // https://github.com/KomodoPlatform/AtomicDEX-mobile/pull/1078#issuecomment-808705710
