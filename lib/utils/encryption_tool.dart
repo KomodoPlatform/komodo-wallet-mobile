@@ -22,7 +22,7 @@ class EncryptionTool {
     if (key == KeyEncryption.SEED) {
       bool isValid = false;
       try {
-        isValid = argon2.verifyHashStringSync(
+        isValid = await argon2.verifyHashString(
           password,
           await storage.read(key: keyPassword(key, wallet)),
           type: Argon2Type.id,
@@ -35,11 +35,11 @@ class EncryptionTool {
     }
   }
 
-  String _computeHash(String data) {
+  Future<String> _computeHash(String data) async {
     final s = Salt.newSalt();
 
     final result =
-        argon2.hashPasswordStringSync(data, salt: s, type: Argon2Type.id);
+        await argon2.hashPasswordString(data, salt: s, type: Argon2Type.id);
 
     return result.encodedString;
   }
@@ -51,7 +51,8 @@ class EncryptionTool {
           .then((_) async {
         if (key == KeyEncryption.SEED) {
           await storage.write(
-              key: keyPassword(key, wallet), value: _computeHash(password));
+              key: keyPassword(key, wallet),
+              value: await _computeHash(password));
         }
       });
 
@@ -79,4 +80,4 @@ class EncryptionTool {
   Future<void> delete(String key) async => await storage.delete(key: key);
 }
 
-enum KeyEncryption { SEED, PIN }
+enum KeyEncryption { SEED, PIN, CAMOPIN }

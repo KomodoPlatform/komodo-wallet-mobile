@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -5,6 +7,7 @@ import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 import 'package:komodo_dex/services/mm.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class AddressField extends StatefulWidget {
@@ -14,12 +17,14 @@ class AddressField extends StatefulWidget {
     this.controller,
     this.addressFormat,
     this.coin,
+    this.onChanged,
   }) : super(key: key);
 
   final Function onScan;
   final TextEditingController controller;
   final Map<String, dynamic> addressFormat;
   final Coin coin;
+  final Function(String) onChanged;
 
   @override
   _AddressFieldState createState() => _AddressFieldState();
@@ -32,6 +37,7 @@ class _AddressFieldState extends State<AddressField> {
 
   @override
   void initState() {
+    _isCoinActive();
     widget.controller.addListener(() {
       if (!mounted) return;
       _validate();
@@ -40,6 +46,31 @@ class _AddressFieldState extends State<AddressField> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _updateAddressFromClipboard();
+    });
+  }
+
+  @override
+  void dispose() {
+    _coinIsActiveCountdown?.cancel();
+    super.dispose();
+  }
+
+  Timer _coinIsActiveCountdown;
+
+  Future<void> _isCoinActive() async {
+    _coinIsActiveCountdown =
+        Timer.periodic(Duration(milliseconds: 300), (_) async {
+      if (widget.controller.text.isEmpty) return;
+      final dynamic error = await MM.validateAddress(
+        address: widget.controller.text,
+        coin: widget.coin.abbr,
+      );
+      if (error == null) {
+        _coinIsActiveCountdown.cancel();
+        _validate();
+      } else {
+        await Future.delayed(Duration(milliseconds: 300));
+      }
     });
   }
 
@@ -71,6 +102,7 @@ class _AddressFieldState extends State<AddressField> {
                       ? AutovalidateMode.always
                       : AutovalidateMode.disabled,
                   autocorrect: false,
+                  onChanged: widget.onChanged,
                   enableSuggestions: false,
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.text,
@@ -199,6 +231,12 @@ class _AddressFieldState extends State<AddressField> {
         convertMessage = null;
       });
     }
+
+    if (widget.controller.text.isEmpty) {
+      setState(() {
+        autovalidate = false;
+      });
+    }
   }
 
   bool _isBchLegacyFormat(String error) {
@@ -209,7 +247,9 @@ class _AddressFieldState extends State<AddressField> {
   }
 
   bool _isErcNonMixedCase(String error) {
-    if (widget.coin.type != 'erc' && widget.coin.type != 'bep') return false;
+    if (!isErcType(widget.coin)) {
+      return false;
+    }
     if (!error.contains('Invalid address checksum')) return false;
 
     return true;

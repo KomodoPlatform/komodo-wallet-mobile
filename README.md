@@ -1,5 +1,5 @@
 [![Build Status](https://app.bitrise.io/app/bc464ad88d40bb68/status.svg?token=tnpzqFp_7vrcsQYqWSIVBQ&branch=dev)](https://app.bitrise.io/app/bc464ad88d40bb68)  
-# atomicDEX v0.5.2
+# atomicDEX v0.5.3
 Komodo Platform's hybrid mutlicoin DEX-wallet. 
 
 ## Getting Started
@@ -29,6 +29,14 @@ between flutter upgrades.
 cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
 ## For Android build:
+
+Coming soon
+
+## AtomicDEX API library (libmm2.a) version:
+
+beta-2.1.7132
+a293d8f06
+https://gitlab.com/KomodoPlatform/supernet/-/pipelines/599845645
 
 
 ## Flutter version
@@ -70,8 +78,38 @@ In Android Studio (3.6.2) the latest Kotlin plugin (1.3.71) doesn't work with Fl
     adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
     sqlite3 AtomicDEX.db
 
+## Localization
+
+1. Extract messages to .arb file:
+```bash
+flutter pub run intl_generator:extract_to_arb --output-dir=lib/l10n lib/localizations.dart
+```
+2. Sync generated `intl_messages.arb` with existing locale `intl_*.arb` files:
+```bash
+dart run sync_arb_files.dart
+```
+3. ARB files can be used for input to translation tools like [Arbify](https://github.com/Arbify/Arbify), [Localizely](https://localizely.com/) etc.
+4. The resulting translations can be used to generate a set of libraries:
+```bash
+flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/localizations.dart lib/l10n/intl_*.arb
+```
+5. Manual editing of generated `messages_*.dart` files might be needed to delete nullable syntax (`?` symbol), since the app doesn't support it yet.
+
 ## Audio samples sources
 
  - [ticking sound](https://freesound.org/people/FoolBoyMedia/sounds/264498/)
  - [silence](https://freesound.org/people/Mullabfuhr/sounds/540483/)
  - [start (iOs)](https://freesound.org/people/pizzaiolo/sounds/320664/)
+
+ ## Testing
+
+ ### 1. Manual testing
+ Manual testing plan:
+ https://docs.google.com/spreadsheets/d/15LAphQydTn5ljS64twfbqIMcDOUMFV_kEmMkNiHbSGc
+
+ ### 2. Integration testing
+ [Guide and coverage](integration_test/README.md)
+
+ ### 3. Unit/Widget testing
+ Not supported
+

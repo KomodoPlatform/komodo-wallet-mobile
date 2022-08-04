@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -70,7 +71,7 @@ class Coin {
     init ??= <String, dynamic>{};
     config ??= <String, dynamic>{};
 
-    type = config['type'] ?? '';
+    type = coinTypeFromString(config['type'] ?? '');
     name = config['name'] ?? init['fname'] ?? '';
     address = config['address'] ?? '';
     port = config['port'] ?? 0;
@@ -95,9 +96,15 @@ class Coin {
       protocol = Protocol.fromJson(init['protocol']);
     }
     dust = init['dust'];
+    chainId = init['chain_id'];
   }
 
-  String type; // 'other', 'erc', 'bep', 'qrc' or 'smartChain'
+  // Coin suspended if was activated by user earlier,
+  // but failed to activate during current session startup
+  bool suspended = false;
+
+  CoinType type;
+
   String name;
   String address;
   int port;
@@ -131,8 +138,10 @@ class Coin {
   Protocol protocol;
   int dust;
 
+  int chainId;
+
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'type': type ?? '',
+        'type': type.name ?? '',
         'name': name ?? '',
         'address': address ?? '',
         'port': port ?? 0,
@@ -158,6 +167,7 @@ class Coin {
         'address_format': addressFormat,
         if (protocol != null) 'protocol': protocol.toJson(),
         if (dust != null) 'dust': dust,
+        if (chainId != null) 'chain_id': chainId,
       };
 
   String getTxFeeSatoshi() {

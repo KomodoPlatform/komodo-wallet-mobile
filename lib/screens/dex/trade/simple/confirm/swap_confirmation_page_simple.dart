@@ -24,7 +24,6 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
-import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:provider/provider.dart';
 
 class SwapConfirmationPageSimple extends StatefulWidget {
@@ -286,7 +285,8 @@ class _SwapConfirmationPageSimpleState
         if (snapshot.data == ConnectivityResult.wifi) return SizedBox();
 
         return _buildWarning(
-          text: AppLocalizations.of(context).mobileDataWarning,
+          text:
+              AppLocalizations.of(context).mobileDataWarning(appConfig.appName),
           iconData: Icons.network_check,
         );
       },
@@ -306,10 +306,12 @@ class _SwapConfirmationPageSimpleState
     Color color;
 
     if (_isBatteryCritical()) {
-      message = AppLocalizations.of(context).batteryCriticalError;
+      message = AppLocalizations.of(context)
+          .batteryCriticalError('${appConfig.batteryLevelCritical}');
       color = Theme.of(context).errorColor;
     } else if (level < appConfig.batteryLevelLow / 100) {
-      message = AppLocalizations.of(context).batteryLowWarning;
+      message = AppLocalizations.of(context)
+          .batteryLowWarning('${appConfig.batteryLevelLow}');
     } else if (isInLowPowerMode) {
       message = AppLocalizations.of(context).batterySavingWarning;
     }
@@ -497,8 +499,6 @@ class _SwapConfirmationPageSimpleState
                         ? null
                         : () async {
                             setState(() => _inProgress = true);
-
-                            await showSoundsDialog(context);
 
                             await _constrProvider.makeSwap(
                               buyOrderType: BuyOrderType.FillOrKill,

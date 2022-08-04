@@ -157,7 +157,9 @@ class MmSwap {
             List<dynamic>.from(errorEvents.map<dynamic>((dynamic x) => x)) ??
                 <String>[],
         'events': events.map((e) => e.toJson).toList(),
-        'my_info': myInfo ?? SwapMyInfo(),
+        // MRC: For the specific case of export and then import of null myInfo swaps,
+        // it's easier to deal with an exported null myInfo than with a non-null empty myInfo
+        'my_info': myInfo,
         'success_events':
             List<dynamic>.from(successEvents.map<dynamic>((dynamic x) => x)) ??
                 <String>[],

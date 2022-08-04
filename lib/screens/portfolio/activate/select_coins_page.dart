@@ -152,10 +152,10 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
     for (Coin c in _currentCoins) {
       if (c.testCoin) continue;
-      if (!coinsMap.containsKey(c.type)) {
-        coinsMap.putIfAbsent(c.type, () => [c]);
+      if (!coinsMap.containsKey(c.type.name)) {
+        coinsMap.putIfAbsent(c.type.name, () => [c]);
       } else {
-        coinsMap[c.type].add(c);
+        coinsMap[c.type.name].add(c);
       }
     }
 
@@ -174,12 +174,10 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       }
     }
 
-    const List<String> defaultTestCoins = ['RICK', 'MORTY'];
-
     final List<Coin> testCoins = _currentCoins
         .where((Coin c) =>
             (c.testCoin && settingsBloc.enableTestCoins) ||
-            defaultTestCoins.contains(c.abbr))
+            appConfig.defaultTestCoins.contains(c.abbr))
         .toList();
     if (testCoins.isNotEmpty) {
       list.add(BuildTypeHeader(

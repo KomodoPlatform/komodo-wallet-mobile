@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/wallet.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/notif_service.dart';
@@ -50,13 +50,12 @@ class AuthenticateBloc extends BlocBase {
     pinStatus = PinStatus.NORMAL_PIN;
     _inpinStatus.add(PinStatus.NORMAL_PIN);
 
-    if (prefs.getBool('isPinIsCreated') != null &&
-        prefs.getBool('isPinIsCreated')) {
+    if (prefs.containsKey('is_pin_creation_in_progress')) {
       pinStatus = PinStatus.CREATE_PIN;
       _inpinStatus.add(PinStatus.CREATE_PIN);
     }
 
-    if (prefs.getBool('switch_pin') == false) {
+    if (!(prefs.getBool('switch_pin') ?? false)) {
       showLock = false;
     }
   }
@@ -71,14 +70,13 @@ class AuthenticateBloc extends BlocBase {
   Future<void> login(String passphrase, String password) async {
     mainBloc.setCurrentIndexTab(0);
     walletBloc.setCurrentWallet(await Db.getCurrentWallet());
+    await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await _checkPINStatus(password);
     await EncryptionTool().write('passphrase', passphrase);
     prefs.setBool('isPassphraseIsSaved', true);
-    await initSwitchPref();
 
-    await prefs.setBool('isPinIsSet', false);
     await prefs.setBool('switch_pin_log_out_on_exit', false);
 
     await coinsBloc.loadWalletSnapshot();
@@ -91,28 +89,20 @@ class AuthenticateBloc extends BlocBase {
     _inIsLogin.add(true);
   }
 
-  Future<void> initSwitchPref() async {
-    await initSwitch('switch_pin', true);
-    await initSwitch('switch_pin_biometric', false);
-  }
-
-  Future<void> initSwitch(String key, bool defaultSwitch) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.getBool(key) != null
-        ? await prefs.setBool(key, prefs.getBool(key))
-        : await prefs.setBool(key, defaultSwitch);
-  }
-
   Future<void> _checkPINStatus(String password) async {
     final Wallet wallet = await Db.getCurrentWallet();
     final EncryptionTool entryptionTool = EncryptionTool();
 
-    String pin;
+    String pin, camoPin;
     if (wallet != null && password != null) {
       pin = await entryptionTool.readData(KeyEncryption.PIN, wallet, password);
+      camoPin = await entryptionTool.readData(
+          KeyEncryption.CAMOPIN, wallet, password);
     }
     if (pin != null) {
       await entryptionTool.write('pin', pin);
+      if (camoPin != null) await entryptionTool.write('camoPin', camoPin);
+
       updateStatusPin(PinStatus.NORMAL_PIN);
     } else {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -123,6 +113,7 @@ class AuthenticateBloc extends BlocBase {
       } else {
         updateStatusPin(PinStatus.CREATE_PIN);
         await entryptionTool.delete('pin');
+        await entryptionTool.delete('camoPin');
       }
     }
   }
@@ -144,12 +135,17 @@ class AuthenticateBloc extends BlocBase {
     await mmSe.stopmm2();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await EncryptionTool().delete('passphrase');
-    await prefs.setBool('isPinIsSet', false);
-    await prefs.setBool('isPassphraseIsSaved', false);
 
-    camoBloc.isCamoActive = false;
+    await prefs.setBool('isPassphraseIsSaved', false);
     await EncryptionTool().delete('camoPin');
-    camoBloc.isCamoEnabled = false;
+
+    await prefs.remove('switch_pin');
+    await prefs.remove('switch_pin_biometric');
+    await prefs.remove('isCamoEnabled');
+    await prefs.remove('isCamoActive');
+    await prefs.remove('camoFraction');
+    await prefs.remove('camoBalance');
+    await prefs.remove('camoSessionStartedAt');
 
     updateStatusPin(PinStatus.NORMAL_PIN);
     await EncryptionTool().delete('pin');

@@ -26,7 +26,6 @@ import 'package:komodo_dex/screens/dex/trade/pro/exchange_rate.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:provider/provider.dart';
 
 class SwapConfirmationPage extends StatefulWidget {
@@ -225,10 +224,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildCoinSwapDetail() {
-    final String amountSell =
-        cutTrailingZeros(formatPrice(swapBloc.amountSell));
-    final String amountReceive =
-        cutTrailingZeros(formatPrice(swapBloc.amountReceive));
+    final String amountSell = cutTrailingZeros(
+        swapBloc.amountSell.toStringAsFixed(appConfig.tradeFormPrecision));
+    final String amountReceive = cutTrailingZeros(
+        swapBloc.amountReceive.toStringAsFixed(appConfig.tradeFormPrecision));
 
     return Column(
       children: <Widget>[
@@ -347,7 +346,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         if (snapshot.data == ConnectivityResult.wifi) return SizedBox();
 
         return _buildWarning(
-          text: AppLocalizations.of(context).mobileDataWarning,
+          text:
+              AppLocalizations.of(context).mobileDataWarning(appConfig.appName),
           iconData: Icons.network_check,
         );
       },
@@ -367,10 +367,12 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     Color color;
 
     if (_isBatteryCritical()) {
-      message = AppLocalizations.of(context).batteryCriticalError;
+      message = AppLocalizations.of(context)
+          .batteryCriticalError('${appConfig.batteryLevelCritical}');
       color = Theme.of(context).errorColor;
     } else if (level < appConfig.batteryLevelLow / 100) {
-      message = AppLocalizations.of(context).batteryLowWarning;
+      message = AppLocalizations.of(context)
+          .batteryLowWarning('${appConfig.batteryLevelLow}');
     } else if (isInLowPowerMode) {
       message = AppLocalizations.of(context).batterySavingWarning;
     }
@@ -549,8 +551,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                       ? null
                       : () async {
                           setState(() => _inProgress = true);
-
-                          await showSoundsDialog(context);
 
                           await tradeForm.makeSwap(
                             buyOrderType: _buyOrderType,

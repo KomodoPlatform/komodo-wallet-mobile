@@ -83,8 +83,7 @@ class _CoinsListAllState extends State<CoinsListAll> {
           horizontalTitleGap: 8,
           leading: CircleAvatar(
             radius: 8,
-            backgroundImage: AssetImage(
-                'assets/coin-icons/${item.coin.abbr.toLowerCase()}.png'),
+            backgroundImage: AssetImage(getCoinIconPath(item.coin.abbr)),
           ),
           title: Text(
             item.coin.abbr,
@@ -126,6 +125,7 @@ class _CoinsListAllState extends State<CoinsListAll> {
     for (CoinBalance coinBalance in active) {
       final int matchingCoins = _getMatchingCoinsNumber(coinBalance.coin);
       if (coinBalance.coin.walletOnly) continue;
+      if (coinBalance.coin.suspended) continue;
       if (!includeEmpty && matchingCoins == 0) continue;
 
       final String term = widget.searchTerm.trim().toLowerCase();

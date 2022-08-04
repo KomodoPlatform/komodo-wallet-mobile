@@ -33,6 +33,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
   bool isInProgress = true;
   Duration estimatedTotalSpeed;
   Duration actualTotalSpeed;
+  bool _openSpoiler = false;
 
   @override
   void initState() {
@@ -109,7 +110,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       if (index == 0) {
         // yurii: for some reason swap.result.myInfo.startedAt
         // returns seconds since epoch instead of milliseconds
-        fromTimestamp = swap.result.myInfo.startedAt * 1000;
+        fromTimestamp = extractStartedAtFromSwap(swap.result) * 1000;
       } else {
         fromTimestamp = swap.result.events[index - 1].timestamp;
       }
@@ -358,6 +359,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       );
     }
 
+    String swapDesc = _swapProvider.swapDescription(swap.result?.uuid);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
       child: Column(
@@ -376,15 +378,55 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
           _buildFirstStep(),
           ..._buildFollowingSteps(),
           const SizedBox(height: 12),
-          Text(
-            _swapProvider.swapDescription(swap.result?.uuid),
-            style: TextStyle(
-              fontFamily: 'Monospace',
-              color: Theme.of(context).colorScheme.secondary,
-              fontSize: 14,
+          if (swap.status == Status.SWAP_FAILED) ...[
+            InkWell(
+              onTap: () => setState(() => _openSpoiler = !_openSpoiler),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    _openSpoiler
+                        ? AppLocalizations.of(context).closeMessage
+                        : AppLocalizations.of(context).openMessage,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Colors.red),
+                  ),
+                  SizedBox(height: 6),
+                  Icon(
+                    _openSpoiler
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                    color: Colors.red,
+                    size: 20,
+                  ),
+                  Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      copyToClipBoard(context, swapDesc);
+                    },
+                    icon: Icon(Icons.copy),
+                  ),
+                ],
+              ),
             ),
-          ),
+            SizedBox(height: 6),
+            if (_openSpoiler) _buildSwapDesc(swapDesc),
+          ] else
+            _buildSwapDesc(swapDesc)
         ],
+      ),
+    );
+  }
+
+  _buildSwapDesc(String _swapDesc) {
+    return Text(
+      _swapDesc,
+      style: TextStyle(
+        fontFamily: 'Monospace',
+        color: Theme.of(context).colorScheme.secondary,
+        fontSize: 14,
       ),
     );
   }

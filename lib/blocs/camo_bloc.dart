@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
 import 'package:komodo_dex/model/balance.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -14,22 +15,23 @@ class CamoBloc implements BlocBase {
   Future<void> init() => _loadPrefs();
 
   Future<void> _loadPrefs() async {
-    _prefs = await SharedPreferences.getInstance();
-
-    _isCamoEnabled = _prefs.getBool('isCamoEnabled') ?? _isCamoEnabled;
-    _isCamoActive = _prefs.getBool('isCamoActive') ?? _isCamoActive;
-    _camoFraction = _prefs.getInt('camoFraction') ?? _camoFraction;
-    _sessionStartedAt =
-        _prefs.getInt('camoSessionStartedAt') ?? _sessionStartedAt;
+    _isCamoEnabled =
+        walletSecuritySettingsProvider.enableCamo ?? _isCamoEnabled;
+    _isCamoActive =
+        walletSecuritySettingsProvider.isCamoActive ?? _isCamoActive;
+    _camoFraction =
+        walletSecuritySettingsProvider.camoFraction ?? _camoFraction;
+    _sessionStartedAt = walletSecuritySettingsProvider.camoSessionStartedAt ??
+        _sessionStartedAt;
+    getCamoPinValue();
   }
-
-  SharedPreferences _prefs;
 
   bool _isCamoActive = false;
   bool _isCamoEnabled = false;
   int _camoFraction = 10; // % of real balance
   int _sessionStartedAt; // milliseconds since Epoch
   bool shouldWarnBadCamoPin = false;
+  String _camoPinValue;
 
   final StreamController<bool> _isCamoActiveController =
       StreamController<bool>.broadcast();
@@ -46,15 +48,21 @@ class CamoBloc implements BlocBase {
   Sink<int> get _inCamoFraction => _camoFractionController.sink;
   Stream<int> get outCamoFraction => _camoFractionController.stream;
 
+  final StreamController<String> _camoPinValueController =
+      StreamController<String>.broadcast();
+  Sink<String> get _inCamoPinValue => _camoPinValueController.sink;
+  Stream<String> get outCamoPinValue => _camoPinValueController.stream;
+
   @override
   void dispose() {
     _isCamoActiveController?.close();
     _isCamoEnabledController?.close();
     _camoFractionController?.close();
+    _camoPinValueController?.close();
   }
 
   void camouflageBalance(Balance balance) {
-    final String balanceStr = _prefs.getString('camoBalance');
+    final String balanceStr = walletSecuritySettingsProvider.camoBalance;
     dynamic json;
     try {
       json = jsonDecode(balanceStr);
@@ -65,7 +73,7 @@ class CamoBloc implements BlocBase {
     double fakeBalance;
     if (json[balance.coin] == null) {
       json[balance.coin] = balance.balance.toString();
-      _prefs.setString('camoBalance', jsonEncode(json));
+      walletSecuritySettingsProvider.camoBalance = jsonEncode(json);
       fakeBalance = balance.balance.toDouble() * _camoFraction / 100;
     } else {
       final double balanceDelta =
@@ -115,12 +123,12 @@ class CamoBloc implements BlocBase {
     _inIsCamoActive.add(val);
     Log('authenticate_bloc', 'switchCamoActive] Camouflage mode set to $val');
 
-    _prefs.setBool('isCamoActive', val);
+    walletSecuritySettingsProvider.isCamoActive = val;
 
     if (val) {
       _sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
-      _prefs.setInt('camoSessionStartedAt', _sessionStartedAt);
-      _prefs.remove('camoBalance');
+      walletSecuritySettingsProvider.camoSessionStartedAt = _sessionStartedAt;
+      walletSecuritySettingsProvider.camoBalance = null;
     }
   }
 
@@ -128,13 +136,21 @@ class CamoBloc implements BlocBase {
   set isCamoEnabled(bool val) {
     _isCamoEnabled = val;
     _inCamoEnabled.add(val);
-    _prefs.setBool('isCamoEnabled', val);
+    walletSecuritySettingsProvider.enableCamo = val;
   }
 
   int get camoFraction => _camoFraction;
   set camoFraction(int val) {
     _camoFraction = val;
     _inCamoFraction.add(val);
-    _prefs.setInt('camoFraction', val);
+    walletSecuritySettingsProvider.camoFraction = val;
+  }
+
+  String get camoPinValue => _camoPinValue;
+
+  void getCamoPinValue() async {
+    final camoPin = await EncryptionTool().read('camoPin');
+    _camoPinValue = camoPin;
+    _inCamoPinValue.add(camoPin);
   }
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -6,7 +9,6 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_field.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/custom_fee.dart';
@@ -17,18 +19,18 @@ import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:decimal/decimal.dart';
 
 class AmountAddressStep extends StatefulWidget {
-  const AmountAddressStep(
-      {Key key,
-      this.onMaxValue,
-      this.focusNode,
-      this.amountController,
-      this.addressController,
-      this.autoFocus = false,
-      this.onWithdrawPressed,
-      this.onCancel,
-      this.coin,
-      this.paymentUriInfo})
-      : super(key: key);
+  const AmountAddressStep({
+    Key key,
+    this.onMaxValue,
+    this.focusNode,
+    this.amountController,
+    this.addressController,
+    this.autoFocus = false,
+    this.onWithdrawPressed,
+    this.onCancel,
+    this.coinBalance,
+    this.paymentUriInfo,
+  }) : super(key: key);
 
   final Function onCancel;
   final Function onMaxValue;
@@ -37,7 +39,7 @@ class AmountAddressStep extends StatefulWidget {
   final TextEditingController amountController;
   final TextEditingController addressController;
   final bool autoFocus;
-  final Coin coin;
+  final CoinBalance coinBalance;
   final PaymentUriInfo paymentUriInfo;
 
   @override
@@ -47,7 +49,8 @@ class AmountAddressStep extends StatefulWidget {
 class _AmountAddressStepState extends State<AmountAddressStep> {
   String barcode = '';
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  bool isCancel = false;
+  bool autovalidate = false;
+  bool isWithdrawPressed = false;
 
   @override
   void initState() {
@@ -63,6 +66,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       padding: const EdgeInsets.all(16),
       child: Form(
         key: formKey,
+        autovalidateMode:
+            autovalidate ? AutovalidateMode.always : AutovalidateMode.disabled,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -71,18 +76,20 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               focusNode: widget.focusNode,
               controller: widget.amountController,
               autoFocus: widget.autoFocus,
-              coinAbbr: widget.coin.abbr,
+              coinBalance: widget.coinBalance,
+              onChanged: onChanged,
             ),
             AddressField(
-              addressFormat: widget.coin.addressFormat,
+              addressFormat: widget.coinBalance.coin.addressFormat,
               controller: widget.addressController,
               onScan: scan,
-              coin: widget.coin,
+              coin: widget.coinBalance.coin,
+              onChanged: onChanged,
             ),
             // Temporary disable custom fee for qrc20 tokens
-            if (!(widget.coin.type == 'qrc'))
+            if (!(widget.coinBalance.coin.type == CoinType.qrc))
               CustomFee(
-                coin: widget.coin,
+                coin: widget.coinBalance.coin,
                 amount: widget.amountController.text,
               ),
             Row(
@@ -115,7 +122,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   void handlePaymentData(PaymentUriInfo uriInfo) {
     if (uriInfo == null) return;
 
-    if (uriInfo.abbr != widget.coin.abbr) {
+    if (uriInfo.abbr != widget.coinBalance.coin.abbr) {
       showWrongCoinDialog(uriInfo);
       return;
     }
@@ -133,7 +140,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     }
     if (uriInfo.amount != null) {
       final coinBalance = coinsBloc.coinBalance.firstWhere(
-          (cb) => cb.coin.abbr == widget.coin.abbr,
+          (cb) => cb.coin.abbr == widget.coinBalance.coin.abbr,
           orElse: () => null);
       final amountDecimal = deci(uriInfo.amount);
 
@@ -159,7 +166,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               Text(AppLocalizations.of(context).wrongCoinSpan1 +
                   uriInfo.abbr +
                   AppLocalizations.of(context).wrongCoinSpan2 +
-                  widget.coin.abbr +
+                  widget.coinBalance.coin.abbr +
                   AppLocalizations.of(context).wrongCoinSpan3),
               SizedBox(height: 16),
               Row(
@@ -185,7 +192,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
           children: <Widget>[
             Text(
               AppLocalizations.of(context).uriInsufficientBalanceSpan1 +
-                  '${deci2s(amount)} ${widget.coin.abbr}' +
+                  '${deci2s(amount)} ${widget.coinBalance.coin.abbr}' +
                   AppLocalizations.of(context).uriInsufficientBalanceSpan2,
             ),
             SizedBox(height: 16),
@@ -214,16 +221,30 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
             // Validate will return true if the form is valid, or false if
             // the form is invalid.
             setState(() {
+              isWithdrawPressed = true;
               widget.amountController.text =
                   widget.amountController.text.replaceAll(',', '.');
             });
-            if (formKey.currentState.validate()) {
+            if (formKey.currentState.validate() &&
+                widget.addressController.text.isNotEmpty &&
+                widget.amountController.text.isNotEmpty) {
               widget.onWithdrawPressed();
             }
           },
         );
       },
     );
+  }
+
+  onChanged(String a) {
+    setState(() {
+      if (isWithdrawPressed && a.isEmpty) {
+        autovalidate = false;
+        formKey.currentState.validate();
+      } else if (isWithdrawPressed) {
+        autovalidate = true;
+      }
+    });
   }
 
   Future<void> scan() async {
@@ -272,7 +293,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
           title: Text(AppLocalizations.of(context).withdrawCameraAccessTitle),
           children: [
             Text(
-              AppLocalizations.of(context).withdrawCameraAccessText,
+              AppLocalizations.of(context)
+                  .withdrawCameraAccessText(appConfig.appName),
               style: TextStyle(fontSize: 13),
             ),
             SizedBox(height: 12),

@@ -1,22 +1,24 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
-import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
-import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
-import 'package:komodo_dex/widgets/build_red_dot.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/build_protocol_chip.dart';
+import 'package:komodo_dex/widgets/build_red_dot.dart';
+import 'package:provider/provider.dart';
+
 import 'coin_detail/coin_detail.dart';
 import 'copy_dialog.dart';
 import 'rewards_page.dart';
@@ -72,7 +74,7 @@ class _ItemCoinState extends State<ItemCoin>
       label: AppLocalizations.of(context).receive,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       icon: Icons.arrow_downward,
-      onPressed: (context) {
+      onPressed: (mContext) {
         showCopyDialog(context, balance.address, coin);
       },
     ));
@@ -92,140 +94,162 @@ class _ItemCoinState extends State<ItemCoin>
       ));
     }
 
-    return Slidable(
-      startActionPane: ActionPane(
-        motion: const DrawerMotion(),
-        extentRatio: (actions != null && actions.isNotEmpty)
-            ? (actions.length * 0.3).clamp(0.3, 1.0)
-            : null,
-        children: actions,
-      ),
-      endActionPane: ActionPane(
-        motion: const DrawerMotion(),
-        extentRatio: 0.4,
-        children: [
-          SlidableAction(
-            label: AppLocalizations.of(context).remove.toUpperCase(),
-            backgroundColor: Theme.of(context).errorColor,
-            icon: Icons.delete,
-            onPressed: (context) async {
-              if (coin.isDefault) {
-                await showCantRemoveDefaultCoin(context, coin);
-              } else {
-                await showConfirmationRemoveCoin(context, coin);
-              }
-            },
-          ),
-        ],
-      ),
-      child: Builder(builder: (BuildContext context) {
-        return InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
-          onLongPress: () => Slidable.of(context).openCurrentActionPane(),
-          onTap: () {
-            final slidableController = Slidable.of(context);
-            if (slidableController != null) {
-              slidableController.close();
-            }
-            Navigator.push<dynamic>(
-              context,
-              MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) =>
-                    CoinDetail(coinBalance: widget.coinBalance),
+    return Opacity(
+      opacity: coin.suspended ? 0.3 : 1,
+      child: Slidable(
+        startActionPane: coin.suspended
+            ? null
+            : ActionPane(
+                motion: const DrawerMotion(),
+                extentRatio: (actions != null && actions.isNotEmpty)
+                    ? (actions.length * 0.3).clamp(0.3, 1.0)
+                    : null,
+                children: actions,
               ),
-            );
-          },
-          child: Container(
-            color: Theme.of(context).colorScheme.surface,
-            child: Row(
-              children: <Widget>[
-                Container(
-                  height: 128,
-                  color: Color(int.parse(coin.colorCoin)),
-                  width: 8,
-                ),
-                const SizedBox(width: 14),
-                SizedBox(
-                  width: 110,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 28,
-                        backgroundColor: Colors.transparent,
-                        backgroundImage: AssetImage('assets/coin-icons/'
-                            '${balance.coin.toLowerCase()}.png'),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        coin.name.toUpperCase(),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(child: SizedBox()),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8, right: 12),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      StreamBuilder<bool>(
-                          initialData: settingsBloc.showBalance,
-                          stream: settingsBloc.outShowBalance,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<bool> snapshot) {
-                            String amount =
-                                f.format(double.parse(balance.getBalance()));
-                            if (snapshot.hasData && !snapshot.data)
-                              amount = '**.**';
-                            return AutoSizeText(
-                              '$amount ${coin.abbr}',
-                              maxLines: 1,
-                              style: Theme.of(context).textTheme.headline6,
-                            );
-                          }),
-                      const SizedBox(height: 8),
-                      StreamBuilder(
-                          initialData: settingsBloc.showBalance,
-                          stream: settingsBloc.outShowBalance,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<bool> snapshot) {
-                            bool hidden = false;
-                            if (snapshot.hasData && !snapshot.data)
-                              hidden = true;
-                            return Text(
-                              cexProvider.convert(
-                                widget.coinBalance.balanceUSD,
-                                hidden: hidden,
-                              ),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(
-                                    color: Colors.grey,
-                                  ),
-                            );
-                          }),
-                      _buildClaimButton(),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          _buildFaucetButton(),
-                          _buildWalletOnly(),
-                          _buildNetworkLabel(),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+        endActionPane: ActionPane(
+          motion: const DrawerMotion(),
+          extentRatio: 0.4,
+          children: [
+            SlidableAction(
+              label: AppLocalizations.of(context).remove.toUpperCase(),
+              backgroundColor: Theme.of(context).errorColor,
+              icon: Icons.delete,
+              onPressed: (context) async {
+                if (coin.isDefault) {
+                  await showCantRemoveDefaultCoin(context, coin);
+                } else {
+                  await showConfirmationRemoveCoin(context, coin);
+                }
+              },
             ),
-          ),
-        );
-      }),
+          ],
+        ),
+        child: Builder(builder: (BuildContext context) {
+          return InkWell(
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
+            onLongPress: () => Slidable.of(context).openCurrentActionPane(),
+            onTap: () {
+              //if (coin.suspended) {
+              //showSuspendedDilog(context, coin: coin);
+              //return;
+              //}
+
+              final slidableController = Slidable.of(context);
+              if (slidableController != null) {
+                slidableController.close();
+              }
+              Navigator.push<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) =>
+                      CoinDetail(coinBalance: widget.coinBalance),
+                ),
+              );
+            },
+            child: Container(
+              color: Theme.of(context).colorScheme.surface,
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    height: 128,
+                    color: Color(int.parse(coin.colorCoin)),
+                    width: 8,
+                  ),
+                  const SizedBox(width: 14),
+                  SizedBox(
+                    width: 110,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 28,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage:
+                                  AssetImage(getCoinIconPath(balance.coin)),
+                            ),
+                            if (coin.suspended)
+                              Icon(
+                                Icons.warning_rounded,
+                                size: 20,
+                                color: Colors.yellow[600],
+                              ),
+                          ],
+                          alignment: Alignment.bottomRight,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          coin.name.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(child: SizedBox()),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 8, bottom: 8, right: 12),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        StreamBuilder<bool>(
+                            initialData: settingsBloc.showBalance,
+                            stream: settingsBloc.outShowBalance,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<bool> snapshot) {
+                              String amount =
+                                  f.format(double.parse(balance.getBalance()));
+                              if (snapshot.hasData && !snapshot.data)
+                                amount = '**.**';
+                              return AutoSizeText(
+                                '$amount ${coin.abbr}',
+                                maxLines: 1,
+                                style: Theme.of(context).textTheme.headline6,
+                              );
+                            }),
+                        const SizedBox(height: 8),
+                        StreamBuilder(
+                            initialData: settingsBloc.showBalance,
+                            stream: settingsBloc.outShowBalance,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<bool> snapshot) {
+                              bool hidden = false;
+                              if (snapshot.hasData && !snapshot.data)
+                                hidden = true;
+                              return Text(
+                                cexProvider.convert(
+                                  widget.coinBalance.balanceUSD,
+                                  hidden: hidden,
+                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(
+                                      color: Colors.grey,
+                                    ),
+                              );
+                            }),
+                        _buildClaimButton(),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            _buildFaucetButton(),
+                            _buildWalletOnly(),
+                            _buildProtocolChip(coin),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
+      ),
     );
   }
 
@@ -238,14 +262,16 @@ class _ItemCoinState extends State<ItemCoin>
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: OutlinedButton(
-        onPressed: () async {
-          rewardsProvider.update();
-          Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => RewardsPage()),
-          );
-        },
+        onPressed: !widget.coinBalance.coin.suspended
+            ? () async {
+                rewardsProvider.update();
+                Navigator.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => RewardsPage()),
+                );
+              }
+            : null,
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
           textStyle:
@@ -257,7 +283,7 @@ class _ItemCoinState extends State<ItemCoin>
         ),
         child: Row(
           children: <Widget>[
-            if (rewardsProvider.needClaim)
+            if (!widget.coinBalance.coin.suspended && rewardsProvider.needClaim)
               Container(
                 padding: const EdgeInsets.only(right: 4),
                 child: Stack(
@@ -283,12 +309,14 @@ class _ItemCoinState extends State<ItemCoin>
       return Padding(
         padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
         child: OutlinedButton(
-          onPressed: () async {
-            showFaucetDialog(
-                context: context,
-                coin: widget.coinBalance.coin.abbr,
-                address: widget.coinBalance.balance.address);
-          },
+          onPressed: !widget.coinBalance.coin.suspended
+              ? () async {
+                  showFaucetDialog(
+                      context: context,
+                      coin: widget.coinBalance.coin.abbr,
+                      address: widget.coinBalance.balance.address);
+                }
+              : null,
           style: OutlinedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
             textStyle:
@@ -305,107 +333,10 @@ class _ItemCoinState extends State<ItemCoin>
     return SizedBox();
   }
 
-  Widget _buildNetworkLabel() {
-    final bool needLabel = (widget.coinBalance.coin.type == 'erc' ||
-            widget.coinBalance.coin.type == 'qrc' ||
-            widget.coinBalance.coin.type == 'bep' ||
-            widget.coinBalance.coin.type == 'smartChain') &&
-        widget.coinBalance.coin.abbr != 'KMD' &&
-        widget.coinBalance.coin.abbr != 'ETH' &&
-        widget.coinBalance.coin.abbr != 'BNB' &&
-        widget.coinBalance.coin.abbr != 'QTUM';
-
-    if (!needLabel) return SizedBox();
-
+  Widget _buildProtocolChip(Coin coin) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          color: widget.coinBalance.coin.type == 'erc' ||
-                  widget.coinBalance.coin.type == 'bep' ||
-                  widget.coinBalance.coin.type == 'qrc'
-              ? const Color.fromRGBO(20, 117, 186, 1)
-              : Theme.of(context).scaffoldBackgroundColor,
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: Builder(
-          builder: (context) {
-            switch (widget.coinBalance.coin.type) {
-              case 'erc':
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagERC20,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
-                  );
-                }
-              case 'bep':
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagBEP20,
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              color: Colors.white,
-                            ),
-                      ),
-                    ],
-                  );
-                }
-              case 'qrc':
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagQRC20,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
-                  );
-                }
-              default:
-                {
-                  return InkWell(
-                    onTap: () {
-                      ScaffoldMessengerState scaffoldMessenger;
-                      try {
-                        scaffoldMessenger = ScaffoldMessenger.of(context);
-                      } catch (_) {}
-
-                      if (scaffoldMessenger != null) {
-                        scaffoldMessenger.showSnackBar(const SnackBar(
-                          duration: Duration(seconds: 2),
-                          content: Text('Built on Komodo'),
-                        ));
-                      }
-                    },
-                    child: Image.asset(
-                      'assets/coin-icons/kmd.png',
-                      width: 18,
-                      height: 18,
-                    ),
-                  );
-                }
-            }
-          },
-        ),
-      ),
+      padding: const EdgeInsets.only(top: 8, left: 4),
+      child: BuildProtocolChip(coin),
     );
   }
 

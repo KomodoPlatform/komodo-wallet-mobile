@@ -4,11 +4,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/camo_bloc.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/startup_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/model/wallet.dart';
+import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
+import 'package:komodo_dex/screens/authentification/app_bar_status.dart';
 import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
@@ -17,7 +21,6 @@ import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:provider/provider.dart';
@@ -52,13 +55,11 @@ class _LockScreenState extends State<LockScreen> {
 
   Future<void> _initScreen() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool isPinIsCreated = prefs.getBool('isPinIsCreated');
+    final bool isPinCreationInProgress =
+        prefs.containsKey('is_pin_creation_in_progress');
     final Wallet currentWallet = await Db.getCurrentWallet();
 
-    if (password == null &&
-        isPinIsCreated != null &&
-        isPinIsCreated == true &&
-        currentWallet != null) {
+    if (password == null && isPinCreationInProgress && currentWallet != null) {
       Navigator.push<dynamic>(
         context,
         MaterialPageRoute<dynamic>(
@@ -139,8 +140,10 @@ class _LockScreenState extends State<LockScreen> {
   Widget build(BuildContext context) {
     final StartupProvider startup = Provider.of<StartupProvider>(context);
     updatesProvider = Provider.of<UpdatesProvider>(context);
+    final walletSecuritySettingsProvider =
+        context.read<WalletSecuritySettingsProvider>();
 
-    Widget _buildSplash(String message) {
+    Widget _buildSplash({String message}) {
       return Scaffold(
         body: Center(
           child: Column(
@@ -152,11 +155,30 @@ class _LockScreenState extends State<LockScreen> {
                     : 'assets/branding/logo_app.png',
               ),
               const SizedBox(height: 12),
-              Text(message,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  )),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(width: 20),
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 1),
+                  ),
+                  if (message != null) ...[
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        message,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Theme.of(context).textTheme.caption.color,
+                        ),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(width: 20),
+                ],
+              ),
             ],
           ),
         ),
@@ -167,10 +189,10 @@ class _LockScreenState extends State<LockScreen> {
       final RegExpMatch _tailMatch =
           RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
       final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
-      return _buildSplash(_logTail);
+      return _buildSplash(message: _logTail);
     } else if (updatesProvider.status == null &&
         mainBloc.networkStatus == NetworkStatus.Online) {
-      return _buildSplash(AppLocalizations.of(context).checkingUpdates);
+      return _buildSplash();
     }
 
     return StreamBuilder<bool>(
@@ -186,112 +208,105 @@ class _LockScreenState extends State<LockScreen> {
                 outShowCreatePin.data == PinStatus.NORMAL_PIN) {
               if (isLogin.hasData && isLogin.data) {
                 return StreamBuilder<bool>(
-                    initialData: authBloc.showLock,
-                    stream: authBloc.outShowLock,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<bool> outShowLock) {
-                      return SharedPreferencesBuilder<dynamic>(
-                        pref: 'switch_pin',
-                        builder: (BuildContext context,
-                            AsyncSnapshot<dynamic> switchPinData) {
-                          if (outShowLock.hasData && outShowLock.data) {
-                            if (switchPinData.hasData && switchPinData.data) {
-                              return Stack(
-                                children: <Widget>[
-                                  FutureBuilder<bool>(
-                                    future: canCheckBiometrics,
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<dynamic> snapshot) {
-                                      if (snapshot.hasData &&
-                                          snapshot.data &&
-                                          widget.pinStatus ==
-                                              PinStatus.NORMAL_PIN) {
-                                        Log.println(
-                                            'lock_screen:141', snapshot.data);
-                                        if (isLogin.hasData && isLogin.data) {
-                                          authenticateBiometrics(
-                                              context, widget.pinStatus);
-                                        }
-                                        return SizedBox();
+                  initialData: authBloc.showLock,
+                  stream: authBloc.outShowLock,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<bool> outShowLock) {
+                    if (outShowLock.hasData && outShowLock.data) {
+                      if (walletSecuritySettingsProvider
+                          .activatePinProtection) {
+                        return Stack(
+                          children: <Widget>[
+                            FutureBuilder<bool>(
+                              future: canCheckBiometrics,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<dynamic> snapshot) {
+                                if (snapshot.hasData &&
+                                    snapshot.data &&
+                                    widget.pinStatus == PinStatus.NORMAL_PIN) {
+                                  Log.println('lock_screen:141', snapshot.data);
+                                  if (isLogin.hasData && isLogin.data) {
+                                    authenticateBiometrics(
+                                            context, widget.pinStatus)
+                                        .then((_) {
+                                      // If last login was camo and camo active value is kept,
+                                      // then reset coin balance, this should happen only once
+                                      // due to bio and camo between incompatible with each other
+                                      if (camoBloc.isCamoActive) {
+                                        camoBloc.isCamoActive = false;
+                                        coinsBloc.resetCoinBalance();
                                       }
-                                      return SizedBox();
-                                    },
-                                  ),
-                                  shouldUpdate
-                                      ? UpdatesPage(
-                                          refresh: false,
-                                          onSkip: () {
-                                            setState(() {
-                                              shouldUpdate = false;
-                                            });
-                                          },
-                                        )
-                                      : PinPage(
-                                          title: AppLocalizations.of(context)
-                                              .lockScreen,
-                                          subTitle: AppLocalizations.of(context)
-                                              .enterPinCode,
-                                          pinStatus: widget.pinStatus,
-                                          isFromChangingPin: false,
-                                          onSuccess: widget.onSuccess,
-                                        ),
-                                ],
-                              );
-                            } else {
-                              return shouldUpdate
-                                  ? UpdatesPage(
-                                      refresh: false,
-                                      onSkip: () {
-                                        setState(() {
-                                          shouldUpdate = false;
-                                        });
-                                      },
-                                    )
-                                  : SharedPreferencesBuilder<bool>(
-                                      pref: 'switch_pin_biometric',
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<bool>
-                                              switchPinBiometric) {
-                                        if (switchPinBiometric.hasData &&
-                                            switchPinBiometric.data) {
-                                          return Stack(
-                                            children: <Widget>[
-                                              BiometricPage(
-                                                pinStatus: widget.pinStatus,
-                                              ),
-                                            ],
-                                          );
-                                        } else {
-                                          return widget.child;
-                                        }
+                                    });
+                                  }
+                                  return SizedBox();
+                                }
+                                return SizedBox();
+                              },
+                            ),
+                            shouldUpdate
+                                ? UpdatesPage(
+                                    refresh: false,
+                                    onSkip: () {
+                                      setState(() {
+                                        shouldUpdate = false;
                                       });
-                            }
-                          } else {
-                            if (widget.child == null &&
-                                (widget.pinStatus == PinStatus.DISABLED_PIN ||
-                                    widget.pinStatus ==
-                                        PinStatus.DISABLED_PIN_BIOMETRIC))
-                              return PinPage(
-                                title: AppLocalizations.of(context).lockScreen,
-                                subTitle:
-                                    AppLocalizations.of(context).enterPinCode,
-                                pinStatus: widget.pinStatus,
-                                isFromChangingPin: false,
-                              );
-                            else
-                              return widget.child;
-                          }
-                        },
-                      );
-                    });
+                                    },
+                                  )
+                                : PinPage(
+                                    title:
+                                        AppLocalizations.of(context).lockScreen,
+                                    subTitle: AppLocalizations.of(context)
+                                        .enterPinCode,
+                                    pinStatus: widget.pinStatus,
+                                    isFromChangingPin: false,
+                                    onSuccess: widget.onSuccess,
+                                  ),
+                          ],
+                        );
+                      } else {
+                        return shouldUpdate
+                            ? UpdatesPage(
+                                refresh: false,
+                                onSkip: () {
+                                  setState(() {
+                                    shouldUpdate = false;
+                                  });
+                                },
+                              )
+                            : walletSecuritySettingsProvider
+                                    .activateBioProtection
+                                ? Stack(
+                                    children: <Widget>[
+                                      BiometricPage(
+                                        pinStatus: widget.pinStatus,
+                                      ),
+                                    ],
+                                  )
+                                : widget.child;
+                      }
+                    } else {
+                      if (widget.child == null &&
+                          (widget.pinStatus == PinStatus.DISABLED_PIN ||
+                              widget.pinStatus ==
+                                  PinStatus.DISABLED_PIN_BIOMETRIC))
+                        return PinPage(
+                          title: AppLocalizations.of(context).lockScreen,
+                          subTitle: AppLocalizations.of(context).enterPinCode,
+                          pinStatus: widget.pinStatus,
+                          isFromChangingPin: false,
+                        );
+                      else
+                        return widget.child;
+                    }
+                  },
+                );
               } else {
                 return const AuthenticatePage();
               }
             } else {
               return PinPage(
                 title: AppLocalizations.of(context).createPin,
-                subTitle: AppLocalizations.of(context).enterPinCode,
-                firstCreationPin: true,
+                subTitle: AppLocalizations.of(context).enterNewPinCode,
                 pinStatus: PinStatus.CREATE_PIN,
                 password: password,
                 isFromChangingPin: false,

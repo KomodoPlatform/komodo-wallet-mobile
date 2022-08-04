@@ -152,24 +152,12 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
           ),
           SizedBox(height: 2),
           Builder(builder: (context) {
-            String myCoin, myAmount, otherCoin, otherAmount;
-            if (_swap.myInfo != null) {
-              myCoin = _swap.myInfo.myCoin;
-              myAmount = _swap.myInfo.myAmount;
-              otherCoin = _swap.myInfo.otherCoin;
-              otherAmount = _swap.myInfo.otherAmount;
-            } else {
-              myCoin =
-                  _swap.type == 'Maker' ? _swap.makerCoin : _swap.takerCoin;
-              myAmount =
-                  _swap.type == 'Maker' ? _swap.makerAmount : _swap.takerAmount;
+            final myInfo = extractMyInfoFromSwap(_swap);
+            final myCoin = myInfo['myCoin'];
+            final myAmount = myInfo['myAmount'];
+            final otherCoin = myInfo['otherCoin'];
+            final otherAmount = myInfo['otherAmount'];
 
-              // Same as previous, just swapped around
-              otherCoin =
-                  _swap.type == 'Maker' ? _swap.takerCoin : _swap.makerCoin;
-              otherAmount =
-                  _swap.type == 'Maker' ? _swap.takerAmount : _swap.makerAmount;
-            }
             return Row(
               children: <Widget>[
                 Text(
@@ -177,7 +165,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${myCoin.toLowerCase()}.png',
+                  getCoinIconPath(myCoin),
                   height: 20,
                 ),
                 SizedBox(width: 8),
@@ -190,7 +178,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
                 ),
                 SizedBox(width: 4),
                 Image.asset(
-                  'assets/coin-icons/${otherCoin.toLowerCase()}.png',
+                  getCoinIconPath(otherCoin),
                   height: 20,
                 ),
               ],
