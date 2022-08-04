@@ -490,7 +490,8 @@ class ConstructorProvider extends ChangeNotifier {
             ' ${error.data['coin']}';
         break;
       case RpcErrorType.Transport:
-        str = 'The requested failed due to a network error: ${error.data}';
+        str =
+            'Trade can\'t be started. Please check if you have enough funds for gas.';
         break;
       default:
         str = error.message ?? 'Something went wrong. Please try again.';
