@@ -21,19 +21,23 @@ class ConfigMm2 {
     this.coins,
     this.dbdir,
     this.allowWeakPassword = false,
+    this.rpcPort,
   });
 
   factory ConfigMm2.fromJson(Map<String, dynamic> json) => ConfigMm2(
-      gui: json['gui'],
-      netid: json['netid'],
-      client: json['client'],
-      userhome: json['userhome'],
-      passphrase: json['passphrase'],
-      rpcPassword: json['rpc_password'],
-      coins: List<CoinInit>.from(json['coins']
-              .map<dynamic>((dynamic x) => CoinInit.fromJson(x))) ??
-          <CoinInit>[],
-      dbdir: json['dbdir']);
+        gui: json['gui'],
+        netid: json['netid'],
+        client: json['client'],
+        userhome: json['userhome'],
+        passphrase: json['passphrase'],
+        rpcPassword: json['rpc_password'],
+        coins: List<CoinInit>.from(json['coins']
+                .map<dynamic>((dynamic x) => CoinInit.fromJson(x))) ??
+            <CoinInit>[],
+        dbdir: json['dbdir'],
+        allowWeakPassword: json['allow_weak_password'] ?? false,
+        rpcPort: json['rpcport'],
+      );
 
   String gui;
   int netid;
@@ -44,6 +48,7 @@ class ConfigMm2 {
   List<CoinInit> coins;
   String dbdir;
   bool allowWeakPassword;
+  int rpcPort;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'gui': gui,
@@ -57,5 +62,6 @@ class ConfigMm2 {
                 <CoinInit>[],
         'dbdir': dbdir,
         'allow_weak_password': allowWeakPassword,
+        if (rpcPort != null) 'rpcport': rpcPort,
       };
 }
