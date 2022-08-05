@@ -577,8 +577,7 @@ class CoinsBloc implements BlocBase {
     }
   }
 
-  List<CoinBalance> sortCoins(List<CoinBalance> unsorted,
-      {bool removeTestCoins = false}) {
+  List<CoinBalance> sortCoins(List<CoinBalance> unsorted) {
     final List<CoinBalance> _sorted = List.from(unsorted);
     _sorted.sort((a, b) {
       if (a.balanceUSD < b.balanceUSD) return 1;
@@ -592,10 +591,14 @@ class CoinsBloc implements BlocBase {
 
       return a.coin.abbr.compareTo(b.coin.abbr);
     });
-    if (removeTestCoins) {
-      _sorted.removeWhere((CoinBalance c) => c.coin.testCoin);
-    }
 
+    return _sorted;
+  }
+
+  List<CoinBalance> sortCoinsWithoutTestCoins(List<CoinBalance> unsorted) {
+    List<CoinBalance> _sorted = [];
+    _sorted = sortCoins(unsorted);
+    _sorted.removeWhere((CoinBalance c) => c.coin.testCoin);
     return _sorted;
   }
 

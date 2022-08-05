@@ -34,7 +34,7 @@ class _CoinsPriceListState extends State<CoinsPriceList> {
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         if (snapshot.data != null && snapshot.data.isNotEmpty) {
           final List<CoinBalance> _sortedList =
-              coinsBloc.sortCoins(snapshot.data, removeTestCoins: true);
+              coinsBloc.sortCoinsWithoutTestCoins(snapshot.data);
           return _sortedList.isEmpty
               ? Center(
                   child: Text(
