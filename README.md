@@ -30,6 +30,14 @@ cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
 ## For Android build:
 
+Coming soon
+
+## AtomicDEX API library (libmm2.a) version:
+
+beta-2.1.7132
+a293d8f06
+https://gitlab.com/KomodoPlatform/supernet/-/pipelines/599845645
+
 
 ## Flutter version
 
@@ -92,3 +100,16 @@ flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/loca
  - [ticking sound](https://freesound.org/people/FoolBoyMedia/sounds/264498/)
  - [silence](https://freesound.org/people/Mullabfuhr/sounds/540483/)
  - [start (iOs)](https://freesound.org/people/pizzaiolo/sounds/320664/)
+
+ ## Testing
+
+ ### 1. Manual testing
+ Manual testing plan:
+ https://docs.google.com/spreadsheets/d/15LAphQydTn5ljS64twfbqIMcDOUMFV_kEmMkNiHbSGc
+
+ ### 2. Integration testing
+ [Guide and coverage](integration_test/README.md)
+
+ ### 3. Unit/Widget testing
+ Not supported
+

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/get_import_swaps.dart';
@@ -80,7 +81,7 @@ class UserpassBody {
 ApiProvider MM = ApiProvider();
 
 class ApiProvider {
-  String url = 'http://localhost:7783';
+  String url = 'http://localhost:${appConfig.rpcPort}';
   Response res;
 
   Response _saveRes(String method, Response res) {
@@ -260,7 +261,7 @@ class ApiProvider {
             disableCertVerification: false))
         .toList();
 
-    if (coin.type == 'erc' || coin.type == 'bep' || coin.type == 'plg')
+    if (isErcType(coin))
       return json.encode(MmEnable(
               userpass: mmSe.userpass,
               coin: coin.abbr,

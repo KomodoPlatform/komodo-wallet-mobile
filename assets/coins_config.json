@@ -1706,11 +1706,9 @@
         "coingeckoId": "band-protocol",
         "serverList": [
             "https://polygon-rpc.com"
-
         ],
         "explorerUrl": [
             "https://polygonscan.com/"
-
         ],
         "type": "plg",
         "colorCoin": "0xff6e8eff",
@@ -1723,7 +1721,6 @@
         "coingeckoId": "basic-attention-token",
         "serverList": [
             "https://polygon-rpc.com"
-
         ],
         "explorerUrl": [
             "https://polygonscan.com/"
@@ -1959,19 +1956,199 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
     {
-        "name": "VOTE2022",
-        "type": "smartChain",
-        "proto": "SSL",
-        "abbr": "VOTE2022",
-        "coingeckoId": "test-token",
-        "colorCoin": "0xFF326464",
+        "abbr": "AAVE-FTM20",
+        "name": "Aave",
+        "coingeckoId": "aave",
         "serverList": [
-            "electrum1.cipig.net:20002",
-            "electrum2.cipig.net:20002",
-            "electrum3.cipig.net:20002"
+            "https://rpc.ftm.tools/"
         ],
         "explorerUrl": [
-            "https://vote.kmdexplorer.io/"
-        ]
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xff9C64A6",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "BAND-FTM20",
+        "name": "Band Protocol",
+        "coingeckoId": "band-protocol",
+        "serverList": [
+            "https://rpc.ftm.tools/"
+        ],
+        "explorerUrl": [
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xff526BFF",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "DAI-FTM20",
+        "name": "Dai",
+        "coingeckoId": "dai",
+        "serverList": [
+            "https://rpc.ftm.tools/"
+        ],
+        "explorerUrl": [
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xffB68900",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "FTMT",
+        "name": "Fantom Testnet",
+        "coingeckoId": "test-coin",
+        "testCoin": true,
+        "serverList": [
+            "https://rpc.testnet.fantom.network/"
+        ],
+        "explorerUrl": [
+            "https://testnet.ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xff13B5EC",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "FTM",
+        "name": "Fantom",
+        "coingeckoId": "fantom",
+        "serverList": [
+            "https://rpc.ftm.tools/"
+        ],
+        "explorerUrl": [
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xff13B5EC",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "ETH-FTM20",
+        "name": "Ethereum",
+        "coingeckoId": "ethereum",
+        "serverList": [
+            "https://rpc.ftm.tools/"
+        ],
+        "explorerUrl": [
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xff687DE3",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDC-FTM20",
+        "name": "USD Coin",
+        "coingeckoId": "usd-coin",
+        "serverList": [
+            "https://rpc.ftm.tools/"
+        ],
+        "explorerUrl": [
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xff317BCB",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDT-FTM20",
+        "name": "Tether",
+        "coingeckoId": "tether",
+        "serverList": [
+            "https://rpc.ftm.tools/"
+        ],
+        "explorerUrl": [
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xff26A17B",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "LINK-FTM20",
+        "name": "Chainlink",
+        "coingeckoId": "chainlink",
+        "serverList": [
+            "https://rpc.ftm.tools/"
+        ],
+        "explorerUrl": [
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xff356CE4",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "SUSHI-FTM20",
+        "name": "Sushi",
+        "coingeckoId": "sushi",
+        "serverList": [
+            "https://rpc.ftm.tools/"
+        ],
+        "explorerUrl": [
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xffE25DA8",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "SNX-FTM20",
+        "name": "Synthetix",
+        "coingeckoId": "havven",
+        "serverList": [
+            "https://rpc.ftm.tools/"
+        ],
+        "explorerUrl": [
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xff00D1FF",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "YFI-FTM20",
+        "name": "yearn.finance",
+        "coingeckoId": "yearn-finance",
+        "serverList": [
+            "https://rpc.ftm.tools/"
+        ],
+        "explorerUrl": [
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xff006BE6",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "CRV-FTM20",
+        "name": "Curve DAO Token",
+        "coingeckoId": "curve-dao-token",
+        "serverList": [
+            "https://rpc.ftm.tools/"
+        ],
+        "explorerUrl": [
+            "https://ftmscan.com/"
+        ],
+        "type": "ftm",
+        "colorCoin": "0xff517AB5",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     }
 ]

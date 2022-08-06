@@ -337,6 +337,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                 });
               },
               child: FloatingActionButton(
+                key: const Key('disclaimer-scroll-button'),
                 child: const Icon(Icons.arrow_downward),
                 onPressed: () {
                   if (isEndOfScroll) {
@@ -367,11 +368,16 @@ class _DisclaimerPageState extends State<DisclaimerPage>
               ? Stack(
                   children: <Widget>[
                     SingleChildScrollView(
+                      key: const Key('scroll-disclaimer'),
                       controller: _scrollController,
                       child: Column(
                         children: <Widget>[
                           _tosContent,
                           _tosControls,
+                          const Text(
+                            '',
+                            key: Key('end-list-disclaimer'),
+                          ),
                         ],
                       ),
                     ),

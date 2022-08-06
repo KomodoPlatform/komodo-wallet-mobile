@@ -17,6 +17,7 @@ import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/widgets/build_protocol_chip.dart';
 import 'coin_detail/coin_detail.dart';
 import 'copy_dialog.dart';
 import 'rewards_page.dart';
@@ -215,7 +216,7 @@ class _ItemCoinState extends State<ItemCoin>
                         children: <Widget>[
                           _buildFaucetButton(),
                           _buildWalletOnly(),
-                          _buildNetworkLabel(),
+                          _buildProtocolChip(coin),
                         ],
                       ),
                     ],
@@ -305,126 +306,10 @@ class _ItemCoinState extends State<ItemCoin>
     return SizedBox();
   }
 
-  Widget _buildNetworkLabel() {
-    final bool needLabel = (widget.coinBalance.coin.type == 'erc' ||
-            widget.coinBalance.coin.type == 'qrc' ||
-            widget.coinBalance.coin.type == 'bep' ||
-            widget.coinBalance.coin.type == 'plg' ||
-            widget.coinBalance.coin.type == 'smartChain') &&
-        widget.coinBalance.coin.abbr != 'KMD' &&
-        widget.coinBalance.coin.abbr != 'ETH' &&
-        widget.coinBalance.coin.abbr != 'BNB' &&
-        widget.coinBalance.coin.abbr != 'MATIC' &&
-        widget.coinBalance.coin.abbr != 'QTUM';
-
-    if (!needLabel) return SizedBox();
-
+  Widget _buildProtocolChip(Coin coin) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          color: widget.coinBalance.coin.type == 'erc' ||
-                  widget.coinBalance.coin.type == 'bep' ||
-                  widget.coinBalance.coin.type == 'plg' ||
-                  widget.coinBalance.coin.type == 'qrc'
-              ? const Color.fromRGBO(20, 117, 186, 1)
-              : Theme.of(context).scaffoldBackgroundColor,
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: Builder(
-          builder: (context) {
-            switch (widget.coinBalance.coin.type) {
-              case 'erc':
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagERC20,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
-                  );
-                }
-              case 'bep':
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagBEP20,
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              color: Colors.white,
-                            ),
-                      ),
-                    ],
-                  );
-                }
-              case 'plg':
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagPLG20,
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              color: Colors.white,
-                            ),
-                      ),
-                    ],
-                  );
-                }
-              case 'qrc':
-                {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tagQRC20,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
-                  );
-                }
-              default:
-                {
-                  return InkWell(
-                    onTap: () {
-                      ScaffoldMessengerState scaffoldMessenger;
-                      try {
-                        scaffoldMessenger = ScaffoldMessenger.of(context);
-                      } catch (_) {}
-
-                      if (scaffoldMessenger != null) {
-                        scaffoldMessenger.showSnackBar(SnackBar(
-                          duration: Duration(seconds: 2),
-                          content:
-                              Text(AppLocalizations.of(context).builtKomodo),
-                        ));
-                      }
-                    },
-                    child: Image.asset(
-                      'assets/coin-icons/kmd.png',
-                      width: 18,
-                      height: 18,
-                    ),
-                  );
-                }
-            }
-          },
-        ),
-      ),
+      padding: const EdgeInsets.only(top: 8, left: 4),
+      child: BuildProtocolChip(coin),
     );
   }
 

@@ -100,8 +100,7 @@ class _BuyFormState extends State<BuyForm> {
         onTap: () => _constrProvider.buyCoin = null,
         leading: CircleAvatar(
           radius: 8,
-          backgroundImage: AssetImage('assets/coin-icons/'
-              '${_constrProvider.buyCoin.toLowerCase()}.png'),
+          backgroundImage: AssetImage(getCoinIconPath(_constrProvider.buyCoin)),
         ),
         title: Text(_constrProvider.buyCoin),
         trailing: Icon(

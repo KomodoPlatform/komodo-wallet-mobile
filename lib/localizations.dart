@@ -896,6 +896,8 @@ class AppLocalizations {
           name: 'searchFilterSubtitlePLG');
   String get searchFilterSubtitleQRC =>
       Intl.message('Select all QRC tokens', name: 'searchFilterSubtitleQRC');
+  String get searchFilterSubtitleFTM =>
+      Intl.message('Select all Fantom tokens', name: 'searchFilterSubtitleFTM');
   String get customFee => Intl.message('Custom fee', name: 'customFee');
   String get gasLimit => Intl.message('Gas limit', name: 'gasLimit');
   String get gasPrice => Intl.message('Gas price', name: 'gasPrice');
@@ -908,6 +910,7 @@ class AppLocalizations {
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagPLG20 => Intl.message('PLG20', name: 'tagPLG20');
+  String get tagFTM20 => Intl.message('FTM20', name: 'tagFTM20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
@@ -1227,7 +1230,10 @@ class AppLocalizations {
       args: <Object>[abbr],
       name: 'addressCoinInactive');
   String get warningOkBtn => Intl.message('Ok', name: 'warningOkBtn');
-
+  String get emptyName =>
+      Intl.message('Contact name cannot be empty', name: 'emptyName');
+  String emptyCoin(String abbr) =>
+      Intl.message('Input $abbr address', name: 'emptyCoin');
   // --- Camouflage Pin ---
 
   String get camoPinTitle =>
@@ -1333,6 +1339,10 @@ class AppLocalizations {
   String get swapTotal => Intl.message('Total', name: 'swapTotal');
   String get swapProgress =>
       Intl.message('Progress details', name: 'swapProgress');
+  String get closeMessage =>
+      Intl.message('Close Error Message', name: 'closeMessage');
+  String get openMessage =>
+      Intl.message('Open Error Message', name: 'openMessage');
 
   // -- Notifications --
 
@@ -1385,8 +1395,6 @@ class AppLocalizations {
 
   // --- Miscellaneous ---
 
-  String get checkingUpdates =>
-      Intl.message('Checking for updates...', name: 'checkingUpdates');
   String get checkForUpdates =>
       Intl.message('Check for updates', name: 'checkForUpdates');
   String get logoutWarning =>

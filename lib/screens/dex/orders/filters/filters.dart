@@ -5,6 +5,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/market.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 
@@ -478,9 +479,8 @@ class _FiltersState extends State<Filters> {
             CircleAvatar(
               radius: 7,
               backgroundColor: color?.withAlpha(50),
-              backgroundImage: current != null
-                  ? AssetImage('assets/coin-icons/${current.toLowerCase()}.png')
-                  : null,
+              backgroundImage:
+                  current != null ? AssetImage(getCoinIconPath(current)) : null,
             ),
             SizedBox(width: 4),
             Expanded(
@@ -532,8 +532,7 @@ class _FiltersState extends State<Filters> {
             children: [
               CircleAvatar(
                 radius: 8,
-                backgroundImage:
-                    AssetImage('assets/coin-icons/${coin.toLowerCase()}.png'),
+                backgroundImage: AssetImage(getCoinIconPath(coin)),
               ),
               SizedBox(width: 4),
               Text(coin),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
 import 'package:komodo_dex/screens/addressbook/contacts_list.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
@@ -141,6 +142,7 @@ class _AddressBookState extends State<AddressBookPage> {
                 ));
           },
           child: const Icon(Icons.add),
+          key: const Key('add-address-page-button'),
         ),
         const SizedBox(width: 4),
         RoundButton(
@@ -159,12 +161,29 @@ class _AddressBookState extends State<AddressBookPage> {
     if (coin == null) return SizedBox();
 
     String title = coin.abbr;
-
-    if (coin.type == 'smartChain') title = 'KMD & SmartChains';
-    if (coin.type == 'erc') title = 'ETH & ERC tokens';
-    if (coin.type == 'bep') title = 'BNB & BEP tokens';
-    if (coin.type == 'plg') title = 'Polygon & PLG tokens';
-    if (coin.type == 'qrc' || coin.abbr == 'QTUM') title = 'QTUM & QRC tokens';
+    switch (coin.type) {
+      case CoinType.smartChain:
+        title = 'KMD & SmartChains';
+        break;
+      case CoinType.erc:
+        title = 'ETH & ERC tokens';
+        break;
+      case CoinType.bep:
+        title = 'BNB & BEP tokens';
+        break;
+      case CoinType.plg:
+        title = 'Polygon & PLG tokens';
+        break;
+      case CoinType.ftm:
+        title = 'Fantom & FTM tokens';
+        break;
+      case CoinType.qrc:
+        title = 'QTUM & QRC tokens';
+        break;
+      case CoinType.utxo:
+        if (coin.abbr == 'QTUM') title = 'QTUM & QRC tokens';
+        break;
+    }
 
     return Padding(
       padding: const EdgeInsets.all(12),

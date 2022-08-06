@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class RoundButton extends StatelessWidget {
   const RoundButton({
+    Key key,
     @required this.onPressed,
     @required this.child,
     this.size = 50,
-  });
+  }) : super(key: key);
 
   final Function onPressed;
   final Widget child;
