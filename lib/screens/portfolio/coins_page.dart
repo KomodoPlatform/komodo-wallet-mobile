@@ -410,7 +410,7 @@ class ListCoinsState extends State<ListCoins> {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
+                    children: <Widget>[
                       AddCoinButton(),
                       Text(AppLocalizations.of(context).pleaseAddCoin),
                     ],
