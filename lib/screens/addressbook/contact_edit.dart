@@ -53,7 +53,7 @@ class _ContactEditState extends State<ContactEdit> {
         onTapDown: (_) {
           setState(() {
             _focusOn = '';
-            unfocusTextField(context);
+            unfocusEverything();
           });
         },
         child: LockScreen(
@@ -232,7 +232,7 @@ class _ContactEditState extends State<ContactEdit> {
           onRemove: () {
             setState(() {
               _focusOn = '';
-              unfocusTextField(context);
+              unfocusEverything();
             });
             _editContact.addresses.removeWhere((k, v) => k == abbr);
           },
@@ -311,7 +311,7 @@ class _ContactEditState extends State<ContactEdit> {
     setState(() {
       _focusOn = '';
     });
-    unfocusTextField(context);
+    unfocusEverything();
 
     dialogBloc.dialog = showDialog<void>(
         context: context,
