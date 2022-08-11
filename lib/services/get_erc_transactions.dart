@@ -62,10 +62,7 @@ class GetErcTransactions {
         url = _getErcTransactionHistoryUrl(coin, oneUrl, hrcUrl);
         break;
       case CoinType.mvr:
-        url = (coin.protocol?.type == 'ETH' // 'MOVR'
-                ? '$movrUrl/$address'
-                : '$mvrUrl/${coin.protocol.protocolData.contractAddress}/$address') +
-            (coin.testCoin ? '&testnet=true' : '');
+        url = _getErcTransactionHistoryUrl(coin, movrUrl, mvrUrl);
         break;
     }
 
