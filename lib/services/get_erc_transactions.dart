@@ -25,6 +25,8 @@ class GetErcTransactions {
   final String ftmUrl = appConfig.ftmUrl;
   final String oneUrl = appConfig.oneUrl;
   final String hrcUrl = appConfig.hrcUrl;
+  final String kcsUrl = appConfig.kcsUrl;
+  final String krcUrl = appConfig.krcUrl;
   final String etcUrl = appConfig.etcUrl;
   final String sbchUrl = appConfig.sbchUrl;
   final String ubqUrl = appConfig.ubqUrl;
@@ -71,6 +73,9 @@ class GetErcTransactions {
         break;
       case CoinType.hrc:
         url = _getErcTransactionHistoryUrl(coin, oneUrl, hrcUrl);
+        break;
+      case CoinType.krc:
+        url = _getErcTransactionHistoryUrl(coin, kcsUrl, krcUrl);
         break;
     }
 

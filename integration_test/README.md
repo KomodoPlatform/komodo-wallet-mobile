@@ -153,6 +153,10 @@ flutter test integration_test/runners/add_sbch_protocol.dart
 ```
 
 ```bash
+flutter test integration_test/runners/add_kucoin_protocol.dart
+```
+
+```bash
 flutter test integration_test/runners/add_etc_protocol.dart
 ```
 
