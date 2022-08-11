@@ -30,6 +30,14 @@ cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
 ## For Android build:
 
+Coming soon
+
+## AtomicDEX API library (libmm2.a) version:
+
+beta-2.1.7132
+a293d8f06
+https://gitlab.com/KomodoPlatform/supernet/-/pipelines/599845645
+
 
 ## Flutter version
 
