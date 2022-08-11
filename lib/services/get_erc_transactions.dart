@@ -62,10 +62,7 @@ class GetErcTransactions {
         url = _getErcTransactionHistoryUrl(coin, oneUrl, hrcUrl);
         break;
       case CoinType.krc:
-        url = (coin.protocol?.type == 'ETH' // 'HRC'
-                ? '$kcsUrl/$address'
-                : '$krcUrl/${coin.protocol.protocolData.contractAddress}/$address') +
-            (coin.testCoin ? '&testnet=true' : '');
+        url = _getErcTransactionHistoryUrl(coin, kcsUrl, krcUrl);
         break;
     }
 
