@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/wallet.dart';
@@ -146,6 +147,8 @@ class AuthenticateBloc extends BlocBase {
     await prefs.remove('camoFraction');
     await prefs.remove('camoBalance');
     await prefs.remove('camoSessionStartedAt');
+    await prefs.remove('showCancelOrderDialog1');
+    settingsBloc.showCancelOrderDialog = true;
 
     updateStatusPin(PinStatus.NORMAL_PIN);
     await EncryptionTool().delete('pin');

@@ -483,6 +483,7 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildEnableTestCoins() {
     return StreamBuilder(
+      key: const Key('show-test-coins'),
       initialData: settingsBloc.enableTestCoins,
       stream: settingsBloc.outEnableTestCoins,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {

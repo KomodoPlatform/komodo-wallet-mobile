@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
+import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/orders/filters/filters.dart';
@@ -53,6 +54,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
           final List<Widget> orderSwapsWidget = orderSwapsFiltered
               .map((dynamic item) {
                 if (item is Swap) {
+                  swapBloc.currentSwaps = [item.result.myOrderUuid];
                   return BuildItemSwap(context: context, swap: item);
                 } else if (item is Order) {
                   switch (item.orderType) {
@@ -73,6 +75,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
           return ListView(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
             controller: widget.scrollCtrl,
+            key: const Key('active-order-list'),
             children: [
               if (widget.showFilters) _buildFilters(orderSwaps),
               if (orderSwapsFiltered.isNotEmpty) ...{

@@ -66,11 +66,15 @@ class _CoinsListAllState extends State<CoinsListAll> {
   }
 
   Widget _buildCoinItem(ListAllItem item) {
+    String keyName = widget.type == Market.SELL
+        ? 'sell-${item.coin.abbr}'
+        : 'buy-${item.coin.abbr}';
     return Opacity(
       opacity: item.coin.isActive ? 1 : 0.3,
       child: Card(
         margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
         child: ListTile(
+          key: Key(keyName),
           visualDensity: VisualDensity.compact,
           onTap: () {
             widget.type == Market.SELL

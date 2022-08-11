@@ -119,11 +119,11 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
 
     if (_orderWasCreated && existingOrderOrSwap == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pop(context);
+        if (mounted) Navigator.pop(context);
       });
     } else if (!_orderWasCreated) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() => _orderWasCreated = true);
+        if (mounted) setState(() => _orderWasCreated = true);
       });
     }
   }
