@@ -121,6 +121,7 @@ class _SellFormState extends State<SellForm> {
     return Stack(
       children: [
         TextFormField(
+          key: const Key('amount-field'),
           controller: _amtCtrl,
           onChanged: _constrProvider.onSellAmtFieldChange,
           focusNode: _focusNode,

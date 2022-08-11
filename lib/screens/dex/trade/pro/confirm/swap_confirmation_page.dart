@@ -126,9 +126,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
       Log('swap_confirmaiton_page]', '_checkBattery: $e');
     }
 
-    setState(() {
-      _batteryData = battery;
-    });
+    if (mounted)
+      setState(() {
+        _batteryData = battery;
+      });
   }
 
   bool _isBatteryCritical() {
@@ -578,6 +579,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
             height: 8,
           ),
           TextButton(
+            key: const Key('cancel-swap-button'),
             onPressed: () => Navigator.of(context).pop(),
             style: TextButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 56),

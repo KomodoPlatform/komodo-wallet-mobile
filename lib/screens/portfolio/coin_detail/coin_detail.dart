@@ -366,12 +366,10 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Widget _buildTransactionsList(BuildContext context) {
-    if (currentCoinBalance.coin.type == CoinType.hrc) {
+    List<CoinType> coinsWithoutHist = [CoinType.hrc, CoinType.ubiq, CoinType.krc];
+    if (coinsWithoutHist.contains(currentCoinBalance.coin.type)) {
       return _buildTxExplorerButton(
-          'https://explorer.harmony.one/address/${currentCoinBalance.balance.address}');
-    } else if (currentCoinBalance.coin.type == CoinType.krc) {
-      return _buildTxExplorerButton(
-          'https://explorer.kcc.io/en/address/${currentCoinBalance.balance.address}');
+          '${currentCoinBalance.coin.explorerUrl.first}address/${currentCoinBalance.balance.address}');
     }
     return Expanded(
       child: RefreshIndicator(

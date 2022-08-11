@@ -24,6 +24,9 @@ class SettingsBloc implements BlocBase {
         _prefs.getBool('showSoundsExplanationDialog') ??
             showSoundsExplanationDialog;
 
+    showCancelOrderDialog =
+        _prefs.getBool('showCancelOrderDialog1') ?? showCancelOrderDialog;
+
     if (_prefs.getBool('showOrderDetailsByTap') == null) {
       _prefs.setBool('showOrderDetailsByTap', true);
     }
@@ -34,6 +37,7 @@ class SettingsBloc implements BlocBase {
   bool showBalance = true;
   bool isLightTheme = false;
   bool showSoundsExplanationDialog = true;
+  bool showCancelOrderDialog = true;
   bool enableTestCoins = false;
 
   final StreamController<bool> _showBalanceController =
@@ -107,6 +111,11 @@ class SettingsBloc implements BlocBase {
     showSoundsExplanationDialog = val;
     _inShowSoundsDialog.add(val);
     _prefs.setBool('showSoundsExplanationDialog', val);
+  }
+
+  void setShowCancelOrderDialog(bool val) {
+    showCancelOrderDialog = val;
+    _prefs.setBool('showCancelOrderDialog1', val);
   }
 
   void setLightTheme(bool val) {

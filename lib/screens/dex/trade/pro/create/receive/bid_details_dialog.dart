@@ -80,6 +80,7 @@ void openBidDetailsDialog({
                             ),
                             const SizedBox(width: 12),
                             ElevatedButton(
+                              key: const Key('confirm-details'),
                               onPressed: () {
                                 dialogBloc.closeDialog(context);
                                 onSelect();
