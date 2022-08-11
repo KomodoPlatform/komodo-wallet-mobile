@@ -1991,6 +1991,17 @@
         "fallback_swap_contract": "0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"
     },
     {
+        "abbr": "SBCH",
+        "name": "SmartBCH",
+        "coingeckoId": "bitcoin-cash",
+        "serverList": ["https://smartbch.fountainhead.cash/mainnet"],
+        "explorerUrl": ["https://www.smartscan.cash/"],
+        "type": "sbch",
+        "colorCoin": "0xff74dd54",
+        "swap_contract_address": "0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68",
+        "fallback_swap_contract": "0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68"
+    },
+    {
         "abbr": "UBQ",
         "name": "Ubiq",
         "coingeckoId": "ubiq",

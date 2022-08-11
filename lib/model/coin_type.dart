@@ -10,6 +10,7 @@ enum CoinType {
   qrc,
   hrc,
   etc,
+  sbch,
   ubiq,
 }
 
