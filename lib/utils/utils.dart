@@ -315,6 +315,7 @@ Future<void> showConfirmationRemoveCoin(
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton(
+                  key: Key('confirm-disable'),
                   onPressed: () async {
                     try {
                       await coinsBloc.removeCoin(coin);
