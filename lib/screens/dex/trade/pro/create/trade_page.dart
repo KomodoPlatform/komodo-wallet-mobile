@@ -263,9 +263,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log.println(
         'trade_page:719', 'coin-select-${market.toString().toLowerCase()}');
     return SizedBox(
-      key: Key('coin-select-${market.toString().toLowerCase()}'),
       child: market == Market.BUY
           ? StreamBuilder<CoinBalance>(
+              key: Key('coin-select-buy'),
               initialData: swapBloc.receiveCoinBalance,
               stream: swapBloc.outReceiveCoinBalance,
               builder: (context, snapshot) => _buildSelectorCoin(
@@ -274,6 +274,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               ),
             )
           : StreamBuilder<CoinBalance>(
+              key: Key('coin-select-sell'),
               initialData: swapBloc.sellCoinBalance,
               stream: swapBloc.outSellCoinBalance,
               builder: (context, snapshot) => _buildSelectorCoin(

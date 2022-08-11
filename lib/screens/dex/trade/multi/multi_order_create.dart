@@ -55,6 +55,7 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
     final int qtt = multiOrderProvider.relCoins.length;
 
     return ElevatedButton(
+      key: const Key('create-multi-order'),
       onPressed: allowCreate
           ? () async {
               if (await multiOrderProvider.validate()) {
