@@ -66,7 +66,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
 
     return GestureDetector(
       onTap: () {
-        unfocusTextField(context);
+        unfocusEverything();
       },
       child: DefaultTabController(
         length: 2,
