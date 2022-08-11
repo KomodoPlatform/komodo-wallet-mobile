@@ -844,6 +844,9 @@ class AppLocalizations {
           name: 'searchFilterSubtitleTestCoins');
   String get searchFilterSubtitleERC =>
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
+  String get searchFilterSubtitleHRC =>
+      Intl.message('Select all Harmony tokens',
+          name: 'searchFilterSubtitleHRC');
   String get searchFilterSubtitleBEP =>
       Intl.message('Select all BEP tokens', name: 'searchFilterSubtitleBEP');
   String get searchFilterSubtitlePLG =>
@@ -861,6 +864,7 @@ class AppLocalizations {
           name: 'customFeeWarning');
   String get searchFilterSubtitleutxo =>
       Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
+  String get tagHRC20 => Intl.message('HRC20', name: 'tagHRC20');
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
@@ -1081,6 +1085,8 @@ class AppLocalizations {
       Intl.message('One hour not passed yet', name: 'rewardsOneHourLong');
   String get rewardsButton =>
       Intl.message('Claim your rewards', name: 'rewardsButton');
+  String get seeTxHistory =>
+      Intl.message('View Transaction History', name: 'viewTxHistory');
 
   // --- Multi Order---
 

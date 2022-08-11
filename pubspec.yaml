@@ -60,6 +60,9 @@ dependencies:
       #url: https://github.com/KomodoPlatform/encrypt
       #ref: 4.0.3
 
+  # https://pub.dev/packages/mobile_scanner/versions/1.1.2
+  mobile_scanner: 1.1.2
+
 dev_dependencies:
   integration_test:
     sdk: flutter
@@ -76,10 +79,6 @@ dev_dependencies:
     #git:
       #url: https://github.com/KomodoPlatform/auto_size_text.git
       #ref: a2cb00e548916731f5c4c241d79a93419a4f9447
-
-  # barcode_scan was discontinued, I was originally going to replace it with a fork
-  # but instead decided to replace with a completely new plugin
-  qr_code_scanner: 0.6.1 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)
 
   shared_preferences: 2.0.8 # flutter.dev (Note: Supports null safety)
   bip39: 1.0.6 # READY FOR SECURE CODE REVIEW (Note: Supports null safety)

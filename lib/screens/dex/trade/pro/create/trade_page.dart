@@ -353,7 +353,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log('trade_page', 'receive coin selected: $coin...');
     Log('trade_page', 'performing maker order');
 
-    unfocusTextField(context);
+    unfocusEverything();
     swapBloc.updateMatchingBid(null);
     if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
 
@@ -366,7 +366,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log('trade_page', 'receive coin selected: ${bid.coin}...');
     Log('trade_page', 'performing taker order');
 
-    unfocusTextField(context);
+    unfocusEverything();
     swapBloc.updateMatchingBid(bid);
     if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
 
