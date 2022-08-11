@@ -103,6 +103,8 @@ class AppConfig {
   String get hrcUrl => 'https://komodo.live:3334/api/v2/hrc_tx_history';
   String get kcsUrl => 'https://komodo.live:3334/api/v1/krc_tx_history';
   String get krcUrl => 'https://komodo.live:3334/api/v2/krc_tx_history';
+  String get etcUrl => 'https://komodo.live:3334/api/v1/etc_tx_history';
+  String get sbchUrl => 'https://komodo.live:3334/api/v1/sbch_tx_history';
   String get ubqUrl => 'https://komodo.live:3334/api/v1/ubq_tx_history';
 
   /// We're using different rpc ports for different wallet packages

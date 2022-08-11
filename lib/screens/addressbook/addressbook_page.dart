@@ -174,6 +174,9 @@ class _AddressBookState extends State<AddressBookPage> {
       case CoinType.bep:
         title = 'BNB & BEP tokens';
         break;
+      case CoinType.sbch:
+        title = 'SmartBCH tokens';
+        break;
       case CoinType.plg:
         title = 'Polygon & PLG tokens';
         break;
@@ -182,6 +185,9 @@ class _AddressBookState extends State<AddressBookPage> {
         break;
       case CoinType.ftm:
         title = 'Fantom & FTM tokens';
+        break;
+      case CoinType.etc:
+        title = 'Ethereum Classic';
         break;
       case CoinType.hrc:
         title = 'Harmony & HRC tokens';

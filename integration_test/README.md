@@ -149,7 +149,15 @@ flutter test integration_test/runners/add_ubiq_protocol.dart
 ```
 
 ```bash
+flutter test integration_test/runners/add_sbch_protocol.dart
+```
+
+```bash
 flutter test integration_test/runners/add_kucoin_protocol.dart
+```
+
+```bash
+flutter test integration_test/runners/add_etc_protocol.dart
 ```
 
 #### 3.2 Run all tests
