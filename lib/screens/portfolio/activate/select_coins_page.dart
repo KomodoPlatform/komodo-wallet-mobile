@@ -32,7 +32,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   StreamSubscription<List<CoinToActivate>> _listenerCoinsActivated;
   List<Coin> _currentCoins = <Coin>[];
   List<Widget> _listViewItems = <Widget>[];
-  bool _noCoinActivated = true;
+  List<CoinToActivate> _coinsToActivate = [];
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
     _listenerCoinsActivated = coinsBloc.outCoinBeforeActivation.listen((data) {
       setState(() {
-        _noCoinActivated = data.where((element) => element.isActive).isEmpty;
+        _coinsToActivate = data.where((element) => element.isActive).toList();
       });
     });
     super.initState();
@@ -101,9 +101,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                       ? LoadingCoin()
                       : Column(
                           children: [
-                            _noCoinActivated
+                            _coinsToActivate.isEmpty
                                 ? SizedBox()
-                                : BuildSelectedCoins(),
+                                : BuildSelectedCoins(_coinsToActivate),
                             Expanded(
                               child: ListView.builder(
                                 itemCount: _listViewItems.length,
