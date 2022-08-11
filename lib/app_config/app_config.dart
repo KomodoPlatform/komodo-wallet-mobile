@@ -32,15 +32,24 @@ class AppConfig {
     'KRC20',
   ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
-  Map<String, String> allProtocolNames = {
-    'utxo': 'UTXO',
-    'smartChain': 'Smart Chain',
-    'qrc': 'QTUM (QRC-20)',
-    'plg': 'Polygon (PLG-20)',
-    'ftm': 'Fantom (FTM-20)',
-    'erc': 'Ethereum (ERC-20)',
-    'bep': 'Binance (BEP-20)',
-  };
+  Map<String, String> get allProtocolNames => {
+        'utxo': 'UTXO',
+        'smartChain': 'Smart Chain',
+        'erc': 'Ethereum (ERC-20)',
+        'bep': 'Binance (BEP-20)',
+        'qrc': 'QTUM (QRC-20)',
+        'plg': 'Polygon (PLG-20)',
+        'ftm': 'Fantom (FTM-20)',
+        'hrc': 'Harmony (HRC-20)',
+        'avax': 'Avax (avax-20)',
+        'hco': 'HecoChain (HCO-20)',
+        'mvr': 'Moonriver (MVR-20)',
+        'krc': 'Kucoin (KRC-20)',
+        'ubiq': 'Ubiq',
+        'etc': 'Ethereum Classic',
+        'sbch': 'SmartBCH',
+      };
+
   bool get isSwapShareCardEnabled => true;
 
   // support channels (showed on help page)
