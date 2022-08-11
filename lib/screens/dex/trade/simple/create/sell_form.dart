@@ -28,7 +28,7 @@ class _SellFormState extends State<SellForm> {
       if (_constrProvider.buyCoin == null) {
         _focusNode.requestFocus();
       } else {
-        unfocusTextField(context);
+        unfocusEverything();
       }
     });
 

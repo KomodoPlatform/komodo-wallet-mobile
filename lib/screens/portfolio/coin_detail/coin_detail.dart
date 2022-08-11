@@ -825,7 +825,7 @@ class _CoinDetailState extends State<CoinDetail> {
       alignment: Alignment.topRight,
       secondChild: GestureDetector(
         onTap: () {
-          unfocusTextField(context);
+          unfocusEverything();
         },
         child: Card(
             margin:

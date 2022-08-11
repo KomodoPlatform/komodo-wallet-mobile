@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 
 Future<void> activateTestCoins(WidgetTester tester,
     {List<String> coinsToActivate}) async {
-  coinsToActivate = coinsToActivate ?? appConfig.defaultTestCoins;
+  coinsToActivate = coinsToActivate ?? const ['MORTY', 'RICK'];
   final Finder addAssetsButton = find.byKey(const Key('adding-coins'));
   final Finder portfolioTab = find.byKey(const Key('main-nav-portfolio'));
   final Finder searchCoinsField = find.byKey(const Key('coins-search-field'));
