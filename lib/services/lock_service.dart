@@ -188,7 +188,7 @@ class LockService {
     // it might stuck in some intermediate state, preventing the long press menus, such as "PASTE",
     // from appearing. Unfocusing before hiding such fields workarounds the issue.
     Log.println('lock_service:178', 'Unfocus and lock..');
-    unfocusTextField(context);
+    unfocusEverything();
 
     authBloc.showLock = true;
   }

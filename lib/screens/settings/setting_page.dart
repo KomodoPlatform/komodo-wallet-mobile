@@ -321,10 +321,9 @@ class _SettingPageState extends State<SettingPage> {
                           context,
                           MaterialPageRoute<dynamic>(
                               builder: (BuildContext context) => PinPage(
-                                  title:
-                                      AppLocalizations.of(context).lockScreen,
+                                  title: AppLocalizations.of(context).createPin,
                                   subTitle: AppLocalizations.of(context)
-                                      .enterOldPinCode,
+                                      .enterNewPinCode,
                                   pinStatus: PinStatus.CHANGE_PIN,
                                   password: password)));
                     },

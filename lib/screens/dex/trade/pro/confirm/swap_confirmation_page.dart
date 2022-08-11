@@ -224,10 +224,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildCoinSwapDetail() {
-    final String amountSell =
-        cutTrailingZeros(formatPrice(swapBloc.amountSell));
-    final String amountReceive =
-        cutTrailingZeros(formatPrice(swapBloc.amountReceive));
+    final String amountSell = cutTrailingZeros(
+        swapBloc.amountSell.toStringAsFixed(appConfig.tradeFormPrecision));
+    final String amountReceive = cutTrailingZeros(
+        swapBloc.amountReceive.toStringAsFixed(appConfig.tradeFormPrecision));
 
     return Column(
       children: <Widget>[

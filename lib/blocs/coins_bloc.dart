@@ -171,7 +171,7 @@ class CoinsBloc implements BlocBase {
       if (type == null) {
         shouldChange = item.coin.testCoin;
       } else {
-        shouldChange = item.coin.type == type && !item.coin.testCoin;
+        shouldChange = item.coin.type.name == type && !item.coin.testCoin;
       }
 
       if (shouldChange) {
@@ -274,7 +274,8 @@ class CoinsBloc implements BlocBase {
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
       dynamic transactions;
-      if (coin.type == 'erc' || coin.type == 'bep' || coin.type == 'plg') {
+
+      if (isErcType(coin)) {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else {
@@ -594,12 +595,19 @@ class CoinsBloc implements BlocBase {
     return _sorted;
   }
 
+  List<CoinBalance> sortCoinsWithoutTestCoins(List<CoinBalance> unsorted) {
+    List<CoinBalance> _sorted = [];
+    _sorted = sortCoins(unsorted);
+    _sorted.removeWhere((CoinBalance c) => c.coin.testCoin);
+    return _sorted;
+  }
+
   Future<Transaction> getLatestTransaction(Coin coin) async {
     const int limit = 1;
     const String fromId = null;
     try {
       dynamic transactions;
-      if (coin.type == 'erc' || coin.type == 'bep' || coin.type == 'plg') {
+      if (isErcType(coin)) {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else {

@@ -10,6 +10,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
@@ -85,7 +86,9 @@ class _CoinDetailState extends State<CoinDetail> {
   void initState() {
     cexProvider ??= Provider.of<CexProvider>(context, listen: false);
     // set default coin
-    cexProvider.withdrawCurrency = widget.coinBalance.coin.abbr.toUpperCase();
+    Future.delayed(Duration.zero, () {
+      cexProvider.withdrawCurrency = widget.coinBalance.coin.abbr.toUpperCase();
+    });
 
     isSendIsActive = widget.isSendIsActive;
     currentCoinBalance = widget.coinBalance;
@@ -213,8 +216,7 @@ class _CoinDetailState extends State<CoinDetail> {
               Stack(
                 children: [
                   PhotoHero(
-                    tag: 'assets/coin-icons/'
-                        '${currentCoinBalance.coin.abbr.toLowerCase()}.png',
+                    tag: getCoinIconPath(currentCoinBalance.balance.coin),
                     radius: 16,
                   ),
                   if (currentCoinBalance.coin.suspended)
@@ -262,8 +264,8 @@ class _CoinDetailState extends State<CoinDetail> {
     // Since we currently fetching erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
-    final String coinType = currentCoinBalance.coin.type;
-    if (coinType == 'erc' || coinType == 'bep' || coinType == 'plg') {
+
+    if (isErcType(widget.coinBalance.coin)) {
       return SizedBox();
     }
 
@@ -330,7 +332,59 @@ class _CoinDetailState extends State<CoinDetail> {
         });
   }
 
+  Widget _buildTxExplorerButton(String link) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 50),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: OutlinedButton(
+              key: Key('tx-explorer-button'),
+              onPressed: () => launchURL(link),
+              style: OutlinedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 12),
+                side:
+                    BorderSide(color: Theme.of(context).colorScheme.secondary),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: Stack(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 10,
+                          height: 10,
+                        ),
+                        buildRedDot(context)
+                      ],
+                    ),
+                  ),
+                  Text(AppLocalizations.of(context).seeTxHistory.toUpperCase())
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildTransactionsList(BuildContext context) {
+    if (currentCoinBalance.coin.type == CoinType.hrc) {
+      return _buildTxExplorerButton(
+          'https://explorer.harmony.one/address/${currentCoinBalance.balance.address}');
+    }
     return Expanded(
       child: RefreshIndicator(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -625,7 +679,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(
-                          'assets/coin-icons/${platform.toLowerCase()}.png',
+                          getCoinIconPath(platform),
                           width: 16,
                           height: 16,
                         ),
@@ -687,6 +741,7 @@ class _CoinDetailState extends State<CoinDetail> {
         return Stack(
           children: <Widget>[
             SecondaryButton(
+              key: Key('open-' + statusButton.name),
               text: text,
               textColor: Theme.of(context).textTheme.button.color,
               borderColor: Theme.of(context).colorScheme.secondary,
@@ -713,6 +768,7 @@ class _CoinDetailState extends State<CoinDetail> {
     }
 
     return SecondaryButton(
+      key: Key('open-' + statusButton.name),
       text: text,
       isDarkMode: Theme.of(context).brightness != Brightness.light,
       textColor: Theme.of(context).colorScheme.secondary,
@@ -781,7 +837,7 @@ class _CoinDetailState extends State<CoinDetail> {
       alignment: Alignment.topRight,
       secondChild: GestureDetector(
         onTap: () {
-          unfocusTextField(context);
+          unfocusEverything();
         },
         child: Card(
             margin:

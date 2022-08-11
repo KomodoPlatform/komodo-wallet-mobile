@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 
 class BuildTypeHeader extends StatefulWidget {
   const BuildTypeHeader({Key key, this.type}) : super(key: key);
@@ -55,28 +56,37 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
   }
 
   String _getTitleText() {
-    switch (widget.type) {
-      case 'erc':
+    final CoinType titleType = coinTypeFromString(widget.type);
+
+    switch (titleType) {
+      case CoinType.erc:
         return AppLocalizations.of(context).searchFilterSubtitleERC;
         break;
-      case 'bep':
+      case CoinType.hrc:
+        return AppLocalizations.of(context).searchFilterSubtitleHRC;
+        break;
+      case CoinType.bep:
         return AppLocalizations.of(context).searchFilterSubtitleBEP;
         break;
-      case 'plg':
+      case CoinType.plg:
         return AppLocalizations.of(context).searchFilterSubtitlePLG;
         break;
-      case 'qrc':
+      case CoinType.qrc:
         return AppLocalizations.of(context).searchFilterSubtitleQRC;
         break;
-      case 'utxo':
+      case CoinType.utxo:
         return AppLocalizations.of(context).searchFilterSubtitleutxo;
         break;
-      case 'smartChain':
+      case CoinType.ftm:
+        return AppLocalizations.of(context).searchFilterSubtitleFTM;
+        break;
+      case CoinType.smartChain:
         return AppLocalizations.of(context).searchFilterSubtitleSmartChain;
         break;
-      default:
-        return AppLocalizations.of(context).searchFilterSubtitleTestCoins;
     }
+
+    // titleType == null for test assets
+    return AppLocalizations.of(context).searchFilterSubtitleTestCoins;
   }
 
   bool _areAllActive(List<CoinToActivate> coinsBeforeActivation) {
@@ -89,7 +99,7 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
       if (widget.type == null) {
         if (item.coin.testCoin) areAllActive = false;
       } else {
-        if (item.coin.type == widget.type && !item.coin.testCoin)
+        if (item.coin.type.name == widget.type && !item.coin.testCoin)
           areAllActive = false;
       }
     }

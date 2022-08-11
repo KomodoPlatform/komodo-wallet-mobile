@@ -28,7 +28,7 @@ class _SellFormState extends State<SellForm> {
       if (_constrProvider.buyCoin == null) {
         _focusNode.requestFocus();
       } else {
-        unfocusTextField(context);
+        unfocusEverything();
       }
     });
 
@@ -154,8 +154,8 @@ class _SellFormState extends State<SellForm> {
         onTap: () => _constrProvider.sellCoin = null,
         leading: CircleAvatar(
           radius: 8,
-          backgroundImage: AssetImage('assets/coin-icons/'
-              '${_constrProvider.sellCoin.toLowerCase()}.png'),
+          backgroundImage:
+              AssetImage(getCoinIconPath(_constrProvider.sellCoin)),
         ),
         title: Text(_constrProvider.sellCoin),
         trailing: Icon(

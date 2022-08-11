@@ -833,6 +833,9 @@ class AppLocalizations {
           name: 'searchFilterSubtitleTestCoins');
   String get searchFilterSubtitleERC =>
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
+  String get searchFilterSubtitleHRC =>
+      Intl.message('Select all Harmony tokens',
+          name: 'searchFilterSubtitleHRC');
   String get searchFilterSubtitleBEP =>
       Intl.message('Select all BEP tokens', name: 'searchFilterSubtitleBEP');
   String get searchFilterSubtitlePLG =>
@@ -840,6 +843,8 @@ class AppLocalizations {
           name: 'searchFilterSubtitlePLG');
   String get searchFilterSubtitleQRC =>
       Intl.message('Select all QRC tokens', name: 'searchFilterSubtitleQRC');
+  String get searchFilterSubtitleFTM =>
+      Intl.message('Select all Fantom tokens', name: 'searchFilterSubtitleFTM');
   String get customFee => Intl.message('Custom fee', name: 'customFee');
   String get gasLimit => Intl.message('Gas limit', name: 'gasLimit');
   String get gasPrice => Intl.message('Gas price', name: 'gasPrice');
@@ -848,10 +853,12 @@ class AppLocalizations {
           name: 'customFeeWarning');
   String get searchFilterSubtitleutxo =>
       Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
+  String get tagHRC20 => Intl.message('HRC20', name: 'tagHRC20');
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagPLG20 => Intl.message('PLG20', name: 'tagPLG20');
+  String get tagFTM20 => Intl.message('FTM20', name: 'tagFTM20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
@@ -1067,6 +1074,8 @@ class AppLocalizations {
       Intl.message('One hour not passed yet', name: 'rewardsOneHourLong');
   String get rewardsButton =>
       Intl.message('Claim your rewards', name: 'rewardsButton');
+  String get seeTxHistory =>
+      Intl.message('View Transaction History', name: 'viewTxHistory');
 
   // --- Multi Order---
 
@@ -1169,7 +1178,10 @@ class AppLocalizations {
       args: <Object>[abbr],
       name: 'addressCoinInactive');
   String get warningOkBtn => Intl.message('Ok', name: 'warningOkBtn');
-
+  String get emptyName =>
+      Intl.message('Contact name cannot be empty', name: 'emptyName');
+  String emptyCoin(String abbr) =>
+      Intl.message('Input $abbr address', name: 'emptyCoin');
   // --- Camouflage Pin ---
 
   String get camoPinTitle =>
@@ -1275,6 +1287,10 @@ class AppLocalizations {
   String get swapTotal => Intl.message('Total', name: 'swapTotal');
   String get swapProgress =>
       Intl.message('Progress details', name: 'swapProgress');
+  String get closeMessage =>
+      Intl.message('Close Error Message', name: 'closeMessage');
+  String get openMessage =>
+      Intl.message('Open Error Message', name: 'openMessage');
 
   // -- Notifications --
 
@@ -1327,8 +1343,6 @@ class AppLocalizations {
 
   // --- Miscellaneous ---
 
-  String get checkingUpdates =>
-      Intl.message('Checking for updates...', name: 'checkingUpdates');
   String get checkForUpdates =>
       Intl.message('Check for updates', name: 'checkForUpdates');
   String get logoutWarning =>

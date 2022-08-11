@@ -4,6 +4,7 @@ import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class CustomFee extends StatefulWidget {
   const CustomFee({Key key, this.amount, this.coin}) : super(key: key);
@@ -57,9 +58,7 @@ class _CustomFeeState extends State<CustomFee> {
                       .bodyText2
                       .copyWith(color: Theme.of(context).errorColor),
                 ),
-                widget.coin.type == 'erc' ||
-                        widget.coin.type == 'bep' ||
-                        widget.coin.type == 'plg'
+                isErcType(widget.coin)
                     ? CustomFeeFieldERC(
                         coin: widget.coin,
                         isCustomFeeActive: isCustomFeeActive,

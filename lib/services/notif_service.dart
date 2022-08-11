@@ -99,11 +99,7 @@ class NotifService {
       final List<Transaction> transactions = [];
 
       for (CoinBalance coin in coins) {
-        if (coin.coin.type == 'erc' ||
-            coin.coin.type == 'bep' ||
-            coin.coin.type == 'plg') {
-          continue;
-        }
+        if (isErcType(coin.coin)) continue;
 
         final String abbr = coin.coin.abbr;
         final String address = coin.balance.address;
