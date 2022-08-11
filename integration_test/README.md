@@ -113,6 +113,14 @@ flutter test integration_test/runners/add_address.dart
 ```
 
 ```bash
+flutter test integration_test/tests/markets/verify_removed_testcoins.dart
+```
+
+```bash
+flutter test integration_test/runners/add_harmony_protocol.dart
+```
+
+```bash
 flutter test integration_test/runners/protocol_filters.dart
 ```
 

@@ -600,6 +600,13 @@ class CoinsBloc implements BlocBase {
     return _sorted;
   }
 
+  List<CoinBalance> sortCoinsWithoutTestCoins(List<CoinBalance> unsorted) {
+    List<CoinBalance> _sorted = [];
+    _sorted = sortCoins(unsorted);
+    _sorted.removeWhere((CoinBalance c) => c.coin.testCoin);
+    return _sorted;
+  }
+
   Future<Transaction> getLatestTransaction(Coin coin) async {
     const int limit = 1;
     const String fromId = null;

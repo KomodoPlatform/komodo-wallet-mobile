@@ -29,7 +29,7 @@ class _BuyFormState extends State<BuyForm> {
       if (_constrProvider.sellCoin == null) {
         _focusNode.requestFocus();
       } else {
-        unfocusTextField(context);
+        unfocusEverything();
       }
     });
 

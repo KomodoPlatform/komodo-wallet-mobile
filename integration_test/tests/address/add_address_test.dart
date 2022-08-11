@@ -2,7 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/main.dart';
 
-Future<void> addAddressToTest(WidgetTester tester) async {
+Future<void> addAddressToTest(WidgetTester tester,
+    {String coin = 'AXE'}) async {
+  print('ADD ADDRESS TO WALLET TEST');
   final Finder settingsMenu = find.byKey(const Key('main-nav-more'));
   final Finder addressBookButton = find.byKey(Key('side-nav-addressbook'));
 
@@ -35,7 +37,7 @@ Future<void> addAddressToTest(WidgetTester tester) async {
     );
 
     // add address
-    await _createAddress(tester);
+    await _createAddress(tester, coin);
 
     expect(
       addressItem,
@@ -60,16 +62,18 @@ Future<void> addAddressToTest(WidgetTester tester) async {
     await tester.dragUntilVisible(
         editedAddressItem, addressList, Offset(0, -15));
     await tester.pumpAndSettle();
+    await tester.pageBack();
+    await tester.pumpAndSettle();
   } catch (e) {
     print(e?.message ?? e);
     rethrow;
   }
 }
 
-Future<void> _createAddress(WidgetTester tester) async {
-  final Finder selectedCoinAxe = find.byKey(const Key('selected-coin-AXE'));
+Future<void> _createAddress(WidgetTester tester, String coin) async {
+  final Finder selectedCoinAxe = find.byKey(Key('selected-coin-$coin'));
   final Finder nameField = find.byKey(const Key('name-address-field'));
-  final Finder axeAddressField = find.byKey(const Key('AXE-address-field'));
+  final Finder axeAddressField = find.byKey(Key('$coin-address-field'));
   final Finder saveButton = find.byKey(const Key('save-address'));
   final Finder addAddressButton = find.byKey(const Key('add-address'));
   final Finder selectCoinList = find.byKey(const Key('select-coin-list'));
@@ -81,6 +85,10 @@ Future<void> _createAddress(WidgetTester tester) async {
     findsOneWidget,
     reason: 'Coin List dialog is not found',
   );
+
+  await tester.dragUntilVisible(
+      selectedCoinAxe, selectCoinList, Offset(0, -50));
+  await tester.pumpAndSettle();
   await tester.tap(selectedCoinAxe);
   await tester.pumpAndSettle();
   // test fails if a second `add address button` is present

@@ -14,7 +14,8 @@ import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {
-  const BuildCoinPriceListItem({this.coinBalance, this.onTap});
+  const BuildCoinPriceListItem({this.coinBalance, this.onTap, Key key})
+      : super(key: key);
 
   final CoinBalance coinBalance;
   final Function onTap;

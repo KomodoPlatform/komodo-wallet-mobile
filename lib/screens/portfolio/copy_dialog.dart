@@ -13,6 +13,7 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
     builder: (BuildContext context) {
       // return object of type Dialog
       return CustomSimpleDialog(
+        key: Key('receive-dialog'),
         children: <Widget>[
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.4,
@@ -30,6 +31,7 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
                   ),
                 ),
                 InkWell(
+                  key: Key('copy-address'),
                   onTap: () => copyToClipBoard(mContext, address),
                   child: Row(
                     children: [
@@ -60,6 +62,7 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     ElevatedButton(
+                      key: Key('close-dialog'),
                       onPressed: () => Navigator.of(context).pop(),
                       child: Text(AppLocalizations.of(context).close),
                     ),
