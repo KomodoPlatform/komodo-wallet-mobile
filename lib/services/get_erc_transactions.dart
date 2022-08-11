@@ -25,6 +25,7 @@ class GetErcTransactions {
   final String ftmUrl = appConfig.ftmUrl;
   final String oneUrl = appConfig.oneUrl;
   final String hrcUrl = appConfig.hrcUrl;
+  final String sbchUrl = appConfig.sbchUrl;
   final String ubqUrl = appConfig.ubqUrl;
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
@@ -45,6 +46,9 @@ class GetErcTransactions {
       case CoinType.utxo:
       case CoinType.smartChain:
       case CoinType.qrc:
+        break;
+      case CoinType.sbch:
+        url = '$sbchUrl/$address';
         break;
       case CoinType.ubiq:
         url = '$ubqUrl/$address';
