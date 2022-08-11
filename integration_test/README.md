@@ -112,6 +112,14 @@ flutter test integration_test/runners/restore_wallet.dart
 flutter test integration_test/runners/add_address.dart
 ```
 
+```bash
+flutter test integration_test/tests/markets/verify_removed_testcoins.dart
+```
+
+```bash
+flutter test integration_test/runners/add_harmony_protocol.dart
+```
+
 #### 3.2 Run all tests
 
 - Open terminal
