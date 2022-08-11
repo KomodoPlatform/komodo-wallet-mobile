@@ -381,7 +381,7 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Widget _buildTransactionsList(BuildContext context) {
-    List<CoinType> coinsWithoutHist = [CoinType.hrc, CoinType.sbch];
+    List<CoinType> coinsWithoutHist = [CoinType.hrc, CoinType.ubiq, CoinType.sbch];
     if (coinsWithoutHist.contains(currentCoinBalance.coin.type)) {
       return _buildTxExplorerButton(
           '${currentCoinBalance.coin.explorerUrl.first}address/${currentCoinBalance.balance.address}');

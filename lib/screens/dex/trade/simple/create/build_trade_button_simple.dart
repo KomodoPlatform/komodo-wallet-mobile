@@ -40,7 +40,7 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              child: Text('Next'.toUpperCase()),
+              child: Text(AppLocalizations.of(context).next.toUpperCase()),
             ),
           ),
           SizedBox(width: 70),

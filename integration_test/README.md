@@ -34,10 +34,10 @@
      - [ ] Rewards page (for KMD)
      - [ ] Faucet view (for RICK and MORTY)
  - **DEX**
-   - [ ] Simple form
-   - [ ] Advanced form
-   - [ ] Multi-order form
-   - [ ] Active orders list
+   - [x] Simple form
+   - [x] Advanced form
+   - [x] Multi-order form
+   - [x] Active orders list
     - [ ] Maker order details page
     - [ ] Active swap details page
    - [ ] History list
@@ -113,11 +113,39 @@ flutter test integration_test/runners/add_address.dart
 ```
 
 ```bash
+flutter test integration_test/runners/create_simple_swap.dart
+```
+
+```bash
+flutter test integration_test/runners/cancel_swap.dart
+```
+
+```bash
+flutter test integration_test/runners/create_advanced_swap.dart
+```
+
+```bash
+flutter test integration_test/runners/create_multi_swap.dart
+```
+
+```bash
+flutter test integration_test/tests/wallet_tests.dart
+```
+
+```bash
+flutter test integration_test/tests/swap_tests.dart
+```
+
+```bash
 flutter test integration_test/tests/markets/verify_removed_testcoins.dart
 ```
 
 ```bash
 flutter test integration_test/runners/add_harmony_protocol.dart
+```
+
+```bash
+flutter test integration_test/runners/add_ubiq_protocol.dart
 ```
 
 ```bash
@@ -133,4 +161,5 @@ flutter test integration_test/runners/add_sbch_protocol.dart
 ```bash
 /bin/zsh ./execute_integration.sh
 ```
-- All the tests are run from 3.1.1 to 3.1.2
+
+- All the tests are run from 3.1.5 to 3.1.8

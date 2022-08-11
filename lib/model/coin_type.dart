@@ -10,6 +10,7 @@ enum CoinType {
   qrc,
   hrc,
   sbch,
+  ubiq,
 }
 
 CoinType coinTypeFromString(String value) {
