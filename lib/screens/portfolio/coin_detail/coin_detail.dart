@@ -356,23 +356,8 @@ class _CoinDetailState extends State<CoinDetail> {
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: Stack(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 10,
-                          height: 10,
-                        ),
-                        buildRedDot(context)
-                      ],
-                    ),
-                  ),
-                  Text(AppLocalizations.of(context).seeTxHistory.toUpperCase())
-                ],
-              ),
+              child:
+                  Text(AppLocalizations.of(context).seeTxHistory.toUpperCase()),
             ),
           ),
         ],
@@ -381,9 +366,10 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Widget _buildTransactionsList(BuildContext context) {
-    if (currentCoinBalance.coin.type == CoinType.hrc) {
+    List<CoinType> coinsWithoutHist = [CoinType.hrc, CoinType.ubiq, CoinType.sbch, CoinType.krc];
+    if (coinsWithoutHist.contains(currentCoinBalance.coin.type)) {
       return _buildTxExplorerButton(
-          'https://explorer.harmony.one/address/${currentCoinBalance.balance.address}');
+          '${currentCoinBalance.coin.explorerUrl.first}address/${currentCoinBalance.balance.address}');
     }
     return Expanded(
       child: RefreshIndicator(

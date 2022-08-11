@@ -29,11 +29,17 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
 
   Future<void> migrateSecuritySettings() async {
     await pauseUntil(() => _isInitialized);
-    Log('security_settings_provider', 'Migrating wallet security settings');
+    Log('wallet_security_settings_provider',
+        'Migrating wallet security settings');
 
     // MRC: If this key isn't present, we didn't do the migration yet,
     // this key also should be present on newly created wallets.
-    if (_prefs.containsKey('wallet_security_settings_migrated')) return;
+    Log('security_settings_provider', 'Checking if db migration is needed');
+    if ((_prefs.getInt('db_version_migrated') ?? -1) == 3) {
+      Log('Checking if wallet settings need migration: ', 'false');
+      return;
+    }
+    Log('Checking if wallet settings need migration: ', 'true');
 
     try {
       await _prefs.setBool(
@@ -46,6 +52,7 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       final tmpCamoFraction = _prefs.getInt('camoFraction');
       final tmpCamoBalance = _prefs.getString('camoBalance');
       final tmpCamoSessionStartedAt = _prefs.getInt('camoSessionStartedAt');
+      final tmpLogOutOnExitList = _prefs.getBool('switch_pin_log_out_on_exit');
 
       // MRC: We should migrate all wallets at once, this should be safer than
       // migrating only the current one, the user can change each of them later
@@ -58,6 +65,7 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
         camoFraction: tmpCamoFraction,
         camoBalance: tmpCamoBalance,
         camoSessionStartedAt: tmpCamoSessionStartedAt,
+        logOutOnExit: tmpLogOutOnExitList ?? false,
       );
 
       _walletSecuritySettings = tmpWalletSecuritySettings;
@@ -82,6 +90,7 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       await _prefs.remove('camoFraction');
       await _prefs.remove('camoBalance');
       await _prefs.remove('camoSessionStartedAt');
+      await _prefs.remove('switch_pin_log_out_on_exit');
 
       // Old shared prefs
       // unused, was renamed to isPinIsCreated previously
@@ -93,6 +102,7 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       await _prefs.remove('isCamoPinCreated');
       // should have been deleted after finishing camo pins etup
 
+      await _prefs.setInt('db_version_migrated', 3);
       await _prefs.setBool('wallet_security_settings_migrated', true);
 
       Log('security_settings_provider',
@@ -101,9 +111,11 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
       await Future.delayed(const Duration(milliseconds: 100));
 
       await _prefs.remove('wallet_security_settings_migration_in_progress');
+      await _prefs.remove('wallet_security_settings_migrated');
     } catch (e) {
       Log('security_settings_provider',
           'Failed to migrate wallet security settings, error: ${e.toString()}');
+      rethrow;
     }
   }
 
@@ -118,11 +130,13 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
     final camoFraction = _walletSecuritySettings.camoFraction;
     final camoBalance = _walletSecuritySettings.camoBalance;
     final camoSessionStartedAt = _walletSecuritySettings.camoSessionStartedAt;
+    final logOutOnExitList = _walletSecuritySettings.logOutOnExit;
 
     await _prefs.setBool('switch_pin', pinProtection);
     await _prefs.setBool('switch_pin_biometric', bioProtection);
     await _prefs.setBool('isCamoEnabled', camoEnabled);
     await _prefs.setBool('isCamoActive', camoActive);
+    await _prefs.setBool('switch_pin_log_out_on_exit', logOutOnExitList);
     if (camoFraction != null) await _prefs.setInt('camoFraction', camoFraction);
     if (camoBalance != null) await _prefs.setString('camoBalance', camoBalance);
     if (camoSessionStartedAt != null)
@@ -142,6 +156,16 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
     _walletSecuritySettings.activatePinProtection = v;
     _prefs.setBool('switch_pin', v);
 
+    _updateDb().then((value) => notifyListeners());
+  }
+
+  bool get logOutOnExit =>
+      _prefs.getBool('switch_pin_log_out_on_exit') ??
+      _walletSecuritySettings.logOutOnExit;
+
+  set logOutOnExit(bool v) {
+    _walletSecuritySettings.logOutOnExit = v;
+    _prefs.setBool('switch_pin_log_out_on_exit', v);
     _updateDb().then((value) => notifyListeners());
   }
 

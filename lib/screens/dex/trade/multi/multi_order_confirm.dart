@@ -74,6 +74,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
             child: Text(AppLocalizations.of(context).multiConfirmCancel),
           ),
           ElevatedButton(
+            key: const Key('confirm-create-multi-order'),
             onPressed: inProgress
                 ? null
                 : () async {

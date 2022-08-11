@@ -110,9 +110,10 @@ class _SwapConfirmationPageSimpleState
       Log('swap_confirmaiton_page_simple]', '_checkBattery: $e');
     }
 
-    setState(() {
-      _batteryData = battery;
-    });
+    if (mounted)
+      setState(() {
+        _batteryData = battery;
+      });
   }
 
   bool _isBatteryCritical() {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/screens/dex/orders/maker/maker_order_details_page.dart';
 import 'package:komodo_dex/screens/dex/orders/maker/order_fill.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cancel_order_dialog.dart';
 
 class BuildItemMaker extends StatefulWidget {
   const BuildItemMaker(this.order);
@@ -151,8 +151,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                       ? SizedBox(
                           height: 30,
                           child: OutlinedButton(
-                            onPressed: () =>
-                                ordersBloc.cancelOrder(widget.order.uuid),
+                            onPressed: () => showCancelConfirmation(context),
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(
                                   color:
@@ -190,6 +189,14 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
           ),
         ),
       ),
+    );
+  }
+
+  void showCancelConfirmation(BuildContext mContext) {
+    showCancelOrderDialog(
+      context: mContext,
+      key: const Key('settings-cancel-order-yes'),
+      uuid: widget.order.uuid,
     );
   }
 
