@@ -29,7 +29,7 @@ class AppConfig {
     'PLG20',
     'FTM20',
     'HRC20',
-    'HCO20'
+    'HCO20',
     'KRC20',
   ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
