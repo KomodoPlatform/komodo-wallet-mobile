@@ -26,6 +26,7 @@ class GetErcTransactions {
   final String oneUrl = appConfig.oneUrl;
   final String hrcUrl = appConfig.hrcUrl;
   final String etcUrl = appConfig.etcUrl;
+  final String ubqUrl = appConfig.ubqUrl;
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
     if (!isErcType(coin)) return;
@@ -48,6 +49,9 @@ class GetErcTransactions {
         break;
       case CoinType.etc:
         url = '$etcUrl/$address';
+        break;
+      case CoinType.ubiq:
+        url = '$ubqUrl/$address';
         break;
       case CoinType.erc:
         url = _getErcTransactionHistoryUrl(coin, ethUrl, ercUrl);

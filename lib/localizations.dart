@@ -478,6 +478,17 @@ class AppLocalizations {
   String get back => Intl.message('back', name: 'back');
   String get cancel => Intl.message('Cancel', name: 'cancel');
   String get details => Intl.message('details', name: 'details');
+  String get yes => Intl.message('Yes', name: 'yes');
+  String get no => Intl.message('No', name: 'no');
+  String get noteOnOrder =>
+      Intl.message('Note: Matched order cannot be cancelled again',
+          name: 'noteOnOrder');
+  String get dontAskAgain =>
+      Intl.message('Don’t ask again', name: 'dontAskAgain');
+  String get cancelOrder => Intl.message('Cancel Order', name: 'cancelOrder');
+  String get confirmCancel =>
+      Intl.message('Are you sure you want to cancel the order',
+          name: 'confirmCancel');
   String get unspendable => Intl.message('unspendable', name: 'unspendable');
   String get commingsoon =>
       Intl.message('TX details coming soon!', name: 'commingsoon');
@@ -838,6 +849,8 @@ class AppLocalizations {
           name: 'searchFilterSubtitleHRC');
   String get searchFilterSubtitleETC =>
       Intl.message('Select all ETC tokens', name: 'searchFilterSubtitleETC');
+  String get searchFilterSubtitleUBQ =>
+      Intl.message('Select all Ubiq coins', name: 'searchFilterSubtitle UBQ');
   String get searchFilterSubtitleBEP =>
       Intl.message('Select all BEP tokens', name: 'searchFilterSubtitleBEP');
   String get searchFilterSubtitlePLG =>
@@ -863,6 +876,7 @@ class AppLocalizations {
   String get tagFTM20 => Intl.message('FTM20', name: 'tagFTM20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String get tagETC => Intl.message('ETC', name: 'tagETC');
+  String get tagUBQ => Intl.message('UBQ', name: 'tagUBQ');
   String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
           name: 'errorNotEnoughGas', args: <Object>[gas]);

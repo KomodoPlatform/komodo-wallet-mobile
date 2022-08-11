@@ -287,7 +287,10 @@ class _AppDrawerState extends State<AppDrawer> {
 
     return ListTile(
       onTap: onTap,
-      leading: leading,
+      leading: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [leading],
+      ),
       title: title,
       trailing: trailing,
     );

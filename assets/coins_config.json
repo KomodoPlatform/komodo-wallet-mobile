@@ -1989,5 +1989,20 @@
         "colorCoin": "0xff328432",
         "swap_contract_address": "0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94",
         "fallback_swap_contract": "0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"
+    },
+    {
+        "abbr": "UBQ",
+        "name": "Ubiq",
+        "coingeckoId": "ubiq",
+        "serverList": [
+          "https://rpc.octano.dev/"
+        ],
+        "explorerUrl": [
+          "https://ubiqscan.io/"
+        ],
+        "type": "ubiq",
+        "colorCoin": "0xff00EB90",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     }
 ]
