@@ -49,6 +49,7 @@ class GetErcTransactions {
         break;
       case CoinType.sbch:
         url = '$sbchUrl/$address';
+        break;
       case CoinType.ubiq:
         url = '$ubqUrl/$address';
         break;
