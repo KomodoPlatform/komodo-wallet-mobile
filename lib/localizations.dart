@@ -847,6 +847,8 @@ class AppLocalizations {
   String get searchFilterSubtitleHRC =>
       Intl.message('Select all Harmony tokens',
           name: 'searchFilterSubtitleHRC');
+  String get searchFilterSubtitleETC =>
+      Intl.message('Select all ETC tokens', name: 'searchFilterSubtitleETC');
   String get searchFilterSubtitleSBCH =>
       Intl.message('Select all SmartBCH tokens',
           name: 'searchFilterSubtitleSBCH');
@@ -876,6 +878,7 @@ class AppLocalizations {
   String get tagPLG20 => Intl.message('PLG20', name: 'tagPLG20');
   String get tagFTM20 => Intl.message('FTM20', name: 'tagFTM20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
+  String get tagETC => Intl.message('ETC', name: 'tagETC');
   String get tagSBCH => Intl.message('SBCH', name: 'tagSBCH');
   String get tagUBQ => Intl.message('UBQ', name: 'tagUBQ');
   String errorNotEnoughGas(String gas) =>

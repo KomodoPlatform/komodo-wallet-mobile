@@ -25,6 +25,7 @@ class GetErcTransactions {
   final String ftmUrl = appConfig.ftmUrl;
   final String oneUrl = appConfig.oneUrl;
   final String hrcUrl = appConfig.hrcUrl;
+  final String etcUrl = appConfig.etcUrl;
   final String sbchUrl = appConfig.sbchUrl;
   final String ubqUrl = appConfig.ubqUrl;
 
@@ -46,6 +47,9 @@ class GetErcTransactions {
       case CoinType.utxo:
       case CoinType.smartChain:
       case CoinType.qrc:
+        break;
+      case CoinType.etc:
+        url = '$etcUrl/$address';
         break;
       case CoinType.sbch:
         url = '$sbchUrl/$address';
