@@ -39,7 +39,7 @@ android {
 
     defaultConfig {
         applicationId "com.komodoplatform.atomicdex"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
