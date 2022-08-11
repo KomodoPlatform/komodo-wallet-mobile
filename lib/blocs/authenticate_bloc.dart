@@ -78,8 +78,6 @@ class AuthenticateBloc extends BlocBase {
     await EncryptionTool().write('passphrase', passphrase);
     prefs.setBool('isPassphraseIsSaved', true);
 
-    await prefs.setBool('switch_pin_log_out_on_exit', false);
-
     await coinsBloc.loadWalletSnapshot();
 
     await mmSe.init(passphrase);
