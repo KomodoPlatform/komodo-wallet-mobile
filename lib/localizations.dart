@@ -854,6 +854,8 @@ class AppLocalizations {
   String get searchFilterSubtitleSBCH =>
       Intl.message('Select all SmartBCH tokens',
           name: 'searchFilterSubtitleSBCH');
+  String get searchFilterSubtitleAVX =>
+      Intl.message('Select all Avax tokens', name: 'searchFilterSubtitleAVX');
   String get searchFilterSubtitleUBQ =>
       Intl.message('Select all Ubiq coins', name: 'searchFilterSubtitle UBQ');
   String get searchFilterSubtitleBEP =>
@@ -884,6 +886,7 @@ class AppLocalizations {
   String get tagHCO20 => Intl.message('HCO20', name: 'tagHCO20');
   String get tagKRC20 => Intl.message('KRC20', name: 'tagKRC20');
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
+  String get tagAVX20 => Intl.message('AVX20', name: 'tagAVX20');
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagPLG20 => Intl.message('PLG20', name: 'tagPLG20');

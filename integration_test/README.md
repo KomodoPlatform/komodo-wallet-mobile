@@ -168,6 +168,10 @@ flutter test integration_test/runners/add_kucoin_protocol.dart
 flutter test integration_test/runners/add_etc_protocol.dart
 ```
 
+```bash
+flutter test integration_test/runners/add_avax_protocol.dart
+```
+
 #### 3.2 Run all tests
 
 - Open terminal
