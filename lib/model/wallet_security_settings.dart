@@ -6,6 +6,7 @@ class WalletSecuritySettings {
   int camoFraction;
   String camoBalance;
   int camoSessionStartedAt;
+  bool logOutOnExit;
 
   WalletSecuritySettings({
     this.activatePinProtection = true,
@@ -15,5 +16,6 @@ class WalletSecuritySettings {
     this.camoFraction,
     this.camoBalance,
     this.camoSessionStartedAt,
+    this.logOutOnExit = false,
   });
 }

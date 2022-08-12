@@ -1989,6 +1989,50 @@
         "colorCoin": "0xffF0B90B",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+      },
+      {
+        "abbr": "AAVE-HCO20",
+        "name": "Aave",
+        "coingeckoId": "aave",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff9C64A6",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+      },
+      {
+        "abbr": "1INCH-KRC20",
+        "name": "TerraUSD",
+        "coingeckoId": "terrausd",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff5493F7",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "AAVE-KRC20",
+        "name": "Aave",
+        "coingeckoId": "aave",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff9C64A6",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "BCH-HCO20",
+        "name": "Bitcoin Cash",
+        "coingeckoId": "bitcoin-cash",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff8DC351",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
     {
         "abbr": "DAI-MVR20",
@@ -1997,6 +2041,28 @@
         "serverList": ["https://rpc.api.moonriver.moonbeam.network"],
         "explorerUrl": ["https://moonriver.moonscan.io/"],
         "type": "mvr",
+        "colorCoin": "0xffB68900",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+      },
+      {
+        "abbr": "BAL-KRC20",
+        "name": "Balancer",
+        "coingeckoId": "balancer",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff4D4D4D",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "DAI-HCO20",
+        "name": "Dai",
+        "coingeckoId": "dai",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
         "colorCoin": "0xffB68900",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2013,6 +2079,61 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
     {
+        "abbr": "COMP-KRC20",
+        "name": "Compound",
+        "coingeckoId": "compound-governance-token",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff00DBA3",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "DOT-HCO20",
+        "name": "Polkadot",
+        "coingeckoId": "polkadot",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xffE80082",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "DODO-KRC20",
+        "name": "DODO",
+        "coingeckoId": "dodo",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xffFAF621",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "FIL-HCO20",
+        "name": "Filecoin",
+        "coingeckoId": "filecoin",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff4CCAD2",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "GRT-KRC20",
+        "name": "The Graph",
+        "coingeckoId": "the-graph",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff6E54DB",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
         "abbr": "MOVR",
         "name": "Moonriver",
         "coingeckoId": "moonriver",
@@ -2020,6 +2141,17 @@
         "explorerUrl": ["https://moonriver.moonscan.io/"],
         "type": "mvr",
         "colorCoin": "0xff52CCC9",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+      },
+      {
+        "abbr": "MATIC-HCO20",
+        "name": "Polygon",
+        "coingeckoId": "matic-network",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff804EE1",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
@@ -2035,12 +2167,100 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
     {
+        "abbr": "MATIC-KRC20",
+        "name": "Polygon",
+        "coingeckoId": "matic-network",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff804EE1",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "ETH-HCO20",
+        "name": "Ethereum",
+        "coingeckoId": "ethereum",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff687DE3",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "PAX-KRC20",
+        "name": "Paxos Standard",
+        "coingeckoId": "paxos-standard",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff408C69",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "KCS",
+        "name": "KuCoin Token",
+        "coingeckoId": "kucoin-shares",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff25AF90",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "ETH-KRC20",
+        "name": "Ethereum",
+        "coingeckoId": "ethereum",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff687DE3",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDC-HCO20",
+        "name": "USD Coin",
+        "coingeckoId": "usd-coin",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff317BCB",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
         "abbr": "USDT-MVR20",
         "name": "Tether",
         "coingeckoId": "tether",
         "serverList": ["https://rpc.api.moonriver.moonbeam.network"],
         "explorerUrl": ["https://moonriver.moonscan.io/"],
         "type": "mvr",
+        "colorCoin": "0xff317BCB",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+      },
+      {
+        "abbr": "USDC-KRC20",
+        "name": "USD Coin",
+        "coingeckoId": "usd-coin",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff317BCB",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDT-HCO20",
+        "name": "Tether",
+        "coingeckoId": "tether",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
         "colorCoin": "0xff26A17B",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
@@ -2055,5 +2275,308 @@
         "colorCoin": "0xffE25DA8",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDT-KRC20",
+        "name": "TerraUSD",
+        "coingeckoId": "basic-attention-token",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff26A17B",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "LINK-HCO20",
+        "name": "Chainlink",
+        "coingeckoId": "chainlink",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff356CE4",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "BAT-KRC20",
+        "name": "Basic Attention Token",
+        "coingeckoId": "terrausd",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xffFF5000",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "LINK-KRC20",
+        "name": "Chainlink",
+        "coingeckoId": "chainlink",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff356CE4",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "REN-HCO20",
+        "name": "Ren",
+        "coingeckoId": "republic-protocol",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff595959",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "QNT-KRC20",
+        "name": "Quant",
+        "coingeckoId": "quant-network",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff000000",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "SUSHI-KRC20",
+        "name": "Sushi",
+        "coingeckoId": "sushi",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xffE25DA8",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "MKR-KRC20",
+        "name": "Maker",
+        "coingeckoId": "maker",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff1BAF9F",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "NEXO-KRC20",
+        "name": "Nexo",
+        "coingeckoId": "nexo",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xffA3B3D6",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "SNX-KRC20",
+        "name": "Synthetix",
+        "coingeckoId": "havven",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff00D1FF",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "TUSD-HCO20",
+        "name": "TrueUSD",
+        "coingeckoId": "true-usd",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff2E3181",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "TEL-KRC20",
+        "name": "Telcoin",
+        "coingeckoId": "telcoin",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff1BD8FF",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "TUSD-KRC20",
+        "name": "TrueUSD",
+        "coingeckoId": "true-usd",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff2E3181",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "HT",
+        "name": "Huobi Token",
+        "coingeckoId": "huobi-token",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff00953F",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "YFI-KRC20",
+        "name": "yearn.finance",
+        "coingeckoId": "yearn-finance",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff006BE6",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "HUSD-HCO20",
+        "name": "HUSD",
+        "coingeckoId": "husd",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xff0075FB",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "CHZ-KRC20",
+        "name": "chiliZ",
+        "coingeckoId": "chiliz",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff5493F7",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "CRO-KRC20",
+        "name": "Crypto.com",
+        "coingeckoId": "crypto-com-chain",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff243565",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "CRV-KRC20",
+        "name": "Curve DAO Token",
+        "coingeckoId": "curve-dao-token",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff517AB5",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "ENJ-KRC20",
+        "name": "Enjin Coin",
+        "coingeckoId": "enjincoin",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff6752C3",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "HUSD-KRC20",
+        "name": "HUSD",
+        "coingeckoId": "husd",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xff0075FB",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+
+        "abbr": "UNI-HCO20",
+        "name": "Uniswap",
+        "coingeckoId": "uniswap",
+        "serverList": ["https://http-mainnet.hecochain.com"],
+        "explorerUrl": ["https://hecoinfo.com/"],
+        "type": "hco",
+        "colorCoin": "0xffFF007A",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "MANA-KRC20",
+        "name": "Decentraland",
+        "coingeckoId": "decentraland",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xffFF3C6C",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "UNI-KRC20",
+        "name": "Uniswap",
+        "coingeckoId": "uniswap",
+        "serverList": ["https://rpc-mainnet.kcc.network"],
+        "explorerUrl": ["https://explorer.kcc.io/en/"],
+        "type": "krc",
+        "colorCoin": "0xffFF007A",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "ETC",
+        "name": "Ethereum Classic",
+        "coingeckoId": "ethereum-classic",
+        "serverList": ["https://www.ethercluster.com/etc"],
+        "explorerUrl": ["https://blockscout.com/etc/mainnet/"],
+        "type": "etc",
+        "colorCoin": "0xff328432",
+        "swap_contract_address": "0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94",
+        "fallback_swap_contract": "0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94"
+    },
+    {
+        "abbr": "SBCH",
+        "name": "SmartBCH",
+        "coingeckoId": "bitcoin-cash",
+        "serverList": ["https://smartbch.fountainhead.cash/mainnet"],
+        "explorerUrl": ["https://www.smartscan.cash/"],
+        "type": "sbch",
+        "colorCoin": "0xff74dd54",
+        "swap_contract_address": "0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68",
+        "fallback_swap_contract": "0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68"
+    },
+    {
+        "abbr": "UBQ",
+        "name": "Ubiq",
+        "coingeckoId": "ubiq",
+        "serverList": [
+          "https://rpc.octano.dev/"
+        ],
+        "explorerUrl": [
+          "https://ubiqscan.io/"
+        ],
+        "type": "ubiq",
+        "colorCoin": "0xff00EB90",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     }
 ]
+

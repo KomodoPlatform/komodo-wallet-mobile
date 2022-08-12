@@ -14,6 +14,7 @@ void openSelectReceiveCoinDialog({
       context: context,
       builder: (BuildContext context) {
         return InProgressPopup(
+          key: const Key('buy-coin-dialog'),
           onDone: () {
             Navigator.of(context).pop();
 
@@ -21,6 +22,7 @@ void openSelectReceiveCoinDialog({
                 context: context,
                 builder: (BuildContext context) {
                   return MatchingOrderbooks(
+                    key: const Key('buy-coin-dialog'),
                     sellAmount: amountSell,
                     onCreatePressed: (String coin) => onCreate(coin),
                     onBidSelected: (Ask bid) => onSelect(bid),

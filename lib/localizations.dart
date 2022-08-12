@@ -478,6 +478,17 @@ class AppLocalizations {
   String get back => Intl.message('back', name: 'back');
   String get cancel => Intl.message('Cancel', name: 'cancel');
   String get details => Intl.message('details', name: 'details');
+  String get yes => Intl.message('Yes', name: 'yes');
+  String get no => Intl.message('No', name: 'no');
+  String get noteOnOrder =>
+      Intl.message('Note: Matched order cannot be cancelled again',
+          name: 'noteOnOrder');
+  String get dontAskAgain =>
+      Intl.message('Don’t ask again', name: 'dontAskAgain');
+  String get cancelOrder => Intl.message('Cancel Order', name: 'cancelOrder');
+  String get confirmCancel =>
+      Intl.message('Are you sure you want to cancel the order',
+          name: 'confirmCancel');
   String get unspendable => Intl.message('unspendable', name: 'unspendable');
   String get commingsoon =>
       Intl.message('TX details coming soon!', name: 'commingsoon');
@@ -833,9 +844,18 @@ class AppLocalizations {
           name: 'searchFilterSubtitleTestCoins');
   String get searchFilterSubtitleERC =>
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
+  String get searchFilterSubtitleKRC =>
+      Intl.message('Select all Kucoin tokens', name: 'searchFilterSubtitleKRC');
   String get searchFilterSubtitleHRC =>
       Intl.message('Select all Harmony tokens',
           name: 'searchFilterSubtitleHRC');
+  String get searchFilterSubtitleETC =>
+      Intl.message('Select all ETC tokens', name: 'searchFilterSubtitleETC');
+  String get searchFilterSubtitleSBCH =>
+      Intl.message('Select all SmartBCH tokens',
+          name: 'searchFilterSubtitleSBCH');
+  String get searchFilterSubtitleUBQ =>
+      Intl.message('Select all Ubiq coins', name: 'searchFilterSubtitle UBQ');
   String get searchFilterSubtitleBEP =>
       Intl.message('Select all BEP tokens', name: 'searchFilterSubtitleBEP');
   String get searchFilterSubtitlePLG =>
@@ -843,6 +863,9 @@ class AppLocalizations {
           name: 'searchFilterSubtitlePLG');
   String get searchFilterSubtitleQRC =>
       Intl.message('Select all QRC tokens', name: 'searchFilterSubtitleQRC');
+  String get searchFilterSubtitleHCO =>
+      Intl.message('Select all HecoChain tokens',
+          name: 'searchFilterSubtitleHCO');
   String get searchFilterSubtitleFTM =>
       Intl.message('Select all Fantom tokens', name: 'searchFilterSubtitleFTM');
   String get searchFilterSubtitleMVR =>
@@ -858,12 +881,17 @@ class AppLocalizations {
       Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
   String get tagHRC20 => Intl.message('HRC20', name: 'tagHRC20');
   String get tagMVR20 => Intl.message('MVR20', name: 'tagMVR20');
+  String get tagHCO20 => Intl.message('HCO20', name: 'tagHCO20');
+  String get tagKRC20 => Intl.message('KRC20', name: 'tagKRC20');
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagPLG20 => Intl.message('PLG20', name: 'tagPLG20');
   String get tagFTM20 => Intl.message('FTM20', name: 'tagFTM20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
+  String get tagETC => Intl.message('ETC', name: 'tagETC');
+  String get tagSBCH => Intl.message('SBCH', name: 'tagSBCH');
+  String get tagUBQ => Intl.message('UBQ', name: 'tagUBQ');
   String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
           name: 'errorNotEnoughGas', args: <Object>[gas]);

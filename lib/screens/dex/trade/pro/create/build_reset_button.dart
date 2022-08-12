@@ -27,6 +27,7 @@ class _BuildResetButtonState extends State<BuildResetButton> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
+      key: const Key('clear-trade-button'),
       onPressed: _enabled ? tradeForm.reset : null,
       child: Text(AppLocalizations.of(context).reset),
     );
