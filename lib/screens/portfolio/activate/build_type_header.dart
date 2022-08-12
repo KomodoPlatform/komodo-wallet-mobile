@@ -92,6 +92,9 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
       case CoinType.ftm:
         return AppLocalizations.of(context).searchFilterSubtitleFTM;
         break;
+      case CoinType.mvr:
+        return AppLocalizations.of(context).searchFilterSubtitleMVR;
+        break;
       case CoinType.hco:
         return AppLocalizations.of(context).searchFilterSubtitleHCO;
         break;

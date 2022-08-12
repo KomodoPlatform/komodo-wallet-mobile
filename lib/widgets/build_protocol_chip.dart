@@ -19,7 +19,7 @@ class BuildProtocolChip extends StatelessWidget {
     final TextStyle style =
         Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.white);
 
-    Widget chip;
+    Widget chip = SizedBox();
 
     switch (coin.type) {
       case CoinType.utxo:
@@ -28,6 +28,7 @@ class BuildProtocolChip extends StatelessWidget {
 
       case CoinType.erc:
       case CoinType.qrc:
+      case CoinType.mvr:
       case CoinType.bep:
       case CoinType.plg:
       case CoinType.ubiq:
@@ -126,6 +127,9 @@ class BuildProtocolChip extends StatelessWidget {
           break;
         case CoinType.plg:
           label = AppLocalizations.of(context).tagPLG20;
+          break;
+        case CoinType.mvr:
+          label = AppLocalizations.of(context).tagMVR20;
           break;
       }
 

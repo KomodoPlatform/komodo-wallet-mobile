@@ -145,7 +145,11 @@ flutter test integration_test/runners/add_harmony_protocol.dart
 ```
 
 ```bash
-flutter test integration_test/runners/add_hecochain_protocol.dart
+flutter test integration_test/runners/add_moonriver_protocol.dart
+```
+
+```bash
+flutter test integration_test/runners/add_moonriver_protocol.dart
 ```
 
 ```bash

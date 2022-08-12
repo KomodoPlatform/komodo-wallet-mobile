@@ -1980,6 +1980,17 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
     {
+        "abbr": "BUSD-MVR20",
+        "name": "Binance USD",
+        "coingeckoId": "binance-usd",
+        "serverList": ["https://rpc.api.moonriver.moonbeam.network"],
+        "explorerUrl": ["https://moonriver.moonscan.io/"],
+        "type": "mvr",
+        "colorCoin": "0xffF0B90B",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+      },
+      {
         "abbr": "AAVE-HCO20",
         "name": "Aave",
         "coingeckoId": "aave",
@@ -2024,6 +2035,17 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
     {
+        "abbr": "DAI-MVR20",
+        "name": "Dai",
+        "coingeckoId": "dai",
+        "serverList": ["https://rpc.api.moonriver.moonbeam.network"],
+        "explorerUrl": ["https://moonriver.moonscan.io/"],
+        "type": "mvr",
+        "colorCoin": "0xffB68900",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+      },
+      {
         "abbr": "BAL-KRC20",
         "name": "Balancer",
         "coingeckoId": "balancer",
@@ -2042,6 +2064,17 @@
         "explorerUrl": ["https://hecoinfo.com/"],
         "type": "hco",
         "colorCoin": "0xffB68900",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "MM-MVR20",
+        "name": "Million",
+        "coingeckoId": "million",
+        "serverList": ["https://rpc.api.moonriver.moonbeam.network"],
+        "explorerUrl": ["https://moonriver.moonscan.io/"],
+        "type": "mvr",
+        "colorCoin": "0xffF5B700",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
@@ -2101,6 +2134,17 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
     {
+        "abbr": "MOVR",
+        "name": "Moonriver",
+        "coingeckoId": "moonriver",
+        "serverList": ["https://rpc.api.moonriver.moonbeam.network"],
+        "explorerUrl": ["https://moonriver.moonscan.io/"],
+        "type": "mvr",
+        "colorCoin": "0xff52CCC9",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+      },
+      {
         "abbr": "MATIC-HCO20",
         "name": "Polygon",
         "coingeckoId": "matic-network",
@@ -2108,6 +2152,17 @@
         "explorerUrl": ["https://hecoinfo.com/"],
         "type": "hco",
         "colorCoin": "0xff804EE1",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "USDC-MVR20",
+        "name": "USD Coin",
+        "coingeckoId": "usd-coin",
+        "serverList": ["https://rpc.api.moonriver.moonbeam.network"],
+        "explorerUrl": ["https://moonriver.moonscan.io/"],
+        "type": "mvr",
+        "colorCoin": "0xff317BCB",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
@@ -2178,6 +2233,17 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
     {
+        "abbr": "USDT-MVR20",
+        "name": "Tether",
+        "coingeckoId": "tether",
+        "serverList": ["https://rpc.api.moonriver.moonbeam.network"],
+        "explorerUrl": ["https://moonriver.moonscan.io/"],
+        "type": "mvr",
+        "colorCoin": "0xff317BCB",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+      },
+      {
         "abbr": "USDC-KRC20",
         "name": "USD Coin",
         "coingeckoId": "usd-coin",
@@ -2196,6 +2262,17 @@
         "explorerUrl": ["https://hecoinfo.com/"],
         "type": "hco",
         "colorCoin": "0xff26A17B",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+    },
+    {
+        "abbr": "SUSHI-MVR20",
+        "name": "Sushi",
+        "coingeckoId": "sushi",
+        "serverList": ["https://rpc.api.moonriver.moonbeam.network"],
+        "explorerUrl": ["https://moonriver.moonscan.io/"],
+        "type": "mvr",
+        "colorCoin": "0xffE25DA8",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
     },
