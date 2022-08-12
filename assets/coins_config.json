@@ -2577,6 +2577,260 @@
         "colorCoin": "0xff00EB90",
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
-    }
+    },
+  {
+    "abbr": "1INCH-AVX20",
+    "name": "1inch",
+    "coingeckoId": "1inch",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff95A7C5",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "AAVE-AVX20",
+    "name": "Aave",
+    "coingeckoId": "aave",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff9C64A6",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "AVAX",
+    "name": "Avalanche",
+    "coingeckoId": "avalanche-2",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xffE84142",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "AVAXT",
+    "name": "Avalanche Testnet",
+    "testCoin": true,
+    "coingeckoId": "test-coin",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xffE84142",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "BUSD-AVX20",
+    "name": "Binance USD",
+    "coingeckoId": "binance-usd",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xffF0B90B",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "COMP-AVX20",
+    "name": "Compound",
+    "coingeckoId": "compound-governance-token",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff00DBA3",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "DAI-AVX20",
+    "name": "Dai",
+    "coingeckoId": "dai",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xffB68900",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "GRT-AVX20",
+    "name": "The Graph",
+    "coingeckoId": "the-graph",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff6E54DB",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "MM-AVX20",
+    "name": "Million",
+    "coingeckoId": "million",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xffF5B700",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "ETH-AVX20",
+    "name": "Ethereum",
+    "coingeckoId": "ethereum",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff687DE3",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "USDC-AVX20",
+    "name": "USD Coin",
+    "coingeckoId": "usd-coin",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff317BCB",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "USDT-AVX20",
+    "name": "Tether",
+    "coingeckoId": "tether",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff26A17B",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "BAT-AVX20",
+    "name": "Basic Attention Token",
+    "coingeckoId": "basic-attention-token",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xffFF5000",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "LINK-AVX20",
+    "name": "Chainlink",
+    "coingeckoId": "chainlink",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff356CE4",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "SUSHI-AVX20",
+    "name": "Sushi",
+    "coingeckoId": "sushi",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xffE25DA8",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "MKR-AVX20",
+    "name": "Maker",
+    "coingeckoId": "maker",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff1BAF9F",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "SNX-AVX20",
+    "name": "Synthetix",
+    "coingeckoId": "havven",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff00D1FF",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "TRYB-AVX20",
+    "name": "BiLira",
+    "coingeckoId": "bilira",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff0929AA",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "YFI-AVX20",
+    "name": "yearn.finance",
+    "coingeckoId": "yearn-finance",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff006BE6",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "ZRX-AVX20",
+    "name": "0x",
+    "coingeckoId": "0x",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff302C2C",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "CRV-AVX20",
+    "name": "Curve DAO Token",
+    "coingeckoId": "curve-dao-token",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff517AB5",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "UMA-AVX20",
+    "name": "UMA",
+    "coingeckoId": "uma",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xff95A7C5",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
+    "abbr": "UNI-AVX20",
+    "name": "Uniswap",
+    "coingeckoId": "uniswap",
+    "serverList": ["https://api.avax.network/ext/bc/C/rpc"],
+    "explorerUrl": ["https://snowtrace.io/"],
+    "type": "avx",
+    "colorCoin": "0xffFF007A",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  }
 ]
 

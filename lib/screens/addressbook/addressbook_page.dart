@@ -192,6 +192,9 @@ class _AddressBookState extends State<AddressBookPage> {
       case CoinType.hrc:
         title = 'Harmony & HRC tokens';
         break;
+      case CoinType.avx:
+        title = 'Avalanche & AVAX tokens';
+        break;
       case CoinType.hco:
         title = 'Huobi & HCO tokens';
         break;

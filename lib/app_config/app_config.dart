@@ -32,6 +32,7 @@ class AppConfig {
     'MVR20',
     'HCO20',
     'KRC20',
+    'AVX20',
   ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
 
@@ -112,6 +113,8 @@ class AppConfig {
   String get etcUrl => 'https://komodo.live:3334/api/v1/etc_tx_history';
   String get sbchUrl => 'https://komodo.live:3334/api/v1/sbch_tx_history';
   String get ubqUrl => 'https://komodo.live:3334/api/v1/ubq_tx_history';
+  String get avaxUrl => 'https://komodo.live:3334/api/v1/avx_tx_history';
+  String get avxUrl => 'https://komodo.live:3334/api/v2/avx_tx_history';
 
   /// We're using different rpc ports for different wallet packages
   /// in order to allow multiple wallets to run simultaneously.

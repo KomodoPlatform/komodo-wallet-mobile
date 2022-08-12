@@ -31,6 +31,7 @@ class BuildProtocolChip extends StatelessWidget {
       case CoinType.mvr:
       case CoinType.bep:
       case CoinType.plg:
+      case CoinType.avx:
       case CoinType.ubiq:
       case CoinType.hrc:
       case CoinType.hco:
@@ -103,6 +104,9 @@ class BuildProtocolChip extends StatelessWidget {
           break;
         case CoinType.etc:
           label = AppLocalizations.of(context).tagETC;
+          break;
+        case CoinType.avx:
+          label = AppLocalizations.of(context).tagAVX20;
           break;
         case CoinType.hrc:
           label = AppLocalizations.of(context).tagHRC20;
