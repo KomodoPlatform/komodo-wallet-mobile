@@ -863,6 +863,9 @@ class AppLocalizations {
           name: 'searchFilterSubtitlePLG');
   String get searchFilterSubtitleQRC =>
       Intl.message('Select all QRC tokens', name: 'searchFilterSubtitleQRC');
+  String get searchFilterSubtitleHCO =>
+      Intl.message('Select all HecoChain tokens',
+          name: 'searchFilterSubtitleHCO');
   String get searchFilterSubtitleFTM =>
       Intl.message('Select all Fantom tokens', name: 'searchFilterSubtitleFTM');
   String get customFee => Intl.message('Custom fee', name: 'customFee');
@@ -874,6 +877,7 @@ class AppLocalizations {
   String get searchFilterSubtitleutxo =>
       Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
   String get tagHRC20 => Intl.message('HRC20', name: 'tagHRC20');
+  String get tagHCO20 => Intl.message('HCO20', name: 'tagHCO20');
   String get tagKRC20 => Intl.message('KRC20', name: 'tagKRC20');
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');

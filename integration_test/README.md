@@ -145,6 +145,10 @@ flutter test integration_test/runners/add_harmony_protocol.dart
 ```
 
 ```bash
+flutter test integration_test/runners/add_hecochain_protocol.dart
+```
+
+```bash
 flutter test integration_test/runners/add_ubiq_protocol.dart
 ```
 
