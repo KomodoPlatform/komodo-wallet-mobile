@@ -101,9 +101,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                       ? LoadingCoin()
                       : Column(
                           children: [
-                            _coinsToActivate.isEmpty
-                                ? SizedBox()
-                                : BuildSelectedCoins(_coinsToActivate),
+                            if (_coinsToActivate.isNotEmpty)
+                              BuildSelectedCoins(_coinsToActivate),
                             Expanded(
                               child: ListView.builder(
                                 itemCount: _listViewItems.length,
