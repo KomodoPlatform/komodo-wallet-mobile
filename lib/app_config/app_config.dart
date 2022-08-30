@@ -38,6 +38,7 @@ class AppConfig {
         'ARRR-BEP20',
       ];
   final List<String> protocolSuffixes = [
+    'QRC20',
     'ERC20',
     'BEP20',
     'PLG20',

@@ -50,7 +50,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
     _listenerCoinsActivated = coinsBloc.outCoinBeforeActivation.listen((data) {
       print(data
-          .where((element) => element.coin.type == CoinType.bep)
+          .where((element) => element.coin.type == CoinType.plg)
           .toList()
           .length);
       setState(() {
