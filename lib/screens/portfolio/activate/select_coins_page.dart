@@ -8,6 +8,7 @@ import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/portfolio/activate/build_item_coin.dart';
 import 'package:komodo_dex/screens/portfolio/activate/build_type_header.dart';
@@ -48,6 +49,10 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     });
 
     _listenerCoinsActivated = coinsBloc.outCoinBeforeActivation.listen((data) {
+      print(data
+          .where((element) => element.coin.type == CoinType.bep)
+          .toList()
+          .length);
       setState(() {
         _coinsToActivate = data.where((element) => element.isActive).toList();
       });
