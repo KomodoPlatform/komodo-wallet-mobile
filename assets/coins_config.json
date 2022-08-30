@@ -5233,5 +5233,272 @@
     "http://bsc3.cipig.net:8655"
   ],
   "explorerUrl": ["https://bscscan.com/"]
+},
+  {
+    "abbr": "DIMI-QRC20",
+    "address": "electrum1.cipig.net",
+    "port": 50001,
+    "proto": "tcp",
+    "name": "DiminutiveCoin",
+    "coingeckoId": "diminutive-coin",
+    "type": "qrc",
+    "colorCoin": "0xFF0BFBE2",
+    "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+    "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+    "serverList": [
+      "electrum1.cipig.net:10050",
+      "electrum2.cipig.net:10050",
+      "electrum3.cipig.net:10050"
+    ],
+    "explorerUrl": [
+      "https://qtum.info/"
+    ]
+  }, {
+  "abbr": "TSL",
+  "name": "Energo",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "coingeckoId": "energo",
+  "type": "qrc",
+  "colorCoin": "0xFF64B082",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "HLC",
+  "name": "HalalChain",
+  "coingeckoId": "halalchain",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFF7E3193",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "HPY",
+  "name": "Hyper Pay",
+  "coingeckoId": "hyper-pay",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFF7E3193",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "INK",
+  "name": "Ink",
+  "coingeckoId": "ink",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFF7E3193",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "LSTR",
+  "name": "Luna Stars",
+  "coingeckoId": "meetluna",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFF",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "NVC-QRC20",
+  "name": "Novacoin",
+  "coingeckoId": "novacoin",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFFFCF96D",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "OC",
+  "name": "OceanChain",
+  "coingeckoId": "oceanchain",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFF595959",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "PUT",
+  "name": "Profile Utility Token",
+  "coingeckoId": "profile-utility-token",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFF4CCAD2",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "QBT",
+  "name": "Qbao",
+  "coingeckoId": "qbao",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFFEF1C70",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "QIAIR",
+  "name": "Qi Airdrop Token",
+  "coingeckoId": "test-coin",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFFFEFEFE",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "QI",
+  "name": "QiSwap",
+  "coingeckoId": "qiswap",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFFFFFFFF",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "SPC",
+  "name": "SpaceChain",
+  "coingeckoId": "spc-spacechain",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFFBB2100",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
+}, {
+  "abbr": "XVC-QRC20",
+  "name": "Vanillacash",
+  "coingeckoId": "vcash",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "type": "qrc",
+  "colorCoin": "0xFFB50126",
+  "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+  "serverList": [
+    "electrum1.cipig.net:10050",
+    "electrum2.cipig.net:10050",
+    "electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+    "https://qtum.info/"
+  ]
 }
 ]
