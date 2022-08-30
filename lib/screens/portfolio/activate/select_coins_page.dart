@@ -175,13 +175,18 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     }
 
     final List<String> sortedTypes = coinsMap.keys.toList()
-      ..sort((String a, String b) => b.compareTo(a));
+      ..sort((String a, String b) => a.compareTo(b));
 
     for (String type in sortedTypes) {
       list.add(BuildTypeHeader(
         type: type,
       ));
-      for (Coin coin in coinsMap[type]) {
+
+      List<Coin> _tCoins = coinsMap[type];
+      _tCoins.sort((Coin a, Coin b) =>
+          a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+
+      for (Coin coin in _tCoins) {
         list.add(BuildItemCoin(
           key: Key('coin-activate-${coin.abbr}'),
           coin: coin,

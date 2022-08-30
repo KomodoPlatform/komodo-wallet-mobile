@@ -11,6 +11,7 @@ class BuildSelectedCoins extends StatelessWidget {
     return AppBar(
       foregroundColor: Theme.of(context).colorScheme.onPrimary,
       centerTitle: false,
+      toolbarHeight: 40,
       title: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.0),
         child: SingleChildScrollView(
