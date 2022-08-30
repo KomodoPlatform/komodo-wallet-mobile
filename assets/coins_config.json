@@ -1914,6 +1914,17 @@
     "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
   },
   {
+    "abbr": "WBTC-HRC20",
+    "name": "Wrapped Bitcoin",
+    "coingeckoId": "wrapped-bitcoin",
+    "serverList": ["https://api.harmony.one", "https://api.s0.t.hmny.io"],
+    "explorerUrl": ["https://explorer.harmony.one/"],
+    "type": "hrc",
+    "colorCoin": "0xff687DE3",
+    "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+    "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE"
+  },
+  {
     "abbr": "USDC-HRC20",
     "name": "USD Coin",
     "coingeckoId": "usd-coin",
@@ -2003,8 +2014,8 @@
   },
   {
     "abbr": "1INCH-KRC20",
-    "name": "TerraUSD",
-    "coingeckoId": "terrausd",
+    "name": "1inch",
+    "coingeckoId": "1inch",
     "serverList": ["https://rpc-mainnet.kcc.network"],
     "explorerUrl": ["https://explorer.kcc.io/en/"],
     "type": "krc",
