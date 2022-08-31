@@ -36,6 +36,9 @@ class AppConfig {
         'SUPERNET',
         'PAXG-ERC20',
         'ARRR-BEP20',
+        'NVC',
+        'XPM',
+        'XVC'
       ];
   final List<String> protocolSuffixes = [
     'QRC20',

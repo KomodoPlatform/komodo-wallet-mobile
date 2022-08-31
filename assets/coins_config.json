@@ -5992,5 +5992,690 @@
         "explorerUrl": [
             "https://wsb.explorer.dexstats.info/"
         ]
+    },
+    {
+        "abbr": "ABY",
+        "name": "ArtByte",
+        "type": "smartChain",
+        "coingeckoId": "artbyte",
+        "colorCoin": "0xFF8B0D10",
+        "proto": "SSL",
+        "serverList": [
+            "elec-seeder-one.artbytecoin.org:50012",
+            "elec-seeder-two.artbytecoin.org:50012",
+            "electrumx-three.artbyte.live:50012",
+            "electrumx-four.artbyte.live:50012"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/aby/"
+        ]
+    }, {
+        "abbr": "AUR",
+        "name": "Auroracoin",
+        "type": "smartChain",
+        "coingeckoId": "auroracoin",
+        "colorCoin": "0xFF0A6C5E",
+        "proto": "SSL",
+        "serverList": [
+            "electrumx.aur.ewmcx.info:50002",
+            "failover.aur.ewmcx.biz:50002"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/aur/"
+        ]
+    }, {
+        "abbr": "USBL",
+        "name": "Balanced Dollar",
+        "type": "smartChain",
+        "coingeckoId": "test-coin",
+        "testCoin": true,
+        "proto": "TCP",
+        "colorCoin": "0xFF279553",
+        "serverList": [
+            "swap.softbalanced.com:50001"
+        ],
+        "explorerUrl": [
+            "https://softbalanced.com:3001/insight/"
+        ]
+    }, {
+        "abbr": "BTCZ",
+        "name": "BitcoinZ",
+        "type": "smartChain",
+        "coingeckoId": "bitcoinz",
+        "colorCoin": "0xFFF5B036",
+        "serverList": [
+            "electrum1.btcz.rocks:50001",
+            "electrum2.btcz.rocks:50001"
+        ],
+        "explorerUrl": [
+            "https://explorer.btcz.rocks/"
+        ]
+    }, {
+        "abbr": "BTX",
+        "name": "BitCore",
+        "type": "smartChain",
+        "coingeckoId": "bitcore",
+        "colorCoin": "0xFFFB30A6",
+        "proto": "SSL",
+        "serverList": [
+            "btx-electrumx.coinsmunity.com:50002"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/btx/"
+        ]
+    }, {
+        "abbr": "BTE",
+        "name": "Bitweb",
+        "type": "smartChain",
+        "coingeckoId": "bitweb",
+        "colorCoin": "0xFFFFE201",
+        "serverList": [
+            "electrumx.bitwebcore.org:20001",
+            "electrumx6.bitwebcore.org:20001",
+            "electrumx7.bitwebcore.org:20001"
+        ],
+        "explorerUrl": [
+            "https://explorer.bitwebcore.org/"
+        ]
+    }, {
+        "abbr": "BLK",
+        "name": "BlackCoin",
+        "type": "smartChain",
+        "coingeckoId": "blackcoin",
+        "colorCoin": "0xFF595959",
+        "proto": "SSL",
+        "serverList": [
+            "electrum1.blackcoin.nl:10002",
+            "electrum2.blackcoin.nl:20002",
+            "electrum3.blackcoin.nl:30002"
+        ],
+        "explorerUrl": [
+
+        ]
+    }, {
+        "abbr": "tBLK",
+        "name": "BlackCoin (testnet)",
+        "type": "smartChain",
+        "coingeckoId": "test-coin",
+        "colorCoin": "0xFF595959",
+        "proto": "SSL",
+        "serverList": [
+            "electrum1.blackcoin.nl:10012",
+            "electrum2.blackcoin.nl:20012",
+            "electrum3.blackcoin.nl:30012"
+        ],
+        "explorerUrl": [
+            "https://explorer.blackcoin.nl/"
+        ]
+    }, {
+        "abbr": "CDN",
+        "name": "WallStreetBets",
+        "type": "smartChain",
+        "coingeckoId": "test-coin",
+        "colorCoin": "0xFF90191C",
+        "proto": "SSL",
+        "serverList": [
+            "mumbai.ecoincore.com:34333",
+            "holland.ecoincore.com:34333",
+            "miami.ecoincore.com:34333",
+            "woolloomooloo.ecoincore.com:34333",
+            "lenoir.ecoincore.com:34333"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/cdn/"
+        ]
+    }, {
+        "abbr": "DGC",
+        "name": "Digitalcoin",
+        "type": "smartChain",
+        "coingeckoId": "digitalcoin",
+        "colorCoin": "0xFFBC7600",
+        "serverList": [
+            "electrumx.dgc.ewmcx.org:50001",
+            "failover.dgc.ewmcx.biz:50002"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/dgc/"
+        ]
+    }, {
+        "abbr": "DIMI",
+        "name": "Diminutive Coin",
+        "type": "smartChain",
+        "coingeckoId": "diminutive-coin",
+        "colorCoin": "0xFF0BFBE2",
+        "proto": "SSL",
+        "serverList": [
+            "electrumx1.diminutivecoin.com:50012",
+            "electrumx2.diminutivecoin.com:50012"
+        ],
+        "explorerUrl": [
+            "https://explorer.diminutivecoin.com/"
+        ]
+    }, {
+        "abbr": "DOI",
+        "name": "Doichain",
+        "type": "smartChain",
+        "coingeckoId": "doichain",
+        "proto": "SSL",
+        "colorCoin": "0xFF120641",
+        "serverList": [
+            "itchy-jellyfish-89.doi.works:50002",
+            "big-parrot-60.doi.works:50002",
+            "ugly-bird-70.doi.works:50002",
+            "pink-deer-69.doi.works:50002"
+        ],
+        "explorerUrl": [
+            "https://explorer.doichain.org/"
+        ]
+    }, {
+        "abbr": "EFL",
+        "name": "e-Gulden",
+        "type": "smartChain",
+        "coingeckoId": "electronicgulden",
+        "colorCoin": "0xFFFF940B",
+        "proto": "SSL",
+        "serverList": [
+            "holland.ecoincore.com:11017",
+            "lenoir.ecoincore.com:11017",
+            "electrum1.egulden.org:50002",
+            "electrum2.egulden.org:50002",
+            "electrum5.egulden.org:11017"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/efl/"
+        ]
+    }, {
+        "abbr": "XEC",
+        "name": "eCash",
+        "type": "smartChain",
+        "coingeckoId": "ecash",
+        "proto": "SSL",
+        "colorCoin": "0xFF273498",
+        "serverList": [
+            "electrum.bitcoinabc.org:50002",
+            "fulcrum.pepipierre.fr:50002"
+        ],
+        "explorerUrl": [
+            "https://blockchair.com/ecash/"
+        ]
+    }, {
+        "abbr": "EMC2",
+        "name": "Einsteinium",
+        "type": "smartChain",
+        "coingeckoId": "einsteinium",
+        "colorCoin": "0xFF00CCFF",
+        "serverList": [
+            "electrum1.cipig.net:10062",
+            "electrum2.cipig.net:10062",
+            "electrum3.cipig.net:10062"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/emc2/"
+        ]
+    }, {
+        "abbr": "XRG",
+        "name": "Ergon",
+        "type": "smartChain",
+        "coingeckoId": "test-coin",
+        "colorCoin": "0xFF162D50",
+        "proto": "SSL",
+        "testCoin": true,
+        "serverList": [
+            "fulcrum.ergon.network:52138",
+            "blackie.c3-soft.com:52138"
+        ],
+        "explorerUrl": [
+            "https://explorer.ergon.network/"
+        ]
+    }, {
+        "abbr": "FLUX",
+        "name": "Flux",
+        "type": "smartChain",
+        "coingeckoId": "zelcash",
+        "colorCoin": "0xFF2B61D1",
+        "serverList": [
+            "electrumx.runonflux.io:50002",
+            "electrumx2.runonflux.io:50001"
+        ],
+        "explorerUrl": [
+            "https://explorer.runonflux.io/"
+        ]
+    }, {
+        "abbr": "FJC",
+        "name": "Fujicoin",
+        "type": "smartChain",
+        "coingeckoId": "fujicoin",
+        "colorCoin": "0xFF00AFEC",
+        "proto": "TCP",
+        "serverList": [
+            "electrumx1.fujicoin.org:50001",
+            "electrumx2.fujicoin.org:50001"
+        ],
+        "explorerUrl": [
+            "https://explorer.fujicoin.org/"
+        ]
+    }, {
+        "abbr": "BSTY",
+        "name": "GlobalBoost-Y",
+        "type": "smartChain",
+        "coingeckoId": "globalboost",
+        "colorCoin": "0xFF78570D",
+        "proto": "SSL",
+        "serverList": [
+            "bsty-main.coinmunity.gold:50012",
+            "bsty-bkp.coinmunity.gold:50012"
+        ],
+        "explorerUrl": [
+            "https://insight.globalboost.info/"
+        ]
+    }, {
+        "abbr": "IC",
+        "name": "Ignition",
+        "type": "smartChain",
+        "coingeckoId": "ignition",
+        "proto": "TCP",
+        "colorCoin": "0xFF72009D",
+        "serverList": [
+            "electrum1.ignitioncoin.org:10001",
+            "electrum2.ignitioncoin.org:10001"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/ic/"
+        ]
+    }, {
+        "abbr": "IL8P",
+        "name": "InfiniLooP",
+        "type": "smartChain",
+        "coingeckoId": "test-coin",
+        "testCoin": true,
+        "proto": "SSL",
+        "colorCoin": "0xFF696969",
+        "serverList": [
+            "il8p.electrumx.transcenders.name:50002",
+            "il9p.electrumx.transcenders.name:50002"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/il8p/"
+        ]
+    }, {
+        "abbr": "LBC",
+        "name": "LBRY Credits",
+        "type": "smartChain",
+        "coingeckoId": "lbry-credits",
+        "colorCoin": "0xFF00775C",
+        "serverList": [
+            "electrum1.cipig.net:10067",
+            "electrum2.cipig.net:10067",
+            "electrum3.cipig.net:10067"
+        ],
+        "explorerUrl": [
+            "https://explorer.lbry.com/"
+        ]
+    }, {
+        "abbr": "LCC",
+        "name": "Litecoin Cash",
+        "type": "smartChain",
+        "coingeckoId": "litecoin-cash",
+        "colorCoin": "0xFF068210",
+        "serverList": [
+            "188.166.117.139:50001"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/lcc/"
+        ]
+    }, {
+        "abbr": "LTFN",
+        "name": "Litecoin Finance",
+        "type": "smartChain",
+        "coingeckoId": "litecoin-finance",
+        "colorCoin": "0xFF0099CC",
+        "serverList": [
+            "eltfnx.scalaris.info:30001",
+            "eltfnx6.scalaris.info:30001",
+            "eltfnx7.scalaris.info:30001"
+        ],
+        "explorerUrl": [
+            "https://openchains.info/coin/ltfn/"
+        ]
+    }, {
+        "abbr": "LYNX",
+        "name": "Lynx",
+        "type": "smartChain",
+        "coingeckoId": "lynx",
+        "colorCoin": "0xFF0071BA",
+        "proto": "SSL",
+        "serverList": [
+            "electrum5.getlynx.io:50002",
+            "electrum6.getlynx.io:50002",
+            "electrum7.getlynx.io:50002",
+            "electrum8.getlynx.io:50002",
+            "electrum9.getlynx.io:50002"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/lynx/"
+        ]
+    }, {
+        "abbr": "MONA",
+        "name": "MonaCoin",
+        "type": "smartChain",
+        "coingeckoId": "monacoin",
+        "colorCoin": "0xFFDEC799",
+        "serverList": [
+            "electrumx3.monacoin.nl:50001",
+            "103.125.218.246:50001",
+            "electrumx.tamami-foundation.org:50001"
+        ],
+        "explorerUrl": [
+            "https://blockbook.electrum-mona.org/"
+        ]
+    }, {
+        "abbr": "XMY",
+        "name": "Myriad",
+        "type": "smartChain",
+        "coingeckoId": "myriadcoin",
+        "proto": "TCP",
+        "colorCoin": "0xFFF01385",
+        "serverList": [
+            "lenoir.ecoincore.com:10891"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/xmy/"
+        ]
+    }, {
+        "abbr": "NMC",
+        "name": "Namecoin",
+        "type": "smartChain",
+        "coingeckoId": "namecoin",
+        "colorCoin": "0xFF186C9D",
+        "proto": "SSL",
+        "serverList": [
+            "nmc.bitcoins.sk:50002",
+            "nmc2.bitcoins.sk:57002",
+            "46.229.238.187:57001"
+        ],
+        "explorerUrl": [
+            "https://nmc.tokenview.com/en/"
+        ]
+    }, {
+        "abbr": "NVC",
+        "name": "Novacoin",
+        "type": "smartChain",
+        "coingeckoId": "novacoin",
+        "proto": "SSL",
+        "colorCoin": "0xFFFCF96D",
+        "serverList": [
+            "electrumx.nvc.ewmcx.org:50002",
+            "failover.nvc.ewmcx.biz:50002"
+        ],
+        "explorerUrl": [
+            "https://explorer.novaco.in/"
+        ]
+    }, {
+        "abbr": "NYAN",
+        "name": "Nyancoin",
+        "type": "smartChain",
+        "coingeckoId": "test-coin",
+        "testCoin": true,
+        "colorCoin": "0xFF008CE7",
+        "serverList": [
+            "txserver.live:50022",
+            "electrumx.live:50022"
+        ],
+        "explorerUrl": [
+            "https://www.nyanchain.com/"
+        ]
+    }, {
+        "abbr": "PPC",
+        "name": "Peercoin",
+        "type": "smartChain",
+        "proto": "SSL",
+        "coingeckoId": "peercoin",
+        "colorCoin": "0xFF46BC60",
+        "serverList": [
+            "electrum.peercoinexplorer.net:50002",
+            "allingas.peercoinexplorer.net:50002",
+            "allingas.peercoinexplorer.net:50004"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/ppc/"
+        ]
+    }, {
+        "abbr": "PIC",
+        "name": "Picacoin",
+        "type": "smartChain",
+        "coingeckoId": "test-coin",
+        "testCoin": true,
+        "colorCoin": "0xFF04D9FF",
+        "serverList": [
+            "143.198.143.180:50001",
+            "134.122.120.47:50001"
+        ],
+        "explorerUrl": [
+            "http://explorer.picacoin.org/"
+        ]
+    }, {
+        "abbr": "XPM",
+        "name": "Primecoin",
+        "type": "smartChain",
+        "coingeckoId": "primecoin",
+        "proto": "TCP",
+        "colorCoin": "0xFFA67522",
+        "serverList": [
+            "electrumx.primecoin.org:50001",
+            "electrumx.mainnet.primecoin.org:50011",
+            "electrumx.gemmer.primecoin.org:50011"
+        ],
+        "explorerUrl": [
+            "https://www.blockseek.io/xpm/"
+        ]
+    }, {
+        "abbr": "PRUX",
+        "name": "PRUX",
+        "type": "smartChain",
+        "coingeckoId": "test-coin",
+        "colorCoin": "0xFFFF8000",
+        "proto": "SSL",
+        "serverList": [
+            "txserver.live:50002",
+            "electrumx.live:50012"
+        ],
+        "explorerUrl": [
+            "https://explorer.prux.info/"
+        ]
+    }, {
+        "abbr": "RTM",
+        "name": "Raptoreum",
+        "type": "smartChain",
+        "coingeckoId": "raptoreum",
+        "colorCoin": "0xFFB74427",
+        "proto": "TCP",
+        "serverList": [
+            "209.151.151.21:50001",
+            "209.50.52.239:50001"
+        ],
+        "explorerUrl": [
+            "https://explorer.raptoreum.com/"
+        ]
+    }, {
+        "abbr": "VAL",
+        "name": "Validity",
+        "type": "smartChain",
+        "coingeckoId": "radium",
+        "colorCoin": "0xFF1EEC84",
+        "proto": "SSL",
+        "serverList": [
+            "e1.validitytech.com:11002",
+            "e2.validitytech.com:11002",
+            "e3.validitytech.com:11002"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/val/"
+        ]
+    }, {
+        "abbr": "SCA",
+        "name": "Scalaris",
+        "type": "smartChain",
+        "coingeckoId": "test-coin",
+        "colorCoin": "0xFF595959",
+        "testCoin": true,
+        "serverList": [
+            "electrum1.scalaris.info:10001",
+            "electrum2.scalaris.info:10001",
+            "electrum3.scalaris.info:10001"
+        ],
+        "explorerUrl": [
+            "https://explorer.scalaris.info/"
+        ]
+    }, {
+        "abbr": "XVC",
+        "name": "Vanillacash",
+        "type": "smartChain",
+        "coingeckoId": "vcash",
+        "colorCoin": "0xFFB50126",
+        "serverList": [
+            "electrumx1.vanillacash.info:50011",
+            "electrumx2.vanillacash.info:50011"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/xvc/"
+        ]
+    }, {
+        "abbr": "SYS",
+        "name": "Syscoin",
+        "type": "smartChain",
+        "coingeckoId": "syscoin",
+        "colorCoin": "0xFF0084C7",
+        "serverList": [
+            "electrum1.cipig.net:10064",
+            "electrum2.cipig.net:10064",
+            "electrum3.cipig.net:10064"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/sys/"
+        ]
+    }, {
+        "abbr": "TRC",
+        "name": "Terracoin",
+        "type": "smartChain",
+        "coingeckoId": "terracoin",
+        "colorCoin": "0xFF096432",
+        "proto": "SSL",
+        "serverList": [
+            "failover.trc-uis.ewmcx.biz:50006",
+            "electrum.terracoin.io:50001",
+            "electrum.southofheaven.ca:50001"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/trc/"
+        ]
+    }, {
+        "abbr": "UIS",
+        "name": "Unitus",
+        "type": "smartChain",
+        "coingeckoId": "unitus",
+        "colorCoin": "0xFF008DCD",
+        "serverList": [
+            "failover.trc-uis.ewmcx.biz:50002",
+            "electrumx.uis.ewmcx.info:50001"
+        ],
+        "explorerUrl": [
+            "https://explorer.unitus.network/"
+        ]
+    }, {
+        "abbr": "UNO",
+        "name": "Unobtanium",
+        "type": "smartChain",
+        "coingeckoId": "unobtanium",
+        "proto": "SSL",
+        "colorCoin": "0xFF2F87BB",
+        "serverList": [
+            "uno-main.coinmunity.gold:50002",
+            "uno-bkp.coinmunity.gold:50002"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/uno/"
+        ]
+    }, {
+        "abbr": "USDI",
+        "name": "WallStreetBets",
+        "type": "smartChain",
+        "coingeckoId": "test-coin",
+        "testCoin": true,
+        "colorCoin": "0xFFC29E47",
+        "proto": "SSL",
+        "serverList": [
+            "usdi1.blackcoin.nl:10002",
+            "usdi2.blackcoin.nl:10002"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/usdi/"
+        ]
+    }, {
+        "abbr": "VRM",
+        "name": "Verium Reserve",
+        "type": "smartChain",
+        "coingeckoId": "test-coin",
+        "testCoin": true,
+        "colorCoin": "0xFF586A7A",
+        "serverList": [
+            "electrum01-vrm.vericonomy.com:50001",
+            "electrum02-vrm.vericonomy.com:50001"
+        ],
+        "explorerUrl": [
+            "https://explorer-vrm.vericonomy.com/"
+        ]
+    }, {
+        "abbr": "WHIVE",
+        "name": "Whive",
+        "type": "smartChain",
+        "coingeckoId": "whive",
+        "colorCoin": "0xFFFFCC00",
+        "proto": "SSL",
+        "serverList": [
+            "electrumx1.cointest.com:50002",
+            "electrumx2.cointest.com:50002"
+        ],
+        "explorerUrl": [
+            "https://whiveexplorer.cointest.com/"
+        ]
+    }, {
+        "abbr": "WCN",
+        "name": "Widecoin",
+        "type": "smartChain",
+        "coingeckoId": "widecoin",
+        "colorCoin": "0xFFE49F00",
+        "serverList": [
+            "electrumx.widecoin.org:50001",
+            "electrumx2.widecoin.org:50001"
+        ],
+        "explorerUrl": [
+            "https://explorer.widecoin.org/"
+        ]
+    }, {
+        "abbr": "ZET",
+        "name": "Zetacoin",
+        "type": "smartChain",
+        "proto": "SSL",
+        "coingeckoId": "zetacoin",
+        "colorCoin": "0xFF155169",
+        "serverList": [
+            "zeta-seed-c.zetacoin.tech:50012"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/zet/"
+        ]
+    }, {
+        "abbr": "ZET-OLD",
+        "name": "Zetacoin (OLD)",
+        "type": "smartChain",
+        "coingeckoId": "zetacoin",
+        "proto": "SSL",
+        "colorCoin": "0xFF155169",
+        "serverList": [
+            "electrumx.zet.ewmcx.info:50001"
+        ],
+        "explorerUrl": [
+            "https://chainz.cryptoid.info/zet-old/"
+        ]
     }
 ]
