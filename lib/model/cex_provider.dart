@@ -628,7 +628,11 @@ class CexPrices {
               .toList();
 
       for (Coin coin in coins) {
-        if (pricesData['volume24h'] == null) return;
+        // check if coin volume is enough
+        double minVolume = 10000;
+        double lastPrice = double.tryParse(pricesData['last_price']) ?? 0;
+        double volume24h = double.tryParse(pricesData['volume24h']) ?? 0;
+        if (lastPrice * volume24h < minVolume) return;
 
         final String coinAbbr = coin.abbr;
         _prices[coinAbbr] = {};
