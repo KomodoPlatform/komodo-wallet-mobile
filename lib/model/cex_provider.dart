@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/app_config/app_config.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -632,7 +633,10 @@ class CexPrices {
         double minVolume = 10000;
         double lastPrice = double.tryParse(pricesData['last_price']) ?? 0;
         double volume24h = double.tryParse(pricesData['volume24h']) ?? 0;
-        if (lastPrice * volume24h < minVolume) return;
+        if (lastPrice * volume24h < minVolume ||
+            coin.type != CoinType.smartChain) {
+          return;
+        }
 
         final String coinAbbr = coin.abbr;
         _prices[coinAbbr] = {};
