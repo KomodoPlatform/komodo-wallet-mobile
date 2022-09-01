@@ -77,7 +77,7 @@ class AppConfig {
   String get cryptoPricesEndpoint =>
       'https://prices.komodo.live:1313/api/v2/tickers?expire_at=600';
   String get cryptoPricesFallback =>
-      'https://rates.komodo.live/api/v1/gecko_rates/';
+      'https://api.coingecko.com/api/v3/simple/price?ids=';
 
   // endpoint source code:
   // https://github.com/KomodoPlatform/CexPricesEndpoint

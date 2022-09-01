@@ -572,7 +572,8 @@ class CexPrices {
     }
 
     final String mainUrl = appConfig.cryptoPricesEndpoint;
-    final String fallbackUrl = appConfig.cryptoPricesFallback + ids.join(',');
+    final String fallbackUrl =
+        appConfig.cryptoPricesFallback + ids.join(',') + '&vs_currencies=usd';
 
     bool fetched = await _fetchPrices(mainUrl);
     if (!fetched) fetched = await _fetchFallbackPrices(fallbackUrl);
