@@ -571,18 +571,86 @@ class CexPrices {
       ids.add(coin.coingeckoId);
     }
 
-    final String mainUrl = appConfig.cryptoPricesEndpoint + ids.join(',');
-    final String fallbackUrl =
-        appConfig.cryptoPricesFallback + ids.join(',') + '&vs_currencies=usd';
+    final String mainUrl = appConfig.cryptoPricesEndpoint;
+    final String fallbackUrl = appConfig.cryptoPricesFallback + ids.join(',');
 
     bool fetched = await _fetchPrices(mainUrl);
-    if (!fetched) fetched = await _fetchPrices(fallbackUrl);
+    if (!fetched) fetched = await _fetchFallbackPrices(fallbackUrl);
     if (!fetched) return;
 
     _notifyListeners();
   }
 
   Future<bool> _fetchPrices(String url) async {
+    if (_fetchingPrices) return false;
+    _fetchingPrices = true;
+    http.Response _res;
+    String _body;
+    try {
+      _res = await http.get(Uri.parse(url)).timeout(
+        const Duration(seconds: 60),
+        onTimeout: () {
+          Log('cex_provider', 'Fetching usd prices timed out');
+          _fetchingPrices = false;
+          return;
+        },
+      );
+      _body = _res.body;
+    } catch (e) {
+      Log('cex_provider', 'Failed to fetch usd prices: $e');
+    }
+
+    _fetchingPrices = false;
+
+    Map<String, dynamic> json;
+    try {
+      json = jsonDecode(_body);
+    } catch (e) {
+      Log('cex_provider', 'Failed to parse prices json: $e');
+    }
+
+    if (json == null) return false;
+    if (json['error'] != null) {
+      Log('cex_provider', 'Prices endpoint error: ${json['error']}');
+      return false;
+    }
+
+    // All available coins, inculding not active.
+    final List<Coin> allCoins = (await coins).values.toList();
+
+    json.forEach((String ticker, dynamic pricesData) {
+      // Some coins are presented in multiple networks,
+      // like BAT-ERC20 and BAT-BEP20, but have same
+      // coingeckoId and same usd price
+      final List<Coin> coins =
+          (allCoins.where((coin) => getCoinTicker(coin.abbr) == ticker) ?? [])
+              .toList();
+
+      for (Coin coin in coins) {
+        if (pricesData['volume24h'] == null) return;
+
+        final String coinAbbr = coin.abbr;
+        _prices[coinAbbr] = {};
+
+        pricesData.forEach((String currency, dynamic price) {
+          if (currency != 'last_price') return;
+
+          double priceDouble;
+          try {
+            // Handle margin cases (e.g. int price, like '22000')
+            priceDouble = double.parse(price.toString());
+          } catch (_) {
+            priceDouble = 0.00;
+          }
+          _prices[coinAbbr]['usd'] = priceDouble;
+        });
+      }
+    });
+
+    return true;
+  }
+
+  Future<bool> _fetchFallbackPrices(String url) async {
     if (_fetchingPrices) return false;
     _fetchingPrices = true;
     http.Response _res;

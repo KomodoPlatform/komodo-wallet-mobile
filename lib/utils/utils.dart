@@ -68,11 +68,14 @@ Rational tryParseRat(String text) {
 }
 
 String getCoinIconPath(String abbr) {
+  return 'assets/coin-icons/' + getCoinTicker(abbr).toLowerCase() + '.png';
+}
+
+String getCoinTicker(String abbr) {
   for (String suffix in appConfig.protocolSuffixes) {
     abbr = abbr.replaceAll('-$suffix', '');
   }
-
-  return 'assets/coin-icons/' + abbr.toLowerCase() + '.png';
+  return abbr;
 }
 
 Rational deci2rat(Decimal decimal) {
