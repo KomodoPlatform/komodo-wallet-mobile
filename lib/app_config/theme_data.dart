@@ -39,7 +39,7 @@ TextSelectionThemeData get _textSelectionThemeData =>
     const TextSelectionThemeData(
       selectionColor: Color.fromRGBO(57, 161, 238, 0.3),
       cursorColor: Color.fromRGBO(57, 161, 238, 1),
-      selectionHandleColor: Colors.transparent,
+      selectionHandleColor: Color.fromRGBO(57, 161, 238, 1),
     );
 
 BottomNavigationBarThemeData get _bottomNavigationBarThemeData =>
