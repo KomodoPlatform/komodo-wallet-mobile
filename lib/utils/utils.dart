@@ -339,9 +339,9 @@ Future<void> showConfirmationRemoveCoin(
 
 Future<void> launchURL(String url) async {
   Log.println('utils:388', url);
-  if (await canLaunch(url)) {
+  if (await canLaunchUrl(Uri.parse(url))) {
     mainBloc.isUrlLaucherIsOpen = true;
-    await launch(url);
+    await launchUrl(Uri.parse(url));
     mainBloc.isUrlLaucherIsOpen = false;
   } else {
     throw 'Could not launch $url';
