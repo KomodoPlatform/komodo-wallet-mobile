@@ -95,8 +95,10 @@ dependencies:
       url: https://github.com/KomodoPlatform/auto_size_text.git
       ref: 2178f0821132636bc4f0dea1bc4d40a889d8249b #3.0.0
 
-  # https://pub.dev/packages/mobile_scanner/versions/1.1.2
-  mobile_scanner: 1.1.2
+  mobile_scanner: # newly added, never reviewed
+    git:
+      url: https://github.com/KomodoPlatform/mobile_scanner.git
+      ref: 9ecb3d8c0fc34533b007270cd425264c4b446008 #1.1.2
 
   bip39: # last reviewed 3bee3eedb28ba5ae1af82873c8e5b6f32038b8a1
     git:
