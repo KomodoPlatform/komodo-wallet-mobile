@@ -1,25 +1,23 @@
-import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/best_order.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/market.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/coins_list_best_item.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/empty_list_message.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/best_order.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
 
 class CoinsListBest extends StatefulWidget {
-  const CoinsListBest({this.type, this.searchTerm, this.known});
+  const CoinsListBest({this.type, this.searchTerm});
 
   final Market type;
   final String searchTerm;
-  final LinkedHashMap<String, Coin> known;
 
   @override
   _CoinsListBestState createState() => _CoinsListBestState();
@@ -55,11 +53,7 @@ class _CoinsListBestState extends State<CoinsListBest> {
           }
           _timer = null;
 
-          final List<Widget> items = _buildItems(snapshot.data);
-          return ListView(
-            shrinkWrap: true,
-            children: items,
-          );
+          return _buildList(bestOrders);
         },
       ),
     );
@@ -101,7 +95,21 @@ class _CoinsListBestState extends State<CoinsListBest> {
     );
   }
 
-  List<Widget> _buildItems(BestOrders bestOrders) {
+  Widget _buildList(BestOrders bestOrders) {
+    return FutureBuilder<List<Widget>>(
+      future: _buildItems(bestOrders),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return SizedBox.shrink();
+
+        return ListView(
+          shrinkWrap: true,
+          children: snapshot.data,
+        );
+      },
+    );
+  }
+
+  Future<List<Widget>> _buildItems(BestOrders bestOrders) async {
     final Iterable tickers = bestOrders?.result?.keys;
     if (tickers == null) return [EmptyListMessage()];
 
@@ -133,13 +141,14 @@ class _CoinsListBestState extends State<CoinsListBest> {
       return aCoin.compareTo(bCoin);
     });
 
+    final known = await coins;
     final List<Widget> items = [];
     bool switcherDisabled = true;
     for (BestOrder topOrder in topOrdersList) {
       final String abbr =
           topOrder.action == Market.BUY ? topOrder.otherCoin : topOrder.coin;
 
-      final Coin coin = widget.known[abbr];
+      final Coin coin = known[abbr];
       final String term = widget.searchTerm.toLowerCase().trim();
       if (term.isNotEmpty) {
         bool matched = false;

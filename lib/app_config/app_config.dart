@@ -22,8 +22,26 @@ class AppConfig {
 
   List<String> get defaultCoins => ['KMD', 'BTC'];
   List<String> get coinsFiat => ['BTC', 'KMD'];
-  List<String> get walletOnlyCoins => ['USDT-ERC20'];
+  List<String> get walletOnlyCoins => [
+        'USDT-ERC20',
+        'BET',
+        'BOTS',
+        'CRYPTO',
+        'DEX',
+        'HODL',
+        'JUMBLR',
+        'MGW',
+        'PANGEA',
+        'REVS',
+        'SUPERNET',
+        'PAXG-ERC20',
+        'ARRR-BEP20',
+        'NVC',
+        'XPM',
+        'XVC'
+      ];
   final List<String> protocolSuffixes = [
+    'QRC20',
     'ERC20',
     'BEP20',
     'PLG20',
