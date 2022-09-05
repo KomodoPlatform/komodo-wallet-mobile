@@ -633,8 +633,9 @@ class CexPrices {
         double minVolume = 10000;
         double lastPrice = double.tryParse(pricesData['last_price']) ?? 0;
         double volume24h = double.tryParse(pricesData['volume24h']) ?? 0;
-        if (lastPrice * volume24h < minVolume ||
-            coin.type != CoinType.smartChain) {
+        if (coin.type == CoinType.smartChain) {
+          // enough_volume for all smartChain tokens are always true :. proceed
+        } else if (lastPrice * volume24h < minVolume) {
           return;
         }
 
