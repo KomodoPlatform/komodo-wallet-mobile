@@ -1,17 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:decimal/decimal.dart';
+import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/market.dart';
+import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/empty_list_message.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/auto_scroll_text.dart';
 import 'package:provider/provider.dart';
-
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/orderbook_depth.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
 
 class CoinsListAll extends StatefulWidget {
   const CoinsListAll({this.type, this.searchTerm});
@@ -104,33 +102,13 @@ class _CoinsListAllState extends State<CoinsListAll> {
     );
   }
 
-  int _getMatchingCoinsNumber(Coin coin) {
-    int counter = 0;
-    final List<OrderbookDepth> obDepths =
-        _obProvider.depthsForCoin(coin, widget.type);
-
-    for (OrderbookDepth obDepth in obDepths) {
-      final String coinBalanceRequired =
-          widget.type == Market.SELL ? coin.abbr : obDepth.pair.base;
-      final Decimal balance =
-          coinsBloc.getBalanceByAbbr(coinBalanceRequired)?.balance?.balance;
-
-      if (balance == null || balance.toDouble() == 0.0) continue;
-      if (obDepth.depth.bids > 0) counter++;
-    }
-
-    return counter;
-  }
-
-  List<ListAllItem> _getItems({bool includeEmpty = false}) {
+  List<ListAllItem> _getItems() {
     final List<ListAllItem> available = [];
     final List<CoinBalance> active = coinsBloc.coinBalance;
 
     for (CoinBalance coinBalance in active) {
-      final int matchingCoins = _getMatchingCoinsNumber(coinBalance.coin);
       if (coinBalance.coin.walletOnly) continue;
       if (coinBalance.coin.suspended) continue;
-      if (!includeEmpty && matchingCoins == 0) continue;
 
       final String term = widget.searchTerm.trim().toLowerCase();
       if (term.isNotEmpty) {
@@ -142,31 +120,15 @@ class _CoinsListAllState extends State<CoinsListAll> {
         if (!matched) continue;
       }
 
-      available.add(ListAllItem(
-        coin: coinBalance.coin,
-        matchingCoins: matchingCoins,
-      ));
+      available.add(ListAllItem(coin: coinBalance.coin));
     }
 
-    available.sort((a, b) {
-      if (a.matchingCoins > b.matchingCoins) return -1;
-      if (a.matchingCoins < b.matchingCoins) return 1;
-
-      return a.coin.abbr.compareTo(b.coin.abbr);
-    });
-
-    if (available.isNotEmpty) {
-      return available;
-    } else if (!includeEmpty) {
-      return _getItems(includeEmpty: true);
-    } else {
-      return available;
-    }
+    return available;
   }
 }
 
 class ListAllItem {
-  ListAllItem({this.coin, this.matchingCoins});
+  ListAllItem({this.coin});
 
   String get balance {
     final Decimal coinBalance =
@@ -175,5 +137,4 @@ class ListAllItem {
   }
 
   Coin coin;
-  int matchingCoins;
 }

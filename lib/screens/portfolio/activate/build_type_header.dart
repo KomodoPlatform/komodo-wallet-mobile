@@ -76,6 +76,9 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
       case CoinType.bep:
         return AppLocalizations.of(context).searchFilterSubtitleBEP;
         break;
+      case CoinType.avx:
+        return AppLocalizations.of(context).searchFilterSubtitleAVX;
+        break;
       case CoinType.plg:
         return AppLocalizations.of(context).searchFilterSubtitlePLG;
         break;
@@ -99,6 +102,12 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
         break;
       case CoinType.ftm:
         return AppLocalizations.of(context).searchFilterSubtitleFTM;
+        break;
+      case CoinType.mvr:
+        return AppLocalizations.of(context).searchFilterSubtitleMVR;
+        break;
+      case CoinType.hco:
+        return AppLocalizations.of(context).searchFilterSubtitleHCO;
         break;
       case CoinType.smartChain:
         return AppLocalizations.of(context).searchFilterSubtitleSmartChain;

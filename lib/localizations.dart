@@ -854,6 +854,8 @@ class AppLocalizations {
   String get searchFilterSubtitleSBCH =>
       Intl.message('Select all SmartBCH tokens',
           name: 'searchFilterSubtitleSBCH');
+  String get searchFilterSubtitleAVX =>
+      Intl.message('Select all Avax tokens', name: 'searchFilterSubtitleAVX');
   String get searchFilterSubtitleUBQ =>
       Intl.message('Select all Ubiq coins', name: 'searchFilterSubtitle UBQ');
   String get searchFilterSubtitleBEP =>
@@ -863,8 +865,14 @@ class AppLocalizations {
           name: 'searchFilterSubtitlePLG');
   String get searchFilterSubtitleQRC =>
       Intl.message('Select all QRC tokens', name: 'searchFilterSubtitleQRC');
+  String get searchFilterSubtitleHCO =>
+      Intl.message('Select all HecoChain tokens',
+          name: 'searchFilterSubtitleHCO');
   String get searchFilterSubtitleFTM =>
       Intl.message('Select all Fantom tokens', name: 'searchFilterSubtitleFTM');
+  String get searchFilterSubtitleMVR =>
+      Intl.message('Select all Moonriver tokens',
+          name: 'searchFilterSubtitleMVR');
   String get customFee => Intl.message('Custom fee', name: 'customFee');
   String get gasLimit => Intl.message('Gas limit', name: 'gasLimit');
   String get gasPrice => Intl.message('Gas price', name: 'gasPrice');
@@ -874,8 +882,11 @@ class AppLocalizations {
   String get searchFilterSubtitleutxo =>
       Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
   String get tagHRC20 => Intl.message('HRC20', name: 'tagHRC20');
+  String get tagMVR20 => Intl.message('MVR20', name: 'tagMVR20');
+  String get tagHCO20 => Intl.message('HCO20', name: 'tagHCO20');
   String get tagKRC20 => Intl.message('KRC20', name: 'tagKRC20');
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
+  String get tagAVX20 => Intl.message('AVX20', name: 'tagAVX20');
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagPLG20 => Intl.message('PLG20', name: 'tagPLG20');

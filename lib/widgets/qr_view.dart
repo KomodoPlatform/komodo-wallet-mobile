@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScan extends StatelessWidget {
-  bool gotQR = false;
+  static bool gotQR = false;
 
   @override
   Widget build(BuildContext context) {

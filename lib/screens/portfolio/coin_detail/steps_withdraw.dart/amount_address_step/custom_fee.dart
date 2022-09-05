@@ -49,6 +49,9 @@ class _CustomFeeState extends State<CustomFee> {
                 : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 200),
             firstChild: SizedBox(),
+            firstCurve: Curves.easeIn,
+            secondCurve: Curves.easeIn,
+            alignment: Alignment.topRight,
             secondChild: Column(
               children: <Widget>[
                 Text(

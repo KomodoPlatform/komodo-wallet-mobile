@@ -27,9 +27,8 @@ class _InProgressPopupState extends State<InProgressPopup> {
   Widget build(BuildContext context) {
     orderBookProvider = Provider.of<OrderBookProvider>(context);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await orderBookProvider.subscribeDepth([
-        {swapBloc.sellCoinBalance.coin.abbr: CoinType.base}
-      ]);
+      await orderBookProvider.subscribeDepth(
+          swapBloc.sellCoinBalance.coin.abbr, CoinType.base);
       widget.onDone();
     });
 

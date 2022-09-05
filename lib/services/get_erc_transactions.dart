@@ -25,11 +25,17 @@ class GetErcTransactions {
   final String ftmUrl = appConfig.ftmUrl;
   final String oneUrl = appConfig.oneUrl;
   final String hrcUrl = appConfig.hrcUrl;
+  final String movrUrl = appConfig.movrUrl;
+  final String mvrUrl = appConfig.mvrUrl;
+  final String htUrl = appConfig.htUrl;
+  final String hcoUrl = appConfig.hcoUrl;
   final String kcsUrl = appConfig.kcsUrl;
   final String krcUrl = appConfig.krcUrl;
   final String etcUrl = appConfig.etcUrl;
   final String sbchUrl = appConfig.sbchUrl;
   final String ubqUrl = appConfig.ubqUrl;
+  final String avaxUrl = appConfig.avaxUrl;
+  final String avxUrl = appConfig.avxUrl;
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
     if (!isErcType(coin)) return;
@@ -59,6 +65,9 @@ class GetErcTransactions {
       case CoinType.ubiq:
         url = '$ubqUrl/$address';
         break;
+      case CoinType.avx:
+        url = _getErcTransactionHistoryUrl(coin, avaxUrl, avxUrl);
+        break;
       case CoinType.erc:
         url = _getErcTransactionHistoryUrl(coin, ethUrl, ercUrl);
         break;
@@ -71,8 +80,14 @@ class GetErcTransactions {
       case CoinType.ftm:
         url = _getErcTransactionHistoryUrl(coin, fantomUrl, ftmUrl);
         break;
+      case CoinType.hco:
+        url = _getErcTransactionHistoryUrl(coin, htUrl, hcoUrl);
+        break;
       case CoinType.hrc:
         url = _getErcTransactionHistoryUrl(coin, oneUrl, hrcUrl);
+        break;
+      case CoinType.mvr:
+        url = _getErcTransactionHistoryUrl(coin, movrUrl, mvrUrl);
         break;
       case CoinType.krc:
         url = _getErcTransactionHistoryUrl(coin, kcsUrl, krcUrl);

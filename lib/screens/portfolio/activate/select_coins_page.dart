@@ -15,6 +15,7 @@ import 'package:komodo_dex/screens/portfolio/activate/search_filter.dart';
 import 'package:komodo_dex/screens/portfolio/loading_coin.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
+import 'build_selected_coins.dart';
 
 import 'build_filter_coin.dart';
 
@@ -30,8 +31,10 @@ class SelectCoinsPage extends StatefulWidget {
 class _SelectCoinsPageState extends State<SelectCoinsPage> {
   bool _isDone = false;
   StreamSubscription<bool> _listenerClosePage;
+  StreamSubscription<List<CoinToActivate>> _listenerCoinsActivated;
   List<Coin> _currentCoins = <Coin>[];
   List<Widget> _listViewItems = <Widget>[];
+  List<CoinToActivate> _coinsToActivate = [];
 
   @override
   void initState() {
@@ -45,12 +48,19 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     coinsBloc.initCoinBeforeActivation().then((_) {
       _initCoinList();
     });
+
+    _listenerCoinsActivated = coinsBloc.outCoinBeforeActivation.listen((data) {
+      setState(() {
+        _coinsToActivate = data.where((element) => element.isActive).toList();
+      });
+    });
     super.initState();
   }
 
   @override
   void dispose() {
     _listenerClosePage.cancel();
+    _listenerCoinsActivated.cancel();
     super.dispose();
   }
 
@@ -103,6 +113,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 );
               },
             ),
+            titleSpacing: 0,
           ),
           body: StreamBuilder<CoinToActivate>(
               initialData: coinsBloc.currentActiveCoin,
@@ -116,11 +127,15 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                       ? LoadingCoin()
                       : Column(
                           children: [
+                            if (_coinsToActivate.isNotEmpty)
+                              BuildSelectedCoins(_coinsToActivate),
                             Expanded(
-                              child: ListView.builder(
-                                itemCount: _listViewItems.length,
-                                itemBuilder: (BuildContext context, int i) =>
-                                    _listViewItems[i],
+                              child: Scrollbar(
+                                child: ListView.builder(
+                                  itemCount: _listViewItems.length,
+                                  itemBuilder: (BuildContext context, int i) =>
+                                      _listViewItems[i],
+                                ),
                               ),
                             ),
                             _buildDoneButton(),
@@ -210,8 +225,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       }
     }
 
-    List<String> sortedTypes = coinsMap.keys.toList()
-      ..sort((String a, String b) => b.compareTo(a));
+    final List<String> sortedTypes = coinsMap.keys.toList()
+      ..sort((String a, String b) => a.compareTo(b));
 
     for (String type in sortedTypes) {
       list.add(BuildTypeHeader(
@@ -219,7 +234,12 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         query: controller.text,
         filterType: typeFilter,
       ));
-      for (Coin coin in coinsMap[type]) {
+
+      List<Coin> _tCoins = coinsMap[type];
+      _tCoins.sort((Coin a, Coin b) =>
+          a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+
+      for (Coin coin in _tCoins) {
         list.add(BuildItemCoin(
           key: Key('coin-activate-${coin.abbr}'),
           coin: coin,

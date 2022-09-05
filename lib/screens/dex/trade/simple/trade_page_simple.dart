@@ -1,17 +1,14 @@
-import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/market.dart';
+import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_button_simple.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_details.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/buy_form.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/coins_list.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/sell_form.dart';
 import 'package:provider/provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/markets/coin_select.dart';
 
 class TradePageSimple extends StatefulWidget {
   const TradePageSimple({Key key}) : super(key: key);
@@ -30,47 +27,15 @@ class _TradePageSimpleState extends State<TradePageSimple> {
     _obProvider ??= Provider.of<OrderBookProvider>(context);
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
 
-    return FutureBuilder<LinkedHashMap<String, Coin>>(
-      future: _subscribeDepths(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return _buildProgress();
-
-        final page = TradePageSimpleContent(key: _key, known: snapshot.data);
-        return _constrProvider.anyLists()
-            ? page
-            : SingleChildScrollView(child: page);
-      },
-    );
-  }
-
-  Future<LinkedHashMap<String, Coin>> _subscribeDepths() async {
-    final LinkedHashMap<String, Coin> known = await coins;
-
-    final List<Map<String, CoinType>> coinsList = [];
-    for (String abbr in known.keys) {
-      coinsList.add({abbr: CoinType.base});
-      coinsList.add({abbr: CoinType.rel});
-    }
-
-    await _obProvider.subscribeDepth(coinsList);
-    return known;
-  }
-
-  Widget _buildProgress() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+    final content = TradePageSimpleContent(key: _key);
+    return _constrProvider.anyLists()
+        ? content
+        : SingleChildScrollView(child: content);
   }
 }
 
 class TradePageSimpleContent extends StatefulWidget {
-  const TradePageSimpleContent({Key key, @required this.known})
-      : super(key: key);
-
-  final LinkedHashMap<String, Coin> known;
+  const TradePageSimpleContent({Key key}) : super(key: key);
 
   @override
   _TradePageSimpleContentState createState() => _TradePageSimpleContentState();
@@ -101,8 +66,8 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(child: _buildSell(widget.known)),
-                Expanded(child: _buildBuy(widget.known)),
+                Expanded(child: _buildSell()),
+                Expanded(child: _buildBuy()),
               ],
             ),
           ),
@@ -115,7 +80,7 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
     );
   }
 
-  Widget _buildSell(LinkedHashMap<String, Coin> known) {
+  Widget _buildSell() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -141,7 +106,6 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
               _constrProvider.sellCoin == null
                   ? CoinsList(
                       type: Market.SELL,
-                      known: known,
                       searchTerm: _sellSearchTerm,
                     )
                   : SellForm(),
@@ -161,7 +125,7 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
     );
   }
 
-  Widget _buildBuy(LinkedHashMap<String, Coin> known) {
+  Widget _buildBuy() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -186,7 +150,6 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
               _constrProvider.buyCoin == null
                   ? CoinsList(
                       type: Market.BUY,
-                      known: known,
                       searchTerm: _buySearchTerm,
                     )
                   : BuyForm(),
