@@ -113,7 +113,6 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 );
               },
             ),
-            titleSpacing: 0,
           ),
           body: StreamBuilder<CoinToActivate>(
               initialData: coinsBloc.currentActiveCoin,
