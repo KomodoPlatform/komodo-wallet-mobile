@@ -628,13 +628,14 @@ class CexPrices {
           (allCoins.where((coin) => getCoinTicker(coin.abbr) == ticker) ?? [])
               .toList();
 
+      // check if coin volume is enough
+      double minVolume = 10000;
+      double lastPrice = double.tryParse(pricesData['last_price']) ?? 0;
+      double volume24h = double.tryParse(pricesData['volume24h']) ?? 0;
+
       for (Coin coin in coins) {
-        // check if coin volume is enough
-        double minVolume = 10000;
-        double lastPrice = double.tryParse(pricesData['last_price']) ?? 0;
-        double volume24h = double.tryParse(pricesData['volume24h']) ?? 0;
         if (coin.type == CoinType.smartChain) {
-          // enough_volume for all smartChain tokens are always true :. proceed
+          // enough_volume for all smartChain tokens is always true :. proceed
         } else if (lastPrice * volume24h < minVolume) {
           return;
         }
