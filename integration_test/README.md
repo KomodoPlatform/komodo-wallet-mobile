@@ -157,6 +157,10 @@ flutter test integration_test/runners/add_ubiq_protocol.dart
 ```
 
 ```bash
+flutter test integration_test/runners/protocol_filters.dart
+```
+
+```bash
 flutter test integration_test/runners/add_sbch_protocol.dart
 ```
 

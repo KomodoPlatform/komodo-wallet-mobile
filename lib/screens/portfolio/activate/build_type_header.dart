@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_type.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class BuildTypeHeader extends StatefulWidget {
-  const BuildTypeHeader({Key key, this.type}) : super(key: key);
+  const BuildTypeHeader({Key key, this.type, this.filterType, this.query})
+      : super(key: key);
 
   // `null` for 'test coins' category
   final String type;
+  final String filterType;
+  final String query;
 
   @override
   _BuildTypeHeaderState createState() => _BuildTypeHeaderState();
@@ -25,7 +29,11 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
           // todo(MRC): Optimize this to use CheckboxListTile in a future point in time
           return InkWell(
             onTap: () => coinsBloc.setCoinsBeforeActivationByType(
-                widget.type, !isActive),
+              widget.type,
+              !isActive,
+              filterType: widget.filterType,
+              query: widget.query,
+            ),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
               child: Row(
@@ -118,10 +126,27 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
 
       // `widget.type == null` for test coins
       if (widget.type == null) {
-        if (item.coin.testCoin) areAllActive = false;
+        if (isCoinPresent(item.coin, widget.query, widget.filterType) &&
+            item.coin.testCoin) {
+          if (item.isActive)
+            continue;
+          else
+            areAllActive = false;
+        } else if (widget.filterType.isEmpty &&
+            widget.query.isEmpty &&
+            item.coin.testCoin) areAllActive = false;
       } else {
-        if (item.coin.type.name == widget.type && !item.coin.testCoin)
-          areAllActive = false;
+        if (item.coin.type.name == widget.type &&
+            !item.coin.testCoin &&
+            isCoinPresent(item.coin, widget.query, widget.filterType)) {
+          if (item.isActive)
+            continue;
+          else
+            areAllActive = false;
+        } else if (widget.filterType.isEmpty &&
+            widget.query.isEmpty &&
+            item.coin.type.name == widget.type &&
+            !item.coin.testCoin) areAllActive = false;
       }
     }
 

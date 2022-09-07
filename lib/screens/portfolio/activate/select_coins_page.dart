@@ -17,6 +17,8 @@ import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'build_selected_coins.dart';
 
+import 'build_filter_coin.dart';
+
 class SelectCoinsPage extends StatefulWidget {
   const SelectCoinsPage({this.coinsToActivate});
 
@@ -62,6 +64,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     super.dispose();
   }
 
+  String typeFilter = '';
+  final TextEditingController controller = TextEditingController();
+  FocusNode myFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return LockScreen(
@@ -69,8 +74,13 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       child: Scaffold(
           appBar: AppBar(
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            flexibleSpace: SizedBox(),
+            titleSpacing: 0,
             title: SearchFieldFilterCoin(
               clear: () => _initCoinList(),
+              type: typeFilter,
+              focusNode: myFocusNode,
+              controller: controller,
               onFilterCoins: (List<Coin> coinsFiltered) {
                 setState(() {
                   _currentCoins = coinsFiltered;
@@ -78,16 +88,31 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 });
               },
             ),
+            actions: [
+              BuildFilterCoin(
+                typeFilter: typeFilter,
+                allCoinsTypes: allCoinsTypes,
+                focusNode: myFocusNode,
+                onSelected: (String aType) async {
+                  typeFilter = aType;
+                  List<Coin> coinsFiltered = await coinsBloc
+                      .getAllNotActiveCoinsWithFilter(controller.text, aType);
+                  setState(() {
+                    _currentCoins = coinsFiltered;
+                    _listViewItems = _buildListView();
+                  });
+                },
+              )
+            ],
             leading: Builder(
               builder: (BuildContext context) {
                 return IconButton(
-                  icon: Icon(Icons.close),
+                  icon: Icon(Icons.arrow_back_ios_new_rounded),
                   splashRadius: 24,
                   onPressed: () => Navigator.of(context).pop(),
                 );
               },
             ),
-            titleSpacing: 0,
           ),
           body: StreamBuilder<CoinToActivate>(
               initialData: coinsBloc.currentActiveCoin,
@@ -120,13 +145,20 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     );
   }
 
-  void _initCoinList() {
+  void _initCoinList() async {
+    for (CoinToActivate coinToActivate in coinsBloc.coinBeforeActivation) {
+      _currentCoins
+          .removeWhere((Coin coin) => coin.abbr == coinToActivate.coin.abbr);
+      _currentCoins.add(coinToActivate.coin);
+    }
+
+    final Map<String, List<Coin>> coinsMap = getCoinsMap();
+    allCoinsTypes = coinsMap.keys.toList()
+      ..sort((String a, String b) => b.compareTo(a));
+
+    _currentCoins =
+        await coinsBloc.getAllNotActiveCoinsWithFilter('', typeFilter);
     setState(() {
-      for (CoinToActivate coinToActivate in coinsBloc.coinBeforeActivation) {
-        _currentCoins
-            .removeWhere((Coin coin) => coin.abbr == coinToActivate.coin.abbr);
-        _currentCoins.add(coinToActivate.coin);
-      }
       _listViewItems = _buildListView();
     });
   }
@@ -150,6 +182,23 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     ];
   }
 
+  List<String> allCoinsTypes = [];
+
+  Map<String, List<Coin>> getCoinsMap() {
+    final Map<String, List<Coin>> coinsMap = <String, List<Coin>>{};
+
+    for (Coin c in _currentCoins) {
+      if (c.testCoin) continue;
+      if (!coinsMap.containsKey(c.type.name)) {
+        coinsMap.putIfAbsent(c.type.name, () => [c]);
+      } else {
+        coinsMap[c.type.name].add(c);
+      }
+    }
+
+    return coinsMap;
+  }
+
   List<Widget> _buildCoinListItems() {
     if (_currentCoins.isEmpty) {
       return [
@@ -163,6 +212,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     }
 
     final List<Widget> list = <Widget>[];
+
     final Map<String, List<Coin>> coinsMap = <String, List<Coin>>{};
 
     for (Coin c in _currentCoins) {
@@ -180,6 +230,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     for (String type in sortedTypes) {
       list.add(BuildTypeHeader(
         type: type,
+        query: controller.text,
+        filterType: typeFilter,
       ));
 
       List<Coin> _tCoins = coinsMap[type];
@@ -202,6 +254,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     if (testCoins.isNotEmpty) {
       list.add(BuildTypeHeader(
         type: null,
+        filterType: typeFilter,
+        query: controller.text,
       ));
 
       for (Coin testCoin in testCoins) {
