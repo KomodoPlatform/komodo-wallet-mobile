@@ -223,17 +223,7 @@ class MusicService {
       if (custom.existsSync()) customFile = custom;
     }
 
-    final String defaultPath = newMode == MusicMode.MAKER
-        ? 'maker_order_placed.mp3'
-        : [
-            MusicMode.TAKER,
-            MusicMode.ACTIVE,
-            MusicMode.FAILED,
-            MusicMode.APPLAUSE,
-            MusicMode.SILENT
-          ].contains(newMode)
-            ? 'none.mp3'
-            : null;
+    const String defaultPath = 'none.mp3';
 
     final String path = customFile != null
         ? (Platform.isAndroid ? customFile.path : customName)
