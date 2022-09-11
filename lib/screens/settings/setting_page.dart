@@ -27,7 +27,6 @@ import 'package:komodo_dex/screens/import-export/export_page.dart';
 import 'package:komodo_dex/screens/import-export/import_page.dart';
 import 'package:komodo_dex/screens/import-export/import_swap_page.dart';
 import 'package:komodo_dex/screens/settings/camo_pin_setup_page.dart';
-import 'package:komodo_dex/screens/settings/sound_settings_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -87,8 +86,6 @@ class _SettingPageState extends State<SettingPage> {
           children: <Widget>[
             _buildTitle(AppLocalizations.of(context).logoutsettings),
             _buildLogOutOnExit(),
-            _buildTitle(AppLocalizations.of(context).soundTitle),
-            _buildSound(),
             _buildTitle(AppLocalizations.of(context).security),
             _buildActivatePIN(),
             const SizedBox(height: 1),
@@ -138,18 +135,6 @@ class _SettingPageState extends State<SettingPage> {
     version += ' - ${mmSe.mmVersion}';
 
     return version;
-  }
-
-  Widget _buildSound() {
-    return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context).soundSettingsTitle),
-      onTap: () => Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => SoundSettingsPage(),
-        ),
-      ),
-    );
   }
 
   Widget _buildTitle(String title) {
