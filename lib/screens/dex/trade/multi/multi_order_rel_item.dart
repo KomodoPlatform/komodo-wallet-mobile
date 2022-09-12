@@ -44,6 +44,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
     return SwitchListTile(
       tileColor: widget.color,
       contentPadding: EdgeInsets.symmetric(horizontal: 0),
+      key: Key('coin-select-buy-' + widget.item.coin.abbr.toLowerCase()),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -252,6 +253,8 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                 inputDecorationTheme: gefaultUnderlineInputTheme,
               ),
               child: TextField(
+                key: Key(
+                    'input-text-buy-' + widget.item.coin.abbr.toLowerCase()),
                 controller: widget.controller,
                 focusNode: widget.focusNode,
                 textAlign: TextAlign.right,

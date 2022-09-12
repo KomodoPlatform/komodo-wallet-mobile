@@ -163,15 +163,19 @@ class CoinsBloc implements BlocBase {
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
-  void setCoinsBeforeActivationByType(String type, bool isActive) {
+  void setCoinsBeforeActivationByType(
+    String type,
+    bool isActive, {
+    String query,
+    String filterType,
+  }) {
     final List<CoinToActivate> list = [];
     for (CoinToActivate item in coinBeforeActivation) {
-      bool shouldChange;
-      // type == null when we're selecting/deselecting test coins
-      if (type == null) {
-        shouldChange = item.coin.testCoin;
-      } else {
-        shouldChange = item.coin.type.name == type && !item.coin.testCoin;
+      bool shouldChange = false;
+
+      if (isCoinPresent(item.coin, query, filterType)) {
+        shouldChange =
+            item.coin.testCoin ? type == null : item.coin.type.name == type;
       }
 
       if (shouldChange) {
@@ -468,9 +472,10 @@ class CoinsBloc implements BlocBase {
     return notActive;
   }
 
-  Future<List<Coin>> getAllNotActiveCoinsWithFilter(String query) async {
+  Future<List<Coin>> getAllNotActiveCoinsWithFilter(
+      String query, String type) async {
     List<Coin> coinsActivate = await getAllNotActiveCoins();
-    coinsActivate = filterCoinsByQuery(coinsActivate, query);
+    coinsActivate = filterCoinsByQuery(coinsActivate, query, type: type);
     return coinsActivate;
   }
 
@@ -592,6 +597,13 @@ class CoinsBloc implements BlocBase {
       return a.coin.abbr.compareTo(b.coin.abbr);
     });
 
+    return _sorted;
+  }
+
+  List<CoinBalance> sortCoinsWithoutTestCoins(List<CoinBalance> unsorted) {
+    List<CoinBalance> _sorted = [];
+    _sorted = sortCoins(unsorted);
+    _sorted.removeWhere((CoinBalance c) => c.coin.testCoin);
     return _sorted;
   }
 

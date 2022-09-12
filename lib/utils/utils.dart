@@ -23,7 +23,6 @@ import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/qr_view.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -339,9 +338,9 @@ Future<void> showConfirmationRemoveCoin(
 
 Future<void> launchURL(String url) async {
   Log.println('utils:388', url);
-  if (await canLaunch(url)) {
+  if (await canLaunchUrl(Uri.parse(url))) {
     mainBloc.isUrlLaucherIsOpen = true;
-    await launch(url);
+    await launchUrl(Uri.parse(url));
     mainBloc.isUrlLaucherIsOpen = false;
   } else {
     throw 'Could not launch $url';
@@ -878,12 +877,8 @@ String toInitialUpper(String val) {
   return initial.toUpperCase() + rest;
 }
 
-String toCapitalized(String val) => val.isNotEmpty
-    ? '${val[0].toUpperCase()}${val.substring(1).toLowerCase()}'
-    : '';
-
-String toTitleCase(String val) => val
-    .replaceAll(RegExp(' +'), ' ')
-    .split(' ')
-    .map((str) => toCapitalized(val))
-    .join(' ');
+bool isCoinPresent(Coin coin, String query, String filter) {
+  return coin.type.name.toLowerCase().contains(filter.toLowerCase()) &&
+      (coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
+          coin.name.toLowerCase().contains(query.trim().toLowerCase()));
+}

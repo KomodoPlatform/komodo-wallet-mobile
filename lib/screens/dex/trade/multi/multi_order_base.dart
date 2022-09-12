@@ -139,6 +139,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
 
   Widget _buildCoinSelect() {
     return InkWell(
+      key: const Key('coin-select-sell'),
       onTap: () => _showCoinSelectDialog(),
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -181,6 +182,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         builder: (context) {
           if (coins == null)
             return CustomSimpleDialog(
+              key: const Key('sell-coin-dialog'),
               children: const [
                 Center(
                   child: CircularProgressIndicator(),
@@ -200,12 +202,14 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
           }
 
           return CustomSimpleDialog(
+            key: const Key('sell-coin-dialog'),
             hasHorizontalPadding: false,
             title: Text(AppLocalizations.of(context).multiBaseSelectTitle),
             children: coinsBloc
                 .sortCoins(availableForSell)
                 .map<Widget>((CoinBalance item) {
               return InkWell(
+                key: Key('item-dialog-${item.coin.abbr.toLowerCase()}-sell'),
                 onTap: () {
                   multiOrderProvider.baseCoin = item.coin.abbr;
                   amountCtrl.text = '';
@@ -303,6 +307,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                         inputDecorationTheme: gefaultUnderlineInputTheme,
                       ),
                       child: TextFormField(
+                        key: const Key('input-text-sell'),
                         controller: amountCtrl,
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),

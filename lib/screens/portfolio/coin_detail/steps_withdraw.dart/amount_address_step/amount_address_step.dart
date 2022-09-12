@@ -87,7 +87,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               onChanged: onChanged,
             ),
             // Temporary disable custom fee for qrc20 tokens
-            if (!(widget.coinBalance.coin.type == CoinType.qrc))
+            if (widget.coinBalance.coin.type != CoinType.qrc)
               CustomFee(
                 coin: widget.coinBalance.coin,
                 amount: widget.amountController.text,

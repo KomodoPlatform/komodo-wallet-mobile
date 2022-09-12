@@ -123,8 +123,12 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                   style: TextStyle(color: _isAsk ? Colors.red : Colors.green),
                 ),
                 const SizedBox(width: 6),
-                Text(
-                  '${_activePair.buy.abbr} / 1${_activePair.sell.abbr}',
+                Expanded(
+                  child: Text(
+                    '${_activePair.buy.abbr} / 1${_activePair.sell.abbr}',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
@@ -147,10 +151,15 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                   ),
                 ),
                 const SizedBox(width: 6),
-                Text('${_activePair.sell.abbr} / 1${_activePair.buy.abbr}',
-                    style: const TextStyle(
-                      fontSize: 13,
-                    )),
+                Expanded(
+                  child: Text(
+                      '${_activePair.sell.abbr} / 1${_activePair.buy.abbr}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 13,
+                      )),
+                ),
               ],
             ),
           ),

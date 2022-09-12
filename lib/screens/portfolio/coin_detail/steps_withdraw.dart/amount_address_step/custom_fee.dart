@@ -49,6 +49,9 @@ class _CustomFeeState extends State<CustomFee> {
                 : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 200),
             firstChild: SizedBox(),
+            firstCurve: Curves.easeIn,
+            secondCurve: Curves.easeIn,
+            alignment: Alignment.topRight,
             secondChild: Column(
               children: <Widget>[
                 Text(
@@ -102,8 +105,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                 child: TextFormField(
                   controller: _gasController,
                   inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(
-                        '^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
+                    FilteringTextInputFormatter.digitsOnly
                   ],
                   textInputAction: TextInputAction.done,
                   keyboardType:

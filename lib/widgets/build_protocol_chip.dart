@@ -19,7 +19,7 @@ class BuildProtocolChip extends StatelessWidget {
     final TextStyle style =
         Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.white);
 
-    Widget chip;
+    Widget chip = SizedBox();
 
     switch (coin.type) {
       case CoinType.utxo:
@@ -28,9 +28,17 @@ class BuildProtocolChip extends StatelessWidget {
 
       case CoinType.erc:
       case CoinType.qrc:
+      case CoinType.mvr:
       case CoinType.bep:
       case CoinType.plg:
+      case CoinType.avx:
+      case CoinType.ubiq:
+      case CoinType.hrc:
+      case CoinType.hco:
+      case CoinType.krc:
+      case CoinType.etc:
       case CoinType.ftm:
+      case CoinType.sbch:
         chip = Container(
           decoration: decoration,
           padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
@@ -94,14 +102,38 @@ class BuildProtocolChip extends StatelessWidget {
         case CoinType.erc:
           label = AppLocalizations.of(context).tagERC20;
           break;
+        case CoinType.etc:
+          label = AppLocalizations.of(context).tagETC;
+          break;
+        case CoinType.avx:
+          label = AppLocalizations.of(context).tagAVX20;
+          break;
+        case CoinType.hrc:
+          label = AppLocalizations.of(context).tagHRC20;
+          break;
+        case CoinType.hco:
+          label = AppLocalizations.of(context).tagHCO20;
+          break;
+        case CoinType.krc:
+          label = AppLocalizations.of(context).tagKRC20;
+          break;
+        case CoinType.ubiq:
+          label = AppLocalizations.of(context).tagUBQ;
+          break;
         case CoinType.qrc:
           label = AppLocalizations.of(context).tagQRC20;
+          break;
+        case CoinType.sbch:
+          label = AppLocalizations.of(context).tagSBCH;
           break;
         case CoinType.ftm:
           label = AppLocalizations.of(context).tagFTM20;
           break;
         case CoinType.plg:
           label = AppLocalizations.of(context).tagPLG20;
+          break;
+        case CoinType.mvr:
+          label = AppLocalizations.of(context).tagMVR20;
           break;
       }
 

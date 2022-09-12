@@ -16,6 +16,7 @@ void main() {
     print('RESTORE WALLET TO TEST');
     await restoreWalletToTest(tester);
     await tester.pumpAndSettle();
+    print('ADD ADDRESS TO TEST');
     await addAddressToTest(tester);
   }, semanticsEnabled: false);
 }

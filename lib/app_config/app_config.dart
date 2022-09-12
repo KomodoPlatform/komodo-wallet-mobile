@@ -22,9 +22,54 @@ class AppConfig {
 
   List<String> get defaultCoins => ['KMD', 'BTC'];
   List<String> get coinsFiat => ['BTC', 'KMD'];
-  List<String> get walletOnlyCoins => ['USDT-ERC20'];
-  final List<String> protocolSuffixes = ['ERC20', 'BEP20', 'PLG20', 'FTM20'];
+  List<String> get walletOnlyCoins => [
+        'USDT-ERC20',
+        'BET',
+        'BOTS',
+        'CRYPTO',
+        'DEX',
+        'HODL',
+        'JUMBLR',
+        'MGW',
+        'PANGEA',
+        'REVS',
+        'SUPERNET',
+        'PAXG-ERC20',
+        'ARRR-BEP20',
+        'NVC',
+        'XPM',
+        'XVC'
+      ];
+  final List<String> protocolSuffixes = [
+    'QRC20',
+    'ERC20',
+    'BEP20',
+    'PLG20',
+    'FTM20',
+    'HRC20',
+    'MVR20',
+    'HCO20',
+    'KRC20',
+    'AVX20',
+  ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
+  Map<String, String> get allProtocolNames => {
+        'utxo': 'UTXO',
+        'smartChain': 'Smart Chain',
+        'erc': 'Ethereum (ERC-20)',
+        'bep': 'Binance (BEP-20)',
+        'qrc': 'QTUM (QRC-20)',
+        'plg': 'Polygon (PLG-20)',
+        'ftm': 'Fantom (FTM-20)',
+        'hrc': 'Harmony (HRC-20)',
+        'avax': 'Avax (avax-20)',
+        'hco': 'HecoChain (HCO-20)',
+        'mvr': 'Moonriver (MVR-20)',
+        'krc': 'Kucoin (KRC-20)',
+        'ubiq': 'Ubiq',
+        'etc': 'Ethereum Classic',
+        'sbch': 'SmartBCH',
+      };
 
   bool get isSwapShareCardEnabled => true;
 
@@ -92,6 +137,19 @@ class AppConfig {
   String get plgUrl => 'https://komodo.live:3334/api/v2/plg_tx_history';
   String get fantomUrl => 'https://komodo.live:3334/api/v1/ftm_tx_history';
   String get ftmUrl => 'https://komodo.live:3334/api/v2/ftm_tx_history';
+  String get oneUrl => 'https://komodo.live:3334/api/v1/hrc_tx_history';
+  String get hrcUrl => 'https://komodo.live:3334/api/v2/hrc_tx_history';
+  String get movrUrl => 'https://komodo.live:3334/api/v1/moonriver_tx_history';
+  String get mvrUrl => 'https://komodo.live:3334/api/v2/moonriver_tx_history';
+  String get htUrl => 'https://komodo.live:3334/api/v1/heco_tx_history';
+  String get hcoUrl => 'https://komodo.live:3334/api/v2/heco_tx_history';
+  String get kcsUrl => 'https://komodo.live:3334/api/v1/krc_tx_history';
+  String get krcUrl => 'https://komodo.live:3334/api/v2/krc_tx_history';
+  String get etcUrl => 'https://komodo.live:3334/api/v1/etc_tx_history';
+  String get sbchUrl => 'https://komodo.live:3334/api/v1/sbch_tx_history';
+  String get ubqUrl => 'https://komodo.live:3334/api/v1/ubq_tx_history';
+  String get avaxUrl => 'https://komodo.live:3334/api/v1/avx_tx_history';
+  String get avxUrl => 'https://komodo.live:3334/api/v2/avx_tx_history';
 
   /// We're using different rpc ports for different wallet packages
   /// in order to allow multiple wallets to run simultaneously.

@@ -28,7 +28,7 @@ class _SellFormState extends State<SellForm> {
       if (_constrProvider.buyCoin == null) {
         _focusNode.requestFocus();
       } else {
-        unfocusTextField(context);
+        unfocusEverything();
       }
     });
 
@@ -121,6 +121,7 @@ class _SellFormState extends State<SellForm> {
     return Stack(
       children: [
         TextFormField(
+          key: const Key('amount-field'),
           controller: _amtCtrl,
           onChanged: _constrProvider.onSellAmtFieldChange,
           focusNode: _focusNode,
