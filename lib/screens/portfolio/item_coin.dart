@@ -15,6 +15,7 @@ import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/build_protocol_chip.dart';
 import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:provider/provider.dart';
@@ -100,12 +101,12 @@ class _ItemCoinState extends State<ItemCoin>
         startActionPane: coin.suspended
             ? null
             : ActionPane(
-          motion: const DrawerMotion(),
-          extentRatio: (actions != null && actions.isNotEmpty)
-              ? (actions.length * 0.3).clamp(0.3, 1.0)
-              : null,
-          children: actions,
-        ),
+                motion: const DrawerMotion(),
+                extentRatio: (actions != null && actions.isNotEmpty)
+                    ? (actions.length * 0.3).clamp(0.3, 1.0)
+                    : null,
+                children: actions,
+              ),
         endActionPane: ActionPane(
           motion: const DrawerMotion(),
           extentRatio: 0.4,
@@ -168,7 +169,7 @@ class _ItemCoinState extends State<ItemCoin>
                               radius: 28,
                               backgroundColor: Colors.transparent,
                               backgroundImage:
-                              AssetImage(getCoinIconPath(balance.coin)),
+                                  AssetImage(getCoinIconPath(balance.coin)),
                             ),
                             if (coin.suspended)
                               Icon(
@@ -191,7 +192,7 @@ class _ItemCoinState extends State<ItemCoin>
                   Expanded(child: SizedBox()),
                   Padding(
                     padding:
-                    const EdgeInsets.only(top: 8, bottom: 8, right: 12),
+                        const EdgeInsets.only(top: 8, bottom: 8, right: 12),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -202,7 +203,7 @@ class _ItemCoinState extends State<ItemCoin>
                             builder: (BuildContext context,
                                 AsyncSnapshot<bool> snapshot) {
                               String amount =
-                              f.format(double.parse(balance.getBalance()));
+                                  f.format(double.parse(balance.getBalance()));
                               if (snapshot.hasData && !snapshot.data)
                                 amount = '**.**';
                               return AutoSizeText(
@@ -229,8 +230,8 @@ class _ItemCoinState extends State<ItemCoin>
                                     .textTheme
                                     .bodyText1
                                     .copyWith(
-                                  color: Colors.grey,
-                                ),
+                                      color: Colors.grey,
+                                    ),
                               );
                             }),
                         _buildClaimButton(),
@@ -251,7 +252,8 @@ class _ItemCoinState extends State<ItemCoin>
           );
         }),
       ),
-    );  }
+    );
+  }
 
   Widget _buildClaimButton() {
     final bool needClaimButton = widget.coinBalance.coin.abbr == 'KMD' &&
