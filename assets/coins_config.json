@@ -6678,4 +6678,31 @@
             "https://chainz.cryptoid.info/zet-old/"
         ]
     }
+,
+  {
+    "abbr": "ZOMBIE",
+    "name": "Zombie",
+    "type": "zhtlc",
+    "coingeckoId": "test-coin",
+    "colorCoin": "0xFF72B001",
+    "serverList": [
+      "zombie.sirseven.me:10033"
+    ],
+    "explorerUrl": [
+      "https://zombie.explorer.lordofthechains.com/"
+    ]
+  },
+  {
+    "abbr": "ARRR",
+    "name": "Pirate",
+    "type": "zhtlc",
+    "coingeckoId": "pirate-chain",
+    "colorCoin": "0xFFC7A34C",
+    "serverList": [
+      "pirate.sirseven.me:10032"
+    ],
+    "explorerUrl": [
+      "https://pirate.explorer.dexstats.info/"
+    ]
+  }
 ]

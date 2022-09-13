@@ -16,6 +16,7 @@ enum CoinType {
   sbch,
   ubiq,
   avx,
+  zhtlc,
 }
 
 CoinType coinTypeFromString(String value) {
