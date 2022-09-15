@@ -319,9 +319,9 @@ class _CoinDetailState extends State<CoinDetail> {
                       const SizedBox(
                         width: 8,
                       ),
-                      const Text('Loading...'),
+                      Text(AppLocalizations.of(context).loading),
                       Expanded(child: SizedBox()),
-                      Text('Transactions left $txLeft'),
+                      Text('${AppLocalizations.of(context).txleft} $txLeft'),
                     ],
                   ),
                 );
@@ -456,19 +456,19 @@ class _CoinDetailState extends State<CoinDetail> {
                     CircularProgressIndicator(),
                     SizedBox(height: 24),
                     Text(
-                      'Retrying activating all coins...',
+                      AppLocalizations.of(context).retryActivating,
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
                     SizedBox(height: 24),
                     Text(
-                      'You will be redirected to portfolio page on completion.',
+                      AppLocalizations.of(context).willBeRedirected,
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
                     SizedBox(height: 24),
                     Text(
-                      'If even then some coins are still not activated, try restarting the app.',
+                      AppLocalizations.of(context).tryRestarting,
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
@@ -481,10 +481,10 @@ class _CoinDetailState extends State<CoinDetail> {
                     ),
                     SizedBox(height: 24),
                     Text(
-                        'We failed to activate ${currentCoinBalance.coin.abbr}'),
+                        '${AppLocalizations.of(context).weFailedTo} ${currentCoinBalance.coin.abbr}'),
                     SizedBox(height: 24),
                     Text(
-                      'Please restart the app to try again, or press the button below.',
+                      AppLocalizations.of(context).pleaseRestart,
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
@@ -498,11 +498,11 @@ class _CoinDetailState extends State<CoinDetail> {
                             .retryActivatingSuspendedCoins()
                             .whenComplete(() => _goToPreviousPage(context));
                       },
-                      text: 'Retry activating all',
+                      text: AppLocalizations.of(context).retryAll,
                     ),
                     SizedBox(height: 24),
                     Text(
-                      'You will be automatically redirected to portfolio page when the retry activation process completes.',
+                      AppLocalizations.of(context).automaticRedirected,
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),

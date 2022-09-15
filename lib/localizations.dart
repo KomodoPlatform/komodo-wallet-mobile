@@ -327,6 +327,7 @@ class AppLocalizations {
   String get snackbarDismiss =>
       Intl.message('Dismiss', name: 'snackbarDismiss');
   String get feedNewsTab => Intl.message('News', name: 'feedNewsTab');
+  String get duration => Intl.message('Duration', name: 'duration');
   String get feedUnableToUpdate =>
       Intl.message('Unable to get news update', name: 'feedUnableToUpdate');
   String get feedUnableToProceed =>
@@ -334,6 +335,7 @@ class AppLocalizations {
           name: 'feedUnableToProceed');
   String get feedUpToDate =>
       Intl.message('Already up to date', name: 'feedUpToDate');
+  String get date => Intl.message('Date', name: 'date');
   String feedNotifTitle(String appCompanyShort) =>
       Intl.message('$appCompanyShort news',
           name: 'feedNotifTitle', args: [appCompanyShort]);
@@ -545,6 +547,7 @@ class AppLocalizations {
       Intl.message('No reward claimable - please try again in 1h.',
           name: 'noRewardYet');
   String get loading => Intl.message('Loading...', name: 'loading');
+  String get txleft => Intl.message('Transactions Left', name: 'txleft');
   String get dex => Intl.message('DEX', name: 'dex');
   String get media => Intl.message('News', name: 'media');
   String get newsFeed => Intl.message('News feed', name: 'newsFeed');
@@ -743,6 +746,8 @@ class AppLocalizations {
   String get exchangeTitle => Intl.message('EXCHANGE', name: 'exchangeTitle');
   String get orders => Intl.message('orders', name: 'orders');
   String get selectCoin => Intl.message('Select coin', name: 'selectCoin');
+  String get selectLanguage =>
+      Intl.message('Select Language', name: 'selectLanguage');
   String get noFunds => Intl.message('No funds', name: 'noFunds');
   String get noFundsDetected =>
       Intl.message('No funds available - please deposit.',
@@ -951,6 +956,10 @@ class AppLocalizations {
   String get tagETC => Intl.message('ETC', name: 'tagETC');
   String get tagSBCH => Intl.message('SBCH', name: 'tagSBCH');
   String get tagUBQ => Intl.message('UBQ', name: 'tagUBQ');
+  String get builtOnKmd => Intl.message('Built on Komodo', name: 'builtOnKmd');
+  String get poweredOnKmd =>
+      Intl.message('Powered by Komodo', name: 'poweredOnKmd');
+
   String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
           name: 'errorNotEnoughGas', args: <Object>[gas]);
@@ -1167,6 +1176,38 @@ class AppLocalizations {
       Intl.message('Claim your rewards', name: 'rewardsButton');
   String get seeTxHistory =>
       Intl.message('View Transaction History', name: 'viewTxHistory');
+  String get retryActivating =>
+      Intl.message('Retrying activating all coins...', name: 'retryActivating');
+  String get willBeRedirected =>
+      Intl.message('You will be redirected to portfolio page on completion.',
+          name: 'willBeRedirected');
+
+  String get tryRestarting => Intl.message(
+      'If even then some coins are still not activated, try restarting the app.',
+      name: 'tryRestarting');
+
+  String get weFailedTo =>
+      Intl.message('We failed to activate', name: 'weFailedTo');
+
+  String get pleaseRestart => Intl.message(
+      'Please restart the app to try again, or press the button below.',
+      name: 'pleaseRestart');
+  String get retryAll => Intl.message('Retry activating all', name: 'retryAll');
+  String get automaticRedirected => Intl.message(
+      'You will be automatically redirected to portfolio page when the retry activation process completes.',
+      name: 'automaticRedirected');
+
+  String weFailedToActivate(String coinAbbr) => Intl.message(
+        'We failed to activate $coinAbbr.\n'
+        'Please restart the app to try again.',
+        name: 'weFailedToActivate',
+        args: [coinAbbr],
+      );
+  String isUnavailable(String coinAbbr) => Intl.message(
+        '$coinAbbr is unavailable :(',
+        name: 'isUnavailable',
+        args: [coinAbbr],
+      );
 
   // --- Multi Order---
 
@@ -1451,6 +1492,7 @@ class AppLocalizations {
   String get milliseconds => Intl.message('ms', name: 'milliseconds');
   String get seconds => Intl.message('s', name: 'seconds');
   String get minutes => Intl.message('m', name: 'minutes');
+  String get longMinutes => Intl.message('minutes', name: 'longMinutes');
   String get hours => Intl.message('h', name: 'hours');
   String get moreTab => Intl.message('More', name: 'moreTab');
   String get less => Intl.message('Less', name: 'less');
@@ -1544,6 +1586,7 @@ class AppLocalizations {
       Intl.message('Select file', name: 'selectFileImport');
   String get importFileNotFound =>
       Intl.message('File not found', name: 'importFileNotFound');
+  String get fingerprint => Intl.message('Fingerprint', name: 'fingerprint');
   String get importPassword => Intl.message('Password', name: 'importPassword');
   String get importPassCancel =>
       Intl.message('Cancel', name: 'importPassCancel');

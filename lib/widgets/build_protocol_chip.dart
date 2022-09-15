@@ -60,9 +60,9 @@ class BuildProtocolChip extends StatelessWidget {
                 onTap: () {
                   try {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         duration: Duration(seconds: 2),
-                        content: Text('Built on Komodo'),
+                        content: Text(AppLocalizations.of(context).builtOnKmd),
                       ),
                     );
                   } catch (_) {}

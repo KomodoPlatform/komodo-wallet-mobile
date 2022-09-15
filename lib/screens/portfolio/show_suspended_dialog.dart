@@ -10,10 +10,9 @@ Future<void> showSuspendedDilog(BuildContext context,
       context: context,
       builder: (BuildContext context) {
         return CustomSimpleDialog(
-          title: Text('${coin.abbr} is unavailable :('),
+          title: Text(AppLocalizations.of(context).isUnavailable(coin.abbr)),
           children: [
-            Text('We failed to activate ${coin.abbr}.\n'
-                'Please restart the app to try again.'),
+            Text(AppLocalizations.of(context).weFailedToActivate(coin.abbr)),
             const SizedBox(height: 10),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
               TextButton(
