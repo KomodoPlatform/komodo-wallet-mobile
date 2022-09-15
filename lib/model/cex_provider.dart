@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/app_config/app_config.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -571,18 +572,96 @@ class CexPrices {
       ids.add(coin.coingeckoId);
     }
 
-    final String mainUrl = appConfig.cryptoPricesEndpoint + ids.join(',');
+    final String mainUrl = appConfig.cryptoPricesEndpoint;
     final String fallbackUrl =
         appConfig.cryptoPricesFallback + ids.join(',') + '&vs_currencies=usd';
 
     bool fetched = await _fetchPrices(mainUrl);
-    if (!fetched) fetched = await _fetchPrices(fallbackUrl);
+    if (!fetched) fetched = await _fetchFallbackPrices(fallbackUrl);
     if (!fetched) return;
 
     _notifyListeners();
   }
 
   Future<bool> _fetchPrices(String url) async {
+    if (_fetchingPrices) return false;
+    _fetchingPrices = true;
+    http.Response _res;
+    String _body;
+    try {
+      _res = await http.get(Uri.parse(url)).timeout(
+        const Duration(seconds: 60),
+        onTimeout: () {
+          Log('cex_provider', 'Fetching usd prices timed out');
+          _fetchingPrices = false;
+          return;
+        },
+      );
+      _body = _res.body;
+    } catch (e) {
+      Log('cex_provider', 'Failed to fetch usd prices: $e');
+    }
+
+    _fetchingPrices = false;
+
+    Map<String, dynamic> json;
+    try {
+      json = jsonDecode(_body);
+    } catch (e) {
+      Log('cex_provider', 'Failed to parse prices json: $e');
+    }
+
+    if (json == null) return false;
+    if (json['error'] != null) {
+      Log('cex_provider', 'Prices endpoint error: ${json['error']}');
+      return false;
+    }
+
+    // All available coins, inculding not active.
+    final List<Coin> allCoins = (await coins).values.toList();
+
+    json.forEach((String ticker, dynamic pricesData) {
+      // Some coins are presented in multiple networks,
+      // like BAT-ERC20 and BAT-BEP20, but have same
+      // coingeckoId and same usd price
+      final List<Coin> coins =
+          (allCoins.where((coin) => getCoinTicker(coin.abbr) == ticker) ?? [])
+              .toList();
+
+      // check if coin volume is enough
+      double minVolume = 10000;
+      double lastPrice = double.tryParse(pricesData['last_price']) ?? 0;
+      double volume24h = double.tryParse(pricesData['volume24h']) ?? 0;
+
+      for (Coin coin in coins) {
+        if (coin.type == CoinType.smartChain) {
+          // enough_volume for all smartChain tokens is always true :. proceed
+        } else if (lastPrice * volume24h < minVolume) {
+          return;
+        }
+
+        final String coinAbbr = coin.abbr;
+        _prices[coinAbbr] = {};
+
+        pricesData.forEach((String currency, dynamic price) {
+          if (currency != 'last_price') return;
+
+          double priceDouble;
+          try {
+            // Handle margin cases (e.g. int price, like '22000')
+            priceDouble = double.parse(price.toString());
+          } catch (_) {
+            priceDouble = 0.00;
+          }
+          _prices[coinAbbr]['usd'] = priceDouble;
+        });
+      }
+    });
+
+    return true;
+  }
+
+  Future<bool> _fetchFallbackPrices(String url) async {
     if (_fetchingPrices) return false;
     _fetchingPrices = true;
     http.Response _res;

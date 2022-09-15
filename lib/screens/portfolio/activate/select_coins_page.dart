@@ -69,79 +69,74 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   FocusNode myFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    return LockScreen(
-      context: context,
-      child: Scaffold(
-          appBar: AppBar(
-            foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            flexibleSpace: SizedBox(),
-            titleSpacing: 0,
-            title: SearchFieldFilterCoin(
-              clear: () => _initCoinList(),
-              type: typeFilter,
-              focusNode: myFocusNode,
-              controller: controller,
-              onFilterCoins: (List<Coin> coinsFiltered) {
-                setState(() {
-                  _currentCoins = coinsFiltered;
-                  _listViewItems = _buildListView();
-                });
-              },
-            ),
-            actions: [
-              BuildFilterCoin(
-                typeFilter: typeFilter,
-                allCoinsTypes: allCoinsTypes,
+    return WillPopScope(
+      onWillPop: () async => !_isDone,
+      child: LockScreen(
+        context: context,
+        child: Scaffold(
+            appBar: AppBar(
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              flexibleSpace: SizedBox(),
+              titleSpacing: 0,
+              title: SearchFieldFilterCoin(
+                clear: () => _initCoinList(),
+                type: typeFilter,
                 focusNode: myFocusNode,
-                onSelected: (String aType) async {
-                  typeFilter = aType;
-                  List<Coin> coinsFiltered = await coinsBloc
-                      .getAllNotActiveCoinsWithFilter(controller.text, aType);
+                controller: controller,
+                onFilterCoins: (List<Coin> coinsFiltered) {
                   setState(() {
                     _currentCoins = coinsFiltered;
                     _listViewItems = _buildListView();
                   });
                 },
-              )
-            ],
-            leading: Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  icon: Icon(Icons.arrow_back_ios_new_rounded),
-                  splashRadius: 24,
-                  onPressed: () => Navigator.of(context).pop(),
-                );
-              },
+              ),
+              actions: [
+                BuildFilterCoin(
+                  typeFilter: typeFilter,
+                  allCoinsTypes: allCoinsTypes,
+                  focusNode: myFocusNode,
+                  onSelected: (String aType) async {
+                    typeFilter = aType;
+                    List<Coin> coinsFiltered = await coinsBloc
+                        .getAllNotActiveCoinsWithFilter(controller.text, aType);
+                    setState(() {
+                      _currentCoins = coinsFiltered;
+                      _listViewItems = _buildListView();
+                    });
+                  },
+                )
+              ],
             ),
-          ),
-          body: StreamBuilder<CoinToActivate>(
-              initialData: coinsBloc.currentActiveCoin,
-              stream: coinsBloc.outcurrentActiveCoin,
-              builder: (BuildContext context,
-                  AsyncSnapshot<CoinToActivate> snapshot) {
-                if (snapshot.data != null) {
-                  return LoadingCoin();
-                } else {
-                  return _isDone
-                      ? LoadingCoin()
-                      : Column(
-                          children: [
-                            if (_coinsToActivate.isNotEmpty)
-                              BuildSelectedCoins(_coinsToActivate),
-                            Expanded(
-                              child: Scrollbar(
-                                child: ListView.builder(
-                                  itemCount: _listViewItems.length,
-                                  itemBuilder: (BuildContext context, int i) =>
-                                      _listViewItems[i],
+            body: StreamBuilder<CoinToActivate>(
+                initialData: coinsBloc.currentActiveCoin,
+                stream: coinsBloc.outcurrentActiveCoin,
+                builder: (BuildContext context,
+                    AsyncSnapshot<CoinToActivate> snapshot) {
+                  if (snapshot.data != null) {
+                    return LoadingCoin();
+                  } else {
+                    return _isDone
+                        ? LoadingCoin()
+                        : Column(
+                            children: [
+                              if (_coinsToActivate.isNotEmpty)
+                                BuildSelectedCoins(_coinsToActivate),
+                              Expanded(
+                                child: Scrollbar(
+                                  child: ListView.builder(
+                                    itemCount: _listViewItems.length,
+                                    itemBuilder:
+                                        (BuildContext context, int i) =>
+                                            _listViewItems[i],
+                                  ),
                                 ),
                               ),
-                            ),
-                            _buildDoneButton(),
-                          ],
-                        );
-                }
-              })),
+                              _buildDoneButton(),
+                            ],
+                          );
+                  }
+                })),
+      ),
     );
   }
 
