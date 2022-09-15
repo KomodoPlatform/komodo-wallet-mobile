@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/get_trade_preimage.dart';
+import 'package:komodo_dex/model/rpc_error.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/confirm/protection_control.dart';
@@ -99,7 +100,39 @@ class MultiOrderProvider extends ChangeNotifier {
   String getError(String coin) {
     if (coin == _baseCoin) return _baseCoinError;
 
-    return _relCoins[coin]?.error;
+    return _relCoins[coin]?.preimage?.error != null
+        ? _getHumanPreimageError(_relCoins[coin]?.preimage?.error)
+        : _relCoins[coin]?.error;
+  }
+
+  String _getHumanPreimageError(RpcError error) {
+    String str;
+    switch (error?.type) {
+      case RpcErrorType.NotSufficientBaseCoinBalance:
+        str = '${error.data['coin']} balance is not sufficient'
+            ' to pay fees';
+        break;
+      case RpcErrorType.NotSufficientBalance:
+        str = '${error.data['coin']} balance is not sufficient for trade. '
+            'Min required balance is '
+            '${cutTrailingZeros(formatPrice(error.data['required']))} '
+            '${error.data['coin']}';
+        break;
+      case RpcErrorType.VolumeTooLow:
+        str =
+            'Min volume is ${cutTrailingZeros(formatPrice(error.data['threshold']))}'
+            ' ${error.data['coin']}';
+        break;
+      case RpcErrorType.Transport:
+        str =
+            "Trade can't be started. Please check if you have enough funds for gas."
+            ' Error: ${error.data}';
+        break;
+      default:
+        str = error.message ?? 'Something went wrong. Please try again.';
+    }
+
+    return str;
   }
 
   Future<void> setRelCoinAmt(String coin, double amt) async {
