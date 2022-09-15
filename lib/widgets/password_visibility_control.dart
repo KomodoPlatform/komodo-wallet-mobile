@@ -28,9 +28,10 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
 
   void _setObscureTo(bool isObscured) {
     if (_timer != null) _timer.cancel();
-    setState(() {
-      _isObscured = isObscured;
-    });
+    if (mounted)
+      setState(() {
+        _isObscured = isObscured;
+      });
     widget.onVisibilityChange(_isObscured);
   }
 
@@ -38,6 +39,12 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
     final double distance = sqrt(pow(_tapStartPosition.dx - position.dx, 2) +
         pow(_tapStartPosition.dy - position.dy, 2));
     return distance > 20;
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override

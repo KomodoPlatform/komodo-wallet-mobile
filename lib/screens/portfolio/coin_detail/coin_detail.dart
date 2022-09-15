@@ -10,6 +10,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
@@ -331,7 +332,52 @@ class _CoinDetailState extends State<CoinDetail> {
         });
   }
 
+  Widget _buildTxExplorerButton(String link) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 50),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: OutlinedButton(
+              key: Key('tx-explorer-button'),
+              onPressed: () => launchURL(link),
+              style: OutlinedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 12),
+                side:
+                    BorderSide(color: Theme.of(context).colorScheme.secondary),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              child:
+                  Text(AppLocalizations.of(context).seeTxHistory.toUpperCase()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildTransactionsList(BuildContext context) {
+    List<CoinType> coinsWithoutHist = [
+      CoinType.hrc,
+      CoinType.ubiq,
+      CoinType.sbch,
+      CoinType.krc,
+      CoinType.hco,
+    ];
+
+    if (coinsWithoutHist.contains(currentCoinBalance.coin.type)) {
+      return _buildTxExplorerButton(
+          '${currentCoinBalance.coin.explorerUrl.first}address/${currentCoinBalance.balance.address}');
+    }
     return Expanded(
       child: RefreshIndicator(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -688,6 +734,7 @@ class _CoinDetailState extends State<CoinDetail> {
         return Stack(
           children: <Widget>[
             SecondaryButton(
+              key: Key('open-' + statusButton.name),
               text: text,
               textColor: Theme.of(context).textTheme.button.color,
               borderColor: Theme.of(context).colorScheme.secondary,
@@ -714,6 +761,7 @@ class _CoinDetailState extends State<CoinDetail> {
     }
 
     return SecondaryButton(
+      key: Key('open-' + statusButton.name),
       text: text,
       isDarkMode: Theme.of(context).brightness != Brightness.light,
       textColor: Theme.of(context).colorScheme.secondary,
@@ -782,7 +830,7 @@ class _CoinDetailState extends State<CoinDetail> {
       alignment: Alignment.topRight,
       secondChild: GestureDetector(
         onTap: () {
-          unfocusTextField(context);
+          unfocusEverything();
         },
         child: Card(
             margin:

@@ -378,8 +378,9 @@ class ConstructorProvider extends ChangeNotifier {
     if (bestOrders.error != null) return;
 
     final String coin =
-        type == Market.SELL ? _matchingOrder.otherCoin : _matchingOrder.coin;
+        type == Market.SELL ? _matchingOrder?.otherCoin : _matchingOrder?.coin;
 
+    if (coin == null) return;
     final BestOrder topOrder = getTickerTopOrder(bestOrders.result[coin], type);
     if (topOrder == null) return;
 
@@ -491,7 +492,8 @@ class ConstructorProvider extends ChangeNotifier {
         break;
       case RpcErrorType.Transport:
         str =
-            'Trade can\'t be started. Please check if you have enough funds for gas.';
+            "Trade can't be started. Please check if you have enough funds for gas."
+            ' Error: ${error.data}';
         break;
       default:
         str = error.message ?? 'Something went wrong. Please try again.';

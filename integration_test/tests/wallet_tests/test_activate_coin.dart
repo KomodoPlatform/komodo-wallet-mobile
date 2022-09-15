@@ -25,6 +25,11 @@ Future<void> testActivateCoins(WidgetTester tester) async {
     await tester.pumpAndSettle();
     expect(searchCoinsField, findsOneWidget);
 
+    expect(
+      find.byKey(Key('selected-coins-preview')),
+      findsNothing,
+      reason: 'Selected Coin Preview is available',
+    );
     // Try to find non-existent coin
     await tester.enterText(searchCoinsField, 'NOSUCHCOINEVER');
     await tester.pumpAndSettle();
@@ -56,6 +61,8 @@ Future<void> testActivateCoins(WidgetTester tester) async {
     await tester.pumpAndSettle();
     // ETH, DOGE, KMD-BEP20 and BNB should be active
 
+    await _testSelectedCoinPreview(tester);
+
     await tester.tap(confirmAddAssetsButton);
     await tester.pumpAndSettle();
     await tester.dragUntilVisible(
@@ -64,4 +71,53 @@ Future<void> testActivateCoins(WidgetTester tester) async {
     print(e?.message ?? e);
     rethrow;
   }
+}
+
+Future<void> _testSelectedCoinPreview(WidgetTester tester) async {
+  final Finder selectedCoinsPreview = find.byKey(Key('selected-coins-preview'));
+  final Finder chipETH = find.byKey(Key('selected-chip-ETH'));
+  final Finder chipDOGE = find.byKey(Key('selected-chip-DOGE'));
+  final Finder chipKMD = find.byKey(Key('selected-chip-KMD-BEP20'));
+
+  expect(
+    selectedCoinsPreview,
+    findsOneWidget,
+    reason: 'Selected Coin Preview is not available',
+  );
+
+  // find and check if ETH chip is present
+  await tester.dragUntilVisible(
+    chipETH,
+    selectedCoinsPreview,
+    Offset(30, 0),
+  );
+  expect(
+    chipETH,
+    findsOneWidget,
+    reason: 'ETH chip is not present',
+  );
+
+  // find and check if DOGE chip is present
+  await tester.dragUntilVisible(
+    chipDOGE,
+    selectedCoinsPreview,
+    Offset(30, 0),
+  );
+  expect(
+    chipDOGE,
+    findsOneWidget,
+    reason: ' DOGE chip is not present',
+  );
+
+  // find and check if KMD-BEP20 chip is present
+  await tester.dragUntilVisible(
+    chipKMD,
+    selectedCoinsPreview,
+    Offset(30, 0),
+  );
+  expect(
+    chipKMD,
+    findsOneWidget,
+    reason: 'KMD-BEP20 chip is not present',
+  );
 }

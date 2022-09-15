@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
@@ -55,6 +56,7 @@ class _ItemCoinState extends State<ItemCoin>
           '${coin.abbr} balance: ${balance.balance}'
               '; locked_by_swaps: ${balance.lockedBySwaps}');
       actions.add(SlidableAction(
+        key: Key('send-coin'),
         label: AppLocalizations.of(context).send,
         backgroundColor: Colors.white,
         icon: Icons.arrow_upward,
@@ -71,6 +73,7 @@ class _ItemCoinState extends State<ItemCoin>
       ));
     }
     actions.add(SlidableAction(
+      key: Key('receive-coin'),
       label: AppLocalizations.of(context).receive,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       icon: Icons.arrow_downward,
@@ -80,6 +83,7 @@ class _ItemCoinState extends State<ItemCoin>
     ));
     if (!coin.walletOnly && double.parse(balance.getBalance()) > 0) {
       actions.add(SlidableAction(
+        key: Key('swap-coin'),
         label: AppLocalizations.of(context).swap.toUpperCase(),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         icon: Icons.swap_vert,
@@ -111,6 +115,7 @@ class _ItemCoinState extends State<ItemCoin>
           extentRatio: 0.4,
           children: [
             SlidableAction(
+              key: Key('disable-coin'),
               label: AppLocalizations.of(context).remove.toUpperCase(),
               backgroundColor: Theme.of(context).errorColor,
               icon: Icons.delete,
@@ -304,33 +309,35 @@ class _ItemCoinState extends State<ItemCoin>
   }
 
   Widget _buildFaucetButton() {
-    if (widget.coinBalance.coin.abbr == 'RICK' ||
-        widget.coinBalance.coin.abbr == 'MORTY') {
-      return Padding(
-        padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
-        child: OutlinedButton(
-          onPressed: !widget.coinBalance.coin.suspended
-              ? () async {
-                  showFaucetDialog(
-                      context: context,
-                      coin: widget.coinBalance.coin.abbr,
-                      address: widget.coinBalance.balance.address);
-                }
-              : null,
-          style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-            textStyle:
-                Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
-            side: BorderSide(color: Theme.of(context).colorScheme.secondary),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+    return appConfig.defaultTestCoins.contains(widget.coinBalance.coin.abbr)
+        ? Padding(
+            padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
+            child: OutlinedButton(
+              onPressed: !widget.coinBalance.coin.suspended
+                  ? () async {
+                      showFaucetDialog(
+                          context: context,
+                          coin: widget.coinBalance.coin.abbr,
+                          address: widget.coinBalance.balance.address);
+                    }
+                  : null,
+              style: OutlinedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 12),
+                side:
+                    BorderSide(color: Theme.of(context).colorScheme.secondary),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              child: Text(AppLocalizations.of(context).faucetName),
             ),
-          ),
-          child: Text(AppLocalizations.of(context).faucetName),
-        ),
-      );
-    }
-    return SizedBox();
+          )
+        : SizedBox();
   }
 
   Widget _buildProtocolChip(Coin coin) {

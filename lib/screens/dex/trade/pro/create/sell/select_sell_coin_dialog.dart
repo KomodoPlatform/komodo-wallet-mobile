@@ -20,11 +20,13 @@ void openSelectSellCoinDialog({
       builder: (BuildContext context) {
         return coinItemsList.isNotEmpty
             ? CustomSimpleDialog(
+                key: const Key('sell-coin-dialog'),
                 hasHorizontalPadding: false,
                 title: Text(AppLocalizations.of(context).sell),
                 children: coinItemsList,
               )
             : CustomSimpleDialog(
+                key: const Key('sell-coin-dialog'),
                 title: Column(
                   children: <Widget>[
                     Icon(
