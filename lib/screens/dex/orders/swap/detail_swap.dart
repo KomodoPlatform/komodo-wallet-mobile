@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -213,9 +214,10 @@ class _DetailSwapState extends State<DetailSwap> {
       children: [
         Expanded(
           child: Text(
-            (double.parse(amount) % 1) == 0
-                ? double.parse(amount).toString() + ' ' + coin
-                : double.parse(amount).toStringAsFixed(4) + ' ' + coin,
+            cutTrailingZeros(double.parse(amount)
+                    .toStringAsFixed(appConfig.tradeFormPrecision)) +
+                ' ' +
+                coin,
             style: Theme.of(context)
                 .textTheme
                 .bodyText2
