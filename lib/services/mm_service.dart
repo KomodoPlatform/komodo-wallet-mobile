@@ -157,6 +157,10 @@ class MMService {
         await initializeMmVersion();
       }
     });
+    jobService.install('maintainLog', 6.0 * 3600, (j) async {
+      // delete old logs
+      await Log.maintain();
+    });
   }
 
   String _createRpcPass() {
@@ -262,6 +266,12 @@ class MMService {
     if (gz.existsSync()) gz.deleteSync();
 
     final files = Directory(filesPath);
+    // removes the last file until the total space is less than 500mb
+    while ((files.statSync().size / 1000000) > 500) {
+      List<FileSystemEntity> _files = files.listSync();
+      _files.sort((b, a) => a.path.compareTo(b.path));
+      _files.removeLast();
+    }
     final logName = RegExp(r'^(\d{4})-(\d{2})-(\d{2})\.log$');
     final List<File> unlink = [];
     for (FileSystemEntity en in files.listSync()) {
