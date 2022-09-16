@@ -50,11 +50,11 @@ class Log {
         now: now);
   }
 
-  /// Loop through saved log files from latest to older, and delete
-  /// all files above overall [limitMb] size, except the today's one
-  static Future<void> maintain() async {
-    const double limitMB = 1000;
+  static double limitMB = 500;
 
+  /// Loop through saved log files from latest to older, and delete
+  /// all files above overall [limitMB] size, except the today's one
+  static Future<void> maintain() async {
     final List<File> logs = (await applicationDocumentsDirectory)
         .listSync()
         .whereType<File>()
