@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
+import 'package:komodo_dex/app_config/coin_converter.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -28,11 +29,11 @@ Future<LinkedHashMap<String, Coin>> get coins async {
     return _coins;
   }
   _coinsInvoked = true;
-
-  Log('coin:29', 'Loading coins_init_mm2.json…');
+  Log('coin:29', 'Loading 0.5.6-coins.json…');
   const ci = 'assets/coins_init_mm2.json';
   final cis = await rootBundle.loadString(ci, cache: false);
   final List<dynamic> cil = json.decode(cis);
+  // final List<dynamic> cil = await convertCoinToMobile();
   final Map<String, Map<String, dynamic>> cim = {};
   for (dynamic js in cil) cim[js['coin']] = Map<String, dynamic>.from(js);
 
