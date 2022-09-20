@@ -224,10 +224,9 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                 if (result is RecoverFundsOfSwap) {
                                   showMessage(
                                       context,
-                                      'Successfully unlocked ' +
-                                          result.result.coin +
-                                          ' funds - TX: ' +
-                                          result.result.txHash);
+                                      AppLocalizations.of(context)
+                                          .unlockSuccess(result.result.coin,
+                                              result.result.txHash));
                                 } else if (result is ErrorString) {
                                   showErrorMessage(context, result.error);
                                 }

@@ -737,8 +737,11 @@ class AppLocalizations {
       Intl.message('Copy to clipboard', name: 'clipboardCopy');
 
   String get unlock => Intl.message('unlock', name: 'unlock');
-  String get unlockSuccess =>
-      Intl.message('Successfully unlocked ', name: 'unlockSuccess');
+  String unlockSuccess(String amnt, String hash) => Intl.message(
+        'Successfully unlocked $amnt funds - TX: $hash',
+        name: 'unlockSuccess',
+        args: [amnt, hash],
+      );
   String get unlockFunds => Intl.message('Unlock Funds', name: 'unlockFunds');
   String get noOrders =>
       Intl.message('No orders, please go to trade.', name: 'noOrders');
