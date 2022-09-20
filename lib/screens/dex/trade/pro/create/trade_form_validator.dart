@@ -36,8 +36,8 @@ class TradeFormValidator {
   String _validateMaxTakerVolume() {
     if (swapBloc.matchingBid != null &&
         swapBloc.maxTakerVolume == Rational.parse('0')) {
-      return '${swapBloc.sellCoinBalance.coin.abbr} balance not sufficient'
-          ' to pay trading fee';
+      return appLocalizations
+          .insufficientBalanceToPay(swapBloc.sellCoinBalance.coin.abbr);
     }
 
     return null;

@@ -321,7 +321,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       ),
                       Text(AppLocalizations.of(context).loading),
                       Expanded(child: SizedBox()),
-                      Text('${AppLocalizations.of(context).txleft} $txLeft'),
+                      Text(AppLocalizations.of(context).txleft(txLeft)),
                     ],
                   ),
                 );
@@ -481,7 +481,9 @@ class _CoinDetailState extends State<CoinDetail> {
                     ),
                     SizedBox(height: 24),
                     Text(
-                        '${AppLocalizations.of(context).weFailedTo} ${currentCoinBalance.coin.abbr}'),
+                      AppLocalizations.of(context)
+                          .weFailedTo(currentCoinBalance.coin.abbr),
+                    ),
                     SizedBox(height: 24),
                     Text(
                       AppLocalizations.of(context).pleaseRestart,

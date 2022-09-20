@@ -547,7 +547,16 @@ class AppLocalizations {
       Intl.message('No reward claimable - please try again in 1h.',
           name: 'noRewardYet');
   String get loading => Intl.message('Loading...', name: 'loading');
-  String get txleft => Intl.message('Transactions Left', name: 'txleft');
+  String txleft(String left) => Intl.message(
+        'Transactions Left: $left',
+        name: 'txleft',
+        args: [left],
+      );
+  String insufficientBalanceToPay(String abbr) => Intl.message(
+        '$abbr balance not sufficient to pay trading fee',
+        name: 'insufficientBalanceToPay',
+        args: [abbr],
+      );
   String get dex => Intl.message('DEX', name: 'dex');
   String get media => Intl.message('News', name: 'media');
   String get newsFeed => Intl.message('News feed', name: 'newsFeed');
@@ -729,7 +738,7 @@ class AppLocalizations {
 
   String get unlock => Intl.message('unlock', name: 'unlock');
   String get unlockSuccess =>
-      Intl.message('Successfully unlocked', name: 'unlockSuccess');
+      Intl.message('Successfully unlocked ', name: 'unlockSuccess');
   String get unlockFunds => Intl.message('Unlock Funds', name: 'unlockFunds');
   String get noOrders =>
       Intl.message('No orders, please go to trade.', name: 'noOrders');
@@ -1186,8 +1195,11 @@ class AppLocalizations {
       'If even then some coins are still not activated, try restarting the app.',
       name: 'tryRestarting');
 
-  String get weFailedTo =>
-      Intl.message('We failed to activate', name: 'weFailedTo');
+  String weFailedTo(String coinAbbr) => Intl.message(
+        'We failed to activate $coinAbbr',
+        name: 'weFailedTo',
+        args: [coinAbbr],
+      );
 
   String get pleaseRestart => Intl.message(
       'Please restart the app to try again, or press the button below.',
