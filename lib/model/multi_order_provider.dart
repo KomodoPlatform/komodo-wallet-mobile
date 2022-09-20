@@ -100,39 +100,7 @@ class MultiOrderProvider extends ChangeNotifier {
   String getError(String coin) {
     if (coin == _baseCoin) return _baseCoinError;
 
-    return _relCoins[coin]?.preimage?.error != null
-        ? _getHumanPreimageError(_relCoins[coin]?.preimage?.error)
-        : _relCoins[coin]?.error;
-  }
-
-  String _getHumanPreimageError(RpcError error) {
-    String str;
-    switch (error?.type) {
-      case RpcErrorType.NotSufficientBaseCoinBalance:
-        str = '${error.data['coin']} balance is not sufficient'
-            ' to pay fees';
-        break;
-      case RpcErrorType.NotSufficientBalance:
-        str = '${error.data['coin']} balance is not sufficient for trade. '
-            'Min required balance is '
-            '${cutTrailingZeros(formatPrice(error.data['required']))} '
-            '${error.data['coin']}';
-        break;
-      case RpcErrorType.VolumeTooLow:
-        str =
-            'Min volume is ${cutTrailingZeros(formatPrice(error.data['threshold']))}'
-            ' ${error.data['coin']}';
-        break;
-      case RpcErrorType.Transport:
-        str =
-            "Trade can't be started. Please check if you have enough funds for gas."
-            ' Error: ${error.data}';
-        break;
-      default:
-        str = error.message ?? 'Something went wrong. Please try again.';
-    }
-
-    return str;
+    return _relCoins[coin]?.error;
   }
 
   Future<void> setRelCoinAmt(String coin, double amt) async {
@@ -241,6 +209,12 @@ class MultiOrderProvider extends ChangeNotifier {
       // TBD: refactor when 'trade_preimage' will return detailed error
       return _localizations.swapGasAmount(gasCoin);
     } else {
+      // MRC: Generic way to deal with Transport errors on gas validation
+      if (preimage.error != null &&
+          preimage.error.type == RpcErrorType.Transport) {
+        return "Trade can't be started. Please check if you have enough funds for gas."
+            ' Error: ${preimage.error.data}';
+      }
       final CoinFee totalGasFee = preimage.totalFees
           .firstWhere((item) => item.coin == gasCoin, orElse: () => null);
       if (totalGasFee != null) {
