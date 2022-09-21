@@ -62,13 +62,13 @@ class AppConfig {
         'plg': 'Polygon (PLG-20)',
         'ftm': 'Fantom (FTM-20)',
         'hrc': 'Harmony (HRC-20)',
-        'avax': 'Avax (avax-20)',
+        'avx': 'Avax (AVX-20)',
         'hco': 'HecoChain (HCO-20)',
         'mvr': 'Moonriver (MVR-20)',
         'krc': 'Kucoin (KRC-20)',
         'ubiq': 'Ubiq',
-        'etc': 'Ethereum Classic',
-        'sbch': 'SmartBCH',
+        'etc': 'Ethereum Classic (ETC)',
+        'sbch': 'SmartBCH (SBCH)',
       };
 
   bool get isSwapShareCardEnabled => true;
