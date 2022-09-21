@@ -29,18 +29,15 @@ Future<LinkedHashMap<String, Coin>> get coins async {
     return _coins;
   }
   _coinsInvoked = true;
-  Log('coin:29', 'Loading 0.5.6-coins.json…');
+  Log('coin:29', 'Loading coins_init_mm2.json…');
   const ci = 'assets/coins_init_mm2.json';
   final cis = await rootBundle.loadString(ci, cache: false);
   final List<dynamic> cil = json.decode(cis);
-  // final List<dynamic> cil = await convertCoinToMobile();
   final Map<String, Map<String, dynamic>> cim = {};
   for (dynamic js in cil) cim[js['coin']] = Map<String, dynamic>.from(js);
 
-  Log('coin:36', 'Loading coins_config.json…');
-  const cc = 'assets/coins_config.json';
-  final ccs = await rootBundle.loadString(cc, cache: false);
-  final List<dynamic> ccl = json.decode(ccs);
+  Log('coin:36', 'Loading 0.5.6-coins.json…');
+  final List<dynamic> ccl = await convertDesktopCoinsToMobile();
   final coins = LinkedHashMap<String, Coin>.of({});
   for (dynamic js in ccl) {
     final String ticker = js['abbr'];

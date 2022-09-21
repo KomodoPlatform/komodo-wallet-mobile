@@ -4,16 +4,16 @@ import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'dart:developer';
 
-Future<List<dynamic>> convertCoinToMobile() async {
+Future<List<dynamic>> convertDesktopCoinsToMobile() async {
   final String coins =
       await rootBundle.loadString('assets/0.5.6-coins.json', cache: false);
   // 561 coins
   Map coinsResponse = jsonDecode(coins);
   List allCoinsList = [];
 
-  coinsResponse.forEach((key, element) {
-    String proto = _getType(element['type']);
-    String abbr = element['coin'];
+  coinsResponse.forEach((key, coinData) {
+    String proto = _getType(coinData['type']);
+    String abbr = coinData['coin'];
 
     if (_excludedCoins.contains(key) || proto == null) {
       return;
@@ -21,24 +21,37 @@ Future<List<dynamic>> convertCoinToMobile() async {
 
     allCoinsList.add({
       'abbr': abbr,
-      'name': element['name'],
-      'coingeckoId': element['coingecko_id'],
+      'name': coinData['name'],
+      'coingeckoId': coinData['coingecko_id'],
       'colorCoin': _getColor(abbr),
       'type': proto,
-      'explorerUrl': element['explorer_url'],
-      'serverList': _getServerList(proto, element),
+      'explorerUrl': coinData['explorer_url'],
+      'serverList': _getServerList(proto, abbr, coinData),
+      if (_sslCoins.contains(abbr) || _tcpCoins.contains(abbr))
+        'proto': _tcpCoins.contains(abbr) ? 'TCP' : 'SSL',
       if (_getContractAddress(proto) != null)
         'swap_contract_address': _getContractAddress(proto),
       if (_getContractAddress(proto, isFallback: true) != null)
         'fallback_swap_contract': _getContractAddress(proto, isFallback: true),
-      if (element['address'] != null) 'address': element['address'],
-      if (element['is_testnet'] != null) 'testCoin': element['is_testnet'],
+      if (coinData['address'] != null) 'address': coinData['address'],
+      if (_isTestCoin(coinData) != null) 'testCoin': _isTestCoin(coinData),
     });
   });
 
   log(jsonEncode(allCoinsList));
 
   return allCoinsList;
+}
+
+bool _isTestCoin(dynamic coinData) {
+  if (coinData['is_testnet'] != null) {
+    return coinData['is_testnet'];
+  } else if (coinData['coingecko_id'] == 'test-coin' ||
+      coinData['coingecko_id'] == 'test-token') {
+    return true;
+  } else {
+    return null;
+  }
 }
 
 String _getType(String coin) {
@@ -120,15 +133,34 @@ String _getContractAddress(String protocol, {bool isFallback = false}) {
   }
 }
 
-List<String> _getServerList(String protocol, dynamic element) {
+List<String> _getServerList(String protocol, String abbr, dynamic coinData) {
+  if (abbr == 'KMD') {
+    return [
+      'electrum1.cipig.net:20001',
+      'electrum2.cipig.net:20001',
+      'electrum3.cipig.net:20001',
+    ];
+  } else if (abbr == 'RICK') {
+    return [
+      'electrum1.cipig.net:20017',
+      'electrum2.cipig.net:20017',
+      'electrum3.cipig.net:20017',
+    ];
+  } else if (abbr == 'MORTY') {
+    return [
+      'electrum3.cipig.net:20018',
+      'electrum2.cipig.net:20018',
+      'electrum1.cipig.net:20018',
+    ];
+  }
   CoinType coinType = coinTypeFromString(protocol);
   switch (coinType) {
     case CoinType.utxo:
-      List<dynamic> electrums = element['electrum'];
+      List<dynamic> electrums = coinData['electrum'];
       return List.generate(
           electrums.length, (index) => electrums[index]['url']);
     case CoinType.smartChain:
-      List<dynamic> electrums = element['electrum'];
+      List<dynamic> electrums = coinData['electrum'];
       return List.generate(
           electrums.length, (index) => electrums[index]['url']);
     case CoinType.qrc:
@@ -144,7 +176,7 @@ List<String> _getServerList(String protocol, dynamic element) {
         'https://rpc-mainnet.maticvigil.com'
       ];
     default:
-      List<dynamic> nodes = element['nodes'];
+      List<dynamic> nodes = coinData['nodes'];
       return nodes.map((e) => e.toString()).toList();
   }
 }
@@ -168,8 +200,102 @@ List<String> _excludedCoins = [
   'WSB',
   'SUPERNET',
   'NAV',
+  'VOTE2022'
 ];
 
+List<String> _sslCoins = [
+  'KMD',
+  'MORTY',
+  'NAV',
+  'RICK',
+  'ABY',
+  'AUR',
+  'BTX',
+  'BLK',
+  'tBLK',
+  'CDN',
+  'DIMI',
+  'DOI',
+  'EFL',
+  'XEC',
+  'XRG',
+  'BSTY',
+  'IL8P',
+  'LYNX',
+  'NMC',
+  'NVC',
+  'PPC',
+  'PRUX',
+  'VAL',
+  'TRC',
+  'UNO',
+  'USDI',
+  'WHIVE',
+  'ZET',
+  'ZET-OLD',
+];
+
+List<String> _tcpCoins = [
+  'BTC',
+  'AWC',
+  'AXE',
+  'BAT-ERC20',
+  'BUSD-ERC20',
+  'BCH',
+  'CHIPS',
+  'ZILLA',
+  'DAI-ERC20',
+  'DASH',
+  'DGB',
+  'DOGE',
+  'ECA',
+  'ETH',
+  'ETHR',
+  'JSTR',
+  'FTC',
+  'LABS',
+  'KOIN',
+  'LTC',
+  'MCL',
+  'PAX-ERC20',
+  'QTUM',
+  'QC',
+  'RVN',
+  'THC',
+  'TKL',
+  'TUSD-ERC20',
+  'USDC-ERC20',
+  'VRSC',
+  'ZEC',
+  'FIRO',
+  'ZER',
+  'tBTC-TEST',
+  'SFUSD',
+  'USDT-ERC20',
+  'LINK-ERC20',
+  'tQTUM',
+  'QRC20',
+  'DIMI-QRC20',
+  'TSL',
+  'HLC',
+  'HPY',
+  'INK',
+  'LSTR',
+  'NVC-QRC20',
+  'OC',
+  'PUT',
+  'QBT',
+  'QIAIR',
+  'QI',
+  'SPC',
+  'XVC-QRC20',
+  'USBL',
+  'FJC',
+  'IC',
+  'XMY',
+  'XPM',
+  'RTM'
+];
 String _getColor(String coin) {
   String defaultColor = 'F9F9F9';
 
