@@ -75,7 +75,7 @@ String getCoinTicker(String abbr) {
   for (String suffix in appConfig.protocolSuffixes) {
     abbr = abbr.replaceAll('-$suffix', '');
   }
-  return abbr;
+  return abbr.replaceAll('-OLD', '');
 }
 
 Rational deci2rat(Decimal decimal) {

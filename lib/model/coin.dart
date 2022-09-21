@@ -29,6 +29,7 @@ Future<LinkedHashMap<String, Coin>> get coins async {
     return _coins;
   }
   _coinsInvoked = true;
+
   Log('coin:29', 'Loading coins_init_mm2.json…');
   const ci = 'assets/coins_init_mm2.json';
   final cis = await rootBundle.loadString(ci, cache: false);
