@@ -46,8 +46,7 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
 bool _isTestCoin(dynamic coinData) {
   if (coinData['is_testnet'] != null) {
     return coinData['is_testnet'];
-  } else if (coinData['coingecko_id'] == 'test-coin' ||
-      coinData['coingecko_id'] == 'test-token') {
+  } else if (coinData['coingecko_id'] == 'test-coin') {
     return true;
   } else {
     return null;
