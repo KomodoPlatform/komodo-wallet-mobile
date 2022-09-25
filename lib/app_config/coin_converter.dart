@@ -102,7 +102,8 @@ String _getType(String coin) {
       type = CoinType.avx;
       break;
     default:
-      return null;
+      return null; // for other protocols not yet added on the mobile
+    // they default to null and are not added as a coin , e.g optimism, zhtlc
   }
   return type.name;
 }
@@ -133,25 +134,6 @@ String _getContractAddress(String protocol, {bool isFallback = false}) {
 }
 
 List<String> _getServerList(String protocol, String abbr, dynamic coinData) {
-  if (abbr == 'KMD') {
-    return [
-      'electrum1.cipig.net:20001',
-      'electrum2.cipig.net:20001',
-      'electrum3.cipig.net:20001',
-    ];
-  } else if (abbr == 'RICK') {
-    return [
-      'electrum1.cipig.net:20017',
-      'electrum2.cipig.net:20017',
-      'electrum3.cipig.net:20017',
-    ];
-  } else if (abbr == 'MORTY') {
-    return [
-      'electrum3.cipig.net:20018',
-      'electrum2.cipig.net:20018',
-      'electrum1.cipig.net:20018',
-    ];
-  }
   CoinType coinType = coinTypeFromString(protocol);
   switch (coinType) {
     case CoinType.utxo:
@@ -175,8 +157,7 @@ List<String> _getServerList(String protocol, String abbr, dynamic coinData) {
         'https://rpc-mainnet.maticvigil.com'
       ];
     default:
-      List<dynamic> nodes = coinData['nodes'];
-      return nodes.map((e) => e.toString()).toList();
+      return coinData['nodes'].map((e) => e.toString()).toList();
   }
 }
 
