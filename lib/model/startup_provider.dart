@@ -50,6 +50,9 @@ class Startup {
     // delete old logs
     await Log.maintain();
 
+    // clear temporary log file
+    await Log.clearTempLog();
+
     // We'd *like* to jump-start MM as part of the initial startup sequence
     // but this is unlikely to happen because the passphrase needs to be unlocked first.
     // So invoking this method here might be seen as a wishful thinking.
