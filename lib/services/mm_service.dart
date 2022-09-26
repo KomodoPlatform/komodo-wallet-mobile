@@ -267,11 +267,14 @@ class MMService {
 
     final files = Directory(filesPath);
     // removes the last file until the total space is less than 500mb
-    while ((files.statSync().size / 1000000) > 500) {
-      List<FileSystemEntity> _files = files.listSync();
+    while (dirStatSync(filesPath) > 500) {
+      // get only log files in case we have other files(not-log) in the folder
+      List<FileSystemEntity> _files =
+          files.listSync().where((element) => element.path.endsWith('log'));
       _files.sort((b, a) => a.path.compareTo(b.path));
       _files.removeLast();
     }
+
     final logName = RegExp(r'^(\d{4})-(\d{2})-(\d{2})\.log$');
     final List<File> unlink = [];
     for (FileSystemEntity en in files.listSync()) {
@@ -301,6 +304,27 @@ class MMService {
     final ret = FileAndSink(file, sink);
     _logs[ymd] = ret;
     return ret;
+  }
+
+  /// returns directory size in MB
+  double dirStatSync(String dirPath) {
+    int totalSize = 0;
+    var dir = Directory(dirPath);
+    try {
+      if (dir.existsSync()) {
+        dir
+            .listSync(recursive: true, followLinks: false)
+            .where((element) => element.path.endsWith('log'))
+            .forEach((FileSystemEntity entity) {
+          if (entity is File) {
+            totalSize += entity.lengthSync();
+          }
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return totalSize / 1000000;
   }
 
   Future<void> runBin(String rpcPass) async {

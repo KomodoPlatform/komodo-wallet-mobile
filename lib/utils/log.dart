@@ -44,9 +44,9 @@ class Log {
     // We make the log lines a bit shorter by only mentioning the time
     // and not the date, as the latter is already present in the log file name.
     final now = DateTime.now();
-    // only write to log file if the [messageToPrint] has appeared 5 times
+    // only write to log file if the [messageToPrint] has appeared 3 times
     // within the last 2 minutes.
-    if (_tempLogs.where((c) => c == messageToPrint).length < 6) {
+    if (_tempLogs.where((c) => c == messageToPrint).length < 4) {
       mmSe.log2file(
           '${twoDigits(now.hour)}'
           ':${twoDigits(now.minute)}'
@@ -58,7 +58,7 @@ class Log {
     }
   }
 
-  // clear temporary log file every 2 minutes
+  /// clear [_tempLogs] every 2 minutes
   static Future<void> clearTempLog() async {
     jobService.install('clearTempLog', 120, (j) async {
       _tempLogs.clear();
