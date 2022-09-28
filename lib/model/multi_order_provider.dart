@@ -209,12 +209,6 @@ class MultiOrderProvider extends ChangeNotifier {
       // TBD: refactor when 'trade_preimage' will return detailed error
       return _localizations.swapGasAmount(gasCoin);
     } else {
-      // MRC: Generic way to deal with Transport errors on gas validation
-      if (preimage.error != null &&
-          preimage.error.type == RpcErrorType.Transport) {
-        return "Trade can't be started. Please check if you have enough funds for gas."
-            ' Error: ${preimage.error.data}';
-      }
       final CoinFee totalGasFee = preimage.totalFees
           .firstWhere((item) => item.coin == gasCoin, orElse: () => null);
       if (totalGasFee != null) {
@@ -302,9 +296,12 @@ class MultiOrderProvider extends ChangeNotifier {
       ));
     } catch (e) {
       _relCoins[coin].processing = false;
+      final gasErrorMessage = await _validateGas(coin, preimage);
+      if (gasErrorMessage != null) {
+        _relCoins[coin].error = gasErrorMessage;
+      }
       _relCoins[coin].preimage = null;
       Log('multi_order_provider', '_updatePreimage] $e');
-      _relCoins[coin].error = e.toString();
       notifyListeners();
       return;
     }
