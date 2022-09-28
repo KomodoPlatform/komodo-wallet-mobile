@@ -1114,8 +1114,50 @@
     "required_confirmations": 1,
     "avg_blocktime": 10,
     "protocol": {
-      "type": "UTXO"
+        "type": "BCH",
+        "protocol_data": {
+            "slp_prefix": "simpleledger"
+        }
     }
+  },
+  {
+    "coin":"USDT-SLP",
+    "protocol":{
+      "type":"SLPTOKEN",
+      "protocol_data":{
+        "decimals":8,
+        "token_id":"9fc89d6b7d5be2eac0b3787c5b8236bca5de641b5bafafc8f450727b63615c11",
+        "platform":"BCH",
+        "required_confirmations": 1
+      }
+    },
+    "mm2": 1
+  },
+  {
+    "coin":"HONK",
+    "protocol":{
+      "type":"SLPTOKEN",
+      "protocol_data":{
+        "decimals":0,
+        "token_id":"7f8889682d57369ed0e32336f8b7e0ffec625a35cca183f4e81fde4e71a538a1",
+        "platform":"BCH",
+        "required_confirmations": 1
+      }
+    },
+    "mm2": 1
+  },
+  {
+    "coin":"ASLP",
+    "protocol":{
+      "type":"SLPTOKEN",
+      "protocol_data":{
+        "decimals":2,
+        "token_id":"926894cbf50269b15c97559b9acfc1bd88cd5f20703313ce0ea0683ecdb40911",
+        "platform":"BCH",
+        "required_confirmations": 1
+      }
+    },
+    "mm2": 1
   },
   {
     "coin": "BCH-ERC20",
@@ -2060,6 +2102,23 @@
         "platform": "ETH-ARB20",
         "contract_address": "0x3a8B787f78D775AECFEEa15706D4221B40F345AB"
       }
+    }
+  },
+  {
+    "coin": "CHTA",
+    "name": "cheetahcoin",
+    "fname": "Cheetahcoin",
+    "rpcport": 8536,
+    "pubtype": 28,
+    "p2shtype": 5,
+    "wiftype": 128,
+    "txfee": 40000,
+    "mm2": 1,
+    "enable_spv_proof": true,
+    "required_confirmations": 2,
+    "avg_blocktime": 2,
+    "protocol": {
+      "type": "UTXO"
     }
   },
   {
@@ -4827,17 +4886,20 @@
     }
   },
   {
-    "coin": "JST",
-    "name": "JST",
-    "fname": "JST (TESTCOIN)",
-    "mm2": 1,
-    "chain_id": 1,
+    "coin": "JST-BEP20",
+    "name": "jst_bep20",
+    "fname": "JUST",
     "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 56,
+    "decimals": 18,
+    "avg_blocktime": 0.05,
+    "required_confirmations": 3,
     "protocol": {
       "type": "ERC20",
       "protocol_data": {
-        "platform": "ETH",
-        "contract_address": "0x996a8ae0304680f6a69b8a9d7c6e37d65ab5ab56"
+        "platform": "BNB",
+        "contract_address": "0xeA998D307ACA04D4f0A3B3036Aba84AE2E409C0A"
       }
     }
   },
@@ -5093,6 +5155,26 @@
     }
   },
   {
+    "coin": "LNC",
+    "name": "lightningcash",
+    "fname": "LightningCash",
+    "rpcport": 9110,
+    "pubtype": 28,
+    "p2shtype": 50,
+    "wiftype": 176,
+    "decimals": 8,
+    "signature_version": "base",
+    "txfee": 10000,
+    "segwit": true,
+    "bech32_hrp": "lnc",
+    "mm2": 1,
+    "required_confirmations": 6,
+    "avg_blocktime": 0.0834,
+    "protocol": {
+      "type": "UTXO"
+    }
+  },
+  {
     "coin": "LEO-ERC20",
     "name": "leo_erc20",
     "fname": "LEO Token",
@@ -5289,6 +5371,24 @@
     }
   },
   {
+    "coin": "LRC-BEP20",
+    "name": "lrc_bep20",
+    "fname": "Loopring",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 56,
+    "decimals": 18,
+    "avg_blocktime": 0.05,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "BNB",
+        "contract_address": "0x66e4d38b20173F509A1fF5d82866949e4fE898da"
+      }
+    }
+  },
+  {
     "coin": "LRC-PLG20",
     "name": "lrc_plg20",
     "fname": "Loopring",
@@ -5358,6 +5458,42 @@
       "protocol_data": {
         "platform": "ETH",
         "contract_address": "0x27C70Cd1946795B66be9d954418546998b546634"
+      }
+    }
+  },
+  {
+    "coin": "LOOM-ERC20",
+    "name": "loom_erc20",
+    "fname": "Loom Network",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 1,
+    "decimals": 18,
+    "avg_blocktime": 0.25,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "ETH",
+        "contract_address": "0x42476F744292107e34519F9c357927074Ea3F75D"
+      }
+    }
+  },
+  {
+    "coin": "LOOM-BEP20",
+    "name": "loom_bep20",
+    "fname": "Loom Network",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 56,
+    "decimals": 18,
+    "avg_blocktime": 0.05,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "BNB",
+        "contract_address": "0xE6Ce27025F13f5213bBc560dC275e292965a392F"
       }
     }
   },
@@ -6191,6 +6327,23 @@
         "platform": "BNB",
         "contract_address": "0x1Fa4a73a3F0133f0025378af00236f3aBDEE5D63"
       }
+    }
+  },
+  {
+    "coin": "NENG",
+    "name": "nengcoin",
+    "fname": "Nengcoin",
+    "rpcport": 6376,
+    "pubtype": 53,
+    "p2shtype": 5,
+    "wiftype": 176,
+    "txfee": 200000,
+    "mm2": 1,
+    "enable_spv_proof": true,
+    "required_confirmations": 2,
+    "avg_blocktime": 1,
+    "protocol": {
+      "type": "UTXO"
     }
   },
   {
@@ -8253,6 +8406,24 @@
     }
   },
   {
+    "coin": "TAMA-ERC20",
+    "name": "tama_erc20",
+    "fname": "Tamadoge",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 1,
+    "avg_blocktime": 0.25,
+    "required_confirmations": 3,
+    "decimals": 18,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "ETH",
+        "contract_address": "0x12b6893cE26Ea6341919FE289212ef77e51688c8"
+      }
+    }
+  },
+  {
     "coin": "tBTC-TEST",
     "name": "tbitcoin",
     "fname": "tBitcoin",
@@ -10260,7 +10431,7 @@
   },
   {
     "coin": "ZRX-PLG20",
-    "name": "mana_plg20",
+    "name": "zrx_plg20",
     "fname": "0x",
     "rpcport": 80,
     "mm2": 1,
