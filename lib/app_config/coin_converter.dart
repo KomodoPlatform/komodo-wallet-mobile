@@ -11,11 +11,10 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
   Map coinsResponse = jsonDecode(coins);
   List allCoinsList = [];
 
-  coinsResponse.forEach((key, coinData) {
+  coinsResponse.forEach((abbr, coinData) {
     String proto = _getType(coinData['type']);
-    String abbr = coinData['coin'];
 
-    if (_excludedCoins.contains(key) || proto == null) {
+    if (_excludedCoins.contains(abbr) || proto == null) {
       return;
     }
 
@@ -135,11 +134,10 @@ String _getContractAddress(String protocol, {bool isFallback = false}) {
 
 List<String> _getServerList(String protocol, String abbr, dynamic coinData) {
   CoinType coinType = coinTypeFromString(protocol);
+  List<dynamic> servers = coinData['nodes'] ?? coinData['electrum'] ?? [];
   switch (coinType) {
     case CoinType.utxo:
-      List<dynamic> electrums = coinData['electrum'];
-      return List.generate(
-          electrums.length, (index) => electrums[index]['url']);
+      return List.generate(servers.length, (index) => servers[index]['url']);
     case CoinType.smartChain:
       List<dynamic> electrums = coinData['electrum'];
       return List.generate(
@@ -157,7 +155,7 @@ List<String> _getServerList(String protocol, String abbr, dynamic coinData) {
         'https://rpc-mainnet.maticvigil.com'
       ];
     default:
-      return coinData['nodes'].map((e) => e.toString()).toList();
+      return servers.map((e) => e.toString()).toList();
   }
 }
 
@@ -193,7 +191,6 @@ List<String> _sslCoins = [
   'BTX',
   'BLK',
   'tBLK',
-  'CDN',
   'DIMI',
   'DOI',
   'EFL',
@@ -205,7 +202,6 @@ List<String> _sslCoins = [
   'NMC',
   'NVC',
   'PPC',
-  'PRUX',
   'VAL',
   'TRC',
   'UNO',
@@ -213,68 +209,108 @@ List<String> _sslCoins = [
   'WHIVE',
   'ZET',
   'ZET-OLD',
+  'NYAN',
+  'PND',
+  'VRSC',
+  'XRG',
+  'RUNES',
+  'tBCH',
+  'AUR',
+  'BTX',
+  'DIMI',
+  'EFL',
+  'XEC',
+  'BSTY',
+  'NMC',
+  'NVC',
+  'UNO',
+  'CDN',
+  'PRUX',
+  'SCA'
 ];
 
 List<String> _tcpCoins = [
-  'BTC',
-  'AWC',
   'AXE',
-  'BAT-ERC20',
-  'BUSD-ERC20',
+  'GRS',
+  'IC',
+  'LTFN',
+  'XMY',
+  'XVC',
+  'XVC-OLD',
+  'tBTC-TEST',
+  'ZEC',
+  'ZET',
+  'LBC',
   'BCH',
-  'CHIPS',
-  'ZILLA',
-  'DAI-ERC20',
-  'DASH',
-  'DGB',
-  'DOGE',
-  'ECA',
-  'ETH',
-  'ETHR',
-  'JSTR',
-  'FTC',
-  'LABS',
-  'KOIN',
-  'LTC',
-  'MCL',
-  'PAX-ERC20',
-  'QTUM',
-  'QC',
-  'RVN',
+  'BTC',
+  'BTCZ',
+  'BET',
+  'BOTS',
+  'BTE',
+  'CCL',
+  'CLC',
+  'CIPHS',
+  'ACTN',
   'THC',
   'TKL',
-  'TUSD-ERC20',
-  'USDC-ERC20',
-  'VRSC',
-  'ZEC',
+  'CRYPTO',
+  'DASH',
+  'DGB',
+  'DGC',
+  'DOGE',
+  'DP',
+  'ECA',
+  'EMC2',
   'FIRO',
-  'ZER',
-  'tBTC-TEST',
-  'SFUSD',
-  'USDT-ERC20',
-  'LINK-ERC20',
-  'tQTUM',
-  'QRC20',
-  'DIMI-QRC20',
-  'TSL',
-  'HLC',
-  'HPY',
-  'INK',
-  'LSTR',
-  'NVC-QRC20',
-  'OC',
-  'PUT',
-  'QBT',
-  'QIAIR',
-  'QI',
-  'SPC',
-  'XVC-QRC20',
-  'USBL',
   'FJC',
-  'IC',
-  'XMY',
+  'FTC',
+  'GLEEC',
+  'GRMS',
+  'GMS',
+  'HODL',
+  'JUMBLR',
+  'KOIN',
+  'LCC',
+  'LTC',
+  'MCL',
+  'MSHARK',
+  'UIS',
+  'KMD',
+  'LABS',
+  'MESH',
+  'MGW',
+  'DEX',
+  'RICK',
+  'MORTY',
+  'NYAN',
+  'PANGEA',
+  'PRUX',
+  'REVS',
+  'SOULJA',
+  'SYS',
+  'WSB',
+  'CHIPS',
+  'SUPERNET',
+  'ILN',
+  'MONA',
+  'NENG',
+  'QTUM',
+  'RTM',
+  'RVN',
+  'SPACE',
+  'THC',
+  'TRC',
+  'VRM',
+  'WCN',
   'XPM',
-  'RTM'
+  'ZER',
+  'ZILLA',
+  'tQTUM',
+  'SFUSD',
+  'USBL',
+  'WHIVE',
+  'VOTE2022',
+  'RUNES'
 ];
 String _getColor(String coin) {
   String defaultColor = 'F9F9F9';
