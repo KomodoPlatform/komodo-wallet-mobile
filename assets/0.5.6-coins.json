@@ -876,93 +876,9 @@
       "https://bchd.fountainhead.cash:443"
     ],
     "allow_slp_unsafe_conf": false,
-    "type": "BCH",
+    "type": "UTXO",
+    "other_types": ["SLP"],
     "name": "Bitcoin Cash"
-  },
-  "sTST": {
-    "coin": "sTST",
-    "active": false,
-    "is_testnet": true,
-    "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://testnet.simpleledger.info/"
-    ],
-    "explorer_tx_url": "#tx/",
-    "type": "tBCH",
-    "name": "sTST"
-  },
-  "HONK": {
-    "coin": "HONK",
-    "active": false,
-    "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://simpleledger.info/"
-    ],
-    "explorer_tx_url": "#tx/",
-    "type": "BCH",
-    "name": "HONK HONK"
-  },
-  "ASLP": {
-    "coin": "ASLP",
-    "active": false,
-    "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://simpleledger.info/"
-    ],
-    "explorer_tx_url": "#tx/",
-    "type": "BCH",
-    "name": "AtomicSLP"
-  },
-  "USDF": {
-    "coin": "USDF",
-    "active": false,
-    "is_testnet": true,
-    "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
-    "explorer_url": [
-      "https://testnet.simpleledger.info/"
-    ],
-    "explorer_tx_url": "#tx/",
-    "type": "tBCH",
-    "name": "Fake USD (Testnet)"
-  },
-  "tBCH": {
-    "coin": "tBCH",
-    "active": false,
-    "is_testnet": true,
-    "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
-    "currently_enabled": false,
-    "electrum": [
-      {
-        "url": "tbch.loping.net:60002",
-        "protocol": "SSL"
-      },
-      {
-        "url": "electroncash.de:50004",
-        "protocol": "SSL"
-      },
-      {
-        "url": "testnet.bitcoincash.network:60002",
-        "protocol": "SSL"
-      }
-    ],
-    "explorer_url": [
-      "https://tbch.loping.net/"
-    ],
-    "bchd_urls": [
-      "https://bchd-testnet.greyh.at:18335"
-    ],
-    "allow_slp_unsafe_conf": false,
-    "type": "BCH",
-    "name": "Bitcoin Cash (Testnet)"
   },
   "USDT-SLP": {
     "coin": "USDT-SLP",
@@ -974,7 +890,7 @@
       "https://simpleledger.info/"
     ],
     "explorer_tx_url": "#tx/",
-    "type": "BCH",
+    "type": "SLP",
     "name": "Tether"
   },
   "BCH-ERC20": {
@@ -1746,22 +1662,22 @@
     "currently_enabled": false
   },
   "CASE": {
-    "coin": "CASE",
-    "name": "Case Token",
-    "coinpaprika_id": "test-coin",
-    "coingecko_id": "test-coin",
-    "nomics_id": "CASE",
-    "nodes": [
-      "http://bsc1.cipig.net:8655",
-      "http://bsc2.cipig.net:8655",
-      "http://bsc3.cipig.net:8655"
-    ],
-    "explorer_url": [
-      "https://bscscan.com/"
-    ],
-    "type": "BEP-20",
-    "active": false,
-    "currently_enabled": false
+      "coin": "CASE",
+      "name": "Case Token",
+      "coinpaprika_id": "test-coin",
+      "coingecko_id": "test-coin",
+      "nomics_id": "CASE",
+      "nodes": [
+        "http://bsc1.cipig.net:8655",
+        "http://bsc2.cipig.net:8655",
+        "http://bsc3.cipig.net:8655"
+      ],
+      "explorer_url": [
+        "https://bscscan.com/"
+      ],
+      "type": "BEP-20",
+      "active": false,
+      "currently_enabled": false
   },
   "CCL": {
     "coin": "CCL",
@@ -5903,11 +5819,11 @@
     "explorer_url": [
       "https://www.nyanchain.com/"
     ],
-    "explorer_tx_url": "tx.nyan?",
-    "explorer_address_url": "ad.nyan?",
-    "type": "UTXO",
-    "active": false,
-    "currently_enabled": false
+      "explorer_tx_url": "tx.nyan?",
+      "explorer_address_url": "ad.nyan?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
   },
   "PANGEA": {
     "coin": "PANGEA",
@@ -5998,12 +5914,12 @@
     "currently_enabled": false
   },
   "PPC": {
-    "coin": "PPC",
-    "name": "Peercoin",
-    "coinpaprika_id": "ppc-peercoin",
-    "coingecko_id": "peercoin",
-    "nomics_id": "PPC",
-    "electrum": [
+      "coin": "PPC",
+      "name": "Peercoin",
+      "coinpaprika_id": "ppc-peercoin",
+      "coingecko_id": "peercoin",
+      "nomics_id": "PPC",
+      "electrum": [
       {
         "url": "electrum.peercoinexplorer.net:50002",
         "protocol": "SSL",
@@ -6016,15 +5932,15 @@
         "disable_cert_verification": false,
         "ws_url": "allingas.peercoinexplorer.net:50004"
       }
-    ],
-    "explorer_url": [
-      "https://chainz.cryptoid.info/ppc/"
-    ],
-    "explorer_tx_url": "tx.dws?",
-    "explorer_address_url": "address.dws?",
-    "type": "UTXO",
-    "active": false,
-    "currently_enabled": false
+      ],
+      "explorer_url": [
+        "https://chainz.cryptoid.info/ppc/"
+      ],
+      "explorer_tx_url": "tx.dws?",
+      "explorer_address_url": "address.dws?",
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
   },
   "PPC-ERC20": {
     "coin": "PPC-ERC20",
@@ -6063,12 +5979,12 @@
     "currently_enabled": false
   },
   "PRUX": {
-    "coin": "PRUX",
-    "name": "PRUX",
-    "coinpaprika_id": "prux-prux-coin",
-    "coingecko_id": "test-coin",
-    "nomics_id": "PRUX",
-    "electrum": [
+      "coin": "PRUX",
+      "name": "PRUX",
+      "coinpaprika_id": "prux-prux-coin",
+      "coingecko_id": "test-coin",
+      "nomics_id": "PRUX",
+      "electrum": [
       {
         "url": "txserver.live:50002",
         "protocol": "SSL"
@@ -6085,13 +6001,13 @@
         "url": "electrumx.live:50010",
         "protocol": "TCP"
       }
-    ],
-    "explorer_url": [
-      "https://explorer.prux.info/"
-    ],
-    "type": "UTXO",
-    "active": false,
-    "currently_enabled": false
+      ],
+      "explorer_url": [
+        "https://explorer.prux.info/"
+      ],
+      "type": "UTXO",
+      "active": false,
+      "currently_enabled": false
   },
   "QIAIR": {
     "coin": "QIAIR",
@@ -6529,20 +6445,20 @@
     "currently_enabled": false
   },
   "SUSHI-MVR20": {
-    "coin": "SUSHI-MVR20",
-    "name": "Sushi",
-    "coinpaprika_id": "sushi-sushi",
-    "coingecko_id": "sushi",
-    "nomics_id": "SUSHI",
-    "nodes": [
-      "https://rpc.api.moonriver.moonbeam.network"
-    ],
-    "explorer_url": [
-      "https://moonriver.moonscan.io/"
-    ],
-    "type": "Moonriver",
-    "active": false,
-    "currently_enabled": false
+      "coin": "SUSHI-MVR20",
+      "name": "Sushi",
+      "coinpaprika_id": "sushi-sushi",
+      "coingecko_id": "sushi",
+      "nomics_id": "SUSHI",
+      "nodes": [
+        "https://rpc.api.moonriver.moonbeam.network"
+      ],
+      "explorer_url": [
+        "https://moonriver.moonscan.io/"
+      ],
+      "type": "Moonriver",
+      "active": false,
+      "currently_enabled": false
   },
   "SUSHI-PLG20": {
     "coin": "SUSHI-PLG20",
@@ -8077,39 +7993,39 @@
     "currently_enabled": false
   },
   "WBTC-ERC20": {
-    "coin": "WBTC-ERC20",
-    "name": "Wrapped Bitcoin",
-    "coinpaprika_id": "wbtc-wrapped-bitcoin",
-    "coingecko_id": "wrapped-bitcoin",
-    "nomics_id": "WBTC",
-    "nodes": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorer_url": [
-      "https://etherscan.io/"
-    ],
-    "type": "ERC-20",
-    "active": false,
-    "currently_enabled": false
+      "coin": "WBTC-ERC20",
+      "name": "Wrapped Bitcoin",
+      "coinpaprika_id": "wbtc-wrapped-bitcoin",
+      "coingecko_id": "wrapped-bitcoin",
+      "nomics_id": "WBTC",
+      "nodes": [
+        "http://eth1.cipig.net:8555",
+        "http://eth2.cipig.net:8555",
+        "http://eth3.cipig.net:8555"
+      ],
+      "explorer_url": [
+        "https://etherscan.io/"
+      ],
+      "type": "ERC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "WBTC-HRC20": {
-    "coin": "WBTC-HRC20",
-    "name": "Wrapped Bitcoin",
-    "coinpaprika_id": "wbtc-wrapped-bitcoin",
-    "coingecko_id": "wrapped-bitcoin",
-    "nomics_id": "WBTC",
-    "nodes": [
-      "https://api.harmony.one",
-      "https://api.s0.t.hmny.io"
-    ],
-    "explorer_url": [
-      "https://explorer.harmony.one/"
-    ],
-    "type": "HRC-20",
-    "active": false,
-    "currently_enabled": false
+      "coin": "WBTC-HRC20",
+      "name": "Wrapped Bitcoin",
+      "coinpaprika_id": "wbtc-wrapped-bitcoin",
+      "coingecko_id": "wrapped-bitcoin",
+      "nomics_id": "WBTC",
+      "nodes": [
+        "https://api.harmony.one",
+        "https://api.s0.t.hmny.io"
+      ],
+      "explorer_url": [
+        "https://explorer.harmony.one/"
+      ],
+      "type": "HRC-20",
+      "active": false,
+      "currently_enabled": false
   },
   "WCN": {
     "coin": "WCN",
@@ -10571,8 +10487,8 @@
     "nomics_id": "WHIVE",
     "electrum": [
       {
-        "url": "electrumx1.cointest.com:50002",
-        "protocol": "SSL",
+       "url": "electrumx1.cointest.com:50002",
+       "protocol": "SSL",
         "disable_cert_verification": true
       },
       {
@@ -10743,7 +10659,7 @@
       {
         "url": "electrum4.runebase.io:50001",
         "protocol": "TCP"
-      }
+      }      
     ],
     "explorer_url": [
       "https://explorer.runebase.io/"
@@ -10755,7 +10671,7 @@
     "is_segwit_on": false,
     "currently_enabled": false
   },
-  "ACTN": {
+"ACTN": {
     "coin": "ACTN",
     "name": "Action Coin",
     "type": "Smart Chain",
@@ -10772,7 +10688,7 @@
         "url": "electrumx2.actioncoin.com:30001",
         "ws_url": "electrumx2.actioncoin.com:20001",
         "protocol": "SSL"
-      },
+      },  
       {
         "url": "electrumx1.actioncoin.com:10001"
       },
@@ -10843,5 +10759,65 @@
     "active": false,
     "currently_enabled": false,
     "wallet_only": false
+  },
+  "sTST": {
+    "coin": "sTST",
+    "active": false,
+    "is_testnet": true,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://testnet.simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "SLP",
+    "name": "sTST"
+  },
+  "USDF": {
+    "coin": "USDF",
+    "active": false,
+    "is_testnet": true,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "explorer_url": [
+      "https://testnet.simpleledger.info/"
+    ],
+    "explorer_tx_url": "#tx/",
+    "type": "SLP",
+    "name": "Fake USD (Testnet)"
+  },
+  "tBCH": {
+    "coin": "tBCH",
+    "active": false,
+    "is_testnet": true,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "tbch.loping.net:60002",
+        "protocol": "SSL"
+      },
+      {
+        "url": "electroncash.de:50004",
+        "protocol": "SSL"
+      },
+      {
+        "url": "testnet.bitcoincash.network:60002",
+        "protocol": "SSL"
+      }
+    ],
+    "explorer_url": [
+      "https://tbch.loping.net/"
+    ],
+    "bchd_urls": [
+      "https://bchd-testnet.greyh.at:18335"
+    ],
+    "allow_slp_unsafe_conf": false,
+    "type": "UTXO",
+    "other_types": ["SLP"],
+    "name": "Bitcoin Cash (Testnet)"
   }
 }
