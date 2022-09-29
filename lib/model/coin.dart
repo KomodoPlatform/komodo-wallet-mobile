@@ -72,9 +72,6 @@ class Coin {
 
     type = coinTypeFromString(config['type'] ?? '');
     name = config['name'] ?? init['fname'] ?? '';
-    address = config['address'] ?? '';
-    port = config['port'] ?? 0;
-    proto = config['proto'] ?? '';
     txfee = init['txfee'] ?? 0;
     mm2 = init['mm2'] ?? 0;
     abbr = init['coin'] ?? config['abbr'] ?? '';
@@ -108,9 +105,6 @@ class Coin {
   CoinType type;
 
   String name;
-  String address;
-  int port;
-  String proto;
   int txfee;
   double priceUsd;
   int mm2;
@@ -146,9 +140,6 @@ class Coin {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type.name ?? '',
         'name': name ?? '',
-        'address': address ?? '',
-        'port': port ?? 0,
-        'proto': proto ?? '',
         'txfee': txfee ?? 0,
         'priceUSD': priceUsd ?? 0.0,
         'mm2': mm2 ?? 0,
