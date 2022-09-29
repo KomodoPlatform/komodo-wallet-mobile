@@ -33,6 +33,7 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
       if (_getContractAddress(proto, isFallback: true) != null)
         'fallback_swap_contract': _getContractAddress(proto, isFallback: true),
       if (coinData['address'] != null) 'address': coinData['address'],
+      if (coinData['bchd_urls'] != null) 'bchd_urls': coinData['bchd_urls'],
       if (_isTestCoin(coinData) != null) 'testCoin': _isTestCoin(coinData),
     });
   });
@@ -53,6 +54,8 @@ bool _isTestCoin(dynamic coinData) {
 }
 
 String _getType(String coin) {
+  // absent protocols
+  // [SLP, RSK Smart Bitcoin, Arbitrum, Moonbeam, Optimism, ZHTLC]
   CoinType type;
   switch (coin) {
     case 'UTXO':
@@ -178,7 +181,9 @@ List<String> _excludedCoins = [
   'WSB',
   'SUPERNET',
   'NAV',
-  'VOTE2022'
+  'VOTE2022',
+  'CIPHS',
+  'GMS'
 ];
 
 List<String> _sslCoins = [

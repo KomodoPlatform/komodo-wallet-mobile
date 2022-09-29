@@ -287,7 +287,8 @@ class ApiProvider {
       if (coin.swapContractAddress.isNotEmpty)
         'swap_contract_address': coin.swapContractAddress,
       if (coin.fallbackSwapContract.isNotEmpty)
-        'fallback_swap_contract': coin.fallbackSwapContract
+        'fallback_swap_contract': coin.fallbackSwapContract,
+      if (coin.bchdUrls != null) 'bchd_urls': coin.bchdUrls
     };
     final js = json.encode(electrum);
     Log('mm:251', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));

@@ -94,6 +94,9 @@ class Coin {
     if (init['protocol'] != null) {
       protocol = Protocol.fromJson(init['protocol']);
     }
+    if (config['bchd_urls'] != null) {
+      bchdUrls = List<String>.from(config['bchd_urls']);
+    }
     dust = init['dust'];
     chainId = init['chain_id'];
   }
@@ -117,6 +120,7 @@ class Coin {
   String coingeckoId;
   bool testCoin;
   String colorCoin;
+  List<String> bchdUrls;
   List<String> serverList;
   List<String> explorerUrl;
   String swapContractAddress;
@@ -167,6 +171,8 @@ class Coin {
         if (protocol != null) 'protocol': protocol.toJson(),
         if (dust != null) 'dust': dust,
         if (chainId != null) 'chain_id': chainId,
+        if (bchdUrls != null)
+          'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
       };
 
   String getTxFeeSatoshi() {
@@ -225,14 +231,17 @@ class ProtocolData {
   ProtocolData.fromJson(Map<String, dynamic> json) {
     platform = json['platform'];
     contractAddress = json['contract_address'];
+    slpPrefix = json['slp_prefix'];
   }
 
   String platform;
   String contractAddress;
+  String slpPrefix;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       if (platform != null) 'platform': platform,
+      if (slpPrefix != null) 'slp_prefix': slpPrefix,
       if (contractAddress != null) 'contract_address': contractAddress,
     };
   }
