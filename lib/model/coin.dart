@@ -15,13 +15,13 @@ bool _coinsInvoked = false;
 
 /// A cached list of coins.
 /// Most fields are loaded from “coins_init_mm2.json”.
-/// List of coins, their electrums and webs - are loaded from “coins_config.json”.
+/// List of coins, their electrums and webs - are loaded from “0.5.6-coins.json”.
 ///
 /// For ease of maintenance the “coins_init_mm2.json” should be an exact copy of
 /// https://github.com/jl777/coins/blob/master/coins,
 /// that way we can update it with a simple overwrite.
 ///
-/// A coin can be absent from “coins_init_mm2.json” and fully defined in “coins_config.json”,
+/// A coin can be absent from “coins_init_mm2.json” and fully defined in “0.5.6-coins.json”,
 /// the “VOTE” coin is currently defined that way.
 Future<LinkedHashMap<String, Coin>> get coins async {
   // Protect from loading coins multiple times from parallel green threads.
@@ -106,7 +106,7 @@ class Coin {
   List _getServerList(List servers) {
     List _servers = [];
     for (dynamic element in servers) {
-      // is erc 20 token
+      // is ercType
       if (element is String) {
         _servers.add(element);
       } else {
@@ -121,7 +121,7 @@ class Coin {
   List _setServerList(List servers) {
     List _servers = [];
     for (dynamic element in servers) {
-      // is erc 20 token
+      // is ercType
       if (element is String) {
         _servers.add(element);
       } else {

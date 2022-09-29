@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'dart:developer';
 
 Future<List<dynamic>> convertDesktopCoinsToMobile() async {
   final String coins =
@@ -15,7 +14,7 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
     String proto = _getType(coinData['type']);
 
     if (_excludedCoins.contains(abbr) || proto == null) {
-      return;
+      return; // unsupported protocols should be skipped
     }
 
     allCoinsList.add({
@@ -50,6 +49,8 @@ bool _isTestCoin(dynamic coinData) {
     return null;
   }
 }
+
+//   sc,   qrc, plg, mvr, krc, hrc, hco, erc, bep
 
 String _getType(String coin) {
   // absent protocols
@@ -135,7 +136,6 @@ String _getContractAddress(String protocol, {bool isFallback = false}) {
 
 List<dynamic> _getServerList(dynamic coinData) {
   String protocol = _getType(coinData['type']);
-
   CoinType coinType = coinTypeFromString(protocol);
 
   switch (coinType) {
@@ -156,7 +156,7 @@ List<dynamic> _getServerList(dynamic coinData) {
         'https://rpc-mainnet.maticvigil.com'
       ];
     default:
-      return coinData['nodes'].map((e) => e.toString()).toList();
+      return coinData['nodes'];
   }
 }
 
@@ -180,7 +180,7 @@ List<String> _excludedCoins = [
   'SUPERNET',
   'NAV',
   'VOTE2022',
-  // coins that do not work
+  // coins below do not work both on desktop and mobile
   'CIPHS',
   'GMS',
   'USDI',
@@ -192,8 +192,6 @@ List<String> _excludedCoins = [
 ];
 
 String _getColor(String coin) {
-  String defaultColor = 'F9F9F9';
-
   Map<String, String> allColors = {
     '1INCH': '#95A7C5',
     'AAVE': '#9C64A6',
@@ -464,6 +462,7 @@ String _getColor(String coin) {
     'tBTC-TEST': '#E9983C',
     'tQTUM': '#2E9AD0'
   };
+  String defaultColor = 'F9F9F9';
 
   return '0xFF${allColors[getCoinTicker(coin)]?.replaceAll('#', '') ?? defaultColor}';
 
