@@ -118,7 +118,7 @@ class Coin {
     return _servers;
   }
 
-  List _setServerList(List servers) {
+  static List setServerList(List servers) {
     List _servers = [];
     for (dynamic element in servers) {
       // is ercType
@@ -128,7 +128,9 @@ class Coin {
         _servers.add(element.toJson());
       }
     }
-    return _servers;
+    return _servers.first is String
+        ? List<String>.of(_servers.map((e) => e.toString()))
+        : _servers;
   }
 
   CoinType type;
@@ -178,7 +180,7 @@ class Coin {
         'swap_contract_address': swapContractAddress ?? '',
         'fallback_swap_contract': fallbackSwapContract ?? '',
         'colorCoin': colorCoin ?? '',
-        'serverList': _setServerList(serverList) ?? [],
+        'serverList': setServerList(serverList) ?? [],
         'explorerUrl':
             List<dynamic>.from(explorerUrl.map<String>((dynamic x) => x)) ??
                 <String>[],

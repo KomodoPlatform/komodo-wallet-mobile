@@ -40,7 +40,6 @@ import '../model/coin.dart';
 import '../model/coin_to_kick_start.dart';
 import '../model/disable_coin.dart';
 import '../model/error_string.dart';
-import '../model/get_active_coin.dart';
 import '../model/get_balance.dart';
 import '../model/get_buy.dart';
 import '../model/get_cancel_order.dart';
@@ -261,24 +260,14 @@ class ApiProvider {
               txHistory: false,
               swapContractAddress: coin.swapContractAddress,
               fallbackSwapContract: coin.fallbackSwapContract,
-              urls: coin.serverList.map((e) => e.toString()).toList())
+              urls: Coin.setServerList(coin.serverList))
           .toJson());
-
-    List<dynamic> urls = [];
-    for (Server server in coin.serverList) {
-      urls.add({
-        'url': server.url,
-        'protocol': server.protocol.toUpperCase(),
-        'disable_cert_verification': server.disableCertVerification,
-      });
-    }
-
     // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
     final electrum = <String, dynamic>{
       'method': 'electrum',
       'userpass': mmSe.userpass,
       'coin': coin.abbr,
-      'servers': urls,
+      'servers': Coin.setServerList(coin.serverList),
       'mm2': coin.mm2,
       'tx_history': true,
       'required_confirmations': coin.requiredConfirmations,

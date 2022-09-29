@@ -136,6 +136,11 @@ List<dynamic> _getServerList(dynamic coinData) {
   String protocol = _getType(coinData['type']);
   CoinType coinType = coinTypeFromString(protocol);
 
+  // QTUM and tQTUM both have electrums, so are considered specially
+  if (coinData['coin'] == 'QTUM' || coinData['coin'] == 'tQTUM') {
+    return coinData['electrum'];
+  }
+
   switch (coinType) {
     case CoinType.utxo:
       return coinData['electrum'];
