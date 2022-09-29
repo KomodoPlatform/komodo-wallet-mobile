@@ -254,13 +254,6 @@ class ApiProvider {
   }
 
   String enableCoinImpl(Coin coin) {
-    final List<Server> servers = coin.serverList
-        .map((String url) => Server(
-            url: url,
-            protocol: coin.proto == null ? 'TCP' : coin.proto.toUpperCase(),
-            disableCertVerification: false))
-        .toList();
-
     if (isErcType(coin))
       return json.encode(MmEnable(
               userpass: mmSe.userpass,
@@ -268,15 +261,24 @@ class ApiProvider {
               txHistory: false,
               swapContractAddress: coin.swapContractAddress,
               fallbackSwapContract: coin.fallbackSwapContract,
-              urls: coin.serverList)
+              urls: coin.serverList.map((e) => e.toString()).toList())
           .toJson());
+
+    List<dynamic> urls = [];
+    for (Server server in coin.serverList) {
+      urls.add({
+        'url': server.url,
+        'protocol': server.protocol.toUpperCase(),
+        'disable_cert_verification': server.disableCertVerification,
+      });
+    }
 
     // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
     final electrum = <String, dynamic>{
       'method': 'electrum',
       'userpass': mmSe.userpass,
       'coin': coin.abbr,
-      'servers': List<dynamic>.from(servers.map<dynamic>((se) => se.toJson())),
+      'servers': urls,
       'mm2': coin.mm2,
       'tx_history': true,
       'required_confirmations': coin.requiredConfirmations,
@@ -526,6 +528,7 @@ class ApiProvider {
     final r = await client.post(Uri.parse(url), body: json.encode(batch));
     _assert200(r);
     _saveRes('batch', r);
+
     return List<dynamic>.from(json.decode(r.body));
   }
 

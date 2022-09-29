@@ -6,6 +6,7 @@ import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/app_config/coin_converter.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_type.dart';
+import 'package:komodo_dex/model/get_active_coin.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -82,7 +83,7 @@ class Coin {
     colorCoin = config['colorCoin'] ?? '';
     isDefault = appConfig.defaultCoins.contains(abbr);
     walletOnly = appConfig.walletOnlyCoins.contains(abbr);
-    serverList = List<String>.from(config['serverList']);
+    serverList = _getServerList(config['serverList'] ?? []);
     explorerUrl = List<String>.from(config['explorerUrl']);
     requiredConfirmations = init['required_confirmations'];
     matureConfirmations = init['mature_confirmations'];
@@ -102,6 +103,34 @@ class Coin {
   // but failed to activate during current session startup
   bool suspended = false;
 
+  List _getServerList(List servers) {
+    List _servers = [];
+    for (dynamic element in servers) {
+      // is erc 20 token
+      if (element is String) {
+        _servers.add(element);
+      } else {
+        Server server = Server.fromJson(element);
+        _servers.add(server);
+      }
+    }
+
+    return _servers;
+  }
+
+  List _setServerList(List servers) {
+    List _servers = [];
+    for (dynamic element in servers) {
+      // is erc 20 token
+      if (element is String) {
+        _servers.add(element);
+      } else {
+        _servers.add(element.toJson());
+      }
+    }
+    return _servers;
+  }
+
   CoinType type;
 
   String name;
@@ -115,7 +144,7 @@ class Coin {
   bool testCoin;
   String colorCoin;
   List<String> bchdUrls;
-  List<String> serverList;
+  List<dynamic> serverList;
   List<String> explorerUrl;
   String swapContractAddress;
   String fallbackSwapContract;
@@ -149,9 +178,7 @@ class Coin {
         'swap_contract_address': swapContractAddress ?? '',
         'fallback_swap_contract': fallbackSwapContract ?? '',
         'colorCoin': colorCoin ?? '',
-        'serverList':
-            List<dynamic>.from(serverList.map<String>((dynamic x) => x)) ??
-                <String>[],
+        'serverList': _setServerList(serverList) ?? [],
         'explorerUrl':
             List<dynamic>.from(explorerUrl.map<String>((dynamic x) => x)) ??
                 <String>[],
