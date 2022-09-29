@@ -35,8 +35,6 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
     });
   });
 
-  log(jsonEncode(allCoinsList.length));
-
   return allCoinsList;
 }
 
