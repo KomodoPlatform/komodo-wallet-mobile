@@ -132,7 +132,7 @@ class _ItemCoinState extends State<ItemCoin>
         child: Builder(builder: (BuildContext context) {
           return InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
-            onLongPress: () => Slidable.of(context).openCurrentActionPane(),
+            onLongPress: () => Slidable.of(context).openStartActionPane(),
             onTap: () {
               //if (coin.suspended) {
               //showSuspendedDilog(context, coin: coin);
