@@ -135,18 +135,20 @@ List<dynamic> _getServerList(dynamic coinData) {
   if (coinData['nodes'] == null &&
       coinData['electrum'] == null &&
       coinData['type'] == 'QRC-20') {
+    int portSuffix =
+        coinData['coin'] == 'tQTUM' || coinData['coin'] == 'QRC20' ? 71 : 50;
     return [
       {
-        'url': 'electrum1.cipig.net:10050',
-        'ws_url': 'electrum1.cipig.net:30050'
+        'url': 'electrum1.cipig.net:100$portSuffix',
+        'ws_url': 'electrum1.cipig.net:300$portSuffix'
       },
       {
-        'url': 'electrum2.cipig.net:10050',
-        'ws_url': 'electrum2.cipig.net:30050'
+        'url': 'electrum2.cipig.net:100$portSuffix',
+        'ws_url': 'electrum2.cipig.net:300$portSuffix'
       },
       {
-        'url': 'electrum3.cipig.net:10050',
-        'ws_url': 'electrum3.cipig.net:30050'
+        'url': 'electrum3.cipig.net:100$portSuffix',
+        'ws_url': 'electrum3.cipig.net:300$portSuffix'
       }
     ];
   } else {
