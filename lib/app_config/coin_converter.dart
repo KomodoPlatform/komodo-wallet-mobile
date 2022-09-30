@@ -48,8 +48,6 @@ bool _isTestCoin(dynamic coinData) {
   }
 }
 
-//   sc,   qrc, plg, mvr, krc, hrc, hco, erc, bep
-
 String _getType(String coin) {
   // absent protocols
   // [SLP, RSK Smart Bitcoin, Arbitrum, Moonbeam, Optimism, ZHTLC]
@@ -133,33 +131,26 @@ String _getContractAddress(String protocol, {bool isFallback = false}) {
 }
 
 List<dynamic> _getServerList(dynamic coinData) {
-  String protocol = _getType(coinData['type']);
-  CoinType coinType = coinTypeFromString(protocol);
-
-  // QTUM and tQTUM both have electrums, so are considered specially
-  if (coinData['coin'] == 'QTUM' || coinData['coin'] == 'tQTUM') {
-    return coinData['electrum'];
-  }
-
-  switch (coinType) {
-    case CoinType.utxo:
-      return coinData['electrum'];
-    case CoinType.smartChain:
-      return coinData['electrum'];
-    case CoinType.qrc:
-      return [
-        'electrum1.cipig.net:10050',
-        'electrum2.cipig.net:10050',
-        'electrum3.cipig.net:10050'
-      ];
-    case CoinType.plg:
-      return [
-        'https://polygon-rpc.com',
-        'https://poly-rpc.gateway.pokt.network',
-        'https://rpc-mainnet.maticvigil.com'
-      ];
-    default:
-      return coinData['nodes'];
+  // QRC-20 nodes and electrum are null in json, so hardcoding them
+  if (coinData['nodes'] == null &&
+      coinData['electrum'] == null &&
+      coinData['type'] == 'QRC-20') {
+    return [
+      {
+        'url': 'electrum1.cipig.net:10050',
+        'ws_url': 'electrum1.cipig.net:30050'
+      },
+      {
+        'url': 'electrum2.cipig.net:10050',
+        'ws_url': 'electrum2.cipig.net:30050'
+      },
+      {
+        'url': 'electrum3.cipig.net:10050',
+        'ws_url': 'electrum3.cipig.net:30050'
+      }
+    ];
+  } else {
+    return coinData['nodes'] ?? coinData['electrum'] ?? [];
   }
 }
 

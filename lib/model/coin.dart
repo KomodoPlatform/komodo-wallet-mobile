@@ -129,7 +129,7 @@ class Coin {
       }
     }
     return _servers.first is String
-        ? List<String>.of(_servers.map((e) => e.toString()))
+        ? List<String>.of(_servers.map((e) => e.toString())) // is ercType
         : _servers;
   }
 
