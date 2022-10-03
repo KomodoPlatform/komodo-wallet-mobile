@@ -181,7 +181,7 @@ List<String> _excludedCoins = [
   'GMS',
   'USDI',
   'PIC',
-  'SCA',
+  'GRMS',
   'ZEC',
   'LTFN',
   'IC'
