@@ -269,8 +269,10 @@ class MMService {
     // removes the last file until the total space is less than 500mb
     while (dirStatSync(filesPath) > 500) {
       // get only log files in case we have other files(not-log) in the folder
-      List<FileSystemEntity> _files =
-          files.listSync().where((element) => element.path.endsWith('log'));
+      List<FileSystemEntity> _files = files
+          .listSync()
+          .where((element) => element.path.endsWith('log'))
+          .toList();
       _files.sort((b, a) => a.path.compareTo(b.path));
       _files.removeLast();
     }
