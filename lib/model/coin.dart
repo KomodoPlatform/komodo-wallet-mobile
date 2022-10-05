@@ -133,6 +133,20 @@ class Coin {
         : _servers;
   }
 
+  // get address from parent coins
+  static String getSwapContractAddress(
+      LinkedHashMap<String, Coin> allCoins, Coin coin) {
+    return allCoins[coin.protocol.protocolData.platform]?.swapContractAddress ??
+        '';
+  }
+
+  static String getFallbackSwapAddress(
+      LinkedHashMap<String, Coin> allCoins, Coin coin) {
+    return allCoins[coin.protocol.protocolData.platform]
+            ?.fallbackSwapContract ??
+        '';
+  }
+
   CoinType type;
 
   String name;

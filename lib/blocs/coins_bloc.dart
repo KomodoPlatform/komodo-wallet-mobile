@@ -340,22 +340,23 @@ class CoinsBloc implements BlocBase {
 
   /// Handle the coins user has picked for activation.
   /// Also used for coin activations during the application startup.
-  Future<void> enableCoins(List<Coin> coins) async {
+  Future<void> enableCoins(List<Coin> coinsToEnable) async {
     await pauseUntil(() => !_coinsLock, maxMs: 3000);
     _coinsLock = true;
 
+    LinkedHashMap<String, Coin> allCoins = await coins;
     // Using a batch request to speed up the coin activation.
     final List<Map<String, dynamic>> batch = [];
-    for (Coin coin in coins) {
-      batch.add(json.decode(MM.enableCoinImpl(coin)));
+    for (Coin coin in coinsToEnable) {
+      batch.add(json.decode(MM.enableCoinImpl(allCoins, coin)));
     }
     final replies = await MM.batch(batch);
     if (replies.length != batch.length) {
       throw Exception(
           'Unexpected number of replies: ${replies.length} != ${batch.length}');
     }
-    for (int ix = 0; ix < coins.length; ++ix) {
-      final coin = coins[ix];
+    for (int ix = 0; ix < coinsToEnable.length; ++ix) {
+      final coin = coinsToEnable[ix];
       final Map<String, dynamic> ans = replies[ix];
       final err = ErrorString.fromJson(ans);
       final abbr = coin.abbr;
@@ -458,17 +459,18 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<List<Coin>> getAllNotActiveCoins() async {
-    final all = (await coins).values.toList();
+    final allInMap = await coins;
+    final allAsList = allInMap.values.toList();
     final active = await Db.activeCoins;
     final notActive = <Coin>[];
 
-    for (Coin coin in all) {
+    for (Coin coin in allAsList) {
       if (active.contains(coin.abbr)) continue;
       notActive.add(coin);
     }
 
-    notActive.sort((Coin a, Coin b) =>
-        a.swapContractAddress.compareTo(b.swapContractAddress));
+    notActive.sort((Coin a, Coin b) => Coin.getSwapContractAddress(allInMap, a)
+        .compareTo(Coin.getSwapContractAddress(allInMap, b)));
     return notActive;
   }
 

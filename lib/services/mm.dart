@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -32,7 +33,6 @@ import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-import '../model/active_coin.dart';
 import '../model/balance.dart';
 import '../model/base_service.dart';
 import '../model/buy_response.dart';
@@ -252,14 +252,16 @@ class ApiProvider {
     if (err.error.isNotEmpty) throw removeLineFromMM2(err);
   }
 
-  String enableCoinImpl(Coin coin) {
+  String enableCoinImpl(LinkedHashMap<String, Coin> allCoins, Coin coin) {
+    String swapContractAddress = Coin.getSwapContractAddress(allCoins, coin);
+    String fallbackSwapContract = Coin.getFallbackSwapAddress(allCoins, coin);
     if (isErcType(coin))
       return json.encode(MmEnable(
               userpass: mmSe.userpass,
               coin: coin.abbr,
               txHistory: false,
-              swapContractAddress: coin.swapContractAddress,
-              fallbackSwapContract: coin.fallbackSwapContract,
+              swapContractAddress: swapContractAddress,
+              fallbackSwapContract: fallbackSwapContract,
               urls: Coin.setServerList(coin.serverList))
           .toJson());
     // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
@@ -275,25 +277,15 @@ class ApiProvider {
         'mature_confirmations': coin.matureConfirmations,
       'requires_notarization': coin.requiresNotarization ?? false,
       'address_format': coin.addressFormat,
-      if (coin.swapContractAddress.isNotEmpty)
-        'swap_contract_address': coin.swapContractAddress,
-      if (coin.fallbackSwapContract.isNotEmpty)
-        'fallback_swap_contract': coin.fallbackSwapContract,
+      if (swapContractAddress.isNotEmpty)
+        'swap_contract_address': swapContractAddress,
+      if (fallbackSwapContract.isNotEmpty)
+        'fallback_swap_contract': fallbackSwapContract,
       if (coin.bchdUrls != null) 'bchd_urls': coin.bchdUrls
     };
     final js = json.encode(electrum);
     Log('mm:251', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
     return js;
-  }
-
-  Future<ActiveCoin> enableCoin(Coin coin, {http.Client client}) async {
-    client ??= mmSe.client;
-    final r = await client.post(Uri.parse(url), body: enableCoinImpl(coin));
-    _assert200(r);
-    final dynamic jbody = json.decode(r.body);
-    final err = ErrorString.fromJson(jbody);
-    if (err.error.isNotEmpty) throw removeLineFromMM2(err);
-    return ActiveCoin.fromJson(jbody);
   }
 
   Future<dynamic> postSetPrice(

@@ -24,12 +24,11 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
       'colorCoin': _getColor(abbr),
       'type': proto,
       'explorerUrl': coinData['explorer_url'],
-      'serverList': _getServerList(coinData),
-      if (_getContractAddress(proto) != null)
-        'swap_contract_address': _getContractAddress(proto),
-      if (_getContractAddress(proto, isFallback: true) != null)
-        'fallback_swap_contract': _getContractAddress(proto, isFallback: true),
-      if (coinData['address'] != null) 'address': coinData['address'],
+      'serverList': coinData['nodes'] ?? coinData['electrum'] ?? [],
+      if (coinData['swap_contract_address'] != null)
+        'swap_contract_address': coinData['swap_contract_address'],
+      if (coinData['fallback_swap_contract'] != null)
+        'fallback_swap_contract': coinData['fallback_swap_contract'],
       if (coinData['bchd_urls'] != null) 'bchd_urls': coinData['bchd_urls'],
       if (_isTestCoin(coinData) != null) 'testCoin': _isTestCoin(coinData),
     });
@@ -103,57 +102,6 @@ String _getType(String coin) {
     // they default to null and are not added as a coin , e.g optimism, zhtlc
   }
   return type.name;
-}
-
-String _getContractAddress(String protocol, {bool isFallback = false}) {
-  CoinType coinType = coinTypeFromString(protocol);
-  switch (coinType) {
-    case CoinType.utxo:
-      return null;
-    case CoinType.smartChain:
-      return null;
-    case CoinType.erc:
-      return isFallback
-          ? '0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80'
-          : '0x8500AFc0bc5214728082163326C2FF0C73f4a871';
-    case CoinType.bep:
-      return '0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31';
-    case CoinType.etc:
-      return '0x6d9ce4BD298DE38bAfEFD15f5C6f5c95313B1d94';
-    case CoinType.sbch:
-      return '0x25bF2AAB8749AD2e4360b3e0B738f3Cd700C4D68';
-    case CoinType.qrc:
-      return '0x2f754733acd6d753731c00fee32cb484551cc15d';
-    default:
-      // [plg, ftm, hrc, mvr, hco, krc, ubiq, avx] have the same contract/fallback address
-      return '0x9130b257D37A52E52F21054c4DA3450c72f595CE';
-  }
-}
-
-List<dynamic> _getServerList(dynamic coinData) {
-  // QRC-20 nodes and electrum are null in json, so hardcoding them
-  if (coinData['nodes'] == null &&
-      coinData['electrum'] == null &&
-      coinData['type'] == 'QRC-20') {
-    int portSuffix =
-        coinData['coin'] == 'tQTUM' || coinData['coin'] == 'QRC20' ? 71 : 50;
-    return [
-      {
-        'url': 'electrum1.cipig.net:100$portSuffix',
-        'ws_url': 'electrum1.cipig.net:300$portSuffix'
-      },
-      {
-        'url': 'electrum2.cipig.net:100$portSuffix',
-        'ws_url': 'electrum2.cipig.net:300$portSuffix'
-      },
-      {
-        'url': 'electrum3.cipig.net:100$portSuffix',
-        'ws_url': 'electrum3.cipig.net:300$portSuffix'
-      }
-    ];
-  } else {
-    return coinData['nodes'] ?? coinData['electrum'] ?? [];
-  }
 }
 
 List<String> _excludedCoins = [
