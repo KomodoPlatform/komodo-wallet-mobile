@@ -662,27 +662,19 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
   }
 
   void _updateOldLogsList() {
-    final now = DateTime.now();
-    final ymd = '${now.year}'
-        '-${Log.twoDigits(now.month)}'
-        '-${Log.twoDigits(now.day)}';
     final dirList = applicationDocumentsDirectorySync.listSync();
     setState(() {
       _listLogs = dirList
           .whereType<File>()
-          .where((f) => f.path.endsWith('.log') && !f.path.endsWith('$ymd.log'))
+          .where((f) => f.path.endsWith('.log'))
           .toList();
     });
   }
 
-  void _updateLogsSize() {
-    int totalSize = 0;
-    for (File log in _listLogs) {
-      final fileSize = log.statSync().size;
-      totalSize += fileSize;
-    }
+  Future<void> _updateLogsSize() async {
+    final dirPath = applicationDocumentsDirectorySync.path;
     setState(() {
-      _sizeMb = totalSize / 1000000;
+      _sizeMb = mmSe.dirStatSync(dirPath);
     });
   }
 }
