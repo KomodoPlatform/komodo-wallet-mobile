@@ -70,7 +70,8 @@ class Log {
   /// Loop through saved log files from latest to older, and delete
   /// all files above overall [limitMB] size, except the today's one
   static Future<void> maintain() async {
-    final List<File> logs = (await applicationDocumentsDirectory)
+    Directory directory = await applicationDocumentsDirectory;
+    final List<File> logs = directory
         .listSync()
         .whereType<File>()
         .where((f) => f.path.endsWith('.log'))
@@ -78,19 +79,12 @@ class Log {
 
     logs.sort((a, b) => b.path.compareTo(a.path));
 
-    final DateTime now = DateTime.now();
-    final String todayStr = '${now.year}'
-        '-${twoDigits(now.month)}'
-        '-${twoDigits(now.day)}';
-
-    double totalMb = 0;
-    bool limitExceeded = false;
-    for (File logFile in logs) {
-      final double fileSizeMb = logFile.statSync().size / 1000000;
-      totalMb += fileSizeMb;
-      if (totalMb > limitMB) limitExceeded = true;
-      if (limitExceeded && !logFile.path.endsWith('$todayStr.log')) {
-        logFile.deleteSync();
+    double totalSize = mmSe.dirStatSync(directory.path);
+    while (totalSize > limitMB) {
+      try {
+        logs.first.deleteSync();
+      } catch (e) {
+        print(e);
       }
     }
   }

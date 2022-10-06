@@ -245,6 +245,22 @@ class MMService {
     // even if it happens to jump a bit into the past.
     // This in turn allows us to make the log lines shorter
     // by only mentioning the current time (and not date) in a line.
+
+    final files = Directory(filesPath);
+    // removes the last file until the total space is less than 500mb
+    while (dirStatSync(filesPath) > Log.limitMB) {
+      // get only log files in case we have other files(not-log) in the folder
+      List<FileSystemEntity> _files = files
+          .listSync()
+          .where((element) => element.path.endsWith('.log'))
+          .toList();
+      _files.sort((b, a) => a.path.compareTo(b.path));
+      try {
+        _files.first.deleteSync();
+      } catch (e) {
+        print(e);
+      }
+    }
     now ??= DateTime.now();
     final ymd = '${now.year}'
         '-${Log.twoDigits(now.month)}'
@@ -255,7 +271,6 @@ class MMService {
     if (_logs.length > 2) _logs.clear(); // Close day-before-yesterday logs.
 
     // Remove old logs.
-
     final unusedLog = File('${filesPath}log.txt');
     if (unusedLog.existsSync()) unusedLog.deleteSync();
 
@@ -264,18 +279,6 @@ class MMService {
 
     final gz = File('${filesPath}dex.log.gz'); // _shareFile
     if (gz.existsSync()) gz.deleteSync();
-
-    final files = Directory(filesPath);
-    // removes the last file until the total space is less than 500mb
-    while (dirStatSync(filesPath) > 500) {
-      // get only log files in case we have other files(not-log) in the folder
-      List<FileSystemEntity> _files = files
-          .listSync()
-          .where((element) => element.path.endsWith('log'))
-          .toList();
-      _files.sort((b, a) => a.path.compareTo(b.path));
-      _files.removeLast();
-    }
 
     final logName = RegExp(r'^(\d{4})-(\d{2})-(\d{2})\.log$');
     final List<File> unlink = [];
