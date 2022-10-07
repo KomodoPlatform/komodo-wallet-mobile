@@ -25,26 +25,16 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
       'type': proto,
       'explorerUrl': coinData['explorer_url'],
       'serverList': coinData['nodes'] ?? coinData['electrum'] ?? [],
+      'testCoin': coinData['coingecko_id'] == 'test-coin',
       if (coinData['swap_contract_address'] != null)
         'swap_contract_address': coinData['swap_contract_address'],
       if (coinData['fallback_swap_contract'] != null)
         'fallback_swap_contract': coinData['fallback_swap_contract'],
       if (coinData['bchd_urls'] != null) 'bchd_urls': coinData['bchd_urls'],
-      if (_isTestCoin(coinData) != null) 'testCoin': _isTestCoin(coinData),
     });
   });
 
   return allCoinsList;
-}
-
-bool _isTestCoin(dynamic coinData) {
-  if (coinData['is_testnet'] != null) {
-    return coinData['is_testnet'];
-  } else if (coinData['coingecko_id'] == 'test-coin') {
-    return true;
-  } else {
-    return null;
-  }
 }
 
 String _getType(String coin) {

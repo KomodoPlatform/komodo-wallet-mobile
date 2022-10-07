@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -252,16 +251,14 @@ class ApiProvider {
     if (err.error.isNotEmpty) throw removeLineFromMM2(err);
   }
 
-  String enableCoinImpl(LinkedHashMap<String, Coin> allCoins, Coin coin) {
-    String swapContractAddress = Coin.getSwapContractAddress(allCoins, coin);
-    String fallbackSwapContract = Coin.getFallbackSwapAddress(allCoins, coin);
+  String enableCoinImpl(Coin coin) {
     if (isErcType(coin))
       return json.encode(MmEnable(
               userpass: mmSe.userpass,
               coin: coin.abbr,
               txHistory: false,
-              swapContractAddress: swapContractAddress,
-              fallbackSwapContract: fallbackSwapContract,
+              swapContractAddress: coin.swapContractAddress,
+              fallbackSwapContract: coin.fallbackSwapContract,
               urls: Coin.setServerList(coin.serverList))
           .toJson());
     // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
@@ -277,10 +274,10 @@ class ApiProvider {
         'mature_confirmations': coin.matureConfirmations,
       'requires_notarization': coin.requiresNotarization ?? false,
       'address_format': coin.addressFormat,
-      if (swapContractAddress.isNotEmpty)
-        'swap_contract_address': swapContractAddress,
-      if (fallbackSwapContract.isNotEmpty)
-        'fallback_swap_contract': fallbackSwapContract,
+      if (coin.swapContractAddress.isNotEmpty)
+        'swap_contract_address': coin.swapContractAddress,
+      if (coin.fallbackSwapContract.isNotEmpty)
+        'fallback_swap_contract': coin.fallbackSwapContract,
       if (coin.bchdUrls != null) 'bchd_urls': coin.bchdUrls
     };
     final js = json.encode(electrum);
