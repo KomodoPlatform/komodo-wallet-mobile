@@ -2805,12 +2805,6 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "checkingUpdates": "Проверка обновлений...",
-    "@checkingUpdates": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
     "checkForUpdates": "Проверить обновления",
     "@checkForUpdates": {
         "type": "text",
