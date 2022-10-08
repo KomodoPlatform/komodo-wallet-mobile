@@ -930,7 +930,7 @@ class AppLocalizations {
   String get searchFilterSubtitleAVX =>
       Intl.message('Select all Avax tokens', name: 'searchFilterSubtitleAVX');
   String get searchFilterSubtitleUBQ =>
-      Intl.message('Select all Ubiq coins', name: 'searchFilterSubtitle UBQ');
+      Intl.message('Select all Ubiq coins', name: 'searchFilterSubtitleUBQ');
   String get searchFilterSubtitleBEP =>
       Intl.message('Select all BEP tokens', name: 'searchFilterSubtitleBEP');
   String get searchFilterSubtitlePLG =>
@@ -1187,7 +1187,7 @@ class AppLocalizations {
   String get rewardsButton =>
       Intl.message('Claim your rewards', name: 'rewardsButton');
   String get seeTxHistory =>
-      Intl.message('View Transaction History', name: 'viewTxHistory');
+      Intl.message('View Transaction History', name: 'seeTxHistory');
   String get retryActivating =>
       Intl.message('Retrying activating all coins...', name: 'retryActivating');
   String get willBeRedirected =>
@@ -1329,8 +1329,8 @@ class AppLocalizations {
   String get warningOkBtn => Intl.message('Ok', name: 'warningOkBtn');
   String get emptyName =>
       Intl.message('Contact name cannot be empty', name: 'emptyName');
-  String emptyCoin(String abbr) =>
-      Intl.message('Input $abbr address', name: 'emptyCoin');
+  String emptyCoin(String abbr) => Intl.message('Input $abbr address',
+      name: 'emptyCoin', args: <Object>[abbr]);
   // --- Camouflage Pin ---
 
   String get camoPinTitle =>
@@ -1514,7 +1514,7 @@ class AppLocalizations {
   String get oldLogsTitle => Intl.message('Old logs', name: 'oldLogsTitle');
   String get oldLogsDelete => Intl.message('Delete', name: 'oldLogsDelete');
   String get deletingWallet =>
-      Intl.message('Deleting wallet...', name: 'deleteWallet');
+      Intl.message('Deleting wallet...', name: 'deletingWallet');
 
   String get oldLogsUsed => Intl.message('Space used', name: 'oldLogsUsed');
   String get okButton => Intl.message('Ok', name: 'okButton');

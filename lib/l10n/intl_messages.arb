@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2022-05-27T10:03:50.010786",
+  "@@last_modified": "2022-10-08T10:05:48.722733",
   "mobileDataWarning": "Please note that now you're using cellular data and participation in {appName} P2P network consume internet traffic. It's better to use a WiFi network if your cellular data plan is costly.",
   "@mobileDataWarning": {
     "type": "text",
@@ -688,6 +688,12 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "duration": "Duration",
+  "@duration": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "feedUnableToUpdate": "Unable to get news update",
   "@feedUnableToUpdate": {
     "type": "text",
@@ -702,6 +708,12 @@
   },
   "feedUpToDate": "Already up to date",
   "@feedUpToDate": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "date": "Date",
+  "@date": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -1294,6 +1306,42 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "yes": "Yes",
+  "@yes": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "no": "No",
+  "@no": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "noteOnOrder": "Note: Matched order cannot be cancelled again",
+  "@noteOnOrder": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "dontAskAgain": "Don’t ask again",
+  "@dontAskAgain": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "cancelOrder": "Cancel Order",
+  "@cancelOrder": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "confirmCancel": "Are you sure you want to cancel the order",
+  "@confirmCancel": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "unspendable": "unspendable",
   "@unspendable": {
     "type": "text",
@@ -1419,6 +1467,26 @@
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
+  },
+  "txleft": "Transactions Left: {left}",
+  "@txleft": {
+    "type": "text",
+    "placeholders_order": [
+      "left"
+    ],
+    "placeholders": {
+      "left": {}
+    }
+  },
+  "insufficientBalanceToPay": "{abbr} balance not sufficient to pay trading fee",
+  "@insufficientBalanceToPay": {
+    "type": "text",
+    "placeholders_order": [
+      "abbr"
+    ],
+    "placeholders": {
+      "abbr": {}
+    }
   },
   "dex": "DEX",
   "@dex": {
@@ -1984,11 +2052,17 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "unlockSuccess": "Successfully unlocked",
+  "unlockSuccess": "Successfully unlocked {amnt} funds - TX: {hash}",
   "@unlockSuccess": {
     "type": "text",
-    "placeholders_order": [],
-    "placeholders": {}
+    "placeholders_order": [
+      "amnt",
+      "hash"
+    ],
+    "placeholders": {
+      "amnt": {},
+      "hash": {}
+    }
   },
   "unlockFunds": "Unlock Funds",
   "@unlockFunds": {
@@ -2044,6 +2118,12 @@
   },
   "selectCoin": "Select coin",
   "@selectCoin": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "selectLanguage": "Select Language",
+  "@selectLanguage": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -2478,6 +2558,42 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "searchFilterSubtitleKRC": "Select all Kucoin tokens",
+  "@searchFilterSubtitleKRC": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "searchFilterSubtitleHRC": "Select all Harmony tokens",
+  "@searchFilterSubtitleHRC": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "searchFilterSubtitleETC": "Select all ETC tokens",
+  "@searchFilterSubtitleETC": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "searchFilterSubtitleSBCH": "Select all SmartBCH tokens",
+  "@searchFilterSubtitleSBCH": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "searchFilterSubtitleAVX": "Select all Avax tokens",
+  "@searchFilterSubtitleAVX": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "searchFilterSubtitleUBQ": "Select all Ubiq coins",
+  "@searchFilterSubtitleUBQ": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "searchFilterSubtitleBEP": "Select all BEP tokens",
   "@searchFilterSubtitleBEP": {
     "type": "text",
@@ -2492,6 +2608,24 @@
   },
   "searchFilterSubtitleQRC": "Select all QRC tokens",
   "@searchFilterSubtitleQRC": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "searchFilterSubtitleHCO": "Select all HecoChain tokens",
+  "@searchFilterSubtitleHCO": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "searchFilterSubtitleFTM": "Select all Fantom tokens",
+  "@searchFilterSubtitleFTM": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "searchFilterSubtitleMVR": "Select all Moonriver tokens",
+  "@searchFilterSubtitleMVR": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -2526,8 +2660,38 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "tagHRC20": "HRC20",
+  "@tagHRC20": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "tagMVR20": "MVR20",
+  "@tagMVR20": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "tagHCO20": "HCO20",
+  "@tagHCO20": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "tagKRC20": "KRC20",
+  "@tagKRC20": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "tagERC20": "ERC20",
   "@tagERC20": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "tagAVX20": "AVX20",
+  "@tagAVX20": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -2550,8 +2714,44 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "tagFTM20": "FTM20",
+  "@tagFTM20": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "tagKMD": "KMD",
   "@tagKMD": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "tagETC": "ETC",
+  "@tagETC": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "tagSBCH": "SBCH",
+  "@tagSBCH": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "tagUBQ": "UBQ",
+  "@tagUBQ": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "builtOnKmd": "Built on Komodo",
+  "@builtOnKmd": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "poweredOnKmd": "Powered by Komodo",
+  "@poweredOnKmd": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -3236,6 +3436,78 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "seeTxHistory": "View Transaction History",
+  "@seeTxHistory": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "retryActivating": "Retrying activating all coins...",
+  "@retryActivating": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "willBeRedirected": "You will be redirected to portfolio page on completion.",
+  "@willBeRedirected": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "tryRestarting": "If even then some coins are still not activated, try restarting the app.",
+  "@tryRestarting": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "weFailedTo": "We failed to activate {coinAbbr}",
+  "@weFailedTo": {
+    "type": "text",
+    "placeholders_order": [
+      "coinAbbr"
+    ],
+    "placeholders": {
+      "coinAbbr": {}
+    }
+  },
+  "pleaseRestart": "Please restart the app to try again, or press the button below.",
+  "@pleaseRestart": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "retryAll": "Retry activating all",
+  "@retryAll": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "automaticRedirected": "You will be automatically redirected to portfolio page when the retry activation process completes.",
+  "@automaticRedirected": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "weFailedToActivate": "We failed to activate {coinAbbr}.\nPlease restart the app to try again.",
+  "@weFailedToActivate": {
+    "type": "text",
+    "placeholders_order": [
+      "coinAbbr"
+    ],
+    "placeholders": {
+      "coinAbbr": {}
+    }
+  },
+  "isUnavailable": "{coinAbbr} is unavailable :(",
+  "@isUnavailable": {
+    "type": "text",
+    "placeholders_order": [
+      "coinAbbr"
+    ],
+    "placeholders": {
+      "coinAbbr": {}
+    }
+  },
   "multiTab": "Multi",
   "@multiTab": {
     "type": "text",
@@ -3578,6 +3850,22 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "emptyName": "Contact name cannot be empty",
+  "@emptyName": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "emptyCoin": "Input {abbr} address",
+  "@emptyCoin": {
+    "type": "text",
+    "placeholders_order": [
+      "abbr"
+    ],
+    "placeholders": {
+      "abbr": {}
+    }
+  },
   "camoPinTitle": "Camouflage PIN",
   "@camoPinTitle": {
     "type": "text",
@@ -3848,6 +4136,18 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "closeMessage": "Close Error Message",
+  "@closeMessage": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "openMessage": "Open Error Message",
+  "@openMessage": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "notifTxTitle": "Incoming transaction",
   "@notifTxTitle": {
     "type": "text",
@@ -3984,12 +4284,6 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "checkingUpdates": "Checking for updates...",
-  "@checkingUpdates": {
-    "type": "text",
-    "placeholders_order": [],
-    "placeholders": {}
-  },
   "checkForUpdates": "Check for updates",
   "@checkForUpdates": {
     "type": "text",
@@ -4032,6 +4326,12 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "longMinutes": "minutes",
+  "@longMinutes": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "hours": "h",
   "@hours": {
     "type": "text",
@@ -4058,6 +4358,12 @@
   },
   "oldLogsDelete": "Delete",
   "@oldLogsDelete": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "deletingWallet": "Deleting wallet...",
+  "@deletingWallet": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -4314,6 +4620,12 @@
   },
   "importFileNotFound": "File not found",
   "@importFileNotFound": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "fingerprint": "Fingerprint",
+  "@fingerprint": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
