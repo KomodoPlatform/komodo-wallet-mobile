@@ -82,7 +82,7 @@ class Log {
     double totalSize = mmSe.dirStatSync(directory.path);
     while (totalSize > limitMB) {
       try {
-        logs.first.deleteSync();
+        if (logs.first.existsSync()) logs.first.deleteSync();
       } catch (e) {
         print(e);
       }

@@ -256,7 +256,7 @@ class MMService {
           .toList();
       _files.sort((b, a) => a.path.compareTo(b.path));
       try {
-        _files.first.deleteSync();
+        if (_files.first.existsSync()) _files.first.deleteSync();
       } catch (e) {
         print(e);
       }
