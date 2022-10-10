@@ -78,8 +78,11 @@ class Coin {
     abbr = init['coin'] ?? config['abbr'] ?? '';
     coingeckoId = config['coingeckoId'] ?? '';
     testCoin = config['testCoin'] ?? false;
-    swapContractAddress = config['swap_contract_address'] ?? '';
-    fallbackSwapContract = config['fallback_swap_contract'] ?? '';
+    swapContractAddress =
+        config['swap_contract_address'] ?? config['contract_address'] ?? '';
+    fallbackSwapContract = config['fallback_swap_contract'] ??
+        config['swap_contract_address'] ??
+        '';
     colorCoin = config['colorCoin'] ?? '';
     isDefault = appConfig.defaultCoins.contains(abbr);
     walletOnly = appConfig.walletOnlyCoins.contains(abbr);
@@ -128,7 +131,7 @@ class Coin {
         _servers.add(element.toJson());
       }
     }
-    return _servers.first is String
+    return _servers.any((element) => element is String)
         ? List<String>.of(_servers.map((e) => e.toString())) // is ercType
         : _servers;
   }
@@ -178,7 +181,8 @@ class Coin {
         'coingeckoId': coingeckoId ?? '',
         'testCoin': testCoin ?? false,
         'swap_contract_address': swapContractAddress ?? '',
-        'fallback_swap_contract': fallbackSwapContract ?? '',
+        'fallback_swap_contract':
+            fallbackSwapContract ?? swapContractAddress ?? '',
         'colorCoin': colorCoin ?? '',
         'serverList': setServerList(serverList) ?? [],
         'explorerUrl':

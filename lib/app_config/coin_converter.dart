@@ -28,6 +28,8 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
       'testCoin': coinData['coingecko_id'] == 'test-coin',
       if (coinData['swap_contract_address'] != null)
         'swap_contract_address': coinData['swap_contract_address'],
+      if (coinData['contract_address'] != null)
+        'swap_contract_address': coinData['contract_address'],
       if (coinData['fallback_swap_contract'] != null)
         'fallback_swap_contract': coinData['fallback_swap_contract'],
       if (coinData['bchd_urls'] != null) 'bchd_urls': coinData['bchd_urls'],
@@ -39,10 +41,14 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
 
 String _getType(String coin) {
   // absent protocols
-  // [SLP, RSK Smart Bitcoin, Arbitrum, Moonbeam, Optimism, ZHTLC]
+  // [RSK Smart Bitcoin, Arbitrum, Moonbeam, Optimism, ZHTLC]
   CoinType type;
   switch (coin) {
     case 'UTXO':
+      type = CoinType.utxo;
+      break;
+    // SLP coins are formerly UTXO coins but different configuration
+    case 'SLP':
       type = CoinType.utxo;
       break;
     case 'Smart Chain':
