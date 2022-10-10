@@ -68,7 +68,22 @@ Rational tryParseRat(String text) {
 }
 
 String getCoinIconPath(String abbr) {
+  List<String> coinsWithoutIcons = [
+    'AWR',
+    'CFUN',
+    'ENT',
+    'EPC',
+    'FENIX',
+    'PLY',
+    'WID',
+    'HONK',
+    'ASLP',
+    'USDF',
+    'sTST'
+  ];
   String ticker = getCoinTicker(abbr).replaceAll('-OLD', '').toLowerCase();
+  if (coinsWithoutIcons.contains(abbr)) ticker = 'adexbsc';
+
   return 'assets/coin-icons/$ticker.png';
 }
 
