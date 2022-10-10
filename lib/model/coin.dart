@@ -256,17 +256,27 @@ class ProtocolData {
     platform = json['platform'];
     contractAddress = json['contract_address'];
     slpPrefix = json['slp_prefix'];
+    decimals = json['decimals'];
+    tokenId = json['token_id'];
+    requiredConfirmations = json['required_confirmations'];
   }
 
   String platform;
   String contractAddress;
   String slpPrefix;
+  int decimals;
+  String tokenId;
+  int requiredConfirmations;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       if (platform != null) 'platform': platform,
-      if (slpPrefix != null) 'slp_prefix': slpPrefix,
       if (contractAddress != null) 'contract_address': contractAddress,
+      if (slpPrefix != null) 'slp_prefix': slpPrefix,
+      if (decimals != null) 'contract_address': decimals,
+      if (tokenId != null) 'contract_address': tokenId,
+      if (requiredConfirmations != null)
+        'contract_address': requiredConfirmations,
     };
   }
 }
