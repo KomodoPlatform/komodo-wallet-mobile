@@ -128,7 +128,7 @@ List<String> _excludedCoins = [
   'GRMS',
   'ZEC',
   'LTFN',
-  'IC'
+  'IC', 'ABY-OLD', 'GIN', 'GLEEC-OLD', 'PGT', 'PRUX',
 ];
 
 String _getColor(String coin) {
