@@ -106,7 +106,6 @@ List<String> _excludedCoins = [
   'BET',
   'BOTS',
   'CRYPTO',
-  'DUST',
   'FLUX',
   'HODL',
   'JUMBLR',
@@ -119,16 +118,6 @@ List<String> _excludedCoins = [
   'WSB',
   'SUPERNET',
   'NAV',
-  // coins below do not work both on desktop and mobile
-  'PIC',
-  'GRMS',
-  'LTFN',
-  'IC',
-  'ABY-OLD',
-  'GIN',
-  'GLEEC-OLD',
-  'PGT',
-  'PRUX',
 ];
 
 String _getColor(String coin) {
