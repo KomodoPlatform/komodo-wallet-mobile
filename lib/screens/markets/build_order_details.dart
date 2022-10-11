@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -378,8 +379,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
                     const SizedBox(width: 12),
                     Text(
-                      formatPrice(
-                          widget.order.getReceiveAmount(widget.sellAmount)),
+                      cutTrailingZeros(widget.order
+                          .getReceiveAmount(widget.sellAmount)
+                          .toStringAsFixed(appConfig.tradeFormPrecision)),
                       style: Theme.of(context).textTheme.subtitle2.copyWith(
                             fontWeight: FontWeight.normal,
                           ),
@@ -415,10 +417,11 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 Text(_isAsk ? _activePair.buy.abbr : _activePair.sell.abbr),
                 const SizedBox(width: 12),
                 Text(
-                  formatPrice(widget.order
-                          .getReceiveAmount(widget.sellAmount)
-                          .toDouble() *
-                      double.parse(widget.order.price)),
+                  cutTrailingZeros((widget.order
+                              .getReceiveAmount(widget.sellAmount)
+                              .toDouble() *
+                          double.parse(widget.order.price))
+                      .toStringAsFixed(appConfig.tradeFormPrecision)),
                   style: Theme.of(context).textTheme.subtitle2.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
