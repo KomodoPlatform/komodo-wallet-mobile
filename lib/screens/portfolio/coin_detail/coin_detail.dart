@@ -286,7 +286,8 @@ class _CoinDetailState extends State<CoinDetail> {
 
                 if (_isWaiting) {
                   _refresh();
-                } else if (_scrollController.position.pixels == 0.0) {
+                } else if (_scrollController.hasClients &&
+                    _scrollController.position.pixels == 0.0) {
                   _refresh();
                 } else if (latestTransaction == null ||
                     latestTransaction.internalId != t.internalId) {
@@ -639,6 +640,7 @@ class _CoinDetailState extends State<CoinDetail> {
   Widget _buildContractAddress(ProtocolData protocolData) {
     final platform = protocolData.platform;
     String contractAddress = protocolData.contractAddress;
+    if (platform == null || contractAddress == null) return SizedBox();
     String middleUrl = 'address';
     if (platform == 'QTUM') {
       contractAddress = contractAddress.replaceFirst('0x', '');
