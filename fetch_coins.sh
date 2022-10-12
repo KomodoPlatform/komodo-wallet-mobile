@@ -12,7 +12,7 @@ coins_repo_commit="$( jq -r '.coins_repo_commit' coins_ci.json )"
 curl -l "https://raw.githubusercontent.com/KomodoPlatform/coins/${coins_repo_commit}/coins" --output "assets/coins_init_mm2.json"
 
 # get assets lists
-jq -r 'keys | .[]' assets/0.5.6-coins.json > app_assets
+jq -r 'keys | .[]' assets/desktop_coins.json > app_assets
 jq -r '.[].coin' assets/coins_init_mm2.json > coins_assets
 
 # check if all assets from 0.5.6-coins are present in coins_init_mm2

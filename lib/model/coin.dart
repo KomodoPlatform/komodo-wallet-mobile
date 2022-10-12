@@ -15,13 +15,13 @@ bool _coinsInvoked = false;
 
 /// A cached list of coins.
 /// Most fields are loaded from “coins_init_mm2.json”.
-/// List of coins, their electrums and webs - are loaded from “0.5.6-coins.json”.
+/// List of coins, their electrums and webs - are loaded from “desktop_coins.json”.
 ///
 /// For ease of maintenance the “coins_init_mm2.json” should be an exact copy of
 /// https://github.com/jl777/coins/blob/master/coins,
 /// that way we can update it with a simple overwrite.
 ///
-/// A coin can be absent from “coins_init_mm2.json” and fully defined in “0.5.6-coins.json”,
+/// A coin can be absent from “coins_init_mm2.json” and fully defined in “desktop_coins.json”,
 /// the “VOTE” coin is currently defined that way.
 Future<LinkedHashMap<String, Coin>> get coins async {
   // Protect from loading coins multiple times from parallel green threads.
@@ -38,7 +38,7 @@ Future<LinkedHashMap<String, Coin>> get coins async {
   final Map<String, Map<String, dynamic>> cim = {};
   for (dynamic js in cil) cim[js['coin']] = Map<String, dynamic>.from(js);
 
-  Log('coin:36', 'Loading 0.5.6-coins.json…');
+  Log('coin:36', 'Loading desktop_coins.json…');
   final List<dynamic> ccl = await convertDesktopCoinsToMobile();
   final coins = LinkedHashMap<String, Coin>.of({});
   for (dynamic js in ccl) {

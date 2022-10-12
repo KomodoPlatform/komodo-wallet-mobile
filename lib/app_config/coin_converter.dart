@@ -5,7 +5,7 @@ import 'package:komodo_dex/utils/utils.dart';
 
 Future<List<dynamic>> convertDesktopCoinsToMobile() async {
   final String coins =
-      await rootBundle.loadString('assets/0.5.6-coins.json', cache: false);
+      await rootBundle.loadString('assets/desktop_coins.json', cache: false);
   // 561 coins
   Map coinsResponse = jsonDecode(coins);
   List allCoinsList = [];
@@ -13,7 +13,7 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
   coinsResponse.forEach((abbr, coinData) {
     String proto = _getType(coinData['type']);
 
-    if (_excludedCoins.contains(abbr) || proto == null) {
+    if (proto == null) {
       return; // unsupported protocols should be skipped
     }
 
@@ -99,26 +99,6 @@ String _getType(String coin) {
   }
   return type.name;
 }
-
-List<String> _excludedCoins = [
-  'ABY',
-  'ARRR',
-  'BET',
-  'BOTS',
-  'CRYPTO',
-  'FLUX',
-  'HODL',
-  'JUMBLR',
-  'MSHARK',
-  'MGW',
-  'DEX',
-  'PANGEA',
-  'REVS',
-  'SOULJA',
-  'WSB',
-  'SUPERNET',
-  'NAV',
-];
 
 String _getColor(String coin) {
   Map<String, String> allColors = {
