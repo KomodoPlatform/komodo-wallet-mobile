@@ -14,14 +14,14 @@ LinkedHashMap<String, Coin> _coins;
 bool _coinsInvoked = false;
 
 /// A cached list of coins.
-/// Most fields are loaded from “coins_init_mm2.json”.
-/// List of coins, their electrums and webs - are loaded from “desktop_coins.json”.
+/// Most fields are loaded from “coins.json”.
+/// List of coins, their electrums and webs - are loaded from “coins_config.json”.
 ///
-/// For ease of maintenance the “coins_init_mm2.json” should be an exact copy of
+/// For ease of maintenance the coins.json” should be an exact copy of
 /// https://github.com/jl777/coins/blob/master/coins,
 /// that way we can update it with a simple overwrite.
 ///
-/// A coin can be absent from “coins_init_mm2.json” and fully defined in “desktop_coins.json”,
+/// A coin can be absent from “coins.json” and fully defined in “coins_config.json”,
 /// the “VOTE” coin is currently defined that way.
 Future<LinkedHashMap<String, Coin>> get coins async {
   // Protect from loading coins multiple times from parallel green threads.
@@ -31,14 +31,14 @@ Future<LinkedHashMap<String, Coin>> get coins async {
   }
   _coinsInvoked = true;
 
-  Log('coin:29', 'Loading coins_init_mm2.json…');
-  const ci = 'assets/coins_init_mm2.json';
+  Log('coin:29', 'Loading coins.json…');
+  const ci = 'assets/coins.json';
   final cis = await rootBundle.loadString(ci, cache: false);
   final List<dynamic> cil = json.decode(cis);
   final Map<String, Map<String, dynamic>> cim = {};
   for (dynamic js in cil) cim[js['coin']] = Map<String, dynamic>.from(js);
 
-  Log('coin:36', 'Loading desktop_coins.json…');
+  Log('coin:36', 'Loading “coins_config.json…');
   final List<dynamic> ccl = await convertDesktopCoinsToMobile();
   final coins = LinkedHashMap<String, Coin>.of({});
   for (dynamic js in ccl) {
@@ -46,7 +46,7 @@ Future<LinkedHashMap<String, Coin>> get coins async {
     final config = Map<String, dynamic>.of(js);
     Map<String, dynamic> init = cim[ticker];
     if (init == null) {
-      Log('coin:46', 'Coin $ticker is not in “coins_init_mm2.json”');
+      Log('coin:46', 'Coin $ticker is not in coins.json”');
       init = config;
     }
     coins[ticker] = Coin.fromJson(init, config);
@@ -65,7 +65,7 @@ class Coin {
   });
 
   /// Construct the coin from two JSON maps:
-  /// [init] is from coins_init_mm2.json, an exact copy of https://github.com/jl777/coins/blob/master/coins;
+  /// [init] is from coins.json, an exact copy of https://github.com/jl777/coins/blob/master/coins;
   /// [config] is from coins_config.json, for fields that are missing from [init].
   Coin.fromJson(Map<String, dynamic> init, Map<String, dynamic> config) {
     init ??= <String, dynamic>{};

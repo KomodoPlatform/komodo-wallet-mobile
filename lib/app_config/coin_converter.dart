@@ -5,7 +5,7 @@ import 'package:komodo_dex/utils/utils.dart';
 
 Future<List<dynamic>> convertDesktopCoinsToMobile() async {
   final String coins =
-      await rootBundle.loadString('assets/desktop_coins.json', cache: false);
+      await rootBundle.loadString('assets/coins_config.json', cache: false);
   // 561 coins
   Map coinsResponse = jsonDecode(coins);
   List allCoinsList = [];
@@ -13,7 +13,7 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
   coinsResponse.forEach((abbr, coinData) {
     String proto = _getType(coinData['type']);
 
-    if (proto == null) {
+    if (_excludedCoins.contains(abbr) || proto == null) {
       return; // unsupported protocols should be skipped
     }
 
@@ -38,6 +38,8 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
 
   return allCoinsList;
 }
+
+List<String> get _excludedCoins => [];
 
 String _getType(String coin) {
   // absent protocols
