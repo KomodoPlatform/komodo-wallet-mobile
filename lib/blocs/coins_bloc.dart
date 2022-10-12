@@ -481,12 +481,11 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<List<Coin>> getAllNotActiveCoins() async {
-    final allInMap = await coins;
-    final allAsList = allInMap.values.toList();
+    final all = (await coins).values.toList();
     final active = await Db.activeCoins;
     final notActive = <Coin>[];
 
-    for (Coin coin in allAsList) {
+    for (Coin coin in all) {
       if (active.contains(coin.abbr)) continue;
       notActive.add(coin);
     }
