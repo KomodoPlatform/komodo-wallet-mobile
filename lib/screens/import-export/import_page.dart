@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
@@ -535,7 +536,7 @@ class _ImportPageState extends State<ImportPage> {
     try {
       final String length32Key = md5.convert(utf8.encode(pass)).toString();
       final key = encrypt.Key.fromUtf8(length32Key);
-      final iv = encrypt.IV.fromLength(16);
+      final iv = encrypt.IV.fromUtf8(appConfig.appName);
 
       final encrypter = encrypt.Encrypter(encrypt.AES(key));
       final String str = await file.readAsString();
