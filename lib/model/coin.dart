@@ -181,8 +181,7 @@ class Coin {
         'coingeckoId': coingeckoId ?? '',
         'testCoin': testCoin ?? false,
         'swap_contract_address': swapContractAddress ?? '',
-        'fallback_swap_contract':
-            fallbackSwapContract ?? swapContractAddress ?? '',
+        'fallback_swap_contract': fallbackSwapContract ?? '',
         'colorCoin': colorCoin ?? '',
         'serverList': setServerList(serverList) ?? [],
         'explorerUrl':
