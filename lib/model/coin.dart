@@ -39,7 +39,7 @@ Future<LinkedHashMap<String, Coin>> get coins async {
   for (dynamic js in cil) cim[js['coin']] = Map<String, dynamic>.from(js);
 
   Log('coin:36', 'Loading “coins_config.json…');
-  final List<dynamic> ccl = await convertDesktopCoinsToMobile();
+  final List<dynamic> ccl = await convertCoinsConfigToAppConfig();
   final coins = LinkedHashMap<String, Coin>.of({});
   for (dynamic js in ccl) {
     final String ticker = js['abbr'];

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-Future<List<dynamic>> convertDesktopCoinsToMobile() async {
+Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
   final String coins =
       await rootBundle.loadString('assets/coins_config.json', cache: false);
   // 561 coins
