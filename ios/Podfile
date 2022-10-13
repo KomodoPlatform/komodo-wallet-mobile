@@ -4,14 +4,15 @@
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
+platform :ios, '11.0'
+
 project 'Runner', {
   'Debug' => :debug,
   'Profile' => :release,
   'Release' => :release,
 }
 
-source 'https://github.com/KomodoPlatform/KomodoSpecs'
-source 'https://cdn.cocoapods.org/'
+source 'https://github.com/CocoaPods/Specs.git'
 
 def flutter_root
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
@@ -35,7 +36,7 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-  pod 'DKImagePickerController/PhotoGallery', :git => 'https://github.com/KomodoPlatform/DKImagePickerController.git'
+  pod 'Argon2Swift', :source => 'https://github.com/KomodoPlatform/KomodoSpecs'
 end
 
 post_install do |installer|
