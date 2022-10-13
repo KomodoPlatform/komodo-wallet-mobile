@@ -25,7 +25,8 @@ Future<List<dynamic>> convertDesktopCoinsToMobile() async {
       'type': proto,
       'explorerUrl': coinData['explorer_url'],
       'serverList': coinData['nodes'] ?? coinData['electrum'] ?? [],
-      'testCoin': coinData['coingecko_id'] == 'test-coin',
+      'testCoin':
+          coinData['is_testnet'] ?? coinData['coingecko_id'] == 'test-coin',
       if (coinData['swap_contract_address'] != null)
         'swap_contract_address': coinData['swap_contract_address'],
       if (coinData['contract_address'] != null)
@@ -43,7 +44,7 @@ List<String> get _excludedCoins => [];
 
 String _getType(String coin) {
   // absent protocols
-  // [RSK Smart Bitcoin, Arbitrum, Moonbeam, Optimism, ZHTLC]
+  // [RSK Smart Bitcoin, Arbitrum, Moonbeam, ZHTLC]
   CoinType type;
   switch (coin) {
     case 'UTXO':
