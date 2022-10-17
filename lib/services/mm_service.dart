@@ -157,10 +157,6 @@ class MMService {
         await initializeMmVersion();
       }
     });
-    jobService.install('maintainLog', 6.0 * 3600, (j) async {
-      // delete old logs
-      await Log.maintain();
-    });
   }
 
   String _createRpcPass() {
@@ -266,7 +262,7 @@ class MMService {
         '-${Log.twoDigits(now.month)}'
         '-${Log.twoDigits(now.day)}';
     final log = _logs[ymd];
-    if (log != null) return log;
+    if (log != null && (log.file?.existsSync() ?? false)) return log;
 
     if (_logs.length > 2) _logs.clear(); // Close day-before-yesterday logs.
 
