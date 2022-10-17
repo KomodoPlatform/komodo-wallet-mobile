@@ -95,6 +95,20 @@ flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/loca
 ```
 5. Manual editing of generated `messages_*.dart` files might be needed to delete nullable syntax (`?` symbol), since the app doesn't support it yet.
 
+## Generate latest coin config:
+
+Clone the latest version of [coins](https://github.com/KomodoPlatform/coins)
+
+Download and install the latest version of [python3](https://www.python.org/downloads/)
+
+Open the clonned repository and run the script below in the terminal in the repo folder
+
+```bash
+python3 utils/generate_app_configs.py
+```
+
+Copy the generated `coins_config.json` file in Utils folder and paste inside assets/ folder in AtomicDEX-mobile project
+
 ## Audio samples sources
 
  - [ticking sound](https://freesound.org/people/FoolBoyMedia/sounds/264498/)
