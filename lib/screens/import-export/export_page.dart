@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
@@ -350,21 +349,22 @@ class _ExportPageState extends State<ExportPage> {
     final Directory tmpDir = await getApplicationDocumentsDirectory();
 
     final String encoded = jsonEncode(_selected);
-    final tmpFilePath = '${tmpDir.path}/backup_atomicDEX';
+    final tmpFilePath = '${tmpDir.path}/atomicDEX_backup';
     final File tempFile = File(tmpFilePath);
     if (tempFile.existsSync()) await tempFile.delete();
     final String length32Key =
         md5.convert(utf8.encode(_ctrlPass1.text)).toString();
     final key = encrypt.Key.fromUtf8(length32Key);
-    final iv = encrypt.IV.fromUtf8(appConfig.appName);
+    final iv = encrypt.IV.fromLength(16);
 
     final encrypter = encrypt.Encrypter(encrypt.AES(key));
     final encrypted = encrypter.encrypt(encoded, iv: iv);
 
-    await tempFile.writeAsString(encrypted.base64);
+    String result = iv.base64 + encrypted.base64;
 
+    await tempFile.writeAsString(result);
     await Share.shareFiles([tempFile.path],
-        mimeTypes: ['application/octet-stream'], subject: 'backup_atomicDEX');
+        mimeTypes: ['application/octet-stream'], subject: 'atomicDEX_backup');
     setState(() {
       _done = true;
     });
