@@ -19,18 +19,11 @@ MacOS: `brew install coreutils jq`, [Brew software](https://brew.sh/)
 Windows: `choco install jq`, [Choco sowftware](https://chocolatey.org/)
 
 
-## For iOS build:
+## Build and run
 
-Do
+https://github.com/KomodoPlatform/AtomicDEX-mobile/wiki/Project-Setup#build-and-run
 
-    (cd ios && rm -rf Podfile.lock Podfile Pods)
 
-between flutter upgrades.
-cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
-
-## For Android build:
-
-Coming soon
 
 ## AtomicDEX API library (libmm2.a) version:
 
