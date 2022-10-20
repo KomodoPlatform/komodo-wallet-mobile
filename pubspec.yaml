@@ -42,7 +42,7 @@ dependencies:
 
   http: 0.13.4 # dart.dev (Note: Supports null safety)
 
-  crypto: 3.0.1 # dart.dev (Note: Supports null safety)
+  cryptography: ^2.0.5
 
 
   #-------fluttercommunity.dev------
@@ -79,11 +79,6 @@ dependencies:
     git:
       url: https://github.com/KomodoPlatform/provider.git
       ref: 960e422105e2b7a6a9e46b2517daead8754c6b25 #6.0.2
-
-  encrypt: # last reviewed b17327a
-    git:
-      url: https://github.com/KomodoPlatform/encrypt
-      ref: 3a42d25b0c356606c26a238384b9f2189572d954 #5.0.1
 
   qr_flutter: # last reviewed 587c969052f37d9fc0f14801aba241bffbc1ea84
     git:
@@ -145,7 +140,7 @@ dependencies:
   # MRC: Argon2 algo was our only remaining use of flutter_sodium, so I have switched
   # to dargon2_flutter, which does only Argon2, therefore dropping our dependency on
   # flutter_sodium completely
-  dargon2_flutter: # reviewed by MRC at d11f51cab560acf7644ebef402f1996b6f320365 
+  dargon2_flutter: # reviewed by MRC at d11f51cab560acf7644ebef402f1996b6f320365
     git:
       url: https://github.com/KomodoPlatform/dargon2
       path: dargon2_flutter/dargon2_flutter/

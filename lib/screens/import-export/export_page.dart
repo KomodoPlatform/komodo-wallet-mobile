@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cryptography/cryptography.dart';
 import 'package:intl/intl.dart';
-import 'package:crypto/crypto.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
@@ -352,17 +351,17 @@ class _ExportPageState extends State<ExportPage> {
     final tmpFilePath = '${tmpDir.path}/atomicDEX_backup';
     final File tempFile = File(tmpFilePath);
     if (tempFile.existsSync()) await tempFile.delete();
-    final String length32Key =
-        md5.convert(utf8.encode(_ctrlPass1.text)).toString();
-    final key = encrypt.Key.fromUtf8(length32Key);
-    final iv = encrypt.IV.fromLength(16);
 
-    final encrypter = encrypt.Encrypter(encrypt.AES(key));
-    final encrypted = encrypter.encrypt(encoded, iv: iv);
+    final length16Key = await hashPassword(_ctrlPass1.text);
 
-    String result = iv.base64 + encrypted.base64;
+    final algorithm = AesCtr.with128bits(macAlgorithm: Hmac.sha256());
+    SecretKey secretKey = SecretKey(length16Key.rawBytes);
+    final secretBox =
+        await algorithm.encrypt(encoded.codeUnits, secretKey: secretKey);
 
-    await tempFile.writeAsString(result);
+    await tempFile
+        .writeAsString(String.fromCharCodes(secretBox.concatenation()));
+
     await Share.shareFiles([tempFile.path],
         mimeTypes: ['application/octet-stream'], subject: 'atomicDEX_backup');
     setState(() {

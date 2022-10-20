@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:dargon2_flutter/dargon2_flutter.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,6 +77,16 @@ String getCoinTicker(String abbr) {
     abbr = abbr.replaceAll('-$suffix', '');
   }
   return abbr;
+}
+
+Future<DArgon2Result> hashPassword(String pass) async {
+  final s = Salt(pass.codeUnits);
+  return await argon2.hashPasswordString(
+    pass,
+    salt: s,
+    type: Argon2Type.id,
+    length: 16,
+  );
 }
 
 Rational deci2rat(Decimal decimal) {

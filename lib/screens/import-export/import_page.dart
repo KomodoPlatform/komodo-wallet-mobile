@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cryptography/cryptography.dart';
 import 'package:intl/intl.dart';
-import 'package:crypto/crypto.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -533,22 +532,18 @@ class _ImportPageState extends State<ImportPage> {
     }
 
     try {
-      final String length32Key = md5.convert(utf8.encode(pass)).toString();
-      final key = encrypt.Key.fromUtf8(length32Key);
+      final algorithm = AesCtr.with128bits(macAlgorithm: Hmac.sha256());
+      final length16Key = await hashPassword(pass);
 
-      // parse iv and data
+      SecretKey secretKeyB = SecretKey(length16Key.rawBytes);
+      // decrypt
       final String str = await file.readAsString();
-      String ivData = str.substring(0, 24);
-      String encryptedData = str.substring(24);
+      var a = SecretBox.fromConcatenation(str.codeUnits,
+          nonceLength: 16, macLength: 32);
 
-      final iv = encrypt.IV.fromBase64(ivData);
+      final decrypted = await algorithm.decrypt(a, secretKey: secretKeyB);
 
-      final encrypter = encrypt.Encrypter(encrypt.AES(key));
-
-      final encrypted = encrypt.Encrypted.fromBase64(encryptedData);
-
-      final decrypted = encrypter.decrypt(encrypted, iv: iv);
-      return jsonDecode(decrypted);
+      return jsonDecode(String.fromCharCodes(decrypted));
     } catch (e) {
       Log('import_page]', 'Failed to decrypt file: $e');
       _showError(AppLocalizations.of(context).importDecryptError);
