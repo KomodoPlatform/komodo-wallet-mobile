@@ -537,22 +537,22 @@ class _ImportPageState extends State<ImportPage> {
       final algorithm = AesCtr.with128bits(macAlgorithm: Hmac.sha256());
       final length16Key = await hashPassword(pass);
 
-      SecretKey secretKeyB = SecretKey(length16Key.rawBytes);
+      SecretKey secretKey = SecretKey(length16Key.rawBytes);
       // decrypt
       final String str = await file.readAsString();
       var a = SecretBox.fromConcatenation(str.codeUnits,
           nonceLength: 16, macLength: 32);
 
-      final decrypted = await algorithm.decrypt(a, secretKey: secretKeyB);
+      final decrypted = await algorithm.decrypt(a, secretKey: secretKey);
 
       return jsonDecode(String.fromCharCodes(decrypted));
     } catch (e) {
-      // try old method of decryption
+      // back compatibility
       try {
         final String length32Key =
             crypto.md5.convert(utf8.encode(pass)).toString();
         final key = encrypt.Key.fromUtf8(length32Key);
-        final iv = encrypt.IV.fromLength(16);
+        final iv = encrypt.IV.allZerosOfLength(16);
 
         final encrypter = encrypt.Encrypter(encrypt.AES(key));
         final String str = await file.readAsString();
