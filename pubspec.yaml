@@ -42,10 +42,9 @@ dependencies:
 
   http: 0.13.4 # dart.dev (Note: Supports null safety)
 
-  cryptography: ^2.0.5
-
 
   #-------fluttercommunity.dev------
+
 
   connectivity_plus: # newly added, wasn't reviewed
     git:
@@ -150,6 +149,12 @@ dependencies:
     git:
       url: https://github.com/KomodoPlatform/dart-uuid.git
       ref: c9a37bc675fd3fa715db2d929dc66d15ec09ad27 #3.0.5
+
+  cryptography: # newly added, wasn't reviewed
+    git:
+      url: https://github.com/KomodoPlatform/cryptography.git
+      path: cryptography/
+      ref: 97cfb212bccef853d93606792a78235ad8a14b2e #2.0.5
       
 
 dev_dependencies:
