@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.1"
+  asn1lib:
+    dependency: transitive
+    description:
+      name: asn1lib
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   async:
     dependency: transitive
     description:
@@ -157,7 +164,7 @@ packages:
     source: hosted
     version: "3.0.2"
   crypto:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: crypto
       url: "https://pub.dartlang.org"
@@ -240,6 +247,15 @@ packages:
       url: "https://github.com/KomodoPlatform/dart-decimal.git"
     source: git
     version: "1.4.0"
+  encrypt:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "3a42d25b0c356606c26a238384b9f2189572d954"
+      resolved-ref: "3a42d25b0c356606c26a238384b9f2189572d954"
+      url: "https://github.com/KomodoPlatform/encrypt"
+    source: git
+    version: "5.0.2"
   fake_async:
     dependency: transitive
     description:

@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:cryptography/cryptography.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -535,19 +537,35 @@ class _ImportPageState extends State<ImportPage> {
       final algorithm = AesCtr.with128bits(macAlgorithm: Hmac.sha256());
       final length16Key = await hashPassword(pass);
 
-      SecretKey secretKeyB = SecretKey(length16Key.rawBytes);
+      SecretKey secretKey = SecretKey(length16Key.rawBytes);
       // decrypt
       final String str = await file.readAsString();
       var a = SecretBox.fromConcatenation(str.codeUnits,
           nonceLength: 16, macLength: 32);
 
-      final decrypted = await algorithm.decrypt(a, secretKey: secretKeyB);
+      final decrypted = await algorithm.decrypt(a, secretKey: secretKey);
 
       return jsonDecode(String.fromCharCodes(decrypted));
     } catch (e) {
-      Log('import_page]', 'Failed to decrypt file: $e');
-      _showError(AppLocalizations.of(context).importDecryptError);
-      return null;
+      // back compatibility
+      try {
+        final String length32Key =
+            crypto.md5.convert(utf8.encode(pass)).toString();
+        final key = encrypt.Key.fromUtf8(length32Key);
+        final iv = encrypt.IV.allZerosOfLength(16);
+
+        final encrypter = encrypt.Encrypter(encrypt.AES(key));
+        final String str = await file.readAsString();
+
+        final encrypted = encrypt.Encrypted.fromBase64(str);
+
+        final decrypted = encrypter.decrypt(encrypted, iv: iv);
+        return jsonDecode(decrypted);
+      } catch (e) {
+        Log('import_page]', 'Failed to decrypt file: $e');
+        _showError(AppLocalizations.of(context).importDecryptError);
+        return null;
+      }
     }
   }
 
