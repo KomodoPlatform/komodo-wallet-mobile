@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:cryptography/cryptography.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -545,9 +547,25 @@ class _ImportPageState extends State<ImportPage> {
 
       return jsonDecode(String.fromCharCodes(decrypted));
     } catch (e) {
-      Log('import_page]', 'Failed to decrypt file: $e');
-      _showError(AppLocalizations.of(context).importDecryptError);
-      return null;
+      // try old method of decryption
+      try {
+        final String length32Key =
+            crypto.md5.convert(utf8.encode(pass)).toString();
+        final key = encrypt.Key.fromUtf8(length32Key);
+        final iv = encrypt.IV.fromLength(16);
+
+        final encrypter = encrypt.Encrypter(encrypt.AES(key));
+        final String str = await file.readAsString();
+
+        final encrypted = encrypt.Encrypted.fromBase64(str);
+
+        final decrypted = encrypter.decrypt(encrypted, iv: iv);
+        return jsonDecode(decrypted);
+      } catch (e) {
+        Log('import_page]', 'Failed to decrypt file: $e');
+        _showError(AppLocalizations.of(context).importDecryptError);
+        return null;
+      }
     }
   }
 
