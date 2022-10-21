@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:crypto/crypto.dart' as crypto;
-import 'package:cryptography/cryptography.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +20,7 @@ import 'package:komodo_dex/screens/import-export/overwrite_dialog_content.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
@@ -534,38 +532,14 @@ class _ImportPageState extends State<ImportPage> {
     }
 
     try {
-      final algorithm = AesCtr.with128bits(macAlgorithm: Hmac.sha256());
-      final length16Key = await hashPassword(pass);
-
-      SecretKey secretKey = SecretKey(length16Key.rawBytes);
-      // decrypt
       final String str = await file.readAsString();
-      var a = SecretBox.fromConcatenation(str.codeUnits,
-          nonceLength: 16, macLength: 32);
 
-      final decrypted = await algorithm.decrypt(a, secretKey: secretKey);
-
-      return jsonDecode(String.fromCharCodes(decrypted));
+      final decrypted = await EncryptionTool().decryptData(pass, str);
+      return jsonDecode(decrypted);
     } catch (e) {
-      // back compatibility
-      try {
-        final String length32Key =
-            crypto.md5.convert(utf8.encode(pass)).toString();
-        final key = encrypt.Key.fromUtf8(length32Key);
-        final iv = encrypt.IV.allZerosOfLength(16);
-
-        final encrypter = encrypt.Encrypter(encrypt.AES(key));
-        final String str = await file.readAsString();
-
-        final encrypted = encrypt.Encrypted.fromBase64(str);
-
-        final decrypted = encrypter.decrypt(encrypted, iv: iv);
-        return jsonDecode(decrypted);
-      } catch (e) {
-        Log('import_page]', 'Failed to decrypt file: $e');
-        _showError(AppLocalizations.of(context).importDecryptError);
-        return null;
-      }
+      Log('import_page]', 'Failed to decrypt file: $e');
+      _showError(AppLocalizations.of(context).importDecryptError);
+      return null;
     }
   }
 
