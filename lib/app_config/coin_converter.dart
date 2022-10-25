@@ -30,7 +30,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       if (coinData['swap_contract_address'] != null)
         'swap_contract_address': coinData['swap_contract_address'],
       if (coinData['contract_address'] != null)
-        'swap_contract_address': coinData['contract_address'],
+        'contract_address': coinData['contract_address'],
       if (coinData['fallback_swap_contract'] != null)
         'fallback_swap_contract': coinData['fallback_swap_contract'],
       if (coinData['bchd_urls'] != null) 'bchd_urls': coinData['bchd_urls'],
