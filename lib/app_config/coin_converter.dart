@@ -25,8 +25,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       'type': proto,
       'explorerUrl': coinData['explorer_url'],
       'serverList': coinData['nodes'] ?? coinData['electrum'] ?? [],
-      'testCoin':
-          coinData['is_testnet'] ?? coinData['coingecko_id'] == 'test-coin',
+      'testCoin': coinData['is_testnet'] ?? false,
       if (coinData['swap_contract_address'] != null)
         'swap_contract_address': coinData['swap_contract_address'],
       if (coinData['contract_address'] != null)
