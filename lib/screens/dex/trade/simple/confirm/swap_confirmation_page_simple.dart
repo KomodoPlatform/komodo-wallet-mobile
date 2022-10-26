@@ -552,10 +552,10 @@ class _SwapConfirmationPageSimpleState
         result: MmSwap(
           uuid: response.result.uuid,
           myInfo: SwapMyInfo(
-              myAmount: cutTrailingZeros(
-                  formatPrice(_constrProvider.sellAmount.toDouble())),
-              otherAmount: cutTrailingZeros(
-                  formatPrice(_constrProvider.buyAmount.toDouble())),
+              myAmount: cutTrailingZeros(_constrProvider.sellAmount
+                  .toStringAsFixed(appConfig.tradeFormPrecision)),
+              otherAmount: cutTrailingZeros(_constrProvider.buyAmount
+                  .toStringAsFixed(appConfig.tradeFormPrecision)),
               myCoin: response.result.rel,
               otherCoin: response.result.base,
               startedAt: DateTime.now().millisecondsSinceEpoch),

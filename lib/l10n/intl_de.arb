@@ -1,1436 +1,1980 @@
 {
-    "welcomeTitle": "WILLKOMMEN",
-    "@welcomeTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "welcomeWallet": "Wallet",
-    "@welcomeWallet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "welcomeInfo": "AtomicDEX mobile ist eine digitale Geldbörse mit nativer DEX-Funktion der dritten Generation und vielem mehr.",
-    "@welcomeInfo": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "welcomeLetSetUp": "Wallet einrichten!",
-    "@welcomeLetSetUp": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle1": "Endbenutzer-Lizenzvertrag (EULA) von atomicDEX mobile:\n\n",
-    "@eulaTitle1": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "eulaTitle2": "ALLGEMEINE GESCHÄFTSBEDINGUNGEN: (APPLICATION USER AGREEMENT)\n\n",
-    "@eulaTitle2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle3": "NUTZUNGSBEDINGUNGEN UND HAFTUNGSAUSSCHLUSS\n\n",
-    "@eulaTitle3": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle4": "ALLGEMEINER GEBRAUCH\n\n",
-    "@eulaTitle4": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle5": "ÄNDERUNGEN\n\n",
-    "@eulaTitle5": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle6": "GEBRAUCHSBESCHRÄNKUNGEN\n\n",
-    "@eulaTitle6": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle7": "KONTEN UND MITGLIEDSCHAFT\n\n",
-    "@eulaTitle7": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle8": "SICHERUNGEN\n\n",
-    "@eulaTitle8": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle9": "ALLGEMEINE WARNUNG\n\n",
-    "@eulaTitle9": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle10": "ZUGANG UND SICHERHEIT\n\n",
-    "@eulaTitle10": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle11": "RECHTE AN GEISTIGEM EIGENTUM\n\n",
-    "@eulaTitle11": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle12": "HAFTUNGSAUSSCHLUSS\n\n",
-    "@eulaTitle12": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle13": "Zusicherungen und Gewährleistungen, Freistellung und Haftungsbeschränkung\n\n",
-    "@eulaTitle13": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle14": "ALLGEMEINE RISIKOFAKTOREN\n\n",
-    "@eulaTitle14": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle15": "Entschädigung\n\n",
-    "@eulaTitle15": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle16": "RISIKOANGABEN DIESER ANWENDUNG\n\n",
-    "@eulaTitle16": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle17": "KEINE ANLAGEBERATUNG ODER BROKERAGE\n\n",
-    "@eulaTitle17": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle18": "BEENDIGUNG\n\n",
-    "@eulaTitle18": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle19": "Rechte Dritter\n\n",
-    "@eulaTitle19": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaTitle20": "UNSERE RECHTLICHEN VERPFLICHTUNGEN\n\n",
-    "@eulaTitle20": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe1": "Diese Endbenutzer-Lizenzvereinbarung („EULA“) ist eine rechtsgültige Vereinbarung zwischen Ihnen und {appCompanyLong}.\n\nDiese EULA-Vereinbarung regelt Ihren Erwerb und Ihre Nutzung unserer mobilen Software {appName} („Software“, „mobile Anwendung“, „Anwendung“ oder „App“) direkt von {appCompanyLong} oder indirekt über eine von {appCompanyLong} autorisierte juristische Person, Wiederverkäufer oder Distributor (ein ‚Distributor‘).\nBitte lesen Sie diese EULA-Vereinbarung sorgfältig durch, bevor Sie den Installationsvorgang abschließen und die mobile Software {appName} verwenden. Es bietet eine Lizenz zur Nutzung der mobilen Software {appName} und enthält Gewährleistungsinformationen und Haftungsausschlüsse.\nWenn Sie sich für das Beta-Programm der mobilen Software {appName} registrieren, gilt diese EULA-Vereinbarung auch für diese Testversion. Indem Sie auf „Akzeptieren“ klicken oder die mobile Software {appName} installieren und/oder verwenden, bestätigen Sie Ihr Einverständnis mit der Software und stimmen zu, an die Bedingungen dieser EULA-Vereinbarung gebunden zu sein.\nWenn Sie diese EULA-Vereinbarung im Namen eines Unternehmens oder einer anderen juristischen Person abschließen, erklären Sie, dass Sie befugt sind, diese juristische Person und ihre verbundenen Unternehmen an diese Bedingungen zu binden. Wenn Sie nicht über eine solche Befugnis verfügen oder mit den Bedingungen dieser EULA-Vereinbarung nicht einverstanden sind, dürfen Sie die Software nicht installieren oder verwenden, und Sie dürfen diese EULA-Vereinbarung nicht akzeptieren.\nDiese EULA-Vereinbarung gilt nur für die hiermit von {appCompanyLong} bereitgestellte Software, unabhängig davon, ob hierin auf andere Software verwiesen oder diese beschrieben wird. Die Bedingungen gelten auch für alle {appCompanyLong}-Updates, Ergänzungen, internetbasierten Dienste und Supportdienste für die Software, sofern diesen Artikeln bei der Lieferung keine anderen Bedingungen beigefügt sind. In diesem Fall gelten diese Bedingungen.\n\nLIZENZGEWÄHRUNG\n\n{appCompanyLong} gewährt Ihnen hiermit eine persönliche, nicht übertragbare, nicht exklusive Lizenz zur Nutzung der mobilen Software {appName} auf Ihren Geräten gemäß den Bedingungen dieser EULA-Vereinbarung.\n\nSie sind berechtigt, die mobile Software von {appName} (z. B. einen PC, Laptop, ein Mobiltelefon oder ein Tablet) unter Ihrer Kontrolle zu laden. Sie sind dafür verantwortlich sicherzustellen, dass Ihr Gerät die Mindestsicherheits- und Ressourcenanforderungen der mobilen Software {appName} erfüllt.\n\nSie dürfen nicht:\n(a) die Software ganz oder teilweise zu bearbeiten, zu ändern, zu modifizieren, anzupassen, zu übersetzen oder anderweitig zu verändern, noch zu gestatten, dass die gesamte oder Teile der Software mit anderer Software kombiniert oder in diese integriert werden, noch dekompilieren, disassemblieren oder Reverse Engineering der Software oder der Versuch, solche Dinge zu tun;\n(b) die Software für kommerzielle Zwecke reproduzieren, kopieren, verteilen, weiterverkaufen oder anderweitig verwenden;\n(c) die Software in einer Weise zu verwenden, die gegen geltendes lokales, nationales oder internationales Recht verstößt;\n(d) die Software für einen Zweck zu verwenden, den {appCompanyLong} als Verstoß gegen diese EULA-Vereinbarung ansieht.\n\nGEISTIGES EIGENTUM UND EIGENTUM\n\n{appCompanyLong} behält jederzeit das Eigentum an der ursprünglich von Ihnen heruntergeladenen Software und allen nachfolgenden Downloads der Software durch Sie. Die Software (und das Urheberrecht und andere geistige Eigentumsrechte jeglicher Art an der Software, einschließlich aller daran vorgenommenen Änderungen) sind und bleiben Eigentum von {appCompanyLong}.\n\n{appCompanyLong} behält sich das Recht vor, Lizenzen zur Nutzung der Software an Dritte zu vergeben.\n\nBEENDIGUNG\n\nDiese EULA-Vereinbarung gilt ab dem Datum, an dem Sie die Software zum ersten Mal verwenden, und gilt bis zur Beendigung. Sie können es jederzeit durch schriftliche Mitteilung an {appCompanyLong} kündigen.\nEs endet auch sofort, wenn Sie eine Bedingung dieser EULA-Vereinbarung nicht einhalten. Bei einer solchen Kündigung enden die durch diese EULA-Vereinbarung gewährten Lizenzen sofort und Sie stimmen zu, jeglichen Zugriff und jede Nutzung der Software einzustellen. Die Bestimmungen, die ihrer Natur nach fortbestehen und fortbestehen, gelten auch nach Beendigung dieser EULA-Vereinbarung.\n\nGELTENDES RECHT\n\nDiese EULA-Vereinbarung und alle Streitigkeiten, die sich aus oder im Zusammenhang mit dieser EULA-Vereinbarung ergeben, unterliegen den Gesetzen Vietnams und werden in Übereinstimmung mit diesen ausgelegt.\n\nDieses Dokument wurde zuletzt am 31. Januar 2020 aktualisiert\n\n",
-    "@eulaParagraphe1": {
-        "type": "text",
-        "placeholders_order": [
-            "appName",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appName": {},
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe2": "Dieser Haftungsausschluss gilt für die Inhalte und Dienste der App {appName} und gilt für alle Nutzer der „Anwendung“ („Software“, „mobile Anwendung“, „Anwendung“ oder „App“).\n\nDie Anwendung gehört {appCompanyLong}.\n\nWir behalten uns das Recht vor, die folgenden Allgemeinen Geschäftsbedingungen (die die Nutzung der Anwendung „{appName} mobile“ regeln) jederzeit ohne vorherige Ankündigung und nach eigenem Ermessen zu ändern. Es liegt in Ihrer Verantwortung, diese Allgemeinen Geschäftsbedingungen regelmäßig auf Aktualisierungen dieser Bedingungen zu überprüfen, die nach ihrer Veröffentlichung in Kraft treten.\nIhre fortgesetzte Nutzung der Anwendung gilt als Zustimmung zu den folgenden Bedingungen.\nWir sind ein in Vietnam eingetragenes Unternehmen und diese Allgemeinen Geschäftsbedingungen unterliegen den Gesetzen Vietnams.\nWenn Sie diesen Geschäftsbedingungen nicht zustimmen, dürfen Sie diese Software nicht verwenden oder darauf zugreifen.\n\n",
-    "@eulaParagraphe2": {
-        "type": "text",
-        "placeholders_order": [
-            "appName",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appName": {},
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe3": "Durch den Abschluss dieser Benutzervereinbarung (jedes Subjekt, das auf die Website zugreift oder sie nutzt) (dieses Schreiben) erklären Sie, dass Sie eine volljährige Person (mindestens 18 Jahre oder älter) sind und befähigt sind, diese Benutzervereinbarung einzugehen und zu akzeptieren rechtlich an die Bedingungen dieser Nutzungsvereinbarung, wie hierin aufgenommen und von Zeit zu Zeit geändert, gebunden zu sein.\n\n",
-    "@eulaParagraphe3": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe4": "Wir können die Bedingungen dieser Nutzungsvereinbarung jederzeit ändern. Solche Änderungen treten in Kraft, wenn sie in der Anwendung veröffentlicht werden oder wenn Sie die Dienste nutzen.\n\nLesen Sie die Nutzungsvereinbarung jedes Mal sorgfältig durch, wenn Sie unsere Dienste nutzen. Ihre fortgesetzte Nutzung der Dienste bedeutet, dass Sie sich damit einverstanden erklären, an die aktuelle Nutzungsvereinbarung gebunden zu sein. Unser Versäumnis oder unsere Verzögerung bei der Durchsetzung oder teilweisen Durchsetzung einer Bestimmung dieser Nutzungsvereinbarung darf nicht als Verzicht auf irgendwelche ausgelegt werden.\n\n",
-    "@eulaParagraphe4": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe5": "Es ist Ihnen nicht gestattet, die mobile Anwendung {appName} oder die Benutzerinhalte zu dekompilieren, zu decodieren, zu disassemblieren, zu vermieten, zu verleasen, zu verleihen, zu verkaufen, unterzulizenzieren oder davon abgeleitete Werke zu erstellen. Sie dürfen auch keine Netzwerküberwachungs- oder Erkennungssoftware verwenden, um die Softwarearchitektur zu bestimmen oder Informationen über die Nutzung oder die Identität von Einzelpersonen oder Benutzern zu extrahieren.\nEs ist Ihnen nicht gestattet, die Anwendung oder den Benutzerinhalt ganz oder teilweise ohne unsere vorherige schriftliche Genehmigung zu kommerziellen, gemeinnützigen oder öffentlichen Zwecken zu kopieren, zu modifizieren, zu reproduzieren, neu zu veröffentlichen, zu verteilen, anzuzeigen oder zu übertragen.\n\n",
-    "@eulaParagraphe5": {
-        "type": "text",
-        "placeholders_order": [
-            "appName"
-        ],
-        "placeholders": {
-            "appName": {}
-        }
-    },
-    "eulaParagraphe6": "Wenn Sie ein Konto in der mobilen Anwendung erstellen, sind Sie dafür verantwortlich, die Sicherheit Ihres Kontos aufrechtzuerhalten, und Sie tragen die volle Verantwortung für alle Aktivitäten, die unter dem Konto stattfinden, und alle anderen damit verbundenen Aktionen. Wir haften nicht für Handlungen oder Unterlassungen Ihrerseits, einschließlich Schäden jeglicher Art, die durch solche Handlungen oder Unterlassungen entstehen.\n\n{appName} Mobile ist eine Wallet-Implementierung ohne Verwahrung und daher kann {appCompanyLong} im Falle eines (Daten-)Verlusts weder auf Ihr Konto zugreifen noch es wiederherstellen.\n\n",
-    "@eulaParagraphe6": {
-        "type": "text",
-        "placeholders_order": [
-            "appName",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appName": {},
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe7": "Wir sind nicht verantwortlich für Seed-Phrasen, die sich in der mobilen Anwendung befinden. In keinem Fall haften wir für Verluste jeglicher Art. Es liegt in Ihrer alleinigen Verantwortung, angemessene Backups Ihrer Konten und ihrer Seedprases zu führen.\n\n",
-    "@eulaParagraphe7": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe8": "Sie sollten nicht allein auf der Grundlage des Inhalts dieser Bewerbung handeln oder Handlungen unterlassen.\nIhr Zugriff auf diese Anwendung begründet selbst kein Berater-Kunden-Verhältnis zwischen Ihnen und uns.\nDer Inhalt dieses Antrags stellt weder eine Aufforderung noch einen Anreiz dar, in von uns angebotene Finanzprodukte oder -dienstleistungen zu investieren.\nAlle in diesem Antrag enthaltenen Ratschläge wurden ohne Berücksichtigung Ihrer Ziele, finanziellen Situation oder Bedürfnisse erstellt. Sie sollten unsere Risikohinweise beachten, bevor Sie eine Entscheidung treffen, ob Sie das in diesem Dokument beschriebene Produkt erwerben möchten.\n\n",
-    "@eulaParagraphe8": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe9": "Wir garantieren nicht Ihren kontinuierlichen Zugriff auf die Anwendung oder dass Ihr Zugriff oder Ihre Nutzung fehlerfrei sein wird.\nWir haften nicht für den Fall, dass Ihnen die Anwendung aus irgendeinem Grund nicht zur Verfügung steht (z. B. aufgrund von Computerausfallzeiten, die auf Fehlfunktionen, Upgrades, Serverprobleme, vorsorgliche oder korrigierende Wartungsarbeiten oder Unterbrechungen der Telekommunikationsversorgung zurückzuführen sind).\n\n",
-    "@eulaParagraphe9": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe10": "{appCompanyLong} ist der Eigentümer und/oder autorisierte Benutzer aller Marken, Dienstleistungsmarken, Designmarken, Patente, Urheberrechte, Datenbankrechte und aller anderen geistigen Eigentumsrechte, die in der Anwendung erscheinen oder darin enthalten sind, sofern nicht anders angegeben. Alle Informationen, Texte, Materialien, Grafiken, Software und Anzeigen auf der Anwendungsoberfläche sind urheberrechtlich geschützt von {appCompanyLong}, seinen Lieferanten und Lizenzgebern, sofern nicht ausdrücklich von {appCompanyLong} angegeben.\nAußer wie in den Bedingungen vorgesehen, gewährt Ihnen die Nutzung der Anwendung keinerlei Rechte, Titel, Anteile oder Lizenzen an solchem geistigen Eigentum, auf das Sie in der Anwendung möglicherweise Zugriff haben.\nWir besitzen die Rechte oder haben die Erlaubnis, die in unserer Anmeldung aufgeführten Marken zu verwenden. Sie sind nicht berechtigt, eine dieser Marken ohne unsere schriftliche Genehmigung zu verwenden – dies würde eine Verletzung der geistigen Eigentumsrechte von uns oder einer anderen Partei darstellen.\nAlternativ können wir Sie autorisieren, den Inhalt in unserer Anwendung zu verwenden, wenn Sie uns vorher kontaktieren und wir schriftlich zustimmen.\n\n",
-    "@eulaParagraphe10": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe11": "{appCompanyLong} kann die Sicherheit Ihrer Computersysteme nicht garantieren. Wir übernehmen keine Haftung für Verluste oder Beschädigungen elektronisch gespeicherter Daten oder Schäden an Computersystemen, die im Zusammenhang mit der Nutzung der Anwendung oder der Benutzerinhalte entstehen.\n{appCompanyLong} gibt keinerlei Zusicherungen oder Gewährleistungen, weder ausdrücklich noch stillschweigend, in Bezug auf den Betrieb der Anwendung oder den Benutzerinhalt. Sie stimmen ausdrücklich zu, dass Ihre Nutzung der Anwendung vollständig auf Ihr alleiniges Risiko erfolgt.\nSie stimmen zu, dass die in der Anwendung bereitgestellten Inhalte und die Benutzerinhalte keine Finanzprodukt-, Rechts- oder Steuerberatung darstellen, und Sie stimmen zu, die Benutzerinhalte oder die Anwendung nicht als solche darzustellen.\nSoweit nach geltendem Recht zulässig, wird die Anwendung „wie besehen, wie verfügbar“ bereitgestellt.\n\n{appCompanyLong} lehnt ausdrücklich jegliche Verantwortung für Verluste, Verletzungen, Ansprüche, Haftung oder Schäden oder indirekte, zufällige, besondere oder Folgeschäden oder entgangene Gewinne ab, die sich ergeben aus, entstehen aus oder in irgendeiner Weise damit zusammenhängen:\n(a) Fehler oder Auslassungen in der Anwendung und/oder den Benutzerinhalten, einschließlich, aber nicht beschränkt auf technische Ungenauigkeiten und typografische Fehler;\n(b) Websites, Anwendungen oder Inhalte Dritter, auf die direkt oder indirekt über Links in der Anwendung zugegriffen wird, einschließlich, aber nicht beschränkt auf Fehler oder Auslassungen;\n(c) die Nichtverfügbarkeit der Anwendung oder eines Teils davon;\n(d) Ihre Nutzung der Anwendung;\n(e) Ihre Nutzung von Geräten oder Software in Verbindung mit der Anwendung.\n\nAlle in Verbindung mit der Plattform angebotenen Dienste werden „wie besehen“ bereitgestellt, ohne jegliche ausdrückliche, stillschweigende oder gesetzliche Zusicherung oder Gewährleistung. Soweit nach geltendem Recht zulässig, lehnen wir ausdrücklich alle stillschweigenden Gewährleistungen für Eigentum, Marktgängigkeit, Eignung für einen bestimmten Zweck und/oder Nichtverletzung von Rechten Dritter ab. Wir geben keine Zusicherungen oder Gewährleistungen ab, dass die Nutzung der Plattform kontinuierlich, ununterbrochen, zeitnah oder fehlerfrei erfolgt.\nWir übernehmen keine Garantie dafür, dass eine Plattform frei von Viren, Malware oder anderen damit verbundenen schädlichen Materialien ist und dass Ihre Fähigkeit, auf eine Plattform zuzugreifen, ununterbrochen ist. Jegliche Mängel oder Fehlfunktionen des Produkts sollten an den Drittanbieter gerichtet werden, der die Plattform anbietet, nicht an {appCompanyShort}.\nWir sind Ihnen gegenüber nicht verantwortlich oder haftbar für Verluste jeglicher Art aus Handlungen, die im Vertrauen auf das Material oder die Informationen, die in oder über die Plattform enthalten sind, vorgenommen oder vorgenommen wurden.\nDies ist experimentelle und unfertige Software. Benutzung auf eigene Gefahr. Keine Gewährleistung für Schäden jeglicher Art. Durch die Nutzung dieser Anwendung stimmen Sie diesen Bedingungen zu.\n\n",
-    "@eulaParagraphe11": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyShort",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyShort": {},
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe12": "Wenn Sie auf die Dienste zugreifen oder diese nutzen, stimmen Sie zu, dass Sie allein für Ihr Verhalten beim Zugriff auf unsere Dienste und deren Nutzung verantwortlich sind. Ohne die Allgemeingültigkeit des Vorstehenden einzuschränken, stimmen Sie zu, dass Sie Folgendes nicht tun werden:\n(a) die Dienste auf eine Weise zu nutzen, die andere Benutzer stören, stören, negativ beeinflussen oder daran hindern könnte, die Dienste vollständig zu nutzen, oder die das Funktionieren unserer Dienste in irgendeiner Weise beschädigen, deaktivieren, überlasten oder beeinträchtigen könnte;\n(b) die Dienste nutzen, um illegale Aktivitäten zu bezahlen, zu unterstützen oder sich anderweitig daran zu beteiligen, einschließlich, aber nicht beschränkt auf illegales Glücksspiel, Betrug, Geldwäsche oder terroristische Aktivitäten;\n(c) Roboter, Spider, Crawler, Scraper oder andere automatisierte Mittel oder Schnittstellen zu verwenden, die nicht von uns bereitgestellt werden, um auf unsere Dienste zuzugreifen oder Daten zu extrahieren;\n(d) das Wallet oder die Zugangsdaten eines anderen Benutzers ohne Autorisierung zu verwenden oder dies zu versuchen;\n(e) versuchen, von uns eingesetzte Inhaltsfiltertechniken zu umgehen, oder versuchen, auf Dienste oder Bereiche unserer Dienste zuzugreifen, für die Sie keine Zugriffsberechtigung haben;\n(f) Viren, Trojaner, Würmer, Logikbomben oder anderes schädliches Material in die Dienste einschleusen;\n(g) ohne unsere vorherige schriftliche Zustimmung Anwendungen von Drittanbietern zu entwickeln, die mit unseren Diensten interagieren;\n(h) falsche, ungenaue oder irreführende Informationen liefern;\n(i) andere Personen ermutigen oder dazu verleiten, sich an einer der gemäß diesem Abschnitt verbotenen Aktivitäten zu beteiligen.\n\n",
-    "@eulaParagraphe12": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "eulaParagraphe13": "Sie stimmen zu und verstehen, dass mit der Nutzung von Diensten im Zusammenhang mit virtuellen Währungen Risiken verbunden sind, einschließlich, aber nicht beschränkt auf das Risiko des Ausfalls von Hardware, Software und Internetverbindungen, das Risiko der Einführung bösartiger Software und das Risiko, dass Dritte unbefugt erhalten Zugriff auf Informationen, die in Ihrem Wallet gespeichert sind, einschließlich, aber nicht beschränkt auf Ihre öffentlichen und privaten Schlüssel. Sie stimmen zu und verstehen, dass {appCompanyLong} nicht für Kommunikationsausfälle, Unterbrechungen, Fehler, Verzerrungen oder Verzögerungen verantwortlich ist, die Sie bei der Nutzung der Dienste erleben können, wie auch immer diese verursacht wurden.\nSie akzeptieren und erkennen an, dass mit der Nutzung eines virtuellen Währungsnetzwerks Risiken verbunden sind, einschließlich, aber nicht beschränkt auf das Risiko unbekannter Schwachstellen im Netzwerkprotokoll oder unvorhergesehener Änderungen am Netzwerkprotokoll. Sie erkennen an und akzeptieren, dass {appCompanyLong} keine Kontrolle über ein Kryptowährungsnetzwerk hat und nicht für Schäden verantwortlich ist, die sich aus solchen Risiken ergeben, einschließlich, aber nicht beschränkt auf die Unfähigkeit, eine Transaktion rückgängig zu machen, und jegliche Verluste in Verbindung damit aufgrund fehlerhafter oder betrügerischer Handlungen.\nDas Verlustrisiko bei der Nutzung von Diensten mit virtuellen Währungen kann erheblich sein und Verluste können innerhalb kurzer Zeit auftreten. Darüber hinaus unterliegen Preis und Liquidität erheblichen Schwankungen, die nicht vorhersehbar sein können.\nVirtuelle Währungen sind kein gesetzliches Zahlungsmittel und werden von keiner souveränen Regierung unterstützt. Darüber hinaus ändert sich die gesetzliche und regulatorische Landschaft rund um virtuelle Währungen ständig und kann sich auf Ihre Fähigkeit auswirken, virtuelle Währungen zu verwenden, zu übertragen oder auszutauschen.\nCFDs sind komplexe Instrumente und bergen ein hohes Risiko, aufgrund der Hebelwirkung schnell Geld zu verlieren. 80,6 % der Konten von Privatanlegern verlieren Geld, wenn sie CFDs mit diesem Anbieter handeln. Sie sollten überlegen, ob Sie verstehen, wie CFDs funktionieren, und ob Sie es sich leisten können, das hohe Risiko einzugehen, Ihr Geld zu verlieren.\n\n",
-    "@eulaParagraphe13": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe14": "Sie erklären sich damit einverstanden, {appCompanyLong}, seine leitenden Angestellten, Direktoren, Mitarbeiter, Vertreter, Lizenzgeber, Lieferanten und alle Drittanbieter von Informationen für die Anwendung von und gegen alle Verluste, Ausgaben, Schäden und Kosten, einschließlich angemessener Anwaltsgebühren, schadlos zu halten, zu verteidigen und schadlos zu halten , die aus einer Verletzung der Bedingungen durch Sie resultieren.\nSie erklären sich außerdem damit einverstanden, {appCompanyLong} von allen Ansprüchen schadlos zu halten, dass Informationen oder Materialien, die Sie an {appCompanyLong} übermittelt haben, gegen Gesetze oder Rechte Dritter verstoßen (einschließlich, aber nicht beschränkt auf Ansprüche in Bezug auf Verleumdung). , Verletzung der Privatsphäre, Vertrauensbruch, Urheberrechtsverletzung oder Verletzung eines anderen geistigen Eigentumsrechts).\n\n",
-    "@eulaParagraphe14": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe15": "Um den Vorgang abzuschließen, muss jede mit der Komodo-Plattform erstellte virtuelle Währungstransaktion bestätigt und im Hauptbuch der virtuellen Währung erfasst werden, das dem entsprechenden Netzwerk der virtuellen Währung zugeordnet ist. Bei solchen Netzwerken handelt es sich um dezentrale Peer-to-Peer-Netzwerke, die von unabhängigen Dritten unterstützt werden, die nicht Eigentum der Komodo Platform sind, von dieser kontrolliert oder betrieben werden. Komodo Platform hat keine Kontrolle über ein Netzwerk für virtuelle Währungen und kann daher nicht sicherstellen, dass alle Transaktionsdetails, die Sie über unsere Services übermitteln, im entsprechenden Netzwerk für virtuelle Währungen bestätigt werden. Sie stimmen zu und verstehen, dass die Transaktionsdetails, die Sie über unsere Services übermitteln, möglicherweise nicht vollständig sind oder durch das zur Abwicklung der Transaktion verwendete Netzwerk für virtuelle Währungen erheblich verzögert werden. Wir können nicht garantieren, dass die Brieftasche Titel oder Rechte in einer virtuellen Währung überträgt oder Garantien in Bezug auf den Titel abgibt. Nachdem die Transaktionsdetails an ein Netzwerk für virtuelle Währungen übermittelt wurden, können wir Ihnen nicht helfen, Ihre Transaktion oder Transaktionsdetails abzubrechen oder anderweitig zu ändern. Komodo Platform hat keine Kontrolle über ein virtuelles Währungsnetzwerk und kann keine Stornierungs- oder Änderungsanforderungen vereinfachen. Im Falle einer Gabelung kann die Komodo-Plattform möglicherweise keine Aktivitäten in Bezug auf Ihre virtuelle Währung unterstützen. Sie stimmen zu und verstehen, dass im Falle einer Gabelung die Transaktionen möglicherweise nicht abgeschlossen, teilweise abgeschlossen, falsch abgeschlossen oder wesentlich verzögert werden. Komodo Platform haftet nicht für Verluste, die Ihnen ganz oder teilweise direkt oder indirekt durch eine Gabel entstehen. In keinem Fall haften Komodo Platform, ihre verbundenen Unternehmen und Dienstleister oder ihre jeweiligen leitenden Angestellten, Direktoren, Vertreter, Angestellten oder Vertreter für entgangenen Gewinn oder besondere, zufällige, indirekte, immaterielle oder Folgeschäden, gleich aus welchem Grund bei vertraglicher, unerlaubter Handlung, Fahrlässigkeit, verschuldensunabhängiger Haftung oder in sonstiger Weise, die sich aus oder im Zusammenhang mit der autorisierten oder nicht autorisierten Nutzung der Dienste oder dieser Vereinbarung ergeben, selbst wenn ein autorisierter Vertreter von Komodo Platform davon in Kenntnis gesetzt wurde, davon Kenntnis hat oder hätte von der Möglichkeit solcher Schäden wissen müssen. Zum Beispiel (und ohne den Geltungsbereich des vorstehenden Satzes einzuschränken) können Sie keinen Ersatz für entgangenen Gewinn, entgangene Geschäftsmöglichkeiten oder andere Arten von besonderen, zufälligen, indirekten, immateriellen oder Folgeschäden leisten. In einigen Gerichtsbarkeiten ist der Ausschluss oder die Beschränkung von Neben- oder Folgeschäden nicht zulässig. Daher gilt die oben genannte Beschränkung möglicherweise nicht für Sie. Wir sind nicht verantwortlich oder haftbar für Verluste und übernehmen keine Verantwortung für Schäden oder Ansprüche, die ganz oder teilweise direkt oder indirekt entstehen aus: (a) Benutzerfehlern wie vergessenen Passwörtern, falsch konstruierten Transaktionen oder falsch getippten virtuellen Währungen Adressen; (b) Serverausfall oder Datenverlust; (c) beschädigte oder anderweitig fehlerhafte Wallets oder Wallet-Dateien; (d) unbefugter Zugriff auf Anwendungen; (e) alle nicht autorisierten Aktivitäten, einschließlich, jedoch nicht beschränkt auf die Verwendung von Hacking, Viren, Phishing, Brute Forcing oder anderen Mitteln zum Angriff auf die Dienste.\n\n",
-    "@eulaParagraphe15": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe16": "Um Zweifel auszuschließen, bietet Komodo Platform weder Anlage-, Steuer- oder Rechtsberatung an, noch handelt der Komodo Platform-Broker in Ihrem Namen. Alle Komodo Platform-Trades werden automatisch ausgeführt, basierend auf den Parametern Ihrer Orderinstruktionen und in Übereinstimmung mit den Ausführungsverfahren für veröffentlichte Trades. Sie sind allein dafür verantwortlich, basierend auf Ihrer persönlichen Investition zu bestimmen, ob eine Investition, eine Anlagestrategie oder eine damit verbundene Transaktion für Sie geeignet ist Ziele, finanzielle Verhältnisse und Risikotoleranz. Weder Komodo noch seine Eigentümer, Mitglieder, leitenden Angestellten, Direktoren, Partner, Berater oder Personen, die an der Veröffentlichung dieses Antrags beteiligt sind, sind eingetragene Anlageberater, Makler, Händler oder verbundene Unternehmen Eine Person mit einem registrierten Anlageberater oder Broker-Händler und keiner der oben genannten Personen spricht eine Empfehlung aus, wonach der Kauf oder Verkauf von Krypto-Assets oder Wertpapieren eines in der Mobilanwendung profilierten Unternehmens für eine Person oder eine Anlage oder Transaktion geeignet oder empfehlenswert ist in solchen Krypto-Assets oder Wertpapieren wird rentabel sein. Die in der Mobilanwendung enthaltenen Informationen sind weder als Verkaufsangebot noch als Aufforderung zum Kauf eines Krypto-Assets oder einer Sicherheit gedacht und stellen kein solches dar. Die Informationen in der Mobilanwendung dienen nur zu Informationszwecken und stellen keine Beratung oder Empfehlung für eine bestimmte Investition oder Transaktion dar. Bitte konsultieren Sie einen qualifizierten Fachmann, bevor Sie eine Entscheidung treffen. Die in diesem Antrag enthaltenen Meinungen und Analysen basieren auf Informationen aus Quellen, die als zuverlässig gelten, und werden nach bestem Wissen und Gewissen „wie sie sind“ bereitgestellt. Komodo gibt keine ausdrückliche, implizite oder gesetzliche Zusicherung oder Garantie in Bezug auf die Richtigkeit oder Vollständigkeit solcher Informationen, die ohne vorherige Ankündigung geändert werden können. Komodo haftet nicht für Fehler oder Maßnahmen in Bezug auf die oben genannten Punkte. Meinungs- und Glaubensbekundungen sind diejenigen der Autoren und / oder Herausgeber, die zu dieser Anwendung beitragen, und basieren ausschließlich auf den Informationen, über die diese Autoren und / oder Herausgeber verfügen. Es sollte keine Schlussfolgerung gezogen werden, dass Komodo oder solche Autoren oder Herausgeber spezielle oder umfassendere Kenntnisse über die Crypto-Assets oder Unternehmen mit Profilen oder besondere Fachkenntnisse in den Branchen oder Märkten haben, in denen die Crypto-Assets und Unternehmen mit Profilen tätig sind und im Wettbewerb stehen Dieser Antrag stammt aus Quellen, die als zuverlässig gelten. Komodo übernimmt jedoch keine Verantwortung für die Überprüfung der Richtigkeit dieser Informationen und übernimmt keine Gewähr für die Richtigkeit oder Vollständigkeit dieser Informationen. Bestimmte Aussagen in diesem Antrag können zukunftsgerichtete Aussagen sein, die auf den gegenwärtigen Erwartungen beruhen. Komodo gibt keine Zusicherung oder Garantie dafür ab, dass solche zukunftsgerichteten Aussagen zutreffend sind. Personen, die die Komodo-Anwendung verwenden, werden dringend gebeten, sich bezüglich einer Investition oder einer Transaktion in einen Krypto-Vermögenswert oder ein Unternehmen mit Profil an einen qualifizierten Fachmann zu wenden hierin. Darüber hinaus erklären Personen, die diese Anwendung verwenden, ausdrücklich, dass der Inhalt dieser Anwendung bei Investitions- oder Transaktionsentscheidungen dieser Personen nicht berücksichtigt wird. Händler sollten die in der Komodo-Anwendung bereitgestellten Informationen unabhängig überprüfen, indem sie ihre eigene Due Diligence für Krypto-Assets oder Unternehmen durchführen, bei denen sie eine Investition oder Transaktion jeglicher Art in Betracht ziehen, und ein vollständiges Informationspaket über diese Krypto-Assets oder Unternehmen durchsehen, die Dies sollte unter anderem Blog-Aktualisierungen und Pressemitteilungen umfassen. Die frühere Wertentwicklung von Crypto-Assets und Wertpapieren mit Profil ist kein Hinweis auf zukünftige Ergebnisse. Krypto-Assets und Unternehmen, die auf dieser Website vorgestellt werden, verfügen möglicherweise nicht über einen aktiven Handelsmarkt und investieren in Krypto-Assets oder Wertpapiere, für die es keinen aktiven Handelsmarkt gibt oder die auf bestimmten Medien, Plattformen und Märkten gehandelt werden. Dies wird als äußerst spekulativ eingestuft und birgt ein hohes Risiko . Jeder, der über solche Krypto-Vermögenswerte und Wertpapiere verfügt, sollte finanziell in der Lage und bereit sein, das Verlustrisiko und den tatsächlichen Verlust seines gesamten Handels zu tragen. Die Informationen in diesem Antrag sind nicht als Grundlage für eine Investitionsentscheidung gedacht. Personen, die die Komodo-Anwendung verwenden, sollten zu ihrer eigenen Zufriedenheit die Richtigkeit von Informationen bestätigen, bevor sie eine Investition tätigen oder eine Transaktion tätigen. Die Entscheidung über den Kauf oder Verkauf von Krypto-Assets oder Sicherheiten, die von Komodo angeboten werden, erfolgt ausschließlich auf eigenes Risiko des Lesers. Als Leser und Benutzer dieser Anwendung erklären Sie sich damit einverstanden, unter keinen Umständen haftbare Eigentümer, Mitglieder, leitende Angestellte, Direktoren, Partner, Berater oder andere Personen, die an der Veröffentlichung dieser Anwendung beteiligt sind, für Verluste zu haften, die durch die Verwendung von entstehen In dieser Anwendung enthaltene InformationenKomodo und seine Auftragnehmer und verbundenen Unternehmen können im Falle einer Wertsteigerung oder Wertminderung der Krypto-Vermögenswerte und Wertpapiere profitieren. Solche Crypto-Assets und Wertpapiere können von Zeit zu Zeit gekauft oder verkauft werden, auch nachdem Komodo positive Informationen über die Crypto-Assets und Unternehmen verbreitet hat. Komodo ist nicht verpflichtet, die Leser über seine Handelsaktivitäten oder die Handelsaktivitäten seiner Eigentümer, Mitglieder, leitenden Angestellten, Direktoren, Auftragnehmer und verbundenen Unternehmen und / oder mit den Eigentümern, Mitgliedern, leitenden Angestellten, Direktoren, Auftragnehmern und verbundenen Unternehmen von BC Relations zu informieren affiliates.Komodo und seine verbundenen Unternehmen können von Zeit zu Zeit Vereinbarungen zum Kauf von Krypto-Assets oder Wertpapieren abschließen, um eine Methode zur Erreichung ihrer Ziele bereitzustellen.\n\n",
-    "@eulaParagraphe16": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyShort",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyShort": {},
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe17": "Die Bedingungen gelten bis zur Kündigung durch {appCompanyLong}.\nIm Falle einer Kündigung sind Sie nicht mehr berechtigt, auf die Anwendung zuzugreifen, aber alle Ihnen auferlegten Beschränkungen sowie die in den Bedingungen festgelegten Haftungsausschlüsse und -beschränkungen bleiben auch nach der Kündigung bestehen.\nEine solche Kündigung berührt nicht die gesetzlichen Rechte, die {appCompanyLong} bis zum Datum der Kündigung gegen Sie entstanden sein könnten.\n{appCompanyLong} kann die Anwendung auch jederzeit als Ganzes oder Teile oder Funktionen der Anwendung entfernen.\n\n",
-    "@eulaParagraphe17": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe18": "Die Bestimmungen der vorstehenden Absätze gelten zugunsten von {appCompanyLong} und seinen leitenden Angestellten, Direktoren, Mitarbeitern, Vertretern, Lizenzgebern, Lieferanten und allen Drittanbietern von Informationen für die Anwendung. Jede dieser natürlichen oder juristischen Personen hat das Recht, diese Bestimmungen in eigenem Namen direkt gegen Sie geltend zu machen und durchzusetzen.\n\n",
-    "@eulaParagraphe18": {
-        "type": "text",
-        "placeholders_order": [
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appCompanyLong": {}
-        }
-    },
-    "eulaParagraphe19": "{appName} Mobile ist eine nicht verwahrte, dezentralisierte und Blockchain-basierte Anwendung und als solche speichert {appCompanyLong} niemals Benutzerdaten (Konten und Authentifizierungsdaten).\nWir sammeln und verarbeiten auch nicht personenbezogene, anonymisierte Daten für statistische Zwecke und Analysen und um uns dabei zu helfen, einen besseren Service zu bieten.\n\nDieses Dokument wurde zuletzt am 31. Januar 2020 aktualisiert\n\n",
-    "@eulaParagraphe19": {
-        "type": "text",
-        "placeholders_order": [
-            "appName",
-            "appCompanyLong"
-        ],
-        "placeholders": {
-            "appName": {},
-            "appCompanyLong": {}
-        }
-    },
-    "createPin": "PIN erstellen",
-    "@createPin": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "enterPinCode": "Geben Sie Ihren PIN-Code ein",
-    "@enterPinCode": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "login": "Anmeldung",
-    "@login": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "newAccount": "neues Konto",
-    "@newAccount": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "newAccountUpper": "Neues Konto",
-    "@newAccountUpper": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "addingCoinSuccess": "{name} erfolgreich aktiviert!",
-    "@addingCoinSuccess": {
-        "type": "text",
-        "placeholders_order": [
-            "name"
-        ],
-        "placeholders": {
-            "name": {}
-        }
-    },
-    "connecting": "Verbindung wird hergestellt ...",
-    "@connecting": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "addCoin": "Coin aktivieren",
-    "@addCoin": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "numberAssets": "{assets} Assets",
-    "@numberAssets": {
-        "type": "text",
-        "placeholders_order": [
-            "assets"
-        ],
-        "placeholders": {
-            "assets": {}
-        }
-    },
-    "enterSeedPhrase": "Geben Sie Ihren Seed ein",
-    "@enterSeedPhrase": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "exampleHintSeed": "Beispiel: build case level ...",
-    "@exampleHintSeed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "confirm": "bestätigen",
-    "@confirm": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "buy": "Kaufen",
-    "@buy": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "sell": "Verkaufen",
-    "@sell": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "shareAddress": "Meine {coinName} Adresse: {address}",
-    "@shareAddress": {
-        "type": "text",
-        "placeholders_order": [
-            "coinName",
-            "address"
-        ],
-        "placeholders": {
-            "coinName": {},
-            "address": {}
-        }
-    },
-    "withdraw": "Senden",
-    "@withdraw": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "errorValueEmpty": "Wert ist zu hoch oder zu niedrig",
-    "@errorValueEmpty": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "amount": "Betrag",
-    "@amount": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "addressSend": "Empfängeradresse",
-    "@addressSend": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "withdrawValue": "SENDEN {amount} {coinName}",
-    "@withdrawValue": {
-        "type": "text",
-        "placeholders_order": [
-            "amount",
-            "coinName"
-        ],
-        "placeholders": {
-            "amount": {},
-            "coinName": {}
-        }
-    },
-    "withdrawConfirm": "Auszahlung bestätigen",
-    "@withdrawConfirm": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "close": "Schließen",
-    "@close": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "confirmSeed": "Seed Phrase bestätigen",
-    "@confirmSeed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "seedPhraseTitle": "Ihr neuer Seed",
-    "@seedPhraseTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "getBackupPhrase": "Wichtig: Sichern Sie Ihren Seed bevor Sie fortfahren!",
-    "@getBackupPhrase": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "recommendSeedMessage": "Wir empfehlen die Offline-Sicherung.",
-    "@recommendSeedMessage": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "next": "Weiter",
-    "@next": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "confirmPin": "PIN-Code bestätigen",
-    "@confirmPin": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "errorTryAgain": "Fehler, bitte versuchen Sie es erneut",
-    "@errorTryAgain": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "settings": "Einstellungen",
-    "@settings": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "security": "Sicherheit",
-    "@security": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "activateAccessPin": "PIN-Schutz aktivieren",
-    "@activateAccessPin": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "lockScreen": "Bildschirm ist gesperrt",
-    "@lockScreen": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "changePin": "PIN Code ändern",
-    "@changePin": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "logout": "Ausloggen",
-    "@logout": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "max": "Max",
-    "@max": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "amountToSell": "Zu verkaufender Betrag",
-    "@amountToSell": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "youWillReceived": "Sie erhalten: ",
-    "@youWillReceived": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "selectCoinToSell": "Wählen Sie den zu verkaufenden Coin",
-    "@selectCoinToSell": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "selectCoinToBuy": "Wählen Sie den zu kaufenden Coin aus",
-    "@selectCoinToBuy": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "swap": "swap",
-    "@swap": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "buySuccessWaiting": "Trade gestartet, bitte warten!",
-    "@buySuccessWaiting": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "networkFee": "Netzwerkgebühr",
-    "@networkFee": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "commissionFee": "Provision",
-    "@commissionFee": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "portfolio": "Portfolio",
-    "@portfolio": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "checkOut": "Bezahlen",
-    "@checkOut": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "estimateValue": "Gesamtwert",
-    "@estimateValue": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "selectPaymentMethod": "Wählen Sie eine Bezahlart",
-    "@selectPaymentMethod": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "volumes": "Volumen",
-    "@volumes": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "placeOrder": "Platzieren Sie Ihre Order",
-    "@placeOrder": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "comingSoon": "Demnächst...",
-    "@comingSoon": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "marketplace": "Marktplatz",
-    "@marketplace": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "youAreSending": "Sie senden:",
-    "@youAreSending": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "code": "Code: ",
-    "@code": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "value": "Wert: ",
-    "@value": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "paidWith": "Bezahlt mit ",
-    "@paidWith": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "errorValueNotEmpty": "Bitte Daten eintippen",
-    "@errorValueNotEmpty": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "errorAmountBalance": "Guthaben unzureichend",
-    "@errorAmountBalance": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "errorNotAValidAddress": "Keine gültige Adresse",
-    "@errorNotAValidAddress": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "toAddress": "An Adresse:",
-    "@toAddress": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "receive": "ERHALTEN",
-    "@receive": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "send": "SENDEN",
-    "@send": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "back": "zurück",
-    "@back": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "cancel": "stornieren",
-    "@cancel": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "commingsoon": "TX Details folgen in Kürze!",
-    "@commingsoon": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "history": "Historie",
-    "@history": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "commingsoonGeneral": "Details folgen in Kürze!",
-    "@commingsoonGeneral": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "orderMatching": "Warte auf Bestätigung",
-    "@orderMatching": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "orderMatched": "Order bestätigt!",
-    "@orderMatched": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "swapOngoing": "Swap läuft",
-    "@swapOngoing": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "swapSucceful": "Swap erfolgreich",
-    "@swapSucceful": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "timeOut": "Timeout",
-    "@timeOut": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "swapFailed": "Swap fehlgeschlagen",
-    "@swapFailed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "errorTryLater": "Fehler, bitte versuchen Sie es später",
-    "@errorTryLater": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "feedback": "Feedback übermitteln",
-    "@feedback": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "loadingOrderbook": "Auftragsbuch wird geladen",
-    "@loadingOrderbook": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "claim": "Anfordern",
-    "@claim": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "claimTitle": "KMD Prämie anfordern?",
-    "@claimTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "success": "Transaktion erfolgreich!",
-    "@success": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noRewardYet": "Keine Prämie verfügbar. Bitte versuchen Sie es in 1 Stunde erneut.",
-    "@noRewardYet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "loading": "Wird geladen...",
-    "@loading": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "dex": "DEX",
-    "@dex": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "media": "News",
-    "@media": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "newsFeed": "Neuigkeiten",
-    "@newsFeed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "clipboard": "In die Zwischenablage kopiert",
-    "@clipboard": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "from": "Von",
-    "@from": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "to": "An",
-    "@to": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "txConfirmed": "BESTÄTIGT",
-    "@txConfirmed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "txBlock": "Block",
-    "@txBlock": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "txConfirmations": "Bestätigungen",
-    "@txConfirmations": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "txFee": "Gebühr",
-    "@txFee": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noSwaps": "Keine Historie",
-    "@noSwaps": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "trade": "HANDEL",
-    "@trade": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "tradeCompleted": "Handel abgeschlossen!",
-    "@tradeCompleted": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "step": "Schritt",
-    "@step": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "tradeDetail": "HANDELSDETAILS",
-    "@tradeDetail": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "requestedTrade": "Angeforderter Handel",
-    "@requestedTrade": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "mediaBrowse": "Stöbern",
-    "@mediaBrowse": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "mediaNotSavedDescription": "SIE HABEN KEINE GESPEICHERTEN ARTIKEL",
-    "@mediaNotSavedDescription": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "mediaBy": "Von",
-    "@mediaBy": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "lockScreenAuth": "Bitte authentifizieren!",
-    "@lockScreenAuth": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noTxs": "Keine Transaktionen",
-    "@noTxs": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "done": "Erledigt",
-    "@done": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "selectCoinTitle": "Coins aktivieren:",
-    "@selectCoinTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "selectCoinInfo": "Wählen Sie die Coins aus, die Sie Ihrem Portfolio hinzufügen möchten.",
-    "@selectCoinInfo": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noArticles": "Keine Neuigkeiten - bitte versuchen Sie es später erneut!",
-    "@noArticles": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "infoTrade1": "Dieser Handel kann nicht rückgängig gemacht werden!",
-    "@infoTrade1": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "infoTrade2": "Diese Anwendung während aktiver Handelstransaktionen NICHT schließen!",
-    "@infoTrade2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "swapDetailTitle": "BESTÄTIGEN SIE DIESEN HANDEL",
-    "@swapDetailTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "checkSeedPhrase": "Überprüfen Sie Ihren Seed",
-    "@checkSeedPhrase": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "checkSeedPhraseTitle": "LASSEN SIE UNS IHREN SEED DOPPELT ÜBERPRÜFEN",
-    "@checkSeedPhraseTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "checkSeedPhraseInfo": "Ihr Seed ist wichtig - deshalb stellen wir Ihnen drei verschiedene Fragen, um sicherzustellen, dass dieser korrekt ist und Sie Ihr Wallet jederzeit problemlos wiederherstellen können.",
-    "@checkSeedPhraseInfo": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "checkSeedPhraseSubtile": "Was ist das {index} . Wort in Ihrem Seed?",
-    "@checkSeedPhraseSubtile": {
-        "type": "text",
-        "placeholders_order": [
-            "index"
-        ],
-        "placeholders": {
-            "index": {}
-        }
-    },
-    "checkSeedPhraseHint": "Wie lautet das {index} . Wort",
-    "@checkSeedPhraseHint": {
-        "type": "text",
-        "placeholders_order": [
-            "index"
-        ],
-        "placeholders": {
-            "index": {}
-        }
-    },
-    "checkSeedPhraseButton1": "WEITER",
-    "@checkSeedPhraseButton1": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "checkSeedPhraseButton2": "ZURÜCK",
-    "@checkSeedPhraseButton2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "activateAccessBiometric": "Aktivieren Sie den biometrischen Schutz",
-    "@activateAccessBiometric": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "allowCustomSeed": "Erlaube benutzerdefinierten Seed",
-    "@allowCustomSeed": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "hintEnterPassword": "Geben Sie Ihr Passwort ein",
-    "@hintEnterPassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "signInWithSeedPhrase": "Melden Sie sich mit dem Seed an",
-    "@signInWithSeedPhrase": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "signInWithPassword": "Mit Passwort anmelden",
-    "@signInWithPassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "hintEnterSeedPhrase": "Geben Sie Ihren Seed ein",
-    "@hintEnterSeedPhrase": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "wrongPassword": "Die Passwörter stimmen nicht überein. Bitte versuche es erneut.",
-    "@wrongPassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "hintNameYourWallet": "Benennen Sie Ihre digitale Geldbörse",
-    "@hintNameYourWallet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "infoWalletPassword": "Sie müssten aus Sicherheitsgründen Ihr Wallet mit einem Passwort sichern.",
-    "@infoWalletPassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "confirmPassword": "Passwort bestätigen",
-    "@confirmPassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "dontWantPassword": "Ich möchte kein Passwort",
-    "@dontWantPassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "areYouSure": "BIST DU SICHER?",
-    "@areYouSure": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "infoPasswordDialog": "Verwenden Sie ein sicheres Passwort und speichern Sie es nicht auf diesem Gerät!",
-    "@infoPasswordDialog": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "setUpPassword": "PASSWORT EINRICHTEN",
-    "@setUpPassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "createAWallet": "Erstellen Sie ein Wallet",
-    "@createAWallet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "restoreWallet": "WIEDERHERSTELLEN",
-    "@restoreWallet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "hintPassword": "Passwort",
-    "@hintPassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "hintConfirmPassword": "Passwort bestätigen",
-    "@hintConfirmPassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "hintCurrentPassword": "Aktuelles Passwort",
-    "@hintCurrentPassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "logoutsettings": "Abmelde-Einstellungen",
-    "@logoutsettings": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "logoutOnExit": "Beim Beenden abmelden",
-    "@logoutOnExit": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "deleteWallet": "Wallet löschen",
-    "@deleteWallet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "delete": "Löschen",
-    "@delete": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "settingDialogSpan1": "Sind Sie sicher, dass Sie löschen möchten ",
-    "@settingDialogSpan1": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "settingDialogSpan2": " Wallet?",
-    "@settingDialogSpan2": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "settingDialogSpan3": "Wenn ja, stellen Sie sicher, dass Sie ",
-    "@settingDialogSpan3": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "settingDialogSpan4": " Ihren Seed sichern.",
-    "@settingDialogSpan4": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "settingDialogSpan5": " Um Ihre Wallet in Zukunft wiederherzustellen.",
-    "@settingDialogSpan5": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "backupTitle": "Backup",
-    "@backupTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "enterpassword": "Bitte Passwort eingeben um fortzufahren.",
-    "@enterpassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "clipboardCopy": "In die Zwischenablage kopieren",
-    "@clipboardCopy": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "unlock": "Freischalten",
-    "@unlock": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noOrder": "Keine {coinName} Order verfügbar - versuchen Sie es später oder erstellen Sie einen Auftrag.",
-    "@noOrder": {
-        "type": "text",
-        "placeholders_order": [
-            "coinName"
-        ],
-        "placeholders": {
-            "coinName": {}
-        }
-    },
-    "bestAvailableRate": "Günstigster Preis",
-    "@bestAvailableRate": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "receiveLower": "Erhalten",
-    "@receiveLower": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "makeAorder": "Eine Order erstellen",
-    "@makeAorder": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "exchangeTitle": "HANDEL",
-    "@exchangeTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "orders": "Orders",
-    "@orders": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "selectCoin": "Coin auswählen",
-    "@selectCoin": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noFunds": "Kein Guthaben",
-    "@noFunds": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noFundsDetected": "Kein Guthaben vorhanden - bitte zuerst einzahlen.",
-    "@noFundsDetected": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "goToPorfolio": "Zum Portfolio gehen",
-    "@goToPorfolio": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noOrderAvailable": "Klicken Sie hier, um eine Order zu erstellen",
-    "@noOrderAvailable": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "orderCreated": "Auftrag erstellt",
-    "@orderCreated": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "orderCreatedInfo": "Bestellung erfolgreich erstellt",
-    "@orderCreatedInfo": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "showMyOrders": "MEINE BESTELLUNGEN ANZEIGEN",
-    "@showMyOrders": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "titleCreatePassword": "ERSTELLE EIN PASSWORT",
-    "@titleCreatePassword": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "encryptingWallet": "Wallet verschlüsseln",
-    "@encryptingWallet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "decryptingWallet": "Wallet entschlüsseln",
-    "@decryptingWallet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "notEnoughtBalanceForFee": "Nicht genügend Guthaben für Gebühren - handeln Sie einen kleineren Betrag",
-    "@notEnoughtBalanceForFee": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "noInternet": "Keine Internetverbindung",
-    "@noInternet": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "legalTitle": "Legal",
-    "@legalTitle": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "disclaimerAndTos": "Haftungsausschluss & AGB",
-    "@disclaimerAndTos": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "accepteula": "EULA akzeptieren",
-    "@accepteula": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "accepttac": "Nutzungsbedingungen akzeptieren",
-    "@accepttac": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "confirmeula": "Durch Klicken auf die folgenden Schaltflächen bestätigen Sie, dass Sie die \"EULA\" und die \"Allgemeinen Geschäftsbedingungen\" gelesen haben und diese akzeptieren",
-    "@confirmeula": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "youWillReceiveClaim": "Sie erhalten {amount} {coin}",
-    "@youWillReceiveClaim": {
-        "type": "text",
-        "placeholders_order": [
-            "amount",
-            "coin"
-        ],
-        "placeholders": {
-            "amount": {},
-            "coin": {}
-        }
-    },
-    "seeOrders": "Klicken Sie hier, um {amount} Orders zu sehen",
-    "@seeOrders": {
-        "type": "text",
-        "placeholders_order": [
-            "amount"
-        ],
-        "placeholders": {
-            "amount": {}
-        }
-    },
-    "clickToSee": "Zum Anzeigen klicken ",
-    "@clickToSee": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "price": "Preis",
-    "@price": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    },
-    "availableVolume": "max vol",
-    "@availableVolume": {
-        "type": "text",
-        "placeholders_order": [],
-        "placeholders": {}
-    }
+	"welcomeTitle": "WILLKOMMEN",
+	"@welcomeTitle": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"welcomeWallet": "Wallet",
+	"@welcomeWallet": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"welcomeInfo": "{appName} ist eine Multi-Coin-Wallet der nächsten Generation mit nativer DEX-Funktionalität der dritten Generation und mehr.",
+	"@welcomeInfo": {
+		"type": "text",
+		"placeholders_order": [
+			"appName"
+		],
+		"placeholders": {
+			"appName": {}
+		}
+	},
+	"welcomeLetSetUp": "AUF GEHT'S!",
+	"@welcomeLetSetUp": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle1": "End-User License Agreement (EULA) of {appName} mobile:\n\n",
+	"@eulaTitle1": {
+		"type": "text",
+		"placeholders_order": [
+			"appName"
+		],
+		"placeholders": {
+			"appName": {}
+		}
+	},
+	"eulaTitle2": "TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)\n\n",
+	"@eulaTitle2": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle3": "TERMS AND CONDITIONS OF USE AND DISCLAIMER\n\n",
+	"@eulaTitle3": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle4": "GENERAL USE\n\n",
+	"@eulaTitle4": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle5": "MODIFICATIONS\n\n",
+	"@eulaTitle5": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle6": "LIMITATIONS ON USE\n\n",
+	"@eulaTitle6": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle7": "ACCOUNTS AND MEMBERSHIP\n\n",
+	"@eulaTitle7": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle8": "BACKUPS\n\n",
+	"@eulaTitle8": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle9": "GENERAL WARNING\n\n",
+	"@eulaTitle9": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle10": "ACCESS AND SECURITY\n\n",
+	"@eulaTitle10": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle11": "INTELLECTUAL PROPERTY RIGHTS\n\n",
+	"@eulaTitle11": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle12": "DISCLAIMER\n\n",
+	"@eulaTitle12": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle13": "REPRESENTATIONS AND WARRANTIES, INDEMNIFICATION, AND LIMITATION OF LIABILITY\n\n",
+	"@eulaTitle13": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle14": "GENERAL RISK FACTORS\n\n",
+	"@eulaTitle14": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle15": "INDEMNIFICATION\n\n",
+	"@eulaTitle15": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle16": "RISK DISCLOSURES RELATING TO THE WALLET\n\n",
+	"@eulaTitle16": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle17": "NO INVESTMENT ADVICE OR BROKERAGE\n\n",
+	"@eulaTitle17": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle18": "TERMINATION\n\n",
+	"@eulaTitle18": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle19": "THIRD PARTY RIGHTS\n\n",
+	"@eulaTitle19": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaTitle20": "OUR LEGAL OBLIGATIONS\n\n",
+	"@eulaTitle20": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaParagraphe1": "This End-User License Agreement ('EULA') is a legal agreement between you and {appCompanyLong}.\n\nThis EULA agreement governs your acquisition and use of our {appName} mobile software ('Software', 'Mobile Application', 'Application' or 'App') directly from {appCompanyLong} or indirectly through a {appCompanyLong} authorized entity, reseller or distributor (a 'Distributor').\nPlease read this EULA agreement carefully before completing the installation process and using the {appName} mobile software. It provides a license to use the {appName} mobile software and contains warranty information and liability disclaimers.\nIf you register for the beta program of the {appName} mobile software, this EULA agreement will also govern that trial. By clicking 'accept' or installing and/or using the {appName} mobile software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.\nIf you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.\nThis EULA agreement shall apply only to the Software supplied by {appCompanyLong} herewith regardless of whether other software is referred to or described herein. The terms also apply to any {appCompanyLong} updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.\n\nLICENSE GRANT\n\n{appCompanyLong} hereby grants you a personal, non-transferable, non-exclusive license to use the {appName} mobile software on your devices in accordance with the terms of this EULA agreement.\n\nYou are permitted to load the {appName} mobile software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the {appName} mobile software.\n\nYou are not permitted to:\n(a) edit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things;\n(b) reproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose;\n(c) use the Software in any way which breaches any applicable local, national or international law;\n(d) use the Software for any purpose that {appCompanyLong} considers is a breach of this EULA agreement.\n\nINTELLECTUAL PROPERTY AND OWNERSHIP\n\n{appCompanyLong} shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of {appCompanyLong}.\n\n{appCompanyLong} reserves the right to grant licenses to use the Software to third parties.\n\nTERMINATION\n\nThis EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to {appCompanyLong}.\nIt will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.\n\nGOVERNING LAW\n\nThis EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.\n\nThis document was last updated on January 31st, 2020\n\n",
+	"@eulaParagraphe1": {
+		"type": "text",
+		"placeholders_order": [
+			"appName",
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appName": {},
+			"appCompanyLong": {}
+		}
+	},
+	"eulaParagraphe2": "This disclaimer applies to the contents and services of the app {appName} and is valid for all users of the “Application” ('Software', “Mobile Application”, “Application” or “App”).\n\nThe Application is owned by {appCompanyLong}.\n\nWe reserve the right to amend the following Terms and Conditions (governing the use of the application “{appName} mobile”) at any time without prior notice and at our sole discretion. It is your responsibility to periodically check this Terms and Conditions for any updates to these Terms, which shall come into force once published.\nYour continued use of the application shall be deemed as acceptance of the following Terms.\nWe are a company incorporated in Vietnam and these Terms and Conditions are governed by and subject to the laws of Vietnam.\nIf You do not agree with these Terms and Conditions, You must not use or access this software.\n\n",
+	"@eulaParagraphe2": {
+		"type": "text",
+		"placeholders_order": [
+			"appName",
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appName": {},
+			"appCompanyLong": {}
+		}
+	},
+	"eulaParagraphe3": "By entering into this User (each subject accessing or using the site) Agreement (this writing) You declare that You are an individual over the age of majority (at least 18 or older) and have the capacity to enter into this User Agreement and accept to be legally bound by the terms and conditions of this User Agreement, as incorporated herein and amended from time to time.\n\n",
+	"@eulaParagraphe3": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaParagraphe4": "We may change the terms of this User Agreement at any time. Any such changes will take effect when published in the application, or when You use the Services.\n\nRead the User Agreement carefully every time You use our Services. Your continued use of the Services shall signify your acceptance to be bound by the current User Agreement. Our failure or delay in enforcing or partially enforcing any provision of this User Agreement shall not be construed as a waiver of any.\n\n",
+	"@eulaParagraphe4": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaParagraphe5": "You are not allowed to decompile, decode, disassemble, rent, lease, loan, sell, sublicense, or create derivative works from the {appName} mobile application or the user content. Nor are You allowed to use any network monitoring or detection software to determine the software architecture, or extract information about usage or individuals’ or users’ identities.\nYou are not allowed to copy, modify, reproduce, republish, distribute, display, or transmit for commercial, non-profit or public purposes all or any portion of the application or the user content without our prior written authorization.\n\n",
+	"@eulaParagraphe5": {
+		"type": "text",
+		"placeholders_order": [
+			"appName"
+		],
+		"placeholders": {
+			"appName": {}
+		}
+	},
+	"eulaParagraphe6": "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions.\n\n{appName} mobile is a non-custodial wallet implementation and thus {appCompanyLong} can not access nor restore your account in case of (data) loss.\n\n",
+	"@eulaParagraphe6": {
+		"type": "text",
+		"placeholders_order": [
+			"appName",
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appName": {},
+			"appCompanyLong": {}
+		}
+	},
+	"eulaParagraphe7": "We are not responsible for seed-phrases residing in the Mobile Application. In no event shall we be held liable for any loss of any kind. It is your sole responsibility to maintain appropriate backups of your accounts and their seedprases.\n\n",
+	"@eulaParagraphe7": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaParagraphe8": "You should not act, or refrain from acting solely on the basis of the content of this application.\nYour access to this application does not itself create an adviser-client relationship between You and us.\nThe content of this application does not constitute a solicitation or inducement to invest in any financial products or services offered by us.\nAny advice included in this application has been prepared without taking into account your objectives, financial situation or needs. You should consider our Risk Disclosure Notice before making any decision on whether to acquire the product described in that document.\n\n",
+	"@eulaParagraphe8": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaParagraphe9": "We do not guarantee your continuous access to the application or that your access or use will be error-free.\nWe will not be liable in the event that the application is unavailable to You for any reason (for example, due to computer downtime ascribable to malfunctions, upgrades, server problems, precautionary or corrective maintenance activities or interruption in telecommunication supplies).\n\n",
+	"@eulaParagraphe9": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaParagraphe10": "{appCompanyLong} is the owner and/or authorised user of all trademarks, service marks, design marks, patents, copyrights, database rights and all other intellectual property appearing on or contained within the application, unless otherwise indicated. All information, text, material, graphics, software and advertisements on the application interface are copyright of {appCompanyLong}, its suppliers and licensors, unless otherwise expressly indicated by {appCompanyLong}.\nExcept as provided in the Terms, use of the application does not grant You any right, title, interest or license to any such intellectual property You may have access to on the application.\nWe own the rights, or have permission to use, the trademarks listed in our application. You are not authorised to use any of those trademarks without our written authorization – doing so would constitute a breach of our or another party’s intellectual property rights.\nAlternatively, we might authorise You to use the content in our application if You previously contact us and we agree in writing.\n\n",
+	"@eulaParagraphe10": {
+		"type": "text",
+		"placeholders_order": [
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appCompanyLong": {}
+		}
+	},
+	"eulaParagraphe11": "{appCompanyLong} cannot guarantee the safety or security of your computer systems. We do not accept liability for any loss or corruption of electronically stored data or any damage to any computer system occurred in connection with the use of the application or of the user content.\n{appCompanyLong} makes no representation or warranty of any kind, express or implied, as to the operation of the application or the user content. You expressly agree that your use of the application is entirely at your sole risk.\nYou agree that the content provided in the application and the user content do not constitute financial product, legal or taxation advice, and You agree on not representing the user content or the application as such.\nTo the extent permitted by current legislation, the application is provided on an “as is, as available” basis.\n\n{appCompanyLong} expressly disclaims all responsibility for any loss, injury, claim, liability, or damage, or any indirect, incidental, special or consequential damages or loss of profits whatsoever resulting from, arising out of or in any way related to:\n(a) any errors in or omissions of the application and/or the user content, including but not limited to technical inaccuracies and typographical errors;\n(b) any third party website, application or content directly or indirectly accessed through links in the application, including but not limited to any errors or omissions;\n(c) the unavailability of the application or any portion of it;\n(d) your use of the application;\n(e) your use of any equipment or software in connection with the application.\n\nAny Services offered in connection with the Platform are provided on an 'as is' basis, without any representation or warranty, whether express, implied or statutory. To the maximum extent permitted by applicable law, we specifically disclaim any implied warranties of title, merchantability, suitability for a particular purpose and/or non-infringement. We do not make any representations or warranties that use of the Platform will be continuous, uninterrupted, timely, or error-free.\nWe make no warranty that any Platform will be free from viruses, malware, or other related harmful material and that your ability to access any Platform will be uninterrupted. Any defects or malfunction in the product should be directed to the third party offering the Platform, not to {appCompanyShort}.\nWe will not be responsible or liable to You for any loss of any kind, from action taken, or taken in reliance on the material or information contained in or through the Platform.\nThis is experimental and unfinished software. Use at your own risk. No warranty for any kind of damage. By using this application you agree to this terms and conditions.\n\n",
+	"@eulaParagraphe11": {
+		"type": "text",
+		"placeholders_order": [
+			"appCompanyShort",
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appCompanyShort": {},
+			"appCompanyLong": {}
+		}
+	},
+	"eulaParagraphe12": "When accessing or using the Services, You agree that You are solely responsible for your conduct while accessing and using our Services. Without limiting the generality of the foregoing, You agree that You will not:\n(a) use the Services in any manner that could interfere with, disrupt, negatively affect or inhibit other users from fully enjoying the Services, or that could damage, disable, overburden or impair the functioning of our Services in any manner;\n(b) use the Services to pay for, support or otherwise engage in any illegal activities, including, but not limited to illegal gambling, fraud, money laundering, or terrorist activities;\n(c) use any robot, spider, crawler, scraper or other automated means or interface not provided by us to access our Services or to extract data;\n(d) use or attempt to use another user’s Wallet or credentials without authorization;\n(e) attempt to circumvent any content filtering techniques we employ, or attempt to access any service or area of our Services that You are not authorized to access;\n(f) introduce to the Services any virus, Trojan, worms, logic bombs or other harmful material;\n(g) develop any third-party applications that interact with our Services without our prior written consent;\n(h) provide false, inaccurate, or misleading information;\n(i) encourage or induce any other person to engage in any of the activities prohibited under this Section.\n\n",
+	"@eulaParagraphe12": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"eulaParagraphe13": "You agree and understand that there are risks associated with utilizing Services involving Virtual Currencies including, but not limited to, the risk of failure of hardware, software and internet connections, the risk of malicious software introduction, and the risk that third parties may obtain unauthorized access to information stored within your Wallet, including but not limited to your public and private keys. You agree and understand that {appCompanyLong} will not be responsible for any communication failures, disruptions, errors, distortions or delays You may experience when using the Services, however caused.\nYou accept and acknowledge that there are risks associated with utilizing any virtual currency network, including, but not limited to, the risk of unknown vulnerabilities in or unanticipated changes to the network protocol. You acknowledge and accept that {appCompanyLong} has no control over any cryptocurrency network and will not be responsible for any harm occurring as a result of such risks, including, but not limited to, the inability to reverse a transaction, and any losses in connection therewith due to erroneous or fraudulent actions.\nThe risk of loss in using Services involving Virtual Currencies may be substantial and losses may occur over a short period of time. In addition, price and liquidity are subject to significant fluctuations that may be unpredictable.\nVirtual Currencies are not legal tender and are not backed by any sovereign government. In addition, the legislative and regulatory landscape around Virtual Currencies is constantly changing and may affect your ability to use, transfer, or exchange Virtual Currencies.\nCFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 80.6% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether You understand how CFDs work and whether You can afford to take the high risk of losing your money.\n\n",
+	"@eulaParagraphe13": {
+		"type": "text",
+		"placeholders_order": [
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appCompanyLong": {}
+		}
+	},
+	"eulaParagraphe14": "You agree to indemnify, defend and hold harmless {appCompanyLong}, its officers, directors, employees, agents, licensors, suppliers and any third party information providers to the application from and against all losses, expenses, damages and costs, including reasonable lawyer fees, resulting from any violation of the Terms by You.\nYou also agree to indemnify {appCompanyLong} against any claims that information or material which You have submitted to {appCompanyLong} is in violation of any law or in breach of any third party rights (including, but not limited to, claims in respect of defamation, invasion of privacy, breach of confidence, infringement of copyright or infringement of any other intellectual property right).\n\n",
+	"@eulaParagraphe14": {
+		"type": "text",
+		"placeholders_order": [
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appCompanyLong": {}
+		}
+	},
+	"eulaParagraphe15": "In order to be completed, any Virtual Currency transaction created with the {appCompanyLong} must be confirmed and recorded in the Virtual Currency ledger associated with the relevant Virtual Currency network. Such networks are decentralized, peer-to-peer networks supported by independent third parties, which are not owned, controlled or operated by {appCompanyLong}.\n{appCompanyLong} has no control over any Virtual Currency network and therefore cannot and does not ensure that any transaction details You submit via our Services will be confirmed on the relevant Virtual Currency network. You agree and understand that the transaction details You submit via our Services may not be completed, or may be substantially delayed, by the Virtual Currency network used to process the transaction. We do not guarantee that the Wallet can transfer title or right in any Virtual Currency or make any warranties whatsoever with regard to title.\nOnce transaction details have been submitted to a Virtual Currency network, we cannot assist You to cancel or otherwise modify your transaction or transaction details. {appCompanyLong} has no control over any Virtual Currency network and does not have the ability to facilitate any cancellation or modification requests.\nIn the event of a Fork, {appCompanyLong} may not be able to support activity related to your Virtual Currency. You agree and understand that, in the event of a Fork, the transactions may not be completed, completed partially, incorrectly completed, or substantially delayed. {appCompanyLong} is not responsible for any loss incurred by You caused in whole or in part, directly or indirectly, by a Fork.\nIn no event shall {appCompanyLong}, its affiliates and service providers, or any of their respective officers, directors, agents, employees or representatives, be liable for any lost profits or any special, incidental, indirect, intangible, or consequential damages, whether based on contract, tort, negligence, strict liability, or otherwise, arising out of or in connection with authorized or unauthorized use of the services, or this agreement, even if an authorized representative of {appCompanyLong} has been advised of, has known of, or should have known of the possibility of such damages.\nFor example (and without limiting the scope of the preceding sentence), You may not recover for lost profits, lost business opportunities, or other types of special, incidental, indirect, intangible, or consequential damages. Some jurisdictions do not allow the exclusion or limitation of incidental or consequential damages, so the above limitation may not apply to You.\nWe will not be responsible or liable to You for any loss and take no responsibility for damages or claims arising in whole or in part, directly or indirectly from:\n(a) user error such as forgotten passwords, incorrectly constructed transactions, or mistyped Virtual Currency addresses;\n(b) server failure or data loss;\n(c) corrupted or otherwise non-performing Wallets or Wallet files;\n(d) unauthorized access to applications;\n(e) any unauthorized activities, including without limitation the use of hacking, viruses, phishing, brute forcing or other means of attack against the Services.\n\n",
+	"@eulaParagraphe15": {
+		"type": "text",
+		"placeholders_order": [
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appCompanyLong": {}
+		}
+	},
+	"eulaParagraphe16": "For the avoidance of doubt, {appCompanyLong} does not provide investment, tax or legal advice, nor does {appCompanyLong} broker trades on your behalf. All {appCompanyLong} trades are executed automatically, based on the parameters of your order instructions and in accordance with posted Trade execution procedures, and You are solely responsible for determining whether any investment, investment strategy or related transaction is appropriate for You based on your personal investment objectives, financial circumstances and risk tolerance. You should consult your legal or tax professional regarding your specific situation. Neither {appCompanyShort} nor its owners, members, officers, directors, partners, consultants, nor anyone involved in the publication of this application, is a registered investment adviser or broker-dealer or associated person with a registered investment adviser or broker-dealer and none of the foregoing make any recommendation that the purchase or sale of crypto-assets or securities of any company profiled in the mobile Application is suitable or advisable for any person or that an investment or transaction in such crypto-assets or securities will be profitable. The information contained in the mobile Application is not intended to be, and shall not constitute, an offer to sell or the solicitation of any offer to buy any crypto-asset or security. The information presented in the mobile Application is provided for informational purposes only and is not to be treated as advice or a recommendation to make any specific investment or transaction. Please, consult with a qualified professional before making any decisions. The opinions and analysis included in this applications are based on information from sources deemed to be reliable and are provided “as is” in good faith. {appCompanyShort} makes no representation or warranty, expressed, implied, or statutory, as to the accuracy or completeness of such information, which may be subject to change without notice. {appCompanyShort} shall not be liable for any errors or any actions taken in relation to the above. Statements of opinion and belief are those of the authors and/or editors who contribute to this application, and are based solely upon the information possessed by such authors and/or editors. No inference should be drawn that {appCompanyShort} or such authors or editors have any special or greater knowledge about the crypto-assets or companies profiled or any particular expertise in the industries or markets in which the profiled crypto-assets and companies operate and compete. Information on this application is obtained from sources deemed to be reliable; however, {appCompanyShort} takes no responsibility for verifying the accuracy of such information and makes no representation that such information is accurate or complete. Certain statements included in this application may be forward-looking statements based on current expectations. {appCompanyShort} makes no representation and provides no assurance or guarantee that such forward-looking statements will prove to be accurate. Persons using the {appCompanyShort} application are urged to consult with a qualified professional with respect to an investment or transaction in any crypto-asset or company profiled herein. Additionally, persons using this application expressly represent that the content in this application is not and will not be a consideration in such persons’ investment or transaction decisions. Traders should verify independently information provided in the {appCompanyShort} application by completing their own due diligence on any crypto-asset or company in which they are contemplating an investment or transaction of any kind and review a complete information package on that crypto-asset or company, which should include, but not be limited to, related blog updates and press releases. Past performance of profiled crypto-assets and securities is not indicative of future results. Crypto-assets and companies profiled on this site may lack an active trading market and invest in a crypto-asset or security that lacks an active trading market or trade on certain media, platforms and markets are deemed highly speculative and carry a high degree of risk. Anyone holding such crypto-assets and securities should be financially able and prepared to bear the risk of loss and the actual loss of his or her entire trade. The information in this application is not designed to be used as a basis for an investment decision. Persons using the {appCompanyShort} application should confirm to their own satisfaction the veracity of any information prior to entering into any investment or making any transaction. The decision to buy or sell any crypto-asset or security that may be featured by {appCompanyShort} is done purely and entirely at the reader’s own risk. As a reader and user of this application, You agree that under no circumstances will You seek to hold liable owners, members, officers, directors, partners, consultants or other persons involved in the publication of this application for any losses incurred by the use of information contained in this application {appCompanyShort} and its contractors and affiliates may profit in the event the crypto-assets and securities increase or decrease in value. Such crypto-assets and securities may be bought or sold from time to time, even after {appCompanyShort} has distributed positive information regarding the crypto-assets and companies. {appCompanyShort} has no obligation to inform readers of its trading activities or the trading activities of any of its owners, members, officers, directors, contractors and affiliates and/or any companies affiliated with BC Relations’ owners, members, officers, directors, contractors and affiliates. {appCompanyShort} and its affiliates may from time to time enter into agreements to purchase crypto-assets or securities to provide a method to reach their goals.\n\n",
+	"@eulaParagraphe16": {
+		"type": "text",
+		"placeholders_order": [
+			"appCompanyShort",
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appCompanyShort": {},
+			"appCompanyLong": {}
+		}
+	},
+	"eulaParagraphe17": "The Terms are effective until terminated by {appCompanyLong}.\nIn the event of termination, You are no longer authorized to access the Application, but all restrictions imposed on You and the disclaimers and limitations of liability set out in the Terms will survive termination.\nSuch termination shall not affect any legal right that may have accrued to {appCompanyLong} against You up to the date of termination.\n{appCompanyLong} may also remove the Application as a whole or any sections or features of the Application at any time.\n\n",
+	"@eulaParagraphe17": {
+		"type": "text",
+		"placeholders_order": [
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appCompanyLong": {}
+		}
+	},
+	"eulaParagraphe18": "The provisions of previous paragraphs are for the benefit of {appCompanyLong} and its officers, directors, employees, agents, licensors, suppliers, and any third party information providers to the Application. Each of these individuals or entities shall have the right to assert and enforce those provisions directly against You on its own behalf.\n\n",
+	"@eulaParagraphe18": {
+		"type": "text",
+		"placeholders_order": [
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appCompanyLong": {}
+		}
+	},
+	"eulaParagraphe19": "{appName} mobile is a non-custodial, decentralized and blockchain based application and as such does {appCompanyLong} never store any user-data (accounts and authentication data).\nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on January 31st, 2020\n\n",
+	"@eulaParagraphe19": {
+		"type": "text",
+		"placeholders_order": [
+			"appName",
+			"appCompanyLong"
+		],
+		"placeholders": {
+			"appName": {},
+			"appCompanyLong": {}
+		}
+	},
+	"createPin": "PIN erstellen",
+	"@createPin": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"enterPinCode": "Geben Sie Ihren PIN-Code ein",
+	"@enterPinCode": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"login": "Anmeldung",
+	"@login": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"newAccount": "neues Konto",
+	"@newAccount": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"newAccountUpper": "Neues Konto",
+	"@newAccountUpper": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"addingCoinSuccess": "{name} erfolgreich aktiviert!",
+	"@addingCoinSuccess": {
+		"type": "text",
+		"placeholders_order": [
+			"name"
+		],
+		"placeholders": {
+			"name": {}
+		}
+	},
+	"connecting": "Verbindung wird hergestellt ...",
+	"@connecting": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"addCoin": "Coin aktivieren",
+	"@addCoin": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"numberAssets": "{assets} Assets",
+	"@numberAssets": {
+		"type": "text",
+		"placeholders_order": [
+			"assets"
+		],
+		"placeholders": {
+			"assets": {}
+		}
+	},
+	"enterSeedPhrase": "Geben Sie Ihre Seed-Phrase ein",
+	"@enterSeedPhrase": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"exampleHintSeed": "Beispiel: build case level ...",
+	"@exampleHintSeed": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"confirm": "Bestätigen",
+	"@confirm": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"buy": "Kaufen",
+	"@buy": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"sell": "Verkaufen",
+	"@sell": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"shareAddress": "Meine {coinName} Adresse:\n{address}",
+	"@shareAddress": {
+		"type": "text",
+		"placeholders_order": [
+			"coinName",
+			"address"
+		],
+		"placeholders": {
+			"coinName": {},
+			"address": {}
+		}
+	},
+	"withdraw": "Auszahlung",
+	"@withdraw": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"errorValueEmpty": "Wert ist zu hoch oder zu niedrig",
+	"@errorValueEmpty": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"amount": "Menge",
+	"@amount": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"addressSend": "Empfängeradresse",
+	"@addressSend": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"withdrawValue": "{amount} {coinName} ABHEBEN",
+	"@withdrawValue": {
+		"type": "text",
+		"placeholders_order": [
+			"amount",
+			"coinName"
+		],
+		"placeholders": {
+			"amount": {},
+			"coinName": {}
+		}
+	},
+	"withdrawConfirm": "Auszahlung bestätigen",
+	"@withdrawConfirm": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"close": "Schließen",
+	"@close": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"confirmSeed": "Seed-Phrase bestätigen",
+	"@confirmSeed": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"seedPhraseTitle": "Ihr neuer Seed",
+	"@seedPhraseTitle": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"getBackupPhrase": "Wichtig: Sichern Sie Ihren Seed bevor Sie fortfahren!",
+	"@getBackupPhrase": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"recommendSeedMessage": "Wir empfehlen die Offline-Sicherung.",
+	"@recommendSeedMessage": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"next": "Weiter",
+	"@next": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"confirmPin": "PIN-Code bestätigen",
+	"@confirmPin": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"errorTryAgain": "Fehler, bitte versuchen Sie es erneut",
+	"@errorTryAgain": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"settings": "Einstellungen",
+	"@settings": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"security": "Sicherheit",
+	"@security": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"activateAccessPin": "PIN-Schutz aktivieren",
+	"@activateAccessPin": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"lockScreen": "Bildschirm ist gesperrt",
+	"@lockScreen": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"changePin": "PIN-Code ändern",
+	"@changePin": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"logout": "Ausloggen",
+	"@logout": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"max": "MAX",
+	"@max": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"amountToSell": "Zu verkaufende Menge",
+	"@amountToSell": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"youWillReceived": "Sie erhalten:",
+	"@youWillReceived": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"selectCoinToSell": "Wählen Sie den zu verkaufenden Coin",
+	"@selectCoinToSell": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"selectCoinToBuy": "Wählen Sie den zu kaufenden Coin aus",
+	"@selectCoinToBuy": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"swap": "swap",
+	"@swap": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"buySuccessWaiting": "Swap gestartet, bitte warten!",
+	"@buySuccessWaiting": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"networkFee": "Netzwerkgebühr",
+	"@networkFee": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"commissionFee": "Provision",
+	"@commissionFee": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"portfolio": "Portfolio",
+	"@portfolio": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"checkOut": "Abmelden",
+	"@checkOut": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"estimateValue": "Geschätzter Gesamtwert",
+	"@estimateValue": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"selectPaymentMethod": "Wählen Sie eine Bezahlart",
+	"@selectPaymentMethod": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"volumes": "Volumen",
+	"@volumes": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"placeOrder": "Auftrag platzieren",
+	"@placeOrder": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"comingSoon": "Demnächst...",
+	"@comingSoon": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"marketplace": "Marktplatz",
+	"@marketplace": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"youAreSending": "Sie senden:",
+	"@youAreSending": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"code": "Code:",
+	"@code": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"value": "Wert:",
+	"@value": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"paidWith": "Bezahlt mit",
+	"@paidWith": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"errorValueNotEmpty": "Bitte Daten eintippen",
+	"@errorValueNotEmpty": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"errorAmountBalance": "Guthaben unzureichend",
+	"@errorAmountBalance": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"errorNotAValidAddress": "Ungültige Adresse",
+	"@errorNotAValidAddress": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"toAddress": "An Adresse:",
+	"@toAddress": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"receive": "ERHALTEN",
+	"@receive": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"send": "SENDEN",
+	"@send": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"back": "zurück",
+	"@back": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"cancel": "stornieren",
+	"@cancel": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"commingsoon": "TX Details folgen in Kürze!",
+	"@commingsoon": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"history": "Verlauf",
+	"@history": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"commingsoonGeneral": "Details folgen in Kürze!",
+	"@commingsoonGeneral": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"orderMatching": "Auftrag wird gematched",
+	"@orderMatching": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"orderMatched": "Auftrag gematched!",
+	"@orderMatched": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"swapOngoing": "Swap läuft",
+	"@swapOngoing": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"swapSucceful": "Swap erfolgreich",
+	"@swapSucceful": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"timeOut": "Zeitüberschreitung",
+	"@timeOut": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"swapFailed": "Swap fehlgeschlagen",
+	"@swapFailed": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"errorTryLater": "Fehler, bitte versuchen Sie es später",
+	"@errorTryLater": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"feedback": "Protokolldatei teilen",
+	"@feedback": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"loadingOrderbook": "Auftragsbuch wird geladen...",
+	"@loadingOrderbook": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"claim": "Anfordern",
+	"@claim": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"claimTitle": "KMD Prämie anfordern?",
+	"@claimTitle": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"success": "Erfolgreich!",
+	"@success": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"noRewardYet": "Keine Belohnung verfügbar. Bitte versuchen Sie es in 1 Stunde erneut.",
+	"@noRewardYet": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"loading": "Wird geladen...",
+	"@loading": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"dex": "DEX",
+	"@dex": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"media": "Neuigkeiten",
+	"@media": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"newsFeed": "Newsfeed",
+	"@newsFeed": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"clipboard": "In die Zwischenablage kopiert",
+	"@clipboard": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"from": "Von",
+	"@from": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"to": "An",
+	"@to": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"txConfirmed": "BESTÄTIGT",
+	"@txConfirmed": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"txBlock": "Block",
+	"@txBlock": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"txConfirmations": "Bestätigungen",
+	"@txConfirmations": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"txFee": "Gebühr",
+	"@txFee": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"noSwaps": "Kein Verlauf vorhanden",
+	"@noSwaps": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"trade": "HANDEL",
+	"@trade": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"tradeCompleted": "SWAP ABGESCHLOSSEN!",
+	"@tradeCompleted": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"step": "Schritt",
+	"@step": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"tradeDetail": "HANDELSDETAILS",
+	"@tradeDetail": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"requestedTrade": "Angeforderter Handel",
+	"@requestedTrade": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"mediaBrowse": "DURCHBLÄTTERN",
+	"@mediaBrowse": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"mediaNotSavedDescription": "SIE HABEN KEINE GESPEICHERTEN ARTIKEL",
+	"@mediaNotSavedDescription": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"mediaBy": "Von",
+	"@mediaBy": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"lockScreenAuth": "Bitte authentifizieren!",
+	"@lockScreenAuth": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"noTxs": "Keine Transaktionen vorhanden",
+	"@noTxs": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"done": "Erledigt",
+	"@done": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"selectCoinTitle": "Coins aktivieren:",
+	"@selectCoinTitle": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"selectCoinInfo": "Wählen Sie die Coins aus, die Sie Ihrem Portfolio hinzufügen möchten.",
+	"@selectCoinInfo": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"noArticles": "Keine Neuigkeiten - bitte versuchen Sie es später erneut!",
+	"@noArticles": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"infoTrade1": "Der Swap kann nicht rückgängig gemacht werden und ist ein endgültiges Ereignis!",
+	"@infoTrade1": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"infoTrade2": "Der Swap kann bis zu 60 Minuten dauern. Schließen Sie diese Anwendung NICHT!",
+	"@infoTrade2": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"swapDetailTitle": "TAUSCH-DETAILS BESTÄTIGEN",
+	"@swapDetailTitle": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"checkSeedPhrase": "Seed-Phrase überprüfen",
+	"@checkSeedPhrase": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"checkSeedPhraseTitle": "LASSEN SIE UNS IHREN SEED DOPPELT ÜBERPRÜFEN",
+	"@checkSeedPhraseTitle": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"checkSeedPhraseInfo": "Ihr Seed ist wichtig - deshalb stellen wir Ihnen drei verschiedene Fragen, um sicherzustellen, dass dieser korrekt ist und Sie Ihr Wallet jederzeit problemlos wiederherstellen können.",
+	"@checkSeedPhraseInfo": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"checkSeedPhraseSubtile": "Was ist das {index}.Wort in Ihrer Seed?",
+	"@checkSeedPhraseSubtile": {
+		"type": "text",
+		"placeholders_order": [
+			"index"
+		],
+		"placeholders": {
+			"index": {}
+		}
+	},
+	"checkSeedPhraseHint": "{index} Wort eingeben",
+	"@checkSeedPhraseHint": {
+		"type": "text",
+		"placeholders_order": [
+			"index"
+		],
+		"placeholders": {
+			"index": {}
+		}
+	},
+	"checkSeedPhraseButton1": "WEITER",
+	"@checkSeedPhraseButton1": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"checkSeedPhraseButton2": "ZURÜCK UND ERNEUT ÜBERPRÜFEN",
+	"@checkSeedPhraseButton2": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"activateAccessBiometric": "Biometrischen Schutz aktivieren",
+	"@activateAccessBiometric": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"allowCustomSeed": "Benutzerdefinierten Seed erlauben",
+	"@allowCustomSeed": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"hintEnterPassword": "Geben Sie Ihr Kennwort ein",
+	"@hintEnterPassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"signInWithSeedPhrase": "Kennwort vergessen? Wallet mit der Seed wiederherstellen",
+	"@signInWithSeedPhrase": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"signInWithPassword": "Mit Kennwort anmelden",
+	"@signInWithPassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"hintEnterSeedPhrase": "Geben Sie Ihren Seed ein",
+	"@hintEnterSeedPhrase": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"wrongPassword": "Die Kennwörter stimmen nicht überein. Bitte versuche es erneut.",
+	"@wrongPassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"hintNameYourWallet": "Benennen Sie Ihr Wallet",
+	"@hintNameYourWallet": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"infoWalletPassword": "Aus Sicherheitsgründen müssen Sie ein Kennwort für die Verschlüsselung ihres Wallets angeben.",
+	"@infoWalletPassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"confirmPassword": "Kennwort bestätigen",
+	"@confirmPassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"dontWantPassword": "Ich möchte kein Kennwort",
+	"@dontWantPassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"areYouSure": "BIST DU SICHER?",
+	"@areYouSure": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"infoPasswordDialog": "Verwenden Sie ein sicheres Kennwort und speichern Sie es nicht auf demselben Gerät",
+	"@infoPasswordDialog": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"setUpPassword": "KENNWORT EINRICHTEN",
+	"@setUpPassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"createAWallet": "Wallet erstellen",
+	"@createAWallet": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"restoreWallet": "WIEDERHERSTELLEN",
+	"@restoreWallet": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"hintPassword": "Kennwort",
+	"@hintPassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"hintConfirmPassword": "Kennwort bestätigen",
+	"@hintConfirmPassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"hintCurrentPassword": "Aktuelles Kennwort",
+	"@hintCurrentPassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"logoutsettings": "Abmelde-Einstellungen",
+	"@logoutsettings": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"logoutOnExit": "Beim Beenden abmelden",
+	"@logoutOnExit": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"deleteWallet": "Wallet löschen",
+	"@deleteWallet": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"delete": "Löschen",
+	"@delete": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"settingDialogSpan1": "Sind Sie sicher, dass Sie die",
+	"@settingDialogSpan1": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"settingDialogSpan2": "Wallet löschen möchten?",
+	"@settingDialogSpan2": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"settingDialogSpan3": "Wenn ja, stellen Sie sicher, dass Sie",
+	"@settingDialogSpan3": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"settingDialogSpan4": "Ihren Seed sichern,",
+	"@settingDialogSpan4": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"settingDialogSpan5": "um Ihre Wallet in Zukunft wiederherzustellen.",
+	"@settingDialogSpan5": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"backupTitle": "Sicherung",
+	"@backupTitle": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"enterpassword": "Bitte Kennwort eingeben um fortzufahren.",
+	"@enterpassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"clipboardCopy": "In die Zwischenablage kopieren",
+	"@clipboardCopy": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"unlock": "Freischalten",
+	"@unlock": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"noOrder": "Bitte geben Sie die {coinName} Menge ein.",
+	"@noOrder": {
+		"type": "text",
+		"placeholders_order": [
+			"coinName"
+		],
+		"placeholders": {
+			"coinName": {}
+		}
+	},
+	"bestAvailableRate": "Wechselkurs",
+	"@bestAvailableRate": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"receiveLower": "Erhalten",
+	"@receiveLower": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"makeAorder": "Einen Auftrag erstellen",
+	"@makeAorder": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"exchangeTitle": "TAUSCHEN",
+	"@exchangeTitle": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"orders": "Aufträge",
+	"@orders": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"selectCoin": "Coin auswählen",
+	"@selectCoin": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"noFunds": "Kein Guthaben",
+	"@noFunds": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"noFundsDetected": "Kein Guthaben vorhanden - bitte zuerst einzahlen.",
+	"@noFundsDetected": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"goToPorfolio": "Zum Portfolio gehen",
+	"@goToPorfolio": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"noOrderAvailable": "Klicken Sie hier, um einen Auftrag zu erstellen",
+	"@noOrderAvailable": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"orderCreated": "Auftrag erstellt",
+	"@orderCreated": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"orderCreatedInfo": "Auftrag erfolgreich erstellt",
+	"@orderCreatedInfo": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"showMyOrders": "MEINE AUFTRÄGE ANZEIGEN",
+	"@showMyOrders": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"titleCreatePassword": "PASSWORT ERSTELLEN",
+	"@titleCreatePassword": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"encryptingWallet": "Wallet verschlüsseln",
+	"@encryptingWallet": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"decryptingWallet": "Wallet entschlüsseln",
+	"@decryptingWallet": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"notEnoughtBalanceForFee": "Nicht genügend Guthaben für Gebühren - handeln Sie einen kleinere Menge",
+	"@notEnoughtBalanceForFee": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"noInternet": "Keine Internetverbindung",
+	"@noInternet": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"legalTitle": "Rechtliches",
+	"@legalTitle": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"disclaimerAndTos": "Haftungsausschluss & AGB",
+	"@disclaimerAndTos": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"accepteula": "EULA akzeptieren",
+	"@accepteula": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"accepttac": "Allgemeine Geschäftsbedingungen akzeptieren",
+	"@accepttac": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"confirmeula": "Durch Klicken auf die folgenden Schaltflächen bestätigen Sie, dass Sie die \"EULA\" und die \"Allgemeinen Geschäftsbedingungen\" gelesen haben und diese akzeptieren",
+	"@confirmeula": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"youWillReceiveClaim": "Sie erhalten {amount} {coin}",
+	"@youWillReceiveClaim": {
+		"type": "text",
+		"placeholders_order": [
+			"amount",
+			"coin"
+		],
+		"placeholders": {
+			"amount": {},
+			"coin": {}
+		}
+	},
+	"seeOrders": "Klicken Sie hier, um {amount} Aufträge zu sehen",
+	"@seeOrders": {
+		"type": "text",
+		"placeholders_order": [
+			"amount"
+		],
+		"placeholders": {
+			"amount": {}
+		}
+	},
+	"clickToSee": "Zum Anzeigen klicken",
+	"@clickToSee": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"price": "Preis",
+	"@price": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"availableVolume": "max vol",
+	"@availableVolume": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
+	"Active": "Aktiv",
+	"Applause": "Beifall",
+	"Can't play that": "Kann nicht abgespielt werden",
+	"Failed": "Fehlgeschlagen",
+	"Maker": "Maker",
+	"Play at full volume": "In voller Lautstärke abspielen",
+	"Sound": "Sound",
+	"Taker": "Taker",
+	"a swap fails": "ein Swap ist fehlgeschlagen",
+	"a swap runs to completion": "ein Swap läuft bis zur Fertigstellung",
+	"addressAdd": "Adresse hinzufügen",
+	"addressBook": "Adressbuch",
+	"addressBookEmpty": "Adressbuch ist leer",
+	"addressBookFilter": "Nur Kontakte mit {title} Adressen anzeigen",
+	"addressBookTitle": "Adressbuch",
+	"addressCoinInactive": "Sie können kein Guthaben an die {abbr} Adresse senden, da {abbr} nicht aktiviert ist. Bitte gehen Sie zum Portfolio.",
+	"addressNotFound": "Nichts gefunden",
+	"addressSelectCoin": "Coin auswählen",
+	"advanced": "Fortgeschritten",
+	"all": "Alle",
+	"alreadyExists": "Ist bereits vorhanden",
+	"answer_1": "Nein! {appName} hat keine Vormundschaft. Wir speichern niemals sensible Daten, einschließlich Ihrer privaten Schlüssel, Seed-Phrasen oder PINs. Diese Daten werden nur auf dem Gerät des Benutzers gespeichert und verlassen es nie. Sie haben die volle Kontrolle über Ihr Vermögen.",
+	"answer_10": "{appName} ist auf Mobilgeräten für Android und iPhone sowie auf dem Desktop für Windows, Mac und Linux Betriebssystemen erhältlich.",
+	"answer_2": "Bei anderen DEXs können Sie im Allgemeinen nur Assets handeln, die auf einem einzigen Blockchain-Netzwerk basieren, Proxy-Token verwenden und nur einen einzigen Auftrag mit denselben Geldmitteln aufgeben.\n\n{appName} ermöglicht Ihnen den nativen Handel über zwei verschiedene Blockchain-Netzwerke ohne Proxy-Tokens. Sie können auch mehrere Aufträge mit demselben Guthaben platzieren. Sie können zum Beispiel 0,1 BTC für KMD, QTUM oder VRSC verkaufen - der erste Auftrag, der ausgeführt wird, storniert automatisch alle anderen Aufträge.",
+	"answer_3": "Mehrere Faktoren bestimmen die Bearbeitungszeit für einen Swap. Die Blockzeit der gehandelten Assets hängt vom jeweiligen Netzwerk ab (Bitcoin ist normalerweise das langsamste). Außerdem kann der Benutzer die Sicherheitseinstellungen anpassen. Zum Beispiel (können Sie {appName} bitten, eine KMD-Transaktion nach nur 3 Bestätigungen als endgültig zu betrachten, wodurch die Swap-Zeit kürzer wird als beim Warten auf eine <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">Beglaubigung</a>",
+	"answer_4": "Ja. Sie müssen mit dem Internet verbunden bleiben und die App ausführen, um jeden Atomic Swap erfolgreich abzuschließen (sehr kurze Verbindungsunterbrechungen sind normalerweise in Ordnung). Andernfalls besteht das Risiko einer Auftragsstornierung, wenn Sie ein Maker sind, und das Risiko eines Geldverlusts, wenn Sie ein Taker sind.\n\nDas Atomic-Swap-Protokoll erfordert, dass beide Teilnehmer online bleiben und die beteiligten Blockchains überwachen, damit der Prozess atomar bleibt.",
+	"answer_5": "Beim Handel auf {appName} sind zwei Gebührenkategorien zu berücksichtigen.\n\n1. {appName} berechnet ungefähr 0,13 % (1/777 des Handelsvolumens, aber nicht weniger als 0,0001) als Handelsgebühr für Taker-Aufträge, Maker-Aufträge haben keine Gebühren.\n\n2. Sowohl Maker als auch Taker müssen normale Netzwerkgebühren an die beteiligten Blockchains zahlen, wenn sie Atomic-Swap-Transaktionen durchführen.\n\nDie Netzwerkgebühren können je nach ausgewähltem Handelspaar stark variieren.",
+	"answer_6": "Ja! {appName} bietet Support über den <a href=\"{link}\">{appCompanyShort} {name}</a>. Das Team und die Community helfen Euch gerne weiter!\n",
+	"answer_7": "Nein! {appName} ist vollständig dezentralisiert. Es ist nicht möglich, den Benutzerzugang durch Dritte zu beschränken.",
+	"answer_8": "{appName} wird vom {appCompanyShort}-Team entwickelt. {appCompanyShort} ist eines der etabliertesten Blockchain-Projekte, das an innovativen Lösungen wie Atomic Swaps, Delayed Proof of Work und einer interoperablen Multi-Chain-Architektur arbeitet.",
+	"answer_9": "Auf jeden Fall! Sie können unsere <a href=\"https://developers.atomicdex.io/\">Entwicklerdokumentation</a> für weitere Details lesen oder uns mit Ihren Partnerschaftsanfragen kontaktieren. Haben Sie eine spezielle technische Frage? Die {appName}-Entwicklercommunity ist immer bereit zu helfen!",
+	"authenticate": "authentifizieren",
+	"automaticRedirected": "Sie werden automatisch zur Portfolio-Seite weitergeleitet, wenn der erneute Aktivierungsprozess abgeschlossen ist.",
+	"batteryCriticalError": "Der Akkustand ist kritisch ({batteryLevelCritical}%) um einen Swap sicher auszuführen. Bitte laden Sie ihr Handy auf und versuchen es später noch einmal.",
+	"batteryLowWarning": "Ihre Akkuladung ist niedriger als {batteryLevelLow} %. Bitte denken Sie an das Aufladen des Telefons.",
+	"batterySavingWarning": "Ihr  Handy ist im Energissparmodus. Bitte deaktivieren Sie diesen Modus oder gehen Sie mit der App NICHT im Hintergrundmodus. Andernfalls könnte die App durch das Betriebssystem beendet werden und der Swap schlägt fehl.",
+	"builtKomodo": "Auf Komodo aufgebaut",
+	"builtOnKmd": "Auf Komodo aufgebaut",
+	"buyOrderType": "In Maker-Auftrag umwandeln, wenn kein match stattgefunden hat",
+	"buySuccessWaitingError": "Auftragsvermittlung läuft, bitte warten Sie {seconde} Sekunden!",
+	"buyTestCoinWarning": "Warnung, Sie möchten Test-Coins ohne tatsächlichen Wert kaufen!",
+	"camoPinBioProtectionConflict": "Tarnungs-PIN und Bio-Schutz können nicht gleichzeitig aktiviert werden.",
+	"camoPinBioProtectionConflictTitle": "Konflikt zwischen Carmo-PIN und Bio-Schutz.",
+	"camoPinChange": "Tarnungs-PIN ändern",
+	"camoPinCreate": "Tarnungs-PIN erstellen",
+	"camoPinDesc": "Wenn Sie die App mit der Tarnungs-PIN entsperren, wird ein gefälschtes NIEDRIGERES Guthaben angezeigt und die Konfigurationsoption Tarnungs-PIN ist in den Einstellungen NICHT sichtbar.",
+	"camoPinInvalid": "ungültiger Tarnungs-PIN",
+	"camoPinLink": "Tarnungs-PIN",
+	"camoPinNotFound": "Tarnungs-PIN nicht gefunden",
+	"camoPinOff": "Aus",
+	"camoPinOn": "An",
+	"camoPinSaved": "Tarnungs-PIN gespeichert",
+	"camoPinTitle": "Tarnungs-PIN",
+	"camoSetupSubtitle": "Neuen Tarnungs-PIN eingeben",
+	"camoSetupTitle": "Tarnungs-PIN Einrichtung",
+	"camouflageSetup": "Tarnungs-PIN Einrichtung",
+	"cancelButton": "stornieren",
+	"cancelOrder": "Auftrag stornieren",
+	"candleChartError": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
+	"cantDeleteDefaultCoinOk": "Ok",
+	"cantDeleteDefaultCoinSpan": "ist ein Standard-Coin. Standard-Coins können nicht deaktiviert werden.",
+	"cantDeleteDefaultCoinTitle": "Kann nicht deaktiviert werden",
+	"cex": "CEX",
+	"cexChangeRate": "CEX-Tauschrate",
+	"cexData": "CEX-Daten",
+	"cexDataDesc": "Die mit diesem Symbol gekennzeichneten Marktdaten (Kurse, Charts usw.) stammen aus Drittquellen (<a href=\"https://www.coingecko.com/\">coingecko.com</a>, <a href=\"https://openrates.io/\">openrates.io</a>).",
+	"checkForUpdates": "Nach Updates suchen",
+	"chineseLanguage": "Chinesisch",
+	"closeMessage": "Fehlermeldung schließen",
+	"closePreview": "Vorschau schließen",
+	"coinSelectClear": "Löschen",
+	"coinSelectNotFound": "keine aktivierten Coins",
+	"coinSelectTitle": "Coin auswählen",
+	"comparedToCex": "im Vergleich zu CEX",
+	"configureWallet": "Bitte warten, ihre Wallet wird konfiguriert...",
+	"confirmCamouflageSetup": "Tarnungs-PIN bestätigen",
+	"confirmCancel": "Wollen Sie die Order wirklich stornieren?",
+	"contactCancel": "Abbrechen",
+	"contactDelete": "Kontakt löschen",
+	"contactDeleteBtn": "Löschen",
+	"contactDeleteWarning": "Möchten Sie den Kontakt {name} wirklich löschen?",
+	"contactDiscardBtn": "Verwerfen",
+	"contactEdit": "Bearbeiten",
+	"contactExit": "Beenden",
+	"contactExitWarning": "Änderungen verwerfen?",
+	"contactNotFound": "Keine Kontakte gefunden",
+	"contactSave": "Sichern",
+	"contactTitle": "Kontaktdetails",
+	"contactTitleName": "Name",
+	"convert": "Umwandeln",
+	"couldntImportError": "Konnte nicht importiert werden:",
+	"create": "Handeln",
+	"createContact": "Kontakt erstellen",
+	"currency": "Währung",
+	"currencyDialogTitle": "Währung",
+	"currentValue": "Aktueller Wert:",
+	"customFee": "Individuelle Gebühr",
+	"customFeeWarning": "Individuelle Gebühr nur nutzen, wenn Sie wissen was darunter zu verstehen ist!",
+	"customSeedWarning": "Benutzerdefinierte Seed-Phrasen sind möglicherweise weniger sicher und leichter zu knacken als eine generierte BIP39-konforme Seed-Phrase oder ein privater Schlüssel (WIF). Um zu bestätigen, dass Sie das Risiko verstehen und wissen was Sie tun, geben Sie \"{iunderstand}\" im Kasten unten an.\n",
+	"dPow": "Komodo dPoW Sicherheit",
+	"date": "Datum",
+	"deleteConfirm": "Deaktivierung bestätigen",
+	"deleteSpan1": "Möchten Sie",
+	"deleteSpan2": "von ihrem Portfolio entfernen? Alle offenen Aufträge werden storniert.",
+	"deletingWallet": "Wallet wird gelöscht...",
+	"details": "Details",
+	"deutscheLanguage": "Deutsch",
+	"developerTitle": "Entwickler/in",
+	"dexIsNotAvailable": "DEX ist für diesen Coin nicht verfügbar",
+	"dontAskAgain": "Nicht mehr nachfragen",
+	"duration": "Dauer",
+	"editContact": "Kontakt bearbeiten",
+	"emptyCoin": "Geben Sie die {abbr}  Adresse ein",
+	"emptyExportPass": "Verschlüsselungskennwort darf nicht leer sein",
+	"emptyImportPass": "Kennwort darf nicht leer sein",
+	"emptyName": "Kontakt-Name darf nicht leer sein",
+	"emptyWallet": "Wallet-Name darf nicht leer sein",
+	"enableTestCoins": "Test-Coins aktivieren",
+	"enablingTooManyAssetsSpan1": "Sie haben",
+	"enablingTooManyAssetsSpan2": "Assets aktivert und versuchen",
+	"enablingTooManyAssetsSpan3": "weitere zu aktivieren. Das Maximallimit beträgt",
+	"enablingTooManyAssetsSpan4": ". Bitte deaktivieren sie welche, bevor neue aktiviert werden.",
+	"enablingTooManyAssetsTitle": "Es wurde versucht, zu viele Assets zu aktivieren",
+	"englishLanguage": "Englisch",
+	"enterNewPinCode": "Geben Sie ihren neuen PIN ein",
+	"enterOldPinCode": "Geben Sie ihren alten PIN ein",
+	"enterSellAmount": "Sie müssen zuerst die Verkaufsmenge eingeben",
+	"errorNotAValidAddressSegWit": "Segwit-Adressen werden (noch) nicht unterstützt",
+	"errorNotEnoughGas": "Nicht genug Gas - verwenden Sie mindestens {gas} Gwei",
+	"exchangeExpedient": "Sinnvoll",
+	"exchangeExpensive": "Teuer",
+	"exchangeIdentical": "Identisch mit CEX",
+	"exchangeRate": "Wechselkurs:",
+	"exportButton": "Exportieren",
+	"exportContactsTitle": "Kontakte",
+	"exportDesc": "Bitte wählen Sie die Elemente aus, die in eine verschlüsselte Datei exportiert werden sollen.",
+	"exportLink": "Exportieren",
+	"exportNotesTitle": "Hinweise",
+	"exportSuccessTitle": "Die Elemente wurden erfolgreich exportiert:",
+	"exportSwapsTitle": "Swaps",
+	"exportTitle": "Exportieren",
+	"fakeBalanceAmt": "Gefälschter Guthaben:",
+	"faqTitle": "Häufig gestellte Fragen",
+	"faucetError": "Fehler",
+	"faucetInProgress": "Anfrage an {coin} faucet senden...",
+	"faucetName": "FAUCET",
+	"faucetSuccess": "Erfolg",
+	"faucetTimedOut": "Zeitüberschreitung der Anfrage",
+	"feedNewsTab": "Neuigkeiten",
+	"feedNotFound": "Hier gibt es nichts",
+	"feedNotifTitle": "{appCompanyShort} Neuigkeiten",
+	"feedReadMore": "Mehr lesen...",
+	"feedTab": "Feed",
+	"feedTitle": "Newsfeed",
+	"feedUnableToProceed": "Aktualisierung der Nachrichten kann nicht fortgesetzt werden",
+	"feedUnableToUpdate": "Nachrichten können nicht aktualisiert werden",
+	"feedUpToDate": "Bereits auf dem neuesten Stand",
+	"feedUpdated": "Newsfeed aktualisiert",
+	"filtersAll": "Alle",
+	"filtersButton": "Filter",
+	"filtersClearAll": "Alle Filter löschen",
+	"filtersFailed": "Fehlgeschlagen",
+	"filtersFrom": "Von Datum",
+	"filtersMaker": "Maker",
+	"filtersReceive": "Coin erhalten",
+	"filtersSell": "Coin verkaufen",
+	"filtersStatus": "Status",
+	"filtersSuccessful": "Erfolgreich",
+	"filtersTaker": "Taker",
+	"filtersTo": "Bis Datum",
+	"filtersType": "Taker/Maker",
+	"fingerprint": "Fingerabdruck",
+	"frenchLanguage": "Französisch",
+	"gasFee": "{coin}-Gebühr",
+	"gasLimit": "Gas-Limit",
+	"gasNotActive": "Bitte aktivieren Sie {coin}.",
+	"gasPrice": "Gas-Preis",
+	"generalPinNotActive": "Der allgemeine PIN-Schutz ist nicht aktiv.\nDer Tarnungsmodus ist nicht verfügbar.\nBitte aktivieren Sie den PIN-Schutz.",
+	"helpLink": "Hilfe",
+	"helpTitle": "Hilfe und Support",
+	"hideBalance": "Guthaben ausblenden",
+	"hintCreatePassword": "Kennwort erstellen",
+	"hours": "h",
+	"hungarianLanguage": "Ungarisch",
+	"iUnderstand": "Ich habe verstanden",
+	"importButton": "Importieren",
+	"importDecryptError": "Ungültiges Kennwort oder beschädigte Daten",
+	"importDesc": "Zu importierende Gegenstände:",
+	"importFileNotFound": "Datei nicht gefunden",
+	"importInvalidSwapData": "Ungültige Swap-Daten. Bitte geben Sie eine gültige Swap-Status JSON-Datei an.",
+	"importLink": "Importieren",
+	"importLoadDesc": "Bitte wählen Sie eine verschlüsselte Datei zum Importieren aus.",
+	"importLoadSwapDesc": "Bitte wählen Sie eine einfache Textauslagerungsdatei zum Importieren aus.",
+	"importLoading": "Öffnung...",
+	"importPassCancel": "Abbrechen",
+	"importPassOk": "Ok",
+	"importPassword": "Kennwort",
+	"importSingleSwapLink": "Einzigen Swap importieren",
+	"importSingleSwapTitle": "Swaps importieren",
+	"importSomeItemsSkippedWarning": "Einige Elemente wurden übersprungen",
+	"importSuccessTitle": "Die Elemente wurden erfolgreich importiert:",
+	"importSwapFailed": "Import von Swaps fehlgeschlagen",
+	"importSwapJsonDecodingError": "Fehler beim Dekodieren der json-Datei",
+	"importTitle": "Importieren",
+	"insufficientBalanceToPay": "{abbr} Guthaben reicht nicht aus, um die Handelsgebühr zu bezahlen",
+	"insufficientText": "Die Mindestmenge, die für diesen Auftrag erforderlich ist, beträgt",
+	"insufficientTitle": "Unzureichendes Volumen",
+	"internetRefreshButton": "Aktualisieren",
+	"internetRestored": "Internetverbindung wiederhergestellt",
+	"invalidSwap": "Swap kann nicht durchgeführt werden",
+	"invalidSwapDetailsLink": "Details",
+	"isUnavailable": "{coinAbbr} ist nicht verfügbar :(",
+	"japaneseLanguage": "Japanisch",
+	"language": "Sprache",
+	"latestTxs": "Letzte Transaktionen",
+	"less": "Weniger",
+	"logoutWarning": "Sind Sie sicher, dass Sie sich jetzt abmelden möchten?",
+	"longMinutes": "Minuten",
+	"makerDetailsCancel": "Auftrag stornieren",
+	"makerDetailsCreated": "Erstellt am",
+	"makerDetailsFor": "Erhalten",
+	"makerDetailsId": "Auftrags-ID",
+	"makerDetailsNoSwaps": "Durch diesen Auftrag wurden keine Swaps gestartet",
+	"makerDetailsPrice": "Preis",
+	"makerDetailsSell": "Verkauf",
+	"makerDetailsSwaps": "Durch diesen Auftrag gestartete Swaps",
+	"makerDetailsTitle": "Details des Maker-Auftrag",
+	"makerOrder": "Maker-Auftrag",
+	"marketsChart": "Chart",
+	"marketsDepth": "Tiefe",
+	"marketsNoAsks": "Keine Anfragen gefunden",
+	"marketsNoBids": "Keine Angebote gefunden",
+	"marketsOrderDetails": "Details zum Auftrag",
+	"marketsOrderbook": "AUFTRAGSBUCH",
+	"marketsPrice": "PREIS",
+	"marketsSelectCoins": "Bitte Coins auswählen",
+	"marketsTab": "Märkte",
+	"marketsTitle": "MÄRKTE",
+	"matchExportPass": "Kennwörter müssen übereinstimmen",
+	"matchingCamoChange": "Ändern",
+	"matchingCamoPinError": "Ihre allgemeine PIN und die Tarnungs-PIN sind identisch.\nDer Tarnmodus wird nicht verfügbar sein.\nBitte ändern Sie die Tarnungs-PIN.",
+	"matchingCamoTitle": "Ungültige PIN",
+	"maxOrder": "Max Auftragsvolumen:",
+	"mediaBrowseFeed": "FEED DURCHBLÄTTERN",
+	"mediaSaved": "GESPEICHERT",
+	"merge": "Zusammenfassen",
+	"mergedValue": "Zusammengefasster Wert:",
+	"milliseconds": "ms",
+	"min": "MIN",
+	"minOrder": "Min Auftragsvolumen:",
+	"minValue": "Die Mindestmenge für den Verkauf ist {number} {coinName}",
+	"minValueBuy": "Die Mindestmenge für den Kauf ist {number} {coinName}",
+	"minValueOrder": "Die Mindestmenge des Auftrags ist {buyAmount} {buyCoin}\n({sellAmount} {sellCoin})",
+	"minValueSell": "Die Mindestmenge für den Verkauf ist {number} {coinName}",
+	"minVolumeInput": "Muss größer sein als {minValue} {coin}",
+	"minVolumeIsTDH": "Muss niedriger als die Verkaufsmenge sein",
+	"minVolumeTitle": "Erforderliches Mindestvolumen",
+	"minVolumeToggle": "Benutzerdefiniertes Mindestvolumen verwenden",
+	"minutes": "m",
+	"mobileDataWarning": "Bitte beachten Sie, dass Sie jetzt Mobilfunkdaten verwenden und die Teilnahme am P2P-Netzwerk von {AppName} Internetverkehr verbraucht. Es ist besser, ein WiFi-Netzwerk zu verwenden, wenn Ihr mobiler Datentarif kostspielig ist.",
+	"moreTab": "Mehr",
+	"multiActivateGas": "Aktivieren Sie {coin} und laden Sie zuerst Ihr Guthaben auf",
+	"multiBaseAmtPlaceholder": "Menge",
+	"multiBasePlaceholder": "Coin",
+	"multiBaseSelectTitle": "Verkaufen",
+	"multiConfirmCancel": "Abbrechen",
+	"multiConfirmConfirm": "Bestätigen",
+	"multiConfirmTitle": "{number} Auftrag/Aufträge erstellen:",
+	"multiCreate": "Erstellen",
+	"multiCreateOrder": "Auftrag",
+	"multiCreateOrders": "Aufträge",
+	"multiEthFee": "Gebühr",
+	"multiFiatCancel": "Abbrechen",
+	"multiFiatDesc": "Bitte geben Sie den gewünschten Fiat-Betrag ein:",
+	"multiFiatFill": "Automatisch ausfüllen",
+	"multiFixErrors": "Bitte beheben Sie alle Fehler, bevor Sie fortfahren",
+	"multiInvalidAmt": "Ungültige Menge",
+	"multiInvalidSellAmt": "Ungültige Verkaufsmenge",
+	"multiLowGas": "{coin} Guthaben ist zu niedrig",
+	"multiLowerThanFee": "Nicht genug {coin} vorhanden, um die Gebühren zu zahlen. MIN Guthaben beträgt {fee} {coin}",
+	"multiMaxSellAmt": "Max Verkaufsmenge beträgt",
+	"multiMinReceiveAmt": "Der Mindestbetrag, den Sie erhalten, beträgt",
+	"multiMinSellAmt": "Min Verkaufsmenge beträgt",
+	"multiReceiveTitle": "Erhalten:",
+	"multiSellTitle": "Verkaufen:",
+	"multiTab": "Mehrfach",
+	"multiTableAmt": "Menge erhalten",
+	"multiTablePrice": "Preis/CEX",
+	"newValue": "Neuer Wert:",
+	"no": "Nein",
+	"noCoinFound": "Kein Coin gefunden",
+	"noItemsToExport": "Keine Elemente ausgewählt",
+	"noItemsToImport": "Keine Elemente ausgewählt",
+	"noMatchingOrders": "Keine übereinstimmenden Aufträge gefunden",
+	"noOrders": "Keine Aufträge, bitte gehen Sie zum Handel.",
+	"noRewards": "Keine anforderungsfähigen Belohnungen",
+	"noSuchCoin": "Diese Münze gibt es nicht",
+	"nonNumericInput": "Der Wert muss numerisch sein",
+	"notEnoughGas": "Nicht genug {coin} für die Transaktion!",
+	"noteOnOrder": "Hinweis: Übereinstimmende Aufträge können nicht mehr storniert werden.",
+	"notePlaceholder": "Notiz hinzufügen",
+	"noteTitle": "Notiz",
+	"nothingFound": "Nichts gefunden",
+	"notifSwapCompletedText": "{sell}/{buy} swap wurde erfolgreich abgeschlossen",
+	"notifSwapCompletedTitle": "Swap abgeschlossen",
+	"notifSwapFailedText": "{sell}/{buy} swap fehlgeschlagen",
+	"notifSwapFailedTitle": "Swap fehlgeschlagen",
+	"notifSwapStartedText": "{sell}/{buy} swap gestartet",
+	"notifSwapStartedTitle": "Neuer swap gestartet",
+	"notifSwapStatusTitle": "Swap-Status geändert",
+	"notifSwapTimeoutText": "{sell}/{buy} swap ist abgelaufen(Zeitüberschreitung)",
+	"notifSwapTimeoutTitle": "Swap ist abgelaufen(Zeitüberschreitung)",
+	"notifTxText": "Du hast eine {coin} Transaktion erhalten!",
+	"notifTxTitle": "Eingehende Transaktion",
+	"okButton": "Ok",
+	"oldLogsDelete": "Löschen",
+	"oldLogsTitle": "Alte Protokolle",
+	"oldLogsUsed": "Genutzter Speicher",
+	"openMessage": "Fehlermeldung öffnen",
+	"orderCancel": "Alle {coin} Aufträge werden storniert.",
+	"orderDetailsAddress": "Adresse",
+	"orderDetailsCancel": "Abbrechen",
+	"orderDetailsExpedient": "Sinnvoll: CEX +{delta}%",
+	"orderDetailsExpensive": "Teuer: CEX {delta}%",
+	"orderDetailsFor": "für",
+	"orderDetailsIdentical": "Identisch mit CEX",
+	"orderDetailsMin": "min.",
+	"orderDetailsPrice": "Preis",
+	"orderDetailsReceive": "Erhalten",
+	"orderDetailsSelect": "Auswählen",
+	"orderDetailsSells": "Verkäufe",
+	"orderDetailsSettings": "Durch einmaliges antippen öffnen Sie die Details, durch langes antippen wählen Sie einen Auftrag",
+	"orderDetailsSpend": "Ausgegeben",
+	"orderDetailsTitle": "Details",
+	"orderFilled": "{fill}% ausgefüllt",
+	"orderTypePartial": "Auftrag",
+	"orderTypeUnknown": "Unbekannter Auftragstyp",
+	"ordersActive": "Aktiv",
+	"ordersHistory": "Verlauf",
+	"ordersTableAmount": "({coin}) Menge",
+	"ordersTablePrice": "({coin}) Preis",
+	"ordersTableTotal": "({coin}) Gesamt",
+	"overwrite": "Überschreiben",
+	"ownOrder": "Dies ist Ihr eigener Auftrag!",
+	"paidFromBalance": "Bezahlt aus dem Guthaben:",
+	"paidFromVolume": "Bezahlt aus dem eingegangenen Volumen:",
+	"passwordRequirement": "Das Kennwort muss mindestens 12 Zeichen enthalten, davon ein Kleinbuchstabe, ein Großbuchstabe und ein Sonderzeichen.",
+	"paymentUriDetailsAccept": "Bezahlen",
+	"paymentUriDetailsAcceptQuestion": "Akzeptieren Sie diese Transaktion?",
+	"paymentUriDetailsAddressSpan": "Nach Adresse",
+	"paymentUriDetailsAmountSpan": "Menge:",
+	"paymentUriDetailsCoinSpan": "Coin:",
+	"paymentUriDetailsDeny": "Abbrechen",
+	"paymentUriDetailsTitle": "Zahlung angefordert",
+	"paymentUriInactiveCoin": "{abbr} ist nicht aktiviert. Bitte aktivieren und erneut versuchen.",
+	"pleaseAddCoin": "Bitte fügen Sie einen Coin hinzu",
+	"pleaseRestart": "Bitte starten Sie die App neu, um es erneut zu versuchen, oder drücken Sie die Schaltfläche unten.",
+	"poweredOnKmd": "Unterstützt von Komodo",
+	"privateKey": "Privater Schlüssel",
+	"privateKeys": "Private Schlüssel",
+	"protectionCtrlConfirmations": "Bestätigungen",
+	"protectionCtrlCustom": "Individuelle Schutzeinstellungen verwenden",
+	"protectionCtrlOff": "AUS",
+	"protectionCtrlOn": "AN",
+	"protectionCtrlWarning": "Achtung, dieser Atomic Swap ist nicht durch dPoW geschützt.",
+	"pubkey": "Öffentlicher Schlüssel (Pubkey)",
+	"question_1": "Speichern Sie meine privaten Schlüssel?",
+	"question_10": "Auf welchen Geräten kann ich {appName} verwenden?",
+	"question_2": "Wie unterscheidet sich der Handel auf {appName} vom Handel auf anderen DEXs?",
+	"question_3": "Wie lange dauert ein Atomic Swap?",
+	"question_4": "Muss ich für die Dauer des Swaps online sein?",
+	"question_5": "Wie werden die Gebühren für {appName} berechnet?",
+	"question_6": "Bieten Sie einen Support für die Nutzer an?",
+	"question_7": "Gibt es länderspezifische Einschränkungen?",
+	"question_8": "Wer steckt hinter {appName}?",
+	"question_9": "Ist es möglich, meine eigene White-Label-Börse auf {appName} zu entwickeln?",
+	"remove": "Deaktivieren",
+	"reset": "LÖSCHEN",
+	"resetTitle": "Formular zurücksetzen",
+	"retryActivating": "Erneuter Versuch, alle Münzen zu aktivieren...",
+	"retryAll": "Erneuter Versuch, alle zu aktivieren",
+	"rewardsButton": "Belohnungen beantragen",
+	"rewardsCancel": "Stornieren",
+	"rewardsError": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
+	"rewardsInProgressLong": "Transaktion ist in Bearbeitung",
+	"rewardsInProgressShort": "in Bearbeitung",
+	"rewardsLowAmountLong": "UTXO-Menge ist geringer als 10 KMD",
+	"rewardsLowAmountShort": "<10 KMD",
+	"rewardsOneHourLong": "Eine Stunde ist noch nicht vergangen",
+	"rewardsOneHourShort": "<1 Stunde",
+	"rewardsPopupOk": "Ok",
+	"rewardsPopupTitle": "Belohnungsstatus:",
+	"rewardsReadMore": "Lesen Sie mehr über KMD-Belohnungen für aktive Nutzer",
+	"rewardsReceive": "Empfangen",
+	"rewardsSuccess": "Erfolgreich! {amount} KMD erhalten",
+	"rewardsTableFiat": "Fiat",
+	"rewardsTableRewards": "Belohnungen,\nKMD",
+	"rewardsTableStatus": "Status",
+	"rewardsTableTime": "Verbleibende Zeit",
+	"rewardsTableTitle": "Informationen zu den Belohnungen:",
+	"rewardsTableUXTO": "UTXO Menge,\nKMD",
+	"rewardsTimeDays": "{dd} Tag(e)",
+	"rewardsTimeHours": "{hh}h {minutes}m",
+	"rewardsTimeMin": "{mm}min",
+	"rewardsTitle": "Informationen zu den Belohnungen",
+	"russianLanguage": "Russisch",
+	"saveMerged": "Zusammenfassung speichern",
+	"searchFilterCoin": "Coin suchen",
+	"searchFilterSubtitleAVX": "Alle Avax tokens auswählen",
+	"searchFilterSubtitleBEP": "Alle BEP tokens auswählen",
+	"searchFilterSubtitleERC": "Alle ERC tokens auswählen",
+	"searchFilterSubtitleETC": "Alle ETC tokens auswählen",
+	"searchFilterSubtitleFTM": "Alle Fantom tokens auswählen",
+	"searchFilterSubtitleHCO": "Alle HecoChain tokens auswählen",
+	"searchFilterSubtitleHRC": "Alle Harmony tokens auswählen",
+	"searchFilterSubtitleKRC": "Alle Kucoin tokens auswählen",
+	"searchFilterSubtitleMVR": "Alle Moonriver tokens auswählen",
+	"searchFilterSubtitlePLG": "Alle Polygon tokens auswählen",
+	"searchFilterSubtitleQRC": "Alle QRC tokens auswählen",
+	"searchFilterSubtitleSBCH": "Alle SmartBCH tokens auswählen",
+	"searchFilterSubtitleSmartChain": "Alle SmartChains auswählen",
+	"searchFilterSubtitleTestCoins": "Alle Test Assets auswählen",
+	"searchFilterSubtitleUBQ": "Alle Ubiq coins auswählen",
+	"searchFilterSubtitleutxo": "Alle UTXO coins auswählen",
+	"searchForTicker": "Ticker suchen",
+	"seconds": "s",
+	"seeTxHistory": "Transaktionsverlauf anzeigen",
+	"seedPhrase": "Seed-Phrase",
+	"selectFileImport": "Datei auswählen",
+	"selectLanguage": "Sprache wählen",
+	"selectedOrder": "Ausgewählter Auftrag:",
+	"sellTestCoinWarning": "Achtung, Sie sind bereit, Testmünzen OHNE realen Wert zu verkaufen!",
+	"settingLanguageTitle": "Sprachen",
+	"share": "Teilen",
+	"showDetails": "Details anzeigen",
+	"simple": "Einfach",
+	"simpleTradeActivate": "Aktivieren",
+	"simpleTradeBuyHint": "Bitte geben Sie die {coin} Menge an, die Sie kaufen möchten",
+	"simpleTradeBuyTitle": "Kaufen",
+	"simpleTradeClose": "Schließen",
+	"simpleTradeMaxActiveCoins": "Maximum an aktivierbaren Coins ist {maxCoins}. Bitte deaktivieren Sie welche.",
+	"simpleTradeNotActive": "{coin} ist nicht aktiviert!",
+	"simpleTradeRecieve": "Erhalten",
+	"simpleTradeSellHint": "Bitte geben Sie die {coin} Menge an, die Sie verkaufen möchten",
+	"simpleTradeSellTitle": "Verkaufen",
+	"simpleTradeSend": "Senden",
+	"simpleTradeShowLess": "Weniger anzeigen",
+	"simpleTradeShowMore": "Mehr anzeigen",
+	"simpleTradeUnableActivate": "{coin} kann nicht aktiviert werden",
+	"skip": "Überspringen",
+	"snackbarDismiss": "Ablehnen",
+	"soundCantPlayThatMsg": "Wählen Sie bitte eine mp3- oder wav-Datei aus. Wir spielen es, wenn {description}.",
+	"soundPlayedWhen": "Abgespielt, wenn {description}",
+	"soundSettingsLink": "Sound",
+	"soundSettingsTitle": "Sound-Einstellungen",
+	"soundsDialogTitle": "Sounds",
+	"soundsDoNotShowAgain": "Verstanden, nicht mehr zeigen",
+	"soundsExplanation": "Während des Swap-Prozesses und wenn ein aktiver Maker-Auftrag erteilt wird, hören Sie akustische Benachrichtigungen.\nDas Atomic-Swap-Protokoll erfordert, dass die Teilnehmer für einen erfolgreichen Handel online sind, und akustische Benachrichtigungen helfen dabei.",
+	"soundsNote": "Beachten Sie, dass Sie Ihre eigenen Sounds in den Anwendungseinstellungen festlegen können.",
+	"spanishLanguage": "Spanisch",
+	"support": "Support",
+	"supportLinksDesc": "Wenn Sie Fragen haben oder glauben, dass Sie ein technisches Problem mit der {appName} App gefunden haben, können Sie dies melden und Unterstützung von unserem Team erhalten.",
+	"swapCurrent": "Aktuell",
+	"swapEstimated": "Schätzung",
+	"swapGasActivate": "Bitte aktivieren Sie zuerst {coin} und laden Sie Ihr Guthaben auf",
+	"swapGasAmount": "Das {coin} Guthaben reicht nicht aus, um die Transaktionsgebühren zu bezahlen.",
+	"swapGasAmountRequired": "Das {coin} Guthaben reicht nicht aus, um die Transaktionsgebühren zu bezahlen. {coin} {amount} sind erforderlich.",
+	"swapProgress": "Fortschrittdetails",
+	"swapStarted": "Gestartet",
+	"swapTotal": "Gesamt",
+	"swapUUID": "Swap UUID",
+	"switchTheme": "Thema ändern",
+	"tagAVX20": "AVX20",
+	"tagBEP20": "BEP20",
+	"tagERC20": "ERC20",
+	"tagETC": "ETC",
+	"tagFTM20": "FTM20",
+	"tagHCO20": "HCO20",
+	"tagHRC20": "HRC20",
+	"tagKMD": "KMD",
+	"tagKRC20": "KRC20",
+	"tagMVR20": "MVR20",
+	"tagPLG20": "PLG20",
+	"tagQRC20": "QRC20",
+	"tagSBCH": "SBCH",
+	"tagUBQ": "UBQ",
+	"takerOrder": "Taker-Auftrag",
+	"titleCurrentAsk": "Auftrag ausgewählt",
+	"tooManyAssetsEnabledSpan1": "Sie haben",
+	"tooManyAssetsEnabledSpan2": "Assets aktiviert. Max Limit aktivierbarer Assets ist",
+	"tooManyAssetsEnabledSpan3": ". Bitte deaktivieren Sie welche, bevor Sie neue hinzufügen.",
+	"tooManyAssetsEnabledTitle": "Zu viele Assets aktiviert",
+	"totalFees": "Gesamtgebühren:",
+	"tradePreimageError": "Handelsgebühren konnten nicht berechnet werden",
+	"tradingFee": "Handelsgebühr:",
+	"tradingMode": "Handelsart:",
+	"traditionalChinese": "traditionell",
+	"tryRestarting": "Wenn auch dann noch einige Coins nicht aktiviert sind, versuchen Sie, die App neu zu starten.",
+	"turkishLanguage": "Türkisch",
+	"txFeeTitle": "Transaktionsgebühr:",
+	"txHash": "Transaktions ID",
+	"txLimitExceeded": "Zu viele Anfragen.\nDas Limit für Anfragen zur Transaktionshistorie wurde überschritten.\nBitte versuchen Sie es später noch einmal.",
+	"txNotConfirmed": "UNBESTÄTIGT",
+	"txleft": "Verbleibende Transaktionen: {left}",
+	"unlockFunds": "Geldmittel freischalten",
+	"unlockSuccess": "{amnt} Geldmittel wurden erfolgreich freigeschaltet - TX: {hash}",
+	"unspendable": "Nicht verwendbar",
+	"updatesAvailable": "Neue Version verfügbar",
+	"updatesChecking": "Nach Updates suchen...",
+	"updatesCurrentVersion": "Sie nutzen Version {version}",
+	"updatesNotifAvailable": "Neue Version verfügbar. Bitte updaten.",
+	"updatesNotifAvailableVersion": "Version {version} verfügbar. Bitte updaten.",
+	"updatesNotifTitle": "Update verfügbar",
+	"updatesSkip": "Vorerst überspringen",
+	"updatesTitle": "{appName} Update",
+	"updatesUpToDate": "Bereits auf dem neuesten Stand",
+	"updatesUpdate": "Update",
+	"uriInsufficientBalanceSpan1": "Nicht genug Guthaben für die gescannte",
+	"uriInsufficientBalanceSpan2": "Zahlungsaufforderung.",
+	"uriInsufficientBalanceTitle": "Unzureichendes Guthaben",
+	"version": "Version",
+	"viewInExplorerButton": "Explorer",
+	"viewSeedAndKeys": "Seed & Private Schlüssel",
+	"walletInUse": "Wallet-Name existiert bereits",
+	"walletMaxChar": "Wallet-Name darf maximal 40 Zeichen lang sein",
+	"walletOnly": "Nur Wallet",
+	"warning": "Achtung!",
+	"warningOkBtn": "Ok",
+	"warningShareLogs": "Achtung - in besonderen Fällen enthalten diese Protokolldaten sensible Informationen, die dazu verwendet werden können, Coins aus fehlgeschlagenen Swaps auszugeben!",
+	"weFailedTo": "Wir konnten {coinAbbr} nicht aktivieren",
+	"weFailedToActivate": "Wir konnten {coinAbbr} nicht aktivieren.\nBitte starten Sie die App neu, um es erneut zu versuchen.",
+	"willBeRedirected": "Nach Fertigstellung werden Sie zur Portfolio-Seite weitergeleitet.",
+	"withdrawCameraAccessText": "Sie haben {appName} zuvor den Zugriff auf die Kamera verweigert.\nBitte ändern Sie die Kamerazugriffsrechte manuell in den Telefoneinstellungen, um mit dem QR-Code-Scan fortzufahren.",
+	"withdrawCameraAccessTitle": "Zugriff verweigert",
+	"withdrawConfirmError": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
+	"wrongCoinSpan1": "Sie versuchen, einen QR-Code für eine Zahlung zu scannen",
+	"wrongCoinSpan2": "aber Sie sind auf dem",
+	"wrongCoinSpan3": "Auszahlungs-Bildschirm",
+	"wrongCoinTitle": "Falscher Coin",
+	"yes": "Ja",
+	"you have a fresh order that is trying to match with an existing order": "Sie haben einen neuen Auftrag, der  einem bestehenden Auftrag zugeordnet werden soll",
+	"you have an active swap in progress": "Sie haben einen aktiven Swap in Arbeit",
+	"you have an order that new orders can match with": "Sie haben einen Auftrag, dem neue Aufträge zugeordnet werden können",
+	"yourWallet": "Ihr Wallet"
 }
