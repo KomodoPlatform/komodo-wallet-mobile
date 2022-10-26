@@ -3,8 +3,8 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:dargon2_flutter/dargon2_flutter.dart';
 import 'dart:convert';
 
-import 'package:crypto/crypto.dart' as crypto;
-import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:crypto/crypto.dart';
+import 'package:encrypt/encrypt.dart';
 
 class EncryptionTool {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -49,13 +49,12 @@ class EncryptionTool {
   }
 
   String encryptData(String password, String data) {
-    final iv = encrypt.IV.fromSecureRandom(16);
+    final iv = IV.fromSecureRandom(16);
 
-    final key = encrypt.Key.fromUtf8(password)
+    final key = Key.fromUtf8(password)
         .stretch(16, iterationCount: 100000, salt: iv.bytes);
 
-    final encrypter =
-        encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.gcm));
+    final encrypter = Encrypter(AES(key, mode: AESMode.gcm));
 
     final encrypted = encrypter.encrypt(data, iv: iv);
     return iv.base64 + encrypted.base64;
@@ -66,15 +65,13 @@ class EncryptionTool {
       String ivString = encryptedData.substring(0, 24);
       String dataString = encryptedData.substring(24);
 
-      final iv = encrypt.IV.fromBase64(ivString);
+      final iv = IV.fromBase64(ivString);
 
-      final key = encrypt.Key.fromUtf8(password)
+      final key = Key.fromUtf8(password)
           .stretch(16, iterationCount: 100000, salt: iv.bytes);
 
-      final encrypter =
-          encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.gcm));
-      final encrypt.Encrypted encrypted =
-          encrypt.Encrypted.fromBase64(dataString);
+      final encrypter = Encrypter(AES(key, mode: AESMode.gcm));
+      final Encrypted encrypted = Encrypted.fromBase64(dataString);
       final decryptedData = encrypter.decrypt(encrypted, iv: iv);
       return decryptedData;
     } catch (_) {
@@ -84,14 +81,12 @@ class EncryptionTool {
 
   String _decryptLegacy(String password, String encryptedData) {
     try {
-      final String length32Key =
-          crypto.md5.convert(utf8.encode(password)).toString();
-      final key = encrypt.Key.fromUtf8(length32Key);
-      final iv = encrypt.IV.allZerosOfLength(16);
+      final String length32Key = md5.convert(utf8.encode(password)).toString();
+      final key = Key.fromUtf8(length32Key);
+      final iv = IV.allZerosOfLength(16);
 
-      final encrypt.Encrypter encrypter = encrypt.Encrypter(encrypt.AES(key));
-      final encrypt.Encrypted encrypted =
-          encrypt.Encrypted.fromBase64(encryptedData);
+      final Encrypter encrypter = Encrypter(AES(key));
+      final Encrypted encrypted = Encrypted.fromBase64(encryptedData);
       final decryptedData = encrypter.decrypt(encrypted, iv: iv);
 
       return decryptedData;
