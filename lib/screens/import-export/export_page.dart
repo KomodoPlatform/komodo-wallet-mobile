@@ -352,8 +352,7 @@ class _ExportPageState extends State<ExportPage> {
     final File tempFile = File(tmpFilePath);
     if (tempFile.existsSync()) await tempFile.delete();
 
-    final encrypted =
-        await EncryptionTool().encryptData(_ctrlPass1.text, encoded);
+    final encrypted = EncryptionTool().encryptData(_ctrlPass1.text, encoded);
     await tempFile.writeAsString(encrypted);
 
     await Share.shareFiles([tempFile.path],

@@ -534,7 +534,7 @@ class _ImportPageState extends State<ImportPage> {
     try {
       final String str = await file.readAsString();
 
-      final decrypted = await EncryptionTool().decryptData(pass, str);
+      final decrypted = EncryptionTool().decryptData(pass, str);
       return jsonDecode(decrypted);
     } catch (e) {
       Log('import_page]', 'Failed to decrypt file: $e');

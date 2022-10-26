@@ -4,7 +4,6 @@ import 'package:dargon2_flutter/dargon2_flutter.dart';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart' as crypto;
-import 'package:cryptography/cryptography.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 class EncryptionTool {
@@ -49,47 +48,35 @@ class EncryptionTool {
     return result.encodedString;
   }
 
-  Future<String> encryptData(String password, String data) async {
-    final message = utf8.encode(data);
+  String encryptData(String password, String data) {
+    final iv = encrypt.IV.fromSecureRandom(16);
 
-    final algorithm = AesGcm.with128bits();
-    final iv1 = algorithm.newNonce();
-    final iv2 = algorithm.newNonce();
-    final secretKey = await _pbkdf2Key(password, iv2);
+    final key = encrypt.Key.fromUtf8(password)
+        .stretch(16, iterationCount: 100000, salt: iv.bytes);
 
-    final secretBox = await algorithm.encrypt(
-      message,
-      secretKey: secretKey,
-      nonce: iv1,
-    );
+    final encrypter =
+        encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.gcm));
 
-    final encrypted = jsonEncode(<String, dynamic>{
-      '0': base64.encode(secretBox.cipherText),
-      '1': base64.encode(iv1),
-      '2': base64.encode(iv2),
-      '3': base64.encode(secretBox.mac.bytes),
-    });
-    return encrypted;
+    final encrypted = encrypter.encrypt(data, iv: iv);
+    return iv.base64 + encrypted.base64;
   }
 
-  Future<String> decryptData(String password, String encryptedData) async {
+  String decryptData(String password, String encryptedData) {
     try {
-      final Map<String, dynamic> json = jsonDecode(encryptedData);
-      final List<int> data = base64.decode(json['0']);
-      final List<int> iv1 = base64.decode(json['1']);
-      final List<int> iv2 = base64.decode(json['2']);
-      final List<int> mac = base64.decode(json['3']);
+      String ivString = encryptedData.substring(0, 24);
+      String dataString = encryptedData.substring(24);
 
-      final algorithm = AesGcm.with128bits();
-      final secretKey = await _pbkdf2Key(password, iv2);
-      final secretBox = SecretBox(data, nonce: iv1, mac: Mac(mac));
+      final iv = encrypt.IV.fromBase64(ivString);
 
-      final decrypted = await algorithm.decrypt(
-        secretBox,
-        secretKey: secretKey,
-      );
+      final key = encrypt.Key.fromUtf8(password)
+          .stretch(16, iterationCount: 100000, salt: iv.bytes);
 
-      return utf8.decode(decrypted);
+      final encrypter =
+          encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.gcm));
+      final encrypt.Encrypted encrypted =
+          encrypt.Encrypted.fromBase64(dataString);
+      final decryptedData = encrypter.decrypt(encrypted, iv: iv);
+      return decryptedData;
     } catch (_) {
       return _decryptLegacy(password, encryptedData);
     }
@@ -111,21 +98,6 @@ class EncryptionTool {
     } catch (_) {
       return null;
     }
-  }
-
-  Future<SecretKey> _pbkdf2Key(String password, List<int> salt) async {
-    final pbkdf2 = Pbkdf2(
-      macAlgorithm: Hmac.sha256(),
-      iterations: 100000,
-      bits: 128,
-    );
-
-    final secretKey = await pbkdf2.deriveKey(
-      secretKey: SecretKey(utf8.encode(password)),
-      nonce: salt,
-    );
-
-    return secretKey;
   }
 
   Future<void> writeData(KeyEncryption key, Wallet wallet, String password,
