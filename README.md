@@ -19,18 +19,11 @@ MacOS: `brew install coreutils jq`, [Brew software](https://brew.sh/)
 Windows: `choco install jq`, [Choco sowftware](https://chocolatey.org/)
 
 
-## For iOS build:
+## Build and run
 
-Do
+https://github.com/KomodoPlatform/AtomicDEX-mobile/wiki/Project-Setup#build-and-run
 
-    (cd ios && rm -rf Podfile.lock Podfile Pods)
 
-between flutter upgrades.
-cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
-
-## For Android build:
-
-Coming soon
 
 ## AtomicDEX API library (libmm2.a) version:
 
@@ -94,6 +87,20 @@ dart run sync_arb_files.dart
 flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/localizations.dart lib/l10n/intl_*.arb
 ```
 5. Manual editing of generated `messages_*.dart` files might be needed to delete nullable syntax (`?` symbol), since the app doesn't support it yet.
+
+## Generate latest coin config:
+
+Clone the latest version of [coins](https://github.com/KomodoPlatform/coins)
+
+Download and install the latest version of [python3](https://www.python.org/downloads/)
+
+Open the clonned repository and run the script below in the terminal in the repo folder
+
+```bash
+python3 utils/generate_app_configs.py
+```
+
+Copy the generated `coins_config.json` file in Utils folder and paste inside assets/ folder in AtomicDEX-mobile project
 
 ## Audio samples sources
 

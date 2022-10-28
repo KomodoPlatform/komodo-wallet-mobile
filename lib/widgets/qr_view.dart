@@ -3,8 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-class QRScan extends StatelessWidget {
-  static bool gotQR = false;
+class QRScan extends StatefulWidget {
+  const QRScan({Key key}) : super(key: key);
+
+  @override
+  State<QRScan> createState() => _QRScanState();
+}
+
+class _QRScanState extends State<QRScan> {
+  bool gotQR = false;
 
   @override
   Widget build(BuildContext context) {
