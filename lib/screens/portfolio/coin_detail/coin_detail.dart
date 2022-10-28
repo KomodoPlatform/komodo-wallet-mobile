@@ -377,7 +377,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
     if (coinsWithoutHist.contains(currentCoinBalance.coin.type)) {
       return _buildTxExplorerButton(
-          '${currentCoinBalance.coin.explorerUrl.first}address/${currentCoinBalance.balance.address}');
+          '${currentCoinBalance.coin.explorerUrl}address/${currentCoinBalance.balance.address}');
     }
     return Expanded(
       child: RefreshIndicator(
@@ -649,7 +649,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
     final allCoins = coinsBloc.knownCoins;
     final platformCoin = allCoins[platform];
-    final explorerUrl = platformCoin.explorerUrl.first;
+    final explorerUrl = platformCoin.explorerUrl;
 
     final baseUrl = '$explorerUrl/$middleUrl/$contractAddress';
 

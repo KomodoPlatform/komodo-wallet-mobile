@@ -87,7 +87,7 @@ class Coin {
     isDefault = appConfig.defaultCoins.contains(abbr);
     walletOnly = appConfig.walletOnlyCoins.contains(abbr);
     serverList = _getServerList(config['serverList'] ?? []);
-    explorerUrl = List<String>.from(config['explorerUrl']);
+    explorerUrl = config['explorerUrl'] ?? '';
     requiredConfirmations = init['required_confirmations'];
     matureConfirmations = init['mature_confirmations'];
     requiresNotarization = init['requires_notarization'];
@@ -150,7 +150,7 @@ class Coin {
   String colorCoin;
   List<String> bchdUrls;
   List<dynamic> serverList;
-  List<String> explorerUrl;
+  String explorerUrl;
   String swapContractAddress;
   String fallbackSwapContract;
 
@@ -184,9 +184,7 @@ class Coin {
         'fallback_swap_contract': fallbackSwapContract ?? '',
         'colorCoin': colorCoin ?? '',
         'serverList': setServerList(serverList) ?? [],
-        'explorerUrl':
-            List<dynamic>.from(explorerUrl.map<String>((dynamic x) => x)) ??
-                <String>[],
+        'explorerUrl': explorerUrl ?? '',
         'required_confirmations': requiredConfirmations,
         'mature_confirmations': matureConfirmations,
         'requires_notarization': requiresNotarization,
