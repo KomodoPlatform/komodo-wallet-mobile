@@ -10,6 +10,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/blocs/zcash_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -373,55 +374,88 @@ class ListCoinsState extends State<ListCoins> {
             color: Theme.of(context).colorScheme.secondary,
             key: _refreshIndicatorKey,
             onRefresh: () => coinsBloc.updateCoinBalances(),
-            child: Builder(builder: (BuildContext context) {
-              if (snapshot.data != null && snapshot.data.isNotEmpty) {
-                final List<dynamic> datas = <dynamic>[];
+            child: Column(
+              children: [
+                _buildZCashProgressIndicator(),
+                Expanded(
+                  child: Builder(builder: (BuildContext context) {
+                    if (snapshot.data != null && snapshot.data.isNotEmpty) {
+                      final List<dynamic> datas = <dynamic>[];
 
-                final List<CoinBalance> _sorted =
-                    coinsBloc.sortCoins(snapshot.data);
+                      final List<CoinBalance> _sorted =
+                          coinsBloc.sortCoins(snapshot.data);
 
-                datas.addAll(_sorted);
-                datas.add(true);
-                return SlidableAutoCloseBehavior(
-                  child: ListView.separated(
-                    key: const Key('list-view-coins'),
-                    itemCount: datas.length,
-                    padding: const EdgeInsets.all(0),
-                    itemBuilder: (BuildContext context, int index) {
-                      if (datas[index] is bool) {
-                        return const AddCoinButton(key: Key('add-coin'));
-                      } else {
-                        return ItemCoin(
-                          key: Key('coin-list-${datas[index].coin.abbr}'),
-                          mContext: context,
-                          coinBalance: datas[index],
-                        );
-                      }
-                    },
-                    separatorBuilder: (context, _) =>
-                        Divider(color: Theme.of(context).colorScheme.surface),
-                  ),
-                );
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return LoadingCoin();
-              } else if (snapshot.data.isEmpty) {
-                // MRC: Add center to fix random UI glitch
-                // due to loading Add Button
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
-                      AddCoinButton(),
-                      Text('Please Add A Coin'),
-                    ],
-                  ),
-                );
-              } else {
-                return SizedBox();
-              }
-            }));
+                      datas.addAll(_sorted);
+                      datas.add(true);
+                      return SlidableAutoCloseBehavior(
+                        child: ListView.separated(
+                          key: const Key('list-view-coins'),
+                          itemCount: datas.length,
+                          padding: const EdgeInsets.all(0),
+                          itemBuilder: (BuildContext context, int index) {
+                            if (datas[index] is bool) {
+                              return const AddCoinButton(key: Key('add-coin'));
+                            } else {
+                              return ItemCoin(
+                                key: Key('coin-list-${datas[index].coin.abbr}'),
+                                mContext: context,
+                                coinBalance: datas[index],
+                              );
+                            }
+                          },
+                          separatorBuilder: (context, _) => Divider(
+                              color: Theme.of(context).colorScheme.surface),
+                        ),
+                      );
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return LoadingCoin();
+                    } else if (snapshot.data.isEmpty) {
+                      // MRC: Add center to fix random UI glitch
+                      // due to loading Add Button
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            AddCoinButton(),
+                            Text('Please Add A Coin'),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  }),
+                ),
+              ],
+            ));
       },
     );
+  }
+
+  Widget _buildZCashProgressIndicator() {
+    return StreamBuilder<int>(
+        initialData: zcashBloc.totalDownloadSize,
+        stream: zcashBloc.outZcashProgress,
+        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+          int _received = snapshot.data;
+          int _totalDownloadSize = zcashBloc.totalDownloadSize;
+          return _totalDownloadSize > 0
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    LinearProgressIndicator(
+                      value: _received / _totalDownloadSize,
+                    ),
+                    _received == _totalDownloadSize
+                        ? Text('Downloaded Zcash Params')
+                        : Text(
+                            'Downloading Zcash Parameters: ${_received ~/ 1000000}MB / ${_totalDownloadSize ~/ 1000000}MB',
+                          ),
+                  ],
+                )
+              : SizedBox();
+        });
   }
 }
 

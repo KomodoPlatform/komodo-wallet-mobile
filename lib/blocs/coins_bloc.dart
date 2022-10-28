@@ -5,6 +5,7 @@ import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/blocs/zcash_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
@@ -360,6 +361,9 @@ class CoinsBloc implements BlocBase {
       slpCoins.add(getKnownCoinByAbbr(coin.protocol.protocolData.platform));
     }
     slpCoins = slpCoins.toSet().toList();
+
+    // remove zcash-coins from the coin list
+    coins = zcashBloc.removeZcashCoins(coins);
 
     // remove slp-parent-coins from the main coin list
     coins.removeWhere((coin) => slpCoins.contains(coin));

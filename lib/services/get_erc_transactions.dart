@@ -55,6 +55,7 @@ class GetErcTransactions {
       case CoinType.utxo:
       case CoinType.smartChain:
       case CoinType.qrc:
+      case CoinType.zhtlc:
         break;
       case CoinType.etc:
         url = '$etcUrl/$address';

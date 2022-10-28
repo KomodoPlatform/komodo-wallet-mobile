@@ -85,6 +85,7 @@ class AppConfig {
         'ubiq': 'Ubiq',
         'etc': 'Ethereum Classic (ETC)',
         'sbch': 'SmartBCH (SBCH)',
+        'zhtlc': 'ZHTLC',
       };
 
   bool get isSwapShareCardEnabled => true;

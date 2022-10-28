@@ -87,7 +87,9 @@ class Coin {
     isDefault = appConfig.defaultCoins.contains(abbr);
     walletOnly = appConfig.walletOnlyCoins.contains(abbr);
     serverList = _getServerList(config['serverList'] ?? []);
-    explorerUrl = config['explorerUrl'] ?? '';
+    explorerUrl = config['explorerUrl'] is List
+        ? config['explorerUrl'].first
+        : config['explorerUrl'];
     requiredConfirmations = init['required_confirmations'];
     matureConfirmations = init['mature_confirmations'];
     requiresNotarization = init['requires_notarization'];
@@ -98,8 +100,9 @@ class Coin {
     if (config['bchd_urls'] != null) {
       bchdUrls = List<String>.from(config['bchd_urls']);
     }
-    dust = init['dust'];
-    chainId = init['chain_id'];
+    if (config['light_wallet_d_servers'] != null) {
+      lightWalletDServers = List<String>.from(config['light_wallet_d_servers']);
+    }
   }
 
   // Coin suspended if was activated by user earlier,
@@ -149,6 +152,7 @@ class Coin {
   bool testCoin;
   String colorCoin;
   List<String> bchdUrls;
+  List<String> lightWalletDServers;
   List<dynamic> serverList;
   String explorerUrl;
   String swapContractAddress;
@@ -167,9 +171,6 @@ class Coin {
   bool walletOnly;
 
   Protocol protocol;
-  int dust;
-
-  int chainId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type.name ?? '',
@@ -190,10 +191,11 @@ class Coin {
         'requires_notarization': requiresNotarization,
         'address_format': addressFormat,
         if (protocol != null) 'protocol': protocol.toJson(),
-        if (dust != null) 'dust': dust,
-        if (chainId != null) 'chain_id': chainId,
         if (bchdUrls != null)
           'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
+        if (lightWalletDServers != null)
+          'light_wallet_d_servers':
+              List<dynamic>.from(lightWalletDServers.map<String>((x) => x)),
       };
 
   String getTxFeeSatoshi() {

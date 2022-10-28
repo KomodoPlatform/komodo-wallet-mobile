@@ -33,6 +33,8 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       if (coinData['fallback_swap_contract'] != null)
         'fallback_swap_contract': coinData['fallback_swap_contract'],
       if (coinData['bchd_urls'] != null) 'bchd_urls': coinData['bchd_urls'],
+      if (coinData['light_wallet_d_servers'] != null)
+        'light_wallet_d_servers': coinData['light_wallet_d_servers'],
     });
   });
 
@@ -43,7 +45,7 @@ List<String> get _excludedCoins => [];
 
 String _getType(String coin) {
   // absent protocols
-  // [RSK Smart Bitcoin, Arbitrum, Moonbeam, ZHTLC]
+  // [RSK Smart Bitcoin, Arbitrum, Moonbeam]
   CoinType type;
   switch (coin) {
     case 'UTXO':
@@ -94,6 +96,9 @@ String _getType(String coin) {
       break;
     case 'AVX-20':
       type = CoinType.avx;
+      break;
+    case 'ZHTLC':
+      type = CoinType.zhtlc;
       break;
     default:
       return null; // for other protocols not yet added on the mobile
