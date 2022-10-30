@@ -75,7 +75,7 @@ class ZCashBloc implements BlocBase {
       tasksToCheck.add(id);
       jobService.install(
         'checkPresentZcashEnabling$id',
-        3.14,
+        5,
         (j) async {
           await MM.getZcashActivationStatus({
             'userpass': mmSe.userpass,
@@ -94,10 +94,10 @@ class ZCashBloc implements BlocBase {
     String folder = Platform.isIOS ? '/ZcashParams/' : '/.zcash-params/';
     Directory zDir = Directory(dir.path + folder);
     if (zDir.existsSync()) {
-      //  await autoEnableZcashCoins();
-      //  return;
+      await autoEnableZcashCoins();
+      return;
     } else {
-      zDir.createSync(recursive: true);
+      zDir.createSync();
     }
 
     final params = [
