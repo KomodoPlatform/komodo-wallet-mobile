@@ -50,29 +50,34 @@ class EncryptionTool {
 
   String encryptData(String password, String data) {
     final iv = IV.fromSecureRandom(16);
+    final mac = IV.fromSecureRandom(16);
 
     final key = Key.fromUtf8(password)
         .stretch(16, iterationCount: 10000, salt: iv.bytes);
 
     final encrypter = Encrypter(AES(key, mode: AESMode.gcm));
 
-    final encrypted = encrypter.encrypt(data, iv: iv);
-    return iv.base64 + encrypted.base64;
+    final encrypted =
+        encrypter.encrypt(data, iv: iv, associatedData: mac.bytes);
+    return iv.base64 + mac.base64 + encrypted.base64;
   }
 
   String decryptData(String password, String encryptedData) {
     try {
       String ivString = encryptedData.substring(0, 24);
-      String dataString = encryptedData.substring(24);
+      String macString = encryptedData.substring(24, 48);
+      String dataString = encryptedData.substring(48);
 
       final iv = IV.fromBase64(ivString);
+      final mac = IV.fromBase64(macString);
 
       final key = Key.fromUtf8(password)
           .stretch(16, iterationCount: 10000, salt: iv.bytes);
 
       final encrypter = Encrypter(AES(key, mode: AESMode.gcm));
       final Encrypted encrypted = Encrypted.fromBase64(dataString);
-      final decryptedData = encrypter.decrypt(encrypted, iv: iv);
+      final decryptedData =
+          encrypter.decrypt(encrypted, iv: iv, associatedData: mac.bytes);
       return decryptedData;
     } catch (_) {
       return _decryptLegacy(password, encryptedData);

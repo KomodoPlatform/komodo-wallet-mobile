@@ -23,12 +23,11 @@ void testEncryptDecrypt() {
 
   // test: decrypt backward compatibility
   String legacyEncryptedData =
-      'S53A6VypGuD0QImZ/bPkUR1RowsV30OHsRVgJzBYG9/uVE3MeLA04rtI2vEVPGrcyGhcYrLcnk0ArrYhxD9gRAmPMuXclU1QQPGd/QvWED4FPjHsussvQraYcEqeOEgz9Pt9ASM0dEpn8jaHAjyObsj4QKkN8mW6QMrEkadeRVNJ+5h/Gc2pSTS+QVLaF4IFa/1NqVXiDmQ12bjpxhR4ZAAxki1HB9ZqKGjfAxlYFxU=';
+      'S53A6VypGuD0QImZ/bPkUR1RowsV30OHsRc7dWwPFIjuVE3Ae7Q04rtI2vFOOTHYyGJYY7+BnBoL/7J3xj9gRAmPMuXclU1QUuaP+F2NVzwILmGz7No1WK3cIR+ML19ipqw1ViU3IEow+zzSAj+IPZXtS/pcpyqyRd/c1vYLGENK7t84Rs3yVnKBZXXgMdMdc/EdiWDYSj9y3725zB1jP1YkkTtFEYA1J3CAe2EgPjJXq8ODE2kTskkl4a8Rx/64';
   String newlyEncryptedData =
-      'maTt1GbUQv6vGIDM8zoJug==2tBbg6fPleY418g/Dy9MbMgvc2fpq/K8eIqcD1vUuCw4hSptWAZG5+0NsFgUXYo0Z6B/TYC7fD3QvKkB2dSStZ2gpBhs0jzMmTDhuRRBcSoy03TdwClftqRXj7/UQo9PsSHtc1UAqA96vE/amfmfEcxv2xPGiSCzvJYxnF7Gu2ArA7+JYf2dnx9Aq1IFcDQCyNl0EmSmhq+n5f19PwuGuQRsGDsnpYSTfCQ4ltl/cIjhNDuAuB+Ykwg5NA==';
-
+      'FxyTXZc2L2s/x9dh8WG21A==lfKQCRecyIAh5O3hpQ0vmA==fpCyL23VQehBOjadVbIDKYI61JjYxdaOQ56JCGTz8LHz6rgjC0gzd/7YpEH4QfZ4geAiDH6egCZuGyoiDYySY+fMtNx+gewi9tYA2ybAOXlJTXpBl8thqiNbSe4CRNBXni+zaoI7Qn1CI2FTL49JeUDoyT4+mJzMJcEYBTwGbSvRv5ev4yvbe8P3AClx3oxlh8obLHg9pJUQexUlPgF7eRB34NlKIPyNJqFtAjC5MV430ofUvh8UDFk/2SA8xym1o6V0JEabWHdQIw==';
   String data =
-      '{"notes":{},"contacts":{"f8691810-5513-11ed-b08b-276982f23b06":{"name":"wewr","uid":"f8691810-5513-11ed-b08b-276982f23b06","addresses":{"MATIC":"wrearfaerr"}}},"swaps":{}}';
+      '{"notes":{},"contacts":{"dcdef7f0-5927-11ed-95cf-8374e019bff4":{"name":"erewtwewdtretw","uid":"dcdef7f0-5927-11ed-95cf-8374e019bff4","addresses":{"ETH":"twrwtfwtftwretete"}}},"swaps":{}}';
 
   final legacyDecrypted =
       EncryptionTool().decryptData('pass', legacyEncryptedData);
