@@ -52,7 +52,7 @@ class EncryptionTool {
     final iv = IV.fromSecureRandom(16);
 
     final key = Key.fromUtf8(password)
-        .stretch(16, iterationCount: 100000, salt: iv.bytes);
+        .stretch(16, iterationCount: 10000, salt: iv.bytes);
 
     final encrypter = Encrypter(AES(key, mode: AESMode.gcm));
 
@@ -68,7 +68,7 @@ class EncryptionTool {
       final iv = IV.fromBase64(ivString);
 
       final key = Key.fromUtf8(password)
-          .stretch(16, iterationCount: 100000, salt: iv.bytes);
+          .stretch(16, iterationCount: 10000, salt: iv.bytes);
 
       final encrypter = Encrypter(AES(key, mode: AESMode.gcm));
       final Encrypted encrypted = Encrypted.fromBase64(dataString);
