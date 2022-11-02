@@ -89,7 +89,12 @@ class Coin {
     if (config['serverList'] != null) {
       serverList = <Server>[];
       config['serverList'].forEach((v) {
-        serverList.add(Server.fromJson(v));
+        // backward compatibility
+        if (v is String) {
+          serverList.add(Server.fromJson({'url': v}));
+        } else {
+          serverList.add(Server.fromJson(v));
+        }
       });
     }
     explorerUrl = config['explorerUrl'] is String
