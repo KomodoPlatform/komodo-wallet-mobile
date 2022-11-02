@@ -86,8 +86,15 @@ class Coin {
     colorCoin = config['colorCoin'] ?? '';
     isDefault = appConfig.defaultCoins.contains(abbr);
     walletOnly = appConfig.walletOnlyCoins.contains(abbr);
-    serverList = _getServerList(config['serverList'] ?? []);
-    explorerUrl = config['explorerUrl'] ?? '';
+    if (config['serverList'] != null) {
+      serverList = <Server>[];
+      config['serverList'].forEach((v) {
+        serverList.add(Server.fromJson(v));
+      });
+    }
+    explorerUrl = config['explorerUrl'] is String
+        ? config['explorerUrl']
+        : config['explorerUrl'].first;
     requiredConfirmations = init['required_confirmations'];
     matureConfirmations = init['mature_confirmations'];
     requiresNotarization = init['requires_notarization'];
@@ -106,34 +113,12 @@ class Coin {
   // but failed to activate during current session startup
   bool suspended = false;
 
-  List _getServerList(List servers) {
-    List _servers = [];
-    for (dynamic element in servers) {
-      // is ercType
-      if (element is String) {
-        _servers.add(element);
-      } else {
-        Server server = Server.fromJson(element);
-        _servers.add(server);
-      }
+  static List<Map<String, dynamic>> getServerList(List<Server> servers) {
+    List<Map<String, dynamic>> list = [];
+    for (Server server in servers) {
+      list.add(server.toJson());
     }
-
-    return _servers;
-  }
-
-  static List setServerList(List servers) {
-    List _servers = [];
-    for (dynamic element in servers) {
-      // is ercType
-      if (element is String) {
-        _servers.add(element);
-      } else {
-        _servers.add(element.toJson());
-      }
-    }
-    return _servers.any((element) => element is String)
-        ? List<String>.of(_servers.map((e) => e.toString())) // is ercType
-        : _servers;
+    return list;
   }
 
   CoinType type;
@@ -149,7 +134,7 @@ class Coin {
   bool testCoin;
   String colorCoin;
   List<String> bchdUrls;
-  List<dynamic> serverList;
+  List<Server> serverList;
   String explorerUrl;
   String swapContractAddress;
   String fallbackSwapContract;
@@ -183,12 +168,12 @@ class Coin {
         'swap_contract_address': swapContractAddress ?? '',
         'fallback_swap_contract': fallbackSwapContract ?? '',
         'colorCoin': colorCoin ?? '',
-        'serverList': setServerList(serverList) ?? [],
         'explorerUrl': explorerUrl ?? '',
         'required_confirmations': requiredConfirmations,
         'mature_confirmations': matureConfirmations,
         'requires_notarization': requiresNotarization,
         'address_format': addressFormat,
+        if (serverList != null) 'serverList': getServerList(serverList),
         if (protocol != null) 'protocol': protocol.toJson(),
         if (dust != null) 'dust': dust,
         if (chainId != null) 'chain_id': chainId,
