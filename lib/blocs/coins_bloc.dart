@@ -159,6 +159,15 @@ class CoinsBloc implements BlocBase {
     coinBeforeActivation
         .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
 
+    if (isActive && coin?.protocol?.type == 'SLPTOKEN') {
+      Coin parentCoin = getKnownCoinByAbbr(coin.protocol.protocolData.platform);
+      coinBeforeActivation.removeWhere(
+          (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
+      coinBeforeActivation.add(
+        CoinToActivate(coin: parentCoin, isActive: isActive),
+      );
+    }
+
     coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
