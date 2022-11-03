@@ -159,8 +159,16 @@ class CoinsBloc implements BlocBase {
     coinBeforeActivation
         .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
 
-    if (isActive && coin?.protocol?.type == 'SLPTOKEN') {
-      Coin parentCoin = getKnownCoinByAbbr(coin.protocol.protocolData.platform);
+    // auto add parent coin if not enabled previously
+    // if the parent is then removed intentionally by the user
+    // it wont be enabled. But if SLP coins are even removed after auto adding
+    // they will be forced enabled because parent coins are needed enabled before
+    // SLP coins can enable
+    String platform = coin?.protocol?.protocolData?.platform;
+    bool isParentEnabled =
+        coinBalance.any((element) => element.coin.abbr == platform);
+    if (isActive && platform != null && !isParentEnabled) {
+      Coin parentCoin = getKnownCoinByAbbr(platform);
       coinBeforeActivation.removeWhere(
           (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
       coinBeforeActivation.add(
