@@ -192,61 +192,62 @@ class _ItemCoinState extends State<ItemCoin>
                       ],
                     ),
                   ),
-                  Expanded(child: SizedBox()),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 8, bottom: 8, right: 12),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        StreamBuilder<bool>(
-                            initialData: settingsBloc.showBalance,
-                            stream: settingsBloc.outShowBalance,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<bool> snapshot) {
-                              String amount =
-                                  f.format(double.parse(balance.getBalance()));
-                              if (snapshot.hasData && !snapshot.data)
-                                amount = '**.**';
-                              return AutoSizeText(
-                                '$amount ${coin.abbr}',
-                                maxLines: 1,
-                                style: Theme.of(context).textTheme.headline6,
-                              );
-                            }),
-                        const SizedBox(height: 8),
-                        StreamBuilder(
-                            initialData: settingsBloc.showBalance,
-                            stream: settingsBloc.outShowBalance,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<bool> snapshot) {
-                              bool hidden = false;
-                              if (snapshot.hasData && !snapshot.data)
-                                hidden = true;
-                              return Text(
-                                cexProvider.convert(
-                                  widget.coinBalance.balanceUSD,
-                                  hidden: hidden,
-                                ),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .copyWith(
-                                      color: Colors.grey,
-                                    ),
-                              );
-                            }),
-                        _buildClaimButton(),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            _buildFaucetButton(),
-                            _buildWalletOnly(),
-                            _buildProtocolChip(coin),
-                          ],
-                        ),
-                      ],
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 8, bottom: 8, right: 12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          StreamBuilder<bool>(
+                              initialData: settingsBloc.showBalance,
+                              stream: settingsBloc.outShowBalance,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                String amount = f
+                                    .format(double.parse(balance.getBalance()));
+                                if (snapshot.hasData && !snapshot.data)
+                                  amount = '**.**';
+                                return AutoSizeText(
+                                  '$amount ${coin.abbr}',
+                                  maxLines: 1,
+                                  style: Theme.of(context).textTheme.headline6,
+                                );
+                              }),
+                          const SizedBox(height: 8),
+                          StreamBuilder(
+                              initialData: settingsBloc.showBalance,
+                              stream: settingsBloc.outShowBalance,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                bool hidden = false;
+                                if (snapshot.hasData && !snapshot.data)
+                                  hidden = true;
+                                return Text(
+                                  cexProvider.convert(
+                                    widget.coinBalance.balanceUSD,
+                                    hidden: hidden,
+                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .copyWith(
+                                        color: Colors.grey,
+                                      ),
+                                );
+                              }),
+                          _buildClaimButton(),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              _buildFaucetButton(),
+                              _buildWalletOnly(),
+                              _buildProtocolChip(coin),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
