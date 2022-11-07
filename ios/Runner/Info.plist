@@ -14,9 +14,7 @@
 	<string>6.0</string>
 	<key>CFBundleLocalizations</key>
 	<array>
-		<string>zh_TW</string>
 		<string>zh</string>
-		<string>zh_CN</string>
 		<string>English</string>
 		<string>fr</string>
 		<string>de</string>

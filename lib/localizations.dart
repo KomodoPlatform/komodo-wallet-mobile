@@ -1764,7 +1764,6 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
       'fr',
       'de',
       'zh',
-      'zh_TW',
       'ru',
       'ja',
       'tr',

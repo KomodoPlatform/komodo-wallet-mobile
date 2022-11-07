@@ -26,8 +26,6 @@ import 'messages_messages.dart' deferred as messages_messages;
 import 'messages_ru.dart' deferred as messages_ru;
 import 'messages_tr.dart' deferred as messages_tr;
 import 'messages_zh.dart' deferred as messages_zh;
-import 'messages_zh_Hans.dart' deferred as messages_zh_hans;
-import 'messages_zh_TW.dart' deferred as messages_zh_tw;
 
 typedef Future<dynamic> LibraryLoader();
 Map<String, LibraryLoader> _deferredLibraries = {
@@ -40,12 +38,10 @@ Map<String, LibraryLoader> _deferredLibraries = {
   'messages': messages_messages.loadLibrary,
   'ru': messages_ru.loadLibrary,
   'tr': messages_tr.loadLibrary,
-  'zh': messages_zh.loadLibrary,
-  'zh_Hans': messages_zh_hans.loadLibrary,
-  'zh_TW': messages_zh_tw.loadLibrary,
+  'zh': messages_zh.loadLibrary
 };
 
-MessageLookupByLibrary? _findExact(String localeName) {
+MessageLookupByLibrary _findExact(String localeName) {
   switch (localeName) {
     case 'de':
       return messages_de.messages;
@@ -67,10 +63,6 @@ MessageLookupByLibrary? _findExact(String localeName) {
       return messages_tr.messages;
     case 'zh':
       return messages_zh.messages;
-    case 'zh_Hans':
-      return messages_zh_hans.messages;
-    case 'zh_TW':
-      return messages_zh_tw.messages;
     default:
       return null;
   }
@@ -100,7 +92,7 @@ bool _messagesExistFor(String locale) {
   }
 }
 
-MessageLookupByLibrary? _findGeneratedMessagesFor(String locale) {
+MessageLookupByLibrary _findGeneratedMessagesFor(String locale) {
   final actualLocale = Intl.verifiedLocale(locale, _messagesExistFor,
       onFailure: (_) => null);
   if (actualLocale == null) return null;
