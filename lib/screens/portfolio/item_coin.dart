@@ -239,6 +239,7 @@ class _ItemCoinState extends State<ItemCoin>
                               }),
                           _buildClaimButton(),
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               _buildFaucetButton(),
