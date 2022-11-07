@@ -1674,7 +1674,7 @@
 	"filtersType": "テイカー/メーカー",
 	"fingerprint": "指紋",
 	"frenchLanguage": "フランス語",
-	"gasFee": "{コイン}手数料",
+	"gasFee": "{coin} 手数料",
 	"gasLimit": "ガスリミット",
 	"gasNotActive": "{coin}をアクティベートしてください。",
 	"gasPrice": "ガス料金",

@@ -397,7 +397,7 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exampleHintSeed": "例如：构建案例级别",
+	"exampleHintSeed": "例如：build case level ...",
 	"@exampleHintSeed": {
 		"type": "text",
 		"placeholders_order": [],
@@ -1978,7 +1978,7 @@
 	"tagHRC20": "HRC20",
 	"tagKMD": "KMD",
 	"tagKRC20": "KRC20",
-	"tagMVR20": "20,00 MVR",
+	"tagMVR20": "MVR20",
 	"tagPLG20": "PLG20",
 	"tagQRC20": "QRC20",
 	"tagSBCH": "SBCH",

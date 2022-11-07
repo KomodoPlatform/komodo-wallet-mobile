@@ -93,7 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m36(appCompanyShort) => "${appCompanyShort} ニュース";
 
-  static m37(coin) => "{コイン}手数料";
+  static m37(coin) => "${coin} 手数料";
 
   static m38(coin) => "${coin}をアクティベートしてください。";
 
