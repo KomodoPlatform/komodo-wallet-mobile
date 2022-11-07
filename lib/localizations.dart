@@ -1010,8 +1010,6 @@ class AppLocalizations {
       Intl.message('Deutsch', name: 'deutscheLanguage');
   String get chineseLanguage =>
       Intl.message('Chinese', name: 'chineseLanguage');
-  String get traditionalChinese =>
-      Intl.message('traditional', name: 'traditionalChinese');
   String get russianLanguage =>
       Intl.message('Russian', name: 'russianLanguage');
   String get japaneseLanguage =>
