@@ -145,11 +145,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m62(fill) => "${fill}% 埋められました";
 
-  static m63(coin) => "金額（{コイン}）";
+  static m63(coin) => "金額 (${coin})";
 
-  static m64(coin) => "価格 ({コイン})";
+  static m64(coin) => "価格 (${coin})";
 
-  static m65(coin) => "合計 ({コイン})";
+  static m65(coin) => "合計 (${coin})";
 
   static m66(abbr) => "${abbr} はアクティブではありません。有効にしてからもう一度お試しください。";
 
@@ -163,11 +163,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m71(appName) => "${appName} で独自のホワイトラベル取引所を開発することは可能ですか?";
 
-  static m72(amount) => "成功！ {金額} KMD を受け取りました。";
+  static m72(amount) => "成功！ ${amount} KMD を受け取りました。";
 
   static m73(dd) => "${dd} 日";
 
-  static m74(hh, minutes) => "${hh}時{分}分";
+  static m74(hh, minutes) => "${hh}時 ${minutes}分";
 
   static m75(mm) => "${mm}分";
 
@@ -195,7 +195,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m87(coin) => "${coin} の残高は、取引手数料を支払うのに十分ではありません。";
 
-  static m88(coin, amount) => "${coin} の残高は、取引手数料を支払うのに十分ではありません。 {コイン} {金額} が必要です。";
+  static m88(coin, amount) => "${coin} の残高は、取引手数料を支払うのに十分ではありません。${coin} ${amount} が必要です。";
 
   static m89(left) => "残りのトランザクション: {左}";
 
@@ -217,7 +217,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m98(amount, coinName) => "WITHDRAW ${amount} ${coinName}";
 
-  static m99(amount, coin) => "{金額} {コイン} を受け取ります";
+  static m99(amount, coin) => "${amount} ${coin} を受け取ります";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function> {
@@ -891,13 +891,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "tagAVX20" : MessageLookupByLibrary.simpleMessage("AVX20"),
     "tagBEP20" : MessageLookupByLibrary.simpleMessage("BEP20"),
     "tagERC20" : MessageLookupByLibrary.simpleMessage("ERC20"),
-    "tagETC" : MessageLookupByLibrary.simpleMessage("等"),
+    "tagETC" : MessageLookupByLibrary.simpleMessage("ETC"),
     "tagFTM20" : MessageLookupByLibrary.simpleMessage("FTM20"),
     "tagHCO20" : MessageLookupByLibrary.simpleMessage("HCO20"),
     "tagHRC20" : MessageLookupByLibrary.simpleMessage("HRC20"),
     "tagKMD" : MessageLookupByLibrary.simpleMessage("KMD"),
     "tagKRC20" : MessageLookupByLibrary.simpleMessage("KRC20"),
-    "tagMVR20" : MessageLookupByLibrary.simpleMessage("20,00 MVR"),
+    "tagMVR20" : MessageLookupByLibrary.simpleMessage("MVR20"),
     "tagPLG20" : MessageLookupByLibrary.simpleMessage("PLG20"),
     "tagQRC20" : MessageLookupByLibrary.simpleMessage("QRC20"),
     "tagSBCH" : MessageLookupByLibrary.simpleMessage("SBCH"),
