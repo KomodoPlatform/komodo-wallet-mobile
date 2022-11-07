@@ -1022,6 +1022,8 @@ class AppLocalizations {
       Intl.message('Hungarian', name: 'hungarianLanguage');
   String get spanishLanguage =>
       Intl.message('Spanish', name: 'spanishLanguage');
+  String get koreanLanguage =>
+      Intl.message('Korean', name: 'koreanLanguage');
   String get faucetName => Intl.message('FAUCET', name: 'faucetName');
   String get faucetSuccess => Intl.message('Success', name: 'faucetSuccess');
   String get faucetError => Intl.message('Error', name: 'faucetError');
@@ -1767,7 +1769,8 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
       'ja',
       'tr',
       'hu',
-      'es'
+      'es',
+      'ko'
     ].contains(locale.languageCode);
   }
 

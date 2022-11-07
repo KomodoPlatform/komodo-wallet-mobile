@@ -25,6 +25,7 @@
 		<string>tr</string>
 		<string>hu</string>
 		<string>es</string>
+                <string>ko</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>komodo_dex</string>
