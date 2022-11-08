@@ -253,6 +253,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         query: controller.text,
       ));
 
+      testCoins.sort((Coin a, Coin b) =>
+          a.name.toLowerCase().compareTo(b.name.toLowerCase()));
       for (Coin testCoin in testCoins) {
         list.add(BuildItemCoin(
           key: Key('coin-activate-${testCoin.abbr}'),

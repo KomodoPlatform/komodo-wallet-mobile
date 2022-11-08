@@ -64,10 +64,9 @@ class _TransactionDetailState extends State<TransactionDetail> {
             IconButton(
               splashRadius: 24,
               icon: Icon(Icons.open_in_browser),
-              onPressed: () => launchURL(
-                  widget.coinBalance.coin.explorerUrl[0] +
-                      'tx/' +
-                      widget.transaction.txHash),
+              onPressed: () => launchURL(widget.coinBalance.coin.explorerUrl +
+                  'tx/' +
+                  widget.transaction.txHash),
             )
           ],
         ),

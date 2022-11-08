@@ -3,19 +3,19 @@ set -e
 set -x
 
 # back compatibility
-if [[ -f "assets/coins_init_mm2.json" && ! -f "coins_ci.json" ]]; then
+if [[ -f "assets/coins.json" && ! -f "coins_ci.json" ]]; then
     exit 0
 fi
 
 # get coins file
 coins_repo_commit="$( jq -r '.coins_repo_commit' coins_ci.json )"
-curl -l "https://raw.githubusercontent.com/KomodoPlatform/coins/${coins_repo_commit}/coins" --output "assets/coins_init_mm2.json"
+curl -l "https://raw.githubusercontent.com/KomodoPlatform/coins/${coins_repo_commit}/coins" --output "assets/coins.json"
 
 # get assets lists
-jq -r '.[].abbr' assets/coins_config.json > app_assets
-jq -r '.[].coin' assets/coins_init_mm2.json > coins_assets
+jq -r 'keys | .[]' assets/coins_config.json > app_assets
+jq -r '.[].coin' assets/coins.json > coins_assets
 
-# check if all assets from coins_config are present in coins_init_mm2
+# check if all assets from 0.5.6-coins are present in coins.json
 set +x
 while IFS= read -r line;  do
     if [[ "${line}" =~ $(echo ^\($(paste -sd'|' coins_assets)\)$) ]]; then

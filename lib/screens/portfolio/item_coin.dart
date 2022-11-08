@@ -60,8 +60,8 @@ class _ItemCoinState extends State<ItemCoin>
         label: AppLocalizations.of(context).send,
         backgroundColor: Colors.white,
         icon: Icons.arrow_upward,
-        onPressed: (context) {
-          Navigator.push<dynamic>(
+        onPressed: (context) async {
+          await Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => CoinDetail(
@@ -69,6 +69,7 @@ class _ItemCoinState extends State<ItemCoin>
                       isSendIsActive: true,
                     )),
           );
+          cexProvider.withdrawCurrency = null;
         },
       ));
     }
@@ -132,8 +133,8 @@ class _ItemCoinState extends State<ItemCoin>
         child: Builder(builder: (BuildContext context) {
           return InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
-            onLongPress: () => Slidable.of(context).openCurrentActionPane(),
-            onTap: () {
+            onLongPress: () => Slidable.of(context).openStartActionPane(),
+            onTap: () async {
               //if (coin.suspended) {
               //showSuspendedDilog(context, coin: coin);
               //return;
@@ -143,13 +144,14 @@ class _ItemCoinState extends State<ItemCoin>
               if (slidableController != null) {
                 slidableController.close();
               }
-              Navigator.push<dynamic>(
+              await Navigator.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
                   builder: (BuildContext context) =>
                       CoinDetail(coinBalance: widget.coinBalance),
                 ),
               );
+              cexProvider.withdrawCurrency = null;
             },
             child: Container(
               color: Theme.of(context).colorScheme.surface,
