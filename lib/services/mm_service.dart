@@ -448,8 +448,7 @@ class MMService {
 
   Future<List<CoinInit>> readJsonCoinInit() async {
     try {
-      return coinInitFromJson(
-          await rootBundle.loadString('assets/coins_init_mm2.json'));
+      return coinInitFromJson(await rootBundle.loadString('assets/coins.json'));
     } catch (e) {
       if (kDebugMode) {
         Log('mm_service', 'readJsonCoinInit] $e');
