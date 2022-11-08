@@ -32,7 +32,6 @@ import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-import '../model/active_coin.dart';
 import '../model/balance.dart';
 import '../model/base_service.dart';
 import '../model/buy_response.dart';
@@ -40,7 +39,6 @@ import '../model/coin.dart';
 import '../model/coin_to_kick_start.dart';
 import '../model/disable_coin.dart';
 import '../model/error_string.dart';
-import '../model/get_active_coin.dart';
 import '../model/get_balance.dart';
 import '../model/get_buy.dart';
 import '../model/get_cancel_order.dart';
@@ -254,29 +252,21 @@ class ApiProvider {
   }
 
   String enableCoinImpl(Coin coin) {
-    final List<Server> servers = coin.serverList
-        .map((String url) => Server(
-            url: url,
-            protocol: coin.proto == null ? 'TCP' : coin.proto.toUpperCase(),
-            disableCertVerification: false))
-        .toList();
-
     if (isErcType(coin))
       return json.encode(MmEnable(
-              userpass: mmSe.userpass,
-              coin: coin.abbr,
-              txHistory: false,
-              swapContractAddress: coin.swapContractAddress,
-              fallbackSwapContract: coin.fallbackSwapContract,
-              urls: coin.serverList)
-          .toJson());
-
+        userpass: mmSe.userpass,
+        coin: coin.abbr,
+        txHistory: false,
+        swapContractAddress: coin.swapContractAddress,
+        fallbackSwapContract: coin.fallbackSwapContract,
+        urls: List<String>.from(coin.serverList.map((e) => e.url)),
+      ).toJson());
     // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
     final electrum = <String, dynamic>{
       'method': 'electrum',
       'userpass': mmSe.userpass,
       'coin': coin.abbr,
-      'servers': List<dynamic>.from(servers.map<dynamic>((se) => se.toJson())),
+      'servers': Coin.getServerList(coin.serverList),
       'mm2': coin.mm2,
       'tx_history': true,
       'required_confirmations': coin.requiredConfirmations,
@@ -287,21 +277,12 @@ class ApiProvider {
       if (coin.swapContractAddress.isNotEmpty)
         'swap_contract_address': coin.swapContractAddress,
       if (coin.fallbackSwapContract.isNotEmpty)
-        'fallback_swap_contract': coin.fallbackSwapContract
+        'fallback_swap_contract': coin.fallbackSwapContract,
+      if (coin.bchdUrls != null) 'bchd_urls': coin.bchdUrls
     };
     final js = json.encode(electrum);
     Log('mm:251', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
     return js;
-  }
-
-  Future<ActiveCoin> enableCoin(Coin coin, {http.Client client}) async {
-    client ??= mmSe.client;
-    final r = await client.post(Uri.parse(url), body: enableCoinImpl(coin));
-    _assert200(r);
-    final dynamic jbody = json.decode(r.body);
-    final err = ErrorString.fromJson(jbody);
-    if (err.error.isNotEmpty) throw removeLineFromMM2(err);
-    return ActiveCoin.fromJson(jbody);
   }
 
   Future<dynamic> postSetPrice(
@@ -525,6 +506,7 @@ class ApiProvider {
     final r = await client.post(Uri.parse(url), body: json.encode(batch));
     _assert200(r);
     _saveRes('batch', r);
+
     return List<dynamic>.from(json.decode(r.body));
   }
 
