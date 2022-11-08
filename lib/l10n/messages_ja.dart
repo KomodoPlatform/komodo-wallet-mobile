@@ -173,7 +173,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m76(amount) => "クリックして ${amount} 件の注文を表示";
 
-  static m77(coinName, address) => "私の ${coinName} アドレス: ${address}";
+  static m77(coinName, address) => "私の ${coinName} アドレス: \n${address}";
 
   static m78(coin) => "購入する${coin}の金額を入力してください";
 
@@ -197,7 +197,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m88(coin, amount) => "${coin} の残高は、取引手数料を支払うのに十分ではありません。${coin} ${amount} が必要です。";
 
-  static m89(left) => "残りのトランザクション: {左}";
+  static m89(left) => "残りのトランザクション: ${left}";
 
   static m90(amnt, hash) => "${amnt} 資金のロックを解除しました - TX: ${hash}";
 

@@ -4183,7 +4183,7 @@
 	"fingerprint": "Huella dactilar",
 	"gasFee": " tarifa{coin} ",
 	"gasNotActive": "Activa {coin}.",
-	"insufficientBalanceToPay": " El saldo de{abbr} no es suficiente para pagar la tarifa de negociación",
+	"insufficientBalanceToPay": " El saldo de {abbr} no es suficiente para pagar la tarifa de negociación",
 	"isUnavailable": "{coinAbbr} no está disponible :(",
 	"latestTxs": "Últimas transacciones",
 	"less": "menos",

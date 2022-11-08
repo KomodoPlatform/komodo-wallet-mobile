@@ -99,7 +99,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m39(abbr) => "${abbr} 잔액은 교환 수수료를 지불할 금액보다 부족합니다";
 
-  static m40(coinAbbr) => "${coinAbbr}이 사용불가합니다 :(";
+  static m40(coinAbbr) => "${coinAbbr} 이 사용불가합니다 :(";
 
   static m41(coinName, number) => "최소 판매 양은 ${number} ${coinName}입니다";
 
@@ -897,7 +897,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tagHRC20" : MessageLookupByLibrary.simpleMessage("HRC20"),
     "tagKMD" : MessageLookupByLibrary.simpleMessage("KMD"),
     "tagKRC20" : MessageLookupByLibrary.simpleMessage("KRC20"),
-    "tagMVR20" : MessageLookupByLibrary.simpleMessage("20,00 MVR"),
+    "tagMVR20" : MessageLookupByLibrary.simpleMessage("MVR20"),
     "tagPLG20" : MessageLookupByLibrary.simpleMessage("PLG20"),
     "tagQRC20" : MessageLookupByLibrary.simpleMessage("QRC20"),
     "tagSBCH" : MessageLookupByLibrary.simpleMessage("SBCH"),

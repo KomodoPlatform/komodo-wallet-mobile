@@ -29,19 +29,19 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m4(appName) => "AtomicDEX, mobil tarafında Android ve iPhone\'da, masaüstünde ise Windows, Mac, Linux işletim sistemlerinde kullanılabilir.";
 
-  static m5(appName) => "Diğer DEX cüzdanlar genellikle aynı miktar koin ile tek bir alım satım emri vermeye izin verir, ara token kullanır, en önemlisi de tek bir blokzincirin koinlerinin alım satımına olanak sağlar.\n\nAtomicDEX ise birbirinden farklı iki blokzincir ağı arasında ara token kullanmadan doğrudan takas yapmaya imkân sağlar. AtomicDEX\'te aynı miktar koin ile birden fazla alım satım emri verebilirsiniz. Mesela 0.1 BTC ile KMD, QTUM ve VRSC için ayrı ayrı alım emirleri verebilirsiniz ve bunlardan birinin tamamlanması halinde diğerleri kendiliğinden iptal olmuş olurlar.";
+  static m5(appName) => "Diğer DEX cüzdanlar genellikle aynı miktar koin ile tek bir alım satım emri vermeye izin verir, ara token kullanır, en önemlisi de tek bir blokzincirin koinlerinin alım satımına olanak sağlar.\n\n${appName} ise birbirinden farklı iki blokzincir ağı arasında ara token kullanmadan doğrudan takas yapmaya imkân sağlar. ${appName} \'te aynı miktar koin ile birden fazla alım satım emri verebilirsiniz. Mesela 0.1 BTC ile KMD, QTUM ve VRSC için ayrı ayrı alım emirleri verebilirsiniz ve bunlardan birinin tamamlanması halinde diğerleri kendiliğinden iptal olmuş olurlar.";
 
   static m6(appName) => "Her bir takasın tamamlanma sürecini etkileyen birkaç etken vardır. Takas edilen koinlerin bağlı olduğu blokzincirlerin blok çıkarım zamanları (Bitcoin en yavaşıdır) bunda etkilidir. Bunun yanında kullanıcılar, takas öncesinde güvenlik seçeneklerini özelleştirebilir. Mesela bir KMD takasına başlamadan evvel AtomicDEX\'te işlem için 3 onayın yeterli olduğu seçeneği işaretlediğinizde takas süresi <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">noterizasyon</a> eklenmeyeceğinden kısalacaktır.";
 
-  static m7(appName) => "AtomicDEX\'te alım satım yaparken bilinmesi gereken iki tür işlem ücreti vardır.\n\n1. AtomicDEX, alıcı emirlerinden işlem başına yaklaşık olarak %0.13 (takriben 777\'nin 1\'i kadar, fakat bu da 0.0001\'den az olmamak kaydıyla) işlem ücreti alırken, yapıcı emirlerinden herhangi bir ücret alınmamaktadır.\n\n2. Hem yapıcı hem de alıcı emir sahiplerinin ödemesi gerekli olan ve takasın gerçekleştiği blokzincirlerin standart ağ işlem ücretleri.\n\nAğ işlem ücretleri, takas yapmak istediğiniz paritelerin kendi işleyişlerine göre değişiklik göstermektedir.";
+  static m7(appName) => "${appName}\'te alım satım yaparken bilinmesi gereken iki tür işlem ücreti vardır.\n\n1. ${appName}, alıcı emirlerinden işlem başına yaklaşık olarak %0.13 (takriben 777\'nin 1\'i kadar, fakat bu da 0.0001\'den az olmamak kaydıyla) işlem ücreti alırken, yapıcı emirlerinden herhangi bir ücret alınmamaktadır.\n\n2. Hem yapıcı hem de alıcı emir sahiplerinin ödemesi gerekli olan ve takasın gerçekleştiği blokzincirlerin standart ağ işlem ücretleri.\n\nAğ işlem ücretleri, takas yapmak istediğiniz paritelerin kendi işleyişlerine göre değişiklik göstermektedir.";
 
-  static m8(name, link, appName, appCompanyShort) => "Evet. AtomicDEX, <a href=\"${link}\">${appCompanyShort} {name?}</a> üzerinden destek sunmaktadır. Ekibimiz ve topluluğumuz her daim yardımcı olmaktan mutluluk duymaktadır.";
+  static m8(name, link, appName, appCompanyShort) => "Evet. ${appName}, <a href=\"${link}\">${appCompanyShort} {name?}</a> üzerinden destek sunmaktadır. Ekibimiz ve topluluğumuz her daim yardımcı olmaktan mutluluk duymaktadır.";
 
-  static m9(appName) => "Hayır ! AtomicDEX tamamıyla merkeziyetsizdir ve kullanıcıların uygulamaya erişimi başkaları tarafından sınırlandırılamaz.";
+  static m9(appName) => "Hayır ! ${appName} tamamıyla merkeziyetsizdir ve kullanıcıların uygulamaya erişimi başkaları tarafından sınırlandırılamaz.";
 
-  static m10(appName, appCompanyShort) => "AtomicDEX, Komodo takımı tarafından geliştirilmiştir. Komodo, koin takası, Geciktirilmiş İş Kanıtı (dPoW), birlikte çalışabilen çoklu zincir mimarisi gibi yenilikçi blokzincir çözümleri geliştiren köklü bir platformdur.";
+  static m10(appName, appCompanyShort) => "${appName}, ${appCompanyShort} takımı tarafından geliştirilmiştir. ${appCompanyShort}, koin takası, Geciktirilmiş İş Kanıtı (dPoW), birlikte çalışabilen çoklu zincir mimarisi gibi yenilikçi blokzincir çözümleri geliştiren köklü bir platformdur.";
 
-  static m11(appName) => "Tabii ki ! Daha fazla bilgi için <a href=\"https://developers.atomicdex.io/\">developer documentation</a> dökümanımızı okuyabilir ya da iş birliği teklifleriniz için bizimle iletişime geçebilirsiniz. Özel bir teknik sorunuz mu var ? AtomicDEX geliştirici topluluğu yardımcı olmak için her daim hazırdır.";
+  static m11(appName) => "Tabii ki ! Daha fazla bilgi için <a href=\"https://developers.atomicdex.io/\">developer documentation</a> dökümanımızı okuyabilir ya da iş birliği teklifleriniz için bizimle iletişime geçebilirsiniz. Özel bir teknik sorunuz mu var ? ${appName}  geliştirici topluluğu yardımcı olmak için her daim hazırdır.";
 
   static m12(batteryLevelCritical) => "Telefonunuzun bataryası güvenli bir takası tamamlayamayacak (${batteryLevelCritical}%) kadar düşük. Lütfen önce şarja takıp sonra tekrar deneyiniz.";
 
@@ -55,7 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m17(name) => "${name} kişisini silmek istediğinizden emin misiniz ?";
 
-  static m18(iUnderstand) => "Özelleştirilmiş gizli kelime kullanımı yeterince güvenli olmayabilir ve uygulama tarafından oluşturulan BIP39 uyumlu gizli kelimeler ya da özel anahtara (WIF) kıyasla daha kolay kırılabilmektedir. Riskleri kabul edip ne yaptığınızdan emin olduğunuzu tasdiklemek için aşağıdaki kutucuğa \"{Anladım}\" yazınız.";
+  static m18(iUnderstand) => "Özelleştirilmiş gizli kelime kullanımı yeterince güvenli olmayabilir ve uygulama tarafından oluşturulan BIP39 uyumlu gizli kelimeler ya da özel anahtara (WIF) kıyasla daha kolay kırılabilmektedir. Riskleri kabul edip ne yaptığınızdan emin olduğunuzu tasdiklemek için aşağıdaki kutucuğa \"${iUnderstand}\" yazınız.";
 
   static m19(abbr) => "${abbr} adresini girin";
 
@@ -155,9 +155,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m67(appName) => "AtomicDEX\'i hangi cihazlarda kullanabilirim ?";
 
-  static m68(appName) => "AtomicDEX\'te alım satım yapmanın diğer DEX\'lerdekinden ne gibi farkları vardır ?";
+  static m68(appName) => "${appName}\'te alım satım yapmanın diğer DEX\'lerdekinden ne gibi farkları vardır ?";
 
-  static m69(appName) => "AtomicDEX\'te işlem ücretleri nasıl hesaplanmaktadır ?";
+  static m69(appName) => "${appName}\'te işlem ücretleri nasıl hesaplanmaktadır ?";
 
   static m70(appName) => "AtomicDEX\'in arkasında kimler var ?";
 
@@ -213,7 +213,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m96(appName) => "AtomicDEX mobil yerleşik üçüncü nesil DEX işlevselliği ve daha fazla özellikleri ile yeni nesil bir çoklu koin cüzdanıdır.";
 
-  static m97(appName) => "AtomicDEX\'in kameraya erişimi engellenmiş.\nQR kod taramasını yapabilmek için lütfen telefon ayarlarınızdan kamera erişimine izin veriniz.";
+  static m97(appName) => "${appName}\'in kameraya erişimi engellenmiş.\nQR kod taramasını yapabilmek için lütfen telefon ayarlarınızdan kamera erişimine izin veriniz.";
 
   static m98(amount, coinName) => "${amount} adet ${coinName} ÇEK";
 
@@ -270,7 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "backupTitle" : MessageLookupByLibrary.simpleMessage("Yedekle"),
     "batteryCriticalError" : m12,
     "batteryLowWarning" : m13,
-    "batterySavingWarning" : MessageLookupByLibrary.simpleMessage("Telefonunuz batarya tasarruf modunda. Lütfen bu modu devre dışı bırakın ya da AtomicDEX uygulamasını arka plana KOYMAYIN. Aksi halde uygulama, işletim sisteminiz tarafından kapatılabilir ve devam etmekte olan takasınız varsa başarısız olabilir."),
+    "batterySavingWarning" : MessageLookupByLibrary.simpleMessage("Telefonunuz batarya tasarruf modunda. Lütfen bu modu devre dışı bırakın ya da başvuru uygulamasını arka plana KOYMAYIN. Aksi halde uygulama, işletim sisteminiz tarafından kapatılabilir ve devam etmekte olan takasınız varsa başarısız olabilir."),
     "bestAvailableRate" : MessageLookupByLibrary.simpleMessage("Mevcut en iyi fiyat"),
     "builtKomodo" : MessageLookupByLibrary.simpleMessage("Komodo Üzerinde Yapılmıştır"),
     "builtOnKmd" : MessageLookupByLibrary.simpleMessage("Komodo Üzerinde Yapılmıştır"),
@@ -283,7 +283,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "camoPinBioProtectionConflictTitle" : MessageLookupByLibrary.simpleMessage("Kamuflajlı PIN ve Biyometrik Koruma Çakışması"),
     "camoPinChange" : MessageLookupByLibrary.simpleMessage("Kamuflajlı PIN kodunuzu değiştirin"),
     "camoPinCreate" : MessageLookupByLibrary.simpleMessage("Kamuflajlı PIN kodu oluşturun"),
-    "camoPinDesc" : MessageLookupByLibrary.simpleMessage("If You\'ll unlock the app with the Camouflage PIN, a fake LOW balance will be shown and the Camouflage PIN config option will NOT be visible in the settings"),
+    "camoPinDesc" : MessageLookupByLibrary.simpleMessage("Uygulamanın kilidini Kamuflaj PIN\'i ile açarsanız, sahte bir DÜŞÜK bakiye gösterilecek ve Kamuflaj PIN\'i yapılandırma seçeneği ayarlarda GÖRÜNMEYECEK"),
     "camoPinInvalid" : MessageLookupByLibrary.simpleMessage("Geçersiz Kamuflajlı PIN"),
     "camoPinLink" : MessageLookupByLibrary.simpleMessage("Kamuflajlı PIN"),
     "camoPinNotFound" : MessageLookupByLibrary.simpleMessage("Kamuflajlı PIN bulunamadı"),
@@ -751,7 +751,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "question_1" : MessageLookupByLibrary.simpleMessage("Gizli kelimelerimi kaydediyor musunuz ?"),
     "question_10" : m67,
     "question_2" : m68,
-    "question_3" : MessageLookupByLibrary.simpleMessage("AtomicDEX\'te takas işlemleri ne kadar sürmektedir ?"),
+    "question_3" : MessageLookupByLibrary.simpleMessage("Takas işlemleri ne kadar sürmektedir ?"),
     "question_4" : MessageLookupByLibrary.simpleMessage("Takas işlemi boyunca çevrimiçi olmam mı gerekir ?"),
     "question_5" : m69,
     "question_6" : MessageLookupByLibrary.simpleMessage("Kullanıcılara destek sunuyor musunuz ?"),
@@ -866,7 +866,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "soundSettingsTitle" : MessageLookupByLibrary.simpleMessage("Ses seçenekleri"),
     "soundsDialogTitle" : MessageLookupByLibrary.simpleMessage("Sesler"),
     "soundsDoNotShowAgain" : MessageLookupByLibrary.simpleMessage("Anladım, bunu tekrar gösterme"),
-    "soundsExplanation" : MessageLookupByLibrary.simpleMessage("Takas boyunca ve açık bir yapıcı emriniz varken bazı sesli bilgilendirmeler duyacaksınız.\nAtomicDEX\'te pürüzsüz bir takas için her iki tarafın da işlem boyunca çevrimiçi olması gerekmektedir ve sesli bildirimler buna yardımcı olmaktadır."),
+    "soundsExplanation" : MessageLookupByLibrary.simpleMessage("Takas boyunca ve açık bir yapıcı emriniz varken bazı sesli bilgilendirmeler duyacaksınız.\nPürüzsüz bir takas için her iki tarafın da işlem boyunca çevrimiçi olması gerekmektedir ve sesli bildirimler buna yardımcı olmaktadır."),
     "soundsNote" : MessageLookupByLibrary.simpleMessage("Kendi özelleştirilmiş sesli bildirimlerinizi uygulamanın ayarlar bölümünden etkinleştirebileceğinizi unutmayın."),
     "spanishLanguage" : MessageLookupByLibrary.simpleMessage("İspanyolca"),
     "step" : MessageLookupByLibrary.simpleMessage("Adım"),

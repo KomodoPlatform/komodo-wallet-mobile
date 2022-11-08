@@ -97,7 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m38(coin) => "Activa ${coin}.";
 
-  static m39(abbr) => " El saldo de${abbr} no es suficiente para pagar la tarifa de negociación";
+  static m39(abbr) => " El saldo de ${abbr} no es suficiente para pagar la tarifa de negociación";
 
   static m40(coinAbbr) => "${coinAbbr} no está disponible :(";
 

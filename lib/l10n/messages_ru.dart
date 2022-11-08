@@ -173,7 +173,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m76(amount) => "Нажмите, чтобы увидеть ${amount} ордеров";
 
-  static m77(coinName, address) => "Мой ${coinName} адрес: ${address}";
+  static m77(coinName, address) => "Мой ${coinName} адрес:\n${address}";
 
   static m78(coin) => "Пожалуйста введите сумму ${coin} для покупки";
 
@@ -256,7 +256,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "answer_10" : m4,
     "answer_2" : m5,
     "answer_3" : m6,
-    "answer_4" : MessageLookupByLibrary.simpleMessage("Да. Приложение appName должно оставаться подключенным к Интернету для успешного завершения каждого атомарного свопа (очень короткие перерывы в подключении обычно допустимы). В противном случае существует риск отмены сделки, если вы являетесь мейкером, и риск потери средств, если вы тейкер. Протокол атомарного свопа требует, чтобы оба участника оставались в сети и контролировали задействованные блокчейны, чтобы процесс оставался атомарным."),
+    "answer_4" : MessageLookupByLibrary.simpleMessage("Да. Приложение должно оставаться подключенным к Интернету для успешного завершения каждого атомарного свопа (очень короткие перерывы в подключении обычно допустимы). В противном случае существует риск отмены сделки, если вы являетесь мейкером, и риск потери средств, если вы тейкер. Протокол атомарного свопа требует, чтобы оба участника оставались в сети и контролировали задействованные блокчейны, чтобы процесс оставался атомарным."),
     "answer_5" : m7,
     "answer_6" : m8,
     "answer_7" : m9,
@@ -275,7 +275,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "builtKomodo" : MessageLookupByLibrary.simpleMessage("Построено на Komodo"),
     "builtOnKmd" : MessageLookupByLibrary.simpleMessage("Построено на Komodo"),
     "buy" : MessageLookupByLibrary.simpleMessage("Купить"),
-    "buyOrderType" : MessageLookupByLibrary.simpleMessage("Конвертировать Майкеру если нет совпадений"),
+    "buyOrderType" : MessageLookupByLibrary.simpleMessage("Конвертировать в мейкер если нет совпадений"),
     "buySuccessWaiting" : MessageLookupByLibrary.simpleMessage("Обмен начался, пожалуйста подождите!"),
     "buySuccessWaitingError" : m14,
     "buyTestCoinWarning" : MessageLookupByLibrary.simpleMessage("Внимание, вы пытаетесь купить тестовые монеты БЕЗ РЕАЛЬНОЙ стоимости."),
@@ -467,7 +467,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "exportSuccessTitle" : MessageLookupByLibrary.simpleMessage("Элементы которые были успешно экспортированы:"),
     "exportSwapsTitle" : MessageLookupByLibrary.simpleMessage("Свопы"),
     "exportTitle" : MessageLookupByLibrary.simpleMessage("Экспорт"),
-    "fakeBalanceAmt" : MessageLookupByLibrary.simpleMessage("Поддельный баланс:"),
+    "fakeBalanceAmt" : MessageLookupByLibrary.simpleMessage("Маскировочный баланс:"),
     "faqTitle" : MessageLookupByLibrary.simpleMessage("Часто задаваемые вопросы"),
     "faucetError" : MessageLookupByLibrary.simpleMessage("Ошибка"),
     "faucetInProgress" : m35,
@@ -889,19 +889,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "swapUUID" : MessageLookupByLibrary.simpleMessage("UUID обмена"),
     "switchTheme" : MessageLookupByLibrary.simpleMessage("Переключить тему"),
     "tagAVX20" : MessageLookupByLibrary.simpleMessage("AVX20"),
-    "tagBEP20" : MessageLookupByLibrary.simpleMessage("БЭП20"),
+    "tagBEP20" : MessageLookupByLibrary.simpleMessage("BEP20"),
     "tagERC20" : MessageLookupByLibrary.simpleMessage("ERC20"),
-    "tagETC" : MessageLookupByLibrary.simpleMessage("так далее"),
-    "tagFTM20" : MessageLookupByLibrary.simpleMessage("ФТМ20"),
+    "tagETC" : MessageLookupByLibrary.simpleMessage("ETC"),
+    "tagFTM20" : MessageLookupByLibrary.simpleMessage("FTM20"),
     "tagHCO20" : MessageLookupByLibrary.simpleMessage("HCO20"),
-    "tagHRC20" : MessageLookupByLibrary.simpleMessage("HRc20"),
+    "tagHRC20" : MessageLookupByLibrary.simpleMessage("HRC20"),
     "tagKMD" : MessageLookupByLibrary.simpleMessage("KMD"),
-    "tagKRC20" : MessageLookupByLibrary.simpleMessage("КРЦ20"),
-    "tagMVR20" : MessageLookupByLibrary.simpleMessage("МВР20"),
+    "tagKRC20" : MessageLookupByLibrary.simpleMessage("KRC20"),
+    "tagMVR20" : MessageLookupByLibrary.simpleMessage("MVR20"),
     "tagPLG20" : MessageLookupByLibrary.simpleMessage("PLG20"),
     "tagQRC20" : MessageLookupByLibrary.simpleMessage("QRC20"),
-    "tagSBCH" : MessageLookupByLibrary.simpleMessage("СБЧ"),
-    "tagUBQ" : MessageLookupByLibrary.simpleMessage("УБК"),
+    "tagSBCH" : MessageLookupByLibrary.simpleMessage("SBCH"),
+    "tagUBQ" : MessageLookupByLibrary.simpleMessage("UBQ"),
     "takerOrder" : MessageLookupByLibrary.simpleMessage("Ордер Тейкера"),
     "timeOut" : MessageLookupByLibrary.simpleMessage("Таймаут"),
     "titleCreatePassword" : MessageLookupByLibrary.simpleMessage("СОЗДАТЬ ПАРОЛЬ"),

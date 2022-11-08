@@ -421,7 +421,7 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"shareAddress": "私の {coinName} アドレス: {address}",
+	"shareAddress": "私の {coinName} アドレス: \n{address}",
 	"@shareAddress": {
 		"type": "text",
 		"placeholders_order": [
@@ -1998,7 +1998,7 @@
 	"turkishLanguage": "トルコ語",
 	"txFeeTitle": "取引手数料：",
 	"txLimitExceeded": "リクエストが多すぎます。トランザクション履歴リクエストの制限を超えました。後でもう一度やり直してください。",
-	"txleft": "残りのトランザクション: {左}",
+	"txleft": "残りのトランザクション: {left}",
 	"unlockFunds": "資金のロックを解除",
 	"unlockSuccess": "{amnt} 資金のロックを解除しました - TX: {hash}",
 	"unspendable": "使えない",
