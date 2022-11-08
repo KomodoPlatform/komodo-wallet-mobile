@@ -289,6 +289,7 @@ class _ItemCoinState extends State<ItemCoin>
           ),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             if (!widget.coinBalance.coin.suspended && rewardsProvider.needClaim)
               Container(
