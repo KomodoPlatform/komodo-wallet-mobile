@@ -14,7 +14,7 @@ import 'package:intl/message_lookup_by_library.dart';
 
 final messages = MessageLookup();
 
-typedef String MessageIfAbsent(String messageStr, List<Object> args);
+typedef String MessageIfAbsent(String? messageStr, List<Object>? args);
 
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'tr';
@@ -699,7 +699,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "orderDetailsCancel" : MessageLookupByLibrary.simpleMessage("İptal"),
     "orderDetailsExpedient" : m60,
     "orderDetailsExpensive" : m61,
-    "orderDetailsFor" : MessageLookupByLibrary.simpleMessage(""),
+    "orderDetailsFor" : MessageLookupByLibrary.simpleMessage("için"),
     "orderDetailsIdentical" : MessageLookupByLibrary.simpleMessage("CEX\'de"),
     "orderDetailsMin" : MessageLookupByLibrary.simpleMessage("en az"),
     "orderDetailsPrice" : MessageLookupByLibrary.simpleMessage("Fiyat"),
@@ -927,11 +927,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "txFee" : MessageLookupByLibrary.simpleMessage("Ücret"),
     "txFeeTitle" : MessageLookupByLibrary.simpleMessage("İşlem ücreti"),
     "txHash" : MessageLookupByLibrary.simpleMessage("İşlem numarası"),
-    "txLimitExceeded" : MessageLookupByLibrary.simpleMessage(""),
-    "txNotConfirmed" : MessageLookupByLibrary.simpleMessage(""),
+    "txLimitExceeded" : MessageLookupByLibrary.simpleMessage("Çok fazla istek.\nİşlem geçmişi istekleri sınırı aşıldı.\nLütfen daha sonra tekrar deneyiniz."),
+    "txNotConfirmed" : MessageLookupByLibrary.simpleMessage("onaylanmamış"),
     "txleft" : m89,
     "unlock" : MessageLookupByLibrary.simpleMessage("kilidi aç"),
-    "unlockFunds" : MessageLookupByLibrary.simpleMessage(""),
+    "unlockFunds" : MessageLookupByLibrary.simpleMessage("Fonların Kilidini Açın"),
     "unlockSuccess" : m90,
     "unspendable" : MessageLookupByLibrary.simpleMessage("harcanamaz"),
     "updatesAvailable" : MessageLookupByLibrary.simpleMessage("Yeni sürüm mevcut"),
@@ -977,9 +977,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "wrongCoinTitle" : MessageLookupByLibrary.simpleMessage("Yanlış koin"),
     "wrongPassword" : MessageLookupByLibrary.simpleMessage("Parola eşleşmiyor. Lütfen tekrar deneyin."),
     "yes" : MessageLookupByLibrary.simpleMessage("Evet"),
-    "you have a fresh order that is trying to match with an existing order" : MessageLookupByLibrary.simpleMessage(""),
-    "you have an active swap in progress" : MessageLookupByLibrary.simpleMessage(""),
-    "you have an order that new orders can match with" : MessageLookupByLibrary.simpleMessage(""),
+    "you have a fresh order that is trying to match with an existing order" : MessageLookupByLibrary.simpleMessage("mevcut bir siparişle eşleşmeye çalışan yeni bir siparişiniz var"),
+    "you have an active swap in progress" : MessageLookupByLibrary.simpleMessage("devam eden aktif bir takasınız var"),
+    "you have an order that new orders can match with" : MessageLookupByLibrary.simpleMessage("yeni siparişlerin eşleşebileceği bir siparişiniz var"),
     "youAreSending" : MessageLookupByLibrary.simpleMessage("Gönderiyorsunuz:"),
     "youWillReceiveClaim" : m99,
     "youWillReceived" : MessageLookupByLibrary.simpleMessage("Alacağınız:"),

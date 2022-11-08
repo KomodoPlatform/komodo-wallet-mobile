@@ -14,7 +14,7 @@ import 'package:intl/message_lookup_by_library.dart';
 
 final messages = MessageLookup();
 
-typedef String MessageIfAbsent(String messageStr, List<Object> args);
+typedef String MessageIfAbsent(String? messageStr, List<Object>? args);
 
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ru';
@@ -55,7 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m17(name) => "Вы уверены, что хотите удалить ${name}?";
 
-  static m18(iUnderstand) => "";
+  static m18(iUnderstand) => "Пользовательские исходные фразы могут быть менее безопасными и их легче взломать, чем сгенерированные исходные фразы или закрытый ключ (WIF), совместимые с BIP39. Чтобы подтвердить, что вы понимаете риск и знаете, что делаете, введите \"${iUnderstand}\" в поле ниже.";
 
   static m19(abbr) => "Введите ${abbr} адрес";
 
@@ -264,7 +264,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "answer_9" : m11,
     "areYouSure" : MessageLookupByLibrary.simpleMessage("ВЫ УВЕРЕНЫ?"),
     "authenticate" : MessageLookupByLibrary.simpleMessage("аутентификация"),
-    "automaticRedirected" : MessageLookupByLibrary.simpleMessage(""),
+    "automaticRedirected" : MessageLookupByLibrary.simpleMessage("Вы будете автоматически перенаправлены на страницу портфолио после завершения процесса повторной активации."),
     "availableVolume" : MessageLookupByLibrary.simpleMessage("макс объем"),
     "back" : MessageLookupByLibrary.simpleMessage("назад"),
     "backupTitle" : MessageLookupByLibrary.simpleMessage("Бэкап"),
@@ -888,20 +888,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "swapTotal" : MessageLookupByLibrary.simpleMessage("Всего"),
     "swapUUID" : MessageLookupByLibrary.simpleMessage("UUID обмена"),
     "switchTheme" : MessageLookupByLibrary.simpleMessage("Переключить тему"),
-    "tagAVX20" : MessageLookupByLibrary.simpleMessage(""),
-    "tagBEP20" : MessageLookupByLibrary.simpleMessage(""),
+    "tagAVX20" : MessageLookupByLibrary.simpleMessage("AVX20"),
+    "tagBEP20" : MessageLookupByLibrary.simpleMessage("БЭП20"),
     "tagERC20" : MessageLookupByLibrary.simpleMessage("ERC20"),
-    "tagETC" : MessageLookupByLibrary.simpleMessage(""),
-    "tagFTM20" : MessageLookupByLibrary.simpleMessage(""),
-    "tagHCO20" : MessageLookupByLibrary.simpleMessage(""),
-    "tagHRC20" : MessageLookupByLibrary.simpleMessage(""),
+    "tagETC" : MessageLookupByLibrary.simpleMessage("так далее"),
+    "tagFTM20" : MessageLookupByLibrary.simpleMessage("ФТМ20"),
+    "tagHCO20" : MessageLookupByLibrary.simpleMessage("HCO20"),
+    "tagHRC20" : MessageLookupByLibrary.simpleMessage("HRc20"),
     "tagKMD" : MessageLookupByLibrary.simpleMessage("KMD"),
-    "tagKRC20" : MessageLookupByLibrary.simpleMessage(""),
-    "tagMVR20" : MessageLookupByLibrary.simpleMessage(""),
-    "tagPLG20" : MessageLookupByLibrary.simpleMessage(""),
-    "tagQRC20" : MessageLookupByLibrary.simpleMessage(""),
-    "tagSBCH" : MessageLookupByLibrary.simpleMessage(""),
-    "tagUBQ" : MessageLookupByLibrary.simpleMessage(""),
+    "tagKRC20" : MessageLookupByLibrary.simpleMessage("КРЦ20"),
+    "tagMVR20" : MessageLookupByLibrary.simpleMessage("МВР20"),
+    "tagPLG20" : MessageLookupByLibrary.simpleMessage("PLG20"),
+    "tagQRC20" : MessageLookupByLibrary.simpleMessage("QRC20"),
+    "tagSBCH" : MessageLookupByLibrary.simpleMessage("СБЧ"),
+    "tagUBQ" : MessageLookupByLibrary.simpleMessage("УБК"),
     "takerOrder" : MessageLookupByLibrary.simpleMessage("Ордер Тейкера"),
     "timeOut" : MessageLookupByLibrary.simpleMessage("Таймаут"),
     "titleCreatePassword" : MessageLookupByLibrary.simpleMessage("СОЗДАТЬ ПАРОЛЬ"),

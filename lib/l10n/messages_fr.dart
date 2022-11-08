@@ -14,7 +14,7 @@ import 'package:intl/message_lookup_by_library.dart';
 
 final messages = MessageLookup();
 
-typedef String MessageIfAbsent(String messageStr, List<Object> args);
+typedef String MessageIfAbsent(String? messageStr, List<Object>? args);
 
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'fr';
@@ -29,23 +29,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m4(appName) => "${appName} est disponible sur mobile Android et iPhone, et pour PC sur les sytèmes d\'exploitations Windows, Mac, et Linux.";
 
-  static m5(appName) => "";
+  static m5(appName) => "Les autres DEX ne vous permettent généralement que d\'échanger des actifs basés sur un seul réseau de blockchain, d\'utiliser des jetons proxy et de ne permettre de passer qu\'une seule commande avec les mêmes fonds.\n\n${appName} vous permet d\'échanger nativement sur deux réseaux blockchain différents sans jetons proxy. Vous pouvez également passer plusieurs commandes avec les mêmes fonds. Par exemple, vous pouvez vendre 0,1 BTC pour KMD, QTUM ou VRSC — la première commande exécutée annule automatiquement toutes les autres commandes.";
 
-  static m6(appName) => "";
+  static m6(appName) => "Plusieurs facteurs déterminent le temps de traitement de chaque échange. Le temps de blocage des actifs échangés dépend de chaque réseau (Bitcoin étant généralement le plus lent). De plus, l\'utilisateur peut personnaliser les préférences de sécurité. Par exemple, vous pouvez demander à ${appName} de considérer une transaction KMD comme finale après seulement 3 confirmations, ce qui raccourcit le temps d\'échange par rapport à l\'attente d\'une <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">notarisation</a>.";
 
-  static m7(appName) => "";
+  static m7(appName) => "Il existe deux catégories de frais à prendre en compte lors de la négociation sur ${appName}.\n\n1. ${appName} facture environ 0,13 % (1/777 du volume de négociation mais pas moins de 0,0001) comme frais de négociation pour les ordres preneurs, et les ordres fabricant n\'ont aucun frais.\n\n2. Les fabricants et les preneurs devront payer des frais de réseau normaux aux chaînes de blocs impliquées lors des transactions d\'échange atomique.\n\nLes frais de réseau peuvent varier considérablement en fonction de la paire de négociation que vous avez sélectionnée.";
 
-  static m8(name, link, appName, appCompanyShort) => "";
+  static m8(name, link, appName, appCompanyShort) => "Oui! ${appName} propose une assistance via le <a href=\"${link}\">${appCompanyShort} ${name}</a>. L\'équipe et la communauté sont toujours ravies de vous aider !";
 
-  static m9(appName) => "";
+  static m9(appName) => "Non! ${appName} est entièrement décentralisé. Il n\'est pas possible de limiter l\'accès des utilisateurs par un tiers.";
 
-  static m10(appName, appCompanyShort) => "";
+  static m10(appName, appCompanyShort) => "${appName} est développé par l\'équipe ${appCompanyShort} . ${appCompanyShort} est l\'un des projets de blockchain les plus établis travaillant sur des solutions innovantes telles que les swaps atomiques, la preuve de travail différée et une architecture multichaîne interopérable.";
 
-  static m11(appName) => "";
+  static m11(appName) => "Absolument! Vous pouvez lire notre <a href=\"https://developers.atomicdex.io/\">documentation pour les développeurs</a> pour plus de détails ou nous contacter pour vos demandes de partenariat. Vous avez une question technique spécifique ? La communauté de développeurs ${appName} est toujours prête à vous aider !";
 
-  static m12(batteryLevelCritical) => "";
+  static m12(batteryLevelCritical) => "La charge de votre batterie est essentielle (${batteryLevelCritical} %) pour effectuer un échange en toute sécurité. Veuillez le mettre en charge et réessayer.";
 
-  static m13(batteryLevelLow) => "";
+  static m13(batteryLevelLow) => "La charge de votre batterie est inférieure à ${batteryLevelLow} %. Veuillez considérer la recharge du téléphone.";
 
   static m14(seconde) => "Ordre en cours, veuillez patienter ${seconde} secondes!";
 
@@ -55,9 +55,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m17(name) => "Voulez-vous supprimer le contact ${name}?";
 
-  static m18(iUnderstand) => "";
+  static m18(iUnderstand) => "Les phrases de départ personnalisées peuvent être moins sécurisées et plus faciles à déchiffrer qu\'une phrase de départ ou une clé privée (WIF) conforme à BIP39. Pour confirmer que vous comprenez le risque et savez ce que vous faites, saisissez \" ${iUnderstand}\" dans la case ci-dessous.";
 
-  static m19(abbr) => "";
+  static m19(abbr) => "Entrez l\'adresse ${abbr} ";
 
   static m20(gas) => "Pas assez de gas - veuillez utiliser au moins ${gas} Gwei";
 
@@ -89,7 +89,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m34(appName) => "End-User License Agreement (EULA) of ${appName} mobile:";
 
-  static m35(coin) => "";
+  static m35(coin) => "Envoi de la demande au robinet ${coin} ...";
 
   static m36(appCompanyShort) => "${appCompanyShort} actualités";
 
@@ -105,15 +105,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m42(coinName, number) => "Le montant minimum à acheter est ${number} ${coinName}";
 
-  static m43(buyCoin, buyAmount, sellCoin, sellAmount) => "";
+  static m43(buyCoin, buyAmount, sellCoin, sellAmount) => "Le montant minimum de la commande est de ${buyAmount}${buyCoin}(${sellAmount}${sellCoin})";
 
-  static m44(coinName, number) => "";
+  static m44(coinName, number) => "Le montant minimum à vendre est de ${number}${coinName}";
 
-  static m45(minValue, coin) => "";
+  static m45(minValue, coin) => "Doit être supérieur à ${minValue} ${coin}";
 
-  static m46(appName) => "";
+  static m46(appName) => "Veuillez noter que vous utilisez maintenant des données cellulaires et que votre participation au réseau ${appName} P2P consomme du trafic Internet. Il est préférable d\'utiliser un réseau WiFi si votre forfait de données cellulaires est coûteux.";
 
-  static m47(coin) => "";
+  static m47(coin) => "Activez ${coin} et rechargez d\'abord le solde";
 
   static m48(number) => "Créer ${number} Ordre(s):";
 
@@ -125,7 +125,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m52(coin) => "Pas assez de ${coin} pour la transaction!";
 
-  static m53(sell, buy) => "";
+  static m53(sell, buy) => " L\'échange${sell} / ${buy} s\'est terminé avec succès";
 
   static m54(sell, buy) => "${sell}/${buy} échange échoué";
 
@@ -133,17 +133,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m56(sell, buy) => "${sell}/${buy} délais d\'échange dépassé";
 
-  static m57(coin) => "";
+  static m57(coin) => "Vous avez reçu ${coin}  transaction !";
 
   static m58(assets) => "${assets} Actifs";
 
   static m59(coin) => "Tous les ordres ${coin} seront annulés.";
 
-  static m60(delta) => "";
+  static m60(delta) => "Expédient : CEX +${delta} %";
 
-  static m61(delta) => "";
+  static m61(delta) => "Cher : CEX ${delta} %";
 
-  static m62(fill) => "";
+  static m62(fill) => "${fill}% rempli";
 
   static m63(coin) => "Mnt. (${coin})";
 
@@ -151,19 +151,19 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m65(coin) => "Total (${coin})";
 
-  static m66(abbr) => "";
+  static m66(abbr) => "${abbr} n\'est pas actif. Veuillez activer et réessayer.";
 
   static m67(appName) => "Quels sont les appareils compatibles avec ${appName}?";
 
-  static m68(appName) => "";
+  static m68(appName) => "En quoi le trading sur ${appName} est-il différent du trading sur d\'autres DEX ?";
 
-  static m69(appName) => "";
+  static m69(appName) => "Comment sont calculés les frais sur ${appName}  ?";
 
   static m70(appName) => "Qui est derrière ${appName}?";
 
-  static m71(appName) => "";
+  static m71(appName) => "Est-il possible de développer mon propre échange en marque blanche sur ${appName} ?";
 
-  static m72(amount) => "";
+  static m72(amount) => "Succès! ${amount} KMD reçu.";
 
   static m73(dd) => "${dd} jour(s)";
 
@@ -177,29 +177,29 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m78(coin) => "Veuillez entrer le montant de ${coin} à acheter";
 
-  static m79(maxCoins) => "";
+  static m79(maxCoins) => "Le nombre maximum de pièces actives est de ${maxCoins}. Veuillez en désactiver certains.";
 
   static m80(coin) => "${coin} pas activé!";
 
   static m81(coin) => "Veuillez entrer le montant de ${coin} à vendre";
 
-  static m82(coin) => "";
+  static m82(coin) => "Impossible d\'activer ${coin}";
 
-  static m83(description) => "";
+  static m83(description) => "Choisissez un fichier mp3 ou wav s\'il vous plaît. Nous y jouerons quand ${description}.";
 
-  static m84(description) => "";
+  static m84(description) => "Joué quand ${description}";
 
-  static m85(appName) => "";
+  static m85(appName) => "Si vous avez des questions ou si vous pensez avoir rencontré un problème technique avec l\'application ${appName} , vous pouvez le signaler et obtenir de l\'aide de notre équipe.";
 
-  static m86(coin) => "";
+  static m86(coin) => "Veuillez d\'abord activer ${coin} et recharger le solde";
 
-  static m87(coin) => "";
+  static m87(coin) => "${coin}  solde insuffisant pour payer les frais de transaction.";
 
-  static m88(coin, amount) => "";
+  static m88(coin, amount) => "${coin}  solde insuffisant pour payer les frais de transaction. ${coin} ${amount} requis.";
 
-  static m89(left) => "";
+  static m89(left) => "Transactions restantes : ${left}";
 
-  static m90(amnt, hash) => "";
+  static m90(amnt, hash) => " ${amnt}  fonds ont été débloqués avec succès - TX : ${hash}";
 
   static m91(version) => "Version ${version} en cours d\'utilisation";
 
@@ -213,7 +213,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m96(appName) => "AtomicDEX mobile est un portefeuille multi crypto-monnaies de nouvelle génération doté de la fonctionnalité DEX native de troisième génération et encore bien plus.";
 
-  static m97(appName) => "";
+  static m97(appName) => "Vous avez précédemment refusé à ${appName} l\'accès à la caméra.\nVeuillez modifier manuellement l\'autorisation de l\'appareil photo dans les paramètres de votre téléphone pour procéder à l\'analyse du code QR.";
 
   static m98(amount, coinName) => "ENVOYER ${amount} ${coinName}";
 
@@ -256,7 +256,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "answer_10" : m4,
     "answer_2" : m5,
     "answer_3" : m6,
-    "answer_4" : MessageLookupByLibrary.simpleMessage(""),
+    "answer_4" : MessageLookupByLibrary.simpleMessage("Oui. Vous devez rester connecté à Internet et exécuter votre application pour réussir chaque échange atomique (de très courtes pauses de connectivité sont généralement acceptables). Sinon, il y a un risque d\'annulation de transaction si vous êtes un fabricant et un risque de perte de fonds si vous êtes un preneur. Le protocole d\'échange atomique exige que les deux participants restent en ligne et surveillent les chaînes de blocs impliquées pour que le processus reste atomique."),
     "answer_5" : m7,
     "answer_6" : m8,
     "answer_7" : m9,
@@ -264,26 +264,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "answer_9" : m11,
     "areYouSure" : MessageLookupByLibrary.simpleMessage("ÊTES-VOUS SÛR?"),
     "authenticate" : MessageLookupByLibrary.simpleMessage("authentification"),
-    "automaticRedirected" : MessageLookupByLibrary.simpleMessage(""),
+    "automaticRedirected" : MessageLookupByLibrary.simpleMessage("Vous serez automatiquement redirigé vers la page du portfolio une fois le processus de réactivation terminé."),
     "availableVolume" : MessageLookupByLibrary.simpleMessage("vol max"),
     "back" : MessageLookupByLibrary.simpleMessage("retour"),
     "backupTitle" : MessageLookupByLibrary.simpleMessage("Sauvegarde"),
     "batteryCriticalError" : m12,
     "batteryLowWarning" : m13,
-    "batterySavingWarning" : MessageLookupByLibrary.simpleMessage(""),
+    "batterySavingWarning" : MessageLookupByLibrary.simpleMessage("Votre téléphone est en mode d\'économie de batterie. Veuillez désactiver ce mode ou ne PAS mettre l\'application en arrière-plan, sinon l\'application pourrait être tuée par le système d\'exploitation et l\'échange échouerait."),
     "bestAvailableRate" : MessageLookupByLibrary.simpleMessage("Meilleur tarif disponible"),
     "builtKomodo" : MessageLookupByLibrary.simpleMessage("Conçu sur Komodo"),
     "builtOnKmd" : MessageLookupByLibrary.simpleMessage("Conçu sur Komodo"),
     "buy" : MessageLookupByLibrary.simpleMessage("Acheter"),
-    "buyOrderType" : MessageLookupByLibrary.simpleMessage(""),
+    "buyOrderType" : MessageLookupByLibrary.simpleMessage("Convertir en Maker s\'il n\'y a pas de correspondance"),
     "buySuccessWaiting" : MessageLookupByLibrary.simpleMessage("Échange émis, veuillez patienter!"),
     "buySuccessWaitingError" : m14,
-    "buyTestCoinWarning" : MessageLookupByLibrary.simpleMessage(""),
-    "camoPinBioProtectionConflict" : MessageLookupByLibrary.simpleMessage(""),
-    "camoPinBioProtectionConflictTitle" : MessageLookupByLibrary.simpleMessage(""),
+    "buyTestCoinWarning" : MessageLookupByLibrary.simpleMessage("Attention, vous êtes prêt à acheter des pièces test SANS valeur réelle !"),
+    "camoPinBioProtectionConflict" : MessageLookupByLibrary.simpleMessage("Le code PIN de camouflage et la protection bio ne peuvent pas être activés en même temps."),
+    "camoPinBioProtectionConflictTitle" : MessageLookupByLibrary.simpleMessage("Camo PIN et conflit de protection Bio."),
     "camoPinChange" : MessageLookupByLibrary.simpleMessage("Changer Masque PIN"),
     "camoPinCreate" : MessageLookupByLibrary.simpleMessage("Créer Masque PIN"),
-    "camoPinDesc" : MessageLookupByLibrary.simpleMessage(""),
+    "camoPinDesc" : MessageLookupByLibrary.simpleMessage("Si vous déverrouillez l\'application avec le code PIN de camouflage, un faux solde FAIBLE sera affiché et l\'option de configuration du code PIN de camouflage ne sera PAS visible dans les paramètres."),
     "camoPinInvalid" : MessageLookupByLibrary.simpleMessage("Masque PIN incorrect"),
     "camoPinLink" : MessageLookupByLibrary.simpleMessage("Masque PIN"),
     "camoPinNotFound" : MessageLookupByLibrary.simpleMessage("Masque PIN introuvable"),
@@ -297,14 +297,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancel" : MessageLookupByLibrary.simpleMessage("Annuler"),
     "cancelButton" : MessageLookupByLibrary.simpleMessage("Annuler"),
     "cancelOrder" : MessageLookupByLibrary.simpleMessage("Annuler l\'ordre"),
-    "candleChartError" : MessageLookupByLibrary.simpleMessage(""),
+    "candleChartError" : MessageLookupByLibrary.simpleMessage("Un problème est survenu. Réessayez plus tard."),
     "cantDeleteDefaultCoinOk" : MessageLookupByLibrary.simpleMessage("Ok"),
-    "cantDeleteDefaultCoinSpan" : MessageLookupByLibrary.simpleMessage(""),
+    "cantDeleteDefaultCoinSpan" : MessageLookupByLibrary.simpleMessage(" est une pièce par défaut. Les pièces par défaut ne peuvent pas être désactivées."),
     "cantDeleteDefaultCoinTitle" : MessageLookupByLibrary.simpleMessage("Désactivation impossible"),
     "cex" : MessageLookupByLibrary.simpleMessage("CEX"),
     "cexChangeRate" : MessageLookupByLibrary.simpleMessage("Taux de change CEX"),
     "cexData" : MessageLookupByLibrary.simpleMessage("Données CEX"),
-    "cexDataDesc" : MessageLookupByLibrary.simpleMessage(""),
+    "cexDataDesc" : MessageLookupByLibrary.simpleMessage("Les données de marché (prix, graphiques, etc.) marquées de cette icône proviennent de sources tierces (<a href=\"https://www.coingecko.com/\">coingecko.com</a>, <a href=\"https://openrates.io/\">openrates.io</a>)."),
     "changePin" : MessageLookupByLibrary.simpleMessage("Changer code PIN"),
     "checkForUpdates" : MessageLookupByLibrary.simpleMessage("Vérifier les mises à jours"),
     "checkOut" : MessageLookupByLibrary.simpleMessage("Check-out"),
@@ -372,7 +372,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "delete" : MessageLookupByLibrary.simpleMessage("Supprimer"),
     "deleteConfirm" : MessageLookupByLibrary.simpleMessage("Confirmer désactivation"),
     "deleteSpan1" : MessageLookupByLibrary.simpleMessage("Voulez-vous supprimer"),
-    "deleteSpan2" : MessageLookupByLibrary.simpleMessage(""),
+    "deleteSpan2" : MessageLookupByLibrary.simpleMessage(" de votre portefeuille ? Toutes les commandes sans correspondance seront annulées."),
     "deleteWallet" : MessageLookupByLibrary.simpleMessage("Supprimer le portefeuille"),
     "deletingWallet" : MessageLookupByLibrary.simpleMessage("Supression portefeuille…"),
     "details" : MessageLookupByLibrary.simpleMessage("détails"),
@@ -393,10 +393,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyWallet" : MessageLookupByLibrary.simpleMessage("Le nom du portefeuille ne peut être nul"),
     "enableTestCoins" : MessageLookupByLibrary.simpleMessage("Activer les crypto-monnaies de Test"),
     "enablingTooManyAssetsSpan1" : MessageLookupByLibrary.simpleMessage("Vous avez"),
-    "enablingTooManyAssetsSpan2" : MessageLookupByLibrary.simpleMessage(""),
-    "enablingTooManyAssetsSpan3" : MessageLookupByLibrary.simpleMessage(""),
-    "enablingTooManyAssetsSpan4" : MessageLookupByLibrary.simpleMessage(""),
-    "enablingTooManyAssetsTitle" : MessageLookupByLibrary.simpleMessage(""),
+    "enablingTooManyAssetsSpan2" : MessageLookupByLibrary.simpleMessage(" actifs activés et tentative d\'activation"),
+    "enablingTooManyAssetsSpan3" : MessageLookupByLibrary.simpleMessage(" Suite. La limite maximale des éléments activés est"),
+    "enablingTooManyAssetsSpan4" : MessageLookupByLibrary.simpleMessage(". Veuillez en désactiver certains avant d\'en ajouter de nouveaux."),
+    "enablingTooManyAssetsTitle" : MessageLookupByLibrary.simpleMessage("Tentative d\'activation d\'un trop grand nombre d\'éléments"),
     "encryptingWallet" : MessageLookupByLibrary.simpleMessage("Chiffrement du portefeuille..."),
     "englishLanguage" : MessageLookupByLibrary.simpleMessage("Anglais"),
     "enterNewPinCode" : MessageLookupByLibrary.simpleMessage("Enter votre nouveau PIN"),
@@ -454,9 +454,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "eulaTitle8" : MessageLookupByLibrary.simpleMessage("BACKUPS"),
     "eulaTitle9" : MessageLookupByLibrary.simpleMessage("GENERAL WARNING"),
     "exampleHintSeed" : MessageLookupByLibrary.simpleMessage("Exemple: build case level ..."),
-    "exchangeExpedient" : MessageLookupByLibrary.simpleMessage(""),
-    "exchangeExpensive" : MessageLookupByLibrary.simpleMessage(""),
-    "exchangeIdentical" : MessageLookupByLibrary.simpleMessage(""),
+    "exchangeExpedient" : MessageLookupByLibrary.simpleMessage("Opportun"),
+    "exchangeExpensive" : MessageLookupByLibrary.simpleMessage("Coûteux"),
+    "exchangeIdentical" : MessageLookupByLibrary.simpleMessage("Identique au CEX"),
     "exchangeRate" : MessageLookupByLibrary.simpleMessage("Taux de change:"),
     "exchangeTitle" : MessageLookupByLibrary.simpleMessage("ÉCHANGE"),
     "exportButton" : MessageLookupByLibrary.simpleMessage("Exporter"),
@@ -467,13 +467,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "exportSuccessTitle" : MessageLookupByLibrary.simpleMessage("Les objets ont été exportés avec succès:"),
     "exportSwapsTitle" : MessageLookupByLibrary.simpleMessage("Échange"),
     "exportTitle" : MessageLookupByLibrary.simpleMessage("Exporter"),
-    "fakeBalanceAmt" : MessageLookupByLibrary.simpleMessage(""),
+    "fakeBalanceAmt" : MessageLookupByLibrary.simpleMessage("Montant du faux solde :"),
     "faqTitle" : MessageLookupByLibrary.simpleMessage("Foire aux questions"),
     "faucetError" : MessageLookupByLibrary.simpleMessage("Erreur"),
     "faucetInProgress" : m35,
     "faucetName" : MessageLookupByLibrary.simpleMessage("FAUCET"),
     "faucetSuccess" : MessageLookupByLibrary.simpleMessage("Succès"),
-    "faucetTimedOut" : MessageLookupByLibrary.simpleMessage(""),
+    "faucetTimedOut" : MessageLookupByLibrary.simpleMessage("La demande a expiré"),
     "feedNewsTab" : MessageLookupByLibrary.simpleMessage("Actualités"),
     "feedNotFound" : MessageLookupByLibrary.simpleMessage("Rien ici"),
     "feedNotifTitle" : m36,
@@ -526,7 +526,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "importDecryptError" : MessageLookupByLibrary.simpleMessage("Données corrompues ou Mot de passe incorrect"),
     "importDesc" : MessageLookupByLibrary.simpleMessage("données à importer:"),
     "importFileNotFound" : MessageLookupByLibrary.simpleMessage("Fichier non trouvé"),
-    "importInvalidSwapData" : MessageLookupByLibrary.simpleMessage(""),
+    "importInvalidSwapData" : MessageLookupByLibrary.simpleMessage("Données d\'échange non valides. Veuillez fournir un fichier JSON d\'état d\'échange valide."),
     "importLink" : MessageLookupByLibrary.simpleMessage("Importer"),
     "importLoadDesc" : MessageLookupByLibrary.simpleMessage("Veuillez selectionner le chiffré à importer."),
     "importLoadSwapDesc" : MessageLookupByLibrary.simpleMessage("Veuillez selectionner le fichier texte d\'échange à importer."),
@@ -580,10 +580,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "makerDetailsTitle" : MessageLookupByLibrary.simpleMessage("Détails ordre des Maker"),
     "makerOrder" : MessageLookupByLibrary.simpleMessage("Ordre des Maker"),
     "marketplace" : MessageLookupByLibrary.simpleMessage("Marché"),
-    "marketsChart" : MessageLookupByLibrary.simpleMessage(""),
-    "marketsDepth" : MessageLookupByLibrary.simpleMessage(""),
-    "marketsNoAsks" : MessageLookupByLibrary.simpleMessage(""),
-    "marketsNoBids" : MessageLookupByLibrary.simpleMessage(""),
+    "marketsChart" : MessageLookupByLibrary.simpleMessage("Graphique"),
+    "marketsDepth" : MessageLookupByLibrary.simpleMessage("Profondeur"),
+    "marketsNoAsks" : MessageLookupByLibrary.simpleMessage("aucune demande trouvée"),
+    "marketsNoBids" : MessageLookupByLibrary.simpleMessage("Aucune offre trouvée"),
     "marketsOrderDetails" : MessageLookupByLibrary.simpleMessage("Détail Ordre"),
     "marketsOrderbook" : MessageLookupByLibrary.simpleMessage("CARNET d\'ORDRES"),
     "marketsPrice" : MessageLookupByLibrary.simpleMessage("PRIX"),
@@ -603,7 +603,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "mediaNotSavedDescription" : MessageLookupByLibrary.simpleMessage("VOUS N\'AVEZ PAS D\'ARTICLES ENREGISTRÉS"),
     "mediaSaved" : MessageLookupByLibrary.simpleMessage("ENREGISTRÉ"),
     "merge" : MessageLookupByLibrary.simpleMessage("Fusionner"),
-    "mergedValue" : MessageLookupByLibrary.simpleMessage(""),
+    "mergedValue" : MessageLookupByLibrary.simpleMessage("Valeur fusionnée :"),
     "milliseconds" : MessageLookupByLibrary.simpleMessage("ms"),
     "min" : MessageLookupByLibrary.simpleMessage("MIN"),
     "minOrder" : MessageLookupByLibrary.simpleMessage("Volume d\'odre Min:"),
@@ -612,9 +612,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "minValueOrder" : m43,
     "minValueSell" : m44,
     "minVolumeInput" : m45,
-    "minVolumeIsTDH" : MessageLookupByLibrary.simpleMessage(""),
+    "minVolumeIsTDH" : MessageLookupByLibrary.simpleMessage("Doit être inférieur au montant de la vente"),
     "minVolumeTitle" : MessageLookupByLibrary.simpleMessage("Volume Min requis"),
-    "minVolumeToggle" : MessageLookupByLibrary.simpleMessage(""),
+    "minVolumeToggle" : MessageLookupByLibrary.simpleMessage("Utiliser le volume minimal personnalisé"),
     "minutes" : MessageLookupByLibrary.simpleMessage("m"),
     "mobileDataWarning" : m46,
     "moreTab" : MessageLookupByLibrary.simpleMessage("Plus"),
@@ -665,13 +665,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "noOrders" : MessageLookupByLibrary.simpleMessage("Pas d\'ordres, veuillez ouvrir menu échange."),
     "noRewardYet" : MessageLookupByLibrary.simpleMessage("Aucune récompense ne peut être demandée - veuillez réessayer dans 1h."),
     "noRewards" : MessageLookupByLibrary.simpleMessage("Pas de bonus disponible"),
-    "noSuchCoin" : MessageLookupByLibrary.simpleMessage(""),
+    "noSuchCoin" : MessageLookupByLibrary.simpleMessage("Pas une telle pièce"),
     "noSwaps" : MessageLookupByLibrary.simpleMessage("Pas d\'historique."),
     "noTxs" : MessageLookupByLibrary.simpleMessage("Aucune transactions"),
     "nonNumericInput" : MessageLookupByLibrary.simpleMessage("Entrer une valeur numérique"),
     "notEnoughGas" : m52,
     "notEnoughtBalanceForFee" : MessageLookupByLibrary.simpleMessage("Pas assez de solde pour les frais - échangez un montant inférieur"),
-    "noteOnOrder" : MessageLookupByLibrary.simpleMessage(""),
+    "noteOnOrder" : MessageLookupByLibrary.simpleMessage("Remarque : La commande correspondante ne peut plus être annulée"),
     "notePlaceholder" : MessageLookupByLibrary.simpleMessage("Ajouter une Note"),
     "noteTitle" : MessageLookupByLibrary.simpleMessage("Note"),
     "nothingFound" : MessageLookupByLibrary.simpleMessage("Pas de résultat"),
@@ -700,14 +700,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "orderDetailsExpedient" : m60,
     "orderDetailsExpensive" : m61,
     "orderDetailsFor" : MessageLookupByLibrary.simpleMessage("pour"),
-    "orderDetailsIdentical" : MessageLookupByLibrary.simpleMessage(""),
+    "orderDetailsIdentical" : MessageLookupByLibrary.simpleMessage("Identique au CEX"),
     "orderDetailsMin" : MessageLookupByLibrary.simpleMessage("min."),
     "orderDetailsPrice" : MessageLookupByLibrary.simpleMessage("Prix"),
     "orderDetailsReceive" : MessageLookupByLibrary.simpleMessage("Recevoir"),
     "orderDetailsSelect" : MessageLookupByLibrary.simpleMessage("Selectionner"),
     "orderDetailsSells" : MessageLookupByLibrary.simpleMessage("Ventes"),
-    "orderDetailsSettings" : MessageLookupByLibrary.simpleMessage(""),
-    "orderDetailsSpend" : MessageLookupByLibrary.simpleMessage(""),
+    "orderDetailsSettings" : MessageLookupByLibrary.simpleMessage("Ouvrez les détails en un seul clic et sélectionnez Commander en appuyant longuement"),
+    "orderDetailsSpend" : MessageLookupByLibrary.simpleMessage("Dépenser"),
     "orderDetailsTitle" : MessageLookupByLibrary.simpleMessage("Détails"),
     "orderFilled" : m62,
     "orderMatched" : MessageLookupByLibrary.simpleMessage("Ordre trouvé"),
@@ -720,15 +720,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "ordersTableAmount" : m63,
     "ordersTablePrice" : m64,
     "ordersTableTotal" : m65,
-    "overwrite" : MessageLookupByLibrary.simpleMessage(""),
-    "ownOrder" : MessageLookupByLibrary.simpleMessage(""),
-    "paidFromBalance" : MessageLookupByLibrary.simpleMessage(""),
-    "paidFromVolume" : MessageLookupByLibrary.simpleMessage(""),
+    "overwrite" : MessageLookupByLibrary.simpleMessage("Écraser"),
+    "ownOrder" : MessageLookupByLibrary.simpleMessage(" Ceci est votre propre commande!"),
+    "paidFromBalance" : MessageLookupByLibrary.simpleMessage("Payé à partir du solde :"),
+    "paidFromVolume" : MessageLookupByLibrary.simpleMessage("Payé à partir du volume reçu :"),
     "paidWith" : MessageLookupByLibrary.simpleMessage("Payé avec"),
-    "passwordRequirement" : MessageLookupByLibrary.simpleMessage(""),
+    "passwordRequirement" : MessageLookupByLibrary.simpleMessage("Le mot de passe doit contenir au moins 12 caractères, avec une minuscule, une majuscule et un symbole spécial."),
     "paymentUriDetailsAccept" : MessageLookupByLibrary.simpleMessage("Payer"),
     "paymentUriDetailsAcceptQuestion" : MessageLookupByLibrary.simpleMessage("Acceptez-vous cette transaction?"),
-    "paymentUriDetailsAddressSpan" : MessageLookupByLibrary.simpleMessage(""),
+    "paymentUriDetailsAddressSpan" : MessageLookupByLibrary.simpleMessage("Adresser"),
     "paymentUriDetailsAmountSpan" : MessageLookupByLibrary.simpleMessage("Montant:"),
     "paymentUriDetailsCoinSpan" : MessageLookupByLibrary.simpleMessage("Crypto-monnaie:"),
     "paymentUriDetailsDeny" : MessageLookupByLibrary.simpleMessage("Annuler"),
@@ -751,11 +751,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "question_1" : MessageLookupByLibrary.simpleMessage("Stockez-vous ma clé privé?"),
     "question_10" : m67,
     "question_2" : m68,
-    "question_3" : MessageLookupByLibrary.simpleMessage(""),
-    "question_4" : MessageLookupByLibrary.simpleMessage(""),
+    "question_3" : MessageLookupByLibrary.simpleMessage("Combien de temps dure chaque échange atomique ?"),
+    "question_4" : MessageLookupByLibrary.simpleMessage("Dois-je être en ligne pendant toute la durée de l\'échange ?"),
     "question_5" : m69,
-    "question_6" : MessageLookupByLibrary.simpleMessage(""),
-    "question_7" : MessageLookupByLibrary.simpleMessage(""),
+    "question_6" : MessageLookupByLibrary.simpleMessage("Offrez-vous une assistance aux utilisateurs ?"),
+    "question_7" : MessageLookupByLibrary.simpleMessage("Avez-vous des restrictions par pays ?"),
     "question_8" : m70,
     "question_9" : m71,
     "receive" : MessageLookupByLibrary.simpleMessage("RECEVOIR"),
@@ -764,22 +764,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "remove" : MessageLookupByLibrary.simpleMessage("Désactivé"),
     "requestedTrade" : MessageLookupByLibrary.simpleMessage("Commerce demandé"),
     "reset" : MessageLookupByLibrary.simpleMessage("EFFACER"),
-    "resetTitle" : MessageLookupByLibrary.simpleMessage(""),
+    "resetTitle" : MessageLookupByLibrary.simpleMessage("Réinitialiser le formulaire"),
     "restoreWallet" : MessageLookupByLibrary.simpleMessage("RESTAURER"),
-    "retryActivating" : MessageLookupByLibrary.simpleMessage(""),
-    "retryAll" : MessageLookupByLibrary.simpleMessage(""),
+    "retryActivating" : MessageLookupByLibrary.simpleMessage("Nouvelle tentative d\'activation de toutes les pièces..."),
+    "retryAll" : MessageLookupByLibrary.simpleMessage("Réessayez d\'activer tout"),
     "rewardsButton" : MessageLookupByLibrary.simpleMessage("Réclamer votre récompense"),
     "rewardsCancel" : MessageLookupByLibrary.simpleMessage("Annuler"),
-    "rewardsError" : MessageLookupByLibrary.simpleMessage(""),
-    "rewardsInProgressLong" : MessageLookupByLibrary.simpleMessage(""),
-    "rewardsInProgressShort" : MessageLookupByLibrary.simpleMessage(""),
+    "rewardsError" : MessageLookupByLibrary.simpleMessage("Quelque chose s\'est mal passé. Veuillez réessayer plus tard."),
+    "rewardsInProgressLong" : MessageLookupByLibrary.simpleMessage("La transaction est en cours"),
+    "rewardsInProgressShort" : MessageLookupByLibrary.simpleMessage("En traitement"),
     "rewardsLowAmountLong" : MessageLookupByLibrary.simpleMessage("Montant UTXO inférieur à 10 KMD"),
     "rewardsLowAmountShort" : MessageLookupByLibrary.simpleMessage("<10 KMD"),
-    "rewardsOneHourLong" : MessageLookupByLibrary.simpleMessage(""),
+    "rewardsOneHourLong" : MessageLookupByLibrary.simpleMessage("Une heure pas encore passée"),
     "rewardsOneHourShort" : MessageLookupByLibrary.simpleMessage("<1 hour"),
     "rewardsPopupOk" : MessageLookupByLibrary.simpleMessage("Ok"),
     "rewardsPopupTitle" : MessageLookupByLibrary.simpleMessage("Statut récompense:"),
-    "rewardsReadMore" : MessageLookupByLibrary.simpleMessage(""),
+    "rewardsReadMore" : MessageLookupByLibrary.simpleMessage("En savoir plus sur les récompenses des utilisateurs actifs KMD"),
     "rewardsReceive" : MessageLookupByLibrary.simpleMessage("Recevoir"),
     "rewardsSuccess" : m72,
     "rewardsTableFiat" : MessageLookupByLibrary.simpleMessage("Fiat"),
@@ -793,7 +793,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rewardsTimeMin" : m75,
     "rewardsTitle" : MessageLookupByLibrary.simpleMessage("Information récompense"),
     "russianLanguage" : MessageLookupByLibrary.simpleMessage("Russe"),
-    "saveMerged" : MessageLookupByLibrary.simpleMessage(""),
+    "saveMerged" : MessageLookupByLibrary.simpleMessage("Enregistrer fusionné"),
     "searchFilterCoin" : MessageLookupByLibrary.simpleMessage("Rechercher une crypto-monnaie"),
     "searchFilterSubtitleAVX" : MessageLookupByLibrary.simpleMessage("Sélectionner tous les tokens Avax"),
     "searchFilterSubtitleBEP" : MessageLookupByLibrary.simpleMessage("Sélectionner tous les tokens BEP"),
@@ -811,7 +811,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchFilterSubtitleTestCoins" : MessageLookupByLibrary.simpleMessage("Sélectionner tous les tokens Test Assets"),
     "searchFilterSubtitleUBQ" : MessageLookupByLibrary.simpleMessage("Sélectionner tous les tokens Ubiq"),
     "searchFilterSubtitleutxo" : MessageLookupByLibrary.simpleMessage("Sélectionner tous les tokens UTXO"),
-    "searchForTicker" : MessageLookupByLibrary.simpleMessage(""),
+    "searchForTicker" : MessageLookupByLibrary.simpleMessage("Rechercher un téléscripteur"),
     "seconds" : MessageLookupByLibrary.simpleMessage("s"),
     "security" : MessageLookupByLibrary.simpleMessage("Sécurité"),
     "seeOrders" : m76,
@@ -828,7 +828,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectPaymentMethod" : MessageLookupByLibrary.simpleMessage("Sélectionnez votre méthode de paiement"),
     "selectedOrder" : MessageLookupByLibrary.simpleMessage("Selectionner ordre:"),
     "sell" : MessageLookupByLibrary.simpleMessage("Vendre"),
-    "sellTestCoinWarning" : MessageLookupByLibrary.simpleMessage(""),
+    "sellTestCoinWarning" : MessageLookupByLibrary.simpleMessage("Attention, vous êtes prêt à vendre des pièces de test SANS valeur réelle !"),
     "send" : MessageLookupByLibrary.simpleMessage("ENVOYER"),
     "setUpPassword" : MessageLookupByLibrary.simpleMessage("CONFIGURER UN MOT DE PASSE"),
     "settingDialogSpan1" : MessageLookupByLibrary.simpleMessage("Etes-vous sûr que vous voulez supprimer"),
@@ -844,7 +844,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "showMyOrders" : MessageLookupByLibrary.simpleMessage("MONTRER MES COMMANDES"),
     "signInWithPassword" : MessageLookupByLibrary.simpleMessage("Se connecter avec mot de passe"),
     "signInWithSeedPhrase" : MessageLookupByLibrary.simpleMessage("Connectez-vous avec la passphrase"),
-    "simple" : MessageLookupByLibrary.simpleMessage(""),
+    "simple" : MessageLookupByLibrary.simpleMessage("Facile"),
     "simpleTradeActivate" : MessageLookupByLibrary.simpleMessage("Activer"),
     "simpleTradeBuyHint" : m78,
     "simpleTradeBuyTitle" : MessageLookupByLibrary.simpleMessage("Acheter"),
@@ -859,35 +859,35 @@ class MessageLookup extends MessageLookupByLibrary {
     "simpleTradeShowMore" : MessageLookupByLibrary.simpleMessage("Afficher plus"),
     "simpleTradeUnableActivate" : m82,
     "skip" : MessageLookupByLibrary.simpleMessage("Passer"),
-    "snackbarDismiss" : MessageLookupByLibrary.simpleMessage(""),
+    "snackbarDismiss" : MessageLookupByLibrary.simpleMessage("Rejeter"),
     "soundCantPlayThatMsg" : m83,
     "soundPlayedWhen" : m84,
     "soundSettingsLink" : MessageLookupByLibrary.simpleMessage("Son"),
     "soundSettingsTitle" : MessageLookupByLibrary.simpleMessage("Paramètres son"),
     "soundsDialogTitle" : MessageLookupByLibrary.simpleMessage("Sons"),
     "soundsDoNotShowAgain" : MessageLookupByLibrary.simpleMessage("Compris, ne plus afficher"),
-    "soundsExplanation" : MessageLookupByLibrary.simpleMessage(""),
-    "soundsNote" : MessageLookupByLibrary.simpleMessage(""),
+    "soundsExplanation" : MessageLookupByLibrary.simpleMessage("Vous entendrez des notifications sonores pendant le processus d\'échange et lorsqu\'une commande de fabricant active sera passée.\nLe protocole d\'échange atomique exige que les participants soient en ligne pour un échange réussi, et des notifications sonores aident à y parvenir."),
+    "soundsNote" : MessageLookupByLibrary.simpleMessage("Notez que vous pouvez définir vos sons personnalisés dans les paramètres de l\'application."),
     "spanishLanguage" : MessageLookupByLibrary.simpleMessage("Espagnol"),
     "step" : MessageLookupByLibrary.simpleMessage("Étape"),
     "success" : MessageLookupByLibrary.simpleMessage("Succès!"),
     "support" : MessageLookupByLibrary.simpleMessage("Support"),
     "supportLinksDesc" : m85,
     "swap" : MessageLookupByLibrary.simpleMessage("échanger"),
-    "swapCurrent" : MessageLookupByLibrary.simpleMessage(""),
+    "swapCurrent" : MessageLookupByLibrary.simpleMessage("Actuel"),
     "swapDetailTitle" : MessageLookupByLibrary.simpleMessage("CONFIRMEZ LES DÉTAILS DE L’ÉCHANGE"),
-    "swapEstimated" : MessageLookupByLibrary.simpleMessage(""),
+    "swapEstimated" : MessageLookupByLibrary.simpleMessage("Estimation"),
     "swapFailed" : MessageLookupByLibrary.simpleMessage("L\'échange a échoué"),
     "swapGasActivate" : m86,
     "swapGasAmount" : m87,
     "swapGasAmountRequired" : m88,
     "swapOngoing" : MessageLookupByLibrary.simpleMessage("Echange en cours"),
-    "swapProgress" : MessageLookupByLibrary.simpleMessage(""),
-    "swapStarted" : MessageLookupByLibrary.simpleMessage(""),
+    "swapProgress" : MessageLookupByLibrary.simpleMessage("Détails de la progression"),
+    "swapStarted" : MessageLookupByLibrary.simpleMessage("commencé"),
     "swapSucceful" : MessageLookupByLibrary.simpleMessage("Échange réussi"),
     "swapTotal" : MessageLookupByLibrary.simpleMessage("Total"),
     "swapUUID" : MessageLookupByLibrary.simpleMessage("UUID échange"),
-    "switchTheme" : MessageLookupByLibrary.simpleMessage(""),
+    "switchTheme" : MessageLookupByLibrary.simpleMessage("Changer de thème"),
     "tagAVX20" : MessageLookupByLibrary.simpleMessage("AVX20"),
     "tagBEP20" : MessageLookupByLibrary.simpleMessage("BEP20"),
     "tagERC20" : MessageLookupByLibrary.simpleMessage("ERC20"),
@@ -909,17 +909,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "to" : MessageLookupByLibrary.simpleMessage("À"),
     "toAddress" : MessageLookupByLibrary.simpleMessage("Adresse de destination:"),
     "tooManyAssetsEnabledSpan1" : MessageLookupByLibrary.simpleMessage("Vous avez"),
-    "tooManyAssetsEnabledSpan2" : MessageLookupByLibrary.simpleMessage(""),
-    "tooManyAssetsEnabledSpan3" : MessageLookupByLibrary.simpleMessage(""),
-    "tooManyAssetsEnabledTitle" : MessageLookupByLibrary.simpleMessage(""),
+    "tooManyAssetsEnabledSpan2" : MessageLookupByLibrary.simpleMessage(" actifs activés. La limite maximale des éléments activés est"),
+    "tooManyAssetsEnabledSpan3" : MessageLookupByLibrary.simpleMessage(". Veuillez en désactiver certains avant d\'en ajouter de nouveaux."),
+    "tooManyAssetsEnabledTitle" : MessageLookupByLibrary.simpleMessage("Trop d\'éléments activés"),
     "totalFees" : MessageLookupByLibrary.simpleMessage("Frais totaux:"),
     "trade" : MessageLookupByLibrary.simpleMessage("COMMERCE"),
     "tradeCompleted" : MessageLookupByLibrary.simpleMessage("ECHANGE TERMINÉ!"),
     "tradeDetail" : MessageLookupByLibrary.simpleMessage("DÉTAILS DE L\'ÉCHANGE"),
-    "tradePreimageError" : MessageLookupByLibrary.simpleMessage(""),
-    "tradingFee" : MessageLookupByLibrary.simpleMessage(""),
+    "tradePreimageError" : MessageLookupByLibrary.simpleMessage("Échec du calcul des frais commerciaux"),
+    "tradingFee" : MessageLookupByLibrary.simpleMessage("frais de négociation :"),
     "tradingMode" : MessageLookupByLibrary.simpleMessage("Trading Mode:"),
-    "tryRestarting" : MessageLookupByLibrary.simpleMessage(""),
+    "tryRestarting" : MessageLookupByLibrary.simpleMessage("Si même alors certaines pièces ne sont toujours pas activées, essayez de redémarrer l\'application."),
     "turkishLanguage" : MessageLookupByLibrary.simpleMessage("Turque"),
     "txBlock" : MessageLookupByLibrary.simpleMessage("Bloc"),
     "txConfirmations" : MessageLookupByLibrary.simpleMessage("Confirmations"),
@@ -927,24 +927,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "txFee" : MessageLookupByLibrary.simpleMessage("Frais"),
     "txFeeTitle" : MessageLookupByLibrary.simpleMessage("frais transactions:"),
     "txHash" : MessageLookupByLibrary.simpleMessage("Identifiant de transaction"),
-    "txLimitExceeded" : MessageLookupByLibrary.simpleMessage(""),
+    "txLimitExceeded" : MessageLookupByLibrary.simpleMessage("Trop de demandes.\nLimite de demandes d\'historique des transactions dépassée.\nVeuillez réessayer plus tard."),
     "txNotConfirmed" : MessageLookupByLibrary.simpleMessage("NON CONFIRMÉ"),
     "txleft" : m89,
     "unlock" : MessageLookupByLibrary.simpleMessage("ouvrir"),
     "unlockFunds" : MessageLookupByLibrary.simpleMessage("Débloquer Fonds"),
     "unlockSuccess" : m90,
-    "unspendable" : MessageLookupByLibrary.simpleMessage(""),
+    "unspendable" : MessageLookupByLibrary.simpleMessage("indépensable"),
     "updatesAvailable" : MessageLookupByLibrary.simpleMessage("Nouvelle version disponible"),
     "updatesChecking" : MessageLookupByLibrary.simpleMessage("Recherche de mise à jour..."),
     "updatesCurrentVersion" : m91,
     "updatesNotifAvailable" : MessageLookupByLibrary.simpleMessage("Nouvelle version disponible. Veuillez mettre à jour."),
     "updatesNotifAvailableVersion" : m92,
     "updatesNotifTitle" : MessageLookupByLibrary.simpleMessage("Mise à jour disponible"),
-    "updatesSkip" : MessageLookupByLibrary.simpleMessage(""),
+    "updatesSkip" : MessageLookupByLibrary.simpleMessage("Ignorer pour l\'instant"),
     "updatesTitle" : m93,
     "updatesUpToDate" : MessageLookupByLibrary.simpleMessage("Déjà à jour"),
     "updatesUpdate" : MessageLookupByLibrary.simpleMessage("Update"),
-    "uriInsufficientBalanceSpan1" : MessageLookupByLibrary.simpleMessage(""),
+    "uriInsufficientBalanceSpan1" : MessageLookupByLibrary.simpleMessage("Pas assez de solde pour numériser"),
     "uriInsufficientBalanceSpan2" : MessageLookupByLibrary.simpleMessage("demander paiement."),
     "uriInsufficientBalanceTitle" : MessageLookupByLibrary.simpleMessage("Balance insuffisante"),
     "value" : MessageLookupByLibrary.simpleMessage("Valeur:"),
@@ -954,32 +954,32 @@ class MessageLookup extends MessageLookupByLibrary {
     "volumes" : MessageLookupByLibrary.simpleMessage("Les volumes"),
     "walletInUse" : MessageLookupByLibrary.simpleMessage("Le nom du Portefeuille existe déjà"),
     "walletMaxChar" : MessageLookupByLibrary.simpleMessage("Le nom du Portefeuille ne doit pas dépasser 40 charactères"),
-    "walletOnly" : MessageLookupByLibrary.simpleMessage(""),
+    "walletOnly" : MessageLookupByLibrary.simpleMessage("Portefeuille uniquement"),
     "warning" : MessageLookupByLibrary.simpleMessage("Attention!"),
     "warningOkBtn" : MessageLookupByLibrary.simpleMessage("Ok"),
-    "warningShareLogs" : MessageLookupByLibrary.simpleMessage(""),
+    "warningShareLogs" : MessageLookupByLibrary.simpleMessage("Attention - dans des cas particuliers, ces données de journal contiennent des informations sensibles qui peuvent être utilisées pour dépenser des pièces à partir d\'échanges échoués !"),
     "weFailedTo" : m94,
     "weFailedToActivate" : m95,
     "welcomeInfo" : m96,
     "welcomeLetSetUp" : MessageLookupByLibrary.simpleMessage("CONFIGURONS!"),
     "welcomeTitle" : MessageLookupByLibrary.simpleMessage("BIENVENUE"),
     "welcomeWallet" : MessageLookupByLibrary.simpleMessage("portefeuille"),
-    "willBeRedirected" : MessageLookupByLibrary.simpleMessage(""),
+    "willBeRedirected" : MessageLookupByLibrary.simpleMessage("Vous serez redirigé vers la page du portfolio à la fin."),
     "withdraw" : MessageLookupByLibrary.simpleMessage("Envoyer"),
     "withdrawCameraAccessText" : m97,
     "withdrawCameraAccessTitle" : MessageLookupByLibrary.simpleMessage("Accès refusé"),
     "withdrawConfirm" : MessageLookupByLibrary.simpleMessage("Confirmer le retrait"),
-    "withdrawConfirmError" : MessageLookupByLibrary.simpleMessage(""),
+    "withdrawConfirmError" : MessageLookupByLibrary.simpleMessage("Un problème est survenu. Réessayez plus tard."),
     "withdrawValue" : m98,
-    "wrongCoinSpan1" : MessageLookupByLibrary.simpleMessage(""),
-    "wrongCoinSpan2" : MessageLookupByLibrary.simpleMessage(""),
-    "wrongCoinSpan3" : MessageLookupByLibrary.simpleMessage(""),
+    "wrongCoinSpan1" : MessageLookupByLibrary.simpleMessage("Vous essayez de scanner un code QR de paiement pour"),
+    "wrongCoinSpan2" : MessageLookupByLibrary.simpleMessage(" mais tu es sur"),
+    "wrongCoinSpan3" : MessageLookupByLibrary.simpleMessage(" retirer l\'écran"),
     "wrongCoinTitle" : MessageLookupByLibrary.simpleMessage("Mauvaise crypto-monnaie"),
     "wrongPassword" : MessageLookupByLibrary.simpleMessage("Le mot de passe ne correspond pas. Veuillez réessayer."),
     "yes" : MessageLookupByLibrary.simpleMessage("Oui"),
-    "you have a fresh order that is trying to match with an existing order" : MessageLookupByLibrary.simpleMessage(""),
-    "you have an active swap in progress" : MessageLookupByLibrary.simpleMessage(""),
-    "you have an order that new orders can match with" : MessageLookupByLibrary.simpleMessage(""),
+    "you have a fresh order that is trying to match with an existing order" : MessageLookupByLibrary.simpleMessage("vous avez une nouvelle commande qui essaie de correspondre à une commande existante"),
+    "you have an active swap in progress" : MessageLookupByLibrary.simpleMessage("vous avez un échange actif en cours"),
+    "you have an order that new orders can match with" : MessageLookupByLibrary.simpleMessage("vous avez une commande avec laquelle de nouvelles commandes peuvent correspondre"),
     "youAreSending" : MessageLookupByLibrary.simpleMessage("Vous envoyez:"),
     "youWillReceiveClaim" : m99,
     "youWillReceived" : MessageLookupByLibrary.simpleMessage("Vous allez recevoir:"),
