@@ -38,7 +38,7 @@ Map<String, LibraryLoader> _deferredLibraries = {
   'messages': messages_messages.loadLibrary,
   'ru': messages_ru.loadLibrary,
   'tr': messages_tr.loadLibrary,
-  'zh': messages_zh.loadLibrary
+  'zh': messages_zh.loadLibrary,
 };
 
 MessageLookupByLibrary _findExact(String localeName) {
