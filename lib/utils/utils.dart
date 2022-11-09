@@ -76,10 +76,6 @@ String getCoinIconPath(String abbr) {
     'FENIX',
     'PLY',
     'WID',
-    'HONK',
-    'ASLP',
-    'USDF',
-    'sTST'
   ];
   String ticker = getCoinTicker(abbr).replaceAll('-OLD', '').toLowerCase();
   if (coinsWithoutIcons.contains(abbr)) ticker = 'adexbsc';
