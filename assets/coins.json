@@ -304,23 +304,6 @@
     }
   },
   {
-    "coin": "ABY-OLD",
-    "name": "applebyte",
-    "fname": "ArtByte (OLD)",
-    "rpcport": 8607,
-    "pubtype": 23,
-    "p2shtype": 5,
-    "wiftype": 151,
-    "txfee": 500000,
-    "segwit": true,
-    "mm2": 1,
-    "required_confirmations": 3,
-    "avg_blocktime": 2,
-    "protocol": {
-      "type": "UTXO"
-    }
-  },
-  {
     "coin": "ABY",
     "name": "artbyte",
     "fname": "ArtByte",
@@ -1187,13 +1170,139 @@
     "mm2": 1
   },
   {
-    "coin": "ASLP",
+    "coin": "TTT-SLP",
+    "fname": "Trinity Trust Token",
+    "protocol": {
+      "type": "SLPTOKEN",
+      "protocol_data": {
+        "decimals": 2,
+        "token_id": "5321508197ffed321c5fc9a1427e5c68b31d2c1ec92ae1c495f8acb08d8d66cd",
+        "platform": "BCH",
+        "required_confirmations": 1,
+        "slp_prefix": "simpleledger"
+      }
+    },
+    "mm2": 1
+  },
+  {
+    "coin": "ASLP-SLP",
     "fname": "AtomicSLP",
     "protocol": {
       "type": "SLPTOKEN",
       "protocol_data": {
         "decimals": 2,
         "token_id": "926894cbf50269b15c97559b9acfc1bd88cd5f20703313ce0ea0683ecdb40911",
+        "platform": "BCH",
+        "required_confirmations": 1,
+        "slp_prefix": "simpleledger"
+      }
+    },
+    "mm2": 1
+  },
+  {
+    "coin": "SPICE-SLP",
+    "fname": "Spice",
+    "protocol": {
+      "type": "SLPTOKEN",
+      "protocol_data": {
+        "decimals": 8,
+        "token_id": "4de69e374a8ed21cbddd47f2338cc0f479dc58daa2bbe11cd604ca488eca0ddf",
+        "platform": "BCH",
+        "required_confirmations": 1,
+        "slp_prefix": "simpleledger"
+      }
+    },
+    "mm2": 1
+  },
+  {
+    "coin": "FLEXUSD-ERC20",
+    "name": "flexusd_erc20",
+    "fname": "flexUSD",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 1,
+    "decimals": 18,
+    "avg_blocktime": 0.25,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "ETH",
+        "contract_address": "0xa774FFB4AF6B0A91331C084E1aebAE6Ad535e6F3"
+      }
+    }
+  },
+  {
+    "coin": "FLEXUSD-SLP",
+    "fname": "FlexUSD",
+    "protocol": {
+      "type": "SLPTOKEN",
+      "protocol_data": {
+        "decimals": 6,
+        "token_id": "dd21be4532d93661e8ffe16db6535af0fb8ee1344d1fef81a193e2b4cfa9fbc9",
+        "platform": "BCH",
+        "required_confirmations": 1,
+        "slp_prefix": "simpleledger"
+      }
+    },
+    "mm2": 1
+  },
+  {
+    "coin": "SOUR-SLP",
+    "fname": "Sour",
+    "protocol": {
+      "type": "SLPTOKEN",
+      "protocol_data": {
+        "decimals": 8,
+        "token_id": "6448381f9649ecacd8c30189cfbfee71a91b6b9738ea494fe33f8b8b51cbfca0",
+        "platform": "BCH",
+        "required_confirmations": 1,
+        "slp_prefix": "simpleledger"
+      }
+    },
+    "mm2": 1
+  },
+  {
+    "coin": "PSF-SLP",
+    "fname": "PS Foundation",
+    "protocol": {
+      "type": "SLPTOKEN",
+      "protocol_data": {
+        "decimals": 8,
+        "token_id": "38e97c5d7d3585a2cbf3f9580c82ca33985f9cb0845d4dcce220cb709f9538b0",
+        "platform": "BCH",
+        "required_confirmations": 1,
+        "slp_prefix": "simpleledger"
+      }
+    },
+    "mm2": 1
+  },
+  {
+    "coin": "JOY-PLG20",
+    "name": "joy_plg20",
+    "fname": "Joystick.club",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 137,
+    "decimals": 18,
+    "avg_blocktime": 0.03,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "MATIC",
+        "contract_address": "0x218645F85Ff27FC456ef46c3CdacBF5c40B2F9E8"
+      }
+    }
+  },
+  {
+    "coin": "MAZE-SLP",
+    "fname": "Maze",
+    "protocol": {
+      "type": "SLPTOKEN",
+      "protocol_data": {
+        "decimals": 6,
+        "token_id": "bb553ac2ac7af0fcd4f24f9dfacc7f925bfb1446c6e18c7966db95a8d50fb378",
         "platform": "BCH",
         "required_confirmations": 1,
         "slp_prefix": "simpleledger"
@@ -1992,6 +2101,24 @@
     }
   },
   {
+    "coin": "CADC-OLD",
+    "name": "cadc_old",
+    "fname": "CAD Coin (OLD)",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 137,
+    "decimals": 18,
+    "avg_blocktime": 0.03,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "MATIC",
+        "contract_address": "0x5d146d8B1dACb1EBBA5cb005ae1059DA8a1FbF57"
+      }
+    }
+  },
+  {
     "coin": "CADC-PLG20",
     "name": "cadc_plg20",
     "fname": "CAD Coin",
@@ -2005,7 +2132,7 @@
       "type": "ERC20",
       "protocol_data": {
         "platform": "MATIC",
-        "contract_address": "0x5d146d8B1dACb1EBBA5cb005ae1059DA8a1FbF57"
+        "contract_address": "0x9de41aFF9f55219D5bf4359F167d1D0c772A396D"
       }
     }
   },
@@ -2956,7 +3083,7 @@
   },
   {
     "coin": "DIMI-QRC20",
-    "name": "dimi_qrc20",
+    "name": "qtum",
     "fname": "Diminutive Coin",
     "rpcport": 3889,
     "pubtype": 58,
@@ -5902,6 +6029,42 @@
     }
   },
   {
+    "coin": "MC-ERC20",
+    "name": "mc_erc20",
+    "fname": "Merit Circle",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 1,
+    "decimals": 18,
+    "avg_blocktime": 0.25,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "ETH",
+        "contract_address": "0x949D48EcA67b17269629c7194F4b727d4Ef9E5d6"
+      }
+    }
+  },
+  {
+    "coin": "MC-BEP20",
+    "name": "mc_bep20",
+    "fname": "Merit Circle",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 56,
+    "decimals": 18,
+    "avg_blocktime": 0.05,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "BNB",
+        "contract_address": "0x949D48EcA67b17269629c7194F4b727d4Ef9E5d6"
+      }
+    }
+  },
+  {
     "coin": "MCL",
     "sign_message_prefix": "Komodo Signed Message:\n",
     "asset": "MCL",
@@ -6518,7 +6681,7 @@
   },
   {
     "coin": "NVC-QRC20",
-    "name": "nvc_qrc20",
+    "name": "qtum",
     "fname": "Novacoin",
     "rpcport": 3889,
     "pubtype": 58,
@@ -7846,6 +8009,24 @@
     }
   },
   {
+    "coin": "SCRT-BEP20",
+    "name": "scrt_bep20",
+    "fname": "Secret",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 56,
+    "decimals": 18,
+    "avg_blocktime": 0.05,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "BNB",
+        "contract_address": "0x02dd18E4981DA3fC7363fE56f3B81D1860b44ea7"
+      }
+    }
+  },
+  {
     "coin": "SIRX",
     "name": "sirius",
     "fname": "Sirius",
@@ -8599,6 +8780,42 @@
     "avg_blocktime": 1,
     "protocol": {
       "type": "UTXO"
+    }
+  },
+  {
+    "coin": "TON-ERC20",
+    "name": "ton_erc20",
+    "fname": "Toncoin",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 1,
+    "decimals": 9,
+    "avg_blocktime": 0.25,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "ETH",
+        "contract_address": "0x582d872A1B094FC48F5DE31D3B73F2D9bE47def1"
+      }
+    }
+  },
+  {
+    "coin": "TON-BEP20",
+    "name": "ton_bep20",
+    "fname": "Toncoin",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 56,
+    "decimals": 9,
+    "avg_blocktime": 0.05,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "BNB",
+        "contract_address": "0x76A797A59Ba2C17726896976B7B3747BfD1d220f"
+      }
     }
   },
   {
@@ -9981,6 +10198,24 @@
     }
   },
   {
+    "coin": "XSGD-OLD",
+    "name": "xsgd_old",
+    "fname": "StraitsX Singapore Dollar (OLD)",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 137,
+    "decimals": 6,
+    "avg_blocktime": 0.03,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "MATIC",
+        "contract_address": "0x769434dcA303597C8fc4997Bf3DAB233e961Eda2"
+      }
+    }
+  },
+  {
     "coin": "XSGD-PLG20",
     "name": "xsgd_plg20",
     "fname": "StraitsX Singapore Dollar",
@@ -9994,7 +10229,7 @@
       "type": "ERC20",
       "protocol_data": {
         "platform": "MATIC",
-        "contract_address": "0x769434dcA303597C8fc4997Bf3DAB233e961Eda2"
+        "contract_address": "0xDC3326e71D45186F113a2F448984CA0e8D201995"
       }
     }
   },
@@ -10072,7 +10307,7 @@
   },
   {
     "coin": "XVC-QRC20",
-    "name": "xvc_qrc20",
+    "name": "qtum",
     "fname": "VanillaCash",
     "rpcport": 3889,
     "pubtype": 58,
@@ -10434,7 +10669,6 @@
   },
   {
     "coin": "INK",
-    "gui_coin": "INK",
     "name": "qtum",
     "fname": "INK",
     "rpcport": 3889,
@@ -10514,33 +10748,7 @@
     }
   },
   {
-    "coin": "SPC",
-    "gui_coin": "SPC",
-    "name": "qtum",
-    "fname": "SpaceChain",
-    "rpcport": 3889,
-    "mm2": 1,
-    "required_confirmations": 3,
-    "mature_confirmations": 2000,
-    "avg_blocktime": 0.53,
-    "txfee": 0,
-    "dust": 72800,
-    "protocol": {
-      "type": "QRC20",
-      "protocol_data": {
-        "platform": "QTUM",
-        "contract_address": "0x57931faffdec114056a49adfcaa1caac159a1a25"
-      }
-    },
-    "pubtype": 58,
-    "p2shtype": 50,
-    "wiftype": 128,
-    "segwit": false,
-    "decimals": 8
-  },
-  {
     "coin": "HPY",
-    "gui_coin": "HPY",
     "name": "qtum",
     "fname": "HyperPay",
     "rpcport": 3889,
@@ -10565,7 +10773,6 @@
   },
   {
     "coin": "HLC",
-    "gui_coin": "HLC",
     "name": "qtum",
     "fname": "HalalChain",
     "rpcport": 3889,
@@ -10590,7 +10797,7 @@
   },
   {
     "coin": "MED",
-    "name": "med_qrc20",
+    "name": "qtum",
     "fname": "Medibloc",
     "rpcport": 3889,
     "mm2": 1,
@@ -10614,7 +10821,6 @@
   },
   {
     "coin": "LSTR",
-    "gui_coin": "LSTR",
     "name": "qtum",
     "fname": "Luna Stars",
     "rpcport": 3889,
@@ -10639,7 +10845,6 @@
   },
   {
     "coin": "QBT",
-    "gui_coin": "QBT",
     "name": "qtum",
     "fname": "Qbao",
     "rpcport": 3889,
@@ -10664,7 +10869,6 @@
   },
   {
     "coin": "TSL",
-    "gui_coin": "TSL",
     "name": "qtum",
     "fname": "Energo TSL",
     "rpcport": 3889,
@@ -10689,7 +10893,6 @@
   },
   {
     "coin": "OC",
-    "gui_coin": "OC",
     "name": "qtum",
     "fname": "OceanChain",
     "rpcport": 3889,
@@ -10714,7 +10917,6 @@
   },
   {
     "coin": "PUT",
-    "gui_coin": "PUT",
     "name": "qtum",
     "fname": "Profile Utility Token",
     "rpcport": 3889,
@@ -10729,31 +10931,6 @@
       "protocol_data": {
         "platform": "QTUM",
         "contract_address": "0x4060e21ac01b5c5d2a3f01cecd7cbf820f50be95"
-      }
-    },
-    "pubtype": 58,
-    "p2shtype": 50,
-    "wiftype": 128,
-    "segwit": false,
-    "decimals": 8
-  },
-  {
-    "coin": "ZAT",
-    "gui_coin": "ZAT",
-    "name": "qtum",
-    "fname": "zatgo token",
-    "rpcport": 3889,
-    "mm2": 1,
-    "required_confirmations": 3,
-    "mature_confirmations": 2000,
-    "avg_blocktime": 0.53,
-    "txfee": 0,
-    "dust": 72800,
-    "protocol": {
-      "type": "QRC20",
-      "protocol_data": {
-        "platform": "QTUM",
-        "contract_address": "0xdd8ef078a5699ea3dac26b12cb5c5d8f0a2f6e4f"
       }
     },
     "pubtype": 58,
@@ -11448,6 +11625,56 @@
       "protocol_data": {
         "platform": "BNB",
         "contract_address": "0xD7380b10bF3886B34Ab3422DEa42E408850375CA"
+      }
+    }
+  },
+  {
+    "coin": "ATOM",
+    "avg_block_time": 7,
+    "name": "cosmos",
+    "fname": "Cosmos",
+    "mm2": 1,
+    "wallet_only": true,
+    "protocol": {
+      "type": "TENDERMINT",
+      "protocol_data": {
+        "decimals": 6,
+        "denom": "uatom",
+        "account_prefix": "cosmos",
+        "chain_id": "cosmoshub-4"
+      }
+    }
+  },
+  {
+    "coin": "IRIS",
+    "avg_block_time": 7,
+    "name": "iris",
+    "fname": "Iris",
+    "mm2": 1,
+    "protocol": {
+      "type": "TENDERMINT",
+      "protocol_data": {
+        "decimals": 6,
+        "denom": "uiris",
+        "account_prefix": "iaa",
+        "chain_id": "irishub-1",
+        "gas_price": 0.50
+      }
+    }
+  },
+  {
+    "coin": "ATOM-IBC_IRIS",
+    "name": "cosmos_ibc_iris",
+    "fname": "Cosmos IBC-IRIS",
+    "avg_block_time": 7,
+    "mm2": 1,
+    "protocol": {
+      "type": "TENDERMINTTOKEN",
+      "protocol_data": {
+        "platform": "IRIS",
+        "decimals": 6,
+        "denom": "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2",
+        "gas_price": 0.50
       }
     }
   }
