@@ -1,6 +1,6 @@
 {
 	"@@last_modified": "2022-10-08T10:05:48.722733",
-	"mobileDataWarning": "Please note that now you're using cellular data and participation in {appName} P2P network consume internet traffic. It's better to use a WiFi network if your cellular data plan is costly.",
+	"mobileDataWarning": "Please note that now you're using cellular data and participation in the {appName} P2P network consumes internet traffic. It's better to use a WiFi network if your cellular data plan is costly.",
 	"@mobileDataWarning": {
 		"type": "text",
 		"placeholders_order": [
@@ -412,7 +412,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"supportLinksDesc": "If you have any questions, or think you've found a technical problem with the {appName} app, you can report it and get support from our team.",
+	"supportLinksDesc": "If you have any questions, or have found a technical problem with the {appName} app, you can report it to get help from our support team.",
 	"@supportLinksDesc": {
 		"type": "text",
 		"placeholders_order": [
@@ -477,7 +477,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"answer_4": "Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.",
+	"answer_4": "Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of the trading fee if you are a taker. The atomic swap protocol requires both participants to stay online to monitor the involved blockchains for the process to stay atomic.",
 	"@answer_4": {
 		"type": "text",
 		"placeholders_order": []
@@ -740,12 +740,12 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"buyTestCoinWarning": "Warning, you're willing to buy test coins WITHOUT real value!",
+	"buyTestCoinWarning": "Warning, you are about to buy test coins WITHOUT real value!",
 	"@buyTestCoinWarning": {
 		"type": "text",
 		"placeholders_order": []
 	},
-	"batteryCriticalError": "Your battery charge is critical ({batteryLevelCritical}%) to perform a swap safely. Please put it on charge and try again.",
+	"batteryCriticalError": "Your battery charge is critical ({batteryLevelCritical}%) - too low to perform a swap safely. Please put it on charge and try again.",
 	"@batteryCriticalError": {
 		"type": "text",
 		"placeholders_order": [
@@ -755,7 +755,7 @@
 			"batteryLevelCritical": {}
 		}
 	},
-	"batteryLowWarning": "Your battery charge is lower than {batteryLevelLow}%. Please consider phone charging.",
+	"batteryLowWarning": "Your battery charge is lower than {batteryLevelLow}%. Charging your phone is recommended.",
 	"@batteryLowWarning": {
 		"type": "text",
 		"placeholders_order": [
@@ -765,12 +765,12 @@
 			"batteryLevelLow": {}
 		}
 	},
-	"batterySavingWarning": "Your phone is in battery saving mode. Please disable this mode or do NOT put the application to the background, otherwise, the app might be killed by OS and swap failed.",
+	"batterySavingWarning": "Your phone is in battery saving mode. Please disable this mode or do NOT allow the application to go to background, otherwise the app might be killed by OS and swaps will fail.",
 	"@batterySavingWarning": {
 		"type": "text",
 		"placeholders_order": []
 	},
-	"sellTestCoinWarning": "Warning, you're willing to sell test coins WITHOUT real value!",
+	"sellTestCoinWarning": "Warning, you're about to sell test coins WITHOUT real value!",
 	"@sellTestCoinWarning": {
 		"type": "text",
 		"placeholders_order": []
@@ -1641,7 +1641,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"infoWalletPassword": "You have to provide a password for the wallet encryption due to security reasons.",
+	"infoWalletPassword": "For security reasons, you must provide a password for wallet encryption.",
 	"@infoWalletPassword": {
 		"type": "text",
 		"placeholders_order": []
@@ -1741,12 +1741,12 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"settingDialogSpan4": " record your seed phrase.",
+	"settingDialogSpan4": " record your seed phrase",
 	"@settingDialogSpan4": {
 		"type": "text",
 		"placeholders_order": []
 	},
-	"settingDialogSpan5": " In order to restore your wallet in the future.",
+	"settingDialogSpan5": " in order to restore your wallet in the future.",
 	"@settingDialogSpan5": {
 		"type": "text",
 		"placeholders_order": []
@@ -2030,7 +2030,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"confirmeula": "By clicking the below buttons you confirm to have read the 'EULA' and 'Terms and Conditions' and accept these",
+	"confirmeula": "By clicking the buttons below you confirm you have read and accept the 'EULA' and 'Terms and Conditions'",
 	"@confirmeula": {
 		"type": "text",
 		"placeholders_order": []
@@ -2144,7 +2144,7 @@
 			"amount": {}
 		}
 	},
-	"invalidSwap": "Unable to proceed swap",
+	"invalidSwap": "Unable to proceed with swap",
 	"@invalidSwap": {
 		"type": "text",
 		"placeholders_order": []
@@ -3015,7 +3015,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"tryRestarting": "If even then some coins are still not activated, try restarting the app.",
+	"tryRestarting": "If afterwards some coins are still not activated, try restarting the app.",
 	"@tryRestarting": {
 		"type": "text",
 		"placeholders_order": []
@@ -3347,7 +3347,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"addressCoinInactive": "You can not send funds to {abbr} address, because {abbr} is not activated. Please go to portfolio.",
+	"addressCoinInactive": "You can't send funds to {abbr} address, because {abbr} is not activated. Please go to portfolio.",
 	"@addressCoinInactive": {
 		"type": "text",
 		"placeholders_order": [
@@ -3407,7 +3407,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"camoPinDesc": "If You'll unlock the app with the Camouflage PIN, a fake LOW balance will be shown and the Camouflage PIN config option will NOT be visible in the settings",
+	"camoPinDesc": "If you unlock the app with the Camouflage PIN, a fake LOW balance will be shown and the Camouflage PIN config option will NOT be visible in the settings",
 	"@camoPinDesc": {
 		"type": "text",
 		"placeholders_order": []
@@ -3617,7 +3617,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"notifTxText": "You have received {coin} transaction!",
+	"notifTxText": "You have received a {coin} transaction!",
 	"@notifTxText": {
 		"type": "text",
 		"placeholders_order": [
@@ -3730,7 +3730,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"cexDataDesc": "Markets data (prices, charts, etc.) marked with this icon originates from third party sources (<a href=\"https://www.coingecko.com/\">coingecko.com</a>, <a href=\"https://openrates.io/\">openrates.io</a>).",
+	"cexDataDesc": "Market data (prices, charts, etc.) marked with this icon originates from third party sources (<a href=\"https://www.coingecko.com/\">coingecko.com</a>, <a href=\"https://openrates.io/\">openrates.io</a>).",
 	"@cexDataDesc": {
 		"type": "text",
 		"placeholders_order": []
@@ -3870,7 +3870,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"makerDetailsNoSwaps": "No swaps were started by this order",
+	"makerDetailsNoSwaps": "No swaps started by this order yet",
 	"@makerDetailsNoSwaps": {
 		"type": "text",
 		"placeholders_order": []
@@ -3930,17 +3930,17 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"exportDesc": "Please select items to export into encrypted file.",
+	"exportDesc": "Please select items to export into an encrypted file.",
 	"@exportDesc": {
 		"type": "text",
 		"placeholders_order": []
 	},
-	"importLoadDesc": "Please select encrypted file to import.",
+	"importLoadDesc": "Please select an encrypted file to import.",
 	"@importLoadDesc": {
 		"type": "text",
 		"placeholders_order": []
 	},
-	"importLoadSwapDesc": "Please select plain text swap file to import.",
+	"importLoadSwapDesc": "Please select a plain text swap file to import.",
 	"@importLoadSwapDesc": {
 		"type": "text",
 		"placeholders_order": []
@@ -4185,7 +4185,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"enablingTooManyAssetsSpan2": " assets enabled and trying to enable ",
+	"enablingTooManyAssetsSpan2": " assets enabled and are trying to enable ",
 	"@enablingTooManyAssetsSpan2": {
 		"type": "text",
 		"placeholders_order": []
@@ -4195,7 +4195,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"enablingTooManyAssetsSpan4": ". Please disable some before new ones adding.",
+	"enablingTooManyAssetsSpan4": ". Please disable some before adding new ones.",
 	"@enablingTooManyAssetsSpan4": {
 		"type": "text",
 		"placeholders_order": []
