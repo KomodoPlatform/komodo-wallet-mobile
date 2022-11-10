@@ -53,6 +53,7 @@ class GetErcTransactions {
     String url;
     switch (coin.type) {
       case CoinType.utxo:
+      case CoinType.slp:
       case CoinType.smartChain:
       case CoinType.qrc:
         break;
