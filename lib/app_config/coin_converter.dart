@@ -49,9 +49,8 @@ String _getType(String coin) {
     case 'UTXO':
       type = CoinType.utxo;
       break;
-    // SLP coins are formerly UTXO coins but different configuration
     case 'SLP':
-      type = CoinType.utxo;
+      type = CoinType.slp;
       break;
     case 'Smart Chain':
       type = CoinType.smartChain;

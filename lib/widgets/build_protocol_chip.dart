@@ -25,7 +25,9 @@ class BuildProtocolChip extends StatelessWidget {
       case CoinType.utxo:
         chip = const SizedBox.shrink();
         break;
-
+      case CoinType.slp:
+        chip = const SizedBox.shrink();
+        break;
       case CoinType.erc:
       case CoinType.qrc:
       case CoinType.mvr:
@@ -94,6 +96,7 @@ class BuildProtocolChip extends StatelessWidget {
         // UTXO's dont have any chip.
         // Smart chains have dedicated chip with icon.
         case CoinType.utxo:
+        case CoinType.slp:
         case CoinType.smartChain:
           break;
         case CoinType.bep:
