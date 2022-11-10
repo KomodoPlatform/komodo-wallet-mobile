@@ -477,7 +477,7 @@
 		"type": "text",
 		"placeholders_order": []
 	},
-	"answer_4": "Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of the trading fee if you are a taker. The atomic swap protocol requires both participants to stay online to monitor the involved blockchains for the process to stay atomic and for the swap to complete. If a swap fails because you were offline, you will need to go back on line for the refund to be processed.",
+	"answer_4": "Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds for taker. The atomic swap protocol requires both participants to stay online to monitor the involved blockchains for the process to stay atomic and for the swap to complete. If a swap fails because you were offline, you will need to go back on line for the refund to be processed.",
 	"@answer_4": {
 		"type": "text",
 		"placeholders_order": []
