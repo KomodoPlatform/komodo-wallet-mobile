@@ -67,7 +67,8 @@ class AppConfig {
     'HCO20',
     'KRC20',
     'AVX20',
-    'SLP'
+    'SLP',
+    'OLD',
   ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
   Map<String, String> get allProtocolNames => {
@@ -86,7 +87,6 @@ class AppConfig {
         'ubiq': 'Ubiq',
         'etc': 'Ethereum Classic (ETC)',
         'sbch': 'SmartBCH (SBCH)',
-        'slp': 'SLP Tokens',
       };
 
   bool get isSwapShareCardEnabled => true;
