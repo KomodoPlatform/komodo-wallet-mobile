@@ -870,7 +870,8 @@ class _CoinDetailState extends State<CoinDetail> {
       ),
       onTap: () async {
         await _refresh();
-        _scrollController.position.jumpTo(0.0);
+        if (_scrollController.hasClients)
+          _scrollController.position.jumpTo(0.0);
       },
     );
   }

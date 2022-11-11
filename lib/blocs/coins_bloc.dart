@@ -372,8 +372,7 @@ class CoinsBloc implements BlocBase {
 
     // list of slp-parent-coins
     List<Coin> slpCoins = [];
-    for (Coin coin
-        in coins.where((element) => element?.protocol?.type == 'SLPTOKEN')) {
+    for (Coin coin in coins.where((element) => isSlpType(element))) {
       slpCoins.add(getKnownCoinByAbbr(coin.protocol.protocolData.platform));
     }
     slpCoins = slpCoins.toSet().toList();
