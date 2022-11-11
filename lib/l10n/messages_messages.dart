@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m1(title) => "Only showing contacts with ${title} addresses";
 
-  static m2(abbr) => "You can not send funds to ${abbr} address, because ${abbr} is not activated. Please go to portfolio.";
+  static m2(abbr) => "You can\'t send funds to ${abbr} address, because ${abbr} is not activated. Please go to portfolio.";
 
   static m3(appName) => "No! ${appName} is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. This data is only stored on the user’s device and never leaves it. You are in full control of your assets.";
 
@@ -43,9 +43,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m11(appName) => "Absolutely! You can read our <a href=\"https://developers.atomicdex.io/\">developer documentation</a> for more details or contact us with your partnership inquiries. Have a specific technical question? The ${appName} developer community is always ready to help!";
 
-  static m12(batteryLevelCritical) => "Your battery charge is critical (${batteryLevelCritical}%) to perform a swap safely. Please put it on charge and try again.";
+  static m12(batteryLevelCritical) => "Your battery charge is critical (${batteryLevelCritical}%) - too low to perform a swap safely. Please put it on charge and try again.";
 
-  static m13(batteryLevelLow) => "Your battery charge is lower than ${batteryLevelLow}%. Please consider phone charging.";
+  static m13(batteryLevelLow) => "Your battery charge is lower than ${batteryLevelLow}%. Charging your phone is recommended.";
 
   static m14(seconde) => "Ordermatch ongoing, please wait ${seconde} seconds!";
 
@@ -111,7 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m45(minValue, coin) => "Must be greater than ${minValue} ${coin}";
 
-  static m46(appName) => "Please note that now you\'re using cellular data and participation in ${appName} P2P network consume internet traffic. It\'s better to use a WiFi network if your cellular data plan is costly.";
+  static m46(appName) => "Please note that now you\'re using cellular data and participation in the ${appName} P2P network consumes internet traffic. It\'s better to use a WiFi network if your cellular data plan is costly.";
 
   static m47(coin) => "Activate ${coin} and top-up balance first";
 
@@ -133,7 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m56(sell, buy) => "${sell}/${buy} swap was timed out";
 
-  static m57(coin) => "You have received ${coin} transaction!";
+  static m57(coin) => "You have received a ${coin} transaction!";
 
   static m58(assets) => "${assets} Assets";
 
@@ -189,7 +189,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m84(description) => "Played when ${description}";
 
-  static m85(appName) => "If you have any questions, or think you\'ve found a technical problem with the ${appName} app, you can report it and get support from our team.";
+  static m85(appName) => "If you have any questions, or have found a technical problem with the ${appName} app, you can report it to get help from our support team.";
 
   static m86(coin) => "Please activate ${coin} and top-up balance first";
 
@@ -256,7 +256,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "answer_10" : m4,
     "answer_2" : m5,
     "answer_3" : m6,
-    "answer_4" : MessageLookupByLibrary.simpleMessage("Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic."),
+    "answer_4" : MessageLookupByLibrary.simpleMessage("Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds for taker. The atomic swap protocol requires both participants to stay online to monitor the involved blockchains for the process to stay atomic and for the swap to complete. If a swap fails because you were offline, you will need to go back on line for the refund to be processed."),
     "answer_5" : m7,
     "answer_6" : m8,
     "answer_7" : m9,
@@ -270,7 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "backupTitle" : MessageLookupByLibrary.simpleMessage("Backup"),
     "batteryCriticalError" : m12,
     "batteryLowWarning" : m13,
-    "batterySavingWarning" : MessageLookupByLibrary.simpleMessage("Your phone is in battery saving mode. Please disable this mode or do NOT put the application to the background, otherwise, the app might be killed by OS and swap failed."),
+    "batterySavingWarning" : MessageLookupByLibrary.simpleMessage("Your phone is in battery saving mode. Please disable this mode or do NOT allow the application to go to background, otherwise the app might be killed by OS and swaps will fail."),
     "bestAvailableRate" : MessageLookupByLibrary.simpleMessage("Exchange rate"),
     "builtKomodo" : MessageLookupByLibrary.simpleMessage("Built on Komodo"),
     "builtOnKmd" : MessageLookupByLibrary.simpleMessage("Built on Komodo"),
@@ -278,12 +278,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "buyOrderType" : MessageLookupByLibrary.simpleMessage("Convert to Maker if not matched"),
     "buySuccessWaiting" : MessageLookupByLibrary.simpleMessage("Swap issued, please wait!"),
     "buySuccessWaitingError" : m14,
-    "buyTestCoinWarning" : MessageLookupByLibrary.simpleMessage("Warning, you\'re willing to buy test coins WITHOUT real value!"),
+    "buyTestCoinWarning" : MessageLookupByLibrary.simpleMessage("Warning, you are about to buy test coins WITHOUT real value!"),
     "camoPinBioProtectionConflict" : MessageLookupByLibrary.simpleMessage("Camouflage PIN and Bio protection can\'t be enabled at the same time."),
     "camoPinBioProtectionConflictTitle" : MessageLookupByLibrary.simpleMessage("Camo PIN and Bio protection conflict."),
     "camoPinChange" : MessageLookupByLibrary.simpleMessage("Change Camouflage PIN"),
     "camoPinCreate" : MessageLookupByLibrary.simpleMessage("Create Camouflage PIN"),
-    "camoPinDesc" : MessageLookupByLibrary.simpleMessage("If You\'ll unlock the app with the Camouflage PIN, a fake LOW balance will be shown and the Camouflage PIN config option will NOT be visible in the settings"),
+    "camoPinDesc" : MessageLookupByLibrary.simpleMessage("If you unlock the app with the Camouflage PIN, a fake LOW balance will be shown and the Camouflage PIN config option will NOT be visible in the settings"),
     "camoPinInvalid" : MessageLookupByLibrary.simpleMessage("Invalid Camouflage PIN"),
     "camoPinLink" : MessageLookupByLibrary.simpleMessage("Camouflage PIN"),
     "camoPinNotFound" : MessageLookupByLibrary.simpleMessage("Camouflage PIN not found"),
@@ -304,7 +304,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cex" : MessageLookupByLibrary.simpleMessage("CEX"),
     "cexChangeRate" : MessageLookupByLibrary.simpleMessage("CEXchange rate"),
     "cexData" : MessageLookupByLibrary.simpleMessage("CEX data"),
-    "cexDataDesc" : MessageLookupByLibrary.simpleMessage("Markets data (prices, charts, etc.) marked with this icon originates from third party sources (<a href=\"https://www.coingecko.com/\">coingecko.com</a>, <a href=\"https://openrates.io/\">openrates.io</a>)."),
+    "cexDataDesc" : MessageLookupByLibrary.simpleMessage("Market data (prices, charts, etc.) marked with this icon originates from third party sources (<a href=\"https://www.coingecko.com/\">coingecko.com</a>, <a href=\"https://openrates.io/\">openrates.io</a>)."),
     "changePin" : MessageLookupByLibrary.simpleMessage("Change PIN code"),
     "checkForUpdates" : MessageLookupByLibrary.simpleMessage("Check for updates"),
     "checkOut" : MessageLookupByLibrary.simpleMessage("Check Out"),
@@ -340,7 +340,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("Confirm password"),
     "confirmPin" : MessageLookupByLibrary.simpleMessage("Confirm PIN code"),
     "confirmSeed" : MessageLookupByLibrary.simpleMessage("Confirm Seed Phrase"),
-    "confirmeula" : MessageLookupByLibrary.simpleMessage("By clicking the below buttons you confirm to have read the \'EULA\' and \'Terms and Conditions\' and accept these"),
+    "confirmeula" : MessageLookupByLibrary.simpleMessage("By clicking the buttons below you confirm you have read and accept the \'EULA\' and \'Terms and Conditions\'"),
     "connecting" : MessageLookupByLibrary.simpleMessage("Connecting..."),
     "contactCancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "contactDelete" : MessageLookupByLibrary.simpleMessage("Delete Contact"),
@@ -393,9 +393,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyWallet" : MessageLookupByLibrary.simpleMessage("Wallet name must not be empty"),
     "enableTestCoins" : MessageLookupByLibrary.simpleMessage("Enable Test Coins"),
     "enablingTooManyAssetsSpan1" : MessageLookupByLibrary.simpleMessage("You have "),
-    "enablingTooManyAssetsSpan2" : MessageLookupByLibrary.simpleMessage(" assets enabled and trying to enable "),
+    "enablingTooManyAssetsSpan2" : MessageLookupByLibrary.simpleMessage(" assets enabled and are trying to enable "),
     "enablingTooManyAssetsSpan3" : MessageLookupByLibrary.simpleMessage(" more. Enabled assets max limit is "),
-    "enablingTooManyAssetsSpan4" : MessageLookupByLibrary.simpleMessage(". Please disable some before new ones adding."),
+    "enablingTooManyAssetsSpan4" : MessageLookupByLibrary.simpleMessage(". Please disable some before adding new ones."),
     "enablingTooManyAssetsTitle" : MessageLookupByLibrary.simpleMessage("Trying to enable too many assets"),
     "encryptingWallet" : MessageLookupByLibrary.simpleMessage("Encrypting wallet"),
     "englishLanguage" : MessageLookupByLibrary.simpleMessage("English"),
@@ -461,7 +461,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "exchangeTitle" : MessageLookupByLibrary.simpleMessage("EXCHANGE"),
     "exportButton" : MessageLookupByLibrary.simpleMessage("Export"),
     "exportContactsTitle" : MessageLookupByLibrary.simpleMessage("Contacts"),
-    "exportDesc" : MessageLookupByLibrary.simpleMessage("Please select items to export into encrypted file."),
+    "exportDesc" : MessageLookupByLibrary.simpleMessage("Please select items to export into an encrypted file."),
     "exportLink" : MessageLookupByLibrary.simpleMessage("Export"),
     "exportNotesTitle" : MessageLookupByLibrary.simpleMessage("Notes"),
     "exportSuccessTitle" : MessageLookupByLibrary.simpleMessage("Items have been successfully exported:"),
@@ -528,8 +528,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "importFileNotFound" : MessageLookupByLibrary.simpleMessage("File not found"),
     "importInvalidSwapData" : MessageLookupByLibrary.simpleMessage("Invalid swap data. Please provide a valid swap status JSON file."),
     "importLink" : MessageLookupByLibrary.simpleMessage("Import"),
-    "importLoadDesc" : MessageLookupByLibrary.simpleMessage("Please select encrypted file to import."),
-    "importLoadSwapDesc" : MessageLookupByLibrary.simpleMessage("Please select plain text swap file to import."),
+    "importLoadDesc" : MessageLookupByLibrary.simpleMessage("Please select an encrypted file to import."),
+    "importLoadSwapDesc" : MessageLookupByLibrary.simpleMessage("Please select a plain text swap file to import."),
     "importLoading" : MessageLookupByLibrary.simpleMessage("Opening..."),
     "importPassCancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "importPassOk" : MessageLookupByLibrary.simpleMessage("Ok"),
@@ -544,13 +544,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "infoPasswordDialog" : MessageLookupByLibrary.simpleMessage("Use a secure password and do not store it on the same device"),
     "infoTrade1" : MessageLookupByLibrary.simpleMessage("The swap request can not be undone and is a final event!"),
     "infoTrade2" : MessageLookupByLibrary.simpleMessage("The swap can take up to 60 minutes. DONT close this application!"),
-    "infoWalletPassword" : MessageLookupByLibrary.simpleMessage("You have to provide a password for the wallet encryption due to security reasons."),
+    "infoWalletPassword" : MessageLookupByLibrary.simpleMessage("For security reasons, you must provide a password for wallet encryption."),
     "insufficientBalanceToPay" : m39,
     "insufficientText" : MessageLookupByLibrary.simpleMessage("Minumum volume required by this order is"),
     "insufficientTitle" : MessageLookupByLibrary.simpleMessage("Insufficient volume"),
     "internetRefreshButton" : MessageLookupByLibrary.simpleMessage("Refresh"),
     "internetRestored" : MessageLookupByLibrary.simpleMessage("Internet Connection Restored"),
-    "invalidSwap" : MessageLookupByLibrary.simpleMessage("Unable to proceed swap"),
+    "invalidSwap" : MessageLookupByLibrary.simpleMessage("Unable to proceed with swap"),
     "invalidSwapDetailsLink" : MessageLookupByLibrary.simpleMessage("Details"),
     "isUnavailable" : m40,
     "japaneseLanguage" : MessageLookupByLibrary.simpleMessage("Japanese"),
@@ -573,7 +573,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "makerDetailsCreated" : MessageLookupByLibrary.simpleMessage("Created at"),
     "makerDetailsFor" : MessageLookupByLibrary.simpleMessage("Receive"),
     "makerDetailsId" : MessageLookupByLibrary.simpleMessage("Order ID"),
-    "makerDetailsNoSwaps" : MessageLookupByLibrary.simpleMessage("No swaps were started by this order"),
+    "makerDetailsNoSwaps" : MessageLookupByLibrary.simpleMessage("No swaps started by this order yet"),
     "makerDetailsPrice" : MessageLookupByLibrary.simpleMessage("Price"),
     "makerDetailsSell" : MessageLookupByLibrary.simpleMessage("Sell"),
     "makerDetailsSwaps" : MessageLookupByLibrary.simpleMessage("Swaps started by this order"),
@@ -828,14 +828,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectPaymentMethod" : MessageLookupByLibrary.simpleMessage("Select Your Payment Method"),
     "selectedOrder" : MessageLookupByLibrary.simpleMessage("Selected order:"),
     "sell" : MessageLookupByLibrary.simpleMessage("Sell"),
-    "sellTestCoinWarning" : MessageLookupByLibrary.simpleMessage("Warning, you\'re willing to sell test coins WITHOUT real value!"),
+    "sellTestCoinWarning" : MessageLookupByLibrary.simpleMessage("Warning, you\'re about to sell test coins WITHOUT real value!"),
     "send" : MessageLookupByLibrary.simpleMessage("SEND"),
     "setUpPassword" : MessageLookupByLibrary.simpleMessage("SET UP A PASSWORD"),
     "settingDialogSpan1" : MessageLookupByLibrary.simpleMessage("Are you sure you want to delete "),
     "settingDialogSpan2" : MessageLookupByLibrary.simpleMessage(" wallet?"),
     "settingDialogSpan3" : MessageLookupByLibrary.simpleMessage("If so, make sure you "),
-    "settingDialogSpan4" : MessageLookupByLibrary.simpleMessage(" record your seed phrase."),
-    "settingDialogSpan5" : MessageLookupByLibrary.simpleMessage(" In order to restore your wallet in the future."),
+    "settingDialogSpan4" : MessageLookupByLibrary.simpleMessage(" record your seed phrase"),
+    "settingDialogSpan5" : MessageLookupByLibrary.simpleMessage(" in order to restore your wallet in the future."),
     "settingLanguageTitle" : MessageLookupByLibrary.simpleMessage("Languages"),
     "settings" : MessageLookupByLibrary.simpleMessage("Settings"),
     "share" : MessageLookupByLibrary.simpleMessage("Share"),
@@ -919,7 +919,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tradePreimageError" : MessageLookupByLibrary.simpleMessage("Failed to calculate trade fees"),
     "tradingFee" : MessageLookupByLibrary.simpleMessage("trading fee:"),
     "tradingMode" : MessageLookupByLibrary.simpleMessage("Trading Mode:"),
-    "tryRestarting" : MessageLookupByLibrary.simpleMessage("If even then some coins are still not activated, try restarting the app."),
+    "tryRestarting" : MessageLookupByLibrary.simpleMessage("If afterwards some coins are still not activated, try restarting the app."),
     "turkishLanguage" : MessageLookupByLibrary.simpleMessage("Turkish"),
     "txBlock" : MessageLookupByLibrary.simpleMessage("Block"),
     "txConfirmations" : MessageLookupByLibrary.simpleMessage("Confirmations"),
