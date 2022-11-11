@@ -263,12 +263,12 @@ class ApiProvider {
         urls: List<String>.from(coin.serverList.map((e) => e.url)),
       ).toJson());
 
-    if(coin.protocol.type == 'BCH')
+    if(isSlpParent(coin))
       return json.encode(MmParentSlpEnable(
         userpass: mmSe.userpass,
         coin: coin,
       ).toJson());
-    if (isSlpType(coin))
+    if (isSlpChild(coin))
       return json.encode(MmChildSlpEnable(
         userpass: mmSe.userpass,
         coin: coin,

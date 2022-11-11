@@ -372,7 +372,11 @@ class CoinsBloc implements BlocBase {
 
     // list of slp-parent-coins
     List<Coin> slpCoins = [];
-    for (Coin coin in coins.where((element) => isSlpType(element))) {
+    for (Coin coin in coins.where((element) => isSlpChild(element))) {
+      String platform = coin?.protocol?.protocolData?.platform;
+      bool isParentEnabled =
+          coinBalance.any((element) => element.coin.abbr == platform);
+      if (isParentEnabled) return; //parent coin is already enabled
       slpCoins.add(getKnownCoinByAbbr(coin.protocol.protocolData.platform));
     }
     slpCoins = slpCoins.toSet().toList();
