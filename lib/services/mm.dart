@@ -263,7 +263,7 @@ class ApiProvider {
         urls: List<String>.from(coin.serverList.map((e) => e.url)),
       ).toJson());
 
-    if(isSlpParent(coin))
+    if (isSlpParent(coin))
       return json.encode(MmParentSlpEnable(
         userpass: mmSe.userpass,
         coin: coin,
