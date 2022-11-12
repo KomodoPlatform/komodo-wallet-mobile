@@ -4,8 +4,9 @@
 
 import 'dart:convert';
 
-GetTxHistory getTxHistoryFromJson(String str) =>
-    GetTxHistory.fromJson(json.decode(str));
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/utils/utils.dart';
+import 'coin.dart';
 
 String getTxHistoryToJson(GetTxHistory data) => json.encode(data.toJson());
 
@@ -18,25 +19,30 @@ class GetTxHistory {
     this.fromId,
   });
 
-  factory GetTxHistory.fromJson(Map<String, dynamic> json) => GetTxHistory(
-        userpass: json['userpass'] ?? '',
-        method: json['method'] ?? '',
-        coin: json['coin'] ?? '',
-        limit: json['limit'] ?? 0,
-        fromId: json['from_id'],
-      );
-
   String userpass;
   String method;
   String coin;
   int limit;
   String fromId;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'userpass': userpass ?? '',
-        'method': method ?? '',
-        'coin': coin ?? '',
-        'limit': limit ?? 0,
-        'from_id': fromId,
-      };
+  Map<String, dynamic> toJson() {
+    // slp coins uses the rpc 2.0 methods
+    Coin coinToEnable = coinsBloc.getKnownCoinByAbbr(coin);
+    return isSlpParent(coinToEnable) || isSlpChild(coinToEnable)
+        ? <String, dynamic>{
+            'userpass': userpass ?? '',
+            'method': method ?? '',
+            'mmrpc': '2.0',
+            'params': {
+              'coin': coin ?? '',
+            }
+          }
+        : <String, dynamic>{
+            'userpass': userpass ?? '',
+            'method': method ?? '',
+            'coin': coin ?? '',
+            'limit': limit ?? 0,
+            'from_id': fromId,
+          };
+  }
 }

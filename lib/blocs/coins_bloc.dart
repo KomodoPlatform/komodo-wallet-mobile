@@ -372,9 +372,12 @@ class CoinsBloc implements BlocBase {
 
     // list of slp-parent-coins
     List<Coin> slpCoins = [];
-    for (Coin coin
-        in coins.where((element) => element?.protocol?.type == 'SLPTOKEN')) {
-      slpCoins.add(getKnownCoinByAbbr(coin.protocol.protocolData.platform));
+    for (Coin coin in coins.where((element) => isSlpChild(element))) {
+      String platform = coin?.protocol?.protocolData?.platform;
+      bool isParentEnabled =
+          coinBalance.any((element) => element.coin.abbr == platform);
+      if (!isParentEnabled) //parent coin is already enabled
+        slpCoins.add(getKnownCoinByAbbr(coin.protocol.protocolData.platform));
     }
     slpCoins = slpCoins.toSet().toList();
 
@@ -405,7 +408,7 @@ class CoinsBloc implements BlocBase {
 
         continue;
       }
-      final acc = ActiveCoin.fromJson(ans);
+      final acc = ActiveCoin.fromJson(ans, coin);
       if (acc.result != 'success') {
         Log('coins_bloc:278', '!success: $ans');
 

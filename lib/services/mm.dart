@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/get_best_orders.dart';
+import 'package:komodo_dex/model/get_enable_slp_coin.dart';
 import 'package:komodo_dex/model/get_import_swaps.dart';
 import 'package:komodo_dex/model/get_min_trading_volume.dart';
 import 'package:komodo_dex/model/get_orderbook_depth.dart';
@@ -261,6 +262,18 @@ class ApiProvider {
         fallbackSwapContract: coin.fallbackSwapContract,
         urls: List<String>.from(coin.serverList.map((e) => e.url)),
       ).toJson());
+
+    if (isSlpParent(coin))
+      return json.encode(MmParentSlpEnable(
+        userpass: mmSe.userpass,
+        coin: coin,
+      ).toJson());
+    if (isSlpChild(coin))
+      return json.encode(MmChildSlpEnable(
+        userpass: mmSe.userpass,
+        coin: coin,
+      ).toJson());
+
     // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
     final electrum = <String, dynamic>{
       'method': 'electrum',
