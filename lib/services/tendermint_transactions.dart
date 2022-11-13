@@ -5,13 +5,12 @@ import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/utils/log.dart';
 
 import '../localizations.dart';
-import 'mm.dart';
 
 class TenderMintTransactions {
   Future<dynamic> getTransactions(String address) async {
     if (address == null) return;
     String body;
-    String url = MM.url + '/' + address;
+    String url = 'https://tx.komodo.live/$address';
     try {
       final Response response = await http.get(Uri.parse(url));
       body = response.body;

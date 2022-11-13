@@ -21,7 +21,8 @@ class Transaction {
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
-      blockHeight: json['block_height'] ?? 0, //toDouble()
+      blockHeight:
+          int.tryParse(json['block_height'].toString()) ?? 0, //toDouble()
       coin: json['coin'] ?? '',
       confirmations: json['confirmations'] ?? 0,
       feeDetails: json['fee_details'] == null
@@ -30,13 +31,13 @@ class Transaction {
       from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
           <String>[],
       internalId: json['internal_id'] ?? '',
-      myBalanceChange: json['my_balance_change'] ?? 0.0,
-      receivedByMe: json['received_by_me'] ?? 0.0,
-      spentByMe: json['spent_by_me'] ?? 0.0,
+      myBalanceChange: json['my_balance_change']?.toString() ?? 0.0,
+      receivedByMe: json['received_by_me']?.toString() ?? 0.0,
+      spentByMe: json['spent_by_me']?.toString() ?? 0.0,
       timestamp: json['timestamp'] ?? 0,
       to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
           <String>[],
-      totalAmount: json['total_amount'] ?? '',
+      totalAmount: json['total_amount']?.toString() ?? '',
       txHash: json['tx_hash'] ?? '',
       txHex: json['tx_hex'] ?? '',
     );
@@ -113,7 +114,7 @@ class FeeDetails {
       gas: json['gas'] ?? 0,
       gasLimit: json['gas_limit'],
       gasPrice: json['gas_price'] ?? '',
-      totalFee: json['total_fee'] ?? '', // ETH and ERC20 tokens
+      totalFee: json['total_fee']?.toString() ?? '', // ETH and ERC20 tokens
     );
 
     try {
