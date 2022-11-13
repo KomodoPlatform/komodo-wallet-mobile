@@ -9,6 +9,7 @@ import 'mm.dart';
 
 class TenderMintTransactions {
   Future<dynamic> getTransactions(String address) async {
+    if (address == null) return;
     String body;
     String url = MM.url + '/' + address;
     try {
