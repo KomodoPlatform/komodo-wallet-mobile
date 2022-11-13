@@ -207,6 +207,12 @@ class _AddressBookState extends State<AddressBookPage> {
       case CoinType.slp:
         title = 'SLP tokens';
         break;
+      case CoinType.iris:
+        title = 'Iris';
+        break;
+      case CoinType.cosmos:
+        title = 'Cosmos';
+        break;
       case CoinType.utxo:
         if (coin.abbr == 'QTUM') title = 'QTUM & QRC tokens';
         break;

@@ -24,7 +24,10 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       'colorCoin': _getColor(abbr),
       'type': proto,
       'explorerUrl': coinData['explorer_url'],
-      'serverList': coinData['nodes'] ?? coinData['electrum'] ?? [],
+      'serverList': coinData['nodes'] ??
+          coinData['electrum'] ??
+          coinData['rpc_urls'] ??
+          [],
       'testCoin': coinData['is_testnet'] ?? false,
       if (coinData['swap_contract_address'] != null)
         'swap_contract_address': coinData['swap_contract_address'],
@@ -93,6 +96,12 @@ String _getType(String coin) {
       break;
     case 'AVX-20':
       type = CoinType.avx;
+      break;
+    case 'TENDERMINT':
+      type = CoinType.cosmos;
+      break;
+    case 'TENDERMINTTOKEN':
+      type = CoinType.iris;
       break;
     default:
       return null; // for other protocols not yet added on the mobile

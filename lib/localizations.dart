@@ -846,6 +846,11 @@ class AppLocalizations {
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
   String get searchFilterSubtitleSLP =>
       Intl.message('Select all SLP tokens', name: 'searchFilterSubtitleSLP');
+  String get searchFilterSubtitleCosmos =>
+      Intl.message('Select all Cosmos Network',
+          name: 'searchFilterSubtitleCosmos');
+  String get searchFilterSubtitleIris =>
+      Intl.message('Select all Iris Network', name: 'searchFilterSubtitleIris');
   String get searchFilterSubtitleKRC =>
       Intl.message('Select all Kucoin tokens', name: 'searchFilterSubtitleKRC');
   String get searchFilterSubtitleHRC =>

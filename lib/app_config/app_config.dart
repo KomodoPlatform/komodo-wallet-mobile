@@ -88,6 +88,8 @@ class AppConfig {
         'etc': 'Ethereum Classic (ETC)',
         'sbch': 'SmartBCH (SBCH)',
         'slp': 'SLP Tokens',
+        'iris': 'Iris Network',
+        'cosmos': 'Cosmos Network',
       };
 
   bool get isSwapShareCardEnabled => true;
