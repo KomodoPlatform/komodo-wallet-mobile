@@ -3,7 +3,6 @@ import 'coin.dart';
 class ActiveCoin {
   ActiveCoin.fromJson(Map<String, dynamic> json, Coin activeCoin) {
     if (json['mmrpc'] == '2.0') {
-      print(json);
       coin = activeCoin.abbr ?? '';
       if (json['result']['bch_addresses_infos'] != null) {
         address = json['result']['bch_addresses_infos'].keys.first;

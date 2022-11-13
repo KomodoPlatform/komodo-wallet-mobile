@@ -101,18 +101,14 @@ class _CoinDetailState extends State<CoinDetail> {
     setState(() {
       isLoading = true;
     });
-    coinsBloc
-        .updateTransactions(currentCoinBalance.coin, limit, null)
-        .then((_) {
+    coinsBloc.updateTransactions(currentCoinBalance, limit, null).then((_) {
       if (mounted) {
         setState(() {
           isLoading = false;
         });
       }
     });
-    coinsBloc
-        .getLatestTransaction(currentCoinBalance.coin)
-        .then((Transaction t) {
+    coinsBloc.getLatestTransaction(currentCoinBalance).then((Transaction t) {
       if (t != null) latestTransaction = t;
     });
     super.initState();
@@ -124,7 +120,7 @@ class _CoinDetailState extends State<CoinDetail> {
           isLoading = true;
         });
         coinsBloc
-            .updateTransactions(currentCoinBalance.coin, limit, fromId)
+            .updateTransactions(currentCoinBalance, limit, fromId)
             .then((_) {
           setState(() {
             isLoading = false;
@@ -281,8 +277,8 @@ class _CoinDetailState extends State<CoinDetail> {
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
               timer ??= Timer.periodic(const Duration(seconds: 3), (_) async {
-                final Transaction t = await coinsBloc
-                    .getLatestTransaction(currentCoinBalance.coin);
+                final Transaction t =
+                    await coinsBloc.getLatestTransaction(currentCoinBalance);
 
                 if (_isWaiting) {
                   _refresh();
@@ -515,7 +511,7 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Future<void> _refresh() async {
-    await coinsBloc.updateTransactions(currentCoinBalance.coin, limit, null);
+    await coinsBloc.updateTransactions(currentCoinBalance, limit, null);
     if (mounted) {
       setState(() {
         _shouldRefresh = false;

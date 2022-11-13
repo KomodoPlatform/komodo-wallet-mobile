@@ -5,8 +5,10 @@ import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/best_order.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/get_enable_slp_coin.dart';
+import 'package:komodo_dex/model/get_enable_tendermint.dart';
 import 'package:komodo_dex/model/get_import_swaps.dart';
 import 'package:komodo_dex/model/get_min_trading_volume.dart';
 import 'package:komodo_dex/model/get_orderbook_depth.dart';
@@ -238,20 +240,6 @@ class ApiProvider {
                 _catchErrorString('postSell', e, 'Error on post sell'));
       });
 
-  Future<void> simPanic({http.Client client}) async {
-    client ??= mmSe.client;
-    final req = <String, dynamic>{
-      'method': 'sim_panic',
-      'userpass': mmSe.userpass,
-      'mode': 'simple'
-    };
-    final r = await client.post(Uri.parse(url), body: json.encode(req));
-    _assert200(r);
-    final dynamic jbody = json.decode(r.body);
-    final err = ErrorString.fromJson(jbody);
-    if (err.error.isNotEmpty) throw removeLineFromMM2(err);
-  }
-
   String enableCoinImpl(Coin coin) {
     if (isErcType(coin))
       return json.encode(MmEnable(
@@ -263,6 +251,17 @@ class ApiProvider {
         urls: List<String>.from(coin.serverList.map((e) => e.url)),
       ).toJson());
 
+    if (coin.type == CoinType.iris)
+      return json.encode(MmIrisEnable(
+        userpass: mmSe.userpass,
+        coin: coin,
+      ).toJson());
+    if (coin.type == CoinType.cosmos)
+      return json.encode(MmCosmosEnable(
+        userpass: mmSe.userpass,
+        coin: coin,
+        servers: coin.serverList,
+      ).toJson());
     if (isSlpParent(coin))
       return json.encode(MmParentSlpEnable(
         userpass: mmSe.userpass,

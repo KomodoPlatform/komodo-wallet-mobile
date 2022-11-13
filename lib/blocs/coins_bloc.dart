@@ -12,6 +12,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -25,6 +26,7 @@ import 'package:komodo_dex/services/get_erc_transactions.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/services/tendermint_transactions.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -292,13 +294,18 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
-  Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
+  Future<void> updateTransactions(
+      CoinBalance coinBalance, int limit, String fromId) async {
+    Coin coin = coinBalance.coin;
     try {
       dynamic transactions;
 
       if (isErcType(coin)) {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
+      } else if (coin.type == CoinType.iris || coin.type == CoinType.cosmos) {
+        transactions = await tenderMintTransactions
+            .getTransactions(coinBalance.balance.address);
       } else {
         transactions = await MM.getTransactions(mmSe.client,
             GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
@@ -650,9 +657,10 @@ class CoinsBloc implements BlocBase {
     return _sorted;
   }
 
-  Future<Transaction> getLatestTransaction(Coin coin) async {
+  Future<Transaction> getLatestTransaction(CoinBalance coinBalance) async {
     const int limit = 1;
     const String fromId = null;
+    Coin coin = coinBalance.coin;
     try {
       dynamic transactions;
       if (isErcType(coin)) {
