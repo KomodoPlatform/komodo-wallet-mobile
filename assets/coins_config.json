@@ -24304,5 +24304,26 @@
         "url": "https://rpc.irishub-1.irisnet.org"
       }
     ]
+  },
+  "OSMO": {
+    "coin": "OSMO",
+    "type": "TENDERMINT",
+    "name": "Osmosis",
+    "coinpaprika_id": "osmo-osmosis",
+    "coingecko_id": "osmosis",
+    "nomics_id": "osmo-osmosis",
+    "explorer_url": "https://www.mintscan.io/osmosis/",
+    "explorer_tx_url": "",
+    "explorer_address_url": "",
+    "supported": [],
+    "active": false,
+    "is_testnet": false,
+    "currently_enabled": false,
+    "wallet_only": true,
+    "rpc_urls": [
+      {
+        "url": "https://osmosis-mainnet-rpc.allthatnode.com:26657/"
+      }
+    ]
   }
 }
