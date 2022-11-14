@@ -49,9 +49,12 @@ class _HelpPageState extends State<HelpPage> {
                 height: 1.3,
                 fontSize: 15,
               ),
-          linkStyle: const TextStyle(
-            color: Colors.blue,
-          ),
+          linkStyle: Theme.of(context).textTheme.subtitle1.copyWith(
+                fontWeight: FontWeight.w300,
+                height: 1.3,
+                fontSize: 15,
+                color: Colors.blue,
+              ),
         ),
         'isExpanded': false,
       },
@@ -113,9 +116,12 @@ class _HelpPageState extends State<HelpPage> {
                 height: 1.3,
                 fontSize: 15,
               ),
-          linkStyle: const TextStyle(
-            color: Colors.blue,
-          ),
+          linkStyle: Theme.of(context).textTheme.subtitle1.copyWith(
+                fontWeight: FontWeight.w300,
+                height: 1.3,
+                fontSize: 15,
+                color: Colors.blue,
+              ),
         ),
         'isExpanded': false,
       },
@@ -164,9 +170,12 @@ class _HelpPageState extends State<HelpPage> {
             height: 1.3,
             fontSize: 15,
           ),
-      linkStyle: const TextStyle(
-        color: Colors.blue,
-      ),
+      linkStyle: Theme.of(context).textTheme.subtitle1.copyWith(
+            fontWeight: FontWeight.w300,
+            height: 1.3,
+            fontSize: 15,
+            color: Colors.blue,
+          ),
     );
   }
 
