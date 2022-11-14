@@ -22,7 +22,7 @@ class Transaction {
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
       blockHeight:
-          int.tryParse(json['block_height'].toString()) ?? 0, //toDouble()
+          int.tryParse(json['block_height']?.toString()) ?? 0, //toDouble()
       coin: json['coin'] ?? '',
       confirmations: json['confirmations'] ?? 0,
       feeDetails: json['fee_details'] == null

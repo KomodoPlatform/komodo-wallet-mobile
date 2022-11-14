@@ -532,7 +532,7 @@ class _CoinDetailState extends State<CoinDetail> {
     return Column(
       children: <Widget>[
         if (currentCoinBalance.coin.protocol?.protocolData != null)
-          _buildContractAddress(currentCoinBalance.coin.protocol?.protocolData),
+          _buildContractAddress(currentCoinBalance.coin.protocol),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 48),
           child: StreamBuilder<List<CoinBalance>>(
@@ -633,14 +633,20 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  Widget _buildContractAddress(ProtocolData protocolData) {
-    final platform = protocolData.platform;
-    String contractAddress = protocolData.contractAddress;
+  Widget _buildContractAddress(Protocol protocol) {
+    final platform = protocol.protocolData.platform;
+    String contractAddress = protocol.protocolData.contractAddress;
     if (platform == null || contractAddress == null) return SizedBox();
     String middleUrl = 'address';
     if (platform == 'QTUM') {
       contractAddress = contractAddress.replaceFirst('0x', '');
       middleUrl = 'contract';
+    } else if (protocol.type == 'TENDERMINT') {
+      middleUrl = 'account';
+      contractAddress = widget.coinBalance.balance.address;
+    } else if (protocol.type == 'TENDERMINTTOKEN') {
+      middleUrl = 'address';
+      contractAddress = widget.coinBalance.balance.address;
     }
 
     final allCoins = coinsBloc.knownCoins;
