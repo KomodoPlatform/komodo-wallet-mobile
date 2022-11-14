@@ -35,8 +35,6 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m7(appName) => "${appName}\'te alım satım yaparken bilinmesi gereken iki tür işlem ücreti vardır.\n\n1. ${appName}, alıcı emirlerinden işlem başına yaklaşık olarak %0.13 (takriben 777\'nin 1\'i kadar, fakat bu da 0.0001\'den az olmamak kaydıyla) işlem ücreti alırken, yapıcı emirlerinden herhangi bir ücret alınmamaktadır.\n\n2. Hem yapıcı hem de alıcı emir sahiplerinin ödemesi gerekli olan ve takasın gerçekleştiği blokzincirlerin standart ağ işlem ücretleri.\n\nAğ işlem ücretleri, takas yapmak istediğiniz paritelerin kendi işleyişlerine göre değişiklik göstermektedir.";
 
-  static m8(name, link, appName, appCompanyShort) => "Evet. ${appName}, <a href=\"${link}\">${appCompanyShort} {name?}</a> üzerinden destek sunmaktadır. Ekibimiz ve topluluğumuz her daim yardımcı olmaktan mutluluk duymaktadır.";
-
   static m9(appName) => "Hayır ! ${appName} tamamıyla merkeziyetsizdir ve kullanıcıların uygulamaya erişimi başkaları tarafından sınırlandırılamaz.";
 
   static m10(appName, appCompanyShort) => "${appName}, ${appCompanyShort} takımı tarafından geliştirilmiştir. ${appCompanyShort}, koin takası, Geciktirilmiş İş Kanıtı (dPoW), birlikte çalışabilen çoklu zincir mimarisi gibi yenilikçi blokzincir çözümleri geliştiren köklü bir platformdur.";
@@ -258,7 +256,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "answer_3" : m6,
     "answer_4" : MessageLookupByLibrary.simpleMessage("Evet, takas boyunca uygulamanız açık ve internetinizin de (anlık kesintilerde bir sıkıntı yoktur) bağlı olması gerekmektedir. Aksi halde; eğer yapıcı emri (maker) veren siz iseniz takasın iptal olma durumu, alıcı emri (taker) veren iseniz de koinlerinizi kaybetme riski ortaya çıkar. AtomicDEX protokolünde takası yapan her iki tarafın da işlem boyunca çevrimiçi olması ve takasın başarılı olması için gereklidir."),
     "answer_5" : m7,
-    "answer_6" : m8,
     "answer_7" : m9,
     "answer_8" : m10,
     "answer_9" : m11,

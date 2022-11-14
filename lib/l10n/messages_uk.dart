@@ -25,7 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m2(abbr) => "Ви не можете відправити кошти на адресу ${abbr}, оскільки ${abbr} не активований. Будь ласка, перейдіть у портфоліо.";
 
-  static m3(appName) => "Ні! ${appName} не зберігає. Ми ніколи не зберігаємо жодних конфіденційних даних, враховуючи ваші приватні ключі, насінні фрази або PIN-код. Ці дані зберігаються лише на пристрої користувача і ніколи не залишають його. Ви повністю контролюєте свої активи.";
+  static m3(appName) => "Ні! ${appName} не зберігє. Ми ніколи не зберігаємо жодних конфіденційних даних, враховуючи ваші насінні ключі, початкові фрази або PIN-код. Ці дані зберігаються лише на пристрої користувача і ніколи не залишають його. Ви повністю контролюєте свої активи.";
 
   static m4(appName) => "${appName} доступний для мобільних пристроїв на Android та iPhone, а також для настільних ПК в операційних системах Windows, Mac і Linux.";
 
@@ -55,7 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m17(name) => "Ви впевнені, що хочете видалити контакт ${name}?";
 
-  static m18(iUnderstand) => "Довільна насінна фраза може бути менш безпечною та її легше зламати, ніж згенерована початкова фраза або закритий ключ (WIF), сумісна з BIP39. Щоб підтвердити, що ви розумієте ризик і знаєте, що робите, введіть \"${iUnderstand}\" у полі нижче.";
+  static m18(iUnderstand) => "Довільна насінна фраза може бути менш безпечною та її легше зламати, ніж згенерована початкова фраза або закритий ключ (WIF), сумісна з BIP39. Щоб підтвердити, що ви розумієте ризик і знаєте, що робите, введіть \"\$${iUnderstand}\" у полі нижче.";
 
   static m19(abbr) => "Ведіть ${abbr} адресу";
 
@@ -166,10 +166,6 @@ class MessageLookup extends MessageLookupByLibrary {
   static m72(amount) => "Успіх! Отримано ${amount} KMD.";
 
   static m73(dd) => "${dd} дн.";
-
-  static m74(hh, minutes) => "{гч} год {хвилин} хв";
-
-  static m75(mm) => "{хв} хв";
 
   static m76(amount) => "Натистіть щоб побачити ${amount} угоди";
 
@@ -283,7 +279,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "camoPinBioProtectionConflictTitle" : MessageLookupByLibrary.simpleMessage("Конфлікт камуфляжного PIN та Bio захисту."),
     "camoPinChange" : MessageLookupByLibrary.simpleMessage("Змінити PIN-код камуфляжу"),
     "camoPinCreate" : MessageLookupByLibrary.simpleMessage("Створіть камуфляжний PIN-код"),
-    "camoPinDesc" : MessageLookupByLibrary.simpleMessage("Якщо ви розблокуєте програму за допомогою камуфляжного PIN-коду, буде показано ПІДРОБЛЕННИЙ НИЗЬКИЙ баланс, а параметр налаштування камуфляжного PIN-коду НЕ буде видно у налаштуваннях"),
+    "camoPinDesc" : MessageLookupByLibrary.simpleMessage("Якщо ви розблокуєте додаток за допомогою камуфляжного PIN-коду, буде показано ПІДРОБЛЕННИЙ НИЗЬКИЙ баланс, а параметр налаштування камуфляжного PIN-коду НЕ буде видно у налаштуваннях"),
     "camoPinInvalid" : MessageLookupByLibrary.simpleMessage("Недійсний камуфляжний PIN-код"),
     "camoPinLink" : MessageLookupByLibrary.simpleMessage("Камуфляжий PIN-код"),
     "camoPinNotFound" : MessageLookupByLibrary.simpleMessage("Камуфляжний PIN-код не знайдено"),
@@ -310,7 +306,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "checkOut" : MessageLookupByLibrary.simpleMessage("Перевірити"),
     "checkSeedPhrase" : MessageLookupByLibrary.simpleMessage("Перевірте насінну фразу"),
     "checkSeedPhraseButton1" : MessageLookupByLibrary.simpleMessage("ПРОДОВЖИТИ"),
-    "checkSeedPhraseButton2" : MessageLookupByLibrary.simpleMessage("ПОВЕРНУТИСЬ І ПЕРЕВІРИТИ ЗНОВУ"),
+    "checkSeedPhraseButton2" : MessageLookupByLibrary.simpleMessage("ПОВЕРНІТИСЬ І ПЕРЕВІРИТИ ЗНОВУ"),
     "checkSeedPhraseHint" : m15,
     "checkSeedPhraseInfo" : MessageLookupByLibrary.simpleMessage("Ваша насінна фраза важлива, тому ми хочемо переконатися, що ви її запамʼятали. Ми задамо вам три різні запитання щодо насінної фрази, щоб переконатися, що ви зможете легко відновити свій гаманець, коли захочете."),
     "checkSeedPhraseSubtile" : m16,
@@ -649,7 +645,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "newAccount" : MessageLookupByLibrary.simpleMessage("Новий акаунт"),
     "newAccountUpper" : MessageLookupByLibrary.simpleMessage("Новий акаунт"),
     "newValue" : MessageLookupByLibrary.simpleMessage("Нове значення:"),
-    "newsFeed" : MessageLookupByLibrary.simpleMessage(""),
     "next" : MessageLookupByLibrary.simpleMessage("далі"),
     "no" : MessageLookupByLibrary.simpleMessage("Hi"),
     "noArticles" : MessageLookupByLibrary.simpleMessage("Немає новин - перевірте пізніше!"),
@@ -789,8 +784,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rewardsTableTitle" : MessageLookupByLibrary.simpleMessage("Інформація про нагороди:"),
     "rewardsTableUXTO" : MessageLookupByLibrary.simpleMessage("UTXO кіл,\nKMD"),
     "rewardsTimeDays" : m73,
-    "rewardsTimeHours" : m74,
-    "rewardsTimeMin" : m75,
     "rewardsTitle" : MessageLookupByLibrary.simpleMessage("Інформація про нагороди"),
     "russianLanguage" : MessageLookupByLibrary.simpleMessage("Російська"),
     "saveMerged" : MessageLookupByLibrary.simpleMessage("Зберегти обʼєднання"),

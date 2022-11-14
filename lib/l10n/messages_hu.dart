@@ -35,8 +35,6 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m7(appName) => "Két díjkategóriát kell figyelembe venni a ${appName}-on történő kereskedés során.\n\n 1. Az ${appName} körülbelül 0,13%-ot (a kereskedési volumen 1/777-ét, de nem kevesebb, mint 0,0001) számít fel kereskedési díjként a taker megbízásokért, a maker megbízásoknak pedig nulla a díja.\n\n 2. Mind a makereknek, mind a takeereknek normál hálózati díjakat kell fizetniük az érintett blokkláncoknak, amikor atomi swap tranzakciókat hajtanak végre.\n\n A hálózati díjak a kiválasztott kereskedési párostól függően nagymértékben eltérhetnek.";
 
-  static m8(name, link, appName, appCompanyShort) => "Igen! Az ${appName} támogatást nyújt a <a href=\"${link}\">${appCompanyShort} ${name}</a>. A csapat és a közösség mindig szívesen segít!";
-
   static m9(appName) => "Nem! Az ${appName} teljesen decentralizált. Nem lehetséges a felhasználók hozzáférését harmadik fél által korlátozni.";
 
   static m10(appName, appCompanyShort) => "Az ${appName}-t az ${appCompanyShort} csapata fejleszti. Az ${appCompanyShort} az egyik legelismertebb blokkláncprojekt, amely olyan innovatív megoldásokon dolgozik, mint az atomic swap, a Delayed Proof of Work és az interoperábilis multi-chain architektúra.";
@@ -102,8 +100,6 @@ class MessageLookup extends MessageLookupByLibrary {
   static m40(coinAbbr) => "${coinAbbr} nem elérhető :(";
 
   static m41(coinName, number) => "A minimális eladási összeg ${number} ${coinName}";
-
-  static m42(coinName, number) => "A minimálisan vásárolható összeg {szám} {coinNév}";
 
   static m43(buyCoin, buyAmount, sellCoin, sellAmount) => "A megbízás minimális összege ${buyAmount} ${buyCoin} (${sellAmount} ${sellCoin})";
 
@@ -258,7 +254,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "answer_3" : m6,
     "answer_4" : MessageLookupByLibrary.simpleMessage("Igen. Az egyes atomi cserék sikeres végrehajtásához továbbra is kapcsolódnia kell az internethez, és az alkalmazásnak futnia kell (a kapcsolat nagyon rövid megszakításai általában rendben vannak). Ellenkező esetben fennáll a kereskedés törlésének kockázata, ha Ön a döntéshozó, és a pénzeszközök elvesztésének kockázata, ha Ön a vevő. Az atomi swap protokoll megköveteli, hogy mindkét résztvevő online maradjon és figyelje az érintett blokkláncokat, hogy a folyamat atomi maradjon."),
     "answer_5" : m7,
-    "answer_6" : m8,
     "answer_7" : m9,
     "answer_8" : m10,
     "answer_9" : m11,
@@ -608,7 +603,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "min" : MessageLookupByLibrary.simpleMessage("MIN"),
     "minOrder" : MessageLookupByLibrary.simpleMessage("Minimális rendelési mennyiség:"),
     "minValue" : m41,
-    "minValueBuy" : m42,
     "minValueOrder" : m43,
     "minValueSell" : m44,
     "minVolumeInput" : m45,
