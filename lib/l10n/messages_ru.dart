@@ -31,7 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m5(appName) => "Другие DEX обычно позволяют торговать только активами, принадлежащими к одному блокчейну, используют прокси-токены и разрешают размещать только один ордер, использующий ваш баланс.\n\n${appName} позволяет вам торговать между разными блокчейнами без использования прокси-токенов. Вы также можете разместить несколько заказов, используя одни и те же средства. Например, вы можете выставить ордера на продажу 0,1 BTC за KMD, QTUM и VRSC - первый исполненный ордер автоматически отменит все остальные ордера.";
 
-  static m6(appName) => "Есть несколько факторов, определяющих время обработки каждого свопа. Время блокировки торгуемых активов зависит от каждой сети (биткоин блокчейн обычно является самым медленным). Кроме того, пользователь может редактировать параметры безопасности. Например, в ${appName} можно установить количество подтверждений, после которых KMD транзакция считается успешной, равным 3, что сокращает время обмена по сравнению с транзакциями, ожидающими<a href = \"https://komodoplatform.com/security-delayed-proof-of -work-dpow / \"> нотариального заверения</a>.";
+  static m6(appName) => "Есть несколько факторов, определяющих время обработки каждого свопа. Время блокировки торгуемых активов зависит от каждой сети (биткоин блокчейн обычно является самым медленным). Кроме того, пользователь может редактировать параметры безопасности. Например, в ${appName} можно установить количество подтверждений, после которых KMD транзакция считается успешной, равным 3, что сокращает время обмена по сравнению с транзакциями, ожидающими <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">нотариального заверения</a>.";
 
   static m7(appName) => "При торговле на ${appName} необходимо учитывать две категории комиссий.\n\n1. ${appName} взимает приблизительно 0,13% (1/777 объема торгов, но не ниже 0,0001) в качестве комиссии за торговлю для тейкер ордеров, а для ордеров-мейкеров комиссия равна нулю.\n\n2. Как мейкеры, так и тейкеры должны платят обычные комиссии за транзакции в используемых блокчейнах при совершении атомарного свопа .\n\nКомиссиии сети могут сильно различаться в зависимости от выбранной вами торговой пары.";
 
@@ -554,6 +554,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidSwapDetailsLink" : MessageLookupByLibrary.simpleMessage("Подробнее"),
     "isUnavailable" : m40,
     "japaneseLanguage" : MessageLookupByLibrary.simpleMessage("Японский"),
+    "koreanLanguage" : MessageLookupByLibrary.simpleMessage("Корейский"),
     "language" : MessageLookupByLibrary.simpleMessage("Язык"),
     "latestTxs" : MessageLookupByLibrary.simpleMessage("Последние Транзакции"),
     "legalTitle" : MessageLookupByLibrary.simpleMessage("Легальные аспекты"),
@@ -930,6 +931,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "txLimitExceeded" : MessageLookupByLibrary.simpleMessage("Слишком много запросов.\nПревышен лимит запросов истории транзакций.\nПовторите попытку позже."),
     "txNotConfirmed" : MessageLookupByLibrary.simpleMessage("НЕПОДТВЕРЖДЕНА"),
     "txleft" : m89,
+    "ukrainianLanguage" : MessageLookupByLibrary.simpleMessage("Украинский"),
     "unlock" : MessageLookupByLibrary.simpleMessage("разблокировать"),
     "unlockFunds" : MessageLookupByLibrary.simpleMessage("Разблокировать средства"),
     "unlockSuccess" : m90,

@@ -167,6 +167,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m73(dd) => "${dd} дн.";
 
+  static m74(hh, minutes) => "";
+
+  static m75(mm) => "";
+
   static m76(amount) => "Натистіть щоб побачити ${amount} угоди";
 
   static m77(coinName, address) => "Моя адреса ${coinName}:\n${address}";
@@ -550,6 +554,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidSwapDetailsLink" : MessageLookupByLibrary.simpleMessage("Подробиці"),
     "isUnavailable" : m40,
     "japaneseLanguage" : MessageLookupByLibrary.simpleMessage("Японська"),
+    "koreanLanguage" : MessageLookupByLibrary.simpleMessage("Корейська"),
     "language" : MessageLookupByLibrary.simpleMessage("Мова"),
     "latestTxs" : MessageLookupByLibrary.simpleMessage("Останні транзакції"),
     "legalTitle" : MessageLookupByLibrary.simpleMessage("Юридичний"),
@@ -645,6 +650,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "newAccount" : MessageLookupByLibrary.simpleMessage("Новий акаунт"),
     "newAccountUpper" : MessageLookupByLibrary.simpleMessage("Новий акаунт"),
     "newValue" : MessageLookupByLibrary.simpleMessage("Нове значення:"),
+    "newsFeed" : MessageLookupByLibrary.simpleMessage(""),
     "next" : MessageLookupByLibrary.simpleMessage("далі"),
     "no" : MessageLookupByLibrary.simpleMessage("Hi"),
     "noArticles" : MessageLookupByLibrary.simpleMessage("Немає новин - перевірте пізніше!"),
@@ -784,6 +790,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "rewardsTableTitle" : MessageLookupByLibrary.simpleMessage("Інформація про нагороди:"),
     "rewardsTableUXTO" : MessageLookupByLibrary.simpleMessage("UTXO кіл,\nKMD"),
     "rewardsTimeDays" : m73,
+    "rewardsTimeHours" : m74,
+    "rewardsTimeMin" : m75,
     "rewardsTitle" : MessageLookupByLibrary.simpleMessage("Інформація про нагороди"),
     "russianLanguage" : MessageLookupByLibrary.simpleMessage("Російська"),
     "saveMerged" : MessageLookupByLibrary.simpleMessage("Зберегти обʼєднання"),
@@ -923,6 +931,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "txLimitExceeded" : MessageLookupByLibrary.simpleMessage("Забагато запитів.\nПеревищено ліміт запитів історії транзакцій.\nБудь-ласка спробуйте пізніше."),
     "txNotConfirmed" : MessageLookupByLibrary.simpleMessage("НЕПІДТВЕРДЖЕНО"),
     "txleft" : m89,
+    "ukrainianLanguage" : MessageLookupByLibrary.simpleMessage("Український"),
     "unlock" : MessageLookupByLibrary.simpleMessage("розблокувати"),
     "unlockFunds" : MessageLookupByLibrary.simpleMessage("Розблокувати"),
     "unlockSuccess" : m90,
