@@ -50,10 +50,12 @@ class _HelpPageState extends State<HelpPage> {
                 fontSize: 15,
               ),
           linkStyle: Theme.of(context).textTheme.subtitle1.copyWith(
-                fontWeight: FontWeight.w300,
+                fontWeight: Theme.of(context).brightness == Brightness.dark
+                    ? FontWeight.w400
+                    : FontWeight.w300,
                 height: 1.3,
                 fontSize: 15,
-                color: Colors.blue,
+                color: Color.fromRGBO(57, 161, 238, 1),
               ),
         ),
         'isExpanded': false,
@@ -117,10 +119,12 @@ class _HelpPageState extends State<HelpPage> {
                 fontSize: 15,
               ),
           linkStyle: Theme.of(context).textTheme.subtitle1.copyWith(
-                fontWeight: FontWeight.w300,
+                fontWeight: Theme.of(context).brightness == Brightness.dark
+                    ? FontWeight.w400
+                    : FontWeight.w300,
                 height: 1.3,
                 fontSize: 15,
-                color: Colors.blue,
+                color: Color.fromRGBO(57, 161, 238, 1),
               ),
         ),
         'isExpanded': false,
@@ -171,10 +175,12 @@ class _HelpPageState extends State<HelpPage> {
             fontSize: 15,
           ),
       linkStyle: Theme.of(context).textTheme.subtitle1.copyWith(
-            fontWeight: FontWeight.w300,
+            fontWeight: Theme.of(context).brightness == Brightness.dark
+                ? FontWeight.w400
+                : FontWeight.w300,
             height: 1.3,
             fontSize: 15,
-            color: Colors.blue,
+            color: Color.fromRGBO(57, 161, 238, 1),
           ),
     );
   }
