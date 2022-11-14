@@ -100,7 +100,7 @@ class SettingsBloc implements BlocBase {
         return AppLocalizations.of(context).koreanLanguage;
         break;
       case 'uk':
-        return AppLocalizations.of(context).ukranianLanguage; 
+        return AppLocalizations.of(context).ukrainianLanguage; 
         break;
       default:
         return AppLocalizations.of(context).englishLanguage;
