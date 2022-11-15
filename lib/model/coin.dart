@@ -112,6 +112,7 @@ class Coin {
     }
     dust = init['dust'];
     chainId = init['chain_id'];
+    avgBlockTime = init['avg_block_time'];
   }
 
   // Coin suspended if was activated by user earlier,
@@ -130,6 +131,7 @@ class Coin {
 
   String name;
   int txfee;
+  int avgBlockTime;
   double priceUsd;
   int mm2;
 
@@ -182,6 +184,7 @@ class Coin {
         if (protocol != null) 'protocol': protocol.toJson(),
         if (dust != null) 'dust': dust,
         if (chainId != null) 'chain_id': chainId,
+        if (avgBlockTime != null) 'avg_block_time': avgBlockTime,
         if (bchdUrls != null)
           'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
       };

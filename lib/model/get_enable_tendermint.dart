@@ -42,6 +42,7 @@ class MmCosmosEnable {
         'method': method,
         'params': {
           'tokens_params': [],
+          'avg_block_time': coin.avgBlockTime,
           'rpc_urls': servers.map((e) => e.url).toList(),
           'ticker': coin.abbr,
         }

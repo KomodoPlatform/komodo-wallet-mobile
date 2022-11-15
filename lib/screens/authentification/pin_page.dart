@@ -226,9 +226,10 @@ class _PinPageState extends State<PinPage> {
         await prefs.remove('pin_create');
         await prefs.remove('is_pin_creation_in_progress');
 
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted)
+          setState(() {
+            _isLoading = false;
+          });
         break;
 
       case PinStatus.CONFIRM_CAMO_PIN:

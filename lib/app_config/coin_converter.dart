@@ -36,6 +36,8 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       if (coinData['fallback_swap_contract'] != null)
         'fallback_swap_contract': coinData['fallback_swap_contract'],
       if (coinData['bchd_urls'] != null) 'bchd_urls': coinData['bchd_urls'],
+      if (coinData['avg_block_time'] != null)
+        'avg_block_time': coinData['avg_block_time'],
     });
   });
 
