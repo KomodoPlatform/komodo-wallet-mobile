@@ -50,8 +50,14 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
             indicator: CustomTabIndicator(context: context),
             controller: tabController,
             tabs: <Widget>[
-              Tab(text: 'Swap'.toUpperCase()),
-              Tab(text: AppLocalizations.of(context).orders.toUpperCase()),
+              Tab(
+                text: AppLocalizations.of(context).swap.toUpperCase(),
+                key: const Key('swap-tab'),
+              ),
+              Tab(
+                text: AppLocalizations.of(context).orders.toUpperCase(),
+                key: const Key('orders-tab'),
+              ),
             ],
           ),
         ),
@@ -66,7 +72,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
 
     return GestureDetector(
       onTap: () {
-        unfocusTextField(context);
+        unfocusEverything();
       },
       child: DefaultTabController(
         length: 2,

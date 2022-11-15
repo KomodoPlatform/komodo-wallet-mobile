@@ -104,7 +104,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 final RegExp exp =
                     RegExp(r'^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\W)).{12,}$');
                 return !arg.contains(exp)
-                    ? 'Password must contain at least 12 characters, with one lower-case, one upper-case and one special symbol.'
+                    ? AppLocalizations.of(context).passwordRequirement
                     : null;
               },
               style: Theme.of(context).textTheme.bodyText2,

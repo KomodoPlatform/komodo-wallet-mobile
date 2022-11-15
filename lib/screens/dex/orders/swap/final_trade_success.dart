@@ -28,8 +28,6 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
   AnimationController animationController;
   Animation<dynamic> animation;
 
-  final repaintKey = GlobalKey();
-
   @override
   void initState() {
     super.initState();
@@ -51,6 +49,8 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey repaintKey = GlobalKey();
+
     return FadeTransition(
       opacity: animationController.drive(CurveTween(curve: Curves.easeOut)),
       child: ListView(
@@ -114,7 +114,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(20),
                                       onTap: () {
-                                        _shareCard();
+                                        _shareCard(repaintKey);
                                       },
                                       child: Padding(
                                         padding: EdgeInsets.all(8),
@@ -148,7 +148,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
     );
   }
 
-  Future<void> _shareCard() async {
+  Future<void> _shareCard(GlobalKey repaintKey) async {
     final RenderRepaintBoundary boundary =
         repaintKey.currentContext.findRenderObject();
     final ui.Image image = await boundary.toImage(pixelRatio: 4);
@@ -156,7 +156,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
     final pngBytes = byteData.buffer.asUint8List();
 
     final String directory = (await applicationDocumentsDirectory).path;
-    final imgFile = File('$directory/screenshot.png');
+    final imgFile = File('$directory/${widget.swap.result.uuid}.png');
     await imgFile.writeAsBytes(pngBytes);
 
     final myInfo = extractMyInfoFromSwap(widget.swap.result);

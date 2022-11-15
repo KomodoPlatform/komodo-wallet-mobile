@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 import 'package:komodo_dex/services/mm.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class AddressField extends StatefulWidget {
@@ -59,6 +60,7 @@ class _AddressFieldState extends State<AddressField> {
   Future<void> _isCoinActive() async {
     _coinIsActiveCountdown =
         Timer.periodic(Duration(milliseconds: 300), (_) async {
+      if (widget.controller.text.isEmpty) return;
       final dynamic error = await MM.validateAddress(
         address: widget.controller.text,
         coin: widget.coin.abbr,
@@ -187,7 +189,7 @@ class _AddressFieldState extends State<AddressField> {
               autovalidate = false;
             });
           },
-          child: const Text('Convert'),
+          child: Text(AppLocalizations.of(context).convert),
         ),
       ],
     );
@@ -245,8 +247,7 @@ class _AddressFieldState extends State<AddressField> {
   }
 
   bool _isErcNonMixedCase(String error) {
-    final String coinType = widget.coin.type;
-    if (coinType != 'erc' && coinType != 'bep' && coinType != 'plg') {
+    if (!isErcType(widget.coin)) {
       return false;
     }
     if (!error.contains('Invalid address checksum')) return false;

@@ -59,7 +59,7 @@ class _TradeModesPageState extends State<TradeModesPage>
           children: [
             Expanded(
                 child: Text(
-              'Trading Mode:',
+              AppLocalizations.of(context).tradingMode,
               style: style,
             )),
             Flexible(
@@ -70,11 +70,19 @@ class _TradeModesPageState extends State<TradeModesPage>
                 labelPadding: EdgeInsets.symmetric(horizontal: 0),
                 indicatorPadding: EdgeInsets.symmetric(horizontal: 0),
                 tabs: [
-                  Tab(child: Text('Simple', style: style)),
-                  Tab(child: Text('Advanced', style: style)),
                   Tab(
-                      child: Text(AppLocalizations.of(context).multiTab,
-                          style: style)),
+                    child: Text('Simple', style: style),
+                    key: const Key('simple-tab'),
+                  ),
+                  Tab(
+                    child: Text('Advanced', style: style),
+                    key: const Key('advanced-tab'),
+                  ),
+                  Tab(
+                    child: Text(AppLocalizations.of(context).multiTab,
+                        style: style),
+                    key: const Key('multi-tab'),
+                  ),
                 ],
               ),
             ),

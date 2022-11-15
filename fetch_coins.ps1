@@ -1,4 +1,4 @@
-$config_init_mm2 = "assets\coins_init_mm2.json"
+$config_init_mm2 = "assets\coins.json"
 
 # back compatibility
 if ( ( Test-Path -Path $config_init_mm2 -PathType Leaf ) -and -not ( Test-Path -Path "coins_ci.json" -PathType Leaf ) ) {
@@ -14,10 +14,10 @@ rm .\app_assets
 rm .\coins_assets
 
 # get assets lists
-jq.exe -r '.[].abbr' "assets/coins_config.json" > app_assets
+jq.exe -r 'keys | .[]' "assets/coins_config.json" > app_assets
 jq.exe -r '.[].coin' $config_init_mm2 > coins_assets
 
-# check if all assets from coins_config are present in coins_init_mm2
+# check if all assets from coins_config are present in coins.json
 foreach( $line in Get-Content ".\app_assets" ) {
     if ( ( Get-Content ".\coins_assets" ).contains( $line ) ) {
         echo "$line check passed"

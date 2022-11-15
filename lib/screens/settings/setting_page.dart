@@ -27,7 +27,6 @@ import 'package:komodo_dex/screens/import-export/export_page.dart';
 import 'package:komodo_dex/screens/import-export/import_page.dart';
 import 'package:komodo_dex/screens/import-export/import_swap_page.dart';
 import 'package:komodo_dex/screens/settings/camo_pin_setup_page.dart';
-import 'package:komodo_dex/screens/settings/sound_settings_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -35,10 +34,8 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingPage extends StatefulWidget {
@@ -89,8 +86,6 @@ class _SettingPageState extends State<SettingPage> {
           children: <Widget>[
             _buildTitle(AppLocalizations.of(context).logoutsettings),
             _buildLogOutOnExit(),
-            _buildTitle(AppLocalizations.of(context).soundTitle),
-            _buildSound(),
             _buildTitle(AppLocalizations.of(context).security),
             _buildActivatePIN(),
             const SizedBox(height: 1),
@@ -140,18 +135,6 @@ class _SettingPageState extends State<SettingPage> {
     version += ' - ${mmSe.mmVersion}';
 
     return version;
-  }
-
-  Widget _buildSound() {
-    return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context).soundSettingsTitle),
-      onTap: () => Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => SoundSettingsPage(),
-        ),
-      ),
-    );
   }
 
   Widget _buildTitle(String title) {
@@ -323,10 +306,9 @@ class _SettingPageState extends State<SettingPage> {
                           context,
                           MaterialPageRoute<dynamic>(
                               builder: (BuildContext context) => PinPage(
-                                  title:
-                                      AppLocalizations.of(context).lockScreen,
+                                  title: AppLocalizations.of(context).createPin,
                                   subTitle: AppLocalizations.of(context)
-                                      .enterOldPinCode,
+                                      .enterNewPinCode,
                                   pinStatus: PinStatus.CHANGE_PIN,
                                   password: password)));
                     },
@@ -430,22 +412,16 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildLogOutOnExit() {
-    return SharedPreferencesBuilder<dynamic>(
-      pref: 'switch_pin_log_out_on_exit',
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return SwitchListTile(
-          value: snapshot.data ?? false,
-          onChanged: (bool dataSwitch) {
-            setState(() {
-              SharedPreferences.getInstance().then((SharedPreferences data) {
-                data.setBool('switch_pin_log_out_on_exit', dataSwitch);
-              });
-            });
-          },
-          title: Text(AppLocalizations.of(context).logoutOnExit),
-          tileColor: Theme.of(context).primaryColor,
-        );
+    return SwitchListTile(
+      value: walletSecuritySettingsProvider.logOutOnExit ?? false,
+      onChanged: (bool dataSwitch) {
+        setState(() {
+          walletSecuritySettingsProvider.logOutOnExit =
+              !walletSecuritySettingsProvider.logOutOnExit;
+        });
       },
+      title: Text(AppLocalizations.of(context).logoutOnExit),
+      tileColor: Theme.of(context).primaryColor,
     );
   }
 
@@ -484,6 +460,7 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildEnableTestCoins() {
     return StreamBuilder(
+      key: const Key('show-test-coins'),
       initialData: settingsBloc.enableTestCoins,
       stream: settingsBloc.outEnableTestCoins,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -629,12 +606,12 @@ class _ShowLoadingDeleteState extends State<ShowLoadingDelete> {
             child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const <Widget>[
+          children: <Widget>[
             CircularProgressIndicator(),
             SizedBox(
               width: 16,
             ),
-            Text('Deleting wallet...')
+            Text(AppLocalizations.of(context).deletingWallet)
           ],
         ))
       ],
@@ -685,27 +662,19 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
   }
 
   void _updateOldLogsList() {
-    final now = DateTime.now();
-    final ymd = '${now.year}'
-        '-${Log.twoDigits(now.month)}'
-        '-${Log.twoDigits(now.day)}';
     final dirList = applicationDocumentsDirectorySync.listSync();
     setState(() {
       _listLogs = dirList
           .whereType<File>()
-          .where((f) => f.path.endsWith('.log') && !f.path.endsWith('$ymd.log'))
+          .where((f) => f.path.endsWith('.log'))
           .toList();
     });
   }
 
-  void _updateLogsSize() {
-    int totalSize = 0;
-    for (File log in _listLogs) {
-      final fileSize = log.statSync().size;
-      totalSize += fileSize;
-    }
+  Future<void> _updateLogsSize() async {
+    final dirPath = applicationDocumentsDirectorySync.path;
     setState(() {
-      _sizeMb = totalSize / 1000000;
+      _sizeMb = mmSe.dirStatSync(dirPath);
     });
   }
 }

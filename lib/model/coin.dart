@@ -3,7 +3,10 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
+import 'package:komodo_dex/app_config/coin_converter.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin_type.dart';
+import 'package:komodo_dex/model/get_active_coin.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -11,14 +14,14 @@ LinkedHashMap<String, Coin> _coins;
 bool _coinsInvoked = false;
 
 /// A cached list of coins.
-/// Most fields are loaded from “coins_init_mm2.json”.
+/// Most fields are loaded from “coins.json”.
 /// List of coins, their electrums and webs - are loaded from “coins_config.json”.
 ///
-/// For ease of maintenance the “coins_init_mm2.json” should be an exact copy of
+/// For ease of maintenance the coins.json” should be an exact copy of
 /// https://github.com/jl777/coins/blob/master/coins,
 /// that way we can update it with a simple overwrite.
 ///
-/// A coin can be absent from “coins_init_mm2.json” and fully defined in “coins_config.json”,
+/// A coin can be absent from “coins.json” and fully defined in “coins_config.json”,
 /// the “VOTE” coin is currently defined that way.
 Future<LinkedHashMap<String, Coin>> get coins async {
   // Protect from loading coins multiple times from parallel green threads.
@@ -28,24 +31,22 @@ Future<LinkedHashMap<String, Coin>> get coins async {
   }
   _coinsInvoked = true;
 
-  Log('coin:29', 'Loading coins_init_mm2.json…');
-  const ci = 'assets/coins_init_mm2.json';
+  Log('coin:29', 'Loading coins.json…');
+  const ci = 'assets/coins.json';
   final cis = await rootBundle.loadString(ci, cache: false);
   final List<dynamic> cil = json.decode(cis);
   final Map<String, Map<String, dynamic>> cim = {};
   for (dynamic js in cil) cim[js['coin']] = Map<String, dynamic>.from(js);
 
-  Log('coin:36', 'Loading coins_config.json…');
-  const cc = 'assets/coins_config.json';
-  final ccs = await rootBundle.loadString(cc, cache: false);
-  final List<dynamic> ccl = json.decode(ccs);
+  Log('coin:36', 'Loading “coins_config.json…');
+  final List<dynamic> ccl = await convertCoinsConfigToAppConfig();
   final coins = LinkedHashMap<String, Coin>.of({});
   for (dynamic js in ccl) {
     final String ticker = js['abbr'];
     final config = Map<String, dynamic>.of(js);
     Map<String, dynamic> init = cim[ticker];
     if (init == null) {
-      Log('coin:46', 'Coin $ticker is not in “coins_init_mm2.json”');
+      Log('coin:46', 'Coin $ticker is not in coins.json”');
       init = config;
     }
     coins[ticker] = Coin.fromJson(init, config);
@@ -64,35 +65,50 @@ class Coin {
   });
 
   /// Construct the coin from two JSON maps:
-  /// [init] is from coins_init_mm2.json, an exact copy of https://github.com/jl777/coins/blob/master/coins;
+  /// [init] is from coins.json, an exact copy of https://github.com/jl777/coins/blob/master/coins;
   /// [config] is from coins_config.json, for fields that are missing from [init].
   Coin.fromJson(Map<String, dynamic> init, Map<String, dynamic> config) {
     init ??= <String, dynamic>{};
     config ??= <String, dynamic>{};
 
-    type = config['type'] ?? '';
+    type = coinTypeFromString(config['type'] ?? '');
     name = config['name'] ?? init['fname'] ?? '';
-    address = config['address'] ?? '';
-    port = config['port'] ?? 0;
-    proto = config['proto'] ?? '';
     txfee = init['txfee'] ?? 0;
     mm2 = init['mm2'] ?? 0;
     abbr = init['coin'] ?? config['abbr'] ?? '';
     coingeckoId = config['coingeckoId'] ?? '';
     testCoin = config['testCoin'] ?? false;
-    swapContractAddress = config['swap_contract_address'] ?? '';
-    fallbackSwapContract = config['fallback_swap_contract'] ?? '';
+    swapContractAddress =
+        config['swap_contract_address'] ?? config['contract_address'] ?? '';
+    fallbackSwapContract = config['fallback_swap_contract'] ??
+        config['swap_contract_address'] ??
+        '';
     colorCoin = config['colorCoin'] ?? '';
     isDefault = appConfig.defaultCoins.contains(abbr);
     walletOnly = appConfig.walletOnlyCoins.contains(abbr);
-    serverList = List<String>.from(config['serverList']);
-    explorerUrl = List<String>.from(config['explorerUrl']);
+    if (config['serverList'] != null) {
+      serverList = <Server>[];
+      config['serverList'].forEach((v) {
+        // backward compatibility
+        if (v is String) {
+          serverList.add(Server.fromJson({'url': v}));
+        } else {
+          serverList.add(Server.fromJson(v));
+        }
+      });
+    }
+    explorerUrl = config['explorerUrl'] is String
+        ? config['explorerUrl']
+        : config['explorerUrl'].first;
     requiredConfirmations = init['required_confirmations'];
     matureConfirmations = init['mature_confirmations'];
     requiresNotarization = init['requires_notarization'];
     addressFormat = init['address_format'];
     if (init['protocol'] != null) {
       protocol = Protocol.fromJson(init['protocol']);
+    }
+    if (config['bchd_urls'] != null) {
+      bchdUrls = List<String>.from(config['bchd_urls']);
     }
     dust = init['dust'];
     chainId = init['chain_id'];
@@ -102,11 +118,17 @@ class Coin {
   // but failed to activate during current session startup
   bool suspended = false;
 
-  String type; // 'other', 'erc', 'bep', 'qrc', 'plg' or 'smartChain'
+  static List<Map<String, dynamic>> getServerList(List<Server> servers) {
+    List<Map<String, dynamic>> list = [];
+    for (Server server in servers) {
+      list.add(server.toJson());
+    }
+    return list;
+  }
+
+  CoinType type;
+
   String name;
-  String address;
-  int port;
-  String proto;
   int txfee;
   double priceUsd;
   int mm2;
@@ -116,8 +138,9 @@ class Coin {
   String coingeckoId;
   bool testCoin;
   String colorCoin;
-  List<String> serverList;
-  List<String> explorerUrl;
+  List<String> bchdUrls;
+  List<Server> serverList;
+  String explorerUrl;
   String swapContractAddress;
   String fallbackSwapContract;
 
@@ -139,11 +162,8 @@ class Coin {
   int chainId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'type': type ?? '',
+        'type': type.name ?? '',
         'name': name ?? '',
-        'address': address ?? '',
-        'port': port ?? 0,
-        'proto': proto ?? '',
         'txfee': txfee ?? 0,
         'priceUSD': priceUsd ?? 0.0,
         'mm2': mm2 ?? 0,
@@ -153,19 +173,17 @@ class Coin {
         'swap_contract_address': swapContractAddress ?? '',
         'fallback_swap_contract': fallbackSwapContract ?? '',
         'colorCoin': colorCoin ?? '',
-        'serverList':
-            List<dynamic>.from(serverList.map<String>((dynamic x) => x)) ??
-                <String>[],
-        'explorerUrl':
-            List<dynamic>.from(explorerUrl.map<String>((dynamic x) => x)) ??
-                <String>[],
+        'explorerUrl': explorerUrl ?? '',
         'required_confirmations': requiredConfirmations,
         'mature_confirmations': matureConfirmations,
         'requires_notarization': requiresNotarization,
         'address_format': addressFormat,
+        if (serverList != null) 'serverList': getServerList(serverList),
         if (protocol != null) 'protocol': protocol.toJson(),
         if (dust != null) 'dust': dust,
         if (chainId != null) 'chain_id': chainId,
+        if (bchdUrls != null)
+          'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
       };
 
   String getTxFeeSatoshi() {
@@ -224,15 +242,28 @@ class ProtocolData {
   ProtocolData.fromJson(Map<String, dynamic> json) {
     platform = json['platform'];
     contractAddress = json['contract_address'];
+    slpPrefix = json['slp_prefix'];
+    decimals = json['decimals'];
+    tokenId = json['token_id'];
+    requiredConfirmations = json['required_confirmations'];
   }
 
   String platform;
   String contractAddress;
+  String slpPrefix;
+  int decimals;
+  int requiredConfirmations;
+  String tokenId;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       if (platform != null) 'platform': platform,
       if (contractAddress != null) 'contract_address': contractAddress,
+      if (slpPrefix != null) 'slp_prefix': slpPrefix,
+      if (decimals != null) 'decimals': decimals,
+      if (tokenId != null) 'token_id': tokenId,
+      if (requiredConfirmations != null)
+        'required_confirmations': requiredConfirmations,
     };
   }
 }

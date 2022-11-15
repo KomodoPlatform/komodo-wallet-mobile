@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -86,7 +87,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               onChanged: onChanged,
             ),
             // Temporary disable custom fee for qrc20 tokens
-            if (!(widget.coinBalance.coin.type == 'qrc'))
+            if (widget.coinBalance.coin.type != CoinType.qrc)
               CustomFee(
                 coin: widget.coinBalance.coin,
                 amount: widget.amountController.text,

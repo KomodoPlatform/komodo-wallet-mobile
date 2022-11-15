@@ -263,9 +263,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log.println(
         'trade_page:719', 'coin-select-${market.toString().toLowerCase()}');
     return SizedBox(
-      key: Key('coin-select-${market.toString().toLowerCase()}'),
       child: market == Market.BUY
           ? StreamBuilder<CoinBalance>(
+              key: Key('coin-select-buy'),
               initialData: swapBloc.receiveCoinBalance,
               stream: swapBloc.outReceiveCoinBalance,
               builder: (context, snapshot) => _buildSelectorCoin(
@@ -274,6 +274,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               ),
             )
           : StreamBuilder<CoinBalance>(
+              key: Key('coin-select-sell'),
               initialData: swapBloc.sellCoinBalance,
               stream: swapBloc.outSellCoinBalance,
               builder: (context, snapshot) => _buildSelectorCoin(
@@ -302,7 +303,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         minVerticalPadding: 0,
         leading: coin != null
             ? Image.asset(
-                'assets/coin-icons/${coin.abbr.toLowerCase()}.png',
+                getCoinIconPath(coin.abbr),
                 height: 25,
               )
             : CircleAvatar(
@@ -352,7 +353,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log('trade_page', 'receive coin selected: $coin...');
     Log('trade_page', 'performing maker order');
 
-    unfocusTextField(context);
+    unfocusEverything();
     swapBloc.updateMatchingBid(null);
     if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
 
@@ -365,7 +366,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log('trade_page', 'receive coin selected: ${bid.coin}...');
     Log('trade_page', 'performing taker order');
 
-    unfocusTextField(context);
+    unfocusEverything();
     swapBloc.updateMatchingBid(bid);
     if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
 

@@ -23,7 +23,7 @@ class OrderDetailsPage extends StatelessWidget {
         body: SingleChildScrollView(
           child: GestureDetector(
             onTap: () {
-              unfocusTextField(context);
+              unfocusEverything();
             },
             child: Container(
               padding: const EdgeInsets.all(12),

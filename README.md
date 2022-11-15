@@ -19,16 +19,17 @@ MacOS: `brew install coreutils jq`, [Brew software](https://brew.sh/)
 Windows: `choco install jq`, [Choco sowftware](https://chocolatey.org/)
 
 
-## For iOS build:
+## Build and run
 
-Do
+https://github.com/KomodoPlatform/AtomicDEX-mobile/wiki/Project-Setup#build-and-run
 
-    (cd ios && rm -rf Podfile.lock Podfile Pods)
 
-between flutter upgrades.
-cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
-## For Android build:
+## AtomicDEX API library (libmm2.a) version:
+
+beta-2.1.7132
+a293d8f06
+https://gitlab.com/KomodoPlatform/supernet/-/pipelines/599845645
 
 
 ## Flutter version
@@ -87,8 +88,35 @@ flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/loca
 ```
 5. Manual editing of generated `messages_*.dart` files might be needed to delete nullable syntax (`?` symbol), since the app doesn't support it yet.
 
+## Generate latest coin config:
+
+Clone the latest version of [coins](https://github.com/KomodoPlatform/coins)
+
+Download and install the latest version of [python3](https://www.python.org/downloads/)
+
+Open the clonned repository and run the script below in the terminal in the repo folder
+
+```bash
+python3 utils/generate_app_configs.py
+```
+
+Copy the generated `coins_config.json` file in Utils folder and paste inside assets/ folder in AtomicDEX-mobile project
+
 ## Audio samples sources
 
  - [ticking sound](https://freesound.org/people/FoolBoyMedia/sounds/264498/)
  - [silence](https://freesound.org/people/Mullabfuhr/sounds/540483/)
  - [start (iOs)](https://freesound.org/people/pizzaiolo/sounds/320664/)
+
+ ## Testing
+
+ ### 1. Manual testing
+ Manual testing plan:
+ https://docs.google.com/spreadsheets/d/15LAphQydTn5ljS64twfbqIMcDOUMFV_kEmMkNiHbSGc
+
+ ### 2. Integration testing
+ [Guide and coverage](integration_test/README.md)
+
+ ### 3. Unit/Widget testing
+ Not supported
+

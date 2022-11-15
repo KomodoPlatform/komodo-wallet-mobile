@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
+import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/orders/filters/filters.dart';
@@ -7,6 +8,8 @@ import 'package:komodo_dex/screens/dex/orders/swap/build_item_swap.dart';
 import 'package:komodo_dex/screens/dex/orders/maker/build_item_maker.dart';
 import 'package:komodo_dex/screens/dex/orders/taker/build_item_taker.dart';
 import 'package:komodo_dex/widgets/pagination.dart';
+
+import '../../../localizations.dart';
 
 class ActiveOrders extends StatefulWidget {
   const ActiveOrders({
@@ -53,6 +56,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
           final List<Widget> orderSwapsWidget = orderSwapsFiltered
               .map((dynamic item) {
                 if (item is Swap) {
+                  swapBloc.currentSwaps = [item.result.myOrderUuid];
                   return BuildItemSwap(context: context, swap: item);
                 } else if (item is Order) {
                   switch (item.orderType) {
@@ -73,6 +77,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
           return ListView(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
             controller: widget.scrollCtrl,
+            key: const Key('active-order-list'),
             children: [
               if (widget.showFilters) _buildFilters(orderSwaps),
               if (orderSwapsFiltered.isNotEmpty) ...{
@@ -83,8 +88,8 @@ class _ActiveOrdersState extends State<ActiveOrders> {
               if (orderSwapsFiltered.isEmpty) ...{
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 4,
-                  child: const Center(
-                      child: Text('No orders, please go to trade.')),
+                  child: Center(
+                      child: Text(AppLocalizations.of(context).noOrders)),
                 )
               },
               const SizedBox(height: 10),

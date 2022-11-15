@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
 void showConfirmationDialog({
   BuildContext context,
-  String title = 'Confirm',
+  String title,
   IconData icon = Icons.warning,
   Color iconColor,
-  String message = 'Are you sure?',
+  String message,
   Function onConfirm,
-  String confirmButtonText = 'Confirm',
+  String confirmButtonText,
   Key key,
 }) {
+  title ??= AppLocalizations.of(context).confirm;
+  confirmButtonText ??= AppLocalizations.of(context).confirm;
+  message ??=
+      toInitialUpper(AppLocalizations.of(context).areYouSure.toLowerCase());
   dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {

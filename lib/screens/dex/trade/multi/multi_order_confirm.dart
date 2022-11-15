@@ -74,6 +74,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
             child: Text(AppLocalizations.of(context).multiConfirmCancel),
           ),
           ElevatedButton(
+            key: const Key('confirm-create-multi-order'),
             onPressed: inProgress
                 ? null
                 : () async {
@@ -185,8 +186,8 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                         const SizedBox(width: 2),
                         CircleAvatar(
                           maxRadius: 9,
-                          backgroundImage: AssetImage('assets/coin-icons/'
-                              '${multiOrderProvider.baseCoin.toLowerCase()}.png'),
+                          backgroundImage: AssetImage(
+                              getCoinIconPath(multiOrderProvider.baseCoin)),
                         ),
                       ],
                     ),
@@ -210,8 +211,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                       children: <Widget>[
                         CircleAvatar(
                           maxRadius: 9,
-                          backgroundImage: AssetImage(
-                              'assets/coin-icons/${coin.toLowerCase()}.png'),
+                          backgroundImage: AssetImage(getCoinIconPath(coin)),
                         ),
                         const SizedBox(width: 2),
                         Text(coin),

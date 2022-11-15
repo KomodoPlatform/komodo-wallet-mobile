@@ -14,9 +14,7 @@
 	<string>6.0</string>
 	<key>CFBundleLocalizations</key>
 	<array>
-		<string>zh_TW</string>
 		<string>zh</string>
-		<string>zh_CN</string>
 		<string>English</string>
 		<string>fr</string>
 		<string>de</string>
@@ -25,6 +23,8 @@
 		<string>tr</string>
 		<string>hu</string>
 		<string>es</string>
+                <string>ko</string>
+                <string>uk</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>komodo_dex</string>

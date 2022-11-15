@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -123,8 +124,12 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                   style: TextStyle(color: _isAsk ? Colors.red : Colors.green),
                 ),
                 const SizedBox(width: 6),
-                Text(
-                  '${_activePair.buy.abbr} / 1${_activePair.sell.abbr}',
+                Expanded(
+                  child: Text(
+                    '${_activePair.buy.abbr} / 1${_activePair.sell.abbr}',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
@@ -147,10 +152,15 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                   ),
                 ),
                 const SizedBox(width: 6),
-                Text('${_activePair.sell.abbr} / 1${_activePair.buy.abbr}',
-                    style: const TextStyle(
-                      fontSize: 13,
-                    )),
+                Expanded(
+                  child: Text(
+                      '${_activePair.sell.abbr} / 1${_activePair.buy.abbr}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 13,
+                      )),
+                ),
               ],
             ),
           ),
@@ -237,10 +247,8 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     CircleAvatar(
                       radius: 7,
                       backgroundImage: _isAsk
-                          ? AssetImage('assets/coin-icons/'
-                              '${_activePair.sell.abbr.toLowerCase()}.png')
-                          : AssetImage('assets/coin-icons/'
-                              '${_activePair.buy.abbr.toLowerCase()}.png'),
+                          ? AssetImage(getCoinIconPath(_activePair.sell.abbr))
+                          : AssetImage(getCoinIconPath(_activePair.buy.abbr)),
                     ),
                     const SizedBox(width: 4),
                     Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
@@ -275,10 +283,8 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 CircleAvatar(
                   radius: 7,
                   backgroundImage: _isAsk
-                      ? AssetImage('assets/coin-icons/'
-                          '${_activePair.buy.abbr.toLowerCase()}.png')
-                      : AssetImage('assets/coin-icons/'
-                          '${_activePair.sell.abbr.toLowerCase()}.png'),
+                      ? AssetImage(getCoinIconPath(_activePair.buy.abbr))
+                      : AssetImage(getCoinIconPath(_activePair.sell.abbr)),
                 ),
                 const SizedBox(width: 4),
                 Text(_isAsk ? _activePair.buy.abbr : _activePair.sell.abbr),
@@ -366,17 +372,16 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     CircleAvatar(
                       radius: 7,
                       backgroundImage: _isAsk
-                          ? AssetImage('assets/coin-icons/'
-                              '${_activePair.sell.abbr.toLowerCase()}.png')
-                          : AssetImage('assets/coin-icons/'
-                              '${_activePair.buy.abbr.toLowerCase()}.png'),
+                          ? AssetImage(getCoinIconPath(_activePair.sell.abbr))
+                          : AssetImage(getCoinIconPath(_activePair.buy.abbr)),
                     ),
                     const SizedBox(width: 4),
                     Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
                     const SizedBox(width: 12),
                     Text(
-                      formatPrice(
-                          widget.order.getReceiveAmount(widget.sellAmount)),
+                      cutTrailingZeros(widget.order
+                          .getReceiveAmount(widget.sellAmount)
+                          .toStringAsFixed(appConfig.tradeFormPrecision)),
                       style: Theme.of(context).textTheme.subtitle2.copyWith(
                             fontWeight: FontWeight.normal,
                           ),
@@ -405,19 +410,18 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 CircleAvatar(
                   radius: 7,
                   backgroundImage: _isAsk
-                      ? AssetImage('assets/coin-icons/'
-                          '${_activePair.buy.abbr.toLowerCase()}.png')
-                      : AssetImage('assets/coin-icons/'
-                          '${_activePair.sell.abbr.toLowerCase()}.png'),
+                      ? AssetImage(getCoinIconPath(_activePair.buy.abbr))
+                      : AssetImage(getCoinIconPath(_activePair.sell.abbr)),
                 ),
                 const SizedBox(width: 4),
                 Text(_isAsk ? _activePair.buy.abbr : _activePair.sell.abbr),
                 const SizedBox(width: 12),
                 Text(
-                  formatPrice(widget.order
-                          .getReceiveAmount(widget.sellAmount)
-                          .toDouble() *
-                      double.parse(widget.order.price)),
+                  cutTrailingZeros((widget.order
+                              .getReceiveAmount(widget.sellAmount)
+                              .toDouble() *
+                          double.parse(widget.order.price))
+                      .toStringAsFixed(appConfig.tradeFormPrecision)),
                   style: Theme.of(context).textTheme.subtitle2.copyWith(
                         fontWeight: FontWeight.normal,
                       ),

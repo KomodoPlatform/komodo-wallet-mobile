@@ -241,17 +241,32 @@ class MMService {
     // even if it happens to jump a bit into the past.
     // This in turn allows us to make the log lines shorter
     // by only mentioning the current time (and not date) in a line.
+
+    final files = Directory(filesPath);
+    // removes the last file until the total space is less than 500mb
+    while (dirStatSync(filesPath) > Log.limitMB) {
+      // get only log files in case we have other files(not-log) in the folder
+      List<FileSystemEntity> _files = files
+          .listSync()
+          .where((element) => element.path.endsWith('.log'))
+          .toList();
+      _files.sort((b, a) => a.path.compareTo(b.path));
+      try {
+        if (_files.first.existsSync()) _files.first.deleteSync();
+      } catch (e) {
+        print(e);
+      }
+    }
     now ??= DateTime.now();
     final ymd = '${now.year}'
         '-${Log.twoDigits(now.month)}'
         '-${Log.twoDigits(now.day)}';
     final log = _logs[ymd];
-    if (log != null) return log;
+    if (log != null && (log.file?.existsSync() ?? false)) return log;
 
     if (_logs.length > 2) _logs.clear(); // Close day-before-yesterday logs.
 
     // Remove old logs.
-
     final unusedLog = File('${filesPath}log.txt');
     if (unusedLog.existsSync()) unusedLog.deleteSync();
 
@@ -261,7 +276,6 @@ class MMService {
     final gz = File('${filesPath}dex.log.gz'); // _shareFile
     if (gz.existsSync()) gz.deleteSync();
 
-    final files = Directory(filesPath);
     final logName = RegExp(r'^(\d{4})-(\d{2})-(\d{2})\.log$');
     final List<File> unlink = [];
     for (FileSystemEntity en in files.listSync()) {
@@ -291,6 +305,27 @@ class MMService {
     final ret = FileAndSink(file, sink);
     _logs[ymd] = ret;
     return ret;
+  }
+
+  /// returns directory size in MB
+  double dirStatSync(String dirPath) {
+    int totalSize = 0;
+    var dir = Directory(dirPath);
+    try {
+      if (dir.existsSync()) {
+        dir
+            .listSync(recursive: true, followLinks: false)
+            .where((element) => element.path.endsWith('log'))
+            .forEach((FileSystemEntity entity) {
+          if (entity is File) {
+            totalSize += entity.lengthSync();
+          }
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return totalSize / 1000000;
   }
 
   Future<void> runBin(String rpcPass) async {
@@ -413,8 +448,7 @@ class MMService {
 
   Future<List<CoinInit>> readJsonCoinInit() async {
     try {
-      return coinInitFromJson(
-          await rootBundle.loadString('assets/coins_init_mm2.json'));
+      return coinInitFromJson(await rootBundle.loadString('assets/coins.json'));
     } catch (e) {
       if (kDebugMode) {
         Log('mm_service', 'readJsonCoinInit] $e');
@@ -470,6 +504,11 @@ class MMService {
   }
 
   Future<void> stopmm2() async {
+    if (await _mm2status() == Mm2Status.not_running) {
+      _running = false;
+      Log('mm_service', 'mm2 is not running, return');
+      return;
+    }
     final int errorCode = await nativeC.invokeMethod<int>('stop');
     final Mm2StopError error = mm2StopErrorFrom(errorCode);
     Log('mm_service', 'stopmm2: $error');

@@ -4,6 +4,7 @@ import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class CustomFee extends StatefulWidget {
   const CustomFee({Key key, this.amount, this.coin}) : super(key: key);
@@ -48,6 +49,9 @@ class _CustomFeeState extends State<CustomFee> {
                 : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 200),
             firstChild: SizedBox(),
+            firstCurve: Curves.easeIn,
+            secondCurve: Curves.easeIn,
+            alignment: Alignment.topRight,
             secondChild: Column(
               children: <Widget>[
                 Text(
@@ -57,9 +61,7 @@ class _CustomFeeState extends State<CustomFee> {
                       .bodyText2
                       .copyWith(color: Theme.of(context).errorColor),
                 ),
-                widget.coin.type == 'erc' ||
-                        widget.coin.type == 'bep' ||
-                        widget.coin.type == 'plg'
+                isErcType(widget.coin)
                     ? CustomFeeFieldERC(
                         coin: widget.coin,
                         isCustomFeeActive: isCustomFeeActive,
@@ -103,8 +105,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                 child: TextFormField(
                   controller: _gasController,
                   inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(
-                        '^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
+                    FilteringTextInputFormatter.digitsOnly
                   ],
                   textInputAction: TextInputAction.done,
                   keyboardType:
