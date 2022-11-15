@@ -1,5 +1,5 @@
 {
-	"mobileDataWarning": "Tenga en cuenta que ahora está utilizando datos móviles y la participación en la red P2P de {appName} consume tráfico de Internet. Es mejor usar una red WiFi si su plan de datos móviles es costoso.",
+	"mobileDataWarning": "이제 셀룰러 데이터를 사용하고 {appName} P2P 네트워크에 참여하여 인터넷 트래픽을 소비합니다. 셀룰러 데이터 요금제가 비싸다면 WiFi 네트워크를 사용하는 것이 좋습니다.",
 	"@mobileDataWarning": {
 		"type": "text",
 		"placeholders_order": [
@@ -9,13 +9,13 @@
 			"appName": {}
 		}
 	},
-	"withdrawCameraAccessTitle": "Acceso Denegado",
+	"withdrawCameraAccessTitle": "액세스 거부",
 	"@withdrawCameraAccessTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"withdrawCameraAccessText": "Previamente le has negado a {appName} el acceso a la cámara.\nCambia manualmente el permiso de la cámara en la configuración de tu teléfono para continuar con el escaneo del código QR.",
+	"withdrawCameraAccessText": "카메라에 대한 {appName} 액세스를 이전에 거부했습니다.\nQR코드 스캔을 실시하려면 전화기의 설정에서 카메라의 허가를 수동으로 변경해 주세요.",
 	"@withdrawCameraAccessText": {
 		"type": "text",
 		"placeholders_order": [
@@ -25,19 +25,19 @@
 			"appName": {}
 		}
 	},
-	"welcomeTitle": "BIENVENIDO",
+	"welcomeTitle": "환영합니다",
 	"@welcomeTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"welcomeWallet": "wallet",
+	"welcomeWallet": "지갑",
 	"@welcomeWallet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"welcomeInfo": "{appName} móvil es una billetera multimoneda de próxima generación con funcionalidad DEX nativa de tercera generación y más.",
+	"welcomeInfo": "{appName} 모바일은 3세대 DEX 기능과 더 많은 기능 등을 탑재한 차세대 멀티코인 지갑입니다.",
 	"@welcomeInfo": {
 		"type": "text",
 		"placeholders_order": [
@@ -47,7 +47,7 @@
 			"appName": {}
 		}
 	},
-	"welcomeLetSetUp": "¡VAMOS A PREPARARNOS!",
+	"welcomeLetSetUp": "이걸 준비해 봅시다!",
 	"@welcomeLetSetUp": {
 		"type": "text",
 		"placeholders_order": [],
@@ -213,7 +213,7 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"eulaParagraphe5": "You are not allowed to decompile, decode, disassemble, rent, lease, loan, sell, sublicense, or create derivative works from the {appName} mobile application or the user content. Nor are You allowed to use any network monitoring or detection software to determine the software architecture, or extract information about usage or individuals’ or users’ identities.\nYou are not allowed to copy, modify, reproduce, republish, distribute, display, or transmit for commercial, non-profit or public purposes all or any portion of the application or the user content without our prior written authorization.",
+	"eulaParagraphe5": "You are not allowed to decompile, decode, disassemble, rent, lease, loan, sell, sublicense, or create derivative works from the {appName} mobile application or the user content. Nor are You allowed to use any network monitoring or detection software to determine the software architecture, or extract information about usage or individuals’ or users’ identities. \nYou are not allowed to copy, modify, reproduce, republish, distribute, display, or transmit for commercial, non-profit or public purposes all or any portion of the application or the user content without our prior written authorization.",
 	"@eulaParagraphe5": {
 		"type": "text",
 		"placeholders_order": [
@@ -355,7 +355,7 @@
 			"appCompanyLong": {}
 		}
 	},
-	"updatesTitle": "{appName} actualizar",
+	"updatesTitle": "{appName} 업데이트",
 	"@updatesTitle": {
 		"type": "text",
 		"placeholders_order": [
@@ -365,7 +365,7 @@
 			"appName": {}
 		}
 	},
-	"updatesCurrentVersion": "Estás usando la versión {version}",
+	"updatesCurrentVersion": "당신은 {version} 사용 중 입니다",
 	"@updatesCurrentVersion": {
 		"type": "text",
 		"placeholders_order": [
@@ -375,49 +375,49 @@
 			"version": {}
 		}
 	},
-	"updatesChecking": "Comprobando actualizaciones...",
+	"updatesChecking": "업데이트 확인중...",
 	"@updatesChecking": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"updatesUpToDate": "Ya está actualizado",
+	"updatesUpToDate": "벌서 업데이트 되어있습니다",
 	"@updatesUpToDate": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"updatesAvailable": "Nueva versión disponible",
+	"updatesAvailable": "새로운 버전 사용 가능",
 	"@updatesAvailable": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"updatesUpdate": "Actualizar",
+	"updatesUpdate": "업데이트",
 	"@updatesUpdate": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"updatesSkip": "Saltar por ahora",
+	"updatesSkip": "지금은 스킵",
 	"@updatesSkip": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"updatesNotifTitle": "Actualización disponible",
+	"updatesNotifTitle": "업데이트가 있습니다",
 	"@updatesNotifTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"updatesNotifAvailable": "Nueva versión disponible. Por favor actualice.",
+	"updatesNotifAvailable": "새로운 버전이 있습니다. 업데이트를 하세요.",
 	"@updatesNotifAvailable": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"updatesNotifAvailableVersion": "Versión {version} disponible. Por favor actualice.",
+	"updatesNotifAvailableVersion": "버전 {version}이 있습니다. 업데이트를 하세요.",
 	"@updatesNotifAvailableVersion": {
 		"type": "text",
 		"placeholders_order": [
@@ -427,31 +427,31 @@
 			"version": {}
 		}
 	},
-	"helpLink": "Ayuda",
+	"helpLink": "도움",
 	"@helpLink": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"helpTitle": "Ayuda y apoyo",
+	"helpTitle": "도움 및 서포트",
 	"@helpTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"faqTitle": "Preguntas frecuentes",
+	"faqTitle": "자주 묻는 질문들",
 	"@faqTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"support": "Apoyo",
+	"support": "지원",
 	"@support": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"supportLinksDesc": "Si tiene alguna pregunta o cree que ha encontrado un problema técnico con la aplicación {appName}, puede informar y obtener asistencia de nuestro equipo.",
+	"supportLinksDesc": "궁금한 점이 있거나, {appName} 앱의 기술적인 문제를 발견하셨다고 생각하시면, 보고하고 팀의 지원을 받으실 수 있습니다.",
 	"@supportLinksDesc": {
 		"type": "text",
 		"placeholders_order": [
@@ -461,13 +461,13 @@
 			"appName": {}
 		}
 	},
-	"question_1": "¿Guardás mis llaves privadas?",
+	"question_1": "제 개인 키를 보관하나요?",
 	"@question_1": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"answer_1": "¡No! {appName} no tiene custodia. Nunca almacenamos datos confidenciales, incluidas sus claves privadas, frases iniciales o PIN. Estos datos solo se almacenan en el dispositivo del usuario y nunca lo abandonan. Usted tiene el control total de sus activos.",
+	"answer_1": "아니요! {appName}은 정보를 보관하지 않습니다. 키, 시드 문구, 비밀번호 등 기밀 데이터는 저장되지 않습니다. 이 데이터는 사용자의 장치에만 저장되며, 시스템에는 저장되지 않습니다. 당신은 자산을 완전히 관리하고 있습니다.",
 	"@answer_1": {
 		"type": "text",
 		"placeholders_order": [
@@ -477,7 +477,7 @@
 			"appName": {}
 		}
 	},
-	"question_2": "¿En qué se diferencia el comercio en {appName} del comercio en otros DEX?",
+	"question_2": "다른 DEX들에서 거래하는 것 보다 {appName}에서 하는 것이 무엇이 다른가요?",
 	"@question_2": {
 		"type": "text",
 		"placeholders_order": [
@@ -487,7 +487,7 @@
 			"appName": {}
 		}
 	},
-	"answer_2": "Por lo general, otros DEX solo le permiten intercambiar monedas digitales que se basan en una sola red blockchain y solo permiten realizar un solo pedido con los mismos fondos.\n\n{appName} le permite intercambiar de forma nativa en blockchains diferentes. También puede realizar varios pedidos con los mismos fondos. Por ejemplo, puede vender 0.1 BTC por KMD, QTUM o VRSC: el primer pedido que se ejecuta automáticamente cancela todos los demás pedidos.",
+	"answer_2": "다른 DEX는 일반적으로 단일 블록체인 네트워크를 기반으로 하는 자산 거래, 프록시 토큰 사용, 같은 펀드에서 단일 주문만 가능합니다.\n\n{appName}을 사용하면 프록시 토큰 없이 두 개의 다른 블록체인 네트워크 간에 기본적으로 교환할 수 있습니다. 같은 자금으로 여러 개를 주문할 수도 있습니다. 예를 들어, KMD, QTUM 또는 VRSC으로 0.1 BTC를 판매할 수 있습니다. 첫 주문이 가득 차면 다른 모든 주문이 자동으로 취소됩니다.",
 	"@answer_2": {
 		"type": "text",
 		"placeholders_order": [
@@ -497,13 +497,13 @@
 			"appName": {}
 		}
 	},
-	"question_3": "¿Cuánto tiempo toma cada intercambio atómico?",
+	"question_3": "각각의 아토믹 스왑을 얼마나 걸리나요?",
 	"@question_3": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"answer_3": "Varios factores determinan el tiempo de procesamiento de cada intercambio. El tiempo de procesar una transacción depende de cada red (Bitcoin suele ser la más lenta). Además, el usuario puede personalizar las preferencias de seguridad. Por ejemplo, puede pedirle a {appName} que considere una transacción KMD procesada despues de solo 3 confirmaciones, lo que hace que el tiempo de intercambio sea más corto en comparación con la espera de una <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">notarization</a>.",
+	"answer_3": "각 스왑의 처리 시간은 몇 가지 요인에 의해 결정됩니다. 거래되는 자산의 블록 시간은 네트워크마다 다릅니다(보통 비트코인이 가장 느립니다). 게다가 사용자는 보안 설정을 커스터마이징 할 수 있습니다. 예를 들어 3번의 확인 후 {appName}에게 KMD 트랜잭션을 최종적으로 고려하도록 요구할 수 있습니다, 이는 <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">공증</a>을 기다리는 것보다 스와프 시간이 짧아집니다.",
 	"@answer_3": {
 		"type": "text",
 		"placeholders_order": [
@@ -513,19 +513,19 @@
 			"appName": {}
 		}
 	},
-	"question_4": "¿Necesito estar en línea durante la duración del intercambio?",
+	"question_4": "스왑을 하는 동안 온라인에 있어야 하나요?",
 	"@question_4": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"answer_4": "Si. Debe permanecer conectado al Internet y tener su aplicación ejecutándose para completar con éxito cada intercambio (las interrupciones muy breves en la conectividad generalmente no causan problemas). De lo contrario, existe el riesgo de cancelación de la operación y el riesgo de pérdida de fondos si es un comprador. El protocolo de intercambio atómico requiere que ambos participantes permanezcan en línea y monitoreen los blockchains involucrados para que el proceso permanezca atómico.",
+	"answer_4": "네. 각 아토믹 스왑을 정상적으로 완료하려면 인터넷에 접속한 채로 애플리케이션을 실행해 두어야 합니다(보통 연결이 매우 짧은 상태도 문제 없습니다). 그렇지 않으면 제조업자의 경우 거래가 취소되고 인수업자의 경우 자금 손실 위험이 있습니다. 애트믹스와프 프로토콜을 사용하려면 두 참가자가 온라인으로 남아 프로세스가 아토믹 상태를 유지하기 위해 관련 블록체인을 감시해야 합니다.",
 	"@answer_4": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"question_5": "¿Cómo se calculan las tarifas de {appName}?",
+	"question_5": "{appName}에서 수수료는 어떻게 계산되나요?",
 	"@question_5": {
 		"type": "text",
 		"placeholders_order": [
@@ -535,7 +535,7 @@
 			"appName": {}
 		}
 	},
-	"answer_5": "Hay dos categorías de tarifas a tener en cuenta al intercambiar en {appName}.\n\n1. {appName} cobra aproximadamente un 0,13 % (1/777 del volumen de la transacción, pero no menos de 0,0001) como tarifa de transacción para las órdenes del comprador, y las órdenes del vendedor no tienen tarifas.\n\n2. Tanto los vendedores como los compradores deberán pagar tarifas de red normales a las blockchains involucradas al realizar transacciones de intercambio atómico.\n\nLas tarifas de red pueden variar mucho según el par de monedas seleccionadas.",
+	"answer_5": "{appName}에서 거래할 때 고려해야 할 두 가지 수수료 카테고리가 있습니다.\n\n1. {appName}은 수주자의 거래 수수료로 약 0.13%으로(거래량의 1/777 이상 0.0001 이하)를 청구하며 제조사의 주문은 수수료가 제로입니다.\n\n2. 원자력 스와프 거래를 할 때는 제조사와 수험자 모두 관련된 블록체인에 정상적인 네트워크 요금을 지불해야 합니다.\n\n네트워크 요금은 선택한 거래 쌍에 따라 크게 다를 수 있습니다.",
 	"@answer_5": {
 		"type": "text",
 		"placeholders_order": [
@@ -545,13 +545,13 @@
 			"appName": {}
 		}
 	},
-	"question_6": "¿Ofrecen soporte al usuario?",
+	"question_6": "유저 지원을 공급하나요?",
 	"@question_6": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"answer_6": "¡Sí! {appName} ofrece soporte a través de <a href=\"{link}\">{appCompanyShort} {name}</a>. ¡El equipo y la comunidad siempre están dispuestos a ayudar!",
+	"answer_6": "네! {appName}은 <a href=\"{link}\">{appCompanyShort} {name}</a>을 통해서 서포트를 지원합니다. 저희 팀과 커뮤니티는 항상 돕고 싶습니다!",
 	"@answer_6": {
 		"type": "text",
 		"placeholders_order": [
@@ -567,13 +567,13 @@
 			"appCompanyShort": {}
 		}
 	},
-	"question_7": "¿Tiene restricciones de país?",
+	"question_7": "나라 제한이 있나요?",
 	"@question_7": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"answer_7": "¡No! {appName} es completamente descentralizado. No es posible limitar el acceso de los usuarios por parte de ningún tercero.",
+	"answer_7": "아니요! {appName}은 완전한 분권화가 되어있습니다. 유저를 제3자 파티를 통해서 제한하는 것은 불가능합니다.",
 	"@answer_7": {
 		"type": "text",
 		"placeholders_order": [
@@ -583,7 +583,7 @@
 			"appName": {}
 		}
 	},
-	"question_8": "¿Quién está detrás de {appName}?",
+	"question_8": "{appName} 뒤에는 누가 있나요?",
 	"@question_8": {
 		"type": "text",
 		"placeholders_order": [
@@ -593,7 +593,7 @@
 			"appName": {}
 		}
 	},
-	"answer_8": "{appName} está desarrollado por el equipo de {appCompanyShort}. {appCompanyShort} es uno de los proyectos de blockchain más consolidados que trabaja en soluciones innovadoras como intercambios decentralizados, seguridad de blockchains y una arquitectura multicadena interoperable.",
+	"answer_8": "{appName}은 {appCompanyShort} 팁에서 개발되었습니다. {appCompanyShort}는 원자력 스왑, 지연 작업 증명, 상호 운용 가능한 멀티체인 아키텍처 등의 혁신적인 솔루션을 추진하고 있는 가장 확립된 블록체인 프로젝트 중 하나입니다.",
 	"@answer_8": {
 		"type": "text",
 		"placeholders_order": [
@@ -605,7 +605,7 @@
 			"appCompanyShort": {}
 		}
 	},
-	"question_9": "¿Es posible desarrollar mi propio intercambio con {appName}?",
+	"question_9": "{appName}에서 저의 화이트-레이블 익스체인지를 개발할 수 있나요?",
 	"@question_9": {
 		"type": "text",
 		"placeholders_order": [
@@ -615,7 +615,7 @@
 			"appName": {}
 		}
 	},
-	"answer_9": "¡Absolutamente! Puede leer nuestra <a href=\"https://developers.atomicdex.io/\">documentación para desarrolladores</a> para obtener más detalles o comunicarse con nosotros si tiene alguna consulta sobre su asociación. ¿Tiene una pregunta técnica específica? ¡La comunidad de desarrolladores de {appName} siempre está lista para ayudar!",
+	"answer_9": "당연합니다! 당신은 <a href=\"https://developers.atomicdex.io/\">개발자 문서</a>를 읽어서 더욱 더 많은 정보를 얻고 저희에게 파트너십에 대해서 문의를 할 수 있습니다. 특정 기술적 질문이 있으신가요? {appName}의 개발자 커뮤니티는 항상 도움을 줄 준비가 되어있습니다!",
 	"@answer_9": {
 		"type": "text",
 		"placeholders_order": [
@@ -625,7 +625,7 @@
 			"appName": {}
 		}
 	},
-	"question_10": "¿En qué dispositivos puedo usar {appName}?",
+	"question_10": "어떤 기기에서 {appName}을 사용할 수 있나요?",
 	"@question_10": {
 		"type": "text",
 		"placeholders_order": [
@@ -635,7 +635,7 @@
 			"appName": {}
 		}
 	},
-	"answer_10": "{appName} está disponible para dispositivos móviles en Android y iPhone, y para computadoras de escritorio en los sistemas operativos Windows, Mac y Linux.",
+	"answer_10": "{appName}은 안드로이드와 아이폰 모두에서 모바일에 사용할 수 있으며 윈도우, 맥 및 리눅스 운영 체제의 데스크톱에 사용할 수 있습니다.",
 	"@answer_10": {
 		"type": "text",
 		"placeholders_order": [
@@ -645,79 +645,79 @@
 			"appName": {}
 		}
 	},
-	"feedTab": "Informacion",
+	"feedTab": "피드",
 	"@feedTab": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"feedTitle": "Noticias",
+	"feedTitle": "뉴스 피드",
 	"@feedTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"feedReadMore": "Leer más...",
+	"feedReadMore": "더 읽기...",
 	"@feedReadMore": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"feedNotFound": "Nada aquí",
+	"feedNotFound": "아무것도 없습니다",
 	"@feedNotFound": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"feedUpdated": "Fuente de noticias actualizada",
+	"feedUpdated": "뉴스 피드가 업데이트 됬습니다",
 	"@feedUpdated": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"snackbarDismiss": "Descartar",
+	"snackbarDismiss": "해제",
 	"@snackbarDismiss": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"feedNewsTab": "Noticias",
+	"feedNewsTab": "뉴스",
 	"@feedNewsTab": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"duration": "Duración",
+	"duration": "지속시간",
 	"@duration": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"feedUnableToUpdate": "No se puede obtener la actualización de noticias",
+	"feedUnableToUpdate": "뉴스 업데이트를 받을 수 없습니다",
 	"@feedUnableToUpdate": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"feedUnableToProceed": "No se puede continuar con la actualización de noticias",
+	"feedUnableToProceed": "뉴스 업데이트를 진행 할 수 없습니다",
 	"@feedUnableToProceed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"feedUpToDate": "Ya está actualizado",
+	"feedUpToDate": "벌서 최신화 되어 있습니다",
 	"@feedUpToDate": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"date": "Fecha",
+	"date": "날짜",
 	"@date": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"feedNotifTitle": "{appCompanyShort} noticias",
+	"feedNotifTitle": "{appCompanyShort} 뉴스",
 	"@feedNotifTitle": {
 		"type": "text",
 		"placeholders_order": [
@@ -727,37 +727,37 @@
 			"appCompanyShort": {}
 		}
 	},
-	"createPin": "Crear numero PIN",
+	"createPin": "핀 만들기",
 	"@createPin": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"enterPinCode": "Ingresa tu numero PIN",
+	"enterPinCode": "핀 코드를 입력하세요",
 	"@enterPinCode": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"login": "acceso",
+	"login": "로그인",
 	"@login": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"newAccount": "nueva cuenta",
+	"newAccount": "새로운 계정",
 	"@newAccount": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"newAccountUpper": "Nueva Cuenta",
+	"newAccountUpper": "새로운 계정",
 	"@newAccountUpper": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"addingCoinSuccess": "¡Activado {name} con éxito!",
+	"addingCoinSuccess": "성공적으로 {name} 활성화!",
 	"@addingCoinSuccess": {
 		"type": "text",
 		"placeholders_order": [
@@ -767,19 +767,19 @@
 			"name": {}
 		}
 	},
-	"connecting": "Conectando...",
+	"connecting": "연결중...",
 	"@connecting": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"addCoin": "Activar moneda",
+	"addCoin": "코인 활성화",
 	"@addCoin": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"numberAssets": "{assets} activos",
+	"numberAssets": "{assets} 자산",
 	"@numberAssets": {
 		"type": "text",
 		"placeholders_order": [
@@ -789,31 +789,31 @@
 			"assets": {}
 		}
 	},
-	"enterSeedPhrase": "Ingrese su Semilla de 12 palabras",
+	"enterSeedPhrase": "시드 문구를 입력하세요",
 	"@enterSeedPhrase": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exampleHintSeed": "Ejemplo: build case level ...",
+	"exampleHintSeed": "예시: build case level ...",
 	"@exampleHintSeed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"confirm": "Confirmar",
+	"confirm": "확인",
 	"@confirm": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"buyTestCoinWarning": "¡Advertencia, estás dispuesto a comprar monedas de prueba SIN valor real!",
+	"buyTestCoinWarning": "경고합니다, 당신은 실제 가치가 없는 테스트 코인을 구매하는 것입니다!",
 	"@buyTestCoinWarning": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"batteryCriticalError": "La carga de su batería es crítica ({batteryLevelCritical}%) para realizar un intercambio de manera segura. Póngalo a cargar y vuelva a intentarlo.",
+	"batteryCriticalError": "스왑을 안전하게 실행하려면 배터리 충전양 ({batteryLevelCritical}%)은 매우 중요합니다. 충전을 하고 다시 시도해 주십시오.",
 	"@batteryCriticalError": {
 		"type": "text",
 		"placeholders_order": [
@@ -823,7 +823,7 @@
 			"batteryLevelCritical": {}
 		}
 	},
-	"batteryLowWarning": "La carga de la batería es inferior al {batteryLevelLow}%. Considere la posibilidad de cargar el teléfono.",
+	"batteryLowWarning": "배터리 충전량이 {batteryLevelLow}%보다 낮습니다. 휴대폰 충전을 부탁드립니다.",
 	"@batteryLowWarning": {
 		"type": "text",
 		"placeholders_order": [
@@ -833,31 +833,31 @@
 			"batteryLevelLow": {}
 		}
 	},
-	"batterySavingWarning": "Su teléfono está en modo de ahorro de batería. Deshabilite este modo o NO ponga la aplicación en segundo plano, de lo contrario, el sistema operativo podría eliminar la aplicación y fallar el intercambio.",
+	"batterySavingWarning": "전화기가 배터리 절약 모드로 되어 있습니다. 이 모드를 비활성화하거나 애플리케이션을 백그라운드에 두지 마세요. 그렇지 않으면 OS에 의해 애플리케이션이 중지되고 스왑에 실패할 수 있습니다.",
 	"@batterySavingWarning": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"sellTestCoinWarning": "¡Advertencia, estás dispuesto a vender monedas de prueba SIN valor real!",
+	"sellTestCoinWarning": "경고, 진정한 값어치가 없는 테스트 코인을 판매하고 있습니다!",
 	"@sellTestCoinWarning": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"buy": "Comprar",
+	"buy": "구매",
 	"@buy": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"sell": "Vender",
+	"sell": "판매",
 	"@sell": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"shareAddress": "Mi {coinName} dirección:\n{address}",
+	"shareAddress": "나의 {coinName} 주소:\n{address}",
 	"@shareAddress": {
 		"type": "text",
 		"placeholders_order": [
@@ -869,31 +869,31 @@
 			"address": {}
 		}
 	},
-	"withdraw": "Retirar",
+	"withdraw": "인출",
 	"@withdraw": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"errorValueEmpty": "El valor es demasiado alto o bajo",
+	"errorValueEmpty": "값이 너무 높거나 낮습니다",
 	"@errorValueEmpty": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"amount": "Cantidad",
+	"amount": "양",
 	"@amount": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"addressSend": "Dirección de los destinatarios",
+	"addressSend": "수신자 선택",
 	"@addressSend": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"withdrawValue": "RETIRAR {amount} {coinName}",
+	"withdrawValue": "{amount} {coinName} 인출",
 	"@withdrawValue": {
 		"type": "text",
 		"placeholders_order": [
@@ -905,247 +905,247 @@
 			"coinName": {}
 		}
 	},
-	"withdrawConfirm": "Confirmar Retiro",
+	"withdrawConfirm": "인출 확인",
 	"@withdrawConfirm": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"withdrawConfirmError": "Algo salió mal. Vuelva a intentarlo más tarde.",
+	"withdrawConfirmError": "무언가 잘못 됬습니다. 나중에 다시 시도하세요.",
 	"@withdrawConfirmError": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"close": "Cerrar",
+	"close": "닫기",
 	"@close": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"confirmSeed": "Confirmar frase semilla",
+	"confirmSeed": "시드 문구 확인하기",
 	"@confirmSeed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"seedPhraseTitle": "Tu nueva frase semilla",
+	"seedPhraseTitle": "당신의 새로운 시드 문구",
 	"@seedPhraseTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"getBackupPhrase": "Importante: ¡Haz una copia de seguridad de tu frase inicial antes de continuar!",
+	"getBackupPhrase": "중요: 계속하기 전에 시드 문구를 백업해두세요!",
 	"@getBackupPhrase": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"recommendSeedMessage": "Recomendamos almacenarlo fuera de línea.",
+	"recommendSeedMessage": "저희는 오프라인에 저장하는 것을 추천합니다.",
 	"@recommendSeedMessage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"next": "próximo",
+	"next": "다음",
 	"@next": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"confirmPin": "Confirmar código PIN",
+	"confirmPin": "핀 코드 확인",
 	"@confirmPin": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camouflageSetup": "Configuración de PIN de camuflaje",
+	"camouflageSetup": "위장 비밀번호 셋업",
 	"@camouflageSetup": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"confirmCamouflageSetup": "Confirmar PIN de camuflaje",
+	"confirmCamouflageSetup": "위장 비밀번호 확인",
 	"@confirmCamouflageSetup": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"errorTryAgain": "Error, inténtalo de nuevo",
+	"errorTryAgain": "에러, 다시 하세요",
 	"@errorTryAgain": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"settings": "Ajustes",
+	"settings": "설정",
 	"@settings": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"security": "Seguridad",
+	"security": "보안",
 	"@security": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"activateAccessPin": "Activar la protección con PIN",
+	"activateAccessPin": "비밀번호 보호 활성화",
 	"@activateAccessPin": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"lockScreen": "La pantalla está bloqueada",
+	"lockScreen": "스크린이 잠겼습니다",
 	"@lockScreen": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"changePin": "Cambiar código PIN",
+	"changePin": "비밀번호 바꾸기",
 	"@changePin": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"logout": "Cerrar sesión",
+	"logout": "로그아웃",
 	"@logout": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"max": "MAXIMO",
+	"max": "최대",
 	"@max": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"min": "Min",
+	"min": "최소",
 	"@min": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"totalFees": "Tarifas totales:",
+	"totalFees": "총 수수료:",
 	"@totalFees": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"paidFromBalance": "Pagado del saldo:",
+	"paidFromBalance": "잔액에서 지불:",
 	"@paidFromBalance": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"tradingMode": "Modo de comercio:",
+	"tradingMode": "거래 모드:",
 	"@tradingMode": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"skip": "Omitir",
+	"skip": "스킵",
 	"@skip": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"merge": "Unir",
+	"merge": "합체",
 	"@merge": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"overwrite": "Sobrescribir",
+	"overwrite": "덮어쓰기",
 	"@overwrite": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"currentValue": "Valor actual:",
+	"currentValue": "현제 가치:",
 	"@currentValue": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"newValue": "Nuevo valor:",
+	"newValue": "새로운 값:",
 	"@newValue": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"mergedValue": "Valor combinado:",
+	"mergedValue": "합한 갑어치:",
 	"@mergedValue": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"saveMerged": "Guardar combinado",
+	"saveMerged": "병함 저장",
 	"@saveMerged": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"alreadyExists": "Ya existe",
+	"alreadyExists": "벌서 존재합니다",
 	"@alreadyExists": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"simple": "Sencillo",
+	"simple": "심플",
 	"@simple": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"advanced": "Avanzado",
+	"advanced": "고급",
 	"@advanced": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"paidFromVolume": "Pagado del volumen recibido:",
+	"paidFromVolume": "받은 볼륨에서 지불:",
 	"@paidFromVolume": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"amountToSell": "Cantidad a Vender",
+	"amountToSell": "판매 할 양",
 	"@amountToSell": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"youWillReceived": "Usted recibirá:",
+	"youWillReceived": "당신은 받습니다:",
 	"@youWillReceived": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"selectCoinToSell": "Seleccione la moneda que desea VENDER",
+	"selectCoinToSell": "판매하고 싶은 코인 선택",
 	"@selectCoinToSell": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"selectCoinToBuy": "Seleccione la moneda que desea COMPRAR",
+	"selectCoinToBuy": "구매하고 싶은 코인 선택",
 	"@selectCoinToBuy": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swap": "intercambio",
+	"swap": "스왑",
 	"@swap": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"buySuccessWaiting": "Intercambio emitido, por favor espere!",
+	"buySuccessWaiting": "스와프가 발행되었습니다. 잠시만 기다려주세요!",
 	"@buySuccessWaiting": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"buySuccessWaitingError": "Ordermatch en curso, ¡espere {seconde} segundos!",
+	"buySuccessWaitingError": "주문이 진행 중입니다. {seconde}초를 기다려 주세요!",
 	"@buySuccessWaitingError": {
 		"type": "text",
 		"placeholders_order": [
@@ -1155,319 +1155,319 @@
 			"seconde": {}
 		}
 	},
-	"networkFee": "Tarifa de red",
+	"networkFee": "네트워크 수수료",
 	"@networkFee": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"commissionFee": "cuota de comisión",
+	"commissionFee": "수수료",
 	"@commissionFee": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"portfolio": "Portfolio",
+	"portfolio": "포티폴리오",
 	"@portfolio": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"checkOut": "Verificar",
+	"checkOut": "확인하기",
 	"@checkOut": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"estimateValue": "Valor total estimado",
+	"estimateValue": "예상된 합계치",
 	"@estimateValue": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"selectPaymentMethod": "Selecciona tu forma de pago",
+	"selectPaymentMethod": "지불 방법 선택",
 	"@selectPaymentMethod": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"volumes": "Volumenes",
+	"volumes": "볼륨",
 	"@volumes": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"placeOrder": "Haga su pedido",
+	"placeOrder": "당신의 주문을 넣으세요",
 	"@placeOrder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"comingSoon": "Próximamente...",
+	"comingSoon": "곳 옵니다...",
 	"@comingSoon": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"marketplace": "Mercado",
+	"marketplace": "마켓플레이스",
 	"@marketplace": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"youAreSending": "Usted está enviando:",
+	"youAreSending": "당신은 보냅니다:",
 	"@youAreSending": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"code": "Código:",
+	"code": "코드:",
 	"@code": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"value": "Valor:",
+	"value": "값:",
 	"@value": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"paidWith": "Pagado con",
+	"paidWith": "으로 지불",
 	"@paidWith": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"errorValueNotEmpty": "Por favor ingrese datos",
+	"errorValueNotEmpty": "데이터를 입력해주세요",
 	"@errorValueNotEmpty": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"errorAmountBalance": "No hay suficiente equilibrio",
+	"errorAmountBalance": "잔고가 충분하지 않습니다",
 	"@errorAmountBalance": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"errorNotAValidAddress": "No es una dirección válida",
+	"errorNotAValidAddress": "유효한 주소가 없습니다",
 	"@errorNotAValidAddress": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"errorNotAValidAddressSegWit": "Las direcciones de Segwit no son compatibles (todavía)",
+	"errorNotAValidAddressSegWit": "세그윗 주소가 (아직) 지원되지 않습니다",
 	"@errorNotAValidAddressSegWit": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"toAddress": "Hacia:",
+	"toAddress": "주소로:",
 	"@toAddress": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"receive": "RECIBIR",
+	"receive": "받기",
 	"@receive": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"send": "ENVIAR",
+	"send": "보내기",
 	"@send": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"pubkey": "Llave Publica",
+	"pubkey": "펍키",
 	"@pubkey": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"back": "back",
+	"back": "뒤로",
 	"@back": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"cancel": "Cancelar",
+	"cancel": "취소",
 	"@cancel": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"details": "detalles",
+	"details": "상세",
 	"@details": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"yes": "Sí",
+	"yes": "네",
 	"@yes": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"no": "No",
+	"no": "아니요",
 	"@no": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noteOnOrder": "Nota: el pedido emparejado no se puede cancelar de nuevo",
+	"noteOnOrder": "노트: 매치 주문은 다시 취소 될 수 없습니다",
 	"@noteOnOrder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"dontAskAgain": "No vuelvas a preguntar",
+	"dontAskAgain": "다시 물어보지 마세요",
 	"@dontAskAgain": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"cancelOrder": "Cancelar orden",
+	"cancelOrder": "주문 취소",
 	"@cancelOrder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"confirmCancel": "¿Está seguro de que desea cancelar el pedido?",
+	"confirmCancel": "주문을 취소하는 것을 확인하시겠습니까?",
 	"@confirmCancel": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"unspendable": "ingastable",
+	"unspendable": "사용 불가능",
 	"@unspendable": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"commingsoon": "Detalles de TX próximamente!",
+	"commingsoon": "TX 디테일이 곳 옵니다!",
 	"@commingsoon": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"history": "historia",
+	"history": "히스토리",
 	"@history": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"create": "intercambiar",
+	"create": "바꾸기",
 	"@create": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"commingsoonGeneral": "¡Detalles muy pronto!",
+	"commingsoonGeneral": "디테일이 곳 옵니다!",
 	"@commingsoonGeneral": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderMatching": "Triangulación de órdenes",
+	"orderMatching": "주문 매칭",
 	"@orderMatching": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderMatched": "Orden Triangulada",
+	"orderMatched": "주문 매칭됨",
 	"@orderMatched": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapOngoing": "Intercambio en curso",
+	"swapOngoing": "스왑이 진행되고 있습니다",
 	"@swapOngoing": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapSucceful": "Intercambio exitoso",
+	"swapSucceful": "성공적으로 스왑",
 	"@swapSucceful": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"timeOut": "Se acabó el tiempo",
+	"timeOut": "시간 초과",
 	"@timeOut": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"convert": "Convertir",
+	"convert": "바꾸기",
 	"@convert": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapFailed": "Intercambio fallido",
+	"swapFailed": "스왑 실패",
 	"@swapFailed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"errorTryLater": "Error, intente más tarde",
+	"errorTryLater": "에러, 나중에 다시 하세요",
 	"@errorTryLater": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"latestTxs": "Últimas transacciones",
+	"latestTxs": "마지막 거래",
 	"@latestTxs": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"feedback": "Compartir archivo de registro",
+	"feedback": "로그 파일 공유",
 	"@feedback": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"loadingOrderbook": "Cargando libro de ordenes...",
+	"loadingOrderbook": "주문책 로딩 중...",
 	"@loadingOrderbook": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"claim": "afirmar",
+	"claim": "받기",
 	"@claim": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"claimTitle": "¿Reclamar su recompensa KMD?",
+	"claimTitle": "KMD 보상을 받으시겠습니까?",
 	"@claimTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"success": "¡Éxito!",
+	"success": "성공!",
 	"@success": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noRewardYet": "No se puede reclamar ninguna recompensa. Vuelva a intentarlo en 1 hora.",
+	"noRewardYet": "받을 수 있는 보상 없음 - 1시간 뒤에 다시하세요",
 	"@noRewardYet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"loading": "Cargando...",
+	"loading": "로딩 중...",
 	"@loading": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"txleft": "Transacciones restantes: {left}",
+	"txleft": "남은 거래: {left}",
 	"@txleft": {
 		"type": "text",
 		"placeholders_order": [
@@ -1477,7 +1477,7 @@
 			"left": {}
 		}
 	},
-	"insufficientBalanceToPay": " El saldo de {abbr} no es suficiente para pagar la tarifa de negociación",
+	"insufficientBalanceToPay": "{abbr} 잔액은 교환 수수료를 지불할 금액보다 부족합니다",
 	"@insufficientBalanceToPay": {
 		"type": "text",
 		"placeholders_order": [
@@ -1493,235 +1493,235 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"media": "Noticias",
+	"media": "뉴스",
 	"@media": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"newsFeed": "Noticias",
+	"newsFeed": "뉴스 피드",
 	"@newsFeed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"clipboard": "Copiado al portapapeles",
+	"clipboard": "클립보드에 복사됨",
 	"@clipboard": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"from": "Desde",
+	"from": "에서부터",
 	"@from": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"to": "Para",
+	"to": "에게",
 	"@to": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"txConfirmed": "CONFIRMADO",
+	"txConfirmed": "확인됨",
 	"@txConfirmed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"txNotConfirmed": "INCONFIRMADO",
+	"txNotConfirmed": "미확인",
 	"@txNotConfirmed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"txBlock": "Bloque",
+	"txBlock": "블록",
 	"@txBlock": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"txConfirmations": "Confirmaciones",
+	"txConfirmations": "확인",
 	"@txConfirmations": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"txFee": "Tarifa",
+	"txFee": "수수료",
 	"@txFee": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"txHash": "ID de transacción",
+	"txHash": "거래 ID",
 	"@txHash": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noSwaps": "No historia.",
+	"noSwaps": "히스토리 없음.",
 	"@noSwaps": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"trade": "INTERCAMBIO",
+	"trade": "거래",
 	"@trade": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"reset": "RESETEAR",
+	"reset": "클리어",
 	"@reset": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"resetTitle": "Restablecer formulario",
+	"resetTitle": "폼 리셋",
 	"@resetTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"tradeCompleted": "¡CAMBIO COMPLETADO!",
+	"tradeCompleted": "스왑 완료됨!",
 	"@tradeCompleted": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"step": "Paso",
+	"step": "방법",
 	"@step": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"tradeDetail": "DETALLES INTERCAMBIO",
+	"tradeDetail": "거래 상세",
 	"@tradeDetail": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"requestedTrade": "Comercio solicitado",
+	"requestedTrade": "요청된 거래",
 	"@requestedTrade": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapUUID": "Intercambiar UUID",
+	"swapUUID": "UUID 스왑",
 	"@swapUUID": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"mediaBrowse": "NAVEGAR",
+	"mediaBrowse": "브라우즈",
 	"@mediaBrowse": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"mediaSaved": "GUARDADO",
+	"mediaSaved": "저장",
 	"@mediaSaved": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"mediaNotSavedDescription": "NO TIENES ARTÍCULOS GUARDADOS",
+	"mediaNotSavedDescription": "당신은 저장된 기사가 없습니다",
 	"@mediaNotSavedDescription": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"mediaBrowseFeed": "NAVEGAR RSS",
+	"mediaBrowseFeed": "브라우즈 피드",
 	"@mediaBrowseFeed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"mediaBy": "By",
+	"mediaBy": "작성",
 	"@mediaBy": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"lockScreenAuth": "¡Por favor, autentícate!",
+	"lockScreenAuth": "인증 해주세요!",
 	"@lockScreenAuth": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noTxs": "Sin transacciones",
+	"noTxs": "거래내역 없음",
 	"@noTxs": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"done": "Hecho",
+	"done": "완료",
 	"@done": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"selectCoinTitle": "Activar monedas:",
+	"selectCoinTitle": "활성화 코인:",
 	"@selectCoinTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"selectCoinInfo": "Seleccione las monedas que desea agregar a su cartera.",
+	"selectCoinInfo": "당신의 포티폴리오에 추가하고 싶은 코인 선택하기",
 	"@selectCoinInfo": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noArticles": "No hay noticias. Vuelva a consultar más tarde.",
+	"noArticles": "뉴스 없음 - 나중에 다시 확인하세요!",
 	"@noArticles": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"infoTrade1": "¡La solicitud de intercambio no se puede deshacer y es un evento final!",
+	"infoTrade1": "스왑 요청은 되돌릴수 없고 이는 최종 이벤트입니다!",
 	"@infoTrade1": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"infoTrade2": "El intercambio puede tardar hasta 60 minutos. ¡NO cierres esta aplicación!",
+	"infoTrade2": "스왑은 60분까지 걸릴 수 있습니다. 이 앱플리케이션을 종료하지 마세요!",
 	"@infoTrade2": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapDetailTitle": "CONFIRMAR DETALLES DE CAMBIO",
+	"swapDetailTitle": "변환 상세 확인",
 	"@swapDetailTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"minVolumeTitle": "Volumen mínimo requerido",
+	"minVolumeTitle": "필요된 최소 볼륨",
 	"@minVolumeTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"minVolumeToggle": "Usar volumen mínimo personalizado",
+	"minVolumeToggle": "커스텀 최소 볼륨 사용",
 	"@minVolumeToggle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"nonNumericInput": "El valor debe ser numérico.",
+	"nonNumericInput": "값은 숫자여야 합니다",
 	"@nonNumericInput": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"minVolumeIsTDH": "Debe ser menor que el monto de venta",
+	"minVolumeIsTDH": "판매 양보다 적어야 합니다",
 	"@minVolumeIsTDH": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"minVolumeInput": "Debe ser mayor que {minValue} {coin}",
+	"minVolumeInput": "값은 {minValue} {coin}보다 커야합니다",
 	"@minVolumeInput": {
 		"type": "text",
 		"placeholders_order": [
@@ -1733,25 +1733,25 @@
 			"coin": {}
 		}
 	},
-	"checkSeedPhrase": "Comprobar la frase inicial",
+	"checkSeedPhrase": "시드 문구 확인하기",
 	"@checkSeedPhrase": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"checkSeedPhraseTitle": "VAMOS A VERIFICAR DOS VECES TU FRASE SEMILLA",
+	"checkSeedPhraseTitle": "다시 한번 당신의 시드 문구를 확인해봅시다",
 	"@checkSeedPhraseTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"checkSeedPhraseInfo": "Tu frase semilla es importante, por eso nos gusta asegurarnos de que sea correcta. Le haremos tres preguntas diferentes sobre su frase semilla para asegurarnos de que podrá restaurar fácilmente su billetera cuando lo desee.",
+	"checkSeedPhraseInfo": "당신의 시드 문구는 중요합니다 - 그래서 저희는 이것이 맞는지 확인하고 싶습니다. 필요할 때 언제든지 쉽게 지갑을 복원할 수 있도록 시드 문구에 대해 세 가지 다른 질문을 합니다.",
 	"@checkSeedPhraseInfo": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"checkSeedPhraseSubtile": "¿Cuál es la palabra {index} en su frase inicial?",
+	"checkSeedPhraseSubtile": "당신의 시드 문구 안에 있는 {index} 단어는 무엇입니까?",
 	"@checkSeedPhraseSubtile": {
 		"type": "text",
 		"placeholders_order": [
@@ -1761,7 +1761,7 @@
 			"index": {}
 		}
 	},
-	"checkSeedPhraseHint": "Introduzca la palabra {index} ",
+	"checkSeedPhraseHint": "{index} 단어 입력",
 	"@checkSeedPhraseHint": {
 		"type": "text",
 		"placeholders_order": [
@@ -1771,49 +1771,49 @@
 			"index": {}
 		}
 	},
-	"checkSeedPhraseButton1": "SEGUIR",
+	"checkSeedPhraseButton1": "계속하기",
 	"@checkSeedPhraseButton1": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"checkSeedPhraseButton2": "VOLVER Y VERIFICAR DE NUEVO",
+	"checkSeedPhraseButton2": "다시가서 확인하기",
 	"@checkSeedPhraseButton2": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"viewInExplorerButton": "Explorador",
+	"viewInExplorerButton": "익스플로어",
 	"@viewInExplorerButton": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"activateAccessBiometric": "Activar protección biométrica",
+	"activateAccessBiometric": "생체보안 활성화",
 	"@activateAccessBiometric": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"allowCustomSeed": "Permitir semilla personalizada",
+	"allowCustomSeed": "커스텀 시드 허용",
 	"@allowCustomSeed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"warning": "¡Advertencia!",
+	"warning": "경고!",
 	"@warning": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"iUnderstand": "Entiendo",
+	"iUnderstand": "전 이해합니다",
 	"@iUnderstand": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"customSeedWarning": "Las frases semilla personalizadas pueden ser menos seguras y más fáciles de descifrar que una frase semilla o clave privada (WIF) compatible con BIP39 generada. Para confirmar que comprende el riesgo y sabe lo que está haciendo, escriba \"{iUnderstand}\" en el cuadro a continuación.",
+	"customSeedWarning": "커스텀 시드 문구는 생성된 BIP39 준거 시드 문구 또는 개인 키(WIF)보다 안전성이 낮고 크랙되기 쉬운 경우가 있습니다. 위험을 이해하고 무엇을 하고 있는지 확인하려면 아래 상자에 \"{iUnderstand}\"라고 입력해주세요.",
 	"@customSeedWarning": {
 		"type": "text",
 		"placeholders_order": [
@@ -1823,235 +1823,235 @@
 			"iUnderstand": {}
 		}
 	},
-	"hintEnterPassword": "Ingresa tu contraseña",
+	"hintEnterPassword": "당신의 비밀번호 입력하기",
 	"@hintEnterPassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"yourWallet": "Su billetera",
+	"yourWallet": "당신의 지갑",
 	"@yourWallet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"signInWithSeedPhrase": "¿Olvidó la contraseña? Restaurar billetera desde semilla",
+	"signInWithSeedPhrase": "비밀번호를 까먹으셨나요? 지갑을 시드로부터 복구하세요",
 	"@signInWithSeedPhrase": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"signInWithPassword": "Iniciar sesión con contraseña",
+	"signInWithPassword": "비밀번호로 로그인하기",
 	"@signInWithPassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"hintEnterSeedPhrase": "Ingrese su frase inicial",
+	"hintEnterSeedPhrase": "당신의 시드 문구 입력하기",
 	"@hintEnterSeedPhrase": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"wrongPassword": "Las contraseñas no coinciden. Inténtalo de nuevo.",
+	"wrongPassword": "비밀번화가 일치하지 않습니다. 다시 시도해주세요.",
 	"@wrongPassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"hintNameYourWallet": "Nombra tu billetera",
+	"hintNameYourWallet": "지갑 이름 정하기",
 	"@hintNameYourWallet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"infoWalletPassword": "Debe proporcionar una contraseña para el cifrado de la billetera por razones de seguridad.",
+	"infoWalletPassword": "보안 이유상 지갑 암호활를 위해 비밀번호를 입력해야 합니다",
 	"@infoWalletPassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"confirmPassword": "Confirmar contraseña",
+	"confirmPassword": "비밀번호 확인",
 	"@confirmPassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"dontWantPassword": "no quiero una contraseña",
+	"dontWantPassword": "전 비밀번호를 원지 않습니다",
 	"@dontWantPassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"areYouSure": "ESTAS SEGURO?",
+	"areYouSure": "확실하신가요?",
 	"@areYouSure": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"infoPasswordDialog": "Utilice una contraseña segura y no la almacene en el mismo dispositivo",
+	"infoPasswordDialog": "보안 비밀번호를 사용하고 똑같은 장치에 저장해두지 마세요",
 	"@infoPasswordDialog": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"setUpPassword": "CONFIGURAR UNA CONTRASEÑA",
+	"setUpPassword": "비밀번호 만들기",
 	"@setUpPassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"createAWallet": "CREAR UNA CARTERA",
+	"createAWallet": "지갑 만들기",
 	"@createAWallet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"restoreWallet": "RESTAURAR",
+	"restoreWallet": "복구",
 	"@restoreWallet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"hintPassword": "Clave",
+	"hintPassword": "비밀번호",
 	"@hintPassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"passwordRequirement": "La contraseña debe contener al menos 12 caracteres, con una minúscula, una mayúscula y un símbolo especial.",
+	"passwordRequirement": "비밀번호는 최서 12자 이상이어여 하고, 소문자, 대문자 및 특수 기호가 하나씩 있어야합니다.",
 	"@passwordRequirement": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"hintCreatePassword": "Crear contraseña",
+	"hintCreatePassword": "비밀번호 만들기",
 	"@hintCreatePassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"hintConfirmPassword": "Confirmar contraseña",
+	"hintConfirmPassword": "비밀번호 확인",
 	"@hintConfirmPassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"hintCurrentPassword": "Contraseña actual",
+	"hintCurrentPassword": "현제 비밀번호",
 	"@hintCurrentPassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"logoutsettings": "Configuración de cierre de sesión",
+	"logoutsettings": "로그아웃 설정",
 	"@logoutsettings": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"logoutOnExit": "Cerrar sesión al salir",
+	"logoutOnExit": "종료 후 로그아웃",
 	"@logoutOnExit": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"deleteWallet": "Eliminar Billetera",
+	"deleteWallet": "지갑 삭제",
 	"@deleteWallet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"delete": "Borrar",
+	"delete": "삭제",
 	"@delete": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"settingDialogSpan1": "Estás seguro de que quieres eliminar",
+	"settingDialogSpan1": "이걸 지우시길 원하십니까",
 	"@settingDialogSpan1": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"settingDialogSpan2": "billetera?",
+	"settingDialogSpan2": "지갑?",
 	"@settingDialogSpan2": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"settingDialogSpan3": "Si es así, asegúrese de",
+	"settingDialogSpan3": "그렇다면, 확실하게 하세요",
 	"@settingDialogSpan3": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"settingDialogSpan4": "guardar su frase inicial.",
+	"settingDialogSpan4": "당신의 시드 문구를 기록하세요/",
 	"@settingDialogSpan4": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"settingDialogSpan5": "Para restaurar su billetera en el futuro.",
+	"settingDialogSpan5": "미래에 당신의 지갑을 복구하기 위해서.",
 	"@settingDialogSpan5": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"backupTitle": "Respaldo",
+	"backupTitle": "백업",
 	"@backupTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"version": "version",
+	"version": "버전",
 	"@version": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"viewSeedAndKeys": "Semilla y Claves Privadas",
+	"viewSeedAndKeys": "시드 & 개인 키",
 	"@viewSeedAndKeys": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"seedPhrase": "Frase Semilla",
+	"seedPhrase": "시드 문구",
 	"@seedPhrase": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"privateKeys": "Llaves Privadas",
+	"privateKeys": "개인 키들",
 	"@privateKeys": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"privateKey": "Llave Privada",
+	"privateKey": "개인 키",
 	"@privateKey": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"enterpassword": "Por favor ingrese su contraseña para continuar.",
+	"enterpassword": "계속하기 위해서 비밀번호를 먼저 입력해주세요.",
 	"@enterpassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"clipboardCopy": "Copiar al portapapeles",
+	"clipboardCopy": "클립보드 복사",
 	"@clipboardCopy": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"unlock": "desbloquear",
+	"unlock": "열기",
 	"@unlock": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"unlockSuccess": "Desbloqueó con éxito {amnt} fondos - TX: {hash}",
+	"unlockSuccess": "성공적으로 {amnt} 펀드를 열었습니다 - TX: {hash}",
 	"@unlockSuccess": {
 		"type": "text",
 		"placeholders_order": [
@@ -2063,19 +2063,19 @@
 			"hash": {}
 		}
 	},
-	"unlockFunds": "Desbloquear fondos",
+	"unlockFunds": "펀드 열기",
 	"@unlockFunds": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noOrders": "No hay pedidos, por favor vaya al comercio.",
+	"noOrders": "주문 없음, 가서 거래하세요.",
 	"@noOrders": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noOrder": "Ingrese la cantidad de {coinName}.",
+	"noOrder": "{coinName} 양을 입력해 주세요.",
 	"@noOrder": {
 		"type": "text",
 		"placeholders_order": [
@@ -2085,103 +2085,103 @@
 			"coinName": {}
 		}
 	},
-	"bestAvailableRate": "Tipo de cambio",
+	"bestAvailableRate": "비율 바꾸기",
 	"@bestAvailableRate": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"receiveLower": "Recibir",
+	"receiveLower": "받기",
 	"@receiveLower": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"makeAorder": "hacer un pedido",
+	"makeAorder": "주문 만들기",
 	"@makeAorder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exchangeTitle": "INTERCAMBIO",
+	"exchangeTitle": "변환",
 	"@exchangeTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orders": "ordenes",
+	"orders": "주문",
 	"@orders": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"selectCoin": "Seleccionar moneda",
+	"selectCoin": "코인 선택",
 	"@selectCoin": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"selectLanguage": "Seleccione el idioma",
+	"selectLanguage": "언어 선택",
 	"@selectLanguage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noFunds": "Sin Fondos",
+	"noFunds": "펀드 없음",
 	"@noFunds": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noFundsDetected": "No hay fondos disponibles, por favor deposite.",
+	"noFundsDetected": "가능한 펀드 없음 -  ㅂ",
 	"@noFundsDetected": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"goToPorfolio": "Ir al portafolio",
+	"goToPorfolio": "포티폴리오로 가기",
 	"@goToPorfolio": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noOrderAvailable": "Haga clic para crear un pedido",
+	"noOrderAvailable": "주문을 만들기 위해서 눌러주세요",
 	"@noOrderAvailable": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"insufficientTitle": "Volumen insuficiente",
+	"insufficientTitle": "볼륨 부족",
 	"@insufficientTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"insufficientText": "El volumen mínimo requerido por este pedido es",
+	"insufficientText": "이 주문을 하기 위한 최소 볼륨은",
 	"@insufficientText": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderCreated": "Pedido creado",
+	"orderCreated": "주문 생성됨",
 	"@orderCreated": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderCreatedInfo": "Pedido creado con éxito",
+	"orderCreatedInfo": "주문이 성공적으로 생성됬습니다",
 	"@orderCreatedInfo": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"showMyOrders": "Mostrar mis pedidos",
+	"showMyOrders": "나의 주문 보기",
 	"@showMyOrders": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"minValue": "La cantidad mínima para vender es {number} {coinName}",
+	"minValue": "최소 판매 양은 {number} {coinName}입니다",
 	"@minValue": {
 		"type": "text",
 		"placeholders_order": [
@@ -2193,13 +2193,13 @@
 			"number": {}
 		}
 	},
-	"titleCreatePassword": "CREA UNA CONTRASEÑA",
+	"titleCreatePassword": "비밀번호 생성",
 	"@titleCreatePassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"minValueBuy": "La cantidad mínima para comprar es {number}{coinName}",
+	"minValueBuy": "최소 구매 양은 {number} {coinName}입니다",
 	"@minValueBuy": {
 		"type": "text",
 		"placeholders_order": [
@@ -2211,7 +2211,7 @@
 			"number": {}
 		}
 	},
-	"minValueSell": "La cantidad mínima para vender es {number}{coinName}",
+	"minValueSell": "최소 판매 양은 {number} {coinName}입니다",
 	"@minValueSell": {
 		"type": "text",
 		"placeholders_order": [
@@ -2223,7 +2223,7 @@
 			"number": {}
 		}
 	},
-	"minValueOrder": "El monto mínimo del pedido es {buyAmount}{buyCoin}\n({sellAmount}{sellCoin})",
+	"minValueOrder": "최소 주문 양은 {buyAmount} {buyCoin}\n({sellAmount} {sellCoin})입니다",
 	"@minValueOrder": {
 		"type": "text",
 		"placeholders_order": [
@@ -2239,91 +2239,91 @@
 			"sellAmount": {}
 		}
 	},
-	"enterSellAmount": "Primero debe ingresar el monto de la venta",
+	"enterSellAmount": "판매 양을 먼저 입력하세요",
 	"@enterSellAmount": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"encryptingWallet": "Billetera cifrada",
+	"encryptingWallet": "지갑 암호화 하는 중",
 	"@encryptingWallet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"decryptingWallet": "Billetera de descifrado",
+	"decryptingWallet": "지갑 해석 중",
 	"@decryptingWallet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"notEnoughtBalanceForFee": "No hay suficiente saldo para las tarifas: opere con una cantidad menor",
+	"notEnoughtBalanceForFee": "수수료를 위한 잔고 부족 - 더 작은 양을 거래하세요",
 	"@notEnoughtBalanceForFee": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noInternet": "Sin conexión a Internet",
+	"noInternet": "인터넷 연결 없음",
 	"@noInternet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"builtKomodo": "Construido en Komodo",
+	"builtKomodo": "Komodo로 만들어짐",
 	"@builtKomodo": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"pleaseAddCoin": "Por favor agregue una moneda",
+	"pleaseAddCoin": "코인을 더해 주세요",
 	"@pleaseAddCoin": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"internetRestored": "Conexión a Internet restaurada",
+	"internetRestored": "인터넷 연결 복구됨",
 	"@internetRestored": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"internetRefreshButton": "Actualizar",
+	"internetRefreshButton": "새로 고침",
 	"@internetRefreshButton": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"legalTitle": "Legal",
+	"legalTitle": "법적",
 	"@legalTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"disclaimerAndTos": "Descargo de responsabilidad y condiciones de servicio",
+	"disclaimerAndTos": "부인서명 & ToS",
 	"@disclaimerAndTos": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"accepteula": "Aceptar EULA",
+	"accepteula": "EULA 동의",
 	"@accepteula": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"accepttac": "Aceptar TERMINOS y CONDICIONES",
+	"accepttac": "이용약관 동의",
 	"@accepttac": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"confirmeula": "Al hacer clic en los botones a continuación, confirma haber leído el 'EULA' y los 'Términos y condiciones' y acepta estos",
+	"confirmeula": "아래 버튼을 클릭하면 'EULA'와 '이용약관'을 읽고 이러한 버튼에 동의할 수 있습니다.",
 	"@confirmeula": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"gasFee": " tarifa{coin} ",
+	"gasFee": "{coin} 수수료",
 	"@gasFee": {
 		"type": "text",
 		"placeholders_order": [
@@ -2333,7 +2333,7 @@
 			"coin": {}
 		}
 	},
-	"notEnoughGas": "¡No hay suficiente {coin} para la transacción!",
+	"notEnoughGas": "거래를 위한 {coin} 부족합니다!",
 	"@notEnoughGas": {
 		"type": "text",
 		"placeholders_order": [
@@ -2343,7 +2343,7 @@
 			"coin": {}
 		}
 	},
-	"gasNotActive": "Activa {coin}.",
+	"gasNotActive": "{coin}을 활성화하세요.",
 	"@gasNotActive": {
 		"type": "text",
 		"placeholders_order": [
@@ -2353,7 +2353,7 @@
 			"coin": {}
 		}
 	},
-	"youWillReceiveClaim": "Recibirás {amount} {coin}",
+	"youWillReceiveClaim": "당신은 {amount} {coin}을 받습니다",
 	"@youWillReceiveClaim": {
 		"type": "text",
 		"placeholders_order": [
@@ -2365,7 +2365,7 @@
 			"coin": {}
 		}
 	},
-	"seeOrders": "Haga clic para ver {amount} pedidos",
+	"seeOrders": "{amount} 주문을 보기 위해 클릭하세요",
 	"@seeOrders": {
 		"type": "text",
 		"placeholders_order": [
@@ -2375,49 +2375,49 @@
 			"amount": {}
 		}
 	},
-	"clickToSee": "Clic para ver",
+	"clickToSee": "눌러서 보기",
 	"@clickToSee": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"price": "price",
+	"price": "가격",
 	"@price": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"availableVolume": "volumen máximo",
+	"availableVolume": "최대 볼륨",
 	"@availableVolume": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"configureWallet": "Configurando su billetera, por favor espere...",
+	"configureWallet": "지갑을 설정하고 있습니다, 기다려주세요...",
 	"@configureWallet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"titleCurrentAsk": "Pedido seleccionado",
+	"titleCurrentAsk": "주문 선택됨",
 	"@titleCurrentAsk": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"txFeeTitle": "tarifa de transacción:",
+	"txFeeTitle": "거래 수수료:",
 	"@txFeeTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"tradingFee": "tarifa de negociación:",
+	"tradingFee": "거래 수수료:",
 	"@tradingFee": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapGasAmount": "El saldo de {coin} no es suficiente para pagar las tarifas de transacción.",
+	"swapGasAmount": "{coin} 잔고가 거래 수수료를 지불하기 부족합니다.",
 	"@swapGasAmount": {
 		"type": "text",
 		"placeholders_order": [
@@ -2427,7 +2427,7 @@
 			"coin": {}
 		}
 	},
-	"swapGasAmountRequired": " El saldo de{coin} no es suficiente para pagar las tarifas de transacción. {coin} {amount} obligatorio.",
+	"swapGasAmountRequired": "{coin} 잔고가 거래 수수료를 지불하기 부족합니다. {coin} {amount}가 필요합니다.",
 	"@swapGasAmountRequired": {
 		"type": "text",
 		"placeholders_order": [
@@ -2439,49 +2439,49 @@
 			"amount": {}
 		}
 	},
-	"invalidSwap": "No se puede continuar con el intercambio",
+	"invalidSwap": "스왑 진행 불가능",
 	"@invalidSwap": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"showDetails": "Mostrar detalles",
+	"showDetails": "상세 보기",
 	"@showDetails": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exchangeRate": "Tipo de cambio:",
+	"exchangeRate": "변환 비율:",
 	"@exchangeRate": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"selectedOrder": "Orden seleccionado:",
+	"selectedOrder": "선택된 주문:",
 	"@selectedOrder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"minOrder": "Volumen mínimo de pedido:",
+	"minOrder": "최소 주문 볼륨",
 	"@minOrder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"maxOrder": "Volumen máximo de pedidos:",
+	"maxOrder": "최대 주문 볼륨",
 	"@maxOrder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"invalidSwapDetailsLink": "Detalles",
+	"invalidSwapDetailsLink": "상세",
 	"@invalidSwapDetailsLink": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapGasActivate": "Activa {coin} y recarga el saldo primero",
+	"swapGasActivate": "{coin} 활성화와 최고 잔고를 먼저 해주세요",
 	"@swapGasActivate": {
 		"type": "text",
 		"placeholders_order": [
@@ -2491,169 +2491,169 @@
 			"coin": {}
 		}
 	},
-	"tradePreimageError": "Error al calcular las tarifas comerciales",
+	"tradePreimageError": "거래 수수료 계산 실패",
 	"@tradePreimageError": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"remove": "Desactivar",
+	"remove": "비활성화",
 	"@remove": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"walletOnly": "Solo billetera",
+	"walletOnly": "오직 지갑만",
 	"@walletOnly": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"emptyWallet": "El nombre de la billetera no debe estar vacío",
+	"emptyWallet": "지갑 이름은 절대로 공백으로 둘 수 없습니다",
 	"@emptyWallet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"walletMaxChar": "El nombre de la billetera debe tener un máximo de 40 caracteres",
+	"walletMaxChar": "지갑 이름은 최대 40자가 있어야 합니다",
 	"@walletMaxChar": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"walletInUse": "El nombre de la billetera ya está en uso",
+	"walletInUse": "지갑 이름이 벌서 사용 중 입니다",
 	"@walletInUse": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"dexIsNotAvailable": "DEX no está disponible para esta moneda",
+	"dexIsNotAvailable": "DEX은 이 코인에서 사용 불가합니다",
 	"@dexIsNotAvailable": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterCoin": "Buscar una moneda",
+	"searchFilterCoin": "코인 찾기",
 	"@searchFilterCoin": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleSmartChain": "Seleccione todos los SmartChains",
+	"searchFilterSubtitleSmartChain": "SmartChains 토큰 모두 선택",
 	"@searchFilterSubtitleSmartChain": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleTestCoins": "Seleccionar todos los activos de prueba",
+	"searchFilterSubtitleTestCoins": "테스트 자산 토큰 모두 선택",
 	"@searchFilterSubtitleTestCoins": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleERC": "Seleccionar todos los tokens ERC",
+	"searchFilterSubtitleERC": "ERC 토큰 모두 선택",
 	"@searchFilterSubtitleERC": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleKRC": "Seleccionar todos los tokens de Kucoin",
+	"searchFilterSubtitleKRC": "Kucoin 토큰 모두 선택",
 	"@searchFilterSubtitleKRC": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleHRC": "Seleccionar todas las fichas de armonía",
+	"searchFilterSubtitleHRC": "Harmony 토큰 모두 선택",
 	"@searchFilterSubtitleHRC": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleETC": "Seleccionar todos los tokens ETC",
+	"searchFilterSubtitleETC": "ETC 토큰 모두 선택",
 	"@searchFilterSubtitleETC": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleSBCH": "Seleccione todos los tokens SmartBCH",
+	"searchFilterSubtitleSBCH": "SmartBCH 토큰 모두 선택",
 	"@searchFilterSubtitleSBCH": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleAVX": "Seleccionar todos los tokens de Avax",
+	"searchFilterSubtitleAVX": "Avax 토큰 모두 선택",
 	"@searchFilterSubtitleAVX": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleUBQ": "Seleccionar todas las monedas Ubiq",
+	"searchFilterSubtitleUBQ": "Ubiq 코인 모두 선택",
 	"@searchFilterSubtitleUBQ": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleBEP": "Seleccionar todos los tokens BEP",
+	"searchFilterSubtitleBEP": "BEP 토큰 모두 선택",
 	"@searchFilterSubtitleBEP": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitlePLG": "Seleccione todas las fichas de polígono",
+	"searchFilterSubtitlePLG": "Polygon 토큰 모두 선택",
 	"@searchFilterSubtitlePLG": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleQRC": "Seleccionar todos los tokens QRC",
+	"searchFilterSubtitleQRC": "QRC 토큰 모두 선택",
 	"@searchFilterSubtitleQRC": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleHCO": "Seleccionar todos los tokens de HecoChain",
+	"searchFilterSubtitleHCO": "HecoChain 토큰 모두 선택",
 	"@searchFilterSubtitleHCO": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleFTM": "Seleccionar todas las fichas de Fantom",
+	"searchFilterSubtitleFTM": "Fantom 토큰 모두 선택",
 	"@searchFilterSubtitleFTM": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleMVR": "Seleccione todas las fichas de Moonriver",
+	"searchFilterSubtitleMVR": "Moonriver 토큰 모두 선택",
 	"@searchFilterSubtitleMVR": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"customFee": "Costo de Transacción Personalizado",
+	"customFee": "통관 수수료",
 	"@customFee": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"gasLimit": "Limite de Gas",
+	"gasLimit": "가스 제한",
 	"@gasLimit": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"gasPrice": "Precio de Gas",
+	"gasPrice": "가스 가격",
 	"@gasPrice": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"customFeeWarning": "¡Solo use tarifas personalizadas si sabe lo que está haciendo!",
+	"customFeeWarning": "당신이 무엇을 하고 있는지 알고 있는 경우에만 관세비용을 사용하세요!",
 	"@customFeeWarning": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchFilterSubtitleutxo": "Seleccione todas las monedas UTXO",
+	"searchFilterSubtitleutxo": "UTXO 코인 모두 선택",
 	"@searchFilterSubtitleutxo": {
 		"type": "text",
 		"placeholders_order": [],
@@ -2743,19 +2743,19 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"builtOnKmd": "Construido en Komodo",
+	"builtOnKmd": "Komodo로 만들어짐",
 	"@builtOnKmd": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"poweredOnKmd": "Desarrollado por Komodo",
+	"poweredOnKmd": "Komodo의해 구동됨",
 	"@poweredOnKmd": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"errorNotEnoughGas": "No hay suficiente gas: usa al menos {gas} Gwei",
+	"errorNotEnoughGas": "가스가 충분하지 않습니다 - 최소 {gas}양의 가스를 사용하세요",
 	"@errorNotEnoughGas": {
 		"type": "text",
 		"placeholders_order": [
@@ -2765,7 +2765,7 @@
 			"gas": {}
 		}
 	},
-	"orderCancel": "Todos los pedidos de {coin} serán cancelados.",
+	"orderCancel": "모든 {coin} 주문이 취소될것 입니다.",
 	"@orderCancel": {
 		"type": "text",
 		"placeholders_order": [
@@ -2775,157 +2775,157 @@
 			"coin": {}
 		}
 	},
-	"deleteConfirm": "Confirmar desactivación",
+	"deleteConfirm": "비활성화 확인",
 	"@deleteConfirm": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"deleteSpan1": "¿Quieres eliminar",
+	"deleteSpan1": "지우시고 싶으십니까",
 	"@deleteSpan1": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"deleteSpan2": "de tu cartera? Todos los pedidos no emparejados serán cancelados.",
+	"deleteSpan2": "당신의 포티폴리오에서? 일치되지 않은 주문들은 모두 취소됩니다.",
 	"@deleteSpan2": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"cantDeleteDefaultCoinTitle": "No se puede deshabilitar",
+	"cantDeleteDefaultCoinTitle": "비활성화 불가능",
 	"@cantDeleteDefaultCoinTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"cantDeleteDefaultCoinSpan": "es una moneda predeterminada. Las monedas predeterminadas no se pueden desactivar.",
+	"cantDeleteDefaultCoinSpan": "기본 코인입니다. 기본 코인은 비활성화 될 수 없습니다.",
 	"@cantDeleteDefaultCoinSpan": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"cantDeleteDefaultCoinOk": "Ok",
+	"cantDeleteDefaultCoinOk": "네",
 	"@cantDeleteDefaultCoinOk": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"share": "Compartir",
+	"share": "공유",
 	"@share": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"warningShareLogs": "Advertencia: en casos especiales, estos datos de registro contienen información confidencial que se puede usar para gastar monedas de intercambios fallidos.",
+	"warningShareLogs": "경고 - 특별한 경우 이 로그 데이터에는 스왑에 실패한 코인을 사용하는 데 사용할 수 있는 중요한 정보가 포함되어 있습니다!",
 	"@warningShareLogs": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"enterOldPinCode": "Ingrese su antiguo PIN",
+	"enterOldPinCode": "옛날 핀을 입력하세요",
 	"@enterOldPinCode": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"enterNewPinCode": "Ingrese su nuevo PIN",
+	"enterNewPinCode": "새로운 핀을 입력하세요",
 	"@enterNewPinCode": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"authenticate": "autenticar",
+	"authenticate": "증명하기",
 	"@authenticate": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"settingLanguageTitle": "Idiomas",
+	"settingLanguageTitle": "언어",
 	"@settingLanguageTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"englishLanguage": "Inglés",
+	"englishLanguage": "영어",
 	"@englishLanguage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"frenchLanguage": "Francés",
+	"frenchLanguage": "프랑스 국민",
 	"@frenchLanguage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"deutscheLanguage": "Alemán",
+	"deutscheLanguage": "독일어",
 	"@deutscheLanguage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"chineseLanguage": "Chino",
+	"chineseLanguage": "중국인",
 	"@chineseLanguage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"russianLanguage": "Ruso",
+	"russianLanguage": "러시아인",
 	"@russianLanguage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"japaneseLanguage": "Japonés",
+	"japaneseLanguage": "일본어",
 	"@japaneseLanguage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"turkishLanguage": "Turco",
+	"turkishLanguage": "터키어",
 	"@turkishLanguage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"hungarianLanguage": "Húngaro",
+	"hungarianLanguage": "헝가리 인",
 	"@hungarianLanguage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"spanishLanguage": "Español",
+	"spanishLanguage": "스페인의",
 	"@spanishLanguage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"faucetName": "GRIFO",
+	"faucetName": "호수",
 	"@faucetName": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"faucetSuccess": "Éxito",
+	"faucetSuccess": "성공",
 	"@faucetSuccess": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"faucetError": "Error",
+	"faucetError": "에러",
 	"@faucetError": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"faucetTimedOut": "Tiempo de espera agotado",
+	"faucetTimedOut": "요청 시간 초과",
 	"@faucetTimedOut": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"faucetInProgress": "Enviando solicitud a la llave {coin}...",
+	"faucetInProgress": "{coin} 호수에게 요청 보내는 중...",
 	"@faucetInProgress": {
 		"type": "text",
 		"placeholders_order": [
@@ -2935,85 +2935,85 @@
 			"coin": {}
 		}
 	},
-	"Sound": "Sonido",
+	"Sound": "소리",
 	"@Sound": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"Play at full volume": "Juega a todo volumen",
+	"Play at full volume": "최대 소리로 틀기",
 	"@Play at full volume": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"Taker": "Comprador",
+	"Taker": "테이커",
 	"@Taker": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"you have a fresh order that is trying to match with an existing order": "tiene un pedido nuevo que está tratando de coincidir con un pedido existente",
+	"you have a fresh order that is trying to match with an existing order": "당신은 이미 있는 주문과 일치한 새로운 주문을 찾고 있습니다",
 	"@you have a fresh order that is trying to match with an existing order": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"Maker": "Vendedor",
+	"Maker": "메이커",
 	"@Maker": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"you have an order that new orders can match with": "tiene un pedido con el que pueden coincidir nuevos pedidos",
+	"you have an order that new orders can match with": "당신은 새로운 주문을 맞출수 있는 주문이 있습니다",
 	"@you have an order that new orders can match with": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"Active": "Activo",
+	"Active": "활성화",
 	"@Active": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"you have an active swap in progress": "tienes un intercambio activo en curso",
+	"you have an active swap in progress": "당신은 진행되고 있는 활성화 스왑이 있습니다",
 	"@you have an active swap in progress": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"Failed": "Fallido",
+	"Failed": "실패",
 	"@Failed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"a swap fails": "un intercambio falla",
+	"a swap fails": "바꾸기 실패",
 	"@a swap fails": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"Applause": "Aplausos",
+	"Applause": "박수",
 	"@Applause": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"a swap runs to completion": "un intercambio se ejecuta hasta su finalización",
+	"a swap runs to completion": "바꾸기 완료 중",
 	"@a swap runs to completion": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"Can't play that": "no puedo escuchar eso",
+	"Can't play that": "그것은 할 수 없습니다",
 	"@Can't play that": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"soundCantPlayThatMsg": "Elija un archivo mp3 o wav, por favor. Lo reproduciremos cuando {description}.",
+	"soundCantPlayThatMsg": "mp3 또는 wav 파일을 골라주세요. 저희가 {description}때 들려드리겠습니다.",
 	"@soundCantPlayThatMsg": {
 		"type": "text",
 		"placeholders_order": [
@@ -3025,7 +3025,7 @@
 			}
 		}
 	},
-	"soundPlayedWhen": "Jugado cuando {description}",
+	"soundPlayedWhen": "{description}일때 들려주기",
 	"@soundPlayedWhen": {
 		"type": "text",
 		"placeholders_order": [
@@ -3037,109 +3037,109 @@
 			}
 		}
 	},
-	"soundsDialogTitle": "Sonidos",
+	"soundsDialogTitle": "소리들",
 	"@soundsDialogTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"soundsExplanation": "Escuchará notificaciones de sonido durante el proceso de intercambio y cuando tenga un pedido de fabricante activo.\nEl protocolo de intercambios atómicos requiere que los participantes estén en línea para un intercambio exitoso, y las notificaciones de sonido ayudan a lograrlo.",
+	"soundsExplanation": "스왑 진행 중 및 활성 제조업체 주문이 있을 때 사운드 알림이 들립니다.\n아토믹 교환 프로토콜은 성공적인 거래를 위해 참여자들이 온라인에 있어야 하며, 사운드 알림은 이를 달성하는 데 도움이 됩니다.",
 	"@soundsExplanation": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"soundsNote": "Tenga en cuenta que puede configurar sus sonidos personalizados en la configuración de la aplicación.",
+	"soundsNote": "앱플리케이션 성정에서 커스텀 소리를 설정 할 수 있다는 것을 알아두세요.",
 	"@soundsNote": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"soundsDoNotShowAgain": "Entendido, no lo muestres más.",
+	"soundsDoNotShowAgain": "알겠습니다, 더 이상 보여주지 마세요",
 	"@soundsDoNotShowAgain": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"soundSettingsTitle": "Ajustes de sonido",
+	"soundSettingsTitle": "소리 성정",
 	"@soundSettingsTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"soundSettingsLink": "Sonido",
+	"soundSettingsLink": "소리",
 	"@soundSettingsLink": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"marketsTab": "Mercados",
+	"marketsTab": "마켓",
 	"@marketsTab": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"marketsTitle": "MERCADOS",
+	"marketsTitle": "마켓",
 	"@marketsTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"marketsPrice": "PRECIO",
+	"marketsPrice": "가격",
 	"@marketsPrice": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"marketsOrderbook": "LIBRO DE ORDENES",
+	"marketsOrderbook": "책 주문",
 	"@marketsOrderbook": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"marketsChart": "Gráfico",
+	"marketsChart": "차트",
 	"@marketsChart": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"marketsDepth": "Profundidad",
+	"marketsDepth": "깊이",
 	"@marketsDepth": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsPrice": "Precio",
+	"orderDetailsPrice": "가격",
 	"@orderDetailsPrice": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsSells": "Ventas",
+	"orderDetailsSells": "판매",
 	"@orderDetailsSells": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsFor": "for",
+	"orderDetailsFor": "위한",
 	"@orderDetailsFor": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsMin": "min.",
+	"orderDetailsMin": "분.",
 	"@orderDetailsMin": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsAddress": "Direccion",
+	"orderDetailsAddress": "주소",
 	"@orderDetailsAddress": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsExpedient": "Expediente: CEX +{delta}%",
+	"orderDetailsExpedient": "편함: CEX +{delta}%",
 	"@orderDetailsExpedient": {
 		"type": "text",
 		"placeholders_order": [
@@ -3149,7 +3149,7 @@
 			"delta": {}
 		}
 	},
-	"orderDetailsExpensive": "Caro: CEX {delta}%",
+	"orderDetailsExpensive": "편함: CEX {delta}%",
 	"@orderDetailsExpensive": {
 		"type": "text",
 		"placeholders_order": [
@@ -3159,55 +3159,55 @@
 			"delta": {}
 		}
 	},
-	"orderDetailsIdentical": "Idéntico a CEX",
+	"orderDetailsIdentical": "똑같은 CEX",
 	"@orderDetailsIdentical": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsReceive": "Recibir",
+	"orderDetailsReceive": "받기",
 	"@orderDetailsReceive": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsSpend": "Gastar",
+	"orderDetailsSpend": "소비",
 	"@orderDetailsSpend": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"ownOrder": "Esta es tu propia orden!",
+	"ownOrder": "이것은 당신만의 주문입니다!",
 	"@ownOrder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"marketsSelectCoins": "Por favor seleccione monedas",
+	"marketsSelectCoins": "코인을 선택해 주세요",
 	"@marketsSelectCoins": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"coinSelectTitle": "Seleccionar moneda",
+	"coinSelectTitle": "코인 선택",
 	"@coinSelectTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"coinSelectNotFound": "No hay monedas activas",
+	"coinSelectNotFound": "활성화된 코인 없음",
 	"@coinSelectNotFound": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"coinSelectClear": "Remover",
+	"coinSelectClear": "클리어",
 	"@coinSelectClear": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"ordersTablePrice": "Precio ({coin})",
+	"ordersTablePrice": "가격 ({coin})",
 	"@ordersTablePrice": {
 		"type": "text",
 		"placeholders_order": [
@@ -3217,7 +3217,7 @@
 			"coin": {}
 		}
 	},
-	"ordersTableAmount": "Cantidad ({coin})",
+	"ordersTableAmount": "Amt. ({coin})",
 	"@ordersTableAmount": {
 		"type": "text",
 		"placeholders_order": [
@@ -3227,7 +3227,7 @@
 			"coin": {}
 		}
 	},
-	"ordersTableTotal": "Total ({coin})",
+	"ordersTableTotal": "총값 ({coin})",
 	"@ordersTableTotal": {
 		"type": "text",
 		"placeholders_order": [
@@ -3237,109 +3237,109 @@
 			"coin": {}
 		}
 	},
-	"marketsNoBids": "No se encontraron ofertas",
+	"marketsNoBids": "입찰을 찾을 수 없음",
 	"@marketsNoBids": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"marketsNoAsks": "No se encontraron solicitudes",
+	"marketsNoAsks": "질문을 찾을 수 없음",
 	"@marketsNoAsks": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"marketsOrderDetails": "Detalles del Pedido",
+	"marketsOrderDetails": "주문 디테일",
 	"@marketsOrderDetails": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"candleChartError": "Algo salió mal. Vuelve a intentarlo más tarde.",
+	"candleChartError": "무언가 잘못되었습니다. 나중에 다시 시도해주세요.",
 	"@candleChartError": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsTitle": "Información de recompensas",
+	"rewardsTitle": "보상 정보",
 	"@rewardsTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsReadMore": "Obtenga más información sobre las recompensas para usuarios activos de KMD",
+	"rewardsReadMore": "KMD 활성화 유저 보상에 대해서 더 읽어 보기",
 	"@rewardsReadMore": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsCancel": "Cancelar",
+	"rewardsCancel": "취소",
 	"@rewardsCancel": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsReceive": "Recibir",
+	"rewardsReceive": "받기",
 	"@rewardsReceive": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noRewards": "No hay recompensas reclamables",
+	"noRewards": "받을 수 있는 보상 없음",
 	"@noRewards": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsTableTitle": "Información de recompensas:",
+	"rewardsTableTitle": "보상 정보:",
 	"@rewardsTableTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsTableUXTO": "UTXO\ncantidad,\nKMD",
+	"rewardsTableUXTO": "UTXO amt,\nKMD",
 	"@rewardsTableUXTO": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsTableRewards": "Recompensas,\nKMD",
+	"rewardsTableRewards": "보상,\nKMD",
 	"@rewardsTableRewards": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsTableFiat": "Fiat",
+	"rewardsTableFiat": "피아트",
 	"@rewardsTableFiat": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsTableTime": "Tiempo\nrestante",
+	"rewardsTableTime": "남은 시간",
 	"@rewardsTableTime": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsTableStatus": "Estado",
+	"rewardsTableStatus": "상태",
 	"@rewardsTableStatus": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsPopupTitle": "Estado de recompensas:",
+	"rewardsPopupTitle": "보상 상태:",
 	"@rewardsPopupTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsPopupOk": "Ok",
+	"rewardsPopupOk": "네",
 	"@rewardsPopupOk": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsTimeDays": "{dd} dias(s)",
+	"rewardsTimeDays": "{dd} 날(들)",
 	"@rewardsTimeDays": {
 		"type": "text",
 		"placeholders_order": [
@@ -3361,7 +3361,7 @@
 			"minutes": {}
 		}
 	},
-	"rewardsTimeMin": "{mm}min",
+	"rewardsTimeMin": "{mm}분",
 	"@rewardsTimeMin": {
 		"type": "text",
 		"placeholders_order": [
@@ -3371,7 +3371,7 @@
 			"mm": {}
 		}
 	},
-	"rewardsSuccess": "¡Éxito! {amount} KMD recibido.",
+	"rewardsSuccess": "성공! {amount} KMD를 받았습니다.",
 	"@rewardsSuccess": {
 		"type": "text",
 		"placeholders_order": [
@@ -3381,7 +3381,7 @@
 			"amount": {}
 		}
 	},
-	"rewardsError": "Algo salió mal. Por favor, inténtelo de nuevo más tarde.",
+	"rewardsError": "무언가 잘못 됬습니다. 나중에 다시 시도하세요.",
 	"@rewardsError": {
 		"type": "text",
 		"placeholders_order": [],
@@ -3393,67 +3393,67 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsLowAmountLong": "Cantidad de UTXO inferior a 10 KMD",
+	"rewardsLowAmountLong": "UTXO 양이 10 KMD에 이하입니다",
 	"@rewardsLowAmountLong": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsInProgressShort": "procesando",
+	"rewardsInProgressShort": "진행중",
 	"@rewardsInProgressShort": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsInProgressLong": "La transacción está en curso",
+	"rewardsInProgressLong": "거래가 진행되고 있습니다",
 	"@rewardsInProgressLong": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsOneHourShort": "<1 hora",
+	"rewardsOneHourShort": "<1 시간",
 	"@rewardsOneHourShort": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsOneHourLong": "Aún no ha pasado una hora",
+	"rewardsOneHourLong": "한 시간이 지나지 않았습니다",
 	"@rewardsOneHourLong": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"rewardsButton": "Reclama tus recompensas",
+	"rewardsButton": "당신의 보상을 받으세요",
 	"@rewardsButton": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"seeTxHistory": "Ver historial de transacciones",
+	"seeTxHistory": "거래 내역 보기",
 	"@seeTxHistory": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"retryActivating": "Volviendo a intentar activar todas las monedas...",
+	"retryActivating": "다시 모든 코인 활성화 중...",
 	"@retryActivating": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"willBeRedirected": "Se le redirigirá a la página del portafolio al finalizar.",
+	"willBeRedirected": "완료 후 포티폴리오 페이지로 리디렉트 됩니다.",
 	"@willBeRedirected": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"tryRestarting": "Si aún así algunas monedas aún no están activadas, intente reiniciar la aplicación.",
+	"tryRestarting": "그래도 일부 코인이 활성화되어 있지 않다면, 앱을 재부팅해 보세요.",
 	"@tryRestarting": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"weFailedTo": "No pudimos activar {coinAbbr}",
+	"weFailedTo": "저희가 {coinAbbr}를 활성화 하는 것을 실패했습니다",
 	"@weFailedTo": {
 		"type": "text",
 		"placeholders_order": [
@@ -3463,25 +3463,25 @@
 			"coinAbbr": {}
 		}
 	},
-	"pleaseRestart": "Reinicie la aplicación para volver a intentarlo o presione el botón a continuación.",
+	"pleaseRestart": "다시하기 위해서 앱을 다시 시작하거나, 밑에 버튼을 눌러 주세요.",
 	"@pleaseRestart": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"retryAll": "Vuelva a intentar activar todo",
+	"retryAll": "다시 모두 활성화 중",
 	"@retryAll": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"automaticRedirected": "Se le redirigirá automáticamente a la página de cartera cuando se complete el proceso de reintento de activación.",
+	"automaticRedirected": "활성화 재시도가 완료되면 당신은 자동으로 포티폴리오 페이지로 리디랙션이 될 것 입니다.",
 	"@automaticRedirected": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"weFailedToActivate": "No pudimos activar {coinAbbr}.\nReinicie la aplicación para volver a intentarlo.",
+	"weFailedToActivate": "저희가 {coinAbbr}를 활성화 하는 것을 실패했습니다.\n앱을 다시 시작하고 다시 해주세요.",
 	"@weFailedToActivate": {
 		"type": "text",
 		"placeholders_order": [
@@ -3491,7 +3491,7 @@
 			"coinAbbr": {}
 		}
 	},
-	"isUnavailable": "{coinAbbr} no está disponible :(",
+	"isUnavailable": "{coinAbbr} 이 사용불가합니다 :(",
 	"@isUnavailable": {
 		"type": "text",
 		"placeholders_order": [
@@ -3501,103 +3501,103 @@
 			"coinAbbr": {}
 		}
 	},
-	"multiTab": "Multi",
+	"multiTab": "멀티",
 	"@multiTab": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiFixErrors": "Corrija todos los errores antes de continuar",
+	"multiFixErrors": "계속하기 전에 모든 에러를 고치세요",
 	"@multiFixErrors": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiCreate": "Crear",
+	"multiCreate": "생성",
 	"@multiCreate": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiCreateOrder": "Orden",
+	"multiCreateOrder": "주문",
 	"@multiCreateOrder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiCreateOrders": "Ordenes",
+	"multiCreateOrders": "주문들",
 	"@multiCreateOrders": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiBasePlaceholder": "Moneda",
+	"multiBasePlaceholder": "코인",
 	"@multiBasePlaceholder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiSellTitle": "Vender:",
+	"multiSellTitle": "판매:",
 	"@multiSellTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiBaseSelectTitle": "Vender",
+	"multiBaseSelectTitle": "판매",
 	"@multiBaseSelectTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiBaseAmtPlaceholder": "Cantidad",
+	"multiBaseAmtPlaceholder": "양",
 	"@multiBaseAmtPlaceholder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiReceiveTitle": "Recibir:",
+	"multiReceiveTitle": "받기:",
 	"@multiReceiveTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiTablePrice": "Precio/CEX",
+	"multiTablePrice": "가격/CEX",
 	"@multiTablePrice": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiTableAmt": "Recibir Cntd.",
+	"multiTableAmt": "Amt 받기",
 	"@multiTableAmt": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiFiatDesc": "Ingrese la cantidad de dinero para recibir:",
+	"multiFiatDesc": "받을 명령 양을 입력하세요:",
 	"@multiFiatDesc": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiFiatCancel": "Cancelar",
+	"multiFiatCancel": "취소",
 	"@multiFiatCancel": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiFiatFill": "Autollenarl",
+	"multiFiatFill": "자동 채우기",
 	"@multiFiatFill": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiEthFee": "costo",
+	"multiEthFee": "수수료",
 	"@multiEthFee": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiLowerThanFee": "No hay suficientes {coin} para pagar las tarifas. El saldo MÍN es {fee} {coin}",
+	"multiLowerThanFee": "수수료를 지불할 {coin}이 부족합니다. 최소 잔고는 {fee} {coin}입니다",
 	"@multiLowerThanFee": {
 		"type": "text",
 		"placeholders_order": [
@@ -3609,7 +3609,7 @@
 			"fee": {}
 		}
 	},
-	"multiConfirmTitle": "Crear {number} pedido(s):",
+	"multiConfirmTitle": "{number} 주문들 생성:",
 	"@multiConfirmTitle": {
 		"type": "text",
 		"placeholders_order": [
@@ -3619,43 +3619,43 @@
 			"number": {}
 		}
 	},
-	"multiConfirmCancel": "Cancelar",
+	"multiConfirmCancel": "취소",
 	"@multiConfirmCancel": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiConfirmConfirm": "Confirmar",
+	"multiConfirmConfirm": "확인",
 	"@multiConfirmConfirm": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiInvalidSellAmt": "Cantidad de venta no válido",
+	"multiInvalidSellAmt": "잘못된 판매 양",
 	"@multiInvalidSellAmt": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiMaxSellAmt": "La cantidad máxima de venta es",
+	"multiMaxSellAmt": "최대 판매 양은",
 	"@multiMaxSellAmt": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiMinSellAmt": "La cantidad mínima de venta es",
+	"multiMinSellAmt": "최소 판매 양은",
 	"@multiMinSellAmt": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiInvalidAmt": "Monto invalido",
+	"multiInvalidAmt": "잘못된 양",
 	"@multiInvalidAmt": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"multiActivateGas": "Active {coin} y añada saldo primero",
+	"multiActivateGas": "{coin} 활성화하고 먼저 가장 높은 잔고로",
 	"@multiActivateGas": {
 		"type": "text",
 		"placeholders_order": [
@@ -3665,7 +3665,7 @@
 			"coin": {}
 		}
 	},
-	"multiLowGas": " El saldo de{coin} es demasiado bajo",
+	"multiLowGas": "{coin} 잔고가 너무 낮습니다",
 	"@multiLowGas": {
 		"type": "text",
 		"placeholders_order": [
@@ -3675,37 +3675,37 @@
 			"coin": {}
 		}
 	},
-	"multiMinReceiveAmt": "La cantidad mínima recibida es",
+	"multiMinReceiveAmt": "최소 받는 양은",
 	"@multiMinReceiveAmt": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"addressBook": "Directorio",
+	"addressBook": "주소록",
 	"@addressBook": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"addressBookTitle": "Directorio",
+	"addressBookTitle": "주소록",
 	"@addressBookTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"contactTitle": "Detalles de contacto",
+	"contactTitle": "연락처 상세",
 	"@contactTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"addressBookEmpty": "La libreta de direcciones está vacía",
+	"addressBookEmpty": "주소록이 비어 있습니다",
 	"@addressBookEmpty": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"addressBookFilter": "Solo mostrar contactos con direcciones {title}",
+	"addressBookFilter": "{title} 주소를 가진 연락처만 보여지고 있습니다",
 	"@addressBookFilter": {
 		"type": "text",
 		"placeholders_order": [
@@ -3715,79 +3715,79 @@
 			"title": {}
 		}
 	},
-	"createContact": "Crear Contacto",
+	"createContact": "연락처 만들기",
 	"@createContact": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"contactTitleName": "Nombre",
+	"contactTitleName": "이름",
 	"@contactTitleName": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"editContact": "Editar contacto",
+	"editContact": "연락처 편집",
 	"@editContact": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"contactCancel": "Cancelar",
+	"contactCancel": "취소",
 	"@contactCancel": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"contactSave": "Guardar",
+	"contactSave": "저장",
 	"@contactSave": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"contactDiscardBtn": "Descartar",
+	"contactDiscardBtn": "버리기",
 	"@contactDiscardBtn": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"contactExit": "Salir",
+	"contactExit": "종료",
 	"@contactExit": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"contactExitWarning": "Descartar tus cambios?",
+	"contactExitWarning": "변경을 파기하시겠습니까?",
 	"@contactExitWarning": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"addressAdd": "Añadir Direccion",
+	"addressAdd": "주소 추가",
 	"@addressAdd": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"addressSelectCoin": "Seleccionar Moneda",
+	"addressSelectCoin": "코인 선택",
 	"@addressSelectCoin": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"searchForTicker": "Buscar teletipo",
+	"searchForTicker": "Ticker 찾기",
 	"@searchForTicker": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"contactDelete": "Borrar Contacto",
+	"contactDelete": "연락처 삭제",
 	"@contactDelete": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"contactDeleteWarning": "¿Está seguro de que desea eliminar el contacto {name}?",
+	"contactDeleteWarning": "{name}을 연락처를 삭제하는 것을 확인하십니까?",
 	"@contactDeleteWarning": {
 		"type": "text",
 		"placeholders_order": [
@@ -3797,37 +3797,37 @@
 			"name": {}
 		}
 	},
-	"contactDeleteBtn": "Borrar",
+	"contactDeleteBtn": "삭제",
 	"@contactDeleteBtn": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"contactNotFound": "No se encontraron contactos",
+	"contactNotFound": "연락처를 찾을 수 없습니다",
 	"@contactNotFound": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"contactEdit": "Editar",
+	"contactEdit": "편집",
 	"@contactEdit": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"addressNotFound": "Nada Encontrado",
+	"addressNotFound": "찾을 수 없음",
 	"@addressNotFound": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noSuchCoin": "No hay tal moneda",
+	"noSuchCoin": "그런 코인은 없습니다",
 	"@noSuchCoin": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"addressCoinInactive": "No puede enviar fondos a la dirección {abbr} porque {abbr} no está activado. Por favor, vaya a la cartera.",
+	"addressCoinInactive": "{abbr}의 주소로 펀드를 보낼수 없습니다, 왜냐하면 {abbr}는 활성화가 되어있지 않습니다. 포티폴리오로 가주세요.",
 	"@addressCoinInactive": {
 		"type": "text",
 		"placeholders_order": [
@@ -3837,19 +3837,19 @@
 			"abbr": {}
 		}
 	},
-	"warningOkBtn": "Ok",
+	"warningOkBtn": "네",
 	"@warningOkBtn": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"emptyName": "El nombre del contacto no puede estar vacío",
+	"emptyName": "연락처 이름은 공백으로 둘 수 없습니다",
 	"@emptyName": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"emptyCoin": "Introduzca la dirección {abbr} ",
+	"emptyCoin": "{abbr} 주소 입력",
 	"@emptyCoin": {
 		"type": "text",
 		"placeholders_order": [
@@ -3859,295 +3859,295 @@
 			"abbr": {}
 		}
 	},
-	"camoPinTitle": "Camuflajear el PIN",
+	"camoPinTitle": "위장 비밀번호",
 	"@camoPinTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoPinLink": "Camuflajear PIN",
+	"camoPinLink": "위장 비밀번호",
 	"@camoPinLink": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoPinOn": "Activado",
+	"camoPinOn": "켜기",
 	"@camoPinOn": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoPinOff": "Desactivado",
+	"camoPinOff": "끄기",
 	"@camoPinOff": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"matchingCamoTitle": "PIN Invalido",
+	"matchingCamoTitle": "틀린 핀",
 	"@matchingCamoTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"matchingCamoChange": "Cambiar",
+	"matchingCamoChange": "바꾸기",
 	"@matchingCamoChange": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoPinDesc": "Si desbloquea la aplicación con el PIN de camuflaje, se mostrará un saldo BAJO falso y la opción de configuración del PIN de camuflaje NO estará visible en la configuración",
+	"camoPinDesc": "위장 비밀번호로 앱을 잠금해제 하면 가짜인 낮은 잔액이 표시되고, 위장 비밀번호 설정 옵션은 설정에 표시되지 않습니다.",
 	"@camoPinDesc": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"matchingCamoPinError": "Su PIN general y el PIN de camuflaje son los mismos.\nEl modo de camuflaje no estará disponible.\nCambie el PIN de camuflaje.",
+	"matchingCamoPinError": "당신의 일반 핀과 위장 핀이 같습니다.\n위장 모드 사용이 불가능 할 것 입니다.\n위장 핀을 바꿔주세요.",
 	"@matchingCamoPinError": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoPinBioProtectionConflict": "El PIN de camuflaje y la bioprotección no se pueden habilitar al mismo tiempo.",
+	"camoPinBioProtectionConflict": "위장 비밀번호와 바이오인증 보호를 동시에 활성화할 수 없습니다.",
 	"@camoPinBioProtectionConflict": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoPinBioProtectionConflictTitle": "Conflicto entre PIN de camuflaje y bioprotección.",
+	"camoPinBioProtectionConflictTitle": "위장 비밀번호와 바이오인증 보호 문제.",
 	"@camoPinBioProtectionConflictTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"generalPinNotActive": "La protección general con PIN no está activa.\nEl modo de camuflaje no estará disponible.\nActive la protección con PIN.",
+	"generalPinNotActive": "일반 핀 보호가 활성화되어 있지 않습니다.\n위장 모드를 사용 할 수 없습니다.\n핀 보호를 활성화 시켜주세요.",
 	"@generalPinNotActive": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"fakeBalanceAmt": "Cantidad de saldo falso:",
+	"fakeBalanceAmt": "가짜 잔고 잔액:",
 	"@fakeBalanceAmt": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoPinNotFound": "PIN de camuflaje no encontrado",
+	"camoPinNotFound": "위장 비밀번호를 찾을 수 없습니다",
 	"@camoPinNotFound": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoPinCreate": "Crear PIN de camuflaje",
+	"camoPinCreate": "위장 비밀번호 만들기",
 	"@camoPinCreate": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoPinSaved": "PIN de camuflaje guardado",
+	"camoPinSaved": "위장 비밀번호 저장됨",
 	"@camoPinSaved": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoPinInvalid": "PIN de camuflaje no válido",
+	"camoPinInvalid": "잘못된 위장 비밀번호",
 	"@camoPinInvalid": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoPinChange": "Cambiar PIN de camuflaje",
+	"camoPinChange": "위장 비밀번호 바꾸기",
 	"@camoPinChange": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoSetupTitle": "Configuración de PIN de camuflaje",
+	"camoSetupTitle": "위장 비밀번호 셋업",
 	"@camoSetupTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"camoSetupSubtitle": "Ingrese el nuevo PIN de camuflaje",
+	"camoSetupSubtitle": "새로운 위장 비밀번호 입력하기",
 	"@camoSetupSubtitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"protectionCtrlOn": "ACTIVADO",
+	"protectionCtrlOn": "켜기",
 	"@protectionCtrlOn": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"protectionCtrlOff": "DESACTIVADO",
+	"protectionCtrlOff": "끄기",
 	"@protectionCtrlOff": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"protectionCtrlConfirmations": "Confirmaciones",
+	"protectionCtrlConfirmations": "확인 사향",
 	"@protectionCtrlConfirmations": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"dPow": "Seguridad de Komodo dPoW",
+	"dPow": "Komodo dPoW 보안",
 	"@dPow": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"protectionCtrlCustom": "Usar configuraciones de protección personalizadas",
+	"protectionCtrlCustom": "커스텀 보호 설정 사용",
 	"@protectionCtrlCustom": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"protectionCtrlWarning": "Advertencia, este intercambio atómico no está protegido por dPoW.",
+	"protectionCtrlWarning": "경고, 이 아토믹 스왑은 dPoW 보호가 않되어 있습니다.",
 	"@protectionCtrlWarning": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"buyOrderType": "Convertir a Vendedor si no coincide",
+	"buyOrderType": "일치하지 않을 경우 제조사로 변환",
 	"@buyOrderType": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"cexChangeRate": "Tasa de Cambio CEX",
+	"cexChangeRate": "CEX 변환 비율",
 	"@cexChangeRate": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exchangeExpedient": "Expediente",
+	"exchangeExpedient": "편리",
 	"@exchangeExpedient": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exchangeExpensive": "Caro",
+	"exchangeExpensive": "비싼",
 	"@exchangeExpensive": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exchangeIdentical": "Identico a CEX",
+	"exchangeIdentical": "CEX와 똑같음",
 	"@exchangeIdentical": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"comparedToCex": "comparable a CEX",
+	"comparedToCex": "CEX에게 비교하기",
 	"@comparedToCex": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"ordersActive": "Activo",
+	"ordersActive": "활성화",
 	"@ordersActive": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"ordersHistory": "Historial",
+	"ordersHistory": "히스토리",
 	"@ordersHistory": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsTitle": "Detalles",
+	"orderDetailsTitle": "세부 사항",
 	"@orderDetailsTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsSettings": "Abra detalles con un solo toque y seleccione Ordenar con un toque largo",
+	"orderDetailsSettings": "한개 탭에서 상세를 열고 긴 탭에서 주문을 선택하세요",
 	"@orderDetailsSettings": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsCancel": "Cancelar",
+	"orderDetailsCancel": "취소",
 	"@orderDetailsCancel": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderDetailsSelect": "Seleccione",
+	"orderDetailsSelect": "선택",
 	"@orderDetailsSelect": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noMatchingOrders": "No se encontraron pedidos coincidentes",
+	"noMatchingOrders": "알맞는 주문 없음",
 	"@noMatchingOrders": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"makerOrder": "Orden de Vendedor",
+	"makerOrder": "메이커 주문",
 	"@makerOrder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"takerOrder": "Orden de Comprador",
+	"takerOrder": "테어커 주문",
 	"@takerOrder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapCurrent": "Actual",
+	"swapCurrent": "현재",
 	"@swapCurrent": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapEstimated": "Estimado",
+	"swapEstimated": "견적",
 	"@swapEstimated": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapStarted": "Iniciado",
+	"swapStarted": "시작됨",
 	"@swapStarted": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapTotal": "Total",
+	"swapTotal": "전체",
 	"@swapTotal": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"swapProgress": "Detalles del Progreso",
+	"swapProgress": "진행 상세",
 	"@swapProgress": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"closeMessage": "Cerrar mensaje de error",
+	"closeMessage": "에러 메시지 닫기",
 	"@closeMessage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"openMessage": "Abrir mensaje de error",
+	"openMessage": "에러 메세지 열기",
 	"@openMessage": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"notifTxTitle": "Transaccion entrante",
+	"notifTxTitle": "들어오는 거래",
 	"@notifTxTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"notifTxText": "¡Ha recibido una transacción de {coin}!",
+	"notifTxText": "당신은 {coin} 거래를 받았습니다!",
 	"@notifTxText": {
 		"type": "text",
 		"placeholders_order": [
@@ -4157,13 +4157,13 @@
 			"coin": {}
 		}
 	},
-	"notifSwapCompletedTitle": "Intercambio completado",
+	"notifSwapCompletedTitle": "스와프 완료됨",
 	"@notifSwapCompletedTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"notifSwapCompletedText": " El intercambio de{sell}/{buy} se completó con éxito",
+	"notifSwapCompletedText": "{sell}/{buy} 가 성공적으로 바꿔었습니다",
 	"@notifSwapCompletedText": {
 		"type": "text",
 		"placeholders_order": [
@@ -4175,13 +4175,13 @@
 			"buy": {}
 		}
 	},
-	"notifSwapFailedTitle": "Intercambio fallido",
+	"notifSwapFailedTitle": "스와프 실패됨",
 	"@notifSwapFailedTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"notifSwapFailedText": "{sell}/{buy} intercambio fallido",
+	"notifSwapFailedText": "{sell}/{buy} 를 바꾸기 실패했습니다",
 	"@notifSwapFailedText": {
 		"type": "text",
 		"placeholders_order": [
@@ -4193,13 +4193,13 @@
 			"buy": {}
 		}
 	},
-	"notifSwapTimeoutTitle": "Se agotó el tiempo de intercambio",
+	"notifSwapTimeoutTitle": "스왑 시간 초과됨",
 	"@notifSwapTimeoutTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"notifSwapTimeoutText": "{sell}/{buy} intercambio se agotó",
+	"notifSwapTimeoutText": "{sell}/{buy} 스왑 시간이 초과되었습니다",
 	"@notifSwapTimeoutText": {
 		"type": "text",
 		"placeholders_order": [
@@ -4211,19 +4211,19 @@
 			"buy": {}
 		}
 	},
-	"notifSwapStatusTitle": "Cambio de estado cambiado",
+	"notifSwapStatusTitle": "스와프 상태가 바꿨습니다",
 	"@notifSwapStatusTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"notifSwapStartedTitle": "Nuevo intercambio iniciado",
+	"notifSwapStartedTitle": "새로운 스와프가 시작되었습니다",
 	"@notifSwapStartedTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"notifSwapStartedText": "{sell}/{buy} intercambio iniciado",
+	"notifSwapStartedText": "{sell}/{buy} 스와프가 시작되었습니다",
 	"@notifSwapStartedText": {
 		"type": "text",
 		"placeholders_order": [
@@ -4235,25 +4235,25 @@
 			"buy": {}
 		}
 	},
-	"language": "Idioma",
+	"language": "언어",
 	"@language": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"currency": "Moneda",
+	"currency": "화폐",
 	"@currency": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"hideBalance": "Ocultar saldos",
+	"hideBalance": "잔고 숨기기",
 	"@hideBalance": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"switchTheme": "Cambiar Tema",
+	"switchTheme": "테마 전환",
 	"@switchTheme": {
 		"type": "text",
 		"placeholders_order": [],
@@ -4265,37 +4265,37 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"cexData": "data de CEX",
+	"cexData": "CEX 데이터",
 	"@cexData": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"cexDataDesc": "Los datos de mercados (precios, gráficos, etc.) marcados con este ícono provienen de fuentes de terceros (<a href=\"https://www.coingecko.com/\">coingecko.com</a>, <a href =\"https://openrates.io/\">openrates.io</a>).",
+	"cexDataDesc": "이 아이콘이 표시된 시장 데이터(가격, 차트 등)는, 서드 파티(<a href=\"https://www.coingecko.com/\">coingecko.com</a>, <a href=\"https://openrates.io/\">openrates.io</a>)에서 받아왔습니다.",
 	"@cexDataDesc": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"checkForUpdates": "Buscar actualizaciones",
+	"checkForUpdates": "업데이트 확인하기",
 	"@checkForUpdates": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"logoutWarning": "¿Estás seguro de que quieres cerrar sesión ahora?",
+	"logoutWarning": "지금 로그아웃 하고 싶으신게 맞나요?",
 	"@logoutWarning": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"currencyDialogTitle": "Moneda",
+	"currencyDialogTitle": "화폐",
 	"@currencyDialogTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"txLimitExceeded": "Demasiadas solicitudes.\nSe excedió el límite de solicitudes del historial de transacciones.\nVuelva a intentarlo más tarde.",
+	"txLimitExceeded": "요청이 너무 많습니다.\n거래 이력 요구 제한을 초과했습니다.\n나중에 다시 시도해주세요.",
 	"@txLimitExceeded": {
 		"type": "text",
 		"placeholders_order": [],
@@ -4319,7 +4319,7 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"longMinutes": "Minutos",
+	"longMinutes": "분",
 	"@longMinutes": {
 		"type": "text",
 		"placeholders_order": [],
@@ -4331,127 +4331,127 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"moreTab": "Mas",
+	"moreTab": "더",
 	"@moreTab": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"less": "menos",
+	"less": "덜",
 	"@less": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"oldLogsTitle": "Registros antiguos",
+	"oldLogsTitle": "오래된 로그",
 	"@oldLogsTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"oldLogsDelete": "Borrar",
+	"oldLogsDelete": "삭제",
 	"@oldLogsDelete": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"deletingWallet": "Eliminando billetera...",
+	"deletingWallet": "지갑 삭제 중...",
 	"@deletingWallet": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"oldLogsUsed": "Espacio usado",
+	"oldLogsUsed": "사용된 용양",
 	"@oldLogsUsed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"okButton": "Ok",
+	"okButton": "네",
 	"@okButton": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"closePreview": "Cerrar prevista",
+	"closePreview": "프리뷰 닫기",
 	"@closePreview": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"cancelButton": "Cancelar",
+	"cancelButton": "취소",
 	"@cancelButton": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"developerTitle": "Desarrollador",
+	"developerTitle": "개발자",
 	"@developerTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"enableTestCoins": "Habilitar monedas de prueba",
+	"enableTestCoins": "실험 코인 활성화",
 	"@enableTestCoins": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"makerDetailsTitle": "Detalles del pedido del fabricante",
+	"makerDetailsTitle": "주문 디테일 메이커",
 	"@makerDetailsTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"makerDetailsSell": "Vender",
+	"makerDetailsSell": "판매",
 	"@makerDetailsSell": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"makerDetailsFor": "Recibir",
+	"makerDetailsFor": "받기",
 	"@makerDetailsFor": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"makerDetailsPrice": "Precio",
+	"makerDetailsPrice": "가격",
 	"@makerDetailsPrice": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"makerDetailsCancel": "Cancelar orden",
+	"makerDetailsCancel": "주문 취소",
 	"@makerDetailsCancel": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"makerDetailsId": "ID de Orden",
+	"makerDetailsId": "주문 ID",
 	"@makerDetailsId": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"makerDetailsCreated": "Createdo en",
+	"makerDetailsCreated": "에서 만들어짐",
 	"@makerDetailsCreated": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"makerDetailsNoSwaps": "Este pedido no inició intercambios",
+	"makerDetailsNoSwaps": "이 주문에서 스왑이 실행되지 않았습니다",
 	"@makerDetailsNoSwaps": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"makerDetailsSwaps": "Intercambios iniciados por este pedido",
+	"makerDetailsSwaps": "이 주문으로 스왑이 시작되었습니다",
 	"@makerDetailsSwaps": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderFilled": "{fill}% llenado",
+	"orderFilled": "{fill}% 채워짐",
 	"@orderFilled": {
 		"type": "text",
 		"placeholders_order": [
@@ -4461,445 +4461,445 @@
 			"fill": {}
 		}
 	},
-	"noteTitle": "Nota",
+	"noteTitle": "노트",
 	"@noteTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"notePlaceholder": "Añadir Nota",
+	"notePlaceholder": "노트 추가",
 	"@notePlaceholder": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importLink": "Importar",
+	"importLink": "불러오기",
 	"@importLink": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importSingleSwapLink": "Importar un Intercambio",
+	"importSingleSwapLink": "싱글 스왑 불러오기",
 	"@importSingleSwapLink": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exportLink": "Exportar",
+	"exportLink": "수출",
 	"@exportLink": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importTitle": "Importar",
+	"importTitle": "불러오기",
 	"@importTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importSingleSwapTitle": "Importar Intercambio",
+	"importSingleSwapTitle": "스왑 불러오기",
 	"@importSingleSwapTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exportTitle": "Exportar",
+	"exportTitle": "수출",
 	"@exportTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exportDesc": "Seleccione elementos para exportar a un archivo cifrado.",
+	"exportDesc": "함호화된 파일로 내보낼 항목을 선택하세요.",
 	"@exportDesc": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importLoadDesc": "Seleccione el archivo cifrado para importar.",
+	"importLoadDesc": "불러올 암호화된 파일을 선택하세요.",
 	"@importLoadDesc": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importLoadSwapDesc": "Seleccione el archivo de intercambio de texto sin formato para importar.",
+	"importLoadSwapDesc": "불러올 일반 텍스트 바꾸기 파일을 선택하세요.",
 	"@importLoadSwapDesc": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importLoading": "Abriendo...",
+	"importLoading": "열람 중...",
 	"@importLoading": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importDesc": "Elementos a importar:",
+	"importDesc": "불러올 아이템들:",
 	"@importDesc": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exportNotesTitle": "Notas",
+	"exportNotesTitle": "노트",
 	"@exportNotesTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exportContactsTitle": "Contactos",
+	"exportContactsTitle": "연락처",
 	"@exportContactsTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exportSwapsTitle": "Intercambios",
+	"exportSwapsTitle": "바꾸기",
 	"@exportSwapsTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"nothingFound": "Nada Encontrado",
+	"nothingFound": "찾을 수 없습니다",
 	"@nothingFound": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exportButton": "Exportar",
+	"exportButton": "수출",
 	"@exportButton": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importButton": "Importar",
+	"importButton": "불러오기",
 	"@importButton": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"emptyExportPass": "La contraseña de cifrado no puede estar vacía",
+	"emptyExportPass": "암호화 암호는 공백으로 둘 수 없습니다",
 	"@emptyExportPass": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"emptyImportPass": "La contraseña no puede estar vacía",
+	"emptyImportPass": "비밀번호를 공백으로 둘 수 없습니다",
 	"@emptyImportPass": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"matchExportPass": "Las contraseñas deben coincidir",
+	"matchExportPass": "비밀번호가 알맞아합니다",
 	"@matchExportPass": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noItemsToExport": "No hay artículos seleccionados",
+	"noItemsToExport": "선택된 아이템 없음",
 	"@noItemsToExport": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noItemsToImport": "No hay artículos seleccionados",
+	"noItemsToImport": "선택된 아이템 없음",
 	"@noItemsToImport": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"selectFileImport": "Seleccione Archivo",
+	"selectFileImport": "파일 선택",
 	"@selectFileImport": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importFileNotFound": "Archivo no encontrado",
+	"importFileNotFound": "파일을 찾을 수 없음",
 	"@importFileNotFound": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"fingerprint": "Huella dactilar",
+	"fingerprint": "지문",
 	"@fingerprint": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importPassword": "Clave",
+	"importPassword": "비밀번호",
 	"@importPassword": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importPassCancel": "Cancelar",
+	"importPassCancel": "취소",
 	"@importPassCancel": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importPassOk": "Ok",
+	"importPassOk": "네",
 	"@importPassOk": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"exportSuccessTitle": "Los elementos se han exportado correctamente:",
+	"exportSuccessTitle": "아이템이 성공적으로 내보냈습니다:",
 	"@exportSuccessTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importSuccessTitle": "Los elementos se han importado correctamente:",
+	"importSuccessTitle": "아이템을 성공적으로 불러왔습니다:",
 	"@importSuccessTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importDecryptError": "Contraseña no válida o datos dañados",
+	"importDecryptError": "불일치한 비밀번호 또는 망가진 데이터",
 	"@importDecryptError": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importSwapJsonDecodingError": "Error al decodificar el archivo json",
+	"importSwapJsonDecodingError": "json파일 읽기에 에러가 났습니다",
 	"@importSwapJsonDecodingError": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderTypePartial": "Orden",
+	"orderTypePartial": "주문",
 	"@orderTypePartial": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"orderTypeUnknown": "Orden desconocida",
+	"orderTypeUnknown": "알수 없는 주문 종류",
 	"@orderTypeUnknown": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"couldntImportError": "No se pudo importar:",
+	"couldntImportError": "가져올 수 없습니다:",
 	"@couldntImportError": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importSomeItemsSkippedWarning": "Se han saltado algunos elementos",
+	"importSomeItemsSkippedWarning": "어떤 아이템들을 건너뛌습니다",
 	"@importSomeItemsSkippedWarning": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importSwapFailed": "No se pudo importar el intercambio",
+	"importSwapFailed": "스왑 불러오기를 실패했습니다",
 	"@importSwapFailed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"importInvalidSwapData": "Datos de intercambio no válidos. Proporcione un archivo JSON de estado de intercambio válido.",
+	"importInvalidSwapData": "틀린 데이터 바꾸기. 알맞은 상태의 JSON 파일을 주세요.",
 	"@importInvalidSwapData": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersButton": "Filtro",
+	"filtersButton": "필터",
 	"@filtersButton": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersStatus": "Estado",
+	"filtersStatus": "상태",
 	"@filtersStatus": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersAll": "Todo",
+	"filtersAll": "모두",
 	"@filtersAll": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersSuccessful": "Exitoso",
+	"filtersSuccessful": "성공적",
 	"@filtersSuccessful": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersFailed": "Fallido",
+	"filtersFailed": "실패",
 	"@filtersFailed": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersFrom": "Partir de la fecha",
+	"filtersFrom": "날짜부터",
 	"@filtersFrom": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersTo": "Hasta la fecha",
+	"filtersTo": "날짜까지",
 	"@filtersTo": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersType": "Comprador/Vendedor",
+	"filtersType": "테이커/메이커",
 	"@filtersType": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersMaker": "Vendedor",
+	"filtersMaker": "마커",
 	"@filtersMaker": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"all": "TODOS",
+	"all": "모두",
 	"@all": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersTaker": "Comprador",
+	"filtersTaker": "테이커",
 	"@filtersTaker": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersSell": "Vender moneda",
+	"filtersSell": "코인 판매",
 	"@filtersSell": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersReceive": "Recibir moneda",
+	"filtersReceive": "코인 받기",
 	"@filtersReceive": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"filtersClearAll": "Borrar todos los filtros",
+	"filtersClearAll": "모든 필터 지우기",
 	"@filtersClearAll": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"uriInsufficientBalanceTitle": "Saldo insuficiente",
+	"uriInsufficientBalanceTitle": "부족한 잔고",
 	"@uriInsufficientBalanceTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"uriInsufficientBalanceSpan1": "No hay suficiente saldo para escaneado",
+	"uriInsufficientBalanceSpan1": "스캔된 것을 위한 잔고가 부족합니다",
 	"@uriInsufficientBalanceSpan1": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"uriInsufficientBalanceSpan2": "solicitud de pago.",
+	"uriInsufficientBalanceSpan2": "지불 요청.",
 	"@uriInsufficientBalanceSpan2": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"enablingTooManyAssetsTitle": "Intentando habilitar demasiados activos",
+	"enablingTooManyAssetsTitle": "너무 많은 자산을 활성화 할려고 하고 있습니다",
 	"@enablingTooManyAssetsTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"enablingTooManyAssetsSpan1": "Tu tienes",
+	"enablingTooManyAssetsSpan1": "당신의 소유",
 	"@enablingTooManyAssetsSpan1": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"enablingTooManyAssetsSpan2": "activos habilitados y tratando de habilitar",
+	"enablingTooManyAssetsSpan2": "활성화되어 있는 자산과 활성화하려고 하는 자산",
 	"@enablingTooManyAssetsSpan2": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"enablingTooManyAssetsSpan3": "más. El límite máximo de activos habilitados es",
+	"enablingTooManyAssetsSpan3": "활성화된 최대 한계치 자산은",
 	"@enablingTooManyAssetsSpan3": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"enablingTooManyAssetsSpan4": ". Desactive algunos antes de agregar otros nuevos.",
+	"enablingTooManyAssetsSpan4": "새로운 것을 추가하기 전에 먼저 다른 것들을 비활성화 해주세요.",
 	"@enablingTooManyAssetsSpan4": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"tooManyAssetsEnabledTitle": "Demasiados recursos habilitados",
+	"tooManyAssetsEnabledTitle": "너무 많은 자산이 활성화 되어있습니다",
 	"@tooManyAssetsEnabledTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"tooManyAssetsEnabledSpan1": "Tu tienes",
+	"tooManyAssetsEnabledSpan1": "당신의 소유",
 	"@tooManyAssetsEnabledSpan1": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"tooManyAssetsEnabledSpan2": "activos habilitados. El límite máximo de activos habilitados es",
+	"tooManyAssetsEnabledSpan2": "자산이 활성화 됬습니다. 활성화된 자산 최대치는",
 	"@tooManyAssetsEnabledSpan2": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"tooManyAssetsEnabledSpan3": ". Desactive algunos antes de agregar otros nuevos.",
+	"tooManyAssetsEnabledSpan3": ". 새로운 것을 추가하기 전에 비활성화를 해주세요.",
 	"@tooManyAssetsEnabledSpan3": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"paymentUriDetailsTitle": "Pago solicitado",
+	"paymentUriDetailsTitle": "지불 요청",
 	"@paymentUriDetailsTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"paymentUriDetailsCoinSpan": "Moneda:",
+	"paymentUriDetailsCoinSpan": "코인:",
 	"@paymentUriDetailsCoinSpan": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"paymentUriDetailsAddressSpan": "A Direccion",
+	"paymentUriDetailsAddressSpan": "주소 지정",
 	"@paymentUriDetailsAddressSpan": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"paymentUriDetailsAmountSpan": "Monto:",
+	"paymentUriDetailsAmountSpan": "양:",
 	"@paymentUriDetailsAmountSpan": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"paymentUriDetailsAcceptQuestion": "¿Acepta esta transacción?",
+	"paymentUriDetailsAcceptQuestion": "거래를 수락하시겠습니까?",
 	"@paymentUriDetailsAcceptQuestion": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"paymentUriDetailsAccept": "Pagar",
+	"paymentUriDetailsAccept": "지불",
 	"@paymentUriDetailsAccept": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"paymentUriDetailsDeny": "Cancelar",
+	"paymentUriDetailsDeny": "취소",
 	"@paymentUriDetailsDeny": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"paymentUriInactiveCoin": "{abbr} no está activo. Activa e inténtalo de nuevo..",
+	"paymentUriInactiveCoin": "{abbr}가 활성화되어 있지 않습니다. 활성화 후에 다시 시도해주세요.",
 	"@paymentUriInactiveCoin": {
 		"type": "text",
 		"placeholders_order": [
@@ -4909,67 +4909,67 @@
 			"abbr": {}
 		}
 	},
-	"wrongCoinTitle": "Moneda equivocada",
+	"wrongCoinTitle": "잘못된 코인",
 	"@wrongCoinTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"wrongCoinSpan1": "Está intentando escanear un código QR de pago para",
+	"wrongCoinSpan1": "당신은 지불 QR 코드를 스캔 할려고 합니다",
 	"@wrongCoinSpan1": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"wrongCoinSpan2": "pero tu estas en la",
+	"wrongCoinSpan2": "하지만 당신은",
 	"@wrongCoinSpan2": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"wrongCoinSpan3": "pantalla de retirar",
+	"wrongCoinSpan3": "인출 화면에 있습니다",
 	"@wrongCoinSpan3": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"simpleTradeSellTitle": "Vender",
+	"simpleTradeSellTitle": "판매",
 	"@simpleTradeSellTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"simpleTradeBuyTitle": "Comprar",
+	"simpleTradeBuyTitle": "구매",
 	"@simpleTradeBuyTitle": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"simpleTradeRecieve": "Recibir",
+	"simpleTradeRecieve": "받기",
 	"@simpleTradeRecieve": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"simpleTradeSend": "Enviar",
+	"simpleTradeSend": "보내기",
 	"@simpleTradeSend": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"simpleTradeClose": "Cerrar",
+	"simpleTradeClose": "거이",
 	"@simpleTradeClose": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"simpleTradeActivate": "Activar",
+	"simpleTradeActivate": "활성화",
 	"@simpleTradeActivate": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"simpleTradeMaxActiveCoins": "El número máximo de monedas activas es {maxCoins}. Por favor, desactive algunos.",
+	"simpleTradeMaxActiveCoins": "최대 활성화 코인 양은 {maxCoins}입니다. 조금 비활성화 해주세요.",
 	"@simpleTradeMaxActiveCoins": {
 		"type": "text",
 		"placeholders_order": [
@@ -4979,7 +4979,7 @@
 			"maxCoins": {}
 		}
 	},
-	"simpleTradeUnableActivate": "No se puede activar {coin}",
+	"simpleTradeUnableActivate": "{coin}을 활성화 할 수 없습니다",
 	"@simpleTradeUnableActivate": {
 		"type": "text",
 		"placeholders_order": [
@@ -4989,7 +4989,7 @@
 			"coin": {}
 		}
 	},
-	"simpleTradeNotActive": "{coin} no está activo!",
+	"simpleTradeNotActive": "{coin}이 활성화 되어 있지 않습니다!",
 	"@simpleTradeNotActive": {
 		"type": "text",
 		"placeholders_order": [
@@ -4999,7 +4999,7 @@
 			"coin": {}
 		}
 	},
-	"simpleTradeBuyHint": "Ingrese la cantidad de {coin} para comprar",
+	"simpleTradeBuyHint": "구매할 {coin} 양을 입력하세요",
 	"@simpleTradeBuyHint": {
 		"type": "text",
 		"placeholders_order": [
@@ -5009,7 +5009,7 @@
 			"coin": {}
 		}
 	},
-	"simpleTradeSellHint": "Ingrese la cantidad de {coin} para vender",
+	"simpleTradeSellHint": "판매 할 {coin} 양을 입력하세요",
 	"@simpleTradeSellHint": {
 		"type": "text",
 		"placeholders_order": [
@@ -5019,24 +5019,24 @@
 			"coin": {}
 		}
 	},
-	"simpleTradeShowLess": "Muestra menos",
+	"simpleTradeShowLess": "덜 보기",
 	"@simpleTradeShowLess": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"simpleTradeShowMore": "Mostrar mas",
+	"simpleTradeShowMore": "더 보기",
 	"@simpleTradeShowMore": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"noCoinFound": "No se encontró ninguna moneda",
+	"noCoinFound": "코인을 찾을 수 없음",
 	"@noCoinFound": {
 		"type": "text",
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"koreanLanguage": "Coreano",
-	"ukrainianLanguage": "Ucranio"
+	"koreanLanguage": "한국인",
+	"ukrainianLanguage": "우크라이나 인"
 }

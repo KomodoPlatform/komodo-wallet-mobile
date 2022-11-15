@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../localizations.dart';
+
 class OverwriteDialogContent extends StatefulWidget {
   const OverwriteDialogContent({
     this.currentValue,
@@ -35,14 +37,14 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Current value:',
+          AppLocalizations.of(context).currentValue,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         SizedBox(height: 4),
         Text(widget.currentValue),
         SizedBox(height: 12),
         Text(
-          'New value:',
+          AppLocalizations.of(context).newValue,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         SizedBox(height: 4),
@@ -55,7 +57,7 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
               ? <Widget>[
                   ElevatedButton(
                     onPressed: () => widget.onMerge(mergedValueController.text),
-                    child: const Text('Save merged'),
+                    child: Text(AppLocalizations.of(context).saveMerged),
                   ),
                   TextButton(
                     onPressed: () {
@@ -63,7 +65,7 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
                         merging = false;
                       });
                     },
-                    child: const Text('Back'),
+                    child: Text(AppLocalizations.of(context).back),
                   ),
                 ]
               : <Widget>[
@@ -73,15 +75,15 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
                         merging = true;
                       });
                     },
-                    child: const Text('Merge'),
+                    child: Text(AppLocalizations.of(context).merge),
                   ),
                   ElevatedButton(
                     onPressed: widget.onSkip,
-                    child: const Text('Skip'),
+                    child: Text(AppLocalizations.of(context).skip),
                   ),
                   ElevatedButton(
                     onPressed: widget.onOverwrite,
-                    child: const Text('Overwrite'),
+                    child: Text(AppLocalizations.of(context).overwrite),
                   ),
                 ],
         )
@@ -94,7 +96,7 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Merged Value:',
+          AppLocalizations.of(context).mergedValue,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         SizedBox(height: 4),

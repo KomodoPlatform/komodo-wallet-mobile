@@ -8,6 +8,8 @@ import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
+import '../../../../localizations.dart';
+
 class BuildItemSwap extends StatefulWidget {
   const BuildItemSwap({this.context, this.swap});
 
@@ -222,10 +224,9 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                 if (result is RecoverFundsOfSwap) {
                                   showMessage(
                                       context,
-                                      'Successfully unlocked ' +
-                                          result.result.coin +
-                                          ' funds - TX: ' +
-                                          result.result.txHash);
+                                      AppLocalizations.of(context)
+                                          .unlockSuccess(result.result.coin,
+                                              result.result.txHash));
                                 } else if (result is ErrorString) {
                                   showErrorMessage(context, result.error);
                                 }
@@ -241,7 +242,8 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
-                            child: Text('Unlock Funds'),
+                            child:
+                                Text(AppLocalizations.of(context).unlockFunds),
                           ),
                         ),
               ],
