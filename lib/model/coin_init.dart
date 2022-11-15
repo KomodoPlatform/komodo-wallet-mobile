@@ -37,6 +37,7 @@ class CoinInit {
     this.addressFormat,
     this.protocol,
     this.bech32Hrp,
+    this.avgBlockTime,
   });
 
   factory CoinInit.fromJson(Map<String, dynamic> json) => CoinInit(
@@ -65,6 +66,7 @@ class CoinInit {
         forceMinRelayFee: json['force_min_relay_fee'],
         protocol: json['protocol'],
         bech32Hrp: json['bech32_hrp'],
+        avgBlockTime: json['avg_block_time'],
       );
 
   String coin;
@@ -78,6 +80,7 @@ class CoinInit {
   int txfee;
   int mm2;
   int txversion;
+  int avgBlockTime;
   int isPoS;
   int overwintered;
   String versionGroupId;
@@ -119,5 +122,6 @@ class CoinInit {
         'address_format': addressFormat,
         'protocol': protocol,
         if (bech32Hrp != null) 'bech32_hrp': bech32Hrp,
+        if (avgBlockTime != null) 'avg_block_time': avgBlockTime,
       };
 }
