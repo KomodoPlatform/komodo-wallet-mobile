@@ -251,16 +251,17 @@ class ApiProvider {
         urls: List<String>.from(coin.serverList.map((e) => e.url)),
       ).toJson());
 
-    if (coin.type == CoinType.iris)
-      return json.encode(MmIrisEnable(
+    if ((coin.type == CoinType.iris || coin.type == CoinType.cosmos) &&
+        coin.protocol.protocolData.platform != null)
+      return json.encode(MmTendermintTokenEnable(
         userpass: mmSe.userpass,
         coin: coin,
       ).toJson());
-    if (coin.type == CoinType.cosmos)
-      return json.encode(MmCosmosEnable(
+    if ((coin.type == CoinType.iris || coin.type == CoinType.cosmos) &&
+        coin.protocol.protocolData.platform == null)
+      return json.encode(MmTendermintAssetEnable(
         userpass: mmSe.userpass,
         coin: coin,
-        servers: coin.serverList,
       ).toJson());
     if (isSlpParent(coin))
       return json.encode(MmParentSlpEnable(

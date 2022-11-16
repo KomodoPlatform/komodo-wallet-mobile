@@ -1,8 +1,7 @@
 import 'coin.dart';
-import 'get_active_coin.dart';
 
-class MmIrisEnable {
-  MmIrisEnable({
+class MmTendermintTokenEnable {
+  MmTendermintTokenEnable({
     this.userpass,
     this.method = 'enable_tendermint_token',
     this.coin,
@@ -23,18 +22,16 @@ class MmIrisEnable {
       };
 }
 
-class MmCosmosEnable {
-  MmCosmosEnable({
+class MmTendermintAssetEnable {
+  MmTendermintAssetEnable({
     this.userpass,
     this.method = 'enable_tendermint_with_assets',
     this.coin,
-    this.servers,
   });
 
   Coin coin;
   String userpass;
   String method;
-  List<Server> servers;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'mmrpc': '2.0',
@@ -42,7 +39,7 @@ class MmCosmosEnable {
         'method': method,
         'params': {
           'tokens_params': [],
-          'rpc_urls': servers.map((e) => e.url).toList(),
+          'rpc_urls': coin.serverList.map((e) => e.url).toList(),
           'ticker': coin.abbr,
         }
       };
