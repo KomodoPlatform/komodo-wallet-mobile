@@ -1,9 +1,10 @@
+import 'package:komodo_dex/model/coin_type.dart';
+
 import 'coin.dart';
 
 class ActiveCoin {
   ActiveCoin.fromJson(Map<String, dynamic> json, Coin activeCoin) {
-    if (json['mmrpc'] == '2.0') {
-      coin = activeCoin.abbr ?? '';
+    if (activeCoin.type == CoinType.slp) {
       if (json['result']['bch_addresses_infos'] != null) {
         address = json['result']['bch_addresses_infos'].keys.first;
         balance = json['result']['bch_addresses_infos'].values.first['balances']
@@ -19,6 +20,31 @@ class ActiveCoin {
             json['result']['balances'].values.first['unspendable'].toString();
       }
       result = 'success';
+      coin = activeCoin.abbr ?? '';
+      requiredConfirmations = activeCoin.requiredConfirmations;
+      matureConfirmations = activeCoin.matureConfirmations;
+      requiresNotarization = activeCoin.requiresNotarization;
+    } else if ((activeCoin.type == CoinType.iris ||
+            activeCoin.type == CoinType.cosmos) &&
+        activeCoin.protocol.protocolData.platform != null) {
+      json = json['result']['balances'];
+      address = json.keys.first ?? '';
+      balance = json.values.first['spendable'] ?? '';
+      lockedBySwaps = json.values.first['unspendable'] ?? '';
+      result = 'success' ?? '';
+      coin = activeCoin.abbr ?? '';
+      requiredConfirmations = activeCoin.requiredConfirmations;
+      matureConfirmations = activeCoin.matureConfirmations;
+      requiresNotarization = activeCoin.requiresNotarization;
+    } else if ((activeCoin.type == CoinType.iris ||
+            activeCoin.type == CoinType.cosmos) &&
+        activeCoin.protocol.protocolData.platform == null) {
+      json = json['result'];
+      coin = json['ticker'] ?? '';
+      address = json['address'] ?? '';
+      balance = json['balance']['spendable'] ?? '';
+      lockedBySwaps = json['balance']['unspendable'] ?? '';
+      result = 'success' ?? '';
       requiredConfirmations = activeCoin.requiredConfirmations;
       matureConfirmations = activeCoin.matureConfirmations;
       requiresNotarization = activeCoin.requiresNotarization;

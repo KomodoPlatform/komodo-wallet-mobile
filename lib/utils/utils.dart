@@ -492,6 +492,12 @@ bool isSlpChild(Coin coin) {
   return protocolType == 'SLPTOKEN';
 }
 
+bool hasParentPreInstalled(Coin coin) {
+  final String protocolType = coin?.protocol?.type;
+  return protocolType == 'SLPTOKEN' ||
+      coin?.protocol?.protocolData?.platform == 'IRIS';
+}
+
 String humanDate(int epoch) {
   DateTime _dateTime;
   try {
