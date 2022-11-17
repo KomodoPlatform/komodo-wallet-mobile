@@ -42,10 +42,12 @@ class ZCashBloc implements BlocBase {
   Future autoEnableZcashCoins() async {
     final List<Map<String, dynamic>> batch = [];
 
+    final dir = await getApplicationDocumentsDirectory();
+    String folder = Platform.isIOS ? '/ZcashParams/' : '/.zcash-params/';
     for (Coin coin in coinsToActivate) {
       final electrum = {
         'userpass': mmSe.userpass,
-        'method': 'init_z_coin',
+        'method': 'task::enable_z_coin::init',
         'mmrpc': '2.0',
         'params': {
           'ticker': coin.abbr,
@@ -56,8 +58,9 @@ class ZCashBloc implements BlocBase {
                 'electrum_servers': Coin.setServerList(coin.serverList),
                 'light_wallet_d_servers': coin.lightWalletDServers
               }
-            }
-          }
+            },
+            'zcash_params_path': dir.path + folder
+          },
         }
       };
       batch.add(electrum);
