@@ -189,7 +189,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                   if (snapshot.data.data[chartDuration].isEmpty) {
                     List<String> all = snapshot.data.data.keys.toList();
                     int nextDuration = all.indexOf(chartDuration) + 1;
-                    if (all.length >= nextDuration)
+                    if (all.length > nextDuration)
                       chartDuration = all[nextDuration];
                     return SizedBox();
                   }
