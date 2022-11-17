@@ -1,10 +1,12 @@
 import 'package:komodo_dex/model/coin_type.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 import 'coin.dart';
 
 class ActiveCoin {
   ActiveCoin.fromJson(Map<String, dynamic> json, Coin activeCoin) {
-    if (activeCoin.type == CoinType.slp) {
+    if (isSlp(activeCoin)) {
+      // parent coin
       if (json['result']['bch_addresses_infos'] != null) {
         address = json['result']['bch_addresses_infos'].keys.first;
         balance = json['result']['bch_addresses_infos'].values.first['balances']
@@ -13,6 +15,7 @@ class ActiveCoin {
             .values
             .first['balances']['unspendable'];
       } else {
+        // slp tokens
         address = json['result']['balances'].keys.first;
         balance =
             json['result']['balances'].values.first['spendable'].toString();
@@ -27,6 +30,7 @@ class ActiveCoin {
     } else if ((activeCoin.type == CoinType.iris ||
             activeCoin.type == CoinType.cosmos) &&
         activeCoin.protocol.protocolData.platform != null) {
+      // iris/cosmos tokens
       json = json['result']['balances'];
       address = json.keys.first ?? '';
       balance = json.values.first['spendable'] ?? '';
@@ -39,6 +43,7 @@ class ActiveCoin {
     } else if ((activeCoin.type == CoinType.iris ||
             activeCoin.type == CoinType.cosmos) &&
         activeCoin.protocol.protocolData.platform == null) {
+      // iris/cosmos parent coins
       json = json['result'];
       coin = json['ticker'] ?? '';
       address = json['address'] ?? '';

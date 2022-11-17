@@ -28,7 +28,7 @@ class GetTxHistory {
   Map<String, dynamic> toJson() {
     // slp coins uses the rpc 2.0 methods
     Coin coinToEnable = coinsBloc.getKnownCoinByAbbr(coin);
-    return isSlpParent(coinToEnable) || isSlpChild(coinToEnable)
+    return isSlp(coinToEnable)
         ? <String, dynamic>{
             'userpass': userpass ?? '',
             'method': method ?? '',

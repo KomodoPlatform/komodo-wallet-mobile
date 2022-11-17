@@ -492,6 +492,10 @@ bool isSlpChild(Coin coin) {
   return protocolType == 'SLPTOKEN';
 }
 
+bool isSlp(Coin coin) {
+  return isSlpParent(coin) || isSlpChild(coin);
+}
+
 bool hasParentPreInstalled(Coin coin) {
   final String protocolType = coin?.protocol?.type;
   return protocolType == 'SLPTOKEN' ||
