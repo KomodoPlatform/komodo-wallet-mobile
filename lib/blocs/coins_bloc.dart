@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
@@ -155,28 +156,46 @@ class CoinsBloc implements BlocBase {
     _inCoinBeforeActivation.add(this.coinBeforeActivation);
   }
 
+  bool canActivate(List<CoinToActivate> list, {int chosen = 0}) {
+    int selected = list.where((element) => element.isActive).length;
+    int activated = coinBalance.length;
+
+    int maxCoinLength = Platform.isIOS
+        ? appConfig.maxCoinEnabledIOS
+        : appConfig.maxCoinsEnabledAndroid;
+
+    //  print(selected + activated + chosen);
+    return maxCoinLength > selected + activated + chosen;
+  }
+
   void setCoinBeforeActivation(Coin coin, bool isActive) {
     coinBeforeActivation
         .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
 
-    // auto add parent coin if not enabled previously
-    // if the parent is then removed intentionally by the user
-    // it wont be enabled. But if SLP coins are even removed after auto adding
-    // they will be forced enabled because parent coins are needed enabled before
-    // SLP coins can enable
-    String platform = coin?.protocol?.protocolData?.platform;
-    bool isParentEnabled =
-        coinBalance.any((element) => element.coin.abbr == platform);
-    if (isActive && platform != null && !isParentEnabled) {
-      Coin parentCoin = getKnownCoinByAbbr(platform);
-      coinBeforeActivation.removeWhere(
-          (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
-      coinBeforeActivation.add(
-        CoinToActivate(coin: parentCoin, isActive: isActive),
-      );
-    }
+    if (isActive && canActivate(coinBeforeActivation)) {
+      coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
 
-    coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
+      // auto add parent coin if not enabled previously
+      // if the parent is then removed intentionally by the user
+      // it wont be enabled. But if SLP coins are even removed after auto adding
+      // they will be forced enabled because parent coins are needed enabled before
+      // SLP coins can enable
+      String platform = coin?.protocol?.protocolData?.platform;
+      bool isParentEnabled =
+          coinBalance.any((element) => element.coin.abbr == platform);
+      if (isActive && platform != null && !isParentEnabled) {
+        Coin parentCoin = getKnownCoinByAbbr(platform);
+        coinBeforeActivation.removeWhere(
+            (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
+        if (canActivate(coinBeforeActivation)) {
+          coinBeforeActivation.add(
+            CoinToActivate(coin: parentCoin, isActive: isActive),
+          );
+        }
+      }
+    } else {
+      coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
+    }
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
@@ -187,6 +206,10 @@ class CoinsBloc implements BlocBase {
     String filterType,
   }) {
     final List<CoinToActivate> list = [];
+    coinBeforeActivation.sort((a, b) =>
+        a.coin.name.toUpperCase().compareTo(b.coin.name.toUpperCase()));
+    int chosen =
+        coinBeforeActivation.where((element) => element.isActive).length;
     for (CoinToActivate item in coinBeforeActivation) {
       bool shouldChange = false;
 
@@ -204,11 +227,17 @@ class CoinsBloc implements BlocBase {
           Coin parentCoin = getKnownCoinByAbbr(platform);
           coinBeforeActivation.removeWhere(
               (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
-          coinBeforeActivation.add(
-            CoinToActivate(coin: parentCoin, isActive: isActive),
-          );
+          if (canActivate(coinBeforeActivation)) {
+            coinBeforeActivation.add(
+              CoinToActivate(coin: parentCoin, isActive: isActive),
+            );
+          }
         }
-        list.add(CoinToActivate(coin: item.coin, isActive: isActive));
+        if (canActivate(list, chosen: chosen)) {
+          list.add(CoinToActivate(coin: item.coin, isActive: isActive));
+        } else {
+          list.add(item);
+        }
       } else {
         list.add(item);
       }

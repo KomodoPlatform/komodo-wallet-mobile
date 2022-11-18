@@ -587,6 +587,11 @@ class AppLocalizations {
   String get mediaBrowse => Intl.message('BROWSE', name: 'mediaBrowse');
   String get mediaSaved => Intl.message('SAVED', name: 'mediaSaved');
 
+  String enable(int selected, int remains) => Intl.message(
+        'You can still enable $remains, Selected: $selected',
+        name: 'enable',
+        args: [selected, remains],
+      );
   String get mediaNotSavedDescription =>
       Intl.message('YOU HAVE NO SAVED ARTICLES',
           name: 'mediaNotSavedDescription');
@@ -1022,8 +1027,7 @@ class AppLocalizations {
       Intl.message('Hungarian', name: 'hungarianLanguage');
   String get spanishLanguage =>
       Intl.message('Spanish', name: 'spanishLanguage');
-  String get koreanLanguage =>
-      Intl.message('Korean', name: 'koreanLanguage');
+  String get koreanLanguage => Intl.message('Korean', name: 'koreanLanguage');
   String get ukrainianLanguage =>
       Intl.message('Ukrainian', name: 'ukrainianLanguage');
   String get faucetName => Intl.message('FAUCET', name: 'faucetName');
