@@ -304,8 +304,8 @@ class CoinsBloc implements BlocBase {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else if (coin.type == CoinType.iris || coin.type == CoinType.cosmos) {
-        transactions = await tenderMintTransactions
-            .getTransactions(coinBalance.balance.address);
+        transactions =
+            await tenderMintTransactions.getTransactions(coinBalance);
       } else {
         transactions = await MM.getTransactions(mmSe.client,
             GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
@@ -669,8 +669,8 @@ class CoinsBloc implements BlocBase {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else if (coin.type == CoinType.iris || coin.type == CoinType.cosmos) {
-        transactions = await tenderMintTransactions
-            .getTransactions(coinBalance.balance.address);
+        transactions =
+            await tenderMintTransactions.getTransactions(coinBalance);
       } else {
         transactions = await MM.getTransactions(mmSe.client,
             GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
