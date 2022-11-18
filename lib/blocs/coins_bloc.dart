@@ -196,6 +196,18 @@ class CoinsBloc implements BlocBase {
       }
 
       if (shouldChange) {
+        // auto add parent coin if not enabled previously
+        String platform = item.coin?.protocol?.protocolData?.platform;
+        bool isParentEnabled =
+            coinBalance.any((element) => element.coin.abbr == platform);
+        if (isActive && platform != null && !isParentEnabled) {
+          Coin parentCoin = getKnownCoinByAbbr(platform);
+          coinBeforeActivation.removeWhere(
+              (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
+          coinBeforeActivation.add(
+            CoinToActivate(coin: parentCoin, isActive: isActive),
+          );
+        }
         list.add(CoinToActivate(coin: item.coin, isActive: isActive));
       } else {
         list.add(item);
