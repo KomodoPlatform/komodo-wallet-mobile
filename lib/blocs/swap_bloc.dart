@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:komodo_dex/model/get_max_taker_volume.dart';
+import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -144,6 +145,7 @@ class SwapBloc implements BlocBase {
   }
 
   void updateSellCoin(CoinBalance coinBalance) {
+    syncOrderbook.activePair = CoinsPair(sell: coinBalance?.coin, buy: null);
     sellCoinBalance = coinBalance;
     _inSellCoinBalance.add(sellCoinBalance);
 
