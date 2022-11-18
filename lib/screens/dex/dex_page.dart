@@ -51,7 +51,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
             controller: tabController,
             tabs: <Widget>[
               Tab(
-                text: 'Swap'.toUpperCase(),
+                text: AppLocalizations.of(context).swap.toUpperCase(),
                 key: const Key('swap-tab'),
               ),
               Tab(

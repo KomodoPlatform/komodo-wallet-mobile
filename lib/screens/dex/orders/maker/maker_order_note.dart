@@ -113,7 +113,6 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
             ),
           ),
         ),
-        // todo(MRC): Switch to IconButton
 
         if (noteText?.isNotEmpty ?? false)
           IconButton(

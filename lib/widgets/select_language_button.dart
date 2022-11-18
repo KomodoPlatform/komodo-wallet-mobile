@@ -7,6 +7,8 @@ import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/language_flag_icon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../localizations.dart';
+
 class SelectLanguageButton extends StatefulWidget {
   const SelectLanguageButton({Key key}) : super(key: key);
 
@@ -44,7 +46,7 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
           builder: (BuildContext context) {
             return CustomSimpleDialog(
               hasHorizontalPadding: false,
-              title: Text('Select language'),
+              title: Text(AppLocalizations.of(context).selectLanguage),
               children: [
                 ...mainBloc.supportedLocales
                     .map((Locale loc) => BuildLanguageDialogOption(

@@ -58,7 +58,7 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
                     Icons.search,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
-                  hintText: 'Search for Ticker',
+                  hintText: AppLocalizations.of(context).searchForTicker,
                 ),
                 maxLength: 16,
               ),

@@ -304,8 +304,9 @@ class _PinPageState extends State<PinPage> {
         final MaterialPageRoute<dynamic> materialPage =
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => PinPage(
-                      title: 'Camouflage PIN Setup',
-                      subTitle: 'Confirm Camouflage PIN',
+                      title: AppLocalizations.of(context).camouflageSetup,
+                      subTitle:
+                          AppLocalizations.of(context).confirmCamouflageSetup,
                       code: code,
                       pinStatus: PinStatus.CONFIRM_CAMO_PIN,
                       password: widget.password,

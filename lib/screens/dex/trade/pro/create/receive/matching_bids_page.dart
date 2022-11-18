@@ -165,7 +165,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                 child: Container(
                   padding: EdgeInsets.all(6),
                   child: Text(
-                    'Less',
+                    AppLocalizations.of(context).less,
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
@@ -181,7 +181,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                 child: Container(
                   padding: EdgeInsets.all(6),
                   child: Text(
-                    'More',
+                    AppLocalizations.of(context).moreTab,
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
