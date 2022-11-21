@@ -67,6 +67,8 @@ class AppConfig {
     'HCO20',
     'KRC20',
     'AVX20',
+    'SLP',
+    'OLD',
   ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
   Map<String, String> get allProtocolNames => {

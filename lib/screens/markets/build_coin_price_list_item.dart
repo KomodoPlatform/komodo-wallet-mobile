@@ -186,6 +186,14 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                   (BuildContext context, AsyncSnapshot<ChartData> snapshot) {
                 List<CandleData> candles;
                 if (snapshot.hasData) {
+                  if (snapshot.data.data[chartDuration].isEmpty) {
+                    List<String> all = snapshot.data.data.keys.toList();
+                    int nextDuration = all.indexOf(chartDuration) + 1;
+                    if (all.length > nextDuration)
+                      chartDuration = all[nextDuration];
+                    return SizedBox();
+                  }
+
                   candles = snapshot.data.data[chartDuration];
                   if (candles == null) {
                     chartDuration = snapshot.data.data.keys.first;
@@ -215,6 +223,10 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                   ];
                 }
 
+                List<String> options = [];
+                snapshot.data?.data?.forEach((key, value) {
+                  if (value.isNotEmpty) options.add(key);
+                });
                 return Column(
                   children: <Widget>[
                     Container(
@@ -227,7 +239,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                         children: <Widget>[
                           DurationSelect(
                             value: chartDuration,
-                            options: snapshot.data?.data?.keys?.toList(),
+                            options: options,
                             disabled: !snapshot.hasData,
                             onChange: (String value) {
                               setState(() {

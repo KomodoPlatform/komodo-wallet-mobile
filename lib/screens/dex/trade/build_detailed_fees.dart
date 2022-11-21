@@ -6,6 +6,8 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
+import '../../../localizations.dart';
+
 class BuildDetailedFees extends StatefulWidget {
   const BuildDetailedFees({
     this.preimage,
@@ -48,7 +50,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
                       : MainAxisAlignment.start,
                   children: [
                     Text(
-                      'Total fees:',
+                      AppLocalizations.of(context).totalFees,
                       style:
                           widget.style ?? Theme.of(context).textTheme.bodyText1,
                     ),
@@ -101,7 +103,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
               : MainAxisAlignment.start,
           children: [
             Text(
-              'Total fees: ',
+              AppLocalizations.of(context).totalFees + ' ',
               style: _style,
             ),
             Flexible(
@@ -208,7 +210,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
           padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
           color: Theme.of(context).highlightColor.withAlpha(25),
           child: Text(
-            'Paid from balance:',
+            AppLocalizations.of(context).paidFromBalance,
             style: Theme.of(context).textTheme.caption,
           ),
         ),
@@ -328,7 +330,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
           padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
           color: Theme.of(context).highlightColor.withAlpha(25),
           child: Text(
-            'Paid from received volume:',
+            AppLocalizations.of(context).paidFromVolume,
             style: Theme.of(context).textTheme.caption,
           ),
         ),

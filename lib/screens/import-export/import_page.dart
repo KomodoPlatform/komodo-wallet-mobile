@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:intl/intl.dart';
-import 'package:crypto/crypto.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -22,6 +20,7 @@ import 'package:komodo_dex/screens/import-export/overwrite_dialog_content.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
@@ -173,7 +172,7 @@ class _ImportPageState extends State<ImportPage> {
         context: context,
         builder: (context) {
           return CustomSimpleDialog(
-            title: const Text('Already exists'),
+            title: Text(AppLocalizations.of(context).alreadyExists),
             children: <Widget>[
               OverwriteDialogContent(
                   currentValue: existingNote,
@@ -533,16 +532,9 @@ class _ImportPageState extends State<ImportPage> {
     }
 
     try {
-      final String length32Key = md5.convert(utf8.encode(pass)).toString();
-      final key = encrypt.Key.fromUtf8(length32Key);
-      final iv = encrypt.IV.fromLength(16);
-
-      final encrypter = encrypt.Encrypter(encrypt.AES(key));
       final String str = await file.readAsString();
 
-      final encrypted = encrypt.Encrypted.fromBase64(str);
-
-      final decrypted = encrypter.decrypt(encrypted, iv: iv);
+      final decrypted = EncryptionTool().decryptData(pass, str);
       return jsonDecode(decrypted);
     } catch (e) {
       Log('import_page]', 'Failed to decrypt file: $e');

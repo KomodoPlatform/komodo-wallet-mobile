@@ -25,7 +25,9 @@ class BuildProtocolChip extends StatelessWidget {
       case CoinType.utxo:
         chip = const SizedBox.shrink();
         break;
-
+      case CoinType.slp:
+        chip = const SizedBox.shrink();
+        break;
       case CoinType.erc:
       case CoinType.qrc:
       case CoinType.mvr:
@@ -61,9 +63,9 @@ class BuildProtocolChip extends StatelessWidget {
                 onTap: () {
                   try {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         duration: Duration(seconds: 2),
-                        content: Text('Built on Komodo'),
+                        content: Text(AppLocalizations.of(context).builtOnKmd),
                       ),
                     );
                   } catch (_) {}
@@ -95,6 +97,7 @@ class BuildProtocolChip extends StatelessWidget {
         // UTXO's dont have any chip.
         // Smart chains have dedicated chip with icon.
         case CoinType.utxo:
+        case CoinType.slp:
         case CoinType.smartChain:
           break;
         case CoinType.bep:

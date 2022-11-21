@@ -2,6 +2,7 @@
 
 enum CoinType {
   utxo,
+  slp,
   smartChain,
   erc,
   bep,

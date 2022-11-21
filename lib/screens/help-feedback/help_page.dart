@@ -45,13 +45,16 @@ class _HelpPageState extends State<HelpPage> {
         'a': HtmlParser(
           local.answer_3(appConfig.appName),
           textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
-                fontWeight: FontWeight.w300,
+                fontWeight: FontWeight.w400,
                 height: 1.3,
                 fontSize: 15,
               ),
-          linkStyle: const TextStyle(
-            color: Colors.blue,
-          ),
+          linkStyle: Theme.of(context).textTheme.subtitle1.copyWith(
+                fontWeight: FontWeight.w400,
+                height: 1.3,
+                fontSize: 15,
+                color: Color.fromRGBO(57, 161, 238, 1),
+              ),
         ),
         'isExpanded': false,
       },
@@ -109,13 +112,16 @@ class _HelpPageState extends State<HelpPage> {
         'a': HtmlParser(
           local.answer_9(appConfig.appName),
           textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
-                fontWeight: FontWeight.w300,
+                fontWeight: FontWeight.w400,
                 height: 1.3,
                 fontSize: 15,
               ),
-          linkStyle: const TextStyle(
-            color: Colors.blue,
-          ),
+          linkStyle: Theme.of(context).textTheme.subtitle1.copyWith(
+                fontWeight: FontWeight.w400,
+                height: 1.3,
+                fontSize: 15,
+                color: Color.fromRGBO(57, 161, 238, 1),
+              ),
         ),
         'isExpanded': false,
       },
@@ -160,13 +166,16 @@ class _HelpPageState extends State<HelpPage> {
       local.answer_6(name, channels[0].link ?? '', appConfig.appName,
           appConfig.appCompanyShort),
       textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w400,
             height: 1.3,
             fontSize: 15,
           ),
-      linkStyle: const TextStyle(
-        color: Colors.blue,
-      ),
+      linkStyle: Theme.of(context).textTheme.subtitle1.copyWith(
+            fontWeight: FontWeight.w400,
+            height: 1.3,
+            fontSize: 15,
+            color: Color.fromRGBO(57, 161, 238, 1),
+          ),
     );
   }
 

@@ -113,7 +113,7 @@ class _PreimageErrorState extends State<PreimageError> {
                 child: Row(
                   children: [
                     Text(
-                      'Show details',
+                      AppLocalizations.of(context).showDetails,
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     Icon(

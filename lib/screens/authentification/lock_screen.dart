@@ -363,7 +363,7 @@ class _BiometricPageState extends State<BiometricPage> {
       appBar: AppBarStatus(
         context: context,
         pinStatus: PinStatus.NORMAL_PIN,
-        title: 'Fingerprint',
+        title: AppLocalizations.of(context).fingerprint,
       ),
       body: Center(
         child: Column(

@@ -7,7 +7,7 @@ description: Multicoin Wallet with DEX gateway
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.5.3
+version: 0.5.4
 
 publish_to: none
 
@@ -46,6 +46,7 @@ dependencies:
 
 
   #-------fluttercommunity.dev------
+
 
   connectivity_plus: # newly added, wasn't reviewed
     git:
@@ -107,7 +108,7 @@ dependencies:
 
   pin_code_view: # last reviewed c0b6516
     git:
-      url: git://github.com/KomodoPlatform/pin_code_view.git
+      url: https://github.com/KomodoPlatform/pin_code_view.git
       ref: d471b040206870b002cf0154772c1bca4c5dfe46
 
   intl_generator: # newly added, wasn't reviewed
@@ -145,7 +146,7 @@ dependencies:
   # MRC: Argon2 algo was our only remaining use of flutter_sodium, so I have switched
   # to dargon2_flutter, which does only Argon2, therefore dropping our dependency on
   # flutter_sodium completely
-  dargon2_flutter: # reviewed by MRC at d11f51cab560acf7644ebef402f1996b6f320365 
+  dargon2_flutter: # reviewed by MRC at d11f51cab560acf7644ebef402f1996b6f320365
     git:
       url: https://github.com/KomodoPlatform/dargon2
       path: dargon2_flutter/dargon2_flutter/
@@ -155,7 +156,7 @@ dependencies:
     git:
       url: https://github.com/KomodoPlatform/dart-uuid.git
       ref: c9a37bc675fd3fa715db2d929dc66d15ec09ad27 #3.0.5
-      
+
 
 dev_dependencies:
   integration_test:

@@ -24,6 +24,7 @@ class Log {
   /// Log the [message].
   /// The [key] points at the code line location
   /// (updated automatically with https://github.com/ArtemGr/log-loc-rs).
+
   static void println(String key, dynamic message) {
     String messageToPrint = key + message.toString() + '\n';
     if (key.isNotEmpty) {
@@ -50,12 +51,13 @@ class Log {
         now: now);
   }
 
-  /// Loop through saved log files from latest to older, and delete
-  /// all files above overall [limitMb] size, except the today's one
-  static Future<void> maintain() async {
-    const double limitMB = 1000;
+  static double limitMB = 500;
 
-    final List<File> logs = (await applicationDocumentsDirectory)
+  /// Loop through saved log files from latest to older, and delete
+  /// all files above overall [limitMB] size, except the today's one
+  static Future<void> maintain() async {
+    Directory directory = await applicationDocumentsDirectory;
+    final List<File> logs = directory
         .listSync()
         .whereType<File>()
         .where((f) => f.path.endsWith('.log'))
@@ -63,19 +65,12 @@ class Log {
 
     logs.sort((a, b) => b.path.compareTo(a.path));
 
-    final DateTime now = DateTime.now();
-    final String todayStr = '${now.year}'
-        '-${twoDigits(now.month)}'
-        '-${twoDigits(now.day)}';
-
-    double totalMb = 0;
-    bool limitExceeded = false;
-    for (File logFile in logs) {
-      final double fileSizeMb = logFile.statSync().size / 1000000;
-      totalMb += fileSizeMb;
-      if (totalMb > limitMB) limitExceeded = true;
-      if (limitExceeded && !logFile.path.endsWith('$todayStr.log')) {
-        logFile.deleteSync();
+    double totalSize = mmSe.dirStatSync(directory.path);
+    while (totalSize > limitMB) {
+      try {
+        if (logs.first.existsSync()) logs.first.deleteSync();
+      } catch (e) {
+        print(e);
       }
     }
   }

@@ -76,10 +76,6 @@ String getCoinIconPath(String abbr) {
     'FENIX',
     'PLY',
     'WID',
-    'HONK',
-    'ASLP',
-    'USDF',
-    'sTST'
   ];
   String ticker = getCoinTicker(abbr).replaceAll('-OLD', '').toLowerCase();
   if (coinsWithoutIcons.contains(abbr)) ticker = 'adexbsc';
@@ -484,6 +480,16 @@ bool get isInDebugMode {
 bool isErcType(Coin coin) {
   final String protocolType = coin?.protocol?.type;
   return protocolType == 'ERC20' || protocolType == 'ETH';
+}
+
+bool isSlpParent(Coin coin) {
+  final String protocolType = coin?.protocol?.type;
+  return protocolType == 'BCH';
+}
+
+bool isSlpChild(Coin coin) {
+  final String protocolType = coin?.protocol?.type;
+  return protocolType == 'SLPTOKEN';
 }
 
 String humanDate(int epoch) {
