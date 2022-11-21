@@ -55,7 +55,7 @@ class ZCashBloc implements BlocBase {
             'mode': {
               'rpc': 'Light',
               'rpc_data': {
-                'electrum_servers': Coin.setServerList(coin.serverList),
+                'electrum_servers': Coin.getServerList(coin.serverList),
                 'light_wallet_d_servers': coin.lightWalletDServers
               }
             },

@@ -110,6 +110,9 @@ class Coin {
     if (config['bchd_urls'] != null) {
       bchdUrls = List<String>.from(config['bchd_urls']);
     }
+    if (config['light_wallet_d_servers'] != null) {
+      lightWalletDServers = List<String>.from(config['light_wallet_d_servers']);
+    }
     dust = init['dust'];
     chainId = init['chain_id'];
   }
@@ -139,6 +142,7 @@ class Coin {
   bool testCoin;
   String colorCoin;
   List<String> bchdUrls;
+  List<String> lightWalletDServers;
   List<Server> serverList;
   String explorerUrl;
   String swapContractAddress;
@@ -184,6 +188,9 @@ class Coin {
         if (chainId != null) 'chain_id': chainId,
         if (bchdUrls != null)
           'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
+        if (lightWalletDServers != null)
+          'light_wallet_d_servers':
+              List<dynamic>.from(lightWalletDServers.map<String>((x) => x)),
       };
 
   String getTxFeeSatoshi() {
