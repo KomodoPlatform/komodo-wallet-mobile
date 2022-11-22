@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/app_config/app_config.dart';
+import 'package:komodo_dex/blocs/zcash_bloc.dart';
 import 'package:komodo_dex/model/best_order.dart';
 import 'package:komodo_dex/model/get_best_orders.dart';
 import 'package:komodo_dex/model/get_enable_slp_coin.dart';
@@ -528,10 +529,12 @@ class ApiProvider {
       {http.Client client}) async {
     client ??= mmSe.client;
     final r = await client.post(Uri.parse(url), body: json.encode(body));
-    _assert200(r);
+    if (r.statusCode != 200) {
+      zcashBloc.tasksToCheck.remove(body['params']['task_id']);
+    }
+
     _saveRes('getZcashActivationStatus', r);
 
-    print(r.body);
     return json.decode(r.body);
   }
 

@@ -308,14 +308,14 @@ class MMService {
   }
 
   /// returns directory size in MB
-  double dirStatSync(String dirPath) {
+  double dirStatSync(String dirPath, {String endsWith = 'log'}) {
     int totalSize = 0;
     var dir = Directory(dirPath);
     try {
       if (dir.existsSync()) {
         dir
             .listSync(recursive: true, followLinks: false)
-            .where((element) => element.path.endsWith('log'))
+            .where((element) => element.path.endsWith(endsWith))
             .forEach((FileSystemEntity entity) {
           if (entity is File) {
             totalSize += entity.lengthSync();

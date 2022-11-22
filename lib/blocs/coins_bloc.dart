@@ -476,13 +476,13 @@ class CoinsBloc implements BlocBase {
       updateOneCoin(cb);
     }
 
-    await _syncCoinsStateWithApi();
+    await syncCoinsStateWithApi();
 
     currentCoinActivate(null);
     _coinsLock = false;
   }
 
-  Future<void> _syncCoinsStateWithApi() async {
+  Future<void> syncCoinsStateWithApi() async {
     final List<dynamic> apiCoinsJson = await MM.getEnabledCoins();
     final List<String> apiCoins = [];
 

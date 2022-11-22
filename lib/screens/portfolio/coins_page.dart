@@ -212,10 +212,7 @@ class _CoinsPageState extends State<CoinsPage> {
         builder:
             (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
           return snapshot.data != null
-              ? const SizedBox(
-                  height: 2,
-                  child: LinearProgressIndicator(),
-                )
+              ? const SizedBox(height: 2, child: LinearProgressIndicator())
               : SizedBox();
         });
   }
@@ -434,28 +431,23 @@ class ListCoinsState extends State<ListCoins> {
   }
 
   Widget _buildZCashProgressIndicator() {
-    return StreamBuilder<int>(
-        initialData: zcashBloc.totalDownloadSize,
-        stream: zcashBloc.outZcashProgress,
-        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-          int _received = snapshot.data;
-          int _totalDownloadSize = zcashBloc.totalDownloadSize;
-          return _totalDownloadSize > 0
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    LinearProgressIndicator(
-                      value: _received / _totalDownloadSize,
-                    ),
-                    _received == _totalDownloadSize
-                        ? Text('Downloaded Zcash Params')
-                        : Text(
-                            'Downloading Zcash Parameters: ${_received ~/ 1000000}MB / ${_totalDownloadSize ~/ 1000000}MB',
-                          ),
-                  ],
-                )
-              : SizedBox();
-        });
+    return zcashBloc.tasksToCheck.isEmpty
+        ? SizedBox()
+        : StreamBuilder<Map<int, ZTask>>(
+            initialData: const {},
+            stream: zcashBloc.outZcashProgress,
+            builder: (BuildContext context,
+                AsyncSnapshot<Map<int, ZTask>> snapshot) {
+              Map<int, ZTask> data = snapshot.data;
+              return data.isNotEmpty
+                  ? Column(mainAxisSize: MainAxisSize.min, children: [
+                      for (ZTask task in data.values) ...[
+                        LinearProgressIndicator(value: task.progress / 100),
+                        Text('${task.message}: ${task.progress}%'),
+                      ]
+                    ])
+                  : SizedBox();
+            });
   }
 }
 
