@@ -81,10 +81,11 @@ class ZCashBloc implements BlocBase {
     for (int i = 0; i < replies.length; i++) {
       final reply = replies[i];
       int id = reply['result']['task_id'];
-      tasksToCheck[id] = ZTask(abbr: coinsToActivate[i].abbr);
+      tasksToCheck[id] = ZTask(abbr: coinsToActivate[i].abbr, progress: 0);
       jobService.suspend('checkPresentZcashEnabling');
       startStatusChecking();
     }
+    _inZcashProgress.add(tasksToCheck);
   }
 
   void startStatusChecking() {
@@ -100,7 +101,7 @@ class ZCashBloc implements BlocBase {
           'method': 'task::enable_z_coin::status',
           'mmrpc': '2.0',
           'params': {'task_id': task},
-          'id': task
+          'id': task,
         });
 
         _zhtlcActivationProgress(res, task);
@@ -108,11 +109,11 @@ class ZCashBloc implements BlocBase {
     });
   }
 
-  Future<int> _zhtlcActivationProgress(
+  void _zhtlcActivationProgress(
       Map<String, dynamic> activationData, int id) async {
     int _progress = 100;
     String _messageDetails = '';
-    if (!activationData.containsKey('result')) return _progress;
+    if (!activationData.containsKey('result')) return;
     String abbr = tasksToCheck[id].abbr;
     String status = activationData['result']['status'];
     dynamic details = activationData['result']['details'];
@@ -154,19 +155,19 @@ class ZCashBloc implements BlocBase {
         _messageDetails = 'Activating $abbr';
       } else if (details == 'RequestingBalance') {
         _progress = 98;
-        _messageDetails = 'Requesting balance';
+        _messageDetails = 'Requesting $abbr balance';
       } else if (details.containsKey('UpdatingBlocksCache')) {
         int n = details['UpdatingBlocksCache']['current_scanned_block'] -
             blockOffset;
         int d = details['UpdatingBlocksCache']['latest_block'] - blockOffset;
         _progress = 5 + (n / d * 15).toInt();
-        _messageDetails = 'Updating blocks cache';
+        _messageDetails = 'Updating $abbr blocks cache';
       } else if (details.containsKey('BuildingWalletDb')) {
         int n =
             details['BuildingWalletDb']['current_scanned_block'] - blockOffset;
         int d = details['BuildingWalletDb']['latest_block'] - blockOffset;
         _progress = 20 + (n / d * 80).toInt();
-        _messageDetails = 'Building wallet database';
+        _messageDetails = 'Building $abbr wallet database';
       } else {
         _progress = 5;
         _messageDetails = 'Activating $abbr';
@@ -180,8 +181,6 @@ class ZCashBloc implements BlocBase {
       tasksToCheck[id].message = _messageDetails;
     }
     _inZcashProgress.add(tasksToCheck);
-
-    return _progress;
   }
 
   Future<void> downloadZParams() async {
@@ -208,8 +207,9 @@ class ZCashBloc implements BlocBase {
       StreamedResponse _response;
       _response = await Client().send(Request('GET', Uri.parse(param)));
       _totalDownloadSize += _response.contentLength ?? 0;
-      tasksToCheck[20].message = 'Downloading Zcash params...';
-
+      tasksToCheck[20] =
+          ZTask(message: 'Downloading Zcash params...', progress: 0);
+      _inZcashProgress.add(tasksToCheck);
       _response.stream.listen((value) {
         _bytes.addAll(value);
         _received += value.length;
@@ -220,9 +220,9 @@ class ZCashBloc implements BlocBase {
         final file = File(zDir.path + param.split('/').last);
         if (!file.existsSync()) await file.create();
         await file.writeAsBytes(_bytes);
-        tasksToCheck.remove(20);
         _inZcashProgress.add(tasksToCheck);
         if (_received / _totalDownloadSize == 1) {
+          tasksToCheck.remove(20);
           autoEnableZcashCoins();
         }
       });
