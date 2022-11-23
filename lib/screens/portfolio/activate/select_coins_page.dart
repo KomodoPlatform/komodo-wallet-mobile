@@ -267,18 +267,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   }
 
   Widget _buildDoneButton() {
-    int selected = coinsBloc.coinBeforeActivation
-        .where((element) => element.isActive)
-        .length;
-    int activated = coinsBloc.coinBalance.length;
-
-    int maxCoinLength = Platform.isIOS
-        ? appConfig.maxCoinEnabledIOS
-        : appConfig.maxCoinsEnabledAndroid;
-
-    int remainingSpace = maxCoinLength - activated;
     return SizedBox(
-      height: 70,
+      height: 60,
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -295,19 +285,12 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                     }
                   }
                 }
-                return Column(mainAxisSize: MainAxisSize.min, children: [
-                  Text(
-                    AppLocalizations.of(context)
-                        .enable(selected, remainingSpace - selected),
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  PrimaryButton(
-                    key: const Key('done-activate-coins'),
-                    text: AppLocalizations.of(context).done,
-                    isLoading: _isDone,
-                    onPressed: isButtonActive ? _pressDoneButton : null,
-                  )
-                ]);
+                return PrimaryButton(
+                  key: const Key('done-activate-coins'),
+                  text: AppLocalizations.of(context).done,
+                  isLoading: _isDone,
+                  onPressed: isButtonActive ? _pressDoneButton : null,
+                );
               }),
         ),
       ),
