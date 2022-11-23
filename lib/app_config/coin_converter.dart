@@ -11,7 +11,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
   List allCoinsList = [];
 
   coinsResponse.forEach((abbr, coinData) {
-    String proto = _getType(coinData['type']);
+    String proto = _getType(coinData['type'], abbr);
 
     if (_excludedCoins.contains(abbr) || proto == null) {
       return; // unsupported protocols should be skipped
@@ -46,9 +46,10 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
 
 List<String> get _excludedCoins => [];
 
-String _getType(String coin) {
+String _getType(String coin, String abbr) {
   // absent protocols
   // [RSK Smart Bitcoin, Arbitrum, Moonbeam, ZHTLC]
+  if (abbr == 'IRIS') return 'iris';
   CoinType type;
   switch (coin) {
     case 'UTXO':
