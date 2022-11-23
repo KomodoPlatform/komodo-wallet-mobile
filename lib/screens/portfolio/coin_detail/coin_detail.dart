@@ -81,6 +81,7 @@ class _CoinDetailState extends State<CoinDetail> {
   Transaction latestTransaction;
 
   bool isRetryingActivation = false;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -243,6 +244,7 @@ class _CoinDetailState extends State<CoinDetail> {
           mainContext = context;
           return ListView(
             shrinkWrap: true,
+            controller: scrollController,
             children: <Widget>[
               if (!currentCoinBalance.coin.suspended) _buildForm(),
               _buildHeaderCoinDetail(context),
@@ -943,6 +945,7 @@ class _CoinDetailState extends State<CoinDetail> {
     listSteps.add(AmountAddressStep(
       coinBalance: currentCoinBalance,
       paymentUriInfo: widget.paymentUriInfo,
+      scrollController: scrollController,
       onCancel: () {
         setState(() {
           isExpanded = false;
