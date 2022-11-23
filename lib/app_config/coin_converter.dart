@@ -101,7 +101,7 @@ String _getType(String coin) {
       break;
     default:
       return null; // for other protocols not yet added on the mobile
-    // they default to null and are not added as a coin , e.g optimism, zhtlc
+    // they default to null and are not added as a coin , e.g optimism, moonbeam
   }
   return type.name;
 }

@@ -5,6 +5,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -79,6 +80,14 @@ class ZCashBloc implements BlocBase {
     }
 
     for (int i = 0; i < replies.length; i++) {
+      final err = ErrorString.fromJson(replies[i]);
+
+      if (err.error.isNotEmpty) {
+        Log('zcash_bloc:283',
+            'Error activating ${coinsToActivate[i]}: ${err.error}');
+
+        continue;
+      }
       final reply = replies[i];
       int id = reply['result']['task_id'];
       tasksToCheck[id] = ZTask(abbr: coinsToActivate[i].abbr, progress: 0);
@@ -103,6 +112,14 @@ class ZCashBloc implements BlocBase {
           'params': {'task_id': task},
           'id': task,
         });
+        final err = ErrorString.fromJson(res);
+        if (err.error.isNotEmpty) {
+          Log('zcash_bloc:293',
+              'Error getting ${tasksToCheck[task].abbr} activation status: ${err.error}');
+          zcashBloc.tasksToCheck.remove(task);
+          _inZcashProgress.add(tasksToCheck);
+          continue;
+        }
 
         _zhtlcActivationProgress(res, task);
       }

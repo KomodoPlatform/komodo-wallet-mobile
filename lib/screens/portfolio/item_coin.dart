@@ -69,6 +69,7 @@ class _ItemCoinState extends State<ItemCoin>
                     )),
           );
           cexProvider.withdrawCurrency = null;
+          setState(() {});
         },
       ));
     }
