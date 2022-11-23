@@ -70,7 +70,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => !false,
+      onWillPop: () async => !_isDone,
       child: LockScreen(
         context: context,
         child: Scaffold(

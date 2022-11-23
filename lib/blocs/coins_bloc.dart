@@ -195,6 +195,7 @@ class CoinsBloc implements BlocBase {
         shouldChange =
             item.coin.testCoin ? type == null : item.coin.type.name == type;
       }
+
       if (shouldChange) {
         // auto add parent coin if not enabled previously
         String platform = item.coin?.protocol?.protocolData?.platform;
@@ -213,6 +214,7 @@ class CoinsBloc implements BlocBase {
         list.add(item);
       }
     }
+
     coinBeforeActivation = list;
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
