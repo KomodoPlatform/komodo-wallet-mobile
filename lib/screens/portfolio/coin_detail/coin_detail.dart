@@ -880,6 +880,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   void catchError(BuildContext mContext) {
     resetSend();
+    coinsDetailBloc.resetCustomFee();
     ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
