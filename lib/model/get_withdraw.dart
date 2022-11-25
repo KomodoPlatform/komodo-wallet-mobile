@@ -2,26 +2,10 @@
 //
 //     final getWithdraw = getWithdrawFromJson(jsonString);
 
-import 'dart:convert';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 
-import 'package:komodo_dex/blocs/camo_bloc.dart';
-
-GetWithdraw getWithdrawFromJson(String str) =>
-    GetWithdraw.fromJson(json.decode(str));
-
-String getWithdrawToJson(GetWithdraw data) {
-  final Map<String, dynamic> tmpJson = data.toJson();
-  if (data.amount == null) {
-    tmpJson.remove('amount');
-  }
-  if (data.max == null || !data.max || camoBloc.isCamoActive) {
-    tmpJson.remove('max');
-  }
-  if (data.fee == null || data.fee.type == null) {
-    tmpJson.remove('fee');
-  }
-  return json.encode(tmpJson);
-}
+import 'coin.dart';
+import 'coin_type.dart';
 
 class GetWithdraw {
   GetWithdraw({
@@ -34,16 +18,6 @@ class GetWithdraw {
     this.fee,
   });
 
-  factory GetWithdraw.fromJson(Map<String, dynamic> json) => GetWithdraw(
-        method: json['method'] ?? '',
-        amount: json['amount'] ?? '',
-        coin: json['coin'] ?? '',
-        to: json['to'] ?? '',
-        max: json['max'] ?? false,
-        userpass: json['userpass'] ?? '',
-        fee: Fee.fromJson(json['fee']) ?? Fee(),
-      );
-
   String method;
   String amount;
   String coin;
@@ -52,15 +26,29 @@ class GetWithdraw {
   String userpass;
   Fee fee;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'method': method ?? '',
-        if (amount != null) 'amount': amount,
-        'to': to ?? '',
-        'max': max ?? false,
-        'coin': coin ?? '',
-        'userpass': userpass ?? '',
-        if (fee != null) 'fee': fee.toJson(),
-      };
+  Map<String, dynamic> toJson() {
+    Coin coinToEnable = coinsBloc.getKnownCoinByAbbr(coin);
+    return coinToEnable.type == CoinType.zhtlc
+        ? <String, dynamic>{
+            'userpass': userpass ?? '',
+            'method': 'task::withdraw::init',
+            'mmrpc': '2.0',
+            'params': {
+              'coin': coin ?? '',
+              'to': to ?? '',
+              if (amount != null) 'amount': amount,
+            }
+          }
+        : <String, dynamic>{
+            'method': method ?? '',
+            if (amount != null) 'amount': amount,
+            'to': to ?? '',
+            'max': max ?? false,
+            'coin': coin ?? '',
+            'userpass': userpass ?? '',
+            if (fee != null) 'fee': fee.toJson(),
+          };
+  }
 }
 
 class Fee {
@@ -70,12 +58,7 @@ class Fee {
     this.gasPrice,
     this.gas,
   });
-  factory Fee.fromJson(Map<String, dynamic> json) => Fee(
-        type: json['type'],
-        amount: json['amount'],
-        gasPrice: json['gas_price'],
-        gas: json['gas'],
-      );
+
   String
       type; // type of transaction fee, possible values: UtxoFixed, UtxoPerKbyte, EthGas
   String

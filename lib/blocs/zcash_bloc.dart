@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -35,7 +36,7 @@ class ZCashBloc implements BlocBase {
 
   List<Coin> removeZcashCoins(List<Coin> coins) {
     coinsToActivate =
-        coins.where((element) => element?.protocol?.type == 'ZHTLC').toList();
+        coins.where((element) => element.type.name == 'zhtlc').toList();
     if (coinsToActivate.isNotEmpty) {
       // remove zcash-coins from the main coin list if it exists
       coins.removeWhere((coin) => coinsToActivate.contains(coin));
@@ -90,28 +91,58 @@ class ZCashBloc implements BlocBase {
       }
       final reply = replies[i];
       int id = reply['result']['task_id'];
-      tasksToCheck[id] = ZTask(abbr: coinsToActivate[i].abbr, progress: 0);
-      jobService.suspend('checkPresentZcashEnabling');
-      startStatusChecking();
+      tasksToCheck[id] = ZTask(
+        abbr: coinsToActivate[i].abbr,
+        progress: 0,
+        type: 'enable',
+        id: id,
+      );
+      jobService.suspend('checkZcashProcessStatus');
+      startActivationStatusCheck();
     }
     _inZcashProgress.add(tasksToCheck);
   }
 
-  void startStatusChecking() {
-    jobService.install('checkPresentZcashEnabling', 5, (j) async {
+  startWithdrawStatusCheck(int taskId, String abbr) {
+    tasksToCheck[taskId] =
+        ZTask(abbr: abbr, progress: 0, type: 'withdraw', id: taskId);
+    jobService.suspend('checkZcashProcessStatus');
+    _inZcashProgress.add(tasksToCheck);
+    startActivationStatusCheck();
+  }
+
+  void startActivationStatusCheck() {
+    jobService.install('checkZcashProcessStatus', 5, (j) async {
       if (tasksToCheck.isEmpty) {
-        jobService.suspend('checkPresentZcashEnabling');
+        jobService.suspend('checkZcashProcessStatus');
         return;
       }
       if (!mmSe.running) return;
       for (var task in tasksToCheck.keys) {
-        dynamic res = await MM.getZcashActivationStatus({
-          'userpass': mmSe.userpass,
-          'method': 'task::enable_z_coin::status',
-          'mmrpc': '2.0',
-          'params': {'task_id': task},
-          'id': task,
-        });
+        dynamic res;
+
+        if (tasksToCheck[task].type == 'withdraw') {
+          res = await MM.batch([
+            {
+              'userpass': mmSe.userpass,
+              'method': 'task::withdraw::status',
+              'mmrpc': '2.0',
+              'params': {'task_id': tasksToCheck[task].id},
+              'id': tasksToCheck[task].id,
+            }
+          ]);
+        } else {
+          res = await MM.batch([
+            {
+              'userpass': mmSe.userpass,
+              'method': 'task::enable_z_coin::status',
+              'mmrpc': '2.0',
+              'params': {'task_id': task},
+              'id': task,
+            }
+          ]);
+        }
+        res = res.first;
         final err = ErrorString.fromJson(res);
         if (err.error.isNotEmpty) {
           Log('zcash_bloc:293',
@@ -142,6 +173,11 @@ class ZCashBloc implements BlocBase {
     if (status == 'Ok') {
       if (details.containsKey('error')) {
         Log('zcash_bloc:273', 'Error activating $abbr: ${details['error']}');
+        tasksToCheck.remove(id);
+      } else if (activationData['result']['details'] != null) {
+        tasksToCheck[id].result =
+            WithdrawResponse.fromJson(activationData['result']['details']);
+        _inZcashProgress.add(tasksToCheck);
       } else {
         Coin coin = coinsBloc.getKnownCoinByAbbr(abbr);
 
@@ -164,8 +200,8 @@ class ZCashBloc implements BlocBase {
 
         await coinsBloc.syncCoinsStateWithApi();
         coinsBloc.currentCoinActivate(null);
+        tasksToCheck.remove(id);
       }
-      tasksToCheck.remove(id);
     } else if (status == 'InProgress') {
       if (details == 'ActivatingCoin') {
         _progress = 5;
@@ -173,6 +209,9 @@ class ZCashBloc implements BlocBase {
       } else if (details == 'RequestingBalance') {
         _progress = 98;
         _messageDetails = 'Requesting $abbr balance';
+      } else if (details == 'GeneratingTransaction') {
+        _progress = 80;
+        _messageDetails = 'Generating $abbr Transaction';
       } else if (details.containsKey('UpdatingBlocksCache')) {
         int n = details['UpdatingBlocksCache']['current_scanned_block'] -
             blockOffset;
@@ -224,8 +263,11 @@ class ZCashBloc implements BlocBase {
       StreamedResponse _response;
       _response = await Client().send(Request('GET', Uri.parse(param)));
       _totalDownloadSize += _response.contentLength ?? 0;
-      tasksToCheck[20] =
-          ZTask(message: 'Downloading Zcash params...', progress: 0);
+      tasksToCheck[20] = ZTask(
+        message: 'Downloading Zcash params...',
+        progress: 0,
+        type: 'download',
+      );
       _inZcashProgress.add(tasksToCheck);
       _response.stream.listen((value) {
         _bytes.addAll(value);
@@ -250,9 +292,19 @@ class ZCashBloc implements BlocBase {
 class ZTask {
   String abbr;
   String message;
+  String type;
   int progress;
+  int id;
+  dynamic result;
 
-  ZTask({this.abbr, this.message, this.progress});
+  ZTask({
+    this.abbr,
+    this.message,
+    this.type,
+    this.progress,
+    this.result,
+    this.id,
+  });
 }
 
 ZCashBloc zcashBloc = ZCashBloc();

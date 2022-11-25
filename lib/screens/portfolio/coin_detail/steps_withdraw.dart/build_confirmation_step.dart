@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/zcash_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -43,6 +46,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   dynamic _withdrawResponse;
   bool _closeStep = false;
 
+  StreamSubscription statusStream;
   @override
   void initState() {
     super.initState();
@@ -78,11 +82,34 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                     double.parse(widget.amountToPay),
               ))
           .then((dynamic res) {
+        if (res.taskId != null) {
+          // start checking status
+          zcashBloc.startWithdrawStatusCheck(
+            res.taskId,
+            widget.coinBalance.coin.abbr,
+          );
+          statusStream =
+              zcashBloc.outZcashProgress.listen((Map<int, ZTask> event) {
+            event.forEach((key, task) {
+              if (task.type == 'withdraw' && task.result != null) {
+                setState(() => _withdrawResponse = task.result);
+              }
+            });
+          });
+          return;
+        }
+
         setState(() => _withdrawResponse = res);
       }).catchError((dynamic onError) {
         setState(() => _withdrawResponse = onError);
       });
     });
+  }
+
+  @override
+  void dispose() {
+    statusStream?.cancel();
+    super.dispose();
   }
 
   @override
@@ -360,7 +387,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
     try {
       amount = double.parse(res.feeDetails.amount);
     } catch (_) {
-      amount = double.parse(res.feeDetails.totalFee);
+      amount = double.parse(res?.feeDetails?.totalFee ?? '0');
     }
 
     if (amount == null) return null;

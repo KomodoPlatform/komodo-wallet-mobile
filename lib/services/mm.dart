@@ -523,16 +523,6 @@ class ApiProvider {
     return List<dynamic>.from(json.decode(r.body));
   }
 
-  Future<Map<String, dynamic>> getZcashActivationStatus(
-      Map<String, dynamic> body,
-      {http.Client client}) async {
-    client ??= mmSe.client;
-    final r = await client.post(Uri.parse(url), body: json.encode(body));
-    _saveRes('getZcashActivationStatus', r);
-
-    return json.decode(r.body);
-  }
-
   Future<List<dynamic>> getEnabledCoins({http.Client client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(
