@@ -443,7 +443,22 @@ class ListCoinsState extends State<ListCoins> {
                   ? Column(mainAxisSize: MainAxisSize.min, children: [
                       for (ZTask task in data.values) ...[
                         LinearProgressIndicator(value: task.progress / 100),
-                        Text('${task.message}: ${task.progress}%'),
+                        Row(
+                          children: [
+                            Text('${task.message}: ${task.progress}%'),
+                            Spacer(),
+                            InkWell(
+                              onTap: () {
+                                zcashBloc.cancelTask(
+                                    task.id, task.type == 'enable');
+                              },
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.red,
+                              ),
+                            )
+                          ],
+                        )
                       ]
                     ])
                   : SizedBox();

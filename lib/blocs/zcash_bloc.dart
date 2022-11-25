@@ -287,6 +287,21 @@ class ZCashBloc implements BlocBase {
       });
     }
   }
+
+  void cancelTask(int id, bool enable) async {
+    await MM.batch([
+      {
+        'userpass': mmSe.userpass,
+        'method':
+            enable ? 'task::enable_z_coin::cancel' : 'task::withdraw::cancel',
+        'mmrpc': '2.0',
+        'params': {'task_id': id},
+        'id': id,
+      }
+    ]);
+    tasksToCheck.remove(id);
+    _inZcashProgress.add(tasksToCheck);
+  }
 }
 
 class ZTask {
