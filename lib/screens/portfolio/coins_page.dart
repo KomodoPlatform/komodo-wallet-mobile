@@ -431,38 +431,48 @@ class ListCoinsState extends State<ListCoins> {
   }
 
   Widget _buildZCashProgressIndicator() {
-    return zcashBloc.tasksToCheck.isEmpty
-        ? SizedBox()
-        : StreamBuilder<Map<int, ZTask>>(
-            initialData: const {},
-            stream: zcashBloc.outZcashProgress,
-            builder: (BuildContext context,
-                AsyncSnapshot<Map<int, ZTask>> snapshot) {
-              Map<int, ZTask> data = snapshot.data;
-              return data.isNotEmpty
-                  ? Column(mainAxisSize: MainAxisSize.min, children: [
-                      for (ZTask task in data.values) ...[
-                        LinearProgressIndicator(value: task.progress / 100),
-                        Row(
-                          children: [
-                            Text('${task.message}: ${task.progress}%'),
-                            Spacer(),
+    return StreamBuilder<Map<int, ZTask>>(
+        initialData: const {},
+        stream: zcashBloc.outZcashProgress,
+        builder:
+            (BuildContext context, AsyncSnapshot<Map<int, ZTask>> snapshot) {
+          Map<int, ZTask> data = snapshot.data;
+          return data.isNotEmpty
+              ? Column(mainAxisSize: MainAxisSize.min, children: [
+                  for (ZTask task in data.values) ...[
+                    LinearProgressIndicator(value: task.progress / 100),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: Row(
+                        children: [
+                          Text('${task.message}: ${task.progress}%'),
+                          Spacer(),
+                          if (task.result != null && task.type == 'withdraw')
                             InkWell(
                               onTap: () {
-                                zcashBloc.cancelTask(
-                                    task.id, task.type == 'enable');
+                                zcashBloc.confirmWithdraw(task);
                               },
-                              child: Icon(
-                                Icons.close,
-                                color: Colors.red,
+                              child: Text(
+                                'Confirm',
+                                style: TextStyle(color: Colors.blue),
                               ),
-                            )
-                          ],
-                        )
-                      ]
-                    ])
-                  : SizedBox();
-            });
+                            ),
+                          InkWell(
+                            onTap: () {
+                              zcashBloc.cancelTask(task);
+                            },
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.red,
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ]
+                ])
+              : SizedBox();
+        });
   }
 }
 

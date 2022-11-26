@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/job_service.dart';
@@ -26,6 +27,7 @@ class ZCashBloc implements BlocBase {
   Map<int, ZTask> tasksToCheck = {};
 
   Sink<Map<int, ZTask>> get _inZcashProgress => _zcashProgressController.sink;
+
   Stream<Map<int, ZTask>> get outZcashProgress =>
       _zcashProgressController.stream;
 
@@ -91,21 +93,34 @@ class ZCashBloc implements BlocBase {
       }
       final reply = replies[i];
       int id = reply['result']['task_id'];
-      tasksToCheck[id] = ZTask(
-        abbr: coinsToActivate[i].abbr,
-        progress: 0,
-        type: 'enable',
-        id: id,
-      );
-      jobService.suspend('checkZcashProcessStatus');
-      startActivationStatusCheck();
+      bool taskExists = false;
+      for (var element in tasksToCheck.values) {
+        if (element.abbr == coinsToActivate[i].abbr && element.type == 'enable')
+          taskExists = true;
+      }
+      if (!taskExists) {
+        tasksToCheck[id] = ZTask(
+          abbr: coinsToActivate[i].abbr,
+          progress: 0,
+          type: 'enable',
+          id: id,
+          message: 'Activating',
+        );
+        jobService.suspend('checkZcashProcessStatus');
+        startActivationStatusCheck();
+      }
     }
     _inZcashProgress.add(tasksToCheck);
   }
 
   startWithdrawStatusCheck(int taskId, String abbr) {
-    tasksToCheck[taskId] =
-        ZTask(abbr: abbr, progress: 0, type: 'withdraw', id: taskId);
+    tasksToCheck[taskId] = ZTask(
+      abbr: abbr,
+      progress: 0,
+      type: 'withdraw',
+      id: taskId,
+      message: 'Withdrawal',
+    );
     jobService.suspend('checkZcashProcessStatus');
     _inZcashProgress.add(tasksToCheck);
     startActivationStatusCheck();
@@ -174,10 +189,12 @@ class ZCashBloc implements BlocBase {
       if (details.containsKey('error')) {
         Log('zcash_bloc:273', 'Error activating $abbr: ${details['error']}');
         tasksToCheck.remove(id);
-      } else if (activationData['result']['details'] != null) {
+      } else if (tasksToCheck[id].type == 'withdraw') {
         tasksToCheck[id].result =
             WithdrawResponse.fromJson(activationData['result']['details']);
         _inZcashProgress.add(tasksToCheck);
+        _progress = 100;
+        _messageDetails = 'Confirm Withdraw';
       } else {
         Coin coin = coinsBloc.getKnownCoinByAbbr(abbr);
 
@@ -201,12 +218,17 @@ class ZCashBloc implements BlocBase {
         await coinsBloc.syncCoinsStateWithApi();
         coinsBloc.currentCoinActivate(null);
         tasksToCheck.remove(id);
+        jobService.suspend('checkZcashProcessStatus');
+        startActivationStatusCheck();
       }
     } else if (status == 'InProgress') {
       if (details == 'ActivatingCoin') {
         _progress = 5;
         _messageDetails = 'Activating $abbr';
       } else if (details == 'RequestingBalance') {
+        _progress = 98;
+        _messageDetails = 'Requesting $abbr balance';
+      } else if (details == 'RequestingWalletBalance') {
         _progress = 98;
         _messageDetails = 'Requesting $abbr balance';
       } else if (details == 'GeneratingTransaction') {
@@ -263,16 +285,18 @@ class ZCashBloc implements BlocBase {
       StreamedResponse _response;
       _response = await Client().send(Request('GET', Uri.parse(param)));
       _totalDownloadSize += _response.contentLength ?? 0;
-      tasksToCheck[20] = ZTask(
+      tasksToCheck[2000] = ZTask(
         message: 'Downloading Zcash params...',
         progress: 0,
         type: 'download',
+        id: 2000,
       );
+      // 2000 is the task id for downloading z-params{just a random number}
       _inZcashProgress.add(tasksToCheck);
       _response.stream.listen((value) {
         _bytes.addAll(value);
         _received += value.length;
-        tasksToCheck[20].progress =
+        tasksToCheck[2000].progress =
             ((_received / _totalDownloadSize) * 100).toInt();
         _inZcashProgress.add(tasksToCheck);
       }).onDone(() async {
@@ -288,18 +312,28 @@ class ZCashBloc implements BlocBase {
     }
   }
 
-  void cancelTask(int id, bool enable) async {
+  void cancelTask(ZTask task) async {
     await MM.batch([
       {
         'userpass': mmSe.userpass,
-        'method':
-            enable ? 'task::enable_z_coin::cancel' : 'task::withdraw::cancel',
+        'method': task.type == 'enable'
+            ? 'task::enable_z_coin::cancel'
+            : 'task::withdraw::cancel',
         'mmrpc': '2.0',
-        'params': {'task_id': id},
-        'id': id,
+        'params': {'task_id': task.id},
+        'id': task.id,
       }
     ]);
-    tasksToCheck.remove(id);
+    tasksToCheck.remove(task.id);
+    _inZcashProgress.add(tasksToCheck);
+  }
+
+  void confirmWithdraw(ZTask task) async {
+    ApiProvider().postRawTransaction(
+      mmSe.client,
+      GetSendRawTransaction(coin: task.abbr, txHex: task.result.txHex),
+    );
+    tasksToCheck.remove(task.id);
     _inZcashProgress.add(tasksToCheck);
   }
 }
