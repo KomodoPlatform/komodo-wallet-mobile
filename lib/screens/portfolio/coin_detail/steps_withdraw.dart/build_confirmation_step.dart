@@ -91,7 +91,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           statusStream =
               zcashBloc.outZcashProgress.listen((Map<int, ZTask> event) {
             event.forEach((key, task) {
-              if (task.type == 'withdraw' && task.result != null) {
+              if (task.id == res.taskId && task.result != null) {
                 setState(() => _withdrawResponse = task.result);
               }
             });
