@@ -329,10 +329,12 @@ class ZCashBloc implements BlocBase {
   }
 
   void confirmWithdraw(ZTask task) async {
-    ApiProvider().postRawTransaction(
+    await ApiProvider().postRawTransaction(
       mmSe.client,
       GetSendRawTransaction(coin: task.abbr, txHex: task.result.txHex),
     );
+    coinsBloc.updateCoinBalances();
+
     tasksToCheck.remove(task.id);
     _inZcashProgress.add(tasksToCheck);
   }
