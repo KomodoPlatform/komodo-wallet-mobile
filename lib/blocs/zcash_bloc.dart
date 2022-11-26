@@ -286,7 +286,7 @@ class ZCashBloc implements BlocBase {
       _response = await Client().send(Request('GET', Uri.parse(param)));
       _totalDownloadSize += _response.contentLength ?? 0;
       tasksToCheck[2000] = ZTask(
-        message: 'Downloading Zcash params...',
+        message: 'Downloading Zcash params',
         progress: 0,
         type: 'download',
         id: 2000,
