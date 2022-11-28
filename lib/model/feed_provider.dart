@@ -3,10 +3,10 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/services/notif_service.dart';
-import 'package:komodo_dex/utils/log.dart';
+import '../app_config/app_config.dart';
+import '../localizations.dart';
+import '../services/notif_service.dart';
+import '../utils/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FeedProvider extends ChangeNotifier {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/dex/orders/filters/filters.dart';
+import '../../../../localizations.dart';
+import '../../../dex/orders/filters/filters.dart';
 
 class FiltersButton extends StatelessWidget {
   const FiltersButton({

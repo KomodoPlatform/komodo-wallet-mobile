@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
-import 'package:komodo_dex/widgets/password_visibility_control.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
+import '../../localizations.dart';
+import '../authentification/disclaimer_page.dart';
+import '../../widgets/password_visibility_control.dart';
+import '../../widgets/primary_button.dart';
 
 class CreatePasswordPage extends StatefulWidget {
   const CreatePasswordPage({Key key, @required this.seed}) : super(key: key);

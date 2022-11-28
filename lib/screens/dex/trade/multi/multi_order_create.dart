@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/multi_order_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/multi/multi_order_base.dart';
-import 'package:komodo_dex/screens/dex/trade/multi/multi_order_rel_list.dart';
+import '../../../../localizations.dart';
+import '../../../../model/multi_order_provider.dart';
+import '../../../dex/trade/multi/multi_order_base.dart';
+import '../../../dex/trade/multi/multi_order_rel_list.dart';
 import 'package:provider/provider.dart';
 
 class MultiOrderCreate extends StatefulWidget {

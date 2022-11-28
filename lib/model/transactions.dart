@@ -4,8 +4,8 @@
 
 import 'dart:convert';
 
-import 'package:komodo_dex/blocs/camo_bloc.dart';
-import 'package:komodo_dex/model/transaction_data.dart';
+import '../blocs/camo_bloc.dart';
+import '../model/transaction_data.dart';
 
 Transactions transactionsFromJson(String str) =>
     Transactions.fromJson(json.decode(str));

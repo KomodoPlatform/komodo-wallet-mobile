@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/wallet_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/screens/authentification/show_delete_wallet_confirmation.dart';
-import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
-import 'package:komodo_dex/screens/authentification/welcome_page.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/widgets/select_language_button.dart';
+import '../../blocs/authenticate_bloc.dart';
+import '../../blocs/wallet_bloc.dart';
+import '../../localizations.dart';
+import '../../model/wallet.dart';
+import '../authentification/show_delete_wallet_confirmation.dart';
+import '../authentification/unlock_wallet_page.dart';
+import '../authentification/welcome_page.dart';
+import '../../services/mm_service.dart';
+import '../../widgets/select_language_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {

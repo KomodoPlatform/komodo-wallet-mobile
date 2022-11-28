@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../app_config/theme_data.dart';
+import '../blocs/dialog_bloc.dart';
+import '../widgets/custom_simple_dialog.dart';
 
 import '../localizations.dart';
 

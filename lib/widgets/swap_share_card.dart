@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../model/swap.dart';
+import '../utils/utils.dart';
 import 'package:intl/intl.dart';
 
 import '../localizations.dart';

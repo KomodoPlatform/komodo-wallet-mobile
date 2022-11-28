@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/confirm/swap_confirmation_page_simple.dart';
+import '../../../../../blocs/main_bloc.dart';
+import '../../../../../localizations.dart';
+import '../../../../../model/swap_constructor_provider.dart';
+import '../../../../dex/trade/simple/confirm/swap_confirmation_page_simple.dart';
 import 'package:provider/provider.dart';
 
 class BuildTradeButtonSimple extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
+import '../../../blocs/coins_bloc.dart';
+import '../../../localizations.dart';
 
 class LoadingCoin extends StatefulWidget {
   @override
