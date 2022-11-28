@@ -217,40 +217,52 @@ class CoinsBloc implements BlocBase {
     coinBeforeActivation.sort((a, b) =>
         a.coin.name.toUpperCase().compareTo(b.coin.name.toUpperCase()));
 
-    for (CoinToActivate item in coinBeforeActivation) {
-      bool shouldChange = false;
+    int selected =
+        coinBeforeActivation.where((element) => element.isActive).length;
+    int activated = coinBalance.length;
 
-      if (isCoinPresent(item.coin, query, filterType)) {
-        shouldChange =
-            item.coin.testCoin ? type == null : item.coin.type.name == type;
-      }
+    int maxCoinLength = Platform.isIOS
+        ? appConfig.maxCoinEnabledIOS
+        : appConfig.maxCoinsEnabledAndroid;
 
-      if (shouldChange) {
-        if (isActive && canActivate(list, coinBeforeActivation)) {
-          list.add(CoinToActivate(coin: item.coin, isActive: isActive));
-        } else {
-          list.add(CoinToActivate(coin: item.coin, isActive: false));
-        }
+    int remaining = maxCoinLength - activated - selected;
+    int counter = 0;
+
+    List<CoinToActivate> typeList = coinBeforeActivation
+        .where((coin) =>
+            (coin.coin.type.name == (coin.coin.testCoin ? null : type)) &&
+            isCoinPresent(coin.coin, query, filterType))
+        .toList();
+
+    for (int i = 0; i < typeList.length; i++) {
+      Coin coin = typeList[i].coin;
+      coinBeforeActivation
+          .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
+
+      if (isActive && counter < remaining) {
+        coinBeforeActivation
+            .add(CoinToActivate(coin: coin, isActive: isActive));
+        counter++;
+
         // auto add parent coin if not enabled previously
-        String platform = item.coin?.protocol?.protocolData?.platform;
+        String platform = coin?.protocol?.protocolData?.platform;
+        if (platform == null) continue;
         bool isParentEnabled =
             coinBalance.any((element) => element.coin.abbr == platform);
-        if (isActive && platform != null && !isParentEnabled) {
+        bool selectedParent = coinBeforeActivation
+            .any((element) => element.coin.abbr == platform);
+        if (!selectedParent && platform != null && !isParentEnabled) {
           Coin parentCoin = getKnownCoinByAbbr(platform);
+
           list.removeWhere(
               (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
-          if (canActivate(list)) {
-            list.add(
-              CoinToActivate(coin: parentCoin, isActive: true),
-            );
-          }
+          list.add(CoinToActivate(coin: parentCoin, isActive: true));
+          counter++;
         }
       } else {
-        list.add(item);
+        coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
       }
     }
-
-    coinBeforeActivation = list;
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
