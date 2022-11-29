@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:komodo_dex/blocs/wallet_bloc.dart';
-import 'package:komodo_dex/model/article.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/model/wallet_security_settings.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../blocs/wallet_bloc.dart';
+import '../../model/article.dart';
+import '../../model/coin.dart';
+import '../../model/wallet.dart';
+import '../../model/wallet_security_settings.dart';
+import '../../utils/log.dart';
+import '../../utils/utils.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
