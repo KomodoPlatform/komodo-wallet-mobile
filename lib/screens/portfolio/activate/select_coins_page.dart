@@ -278,7 +278,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
     int remainingSpace = maxCoinLength - activated;
     return SizedBox(
-      height: 70,
+      height: 80,
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -296,6 +296,14 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                   }
                 }
                 return Column(mainAxisSize: MainAxisSize.min, children: [
+                  if (remainingSpace - selected == 0)
+                    Text(
+                      AppLocalizations.of(context).coinsActivatedLimitReached,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          .apply(color: Theme.of(context).colorScheme.error),
+                    ),
                   Text(
                     AppLocalizations.of(context)
                         .enable(selected, remainingSpace - selected),

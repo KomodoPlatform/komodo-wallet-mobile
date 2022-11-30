@@ -1682,6 +1682,9 @@ class AppLocalizations {
   String get enablingTooManyAssetsSpan4 =>
       Intl.message('. Please disable some assets before adding more.',
           name: 'enablingTooManyAssetsSpan4');
+  String get coinsActivatedLimitReached =>
+      Intl.message('Disable some assets before adding more',
+          name: 'coinsActivatedLimitReached');
 
   String get tooManyAssetsEnabledTitle =>
       Intl.message('Too many assets enabled',
