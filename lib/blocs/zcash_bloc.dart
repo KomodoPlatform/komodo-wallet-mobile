@@ -180,15 +180,11 @@ class ZCashBloc implements BlocBase {
     String abbr = tasksToCheck[id].abbr;
     String status = activationData['result']['status'];
     dynamic details = activationData['result']['details'];
+    Coin coin = coinsBloc.getKnownCoinByAbbr(abbr);
 
     int blockOffset = 0;
     if (abbr == 'ARRR') {
-      blockOffset = coinsBloc
-          .getKnownCoinByAbbr('ARRR')
-          .protocol
-          .protocolData
-          .checkPointBlock
-          .height;
+      blockOffset = coin.protocol.protocolData.checkPointBlock.height;
     }
 
     // use range from checkpoint block to present
@@ -203,8 +199,6 @@ class ZCashBloc implements BlocBase {
         _progress = 100;
         _messageDetails = 'Confirm Withdraw';
       } else {
-        Coin coin = coinsBloc.getKnownCoinByAbbr(abbr);
-
         await Db.coinActive(coin);
         final bal = Balance(
             address: details['wallet_balance']['address'],
