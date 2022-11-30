@@ -182,7 +182,14 @@ class ZCashBloc implements BlocBase {
     dynamic details = activationData['result']['details'];
 
     int blockOffset = 0;
-    if (abbr == 'ARRR') blockOffset = 1900000;
+    if (abbr == 'ARRR') {
+      blockOffset = coinsBloc
+          .getKnownCoinByAbbr('ARRR')
+          .protocol
+          .protocolData
+          .checkPointBlock
+          .height;
+    }
 
     // use range from checkpoint block to present
     if (status == 'Ok') {
@@ -305,7 +312,7 @@ class ZCashBloc implements BlocBase {
         await file.writeAsBytes(_bytes);
         _inZcashProgress.add(tasksToCheck);
         if (_received / _totalDownloadSize == 1) {
-          tasksToCheck.remove(20);
+          tasksToCheck.remove(2000);
           autoEnableZcashCoins();
         }
       });

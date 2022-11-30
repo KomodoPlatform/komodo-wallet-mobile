@@ -253,6 +253,8 @@ class ProtocolData {
     decimals = json['decimals'];
     tokenId = json['token_id'];
     requiredConfirmations = json['required_confirmations'];
+    if (json['check_point_block'] != null)
+      checkPointBlock = CheckPointBlock.fromJson(json['check_point_block']);
   }
 
   String platform;
@@ -261,6 +263,7 @@ class ProtocolData {
   int decimals;
   int requiredConfirmations;
   String tokenId;
+  CheckPointBlock checkPointBlock;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -271,6 +274,33 @@ class ProtocolData {
       if (tokenId != null) 'token_id': tokenId,
       if (requiredConfirmations != null)
         'required_confirmations': requiredConfirmations,
+      if (checkPointBlock != null)
+        'check_point_block': checkPointBlock.toJson(),
     };
+  }
+}
+
+class CheckPointBlock {
+  int height;
+  int time;
+  String hash;
+  String saplingTree;
+
+  CheckPointBlock({this.height, this.time, this.hash, this.saplingTree});
+
+  CheckPointBlock.fromJson(Map<String, dynamic> json) {
+    height = json['height'];
+    time = json['time'];
+    hash = json['hash'];
+    saplingTree = json['sapling_tree'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['height'] = height;
+    data['time'] = time;
+    data['hash'] = hash;
+    data['sapling_tree'] = saplingTree;
+    return data;
   }
 }
