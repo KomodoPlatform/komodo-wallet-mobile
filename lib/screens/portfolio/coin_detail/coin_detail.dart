@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -611,8 +612,9 @@ class _CoinDetailState extends State<CoinDetail> {
                 padding: const EdgeInsets.only(right: 8),
                 child: _buildButtonLight(StatusButton.CLAIM, mContext),
               )),
-            if (currentCoinBalance.coin.abbr == 'RICK' ||
-                currentCoinBalance.coin.abbr == 'MORTY')
+            if (appConfig.defaultTestCoins
+                    .contains(currentCoinBalance.coin.abbr) ||
+                currentCoinBalance.coin.abbr == 'ZOMBIE')
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.only(right: 8),
