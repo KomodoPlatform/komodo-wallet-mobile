@@ -979,14 +979,29 @@ class _CoinDetailState extends State<CoinDetail> {
                 isSendIsActive = false;
               });
 
-              listSteps.add(SizedBox(
-                  height: 100,
-                  width: double.infinity,
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
+              listSteps.add(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 100,
+                      width: double.infinity,
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      ),
                     ),
-                  )));
+                    SizedBox(height: 10),
+                    Text(
+                      AppLocalizations.of(context).gettingTxWait,
+                      style: Theme.of(context).textTheme.button.copyWith(
+                          color: Theme.of(context).colorScheme.onSecondary),
+                    ),
+                  ],
+                ),
+              );
 
               setState(() {
                 currentIndex = 2;
