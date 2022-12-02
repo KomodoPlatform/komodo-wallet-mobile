@@ -217,8 +217,17 @@ class CoinsBloc implements BlocBase {
     coinBeforeActivation.sort((a, b) =>
         a.coin.name.toUpperCase().compareTo(b.coin.name.toUpperCase()));
 
-    int selected =
-        coinBeforeActivation.where((element) => element.isActive).length;
+    List<CoinToActivate> typeList = coinBeforeActivation
+        .where((coin) =>
+            (coin.coin.type.name == (coin.coin.testCoin ? null : type)) &&
+            isCoinPresent(coin.coin, query, filterType))
+        .toList();
+
+    int selected = coinBeforeActivation
+        .where((element) =>
+            element.isActive &&
+            !typeList.map((e) => e.coin.abbr).contains(element.coin.abbr))
+        .length;
     int activated = coinBalance.length;
 
     int maxCoinLength = Platform.isIOS
@@ -227,12 +236,6 @@ class CoinsBloc implements BlocBase {
 
     int remaining = maxCoinLength - activated - selected;
     int counter = 0;
-
-    List<CoinToActivate> typeList = coinBeforeActivation
-        .where((coin) =>
-            (coin.coin.type.name == (coin.coin.testCoin ? null : type)) &&
-            isCoinPresent(coin.coin, query, filterType))
-        .toList();
 
     for (int i = 0; i < typeList.length; i++) {
       Coin coin = typeList[i].coin;
