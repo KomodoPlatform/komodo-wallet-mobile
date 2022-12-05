@@ -156,18 +156,9 @@ class CoinsBloc implements BlocBase {
     _inCoinBeforeActivation.add(this.coinBeforeActivation);
   }
 
-  bool canActivate(List<CoinToActivate> list,
-      [List<CoinToActivate> chosen = const []]) {
-    Map map = {};
-    for (var element in chosen) {
-      map[element.coin.abbr] = element.isActive;
-    }
-    for (var element in list) {
-      map[element.coin.abbr] = element.isActive;
-    }
-
+  bool canActivate(List<CoinToActivate> list) {
     int activated = coinBalance.length;
-    int selected = map.values.where((element) => element).length;
+    int selected = list.where((element) => element.isActive).length;
 
     int maxCoinLength = Platform.isIOS
         ? appConfig.maxCoinEnabledIOS
@@ -191,15 +182,16 @@ class CoinsBloc implements BlocBase {
       String platform = coin?.protocol?.protocolData?.platform;
       bool isParentEnabled =
           coinBalance.any((element) => element.coin.abbr == platform);
-      if (isActive && platform != null && !isParentEnabled) {
+      if (isActive &&
+          platform != null &&
+          !isParentEnabled &&
+          canActivate(coinBeforeActivation)) {
         Coin parentCoin = getKnownCoinByAbbr(platform);
         coinBeforeActivation.removeWhere(
             (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
-        if (canActivate(coinBeforeActivation)) {
-          coinBeforeActivation.add(
-            CoinToActivate(coin: parentCoin, isActive: isActive),
-          );
-        }
+        coinBeforeActivation.add(
+          CoinToActivate(coin: parentCoin, isActive: isActive),
+        );
       }
     } else {
       coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
@@ -213,7 +205,6 @@ class CoinsBloc implements BlocBase {
     String query,
     String filterType,
   }) {
-    final List<CoinToActivate> list = [];
     coinBeforeActivation.sort((a, b) =>
         a.coin.name.toUpperCase().compareTo(b.coin.name.toUpperCase()));
 
@@ -242,24 +233,28 @@ class CoinsBloc implements BlocBase {
       coinBeforeActivation
           .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
 
+      String platform = coin?.protocol?.protocolData?.platform;
+
       if (isActive && counter < remaining) {
         coinBeforeActivation
             .add(CoinToActivate(coin: coin, isActive: isActive));
         counter++;
 
         // auto add parent coin if not enabled previously
-        String platform = coin?.protocol?.protocolData?.platform;
         if (platform == null) continue;
         bool isParentEnabled =
             coinBalance.any((element) => element.coin.abbr == platform);
-        bool selectedParent = coinBeforeActivation
-            .any((element) => element.coin.abbr == platform);
-        if (!selectedParent && platform != null && !isParentEnabled) {
+        bool selectedParent = coinBeforeActivation.any(
+            (element) => element.coin.abbr == platform && !element.isActive);
+        if (selectedParent && !isParentEnabled) {
           Coin parentCoin = getKnownCoinByAbbr(platform);
 
-          list.removeWhere(
+          coinBeforeActivation.removeWhere(
               (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
-          list.add(CoinToActivate(coin: parentCoin, isActive: true));
+
+          coinBeforeActivation
+              .add(CoinToActivate(coin: parentCoin, isActive: true));
+
           counter++;
         }
       } else {
