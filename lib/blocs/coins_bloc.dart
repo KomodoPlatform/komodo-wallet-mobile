@@ -227,6 +227,7 @@ class CoinsBloc implements BlocBase {
 
     int remaining = maxCoinLength - activated - selected;
     int counter = 0;
+    List<String> _tempList = [];
 
     for (int i = 0; i < typeList.length; i++) {
       Coin coin = typeList[i].coin;
@@ -238,7 +239,7 @@ class CoinsBloc implements BlocBase {
       if (isActive && counter < remaining) {
         coinBeforeActivation
             .add(CoinToActivate(coin: coin, isActive: isActive));
-        counter++;
+        if (!_tempList.contains(coin.abbr)) counter++;
 
         // auto add parent coin if not enabled previously
         if (platform == null) continue;
@@ -248,7 +249,7 @@ class CoinsBloc implements BlocBase {
             (element) => element.coin.abbr == platform && !element.isActive);
         if (selectedParent && !isParentEnabled) {
           Coin parentCoin = getKnownCoinByAbbr(platform);
-
+          _tempList.add(parentCoin.abbr);
           coinBeforeActivation.removeWhere(
               (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
 
