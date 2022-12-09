@@ -153,6 +153,13 @@ class CoinsBloc implements BlocBase {
       coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
     }
     this.coinBeforeActivation = coinBeforeActivation;
+    // remove z-coin that are currently enabling from activation list
+    for (var zCoin in zcashBloc.tasksToCheck.values) {
+      if (zCoin.type == 'enable') {
+        coinBeforeActivation.removeWhere((e) => e.coin.abbr == zCoin.abbr);
+      }
+    }
+
     _inCoinBeforeActivation.add(this.coinBeforeActivation);
   }
 
