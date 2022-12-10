@@ -141,48 +141,55 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
 
             return Column(
               children: <Widget>[
-                SizedBox(height: 6),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      getCoinIconPath(widget.coin),
-                      width: 16,
-                      height: 16,
-                    ),
-                    SizedBox(
-                      width: 4.0,
-                    ),
-                    Text(widget.coin),
-                    SizedBox(
-                      width: 6.0,
-                    ),
-                    Text(AppLocalizations.of(context).privateKey + ':')
-                  ],
-                ),
-                SizedBox(height: 16),
                 Expanded(
-                  child: QrImage(
-                    foregroundColor: Colors.black,
-                    backgroundColor: Colors.white,
-                    data: privKey,
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      SizedBox(height: 6),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            getCoinIconPath(widget.coin),
+                            width: 16,
+                            height: 16,
+                          ),
+                          SizedBox(
+                            width: 4.0,
+                          ),
+                          Text(widget.coin),
+                          SizedBox(
+                            width: 6.0,
+                          ),
+                          Text(AppLocalizations.of(context).privateKey + ':')
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      QrImage(
+                        foregroundColor: Colors.black,
+                        backgroundColor: Colors.white,
+                        data: privKey,
+                      ),
+                      SizedBox(height: 20),
+                      InkWell(
+                        onTap: () {
+                          copyToClipBoard(mContext, privKey);
+                          Future.delayed(Duration(seconds: 2), () {
+                            ScaffoldMessenger.of(mContext)
+                                .hideCurrentSnackBar();
+                          });
+                        },
+                        child: Text(privKey,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(fontFamily: 'monospace')),
+                      ),
+                      const SizedBox(height: 6),
+                    ],
                   ),
                 ),
-                SizedBox(height: 20),
-                InkWell(
-                  onTap: () {
-                    copyToClipBoard(mContext, privKey);
-                    Future.delayed(Duration(seconds: 2), () {
-                      ScaffoldMessenger.of(mContext).hideCurrentSnackBar();
-                    });
-                  },
-                  child: Text(privKey,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          .copyWith(fontFamily: 'monospace')),
-                ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 6),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
