@@ -153,13 +153,6 @@ class CoinsBloc implements BlocBase {
       coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
     }
     this.coinBeforeActivation = coinBeforeActivation;
-    // remove z-coin that are currently enabling from activation list
-    for (var zCoin in zcashBloc.tasksToCheck.values) {
-      if (zCoin.type == 'enable') {
-        coinBeforeActivation.removeWhere((e) => e.coin.abbr == zCoin.abbr);
-      }
-    }
-
     _inCoinBeforeActivation.add(this.coinBeforeActivation);
   }
 
@@ -531,6 +524,13 @@ class CoinsBloc implements BlocBase {
     for (Coin coin in all) {
       if (active.contains(coin.abbr)) continue;
       notActive.add(coin);
+    }
+
+    // remove z-coin that are currently enabling from activation list
+    for (var zCoin in zcashBloc.tasksToCheck.values) {
+      if (zCoin.type == 'enable') {
+        notActive.removeWhere((e) => e.abbr == zCoin.abbr);
+      }
     }
 
     notActive.sort((Coin a, Coin b) =>
