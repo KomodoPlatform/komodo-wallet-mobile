@@ -34,7 +34,7 @@ class _RewardsPageState extends State<RewardsPage> {
           title: Text(AppLocalizations.of(context).rewardsTitle),
         ),
         body: rewardsProvider.errorMessage != null
-            ? _buildErrorMessage()
+            ? Center(child: _buildErrorMessage())
             : rewards == null
                 ? const Center(
                     child: CircularProgressIndicator(),
