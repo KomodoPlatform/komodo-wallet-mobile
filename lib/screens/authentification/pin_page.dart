@@ -45,15 +45,17 @@ class PinPage extends StatefulWidget {
   _PinPageState createState() => _PinPageState();
 }
 
-class _PinPageState extends State<PinPage> {
+class _PinPageState extends State<PinPage> with WidgetsBindingObserver {
   String _error = '';
   bool _isLoading = false;
   String _correctPin;
+  String _inputPin = '';
   String _camoPin;
 
   @override
   void initState() {
     _initCorrectPin();
+    WidgetsBinding.instance.addObserver(this);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.pinStatus == PinStatus.NORMAL_PIN) {
@@ -62,6 +64,20 @@ class _PinPageState extends State<PinPage> {
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // reset pin if there is any lifecycle change
+    setState(() {
+      _inputPin = '';
+    });
   }
 
   @override
@@ -98,6 +114,11 @@ class _PinPageState extends State<PinPage> {
               correctPin: _correctPin,
               onCodeFail: _onCodeFail,
               onCodeSuccess: _onCodeSuccess,
+              pin: _inputPin,
+              onPinChanged: (a) {
+                _inputPin = a;
+                setState(() {});
+              },
             )
           : _buildLoading(),
     );
