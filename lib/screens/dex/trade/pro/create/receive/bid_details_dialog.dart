@@ -19,10 +19,8 @@ void openBidDetailsDialog({
         return SharedPreferencesBuilder<bool>(
             pref: 'showOrderDetailsByTap',
             builder: (context, snapshot) {
-              if (!snapshot.hasData) return SizedBox();
-
               bool showSettings = false;
-              bool showOrderDetailsByTap = snapshot.data;
+              bool showOrderDetailsByTap = snapshot.data ?? true;
 
               return StatefulBuilder(
                 builder: (context, setState) {
