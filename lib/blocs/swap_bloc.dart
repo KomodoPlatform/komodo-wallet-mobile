@@ -154,7 +154,7 @@ class SwapBloc implements BlocBase {
   }
 
   updateFieldBalances() {
-    if (sellCoinBalance == null) {
+    if (sellCoinBalance != null) {
       sellCoinBalance =
           coinsBloc.getBalanceByAbbr(swapBloc.sellCoinBalance?.coin?.abbr);
       _inSellCoinBalance.add(sellCoinBalance);
@@ -163,9 +163,8 @@ class SwapBloc implements BlocBase {
           sellCoinBalance.balance.balance.toDouble()) {
         setAmountSell(deci2rat(sellCoinBalance.balance.balance));
       }
-      print(swapBloc.sellCoinBalance.balance.toJson());
     }
-    if (receiveCoinBalance == null) {
+    if (receiveCoinBalance != null) {
       receiveCoinBalance =
           coinsBloc.getBalanceByAbbr(swapBloc.receiveCoinBalance?.coin?.abbr);
       _inReceiveCoinBalance.add(receiveCoinBalance);
@@ -173,7 +172,6 @@ class SwapBloc implements BlocBase {
           receiveCoinBalance.balance.balance.toDouble()) {
         setAmountSell(deci2rat(receiveCoinBalance.balance.balance));
       }
-      print(swapBloc.receiveCoinBalance.balance.toJson());
     }
   }
 
