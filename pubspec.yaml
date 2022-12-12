@@ -109,7 +109,7 @@ dependencies:
   pin_code_view: # last reviewed c0b6516
     git:
       url: https://github.com/KomodoPlatform/pin_code_view.git
-      ref: d471b040206870b002cf0154772c1bca4c5dfe46
+      ref: 9a8f4924caaa790d676bfb83462aff64a983e6cc
 
   intl_generator: # newly added, wasn't reviewed
     git:
