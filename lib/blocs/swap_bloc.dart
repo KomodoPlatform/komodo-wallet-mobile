@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:komodo_dex/model/get_max_taker_volume.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/services/mm.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -150,6 +151,30 @@ class SwapBloc implements BlocBase {
     _inSellCoinBalance.add(sellCoinBalance);
 
     _updateMaxTakerVolume();
+  }
+
+  updateFieldBalances() {
+    if (sellCoinBalance == null) {
+      sellCoinBalance =
+          coinsBloc.getBalanceByAbbr(swapBloc.sellCoinBalance?.coin?.abbr);
+      _inSellCoinBalance.add(sellCoinBalance);
+
+      if ((amountSell?.toDouble() ?? 0) >
+          sellCoinBalance.balance.balance.toDouble()) {
+        setAmountSell(deci2rat(sellCoinBalance.balance.balance));
+      }
+      print(swapBloc.sellCoinBalance.balance.toJson());
+    }
+    if (receiveCoinBalance == null) {
+      receiveCoinBalance =
+          coinsBloc.getBalanceByAbbr(swapBloc.receiveCoinBalance?.coin?.abbr);
+      _inReceiveCoinBalance.add(receiveCoinBalance);
+      if ((amountReceive?.toDouble() ?? 0) >
+          receiveCoinBalance.balance.balance.toDouble()) {
+        setAmountSell(deci2rat(receiveCoinBalance.balance.balance));
+      }
+      print(swapBloc.receiveCoinBalance.balance.toJson());
+    }
   }
 
   Future<void> _updateMaxTakerVolume() async {
