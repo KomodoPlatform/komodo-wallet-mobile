@@ -28,7 +28,7 @@ packages:
       name: args
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.3.1"
   asn1lib:
     dependency: transitive
     description:
@@ -46,23 +46,29 @@ packages:
   audioplayers:
     dependency: "direct main"
     description:
-      name: audioplayers
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.20.1"
+      path: "packages/audioplayers"
+      ref: "9b927167b0bc103bee43042c195e881b8f653964"
+      resolved-ref: "9b927167b0bc103bee43042c195e881b8f653964"
+      url: "https://github.com/KomodoPlatform/audioplayers.git"
+    source: git
+    version: "0.20.0"
   auto_size_text:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: auto_size_text
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "2178f0821132636bc4f0dea1bc4d40a889d8249b"
+      resolved-ref: "2178f0821132636bc4f0dea1bc4d40a889d8249b"
+      url: "https://github.com/KomodoPlatform/auto_size_text.git"
+    source: git
     version: "3.0.0"
   bip39:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: bip39
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "3633daa2026b98c523ae9a091322be2903f7a8ab"
+      resolved-ref: "3633daa2026b98c523ae9a091322be2903f7a8ab"
+      url: "https://github.com/KomodoPlatform/bip39-dart.git"
+    source: git
     version: "1.0.6"
   boolean_selector:
     dependency: transitive
@@ -71,41 +77,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  bs58check:
-    dependency: "direct dev"
-    description:
-      name: bs58check
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
-  build:
-    dependency: transitive
-    description:
-      name: build
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.3.0"
-  built_collection:
-    dependency: transitive
-    description:
-      name: built_collection
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.1.1"
-  built_value:
-    dependency: transitive
-    description:
-      name: built_value
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "8.2.0"
-  carousel_slider:
-    dependency: "direct dev"
-    description:
-      name: carousel_slider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.0"
   characters:
     dependency: transitive
     description:
@@ -134,13 +105,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  code_builder:
-    dependency: transitive
-    description:
-      name: code_builder
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.1.0"
   collection:
     dependency: transitive
     description:
@@ -149,75 +113,63 @@ packages:
     source: hosted
     version: "1.15.0"
   connectivity_plus:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: connectivity_plus
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
+      path: "packages/connectivity_plus/connectivity_plus"
+      ref: d293b60a77313cc697542724f00186cb09187103
+      resolved-ref: d293b60a77313cc697542724f00186cb09187103
+      url: "https://github.com/KomodoPlatform/plus_plugins.git"
+    source: git
+    version: "2.3.6"
   connectivity_plus_linux:
     dependency: transitive
     description:
       name: connectivity_plus_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.0"
+    version: "1.3.1"
   connectivity_plus_macos:
     dependency: transitive
     description:
       name: connectivity_plus_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.2"
+    version: "1.2.4"
   connectivity_plus_platform_interface:
     dependency: transitive
     description:
       name: connectivity_plus_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   connectivity_plus_web:
     dependency: transitive
     description:
       name: connectivity_plus_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.3"
   connectivity_plus_windows:
     dependency: transitive
     description:
       name: connectivity_plus_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.2"
   convert:
     dependency: transitive
     description:
       name: convert
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
-  coverage:
-    dependency: transitive
-    description:
-      name: coverage
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
+    version: "3.0.2"
   crypto:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.4"
   dargon2_core:
     dependency: transitive
     description:
@@ -228,10 +180,10 @@ packages:
     source: git
     version: "2.1.0"
   dargon2_flutter:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       path: "dargon2_flutter/dargon2_flutter"
-      ref: update-dependencies
+      ref: d11f51cab560acf7644ebef402f1996b6f320365
       resolved-ref: d11f51cab560acf7644ebef402f1996b6f320365
       url: "https://github.com/KomodoPlatform/dargon2"
     source: git
@@ -278,19 +230,23 @@ packages:
     source: hosted
     version: "0.7.3"
   decimal:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: decimal
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.0"
+      path: "."
+      ref: "16aeee1354b74bb83a84e5f37b7b6976a02400df"
+      resolved-ref: "16aeee1354b74bb83a84e5f37b7b6976a02400df"
+      url: "https://github.com/KomodoPlatform/dart-decimal.git"
+    source: git
+    version: "1.4.0"
   encrypt:
     dependency: "direct main"
     description:
-      name: encrypt
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.0.1"
+      path: "."
+      ref: "3a42d25b0c356606c26a238384b9f2189572d954"
+      resolved-ref: "3a42d25b0c356606c26a238384b9f2189572d954"
+      url: "https://github.com/KomodoPlatform/encrypt"
+    source: git
+    version: "5.0.2"
   fake_async:
     dependency: transitive
     description:
@@ -304,7 +260,7 @@ packages:
       name: ffi
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.2"
+    version: "1.2.1"
   file:
     dependency: transitive
     description:
@@ -315,34 +271,22 @@ packages:
   file_picker:
     dependency: "direct main"
     description:
-      name: file_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.2.3"
-  fixnum:
-    dependency: transitive
-    description:
-      name: fixnum
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
+      path: "."
+      ref: f72d4b70c4c63ade584e64b7706774555fbc1c8e
+      resolved-ref: f72d4b70c4c63ade584e64b7706774555fbc1c8e
+      url: "https://github.com/KomodoPlatform/flutter_file_picker.git"
+    source: git
+    version: "4.2.5"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
   flutter_driver:
-    dependency: "direct dev"
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_launcher_icons:
-    dependency: "direct dev"
-    description:
-      name: flutter_launcher_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -361,28 +305,30 @@ packages:
       name: flutter_plugin_android_lifecycle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.0.7"
   flutter_secure_storage:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: flutter_secure_storage
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.0.2"
+      path: flutter_secure_storage
+      ref: "26efe91a75228ad8c8626d6eea18f7f3cb21bdd9"
+      resolved-ref: "26efe91a75228ad8c8626d6eea18f7f3cb21bdd9"
+      url: "https://github.com/KomodoPlatform/flutter_secure_storage.git"
+    source: git
+    version: "5.0.1"
   flutter_secure_storage_linux:
     dependency: transitive
     description:
       name: flutter_secure_storage_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   flutter_secure_storage_macos:
     dependency: transitive
     description:
       name: flutter_secure_storage_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   flutter_secure_storage_platform_interface:
     dependency: transitive
     description:
@@ -405,21 +351,25 @@ packages:
     source: hosted
     version: "1.1.2"
   flutter_slidable:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: flutter_slidable
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "175b0735f5577dd7d378e60cfe2fe1ca607df9fa"
+      resolved-ref: "175b0735f5577dd7d378e60cfe2fe1ca607df9fa"
+      url: "https://github.com/KomodoPlatform/flutter_slidable.git"
+    source: git
     version: "1.1.0"
   flutter_svg:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: flutter_svg
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "02b8595a5b1f1d97c8af5e4a2f84e790bcd8b460"
+      resolved-ref: "02b8595a5b1f1d97c8af5e4a2f84e790bcd8b460"
+      url: "https://github.com/KomodoPlatform/flutter_svg.git"
+    source: git
     version: "0.23.0+1"
   flutter_test:
-    dependency: "direct dev"
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -428,13 +378,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  frontend_server_client:
-    dependency: transitive
-    description:
-      name: frontend_server_client
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.2"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
@@ -446,7 +389,7 @@ packages:
       name: glob
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "2.1.0"
   hex:
     dependency: transitive
     description:
@@ -455,33 +398,24 @@ packages:
     source: hosted
     version: "0.2.0"
   http:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.13.4"
-  http_multi_server:
-    dependency: transitive
-    description:
-      name: http_multi_server
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.2.0"
   http_parser:
     dependency: transitive
     description:
       name: http_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
-  image:
-    dependency: transitive
-    description:
-      name: image
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.3"
+    version: "4.0.1"
+  integration_test:
+    dependency: "direct dev"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   intl:
     dependency: transitive
     description:
@@ -490,19 +424,14 @@ packages:
     source: hosted
     version: "0.17.0"
   intl_generator:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: intl_generator
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "1d1f98f291b2cffc80f4a2822024b3722312e571"
+      resolved-ref: "1d1f98f291b2cffc80f4a2822024b3722312e571"
+      url: "https://github.com/KomodoPlatform/intl_generator.git"
+    source: git
     version: "0.2.1"
-  io:
-    dependency: transitive
-    description:
-      name: io
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
   js:
     dependency: transitive
     description:
@@ -518,19 +447,12 @@ packages:
     source: hosted
     version: "1.0.1"
   local_auth:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: local_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.8"
-  logging:
-    dependency: transitive
-    description:
-      name: logging
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
+    version: "1.1.11"
   matcher:
     dependency: transitive
     description:
@@ -551,14 +473,16 @@ packages:
       name: mime
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
-  mockito:
-    dependency: "direct dev"
+    version: "1.0.2"
+  mobile_scanner:
+    dependency: "direct main"
     description:
-      name: mockito
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.0.16"
+      path: "."
+      ref: "9ecb3d8c0fc34533b007270cd425264c4b446008"
+      resolved-ref: "9ecb3d8c0fc34533b007270cd425264c4b446008"
+      url: "https://github.com/KomodoPlatform/mobile_scanner.git"
+    source: git
+    version: "1.1.1"
   nested:
     dependency: transitive
     description:
@@ -573,27 +497,22 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.0"
-  node_preamble:
-    dependency: transitive
-    description:
-      name: node_preamble
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   package_config:
     dependency: transitive
     description:
       name: package_config
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "2.1.0"
   package_info_plus:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: package_info_plus
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.0"
+      path: "packages/package_info_plus/package_info_plus"
+      ref: "08a7a35502d2498ea3dd1473445b4511dea35518"
+      resolved-ref: "08a7a35502d2498ea3dd1473445b4511dea35518"
+      url: "https://github.com/KomodoPlatform/plus_plugins.git"
+    source: git
+    version: "1.4.2"
   package_info_plus_linux:
     dependency: transitive
     description:
@@ -656,56 +575,49 @@ packages:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.7"
+    version: "2.0.11"
   path_provider_android:
     dependency: transitive
     description:
       name: path_provider_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.12"
+    version: "2.0.20"
   path_provider_ios:
     dependency: transitive
     description:
       name: path_provider_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.8"
+    version: "2.0.11"
   path_provider_linux:
     dependency: transitive
     description:
       name: path_provider_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.5"
+    version: "2.1.7"
   path_provider_macos:
     dependency: transitive
     description:
       name: path_provider_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.0.6"
   path_provider_platform_interface:
     dependency: transitive
     description:
       name: path_provider_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.4"
   path_provider_windows:
     dependency: transitive
     description:
       name: path_provider_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
-  pedantic:
-    dependency: transitive
-    description:
-      name: pedantic
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.11.1"
+    version: "2.0.7"
   petitparser:
     dependency: transitive
     description:
@@ -714,12 +626,12 @@ packages:
     source: hosted
     version: "4.4.0"
   pin_code_view:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       path: "."
       ref: d471b040206870b002cf0154772c1bca4c5dfe46
       resolved-ref: d471b040206870b002cf0154772c1bca4c5dfe46
-      url: "git://github.com/KomodoPlatform/pin_code_view.git"
+      url: "https://github.com/KomodoPlatform/pin_code_view.git"
     source: git
     version: "0.2.1"
   platform:
@@ -742,14 +654,7 @@ packages:
       name: pointycastle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.5.2"
-  pool:
-    dependency: transitive
-    description:
-      name: pool
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.5.0"
+    version: "3.6.1"
   process:
     dependency: transitive
     description:
@@ -760,10 +665,12 @@ packages:
   provider:
     dependency: "direct main"
     description:
-      name: provider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "6.0.1"
+      path: "."
+      ref: "960e422105e2b7a6a9e46b2517daead8754c6b25"
+      resolved-ref: "960e422105e2b7a6a9e46b2517daead8754c6b25"
+      url: "https://github.com/KomodoPlatform/provider.git"
+    source: git
+    version: "6.0.2"
   pub_semver:
     dependency: transitive
     description:
@@ -778,19 +685,14 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  qr_code_scanner:
-    dependency: "direct dev"
-    description:
-      name: qr_code_scanner
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.1"
   qr_flutter:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: qr_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: e3f8d3d4bbe8661f6c941acde8c9815a876756a3
+      resolved-ref: e3f8d3d4bbe8661f6c941acde8c9815a876756a3
+      url: "https://github.com/KomodoPlatform/qr.flutter.git"
+    source: git
     version: "4.0.0"
   rational:
     dependency: transitive
@@ -800,108 +702,73 @@ packages:
     source: hosted
     version: "1.2.1"
   share:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: share
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
   shared_preferences:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.8"
+    version: "2.0.15"
+  shared_preferences_android:
+    dependency: transitive
+    description:
+      name: shared_preferences_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.12"
+  shared_preferences_ios:
+    dependency: transitive
+    description:
+      name: shared_preferences_ios
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   shared_preferences_linux:
     dependency: transitive
     description:
       name: shared_preferences_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   shared_preferences_macos:
     dependency: transitive
     description:
       name: shared_preferences_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.4"
   shared_preferences_platform_interface:
     dependency: transitive
     description:
       name: shared_preferences_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.1.0"
   shared_preferences_web:
     dependency: transitive
     description:
       name: shared_preferences_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.4"
   shared_preferences_windows:
     dependency: transitive
     description:
       name: shared_preferences_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
-  shelf:
-    dependency: transitive
-    description:
-      name: shelf
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
-  shelf_packages_handler:
-    dependency: transitive
-    description:
-      name: shelf_packages_handler
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
-  shelf_static:
-    dependency: transitive
-    description:
-      name: shelf_static
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
-  shelf_web_socket:
-    dependency: transitive
-    description:
-      name: shelf_web_socket
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
+    version: "2.1.1"
   sky_engine:
     dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.99"
-  source_gen:
-    dependency: transitive
-    description:
-      name: source_gen
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.2"
-  source_map_stack_trace:
-    dependency: transitive
-    description:
-      name: source_map_stack_trace
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
-  source_maps:
-    dependency: transitive
-    description:
-      name: source_maps
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.10"
   source_span:
     dependency: transitive
     description:
@@ -910,11 +777,13 @@ packages:
     source: hosted
     version: "1.8.1"
   sqflite:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: sqflite
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: sqflite
+      ref: "85d84b6f656764e4a4d6632dcc9913f4f47011e5"
+      resolved-ref: "85d84b6f656764e4a4d6632dcc9913f4f47011e5"
+      url: "https://github.com/KomodoPlatform/sqflite.git"
+    source: git
     version: "2.0.0+4"
   sqflite_common:
     dependency: transitive
@@ -957,7 +826,7 @@ packages:
       name: synchronized
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0+2"
+    version: "3.0.0+3"
   term_glyph:
     dependency: transitive
     description:
@@ -965,13 +834,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  test:
-    dependency: "direct dev"
-    description:
-      name: test
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.17.12"
   test_api:
     dependency: transitive
     description:
@@ -979,20 +841,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.3"
-  test_core:
-    dependency: transitive
-    description:
-      name: test_core
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.2"
-  timeago:
-    dependency: "direct dev"
-    description:
-      name: timeago
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.0"
   typed_data:
     dependency: transitive
     description:
@@ -1001,33 +849,47 @@ packages:
     source: hosted
     version: "1.3.0"
   url_launcher:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.13"
+    version: "6.1.5"
+  url_launcher_android:
+    dependency: transitive
+    description:
+      name: url_launcher_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.17"
+  url_launcher_ios:
+    dependency: transitive
+    description:
+      name: url_launcher_ios
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.17"
   url_launcher_linux:
     dependency: transitive
     description:
       name: url_launcher_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.1"
   url_launcher_macos:
     dependency: transitive
     description:
       name: url_launcher_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.1"
   url_launcher_platform_interface:
     dependency: transitive
     description:
       name: url_launcher_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.1.0"
   url_launcher_web:
     dependency: transitive
     description:
@@ -1041,13 +903,15 @@ packages:
       name: url_launcher_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "3.0.1"
   uuid:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      name: uuid
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: c9a37bc675fd3fa715db2d929dc66d15ec09ad27
+      resolved-ref: c9a37bc675fd3fa715db2d929dc66d15ec09ad27
+      url: "https://github.com/KomodoPlatform/dart-uuid.git"
+    source: git
     version: "3.0.5"
   vector_math:
     dependency: transitive
@@ -1070,13 +934,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  web_socket_channel:
-    dependency: transitive
-    description:
-      name: web_socket_channel
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
   webdriver:
     dependency: transitive
     description:
@@ -1084,27 +941,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  webkit_inspection_protocol:
-    dependency: transitive
-    description:
-      name: webkit_inspection_protocol
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   win32:
     dependency: transitive
     description:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.1"
+    version: "2.5.2"
   xdg_directories:
     dependency: transitive
     description:
       name: xdg_directories
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0+1"
+    version: "0.2.0+2"
   xml:
     dependency: transitive
     description:
@@ -1118,7 +968,7 @@ packages:
       name: yaml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.1"
 sdks:
   dart: ">=2.15.0 <3.0.0"
-  flutter: ">=2.8.0"
+  flutter: ">=2.8.1"

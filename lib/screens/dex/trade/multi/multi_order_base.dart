@@ -139,6 +139,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
 
   Widget _buildCoinSelect() {
     return InkWell(
+      key: const Key('coin-select-sell'),
       onTap: () => _showCoinSelectDialog(),
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -158,8 +159,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                     : null,
                 backgroundImage: baseCoin == null
                     ? null
-                    : AssetImage(
-                        'assets/coin-icons/${baseCoin.toLowerCase()}.png'),
+                    : AssetImage(getCoinIconPath(baseCoin)),
               ),
               const SizedBox(width: 6),
               Expanded(
@@ -182,6 +182,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         builder: (context) {
           if (coins == null)
             return CustomSimpleDialog(
+              key: const Key('sell-coin-dialog'),
               children: const [
                 Center(
                   child: CircularProgressIndicator(),
@@ -201,12 +202,14 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
           }
 
           return CustomSimpleDialog(
+            key: const Key('sell-coin-dialog'),
             hasHorizontalPadding: false,
             title: Text(AppLocalizations.of(context).multiBaseSelectTitle),
             children: coinsBloc
                 .sortCoins(availableForSell)
                 .map<Widget>((CoinBalance item) {
               return InkWell(
+                key: Key('item-dialog-${item.coin.abbr.toLowerCase()}-sell'),
                 onTap: () {
                   multiOrderProvider.baseCoin = item.coin.abbr;
                   amountCtrl.text = '';
@@ -218,8 +221,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                     children: <Widget>[
                       CircleAvatar(
                         maxRadius: 12,
-                        backgroundImage: AssetImage(
-                            'assets/coin-icons/${item.coin.abbr.toLowerCase()}.png'),
+                        backgroundImage:
+                            AssetImage(getCoinIconPath(item.coin.abbr)),
                       ),
                       const SizedBox(width: 6),
                       Text(
@@ -304,6 +307,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                         inputDecorationTheme: gefaultUnderlineInputTheme,
                       ),
                       child: TextFormField(
+                        key: const Key('input-text-sell'),
                         controller: amountCtrl,
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
@@ -364,7 +368,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                                 formatPrice(multiOrderProvider.baseAmt)) ??
                             '';
                       },
-                child: Text('MAX'),
+                child: Text(AppLocalizations.of(context).max),
               ),
           ],
         ),

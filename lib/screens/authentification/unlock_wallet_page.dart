@@ -77,12 +77,12 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'UNLOCK',
+              AppLocalizations.of(context).unlock.toUpperCase(),
               style: Theme.of(context).textTheme.headline3,
               textAlign: TextAlign.center,
             ),
             Text(
-              'your wallet',
+              AppLocalizations.of(context).yourWallet,
               style: Theme.of(context).textTheme.headline6,
               textAlign: TextAlign.center,
             ),

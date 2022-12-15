@@ -1,21 +1,16 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/market.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/coins_list_all.dart';
 import 'package:komodo_dex/screens/dex/trade/simple/create/coins_list_best.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
 
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
-
 class CoinsList extends StatefulWidget {
-  const CoinsList({this.type, this.known, this.searchTerm});
+  const CoinsList({this.type, this.searchTerm});
 
   final Market type;
-  final LinkedHashMap<String, Coin> known;
   final String searchTerm;
 
   @override
@@ -45,7 +40,6 @@ class _CoinsListState extends State<CoinsList> {
       return CoinsListBest(
         type: widget.type,
         searchTerm: widget.searchTerm,
-        known: widget.known,
       );
     }
   }

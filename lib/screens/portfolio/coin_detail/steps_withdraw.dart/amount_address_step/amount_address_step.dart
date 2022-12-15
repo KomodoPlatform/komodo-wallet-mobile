@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -29,6 +30,7 @@ class AmountAddressStep extends StatefulWidget {
     this.onCancel,
     this.coinBalance,
     this.paymentUriInfo,
+    this.scrollController,
   }) : super(key: key);
 
   final Function onCancel;
@@ -40,6 +42,7 @@ class AmountAddressStep extends StatefulWidget {
   final bool autoFocus;
   final CoinBalance coinBalance;
   final PaymentUriInfo paymentUriInfo;
+  final ScrollController scrollController;
 
   @override
   _AmountAddressStepState createState() => _AmountAddressStepState();
@@ -86,10 +89,11 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               onChanged: onChanged,
             ),
             // Temporary disable custom fee for qrc20 tokens
-            if (!(widget.coinBalance.coin.type == 'qrc'))
+            if (widget.coinBalance.coin.type != CoinType.qrc)
               CustomFee(
                 coin: widget.coinBalance.coin,
                 amount: widget.amountController.text,
+                scrollController: widget.scrollController,
               ),
             Row(
               children: <Widget>[

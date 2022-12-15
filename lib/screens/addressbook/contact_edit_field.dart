@@ -16,7 +16,7 @@ class ContactEditField extends StatefulWidget {
     this.color,
     this.padding,
     this.icon,
-    this.invalid = false,
+    this.validator,
   }) : super(key: key);
 
   final String name;
@@ -26,10 +26,10 @@ class ContactEditField extends StatefulWidget {
   final String value;
   final Color color;
   final Function(String) onChange;
+  final Function(String) validator;
   final Function onRemove;
   final EdgeInsets padding;
   final Widget icon;
-  final bool invalid;
 
   @override
   _ContactEditFieldState createState() => _ContactEditFieldState();
@@ -98,7 +98,8 @@ class _ContactEditFieldState extends State<ContactEditField> {
                             ),
                           ],
                           Expanded(
-                            child: TextField(
+                            child: TextFormField(
+                              key: Key(widget.name + '-address-field'),
                               controller: controller,
                               focusNode: focusNode,
                               textCapitalization: TextCapitalization.words,
@@ -107,6 +108,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                                 if (widget.onChange == null) return;
                                 widget.onChange(value);
                               },
+                              validator: widget.validator,
                               autocorrect: false,
                               enableInteractiveSelection: true,
                             ),

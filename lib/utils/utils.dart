@@ -7,6 +7,7 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -25,7 +26,6 @@ import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/qr_view.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:rational/rational.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
@@ -65,6 +65,29 @@ Rational tryParseRat(String text) {
   } catch (_) {
     return null;
   }
+}
+
+String getCoinIconPath(String abbr) {
+  List<String> coinsWithoutIcons = [
+    'AWR',
+    'CFUN',
+    'ENT',
+    'EPC',
+    'FENIX',
+    'PLY',
+    'WID',
+  ];
+  String ticker = getCoinTicker(abbr).replaceAll('-OLD', '').toLowerCase();
+  if (coinsWithoutIcons.contains(abbr)) ticker = 'adexbsc';
+
+  return 'assets/coin-icons/$ticker.png';
+}
+
+String getCoinTicker(String abbr) {
+  for (String suffix in appConfig.protocolSuffixes) {
+    abbr = abbr.replaceAll('-$suffix', '');
+  }
+  return abbr;
 }
 
 Rational deci2rat(Decimal decimal) {
@@ -306,6 +329,7 @@ Future<void> showConfirmationRemoveCoin(
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton(
+                  key: Key('confirm-disable'),
                   onPressed: () async {
                     try {
                       await coinsBloc.removeCoin(coin);
@@ -330,9 +354,9 @@ Future<void> showConfirmationRemoveCoin(
 
 Future<void> launchURL(String url) async {
   Log.println('utils:388', url);
-  if (await canLaunch(url)) {
+  if (await canLaunchUrl(Uri.parse(url))) {
     mainBloc.isUrlLaucherIsOpen = true;
-    await launch(url);
+    await launchUrl(Uri.parse(url));
     mainBloc.isUrlLaucherIsOpen = false;
   } else {
     throw 'Could not launch $url';
@@ -451,6 +475,21 @@ bool get isInDebugMode {
   bool inDebugMode = false;
   assert(inDebugMode = true);
   return inDebugMode;
+}
+
+bool isErcType(Coin coin) {
+  final String protocolType = coin?.protocol?.type;
+  return protocolType == 'ERC20' || protocolType == 'ETH';
+}
+
+bool isSlpParent(Coin coin) {
+  final String protocolType = coin?.protocol?.type;
+  return protocolType == 'BCH';
+}
+
+bool isSlpChild(Coin coin) {
+  final String protocolType = coin?.protocol?.type;
+  return protocolType == 'SLPTOKEN';
 }
 
 String humanDate(int epoch) {
@@ -657,8 +696,8 @@ void showUriDetailsDialog(
                 children: [
                   CircleAvatar(
                     radius: 11,
-                    backgroundImage: AssetImage(
-                        'assets/coin-icons/${abbr.toLowerCase()}.png'),
+                    backgroundImage:
+                        AssetImage(getCoinIconPath(abbr.toLowerCase())),
                   ),
                   SizedBox(width: 6),
                   Text(
@@ -742,26 +781,21 @@ String getRandomWord() {
   return words[Random().nextInt(words.length)];
 }
 
-List<Coin> filterCoinsByQuery(List<Coin> coins, String query) {
+List<Coin> filterCoinsByQuery(List<Coin> coins, String query,
+    {String type = ''}) {
   if (coins == null || coins.isEmpty) return [];
-  final list = coins
-      .where((Coin coin) =>
-          coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
-          coin.name.toLowerCase().contains(query.trim().toLowerCase()))
-      .toList();
+  List<Coin> list =
+      coins.where((Coin coin) => isCoinPresent(coin, query, type)).toList();
+
   return list;
 }
 
 Future<String> scanQr(BuildContext context) async {
-  unfocusTextField(context);
+  unfocusEverything();
   await Future.delayed(const Duration(milliseconds: 200));
-  final barcode = await Navigator.of(context).push<Barcode>(
-    MaterialPageRoute(builder: (context) => AppQRView()),
+  return await Navigator.of(context).push<String>(
+    MaterialPageRoute(builder: (context) => QRScan()),
   );
-
-  if (barcode == null) return null;
-
-  return barcode.code;
 }
 
 /// Function to generate password based on some criteria
@@ -840,15 +874,11 @@ int extractStartedAtFromSwap(MmSwap swap) {
   return 0;
 }
 
-// According to https://flutterigniter.com/dismiss-keyboard-form-lose-focus/
-// this is the correct way to unfocus a TextField (so the keyboard is dismissed)
-// it's recommended over `FocusScope.of(context).requestFocus(new FocusNode())`
-void unfocusTextField(BuildContext context) {
-  FocusScopeNode currentFocus = FocusScope.of(context);
-
-  if (!currentFocus.hasPrimaryFocus) {
-    currentFocus.unfocus();
-  }
+/// Unfocus whatever is currently focused, e.g. TextFields.
+///
+/// See https://stackoverflow.com/a/56946311 for more info.
+void unfocusEverything() {
+  FocusManager.instance.primaryFocus?.unfocus();
 }
 
 void moveCursorToEnd(TextEditingController controller) {
@@ -862,4 +892,10 @@ String toInitialUpper(String val) {
   final String initial = val.substring(0, 1);
   final String rest = val.substring(1);
   return initial.toUpperCase() + rest;
+}
+
+bool isCoinPresent(Coin coin, String query, String filter) {
+  return coin.type.name.toLowerCase().contains(filter.toLowerCase()) &&
+      (coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
+          coin.name.toLowerCase().contains(query.trim().toLowerCase()));
 }

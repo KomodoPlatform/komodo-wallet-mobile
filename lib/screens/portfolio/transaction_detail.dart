@@ -64,10 +64,9 @@ class _TransactionDetailState extends State<TransactionDetail> {
             IconButton(
               splashRadius: 24,
               icon: Icon(Icons.open_in_browser),
-              onPressed: () => launchURL(
-                  widget.coinBalance.coin.explorerUrl[0] +
-                      'tx/' +
-                      widget.transaction.txHash),
+              onPressed: () => launchURL(widget.coinBalance.coin.explorerUrl +
+                  'tx/' +
+                  widget.transaction.txHash),
             )
           ],
         ),
@@ -354,6 +353,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
   final noteTextController = TextEditingController();
   bool isEdit = false;
   bool isExpanded = false;
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -381,59 +381,86 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
             width: 16,
           ),
           Expanded(
-            child: isEdit
-                ? TextField(
-                    controller: noteTextController,
-                    maxLength: 200,
-                    minLines: 1,
-                    maxLines: 8,
-                  )
-                : InkWell(
-                    onTap: () {
-                      if (noteText != null && noteText.isNotEmpty)
-                        setState(() {
-                          isExpanded = !isExpanded;
-                        });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text(
-                        (noteText == null || noteText.isEmpty)
-                            ? AppLocalizations.of(context).notePlaceholder
-                            : noteText,
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
-                              color: Colors.grey,
-                            ),
-                        maxLines: isExpanded ? null : 1,
-                        overflow: isExpanded ? null : TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-          ),
-          IconButton(
-            splashRadius: 24,
-            icon: Icon(isEdit ? Icons.check : Icons.edit),
-            onPressed: () {
-              setState(
-                () {
-                  if (isEdit) {
+              child: InkWell(
+            onTap: isEdit
+                ? null
+                : () {
+                    setState(() {
+                      isEdit = true;
+                    });
+
                     noteTextController.text = noteTextController.text.trim();
                     noteText = noteTextController.text;
-                    noteText.isNotEmpty
-                        ? Db.saveNote(widget.txHash, noteText)
-                        : Db.deleteNote(widget.txHash);
+                    focusNode.requestFocus();
+                    if (noteText != null && noteText.isNotEmpty)
+                      setState(() {
+                        isExpanded = !isExpanded;
+                      });
+                  },
+            child: Row(
+              children: [
+                Expanded(
+                  child: isEdit
+                      ? TextField(
+                          controller: noteTextController,
+                          maxLength: 200,
+                          minLines: 1,
+                          maxLines: 8,
+                          focusNode: focusNode,
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Text(
+                            (noteText == null || noteText.isEmpty)
+                                ? AppLocalizations.of(context).notePlaceholder
+                                : noteText,
+                            style:
+                                Theme.of(context).textTheme.bodyText2.copyWith(
+                                      color: Colors.grey,
+                                    ),
+                            maxLines: isExpanded ? null : 1,
+                            overflow: isExpanded ? null : TextOverflow.ellipsis,
+                          ),
+                        ),
+                ),
+                IconButton(
+                  splashRadius: 24,
+                  icon: Icon(isEdit ? Icons.check : Icons.edit),
+                  onPressed: () {
+                    setState(
+                      () {
+                        if (isEdit) {
+                          noteTextController.text =
+                              noteTextController.text.trim();
+                          noteText = noteTextController.text;
+                          noteText.isNotEmpty
+                              ? Db.saveNote(widget.txHash, noteText)
+                              : Db.deleteNote(widget.txHash);
 
-                    setState(() {
-                      isExpanded = false;
-                    });
-                  }
-                  setState(() {
-                    isEdit = !isEdit;
-                  });
-                },
-              );
-            },
-          )
+                          setState(() {
+                            isExpanded = false;
+                          });
+                        } else {
+                          focusNode.requestFocus();
+                        }
+
+                        setState(() {
+                          isEdit = !isEdit;
+                        });
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+          )),
+          if (noteText?.isNotEmpty ?? false)
+            IconButton(
+              icon: Icon(Icons.copy),
+              onPressed: () {
+                copyToClipBoard(context, noteText);
+              },
+            ),
         ],
       ),
     );

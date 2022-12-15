@@ -28,9 +28,10 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
 
   void _setObscureTo(bool isObscured) {
     if (_timer != null) _timer.cancel();
-    setState(() {
-      _isObscured = isObscured;
-    });
+    if (mounted)
+      setState(() {
+        _isObscured = isObscured;
+      });
     widget.onVisibilityChange(_isObscured);
   }
 
@@ -41,9 +42,16 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
   }
 
   @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       // NB: Both the long press and the tap start with `onTabDown`.
+      key: const Key('password-visibility'),
       onTapDown: (TapDownDetails details) {
         _tapStartPosition = details.globalPosition;
         _setObscureTo(false);

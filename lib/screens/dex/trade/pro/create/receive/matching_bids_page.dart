@@ -74,8 +74,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
               SizedBox(
                   height: 30,
                   width: 30,
-                  child: Image.asset(
-                      'assets/coin-icons/${receiveCoin.toLowerCase()}.png')),
+                  child: Image.asset(getCoinIconPath(receiveCoin))),
             ],
           ),
         ),
@@ -166,7 +165,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                 child: Container(
                   padding: EdgeInsets.all(6),
                   child: Text(
-                    'Less',
+                    AppLocalizations.of(context).less,
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
@@ -182,7 +181,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                 child: Container(
                   padding: EdgeInsets.all(6),
                   child: Text(
-                    'More',
+                    AppLocalizations.of(context).moreTab,
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),

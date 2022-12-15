@@ -126,9 +126,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
       Log('swap_confirmaiton_page]', '_checkBattery: $e');
     }
 
-    setState(() {
-      _batteryData = battery;
-    });
+    if (mounted)
+      setState(() {
+        _batteryData = battery;
+      });
   }
 
   bool _isBatteryCritical() {
@@ -224,10 +225,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildCoinSwapDetail() {
-    final String amountSell =
-        cutTrailingZeros(formatPrice(swapBloc.amountSell));
-    final String amountReceive =
-        cutTrailingZeros(formatPrice(swapBloc.amountReceive));
+    final String amountSell = cutTrailingZeros(
+        swapBloc.amountSell.toStringAsFixed(appConfig.tradeFormPrecision));
+    final String amountReceive = cutTrailingZeros(
+        swapBloc.amountReceive.toStringAsFixed(appConfig.tradeFormPrecision));
 
     return Column(
       children: <Widget>[
@@ -578,6 +579,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
             height: 8,
           ),
           TextButton(
+            key: const Key('cancel-swap-button'),
             onPressed: () => Navigator.of(context).pop(),
             style: TextButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 56),
@@ -619,9 +621,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           result: MmSwap(
             uuid: response.result.uuid,
             myInfo: SwapMyInfo(
-                myAmount: cutTrailingZeros(formatPrice(swapBloc.amountSell)),
-                otherAmount:
-                    cutTrailingZeros(formatPrice(swapBloc.amountReceive)),
+                myAmount: cutTrailingZeros(swapBloc.amountSell
+                    .toStringAsFixed(appConfig.tradeFormPrecision)),
+                otherAmount: cutTrailingZeros(swapBloc.amountReceive
+                    .toStringAsFixed(appConfig.tradeFormPrecision)),
                 myCoin: response.result.rel,
                 otherCoin: response.result.base,
                 startedAt: DateTime.now().millisecondsSinceEpoch),

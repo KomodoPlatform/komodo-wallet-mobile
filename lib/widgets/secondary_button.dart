@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class SecondaryButton extends StatelessWidget {
   const SecondaryButton({
+    Key key,
     @required this.onPressed,
     this.text,
     this.child,
@@ -10,7 +11,7 @@ class SecondaryButton extends StatelessWidget {
     this.height,
     this.width,
     this.textColor = Colors.black,
-  });
+  }) : super(key: key);
 
   final VoidCallback onPressed;
   final String text;

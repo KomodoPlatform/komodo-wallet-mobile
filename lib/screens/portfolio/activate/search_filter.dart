@@ -9,19 +9,23 @@ class SearchFieldFilterCoin extends StatefulWidget {
     Key key,
     this.onFilterCoins,
     this.clear,
+    this.type,
+    this.controller,
+    this.focusNode,
   }) : super(key: key);
 
   final Function(List<Coin>) onFilterCoins;
   final Function clear;
+  final String type;
+  final TextEditingController controller;
+  final FocusNode focusNode;
 
   @override
   _SearchFieldFilterCoinState createState() => _SearchFieldFilterCoinState();
 }
 
 class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
-  final FocusNode _focus = FocusNode();
   bool isEmptyQuery = true;
-  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +39,12 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
         borderRadius: BorderRadius.circular(32),
         color: Theme.of(context).primaryColor,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: TextFormField(
+        key: const Key('coins-search-field'),
         textAlignVertical: TextAlignVertical.center,
         textInputAction: TextInputAction.search,
-        autofocus: true,
-        controller: _controller,
-        focusNode: _focus,
+        controller: widget.controller,
+        focusNode: widget.focusNode,
         maxLines: 1,
         inputFormatters: [
           LengthLimitingTextInputFormatter(50),
@@ -64,7 +67,7 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
                   splashRadius: 24,
                   onPressed: () {
                     widget.clear();
-                    _controller.clear();
+                    widget.controller.clear();
                     setState(() {
                       isEmptyQuery = true;
                     });
@@ -81,8 +84,8 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
         ),
         onChanged: (String query) async {
           isEmptyQuery = query.isEmpty;
-          widget.onFilterCoins(
-              await coinsBloc.getAllNotActiveCoinsWithFilter(query));
+          widget.onFilterCoins(await coinsBloc.getAllNotActiveCoinsWithFilter(
+              query, widget.type));
         },
       ),
     );

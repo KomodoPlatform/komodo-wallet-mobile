@@ -12,6 +12,7 @@ import 'package:komodo_dex/model/startup_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
+import 'package:komodo_dex/screens/authentification/app_bar_status.dart';
 import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
@@ -142,7 +143,7 @@ class _LockScreenState extends State<LockScreen> {
     final walletSecuritySettingsProvider =
         context.read<WalletSecuritySettingsProvider>();
 
-    Widget _buildSplash(String message) {
+    Widget _buildSplash({String message}) {
       return Scaffold(
         body: Center(
           child: Column(
@@ -154,11 +155,30 @@ class _LockScreenState extends State<LockScreen> {
                     : 'assets/branding/logo_app.png',
               ),
               const SizedBox(height: 12),
-              Text(message,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  )),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(width: 20),
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 1),
+                  ),
+                  if (message != null) ...[
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        message,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Theme.of(context).textTheme.caption.color,
+                        ),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(width: 20),
+                ],
+              ),
             ],
           ),
         ),
@@ -169,10 +189,10 @@ class _LockScreenState extends State<LockScreen> {
       final RegExpMatch _tailMatch =
           RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
       final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
-      return _buildSplash(_logTail);
+      return _buildSplash(message: _logTail);
     } else if (updatesProvider.status == null &&
         mainBloc.networkStatus == NetworkStatus.Online) {
-      return _buildSplash(AppLocalizations.of(context).checkingUpdates);
+      return _buildSplash();
     }
 
     return StreamBuilder<bool>(
@@ -286,8 +306,7 @@ class _LockScreenState extends State<LockScreen> {
             } else {
               return PinPage(
                 title: AppLocalizations.of(context).createPin,
-                subTitle: AppLocalizations.of(context).enterPinCode,
-                firstCreationPin: true,
+                subTitle: AppLocalizations.of(context).enterNewPinCode,
                 pinStatus: PinStatus.CREATE_PIN,
                 password: password,
                 isFromChangingPin: false,
@@ -344,7 +363,7 @@ class _BiometricPageState extends State<BiometricPage> {
       appBar: AppBarStatus(
         context: context,
         pinStatus: PinStatus.NORMAL_PIN,
-        title: 'Fingerprint',
+        title: AppLocalizations.of(context).fingerprint,
       ),
       body: Center(
         child: Column(

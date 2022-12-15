@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/candles_icon.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/duration_select.dart';
@@ -13,7 +14,8 @@ import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {
-  const BuildCoinPriceListItem({this.coinBalance, this.onTap});
+  const BuildCoinPriceListItem({this.coinBalance, this.onTap, Key key})
+      : super(key: key);
 
   final CoinBalance coinBalance;
   final Function onTap;
@@ -75,8 +77,8 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                 CircleAvatar(
                                   radius: 18,
                                   backgroundColor: Colors.transparent,
-                                  backgroundImage: AssetImage(
-                                      'assets/coin-icons/${balance.coin.toLowerCase()}.png'),
+                                  backgroundImage:
+                                      AssetImage(getCoinIconPath(balance.coin)),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
@@ -184,6 +186,14 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                   (BuildContext context, AsyncSnapshot<ChartData> snapshot) {
                 List<CandleData> candles;
                 if (snapshot.hasData) {
+                  if (snapshot.data.data[chartDuration].isEmpty) {
+                    List<String> all = snapshot.data.data.keys.toList();
+                    int nextDuration = all.indexOf(chartDuration) + 1;
+                    if (all.length > nextDuration)
+                      chartDuration = all[nextDuration];
+                    return SizedBox();
+                  }
+
                   candles = snapshot.data.data[chartDuration];
                   if (candles == null) {
                     chartDuration = snapshot.data.data.keys.first;
@@ -213,6 +223,10 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                   ];
                 }
 
+                List<String> options = [];
+                snapshot.data?.data?.forEach((key, value) {
+                  if (value.isNotEmpty) options.add(key);
+                });
                 return Column(
                   children: <Widget>[
                     Container(
@@ -225,7 +239,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                         children: <Widget>[
                           DurationSelect(
                             value: chartDuration,
-                            options: snapshot.data?.data?.keys?.toList(),
+                            options: options,
                             disabled: !snapshot.hasData,
                             onChange: (String value) {
                               setState(() {

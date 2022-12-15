@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:komodo_dex/model/get_max_taker_volume.dart';
+import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -23,6 +24,7 @@ class SwapBloc implements BlocBase {
   Rational maxTakerVolume;
   String _preimageError;
   String _validatorError;
+  final List<String> _currentSwaps = [];
   bool autovalidate = false;
 
   // Using to guide user directly to active orders list
@@ -91,6 +93,11 @@ class SwapBloc implements BlocBase {
   Sink<String> get _inValidatorError => _validatorErrorController.sink;
   Stream<String> get outValidatorError => _validatorErrorController.stream;
 
+  final StreamController<List<String>> _currentSwapsController =
+      StreamController<List<String>>.broadcast();
+  Sink<List<String>> get _inCurrentSwaps => _currentSwapsController.sink;
+  Stream<List<String>> get outCurrentSwaps => _currentSwapsController.stream;
+
   @override
   void dispose() {
     _sellCoinBalanceController.close();
@@ -103,6 +110,7 @@ class SwapBloc implements BlocBase {
     _processingController.close();
     _inPreimageError.close();
     _inValidatorError.close();
+    _inCurrentSwaps.close();
   }
 
   void setIsMaxActive(bool isMaxActive) {
@@ -137,6 +145,7 @@ class SwapBloc implements BlocBase {
   }
 
   void updateSellCoin(CoinBalance coinBalance) {
+    syncOrderbook.activePair = CoinsPair(sell: coinBalance?.coin, buy: null);
     sellCoinBalance = coinBalance;
     _inSellCoinBalance.add(sellCoinBalance);
 
@@ -198,6 +207,12 @@ class SwapBloc implements BlocBase {
   set validatorError(String value) {
     _validatorError = value;
     _inValidatorError.add(_validatorError);
+  }
+
+  List<String> get currentSwaps => _currentSwaps;
+  set currentSwaps(List<String> value) {
+    _currentSwaps.addAll(value);
+    _inCurrentSwaps.add(_currentSwaps);
   }
 }
 

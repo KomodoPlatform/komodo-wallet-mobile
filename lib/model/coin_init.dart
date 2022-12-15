@@ -64,6 +64,7 @@ class CoinInit {
         chainId: json['chain_id'],
         forceMinRelayFee: json['force_min_relay_fee'],
         protocol: json['protocol'],
+        bech32Hrp: json['bech32_hrp'],
       );
 
   String coin;
