@@ -5,7 +5,6 @@ import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
@@ -303,9 +302,6 @@ class CoinsBloc implements BlocBase {
       }
     });
     _inCoins.add(coinBalance);
-
-    // update swap balances
-    swapBloc.updateFieldBalances();
   }
 
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {

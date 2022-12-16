@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:komodo_dex/app_config/app_config.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/get_min_trading_volume.dart';
 import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/screens/dex/trade/pro/confirm/protection_control.dart';
+import 'package:komodo_dex/services/job_service.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/get_buy.dart';
@@ -304,6 +306,24 @@ class TradeForm {
             (double.tryParse(totalSellCoinFee?.amount ?? '0') ?? 0.0);
     return double.parse(
         calculatedVolume.toStringAsFixed(appConfig.tradeFormPrecision));
+  }
+
+  updateMaxSellAmount() {
+    cancelMaxSellAmount();
+    jobService.install('updateMaxSellAmount', 10, (j) async {
+      if (!mmSe.running || swapBloc.sellCoinBalance == null) return;
+      await _updateMaxSellAmount();
+    });
+  }
+
+  _updateMaxSellAmount() async {
+    await swapBloc.updateMaxTakerVolume();
+    await coinsBloc.updateCoinBalances();
+    swapBloc.updateFieldBalances();
+  }
+
+  cancelMaxSellAmount() {
+    jobService.suspend('updateMaxSellAmount');
   }
 
   // Updates swapBloc.tradePreimage and returns error String or null
