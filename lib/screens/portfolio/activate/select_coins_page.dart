@@ -267,6 +267,16 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   }
 
   Widget _buildDoneButton() {
+    int selected = coinsBloc.coinBeforeActivation
+        .where((element) => element.isActive)
+        .length;
+    int activated = coinsBloc.coinBalance.length;
+
+    int maxCoinLength = Platform.isIOS
+        ? appConfig.maxCoinEnabledIOS
+        : appConfig.maxCoinsEnabledAndroid;
+
+    int remainingSpace = maxCoinLength - activated;
     return SizedBox(
       height: 80,
       child: Center(

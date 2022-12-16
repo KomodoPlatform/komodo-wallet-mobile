@@ -588,7 +588,11 @@ class AppLocalizations {
   String get swapUUID => Intl.message('Swap UUID', name: 'swapUUID');
   String get mediaBrowse => Intl.message('BROWSE', name: 'mediaBrowse');
   String get mediaSaved => Intl.message('SAVED', name: 'mediaSaved');
-
+  String enable(int selected, int remains) => Intl.message(
+        'You can still enable $remains, Selected: $selected',
+        name: 'enable',
+        args: [selected, remains],
+      );
   String get mediaNotSavedDescription =>
       Intl.message('YOU HAVE NO SAVED ARTICLES',
           name: 'mediaNotSavedDescription');

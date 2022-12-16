@@ -30,6 +30,7 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/services/job_service.dart';
+import 'dart:io';
 
 class CoinsBloc implements BlocBase {
   CoinsBloc() {
@@ -196,8 +197,6 @@ class CoinsBloc implements BlocBase {
     } else {
       coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
     }
-
-    coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
@@ -207,10 +206,8 @@ class CoinsBloc implements BlocBase {
     String query,
     String filterType,
   }) {
-
     coinBeforeActivation.sort((a, b) =>
         a.coin.name.toUpperCase().compareTo(b.coin.name.toUpperCase()));
-
 
     List<CoinToActivate> typeList = coinBeforeActivation
         .where((coin) =>
@@ -262,7 +259,8 @@ class CoinsBloc implements BlocBase {
 
           counter++;
         }
-        list.add(CoinToActivate(coin: item.coin, isActive: isActive));
+        coinBeforeActivation
+            .add(CoinToActivate(coin: coin, isActive: isActive));
       } else {
         coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
       }
