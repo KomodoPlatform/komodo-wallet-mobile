@@ -7,11 +7,12 @@ import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class CustomFee extends StatefulWidget {
-  const CustomFee({Key key, this.amount, this.coin}) : super(key: key);
+  const CustomFee({Key key, this.amount, this.coin, this.scrollController})
+      : super(key: key);
 
   final String amount;
   final Coin coin;
-
+  final ScrollController scrollController;
   @override
   _CustomFeeState createState() => _CustomFeeState();
 }
@@ -68,7 +69,9 @@ class _CustomFeeState extends State<CustomFee> {
                       )
                     : CustomFeeFieldSmartChain(
                         coin: widget.coin,
-                        isCustomFeeActive: isCustomFeeActive),
+                        isCustomFeeActive: isCustomFeeActive,
+                        scrollController: widget.scrollController,
+                      ),
               ],
             ),
           )
@@ -79,17 +82,32 @@ class _CustomFeeState extends State<CustomFee> {
 }
 
 class CustomFeeFieldERC extends StatefulWidget {
-  const CustomFeeFieldERC({Key key, this.isCustomFeeActive, this.coin})
+  const CustomFeeFieldERC(
+      {Key key, this.isCustomFeeActive, this.coin, this.scrollController})
       : super(key: key);
 
   final bool isCustomFeeActive;
   final Coin coin;
+  final ScrollController scrollController;
 
   @override
   _CustomFeeFieldERCState createState() => _CustomFeeFieldERCState();
 }
 
-class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
+class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   final TextEditingController _gasPriceController = TextEditingController();
   final TextEditingController _gasController = TextEditingController();
 
@@ -138,60 +156,18 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: TextFormField(
-            controller: _gasPriceController,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(
-                  RegExp('^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
-            ],
-            textInputAction: TextInputAction.done,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            style: Theme.of(context).textTheme.bodyText2,
-            textAlign: TextAlign.end,
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]',
-            ),
-            validator: (String value) {
-              if (widget.isCustomFeeActive) {
-                value = value.replaceAll(',', '.');
-
-                if (value.isEmpty || double.parse(value) < 0) {
-                  return AppLocalizations.of(context).errorValueNotEmpty;
-                }
-                coinsDetailBloc.setCustomFee(Fee(
-                    gas: int.parse(_gasController.text.replaceAll(',', '.')),
-                    gasPrice: _gasPriceController.text.replaceAll(',', '.')));
+          child: Focus(
+            onFocusChange: (a) {
+              if (a) {
+                widget.scrollController.animateTo(
+                  120,
+                  curve: Curves.easeOut,
+                  duration: const Duration(milliseconds: 300),
+                );
               }
-              return null;
             },
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class CustomFeeFieldSmartChain extends StatefulWidget {
-  const CustomFeeFieldSmartChain({Key key, this.isCustomFeeActive, this.coin})
-      : super(key: key);
-
-  final bool isCustomFeeActive;
-  final Coin coin;
-
-  @override
-  _CustomFeeFieldSmartChainState createState() =>
-      _CustomFeeFieldSmartChainState();
-}
-
-class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: <Widget>[
-          Expanded(
             child: TextFormField(
+              controller: _gasPriceController,
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(
                     RegExp('^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
@@ -202,10 +178,8 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
               style: Theme.of(context).textTheme.bodyText2,
               textAlign: TextAlign.end,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context).customFee +
-                    '[${widget.coin.abbr}]',
+                labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]',
               ),
-              // The validator receives the text the user has typed in
               validator: (String value) {
                 if (widget.isCustomFeeActive) {
                   value = value.replaceAll(',', '.');
@@ -213,17 +187,99 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
                   if (value.isEmpty || double.parse(value) < 0) {
                     return AppLocalizations.of(context).errorValueNotEmpty;
                   }
-
-                  final double currentAmount = double.parse(value);
-
-                  if (currentAmount >
-                      double.parse(coinsDetailBloc.amountToSend)) {
-                    return AppLocalizations.of(context).errorAmountBalance;
-                  }
-                  coinsDetailBloc.setCustomFee(Fee(amount: value));
+                  coinsDetailBloc.setCustomFee(Fee(
+                      gas: int.parse(_gasController.text.replaceAll(',', '.')),
+                      gasPrice: _gasPriceController.text.replaceAll(',', '.')));
                 }
                 return null;
               },
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class CustomFeeFieldSmartChain extends StatefulWidget {
+  const CustomFeeFieldSmartChain(
+      {Key key, this.isCustomFeeActive, this.coin, this.scrollController})
+      : super(key: key);
+
+  final bool isCustomFeeActive;
+  final Coin coin;
+  final ScrollController scrollController;
+
+  @override
+  _CustomFeeFieldSmartChainState createState() =>
+      _CustomFeeFieldSmartChainState();
+}
+
+class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Focus(
+              onFocusChange: (a) {
+                if (a) {
+                  widget.scrollController.animateTo(
+                    120,
+                    curve: Curves.easeOut,
+                    duration: const Duration(milliseconds: 300),
+                  );
+                }
+              },
+              child: TextFormField(
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp(
+                      '^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
+                ],
+                textInputAction: TextInputAction.done,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                style: Theme.of(context).textTheme.bodyText2,
+                textAlign: TextAlign.end,
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context).customFee +
+                      '[${widget.coin.abbr}]',
+                ),
+                // The validator receives the text the user has typed in
+                validator: (String value) {
+                  if (widget.isCustomFeeActive) {
+                    value = value.replaceAll(',', '.');
+
+                    if (value.isEmpty || double.parse(value) < 0) {
+                      return AppLocalizations.of(context).errorValueNotEmpty;
+                    }
+
+                    final double currentAmount = double.parse(value);
+
+                    if (currentAmount >
+                        double.parse(coinsDetailBloc.amountToSend ?? '0')) {
+                      return AppLocalizations.of(context).errorAmountBalance;
+                    }
+                    coinsDetailBloc.setCustomFee(Fee(amount: value));
+                  }
+                  return null;
+                },
+              ),
             ),
           ),
         ],

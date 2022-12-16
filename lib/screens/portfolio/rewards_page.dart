@@ -33,33 +33,35 @@ class _RewardsPageState extends State<RewardsPage> {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).rewardsTitle),
         ),
-        body: rewards == null
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : RefreshIndicator(
-                color: Theme.of(context).colorScheme.secondary,
-                onRefresh: () async {
-                  rewardsProvider.update();
-                },
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                    children: <Widget>[
-                      rewardsProvider.updateInProgress
-                          ? const SizedBox(
-                              height: 1,
-                              child: LinearProgressIndicator(),
-                            )
-                          : Container(height: 1),
-                      _buildHeader(),
-                      _buildButtons(),
-                      _buildLink(),
-                      _buildTable(),
-                    ],
+        body: rewardsProvider.errorMessage != null
+            ? Center(child: _buildErrorMessage())
+            : rewards == null
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : RefreshIndicator(
+                    color: Theme.of(context).colorScheme.secondary,
+                    onRefresh: () async {
+                      rewardsProvider.update();
+                    },
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        children: <Widget>[
+                          rewardsProvider.updateInProgress
+                              ? const SizedBox(
+                                  height: 1,
+                                  child: LinearProgressIndicator(),
+                                )
+                              : Container(height: 1),
+                          _buildHeader(),
+                          _buildButtons(),
+                          _buildLink(),
+                          _buildTable(),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
       ),
     );
   }

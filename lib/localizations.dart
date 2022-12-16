@@ -1680,8 +1680,11 @@ class AppLocalizations {
       Intl.message(' more. Enabled assets max limit is ',
           name: 'enablingTooManyAssetsSpan3');
   String get enablingTooManyAssetsSpan4 =>
-      Intl.message('. Please disable some before new ones adding.',
+      Intl.message('. Please disable some assets before adding more.',
           name: 'enablingTooManyAssetsSpan4');
+  String get coinsActivatedLimitReached =>
+      Intl.message('You have selected the max number of assets',
+          name: 'coinsActivatedLimitReached');
 
   String get tooManyAssetsEnabledTitle =>
       Intl.message('Too many assets enabled',
@@ -1692,7 +1695,7 @@ class AppLocalizations {
       Intl.message(' assets enabled. Enabled assets max limit is ',
           name: 'tooManyAssetsEnabledSpan2');
   String get tooManyAssetsEnabledSpan3 =>
-      Intl.message('. Please disable some before new ones adding.',
+      Intl.message('. Please disable some assets before adding more.',
           name: 'tooManyAssetsEnabledSpan3');
 
   String get paymentUriDetailsTitle =>

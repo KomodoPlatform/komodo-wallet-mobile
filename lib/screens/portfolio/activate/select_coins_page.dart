@@ -268,7 +268,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
   Widget _buildDoneButton() {
     return SizedBox(
-      height: 60,
+      height: 80,
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -285,12 +285,27 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                     }
                   }
                 }
-                return PrimaryButton(
-                  key: const Key('done-activate-coins'),
-                  text: AppLocalizations.of(context).done,
-                  isLoading: _isDone,
-                  onPressed: isButtonActive ? _pressDoneButton : null,
-                );
+                return Column(mainAxisSize: MainAxisSize.min, children: [
+                  if (remainingSpace - selected == 0)
+                    Text(
+                      AppLocalizations.of(context).coinsActivatedLimitReached,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          .apply(color: Theme.of(context).colorScheme.error),
+                    ),
+                  Text(
+                    AppLocalizations.of(context)
+                        .enable(selected, remainingSpace - selected),
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                  PrimaryButton(
+                    key: const Key('done-activate-coins'),
+                    text: AppLocalizations.of(context).done,
+                    isLoading: _isDone,
+                    onPressed: isButtonActive ? _pressDoneButton : null,
+                  )
+                ]);
               }),
         ),
       ),

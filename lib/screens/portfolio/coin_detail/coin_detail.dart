@@ -82,6 +82,7 @@ class _CoinDetailState extends State<CoinDetail> {
   Transaction latestTransaction;
 
   bool isRetryingActivation = false;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -242,7 +243,9 @@ class _CoinDetailState extends State<CoinDetail> {
         ),
         body: Builder(builder: (BuildContext context) {
           mainContext = context;
-          return Column(
+          return ListView(
+            shrinkWrap: true,
+            controller: scrollController,
             children: <Widget>[
               if (!currentCoinBalance.coin.suspended) _buildForm(),
               _buildHeaderCoinDetail(context),
@@ -380,66 +383,65 @@ class _CoinDetailState extends State<CoinDetail> {
       return _buildTxExplorerButton(
           '${currentCoinBalance.coin.explorerUrl}address/${currentCoinBalance.balance.address}');
     }
-    return Expanded(
-      child: RefreshIndicator(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          color: Theme.of(context).colorScheme.secondary,
-          key: _refreshIndicatorKey,
-          onRefresh: _refresh,
-          child: StreamBuilder<dynamic>(
-              stream: coinsBloc.outTransactions,
-              initialData: coinsBloc.transactions,
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  _isWaiting = true;
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  _isWaiting = false;
-                }
-                if (snapshot.data is Transactions) {
-                  final Transactions transactions = snapshot.data;
-                  final String syncState = StateOfSync.InProgress.toString()
-                      .substring(
-                          StateOfSync.InProgress.toString().indexOf('.') + 1);
+    return RefreshIndicator(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).colorScheme.secondary,
+        key: _refreshIndicatorKey,
+        onRefresh: _refresh,
+        child: StreamBuilder<dynamic>(
+            stream: coinsBloc.outTransactions,
+            initialData: coinsBloc.transactions,
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                _isWaiting = true;
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                _isWaiting = false;
+              }
+              if (snapshot.data is Transactions) {
+                final Transactions transactions = snapshot.data;
+                final String syncState = StateOfSync.InProgress.toString()
+                    .substring(
+                        StateOfSync.InProgress.toString().indexOf('.') + 1);
 
-                  if (snapshot.hasData &&
-                      transactions.result != null &&
-                      transactions.result.transactions != null) {
-                    if (transactions.result.transactions.isNotEmpty) {
-                      //@Slyris plz clean up
-                      return ListView.builder(
-                        itemCount: transactions.result.transactions.length,
-                        itemBuilder: (context, i) => _buildTransactionItem(
-                          transactions.result.transactions[i],
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        controller: _scrollController,
-                      );
-                    } else if (transactions.result.transactions.isEmpty &&
-                        !(transactions.result.syncStatus.state == syncState)) {
-                      return Center(
-                          child: Text(
-                        AppLocalizations.of(context).noTxs,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ));
-                    }
-                  }
-                } else if (snapshot.data is ErrorCode &&
-                    snapshot.data.error != null) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Center(
+                if (snapshot.hasData &&
+                    transactions.result != null &&
+                    transactions.result.transactions != null) {
+                  if (transactions.result.transactions.isNotEmpty) {
+                    //@Slyris plz clean up
+                    return ListView.builder(
+                      itemCount: transactions.result.transactions.length,
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, i) => _buildTransactionItem(
+                        transactions.result.transactions[i],
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      controller: _scrollController,
+                    );
+                  } else if (transactions.result.transactions.isEmpty &&
+                      !(transactions.result.syncStatus.state == syncState)) {
+                    return Center(
                         child: Text(
-                      snapshot.data.error.message,
+                      AppLocalizations.of(context).noTxs,
                       style: Theme.of(context).textTheme.bodyText1,
-                      textAlign: TextAlign.center,
-                    )),
-                  );
+                    ));
+                  }
                 }
-                return SizedBox();
-              })),
-    );
+              } else if (snapshot.data is ErrorCode &&
+                  snapshot.data.error != null) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(
+                      child: Text(
+                    snapshot.data.error.message,
+                    style: Theme.of(context).textTheme.bodyText1,
+                    textAlign: TextAlign.center,
+                  )),
+                );
+              }
+              return SizedBox();
+            }));
   }
 
   void _goToPreviousPage(BuildContext context) {
@@ -882,6 +884,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   void catchError(BuildContext mContext) {
     resetSend();
+    coinsDetailBloc.resetCustomFee();
     ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
@@ -945,6 +948,7 @@ class _CoinDetailState extends State<CoinDetail> {
     listSteps.add(AmountAddressStep(
       coinBalance: currentCoinBalance,
       paymentUriInfo: widget.paymentUriInfo,
+      scrollController: scrollController,
       onCancel: () {
         setState(() {
           isExpanded = false;
