@@ -12,6 +12,7 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -128,11 +129,11 @@ class ZCashBloc implements BlocBase {
 
   void startActivationStatusCheck() {
     jobService.install('checkZcashProcessStatus', 5, (j) async {
+      if (!mmSe.running) return;
       if (tasksToCheck.isEmpty) {
         jobService.suspend('checkZcashProcessStatus');
         return;
       }
-      if (!mmSe.running) return;
       for (var task in tasksToCheck.keys) {
         dynamic res;
 
@@ -222,6 +223,7 @@ class ZCashBloc implements BlocBase {
         jobService.suspend('checkZcashProcessStatus');
         startActivationStatusCheck();
       }
+      await musicService.play([], installing: false);
     } else if (status == 'InProgress') {
       if (details == 'ActivatingCoin') {
         _progress = 5;
@@ -251,6 +253,7 @@ class ZCashBloc implements BlocBase {
         _progress = 5;
         _messageDetails = 'Activating $abbr';
       }
+      await musicService.play([], installing: true);
     } else {
       tasksToCheck.remove(id);
       Log('zcash_bloc:273', 'Error activating $abbr: unexpected error');
@@ -294,12 +297,13 @@ class ZCashBloc implements BlocBase {
       );
       // 2000 is the task id for downloading z-params{just a random number}
       _inZcashProgress.add(tasksToCheck);
-      _response.stream.listen((value) {
+      _response.stream.listen((value) async {
         _bytes.addAll(value);
         _received += value.length;
         tasksToCheck[2000].progress =
             ((_received / _totalDownloadSize) * 100).toInt();
         _inZcashProgress.add(tasksToCheck);
+        await musicService.play([], installing: true);
       }).onDone(() async {
         final file = File(zDir.path + param.split('/').last);
         if (!file.existsSync()) await file.create();
@@ -309,6 +313,7 @@ class ZCashBloc implements BlocBase {
           tasksToCheck.remove(2000);
           autoEnableZcashCoins();
         }
+        await musicService.play([], installing: false);
       });
     }
   }
