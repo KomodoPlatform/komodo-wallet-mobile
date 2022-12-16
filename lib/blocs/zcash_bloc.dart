@@ -297,13 +297,12 @@ class ZCashBloc implements BlocBase {
       );
       // 2000 is the task id for downloading z-params{just a random number}
       _inZcashProgress.add(tasksToCheck);
-      _response.stream.listen((value) async {
+      _response.stream.listen((value) {
         _bytes.addAll(value);
         _received += value.length;
         tasksToCheck[2000].progress =
             ((_received / _totalDownloadSize) * 100).toInt();
         _inZcashProgress.add(tasksToCheck);
-        await musicService.play([], installing: true);
       }).onDone(() async {
         final file = File(zDir.path + param.split('/').last);
         if (!file.existsSync()) await file.create();
@@ -313,7 +312,6 @@ class ZCashBloc implements BlocBase {
           tasksToCheck.remove(2000);
           autoEnableZcashCoins();
         }
-        await musicService.play([], installing: false);
       });
     }
   }
