@@ -98,6 +98,7 @@ class _PinPageState extends State<PinPage> {
               correctPin: _correctPin,
               onCodeFail: _onCodeFail,
               onCodeSuccess: _onCodeSuccess,
+              clearOnAppStateChange: true,
             )
           : _buildLoading(),
     );
