@@ -13,6 +13,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -513,7 +514,11 @@ class CoinsBloc implements BlocBase {
     for (CoinBalance balance in coinBalance) {
       bool shouldSuspend = !apiCoins.contains(balance.coin.abbr);
 
-      if (shouldSuspend) {
+      if (balance.coin.type == CoinType.zhtlc) {
+        // ignore zhtlc coins because they activate later than the
+        // other coins and they are handled in zcashBloc
+        continue;
+      } else if (shouldSuspend) {
         balance.coin.suspended = true;
 
         Log('coins_bloc]',
