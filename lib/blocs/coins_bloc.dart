@@ -503,7 +503,7 @@ class CoinsBloc implements BlocBase {
     _coinsLock = false;
   }
 
-  Future<void> syncCoinsStateWithApi() async {
+  Future<void> syncCoinsStateWithApi([bool ignoreZcash = true]) async {
     final List<dynamic> apiCoinsJson = await MM.getEnabledCoins();
     final List<String> apiCoins = [];
 
@@ -514,7 +514,7 @@ class CoinsBloc implements BlocBase {
     for (CoinBalance balance in coinBalance) {
       bool shouldSuspend = !apiCoins.contains(balance.coin.abbr);
 
-      if (balance.coin.type == CoinType.zhtlc) {
+      if (balance.coin.type == CoinType.zhtlc && ignoreZcash) {
         // ignore zhtlc coins because they activate later than the
         // other coins and they are handled in zcashBloc
         continue;

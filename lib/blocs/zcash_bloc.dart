@@ -193,6 +193,7 @@ class ZCashBloc implements BlocBase {
       if (details.containsKey('error')) {
         Log('zcash_bloc:273', 'Error activating $abbr: ${details['error']}');
         tasksToCheck.remove(id);
+        await coinsBloc.syncCoinsStateWithApi(false);
       } else if (tasksToCheck[id].type == 'withdraw') {
         tasksToCheck[id].result =
             WithdrawResponse.fromJson(activationData['result']['details']);
@@ -217,7 +218,7 @@ class ZCashBloc implements BlocBase {
         cb.balanceUSD = preSavedUsdBalance ?? 0;
         coinsBloc.updateOneCoin(cb);
 
-        await coinsBloc.syncCoinsStateWithApi();
+        await coinsBloc.syncCoinsStateWithApi(false);
         coinsBloc.currentCoinActivate(null);
         tasksToCheck.remove(id);
         jobService.suspend('checkZcashProcessStatus');
