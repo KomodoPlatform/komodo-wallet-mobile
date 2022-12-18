@@ -999,7 +999,7 @@ class _CoinDetailState extends State<CoinDetail> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      AppLocalizations.of(context).gettingTxWait,
+                      AppLocalizations.of(context).finishingUp,
                       style: Theme.of(context).textTheme.button.copyWith(
                           color: Theme.of(context).colorScheme.onSecondary),
                     ),

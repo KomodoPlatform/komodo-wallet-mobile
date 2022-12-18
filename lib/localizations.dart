@@ -538,6 +538,8 @@ class AppLocalizations {
       Intl.message('Latest Transactions', name: 'latestTxs');
   String get gettingTxWait =>
       Intl.message('Getting transaction, please wait', name: 'gettingTxWait');
+  String get finishingUp =>
+      Intl.message('Finishing up, please wait', name: 'gettingTxWait');
   String get feedback => Intl.message('Share Log File', name: 'feedback');
   String get loadingOrderbook =>
       Intl.message('Loading orderbook...', name: 'loadingOrderbook');
