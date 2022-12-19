@@ -3,7 +3,7 @@ import 'package:decimal/decimal.dart';
 import '../model/get_max_taker_volume.dart';
 import '../model/order_book_provider.dart';
 import '../services/mm.dart';
-import '../services/utils.dart';
+import '../utils/utils.dart';
 import 'package:rational/rational.dart';
 import '../blocs/coins_bloc.dart';
 import '../model/coin_balance.dart';
