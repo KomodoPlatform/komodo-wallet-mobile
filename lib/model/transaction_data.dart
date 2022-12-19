@@ -13,6 +13,7 @@ class Transaction {
     this.receivedByMe,
     this.spentByMe,
     this.timestamp,
+    this.memo,
     this.to,
     this.totalAmount,
     this.txHash,
@@ -35,6 +36,7 @@ class Transaction {
       receivedByMe: json['received_by_me']?.toString() ?? 0.0,
       spentByMe: json['spent_by_me']?.toString() ?? 0.0,
       timestamp: json['timestamp'] ?? 0,
+      memo: json['memo'] ?? '0',
       to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
           <String>[],
       totalAmount: json['total_amount']?.toString() ?? '',
@@ -53,6 +55,7 @@ class Transaction {
   String receivedByMe;
   String spentByMe;
   int timestamp;
+  String memo;
   List<String> to;
   String totalAmount;
   String txHash;
@@ -70,6 +73,7 @@ class Transaction {
         'received_by_me': receivedByMe ?? 0.0,
         'spent_by_me': spentByMe ?? 0.0,
         'timestamp': timestamp ?? 0,
+        'memo': memo ?? '',
         'to':
             List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
         'total_amount': totalAmount ?? '',

@@ -573,6 +573,7 @@ class AppLocalizations {
       Intl.message('Confirmations', name: 'txConfirmations');
   String get txFee => Intl.message('Fee', name: 'txFee');
   String get txHash => Intl.message('Transaction ID', name: 'txHash');
+  String get memo => Intl.message('Memo', name: 'memo');
   String get noSwaps => Intl.message('No history.', name: 'noSwaps');
   String get trade => Intl.message('TRADE', name: 'trade');
   String get reset => Intl.message('CLEAR', name: 'reset');

@@ -67,9 +67,9 @@ class _TransactionDetailState extends State<TransactionDetail> {
               onPressed: () {
                 String middleUrl = '';
                 String protoType = widget.coinBalance.coin?.protocol?.type;
-                if (protoType == 'TENDERMINT') {
+                if (protoType == 'TENDERMINTTOKEN') {
                   middleUrl = 'txs/';
-                } else if (protoType == 'TENDERMINTTOKEN') {
+                } else if (protoType == 'TENDERMINT') {
                   middleUrl = '#/txs/';
                 } else {
                   middleUrl = 'tx/';
@@ -239,6 +239,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
         ItemTransationDetail(
             title: AppLocalizations.of(context).txHash,
             data: widget.transaction.txHash),
+        if (widget.transaction.memo.isNotEmpty)
+          ItemTransationDetail(
+              title: AppLocalizations.of(context).memo,
+              data: widget.transaction.memo),
         ItemTransactionNote(
             title: AppLocalizations.of(context).noteTitle,
             txHash: widget.transaction.txHash),
