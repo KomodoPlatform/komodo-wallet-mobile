@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../model/coin_type.dart';
+import '../utils/utils.dart';
 
 Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
   final String coins =

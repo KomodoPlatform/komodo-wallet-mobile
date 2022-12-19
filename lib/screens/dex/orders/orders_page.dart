@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/screens/dex/orders/active_orders.dart';
-import 'package:komodo_dex/screens/dex/orders/filters/filters.dart';
-import 'package:komodo_dex/screens/dex/orders/filters/filters_button.dart';
-import 'package:komodo_dex/screens/dex/orders/swap_history.dart';
+import '../../../blocs/orders_bloc.dart';
+import '../../../blocs/swap_history_bloc.dart';
+import '../../../localizations.dart';
+import '../../../model/order.dart';
+import '../../../model/swap.dart';
+import '../../../model/swap_provider.dart';
+import '../../dex/orders/active_orders.dart';
+import '../../dex/orders/filters/filters.dart';
+import '../../dex/orders/filters/filters_button.dart';
+import '../../dex/orders/swap_history.dart';
 
 class OrdersPage extends StatefulWidget {
   @override

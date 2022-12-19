@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
-import 'package:komodo_dex/screens/dex/orders/taker/build_taker_countdown.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/cancel_order_dialog.dart';
+import '../../../../localizations.dart';
+import '../../../../model/order.dart';
+import '../../../../model/recent_swaps.dart';
+import '../../../../model/swap.dart';
+import '../../../dex/orders/swap/swap_detail_page.dart';
+import '../../../dex/orders/taker/build_taker_countdown.dart';
+import '../../../../services/db/database.dart';
+import '../../../../utils/utils.dart';
+import '../../../../widgets/cancel_order_dialog.dart';
 
 class BuildItemTaker extends StatefulWidget {
   const BuildItemTaker(this.order);

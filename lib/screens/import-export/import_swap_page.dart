@@ -3,18 +3,18 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_import_swaps.dart';
-import 'package:komodo_dex/model/import_swaps.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/import-export/export_import_success.dart';
-import 'package:komodo_dex/services/lock_service.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
+import '../../localizations.dart';
+import '../../model/error_string.dart';
+import '../../model/get_import_swaps.dart';
+import '../../model/import_swaps.dart';
+import '../../model/recent_swaps.dart';
+import '../authentification/lock_screen.dart';
+import '../import-export/export_import_success.dart';
+import '../../services/lock_service.dart';
+import '../../services/mm.dart';
+import '../../utils/log.dart';
+import '../../utils/utils.dart';
+import '../../widgets/primary_button.dart';
 
 class ImportSwapPage extends StatefulWidget {
   @override

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:komodo_dex/widgets/bloc_provider.dart';
-import 'package:komodo_dex/utils/log.dart';
+import '../widgets/bloc_provider.dart';
+import '../utils/log.dart';
 
 MainBloc mainBloc = MainBloc();
 

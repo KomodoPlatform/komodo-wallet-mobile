@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/market.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_button_simple.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_details.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/create/buy_form.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/create/coins_list.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/create/sell_form.dart';
+import '../../../../../localizations.dart';
+import '../../../../model/market.dart';
+import '../../../../model/order_book_provider.dart';
+import '../../../../model/swap_constructor_provider.dart';
+import '../../../dex/trade/simple/create/build_trade_button_simple.dart';
+import '../../../dex/trade/simple/create/build_trade_details.dart';
+import '../../../dex/trade/simple/create/buy_form.dart';
+import '../../../dex/trade/simple/create/coins_list.dart';
+import '../../../dex/trade/simple/create/sell_form.dart';
 import 'package:provider/provider.dart';
 
 class TradePageSimple extends StatefulWidget {

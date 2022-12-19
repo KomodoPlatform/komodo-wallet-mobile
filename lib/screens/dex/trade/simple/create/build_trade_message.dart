@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
+import '../../../../../model/swap_constructor_provider.dart';
 import 'package:provider/provider.dart';
 
 class BuildTradeMessage extends StatefulWidget {

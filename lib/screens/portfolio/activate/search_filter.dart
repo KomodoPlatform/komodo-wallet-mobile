@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin.dart';
+import '../../../blocs/coins_bloc.dart';
+import '../../../../localizations.dart';
+import '../../../model/coin.dart';
 
 class SearchFieldFilterCoin extends StatefulWidget {
   const SearchFieldFilterCoin({

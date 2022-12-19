@@ -1,5 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:komodo_dex/model/wallet.dart';
+import '../model/wallet.dart';
 import 'package:dargon2_flutter/dargon2_flutter.dart';
 import 'dart:convert';
 

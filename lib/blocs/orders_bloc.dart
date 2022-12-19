@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:decimal/decimal.dart';
-import 'package:komodo_dex/model/base_service.dart';
-import 'package:komodo_dex/model/get_cancel_order.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/orders.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/services/music_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/widgets/bloc_provider.dart';
+import '../model/base_service.dart';
+import '../model/get_cancel_order.dart';
+import '../model/order.dart';
+import '../model/orders.dart';
+import '../model/swap.dart';
+import '../model/swap_provider.dart';
+import '../services/mm.dart';
+import '../services/mm_service.dart';
+import '../services/music_service.dart';
+import '../utils/log.dart';
+import '../widgets/bloc_provider.dart';
 
 OrdersBloc ordersBloc = OrdersBloc();
 

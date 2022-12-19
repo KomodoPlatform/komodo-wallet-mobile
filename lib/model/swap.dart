@@ -3,11 +3,11 @@
 //     final swap = swapFromJson(jsonString);
 
 import 'dart:convert';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../model/coin.dart';
+import '../blocs/coins_bloc.dart';
+import '../model/order.dart';
+import '../model/recent_swaps.dart';
+import '../utils/utils.dart';
 
 enum Status {
   ORDER_MATCHING,

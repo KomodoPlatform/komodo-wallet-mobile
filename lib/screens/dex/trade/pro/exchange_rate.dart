@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../blocs/swap_bloc.dart';
+import '../../../../model/cex_provider.dart';
+import '../../../dex/trade/pro/create/trade_form.dart';
+import '../../../../utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../localizations.dart';
