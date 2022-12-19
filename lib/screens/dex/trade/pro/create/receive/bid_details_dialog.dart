@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/screens/markets/build_order_details.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../../../../../../blocs/swap_bloc.dart';
+import '../../../../../markets/build_order_details.dart';
+import '../../../../../../widgets/custom_simple_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
+import '../../../../../../blocs/dialog_bloc.dart';
+import '../../../../../../localizations.dart';
+import '../../../../../../model/orderbook.dart';
+import '../../../../../../widgets/shared_preferences_builder.dart';
 
 void openBidDetailsDialog({
   BuildContext context,
@@ -19,10 +19,8 @@ void openBidDetailsDialog({
         return SharedPreferencesBuilder<bool>(
             pref: 'showOrderDetailsByTap',
             builder: (context, snapshot) {
-              if (!snapshot.hasData) return SizedBox();
-
               bool showSettings = false;
-              bool showOrderDetailsByTap = snapshot.data;
+              bool showOrderDetailsByTap = snapshot.data ?? true;
 
               return StatefulBuilder(
                 builder: (context, setState) {

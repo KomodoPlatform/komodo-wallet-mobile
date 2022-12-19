@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../../localizations.dart';
+import '../../../../../utils/utils.dart';
 
 class SuccessStep extends StatefulWidget {
   const SuccessStep({Key key, this.txHash}) : super(key: key);

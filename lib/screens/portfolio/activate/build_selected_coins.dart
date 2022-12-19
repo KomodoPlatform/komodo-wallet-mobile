@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../blocs/coins_bloc.dart';
+import '../../../utils/utils.dart';
 
 class BuildSelectedCoins extends StatelessWidget {
   final List<CoinToActivate> coins;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
+import '../../../../../localizations.dart';
 
 class EmptyListMessage extends StatelessWidget {
   @override

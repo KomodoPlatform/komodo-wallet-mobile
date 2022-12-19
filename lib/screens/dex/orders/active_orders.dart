@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/orders/filters/filters.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/build_item_swap.dart';
-import 'package:komodo_dex/screens/dex/orders/maker/build_item_maker.dart';
-import 'package:komodo_dex/screens/dex/orders/taker/build_item_taker.dart';
-import 'package:komodo_dex/widgets/pagination.dart';
+import '../../../blocs/orders_bloc.dart';
+import '../../../blocs/swap_bloc.dart';
+import '../../../model/order.dart';
+import '../../../model/swap.dart';
+import '../../dex/orders/filters/filters.dart';
+import '../../dex/orders/swap/build_item_swap.dart';
+import '../../dex/orders/maker/build_item_maker.dart';
+import '../../dex/orders/taker/build_item_taker.dart';
+import '../../../widgets/pagination.dart';
 
 import '../../../localizations.dart';
 

@@ -1,14 +1,14 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/market.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/create/empty_list_message.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/auto_scroll_text.dart';
+import '../../../../../blocs/coins_bloc.dart';
+import '../../../../../model/coin.dart';
+import '../../../../../model/coin_balance.dart';
+import '../../../../../model/market.dart';
+import '../../../../../model/order_book_provider.dart';
+import '../../../../../model/swap_constructor_provider.dart';
+import '../../../../dex/trade/simple/create/empty_list_message.dart';
+import '../../../../../utils/utils.dart';
+import '../../../../../widgets/auto_scroll_text.dart';
 import 'package:provider/provider.dart';
 
 class CoinsListAll extends StatefulWidget {

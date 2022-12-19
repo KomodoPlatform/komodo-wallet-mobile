@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/orderbook.dart';
+import '../../../../../../model/coin.dart';
+import '../../../../../../model/order_book_provider.dart';
+import '../../../../../../model/orderbook.dart';
 import 'package:provider/provider.dart';
 
 class MatchingBidsChart extends StatefulWidget {

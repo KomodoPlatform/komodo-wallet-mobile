@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/html_parser.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
+import '../blocs/dialog_bloc.dart';
+import '../localizations.dart';
+import '../widgets/custom_simple_dialog.dart';
+import '../widgets/html_parser.dart';
+import '../app_config/theme_data.dart';
 
 class CexMarker extends StatelessWidget {
   const CexMarker(

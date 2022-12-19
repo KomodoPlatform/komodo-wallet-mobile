@@ -1,13 +1,13 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/market.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/auto_scroll_text.dart';
+import '../../../../blocs/dialog_bloc.dart';
+import '../../../../localizations.dart';
+import '../../../../model/market.dart';
+import '../../../../model/order.dart';
+import '../../../../model/swap.dart';
+import '../../../../utils/utils.dart';
+import '../../../../widgets/custom_simple_dialog.dart';
+import '../../../../widgets/auto_scroll_text.dart';
 
 class Filters extends StatefulWidget {
   const Filters({

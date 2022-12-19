@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/language_flag_icon.dart';
+import '../blocs/dialog_bloc.dart';
+import '../blocs/main_bloc.dart';
+import '../blocs/settings_bloc.dart';
+import '../utils/utils.dart';
+import '../widgets/custom_simple_dialog.dart';
+import '../widgets/language_flag_icon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../localizations.dart';

@@ -1,18 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_withdraw.dart';
-import 'package:komodo_dex/model/withdraw_response.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
+import '../../../../blocs/coin_detail_bloc.dart';
+import '../../../../blocs/coins_bloc.dart';
+import '../../../../blocs/main_bloc.dart';
+import '../../../../localizations.dart';
+import '../../../../model/coin_balance.dart';
+import '../../../../model/error_string.dart';
+import '../../../../model/get_withdraw.dart';
+import '../../../../model/withdraw_response.dart';
+import '../../../../services/mm.dart';
+import '../../../../services/mm_service.dart';
+import '../../../../utils/utils.dart';
+import '../../../../widgets/primary_button.dart';
+import '../../../../widgets/secondary_button.dart';
 
 class BuildConfirmationStep extends StatefulWidget {
   const BuildConfirmationStep({

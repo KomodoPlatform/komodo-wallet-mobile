@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
-import 'package:komodo_dex/model/order.dart';
+import '../../../../blocs/orders_bloc.dart';
+import '../../../../model/order.dart';
 
 class BuildTakerCountdown extends StatefulWidget {
   const BuildTakerCountdown(this.uuid, {this.style});

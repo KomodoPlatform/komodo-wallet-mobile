@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/widgets/language_flag_icon.dart';
+import '../../blocs/main_bloc.dart';
+import '../../blocs/settings_bloc.dart';
+import '../../localizations.dart';
+import '../authentification/lock_screen.dart';
+import '../../widgets/language_flag_icon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectLanguagePage extends StatefulWidget {

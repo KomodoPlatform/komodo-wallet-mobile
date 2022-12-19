@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'package:decimal/decimal.dart';
-import 'package:komodo_dex/model/get_max_taker_volume.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../model/get_max_taker_volume.dart';
+import '../model/order_book_provider.dart';
+import '../services/mm.dart';
+import '../services/utils.dart';
 import 'package:rational/rational.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/widgets/bloc_provider.dart';
+import '../blocs/coins_bloc.dart';
+import '../model/coin_balance.dart';
+import '../model/orderbook.dart';
+import '../model/trade_preimage.dart';
+import '../widgets/bloc_provider.dart';
 
 class SwapBloc implements BlocBase {
   CoinBalance sellCoinBalance;

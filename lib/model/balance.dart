@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:komodo_dex/blocs/camo_bloc.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../blocs/camo_bloc.dart';
+import '../utils/utils.dart';
 import 'package:decimal/decimal.dart';
 
 String balanceToJson(Balance data) => json.encode(data.toJson());

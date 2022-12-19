@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/build_detailed_fees_simple.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/create/build_trade_message.dart';
+import '../../../../../model/swap_constructor_provider.dart';
+import '../../../../dex/trade/simple/build_detailed_fees_simple.dart';
+import '../../../../dex/trade/simple/create/build_trade_message.dart';
 import 'package:provider/provider.dart';
 
 class BuildTradeDetails extends StatefulWidget {

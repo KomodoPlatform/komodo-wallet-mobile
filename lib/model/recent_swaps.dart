@@ -2,8 +2,8 @@
 //
 //     final recentSwaps = recentSwapsFromJson(jsonString);
 
-import 'package:komodo_dex/model/transaction_data.dart';
-import 'package:komodo_dex/utils/log.dart';
+import '../model/transaction_data.dart';
+import '../utils/log.dart';
 
 import 'swap.dart';
 

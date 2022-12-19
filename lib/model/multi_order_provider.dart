@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/get_trade_preimage.dart';
-import 'package:komodo_dex/model/setprice_response.dart';
-import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/confirm/protection_control.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../blocs/coins_bloc.dart';
+import '../localizations.dart';
+import '../model/get_trade_preimage.dart';
+import '../model/setprice_response.dart';
+import '../model/trade_preimage.dart';
+import '../screens/dex/trade/pro/confirm/protection_control.dart';
+import '../screens/dex/trade/pro/create/trade_form.dart';
+import '../services/mm.dart';
+import '../services/mm_service.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
 
 import 'error_string.dart';
 import 'get_setprice.dart';

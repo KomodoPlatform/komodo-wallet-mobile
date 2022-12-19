@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../../blocs/dialog_bloc.dart';
+import '../../localizations.dart';
+import '../../model/cex_provider.dart';
+import '../../widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 void showCurrenciesDialog(BuildContext context) {
