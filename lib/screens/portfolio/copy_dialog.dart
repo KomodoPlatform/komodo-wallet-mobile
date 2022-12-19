@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../../../widgets/custom_simple_dialog.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../localizations.dart';
+import '../../../blocs/dialog_bloc.dart';
+import '../../../model/coin.dart';
+import '../../../utils/utils.dart';
 
 void showCopyDialog(BuildContext mContext, String address, Coin coin) {
   dialogBloc.dialog = showDialog<dynamic>(

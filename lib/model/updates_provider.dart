@@ -3,12 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/services/job_service.dart';
-import 'package:komodo_dex/services/notif_service.dart';
-import 'package:komodo_dex/utils/log.dart';
+import '../app_config/app_config.dart';
+import '../blocs/main_bloc.dart';
+import '../localizations.dart';
+import '../services/job_service.dart';
+import '../services/notif_service.dart';
+import '../utils/log.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class UpdatesProvider extends ChangeNotifier {

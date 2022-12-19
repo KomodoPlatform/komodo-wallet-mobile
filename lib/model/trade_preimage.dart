@@ -1,5 +1,5 @@
-import 'package:komodo_dex/model/get_trade_preimage.dart';
-import 'package:komodo_dex/model/rpc_error.dart';
+import '../model/get_trade_preimage.dart';
+import '../model/rpc_error.dart';
 
 class TradePreimage {
   TradePreimage({

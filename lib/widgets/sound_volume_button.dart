@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/services/music_service.dart';
+import '../services/music_service.dart';
 
 /// Volume control shared between the swap page and the settings.
 /// On - full volume.

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/feed_provider.dart';
-import 'package:komodo_dex/screens/help-feedback/support_channel_item.dart';
+import '../model/feed_provider.dart';
+import '../screens/help-feedback/support_channel_item.dart';
 
 AppConfig appConfig = AppConfig();
 

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:komodo_dex/utils/utils.dart';
+import '../utils/utils.dart';
 import 'package:rational/rational.dart';
 
 String getTradePreimage2ToJson(GetTradePreimage2 data) =>

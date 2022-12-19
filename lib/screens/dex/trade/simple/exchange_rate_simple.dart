@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/market.dart';
+import '../../../../model/market.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../model/swap_constructor_provider.dart';
+import '../../../../utils/utils.dart';
 
 import '../../../../localizations.dart';
 

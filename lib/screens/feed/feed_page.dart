@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/feed/news/news_tab.dart';
-import 'package:komodo_dex/utils/custom_tab_indicator.dart';
-import 'package:komodo_dex/utils/log.dart';
+import '../../localizations.dart';
+import '../feed/news/news_tab.dart';
+import '../../utils/custom_tab_indicator.dart';
+import '../../../utils/log.dart';
 
 class FeedPage extends StatefulWidget {
   @override

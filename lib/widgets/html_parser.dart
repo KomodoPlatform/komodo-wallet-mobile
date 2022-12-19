@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../utils/utils.dart';
 
 /// Accepts [html] String, and returns `RichText` Widget.
 /// Supported tags:

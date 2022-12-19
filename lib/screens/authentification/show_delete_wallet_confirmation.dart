@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:komodo_dex/blocs/wallet_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../../blocs/wallet_bloc.dart';
+import '../../localizations.dart';
+import '../../model/wallet.dart';
+import '../../blocs/dialog_bloc.dart';
+import '../../widgets/custom_simple_dialog.dart';
 
 Future<void> showDeleteWalletConfirmation(BuildContext context,
     {Wallet wallet, String password}) async {

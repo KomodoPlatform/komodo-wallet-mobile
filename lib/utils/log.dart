@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../services/mm_service.dart';
+import '../utils/utils.dart';
 
 class Log {
   /// Log the [message].

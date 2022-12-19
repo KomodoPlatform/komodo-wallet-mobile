@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../blocs/dialog_bloc.dart';
+import '../blocs/orders_bloc.dart';
+import '../blocs/settings_bloc.dart';
+import '../blocs/swap_bloc.dart';
+import '../localizations.dart';
+import '../widgets/custom_simple_dialog.dart';
 
 void showCancelOrderDialog({BuildContext context, Key key, String uuid}) {
   if (!settingsBloc.showCancelOrderDialog) {

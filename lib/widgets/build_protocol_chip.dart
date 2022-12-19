@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_type.dart';
+import '../localizations.dart';
+import '../model/coin.dart';
+import '../model/coin_type.dart';
 
 class BuildProtocolChip extends StatelessWidget {
   const BuildProtocolChip(this.coin, {Key key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
+import '../../../../../blocs/swap_bloc.dart';
+import '../../../../../localizations.dart';
+import '../../../../dex/trade/pro/create/trade_form.dart';
 
 class BuildResetButton extends StatefulWidget {
   @override

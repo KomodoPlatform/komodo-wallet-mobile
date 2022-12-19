@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
+import '../../blocs/authenticate_bloc.dart';
+import '../authentification/logout_confirmation.dart';
 
 class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
   AppBarStatus({

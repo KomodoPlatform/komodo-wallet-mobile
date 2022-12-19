@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/orderbook_depth.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_orderbook_item.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../../../../../../app_config/theme_data.dart';
+import '../../../../../../blocs/coins_bloc.dart';
+import '../../../../../../model/coin.dart';
+import '../../../../../../model/orderbook_depth.dart';
+import '../../../../../dex/trade/pro/create/receive/matching_orderbook_item.dart';
+import '../../../../../../widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/orderbook.dart';
+import '../../../../../../localizations.dart';
+import '../../../../../../model/order_book_provider.dart';
+import '../../../../../../model/orderbook.dart';
 
 class MatchingOrderbooks extends StatefulWidget {
   const MatchingOrderbooks({
