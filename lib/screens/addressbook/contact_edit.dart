@@ -2,18 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/addressbook_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/screens/addressbook/contact_edit_field.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/build_protocol_chip.dart';
-import 'package:komodo_dex/widgets/confirmation_dialog.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../../app_config/theme_data.dart';
+import '../../blocs/dialog_bloc.dart';
+import '../../localizations.dart';
+import '../../model/addressbook_provider.dart';
+import '../../model/coin.dart';
+import '../../model/coin_type.dart';
+import '../addressbook/contact_edit_field.dart';
+import '../authentification/lock_screen.dart';
+import '../../utils/utils.dart';
+import '../../widgets/build_protocol_chip.dart';
+import '../../widgets/confirmation_dialog.dart';
+import '../../widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ContactEdit extends StatefulWidget {

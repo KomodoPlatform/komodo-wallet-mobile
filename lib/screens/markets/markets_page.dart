@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/screens/markets/coins_price_list.dart';
-import 'package:komodo_dex/screens/markets/order_book_page.dart';
-import 'package:komodo_dex/utils/custom_tab_indicator.dart';
+import '../../localizations.dart';
+import '../../model/coin.dart';
+import '../../model/order_book_provider.dart';
+import '../markets/coins_price_list.dart';
+import '../markets/order_book_page.dart';
+import '../../utils/custom_tab_indicator.dart';
 import 'package:provider/provider.dart';
 
 class MarketsPage extends StatefulWidget {

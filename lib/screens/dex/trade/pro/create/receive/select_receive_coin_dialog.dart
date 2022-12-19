@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/receive/in_progress_popup.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_orderbooks.dart';
+import '../../../../../../blocs/dialog_bloc.dart';
+import '../../../../../../model/orderbook.dart';
+import '../../../../../dex/trade/pro/create/receive/in_progress_popup.dart';
+import '../../../../../dex/trade/pro/create/receive/matching_orderbooks.dart';
 
 void openSelectReceiveCoinDialog({
   BuildContext context,

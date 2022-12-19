@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:komodo_dex/model/transaction_data.dart';
+import '../model/transaction_data.dart';
 
 WithdrawResponse withdrawResponseFromJson(String str) {
   final Map<String, dynamic> json = jsonDecode(str);

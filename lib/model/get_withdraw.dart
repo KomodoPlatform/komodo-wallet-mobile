@@ -2,10 +2,10 @@
 //
 //     final getWithdraw = getWithdrawFromJson(jsonString);
 
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-
+import '../blocs/coins_bloc.dart';
 import 'coin.dart';
 import 'coin_type.dart';
+
 
 class GetWithdraw {
   GetWithdraw({

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/camo_bloc.dart';
-import 'package:komodo_dex/blocs/wallet_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/authentification/pin_page.dart';
-import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/widgets/confirmation_dialog.dart';
+import '../../blocs/authenticate_bloc.dart';
+import '../../blocs/camo_bloc.dart';
+import '../../blocs/wallet_bloc.dart';
+import '../../localizations.dart';
+import '../../model/wallet_security_settings_provider.dart';
+import '../authentification/lock_screen.dart';
+import '../authentification/pin_page.dart';
+import '../authentification/unlock_wallet_page.dart';
+import '../../utils/encryption_tool.dart';
+import '../../widgets/confirmation_dialog.dart';
 import 'package:provider/provider.dart';
 
 class CamoPinSetupPage extends StatefulWidget {

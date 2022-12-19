@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../../app_config/app_config.dart';
+import '../../../../../model/coin_balance.dart';
+import '../../../../../model/coin_type.dart';
+import '../../../../../widgets/custom_simple_dialog.dart';
+import '../../../../../blocs/coins_bloc.dart';
+import '../../../../../blocs/dialog_bloc.dart';
+import '../../../../../utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
-import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_field.dart';
-import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/custom_fee.dart';
-import 'package:komodo_dex/services/lock_service.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
+import '../../../../../blocs/coin_detail_bloc.dart';
+import '../../../../../localizations.dart';
+import '../../../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
+import '../../../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_field.dart';
+import '../../../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/custom_fee.dart';
+import '../../../../../services/lock_service.dart';
+import '../../../../../services/mm_service.dart';
+import '../../../../../widgets/primary_button.dart';
+import '../../../../../widgets/secondary_button.dart';
 import 'package:decimal/decimal.dart';
 
 class AmountAddressStep extends StatefulWidget {

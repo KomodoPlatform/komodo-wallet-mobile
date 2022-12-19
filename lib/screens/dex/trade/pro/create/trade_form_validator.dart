@@ -1,13 +1,13 @@
-import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
+import '../../../../dex/trade/pro/create/trade_form.dart';
 import 'package:rational/rational.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../../blocs/coins_bloc.dart';
+import '../../../../../blocs/main_bloc.dart';
+import '../../../../../blocs/swap_bloc.dart';
+import '../../../../../localizations.dart';
+import '../../../../../model/coin_balance.dart';
+import '../../../../../model/orderbook.dart';
+import '../../../../../model/trade_preimage.dart';
+import '../../../../../utils/utils.dart';
 
 class TradeFormValidator {
   final CoinBalance sellBalance = swapBloc.sellCoinBalance;

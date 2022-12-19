@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/orderbook_depth.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/receive/matching_bids_page.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../../../blocs/coins_bloc.dart';
+import '../../../../../../localizations.dart';
+import '../../../../../../model/order_book_provider.dart';
+import '../../../../../../model/orderbook.dart';
+import '../../../../../../model/orderbook_depth.dart';
+import '../../../../../dex/trade/pro/create/receive/matching_bids_page.dart';
+import '../../../../../../utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class MatchingOrderbookItem extends StatelessWidget {

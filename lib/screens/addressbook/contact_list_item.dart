@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/addressbook_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
-import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../../blocs/coins_bloc.dart';
+import '../../blocs/dialog_bloc.dart';
+import '../../localizations.dart';
+import '../../model/addressbook_provider.dart';
+import '../../model/coin.dart';
+import '../../model/coin_balance.dart';
+import '../../model/coin_type.dart';
+import '../addressbook/contact_edit.dart';
+import '../portfolio/coin_detail/coin_detail.dart';
+import '../../utils/utils.dart';
+import '../../widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ContactListItem extends StatefulWidget {

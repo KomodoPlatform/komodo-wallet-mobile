@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/recover_funds_of_swap.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../blocs/swap_history_bloc.dart';
+import '../../../../model/error_string.dart';
+import '../../../../model/recover_funds_of_swap.dart';
+import '../../../../model/swap.dart';
+import '../../../dex/orders/swap/swap_detail_page.dart';
+import '../../../../../services/db/database.dart';
+import '../../../../../utils/utils.dart';
 
 import '../../../../localizations.dart';
 

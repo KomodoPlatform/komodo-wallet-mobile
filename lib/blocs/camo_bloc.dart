@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
-import 'package:komodo_dex/model/balance.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/widgets/bloc_provider.dart';
-import 'package:komodo_dex/model/transaction_data.dart';
+import '../model/wallet_security_settings_provider.dart';
+import '../model/balance.dart';
+import '../utils/encryption_tool.dart';
+import '../utils/utils.dart';
+import '../utils/log.dart';
+import '../widgets/bloc_provider.dart';
+import '../model/transaction_data.dart';
 
 CamoBloc camoBloc = CamoBloc();
 

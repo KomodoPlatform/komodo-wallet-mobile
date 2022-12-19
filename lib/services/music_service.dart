@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../model/order.dart';
+import '../model/swap.dart';
+import '../model/swap_provider.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
 
 import 'mm_service.dart';
 

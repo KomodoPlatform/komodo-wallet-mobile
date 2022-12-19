@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/screens/dex/orders/filters/filters.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/build_item_swap.dart';
-import 'package:komodo_dex/widgets/pagination.dart';
+import '../../../blocs/swap_history_bloc.dart';
+import '../../../localizations.dart';
+import '../../../model/order.dart';
+import '../../../model/swap.dart';
+import '../../../model/swap_provider.dart';
+import '../../dex/orders/filters/filters.dart';
+import '../../dex/orders/swap/build_item_swap.dart';
+import '../../../widgets/pagination.dart';
 
 class SwapHistory extends StatefulWidget {
   const SwapHistory({

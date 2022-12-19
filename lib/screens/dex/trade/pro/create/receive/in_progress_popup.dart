@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/screens/markets/coin_select.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../../../../../../blocs/swap_bloc.dart';
+import '../../../../../../localizations.dart';
+import '../../../../../../model/order_book_provider.dart';
+import '../../../../../markets/coin_select.dart';
+import '../../../../../../widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 class InProgressPopup extends StatefulWidget {
