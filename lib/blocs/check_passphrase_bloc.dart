@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:komodo_dex/widgets/bloc_provider.dart';
+import '../widgets/bloc_provider.dart';
 
 CheckPassphraseBloc checkPassphraseBloc = CheckPassphraseBloc();
 

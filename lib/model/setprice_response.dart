@@ -3,7 +3,7 @@
 //     final setPriceResponse = setPriceResponseFromJson(jsonString);
 
 import 'dart:convert';
-import 'package:komodo_dex/model/orders.dart';
+import '../model/orders.dart';
 
 SetPriceResponse setPriceResponseFromJson(String str) =>
     SetPriceResponse.fromJson(json.decode(str));

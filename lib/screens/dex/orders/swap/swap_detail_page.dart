@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/dex/orders/maker/maker_order_details_page.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/final_trade_success.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/stepper_trade.dart';
-import 'package:komodo_dex/widgets/sound_volume_button.dart';
+import '../../../../blocs/orders_bloc.dart';
+import '../../../../blocs/swap_history_bloc.dart';
+import '../../../../model/order.dart';
+import '../../../../model/swap.dart';
+import '../../../../model/swap_provider.dart';
+import '../../../authentification/lock_screen.dart';
+import '../../../dex/orders/maker/maker_order_details_page.dart';
+import '../../../dex/orders/swap/final_trade_success.dart';
+import '../../../dex/orders/swap/stepper_trade.dart';
+import '../../../../widgets/sound_volume_button.dart';
 
 class SwapDetailPage extends StatefulWidget {
   const SwapDetailPage({@required this.swap});

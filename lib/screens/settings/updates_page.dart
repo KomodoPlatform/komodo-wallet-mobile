@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/updates_provider.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../app_config/app_config.dart';
+import '../../localizations.dart';
+import '../../model/updates_provider.dart';
+import '../authentification/lock_screen.dart';
+import '../../utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class UpdatesPage extends StatefulWidget {

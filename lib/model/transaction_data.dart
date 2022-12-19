@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../utils/utils.dart';
 
 class Transaction {
   Transaction({

@@ -4,14 +4,14 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
+import '../app_config/app_config.dart';
+import '../model/coin_type.dart';
+import '../model/order_book_provider.dart';
+import '../services/mm_service.dart';
+import '../utils/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../model/coin.dart';
+import '../utils/utils.dart';
 
 class CexProvider extends ChangeNotifier {
   CexProvider() {

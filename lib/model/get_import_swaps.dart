@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:komodo_dex/model/recent_swaps.dart';
+import '../model/recent_swaps.dart';
 
 String getImportSwapsToJson(GetImportSwaps data) => json.encode(data.toJson());
 

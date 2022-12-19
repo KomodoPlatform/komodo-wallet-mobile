@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/widgets/bloc_provider.dart';
+import '../localizations.dart';
+import '../widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SettingsBloc settingsBloc = SettingsBloc();
@@ -100,7 +100,7 @@ class SettingsBloc implements BlocBase {
         return AppLocalizations.of(context).koreanLanguage;
         break;
       case 'uk':
-        return AppLocalizations.of(context).ukrainianLanguage; 
+        return AppLocalizations.of(context).ukrainianLanguage;
         break;
       default:
         return AppLocalizations.of(context).englishLanguage;

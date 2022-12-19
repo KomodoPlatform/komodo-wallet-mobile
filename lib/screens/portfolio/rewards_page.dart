@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/rewards_provider.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/auto_scroll_text.dart';
-import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
+import '../../../blocs/dialog_bloc.dart';
+import '../../../blocs/settings_bloc.dart';
+import '../../../localizations.dart';
+import '../../../model/cex_provider.dart';
+import '../../../model/rewards_provider.dart';
+import '../authentification/lock_screen.dart';
+import '../../../utils/utils.dart';
+import '../../../widgets/auto_scroll_text.dart';
+import '../../widgets/cex_data_marker.dart';
+import '../../widgets/custom_simple_dialog.dart';
+import '../../widgets/primary_button.dart';
+import '../../widgets/secondary_button.dart';
+import '../../app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class RewardsPage extends StatefulWidget {
@@ -33,33 +33,35 @@ class _RewardsPageState extends State<RewardsPage> {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).rewardsTitle),
         ),
-        body: rewards == null
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : RefreshIndicator(
-                color: Theme.of(context).colorScheme.secondary,
-                onRefresh: () async {
-                  rewardsProvider.update();
-                },
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                    children: <Widget>[
-                      rewardsProvider.updateInProgress
-                          ? const SizedBox(
-                              height: 1,
-                              child: LinearProgressIndicator(),
-                            )
-                          : Container(height: 1),
-                      _buildHeader(),
-                      _buildButtons(),
-                      _buildLink(),
-                      _buildTable(),
-                    ],
+        body: rewardsProvider.errorMessage != null
+            ? Center(child: _buildErrorMessage())
+            : rewards == null
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : RefreshIndicator(
+                    color: Theme.of(context).colorScheme.secondary,
+                    onRefresh: () async {
+                      rewardsProvider.update();
+                    },
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        children: <Widget>[
+                          rewardsProvider.updateInProgress
+                              ? const SizedBox(
+                                  height: 1,
+                                  child: LinearProgressIndicator(),
+                                )
+                              : Container(height: 1),
+                          _buildHeader(),
+                          _buildButtons(),
+                          _buildLink(),
+                          _buildTable(),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
       ),
     );
   }

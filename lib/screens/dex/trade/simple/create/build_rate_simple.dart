@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/market.dart';
-import 'package:komodo_dex/widgets/auto_scroll_text.dart';
+import '../../../../../model/market.dart';
+import '../../../../../widgets/auto_scroll_text.dart';
 import 'package:rational/rational.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../../model/swap_constructor_provider.dart';
+import '../../../../../utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class BuildRateSimple extends StatefulWidget {

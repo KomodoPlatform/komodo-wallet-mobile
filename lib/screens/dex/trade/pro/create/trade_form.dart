@@ -1,23 +1,23 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/model/get_min_trading_volume.dart';
-import 'package:komodo_dex/model/get_trade_preimage.dart';
-import 'package:komodo_dex/model/setprice_response.dart';
-import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/confirm/protection_control.dart';
+import '../../../../../app_config/app_config.dart';
+import '../../../../../model/get_min_trading_volume.dart';
+import '../../../../../model/get_trade_preimage.dart';
+import '../../../../../model/setprice_response.dart';
+import '../../../../../model/trade_preimage.dart';
+import '../../../../dex/trade/pro/confirm/protection_control.dart';
 import 'package:rational/rational.dart';
-import 'package:komodo_dex/model/buy_response.dart';
-import 'package:komodo_dex/model/get_buy.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/model/get_setprice.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../../model/buy_response.dart';
+import '../../../../../model/get_buy.dart';
+import '../../../../../services/mm.dart';
+import '../../../../../services/mm_service.dart';
+import '../../../../../utils/log.dart';
+import '../../../../../model/get_setprice.dart';
+import '../../../../../blocs/swap_bloc.dart';
+import '../../../../../model/order_book_provider.dart';
+import '../../../../../model/orderbook.dart';
+import '../../../../../utils/utils.dart';
 
 class TradeForm {
   Timer _typingTimer;

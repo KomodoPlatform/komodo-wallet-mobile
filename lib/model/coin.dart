@@ -2,13 +2,13 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/app_config/coin_converter.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/model/get_active_coin.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../app_config/app_config.dart';
+import '../app_config/coin_converter.dart';
+import '../blocs/coins_bloc.dart';
+import '../model/coin_type.dart';
+import '../model/get_active_coin.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
 
 LinkedHashMap<String, Coin> _coins;
 bool _coinsInvoked = false;

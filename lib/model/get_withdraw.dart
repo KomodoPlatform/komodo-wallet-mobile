@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:komodo_dex/blocs/camo_bloc.dart';
+import '../blocs/camo_bloc.dart';
 
 GetWithdraw getWithdrawFromJson(String str) =>
     GetWithdraw.fromJson(json.decode(str));

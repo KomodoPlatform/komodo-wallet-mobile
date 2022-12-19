@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/wallet_bloc.dart';
-import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/localizations.dart';
+import '../../app_config/app_config.dart';
+import '../../blocs/authenticate_bloc.dart';
+import '../../blocs/wallet_bloc.dart';
+import '../../model/wallet.dart';
+import '../../services/db/database.dart';
+import '../../utils/encryption_tool.dart';
+import '../../utils/log.dart';
+import '../../widgets/primary_button.dart';
+import '../../localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DisclaimerPage extends StatefulWidget {

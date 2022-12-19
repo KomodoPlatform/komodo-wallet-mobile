@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/export_import_list_item.dart';
+import '../../localizations.dart';
+import '../../model/export_import_list_item.dart';
 
 class ExportImportList extends StatefulWidget {
   const ExportImportList({

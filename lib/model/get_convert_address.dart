@@ -1,6 +1,6 @@
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../blocs/coins_bloc.dart';
+import '../model/coin_balance.dart';
+import '../utils/utils.dart';
 
 class GetConvertAddress {
   GetConvertAddress({

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/screens/dex/orders/maker/maker_order_details_page.dart';
-import 'package:komodo_dex/screens/dex/orders/maker/order_fill.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/cancel_order_dialog.dart';
+import '../../../../localizations.dart';
+import '../../../../model/order.dart';
+import '../../../dex/orders/maker/maker_order_details_page.dart';
+import '../../../dex/orders/maker/order_fill.dart';
+import '../../../../services/db/database.dart';
+import '../../../../utils/utils.dart';
+import '../../../../widgets/cancel_order_dialog.dart';
 
 class BuildItemMaker extends StatefulWidget {
   const BuildItemMaker(this.order);

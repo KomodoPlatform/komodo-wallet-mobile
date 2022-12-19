@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/widgets/bloc_provider.dart';
+import '../localizations.dart';
+import '../model/get_recover_funds_of_swap.dart';
+import '../model/recent_swaps.dart';
+import '../model/swap.dart';
+import '../services/mm.dart';
+import '../services/mm_service.dart';
+import '../widgets/bloc_provider.dart';
 
 SwapHistoryBloc swapHistoryBloc = SwapHistoryBloc();
 

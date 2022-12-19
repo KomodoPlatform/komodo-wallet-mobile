@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/addressbook_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
-import 'package:komodo_dex/screens/addressbook/contacts_list.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/widgets/round_button.dart';
+import '../../localizations.dart';
+import '../../model/addressbook_provider.dart';
+import '../../model/coin.dart';
+import '../../model/coin_type.dart';
+import '../addressbook/contact_edit.dart';
+import '../addressbook/contacts_list.dart';
+import '../authentification/lock_screen.dart';
+import '../../widgets/round_button.dart';
 import 'package:provider/provider.dart';
 
 class AddressBookPage extends StatefulWidget {

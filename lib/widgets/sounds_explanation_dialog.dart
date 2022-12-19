@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/settings/sound_settings_page.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../blocs/dialog_bloc.dart';
+import '../blocs/settings_bloc.dart';
+import '../localizations.dart';
+import '../screens/settings/sound_settings_page.dart';
+import '../widgets/custom_simple_dialog.dart';
 
 Future<void> showSoundsDialog(BuildContext context) async {
   if (!settingsBloc.showSoundsExplanationDialog) return;

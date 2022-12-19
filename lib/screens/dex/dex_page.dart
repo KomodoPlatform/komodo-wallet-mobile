@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/dex/orders/orders_page.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_modes_page.dart';
-import 'package:komodo_dex/utils/custom_tab_indicator.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../blocs/orders_bloc.dart';
+import '../../blocs/swap_bloc.dart';
+import '../../localizations.dart';
+import '../dex/orders/orders_page.dart';
+import '../dex/trade/trade_modes_page.dart';
+import '../../utils/custom_tab_indicator.dart';
+import '../../utils/utils.dart';
 
 class DexPage extends StatefulWidget {
   @override
