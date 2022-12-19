@@ -64,9 +64,21 @@ class _TransactionDetailState extends State<TransactionDetail> {
             IconButton(
               splashRadius: 24,
               icon: Icon(Icons.open_in_browser),
-              onPressed: () => launchURL(widget.coinBalance.coin.explorerUrl +
-                  'tx/' +
-                  widget.transaction.txHash),
+              onPressed: () {
+                String middleUrl = '';
+                String protoType = widget.coinBalance.coin?.protocol?.type;
+                if (protoType == 'TENDERMINT') {
+                  middleUrl = 'txs/';
+                } else if (protoType == 'TENDERMINTTOKEN') {
+                  middleUrl = '#/txs/';
+                } else {
+                  middleUrl = 'tx/';
+                }
+
+                launchURL(widget.coinBalance.coin.explorerUrl +
+                    middleUrl +
+                    widget.transaction.txHash);
+              },
             )
           ],
         ),
