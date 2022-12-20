@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/feed_provider.dart';
-import 'package:komodo_dex/screens/feed/news/news_article.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../app_config/app_config.dart';
+import '../../../localizations.dart';
+import '../../../model/feed_provider.dart';
+import '../../feed/news/news_article.dart';
+import '../../../utils/utils.dart';
 
 class BuildNewsItem extends StatefulWidget {
   const BuildNewsItem(this.newsItem);

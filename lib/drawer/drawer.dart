@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
-import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
-import 'package:komodo_dex/screens/help-feedback/help_page.dart';
-import 'package:komodo_dex/screens/settings/currencies_dialog.dart';
-import 'package:komodo_dex/screens/settings/select_language_page.dart';
-import 'package:komodo_dex/screens/settings/setting_page.dart';
-import 'package:komodo_dex/screens/settings/sound_settings_page.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/music_service.dart';
-import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
+import '../blocs/settings_bloc.dart';
+import '../localizations.dart';
+import '../model/cex_provider.dart';
+import '../model/wallet.dart';
+import '../screens/addressbook/addressbook_page.dart';
+import '../screens/authentification/logout_confirmation.dart';
+import '../screens/help-feedback/help_page.dart';
+import '../screens/settings/currencies_dialog.dart';
+import '../screens/settings/select_language_page.dart';
+import '../screens/settings/setting_page.dart';
+import '../screens/settings/sound_settings_page.dart';
+import '../services/db/database.dart';
+import '../services/music_service.dart';
+import '../widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatefulWidget {

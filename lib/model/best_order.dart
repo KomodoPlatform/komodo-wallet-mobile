@@ -1,8 +1,8 @@
-import 'package:komodo_dex/model/get_best_orders.dart';
-import 'package:komodo_dex/model/market.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../model/get_best_orders.dart';
+import '../model/market.dart';
+import '../utils/utils.dart';
 import 'package:rational/rational.dart';
-import 'package:komodo_dex/model/error_string.dart';
+import '../model/error_string.dart';
 
 class BestOrders {
   BestOrders({this.result, this.error, this.request});

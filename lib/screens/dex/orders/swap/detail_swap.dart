@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/blocs/camo_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/detailed_swap_steps.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_note.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../app_config/app_config.dart';
+import '../../../../blocs/camo_bloc.dart';
+import '../../../../localizations.dart';
+import '../../../../model/swap.dart';
+import '../../../dex/orders/swap/detailed_swap_steps.dart';
+import '../../../dex/orders/swap/swap_detail_note.dart';
+import '../../../../utils/utils.dart';
 
 class DetailSwap extends StatefulWidget {
   const DetailSwap({@required this.swap});

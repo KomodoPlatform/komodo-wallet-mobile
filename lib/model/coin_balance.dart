@@ -1,5 +1,5 @@
-import 'package:komodo_dex/model/balance.dart';
-import 'package:komodo_dex/model/coin.dart';
+import '../model/balance.dart';
+import '../model/coin.dart';
 
 class CoinBalance {
   CoinBalance(this.coin, this.balance);

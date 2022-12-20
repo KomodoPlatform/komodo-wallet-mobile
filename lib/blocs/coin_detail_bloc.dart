@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:komodo_dex/model/get_withdraw.dart';
-import 'package:komodo_dex/widgets/bloc_provider.dart';
+import '../model/get_withdraw.dart';
+import '../widgets/bloc_provider.dart';
 
 class CoinDetailBloc implements BlocBase {
   Fee customFee;

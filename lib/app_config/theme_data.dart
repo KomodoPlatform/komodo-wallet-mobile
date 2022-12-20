@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
+import '../blocs/settings_bloc.dart';
 
 SnackBarThemeData _snackBarTheme = const SnackBarThemeData(
   behavior: SnackBarBehavior.floating,

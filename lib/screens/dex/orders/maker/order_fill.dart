@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../blocs/swap_history_bloc.dart';
+import '../../../../localizations.dart';
+import '../../../../model/order.dart';
+import '../../../../model/swap.dart';
+import '../../../../model/swap_provider.dart';
+import '../../../../utils/utils.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
 class OrderFill extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/market.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/create/coins_list_all.dart';
-import 'package:komodo_dex/screens/dex/trade/simple/create/coins_list_best.dart';
+import '../../../../../localizations.dart';
+import '../../../../../model/market.dart';
+import '../../../../../model/swap_constructor_provider.dart';
+import '../../../../dex/trade/simple/create/coins_list_all.dart';
+import '../../../../dex/trade/simple/create/coins_list_best.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
 
