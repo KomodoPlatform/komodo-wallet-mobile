@@ -141,6 +141,12 @@ public class MainActivity extends FlutterFragmentActivity {
             } else if (call.method.equals("status")) {
               int status = (int)nativeMm2MainStatus();
               result.success(status);
+            }else if (call.method.equals("secure")) {
+              getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+              result.success(true);
+            }else if (call.method.equals("hide")) {
+              getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+              result.success(true);
             } else if (call.method.equals("stop")) {
               logSink.success("STOP MM2 --------------------------------");
               int ret = (int)nativeMm2Stop();
