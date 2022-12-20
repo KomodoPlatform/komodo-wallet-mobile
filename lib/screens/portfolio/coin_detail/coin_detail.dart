@@ -56,6 +56,7 @@ class CoinDetail extends StatefulWidget {
 class _CoinDetailState extends State<CoinDetail> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _memoController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
@@ -944,6 +945,7 @@ class _CoinDetailState extends State<CoinDetail> {
   void initSteps() {
     _amountController.clear();
     _addressController.clear();
+    _memoController.clear();
     listSteps.clear();
     listSteps.add(AmountAddressStep(
       coinBalance: currentCoinBalance,
@@ -962,6 +964,7 @@ class _CoinDetailState extends State<CoinDetail> {
             coinBalance: currentCoinBalance,
             amountToPay: _getWithdrawAmountCrypto(),
             addressToSend: _addressController.text,
+            memo: _memoController.text,
             onCancel: () {
               setState(() {
                 isExpanded = false;
@@ -1057,6 +1060,7 @@ class _CoinDetailState extends State<CoinDetail> {
       focusNode: _focus,
       addressController: _addressController,
       amountController: _amountController,
+      memoController: _memoController,
     ));
   }
 }

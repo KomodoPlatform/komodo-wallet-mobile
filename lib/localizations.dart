@@ -1047,6 +1047,7 @@ class AppLocalizations {
 
   // --- sound configuration ---
 
+  String get optional => Intl.message('Optional');
   String get soundTitle => Intl.message('Sound');
   String get soundOption => Intl.message('Play at full volume');
   String get soundTaker => Intl.message('Taker');

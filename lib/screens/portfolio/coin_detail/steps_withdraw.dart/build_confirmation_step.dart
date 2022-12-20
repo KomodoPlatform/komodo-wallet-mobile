@@ -24,6 +24,7 @@ class BuildConfirmationStep extends StatefulWidget {
     this.onError,
     this.onNoInternet,
     this.onConfirmPressed,
+    this.memo,
   }) : super(key: key);
 
   final Function onCancel;
@@ -33,6 +34,7 @@ class BuildConfirmationStep extends StatefulWidget {
   final CoinBalance coinBalance;
   final String amountToPay;
   final String addressToSend;
+  final String memo;
 
   @override
   _BuildConfirmationStepState createState() => _BuildConfirmationStepState();
@@ -74,6 +76,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                 coin: widget.coinBalance.coin.abbr,
                 to: widget.addressToSend,
                 amount: widget.amountToPay,
+                memo: widget.memo,
                 max: double.parse(widget.coinBalance.balance.getBalance()) ==
                     double.parse(widget.amountToPay),
               ))
@@ -246,6 +249,23 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                     style: Theme.of(context).textTheme.bodyText2,
                     maxLines: 1,
                   ),
+                  if (widget.memo.isNotEmpty) ...[
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      AppLocalizations.of(context).memo,
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    AutoSizeText(
+                      widget.memo,
+                      style: Theme.of(context).textTheme.bodyText2,
+                      maxLines: 1,
+                    ),
+                  ],
                   const SizedBox(
                     height: 24,
                   ),
