@@ -111,6 +111,8 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
         break;
       case CoinType.smartChain:
         return AppLocalizations.of(context).searchFilterSubtitleSmartChain;
+      case CoinType.slp:
+        return AppLocalizations.of(context).searchFilterSubtitleSLP;
         break;
     }
 

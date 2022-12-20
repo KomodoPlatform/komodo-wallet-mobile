@@ -3,6 +3,8 @@ import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
+import '../localizations.dart';
+
 class DurationSelect extends StatefulWidget {
   const DurationSelect({
     this.value,
@@ -33,7 +35,8 @@ class _DurationSelectState extends State<DurationSelect> {
       child: Row(
         children: <Widget>[
           Text(
-            _durations[widget.value] ?? 'duration',
+            _durations[widget.value] ??
+                AppLocalizations.of(context).duration.toLowerCase(),
             style: const TextStyle(fontSize: 12),
           ),
           Icon(
@@ -87,7 +90,7 @@ class _DurationSelectState extends State<DurationSelect> {
         builder: (context) {
           return CustomSimpleDialog(
             hasHorizontalPadding: false,
-            title: const Text('Duration'),
+            title: Text(AppLocalizations.of(context).duration),
             children: options,
           );
         }).then((dynamic _) => dialogBloc.dialog = null);

@@ -23,23 +23,39 @@ class AppConfig {
   List<String> get defaultCoins => ['KMD', 'BTC'];
   List<String> get coinsFiat => ['BTC', 'KMD'];
   List<String> get walletOnlyCoins => [
-        'USDT-ERC20',
+        'ARRR-BEP20',
         'BET',
         'BOTS',
+        'CELR-ARB20',
         'CRYPTO',
-        'DEX',
         'HODL',
         'JUMBLR',
+        'LUNA-ERC20',
+        'LUNA-BEP20',
+        'LUNA-HRC20',
+        'LUNA-PLG20',
+        'MSHARK',
+        'PAXG-ERC20',
+        'ETH-ARB20',
+        'ETHK-OPT20',
+        'ETHR-ARB20',
+        'USDT-ARB20',
+        'USDT-ERC20',
         'MGW',
+        'DEX',
         'PANGEA',
         'REVS',
         'SUPERNET',
-        'PAXG-ERC20',
-        'ARRR-BEP20',
         'NVC',
+        'UST-ERC20',
+        'UST-BEP20',
+        'UST-HRC20',
+        'UST-PLG20',
         'XPM',
-        'XVC'
+        'XVC-OLD',
+        'VOTE2022'
       ];
+
   final List<String> protocolSuffixes = [
     'QRC20',
     'ERC20',
@@ -51,6 +67,8 @@ class AppConfig {
     'HCO20',
     'KRC20',
     'AVX20',
+    'SLP',
+    'OLD',
   ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
   Map<String, String> get allProtocolNames => {
@@ -62,13 +80,14 @@ class AppConfig {
         'plg': 'Polygon (PLG-20)',
         'ftm': 'Fantom (FTM-20)',
         'hrc': 'Harmony (HRC-20)',
-        'avax': 'Avax (avax-20)',
+        'avx': 'Avax (AVX-20)',
         'hco': 'HecoChain (HCO-20)',
         'mvr': 'Moonriver (MVR-20)',
         'krc': 'Kucoin (KRC-20)',
         'ubiq': 'Ubiq',
-        'etc': 'Ethereum Classic',
-        'sbch': 'SmartBCH',
+        'etc': 'Ethereum Classic (ETC)',
+        'sbch': 'SmartBCH (SBCH)',
+        'slp': 'SLP Tokens',
       };
 
   bool get isSwapShareCardEnabled => true;
@@ -78,7 +97,7 @@ class AppConfig {
     SupportChannel(
       title: 'DISCORD',
       subtitle: 'Komodo #support',
-      link: 'http://komodoplatform.com/discord',
+      link: 'https://komodoplatform.com/discord',
       icon: SizedBox(
         width: 60,
         child: Image.asset('assets/discord_logo.png'),

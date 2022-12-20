@@ -621,9 +621,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           result: MmSwap(
             uuid: response.result.uuid,
             myInfo: SwapMyInfo(
-                myAmount: cutTrailingZeros(formatPrice(swapBloc.amountSell)),
-                otherAmount:
-                    cutTrailingZeros(formatPrice(swapBloc.amountReceive)),
+                myAmount: cutTrailingZeros(swapBloc.amountSell
+                    .toStringAsFixed(appConfig.tradeFormPrecision)),
+                otherAmount: cutTrailingZeros(swapBloc.amountReceive
+                    .toStringAsFixed(appConfig.tradeFormPrecision)),
                 myCoin: response.result.rel,
                 otherCoin: response.result.base,
                 startedAt: DateTime.now().millisecondsSinceEpoch),

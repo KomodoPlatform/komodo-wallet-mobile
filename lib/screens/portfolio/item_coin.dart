@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
@@ -15,6 +14,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/build_protocol_chip.dart';
 import 'package:komodo_dex/widgets/build_red_dot.dart';
@@ -56,12 +56,11 @@ class _ItemCoinState extends State<ItemCoin>
           '${coin.abbr} balance: ${balance.balance}'
               '; locked_by_swaps: ${balance.lockedBySwaps}');
       actions.add(SlidableAction(
-        key: Key('send-coin'),
         label: AppLocalizations.of(context).send,
         backgroundColor: Colors.white,
         icon: Icons.arrow_upward,
-        onPressed: (context) {
-          Navigator.push<dynamic>(
+        onPressed: (context) async {
+          await Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => CoinDetail(
@@ -69,11 +68,11 @@ class _ItemCoinState extends State<ItemCoin>
                       isSendIsActive: true,
                     )),
           );
+          cexProvider.withdrawCurrency = null;
         },
       ));
     }
     actions.add(SlidableAction(
-      key: Key('receive-coin'),
       label: AppLocalizations.of(context).receive,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       icon: Icons.arrow_downward,
@@ -83,7 +82,6 @@ class _ItemCoinState extends State<ItemCoin>
     ));
     if (!coin.walletOnly && double.parse(balance.getBalance()) > 0) {
       actions.add(SlidableAction(
-        key: Key('swap-coin'),
         label: AppLocalizations.of(context).swap.toUpperCase(),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         icon: Icons.swap_vert,
@@ -132,8 +130,8 @@ class _ItemCoinState extends State<ItemCoin>
         child: Builder(builder: (BuildContext context) {
           return InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
-            onLongPress: () => Slidable.of(context).openCurrentActionPane(),
-            onTap: () {
+            onLongPress: () => Slidable.of(context).openStartActionPane(),
+            onTap: () async {
               //if (coin.suspended) {
               //showSuspendedDilog(context, coin: coin);
               //return;
@@ -143,13 +141,14 @@ class _ItemCoinState extends State<ItemCoin>
               if (slidableController != null) {
                 slidableController.close();
               }
-              Navigator.push<dynamic>(
+              await Navigator.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
                   builder: (BuildContext context) =>
                       CoinDetail(coinBalance: widget.coinBalance),
                 ),
               );
+              cexProvider.withdrawCurrency = null;
             },
             child: Container(
               color: Theme.of(context).colorScheme.surface,
@@ -192,61 +191,63 @@ class _ItemCoinState extends State<ItemCoin>
                       ],
                     ),
                   ),
-                  Expanded(child: SizedBox()),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 8, bottom: 8, right: 12),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        StreamBuilder<bool>(
-                            initialData: settingsBloc.showBalance,
-                            stream: settingsBloc.outShowBalance,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<bool> snapshot) {
-                              String amount =
-                                  f.format(double.parse(balance.getBalance()));
-                              if (snapshot.hasData && !snapshot.data)
-                                amount = '**.**';
-                              return AutoSizeText(
-                                '$amount ${coin.abbr}',
-                                maxLines: 1,
-                                style: Theme.of(context).textTheme.headline6,
-                              );
-                            }),
-                        const SizedBox(height: 8),
-                        StreamBuilder(
-                            initialData: settingsBloc.showBalance,
-                            stream: settingsBloc.outShowBalance,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<bool> snapshot) {
-                              bool hidden = false;
-                              if (snapshot.hasData && !snapshot.data)
-                                hidden = true;
-                              return Text(
-                                cexProvider.convert(
-                                  widget.coinBalance.balanceUSD,
-                                  hidden: hidden,
-                                ),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .copyWith(
-                                      color: Colors.grey,
-                                    ),
-                              );
-                            }),
-                        _buildClaimButton(),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            _buildFaucetButton(),
-                            _buildWalletOnly(),
-                            _buildProtocolChip(coin),
-                          ],
-                        ),
-                      ],
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 8, bottom: 8, right: 12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          StreamBuilder<bool>(
+                              initialData: settingsBloc.showBalance,
+                              stream: settingsBloc.outShowBalance,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                String amount = f
+                                    .format(double.parse(balance.getBalance()));
+                                if (snapshot.hasData && !snapshot.data)
+                                  amount = '**.**';
+                                return AutoSizeText(
+                                  '$amount ${coin.abbr}',
+                                  maxLines: 1,
+                                  style: Theme.of(context).textTheme.headline6,
+                                );
+                              }),
+                          const SizedBox(height: 8),
+                          StreamBuilder(
+                              initialData: settingsBloc.showBalance,
+                              stream: settingsBloc.outShowBalance,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                bool hidden = false;
+                                if (snapshot.hasData && !snapshot.data)
+                                  hidden = true;
+                                return Text(
+                                  cexProvider.convert(
+                                    widget.coinBalance.balanceUSD,
+                                    hidden: hidden,
+                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .copyWith(
+                                        color: Colors.grey,
+                                      ),
+                                );
+                              }),
+                          _buildClaimButton(),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              _buildFaucetButton(),
+                              _buildWalletOnly(),
+                              _buildProtocolChip(coin),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -287,6 +288,7 @@ class _ItemCoinState extends State<ItemCoin>
           ),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             if (!widget.coinBalance.coin.suspended && rewardsProvider.needClaim)
               Container(

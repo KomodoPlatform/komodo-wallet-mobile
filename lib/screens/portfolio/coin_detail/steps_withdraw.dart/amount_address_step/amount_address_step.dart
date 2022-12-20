@@ -30,6 +30,7 @@ class AmountAddressStep extends StatefulWidget {
     this.onCancel,
     this.coinBalance,
     this.paymentUriInfo,
+    this.scrollController,
   }) : super(key: key);
 
   final Function onCancel;
@@ -41,6 +42,7 @@ class AmountAddressStep extends StatefulWidget {
   final bool autoFocus;
   final CoinBalance coinBalance;
   final PaymentUriInfo paymentUriInfo;
+  final ScrollController scrollController;
 
   @override
   _AmountAddressStepState createState() => _AmountAddressStepState();
@@ -91,6 +93,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               CustomFee(
                 coin: widget.coinBalance.coin,
                 amount: widget.amountController.text,
+                scrollController: widget.scrollController,
               ),
             Row(
               children: <Widget>[

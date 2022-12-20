@@ -359,7 +359,8 @@ class _ContactEditState extends State<ContactEdit> {
                             Icons.search,
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
-                          hintText: 'Search for Ticker',
+                          hintText:
+                              AppLocalizations.of(context).searchForTicker,
                         ),
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(16),

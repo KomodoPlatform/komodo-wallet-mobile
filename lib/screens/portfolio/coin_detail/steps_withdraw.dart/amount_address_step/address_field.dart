@@ -189,7 +189,7 @@ class _AddressFieldState extends State<AddressField> {
               autovalidate = false;
             });
           },
-          child: const Text('Convert'),
+          child: Text(AppLocalizations.of(context).convert),
         ),
       ],
     );

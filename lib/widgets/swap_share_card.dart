@@ -3,6 +3,8 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:intl/intl.dart';
 
+import '../localizations.dart';
+
 class SwapShareCard extends StatelessWidget {
   const SwapShareCard({Key key, @required this.swap}) : super(key: key);
 
@@ -62,7 +64,7 @@ class SwapShareCard extends StatelessWidget {
                               height: 24,
                             ),
                             Text(
-                              'Powered by Komodo',
+                              AppLocalizations.of(context).poweredOnKmd,
                               style: TextStyle(fontSize: 4),
                             ),
                           ],
@@ -143,10 +145,11 @@ class SwapShareCard extends StatelessWidget {
                             1: FixedColumnWidth(8),
                           },
                           children: [
-                            const TableRow(
+                            TableRow(
                               children: [
                                 Text(
-                                  'Details',
+                                  toInitialUpper(
+                                      AppLocalizations.of(context).details),
                                   style: TextStyle(
                                     color: Colors.blue,
                                     fontSize: 6,
@@ -165,8 +168,8 @@ class SwapShareCard extends StatelessWidget {
                             ),
                             TableRow(
                               children: [
-                                const Text(
-                                  'Date',
+                                Text(
+                                  AppLocalizations.of(context).date,
                                   style: TextStyle(fontSize: 6),
                                 ),
                                 const SizedBox(),
@@ -179,13 +182,13 @@ class SwapShareCard extends StatelessWidget {
                             ),
                             TableRow(
                               children: [
-                                const Text(
-                                  'Duration',
+                                Text(
+                                  AppLocalizations.of(context).duration,
                                   style: TextStyle(fontSize: 6),
                                 ),
                                 const SizedBox(),
                                 Text(
-                                  '$durationMinutes Minutes',
+                                  '$durationMinutes ${AppLocalizations.of(context).longMinutes}',
                                   style: const TextStyle(fontSize: 6),
                                   textAlign: TextAlign.left,
                                 ),

@@ -159,6 +159,23 @@ class CoinsBloc implements BlocBase {
     coinBeforeActivation
         .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
 
+    // auto add parent coin if not enabled previously
+    // if the parent is then removed intentionally by the user
+    // it wont be enabled. But if SLP coins are even removed after auto adding
+    // they will be forced enabled because parent coins are needed enabled before
+    // SLP coins can enable
+    String platform = coin?.protocol?.protocolData?.platform;
+    bool isParentEnabled =
+        coinBalance.any((element) => element.coin.abbr == platform);
+    if (isActive && platform != null && !isParentEnabled) {
+      Coin parentCoin = getKnownCoinByAbbr(platform);
+      coinBeforeActivation.removeWhere(
+          (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
+      coinBeforeActivation.add(
+        CoinToActivate(coin: parentCoin, isActive: isActive),
+      );
+    }
+
     coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
@@ -179,6 +196,18 @@ class CoinsBloc implements BlocBase {
       }
 
       if (shouldChange) {
+        // auto add parent coin if not enabled previously
+        String platform = item.coin?.protocol?.protocolData?.platform;
+        bool isParentEnabled =
+            coinBalance.any((element) => element.coin.abbr == platform);
+        if (isActive && platform != null && !isParentEnabled) {
+          Coin parentCoin = getKnownCoinByAbbr(platform);
+          coinBeforeActivation.removeWhere(
+              (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
+          coinBeforeActivation.add(
+            CoinToActivate(coin: parentCoin, isActive: isActive),
+          );
+        }
         list.add(CoinToActivate(coin: item.coin, isActive: isActive));
       } else {
         list.add(item);
@@ -338,21 +367,47 @@ class CoinsBloc implements BlocBase {
     _isRetryActivatingRunning = false;
   }
 
+  Future<List> enableSlpParentCoins(List<Coin> slpCoins) async {
+    if (slpCoins.isEmpty) return [];
+    List<Map<String, dynamic>> batch = [];
+    for (Coin coin in slpCoins) {
+      batch.add(json.decode(MM.enableCoinImpl(coin)));
+    }
+    return await MM.batch(batch);
+  }
+
   /// Handle the coins user has picked for activation.
   /// Also used for coin activations during the application startup.
   Future<void> enableCoins(List<Coin> coins) async {
     await pauseUntil(() => !_coinsLock, maxMs: 3000);
     _coinsLock = true;
 
-    // Using a batch request to speed up the coin activation.
+    // list of slp-parent-coins
+    List<Coin> slpCoins = [];
+    for (Coin coin in coins.where((element) => isSlpChild(element))) {
+      String platform = coin?.protocol?.protocolData?.platform;
+      bool isParentEnabled =
+          coinBalance.any((element) => element.coin.abbr == platform);
+      if (!isParentEnabled) //parent coin is already enabled
+        slpCoins.add(getKnownCoinByAbbr(coin.protocol.protocolData.platform));
+    }
+    slpCoins = slpCoins.toSet().toList();
+
+    // remove slp-parent-coins from the main coin list
+    coins.removeWhere((coin) => slpCoins.contains(coin));
+    // activate remaining coins using a batch request to speed up the coin activation.
     final List<Map<String, dynamic>> batch = [];
     for (Coin coin in coins) {
       batch.add(json.decode(MM.enableCoinImpl(coin)));
     }
+    // activate slp-parent-coins first before others.
+    final slpReplies = await enableSlpParentCoins(slpCoins);
     final replies = await MM.batch(batch);
-    if (replies.length != batch.length) {
+    coins.addAll(slpCoins);
+    replies.addAll(slpReplies);
+    if (replies.length != coins.length) {
       throw Exception(
-          'Unexpected number of replies: ${replies.length} != ${batch.length}');
+          'Unexpected number of replies: ${replies.length} != ${coins.length}');
     }
     for (int ix = 0; ix < coins.length; ++ix) {
       final coin = coins[ix];
@@ -365,7 +420,7 @@ class CoinsBloc implements BlocBase {
 
         continue;
       }
-      final acc = ActiveCoin.fromJson(ans);
+      final acc = ActiveCoin.fromJson(ans, coin);
       if (acc.result != 'success') {
         Log('coins_bloc:278', '!success: $ans');
 

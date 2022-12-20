@@ -343,7 +343,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
           swapBloc.updateSellCoin(coin);
           swapBloc.setEnabledSellField(true);
-          _orderBookProvider.activePair = CoinsPair(sell: coin.coin, buy: null);
         },
       );
     }

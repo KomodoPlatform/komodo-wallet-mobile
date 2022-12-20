@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -76,12 +77,16 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(formatPrice(double.parse(widget.order.baseAmount)),
+                      Text(
+                          cutTrailingZeros(double.parse(widget.order.baseAmount)
+                              .toStringAsFixed(appConfig.tradeFormPrecision)),
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       if (filled > 0)
                         Text(
-                            formatPrice(
-                                double.parse(widget.order.baseAmount) - filled),
+                            cutTrailingZeros(
+                                (double.parse(widget.order.baseAmount) - filled)
+                                    .toStringAsFixed(
+                                        appConfig.tradeFormPrecision)),
                             style: TextStyle(
                               fontSize: 10,
                             )),
@@ -114,7 +119,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
               Text(
                 '${AppLocalizations.of(context).orderDetailsMin} '
                 '${widget.order.base} '
-                '${cutTrailingZeros(formatPrice(widget.order.minVolume))}',
+                '${cutTrailingZeros(widget.order.minVolume.toStringAsFixed(appConfig.tradeFormPrecision))}',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
@@ -161,13 +166,15 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    formatPrice(double.parse(widget.order.relAmount)),
+                    cutTrailingZeros(double.parse(widget.order.relAmount)
+                        .toStringAsFixed(appConfig.tradeFormPrecision)),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   if (filled > 0)
                     Text(
-                        formatPrice(
-                            double.parse(widget.order.relAmount) - filled),
+                        cutTrailingZeros(
+                            (double.parse(widget.order.relAmount) - filled)
+                                .toStringAsFixed(appConfig.tradeFormPrecision)),
                         style: TextStyle(
                           fontSize: 10,
                         )),
@@ -196,8 +203,9 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
             child: Row(
               children: <Widget>[
                 Text(
-                  formatPrice(double.parse(widget.order.relAmount) /
-                      double.parse(widget.order.baseAmount)),
+                  cutTrailingZeros((double.parse(widget.order.relAmount) /
+                          double.parse(widget.order.baseAmount))
+                      .toStringAsFixed(appConfig.tradeFormPrecision)),
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 6),
@@ -217,8 +225,9 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
             child: Row(
               children: <Widget>[
                 Text(
-                  formatPrice(double.parse(widget.order.baseAmount) /
-                      double.parse(widget.order.relAmount)),
+                  cutTrailingZeros((double.parse(widget.order.baseAmount) /
+                          double.parse(widget.order.relAmount))
+                      .toStringAsFixed(appConfig.tradeFormPrecision)),
                   style: const TextStyle(
                     fontSize: 13,
                   ),

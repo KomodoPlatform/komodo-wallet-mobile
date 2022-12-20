@@ -81,6 +81,7 @@ class _CoinDetailState extends State<CoinDetail> {
   Transaction latestTransaction;
 
   bool isRetryingActivation = false;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -241,7 +242,9 @@ class _CoinDetailState extends State<CoinDetail> {
         ),
         body: Builder(builder: (BuildContext context) {
           mainContext = context;
-          return Column(
+          return ListView(
+            shrinkWrap: true,
+            controller: scrollController,
             children: <Widget>[
               if (!currentCoinBalance.coin.suspended) _buildForm(),
               _buildHeaderCoinDetail(context),
@@ -286,7 +289,8 @@ class _CoinDetailState extends State<CoinDetail> {
 
                 if (_isWaiting) {
                   _refresh();
-                } else if (_scrollController.position.pixels == 0.0) {
+                } else if (_scrollController.hasClients &&
+                    _scrollController.position.pixels == 0.0) {
                   _refresh();
                 } else if (latestTransaction == null ||
                     latestTransaction.internalId != t.internalId) {
@@ -319,9 +323,9 @@ class _CoinDetailState extends State<CoinDetail> {
                       const SizedBox(
                         width: 8,
                       ),
-                      const Text('Loading...'),
+                      Text(AppLocalizations.of(context).loading),
                       Expanded(child: SizedBox()),
-                      Text('Transactions left $txLeft'),
+                      Text(AppLocalizations.of(context).txleft(txLeft)),
                     ],
                   ),
                 );
@@ -376,68 +380,67 @@ class _CoinDetailState extends State<CoinDetail> {
 
     if (coinsWithoutHist.contains(currentCoinBalance.coin.type)) {
       return _buildTxExplorerButton(
-          '${currentCoinBalance.coin.explorerUrl.first}address/${currentCoinBalance.balance.address}');
+          '${currentCoinBalance.coin.explorerUrl}address/${currentCoinBalance.balance.address}');
     }
-    return Expanded(
-      child: RefreshIndicator(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          color: Theme.of(context).colorScheme.secondary,
-          key: _refreshIndicatorKey,
-          onRefresh: _refresh,
-          child: StreamBuilder<dynamic>(
-              stream: coinsBloc.outTransactions,
-              initialData: coinsBloc.transactions,
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  _isWaiting = true;
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  _isWaiting = false;
-                }
-                if (snapshot.data is Transactions) {
-                  final Transactions transactions = snapshot.data;
-                  final String syncState = StateOfSync.InProgress.toString()
-                      .substring(
-                          StateOfSync.InProgress.toString().indexOf('.') + 1);
+    return RefreshIndicator(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).colorScheme.secondary,
+        key: _refreshIndicatorKey,
+        onRefresh: _refresh,
+        child: StreamBuilder<dynamic>(
+            stream: coinsBloc.outTransactions,
+            initialData: coinsBloc.transactions,
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                _isWaiting = true;
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                _isWaiting = false;
+              }
+              if (snapshot.data is Transactions) {
+                final Transactions transactions = snapshot.data;
+                final String syncState = StateOfSync.InProgress.toString()
+                    .substring(
+                        StateOfSync.InProgress.toString().indexOf('.') + 1);
 
-                  if (snapshot.hasData &&
-                      transactions.result != null &&
-                      transactions.result.transactions != null) {
-                    if (transactions.result.transactions.isNotEmpty) {
-                      //@Slyris plz clean up
-                      return ListView.builder(
-                        itemCount: transactions.result.transactions.length,
-                        itemBuilder: (context, i) => _buildTransactionItem(
-                          transactions.result.transactions[i],
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        controller: _scrollController,
-                      );
-                    } else if (transactions.result.transactions.isEmpty &&
-                        !(transactions.result.syncStatus.state == syncState)) {
-                      return Center(
-                          child: Text(
-                        AppLocalizations.of(context).noTxs,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ));
-                    }
-                  }
-                } else if (snapshot.data is ErrorCode &&
-                    snapshot.data.error != null) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Center(
+                if (snapshot.hasData &&
+                    transactions.result != null &&
+                    transactions.result.transactions != null) {
+                  if (transactions.result.transactions.isNotEmpty) {
+                    //@Slyris plz clean up
+                    return ListView.builder(
+                      itemCount: transactions.result.transactions.length,
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, i) => _buildTransactionItem(
+                        transactions.result.transactions[i],
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      controller: _scrollController,
+                    );
+                  } else if (transactions.result.transactions.isEmpty &&
+                      !(transactions.result.syncStatus.state == syncState)) {
+                    return Center(
                         child: Text(
-                      snapshot.data.error.message,
+                      AppLocalizations.of(context).noTxs,
                       style: Theme.of(context).textTheme.bodyText1,
-                      textAlign: TextAlign.center,
-                    )),
-                  );
+                    ));
+                  }
                 }
-                return SizedBox();
-              })),
-    );
+              } else if (snapshot.data is ErrorCode &&
+                  snapshot.data.error != null) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(
+                      child: Text(
+                    snapshot.data.error.message,
+                    style: Theme.of(context).textTheme.bodyText1,
+                    textAlign: TextAlign.center,
+                  )),
+                );
+              }
+              return SizedBox();
+            }));
   }
 
   void _goToPreviousPage(BuildContext context) {
@@ -456,19 +459,19 @@ class _CoinDetailState extends State<CoinDetail> {
                     CircularProgressIndicator(),
                     SizedBox(height: 24),
                     Text(
-                      'Retrying activating all coins...',
+                      AppLocalizations.of(context).retryActivating,
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
                     SizedBox(height: 24),
                     Text(
-                      'You will be redirected to portfolio page on completion.',
+                      AppLocalizations.of(context).willBeRedirected,
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
                     SizedBox(height: 24),
                     Text(
-                      'If even then some coins are still not activated, try restarting the app.',
+                      AppLocalizations.of(context).tryRestarting,
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
@@ -481,10 +484,12 @@ class _CoinDetailState extends State<CoinDetail> {
                     ),
                     SizedBox(height: 24),
                     Text(
-                        'We failed to activate ${currentCoinBalance.coin.abbr}'),
+                      AppLocalizations.of(context)
+                          .weFailedTo(currentCoinBalance.coin.abbr),
+                    ),
                     SizedBox(height: 24),
                     Text(
-                      'Please restart the app to try again, or press the button below.',
+                      AppLocalizations.of(context).pleaseRestart,
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
@@ -498,11 +503,11 @@ class _CoinDetailState extends State<CoinDetail> {
                             .retryActivatingSuspendedCoins()
                             .whenComplete(() => _goToPreviousPage(context));
                       },
-                      text: 'Retry activating all',
+                      text: AppLocalizations.of(context).retryAll,
                     ),
                     SizedBox(height: 24),
                     Text(
-                      'You will be automatically redirected to portfolio page when the retry activation process completes.',
+                      AppLocalizations.of(context).automaticRedirected,
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
@@ -639,6 +644,7 @@ class _CoinDetailState extends State<CoinDetail> {
   Widget _buildContractAddress(ProtocolData protocolData) {
     final platform = protocolData.platform;
     String contractAddress = protocolData.contractAddress;
+    if (platform == null || contractAddress == null) return SizedBox();
     String middleUrl = 'address';
     if (platform == 'QTUM') {
       contractAddress = contractAddress.replaceFirst('0x', '');
@@ -647,7 +653,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
     final allCoins = coinsBloc.knownCoins;
     final platformCoin = allCoins[platform];
-    final explorerUrl = platformCoin.explorerUrl.first;
+    final explorerUrl = platformCoin.explorerUrl;
 
     final baseUrl = '$explorerUrl/$middleUrl/$contractAddress';
 
@@ -856,7 +862,7 @@ class _CoinDetailState extends State<CoinDetail> {
               width: 8.0,
             ),
             Text(
-              'Latest Transactions',
+              AppLocalizations.of(context).latestTxs,
               style: Theme.of(context)
                   .textTheme
                   .button
@@ -868,13 +874,15 @@ class _CoinDetailState extends State<CoinDetail> {
       ),
       onTap: () async {
         await _refresh();
-        _scrollController.position.jumpTo(0.0);
+        if (_scrollController.hasClients)
+          _scrollController.position.jumpTo(0.0);
       },
     );
   }
 
   void catchError(BuildContext mContext) {
     resetSend();
+    coinsDetailBloc.resetCustomFee();
     ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
@@ -938,6 +946,7 @@ class _CoinDetailState extends State<CoinDetail> {
     listSteps.add(AmountAddressStep(
       coinBalance: currentCoinBalance,
       paymentUriInfo: widget.paymentUriInfo,
+      scrollController: scrollController,
       onCancel: () {
         setState(() {
           isExpanded = false;

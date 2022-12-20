@@ -7,7 +7,7 @@ class Server {
 
   factory Server.fromJson(Map<String, dynamic> json) => Server(
         url: json['url'] ?? '',
-        protocol: json['protocol'] ?? '',
+        protocol: (json['protocol'] ?? 'TCP').toUpperCase(),
         disableCertVerification: json['disable_cert_verification'] ?? false,
       );
 
