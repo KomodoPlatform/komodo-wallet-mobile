@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:komodo_dex/utils/log.dart';
+import '../utils/log.dart';
 
 /// Returns a `Future` in order for us to know when the callback has finished,
 /// allowing us not to call the same callback two times in parallel

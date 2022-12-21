@@ -3,24 +3,24 @@ import 'dart:io';
 
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/addressbook_provider.dart';
-import 'package:komodo_dex/model/backup.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/import-export/export_import_success.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/password_visibility_control.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
+import '../../model/addressbook_provider.dart';
+import '../../model/backup.dart';
+import '../../model/recent_swaps.dart';
+import '../../model/swap.dart';
+import '../../model/swap_provider.dart';
+import '../authentification/lock_screen.dart';
+import '../import-export/export_import_success.dart';
+import '../../utils/encryption_tool.dart';
+import '../../utils/utils.dart';
+import '../../widgets/password_visibility_control.dart';
+import '../../widgets/primary_button.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import 'package:komodo_dex/model/export_import_list_item.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/import-export/export_import_list.dart';
+import '../../model/export_import_list_item.dart';
+import '../../services/db/database.dart';
+import '../../localizations.dart';
+import '../import-export/export_import_list.dart';
 
 class ExportPage extends StatefulWidget {
   @override

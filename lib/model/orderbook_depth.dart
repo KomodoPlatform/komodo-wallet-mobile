@@ -1,4 +1,4 @@
-import 'package:komodo_dex/model/pair.dart';
+import '../model/pair.dart';
 
 class OrderbookDepth {
   OrderbookDepth({this.pair, this.depth});

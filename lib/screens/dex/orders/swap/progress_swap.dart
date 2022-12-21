@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/screens/dex/orders/taker/build_taker_countdown.dart';
+import '../../../../blocs/swap_history_bloc.dart';
+import '../../../../localizations.dart';
+import '../../../../model/swap.dart';
+import '../../../../../model/swap_provider.dart';
+import '../../../dex/orders/taker/build_taker_countdown.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 

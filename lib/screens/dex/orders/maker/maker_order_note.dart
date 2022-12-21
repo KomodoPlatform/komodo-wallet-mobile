@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../app_config/theme_data.dart';
+import '../../../../localizations.dart';
+import '../../../../model/order.dart';
+import '../../../../services/db/database.dart';
+import '../../../../utils/utils.dart';
 
 class MakerOrderNote extends StatefulWidget {
   const MakerOrderNote(this.order);
@@ -113,7 +113,6 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
             ),
           ),
         ),
-
         if (noteText?.isNotEmpty ?? false)
           IconButton(
             icon: Icon(Icons.copy, size: 18),

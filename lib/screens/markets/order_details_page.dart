@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/markets/build_order_details.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../localizations.dart';
+import '../../model/orderbook.dart';
+import '../authentification/lock_screen.dart';
+import '../markets/build_order_details.dart';
+import '../../utils/utils.dart';
 
 class OrderDetailsPage extends StatelessWidget {
   const OrderDetailsPage({

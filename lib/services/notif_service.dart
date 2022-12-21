@@ -1,21 +1,21 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/get_tx_history.dart';
-import 'package:komodo_dex/model/rewards_provider.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/model/transaction_data.dart';
-import 'package:komodo_dex/model/transactions.dart';
-import 'package:komodo_dex/services/job_service.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../blocs/coins_bloc.dart';
+import '../blocs/main_bloc.dart';
+import '../localizations.dart';
+import '../model/coin_balance.dart';
+import '../model/get_tx_history.dart';
+import '../model/rewards_provider.dart';
+import '../model/swap.dart';
+import '../model/swap_provider.dart';
+import '../model/transaction_data.dart';
+import '../model/transactions.dart';
+import '../services/job_service.dart';
+import '../services/mm.dart';
+import '../services/mm_service.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
 
 NotifService notifService = NotifService();
 

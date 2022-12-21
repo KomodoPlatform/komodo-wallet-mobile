@@ -1,19 +1,19 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/market.dart';
-import 'package:komodo_dex/widgets/auto_scroll_text.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../../localizations.dart';
+import '../../../../../app_config/app_config.dart';
+import '../../../../../model/cex_provider.dart';
+import '../../../../../model/coin.dart';
+import '../../../../../model/coin_balance.dart';
+import '../../../../../model/market.dart';
+import '../../../../../widgets/auto_scroll_text.dart';
+import '../../../../../utils/utils.dart';
 import 'package:rational/rational.dart';
 
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/best_order.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
+import '../../../../../blocs/coins_bloc.dart';
+import '../../../../../model/best_order.dart';
+import '../../../../../model/swap_constructor_provider.dart';
 import 'package:provider/provider.dart';
 
 class CoinsListBestItem extends StatefulWidget {

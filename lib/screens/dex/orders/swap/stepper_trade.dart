@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/detail_swap.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/progress_swap.dart';
+import '../../../../model/swap.dart';
+import '../../../dex/orders/swap/detail_swap.dart';
+import '../../../dex/orders/swap/progress_swap.dart';
 
 class StepperTrade extends StatefulWidget {
   const StepperTrade({this.swap, this.onStepFinish});

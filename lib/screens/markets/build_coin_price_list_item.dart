@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
+import '../../localizations.dart';
 
-import 'package:komodo_dex/model/balance.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/candles_icon.dart';
-import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/widgets/duration_select.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
+import '../../model/balance.dart';
+import '../../model/cex_provider.dart';
+import '../../model/coin.dart';
+import '../../model/coin_balance.dart';
+import '../markets/candlestick_chart.dart';
+import '../../utils/utils.dart';
+import '../../widgets/candles_icon.dart';
+import '../../widgets/cex_data_marker.dart';
+import '../../widgets/duration_select.dart';
+import '../../app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {

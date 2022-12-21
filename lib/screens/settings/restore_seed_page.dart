@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/authentification/create_password_page.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/password_visibility_control.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
+import '../../app_config/theme_data.dart';
+import '../../blocs/dialog_bloc.dart';
+import '../../localizations.dart';
+import '../authentification/create_password_page.dart';
+import '../../utils/utils.dart';
+import '../../widgets/custom_simple_dialog.dart';
+import '../../widgets/password_visibility_control.dart';
+import '../../widgets/primary_button.dart';
 import 'package:bip39/bip39.dart' as bip39;
 
 class RestoreSeedPage extends StatefulWidget {

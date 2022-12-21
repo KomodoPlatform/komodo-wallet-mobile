@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/get_send_raw_transaction.dart';
-import 'package:komodo_dex/model/get_withdraw.dart';
-import 'package:komodo_dex/model/send_raw_transaction_response.dart';
-import 'package:komodo_dex/model/withdraw_response.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../blocs/coins_bloc.dart';
+import '../localizations.dart';
+import '../model/coin_balance.dart';
+import '../model/get_send_raw_transaction.dart';
+import '../model/get_withdraw.dart';
+import '../model/send_raw_transaction_response.dart';
+import '../model/withdraw_response.dart';
+import '../services/mm.dart';
+import '../services/mm_service.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
 
 class RewardsProvider extends ChangeNotifier {
   final AppLocalizations _localizations = AppLocalizations();
@@ -84,6 +84,7 @@ class RewardsProvider extends ChangeNotifier {
     try {
       list = await MM.getRewardsInfo();
     } catch (e) {
+      _setError();
       updateInProgress = false;
       Log('rewards_provider', '_updateInfo] $e');
       notifyListeners();

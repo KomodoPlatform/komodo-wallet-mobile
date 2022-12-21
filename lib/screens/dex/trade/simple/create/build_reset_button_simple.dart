@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/swap_constructor_provider.dart';
+import '../../../../../localizations.dart';
+import '../../../../../model/swap_constructor_provider.dart';
 import 'package:provider/provider.dart';
 
 class BuildResetButtonSimple extends StatefulWidget {

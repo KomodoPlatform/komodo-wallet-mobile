@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/help-feedback/support_channel_item.dart';
-import 'package:komodo_dex/widgets/html_parser.dart';
+import '../../app_config/app_config.dart';
+import '../../localizations.dart';
+import '../authentification/lock_screen.dart';
+import '../help-feedback/support_channel_item.dart';
+import '../../widgets/html_parser.dart';
 
 class HelpPage extends StatefulWidget {
   @override

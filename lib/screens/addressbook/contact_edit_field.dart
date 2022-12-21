@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/round_button.dart';
-import 'package:komodo_dex/services/lock_service.dart';
+import '../../utils/utils.dart';
+import '../../widgets/round_button.dart';
+import '../../services/lock_service.dart';
 
 class ContactEditField extends StatefulWidget {
   const ContactEditField({

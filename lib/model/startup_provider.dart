@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/camo_bloc.dart';
-import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../blocs/authenticate_bloc.dart';
+import '../blocs/camo_bloc.dart';
+import '../model/wallet_security_settings_provider.dart';
+import '../utils/encryption_tool.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Shares the progress on startup tasks with the UI

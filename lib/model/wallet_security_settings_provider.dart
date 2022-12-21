@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:komodo_dex/model/wallet_security_settings.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../model/wallet_security_settings.dart';
+import '../services/db/database.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 WalletSecuritySettingsProvider walletSecuritySettingsProvider =

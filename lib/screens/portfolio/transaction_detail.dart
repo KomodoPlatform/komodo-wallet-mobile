@@ -1,19 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/transaction_data.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../blocs/coins_bloc.dart';
+import '../../blocs/main_bloc.dart';
+import '../../blocs/settings_bloc.dart';
+import '../../localizations.dart';
+import '../../model/cex_provider.dart';
+import '../../model/coin_balance.dart';
+import '../../model/transaction_data.dart';
+import '../authentification/lock_screen.dart';
+import '../../services/db/database.dart';
+import '../../utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import 'package:komodo_dex/model/addressbook_provider.dart';
-import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
+import '../../model/addressbook_provider.dart';
+import '../addressbook/addressbook_page.dart';
 
 class TransactionDetail extends StatefulWidget {
   const TransactionDetail({this.transaction, this.coinBalance});

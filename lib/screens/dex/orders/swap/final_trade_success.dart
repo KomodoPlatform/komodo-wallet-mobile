@@ -3,15 +3,15 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/swap.dart';
+import '../../../../app_config/app_config.dart';
+import '../../../../blocs/dialog_bloc.dart';
+import '../../../../localizations.dart';
+import '../../../../model/swap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/detail_swap.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/share_preview_overlay.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/swap_share_card.dart';
+import '../../../dex/orders/swap/detail_swap.dart';
+import '../../../dex/orders/swap/share_preview_overlay.dart';
+import '../../../../utils/utils.dart';
+import '../../../../widgets/swap_share_card.dart';
 import 'package:share/share.dart';
 
 class FinalTradeSuccess extends StatefulWidget {

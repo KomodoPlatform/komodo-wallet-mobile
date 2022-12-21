@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../../localizations.dart';
+import '../../../../../model/coin.dart';
+import '../../../../../model/swap_provider.dart';
+import '../../../../../utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class ProtectionControl extends StatefulWidget {

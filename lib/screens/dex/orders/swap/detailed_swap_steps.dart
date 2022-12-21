@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/detailed_swap_step.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/progress_step.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../../localizations.dart';
+import '../../../../model/swap.dart';
+import '../../../../model/swap_provider.dart';
+import '../../../dex/orders/swap/detailed_swap_step.dart';
+import '../../../dex/orders/swap/progress_step.dart';
+import '../../../../utils/utils.dart';
 import 'package:provider/provider.dart';
 
 enum SwapStepStatus {

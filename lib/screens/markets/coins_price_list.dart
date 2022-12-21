@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/screens/markets/build_coin_price_list_item.dart';
-import 'package:komodo_dex/services/mm_service.dart';
+import '../../../blocs/coins_bloc.dart';
+import '../../../model/coin.dart';
+import '../../../model/coin_balance.dart';
+import '../markets/build_coin_price_list_item.dart';
+import '../../services/mm_service.dart';
 
 import '../../localizations.dart';
 

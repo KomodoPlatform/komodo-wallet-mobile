@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
+import '../../../../localizations.dart';
 
 class SharePreviewOverlay extends ModalRoute<void> {
   SharePreviewOverlay(this.file);

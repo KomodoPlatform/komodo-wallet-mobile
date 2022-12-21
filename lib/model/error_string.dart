@@ -3,7 +3,7 @@
 //     final ErrorString = errorStringFromJson(jsonString);
 
 import 'dart:convert';
-import 'package:komodo_dex/utils/log.dart';
+import '../utils/log.dart';
 
 Future<ErrorString> errorStringFromJson(String str) async =>
     removeLineFromMM2(ErrorString.fromJson(json.decode(str)));

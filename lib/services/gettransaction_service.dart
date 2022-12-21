@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-import 'package:komodo_dex/model/transaction.dart';
+import '../model/transaction.dart';
 
 GetTransactionService getTransactionObj = GetTransactionService();
 

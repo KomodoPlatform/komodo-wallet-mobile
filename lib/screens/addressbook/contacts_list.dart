@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/addressbook_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/screens/addressbook/contact_list_item.dart';
+import '../../localizations.dart';
+import '../../model/addressbook_provider.dart';
+import '../../model/coin.dart';
+import '../../model/coin_type.dart';
+import '../addressbook/contact_list_item.dart';
 
 class ContactsList extends StatefulWidget {
   const ContactsList(

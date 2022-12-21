@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/transaction_data.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../blocs/settings_bloc.dart';
+import '../../../../model/cex_provider.dart';
+import '../../../../model/coin_balance.dart';
+import '../../../../model/transaction_data.dart';
+import '../../../../services/db/database.dart';
+import '../../../../utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../transaction_detail.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/feed_provider.dart';
-import 'package:komodo_dex/screens/feed/news/build_news_item.dart';
+import '../../../localizations.dart';
+import '../../../model/feed_provider.dart';
+import '../../feed/news/build_news_item.dart';
 import 'package:provider/provider.dart';
 
 class NewsTab extends StatefulWidget {
