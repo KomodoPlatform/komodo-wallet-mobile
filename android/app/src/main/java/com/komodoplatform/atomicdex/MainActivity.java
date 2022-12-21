@@ -48,6 +48,8 @@ public class MainActivity extends FlutterFragmentActivity {
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+      WindowManager.LayoutParams.FLAG_SECURE);
     Intent intent = getIntent();
     getPaymentUri(intent);
   }
@@ -60,7 +62,7 @@ public class MainActivity extends FlutterFragmentActivity {
 
   @Override
   protected void onResume() {
-    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+   // getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
     super.onResume();
   }
 
@@ -141,12 +143,6 @@ public class MainActivity extends FlutterFragmentActivity {
             } else if (call.method.equals("status")) {
               int status = (int)nativeMm2MainStatus();
               result.success(status);
-            }else if (call.method.equals("secure")) {
-              getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-              result.success(true);
-            }else if (call.method.equals("hide")) {
-              getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
-              result.success(true);
             } else if (call.method.equals("stop")) {
               logSink.success("STOP MM2 --------------------------------");
               int ret = (int)nativeMm2Stop();

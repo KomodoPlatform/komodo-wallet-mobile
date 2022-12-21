@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -164,32 +163,23 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         mainBloc.isInBackground = true;
         Log('main', 'lifecycle: inactive');
         lockService.lockSignal(context);
-        performAction();
         break;
       case AppLifecycleState.paused:
         Log('main', 'lifecycle: paused');
         mainBloc.isInBackground = true;
         lockService.lockSignal(context);
-        performAction();
         break;
       case AppLifecycleState.detached:
         Log('main', 'lifecycle: detached');
         mainBloc.isInBackground = true;
-        performAction();
         break;
       case AppLifecycleState.resumed:
         Log('main', 'lifecycle: resumed');
         mainBloc.isInBackground = false;
         lockService.lockSignal(context);
         await mmSe.handleWakeUp();
-        performAction(hide: false);
         break;
     }
-  }
-
-  performAction({bool hide = true}) async {
-    if (Platform.isIOS) return;
-    await MMService.nativeC.invokeMethod<bool>(hide ? 'secure' : 'hide');
   }
 
   @override
