@@ -27,9 +27,10 @@ https://github.com/KomodoPlatform/AtomicDEX-mobile/wiki/Project-Setup#build-and-
 
 ## AtomicDEX API library (libmm2.a) version:
 
-beta-2.1.7132
-a293d8f06
-https://gitlab.com/KomodoPlatform/supernet/-/pipelines/599845645
+
+2.1.9256
+6e4de5d21
+http://195.201.0.6/mm2.1/
 
 
 ## Flutter version
