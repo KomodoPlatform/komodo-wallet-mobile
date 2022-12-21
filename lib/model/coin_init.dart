@@ -123,5 +123,6 @@ class CoinInit {
         'protocol': protocol,
         if (bech32Hrp != null) 'bech32_hrp': bech32Hrp,
         if (avgBlockTime != null) 'avg_block_time': avgBlockTime,
+        if (avgBlockTime != null) 'avg_blocktime': avgBlockTime,
       };
 }
