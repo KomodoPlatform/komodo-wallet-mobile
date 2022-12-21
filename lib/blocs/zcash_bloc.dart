@@ -225,6 +225,7 @@ class ZCashBloc implements BlocBase {
         startActivationStatusCheck();
       }
       await musicService.play([], installing: false);
+      coinsToActivate.removeWhere((coin) => coin.abbr == abbr);
     } else if (status == 'InProgress') {
       if (details == 'ActivatingCoin') {
         _progress = 5;
@@ -318,17 +319,20 @@ class ZCashBloc implements BlocBase {
   }
 
   void cancelTask(ZTask task) async {
+    bool isEnable = task.type == 'enable';
     await MM.batch([
       {
         'userpass': mmSe.userpass,
-        'method': task.type == 'enable'
-            ? 'task::enable_z_coin::cancel'
-            : 'task::withdraw::cancel',
+        'method':
+            isEnable ? 'task::enable_z_coin::cancel' : 'task::withdraw::cancel',
         'mmrpc': '2.0',
         'params': {'task_id': task.id},
         'id': task.id,
       }
     ]);
+    if (isEnable) {
+      coinsToActivate.removeWhere((coin) => coin.abbr == task.abbr);
+    }
     tasksToCheck.remove(task.id);
     _inZcashProgress.add(tasksToCheck);
   }
