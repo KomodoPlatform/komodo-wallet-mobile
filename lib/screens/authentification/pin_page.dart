@@ -183,7 +183,8 @@ class _PinPageState extends State<PinPage> {
 
         authBloc.showLock = false;
         if (!mmSe.running) {
-          await authBloc.login(await EncryptionTool().read('passphrase'), null);
+          await authBloc.login(await EncryptionTool().read('passphrase'), null,
+              loadSnapshot: loadSnapshot);
         }
         if (widget.onSuccess != null) {
           widget.onSuccess();
