@@ -70,11 +70,13 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
     return error == null
         ? SizedBox()
         : InkWell(
-            onTap: () {
-              setState(() {
-                _showDetailedError = !_showDetailedError;
-              });
-            },
+            onTap: error.length > 100
+                ? () {
+                    setState(() {
+                      _showDetailedError = !_showDetailedError;
+                    });
+                  }
+                : null,
             child: Container(
               width: double.infinity,
               padding: EdgeInsets.fromLTRB(16, 0, 8, 0),
@@ -84,19 +86,20 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                   Expanded(
                     child: Text(
                       error,
-                      maxLines: _showDetailedError ? null : 1,
+                      maxLines: _showDetailedError ? null : 3,
                       style: Theme.of(context)
                           .textTheme
                           .caption
                           .copyWith(color: Theme.of(context).errorColor),
                     ),
                   ),
-                  Icon(
-                    _showDetailedError
-                        ? Icons.arrow_drop_up
-                        : Icons.arrow_drop_down,
-                    size: 14,
-                  )
+                  if (error.length > 100)
+                    Icon(
+                      _showDetailedError
+                          ? Icons.arrow_drop_up
+                          : Icons.arrow_drop_down,
+                      size: 18,
+                    )
                 ],
               ),
             ),
@@ -247,7 +250,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
         children: <Widget>[
           Container(
             height: 32,
-            padding: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(top: 0),
             child: Theme(
               data: Theme.of(context).copyWith(
                 inputDecorationTheme: gefaultUnderlineInputTheme,
