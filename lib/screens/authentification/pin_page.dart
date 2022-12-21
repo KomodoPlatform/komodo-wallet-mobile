@@ -175,9 +175,10 @@ class _PinPageState extends State<PinPage> {
 
     switch (widget.pinStatus) {
       case PinStatus.NORMAL_PIN:
+        bool loadSnapshot = true;
         if (camoBloc.isCamoActive) {
           coinsBloc.resetCoinBalance();
-          camoBloc.isCamoActive = false;
+          loadSnapshot = false;
         }
 
         authBloc.showLock = false;
