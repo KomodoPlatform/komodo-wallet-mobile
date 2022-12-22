@@ -127,6 +127,7 @@ class CamoBloc implements BlocBase {
 
     if (val) {
       _sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
+      walletSecuritySettingsProvider.enableCamo = true;
       walletSecuritySettingsProvider.camoSessionStartedAt = _sessionStartedAt;
       walletSecuritySettingsProvider.camoBalance = null;
     }
