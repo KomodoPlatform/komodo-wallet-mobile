@@ -62,7 +62,6 @@ public class MainActivity extends FlutterFragmentActivity {
 
   @Override
   protected void onResume() {
-   // getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
     super.onResume();
   }
 
