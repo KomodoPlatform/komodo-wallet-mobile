@@ -313,15 +313,23 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                   isSignWithSeedIsEnabled: false,
                   onSuccess: (_, String password) {
                     Navigator.push<dynamic>(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => PinPage(
-                                title:
-                                    AppLocalizations.of(context).camoSetupTitle,
-                                subTitle: AppLocalizations.of(context)
-                                    .camoSetupSubtitle,
-                                pinStatus: PinStatus.CREATE_CAMO_PIN,
-                                password: password)));
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => PinPage(
+                          title: AppLocalizations.of(context).camoSetupTitle,
+                          subTitle:
+                              AppLocalizations.of(context).camoSetupSubtitle,
+                          pinStatus: PinStatus.CREATE_CAMO_PIN,
+                          password: password,
+                          onSuccess: () {
+                            camoBloc.isCamoEnabled = true;
+                            if (camoBloc.shouldWarnBadCamoPin) {
+                              _showMatchingPinPopupIfNeeded();
+                            }
+                          },
+                        ),
+                      ),
+                    );
                   },
                 ))).then((value) => camoBloc.getCamoPinValue());
   }
@@ -363,9 +371,9 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
   }
 
   Future<void> _switchEnabled(bool val) async {
-    camoBloc.isCamoEnabled = val;
-
     final String savedPin = await EncryptionTool().read('camoPin');
+
+    if (savedPin != null) camoBloc.isCamoEnabled = val;
     if (val && savedPin == null) _startPinSetup();
   }
 

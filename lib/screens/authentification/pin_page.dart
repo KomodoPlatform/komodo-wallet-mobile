@@ -248,6 +248,9 @@ class _PinPageState extends State<PinPage> {
         await prefs.remove('is_camo_pin_creation_in_progress');
 
         camoBloc.shouldWarnBadCamoPin = true;
+        if (widget.onSuccess != null) {
+          widget.onSuccess();
+        }
         Navigator.popUntil(context, ModalRoute.withName('/camoSetup'));
         break;
 
@@ -266,7 +269,7 @@ class _PinPageState extends State<PinPage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     switch (widget.pinStatus) {
-      case (PinStatus.CREATE_PIN):
+      case PinStatus.CREATE_PIN:
         await prefs.setBool('is_pin_creation_in_progress', true);
         await prefs.setString('pin_create', code);
         final MaterialPageRoute<dynamic> materialPage =
@@ -282,7 +285,7 @@ class _PinPageState extends State<PinPage> {
         Navigator.push<dynamic>(context, materialPage);
         break;
 
-      case (PinStatus.CHANGE_PIN):
+      case PinStatus.CHANGE_PIN:
         await prefs.setString('pin_create', code);
         final MaterialPageRoute<dynamic> materialPage =
             MaterialPageRoute<dynamic>(
@@ -298,7 +301,7 @@ class _PinPageState extends State<PinPage> {
         Navigator.pushReplacement<dynamic, dynamic>(context, materialPage);
         break;
 
-      case (PinStatus.CREATE_CAMO_PIN):
+      case PinStatus.CREATE_CAMO_PIN:
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('is_camo_pin_creation_in_progress', true);
         await prefs.setString('camo_pin_create', code);
@@ -309,6 +312,7 @@ class _PinPageState extends State<PinPage> {
                       subTitle:
                           AppLocalizations.of(context).confirmCamouflageSetup,
                       code: code,
+                      onSuccess: widget.onSuccess,
                       pinStatus: PinStatus.CONFIRM_CAMO_PIN,
                       password: widget.password,
                     ));
