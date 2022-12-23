@@ -355,7 +355,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         builder: (context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) return SizedBox();
 
-          final bool isEnabled = snapshot.data;
+          final bool isEnabled = camoBloc.isCamoEnabled;
           return Card(
             child: SwitchListTile(
               title: Text(isEnabled
