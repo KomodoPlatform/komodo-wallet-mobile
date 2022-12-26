@@ -252,9 +252,9 @@ class _SettingPageState extends State<SettingPage> {
     return SwitchListTile(
       title: Text(AppLocalizations.of(
         context,
-      ).enableScreenshots),
+      ).disableScreenshots),
       tileColor: Theme.of(context).primaryColor,
-      value: !walletSecuritySettingsProvider.disallowScreenshot,
+      value: walletSecuritySettingsProvider.disallowScreenshot,
       onChanged: (bool switchValue) {
         Log('setting_page:262', 'switchValue $switchValue');
         walletSecuritySettingsProvider.disallowScreenshot = switchValue;
