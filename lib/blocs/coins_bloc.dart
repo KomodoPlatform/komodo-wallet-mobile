@@ -13,7 +13,6 @@ import '../model/cex_provider.dart';
 import '../model/coin.dart';
 import '../model/coin_balance.dart';
 import '../model/coin_to_kick_start.dart';
-import '../model/coin_type.dart';
 import '../model/disable_coin.dart';
 import '../model/error_code.dart';
 import '../model/error_string.dart';
@@ -27,7 +26,6 @@ import '../services/get_erc_transactions.dart';
 import '../services/mm.dart';
 import '../services/db/database.dart';
 import '../services/mm_service.dart';
-import '../services/tendermint_transactions.dart';
 import '../utils/log.dart';
 import '../utils/utils.dart';
 import '../widgets/bloc_provider.dart';
@@ -362,9 +360,6 @@ class CoinsBloc implements BlocBase {
       if (isErcType(coin)) {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
-      } else if (coin.type == CoinType.iris || coin.type == CoinType.cosmos) {
-        transactions =
-            await tenderMintTransactions.getTransactions(coinBalance);
       } else {
         transactions = await MM.getTransactions(mmSe.client,
             GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
@@ -727,9 +722,6 @@ class CoinsBloc implements BlocBase {
       if (isErcType(coin)) {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
-      } else if (coin.type == CoinType.iris || coin.type == CoinType.cosmos) {
-        transactions =
-            await tenderMintTransactions.getTransactions(coinBalance);
       } else {
         transactions = await MM.getTransactions(mmSe.client,
             GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));

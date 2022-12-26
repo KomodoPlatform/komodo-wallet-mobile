@@ -17,7 +17,10 @@ class MmTendermintTokenEnable {
         'method': method,
         'params': {
           'ticker': coin.abbr,
-          'activation_params': {},
+          'activation_params': {
+            'tx_history': true,
+          },
+          'tx_history': true,
         }
       };
 }
@@ -41,6 +44,7 @@ class MmTendermintAssetEnable {
           'tokens_params': [],
           'rpc_urls': coin.serverList.map((e) => e.url).toList(),
           'ticker': coin.abbr,
+          'tx_history': true,
         }
       };
 }
