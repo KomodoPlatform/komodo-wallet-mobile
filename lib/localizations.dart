@@ -427,6 +427,8 @@ class AppLocalizations {
   String get security => Intl.message('Security', name: 'security');
   String get activateAccessPin =>
       Intl.message('Activate PIN protection', name: 'activateAccessPin');
+  String get enableScreenshots =>
+      Intl.message('Enable Screenshots/Preview', name: 'enableScreenshots');
   String get lockScreen => Intl.message('Screen is locked', name: 'lockScreen');
   String get changePin => Intl.message('Change PIN code', name: 'changePin');
   String get logout => Intl.message('Log Out', name: 'logout');
@@ -1022,8 +1024,7 @@ class AppLocalizations {
       Intl.message('Hungarian', name: 'hungarianLanguage');
   String get spanishLanguage =>
       Intl.message('Spanish', name: 'spanishLanguage');
-  String get koreanLanguage =>
-      Intl.message('Korean', name: 'koreanLanguage');
+  String get koreanLanguage => Intl.message('Korean', name: 'koreanLanguage');
   String get ukrainianLanguage =>
       Intl.message('Ukrainian', name: 'ukrainianLanguage');
   String get faucetName => Intl.message('FAUCET', name: 'faucetName');

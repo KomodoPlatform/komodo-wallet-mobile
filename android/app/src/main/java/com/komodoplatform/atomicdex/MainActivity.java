@@ -34,6 +34,8 @@ import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
+import android.content.SharedPreferences;
+import android.util.Log;
 
 public class MainActivity extends FlutterFragmentActivity {
   private EventChannel logC;
@@ -48,15 +50,21 @@ public class MainActivity extends FlutterFragmentActivity {
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-      WindowManager.LayoutParams.FLAG_SECURE);
     Intent intent = getIntent();
     getPaymentUri(intent);
   }
 
   @Override
   protected void onPause() {
-    getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+    SharedPreferences sharedpreferences = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
+    boolean disallowScreenshot = sharedpreferences.getBoolean("flutter.disallowScreenshot", true);
+    Log.d("disallowScreenshot", String.valueOf(disallowScreenshot));
+
+    if(disallowScreenshot) {
+      runOnUiThread(() -> getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE));}
+    else{
+      runOnUiThread(() -> getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE));
+    }
     super.onPause();
   }
 

@@ -91,6 +91,8 @@ class _SettingPageState extends State<SettingPage> {
             const SizedBox(height: 1),
             _buildActivateBiometric(),
             const SizedBox(height: 1),
+            _buildActivateScreenshot(),
+            const SizedBox(height: 1),
             _buildCamouflagePin(),
             const SizedBox(height: 1),
             _buildChangePIN(),
@@ -241,6 +243,21 @@ class _SettingPageState extends State<SettingPage> {
           );
         }
         return SizedBox();
+      },
+    );
+  }
+
+  Widget _buildActivateScreenshot() {
+    if (Platform.isIOS) return SizedBox();
+    return SwitchListTile(
+      title: Text(AppLocalizations.of(
+        context,
+      ).enableScreenshots),
+      tileColor: Theme.of(context).primaryColor,
+      value: !walletSecuritySettingsProvider.disallowScreenshot,
+      onChanged: (bool switchValue) {
+        Log('setting_page:262', 'switchValue $switchValue');
+        walletSecuritySettingsProvider.disallowScreenshot = switchValue;
       },
     );
   }
