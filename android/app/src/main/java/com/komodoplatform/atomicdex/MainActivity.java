@@ -56,22 +56,29 @@ public class MainActivity extends FlutterFragmentActivity {
 
   @Override
   protected void onPause() {
-    SharedPreferences sharedpreferences = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
-    boolean disallowScreenshot = sharedpreferences.getBoolean("flutter.disallowScreenshot", true);
-    Log.d("disallowScreenshot", String.valueOf(disallowScreenshot));
-
-    if(disallowScreenshot) {
-      runOnUiThread(() -> getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE));}
-    else{
-      runOnUiThread(() -> getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE));
-    }
+    screenshotAction();
     super.onPause();
   }
 
   @Override
   protected void onResume() {
+    screenshotAction();
     super.onResume();
   }
+
+  void screenshotAction(){
+    SharedPreferences sharedpreferences = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
+    boolean disallowScreenshot = sharedpreferences.getBoolean("flutter.disallowScreenshot", true);
+    Log.d("disallowScreenshot", String.valueOf(disallowScreenshot));
+
+    if(disallowScreenshot) {
+      runOnUiThread(() -> getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE));
+    } else{
+      runOnUiThread(() -> getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE));
+    }
+  }
+
+
 
   @Override
   protected void onNewIntent(@NonNull Intent intent) {
@@ -157,6 +164,9 @@ public class MainActivity extends FlutterFragmentActivity {
             } else if (call.method.equals("is_camera_denied")) {
               boolean ret = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED;
               result.success(ret);
+            } else if (call.method.equals("is_screenshot")) {
+              screenshotAction();
+              result.success(true);
             } else if (call.method.equals("get_intent_data")) {
               // Currently should only work for payment uris
               // Hopefully can later be expanded for use on notifications

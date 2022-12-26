@@ -258,6 +258,7 @@ class _SettingPageState extends State<SettingPage> {
       onChanged: (bool switchValue) {
         Log('setting_page:262', 'switchValue $switchValue');
         walletSecuritySettingsProvider.disallowScreenshot = switchValue;
+        MMService.nativeC.invokeMethod('is_screenshot');
       },
     );
   }
