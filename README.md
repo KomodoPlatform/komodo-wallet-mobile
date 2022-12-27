@@ -27,9 +27,8 @@ https://github.com/KomodoPlatform/AtomicDEX-mobile/wiki/Project-Setup#build-and-
 
 ## AtomicDEX API library (libmm2.a) version:
 
-
 2.1.9256
-6e4de5d21
+ffee29455
 http://195.201.0.6/mm2.1/
 
 
