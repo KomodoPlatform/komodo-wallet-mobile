@@ -248,7 +248,6 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildActivateScreenshot() {
-    if (Platform.isIOS) return SizedBox();
     return SwitchListTile(
       title: Text(AppLocalizations.of(
         context,
