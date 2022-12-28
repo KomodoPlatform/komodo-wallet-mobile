@@ -83,8 +83,7 @@ func performMM2Stop() -> Int32 {
         NotificationCenter.default.addObserver(forName: UIApplication.userDidTakeScreenshotNotification,
                                                object: nil,
                                                queue: OperationQueue.main) { notification in
-           let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot") ?? true;
-           print(disallowScreenshot)
+           let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot");
            if disallowScreenshot {
               self.showToast(message: "Screenshot is black due to security reasons")
            }
@@ -95,7 +94,7 @@ func performMM2Stop() -> Int32 {
             let toastContainer = UIView(frame: CGRect())
             toastContainer.backgroundColor = UIColor.black.withAlphaComponent(0.6)
             toastContainer.alpha = 0.0
-            toastContainer.layer.cornerRadius = 20;
+            toastContainer.layer.cornerRadius = 10;
             toastContainer.clipsToBounds  =  true
 
             let toastLabel = UILabel(frame: CGRect())
@@ -117,15 +116,15 @@ func performMM2Stop() -> Int32 {
             let labelTop = NSLayoutConstraint(item: toastLabel, attribute: .top, relatedBy: .equal, toItem: toastContainer, attribute: .top, multiplier: 1, constant: 15)
             toastContainer.addConstraints([centerX, labelBottom, labelTop])
 
-            let containerCenterX = NSLayoutConstraint(item: toastContainer, attribute: .centerX, relatedBy: .equal, toItem: self.window, attribute: .centerX, multiplier: 1, constant: 0)
-            let containerTrailing = NSLayoutConstraint(item: toastContainer, attribute: .width, relatedBy: .equal, toItem: toastLabel, attribute: .width, multiplier: 1.1, constant: 0)
-            let containerBottom = NSLayoutConstraint(item: toastContainer, attribute: .bottom, relatedBy: .equal, toItem: self.window, attribute: .bottom, multiplier: 1, constant: -75)
-            self.window.addConstraints([containerCenterX,containerTrailing, containerBottom])
+            toastContainer.widthAnchor.constraint(equalToConstant: self.window.frame.size.width - 30).isActive = true
+            toastContainer.heightAnchor.constraint(equalToConstant: 50).isActive = true
+            toastContainer.centerXAnchor.constraint(equalTo: self.window.centerXAnchor).isActive = true
+            toastContainer.centerYAnchor.constraint(equalTo: self.window.centerYAnchor).isActive = true
 
             UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
                 toastContainer.alpha = 1.0
             }, completion: { _ in
-                UIView.animate(withDuration: 0.5, delay: 4, options: .curveEaseOut, animations: {
+                UIView.animate(withDuration: 0.5, delay: 3, options: .curveEaseOut, animations: {
                     toastContainer.alpha = 0.0
                 }, completion: {_ in
                     toastContainer.removeFromSuperview()
@@ -271,7 +270,7 @@ func performMM2Stop() -> Int32 {
         blurEffectView.tag = 61007
         screenshotAction()
 
-        let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot") ?? true;
+        let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot");
         if disallowScreenshot {
            self.window?.addSubview(blurEffectView)
         }
@@ -281,7 +280,7 @@ func performMM2Stop() -> Int32 {
         signal(SIGPIPE, SIG_IGN);
         screenshotAction()
 
-        let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot") ?? true;
+        let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot");
         if disallowScreenshot {
             self.window?.viewWithTag(61007)?.removeFromSuperview()
         }
@@ -290,7 +289,7 @@ func performMM2Stop() -> Int32 {
     }
 
     public func screenshotAction() {
-        let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot") ?? true;
+        let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot");
         if disallowScreenshot {
            screenPrevent.isSecureTextEntry = true
         } else {
