@@ -48,10 +48,10 @@ class AppLocalizations {
   // --- Branding - EULA ---
 
   String eulaTitle1(String appName) =>
-      Intl.message('End-User License Agreement (EULA) of $appName mobile:\n\n',
+      Intl.message('End-User License Agreement (EULA) of $appName mobile',
           name: 'eulaTitle1', args: [appName]);
   String get eulaTitle2 =>
-      Intl.message('TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)\n\n',
+      Intl.message('TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)',
           name: 'eulaTitle2');
   String get eulaTitle3 =>
       Intl.message('TERMS AND CONDITIONS OF USE AND DISCLAIMER\n\n',
@@ -839,7 +839,7 @@ class AppLocalizations {
   String get accepttac =>
       Intl.message('Accept TERMS and CONDITIONS', name: 'accepttac');
   String get confirmeula => Intl.message(
-      'By clicking the below buttons you confirm to have read the \'EULA\' and \'Terms and Conditions\' and accept these',
+      'By clicking the button below, you confirm to have read and accept the \'EULA\' and \'Terms and Conditions\'.',
       name: 'confirmeula');
   String gasFee(String coin) =>
       Intl.message('$coin fee', name: 'gasFee', args: <Object>[coin]);
