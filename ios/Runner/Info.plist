@@ -23,9 +23,14 @@
 		<string>tr</string>
 		<string>hu</string>
 		<string>es</string>
-                <string>ko</string>
-                <string>uk</string>
+		<string>ko</string>
+		<string>uk</string>
 	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UISceneConfigurations</key>
+		<dict/>
+	</dict>
 	<key>CFBundleName</key>
 	<string>komodo_dex</string>
 	<key>CFBundlePackageType</key>
