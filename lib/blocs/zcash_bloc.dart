@@ -38,23 +38,29 @@ class ZCashBloc implements BlocBase {
   }
 
   List<Coin> removeZcashCoins(List<Coin> coins) {
-    coinsToActivate =
+    List<Coin> list =
         coins.where((element) => element.type.name == 'zhtlc').toList();
-    if (coinsToActivate.isNotEmpty) {
+    for (var a in list) {
+      if (coinsToActivate.where((e) => e.abbr == a.abbr).isEmpty) {
+        coinsToActivate.add(a);
+      }
+    }
+    if (list.isNotEmpty) {
       // remove zcash-coins from the main coin list if it exists
-      coins.removeWhere((coin) => coinsToActivate.contains(coin));
-      downloadZParams();
+      coins.removeWhere((coin) => list.contains(coin));
+      if (tasksToCheck[2000] == null) downloadZParams();
       return coins;
     } else {
       return coins;
     }
   }
 
+  String folder = Platform.isIOS ? '/ZcashParams/' : '/.zcash-params/';
+
   Future autoEnableZcashCoins() async {
     final List<Map<String, dynamic>> batch = [];
 
     final dir = await getApplicationDocumentsDirectory();
-    String folder = Platform.isIOS ? '/ZcashParams/' : '/.zcash-params/';
     for (Coin coin in coinsToActivate) {
       final electrum = {
         'userpass': mmSe.userpass,
@@ -269,7 +275,6 @@ class ZCashBloc implements BlocBase {
 
   Future<void> downloadZParams() async {
     final dir = await getApplicationDocumentsDirectory();
-    String folder = Platform.isIOS ? '/ZcashParams/' : '/.zcash-params/';
     Directory zDir = Directory(dir.path + folder);
     if (zDir.existsSync() && mmSe.dirStatSync(zDir.path, endsWith: '') > 50) {
       autoEnableZcashCoins();
@@ -333,6 +338,7 @@ class ZCashBloc implements BlocBase {
     if (isEnable) {
       coinsToActivate.removeWhere((coin) => coin.abbr == task.abbr);
     }
+    if (task.type == 'download') coinsToActivate = [];
     tasksToCheck.remove(task.id);
     _inZcashProgress.add(tasksToCheck);
   }
