@@ -12,7 +12,6 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -230,7 +229,6 @@ class ZCashBloc implements BlocBase {
         jobService.suspend('checkZcashProcessStatus');
         startActivationStatusCheck();
       }
-      await musicService.play([], installing: false);
       coinsToActivate.removeWhere((coin) => coin.abbr == abbr);
     } else if (status == 'InProgress') {
       if (details == 'ActivatingCoin') {
@@ -261,7 +259,6 @@ class ZCashBloc implements BlocBase {
         _progress = 5;
         _messageDetails = 'Activating $abbr';
       }
-      await musicService.play([], installing: true);
     } else {
       tasksToCheck.remove(id);
       Log('zcash_bloc:273', 'Error activating $abbr: unexpected error');

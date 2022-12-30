@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:komodo_dex/blocs/zcash_bloc.dart';
 import '../model/order.dart';
 import '../model/swap.dart';
 import '../model/swap_provider.dart';
@@ -79,10 +80,8 @@ class MusicService {
   }
 
   /// Pick the current music mode based on the list of all the orders and SWAPs.
-  MusicMode _pickMode(List<Order> orders, MusicMode prevMode, bool installing) {
-    if (installing) return MusicMode.ACTIVE;
-    if (prevMode == MusicMode.ACTIVE && _installing) return MusicMode.ACTIVE;
-
+  MusicMode _pickMode(List<Order> orders, MusicMode prevMode) {
+    if (zcashBloc.tasksToCheck.isNotEmpty) return MusicMode.ACTIVE;
     if (prevMode == MusicMode.ACTIVE && _anyNewSuccessfulSwaps()) {
       Log('music_service]', 'pickMode: MusicMode.APPLAUSE');
       return MusicMode.APPLAUSE;
@@ -192,12 +191,10 @@ class MusicService {
     _reload = true;
   }
 
-  bool _installing = false;
-  Future<void> play(List<Order> orders, {bool installing = false}) async {
+  Future<void> play(List<Order> orders) async {
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
     //   but for reliability we should also add a periodic update independent from MM logs.
-    final MusicMode newMode = _pickMode(orders, musicMode, installing);
-    _installing = installing;
+    final MusicMode newMode = _pickMode(orders, musicMode);
 
     bool changes = false;
 
