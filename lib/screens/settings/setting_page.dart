@@ -254,9 +254,12 @@ class _SettingPageState extends State<SettingPage> {
       ).disableScreenshots),
       tileColor: Theme.of(context).primaryColor,
       value: walletSecuritySettingsProvider.disallowScreenshot,
-      onChanged: (bool switchValue) {
+      onChanged: (bool switchValue) async {
         Log('setting_page:262', 'switchValue $switchValue');
         walletSecuritySettingsProvider.disallowScreenshot = switchValue;
+        // delay for a while for data to properly sync before trying to
+        // call it on the native side (affects majorly android)
+        await Future.delayed(Duration(microseconds: 500));
         MMService.nativeC.invokeMethod('is_screenshot');
       },
     );
