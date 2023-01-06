@@ -112,6 +112,7 @@ class Coin {
     }
     dust = init['dust'];
     chainId = init['chain_id'];
+    decimals = init['decimals'];
   }
 
   // Coin suspended if was activated by user earlier,
@@ -160,6 +161,7 @@ class Coin {
   int dust;
 
   int chainId;
+  int decimals;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type.name ?? '',
@@ -182,6 +184,7 @@ class Coin {
         if (protocol != null) 'protocol': protocol.toJson(),
         if (dust != null) 'dust': dust,
         if (chainId != null) 'chain_id': chainId,
+        if (decimals != null) 'decimals': decimals,
         if (bchdUrls != null)
           'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
       };
