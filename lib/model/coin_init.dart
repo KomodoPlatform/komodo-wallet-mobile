@@ -37,6 +37,7 @@ class CoinInit {
     this.addressFormat,
     this.protocol,
     this.bech32Hrp,
+    this.forkId,
   });
 
   factory CoinInit.fromJson(Map<String, dynamic> json) => CoinInit(
@@ -65,6 +66,7 @@ class CoinInit {
         forceMinRelayFee: json['force_min_relay_fee'],
         protocol: json['protocol'],
         bech32Hrp: json['bech32_hrp'],
+        forkId: json['fork_id'],
       );
 
   String coin;
@@ -92,6 +94,7 @@ class CoinInit {
   Map<String, dynamic> addressFormat;
   Map<String, dynamic> protocol;
   String bech32Hrp;
+  String forkId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'coin': coin,
@@ -114,6 +117,7 @@ class CoinInit {
         'asset': asset,
         'segwit': segwit,
         if (dust != null) 'dust': dust,
+        if (forkId != null) 'fork_id': forkId,
         if (chainId != null) 'chain_id': chainId,
         if (forceMinRelayFee != null) 'force_min_relay_fee': forceMinRelayFee,
         'address_format': addressFormat,
