@@ -261,6 +261,7 @@ class ZCashBloc implements BlocBase {
       }
     } else {
       tasksToCheck.remove(id);
+      coinsToActivate.removeWhere((coin) => coin.abbr == abbr);
       Log('zcash_bloc:273', 'Error activating $abbr: unexpected error');
     }
     if (tasksToCheck[id] != null) {
