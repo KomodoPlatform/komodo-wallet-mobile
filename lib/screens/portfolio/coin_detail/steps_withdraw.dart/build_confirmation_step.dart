@@ -235,14 +235,14 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                     ],
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: 24,
                   ),
                   Text(
                     AppLocalizations.of(context).toAddress,
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 16,
                   ),
                   AutoSizeText(
                     widget.addressToSend,
@@ -251,19 +251,18 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                   ),
                   if (widget.memo.isNotEmpty) ...[
                     const SizedBox(
-                      height: 16,
+                      height: 24,
                     ),
                     Text(
                       AppLocalizations.of(context).memo,
                       style: Theme.of(context).textTheme.subtitle2,
                     ),
                     const SizedBox(
-                      height: 24,
+                      height: 16,
                     ),
-                    AutoSizeText(
+                    Text(
                       widget.memo,
                       style: Theme.of(context).textTheme.bodyText2,
-                      maxLines: 1,
                     ),
                   ],
                   const SizedBox(
