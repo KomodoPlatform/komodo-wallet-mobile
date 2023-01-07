@@ -99,6 +99,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
                   key: const Key('send-memo-field'),
                   autofocus: false,
                   autocorrect: false,
+                  maxLength: 256,
                   enableSuggestions: false,
                   controller: widget.memoController,
                   textInputAction: TextInputAction.done,
