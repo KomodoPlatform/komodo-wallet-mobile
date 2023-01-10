@@ -36,6 +36,7 @@ class CoinInit {
     this.forceMinRelayFee,
     this.addressFormat,
     this.protocol,
+    this.decimals,
     this.bech32Hrp,
   });
 
@@ -62,6 +63,7 @@ class CoinInit {
         addressFormat: json['address_format'],
         dust: json['dust'],
         chainId: json['chain_id'],
+        decimals: json['decimals'],
         forceMinRelayFee: json['force_min_relay_fee'],
         protocol: json['protocol'],
         bech32Hrp: json['bech32_hrp'],
@@ -88,6 +90,7 @@ class CoinInit {
   bool segwit;
   int dust;
   int chainId;
+  int decimals;
   bool forceMinRelayFee;
   Map<String, dynamic> addressFormat;
   Map<String, dynamic> protocol;
@@ -115,6 +118,7 @@ class CoinInit {
         'segwit': segwit,
         if (dust != null) 'dust': dust,
         if (chainId != null) 'chain_id': chainId,
+        if (decimals != null) 'decimals': decimals,
         if (forceMinRelayFee != null) 'force_min_relay_fee': forceMinRelayFee,
         'address_format': addressFormat,
         'protocol': protocol,
