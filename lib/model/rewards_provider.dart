@@ -84,6 +84,7 @@ class RewardsProvider extends ChangeNotifier {
     try {
       list = await MM.getRewardsInfo();
     } catch (e) {
+      _setError();
       updateInProgress = false;
       Log('rewards_provider', '_updateInfo] $e');
       notifyListeners();

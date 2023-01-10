@@ -78,7 +78,7 @@ class DetailedSwapStep extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: () => launchURL(explorerUrl + 'tx/' + txHash),
+          onTap: () => launchURL(explorerUrl + txHash),
           child: Padding(
             padding: EdgeInsets.fromLTRB(6, 2, 4, 2),
             child: Row(

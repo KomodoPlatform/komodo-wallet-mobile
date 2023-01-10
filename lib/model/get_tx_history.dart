@@ -43,6 +43,7 @@ class GetTxHistory {
             'coin': coin ?? '',
             'limit': limit ?? 0,
             'from_id': fromId,
+            'decimals': coinToEnable.decimals
           };
   }
 }

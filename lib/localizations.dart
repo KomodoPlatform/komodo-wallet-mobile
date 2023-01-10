@@ -589,6 +589,11 @@ class AppLocalizations {
   String get mediaBrowse => Intl.message('BROWSE', name: 'mediaBrowse');
   String get mediaSaved => Intl.message('SAVED', name: 'mediaSaved');
 
+  String enable(int selected, int remains) => Intl.message(
+        'You can still enable $remains, Selected: $selected',
+        name: 'enable',
+        args: [selected, remains],
+      );
   String get mediaNotSavedDescription =>
       Intl.message('YOU HAVE NO SAVED ARTICLES',
           name: 'mediaNotSavedDescription');
@@ -1677,8 +1682,11 @@ class AppLocalizations {
       Intl.message(' more. Enabled assets max limit is ',
           name: 'enablingTooManyAssetsSpan3');
   String get enablingTooManyAssetsSpan4 =>
-      Intl.message('. Please disable some before new ones adding.',
+      Intl.message('. Please disable some assets before adding more.',
           name: 'enablingTooManyAssetsSpan4');
+  String get coinsActivatedLimitReached =>
+      Intl.message('You have selected the max number of assets',
+          name: 'coinsActivatedLimitReached');
 
   String get tooManyAssetsEnabledTitle =>
       Intl.message('Too many assets enabled',
@@ -1689,7 +1697,7 @@ class AppLocalizations {
       Intl.message(' assets enabled. Enabled assets max limit is ',
           name: 'tooManyAssetsEnabledSpan2');
   String get tooManyAssetsEnabledSpan3 =>
-      Intl.message('. Please disable some before new ones adding.',
+      Intl.message('. Please disable some assets before adding more.',
           name: 'tooManyAssetsEnabledSpan3');
 
   String get paymentUriDetailsTitle =>

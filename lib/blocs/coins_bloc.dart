@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
 import '../app_config/app_config.dart';
@@ -155,28 +156,46 @@ class CoinsBloc implements BlocBase {
     _inCoinBeforeActivation.add(this.coinBeforeActivation);
   }
 
+  bool canActivate(List<CoinToActivate> list) {
+    int activated = coinBalance.length;
+    int selected = list.where((element) => element.isActive).length;
+
+    int maxCoinLength = Platform.isIOS
+        ? appConfig.maxCoinEnabledIOS
+        : appConfig.maxCoinsEnabledAndroid;
+
+    return maxCoinLength > selected + activated;
+  }
+
   void setCoinBeforeActivation(Coin coin, bool isActive) {
     coinBeforeActivation
         .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
 
-    // auto add parent coin if not enabled previously
-    // if the parent is then removed intentionally by the user
-    // it wont be enabled. But if SLP coins are even removed after auto adding
-    // they will be forced enabled because parent coins are needed enabled before
-    // SLP coins can enable
-    String platform = coin?.protocol?.protocolData?.platform;
-    bool isParentEnabled =
-        coinBalance.any((element) => element.coin.abbr == platform);
-    if (isActive && platform != null && !isParentEnabled) {
-      Coin parentCoin = getKnownCoinByAbbr(platform);
-      coinBeforeActivation.removeWhere(
-          (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
-      coinBeforeActivation.add(
-        CoinToActivate(coin: parentCoin, isActive: isActive),
-      );
-    }
+    if (isActive && canActivate(coinBeforeActivation)) {
+      coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
 
-    coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
+      // auto add parent coin if not enabled previously
+      // if the parent is then removed intentionally by the user
+      // it wont be enabled. But if SLP coins are even removed after auto adding
+      // they will be forced enabled because parent coins are needed enabled before
+      // SLP coins can enable
+      String platform = coin?.protocol?.protocolData?.platform;
+      bool isParentEnabled =
+          coinBalance.any((element) => element.coin.abbr == platform);
+      if (isActive &&
+          platform != null &&
+          !isParentEnabled &&
+          canActivate(coinBeforeActivation)) {
+        Coin parentCoin = getKnownCoinByAbbr(platform);
+        coinBeforeActivation.removeWhere(
+            (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
+        coinBeforeActivation.add(
+          CoinToActivate(coin: parentCoin, isActive: isActive),
+        );
+      }
+    } else {
+      coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
+    }
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
@@ -186,35 +205,63 @@ class CoinsBloc implements BlocBase {
     String query,
     String filterType,
   }) {
-    final List<CoinToActivate> list = [];
-    for (CoinToActivate item in coinBeforeActivation) {
-      bool shouldChange = false;
+    coinBeforeActivation.sort((a, b) =>
+        a.coin.name.toUpperCase().compareTo(b.coin.name.toUpperCase()));
 
-      if (isCoinPresent(item.coin, query, filterType)) {
-        shouldChange =
-            item.coin.testCoin ? type == null : item.coin.type.name == type;
-      }
+    List<CoinToActivate> typeList = coinBeforeActivation
+        .where((coin) =>
+            (coin.coin.type.name == (coin.coin.testCoin ? null : type)) &&
+            isCoinPresent(coin.coin, query, filterType))
+        .toList();
 
-      if (shouldChange) {
+    int selected = coinBeforeActivation
+        .where((element) =>
+            element.isActive &&
+            !typeList.map((e) => e.coin.abbr).contains(element.coin.abbr))
+        .length;
+    int activated = coinBalance.length;
+
+    int maxCoinLength = Platform.isIOS
+        ? appConfig.maxCoinEnabledIOS
+        : appConfig.maxCoinsEnabledAndroid;
+
+    int remaining = maxCoinLength - activated - selected;
+    int counter = 0;
+    List<String> _tempList = [];
+
+    for (int i = 0; i < typeList.length; i++) {
+      Coin coin = typeList[i].coin;
+      coinBeforeActivation
+          .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
+
+      String platform = coin?.protocol?.protocolData?.platform;
+
+      if (isActive && counter < remaining) {
+        coinBeforeActivation
+            .add(CoinToActivate(coin: coin, isActive: isActive));
+        if (!_tempList.contains(coin.abbr)) counter++;
+
         // auto add parent coin if not enabled previously
-        String platform = item.coin?.protocol?.protocolData?.platform;
+        if (platform == null) continue;
         bool isParentEnabled =
             coinBalance.any((element) => element.coin.abbr == platform);
-        if (isActive && platform != null && !isParentEnabled) {
+        bool selectedParent = coinBeforeActivation.any(
+            (element) => element.coin.abbr == platform && !element.isActive);
+        if (selectedParent && !isParentEnabled) {
           Coin parentCoin = getKnownCoinByAbbr(platform);
+          _tempList.add(parentCoin.abbr);
           coinBeforeActivation.removeWhere(
               (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
-          coinBeforeActivation.add(
-            CoinToActivate(coin: parentCoin, isActive: isActive),
-          );
+
+          coinBeforeActivation
+              .add(CoinToActivate(coin: parentCoin, isActive: true));
+
+          counter++;
         }
-        list.add(CoinToActivate(coin: item.coin, isActive: isActive));
       } else {
-        list.add(item);
+        coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
       }
     }
-
-    coinBeforeActivation = list;
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
