@@ -183,10 +183,10 @@ class Coin {
         'address_format': addressFormat,
         if (serverList != null) 'serverList': getServerList(serverList),
         if (protocol != null) 'protocol': protocol.toJson(),
-    if (explorerTxUrl != null) 'explorer_tx_url': explorerTxUrl,
-    if (explorerAddressUrl != null)
-      'explorer_address_url': explorerAddressUrl,
-    if (decimals != null) 'decimals': decimals,
+        if (explorerTxUrl != null) 'explorer_tx_url': explorerTxUrl,
+        if (explorerAddressUrl != null)
+          'explorer_address_url': explorerAddressUrl,
+        if (decimals != null) 'decimals': decimals,
         if (bchdUrls != null)
           'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
       };
