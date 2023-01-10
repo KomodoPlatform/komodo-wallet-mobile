@@ -191,114 +191,122 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
   }
 
   Widget _buildPinSetup() {
-    return StreamBuilder<String>(
-        initialData: camoBloc.camoPinValue,
-        stream: camoBloc.outCamoPinValue,
-        builder: (context, AsyncSnapshot<String> camoPinSnapshot) {
-          final String camoPin =
-              camoPinSnapshot.hasData ? camoPinSnapshot.data : null;
+    return FutureBuilder(
+        future: camoBloc.getCamoPinValue(),
+        builder: (context, snap) {
+          return StreamBuilder<String>(
+              initialData: camoBloc.camoPinValue,
+              stream: camoBloc.outCamoPinValue,
+              builder: (context, AsyncSnapshot<String> camoPinSnapshot) {
+                final String camoPin =
+                    camoPinSnapshot.hasData ? camoPinSnapshot.data : null;
 
-          return StreamBuilder<bool>(
-              initialData: camoBloc.isCamoEnabled,
-              stream: camoBloc.outCamoEnabled,
-              builder: (context, AsyncSnapshot<bool> camoEnabledSnapshot) {
-                if (!camoEnabledSnapshot.hasData) return SizedBox();
+                return StreamBuilder<bool>(
+                    initialData: camoBloc.isCamoEnabled,
+                    stream: camoBloc.outCamoEnabled,
+                    builder:
+                        (context, AsyncSnapshot<bool> camoEnabledSnapshot) {
+                      if (!camoEnabledSnapshot.hasData) return SizedBox();
 
-                final bool isEnabled = camoEnabledSnapshot.data;
-                return Opacity(
-                  opacity: isEnabled ? 1 : 0.5,
-                  child: Card(
-                    child: InkWell(
-                      onTap: isEnabled ? () => _startPinSetup() : null,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: camoPin == null
-                                  ? Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          AppLocalizations.of(context)
-                                              .camoPinNotFound,
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: isEnabled
-                                                ? Theme.of(context).errorColor
-                                                : null,
-                                          ),
-                                        ),
-                                        Text(
-                                          AppLocalizations.of(context)
-                                              .camoPinCreate,
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2
-                                                .color
-                                                .withOpacity(0.7),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        FutureBuilder<String>(
-                                            future:
-                                                EncryptionTool().read('pin'),
-                                            builder: (context,
-                                                AsyncSnapshot<String>
-                                                    normalPin) {
-                                              if (!normalPin.hasData)
-                                                return SizedBox();
-
-                                              if (normalPin.data !=
-                                                  camoPinSnapshot.data)
-                                                return Text(
-                                                  AppLocalizations.of(context)
-                                                      .camoPinSaved,
-                                                  style: const TextStyle(
-                                                    fontSize: 18,
-                                                  ),
-                                                );
-
-                                              return Text(
+                      final bool isEnabled = camoEnabledSnapshot.data;
+                      return Opacity(
+                        opacity: isEnabled ? 1 : 0.5,
+                        child: Card(
+                          child: InkWell(
+                            onTap: isEnabled ? () => _startPinSetup() : null,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: camoPin == null
+                                        ? Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
                                                 AppLocalizations.of(context)
-                                                    .camoPinInvalid,
+                                                    .camoPinNotFound,
                                                 style: TextStyle(
                                                   fontSize: 18,
-                                                  color: Theme.of(context)
-                                                      .errorColor,
+                                                  color: isEnabled
+                                                      ? Theme.of(context)
+                                                          .errorColor
+                                                      : null,
                                                 ),
-                                              );
-                                            }),
-                                        Text(
-                                          AppLocalizations.of(context)
-                                              .camoPinChange,
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2
-                                                .color
-                                                .withOpacity(0.7),
-                                            fontSize: 14,
+                                              ),
+                                              Text(
+                                                AppLocalizations.of(context)
+                                                    .camoPinCreate,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2
+                                                      .color
+                                                      .withOpacity(0.7),
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              FutureBuilder<String>(
+                                                  future: EncryptionTool()
+                                                      .read('pin'),
+                                                  builder: (context,
+                                                      AsyncSnapshot<String>
+                                                          normalPin) {
+                                                    if (!normalPin.hasData)
+                                                      return SizedBox();
+
+                                                    if (normalPin.data !=
+                                                        camoPinSnapshot.data)
+                                                      return Text(
+                                                        AppLocalizations.of(
+                                                                context)
+                                                            .camoPinSaved,
+                                                        style: const TextStyle(
+                                                          fontSize: 18,
+                                                        ),
+                                                      );
+
+                                                    return Text(
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .camoPinInvalid,
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Theme.of(context)
+                                                            .errorColor,
+                                                      ),
+                                                    );
+                                                  }),
+                                              Text(
+                                                AppLocalizations.of(context)
+                                                    .camoPinChange,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2
+                                                      .color
+                                                      .withOpacity(0.7),
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
+                                  ),
+                                  Icon(Icons.dialpad),
+                                ],
+                              ),
                             ),
-                            Icon(Icons.dialpad),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                );
+                      );
+                    });
               });
         });
   }
@@ -313,15 +321,23 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                   isSignWithSeedIsEnabled: false,
                   onSuccess: (_, String password) {
                     Navigator.push<dynamic>(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => PinPage(
-                                title:
-                                    AppLocalizations.of(context).camoSetupTitle,
-                                subTitle: AppLocalizations.of(context)
-                                    .camoSetupSubtitle,
-                                pinStatus: PinStatus.CREATE_CAMO_PIN,
-                                password: password)));
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => PinPage(
+                          title: AppLocalizations.of(context).camoSetupTitle,
+                          subTitle:
+                              AppLocalizations.of(context).camoSetupSubtitle,
+                          pinStatus: PinStatus.CREATE_CAMO_PIN,
+                          password: password,
+                          onSuccess: () {
+                            camoBloc.isCamoEnabled = true;
+                            if (camoBloc.shouldWarnBadCamoPin) {
+                              _showMatchingPinPopupIfNeeded();
+                            }
+                          },
+                        ),
+                      ),
+                    );
                   },
                 ))).then((value) => camoBloc.getCamoPinValue());
   }
@@ -347,7 +363,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         builder: (context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) return SizedBox();
 
-          final bool isEnabled = snapshot.data;
+          final bool isEnabled = camoBloc.isCamoEnabled;
           return Card(
             child: SwitchListTile(
               title: Text(isEnabled
@@ -363,9 +379,9 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
   }
 
   Future<void> _switchEnabled(bool val) async {
-    camoBloc.isCamoEnabled = val;
-
     final String savedPin = await EncryptionTool().read('camoPin');
+
+    if (savedPin != null) camoBloc.isCamoEnabled = val;
     if (val && savedPin == null) _startPinSetup();
   }
 
