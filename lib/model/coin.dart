@@ -110,8 +110,9 @@ class Coin {
     if (config['bchd_urls'] != null) {
       bchdUrls = List<String>.from(config['bchd_urls']);
     }
-    dust = init['dust'];
-    chainId = init['chain_id'];
+    explorerTxUrl = config['explorer_tx_url'] ?? '';
+    explorerAddressUrl = config['explorer_address_url'] ?? '';
+    decimals = init['decimals'];
     avgBlockTime = init['avg_block_time'];
   }
 
@@ -131,7 +132,6 @@ class Coin {
 
   String name;
   int txfee;
-  int avgBlockTime;
   double priceUsd;
   int mm2;
 
@@ -159,9 +159,10 @@ class Coin {
   bool walletOnly;
 
   Protocol protocol;
-  int dust;
-
-  int chainId;
+  String explorerTxUrl;
+  int avgBlockTime;
+  String explorerAddressUrl;
+  int decimals;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type.name ?? '',
@@ -182,9 +183,10 @@ class Coin {
         'address_format': addressFormat,
         if (serverList != null) 'serverList': getServerList(serverList),
         if (protocol != null) 'protocol': protocol.toJson(),
-        if (dust != null) 'dust': dust,
-        if (chainId != null) 'chain_id': chainId,
-        if (avgBlockTime != null) 'avg_block_time': avgBlockTime,
+    if (explorerTxUrl != null) 'explorer_tx_url': explorerTxUrl,
+    if (explorerAddressUrl != null)
+      'explorer_address_url': explorerAddressUrl,
+    if (decimals != null) 'decimals': decimals,
         if (bchdUrls != null)
           'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
       };

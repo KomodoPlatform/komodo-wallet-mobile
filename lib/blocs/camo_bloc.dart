@@ -127,6 +127,7 @@ class CamoBloc implements BlocBase {
 
     if (val) {
       _sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
+      walletSecuritySettingsProvider.enableCamo = true;
       walletSecuritySettingsProvider.camoSessionStartedAt = _sessionStartedAt;
       walletSecuritySettingsProvider.camoBalance = null;
     }
@@ -148,7 +149,7 @@ class CamoBloc implements BlocBase {
 
   String get camoPinValue => _camoPinValue;
 
-  void getCamoPinValue() async {
+  Future<void> getCamoPinValue() async {
     final camoPin = await EncryptionTool().read('camoPin');
     _camoPinValue = camoPin;
     _inCamoPinValue.add(camoPin);

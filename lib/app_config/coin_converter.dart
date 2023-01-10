@@ -28,6 +28,8 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
           coinData['electrum'] ??
           coinData['rpc_urls'] ??
           [],
+      'explorer_tx_url': coinData['explorer_tx_url'],
+      'explorer_address_url': coinData['explorer_address_url'],
       'testCoin': coinData['is_testnet'] ?? false,
       if (coinData['swap_contract_address'] != null)
         'swap_contract_address': coinData['swap_contract_address'],
@@ -36,8 +38,6 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       if (coinData['fallback_swap_contract'] != null)
         'fallback_swap_contract': coinData['fallback_swap_contract'],
       if (coinData['bchd_urls'] != null) 'bchd_urls': coinData['bchd_urls'],
-      if (coinData['avg_block_time'] != null)
-        'avg_block_time': coinData['avg_block_time'],
     });
   });
 
@@ -99,12 +99,6 @@ String _getType(String coin, String abbr) {
       break;
     case 'AVX-20':
       type = CoinType.avx;
-      break;
-    case 'TENDERMINT':
-      type = CoinType.cosmos;
-      break;
-    case 'TENDERMINTTOKEN':
-      type = CoinType.iris;
       break;
     default:
       return null; // for other protocols not yet added on the mobile
