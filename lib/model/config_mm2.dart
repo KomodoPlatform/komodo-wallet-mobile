@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'coin_init.dart';
-
 ConfigMm2 configMm2FromJson(String str) => ConfigMm2.fromJson(json.decode(str));
 
 String configMm2ToJson(ConfigMm2 data) => json.encode(data.toJson());
@@ -31,9 +29,7 @@ class ConfigMm2 {
         userhome: json['userhome'],
         passphrase: json['passphrase'],
         rpcPassword: json['rpc_password'],
-        coins: List<CoinInit>.from(json['coins']
-                .map<dynamic>((dynamic x) => CoinInit.fromJson(x))) ??
-            <CoinInit>[],
+        coins: json['coins'] ?? [],
         dbdir: json['dbdir'],
         allowWeakPassword: json['allow_weak_password'] ?? false,
         rpcPort: json['rpcport'],
@@ -45,7 +41,7 @@ class ConfigMm2 {
   String userhome;
   String passphrase;
   String rpcPassword;
-  List<CoinInit> coins;
+  List<dynamic> coins;
   String dbdir;
   bool allowWeakPassword;
   int rpcPort;
@@ -57,9 +53,7 @@ class ConfigMm2 {
         'userhome': userhome,
         'passphrase': passphrase,
         'rpc_password': rpcPassword,
-        'coins':
-            List<dynamic>.from(coins.map<dynamic>((dynamic x) => x.toJson())) ??
-                <CoinInit>[],
+        'coins': coins,
         'dbdir': dbdir,
         'allow_weak_password': allowWeakPassword,
         if (rpcPort != null) 'rpcport': rpcPort,
