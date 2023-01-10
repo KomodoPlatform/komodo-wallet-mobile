@@ -15,7 +15,6 @@ import '../blocs/orders_bloc.dart';
 import '../model/balance.dart';
 import '../model/base_service.dart';
 import '../model/coin.dart';
-import '../model/coin_init.dart';
 import '../model/config_mm2.dart';
 import '../model/get_balance.dart';
 import '../model/swap_provider.dart';
@@ -446,9 +445,9 @@ class MMService {
     Log('mm_service:415', error);
   }
 
-  Future<List<CoinInit>> readJsonCoinInit() async {
+  Future<List<dynamic>> readJsonCoinInit() async {
     try {
-      return coinInitFromJson(await rootBundle.loadString('assets/coins.json'));
+      return jsonDecode(await rootBundle.loadString('assets/coins.json'));
     } catch (e) {
       if (kDebugMode) {
         Log('mm_service', 'readJsonCoinInit] $e');
@@ -457,7 +456,7 @@ class MMService {
             ' See README.md for details.');
         SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
       }
-      return <CoinInit>[];
+      return [];
     }
   }
 
