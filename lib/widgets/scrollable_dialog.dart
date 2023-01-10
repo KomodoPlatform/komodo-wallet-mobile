@@ -27,7 +27,7 @@ class ScrollableDialog extends StatefulWidget {
   /// The List of vertical button, if any, keep it null for no vertical buttons
   final Widget verticalButtons;
 
-  /// Whether user must scroll to bottom before closing dialog
+  /// Whether user must scroll to bottom before the "Close" button shows.
   final bool mustScrollToBottom;
 
   @override
@@ -117,25 +117,18 @@ class _ScrollableDialogState extends State<ScrollableDialog> {
     }
     return Container(
       padding: const EdgeInsets.all(16.0),
-      child:
-          //  Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   // mainAxisSize: MainAxisSize.max,
-          //   children: [
-          (widget.mustScrollToBottom && !_isScrolledToBottom)
-              ? Text(
-                  // TODO: Localize
-                  'Scroll to bottom to close',
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                )
-              : ((widget.mustScrollToBottom && _isScrolledToBottom) ||
-                      !widget.mustScrollToBottom)
-                  ? widget.verticalButtons
-                  : Container(),
-      // ],
-      // ),
+      child: (widget.mustScrollToBottom && !_isScrolledToBottom)
+          ? Text(
+              // TODO: Localize
+              'Scroll to bottom to close',
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            )
+          : ((widget.mustScrollToBottom && _isScrolledToBottom) ||
+                  !widget.mustScrollToBottom)
+              ? widget.verticalButtons
+              : Container(),
     );
   }
 }

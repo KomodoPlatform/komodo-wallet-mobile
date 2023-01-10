@@ -4,7 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'tac_contents.dart';
 import 'eula_contents.dart';
-import 'scrollable_dialog.dart';
 import '../../app_config/app_config.dart';
 import '../../blocs/authenticate_bloc.dart';
 import '../../blocs/wallet_bloc.dart';
@@ -13,6 +12,7 @@ import '../../services/db/database.dart';
 import '../../utils/encryption_tool.dart';
 import '../../utils/log.dart';
 import '../../widgets/primary_button.dart';
+import '../../widgets/scrollable_dialog.dart';
 import '../../localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -106,9 +106,6 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                                       title: Text(
                                         AppLocalizations.of(context)
                                             .eulaTitle1(appConfig.appName),
-                                        // style: Theme.of(context)
-                                        //     .textTheme
-                                        //     .subtitle2,
                                       ),
                                       children: [EULAContents()],
                                       verticalButtons: PrimaryButton(
@@ -119,7 +116,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                                         text:
                                             AppLocalizations.of(context).close,
                                       ),
-                                      mustScrollToBottom: true,
+                                      mustScrollToBottom: false,
                                     );
                                   });
                             },
@@ -158,13 +155,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                                     return ScrollableDialog(
                                       title: Text(
                                         AppLocalizations.of(context).eulaTitle2,
-                                        // style: Theme.of(context)
-                                        //     .textTheme
-                                        //     .subtitle2,
                                       ),
                                       children: [TACContents()],
-
-                                      // ),
                                       verticalButtons: PrimaryButton(
                                         key: const Key('tac-close'),
                                         onPressed: () {
@@ -173,9 +165,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                                         text:
                                             AppLocalizations.of(context).close,
                                       ),
-
-                                      // children: [],
-                                      mustScrollToBottom: true,
+                                      mustScrollToBottom: false,
                                     );
                                   });
                             },
