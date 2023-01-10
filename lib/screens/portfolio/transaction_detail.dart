@@ -233,6 +233,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
         ItemTransationDetail(
             title: AppLocalizations.of(context).txHash,
             data: widget.transaction.txHash),
+        if (widget.transaction.memo.isNotEmpty)
+          ItemTransationDetail(
+              title: AppLocalizations.of(context).memo,
+              data: widget.transaction.memo),
         ItemTransactionNote(
             title: AppLocalizations.of(context).noteTitle,
             txHash: widget.transaction.txHash),
