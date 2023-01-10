@@ -24,12 +24,12 @@ Windows: `choco install jq`, [Choco sowftware](https://chocolatey.org/)
 https://github.com/KomodoPlatform/AtomicDEX-mobile/wiki/Project-Setup#build-and-run
 
 
-
 ## AtomicDEX API library (libmm2.a) version:
 
-beta-2.1.7132
-a293d8f06
-https://gitlab.com/KomodoPlatform/supernet/-/pipelines/599845645
+2.1.9256  
+ffee29455  
+http://195.201.0.6/mm2.1/  
+
 
 
 ## Flutter version
