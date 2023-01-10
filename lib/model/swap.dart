@@ -121,14 +121,22 @@ class Swap {
   /// Returns a maker explorer url if
   /// it exists, otherwise an empty string.
   String get makerExplorerUrl {
-    if (makerCoin != null) return makerCoin.explorerUrl;
+    if (makerCoin != null) {
+      String middle =
+          makerCoin.explorerTxUrl.isEmpty ? 'tx/' : makerCoin.explorerTxUrl;
+      return makerCoin.explorerUrl + middle;
+    }
     return '';
   }
 
   /// Returns a taker explorer url if
   /// it exists, otherwise an empty string.
   String get takerExplorerUrl {
-    if (takerCoin != null) return takerCoin.explorerUrl;
+    if (takerCoin != null) {
+      String middle =
+          takerCoin.explorerTxUrl.isEmpty ? 'tx/' : takerCoin.explorerTxUrl;
+      return takerCoin.explorerUrl + middle;
+    }
     return '';
   }
 
