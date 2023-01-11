@@ -56,7 +56,7 @@ class ZCashBloc implements BlocBase {
 
   String folder = Platform.isIOS ? '/ZcashParams/' : '/.zcash-params/';
 
-  Future autoEnableZcashCoins() async {
+  Future _autoEnableZcashCoins() async {
     final List<Map<String, dynamic>> batch = [];
 
     final dir = await getApplicationDocumentsDirectory();
@@ -113,7 +113,7 @@ class ZCashBloc implements BlocBase {
           message: 'Activating',
         );
         jobService.suspend('checkZcashProcessStatus');
-        startActivationStatusCheck();
+        _startActivationStatusCheck();
       }
     }
     _inZcashProgress.add(tasksToCheck);
@@ -129,10 +129,10 @@ class ZCashBloc implements BlocBase {
     );
     jobService.suspend('checkZcashProcessStatus');
     _inZcashProgress.add(tasksToCheck);
-    startActivationStatusCheck();
+    _startActivationStatusCheck();
   }
 
-  void startActivationStatusCheck() {
+  void _startActivationStatusCheck() {
     jobService.install('checkZcashProcessStatus', 5, (j) async {
       if (!mmSe.running) return;
       if (tasksToCheck.isEmpty) {
@@ -227,7 +227,7 @@ class ZCashBloc implements BlocBase {
         coinsBloc.currentCoinActivate(null);
         tasksToCheck.remove(id);
         jobService.suspend('checkZcashProcessStatus');
-        startActivationStatusCheck();
+        _startActivationStatusCheck();
       }
       coinsToActivate.removeWhere((coin) => coin.abbr == abbr);
     } else if (status == 'InProgress') {
@@ -275,7 +275,7 @@ class ZCashBloc implements BlocBase {
     final dir = await getApplicationDocumentsDirectory();
     Directory zDir = Directory(dir.path + folder);
     if (zDir.existsSync() && mmSe.dirStatSync(zDir.path, endsWith: '') > 50) {
-      autoEnableZcashCoins();
+      _autoEnableZcashCoins();
       return;
     } else if (!zDir.existsSync()) {
       zDir.createSync();
@@ -315,7 +315,7 @@ class ZCashBloc implements BlocBase {
         _inZcashProgress.add(tasksToCheck);
         if (_received / _totalDownloadSize == 1) {
           tasksToCheck.remove(2000);
-          autoEnableZcashCoins();
+          _autoEnableZcashCoins();
         }
       });
     }
