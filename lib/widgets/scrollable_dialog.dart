@@ -6,7 +6,7 @@
 import 'package:flutter/material.dart';
 
 class ScrollableDialog extends StatefulWidget {
-  ScrollableDialog({
+  const ScrollableDialog({
     Key key,
     this.title,
     @required this.children,
