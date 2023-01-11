@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../localizations.dart';
-import '../../app_config/app_config.dart';
+import '../localizations.dart';
+import '../app_config/app_config.dart';
 
 class TACContents extends StatelessWidget {
   @override

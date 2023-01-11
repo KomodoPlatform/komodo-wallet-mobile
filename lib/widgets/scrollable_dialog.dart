@@ -6,16 +6,27 @@
 import 'package:flutter/material.dart';
 
 class ScrollableDialog extends StatefulWidget {
-  const ScrollableDialog({
+  ScrollableDialog({
     Key key,
     this.title,
     @required this.children,
     this.padding = const EdgeInsets.all(16.0),
     this.verticalButtons,
     this.mustScrollToBottom = false,
-  }) : super(key: key);
+  })  :
+        // If mustScrollToBottom is true, verticalButtons should be provided since
+        // there the purpose of specifying mustScrollToBottom is to control
+        // when verticalButtons are shown.
+        assert(
+          (!mustScrollToBottom) ||
+              (mustScrollToBottom && verticalButtons != null),
+          'If mustScrollToBottom is true, verticalButtons should be provided since '
+          'the buttons will only be shown once the user has scrolled to the bottom.',
+        ),
+        super(key: key);
 
-  /// The title widget, if any, keep it null for no title
+  /// The title widget, if any, keep it null for no title. Title is shown
+  /// above the scrollable area.
   final Widget title;
 
   /// Same as the children you would use on SimpleDialog
@@ -24,10 +35,13 @@ class ScrollableDialog extends StatefulWidget {
   /// Padding for dialog's contnents
   final EdgeInsets padding;
 
-  /// The List of vertical button, if any, keep it null for no vertical buttons
+  /// The List of vertical buttons. If mustScrollToBottom is true, this is only
+  /// shown once the user has scrolled to the bottom.
   final Widget verticalButtons;
 
-  /// Whether user must scroll to bottom before the "Close" button shows.
+  /// Whether user must scroll to bottom before the vertical buttons are shown.
+  /// NB: If using this widget in a dialog with mustScrollToBottom set to true
+  /// remember to set the dialog's barrierDismissible to false.
   final bool mustScrollToBottom;
 
   @override
@@ -78,7 +92,7 @@ class _ScrollableDialogState extends State<ScrollableDialog> {
           children: [
             _buildTitle(),
             _buildBody(),
-            if (widget.verticalButtons != null) _buildFooter(),
+            _buildFooter(),
           ],
         ),
       ),
@@ -115,20 +129,18 @@ class _ScrollableDialogState extends State<ScrollableDialog> {
     if (widget.verticalButtons == null) {
       return Container();
     }
+
     return Container(
       padding: const EdgeInsets.all(16.0),
       child: (widget.mustScrollToBottom && !_isScrolledToBottom)
           ? Text(
-              // TODO: Localize
-              'Scroll to bottom to close',
+              // TODO: Localize the scroll-to-bottom message
+              'Scroll to bottom to continue...',
               style: TextStyle(
                 color: Colors.grey,
               ),
             )
-          : ((widget.mustScrollToBottom && _isScrolledToBottom) ||
-                  !widget.mustScrollToBottom)
-              ? widget.verticalButtons
-              : Container(),
+          : widget.verticalButtons,
     );
   }
 }

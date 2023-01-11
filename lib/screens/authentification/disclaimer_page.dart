@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'tac_contents.dart';
-import 'eula_contents.dart';
 import '../../app_config/app_config.dart';
 import '../../blocs/authenticate_bloc.dart';
 import '../../blocs/wallet_bloc.dart';
@@ -11,8 +9,10 @@ import '../../model/wallet.dart';
 import '../../services/db/database.dart';
 import '../../utils/encryption_tool.dart';
 import '../../utils/log.dart';
+import '../../widgets/eula_contents.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/scrollable_dialog.dart';
+import '../../widgets/tac_contents.dart';
 import '../../localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,16 +59,6 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
   @override
   Widget build(BuildContext context) {
-    final List<TextSpan> _disclaimerToSText = <TextSpan>[
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle1(appConfig.appName),
-          style: Theme.of(context).textTheme.headline6),
-      TextSpan(
-          text: AppLocalizations.of(context)
-              .eulaParagraphe1(appConfig.appName, appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-    ];
-
     final Widget _tosControls = Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart' as arch;
+
 import '../../app_config/app_config.dart';
 import '../../blocs/camo_bloc.dart';
 import '../../model/cex_provider.dart';
@@ -18,7 +19,6 @@ import '../../blocs/wallet_bloc.dart';
 import '../../localizations.dart';
 import '../../model/updates_provider.dart';
 import '../../model/wallet_security_settings_provider.dart';
-import '../authentification/disclaimer_page.dart';
 import '../authentification/lock_screen.dart';
 import '../authentification/pin_page.dart';
 import '../authentification/show_delete_wallet_confirmation.dart';
@@ -34,6 +34,11 @@ import '../../utils/log.dart';
 import '../../utils/utils.dart';
 import '../../widgets/build_red_dot.dart';
 import '../../widgets/custom_simple_dialog.dart';
+import '../../widgets/eula_contents.dart';
+import '../../widgets/primary_button.dart';
+import '../../widgets/scrollable_dialog.dart';
+import '../../widgets/tac_contents.dart';
+
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -375,12 +380,33 @@ class _SettingPageState extends State<SettingPage> {
     return _chevronListTileHelper(
         title: Text(AppLocalizations.of(context).disclaimerAndTos),
         onTap: () {
-          Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => const DisclaimerPage(
-                      readOnly: true,
-                    )),
+          showDialog(
+            context: context,
+            builder: (context) => ScrollableDialog(
+                mustScrollToBottom: false,
+                verticalButtons: PrimaryButton(
+                  key: const Key('settings-tos-close'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  text: AppLocalizations.of(context).close,
+                ),
+                children: [
+                  Text(
+                      AppLocalizations.of(context)
+                          .eulaTitle1(appConfig.appName),
+                      style: Theme.of(context).textTheme.headline6),
+
+                  EULAContents(),
+
+                  // Spacing of 20px between the sections
+                  const SizedBox(height: 16),
+
+                  Text(AppLocalizations.of(context).eulaTitle2,
+                      style: Theme.of(context).textTheme.headline6),
+
+                  TACContents(),
+                ]),
           );
         });
   }
