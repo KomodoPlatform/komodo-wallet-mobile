@@ -56,6 +56,12 @@ class _ScrollableDialogState extends State<ScrollableDialog> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
+
+    // Run scroll listener even on first frame. This is to take into
+    // consideration if the scrollable contents are too short to scroll.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollListener();
+    });
   }
 
   @override
@@ -66,6 +72,16 @@ class _ScrollableDialogState extends State<ScrollableDialog> {
   }
 
   void _scrollListener() {
+    // If the content is too short to scroll then we consider it scrolled to
+    // the bottom.
+    if (_scrollController.position.maxScrollExtent == 0.0) {
+      setState(() {
+        _isScrolledToBottom = true;
+      });
+
+      return;
+    }
+
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
