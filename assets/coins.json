@@ -11415,6 +11415,7 @@
   {
     "coin": "ATOM",
     "avg_block_time": 7,
+    "avg_blocktime": 7,
     "name": "cosmos",
     "fname": "Cosmos",
     "mm2": 1,
@@ -11432,6 +11433,7 @@
   {
     "coin": "IRIS",
     "avg_block_time": 7,
+    "avg_blocktime": 7,
     "name": "iris",
     "fname": "Iris",
     "mm2": 1,
@@ -11449,6 +11451,7 @@
   {
     "coin": "OSMO",
     "avg_block_time": 6,
+    "avg_blocktime": 6,
     "name": "osmosis",
     "fname": "Osmosis",
     "mm2": 1,
@@ -11469,6 +11472,7 @@
     "name": "cosmos_ibc_iris",
     "fname": "Cosmos IBC-IRIS",
     "avg_block_time": 7,
+    "avg_blocktime": 7,
     "mm2": 1,
     "protocol": {
       "type": "TENDERMINTTOKEN",
