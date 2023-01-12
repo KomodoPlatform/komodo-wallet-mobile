@@ -39,9 +39,6 @@ class _DisclaimerPageState extends State<DisclaimerPage>
   bool isLoading = false;
   bool _checkBoxEULA = false;
   bool _checkBoxTOC = false;
-  // Animation<Offset> _offsetFloat;
-  AnimationController _controller;
-  AnimationController _controllerScale;
   Timer timer;
 
   @override
@@ -51,8 +48,6 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
   @override
   void dispose() {
-    _controller.dispose();
-    _controllerScale.dispose();
     timer.cancel();
     super.dispose();
   }
@@ -78,12 +73,9 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                       },
                     ),
                     Flexible(
-                      // Text showing text with link to accept EULA. Link opens
-                      // up a dialog with the document's contents.
                       child: RichText(
                         text: TextSpan(
                           text: AppLocalizations.of(context).accepteula,
-                          // Hyperlink text style
                           style: Theme.of(context).textTheme.bodyText1.copyWith(
                                 decoration: TextDecoration.underline,
                               ),
@@ -128,12 +120,9 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                       },
                     ),
                     Flexible(
-                      // Text showing text with link to accept EULA. Link opens
-                      // up a dialog with the document's contents.
                       child: RichText(
                         text: TextSpan(
                           text: AppLocalizations.of(context).accepttac,
-                          // Hyperlink text style
                           style: Theme.of(context).textTheme.bodyText1.copyWith(
                                 decoration: TextDecoration.underline,
                               ),

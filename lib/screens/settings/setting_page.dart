@@ -74,8 +74,6 @@ class _SettingPageState extends State<SettingPage> {
     cexProvider = Provider.of<CexProvider>(context);
     walletSecuritySettingsProvider =
         context.watch<WalletSecuritySettingsProvider>();
-    // final Locale myLocale = Localizations.localeOf(context);
-    // Log('setting_page:67', 'current locale: $myLocale');
     return LockScreen(
       context: context,
       child: Scaffold(
@@ -396,15 +394,10 @@ class _SettingPageState extends State<SettingPage> {
                       AppLocalizations.of(context)
                           .eulaTitle1(appConfig.appName),
                       style: Theme.of(context).textTheme.headline6),
-
                   EULAContents(),
-
-                  // Spacing of 20px between the sections
                   const SizedBox(height: 16),
-
                   Text(AppLocalizations.of(context).eulaTitle2,
                       style: Theme.of(context).textTheme.headline6),
-
                   TACContents(),
                 ]),
           );

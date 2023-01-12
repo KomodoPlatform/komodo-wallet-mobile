@@ -7,15 +7,6 @@ class TACContents extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(children: [
-        // First paragraph heading moved to
-        // dialog's title.
-        // TextSpan(
-        //     text:
-        //         AppLocalizations.of(context)
-        //             .eulaTitle2,
-        //     style: Theme.of(context)
-        //         .textTheme
-        //         .subtitle2),
         TextSpan(
             text: AppLocalizations.of(context)
                 .eulaParagraphe2(appConfig.appName, appConfig.appCompanyLong),
@@ -136,10 +127,6 @@ class TACContents extends StatelessWidget {
             text: AppLocalizations.of(context)
                 .eulaParagraphe19(appConfig.appName, appConfig.appCompanyLong),
             style: Theme.of(context).textTheme.bodyText2),
-
-        // 2 Empty paragraph breaks
-        // to ensure the last
-        //paragraph is visible
         TextSpan(text: '\n\n'),
       ]),
     );
