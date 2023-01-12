@@ -249,12 +249,12 @@ class ApiProvider {
         fallbackSwapContract: coin.fallbackSwapContract,
         urls: List<String>.from(coin.serverList.map((e) => e.url)),
       ).toJson());
-    if (coin.protocol.type == 'TENDERMINTTOKEN')
+    if (coin?.protocol?.type == 'TENDERMINTTOKEN')
       return json.encode(MmTendermintTokenEnable(
         userpass: mmSe.userpass,
         coin: coin,
       ).toJson());
-    if (coin.protocol.type == 'TENDERMINT')
+    if (coin?.protocol?.type == 'TENDERMINT')
       return json.encode(MmTendermintAssetEnable(
         userpass: mmSe.userpass,
         coin: coin,

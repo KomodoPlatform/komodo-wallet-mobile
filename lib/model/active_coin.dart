@@ -26,7 +26,7 @@ class ActiveCoin {
       requiredConfirmations = activeCoin.requiredConfirmations;
       matureConfirmations = activeCoin.matureConfirmations;
       requiresNotarization = activeCoin.requiresNotarization;
-    } else if (activeCoin.protocol.type == 'TENDERMINTTOKEN') {
+    } else if (activeCoin?.protocol?.type == 'TENDERMINTTOKEN') {
       // iris/cosmos tokens
       json = json['result']['balances'];
       address = json.keys.first ?? '';
@@ -37,7 +37,7 @@ class ActiveCoin {
       requiredConfirmations = activeCoin.requiredConfirmations;
       matureConfirmations = activeCoin.matureConfirmations;
       requiresNotarization = activeCoin.requiresNotarization;
-    } else if (activeCoin.protocol.type == 'TENDERMINT') {
+    } else if (activeCoin?.protocol?.type == 'TENDERMINT') {
       // iris/cosmos parent coins
       json = json['result'];
       coin = json['ticker'] ?? '';

@@ -107,7 +107,8 @@ class CoinsBloc implements BlocBase {
     final Set<Coin> suspendedCoins = {};
 
     for (CoinBalance balance in coinBalance) {
-      if (balance.coin.suspended) suspendedCoins.add(balance.coin);
+      if (balance.coin.suspended)
+        suspendedCoins.add(getKnownCoinByAbbr(balance.coin.abbr));
     }
 
     return suspendedCoins;

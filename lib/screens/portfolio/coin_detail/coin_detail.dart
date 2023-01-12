@@ -445,71 +445,69 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Widget _buildErrorMessage(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 64, vertical: 16),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: isRetryingActivation
-                ? [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 24),
-                    Text(
-                      AppLocalizations.of(context).retryActivating,
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                    ),
-                    SizedBox(height: 24),
-                    Text(
-                      AppLocalizations.of(context).willBeRedirected,
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                    ),
-                    SizedBox(height: 24),
-                    Text(
-                      AppLocalizations.of(context).tryRestarting,
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                    ),
-                  ]
-                : [
-                    Icon(
-                      Icons.warning_amber_rounded,
-                      size: 128,
-                      color: Colors.yellow[600],
-                    ),
-                    SizedBox(height: 24),
-                    Text(
-                      AppLocalizations.of(context)
-                          .weFailedTo(currentCoinBalance.coin.abbr),
-                    ),
-                    SizedBox(height: 24),
-                    Text(
-                      AppLocalizations.of(context).pleaseRestart,
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                    ),
-                    SizedBox(height: 24),
-                    PrimaryButton(
-                      onPressed: () {
-                        setState(() {
-                          isRetryingActivation = true;
-                        });
-                        coinsBloc
-                            .retryActivatingSuspendedCoins()
-                            .whenComplete(() => _goToPreviousPage(context));
-                      },
-                      text: AppLocalizations.of(context).retryAll,
-                    ),
-                    SizedBox(height: 24),
-                    Text(
-                      AppLocalizations.of(context).automaticRedirected,
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                    ),
-                  ],
-          ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 64, vertical: 16),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: isRetryingActivation
+              ? [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 24),
+                  Text(
+                    AppLocalizations.of(context).retryActivating,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    AppLocalizations.of(context).willBeRedirected,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    AppLocalizations.of(context).tryRestarting,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  ),
+                ]
+              : [
+                  Icon(
+                    Icons.warning_amber_rounded,
+                    size: 128,
+                    color: Colors.yellow[600],
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    AppLocalizations.of(context)
+                        .weFailedTo(currentCoinBalance.coin.abbr),
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    AppLocalizations.of(context).pleaseRestart,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  ),
+                  SizedBox(height: 24),
+                  PrimaryButton(
+                    onPressed: () {
+                      setState(() {
+                        isRetryingActivation = true;
+                      });
+                      coinsBloc
+                          .retryActivatingSuspendedCoins()
+                          .whenComplete(() => _goToPreviousPage(context));
+                    },
+                    text: AppLocalizations.of(context).retryAll,
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    AppLocalizations.of(context).automaticRedirected,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  ),
+                ],
         ),
       ),
     );
@@ -646,10 +644,10 @@ class _CoinDetailState extends State<CoinDetail> {
     if (platform == 'QTUM') {
       contractAddress = contractAddress.replaceFirst('0x', '');
       middleUrl = 'contract';
-    } else if (protocol.type == 'TENDERMINT') {
+    } else if (protocol?.type == 'TENDERMINT') {
       middleUrl = 'account';
       contractAddress = widget.coinBalance.balance.address;
-    } else if (protocol.type == 'TENDERMINTTOKEN') {
+    } else if (protocol?.type == 'TENDERMINTTOKEN') {
       middleUrl = 'address';
       contractAddress = widget.coinBalance.balance.address;
     }
