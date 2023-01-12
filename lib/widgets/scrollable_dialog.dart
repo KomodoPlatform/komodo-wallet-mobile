@@ -4,6 +4,7 @@
 // Boolean to specify if user must scroll to bottom before closing dialog.
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 
 class ScrollableDialog extends StatefulWidget {
   const ScrollableDialog({
@@ -150,8 +151,7 @@ class _ScrollableDialogState extends State<ScrollableDialog> {
       padding: const EdgeInsets.all(16.0),
       child: (widget.mustScrollToBottom && !_isScrolledToBottom)
           ? Text(
-              // TODO: Localize the scroll-to-bottom message
-              'Scroll to bottom to continue...',
+              AppLocalizations.of(context).accepteula,
               style: TextStyle(
                 color: Colors.grey,
               ),

@@ -1530,6 +1530,10 @@ class AppLocalizations {
       Intl.message('Close preview', name: 'closePreview');
   String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
 
+  // TODO: localize this message for all languages
+  String get scrollToContinue =>
+      Intl.message('Scroll to bottom to continue...', name: 'scrollToContinue');
+
   String get developerTitle =>
       Intl.message('Developer', name: 'developerTitle');
   String get enableTestCoins =>
