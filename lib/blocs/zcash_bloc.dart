@@ -5,6 +5,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
@@ -38,7 +39,7 @@ class ZCashBloc implements BlocBase {
 
   List<Coin> removeZcashCoins(List<Coin> coins) {
     List<Coin> list =
-        coins.where((element) => element.type.name == 'zhtlc').toList();
+        coins.where((element) => element.type == CoinType.zhtlc).toList();
     for (var a in list) {
       if (coinsToActivate.where((e) => e.abbr == a.abbr).isEmpty) {
         coinsToActivate.add(a);
@@ -54,7 +55,7 @@ class ZCashBloc implements BlocBase {
     }
   }
 
-  String folder = Platform.isIOS ? '/ZcashParams/' : '/.zcash-params/';
+  String get folder => Platform.isIOS ? '/ZcashParams/' : '/.zcash-params/';
 
   Future _autoEnableZcashCoins() async {
     final List<Map<String, dynamic>> batch = [];
