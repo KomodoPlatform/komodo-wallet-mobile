@@ -1,4 +1,3 @@
-import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 import 'coin.dart';
@@ -6,8 +5,8 @@ import 'coin.dart';
 class ActiveCoin {
   ActiveCoin.fromJson(Map<String, dynamic> json, Coin activeCoin) {
     if (isSlp(activeCoin)) {
-      // parent coin
       if (json['result']['bch_addresses_infos'] != null) {
+        // slp parent coins
         address = json['result']['bch_addresses_infos'].keys.first;
         balance = json['result']['bch_addresses_infos'].values.first['balances']
             ['spendable'];
@@ -27,9 +26,7 @@ class ActiveCoin {
       requiredConfirmations = activeCoin.requiredConfirmations;
       matureConfirmations = activeCoin.matureConfirmations;
       requiresNotarization = activeCoin.requiresNotarization;
-    } else if ((activeCoin.type == CoinType.iris ||
-            activeCoin.type == CoinType.cosmos) &&
-        activeCoin.protocol.protocolData.platform != null) {
+    } else if (activeCoin.protocol.type != 'TENDERMINTTOKEN') {
       // iris/cosmos tokens
       json = json['result']['balances'];
       address = json.keys.first ?? '';
@@ -40,9 +37,7 @@ class ActiveCoin {
       requiredConfirmations = activeCoin.requiredConfirmations;
       matureConfirmations = activeCoin.matureConfirmations;
       requiresNotarization = activeCoin.requiresNotarization;
-    } else if ((activeCoin.type == CoinType.iris ||
-            activeCoin.type == CoinType.cosmos) &&
-        activeCoin.protocol.protocolData.platform == null) {
+    } else if (activeCoin.protocol.type != 'TENDERMINT') {
       // iris/cosmos parent coins
       json = json['result'];
       coin = json['ticker'] ?? '';

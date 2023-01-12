@@ -5,7 +5,6 @@ import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import '../app_config/app_config.dart';
 import '../model/best_order.dart';
-import '../model/coin_type.dart';
 import '../model/get_best_orders.dart';
 import '../model/get_enable_slp_coin.dart';
 import '../model/get_enable_tendermint.dart';
@@ -250,15 +249,12 @@ class ApiProvider {
         fallbackSwapContract: coin.fallbackSwapContract,
         urls: List<String>.from(coin.serverList.map((e) => e.url)),
       ).toJson());
-
-    if ((coin.type == CoinType.iris || coin.type == CoinType.cosmos) &&
-        coin.protocol.protocolData.platform != null)
+    if (coin.protocol.type != 'TENDERMINTTOKEN')
       return json.encode(MmTendermintTokenEnable(
         userpass: mmSe.userpass,
         coin: coin,
       ).toJson());
-    if ((coin.type == CoinType.iris || coin.type == CoinType.cosmos) &&
-        coin.protocol.protocolData.platform == null)
+    if (coin.protocol.type != 'TENDERMINT')
       return json.encode(MmTendermintAssetEnable(
         userpass: mmSe.userpass,
         coin: coin,
