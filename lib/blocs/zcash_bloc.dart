@@ -102,14 +102,14 @@ class ZCashBloc implements BlocBase {
       int id = reply['result']['task_id'];
       bool taskExists = false;
       for (var element in tasksToCheck.values) {
-        if (element.abbr == coinsToActivate[i].abbr && element.type == 'enable')
-          taskExists = true;
+        if (element.abbr == coinsToActivate[i].abbr &&
+            element.type == ZTaskType.ACTIVATING) taskExists = true;
       }
       if (!taskExists) {
         tasksToCheck[id] = ZTask(
           abbr: coinsToActivate[i].abbr,
           progress: 0,
-          type: 'enable',
+          type: ZTaskType.ACTIVATING,
           id: id,
           message: 'Activating',
         );
@@ -124,7 +124,7 @@ class ZCashBloc implements BlocBase {
     tasksToCheck[taskId] = ZTask(
       abbr: abbr,
       progress: 0,
-      type: 'withdraw',
+      type: ZTaskType.WITHDRAW,
       id: taskId,
       message: 'Withdrawal',
     );
@@ -138,12 +138,13 @@ class ZCashBloc implements BlocBase {
       if (!mmSe.running) return;
       if (tasksToCheck.isEmpty) {
         jobService.suspend('checkZcashProcessStatus');
+        coinsToActivate.clear();
         return;
       }
       for (var task in tasksToCheck.keys) {
         dynamic res;
 
-        if (tasksToCheck[task].type == 'withdraw') {
+        if (tasksToCheck[task].type == ZTaskType.WITHDRAW) {
           res = await MM.batch([
             {
               'userpass': mmSe.userpass,
@@ -200,7 +201,7 @@ class ZCashBloc implements BlocBase {
         Log('zcash_bloc:273', 'Error activating $abbr: ${details['error']}');
         tasksToCheck.remove(id);
         await coinsBloc.syncCoinsStateWithApi(false);
-      } else if (tasksToCheck[id].type == 'withdraw') {
+      } else if (tasksToCheck[id].type == ZTaskType.WITHDRAW) {
         tasksToCheck[id].result =
             WithdrawResponse.fromJson(activationData['result']['details']);
         _inZcashProgress.add(tasksToCheck);
@@ -298,7 +299,7 @@ class ZCashBloc implements BlocBase {
       tasksToCheck[2000] = ZTask(
         message: 'Downloading Zcash params',
         progress: 0,
-        type: 'download',
+        type: ZTaskType.DOWNLOADING,
         id: 2000,
       );
       // 2000 is the task id for downloading z-params{just a random number}
@@ -323,7 +324,7 @@ class ZCashBloc implements BlocBase {
   }
 
   void cancelTask(ZTask task) async {
-    bool isEnable = task.type == 'enable';
+    bool isEnable = task.type == ZTaskType.ACTIVATING;
     await MM.batch([
       {
         'userpass': mmSe.userpass,
@@ -337,7 +338,7 @@ class ZCashBloc implements BlocBase {
     if (isEnable) {
       coinsToActivate.removeWhere((coin) => coin.abbr == task.abbr);
     }
-    if (task.type == 'download') coinsToActivate = [];
+    if (task.type == ZTaskType.DOWNLOADING) coinsToActivate = [];
     tasksToCheck.remove(task.id);
     _inZcashProgress.add(tasksToCheck);
   }
@@ -357,7 +358,7 @@ class ZCashBloc implements BlocBase {
 class ZTask {
   String abbr;
   String message;
-  String type;
+  ZTaskType type;
   int progress;
   int id;
   dynamic result;
@@ -371,5 +372,7 @@ class ZTask {
     this.id,
   });
 }
+
+enum ZTaskType { WITHDRAW, ACTIVATING, DOWNLOADING }
 
 ZCashBloc zcashBloc = ZCashBloc();

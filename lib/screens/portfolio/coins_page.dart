@@ -448,7 +448,8 @@ class ListCoinsState extends State<ListCoins> {
                         children: [
                           Text('${task.message}: ${task.progress}%'),
                           Spacer(),
-                          if (task.result != null && task.type == 'withdraw')
+                          if (task.result != null &&
+                              task.type == ZTaskType.WITHDRAW)
                             InkWell(
                               onTap: () {
                                 zcashBloc.confirmWithdraw(task);
