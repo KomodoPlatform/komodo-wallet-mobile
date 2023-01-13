@@ -357,7 +357,7 @@ class AppLocalizations {
         args: <Object>[name],
       );
   String get connecting => Intl.message('Connecting...', name: 'connecting');
-  String get addCoin => Intl.message('Activate coin', name: 'addCoin');
+  String get addCoin => Intl.message('Add Coin', name: 'addCoin');
   String numberAssets(String assets) => Intl.message('$assets Assets',
       args: <Object>[assets], name: 'numberAssets');
   String get enterSeedPhrase =>
