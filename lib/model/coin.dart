@@ -85,7 +85,8 @@ class Coin {
         '';
     colorCoin = config['colorCoin'] ?? '';
     isDefault = appConfig.defaultCoins.contains(abbr);
-    walletOnly = appConfig.walletOnlyCoins.contains(abbr);
+    walletOnly =
+        config['walletOnly'] ?? appConfig.walletOnlyCoins.contains(abbr);
     if (config['serverList'] != null) {
       serverList = <Server>[];
       config['serverList'].forEach((v) {

@@ -252,7 +252,7 @@ class ConstructorProvider extends ChangeNotifier {
       if (!known.containsKey(ticker)) {
         bestOrders.result.remove(ticker);
       }
-      if (appConfig.walletOnlyCoins.contains(ticker)) {
+      if (coinsBloc.getCoinByAbbr(ticker).walletOnly) {
         bestOrders.result.remove(ticker);
       }
       final Coin coin = coinsBloc.getCoinByAbbr(ticker);

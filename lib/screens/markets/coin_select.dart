@@ -103,8 +103,7 @@ class _CoinSelectState extends State<CoinSelect> {
                 return _buildProgressDialog();
               }
               List<CoinBalance> data = snapshot.data;
-              data.removeWhere(
-                  (e) => appConfig.walletOnlyCoins.contains(e.coin.abbr));
+              data.removeWhere((e) => e.coin.walletOnly);
 
               return _buildList(data);
             },
