@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -8,19 +6,12 @@ import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'add_coin_button.dart';
 import '../../../../blocs/coins_bloc.dart';
-import '../../../../blocs/dialog_bloc.dart';
-import '../../../../blocs/main_bloc.dart';
 import '../../../../blocs/settings_bloc.dart';
 import '../../../../localizations.dart';
-import '../../../../app_config/app_config.dart';
 import '../../../../model/cex_provider.dart';
-import '../../../../model/coin.dart';
 import '../../../../model/coin_balance.dart';
-import '../portfolio/activate/select_coins_page.dart';
 import '../portfolio/loading_coin.dart';
-import '../../../../services/db/database.dart';
 import '../../../../services/mm_service.dart';
-import '../../../../widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 import 'item_coin.dart';
