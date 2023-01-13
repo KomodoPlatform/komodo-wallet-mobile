@@ -59,73 +59,9 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                           key: const Key('adding-coins'),
                           child: Icon(Icons.add),
                           mini: true,
-                          onPressed: () {
-                            if (mainBloc.networkStatus !=
-                                NetworkStatus.Online) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                duration: const Duration(seconds: 2),
-                                backgroundColor: Theme.of(context).errorColor,
-                                content: Text(
-                                    AppLocalizations.of(context).noInternet),
-                              ));
-                            } else {
-                              final numCoinsEnabled =
-                                  coinsBloc.coinBalance.length;
-                              final maxCoinPerPlatform = Platform.isAndroid
-                                  ? appConfig.maxCoinsEnabledAndroid
-                                  : appConfig.maxCoinEnabledIOS;
-                              if (numCoinsEnabled >= maxCoinPerPlatform) {
-                                dialogBloc.closeDialog(context);
-                                dialogBloc.dialog = showDialog<void>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return CustomSimpleDialog(
-                                      title: Text(AppLocalizations.of(context)
-                                          .tooManyAssetsEnabledTitle),
-                                      children: [
-                                        Text(AppLocalizations.of(context)
-                                                .tooManyAssetsEnabledSpan1 +
-                                            numCoinsEnabled.toString() +
-                                            AppLocalizations.of(context)
-                                                .tooManyAssetsEnabledSpan2 +
-                                            maxCoinPerPlatform.toString() +
-                                            AppLocalizations.of(context)
-                                                .tooManyAssetsEnabledSpan3),
-                                        SizedBox(height: 12),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () => dialogBloc
-                                                  .closeDialog(context),
-                                              child: Text(
-                                                  AppLocalizations.of(context)
-                                                      .warningOkBtn),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ).then((dynamic _) => dialogBloc.dialog = null);
-                              } else {
-                                Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          const SelectCoinsPage()),
-                                );
-                              }
-                            }
-                          },
+                          onPressed: _showAddCoinPage,
                         ),
-                        //
-
                         SizedBox(width: 16),
-
-                        //
                         Text(
                           AppLocalizations.of(context).addCoin,
                           style: Theme.of(context).textTheme.headline5,
@@ -140,6 +76,56 @@ class _AddCoinButtonState extends State<AddCoinButton> {
             );
           }
         });
+  }
+
+  void _showAddCoinPage() {
+    if (mainBloc.networkStatus != NetworkStatus.Online) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 2),
+        backgroundColor: Theme.of(context).errorColor,
+        content: Text(AppLocalizations.of(context).noInternet),
+      ));
+    } else {
+      final numCoinsEnabled = coinsBloc.coinBalance.length;
+      final maxCoinPerPlatform = Platform.isAndroid
+          ? appConfig.maxCoinsEnabledAndroid
+          : appConfig.maxCoinEnabledIOS;
+      if (numCoinsEnabled >= maxCoinPerPlatform) {
+        dialogBloc.closeDialog(context);
+        dialogBloc.dialog = showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomSimpleDialog(
+              title:
+                  Text(AppLocalizations.of(context).tooManyAssetsEnabledTitle),
+              children: [
+                Text(AppLocalizations.of(context).tooManyAssetsEnabledSpan1 +
+                    numCoinsEnabled.toString() +
+                    AppLocalizations.of(context).tooManyAssetsEnabledSpan2 +
+                    maxCoinPerPlatform.toString() +
+                    AppLocalizations.of(context).tooManyAssetsEnabledSpan3),
+                SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => dialogBloc.closeDialog(context),
+                      child: Text(AppLocalizations.of(context).warningOkBtn),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        ).then((dynamic _) => dialogBloc.dialog = null);
+      } else {
+        Navigator.push<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => const SelectCoinsPage()),
+        );
+      }
+    }
   }
 
   /// Returns `true` if there are coins we can still activate, `false` if all of them activated.
