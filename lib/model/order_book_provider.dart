@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import '../blocs/coins_bloc.dart';
 import '../model/coin.dart';
 import '../model/coin_balance.dart';
@@ -180,6 +181,7 @@ class SyncOrderbook {
     final LinkedHashMap<String, Coin> known = await coins;
     final List<CoinBalance> active = coinsBloc.coinBalance;
 
+    active.removeWhere((e) => appConfig.walletOnlyCoins.contains(e.coin.abbr));
     final Coin coin = known[abbr];
 
     for (CoinBalance coinBalance in active) {
@@ -205,6 +207,8 @@ class SyncOrderbook {
 
     bool wasChanged = false;
     final List<CoinBalance> coinsList = coinsBloc.coinBalance;
+    coinsList
+        .removeWhere((e) => appConfig.walletOnlyCoins.contains(e.coin.abbr));
 
     for (CoinBalance coinBalance in coinsList) {
       if (coinBalance.coin.abbr == coin.abbr) continue;
