@@ -367,31 +367,34 @@ class ListCoinsState extends State<ListCoins> {
             onRefresh: () => coinsBloc.updateCoinBalances(),
             child: Builder(builder: (BuildContext context) {
               if (snapshot.data != null && snapshot.data.isNotEmpty) {
-                final List<dynamic> datas = <dynamic>[];
-
-                final List<CoinBalance> _sorted =
+                final List<CoinBalance> _coinsSorted =
                     coinsBloc.sortCoins(snapshot.data);
 
-                datas.addAll(_sorted);
-                datas.add(true);
                 return SlidableAutoCloseBehavior(
-                  child: ListView.separated(
-                    key: const Key('list-view-coins'),
-                    itemCount: datas.length,
-                    padding: const EdgeInsets.all(0),
-                    itemBuilder: (BuildContext context, int index) {
-                      if (datas[index] is bool) {
-                        return const AddCoinButton(key: Key('add-coin'));
-                      } else {
-                        return ItemCoin(
-                          key: Key('coin-list-${datas[index].coin.abbr}'),
-                          mContext: context,
-                          coinBalance: datas[index],
-                        );
-                      }
-                    },
-                    separatorBuilder: (context, _) =>
-                        Divider(color: Theme.of(context).colorScheme.surface),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        child: AddCoinButton(key: Key('add-coin')),
+                        width: double.infinity,
+                      ),
+                      Expanded(
+                        child: ListView.separated(
+                          key: const Key('list-view-coins'),
+                          itemCount: _coinsSorted.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ItemCoin(
+                              key: Key(
+                                  'coin-list-${_coinsSorted[index].coin.abbr}'),
+                              mContext: context,
+                              coinBalance: _coinsSorted[index],
+                            );
+                            // }
+                          },
+                          separatorBuilder: (context, _) => Divider(
+                              color: Theme.of(context).colorScheme.surface),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
