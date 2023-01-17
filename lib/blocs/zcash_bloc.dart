@@ -1,23 +1,24 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:http/http.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/balance.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_send_raw_transaction.dart';
-import 'package:komodo_dex/model/withdraw_response.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/job_service.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+
+import '../blocs/coins_bloc.dart';
+import '../model/balance.dart';
+import '../model/coin.dart';
+import '../model/coin_balance.dart';
+import '../model/coin_type.dart';
+import '../model/error_string.dart';
+import '../model/get_send_raw_transaction.dart';
+import '../model/withdraw_response.dart';
+import '../services/db/database.dart';
+import '../services/job_service.dart';
+import '../services/mm.dart';
+import '../services/mm_service.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
+import '../widgets/bloc_provider.dart';
 
 class ZCashBloc implements BlocBase {
   // Streams to zcash params download progress
@@ -76,6 +77,8 @@ class ZCashBloc implements BlocBase {
                 'light_wallet_d_servers': coin.lightWalletDServers
               }
             },
+            'scan_blocks_per_iteration': 20,
+            'scan_interval_ms': 200,
             'zcash_params_path': dir.path + folder
           },
         }
