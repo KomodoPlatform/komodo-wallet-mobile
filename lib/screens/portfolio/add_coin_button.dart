@@ -31,10 +31,11 @@ class AddCoinButton extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   )
                 : Column(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       const SizedBox(
-                        height: 12,
+                        height: 8,
                       ),
                       const CircularProgressIndicator(),
                       const SizedBox(
@@ -43,7 +44,7 @@ class AddCoinButton extends StatelessWidget {
                       Text(snapshot.data.currentStatus ??
                           AppLocalizations.of(context).connecting),
                       const SizedBox(
-                        height: 12,
+                        height: 8,
                       ),
                     ],
                   );
