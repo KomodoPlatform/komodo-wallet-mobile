@@ -53,6 +53,8 @@ class _CoinsPageState extends State<CoinsPage> {
     _heightSliver = _heightScreen * 0.25 - MediaQuery.of(context).padding.top;
     if (_heightSliver < 125) _heightSliver = 125;
 
+    final bool isCollapsed = _heightFactor < 1.3;
+
     return Scaffold(
         body: NestedScrollView(
             controller: _scrollController,
@@ -63,6 +65,16 @@ class _CoinsPageState extends State<CoinsPage> {
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   expandedHeight: _heightSliver,
                   pinned: true,
+                  actions: [
+                    AnimatedOpacity(
+                      opacity: isCollapsed ? 1 : 0,
+                      duration: Duration(milliseconds: 200),
+                      child: AddCoinButton(
+                        key: Key('add-coin-button-collapsed'),
+                        isCollapsed: true,
+                      ),
+                    ),
+                  ],
                   flexibleSpace: Builder(
                     builder: (BuildContext context) {
                       return Stack(
@@ -71,7 +83,7 @@ class _CoinsPageState extends State<CoinsPage> {
                               collapseMode: CollapseMode.pin,
                               centerTitle: true,
                               titlePadding:
-                                  EdgeInsetsDirectional.only(bottom: 10),
+                                  EdgeInsetsDirectional.only(bottom: 4),
                               title: SizedBox(
                                 width: _widthScreen * 0.5,
                                 child: Center(
@@ -110,7 +122,7 @@ class _CoinsPageState extends State<CoinsPage> {
                                                 onPressed: () => _cexProvider
                                                     .switchCurrency(),
                                                 style: TextButton.styleFrom(
-                                                  primary: _heightFactor < 1.3
+                                                  primary: isCollapsed
                                                       ? Theme.of(context)
                                                                   .brightness ==
                                                               Brightness.light
@@ -188,6 +200,11 @@ class _CoinsPageState extends State<CoinsPage> {
                     },
                   ),
                   automaticallyImplyLeading: false,
+                ),
+                SliverAppBar(
+                  flexibleSpace:
+                      Center(child: AddCoinButton(key: Key('add-coin-button'))),
+                  pinned: false,
                 ),
               ];
             },
@@ -371,30 +388,20 @@ class ListCoinsState extends State<ListCoins> {
                     coinsBloc.sortCoins(snapshot.data);
 
                 return SlidableAutoCloseBehavior(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        child: AddCoinButton(key: Key('add-coin')),
-                        width: double.infinity,
-                      ),
-                      Expanded(
-                        child: ListView.separated(
-                          key: const Key('list-view-coins'),
-                          itemCount: _coinsSorted.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ItemCoin(
-                              key: Key(
-                                  'coin-list-${_coinsSorted[index].coin.abbr}'),
-                              mContext: context,
-                              coinBalance: _coinsSorted[index],
-                            );
-                            // }
-                          },
-                          separatorBuilder: (context, _) => Divider(
-                              color: Theme.of(context).colorScheme.surface),
-                        ),
-                      ),
-                    ],
+                  child: ListView.separated(
+                    padding: const EdgeInsets.all(0),
+                    key: const Key('list-view-coins'),
+                    itemCount: _coinsSorted.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ItemCoin(
+                        key: Key('coin-list-${_coinsSorted[index].coin.abbr}'),
+                        mContext: context,
+                        coinBalance: _coinsSorted[index],
+                      );
+                      // }
+                    },
+                    separatorBuilder: (context, _) =>
+                        Divider(color: Theme.of(context).colorScheme.surface),
                   ),
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {

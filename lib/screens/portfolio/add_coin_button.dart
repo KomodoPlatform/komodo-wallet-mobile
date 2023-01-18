@@ -12,14 +12,11 @@ import '../portfolio/activate/select_coins_page.dart';
 import '../../../../services/db/database.dart';
 import '../../../../widgets/custom_simple_dialog.dart';
 
-class AddCoinButton extends StatefulWidget {
-  const AddCoinButton({Key key}) : super(key: key);
+class AddCoinButton extends StatelessWidget {
+  const AddCoinButton({Key key, this.isCollapsed = false}) : super(key: key);
 
-  @override
-  _AddCoinButtonState createState() => _AddCoinButtonState();
-}
+  final bool isCollapsed;
 
-class _AddCoinButtonState extends State<AddCoinButton> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<CoinToActivate>(
@@ -28,45 +25,84 @@ class _AddCoinButtonState extends State<AddCoinButton> {
         builder:
             (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
           if (snapshot.data != null) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const SizedBox(
-                  height: 16,
-                ),
-                const CircularProgressIndicator(),
-                const SizedBox(
-                  height: 8,
-                ),
-                Text(snapshot.data.currentStatus ??
-                    AppLocalizations.of(context).connecting),
-                const SizedBox(
-                  height: 16,
-                ),
-              ],
-            );
+            return isCollapsed
+                ? AspectRatio(
+                    aspectRatio: 1,
+                    child: CircularProgressIndicator(),
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      const CircularProgressIndicator(),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(snapshot.data.currentStatus ??
+                          AppLocalizations.of(context).connecting),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                    ],
+                  );
           } else {
             return FutureBuilder<bool>(
               future: _buildAddCoinButton(),
               builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                if (snapshot.data != null && snapshot.data) {
-                  return Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FloatingActionButton(
-                          key: const Key('adding-coins'),
-                          child: Icon(Icons.add),
-                          mini: true,
-                          onPressed: _showAddCoinPage,
-                        ),
-                        SizedBox(width: 16),
-                        Text(
-                          AppLocalizations.of(context).addCoin,
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                      ],
+                final hasCoinsToAdd = snapshot.data;
+
+                if (hasCoinsToAdd ?? false) {
+                  if (isCollapsed)
+                    // Outlined icon button (Circular, same color as icon)
+                    // is used for collapsed state.
+                    return Center(
+                      child: OutlinedButton(
+                        style: Theme.of(context)
+                            .outlinedButtonTheme
+                            .style
+                            .copyWith(
+                              shape: MaterialStateProperty.all(
+                                const CircleBorder(),
+                              ),
+                            ),
+                        key: const Key('adding-coins-fab'),
+                        onPressed: () => _showAddCoinPage(context),
+                        child: Icon(Icons.add),
+                      ),
+                    );
+
+                  return GestureDetector(
+                    onTap: () => _showAddCoinPage(context),
+                    behavior: HitTestBehavior.opaque,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        // Abnormally large horizontal padding to make the
+                        // clickable region larger. Widget is center aligned,
+                        // so does not make a difference visually but serves
+                        // a purpose.
+                        horizontal: 32,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          FloatingActionButton(
+                            key: const Key('adding-coins-fab'),
+                            child: Icon(Icons.add),
+                            mini: true,
+                            onPressed: () => _showAddCoinPage,
+                            // onPressed: _showAddCoinPage,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            AppLocalizations.of(context).addCoin,
+                            style: Theme.of(context).textTheme.headline5,
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 } else {
@@ -78,7 +114,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
         });
   }
 
-  void _showAddCoinPage() {
+  void _showAddCoinPage(BuildContext context) {
     if (mainBloc.networkStatus != NetworkStatus.Online) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
