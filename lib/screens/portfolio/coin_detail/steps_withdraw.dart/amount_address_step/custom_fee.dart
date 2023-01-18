@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../../../../../blocs/coin_detail_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../../model/coin.dart';
@@ -66,6 +67,7 @@ class _CustomFeeState extends State<CustomFee> {
                     ? CustomFeeFieldERC(
                         coin: widget.coin,
                         isCustomFeeActive: isCustomFeeActive,
+                        scrollController: widget.scrollController,
                       )
                     : CustomFeeFieldSmartChain(
                         coin: widget.coin,

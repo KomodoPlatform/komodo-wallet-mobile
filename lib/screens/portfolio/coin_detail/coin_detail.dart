@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:share/share.dart';
+
 import '../../../../blocs/coin_detail_bloc.dart';
 import '../../../../blocs/coins_bloc.dart';
 import '../../../../blocs/main_bloc.dart';
@@ -19,14 +22,6 @@ import '../../../../model/send_raw_transaction_response.dart';
 import '../../../../model/transaction_data.dart';
 import '../../../../model/transactions.dart';
 import '../../../../model/withdraw_response.dart';
-import '../../authentification/lock_screen.dart';
-import '../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_address_step.dart';
-import '../../portfolio/coin_detail/steps_withdraw.dart/build_confirmation_step.dart';
-import '../../portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
-import '../../portfolio/coin_detail/tx_list_item.dart';
-import '../../portfolio/copy_dialog.dart';
-import '../../portfolio/faucet_dialog.dart';
-import '../../portfolio/rewards_page.dart';
 import '../../../../services/mm.dart';
 import '../../../../services/mm_service.dart';
 import '../../../../utils/utils.dart';
@@ -35,8 +30,14 @@ import '../../../../widgets/build_red_dot.dart';
 import '../../../../widgets/photo_widget.dart';
 import '../../../../widgets/primary_button.dart';
 import '../../../../widgets/secondary_button.dart';
-import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import '../../authentification/lock_screen.dart';
+import '../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_address_step.dart';
+import '../../portfolio/coin_detail/steps_withdraw.dart/build_confirmation_step.dart';
+import '../../portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
+import '../../portfolio/coin_detail/tx_list_item.dart';
+import '../../portfolio/copy_dialog.dart';
+import '../../portfolio/faucet_dialog.dart';
+import '../../portfolio/rewards_page.dart';
 
 class CoinDetail extends StatefulWidget {
   const CoinDetail({
@@ -163,7 +164,7 @@ class _CoinDetailState extends State<CoinDetail> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           elevation: elevationHeader,
           foregroundColor: ThemeData.estimateBrightnessForColor(
