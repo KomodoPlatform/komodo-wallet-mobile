@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
@@ -996,8 +998,10 @@ class AppLocalizations {
   String get deleteSpan1 =>
       Intl.message('Do you want to remove ', name: 'deleteSpan1');
   String get deleteSpan2 => Intl.message(
-      ' from your portfolio? All unmatched orders will be canceled.',
+      ' from your portfolio? All unmatched orders will be canceled. ',
       name: 'deleteSpan2');
+  String get deleteSpan3 =>
+      Intl.message(' will also be deactivated', name: 'deleteSpan3');
   String get cantDeleteDefaultCoinTitle =>
       Intl.message("Can't disable ", name: 'cantDeleteDefaultCoinTitle');
   String get cantDeleteDefaultCoinSpan =>

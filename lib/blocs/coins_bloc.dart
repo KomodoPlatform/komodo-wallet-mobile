@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:decimal/decimal.dart';
+
 import '../app_config/app_config.dart';
 import '../blocs/main_bloc.dart';
 import '../blocs/settings_bloc.dart';
@@ -22,14 +24,14 @@ import '../model/get_tx_history.dart';
 import '../model/order_book_provider.dart';
 import '../model/transaction_data.dart';
 import '../model/transactions.dart';
-import '../services/get_erc_transactions.dart';
-import '../services/mm.dart';
 import '../services/db/database.dart';
+import '../services/get_erc_transactions.dart';
+import '../services/job_service.dart';
+import '../services/mm.dart';
 import '../services/mm_service.dart';
 import '../utils/log.dart';
 import '../utils/utils.dart';
 import '../widgets/bloc_provider.dart';
-import '../services/job_service.dart';
 
 class CoinsBloc implements BlocBase {
   CoinsBloc() {
@@ -312,6 +314,26 @@ class CoinsBloc implements BlocBase {
 
     await removeCoinBalance(coin);
     await deactivateCoins(<Coin>[coin]);
+  }
+
+  Future<void> removeIrisCoin(Coin coin, List<CoinBalance> irisTokens) async {
+    if (coin.suspended) {
+      _removeSuspendedCoin(coin);
+      for (var e in irisTokens) {
+        e.coin.suspended = true;
+        _removeSuspendedCoin(e.coin);
+      }
+      return;
+    }
+
+    await removeCoinBalance(coin);
+    final res = await MM.disableCoin(GetDisableCoin(coin: coin.abbr));
+    removeCoinLocal(coin, res);
+    syncOrderbook.updateActivePair();
+    for (var e in irisTokens) {
+      e.coin.suspended = true;
+      _removeSuspendedCoin(e.coin);
+    }
   }
 
   Future<void> removeCoin(Coin coin) async {
