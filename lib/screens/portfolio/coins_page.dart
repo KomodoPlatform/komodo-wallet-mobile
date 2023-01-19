@@ -53,7 +53,8 @@ class _CoinsPageState extends State<CoinsPage> {
     _heightSliver = _heightScreen * 0.25 - MediaQuery.of(context).padding.top;
     if (_heightSliver < 125) _heightSliver = 125;
 
-    final bool isCollapsed = _heightFactor < 1.3;
+    final bool isCollapsed = _scrollController.hasClients &&
+        _scrollController.offset > _heightSliver;
 
     return Scaffold(
         body: NestedScrollView(
@@ -68,7 +69,8 @@ class _CoinsPageState extends State<CoinsPage> {
                   actions: [
                     AnimatedOpacity(
                       opacity: isCollapsed ? 1 : 0,
-                      duration: Duration(milliseconds: 200),
+                      duration: Duration(milliseconds: 600),
+                      curve: Curves.easeInOutExpo,
                       child: AddCoinButton(
                         key: Key('add-coin-button-collapsed'),
                         isCollapsed: true,
