@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../model/feed_provider.dart';
 import '../screens/help-feedback/support_channel_item.dart';
 
@@ -58,20 +59,21 @@ class AppConfig {
         'VOTE2022'
       ];
 
-  final List<String> protocolSuffixes = [
-    'QRC20',
-    'ERC20',
-    'BEP20',
-    'PLG20',
-    'FTM20',
-    'HRC20',
-    'MVR20',
-    'HCO20',
-    'KRC20',
-    'AVX20',
-    'SLP',
-    'OLD',
-  ];
+  List<String> get protocolSuffixes => [
+        'QRC20',
+        'ERC20',
+        'BEP20',
+        'PLG20',
+        'FTM20',
+        'HRC20',
+        'MVR20',
+        'HCO20',
+        'KRC20',
+        'AVX20',
+        'SLP',
+        'OLD',
+        'IBC_IRIS',
+      ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
   Map<String, String> get allProtocolNames => {
         'utxo': 'UTXO',

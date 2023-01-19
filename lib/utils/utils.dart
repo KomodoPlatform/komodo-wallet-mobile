@@ -79,7 +79,7 @@ String getCoinIconPath(String abbr) {
     'PLY',
     'WID',
   ];
-  String ticker = getCoinTicker(abbr).replaceAll('-OLD', '').toLowerCase();
+  String ticker = getCoinTicker(abbr).toLowerCase();
   if (coinsWithoutIcons.contains(abbr)) ticker = 'adexbsc';
 
   return 'assets/coin-icons/$ticker.png';
