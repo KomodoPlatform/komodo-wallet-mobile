@@ -74,36 +74,14 @@ class AddCoinButton extends StatelessWidget {
                       ),
                     );
 
-                  return GestureDetector(
-                    onTap: () => _showAddCoinPage(context),
-                    behavior: HitTestBehavior.opaque,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4,
-                        // Abnormally large horizontal padding to make the
-                        // clickable region larger. Widget is center aligned,
-                        // so does not make a difference visually but serves
-                        // a purpose.
-                        horizontal: 32,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          FloatingActionButton(
-                            key: const Key('adding-coins-fab'),
-                            child: Icon(Icons.add),
-                            mini: true,
-                            onPressed: () => _showAddCoinPage,
-                            // onPressed: _showAddCoinPage,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            AppLocalizations.of(context).addCoin,
-                            style: Theme.of(context).textTheme.headline5,
-                          ),
-                        ],
-                      ),
+                  return SizedBox(
+                    width: 200,
+                    height: 46,
+                    child: PrimaryButton(
+                      key: const Key('add-coins-button'),
+                      icon: Icon(Icons.add),
+                      text: AppLocalizations.of(context).addCoin,
+                      onPressed: () => _showAddCoinPage(context),
                     ),
                   );
                 } else {
