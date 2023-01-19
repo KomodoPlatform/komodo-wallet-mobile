@@ -27,9 +27,13 @@ class AddCoinButton extends StatelessWidget {
             (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
           if (snapshot.data != null) {
             return isCollapsed
-                ? AspectRatio(
-                    aspectRatio: 1,
-                    child: CircularProgressIndicator(),
+                ? Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(12),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: CircularProgressIndicator(),
+                    ),
                   )
                 : Column(
                     mainAxisSize: MainAxisSize.min,
