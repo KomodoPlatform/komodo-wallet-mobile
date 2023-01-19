@@ -76,6 +76,7 @@ class _CoinsPageState extends State<CoinsPage> {
                         isCollapsed: true,
                       ),
                     ),
+                    SizedBox(width: 8),
                   ],
                   flexibleSpace: Builder(
                     builder: (BuildContext context) {
