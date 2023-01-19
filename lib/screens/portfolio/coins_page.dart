@@ -416,7 +416,10 @@ class ListCoinsState extends State<ListCoins> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      AddCoinButton(),
+                      AddCoinButton(
+                        key: const Key('add-coin-button-empty'),
+                        isCollapsed: true,
+                      ),
                       Text(AppLocalizations.of(context).pleaseAddCoin),
                     ],
                   ),
