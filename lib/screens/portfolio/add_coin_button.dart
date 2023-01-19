@@ -11,6 +11,7 @@ import '../../../../model/coin.dart';
 import '../portfolio/activate/select_coins_page.dart';
 import '../../../../services/db/database.dart';
 import '../../../../widgets/custom_simple_dialog.dart';
+import '../../widgets/primary_button.dart';
 
 class AddCoinButton extends StatelessWidget {
   const AddCoinButton({Key key, this.isCollapsed = false}) : super(key: key);
@@ -56,8 +57,6 @@ class AddCoinButton extends StatelessWidget {
 
                 if (hasCoinsToAdd ?? false) {
                   if (isCollapsed)
-                    // Outlined icon button (Circular, same color as icon)
-                    // is used for collapsed state.
                     return Center(
                       child: OutlinedButton(
                         style: Theme.of(context)
@@ -68,7 +67,7 @@ class AddCoinButton extends StatelessWidget {
                                 const CircleBorder(),
                               ),
                             ),
-                        key: const Key('adding-coins-fab'),
+                        key: const Key('add-coins-button-collapse'),
                         onPressed: () => _showAddCoinPage(context),
                         child: Icon(Icons.add),
                       ),
