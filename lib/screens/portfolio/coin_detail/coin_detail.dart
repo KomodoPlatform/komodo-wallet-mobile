@@ -955,6 +955,11 @@ class _CoinDetailState extends State<CoinDetail> {
         });
       },
       onWithdrawPressed: () async {
+        scrollController.animateTo(
+          scrollController.position.minScrollExtent,
+          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 300),
+        );
         setState(() {
           isExpanded = false;
           listSteps.add(BuildConfirmationStep(
