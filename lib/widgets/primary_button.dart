@@ -25,7 +25,7 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final buttonStyle = ElevatedButton.styleFrom(
       primary: backgroundColor ?? Theme.of(context).colorScheme.secondary,
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      minimumSize: const Size.fromHeight(48),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
