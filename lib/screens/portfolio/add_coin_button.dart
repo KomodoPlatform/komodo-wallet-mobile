@@ -77,15 +77,11 @@ class AddCoinButton extends StatelessWidget {
                       ),
                     );
 
-                  return SizedBox(
-                    width: 200,
-                    height: 46,
-                    child: PrimaryButton(
-                      key: const Key('add-coins-button'),
-                      icon: Icon(Icons.add),
-                      text: AppLocalizations.of(context).addCoin,
-                      onPressed: () => _showAddCoinPage(context),
-                    ),
+                  return PrimaryButton(
+                    key: const Key('add-coins-button'),
+                    icon: Icon(Icons.add),
+                    text: AppLocalizations.of(context).addCoin,
+                    onPressed: () => _showAddCoinPage(context),
                   );
                 } else {
                   return SizedBox();
