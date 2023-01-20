@@ -207,6 +207,7 @@ class _CoinsPageState extends State<CoinsPage> {
                 SliverAppBar(
                   flexibleSpace:
                       Center(child: AddCoinButton(key: Key('add-coin-button'))),
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   pinned: false,
                 ),
               ];
