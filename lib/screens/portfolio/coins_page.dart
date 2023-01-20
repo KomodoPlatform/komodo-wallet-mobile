@@ -71,9 +71,12 @@ class _CoinsPageState extends State<CoinsPage> {
                       opacity: isCollapsed ? 1 : 0,
                       duration: Duration(milliseconds: 600),
                       curve: Curves.easeInOutExpo,
-                      child: AddCoinButton(
-                        key: Key('add-coin-button-collapsed'),
-                        isCollapsed: true,
+                      child: IgnorePointer(
+                        ignoring: !isCollapsed,
+                        child: AddCoinButton(
+                          key: Key('add-coin-button-collapsed'),
+                          isCollapsed: true,
+                        ),
                       ),
                     ),
                     SizedBox(width: 8),
