@@ -205,9 +205,18 @@ class _CoinsPageState extends State<CoinsPage> {
                   automaticallyImplyLeading: false,
                 ),
                 SliverAppBar(
-                  flexibleSpace:
-                      Center(child: AddCoinButton(key: Key('add-coin-button'))),
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  toolbarHeight: 48,
+                  flexibleSpace: Center(
+                    child: IntrinsicWidth(
+                      // Child has infite width. We want to change so that it
+                      // ignores the infinite width and takes up min width.
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: AddCoinButton(key: Key('add-coin-button')),
+                      ),
+                    ),
+                  ),
                   pinned: false,
                 ),
               ];
