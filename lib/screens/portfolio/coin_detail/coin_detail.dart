@@ -986,7 +986,11 @@ class _CoinDetailState extends State<CoinDetail> {
               setState(() {
                 isSendIsActive = false;
               });
-
+              scrollController.animateTo(
+                scrollController.position.minScrollExtent,
+                curve: Curves.easeOut,
+                duration: const Duration(milliseconds: 300),
+              );
               listSteps.add(SizedBox(
                   height: 100,
                   width: double.infinity,
