@@ -4,27 +4,27 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../app_config/app_config.dart';
 import '../../../../blocs/coins_bloc.dart';
 import '../../../../blocs/dialog_bloc.dart';
 import '../../../../blocs/main_bloc.dart';
 import '../../../../blocs/settings_bloc.dart';
 import '../../../../blocs/zcash_bloc.dart';
 import '../../../../localizations.dart';
-import '../../../../app_config/app_config.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin.dart';
 import '../../../../model/coin_balance.dart';
-import '../portfolio/activate/select_coins_page.dart';
-import '../portfolio/loading_coin.dart';
 import '../../../../services/db/database.dart';
 import '../../../../services/mm_service.dart';
 import '../../../../widgets/custom_simple_dialog.dart';
-
-import 'package:provider/provider.dart';
-
+import '../portfolio/activate/select_coins_page.dart';
+import '../portfolio/loading_coin.dart';
 import 'item_coin.dart';
+import 'item_zcoin.dart';
 
 class CoinsPage extends StatefulWidget {
   @override
@@ -372,61 +372,60 @@ class ListCoinsState extends State<ListCoins> {
             color: Theme.of(context).colorScheme.secondary,
             key: _refreshIndicatorKey,
             onRefresh: () => coinsBloc.updateCoinBalances(),
-            child: Column(
-              children: [
-                _buildZCashProgressIndicator(),
-                Expanded(
-                  child: Builder(builder: (BuildContext context) {
-                    if (snapshot.data != null && snapshot.data.isNotEmpty) {
-                      final List<dynamic> datas = <dynamic>[];
+            child: Builder(builder: (BuildContext context) {
+              if (snapshot.data != null && snapshot.data.isNotEmpty) {
+                final List<dynamic> datas = <dynamic>[];
 
-                      final List<CoinBalance> _sorted =
-                          coinsBloc.sortCoins(snapshot.data);
+                final List<CoinBalance> _sorted =
+                    coinsBloc.sortCoins(snapshot.data);
 
-                      datas.addAll(_sorted);
-                      datas.add(true);
-                      return SlidableAutoCloseBehavior(
-                        child: ListView.separated(
-                          key: const Key('list-view-coins'),
-                          itemCount: datas.length,
-                          padding: const EdgeInsets.all(0),
-                          itemBuilder: (BuildContext context, int index) {
-                            if (datas[index] is bool) {
-                              return const AddCoinButton(key: Key('add-coin'));
-                            } else {
-                              return ItemCoin(
-                                key: Key('coin-list-${datas[index].coin.abbr}'),
-                                mContext: context,
-                                coinBalance: datas[index],
-                              );
-                            }
-                          },
-                          separatorBuilder: (context, _) => Divider(
-                              color: Theme.of(context).colorScheme.surface),
-                        ),
-                      );
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return LoadingCoin();
-                    } else if (snapshot.data.isEmpty) {
-                      // MRC: Add center to fix random UI glitch
-                      // due to loading Add Button
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const AddCoinButton(),
-                            Text(AppLocalizations.of(context).pleaseAddCoin),
-                          ],
-                        ),
-                      );
-                    } else {
-                      return SizedBox();
-                    }
-                  }),
-                ),
-              ],
-            ));
+                datas.addAll(_sorted);
+                datas.add(true);
+                return SlidableAutoCloseBehavior(
+                    child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    _buildZCashProgressIndicator(),
+                    ListView.separated(
+                      key: const Key('list-view-coins'),
+                      itemCount: datas.length,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (datas[index] is bool) {
+                          return const AddCoinButton(key: Key('add-coin'));
+                        } else {
+                          return ItemCoin(
+                            key: Key('coin-list-${datas[index].coin.abbr}'),
+                            mContext: context,
+                            coinBalance: datas[index],
+                          );
+                        }
+                      },
+                      separatorBuilder: (context, _) =>
+                          Divider(color: Theme.of(context).colorScheme.surface),
+                    ),
+                  ],
+                ));
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return LoadingCoin();
+              } else if (snapshot.data.isEmpty) {
+                // MRC: Add center to fix random UI glitch
+                // due to loading Add Button
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const AddCoinButton(),
+                      Text(AppLocalizations.of(context).pleaseAddCoin),
+                    ],
+                  ),
+                );
+              } else {
+                return SizedBox();
+              }
+            }));
       },
     );
   }
@@ -438,42 +437,12 @@ class ListCoinsState extends State<ListCoins> {
         builder:
             (BuildContext context, AsyncSnapshot<Map<int, ZTask>> snapshot) {
           Map<int, ZTask> data = snapshot.data;
-          return data.isNotEmpty
-              ? Column(mainAxisSize: MainAxisSize.min, children: [
-                  for (ZTask task in data.values) ...[
-                    LinearProgressIndicator(value: task.progress / 100),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                      child: Row(
-                        children: [
-                          Text('${task.message}: ${task.progress}%'),
-                          Spacer(),
-                          if (task.result != null &&
-                              task.type == ZTaskType.WITHDRAW)
-                            InkWell(
-                              onTap: () {
-                                zcashBloc.confirmWithdraw(task);
-                              },
-                              child: Text(
-                                'Confirm',
-                                style: TextStyle(color: Colors.blue),
-                              ),
-                            ),
-                          InkWell(
-                            onTap: () {
-                              zcashBloc.cancelTask(task);
-                            },
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.red,
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ]
-                ])
-              : SizedBox();
+          return ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            physics: ClampingScrollPhysics(),
+            children: data.values.map((e) => ItemZCoin(task: e)).toList(),
+          );
         });
   }
 }
