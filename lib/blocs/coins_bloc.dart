@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:decimal/decimal.dart';
+
 import '../app_config/app_config.dart';
 import '../blocs/main_bloc.dart';
 import '../blocs/settings_bloc.dart';
@@ -24,14 +26,14 @@ import '../model/get_tx_history.dart';
 import '../model/order_book_provider.dart';
 import '../model/transaction_data.dart';
 import '../model/transactions.dart';
-import '../services/get_erc_transactions.dart';
-import '../services/mm.dart';
 import '../services/db/database.dart';
+import '../services/get_erc_transactions.dart';
+import '../services/job_service.dart';
+import '../services/mm.dart';
 import '../services/mm_service.dart';
 import '../utils/log.dart';
 import '../utils/utils.dart';
 import '../widgets/bloc_provider.dart';
-import '../services/job_service.dart';
 
 class CoinsBloc implements BlocBase {
   CoinsBloc() {
@@ -582,7 +584,7 @@ class CoinsBloc implements BlocBase {
 
     // remove z-coin that are currently enabling from activation list
     for (var zCoin in zcashBloc.coinsToActivate) {
-      notActive.removeWhere((e) => e.abbr == zCoin.abbr);
+      notActive.removeWhere((e) => e.abbr == zCoin);
     }
 
     notActive.sort((Coin a, Coin b) =>

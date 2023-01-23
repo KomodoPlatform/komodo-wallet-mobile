@@ -3,13 +3,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import '../app_config/app_config.dart';
-import '../model/version_mm2.dart';
-import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart'
     show EventChannel, MethodChannel, rootBundle, SystemChannels;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:komodo_dex/blocs/zcash_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart' as path;
+
+import '../app_config/app_config.dart';
 import '../blocs/coins_bloc.dart';
 import '../blocs/orders_bloc.dart';
 import '../model/balance.dart';
@@ -18,12 +20,12 @@ import '../model/coin.dart';
 import '../model/config_mm2.dart';
 import '../model/get_balance.dart';
 import '../model/swap_provider.dart';
-import '../services/mm.dart';
+import '../model/version_mm2.dart';
 import '../services/job_service.dart';
+import '../services/mm.dart';
 import '../utils/encryption_tool.dart';
 import '../utils/log.dart';
 import '../utils/utils.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 /// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
@@ -465,6 +467,8 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
       await coinsBloc.enableCoins(active);
+      // continue activating z coins if exists
+      await zcashBloc.downloadZParams();
 
       for (int i = 0; i < 2; i++) {
         await coinsBloc.retryActivatingSuspendedCoins();

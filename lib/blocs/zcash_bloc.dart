@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../blocs/coins_bloc.dart';
 import '../model/balance.dart';
@@ -21,11 +22,26 @@ import '../utils/utils.dart';
 import '../widgets/bloc_provider.dart';
 
 class ZCashBloc implements BlocBase {
+  ZCashBloc() {
+    _loadPrefs();
+  }
+
+  SharedPreferences _prefs;
+
+  Future<void> _loadPrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+    coinsToActivate = _prefs.getStringList('zcoinsToActivate') ?? [];
+  }
+
+  void setZcoinsToActivate(List<String> list) {
+    _prefs.setStringList('zcoinsToActivate', list);
+  }
+
   // Streams to zcash params download progress
   final StreamController<Map<int, ZTask>> _zcashProgressController =
       StreamController<Map<int, ZTask>>.broadcast();
 
-  List<Coin> coinsToActivate = [];
+  List<String> coinsToActivate = [];
   Map<int, ZTask> tasksToCheck = {};
 
   Sink<Map<int, ZTask>> get _inZcashProgress => _zcashProgressController.sink;
@@ -42,10 +58,11 @@ class ZCashBloc implements BlocBase {
     List<Coin> list =
         coins.where((element) => element.type == CoinType.zhtlc).toList();
     for (var a in list) {
-      if (coinsToActivate.where((e) => e.abbr == a.abbr).isEmpty) {
-        coinsToActivate.add(a);
+      if (coinsToActivate.where((e) => e == a.abbr).isEmpty) {
+        coinsToActivate.add(a.abbr);
       }
     }
+    setZcoinsToActivate(coinsToActivate);
     if (list.isNotEmpty) {
       // remove zcash-coins from the main coin list if it exists
       coins.removeWhere((coin) => list.contains(coin));
@@ -62,13 +79,14 @@ class ZCashBloc implements BlocBase {
     final List<Map<String, dynamic>> batch = [];
 
     final dir = await getApplicationDocumentsDirectory();
-    for (Coin coin in coinsToActivate) {
+    for (String abbr in coinsToActivate) {
+      Coin coin = coinsBloc.getKnownCoinByAbbr(abbr);
       final electrum = {
         'userpass': mmSe.userpass,
         'method': 'task::enable_z_coin::init',
         'mmrpc': '2.0',
         'params': {
-          'ticker': coin.abbr,
+          'ticker': abbr,
           'activation_params': {
             'mode': {
               'rpc': 'Light',
@@ -105,12 +123,12 @@ class ZCashBloc implements BlocBase {
       int id = reply['result']['task_id'];
       bool taskExists = false;
       for (var element in tasksToCheck.values) {
-        if (element.abbr == coinsToActivate[i].abbr &&
+        if (element.abbr == coinsToActivate[i] &&
             element.type == ZTaskType.ACTIVATING) taskExists = true;
       }
       if (!taskExists) {
         tasksToCheck[id] = ZTask(
-          abbr: coinsToActivate[i].abbr,
+          abbr: coinsToActivate[i],
           progress: 0,
           type: ZTaskType.ACTIVATING,
           id: id,
@@ -142,6 +160,7 @@ class ZCashBloc implements BlocBase {
       if (tasksToCheck.isEmpty) {
         jobService.suspend('checkZcashProcessStatus');
         coinsToActivate.clear();
+        setZcoinsToActivate(coinsToActivate);
         return;
       }
       for (var task in tasksToCheck.keys) {
@@ -234,7 +253,8 @@ class ZCashBloc implements BlocBase {
         jobService.suspend('checkZcashProcessStatus');
         _startActivationStatusCheck();
       }
-      coinsToActivate.removeWhere((coin) => coin.abbr == abbr);
+      coinsToActivate.removeWhere((coin) => coin == abbr);
+      setZcoinsToActivate(coinsToActivate);
     } else if (status == 'InProgress') {
       if (details == 'ActivatingCoin') {
         _progress = 5;
@@ -266,7 +286,8 @@ class ZCashBloc implements BlocBase {
       }
     } else {
       tasksToCheck.remove(id);
-      coinsToActivate.removeWhere((coin) => coin.abbr == abbr);
+      coinsToActivate.removeWhere((coin) => coin == abbr);
+      setZcoinsToActivate(coinsToActivate);
       Log('zcash_bloc:273', 'Error activating $abbr: unexpected error');
     }
     if (tasksToCheck[id] != null) {
@@ -277,6 +298,7 @@ class ZCashBloc implements BlocBase {
   }
 
   Future<void> downloadZParams() async {
+    if (coinsToActivate.isEmpty) return;
     final dir = await getApplicationDocumentsDirectory();
     Directory zDir = Directory(dir.path + folder);
     if (zDir.existsSync() && mmSe.dirStatSync(zDir.path, endsWith: '') > 50) {
@@ -339,9 +361,10 @@ class ZCashBloc implements BlocBase {
       }
     ]);
     if (isEnable) {
-      coinsToActivate.removeWhere((coin) => coin.abbr == task.abbr);
+      coinsToActivate.removeWhere((coin) => coin == task.abbr);
     }
     if (task.type == ZTaskType.DOWNLOADING) coinsToActivate = [];
+    setZcoinsToActivate(coinsToActivate);
     tasksToCheck.remove(task.id);
     _inZcashProgress.add(tasksToCheck);
   }
