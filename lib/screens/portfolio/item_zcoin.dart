@@ -31,22 +31,12 @@ class _ItemZCoinState extends State<ItemZCoin> {
               if (widget.task.result != null &&
                   widget.task.type == ZTaskType.WITHDRAW)
                 InkWell(
-                  onTap: () {
-                    zcashBloc.confirmWithdraw(widget.task);
-                  },
-                  child: Text(
-                    'Confirm',
-                    style: TextStyle(color: Colors.blue),
-                  ),
+                  onTap: () => zcashBloc.confirmWithdraw(widget.task),
+                  child: Text('Confirm', style: TextStyle(color: Colors.blue)),
                 ),
               InkWell(
-                onTap: () {
-                  zcashBloc.cancelTask(widget.task);
-                },
-                child: Icon(
-                  Icons.close,
-                  color: Colors.red,
-                ),
+                onTap: () => zcashBloc.cancelTask(widget.task),
+                child: Icon(Icons.close, color: Colors.red),
               ),
             ],
           )
@@ -72,22 +62,10 @@ class _ItemZCoinState extends State<ItemZCoin> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Stack(
-                        children: [
-                          CircleAvatar(
-                            radius: 28,
-                            backgroundColor: Colors.transparent,
-                            backgroundImage:
-                                AssetImage(getCoinIconPath(coin.abbr)),
-                          ),
-                          if (coin.suspended)
-                            Icon(
-                              Icons.warning_rounded,
-                              size: 20,
-                              color: Colors.yellow[600],
-                            ),
-                        ],
-                        alignment: Alignment.bottomRight,
+                      CircleAvatar(
+                        radius: 28,
+                        backgroundColor: Colors.transparent,
+                        backgroundImage: AssetImage(getCoinIconPath(coin.abbr)),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -140,9 +118,7 @@ class _ItemZCoinState extends State<ItemZCoin> {
               child: Padding(
                 padding: const EdgeInsets.all(6.0),
                 child: InkWell(
-                  onTap: () {
-                    zcashBloc.cancelTask(widget.task);
-                  },
+                  onTap: () => zcashBloc.cancelTask(widget.task),
                   child: Icon(
                     Icons.close,
                     color: Colors.red,

@@ -432,7 +432,7 @@ class ListCoinsState extends State<ListCoins> {
 
   Widget _buildZCashProgressIndicator() {
     return StreamBuilder<Map<int, ZTask>>(
-        initialData: const {},
+        initialData: zcashBloc.tasksToCheck,
         stream: zcashBloc.outZcashProgress,
         builder:
             (BuildContext context, AsyncSnapshot<Map<int, ZTask>> snapshot) {
