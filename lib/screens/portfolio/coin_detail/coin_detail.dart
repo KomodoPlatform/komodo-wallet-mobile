@@ -64,6 +64,8 @@ class _CoinDetailState extends State<CoinDetail> {
   BuildContext mainContext;
   String fromId;
   bool isExpanded = false;
+  bool autoClose = true;
+  Timer closeTimer;
   bool isLoading = false;
   bool loadingWithdrawDialog = true;
   bool isSendIsActive;
@@ -715,7 +717,7 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Widget _buildButtonLight(StatusButton statusButton, BuildContext mContext) {
-    if (currentIndex == 3 && statusButton == StatusButton.SEND) {
+    if (currentIndex == 3 && statusButton == StatusButton.SEND && autoClose) {
       _closeAfterAWait();
     }
 
@@ -799,6 +801,8 @@ class _CoinDetailState extends State<CoinDetail> {
                   if (currentIndex == 3) {
                     setState(() {
                       isExpanded = false;
+                      autoClose = false;
+                      closeTimer?.cancel();
                       _waitForInit();
                     });
                   } else {
@@ -900,7 +904,7 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Future<void> _closeAfterAWait() async {
-    Timer(const Duration(milliseconds: 3000), () {
+    closeTimer = Timer(const Duration(milliseconds: 3000), () {
       if (mounted) {
         setState(() {
           isExpanded = false;
@@ -1016,6 +1020,7 @@ class _CoinDetailState extends State<CoinDetail> {
                     ));
 
                     currentIndex = 3;
+                    autoClose = true;
                   });
                 } else if (dataRawTx is ErrorString &&
                     dataRawTx.error.contains('gas is too low')) {
