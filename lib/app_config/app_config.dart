@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../model/feed_provider.dart';
 import '../screens/help-feedback/support_channel_item.dart';
 
@@ -89,6 +90,27 @@ class AppConfig {
         'sbch': 'SmartBCH (SBCH)',
         'slp': 'SLP Tokens',
       };
+
+  // ERC: [0]= limit , [1] = gwei
+  // smartchains : [0] = fee
+  Map<String, List<double>> standardFees = {
+    'utxo': [0.00001],
+    'smartChain': [0],
+    'erc': [21600, 15],
+    'bep': [23000, 10],
+    'qrc': [0, 0],
+    'plg': [50000, 45],
+    'ftm': [150000, 1250],
+    'hrc': [21000, 100],
+    'avx': [50000, 30],
+    'hco': [0, 0],
+    'mvr': [21600, 15],
+    'krc': [0, 0],
+    'ubiq': [21600, 5],
+    'etc': [21600, 10],
+    'sbch': [0, 0],
+    'slp': [0, 0],
+  };
 
   bool get isSwapShareCardEnabled => true;
 

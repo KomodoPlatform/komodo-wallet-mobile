@@ -1,22 +1,23 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../../../app_config/app_config.dart';
-import '../../../../../model/coin_balance.dart';
-import '../../../../../model/coin_type.dart';
-import '../../../../../widgets/custom_simple_dialog.dart';
+import '../../../../../blocs/coin_detail_bloc.dart';
 import '../../../../../blocs/coins_bloc.dart';
 import '../../../../../blocs/dialog_bloc.dart';
-import '../../../../../utils/utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../blocs/coin_detail_bloc.dart';
 import '../../../../../localizations.dart';
+import '../../../../../model/coin_balance.dart';
+import '../../../../../model/coin_type.dart';
+import '../../../../../services/lock_service.dart';
+import '../../../../../services/mm_service.dart';
+import '../../../../../utils/utils.dart';
+import '../../../../../widgets/custom_simple_dialog.dart';
+import '../../../../../widgets/primary_button.dart';
+import '../../../../../widgets/secondary_button.dart';
 import '../../../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
 import '../../../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_field.dart';
 import '../../../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/custom_fee.dart';
-import '../../../../../services/lock_service.dart';
-import '../../../../../services/mm_service.dart';
-import '../../../../../widgets/primary_button.dart';
-import '../../../../../widgets/secondary_button.dart';
-import 'package:decimal/decimal.dart';
 
 class AmountAddressStep extends StatefulWidget {
   const AmountAddressStep({
@@ -94,6 +95,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
                 coin: widget.coinBalance.coin,
                 amount: widget.amountController.text,
                 scrollController: widget.scrollController,
+                onChanged: onChanged,
               ),
             Row(
               children: <Widget>[

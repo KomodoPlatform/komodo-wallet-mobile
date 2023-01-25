@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
+
 import '../../../../../blocs/coin_detail_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../../model/coin.dart';
@@ -7,12 +9,14 @@ import '../../../../../model/get_withdraw.dart';
 import '../../../../../utils/utils.dart';
 
 class CustomFee extends StatefulWidget {
-  const CustomFee({Key key, this.amount, this.coin, this.scrollController})
+  const CustomFee(
+      {Key key, this.amount, this.coin, this.scrollController, this.onChanged})
       : super(key: key);
 
   final String amount;
   final Coin coin;
   final ScrollController scrollController;
+  final Function(String) onChanged;
   @override
   _CustomFeeState createState() => _CustomFeeState();
 }
@@ -83,12 +87,17 @@ class _CustomFeeState extends State<CustomFee> {
 
 class CustomFeeFieldERC extends StatefulWidget {
   const CustomFeeFieldERC(
-      {Key key, this.isCustomFeeActive, this.coin, this.scrollController})
+      {Key key,
+      this.isCustomFeeActive,
+      this.coin,
+      this.scrollController,
+      this.onChanged})
       : super(key: key);
 
   final bool isCustomFeeActive;
   final Coin coin;
   final ScrollController scrollController;
+  final Function(String) onChanged;
 
   @override
   _CustomFeeFieldERCState createState() => _CustomFeeFieldERCState();
@@ -130,6 +139,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
                       const TextInputType.numberWithOptions(decimal: true),
                   style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.end,
+                  onChanged: widget.onChanged,
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context).gasLimit,
                   ),
@@ -140,7 +150,13 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
                       if (value.isEmpty || double.parse(value) < 0) {
                         return AppLocalizations.of(context).errorValueNotEmpty;
                       }
-
+                      final double currentAmount = double.parse(value);
+                      String type = widget.coin.type.name;
+                      double standardFee = appConfig.standardFees[type].first;
+                      if (currentAmount < standardFee) {
+                        return AppLocalizations.of(context)
+                            .limitError(standardFee.toInt());
+                      }
                       coinsDetailBloc.setCustomFee(Fee(
                           gas: int.parse(
                               _gasController.text.replaceAll(',', '.')),
@@ -177,6 +193,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
                   const TextInputType.numberWithOptions(decimal: true),
               style: Theme.of(context).textTheme.bodyText2,
               textAlign: TextAlign.end,
+              onChanged: widget.onChanged,
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]',
               ),
@@ -186,6 +203,12 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
 
                   if (value.isEmpty || double.parse(value) < 0) {
                     return AppLocalizations.of(context).errorValueNotEmpty;
+                  }
+                  final double currentAmount = double.parse(value);
+                  String type = widget.coin.type.name;
+                  int standardFee = appConfig.standardFees[type].last.toInt();
+                  if (currentAmount < standardFee) {
+                    return AppLocalizations.of(context).gweiError(standardFee);
                   }
                   coinsDetailBloc.setCustomFee(Fee(
                       gas: int.parse(_gasController.text.replaceAll(',', '.')),
@@ -203,12 +226,17 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
 
 class CustomFeeFieldSmartChain extends StatefulWidget {
   const CustomFeeFieldSmartChain(
-      {Key key, this.isCustomFeeActive, this.coin, this.scrollController})
+      {Key key,
+      this.isCustomFeeActive,
+      this.coin,
+      this.scrollController,
+      this.onChanged})
       : super(key: key);
 
   final bool isCustomFeeActive;
   final Coin coin;
   final ScrollController scrollController;
+  final Function(String) onChanged;
 
   @override
   _CustomFeeFieldSmartChainState createState() =>
@@ -252,6 +280,7 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain>
                       '^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
                 ],
                 textInputAction: TextInputAction.done,
+                onChanged: widget.onChanged,
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
                 style: Theme.of(context).textTheme.bodyText2,
@@ -275,6 +304,14 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain>
                         double.parse(coinsDetailBloc.amountToSend ?? '0')) {
                       return AppLocalizations.of(context).errorAmountBalance;
                     }
+
+                    String type = widget.coin.type.name;
+                    double standardFee = appConfig.standardFees[type].first;
+                    if (currentAmount < standardFee) {
+                      return AppLocalizations.of(context)
+                          .feesError(standardFee);
+                    }
+
                     coinsDetailBloc.setCustomFee(Fee(amount: value));
                   }
                   return null;
