@@ -165,7 +165,7 @@ class _CoinDetailState extends State<CoinDetail> {
     return LockScreen(
       context: context,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           elevation: elevationHeader,
           foregroundColor: ThemeData.estimateBrightnessForColor(
@@ -957,6 +957,11 @@ class _CoinDetailState extends State<CoinDetail> {
         });
       },
       onWithdrawPressed: () async {
+        scrollController.animateTo(
+          scrollController.position.minScrollExtent,
+          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 300),
+        );
         setState(() {
           isExpanded = false;
           listSteps.add(BuildConfirmationStep(
@@ -983,6 +988,11 @@ class _CoinDetailState extends State<CoinDetail> {
               setState(() {
                 isSendIsActive = false;
               });
+              scrollController.animateTo(
+                scrollController.position.minScrollExtent,
+                curve: Curves.easeOut,
+                duration: const Duration(milliseconds: 300),
+              );
 
               listSteps.add(
                 Column(

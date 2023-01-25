@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart' as arch;
+
 import '../../app_config/app_config.dart';
 import '../../blocs/camo_bloc.dart';
 import '../../model/cex_provider.dart';
@@ -18,7 +19,6 @@ import '../../blocs/wallet_bloc.dart';
 import '../../localizations.dart';
 import '../../model/updates_provider.dart';
 import '../../model/wallet_security_settings_provider.dart';
-import '../authentification/disclaimer_page.dart';
 import '../authentification/lock_screen.dart';
 import '../authentification/pin_page.dart';
 import '../authentification/show_delete_wallet_confirmation.dart';
@@ -34,6 +34,11 @@ import '../../utils/log.dart';
 import '../../utils/utils.dart';
 import '../../widgets/build_red_dot.dart';
 import '../../widgets/custom_simple_dialog.dart';
+import '../../widgets/eula_contents.dart';
+import '../../widgets/primary_button.dart';
+import '../../widgets/scrollable_dialog.dart';
+import '../../widgets/tac_contents.dart';
+
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -69,8 +74,6 @@ class _SettingPageState extends State<SettingPage> {
     cexProvider = Provider.of<CexProvider>(context);
     walletSecuritySettingsProvider =
         context.watch<WalletSecuritySettingsProvider>();
-    // final Locale myLocale = Localizations.localeOf(context);
-    // Log('setting_page:67', 'current locale: $myLocale');
     return LockScreen(
       context: context,
       child: Scaffold(
@@ -90,6 +93,8 @@ class _SettingPageState extends State<SettingPage> {
             _buildActivatePIN(),
             const SizedBox(height: 1),
             _buildActivateBiometric(),
+            const SizedBox(height: 1),
+            _buildActivateScreenshot(),
             const SizedBox(height: 1),
             _buildCamouflagePin(),
             const SizedBox(height: 1),
@@ -245,6 +250,44 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
+  Widget _buildActivateScreenshot() {
+    return SwitchListTile(
+      title: Text(AppLocalizations.of(
+        context,
+      ).disableScreenshots),
+      tileColor: Theme.of(context).primaryColor,
+      value: walletSecuritySettingsProvider.disallowScreenshot,
+      onChanged: (bool switchValue) async {
+        if (!switchValue) {
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => UnlockWalletPage(
+                  textButton: AppLocalizations.of(context).unlock,
+                  wallet: walletBloc.currentWallet,
+                  isSignWithSeedIsEnabled: false,
+                  onSuccess: (_, __) {
+                    Navigator.pop(context);
+                    switchScreenshot(switchValue);
+                  }),
+            ),
+          );
+          return;
+        }
+        switchScreenshot(switchValue);
+      },
+    );
+  }
+
+  Future<void> switchScreenshot(bool switchValue) async {
+    Log('setting_page:269', 'disallowScreenshot $switchValue');
+    walletSecuritySettingsProvider.disallowScreenshot = switchValue;
+    // delay for a while for data to properly sync before trying to
+    // call it on the native side (affects majorly android)
+    await Future.delayed(Duration(microseconds: 500));
+    MMService.nativeC.invokeMethod('is_screenshot');
+  }
+
   void _showCamoPinBioProtectionConflictDialog() {
     dialogBloc.dialog = showDialog<dynamic>(
         context: context,
@@ -375,12 +418,28 @@ class _SettingPageState extends State<SettingPage> {
     return _chevronListTileHelper(
         title: Text(AppLocalizations.of(context).disclaimerAndTos),
         onTap: () {
-          Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => const DisclaimerPage(
-                      readOnly: true,
-                    )),
+          showDialog(
+            context: context,
+            builder: (context) => ScrollableDialog(
+                mustScrollToBottom: false,
+                verticalButtons: PrimaryButton(
+                  key: const Key('settings-tos-close'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  text: AppLocalizations.of(context).close,
+                ),
+                children: [
+                  Text(
+                      AppLocalizations.of(context)
+                          .eulaTitle1(appConfig.appName),
+                      style: Theme.of(context).textTheme.headline6),
+                  EULAContents(),
+                  const SizedBox(height: 16),
+                  Text(AppLocalizations.of(context).eulaTitle2,
+                      style: Theme.of(context).textTheme.headline6),
+                  TACContents(),
+                ]),
           );
         });
   }

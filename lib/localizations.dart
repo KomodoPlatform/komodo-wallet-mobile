@@ -48,10 +48,10 @@ class AppLocalizations {
   // --- Branding - EULA ---
 
   String eulaTitle1(String appName) =>
-      Intl.message('End-User License Agreement (EULA) of $appName mobile:\n\n',
+      Intl.message('End-User License Agreement (EULA) of $appName mobile',
           name: 'eulaTitle1', args: [appName]);
   String get eulaTitle2 =>
-      Intl.message('TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)\n\n',
+      Intl.message('TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)',
           name: 'eulaTitle2');
   String get eulaTitle3 =>
       Intl.message('TERMS AND CONDITIONS OF USE AND DISCLAIMER\n\n',
@@ -427,6 +427,8 @@ class AppLocalizations {
   String get security => Intl.message('Security', name: 'security');
   String get activateAccessPin =>
       Intl.message('Activate PIN protection', name: 'activateAccessPin');
+  String get disableScreenshots =>
+      Intl.message('Disable Screenshots/Preview', name: 'disableScreenshots');
   String get lockScreen => Intl.message('Screen is locked', name: 'lockScreen');
   String get changePin => Intl.message('Change PIN code', name: 'changePin');
   String get logout => Intl.message('Log Out', name: 'logout');
@@ -842,7 +844,7 @@ class AppLocalizations {
   String get accepttac =>
       Intl.message('Accept TERMS and CONDITIONS', name: 'accepttac');
   String get confirmeula => Intl.message(
-      'By clicking the below buttons you confirm to have read the \'EULA\' and \'Terms and Conditions\' and accept these',
+      'By clicking the button below, you confirm to have read and accept the \'EULA\' and \'Terms and Conditions\'.',
       name: 'confirmeula');
   String gasFee(String coin) =>
       Intl.message('$coin fee', name: 'gasFee', args: <Object>[coin]);
@@ -1535,6 +1537,10 @@ class AppLocalizations {
   String get closePreview =>
       Intl.message('Close preview', name: 'closePreview');
   String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
+
+  // TODO: localize this message for all languages
+  String get scrollToContinue =>
+      Intl.message('Scroll to bottom to continue...', name: 'scrollToContinue');
 
   String get developerTitle =>
       Intl.message('Developer', name: 'developerTitle');

@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/widgets/page_transition.dart';
+import 'package:pin_code_view/pin_code_view.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../blocs/authenticate_bloc.dart';
 import '../../blocs/camo_bloc.dart';
 import '../../blocs/coins_bloc.dart';
@@ -9,15 +13,12 @@ import '../../blocs/dialog_bloc.dart';
 import '../../localizations.dart';
 import '../../model/wallet.dart';
 import '../../model/wallet_security_settings_provider.dart';
-import '../authentification/app_bar_status.dart';
 import '../../services/db/database.dart';
 import '../../services/mm_service.dart';
 import '../../utils/encryption_tool.dart';
 import '../../utils/log.dart';
 import '../../utils/utils.dart';
-import 'package:pin_code_view/pin_code_view.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../authentification/app_bar_status.dart';
 
 class PinPage extends StatefulWidget {
   const PinPage({
@@ -229,6 +230,7 @@ class _PinPageState extends State<PinPage> {
 
         await prefs.remove('pin_create');
         await prefs.remove('is_pin_creation_in_progress');
+
         if (mounted)
           setState(() {
             _isLoading = false;
