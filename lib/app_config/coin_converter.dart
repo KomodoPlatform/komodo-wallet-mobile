@@ -28,6 +28,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       'explorer_address_url': coinData['explorer_address_url'],
       'serverList': coinData['nodes'] ?? coinData['electrum'] ?? [],
       'testCoin': coinData['is_testnet'] ?? false,
+      'walletOnly': coinData['wallet_only'],
       if (coinData['swap_contract_address'] != null)
         'swap_contract_address': coinData['swap_contract_address'],
       if (coinData['contract_address'] != null)
