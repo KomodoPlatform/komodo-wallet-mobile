@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../app_config/app_config.dart';
 import '../../blocs/authenticate_bloc.dart';
@@ -8,7 +9,10 @@ import '../../model/wallet.dart';
 import '../../services/db/database.dart';
 import '../../utils/encryption_tool.dart';
 import '../../utils/log.dart';
+import '../../widgets/eula_contents.dart';
 import '../../widgets/primary_button.dart';
+import '../../widgets/scrollable_dialog.dart';
+import '../../widgets/tac_contents.dart';
 import '../../localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,216 +36,24 @@ class DisclaimerPage extends StatefulWidget {
 
 class _DisclaimerPageState extends State<DisclaimerPage>
     with TickerProviderStateMixin {
-  final ScrollController _scrollController = ScrollController();
-  bool isEndOfScroll = false;
   bool isLoading = false;
   bool _checkBoxEULA = false;
   bool _checkBoxTOC = false;
-  Animation<Offset> _offsetFloat;
-  AnimationController _controller;
-  Animation<double> _scaleTransition;
-  AnimationController _controllerScale;
-  double _scrollPosition = 0.0;
   Timer timer;
 
   @override
   void initState() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-    _offsetFloat = Tween<Offset>(begin: const Offset(0, 0.01), end: Offset.zero)
-        .animate(_controller);
-
-    _offsetFloat.addListener(() {
-      setState(() {});
-    });
-
-    _controller.forward();
-    timer = Timer.periodic(const Duration(milliseconds: 500), (_) {
-      if (_controller.value == 0) {
-        _controller.forward();
-      } else {
-        _controller.reverse();
-      }
-    });
-
-    _controllerScale = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-    _scaleTransition =
-        CurvedAnimation(parent: _controllerScale, curve: Curves.ease);
-    _controllerScale.forward();
-
-    _scrollController.addListener(() {
-      setState(() {
-        _scrollPosition = _scrollController.position.pixels;
-      });
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        setState(() {
-          isEndOfScroll = true;
-          _controllerScale.reverse();
-          timer.cancel();
-        });
-      }
-    });
     super.initState();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
-    _controllerScale.dispose();
     timer.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<TextSpan> _disclaimerToSText = <TextSpan>[
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle1(appConfig.appName),
-          style: Theme.of(context).textTheme.headline6),
-      TextSpan(
-          text: AppLocalizations.of(context)
-              .eulaParagraphe1(appConfig.appName, appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle2,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context)
-              .eulaParagraphe2(appConfig.appName, appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle3,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle4,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe3,
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle5,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe4,
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle6,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe5(appConfig.appName),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle7,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context)
-              .eulaParagraphe6(appConfig.appName, appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle8,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe7,
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle9,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe8,
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle10,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe9,
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle11,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context)
-              .eulaParagraphe10(appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle12,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe11(
-              appConfig.appCompanyShort, appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle13,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe12,
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle14,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context)
-              .eulaParagraphe13(appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle15,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context)
-              .eulaParagraphe14(appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle16,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context)
-              .eulaParagraphe15(appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle17,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaParagraphe16(
-              appConfig.appCompanyShort, appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle18,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context)
-              .eulaParagraphe17(appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle19,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context)
-              .eulaParagraphe18(appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2),
-      TextSpan(
-          text: AppLocalizations.of(context).eulaTitle20,
-          style: Theme.of(context).textTheme.subtitle2),
-      TextSpan(
-          text: AppLocalizations.of(context)
-              .eulaParagraphe19(appConfig.appName, appConfig.appCompanyLong),
-          style: Theme.of(context).textTheme.bodyText2)
-    ];
-
-    final Widget _tosContent = Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: RichText(
-        text: TextSpan(
-          style: Theme.of(context).textTheme.bodyText2,
-          children: _disclaimerToSText,
-        ),
-      ),
-    );
-
     final Widget _tosControls = Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -261,7 +73,39 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                       },
                     ),
                     Flexible(
-                        child: Text(AppLocalizations.of(context).accepteula)),
+                      child: RichText(
+                        text: TextSpan(
+                          text: AppLocalizations.of(context).accepteula,
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                                decoration: TextDecoration.underline,
+                              ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ScrollableDialog(
+                                      title: Text(
+                                        AppLocalizations.of(context)
+                                            .eulaTitle1(appConfig.appName),
+                                      ),
+                                      children: [EULAContents()],
+                                      verticalButtons: PrimaryButton(
+                                        key: const Key('eula-close'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        text:
+                                            AppLocalizations.of(context).close,
+                                      ),
+                                      mustScrollToBottom: false,
+                                    );
+                                  });
+                            },
+                          mouseCursor: SystemMouseCursors.click,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 Row(
@@ -276,9 +120,37 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                       },
                     ),
                     Flexible(
-                        child: Text(
-                      AppLocalizations.of(context).accepttac,
-                    )),
+                      child: RichText(
+                        text: TextSpan(
+                          text: AppLocalizations.of(context).accepttac,
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                                decoration: TextDecoration.underline,
+                              ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ScrollableDialog(
+                                      title: Text(
+                                        AppLocalizations.of(context).eulaTitle2,
+                                      ),
+                                      children: [TACContents()],
+                                      verticalButtons: PrimaryButton(
+                                        key: const Key('tac-close'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        text:
+                                            AppLocalizations.of(context).close,
+                                      ),
+                                      mustScrollToBottom: false,
+                                    );
+                                  });
+                            },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 Padding(
@@ -291,11 +163,10 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                 ),
               ],
             ),
+          SizedBox(height: 16),
           PrimaryButton(
             key: const Key('next-disclaimer'),
-            onPressed: (widget.readOnly
-                    ? isEndOfScroll
-                    : isEndOfScroll && _checkBoxEULA && _checkBoxTOC)
+            onPressed: (!widget.readOnly && (_checkBoxEULA && _checkBoxTOC))
                 ? _nextPage
                 : null,
             text: widget.readOnly
@@ -316,44 +187,6 @@ class _DisclaimerPageState extends State<DisclaimerPage>
       ),
     );
 
-    final Widget _scrollControl = SlideTransition(
-      position: _offsetFloat,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ScaleTransition(
-            scale: _scaleTransition,
-            child: GestureDetector(
-              onLongPress: () {
-                _scrollController.animateTo(
-                    _scrollController.position.maxScrollExtent,
-                    duration: const Duration(seconds: 3),
-                    curve: Curves.ease);
-                setState(() {
-                  isEndOfScroll = true;
-                  _controllerScale.reverse();
-                  timer.cancel();
-                });
-              },
-              child: FloatingActionButton(
-                key: const Key('disclaimer-scroll-button'),
-                child: const Icon(Icons.arrow_downward),
-                onPressed: () {
-                  if (isEndOfScroll) {
-                    timer.cancel();
-                    _controllerScale.reverse();
-                  }
-                  _scrollController.animateTo(_scrollPosition + 300,
-                      duration: const Duration(seconds: 1), curve: Curves.ease);
-                },
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-
     return Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).disclaimerAndTos),
@@ -364,49 +197,12 @@ class _DisclaimerPageState extends State<DisclaimerPage>
           // On small screens and in split-screen mode
           // page controls (checkboxes, button) should not be docked
           // to the bottom of the screen
-          child: MediaQuery.of(context).size.height < 480
-              ? Stack(
-                  children: <Widget>[
-                    SingleChildScrollView(
-                      key: const Key('scroll-disclaimer'),
-                      controller: _scrollController,
-                      child: Column(
-                        children: <Widget>[
-                          _tosContent,
-                          _tosControls,
-                          const Text(
-                            '',
-                            key: Key('end-list-disclaimer'),
-                          ),
-                        ],
-                      ),
-                    ),
-                    _scrollControl,
-                  ],
-                )
-              : Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Stack(
-                        children: <Widget>[
-                          ListView(
-                            key: const Key('scroll-disclaimer'),
-                            controller: _scrollController,
-                            children: <Widget>[
-                              _tosContent,
-                              const Text(
-                                '',
-                                key: Key('end-list-disclaimer'),
-                              ),
-                            ],
-                          ),
-                          _scrollControl,
-                        ],
-                      ),
-                    ),
-                    _tosControls,
-                  ],
-                ),
+          child: Column(
+            children: <Widget>[
+              //
+              _tosControls,
+            ],
+          ),
         ));
   }
 
