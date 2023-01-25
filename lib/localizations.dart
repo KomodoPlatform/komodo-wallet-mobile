@@ -427,6 +427,8 @@ class AppLocalizations {
   String get security => Intl.message('Security', name: 'security');
   String get activateAccessPin =>
       Intl.message('Activate PIN protection', name: 'activateAccessPin');
+  String get disableScreenshots =>
+      Intl.message('Disable Screenshots/Preview', name: 'disableScreenshots');
   String get lockScreen => Intl.message('Screen is locked', name: 'lockScreen');
   String get changePin => Intl.message('Change PIN code', name: 'changePin');
   String get logout => Intl.message('Log Out', name: 'logout');
