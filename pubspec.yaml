@@ -115,8 +115,8 @@ dependencies:
 
   pin_code_view: # last reviewed c0b6516 -> da9f0f4 by yurii-khi
     git:
-      url: https://github.com/KomodoPlatform/pin_code_view.git
-      ref: da9f0f4a7b315f05e6d7e9f3f3d3a3644d7c042f # Does NOT support null safety
+      url: https://github.com/Brainants/pin_code_view.git
+      ref: 534cf8ab281dd574e74c0096b9eb4a9432d5a948 #0.3.0+2
 
   intl_generator: # newly added, wasn't reviewed
     git:

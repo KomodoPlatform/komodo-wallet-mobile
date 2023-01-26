@@ -36,6 +36,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.0"
+    version: "1.4.0"
   async:
     dependency: transitive
     description:
@@ -621,7 +622,7 @@ packages:
       name: path_provider_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.20"
+    version: "2.0.22"
   path_provider_ios:
     dependency: transitive
     description:
@@ -642,14 +643,14 @@ packages:
       name: path_provider_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.6"
+    version: "2.0.7"
   path_provider_platform_interface:
     dependency: transitive
     description:
       name: path_provider_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.0.5"
   path_provider_windows:
     dependency: transitive
     description:
@@ -668,11 +669,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: da9f0f4a7b315f05e6d7e9f3f3d3a3644d7c042f
-      resolved-ref: da9f0f4a7b315f05e6d7e9f3f3d3a3644d7c042f
-      url: "https://github.com/KomodoPlatform/pin_code_view.git"
+      ref: "534cf8ab281dd574e74c0096b9eb4a9432d5a948"
+      resolved-ref: "534cf8ab281dd574e74c0096b9eb4a9432d5a948"
+      url: "https://github.com/Brainants/pin_code_view.git"
     source: git
-    version: "0.2.1"
+    version: "0.3.0+2"
   platform:
     dependency: transitive
     description:
@@ -758,7 +759,7 @@ packages:
       name: shared_preferences_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.12"
+    version: "2.0.15"
   shared_preferences_ios:
     dependency: transitive
     description:
@@ -772,14 +773,14 @@ packages:
       name: shared_preferences_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.3"
   shared_preferences_macos:
     dependency: transitive
     description:
       name: shared_preferences_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.0.5"
   shared_preferences_platform_interface:
     dependency: transitive
     description:
@@ -800,7 +801,7 @@ packages:
       name: shared_preferences_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.3"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -828,7 +829,7 @@ packages:
       name: sqflite_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0"
+    version: "2.4.0"
   stack_trace:
     dependency: transitive
     description:
@@ -898,49 +899,49 @@ packages:
       name: url_launcher_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.17"
+    version: "6.0.23"
   url_launcher_ios:
     dependency: transitive
     description:
       name: url_launcher_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.17"
+    version: "6.0.18"
   url_launcher_linux:
     dependency: transitive
     description:
       name: url_launcher_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.2"
   url_launcher_macos:
     dependency: transitive
     description:
       name: url_launcher_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.2"
   url_launcher_platform_interface:
     dependency: transitive
     description:
       name: url_launcher_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   url_launcher_web:
     dependency: transitive
     description:
       name: url_launcher_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.6"
+    version: "2.0.14"
   url_launcher_windows:
     dependency: transitive
     description:
       name: url_launcher_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.2"
   uuid:
     dependency: "direct main"
     description:
@@ -1007,5 +1008,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.15.0 <3.0.0"
-  flutter: ">=2.8.1"
+  dart: ">=2.16.0 <3.0.0"
+  flutter: ">=2.10.0"
