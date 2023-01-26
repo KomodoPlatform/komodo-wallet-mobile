@@ -64,7 +64,7 @@ class _CoinsPageState extends State<CoinsPage> {
               return <Widget>[
                 SliverAppBar(
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  expandedHeight: _heightSliver,
+                  expandedHeight: 130,
                   pinned: true,
                   actions: [
                     AnimatedOpacity(
@@ -208,6 +208,7 @@ class _CoinsPageState extends State<CoinsPage> {
                   automaticallyImplyLeading: false,
                 ),
                 SliverAppBar(
+                  automaticallyImplyLeading: false,
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   toolbarHeight: 48,
                   flexibleSpace: Center(
