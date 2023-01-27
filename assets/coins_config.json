@@ -1485,6 +1485,11 @@
                 "protocol": "SSL",
                 "disable_cert_verification": true,
                 "ws_url": "failover.aur.ewmcx.biz:50003"
+            },
+            {
+                "url": "lenoir.ecoincore.com:12343",
+                "protocol": "SSL",
+                "disable_cert_verification": false
             }
         ],
         "derivation_path": "m/44'/85'"
@@ -1650,14 +1655,6 @@
         "electrum": [
             {
                 "url": "electrum-eu.avn.network:50001",
-                "contact": [
-                    {
-                        "email": "alamshafil@pm.me"
-                    }
-                ]
-            },
-            {
-                "url": "electrum-us.avn.network:50001",
                 "contact": [
                     {
                         "email": "alamshafil@pm.me"
@@ -3264,7 +3261,8 @@
             }
         ],
         "asset": "BET",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "BIDR-BEP20": {
         "coin": "BIDR-BEP20",
@@ -3911,7 +3909,8 @@
             }
         ],
         "asset": "BOTS",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "BRZ-BEP20": {
         "coin": "BRZ-BEP20",
@@ -5320,7 +5319,8 @@
             }
         ],
         "asset": "CCL",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "CDN": {
         "coin": "CDN",
@@ -6094,7 +6094,8 @@
             }
         ],
         "asset": "CLC",
-        "derivation_path": "m/44'/1901'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "COMP-AVX20": {
         "coin": "COMP-AVX20",
@@ -6696,7 +6697,8 @@
             }
         ],
         "asset": "CRYPTO",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "CUMMIES-BEP20": {
         "coin": "CUMMIES-BEP20",
@@ -7320,7 +7322,8 @@
             }
         ],
         "asset": "DEX",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "DGB": {
         "coin": "DGB",
@@ -8310,7 +8313,8 @@
             }
         ],
         "asset": "DP",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "DOI": {
         "coin": "DOI",
@@ -8491,6 +8495,12 @@
         "currently_enabled": false,
         "wallet_only": false,
         "electrum": [
+            {
+                "url": "electrum3.egulden.org:50002",
+                "protocol": "SSL",
+                "disable_cert_verification": true,
+                "ws_url": "electrum3.egulden.org:50004"
+            },
             {
                 "url": "holland.ecoincore.com:11017",
                 "protocol": "SSL",
@@ -10690,7 +10700,8 @@
             }
         ],
         "asset": "GLEEC",
-        "derivation_path": "m/44'/476'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "GLM-ERC20": {
         "coin": "GLM-ERC20",
@@ -11503,7 +11514,8 @@
             }
         ],
         "asset": "HODL",
-        "derivation_path": "m/44'/1989'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "HOT-ERC20": {
         "coin": "HOT-ERC20",
@@ -11932,7 +11944,7 @@
                 "url": "electrum1.ilien.io:65011",
                 "contact": [
                     {
-                        "email": "support@chainmake.rs"
+                        "email": "admin@ilien.io"
                     },
                     {
                         "discord": "siu - Chainmakers#3920"
@@ -11944,7 +11956,7 @@
                 "url": "electrum2.ilien.io:65011",
                 "contact": [
                     {
-                        "email": "support@chainmake.rs"
+                        "email": "admin@ilien.io"
                     },
                     {
                         "discord": "siu - Chainmakers#3920"
@@ -11954,7 +11966,8 @@
             }
         ],
         "asset": "ILN",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "ILN-BEP20": {
         "coin": "ILN-BEP20",
@@ -12994,7 +13007,8 @@
             }
         ],
         "asset": "JUMBLR",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "KCS": {
         "coin": "KCS",
@@ -13436,7 +13450,8 @@
             }
         ],
         "asset": "KOIN",
-        "derivation_path": "m/44'/659'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "KSM-BEP20": {
         "coin": "KSM-BEP20",
@@ -13574,7 +13589,8 @@
             }
         ],
         "asset": "LABS",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "LBC": {
         "coin": "LBC",
@@ -15452,7 +15468,8 @@
             }
         ],
         "asset": "MCL",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "MESH": {
         "coin": "MESH",
@@ -15545,7 +15562,8 @@
             }
         ],
         "asset": "MESH",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "MGW": {
         "coin": "MGW",
@@ -15638,7 +15656,8 @@
             }
         ],
         "asset": "MGW",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "MINDS-ERC20": {
         "coin": "MINDS-ERC20",
@@ -16493,7 +16512,8 @@
             }
         ],
         "asset": "MSHARK",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "NATURE": {
         "coin": "NATURE",
@@ -16536,7 +16556,8 @@
             }
         ],
         "asset": "NATURE",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "NAV": {
         "coin": "NAV",
@@ -16936,7 +16957,8 @@
             }
         ],
         "asset": "NINJA",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "NMC": {
         "coin": "NMC",
@@ -17762,7 +17784,8 @@
             }
         ],
         "asset": "PANGEA",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "PAX-ERC20": {
         "coin": "PAX-ERC20",
@@ -18086,97 +18109,6 @@
             }
         ],
         "derivation_path": "m/44'/966'"
-    },
-    "SFUSD": {
-        "coin": "SFUSD",
-        "type": "UTXO",
-        "name": "SmartUSD",
-        "coinpaprika_id": "test-coin",
-        "coingecko_id": "test-coin",
-        "nomics_id": "",
-        "explorer_url": "https://explorer.sfusd.kmd.sh/",
-        "explorer_tx_url": "",
-        "explorer_address_url": "",
-        "supported": [],
-        "active": false,
-        "is_testnet": false,
-        "currently_enabled": false,
-        "wallet_only": false,
-        "electrum": [
-            {
-                "url": "electrum1.cipig.net:10070",
-                "contact": [
-                    {
-                        "email": "cipi@komodoplatform.com"
-                    },
-                    {
-                        "discord": "cipi#4502"
-                    }
-                ],
-                "ws_url": "electrum1.cipig.net:30070"
-            },
-            {
-                "url": "electrum2.cipig.net:10070",
-                "contact": [
-                    {
-                        "email": "cipi@komodoplatform.com"
-                    },
-                    {
-                        "discord": "cipi#4502"
-                    }
-                ],
-                "ws_url": "electrum2.cipig.net:30070"
-            },
-            {
-                "url": "electrum3.cipig.net:10070",
-                "contact": [
-                    {
-                        "email": "cipi@komodoplatform.com"
-                    },
-                    {
-                        "discord": "cipi#4502"
-                    }
-                ],
-                "ws_url": "electrum3.cipig.net:30070"
-            },
-            {
-                "url": "electrum1.cipig.net:20070",
-                "protocol": "SSL",
-                "contact": [
-                    {
-                        "email": "cipi@komodoplatform.com"
-                    },
-                    {
-                        "discord": "cipi#4502"
-                    }
-                ]
-            },
-            {
-                "url": "electrum2.cipig.net:20070",
-                "protocol": "SSL",
-                "contact": [
-                    {
-                        "email": "cipi@komodoplatform.com"
-                    },
-                    {
-                        "discord": "cipi#4502"
-                    }
-                ]
-            },
-            {
-                "url": "electrum3.cipig.net:20070",
-                "protocol": "SSL",
-                "contact": [
-                    {
-                        "email": "cipi@komodoplatform.com"
-                    },
-                    {
-                        "discord": "cipi#4502"
-                    }
-                ]
-            }
-        ],
-        "forex_id": "USD"
     },
     "PND": {
         "coin": "PND",
@@ -20198,7 +20130,8 @@
             }
         ],
         "asset": "REVS",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "RICK": {
         "coin": "RICK",
@@ -20556,6 +20489,18 @@
         "sign_message_prefix": "Raven Signed Message:\n",
         "electrum": [
             {
+                "url": "electrum1.cipig.net:10051",
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ],
+                "ws_url": "electrum1.cipig.net:30051"
+            },
+            {
                 "url": "electrum2.cipig.net:10051",
                 "contact": [
                     {
@@ -20580,7 +20525,8 @@
                 "ws_url": "electrum3.cipig.net:30051"
             },
             {
-                "url": "electrum1.cipig.net:10051",
+                "url": "electrum1.cipig.net:20051",
+                "protocol": "SSL",
                 "contact": [
                     {
                         "email": "cipi@komodoplatform.com"
@@ -20588,8 +20534,7 @@
                     {
                         "discord": "cipi#4502"
                     }
-                ],
-                "ws_url": "electrum1.cipig.net:30051"
+                ]
             },
             {
                 "url": "electrum2.cipig.net:20051",
@@ -20605,18 +20550,6 @@
             },
             {
                 "url": "electrum3.cipig.net:20051",
-                "protocol": "SSL",
-                "contact": [
-                    {
-                        "email": "cipi@komodoplatform.com"
-                    },
-                    {
-                        "discord": "cipi#4502"
-                    }
-                ]
-            },
-            {
-                "url": "electrum1.cipig.net:20051",
                 "protocol": "SSL",
                 "contact": [
                     {
@@ -20879,51 +20812,8 @@
             }
         ],
         "asset": "SIX",
-        "derivation_path": "m/44'/141'"
-    },
-    "SMTF-v2": {
-        "coin": "SMTF-v2",
-        "type": "BEP-20",
-        "name": "SmartFi",
-        "coinpaprika_id": "smtf-smartfi",
-        "coingecko_id": "smartfi",
-        "nomics_id": "SMTF",
-        "explorer_url": "https://bscscan.com/",
-        "explorer_tx_url": "tx/",
-        "explorer_address_url": "address/",
-        "supported": [],
-        "active": false,
-        "is_testnet": false,
-        "currently_enabled": false,
-        "wallet_only": false,
-        "contract_address": "0x11fD9ED04f1Eb43eF9df6425a6990609F2468895",
-        "parent_coin": "BNB",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
-        "nodes": [
-            {
-                "url": "https://node.komodo.live:8080/binance",
-                "gui_auth": true
-            },
-            {
-                "url": "http://bsc1.cipig.net:8655"
-            },
-            {
-                "url": "http://bsc2.cipig.net:8655"
-            },
-            {
-                "url": "http://bsc3.cipig.net:8655"
-            },
-            {
-                "url": "https://bsc1.cipig.net:18655"
-            },
-            {
-                "url": "https://bsc2.cipig.net:18655"
-            },
-            {
-                "url": "https://bsc3.cipig.net:18655"
-            }
-        ],
-        "token_address_url": "tokentxns?a="
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "SNX-AVX20": {
         "coin": "SNX-AVX20",
@@ -21392,7 +21282,8 @@
             }
         ],
         "asset": "SOULJA",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "SPACE": {
         "coin": "SPACE",
@@ -21485,7 +21376,8 @@
             }
         ],
         "asset": "SPACE",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "SRM-ERC20": {
         "coin": "SRM-ERC20",
@@ -21677,7 +21569,8 @@
             }
         ],
         "asset": "SUPERNET",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "SUSHI-AVX20": {
         "coin": "SUSHI-AVX20",
@@ -22761,6 +22654,14 @@
         "sign_message_prefix": "Komodo Signed Message:\n",
         "electrum": [
             {
+                "url": "1.eu.thc.electrum.dexstats.info:10020",
+                "contact": [
+                    {
+                        "discord": "CHMEX#0686"
+                    }
+                ]
+            },
+            {
                 "url": "2.eu.thc.electrum.dexstats.info:10020",
                 "contact": [
                     {
@@ -22770,7 +22671,8 @@
             }
         ],
         "asset": "THC",
-        "derivation_path": "m/44'/113'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "THC-BEP20": {
         "coin": "THC-BEP20",
@@ -22884,7 +22786,8 @@
             }
         ],
         "asset": "TOKEL",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "TON-ERC20": {
         "coin": "TON-ERC20",
@@ -24708,12 +24611,7 @@
                 ],
                 "ws_url": "e3.validitytech.com:11004"
             }
-        ],
-        "derivation_path": "m/44'/634'",
-        "trezor_coin": "Valorbit",
-        "links": {
-            "homepage": "https://valorbit.com"
-        }
+        ]
     },
     "VET-BEP20": {
         "coin": "VET-BEP20",
@@ -25079,7 +24977,8 @@
             }
         ],
         "asset": "VRSC",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "GRMS": {
         "coin": "GRMS",
@@ -25132,7 +25031,46 @@
             }
         ],
         "asset": "GRMS",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
+    },
+    "VPRM": {
+        "coin": "VPRM",
+        "type": "Smart Chain",
+        "name": "Vaporum",
+        "coinpaprika_id": "",
+        "coingecko_id": "",
+        "nomics_id": "",
+        "explorer_url": "http://explorer.vaporumcoin.us/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Komodo Signed Message:\n",
+        "electrum": [
+            {
+                "url": "electrumx1.vaporumcoin.us:50001",
+                "contact": [
+                    {
+                        "github": "VaporumCoin"
+                    }
+                ]
+            },
+            {
+                "url": "electrumx2.vaporumcoin.us:50001",
+                "contact": [
+                    {
+                        "github": "VaporumCoin"
+                    }
+                ]
+            }
+        ],
+        "asset": "VPRM",
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "VTC": {
         "coin": "VTC",
@@ -25598,7 +25536,8 @@
             }
         ],
         "asset": "WSB",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "XEP-BEP20": {
         "coin": "XEP-BEP20",
@@ -25810,11 +25749,6 @@
             },
             {
                 "url": "xrg_ful.googol.cash:52138",
-                "protocol": "SSL",
-                "disable_cert_verification": true
-            },
-            {
-                "url": "la.ask.systems:52138",
                 "protocol": "SSL",
                 "disable_cert_verification": true
             }
@@ -27026,7 +26960,8 @@
             }
         ],
         "asset": "ZILLA",
-        "derivation_path": "m/44'/266'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "ZRX-AVX20": {
         "coin": "ZRX-AVX20",
@@ -29597,15 +29532,6 @@
         "slp_prefix": "slptest",
         "electrum": [
             {
-                "url": "electrs.electroncash.de:60002",
-                "protocol": "SSL",
-                "contact": [
-                    {
-                        "website": "https://1209k.com/bitcoin-eye/ele.php?chain=tbch"
-                    }
-                ]
-            },
-            {
                 "url": "tbch.loping.net:60002",
                 "protocol": "SSL",
                 "contact": [
@@ -30184,7 +30110,8 @@
             }
         ],
         "asset": "ACTN",
-        "derivation_path": "m/44'/141'"
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo"
     },
     "ACTN-BEP20": {
         "coin": "ACTN-BEP20",
