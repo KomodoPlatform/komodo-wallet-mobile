@@ -145,6 +145,7 @@ class _CoinDetailState extends State<CoinDetail> {
     _amountController.dispose();
     _addressController.dispose();
     _scrollController.dispose();
+    closeTimer?.cancel();
     coinsBloc.resetTransactions();
     if (timer != null) {
       timer.cancel();
