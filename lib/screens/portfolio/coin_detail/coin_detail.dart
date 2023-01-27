@@ -902,7 +902,6 @@ class _CoinDetailState extends State<CoinDetail> {
       if (mounted) {
         setState(() {
           isExpanded = false;
-          currentIndex = 0;
           _waitForInit();
         });
       }
