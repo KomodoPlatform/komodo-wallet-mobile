@@ -50,6 +50,12 @@ dependencies:
       path: packages/hydrated_bloc/
       ref: 021aa895be66f5fea566c03f276a094ae9ceb06e #9.0.0 (Note: Supports null safety)
 
+  flutter_bloc:
+    git:
+      url: https://github.com/felangel/bloc.git
+      path: packages/flutter_bloc/
+      ref: 32d5002fb8b8a1e548fe8021d8468327680875ff #8.1.1 (Note: Supports null safety)
+  
   #-------fluttercommunity.dev------
 
 
@@ -81,10 +87,6 @@ dependencies:
       url: https://github.com/KomodoPlatform/flutter_file_picker.git
       ref: f72d4b70c4c63ade584e64b7706774555fbc1c8e #4.2.5
 
-  provider: # last reviewed 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
-    git:
-      url: https://github.com/KomodoPlatform/provider.git
-      ref: 960e422105e2b7a6a9e46b2517daead8754c6b25 #6.0.2
 
   encrypt: # last reviewed b17327a
     git:
