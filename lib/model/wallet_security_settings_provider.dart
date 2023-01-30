@@ -180,6 +180,14 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
     _updateDb().then((value) => notifyListeners());
   }
 
+  bool get disallowScreenshot => _prefs.getBool('disallowScreenshot') ?? true;
+
+  set disallowScreenshot(bool v) {
+    _prefs.setBool('disallowScreenshot', v);
+
+    notifyListeners();
+  }
+
   bool get enableCamo =>
       _prefs.getBool('isCamoEnabled') ?? _walletSecuritySettings.enableCamo;
 

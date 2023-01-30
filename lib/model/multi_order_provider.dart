@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../blocs/coins_bloc.dart';
 import '../localizations.dart';
 import '../model/get_trade_preimage.dart';
+import '../model/rpc_error.dart';
 import '../model/setprice_response.dart';
 import '../model/trade_preimage.dart';
 import '../screens/dex/trade/pro/confirm/protection_control.dart';
@@ -295,9 +296,12 @@ class MultiOrderProvider extends ChangeNotifier {
       ));
     } catch (e) {
       _relCoins[coin].processing = false;
+      final gasErrorMessage = await _validateGas(coin, preimage);
+      if (gasErrorMessage != null) {
+        _relCoins[coin].error = gasErrorMessage;
+      }
       _relCoins[coin].preimage = null;
       Log('multi_order_provider', '_updatePreimage] $e');
-      _relCoins[coin].error = e.toString();
       notifyListeners();
       return;
     }

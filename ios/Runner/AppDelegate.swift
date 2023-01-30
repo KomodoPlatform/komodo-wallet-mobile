@@ -62,22 +62,87 @@ func performMM2Stop() -> Int32 {
         default: ()
         }
     }
-    
+
     override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:] ) -> Bool {
         self.intentURI = url.absoluteString
         return true
+    }
+
+    private var screenPrevent = UITextField()
+    public func configurePreventionScreenshot() {
+        guard let w = window else { return }
+        UserDefaults.standard.register(defaults: ["flutter.disallowScreenshot" : true])
+        if (!w.subviews.contains(screenPrevent)) {
+            w.addSubview(screenPrevent)
+            screenPrevent.centerYAnchor.constraint(equalTo: w.centerYAnchor).isActive = true
+            screenPrevent.centerXAnchor.constraint(equalTo: w.centerXAnchor).isActive = true
+            w.layer.superlayer?.addSublayer(screenPrevent.layer)
+            screenPrevent.layer.sublayers?.first?.addSublayer(w.layer)
+        }
+
+        NotificationCenter.default.addObserver(forName: UIApplication.userDidTakeScreenshotNotification,
+                                               object: nil,
+                                               queue: OperationQueue.main) { notification in
+           let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot");
+           if disallowScreenshot {
+              self.showToast(message: "Screenshot is black due to security reasons")
+           }
+        }
+    }
+
+    public func showToast(message : String) {
+            let toastContainer = UIView(frame: CGRect())
+            toastContainer.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+            toastContainer.alpha = 0.0
+            toastContainer.layer.cornerRadius = 10;
+            toastContainer.clipsToBounds  =  true
+
+            let toastLabel = UILabel(frame: CGRect())
+            toastLabel.textColor = UIColor.white
+            toastLabel.textAlignment = .center;
+            toastLabel.font.withSize(8.0)
+            toastLabel.text = message
+            toastLabel.clipsToBounds  =  true
+            toastLabel.numberOfLines = 0
+
+            toastContainer.addSubview(toastLabel)
+            self.window.addSubview(toastContainer)
+
+            toastLabel.translatesAutoresizingMaskIntoConstraints = false
+            toastContainer.translatesAutoresizingMaskIntoConstraints = false
+
+            let centerX = NSLayoutConstraint(item: toastLabel, attribute: .centerX, relatedBy: .equal, toItem: toastContainer, attribute: .centerXWithinMargins, multiplier: 1, constant: 0)
+            let labelBottom = NSLayoutConstraint(item: toastLabel, attribute: .bottom, relatedBy: .equal, toItem: toastContainer, attribute: .bottom, multiplier: 1, constant: -15)
+            let labelTop = NSLayoutConstraint(item: toastLabel, attribute: .top, relatedBy: .equal, toItem: toastContainer, attribute: .top, multiplier: 1, constant: 15)
+            toastContainer.addConstraints([centerX, labelBottom, labelTop])
+
+            toastContainer.widthAnchor.constraint(equalToConstant: self.window.frame.size.width - 30).isActive = true
+            toastContainer.heightAnchor.constraint(equalToConstant: 50).isActive = true
+            toastContainer.centerXAnchor.constraint(equalTo: self.window.centerXAnchor).isActive = true
+            toastContainer.centerYAnchor.constraint(equalTo: self.window.centerYAnchor).isActive = true
+
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
+                toastContainer.alpha = 1.0
+            }, completion: { _ in
+                UIView.animate(withDuration: 0.5, delay: 3, options: .curveEaseOut, animations: {
+                    toastContainer.alpha = 0.0
+                }, completion: {_ in
+                    toastContainer.removeFromSuperview()
+                })
+            })
     }
     
     override func application (_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         guard let vc = window?.rootViewController as? FlutterViewController else {
             fatalError ("rootViewController is not type FlutterViewController")}
         let vcbm = vc as! FlutterBinaryMessenger
-        
+
         let audioDirKey = vc.lookupKey (forAsset: "assets/audio/start.mp3")
         let audioDirPath = Bundle.main.path (forResource: audioDirKey, ofType: nil)
         save_audio_path(audioDirPath)
         handleAudioInterruptions()
-        
+        configurePreventionScreenshot()
+
         let mm2main = FlutterMethodChannel (name: "mm2", binaryMessenger: vcbm)
         let chargingChannel = FlutterEventChannel (name: "AtomicDEX/logC", binaryMessenger: vcbm)
         chargingChannel.setStreamHandler (self)
@@ -150,6 +215,9 @@ func performMM2Stop() -> Int32 {
                                         } else if call.method == "lsof" {
                                             lsof()
                                             result(0)
+                                        } else if call.method == "is_screenshot" {
+                                            self.screenshotAction()
+                                            result(true)
                                         } else if call.method == "metrics" {
                                             let js = metrics()
                                             result (String (cString: js!))
@@ -200,15 +268,33 @@ func performMM2Stop() -> Int32 {
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = window!.frame
         blurEffectView.tag = 61007
-        
-        self.window?.addSubview(blurEffectView)
+        screenshotAction()
+
+        let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot");
+        if disallowScreenshot {
+           self.window?.addSubview(blurEffectView)
+        }
     }
     
     public override func applicationDidBecomeActive(_ application: UIApplication) {
         signal(SIGPIPE, SIG_IGN);
-        self.window?.viewWithTag(61007)?.removeFromSuperview()
-        
+        screenshotAction()
+
+        let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot");
+        if disallowScreenshot {
+            self.window?.viewWithTag(61007)?.removeFromSuperview()
+        }
+
         restartMM2IfNeeded()
+    }
+
+    public func screenshotAction() {
+        let disallowScreenshot = UserDefaults.standard.bool(forKey: "flutter.disallowScreenshot");
+        if disallowScreenshot {
+           screenPrevent.isSecureTextEntry = true
+        } else {
+           screenPrevent.isSecureTextEntry = false
+        }
     }
     
     override func applicationWillEnterForeground(_ application: UIApplication) {
@@ -220,13 +306,23 @@ func performMM2Stop() -> Int32 {
         
         if shouldRestartMM2 || mm2_main_status() == 0 {
             let _ = performMM2Stop()
-            
+
+            // add blur when app freezes
+           let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = window!.frame
+            blurEffectView.tag = 61007
+            self.window?.addSubview(blurEffectView)
+
             var ticker: Int = 0
             // wait until mm2 stopped, but continue after 3s anyway
             while(mm2_main_status() != 0 && ticker < 30) {
                 usleep(100000) // 0.1s
                 ticker += 1
             }
+
+            // remove blur when app unfreezes
+            self.window?.viewWithTag(61007)?.removeFromSuperview()
             
             let _ = performMM2Start()
         }
