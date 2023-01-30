@@ -27,6 +27,7 @@ import '../screens/feed/feed_page.dart';
 import '../screens/markets/markets_page.dart';
 import '../screens/portfolio/coin_detail/coin_detail.dart';
 import '../screens/portfolio/coins_page.dart';
+import '../services/bloc/bloc_manager.dart';
 import '../services/lock_service.dart';
 import '../services/mm_service.dart';
 import '../utils/log.dart';
@@ -42,10 +43,16 @@ import 'model/startup_provider.dart';
 import 'utils/utils.dart';
 import 'widgets/shared_preferences_builder.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  applicationDocumentsDirectory; // Start getting the application directory.
-  startApp();
+
+  // Get the application directory. Result is cached.
+  await applicationDocumentsDirectory;
+
+  // BlocManager references cached application directory.
+  await BlocManager().init();
+
+  return startApp();
 }
 
 Future<void> startApp() async {

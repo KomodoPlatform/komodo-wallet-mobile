@@ -44,6 +44,11 @@ dependencies:
 
   crypto: 3.0.1 # dart.dev (Note: Supports null safety)
 
+  hydrated_bloc:
+    git:
+      url: https://github.com/felangel/bloc.git
+      path: packages/hydrated_bloc/
+      ref: 021aa895be66f5fea566c03f276a094ae9ceb06e #9.0.0 (Note: Supports null safety)
 
   #-------fluttercommunity.dev------
 
@@ -109,7 +114,7 @@ dependencies:
   pin_code_view: # last reviewed c0b6516 -> da9f0f4 by yurii-khi
     git:
       url: https://github.com/KomodoPlatform/pin_code_view.git
-      ref: da9f0f4a7b315f05e6d7e9f3f3d3a3644d7c042f
+      ref: da9f0f4a7b315f05e6d7e9f3f3d3a3644d7c042f # Does NOT support null safety
 
   intl_generator: # newly added, wasn't reviewed
     git:
