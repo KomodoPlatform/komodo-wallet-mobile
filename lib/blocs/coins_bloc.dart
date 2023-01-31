@@ -52,6 +52,7 @@ class CoinsBloc implements BlocBase {
   LinkedHashMap<String, Coin> get knownCoins => _knownCoins;
 
   List<CoinBalance> coinBalance = <CoinBalance>[];
+  List<String> coinsWithLessThan10kVol = [];
 
   // Streams to handle the list coin
   final StreamController<List<CoinBalance>> _coinsController =
