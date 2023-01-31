@@ -1428,6 +1428,8 @@ class AppLocalizations {
       Intl.message('Identical to CEX', name: 'exchangeIdentical');
   String get comparedToCex =>
       Intl.message('compared to CEX', name: 'comparedToCex');
+  String get comparedTo24hrCex =>
+      Intl.message('compared to avg. 24h CEX price', name: 'comparedTo24hrCex');
 
   String get ordersActive => Intl.message('Active', name: 'ordersActive');
   String get ordersHistory => Intl.message('History', name: 'ordersHistory');
