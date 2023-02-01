@@ -880,13 +880,13 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  void catchError(BuildContext mContext) {
+  void catchError(BuildContext mContext, [String err]) {
     resetSend();
     coinsDetailBloc.resetCustomFee();
     ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
-      content: Text(AppLocalizations.of(mContext).errorTryLater),
+      content: Text(err ?? AppLocalizations.of(mContext).errorTryLater),
     ));
   }
 
@@ -1044,9 +1044,27 @@ class _CoinDetailState extends State<CoinDetail> {
                     ),
                   ));
                 } else {
+                  if (dataRawTx is ErrorString) {
+                    int start = dataRawTx.error.indexOf(r'"');
+                    int end = dataRawTx.error.lastIndexOf(r'"');
+                    if (start != -1 || end != -1) {
+                      String err = dataRawTx.error.substring(start + 1, end);
+                      catchError(mainContext, toInitialUpper(err));
+                      return;
+                    }
+                  }
                   catchError(mainContext);
                 }
               }).catchError((dynamic onError) {
+                if (onError is ErrorString) {
+                  int start = onError.error.indexOf(r'"');
+                  int end = onError.error.lastIndexOf(r'"');
+                  if (start != -1 || end != -1) {
+                    String err = onError.error.substring(start + 1, end);
+                    catchError(mainContext, toInitialUpper(err));
+                    return;
+                  }
+                }
                 catchError(mainContext);
               });
 

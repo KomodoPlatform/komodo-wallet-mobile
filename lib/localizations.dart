@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
@@ -494,6 +496,21 @@ class AppLocalizations {
       Intl.message('Please input data', name: 'errorValueNotEmpty');
   String get errorAmountBalance =>
       Intl.message('Not enough balance', name: 'errorAmountBalance');
+  String gweiError(int value) => Intl.message(
+        'Gwei must be up to $value',
+        name: 'gweiErrorMessage',
+        args: <Object>[value],
+      );
+  String feesError(double value) => Intl.message(
+        'Fees must be up to $value',
+        name: 'feesError',
+        args: <Object>[value],
+      );
+  String limitError(int value) => Intl.message(
+        'Limit must be up to $value',
+        name: 'limitErrorMessage',
+        args: <Object>[value],
+      );
   String get errorNotAValidAddress =>
       Intl.message('Not a valid address', name: 'errorNotAValidAddress');
   String get errorNotAValidAddressSegWit =>
