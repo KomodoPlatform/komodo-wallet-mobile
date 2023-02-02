@@ -3,7 +3,7 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app_config/app_config.dart';
-import '../../../blocs/authenticate_bloc.dart';
+import '../../../generic_blocs/authenticate_bloc.dart';
 import '../../../model/addressbook_provider.dart';
 import '../../../model/cex_provider.dart';
 import '../../../model/feed_provider.dart';

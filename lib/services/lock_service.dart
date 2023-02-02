@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../blocs/authenticate_bloc.dart';
-import '../blocs/wallet_bloc.dart';
+import '../generic_blocs/authenticate_bloc.dart';
+import '../generic_blocs/wallet_bloc.dart';
 import '../model/wallet_security_settings_provider.dart';
 import '../utils/log.dart';
 import '../utils/utils.dart';

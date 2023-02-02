@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../../blocs/orders_bloc.dart';
+import '../../../../generic_blocs/orders_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../model/order.dart';
 import '../../../authentification/lock_screen.dart';

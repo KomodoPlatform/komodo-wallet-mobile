@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../blocs/coins_bloc.dart';
+import '../../../../../generic_blocs/coins_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../../model/best_order.dart';
 import '../../../../../model/cex_provider.dart';

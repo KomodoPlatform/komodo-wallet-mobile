@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../blocs/dialog_bloc.dart';
+import '../../../../../../generic_blocs/dialog_bloc.dart';
 import '../../../../../../model/orderbook.dart';
 import '../../../../../dex/trade/pro/create/receive/in_progress_popup.dart';
 import '../../../../../dex/trade/pro/create/receive/matching_orderbooks.dart';

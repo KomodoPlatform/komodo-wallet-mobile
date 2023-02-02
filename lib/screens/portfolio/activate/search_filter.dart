@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../blocs/coins_bloc.dart';
+import '../../../generic_blocs/coins_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../model/coin.dart';
 

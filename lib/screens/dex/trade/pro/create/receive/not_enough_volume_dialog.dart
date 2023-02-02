@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../../../blocs/dialog_bloc.dart';
-import '../../../../../../blocs/swap_bloc.dart';
+import '../../../../../../generic_blocs/dialog_bloc.dart';
+import '../../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../../localizations.dart';
 import '../../../../../../model/orderbook.dart';
 import '../../../../../../utils/utils.dart';

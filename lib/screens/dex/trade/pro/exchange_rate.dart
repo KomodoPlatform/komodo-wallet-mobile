@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../blocs/swap_bloc.dart';
+import '../../../../generic_blocs/swap_bloc.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../dex/trade/pro/create/trade_form.dart';
 import '../../../../utils/utils.dart';

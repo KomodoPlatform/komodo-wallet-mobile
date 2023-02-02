@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../../../../blocs/coin_detail_bloc.dart';
+import '../../../../../generic_blocs/coin_detail_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../../model/addressbook_provider.dart';
 import '../../../../../model/coin.dart';

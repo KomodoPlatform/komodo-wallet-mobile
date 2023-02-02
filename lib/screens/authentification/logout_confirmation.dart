@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../blocs/authenticate_bloc.dart';
+import '../../generic_blocs/authenticate_bloc.dart';
 import '../../localizations.dart';
 import '../../model/multi_order_provider.dart';
 import '../../model/swap_constructor_provider.dart';

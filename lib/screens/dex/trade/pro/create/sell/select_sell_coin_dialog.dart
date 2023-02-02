@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../../../blocs/coins_bloc.dart';
-import '../../../../../../blocs/dialog_bloc.dart';
-import '../../../../../../blocs/main_bloc.dart';
-import '../../../../../../blocs/settings_bloc.dart';
+import '../../../../../../generic_blocs/coins_bloc.dart';
+import '../../../../../../generic_blocs/dialog_bloc.dart';
+import '../../../../../../generic_blocs/main_bloc.dart';
+import '../../../../../../generic_blocs/settings_bloc.dart';
 import '../../../../../../localizations.dart';
 import '../../../../../../model/coin_balance.dart';
 import '../../../../../../utils/utils.dart';

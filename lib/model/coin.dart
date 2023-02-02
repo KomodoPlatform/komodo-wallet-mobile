@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import '../app_config/app_config.dart';
 import '../app_config/coin_converter.dart';
-import '../blocs/coins_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
 import '../model/coin_type.dart';
 import '../model/get_active_coin.dart';
 import '../utils/log.dart';

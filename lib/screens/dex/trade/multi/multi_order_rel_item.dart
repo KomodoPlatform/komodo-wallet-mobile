@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../../blocs/coins_bloc.dart';
+import '../../../../generic_blocs/coins_bloc.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin_balance.dart';
 import '../../../../model/multi_order_provider.dart';

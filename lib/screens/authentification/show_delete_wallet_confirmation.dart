@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../blocs/wallet_bloc.dart';
+import '../../generic_blocs/wallet_bloc.dart';
 import '../../localizations.dart';
 import '../../model/wallet.dart';
-import '../../blocs/dialog_bloc.dart';
+import '../../generic_blocs/dialog_bloc.dart';
 import '../../widgets/custom_simple_dialog.dart';
 
 Future<void> showDeleteWalletConfirmation(BuildContext context,

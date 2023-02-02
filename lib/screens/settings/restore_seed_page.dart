@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../app_config/theme_data.dart';
-import '../../blocs/dialog_bloc.dart';
+import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
 import '../authentification/create_password_page.dart';
 import '../../utils/utils.dart';

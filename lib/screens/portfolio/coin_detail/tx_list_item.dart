@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import '../../../../blocs/settings_bloc.dart';
+import '../../../../generic_blocs/settings_bloc.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin_balance.dart';
 import '../../../../model/transaction_data.dart';

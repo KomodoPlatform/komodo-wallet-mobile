@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../blocs/swap_bloc.dart';
+import '../../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../../localizations.dart';
 import '../../../../../../model/order_book_provider.dart';
 import '../../../../../markets/coin_select.dart';

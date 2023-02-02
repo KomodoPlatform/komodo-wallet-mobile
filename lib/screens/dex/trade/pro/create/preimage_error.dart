@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../blocs/dialog_bloc.dart';
+import '../../../../../generic_blocs/dialog_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../dex/trade/pro/create/trade_form_validator.dart';
 import '../../../../../utils/utils.dart';

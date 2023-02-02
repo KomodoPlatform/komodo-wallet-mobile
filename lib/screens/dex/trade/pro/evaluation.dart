@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import '../../../../blocs/swap_bloc.dart';
+import '../../../../generic_blocs/swap_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin.dart';

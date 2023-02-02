@@ -6,10 +6,10 @@ import 'package:pin_code_view/pin_code_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../blocs/authenticate_bloc.dart';
-import '../../blocs/camo_bloc.dart';
-import '../../blocs/coins_bloc.dart';
-import '../../blocs/dialog_bloc.dart';
+import '../../generic_blocs/authenticate_bloc.dart';
+import '../../generic_blocs/camo_bloc.dart';
+import '../../generic_blocs/coins_bloc.dart';
+import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
 import '../../model/wallet.dart';
 import '../../model/wallet_security_settings_provider.dart';

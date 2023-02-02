@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../blocs/swap_history_bloc.dart';
+import '../../../generic_blocs/swap_history_bloc.dart';
 import '../../../localizations.dart';
 import '../../../model/order.dart';
 import '../../../model/swap.dart';

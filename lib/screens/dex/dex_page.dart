@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../blocs/orders_bloc.dart';
-import '../../blocs/swap_bloc.dart';
+import '../../generic_blocs/orders_bloc.dart';
+import '../../generic_blocs/swap_bloc.dart';
 import '../../localizations.dart';
 import '../dex/orders/orders_page.dart';
 import '../dex/trade/trade_modes_page.dart';

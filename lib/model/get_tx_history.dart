@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import '../blocs/coins_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
 import '../utils/utils.dart';
 import 'coin.dart';
 

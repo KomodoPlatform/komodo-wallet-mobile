@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../blocs/dialog_bloc.dart';
+import '../../../generic_blocs/dialog_bloc.dart';
 import '../../../app_config/app_config.dart';
 
 class BuildFilterCoin extends StatefulWidget {

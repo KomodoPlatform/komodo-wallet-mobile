@@ -4,7 +4,7 @@ import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../../../../app_config/app_config.dart';
-import '../../../../../../blocs/swap_bloc.dart';
+import '../../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../../localizations.dart';
 import '../../../../../../utils/decimal_text_input_formatter.dart';
 import '../../../../../../utils/utils.dart';

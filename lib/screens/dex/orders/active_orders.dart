@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../blocs/orders_bloc.dart';
-import '../../../blocs/swap_bloc.dart';
+import '../../../generic_blocs/orders_bloc.dart';
+import '../../../generic_blocs/swap_bloc.dart';
 import '../../../model/order.dart';
 import '../../../model/swap.dart';
 import '../../dex/orders/filters/filters.dart';

@@ -3,7 +3,7 @@ import '../../../widgets/custom_simple_dialog.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../../../localizations.dart';
-import '../../../blocs/dialog_bloc.dart';
+import '../../../generic_blocs/dialog_bloc.dart';
 import '../../../model/coin.dart';
 import '../../../utils/utils.dart';
 

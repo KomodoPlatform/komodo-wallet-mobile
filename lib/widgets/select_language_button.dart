@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../blocs/dialog_bloc.dart';
-import '../blocs/main_bloc.dart';
-import '../blocs/settings_bloc.dart';
+import '../generic_blocs/dialog_bloc.dart';
+import '../generic_blocs/main_bloc.dart';
+import '../generic_blocs/settings_bloc.dart';
 import '../utils/utils.dart';
 import '../widgets/custom_simple_dialog.dart';
 import '../widgets/language_flag_icon.dart';

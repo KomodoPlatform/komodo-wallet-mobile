@@ -10,8 +10,8 @@ import 'package:flutter/services.dart'
     show EventChannel, MethodChannel, rootBundle, SystemChannels;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import '../blocs/coins_bloc.dart';
-import '../blocs/orders_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
+import '../generic_blocs/orders_bloc.dart';
 import '../model/balance.dart';
 import '../model/base_service.dart';
 import '../model/coin.dart';

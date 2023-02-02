@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../app_config/app_config.dart';
-import '../blocs/main_bloc.dart';
+import '../generic_blocs/main_bloc.dart';
 import '../localizations.dart';
 import '../services/job_service.dart';
 import '../services/notif_service.dart';

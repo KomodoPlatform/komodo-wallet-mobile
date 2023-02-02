@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../../../blocs/coin_detail_bloc.dart';
-import '../../../../../blocs/coins_bloc.dart';
+import '../../../../../generic_blocs/coin_detail_bloc.dart';
+import '../../../../../generic_blocs/coins_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../../app_config/app_config.dart';
 import '../../../../../model/cex_provider.dart';

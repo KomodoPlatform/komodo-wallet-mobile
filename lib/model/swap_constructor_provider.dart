@@ -17,7 +17,7 @@ import '../model/get_best_orders.dart';
 import '../model/best_order.dart';
 import '../services/mm.dart';
 import '../utils/utils.dart';
-import '../blocs/coins_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
 import '../model/coin_balance.dart';
 
 class ConstructorProvider extends ChangeNotifier {

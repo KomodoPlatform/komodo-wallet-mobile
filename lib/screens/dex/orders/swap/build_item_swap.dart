@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../../blocs/swap_history_bloc.dart';
+import '../../../../generic_blocs/swap_history_bloc.dart';
 import '../../../../model/error_string.dart';
 import '../../../../model/recover_funds_of_swap.dart';
 import '../../../../model/swap.dart';

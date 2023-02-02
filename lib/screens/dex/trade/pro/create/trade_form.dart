@@ -14,7 +14,7 @@ import '../../../../../services/mm.dart';
 import '../../../../../services/mm_service.dart';
 import '../../../../../utils/log.dart';
 import '../../../../../model/get_setprice.dart';
-import '../../../../../blocs/swap_bloc.dart';
+import '../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../model/order_book_provider.dart';
 import '../../../../../model/orderbook.dart';
 import '../../../../../utils/utils.dart';

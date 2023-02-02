@@ -1,6 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../../blocs/dialog_bloc.dart';
+import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
 import '../authentification/lock_screen.dart';
 import '../../services/lock_service.dart';

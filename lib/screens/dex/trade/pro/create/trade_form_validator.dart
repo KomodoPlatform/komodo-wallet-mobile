@@ -1,8 +1,8 @@
 import '../../../../dex/trade/pro/create/trade_form.dart';
 import 'package:rational/rational.dart';
-import '../../../../../blocs/coins_bloc.dart';
-import '../../../../../blocs/main_bloc.dart';
-import '../../../../../blocs/swap_bloc.dart';
+import '../../../../../generic_blocs/coins_bloc.dart';
+import '../../../../../generic_blocs/main_bloc.dart';
+import '../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../../model/coin_balance.dart';
 import '../../../../../model/orderbook.dart';

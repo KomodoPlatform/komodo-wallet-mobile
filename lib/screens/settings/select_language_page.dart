@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../blocs/main_bloc.dart';
-import '../../blocs/settings_bloc.dart';
+import '../../generic_blocs/main_bloc.dart';
+import '../../generic_blocs/settings_bloc.dart';
 import '../../localizations.dart';
 import '../authentification/lock_screen.dart';
 import '../../widgets/language_flag_icon.dart';

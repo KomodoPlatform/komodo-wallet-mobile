@@ -5,7 +5,7 @@
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
 import 'package:rational/rational.dart';
-import '../blocs/coins_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
 import '../utils/utils.dart';
 
 Orderbook orderbookFromJson(String str) => Orderbook.fromJson(json.decode(str));

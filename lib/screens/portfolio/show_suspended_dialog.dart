@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../localizations.dart';
 import '../../model/coin.dart';
-import '../../blocs/dialog_bloc.dart';
+import '../../generic_blocs/dialog_bloc.dart';
 import '../../widgets/custom_simple_dialog.dart';
 
 Future<void> showSuspendedDilog(BuildContext context,

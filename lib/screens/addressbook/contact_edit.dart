@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../app_config/theme_data.dart';
-import '../../blocs/dialog_bloc.dart';
+import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
 import '../../model/addressbook_provider.dart';
 import '../../model/coin.dart';

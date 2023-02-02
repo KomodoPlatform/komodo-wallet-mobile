@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../blocs/dialog_bloc.dart';
-import '../../../blocs/settings_bloc.dart';
+import '../../../generic_blocs/dialog_bloc.dart';
+import '../../../generic_blocs/settings_bloc.dart';
 import '../../../localizations.dart';
 import '../../../model/cex_provider.dart';
 import '../../../model/rewards_provider.dart';
