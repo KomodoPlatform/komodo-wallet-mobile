@@ -15,7 +15,7 @@ import '../utils/encryption_tool.dart';
 import '../widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthenticateBloc extends BlocBase {
+class AuthenticateBloc extends GenericBlocBase {
   AuthenticateBloc() {
     init();
   }

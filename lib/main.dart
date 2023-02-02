@@ -3,24 +3,20 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../app_config/app_config.dart';
-import '../blocs/authenticate_bloc.dart';
 import '../blocs/coins_bloc.dart';
 import '../blocs/main_bloc.dart';
 import '../blocs/settings_bloc.dart';
 import '../drawer/drawer.dart';
 import '../localizations.dart';
-import '../model/addressbook_provider.dart';
-import '../model/cex_provider.dart';
 import '../model/coin_balance.dart';
 import '../model/feed_provider.dart';
 import '../model/intent_data_provider.dart';
-import '../model/order_book_provider.dart';
-import '../model/rewards_provider.dart';
-import '../model/swap_constructor_provider.dart';
-import '../model/swap_provider.dart';
 import '../model/updates_provider.dart';
-import '../model/wallet_security_settings_provider.dart';
 import '../screens/authentification/lock_screen.dart';
 import '../screens/dex/dex_page.dart';
 import '../screens/feed/feed_page.dart';
@@ -28,18 +24,14 @@ import '../screens/markets/markets_page.dart';
 import '../screens/portfolio/coin_detail/coin_detail.dart';
 import '../screens/portfolio/coins_page.dart';
 import '../services/bloc/bloc_manager.dart';
+import '../services/bloc/bloc_provider_manager.dart';
 import '../services/lock_service.dart';
 import '../services/mm_service.dart';
 import '../utils/log.dart';
-import '../widgets/bloc_provider.dart';
 import '../widgets/build_red_dot.dart';
-import 'package:local_auth/local_auth.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'app_config/theme_data.dart';
-import 'model/multi_order_provider.dart';
 import 'model/startup_provider.dart';
+import 'services/bloc/app_providers.dart';
 import 'utils/utils.dart';
 import 'widgets/shared_preferences_builder.dart';
 
@@ -59,58 +51,16 @@ Future<void> startApp() async {
   try {
     mmSe.metrics();
     startup.start();
-    return runApp(_myAppWithProviders);
+    return runApp(
+      AppProviderManager(
+        child: BlocProviderManager(child: const MyApp()),
+      ),
+    );
   } catch (e) {
     Log('main:46', 'startApp] $e');
     rethrow;
   }
 }
-
-BlocProvider<AuthenticateBloc> _myAppWithProviders =
-    BlocProvider<AuthenticateBloc>(
-        bloc: AuthenticateBloc(),
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-              create: (context) => SwapProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => OrderBookProvider(),
-            ),
-            if (appConfig.isFeedEnabled)
-              ChangeNotifierProvider(
-                create: (context) => FeedProvider(),
-              ),
-            ChangeNotifierProvider(
-              create: (context) => RewardsProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => StartupProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => UpdatesProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => CexProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => AddressBookProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => MultiOrderProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => IntentDataProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => ConstructorProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => walletSecuritySettingsProvider,
-            )
-          ],
-          child: const MyApp(),
-        ));
 
 void _initCheckNetworkStatus() {
   Connectivity().onConnectivityChanged.listen(_checkNetworkStatus);

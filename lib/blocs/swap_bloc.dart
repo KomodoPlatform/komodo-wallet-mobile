@@ -9,7 +9,7 @@ import '../model/orderbook.dart';
 import '../model/trade_preimage.dart';
 import '../widgets/bloc_provider.dart';
 
-class SwapBloc implements BlocBase {
+class SwapBloc implements GenericBlocBase {
   CoinBalance sellCoinBalance;
   CoinBalance receiveCoinBalance;
   bool enabledSellField = false;
