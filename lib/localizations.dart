@@ -766,6 +766,11 @@ class AppLocalizations {
   String get exchangeTitle => Intl.message('EXCHANGE', name: 'exchangeTitle');
   String get orders => Intl.message('orders', name: 'orders');
   String get selectCoin => Intl.message('Select coin', name: 'selectCoin');
+  String lessThanCaution(String coinName) => Intl.message(
+        '❗Caution! Market for $coinName has less than \$10k 24h trading-volume!',
+        name: 'lessThanCaution',
+        args: <Object>[coinName],
+      );
   String get selectLanguage =>
       Intl.message('Select Language', name: 'selectLanguage');
   String get noFunds => Intl.message('No funds', name: 'noFunds');
