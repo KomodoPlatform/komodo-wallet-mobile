@@ -13,15 +13,22 @@ class BlocProviderManager extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // TODO: Instantiate all BLoCs here
-        // BlocProvider(
-        //   create: (context) => SubjectBloc(),
-        // ),
-        // BlocProvider(
-        //   create: (context) => SubjectBloc(),
-        // ),
+        // Instantiate all BLoCs here
+        // TODO: Remove this sample bloc after first bloc is added. This is here
+        // to prevent the analyzer from complaining about an empty list.
+        BlocProvider<_SampleBloc>(
+          create: (BuildContext context) => _SampleBloc(),
+        ),
       ],
       child: child,
     );
   }
 }
+
+class _SampleBloc extends Bloc<_SampleEvent, _SampleState> {
+  _SampleBloc() : super(_SampleState());
+}
+
+class _SampleState {}
+
+class _SampleEvent {}
