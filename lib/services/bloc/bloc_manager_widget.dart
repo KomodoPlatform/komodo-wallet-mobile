@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:komodo_dex/packages/login/bloc/login_bloc.dart';
 
-class BlocProviderManager extends StatelessWidget {
-  const BlocProviderManager({
+class BlocProviderWidget extends StatelessWidget {
+  const BlocProviderWidget({
     Key key,
     @required this.child,
   }) : super(key: key);
@@ -14,10 +15,8 @@ class BlocProviderManager extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         // Instantiate all BLoCs here
-        // TODO: Remove this sample bloc after first bloc is added. This is here
-        // to prevent the analyzer from complaining about an empty list.
-        BlocProvider<_SampleBloc>(
-          create: (BuildContext context) => _SampleBloc(),
+        BlocProvider<LoginBloc>(
+          create: (BuildContext context) => LoginBloc(),
         ),
       ],
       child: child,

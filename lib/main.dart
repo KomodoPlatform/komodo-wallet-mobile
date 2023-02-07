@@ -24,7 +24,7 @@ import '../screens/markets/markets_page.dart';
 import '../screens/portfolio/coin_detail/coin_detail.dart';
 import '../screens/portfolio/coins_page.dart';
 import '../services/bloc/bloc_manager.dart';
-import '../services/bloc/bloc_provider_manager.dart';
+import 'services/bloc/bloc_manager_widget.dart';
 import '../services/lock_service.dart';
 import '../services/mm_service.dart';
 import '../utils/log.dart';
@@ -53,7 +53,7 @@ Future<void> startApp() async {
     startup.start();
     return runApp(
       AppProviderManager(
-        child: BlocProviderManager(child: const MyApp()),
+        child: BlocProviderWidget(child: const MyApp()),
       ),
     );
   } catch (e) {
