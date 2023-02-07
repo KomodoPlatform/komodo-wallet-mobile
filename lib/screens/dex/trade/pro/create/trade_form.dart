@@ -1,24 +1,26 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:rational/rational.dart';
+
 import '../../../../../app_config/app_config.dart';
 import '../../../../../blocs/coins_bloc.dart';
-import '../../../../../model/get_min_trading_volume.dart';
-import '../../../../../model/get_trade_preimage.dart';
-import '../../../../../model/setprice_response.dart';
-import '../../../../../model/trade_preimage.dart';
-import '../../../../dex/trade/pro/confirm/protection_control.dart';
-import '../../../../../services/job_service.dart';
+import '../../../../../blocs/swap_bloc.dart';
 import '../../../../../model/buy_response.dart';
 import '../../../../../model/get_buy.dart';
+import '../../../../../model/get_min_trading_volume.dart';
+import '../../../../../model/get_setprice.dart';
+import '../../../../../model/get_trade_preimage.dart';
+import '../../../../../model/order_book_provider.dart';
+import '../../../../../model/orderbook.dart';
+import '../../../../../model/setprice_response.dart';
+import '../../../../../model/trade_preimage.dart';
+import '../../../../../services/job_service.dart';
 import '../../../../../services/mm.dart';
 import '../../../../../services/mm_service.dart';
 import '../../../../../utils/log.dart';
-import '../../../../../model/get_setprice.dart';
-import '../../../../../blocs/swap_bloc.dart';
-import '../../../../../model/order_book_provider.dart';
-import '../../../../../model/orderbook.dart';
 import '../../../../../utils/utils.dart';
+import '../../../../dex/trade/pro/confirm/protection_control.dart';
 
 class TradeForm {
   Timer _typingTimer;
@@ -307,7 +309,7 @@ class TradeForm {
         calculatedVolume.toStringAsFixed(appConfig.tradeFormPrecision));
   }
 
-  updateMaxSellAmount() {
+  void updateMaxSellAmount() {
     cancelMaxSellAmount();
     jobService.install('updateMaxSellAmount', 10, (j) async {
       if (!mmSe.running || swapBloc.sellCoinBalance == null) return;
@@ -315,13 +317,13 @@ class TradeForm {
     });
   }
 
-  _updateMaxSellAmount() async {
+  Future<void> _updateMaxSellAmount() async {
     await swapBloc.updateMaxTakerVolume();
     await coinsBloc.updateCoinBalances();
     swapBloc.updateFieldBalances();
   }
 
-  cancelMaxSellAmount() {
+  void cancelMaxSellAmount() {
     jobService.suspend('updateMaxSellAmount');
   }
 

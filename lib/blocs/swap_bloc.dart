@@ -1,14 +1,16 @@
 import 'dart:async';
+
 import 'package:decimal/decimal.dart';
-import '../model/get_max_taker_volume.dart';
-import '../model/order_book_provider.dart';
-import '../services/mm.dart';
-import '../utils/utils.dart';
 import 'package:rational/rational.dart';
+
 import '../blocs/coins_bloc.dart';
 import '../model/coin_balance.dart';
+import '../model/get_max_taker_volume.dart';
+import '../model/order_book_provider.dart';
 import '../model/orderbook.dart';
 import '../model/trade_preimage.dart';
+import '../services/mm.dart';
+import '../utils/utils.dart';
 import '../widgets/bloc_provider.dart';
 
 class SwapBloc implements BlocBase {
@@ -154,7 +156,7 @@ class SwapBloc implements BlocBase {
     updateMaxTakerVolume();
   }
 
-  updateFieldBalances() {
+  void updateFieldBalances() {
     if (sellCoinBalance == null) return;
     sellCoinBalance.balance.balance =
         Decimal.parse(maxTakerVolume.toDecimalString());
