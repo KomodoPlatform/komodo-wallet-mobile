@@ -1,8 +1,0 @@
-For new features, the following folders are added to lib/packages/{FEATURE NAME}:
-bloc
-models
-screens
-widgets
-
-Then run the following command (NB: from the bloc folder) to generate the files for the new bloc
-mason make hydrated_bloc --name {FEATURE NAME} --style basic

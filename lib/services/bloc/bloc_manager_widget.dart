@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:komodo_dex/packages/login/bloc/login_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:komodo_dex/login/bloc/login_bloc.dart';
+import 'package:komodo_dex/packages/authentication_repository/authentication_repository.dart';
+import 'package:komodo_dex/utils/utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class BlocProviderWidget extends StatelessWidget {
-  const BlocProviderWidget({
+part 'bloc_manager.dart';
+
+class BlocManagerWidget extends StatelessWidget {
+  const BlocManagerWidget({
     Key key,
     @required this.child,
   }) : super(key: key);
@@ -16,18 +22,13 @@ class BlocProviderWidget extends StatelessWidget {
       providers: [
         // Instantiate all BLoCs here
         BlocProvider<LoginBloc>(
-          create: (BuildContext context) => LoginBloc(),
+          create: (BuildContext context) => LoginBloc(
+            prefs: BlocManager()._prefs,
+            authenticationRepository: BlocManager()._authenticationRepository,
+          ),
         ),
       ],
       child: child,
     );
   }
 }
-
-class _SampleBloc extends Bloc<_SampleEvent, _SampleState> {
-  _SampleBloc() : super(_SampleState());
-}
-
-class _SampleState {}
-
-class _SampleEvent {}

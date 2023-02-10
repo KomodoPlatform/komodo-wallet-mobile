@@ -36,7 +36,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.0"
-    version: "1.4.0"
   async:
     dependency: transitive
     description:
@@ -395,6 +394,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  formz:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "26a22df1e3087976679e44ac2400de363feaa9cb"
+      resolved-ref: "26a22df1e3087976679e44ac2400de363feaa9cb"
+      url: "https://github.com/VeryGoodOpenSource/formz.git"
+    source: git
+    version: "0.4.1"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
@@ -665,15 +673,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.4.0"
-  pin_code_view:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: "534cf8ab281dd574e74c0096b9eb4a9432d5a948"
-      resolved-ref: "534cf8ab281dd574e74c0096b9eb4a9432d5a948"
-      url: "https://github.com/Brainants/pin_code_view.git"
-    source: git
-    version: "0.3.0+2"
   platform:
     dependency: transitive
     description:

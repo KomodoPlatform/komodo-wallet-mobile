@@ -58,6 +58,10 @@ dependencies:
   
   #-------fluttercommunity.dev------
 
+  formz:
+    git:
+      url: https://github.com/VeryGoodOpenSource/formz.git
+      ref: 26a22df1e3087976679e44ac2400de363feaa9cb #0.4.1 (Note: Supports null safety)
 
   connectivity_plus: # newly added, wasn't reviewed
     git:
@@ -74,7 +78,6 @@ dependencies:
 
 
   #------------3rd party-------------
-
 
   audioplayers: # last reviewed 859c88c2c3fe926bdbb6e5e729d3c16d088be76a
     git:
@@ -112,11 +115,6 @@ dependencies:
     git:
       url: https://github.com/KomodoPlatform/bip39-dart.git
       ref: 3633daa2026b98c523ae9a091322be2903f7a8ab #1.0.6
-
-  pin_code_view: # last reviewed c0b6516 -> da9f0f4 by yurii-khi
-    git:
-      url: https://github.com/Brainants/pin_code_view.git
-      ref: 534cf8ab281dd574e74c0096b9eb4a9432d5a948 #0.3.0+2
 
   intl_generator: # newly added, wasn't reviewed
     git:

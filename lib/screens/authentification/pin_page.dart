@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:formz/formz.dart';
+import 'package:komodo_dex/login/bloc/login_bloc.dart';
+import 'package:komodo_dex/widgets/pin/pin_input.dart';
 import 'package:komodo_dex/widgets/page_transition.dart';
-import 'package:pin_code_view/pin_code_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -68,6 +70,9 @@ class _PinPageState extends State<PinPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isBlocLoading = context.watch<LoginBloc>().state.status ==
+        FormzStatus.submissionInProgress;
+
     return Scaffold(
       appBar: !_isLoading
           ? AppBarStatus(
@@ -78,29 +83,16 @@ class _PinPageState extends State<PinPage> {
           : null,
       resizeToAvoidBottomInset: false,
       body: !_isLoading
-          ? PinCode(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              title: Text(
-                widget.subTitle,
-                style: Theme.of(context).textTheme.subtitle2,
+          ? Center(
+              child: PinInput(
+                obscureText: false,
+                length: 6,
+                readOnly: isBlocLoading || _isLoading,
+                value: context.watch<LoginBloc>().state.pin.value,
+                onChanged: (String pin) => context.read<LoginBloc>().add(
+                      LoginPinInputChanged(pin),
+                    ),
               ),
-              subTitle: const Text(
-                '',
-              ),
-              obscurePin: true,
-              error: _error,
-              errorDelayProgressColor:
-                  Theme.of(context).brightness == Brightness.light
-                      ? Colors.black
-                      : Colors.white,
-              keyTextStyle: Theme.of(context).textTheme.headline6,
-              errorDelaySeconds:
-                  widget.pinStatus == PinStatus.NORMAL_PIN ? 5 : null,
-              codeLength: 6,
-              correctPin: _correctPin,
-              onCodeFail: _onCodeFail,
-              onCodeSuccess: _onCodeSuccess,
-              clearOnAppStateChange: true,
             )
           : _buildLoading(),
     );
@@ -122,6 +114,10 @@ class _PinPageState extends State<PinPage> {
       ),
     );
   }
+
+// @ologunB A lot of the methods here would need to be transplanted to the
+// login or authentication repository (for API-related stuff) or the bloc
+// for managing the API calls and business logic.
 
   void _onErrorPinEntered() {
     camoBloc.isCamoActive = false;
