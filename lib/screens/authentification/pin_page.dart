@@ -85,7 +85,7 @@ class _PinPageState extends State<PinPage> {
       body: !_isLoading
           ? Center(
               child: PinInput(
-                obscureText: false,
+                obscureText: true,
                 length: 6,
                 readOnly: isBlocLoading || _isLoading,
                 value: context.watch<LoginBloc>().state.pin.value,
