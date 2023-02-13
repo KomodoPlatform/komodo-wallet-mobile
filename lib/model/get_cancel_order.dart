@@ -22,9 +22,9 @@ class GetCancelOrder {
         uuid: json['uuid'] ?? '',
       );
 
-  String userpass;
+  String? userpass;
   String method;
-  String uuid;
+  String? uuid;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass ?? '',

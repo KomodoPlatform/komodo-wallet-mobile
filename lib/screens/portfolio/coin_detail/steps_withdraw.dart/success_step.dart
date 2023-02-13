@@ -3,9 +3,9 @@ import '../../../../../localizations.dart';
 import '../../../../../utils/utils.dart';
 
 class SuccessStep extends StatefulWidget {
-  const SuccessStep({Key key, this.txHash}) : super(key: key);
+  const SuccessStep({Key? key, this.txHash}) : super(key: key);
 
-  final String txHash;
+  final String? txHash;
 
   @override
   _SuccessStepState createState() => _SuccessStepState();
@@ -24,7 +24,7 @@ class _SuccessStepState extends State<SuccessStep> {
               onTap: () => copyToClipBoard(context, widget.txHash),
               child: Column(
                 children: <Widget>[
-                  Text(AppLocalizations.of(context).success),
+                  Text(AppLocalizations.of(context)!.success),
                   const SizedBox(
                     height: 16,
                   ),

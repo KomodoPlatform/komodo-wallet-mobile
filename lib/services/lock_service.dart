@@ -11,7 +11,7 @@ LockService lockService = LockService();
 
 /// Decides when (and how) to lock the screen.
 class LockService {
-  SharedPreferences _prefs;
+  SharedPreferences? _prefs;
   int _inFilePicker = 0;
   int _inQrScanner = 0;
   int _inBiometrics = 0;

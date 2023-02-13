@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 
 class OrderBookTable extends StatefulWidget {
   const OrderBookTable({
-    @required this.sortedAsks,
-    @required this.sortedBids,
+    required this.sortedAsks,
+    required this.sortedBids,
   });
 
   final List<Ask> sortedAsks;
@@ -25,9 +25,9 @@ class OrderBookTable extends StatefulWidget {
 }
 
 class _OrderBookTableState extends State<OrderBookTable> {
-  OrderBookProvider orderBookProvider;
-  CexProvider cexProvider;
-  AddressBookProvider addressBookProvider;
+  OrderBookProvider? orderBookProvider;
+  CexProvider? cexProvider;
+  AddressBookProvider? addressBookProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +77,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 4),
           child: Text(
-            AppLocalizations.of(context)
-                .ordersTablePrice(orderBookProvider.activePair.buy.abbr),
+            AppLocalizations.of(context)!
+                .ordersTablePrice(orderBookProvider!.activePair!.buy!.abbr!),
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
@@ -87,8 +87,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
           height: 34,
           alignment: Alignment.centerRight,
           child: Text(
-            AppLocalizations.of(context)
-                .ordersTableAmount(orderBookProvider.activePair.sell.abbr),
+            AppLocalizations.of(context)!
+                .ordersTableAmount(orderBookProvider!.activePair!.sell!.abbr!),
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
@@ -98,8 +98,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
           height: 34,
           alignment: Alignment.centerRight,
           child: Text(
-            AppLocalizations.of(context)
-                .ordersTableTotal(orderBookProvider.activePair.sell.abbr),
+            AppLocalizations.of(context)!
+                .ordersTableTotal(orderBookProvider!.activePair!.sell!.abbr!),
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
@@ -116,7 +116,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
     for (int i = 0; i < _sortedBids.length; i++) {
       final Ask bid = _sortedBids[i];
       final double _bidVolume =
-          bid.maxvolume.toDouble() * double.parse(bid.price);
+          bid.maxvolume!.toDouble() * double.parse(bid.price!);
       _bidTotal += _bidVolume;
 
       _bidsList.add(TableRow(
@@ -130,7 +130,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
               child: Row(
                 children: <Widget>[
                   Text(
-                    formatPrice((1 / double.parse(bid.price)).toString()),
+                    formatPrice((1 / double.parse(bid.price!)).toString())!,
                     maxLines: 1,
                     style: const TextStyle(color: Colors.green, fontSize: 14),
                   ),
@@ -142,8 +142,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
                         size: 11,
                         color: Theme.of(context)
                             .textTheme
-                            .bodyText2
-                            .color
+                            .bodyText2!
+                            .color!
                             .withAlpha(150),
                       ),
                     ),
@@ -166,13 +166,13 @@ class _OrderBookTableState extends State<OrderBookTable> {
               height: 26,
               alignment: Alignment.centerRight,
               child: Text(
-                formatPrice(_bidVolume.toString()),
+                formatPrice(_bidVolume.toString())!,
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context)
                         .textTheme
-                        .bodyText2
-                        .color
+                        .bodyText2!
+                        .color!
                         .withAlpha(150),
                     fontSize: 14),
               ),
@@ -185,13 +185,13 @@ class _OrderBookTableState extends State<OrderBookTable> {
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: 4),
               child: Text(
-                formatPrice(_bidTotal.toString()),
+                formatPrice(_bidTotal.toString())!,
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context)
                         .textTheme
-                        .bodyText2
-                        .color
+                        .bodyText2!
+                        .color!
                         .withAlpha(150),
                     fontSize: 14),
               ),
@@ -208,7 +208,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(left: 4.0),
             child: Text(
-              AppLocalizations.of(context).marketsNoBids,
+              AppLocalizations.of(context)!.marketsNoBids,
               maxLines: 1,
               style: const TextStyle(color: Colors.green, fontSize: 14),
             ),
@@ -229,7 +229,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
 
     for (int i = 0; i < _sortedAsks.length; i++) {
       final Ask ask = _sortedAsks[i];
-      _askTotal += ask.maxvolume.toDouble();
+      _askTotal += ask.maxvolume!.toDouble();
 
       _asksList.add(TableRow(
         children: <Widget>[
@@ -242,7 +242,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
               child: Row(
                 children: <Widget>[
                   Text(
-                    formatPrice(ask.price),
+                    formatPrice(ask.price)!,
                     maxLines: 1,
                     style: const TextStyle(color: Colors.red, fontSize: 14),
                   ),
@@ -254,8 +254,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
                         size: 11,
                         color: Theme.of(context)
                             .textTheme
-                            .bodyText2
-                            .color
+                            .bodyText2!
+                            .color!
                             .withAlpha(150),
                       ),
                     ),
@@ -278,13 +278,13 @@ class _OrderBookTableState extends State<OrderBookTable> {
               height: 26,
               alignment: Alignment.centerRight,
               child: Text(
-                formatPrice(ask.maxvolume.toString()),
+                formatPrice(ask.maxvolume.toString())!,
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context)
                         .textTheme
-                        .bodyText2
-                        .color
+                        .bodyText2!
+                        .color!
                         .withAlpha(150),
                     fontSize: 14),
               ),
@@ -297,13 +297,13 @@ class _OrderBookTableState extends State<OrderBookTable> {
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: 4),
               child: Text(
-                formatPrice(_askTotal.toString()),
+                formatPrice(_askTotal.toString())!,
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context)
                         .textTheme
-                        .bodyText2
-                        .color
+                        .bodyText2!
+                        .color!
                         .withAlpha(150),
                     fontSize: 14),
               ),
@@ -321,7 +321,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
             height: 26,
             padding: const EdgeInsets.only(left: 4),
             child: Text(
-              AppLocalizations.of(context).marketsNoAsks,
+              AppLocalizations.of(context)!.marketsNoAsks,
               maxLines: 1,
               style: const TextStyle(color: Colors.red, fontSize: 14),
             ),
@@ -336,7 +336,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
   }
 
   TableRow _buildCexRate() {
-    final double cexRate = cexProvider.getCexRate() ?? 0.0;
+    final double cexRate = cexProvider!.getCexRate() ?? 0.0;
 
     return TableRow(
       children: [
@@ -370,11 +370,11 @@ class _OrderBookTableState extends State<OrderBookTable> {
                             child: Row(
                               children: <Widget>[
                                 Text(
-                                  formatPrice(cexRate),
+                                  formatPrice(cexRate)!,
                                   maxLines: 1,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
+                                      .subtitle2!
                                       .copyWith(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w100,
@@ -398,7 +398,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
                             width: 2,
                           ),
                           Text(
-                            '≈ ${cexProvider.convert(cexRate, from: orderBookProvider.activePair.buy.abbr)}',
+                            '≈ ${cexProvider!.convert(cexRate, from: orderBookProvider!.activePair!.buy!.abbr)}',
                             style: TextStyle(
                                 color: Theme.of(context).brightness ==
                                         Brightness.light
@@ -429,7 +429,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
     );
   }
 
-  bool _isInAdressBook(String address) {
-    return addressBookProvider.contactByAddress(address) != null;
+  bool _isInAdressBook(String? address) {
+    return addressBookProvider!.contactByAddress(address) != null;
   }
 }

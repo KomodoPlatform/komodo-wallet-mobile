@@ -7,16 +7,16 @@ import '../../../../../../widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 class InProgressPopup extends StatefulWidget {
-  const InProgressPopup({Key key, this.onDone}) : super(key: key);
+  const InProgressPopup({Key? key, this.onDone}) : super(key: key);
 
-  final Function onDone;
+  final Function? onDone;
 
   @override
   _InProgressPopupState createState() => _InProgressPopupState();
 }
 
 class _InProgressPopupState extends State<InProgressPopup> {
-  OrderBookProvider orderBookProvider;
+  late OrderBookProvider orderBookProvider;
 
   @override
   void initState() {
@@ -26,10 +26,10 @@ class _InProgressPopupState extends State<InProgressPopup> {
   @override
   Widget build(BuildContext context) {
     orderBookProvider = Provider.of<OrderBookProvider>(context);
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
       await orderBookProvider.subscribeDepth(
-          swapBloc.sellCoinBalance.coin.abbr, CoinType.base);
-      widget.onDone();
+          swapBloc.sellCoinBalance!.coin!.abbr, CoinType.base);
+      widget.onDone!();
     });
 
     return CustomSimpleDialog(
@@ -44,7 +44,7 @@ class _InProgressPopupState extends State<InProgressPopup> {
                 width: 16,
               ),
               Text(
-                AppLocalizations.of(context).loadingOrderbook,
+                AppLocalizations.of(context)!.loadingOrderbook,
                 style: Theme.of(context).textTheme.bodyText2,
               )
             ],

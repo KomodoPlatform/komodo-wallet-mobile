@@ -9,18 +9,18 @@ class SupportChannelItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: data.link == null ? null : () => launchURL(data.link),
+      onPressed: data.link == null ? null : () => launchURL(data.link!),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            if (data.icon != null) data.icon,
+            if (data.icon != null) data.icon!,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                if (data.subtitle != null) Text(data.subtitle),
-                if (data.title != null) Text(data.title),
+                if (data.subtitle != null) Text(data.subtitle!),
+                if (data.title != null) Text(data.title!),
               ],
             ),
           ],
@@ -33,8 +33,8 @@ class SupportChannelItem extends StatelessWidget {
 class SupportChannel {
   SupportChannel({this.title, this.subtitle, this.link, this.icon});
 
-  String title;
-  String subtitle;
-  String link;
-  Widget icon;
+  String? title;
+  String? subtitle;
+  String? link;
+  Widget? icon;
 }

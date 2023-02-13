@@ -36,37 +36,37 @@ class OrderBookProvider extends ChangeNotifier {
 
   void notify() => notifyListeners();
 
-  Orderbook getOrderBook([CoinsPair coinsPair]) =>
+  Orderbook? getOrderBook([CoinsPair? coinsPair]) =>
       syncOrderbook.getOrderBook(coinsPair);
 
-  OrderbookDepth getDepth([CoinsPair coinsPair]) =>
+  OrderbookDepth? getDepth([CoinsPair? coinsPair]) =>
       syncOrderbook.getDepth(coinsPair);
 
   // deprecated in favor of depthsForCoin
   // https://github.com/KomodoPlatform/AtomicDEX-mobile/issues/1146
-  List<Orderbook> orderbooksForCoin([Coin coin]) =>
+  List<Orderbook> orderbooksForCoin([Coin? coin]) =>
       syncOrderbook.orderbooksForCoin(coin);
 
-  List<OrderbookDepth> depthsForCoin([Coin coin, Market type]) =>
+  List<OrderbookDepth> depthsForCoin([Coin? coin, Market? type]) =>
       syncOrderbook.depthForCoin(coin, type);
 
   // deprecated in favor of subscribeDepth
   // https://github.com/KomodoPlatform/AtomicDEX-mobile/issues/1146
-  Future<void> subscribeCoin([Coin coin, CoinType type]) =>
+  Future<void> subscribeCoin([Coin? coin, CoinType? type]) =>
       syncOrderbook.subscribeCoin(coin, type);
 
-  Future<void> subscribeDepth(String abbr, CoinType type) async =>
+  Future<void> subscribeDepth(String? abbr, CoinType type) async =>
       await syncOrderbook.subscribeDepth(abbr, type);
 
-  CoinsPair get activePair => syncOrderbook.activePair;
-  set activePair(CoinsPair coinsPair) => syncOrderbook.activePair = coinsPair;
+  CoinsPair? get activePair => syncOrderbook.activePair;
+  set activePair(CoinsPair? coinsPair) => syncOrderbook.activePair = coinsPair;
 
   void updateActivePair() => syncOrderbook.updateActivePair();
 
   // todo(AG): historical swap data for [coinsPair]
-  List<Swap> getSwapHistory(CoinsPair coinsPair) {
-    if (coinsPair.sell.abbr.startsWith('VOTE') ||
-        coinsPair.buy.abbr.startsWith('VOTE')) {
+  List<Swap>? getSwapHistory(CoinsPair coinsPair) {
+    if (coinsPair.sell!.abbr!.startsWith('VOTE') ||
+        coinsPair.buy!.abbr!.startsWith('VOTE')) {
       return null;
     }
 
@@ -76,31 +76,31 @@ class OrderBookProvider extends ChangeNotifier {
   /// Returns [list] of Ask(), sorted by price (DESC),
   /// then by volume (DESC),
   /// then by age (DESC)
-  static List<Ask> sortByPrice(List<Ask> list, {bool quotePrice = false}) {
+  static List<Ask>? sortByPrice(List<Ask>? list, {bool quotePrice = false}) {
     if (list == null || list.isEmpty) return list;
 
     final List<Ask> sorted = quotePrice
         ? list.map((Ask ask) {
             final Ask quoteAsk = Ask.fromJson(ask.toJson());
-            quoteAsk.price = '${1 / double.parse(ask.price)}';
+            quoteAsk.price = '${1 / double.parse(ask.price!)}';
             quoteAsk.priceFract = ask.priceFract == null
                 ? null
                 : <String, dynamic>{
-                    'numer': ask.priceFract['denom'],
-                    'denom': ask.priceFract['numer'],
+                    'numer': ask.priceFract!['denom'],
+                    'denom': ask.priceFract!['numer'],
                   };
             return quoteAsk;
           }).toList()
         : List.from(list);
 
     sorted.sort((a, b) {
-      if (double.parse(a.price) > double.parse(b.price)) return 1;
-      if (double.parse(a.price) < double.parse(b.price)) return -1;
+      if (double.parse(a.price!) > double.parse(b.price!)) return 1;
+      if (double.parse(a.price!) < double.parse(b.price!)) return -1;
 
-      if (a.maxvolume > b.maxvolume) return -1;
-      if (a.maxvolume < b.maxvolume) return 1;
+      if (a.maxvolume! > b.maxvolume!) return -1;
+      if (a.maxvolume! < b.maxvolume!) return 1;
 
-      return a.age.compareTo(b.age);
+      return a.age!.compareTo(b.age!);
     });
     return sorted;
   }
@@ -112,8 +112,8 @@ class CoinsPair {
     this.sell,
   });
 
-  Coin buy;
-  Coin sell;
+  Coin? buy;
+  Coin? sell;
 }
 
 SyncOrderbook syncOrderbook = SyncOrderbook();
@@ -125,16 +125,16 @@ class SyncOrderbook {
 
   Map<String, Orderbook> _orderBooks = {}; // {'BTC/KMD': Orderbook(),}
   Map<String, OrderbookDepth> _orderbooksDepth = {};
-  CoinsPair _activePair;
+  CoinsPair? _activePair;
   bool _updatingDepth = false;
 
   /// Maps short order IDs to latest liveliness markers.
   final List<String> _tickers = [];
   final List<String> _depthTickers = [];
 
-  CoinsPair get activePair => _activePair;
+  CoinsPair? get activePair => _activePair;
 
-  set activePair(CoinsPair coinsPair) {
+  set activePair(CoinsPair? coinsPair) {
     _activePair = coinsPair;
     _notifyListeners();
   }
@@ -142,20 +142,20 @@ class SyncOrderbook {
   void updateActivePair() {
     // Check if coins in activePair are still activated
     if (_activePair?.sell != null &&
-        coinsBloc.getCoinByAbbr(_activePair.sell.abbr) == null) {
-      _activePair.sell = null;
+        coinsBloc.getCoinByAbbr(_activePair!.sell!.abbr) == null) {
+      _activePair!.sell = null;
     }
     if (_activePair?.buy != null &&
-        coinsBloc.getCoinByAbbr(_activePair.buy.abbr) == null) {
-      _activePair.buy = null;
+        coinsBloc.getCoinByAbbr(_activePair!.buy!.abbr) == null) {
+      _activePair!.buy = null;
     }
 
     _notifyListeners();
   }
 
-  Orderbook getOrderBook([CoinsPair coinsPair]) {
+  Orderbook? getOrderBook([CoinsPair? coinsPair]) {
     coinsPair ??= activePair;
-    if (coinsPair.buy == null || coinsPair.sell == null) return null;
+    if (coinsPair!.buy == null || coinsPair.sell == null) return null;
 
     if (!_tickers.contains(_tickerStr(coinsPair)))
       _tickers.add(_tickerStr(coinsPair));
@@ -163,9 +163,9 @@ class SyncOrderbook {
     return _orderBooks[_tickerStr(coinsPair)];
   }
 
-  OrderbookDepth getDepth([CoinsPair coinsPair]) {
+  OrderbookDepth? getDepth([CoinsPair? coinsPair]) {
     coinsPair ??= activePair;
-    if (coinsPair.buy == null || coinsPair.sell == null) return null;
+    if (coinsPair!.buy == null || coinsPair.sell == null) return null;
 
     if (!_depthTickers.contains(_tickerStr(coinsPair))) {
       _depthTickers.add(_tickerStr(coinsPair));
@@ -173,18 +173,18 @@ class SyncOrderbook {
     return _orderbooksDepth[_tickerStr(coinsPair)];
   }
 
-  Future<void> subscribeDepth(String abbr, CoinType type) async {
+  Future<void> subscribeDepth(String? abbr, CoinType type) async {
     if (_updatingDepth) await pauseUntil(() => !_updatingDepth);
 
     bool wasChanged = false;
-    final LinkedHashMap<String, Coin> known = await coins;
+    final LinkedHashMap<String?, Coin> known = await (coins as FutureOr<LinkedHashMap<String?, Coin>>);
     final List<CoinBalance> active = coinsBloc.coinBalance;
 
-    active.removeWhere((e) => e.coin.walletOnly);
-    final Coin coin = known[abbr];
+    active.removeWhere((e) => e.coin!.walletOnly);
+    final Coin? coin = known[abbr];
 
     for (CoinBalance coinBalance in active) {
-      if (coinBalance.coin.abbr == abbr) continue;
+      if (coinBalance.coin!.abbr == abbr) continue;
 
       final String ticker = _tickerStr(CoinsPair(
         sell: type == CoinType.base ? coin : coinBalance.coin,
@@ -200,16 +200,16 @@ class SyncOrderbook {
     if (wasChanged) await _updateOrderbookDepth();
   }
 
-  Future<void> subscribeCoin([Coin coin, CoinType type]) async {
-    coin ??= activePair.sell;
+  Future<void> subscribeCoin([Coin? coin, CoinType? type]) async {
+    coin ??= activePair!.sell;
     type ??= CoinType.base;
 
     bool wasChanged = false;
     final List<CoinBalance> coinsList = coinsBloc.coinBalance;
-    coinsList.removeWhere((e) => e.coin.walletOnly);
+    coinsList.removeWhere((e) => e.coin!.walletOnly);
 
     for (CoinBalance coinBalance in coinsList) {
-      if (coinBalance.coin.abbr == coin.abbr) continue;
+      if (coinBalance.coin!.abbr == coin!.abbr) continue;
 
       final String ticker = _tickerStr(CoinsPair(
         sell: type == CoinType.base ? coin : coinBalance.coin,
@@ -225,12 +225,12 @@ class SyncOrderbook {
     if (wasChanged) await _updateOrderBooks();
   }
 
-  List<Orderbook> orderbooksForCoin([Coin coin]) {
-    coin ??= activePair.sell;
+  List<Orderbook> orderbooksForCoin([Coin? coin]) {
+    coin ??= activePair!.sell;
 
     final List<Orderbook> list = [];
     _orderBooks.forEach((ticker, orderbook) {
-      if (ticker.split('/')[0] == coin.abbr) {
+      if (ticker.split('/')[0] == coin!.abbr) {
         list.add(orderbook);
       }
     });
@@ -238,7 +238,7 @@ class SyncOrderbook {
     return list;
   }
 
-  List<OrderbookDepth> depthForCoin([Coin coin, Market type]) {
+  List<OrderbookDepth> depthForCoin([Coin? coin, Market? type]) {
     coin ??= activePair?.sell;
     type ??= Market.SELL;
 
@@ -250,7 +250,7 @@ class SyncOrderbook {
       }
     });
 
-    list.sort((a, b) => a.pair.rel.compareTo(b.pair.rel));
+    list.sort((a, b) => a.pair!.rel!.compareTo(b.pair!.rel!));
     return list;
   }
 
@@ -299,7 +299,7 @@ class SyncOrderbook {
       final Map<String, OrderbookDepth> orderbooksDepth = {};
 
       for (OrderbookDepth item in result) {
-        orderbooksDepth['${item.pair.base}/${item.pair.rel}'] = item;
+        orderbooksDepth['${item.pair!.base}/${item.pair!.rel}'] = item;
       }
 
       _orderbooksDepth = orderbooksDepth;
@@ -310,7 +310,7 @@ class SyncOrderbook {
   }
 
   String _tickerStr(CoinsPair pair) {
-    return '${pair.sell.abbr}/${pair.buy.abbr}';
+    return '${pair.sell!.abbr}/${pair.buy!.abbr}';
   }
 
   /// Link a [ChangeNotifier] proxy to this singleton.

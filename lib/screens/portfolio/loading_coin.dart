@@ -18,16 +18,16 @@ class _LoadingCoinState extends State<LoadingCoin> {
         const SizedBox(
           height: 16,
         ),
-        StreamBuilder<CoinToActivate>(
+        StreamBuilder<CoinToActivate?>(
             initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
             builder:
-                (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+                (BuildContext context, AsyncSnapshot<CoinToActivate?> snapshot) {
               if (snapshot.data != null &&
-                  snapshot.data.currentStatus != null) {
-                return Text(snapshot.data.currentStatus);
+                  snapshot.data!.currentStatus != null) {
+                return Text(snapshot.data!.currentStatus!);
               } else {
-                return Text(AppLocalizations.of(context).connecting);
+                return Text(AppLocalizations.of(context)!.connecting);
               }
             })
       ],

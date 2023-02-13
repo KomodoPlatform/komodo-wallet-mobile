@@ -28,15 +28,15 @@ class SwapHistoryBloc implements GenericBlocBase {
 
   Future<dynamic> recoverFund(Swap swap) async => await MM.recoverFundsOfSwap(
       mmSe.client,
-      GetRecoverFundsOfSwap(params: Params(uuid: swap.result.uuid)));
+      GetRecoverFundsOfSwap(params: Params(uuid: swap.result!.uuid)));
 
   /// Deprecated: should be using `errorEvents` and `successEvents` (`MmSwap::status`)
   /// instead of hardcoding all the present **and future** status events
   Status getStatusSwap(MmSwap resultSwap) {
     Status status = Status.ORDER_MATCHING;
 
-    for (SwapEL event in resultSwap.events) {
-      switch (event.event.type) {
+    for (SwapEL event in resultSwap.events!) {
+      switch (event.event!.type) {
         case 'Started':
           status = Status.ORDER_MATCHED;
           break;
@@ -109,32 +109,32 @@ class SwapHistoryBloc implements GenericBlocBase {
     return status;
   }
 
-  String getSwapStatusString(BuildContext context, Status status) {
+  String getSwapStatusString(BuildContext context, Status? status) {
     switch (status) {
       case Status.ORDER_MATCHING:
-        return AppLocalizations.of(context).orderMatching;
+        return AppLocalizations.of(context)!.orderMatching;
         break;
       case Status.ORDER_MATCHED:
-        return AppLocalizations.of(context).orderMatched;
+        return AppLocalizations.of(context)!.orderMatched;
         break;
       case Status.SWAP_ONGOING:
-        return AppLocalizations.of(context).swapOngoing;
+        return AppLocalizations.of(context)!.swapOngoing;
         break;
       case Status.SWAP_SUCCESSFUL:
-        return AppLocalizations.of(context).swapSucceful;
+        return AppLocalizations.of(context)!.swapSucceful;
         break;
       case Status.TIME_OUT:
-        return AppLocalizations.of(context).timeOut;
+        return AppLocalizations.of(context)!.timeOut;
         break;
       case Status.SWAP_FAILED:
-        return AppLocalizations.of(context).swapFailed;
+        return AppLocalizations.of(context)!.swapFailed;
         break;
       default:
     }
     return '';
   }
 
-  Color getColorStatus(Status status) {
+  Color getColorStatus(Status? status) {
     switch (status) {
       case Status.ORDER_MATCHING:
         return Colors.grey;
@@ -159,7 +159,7 @@ class SwapHistoryBloc implements GenericBlocBase {
     return Colors.redAccent;
   }
 
-  String getStepStatus(Status status) {
+  String getStepStatus(Status? status) {
     switch (status) {
       case Status.ORDER_MATCHING:
         return '0/3';

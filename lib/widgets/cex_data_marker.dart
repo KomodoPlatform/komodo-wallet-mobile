@@ -13,7 +13,7 @@ class CexMarker extends StatelessWidget {
   });
 
   final Size size;
-  final Color color;
+  final Color? color;
   final BuildContext context;
 
   @override
@@ -48,12 +48,12 @@ void showCexDialog(BuildContext context) {
           const SizedBox(
             width: 8,
           ),
-          Text(AppLocalizations.of(context).cexData),
+          Text(AppLocalizations.of(context)!.cexData),
         ],
       ),
       children: <Widget>[
         HtmlParser(
-          AppLocalizations.of(context).cexDataDesc,
+          AppLocalizations.of(context)!.cexDataDesc,
           linkStyle: TextStyle(color: Colors.blue),
           textStyle: TextStyle(
             color: Theme.of(context).brightness == Brightness.light

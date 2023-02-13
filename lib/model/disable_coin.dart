@@ -18,10 +18,10 @@ class DisableCoin {
         result: Result.fromJson(json['result']),
       );
 
-  Result result;
+  Result? result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson(),
+        'result': result!.toJson(),
       };
 }
 
@@ -37,12 +37,12 @@ class Result {
         coin: json['coin'],
       );
 
-  List<String> cancelledOrders;
-  String coin;
+  List<String>? cancelledOrders;
+  String? coin;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'cancelled_orders':
-            List<dynamic>.from(cancelledOrders.map<dynamic>((String x) => x)),
+            List<dynamic>.from(cancelledOrders!.map<dynamic>((String x) => x)),
         'coin': coin,
       };
 }

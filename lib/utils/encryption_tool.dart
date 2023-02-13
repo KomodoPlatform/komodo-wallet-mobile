@@ -12,7 +12,7 @@ class EncryptionTool {
   String keyPassword(KeyEncryption key, Wallet wallet) =>
       'password${key.toString()}${wallet.name}${wallet.id}';
 
-  String keyData(KeyEncryption key, Wallet wallet, String password) =>
+  String keyData(KeyEncryption key, Wallet wallet, String? password) =>
       '${key.toString()}$password${wallet.name}${wallet.id}';
 
   // MRC: It seems our previous version of flutter_sodium was using Argon2id,
@@ -22,13 +22,13 @@ class EncryptionTool {
   // https://libsodium.gitbook.io/doc/password_hashing/default_phf#notes
 
   Future<bool> isPasswordValid(
-      KeyEncryption key, Wallet wallet, String password) async {
+      KeyEncryption key, Wallet? wallet, String? password) async {
     if (key == KeyEncryption.SEED) {
       bool isValid = false;
       try {
         isValid = await argon2.verifyHashString(
-          password,
-          await storage.read(key: keyPassword(key, wallet)),
+          password!,
+          await (storage.read(key: keyPassword(key, wallet!)) as FutureOr<String>),
           type: Argon2Type.id,
         );
       } catch (_) {}
@@ -62,7 +62,7 @@ class EncryptionTool {
     return iv.base64 + mac.base64 + encrypted.base64;
   }
 
-  String decryptData(String password, String encryptedData) {
+  String? decryptData(String password, String encryptedData) {
     try {
       String ivString = encryptedData.substring(0, 24);
       String macString = encryptedData.substring(24, 48);
@@ -84,7 +84,7 @@ class EncryptionTool {
     }
   }
 
-  String _decryptLegacy(String password, String encryptedData) {
+  String? _decryptLegacy(String password, String encryptedData) {
     try {
       final String length32Key = md5.convert(utf8.encode(password)).toString();
       final key = Key.fromUtf8(length32Key);
@@ -100,38 +100,38 @@ class EncryptionTool {
     }
   }
 
-  Future<void> writeData(KeyEncryption key, Wallet wallet, String password,
-          String data) async =>
+  Future<void> writeData(KeyEncryption key, Wallet wallet, String? password,
+          String? data) async =>
       await storage
           .write(key: keyData(key, wallet, password), value: data)
           .then((_) async {
         if (key == KeyEncryption.SEED) {
           await storage.write(
               key: keyPassword(key, wallet),
-              value: await _computeHash(password));
+              value: await _computeHash(password!));
         }
       });
 
-  Future<String> readData(
-          KeyEncryption key, Wallet wallet, String password) async =>
+  Future<String?> readData(
+          KeyEncryption key, Wallet? wallet, String password) async =>
       await isPasswordValid(key, wallet, password)
           .catchError((dynamic e) => throw e)
           .then((bool onValue) async =>
-              await storage.read(key: keyData(key, wallet, password)));
+              await storage.read(key: keyData(key, wallet!, password)));
 
   Future<void> deleteData(
-          KeyEncryption key, Wallet wallet, String password) async =>
+          KeyEncryption key, Wallet? wallet, String? password) async =>
       await isPasswordValid(key, wallet, password)
           .catchError((dynamic e) => throw e)
           .then((bool res) async {
-        await storage.delete(key: keyPassword(key, wallet));
-      }).then((_) async =>
-              await storage.delete(key: keyData(key, wallet, password)));
+        await storage.delete(key: keyPassword(key, wallet!));
+      }).then(((_) async =>
+              await storage.delete(key: keyData(key, wallet!, password))) as FutureOr<void> Function(Null));
 
-  Future<void> write(String key, String data) async =>
+  Future<void> write(String key, String? data) async =>
       await storage.write(key: key, value: data);
 
-  Future<String> read(String key) async => await storage.read(key: key);
+  Future<String?> read(String key) async => await storage.read(key: key);
 
   Future<void> delete(String key) async => await storage.delete(key: key);
 }

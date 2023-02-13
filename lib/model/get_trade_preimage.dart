@@ -15,7 +15,7 @@ class GetTradePreimage {
     this.max,
   });
 
-  factory GetTradePreimage.fromJson(Map<String, dynamic> json) {
+  factory GetTradePreimage.fromJson(Map<String, dynamic>? json) {
     if (json == null) return null;
 
     return GetTradePreimage(
@@ -30,14 +30,14 @@ class GetTradePreimage {
     );
   }
 
-  String userpass;
+  String? userpass;
   String method;
-  String base;
-  String rel;
-  String swapMethod; // 'buy', 'sell' or 'setprice'
-  String volume;
-  String price;
-  bool max;
+  String? base;
+  String? rel;
+  String? swapMethod; // 'buy', 'sell' or 'setprice'
+  String? volume;
+  String? price;
+  bool? max;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass ?? '',

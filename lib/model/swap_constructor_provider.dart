@@ -26,26 +26,26 @@ class ConstructorProvider extends ChangeNotifier {
         const Duration(seconds: 5), (_) => _updateMatchingOrder());
   }
 
-  String _sellCoin;
-  String _buyCoin;
-  Rational _sellAmount;
-  Rational _buyAmount;
-  BestOrder _matchingOrder;
-  TradePreimage _preimage;
-  Rational _maxTakerVolume;
-  String _warning;
-  String _error;
+  String? _sellCoin;
+  String? _buyCoin;
+  Rational? _sellAmount;
+  Rational? _buyAmount;
+  BestOrder? _matchingOrder;
+  TradePreimage? _preimage;
+  Rational? _maxTakerVolume;
+  String? _warning;
+  String? _error;
   bool _inProgress = false;
-  Timer _timer;
+  Timer? _timer;
 
-  String get error => _error;
-  set error(String value) {
+  String? get error => _error;
+  set error(String? value) {
     _error = value;
     notifyListeners();
   }
 
-  String get warning => _warning;
-  set warning(String value) {
+  String? get warning => _warning;
+  set warning(String? value) {
     _warning = value;
     notifyListeners();
   }
@@ -56,8 +56,8 @@ class ConstructorProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  TradePreimage get preimage => _preimage;
-  set preimage(TradePreimage value) {
+  TradePreimage? get preimage => _preimage;
+  set preimage(TradePreimage? value) {
     _preimage = value;
     notifyListeners();
   }
@@ -70,8 +70,8 @@ class ConstructorProvider extends ChangeNotifier {
         _matchingOrder != null;
   }
 
-  String get sellCoin => _sellCoin;
-  set sellCoin(String value) {
+  String? get sellCoin => _sellCoin;
+  set sellCoin(String? value) {
     _sellCoin = value;
     _sellAmount = null;
     _updateMaxTakerVolume();
@@ -84,8 +84,8 @@ class ConstructorProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get buyCoin => _buyCoin;
-  set buyCoin(String value) {
+  String? get buyCoin => _buyCoin;
+  set buyCoin(String? value) {
     _buyCoin = value;
     _buyAmount = null;
     if (value == null) {
@@ -97,22 +97,22 @@ class ConstructorProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Rational get sellAmount => _sellAmount;
-  set sellAmount(Rational value) {
+  Rational? get sellAmount => _sellAmount;
+  set sellAmount(Rational? value) {
     _warning = null;
 
     if (value != null) {
       // if > than balance
-      if (value > maxSellAmt) value = maxSellAmt;
+      if (value > maxSellAmt!) value = maxSellAmt;
 
       if (_matchingOrder != null) {
-        final Rational price = _matchingOrder.action == Market.SELL
-            ? _matchingOrder.price
-            : _matchingOrder.price.inverse;
+        final Rational price = _matchingOrder!.action == Market.SELL
+            ? _matchingOrder!.price!
+            : _matchingOrder!.price!.inverse;
 
-        final Rational maxOrderAmt = _matchingOrder.maxVolume / price;
+        final Rational maxOrderAmt = _matchingOrder!.maxVolume! / price;
         // if > than order max volume
-        if (value > maxOrderAmt) {
+        if (value! > maxOrderAmt) {
           value = maxOrderAmt;
           _warning = 'Sell amount was set to '
               '${cutTrailingZeros(value.toStringAsFixed(appConfig.tradeFormPrecision))} '
@@ -129,13 +129,13 @@ class ConstructorProvider extends ChangeNotifier {
     _updatePreimage();
   }
 
-  Rational get buyAmount => _buyAmount;
-  set buyAmount(Rational value) {
+  Rational? get buyAmount => _buyAmount;
+  set buyAmount(Rational? value) {
     _warning = null;
 
     if (value != null) {
       if (_matchingOrder != null) {
-        final Rational maxOrderAmt = _matchingOrder.maxVolume;
+        final Rational maxOrderAmt = _matchingOrder!.maxVolume!;
         // if > than order max volume
         if (value > maxOrderAmt) {
           value = maxOrderAmt;
@@ -144,13 +144,13 @@ class ConstructorProvider extends ChangeNotifier {
               '$_buyCoin, which is the max volume available for this price';
         }
 
-        final Rational price = _matchingOrder.action == Market.BUY
-            ? _matchingOrder.price
-            : _matchingOrder.price.inverse;
+        final Rational price = _matchingOrder!.action == Market.BUY
+            ? _matchingOrder!.price!
+            : _matchingOrder!.price!.inverse;
 
         // if > than max sell balance
-        if (value * price > maxSellAmt) {
-          value = maxSellAmt / price;
+        if (value * price > maxSellAmt!) {
+          value = maxSellAmt! / price;
         }
 
         _sellAmount = value * price;
@@ -163,21 +163,21 @@ class ConstructorProvider extends ChangeNotifier {
     _updatePreimage();
   }
 
-  BestOrder get matchingOrder => _matchingOrder;
-  set matchingOrder(BestOrder value) {
+  BestOrder? get matchingOrder => _matchingOrder;
+  set matchingOrder(BestOrder? value) {
     _matchingOrder = value;
     notifyListeners();
   }
 
-  Rational get maxSellAmt {
+  Rational? get maxSellAmt {
     if (_sellCoin == null) return null;
 
     if (_maxTakerVolume != null) return _maxTakerVolume;
 
-    final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(_sellCoin);
+    final CoinBalance? coinBalance = coinsBloc.getBalanceByAbbr(_sellCoin);
     if (coinBalance == null) return null;
 
-    return deci2rat(coinBalance.balance.balance);
+    return deci2rat(coinBalance.balance!.balance);
   }
 
   void onBuyAmtFieldChange(String newText) {
@@ -193,8 +193,8 @@ class ConstructorProvider extends ChangeNotifier {
     }
 
     if (_buyAmount != null) {
-      final String currentText = cutTrailingZeros(
-          _buyAmount.toStringAsFixed(appConfig.tradeFormPrecision));
+      final String? currentText = cutTrailingZeros(
+          _buyAmount!.toStringAsFixed(appConfig.tradeFormPrecision));
       if (newText == currentText) return;
     }
 
@@ -214,17 +214,17 @@ class ConstructorProvider extends ChangeNotifier {
     }
 
     if (_sellAmount != null) {
-      final String currentText = cutTrailingZeros(
-          _sellAmount.toStringAsFixed(appConfig.tradeFormPrecision));
+      final String? currentText = cutTrailingZeros(
+          _sellAmount!.toStringAsFixed(appConfig.tradeFormPrecision));
       if (newText == currentText) return;
     }
 
     sellAmount = newAmount;
   }
 
-  Future<BestOrders> getBestOrders(Market coinsListType) async {
-    String coin;
-    Rational amount;
+  Future<BestOrders> getBestOrders(Market? coinsListType) async {
+    String? coin;
+    Rational? amount;
     Market action;
 
     if (coinsListType == Market.SELL) {
@@ -246,18 +246,18 @@ class ConstructorProvider extends ChangeNotifier {
     if (bestOrders.error != null) return bestOrders;
     if (bestOrders.result == null) return bestOrders;
 
-    final LinkedHashMap<String, Coin> known = await coins;
-    final List<String> tickers = List.from(bestOrders.result.keys);
+    final LinkedHashMap<String?, Coin>? known = await coins;
+    final List<String> tickers = List.from(bestOrders.result!.keys);
     for (String ticker in tickers) {
-      if (!known.containsKey(ticker)) {
-        bestOrders.result.remove(ticker);
+      if (!known!.containsKey(ticker)) {
+        bestOrders.result!.remove(ticker);
       }
-      if (coinsBloc.getCoinByAbbr(ticker).walletOnly) {
-        bestOrders.result.remove(ticker);
+      if (coinsBloc.getCoinByAbbr(ticker)!.walletOnly) {
+        bestOrders.result!.remove(ticker);
       }
-      final Coin coin = coinsBloc.getCoinByAbbr(ticker);
+      final Coin? coin = coinsBloc.getCoinByAbbr(ticker);
       if (coin?.suspended == true) {
-        bestOrders.result.remove(ticker);
+        bestOrders.result!.remove(ticker);
       }
     }
 
@@ -271,36 +271,36 @@ class ConstructorProvider extends ChangeNotifier {
       sellCoin = order.otherCoin;
       await _updateMaxTakerVolume();
 
-      sellAmount = order.price * _buyAmount;
+      sellAmount = order.price! * _buyAmount!;
 
       if (_buyAmount == order.maxVolume) {
         _warning = 'Buy amount was set to '
-            '${cutTrailingZeros(_buyAmount.toStringAsFixed(appConfig.tradeFormPrecision))} '
+            '${cutTrailingZeros(_buyAmount!.toStringAsFixed(appConfig.tradeFormPrecision))} '
             '$_buyCoin, which is the max volume available for this price';
       }
     } else {
       buyCoin = order.coin;
 
-      buyAmount = order.price * _sellAmount;
+      buyAmount = order.price! * _sellAmount!;
 
-      if (_sellAmount == order.maxVolume / order.price) {
+      if (_sellAmount == order.maxVolume! / order.price!) {
         _warning = 'Sell amount was set to '
-            '${cutTrailingZeros(_sellAmount.toStringAsFixed(appConfig.tradeFormPrecision))} '
+            '${cutTrailingZeros(_sellAmount!.toStringAsFixed(appConfig.tradeFormPrecision))} '
             '$_sellCoin, which is the max volume available for this price';
       }
     }
   }
 
   Future<void> makeSwap({
-    ProtectionSettings protectionSettings,
-    BuyOrderType buyOrderType,
-    Function(dynamic) onSuccess,
-    Function(dynamic) onError,
+    required ProtectionSettings protectionSettings,
+    BuyOrderType? buyOrderType,
+    Function(dynamic)? onSuccess,
+    Function(dynamic)? onError,
   }) async {
-    final Rational price = _matchingOrder.action == Market.SELL
-        ? _matchingOrder.price.inverse
-        : _matchingOrder.price;
-    final Rational volume = _buyAmount;
+    final Rational price = _matchingOrder!.action == Market.SELL
+        ? _matchingOrder!.price!.inverse
+        : _matchingOrder!.price!;
+    final Rational volume = _buyAmount!;
 
     final dynamic re = await MM.postBuy(
       mmSe.client,
@@ -322,26 +322,26 @@ class ConstructorProvider extends ChangeNotifier {
     );
 
     if (re is BuyResponse) {
-      onSuccess(re);
+      onSuccess!(re);
     } else {
-      onError(re);
+      onError!(re);
     }
   }
 
-  BestOrder getTickerTopOrder(List<BestOrder> tickerOrdersList, Market type) {
+  BestOrder? getTickerTopOrder(List<BestOrder> tickerOrdersList, Market? type) {
     final List<BestOrder> sorted = List.from(tickerOrdersList);
     sorted.removeWhere((BestOrder order) {
-      final String coin =
+      final String? coin =
           order.action == Market.SELL ? order.coin : order.otherCoin;
-      final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
+      final CoinBalance? coinBalance = coinsBloc.getBalanceByAbbr(coin);
       if (coinBalance == null) return false;
-      return coinBalance.balance.address.toLowerCase() ==
-          order.address.toLowerCase();
+      return coinBalance.balance!.address!.toLowerCase() ==
+          order.address!.toLowerCase();
     });
     if (type == Market.SELL) {
-      sorted.sort((a, b) => a.price.toDouble().compareTo(b.price.toDouble()));
+      sorted.sort((a, b) => a.price!.toDouble().compareTo(b.price!.toDouble()));
     } else {
-      sorted.sort((a, b) => b.price.toDouble().compareTo(a.price.toDouble()));
+      sorted.sort((a, b) => b.price!.toDouble().compareTo(a.price!.toDouble()));
     }
     return sorted.isNotEmpty ? sorted[0] : null;
   }
@@ -372,29 +372,29 @@ class ConstructorProvider extends ChangeNotifier {
     if (_matchingOrder == null) return;
 
     final Market type =
-        _matchingOrder.action == Market.BUY ? Market.SELL : Market.BUY;
+        _matchingOrder!.action == Market.BUY ? Market.SELL : Market.BUY;
 
     final BestOrders bestOrders = await getBestOrders(type);
     if (bestOrders.error != null) return;
 
-    final String coin =
+    final String? coin =
         type == Market.SELL ? _matchingOrder?.otherCoin : _matchingOrder?.coin;
 
     if (coin == null) return;
-    final BestOrder topOrder = getTickerTopOrder(bestOrders.result[coin], type);
+    final BestOrder? topOrder = getTickerTopOrder(bestOrders.result![coin]!, type);
     if (topOrder == null) return;
 
-    if (topOrder.maxVolume == _matchingOrder.maxVolume &&
-        topOrder.price == _matchingOrder.price) return;
+    if (topOrder.maxVolume == _matchingOrder!.maxVolume &&
+        topOrder.price == _matchingOrder!.price) return;
 
-    String warningMessage;
+    String? warningMessage;
 
-    if (topOrder.price != _matchingOrder.price &&
-        topOrder.maxVolume != _matchingOrder.maxVolume) {
+    if (topOrder.price != _matchingOrder!.price &&
+        topOrder.maxVolume != _matchingOrder!.maxVolume) {
       warningMessage = 'Warning: trade price and max volume was updated!';
-    } else if (topOrder.price != _matchingOrder.price) {
+    } else if (topOrder.price != _matchingOrder!.price) {
       warningMessage = 'Warning: trade price was updated!';
-    } else if (topOrder.maxVolume != _matchingOrder.maxVolume) {
+    } else if (topOrder.maxVolume != _matchingOrder!.maxVolume) {
       warningMessage = 'Warning: max trade volume was updated!';
     }
     _matchingOrder = topOrder;
@@ -415,7 +415,7 @@ class ConstructorProvider extends ChangeNotifier {
               base: _buyCoin,
               rel: _sellCoin,
               volume: _buyAmount,
-              price: _sellAmount / _buyAmount));
+              price: _sellAmount! / _buyAmount!));
       inProgress = false;
 
       if (_validatePreimage(preimage)) {
@@ -435,11 +435,11 @@ class ConstructorProvider extends ChangeNotifier {
 
     if (preimage.error != null) {
       isValid = false;
-      _error = _getHumanPreimageError(preimage.error);
+      _error = _getHumanPreimageError(preimage.error!);
     } else {
       // check active coins
-      for (CoinFee coinFee in preimage.totalFees) {
-        final CoinBalance coinBalance =
+      for (CoinFee coinFee in preimage.totalFees!) {
+        final CoinBalance? coinBalance =
             coinsBloc.getBalanceByAbbr(coinFee.coin);
         if (coinBalance == null) {
           isValid = false;
@@ -451,20 +451,20 @@ class ConstructorProvider extends ChangeNotifier {
       }
 
       // if < than order min volume
-      final Rational minOrderVolume = _matchingOrder.minVolume;
+      final Rational? minOrderVolume = _matchingOrder!.minVolume;
       if (minOrderVolume != null &&
           _buyAmount != null &&
-          minOrderVolume > _buyAmount) {
+          minOrderVolume > _buyAmount!) {
         isValid = false;
-        final Rational price = _matchingOrder.action == Market.SELL
-            ? _matchingOrder.price
-            : _matchingOrder.price.inverse;
+        final Rational price = _matchingOrder!.action == Market.SELL
+            ? _matchingOrder!.price!
+            : _matchingOrder!.price!.inverse;
         final Rational minSellVolume = minOrderVolume / price;
         _error = 'Min order volume is'
             ' ${minSellVolume.toStringAsFixed(appConfig.tradeFormPrecision)}'
-            ' ${_matchingOrder.otherCoin}'
+            ' ${_matchingOrder!.otherCoin}'
             '\n(${minOrderVolume.toStringAsFixed(appConfig.tradeFormPrecision)}'
-            ' ${_matchingOrder.coin})';
+            ' ${_matchingOrder!.coin})';
       }
     }
 
@@ -514,7 +514,7 @@ class ConstructorProvider extends ChangeNotifier {
       _maxTakerVolume =
           await MM.getMaxTakerVolume(GetMaxTakerVolume(coin: _sellCoin));
 
-      if (_maxTakerVolume.toDouble() == 0) {
+      if (_maxTakerVolume!.toDouble() == 0) {
         _error = '$_sellCoin balance is not sufficient for trade';
       }
     } catch (e) {

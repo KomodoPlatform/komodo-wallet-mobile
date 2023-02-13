@@ -11,10 +11,10 @@ class PrivKey {
         result: Result.fromJson(json['result']),
       );
 
-  Result result;
+  Result? result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson(),
+        'result': result!.toJson(),
       };
 }
 
@@ -26,8 +26,8 @@ class Result {
         privKey: json['priv_key'] ?? '',
       );
 
-  String coin;
-  String privKey;
+  String? coin;
+  String? privKey;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'coin': coin ?? '',

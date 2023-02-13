@@ -1,4 +1,5 @@
 import '../../../../dex/trade/pro/create/trade_form.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:rational/rational.dart';
 import '../../../../../generic_blocs/coins_bloc.dart';
 import '../../../../../generic_blocs/main_bloc.dart';
@@ -10,22 +11,22 @@ import '../../../../../model/trade_preimage.dart';
 import '../../../../../utils/utils.dart';
 
 class TradeFormValidator {
-  final CoinBalance sellBalance = swapBloc.sellCoinBalance;
-  final CoinBalance receiveBalance = swapBloc.receiveCoinBalance;
-  final Rational amountSell = swapBloc.amountSell;
-  final Rational amountReceive = swapBloc.amountReceive;
-  final Ask matchingBid = swapBloc.matchingBid;
+  final CoinBalance? sellBalance = swapBloc.sellCoinBalance;
+  final CoinBalance? receiveBalance = swapBloc.receiveCoinBalance;
+  final Rational? amountSell = swapBloc.amountSell;
+  final Rational? amountReceive = swapBloc.amountReceive;
+  final Ask? matchingBid = swapBloc.matchingBid;
   final AppLocalizations appLocalizations = AppLocalizations();
 
-  Future<String> get errorMessage async {
-    final String message = _validateNetwork() ??
+  Future<String?> get errorMessage async {
+    final String? message = _validateNetwork() ??
         _validateMaxTakerVolume() ??
         await _validateMinValues() ??
         await _validateGas();
     return message;
   }
 
-  String _validateNetwork() {
+  String? _validateNetwork() {
     if (mainBloc.networkStatus != NetworkStatus.Online) {
       return appLocalizations.noInternet;
     } else {
@@ -33,37 +34,37 @@ class TradeFormValidator {
     }
   }
 
-  String _validateMaxTakerVolume() {
+  String? _validateMaxTakerVolume() {
     if (swapBloc.matchingBid != null &&
         swapBloc.maxTakerVolume == Rational.parse('0')) {
       return appLocalizations
-          .insufficientBalanceToPay(swapBloc.sellCoinBalance.coin.abbr);
+          .insufficientBalanceToPay(swapBloc.sellCoinBalance!.coin!.abbr!);
     }
 
     return null;
   }
 
-  Future<String> _validateMinValues() async {
-    final double minVolumeSell =
-        await tradeForm.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr);
-    final double minVolumeReceive =
-        await tradeForm.minVolumeDefault(swapBloc.receiveCoinBalance.coin.abbr);
+  Future<String?> _validateMinValues() async {
+    final double? minVolumeSell =
+        await tradeForm.minVolumeDefault(swapBloc.sellCoinBalance!.coin!.abbr);
+    final double? minVolumeReceive =
+        await tradeForm.minVolumeDefault(swapBloc.receiveCoinBalance!.coin!.abbr);
 
-    if (amountSell != null && amountSell.toDouble() < minVolumeSell) {
+    if (amountSell != null && amountSell!.toDouble() < minVolumeSell!) {
       return appLocalizations.minValue(
-          swapBloc.sellCoinBalance.coin.abbr, '$minVolumeSell');
+          swapBloc.sellCoinBalance!.coin!.abbr!, '$minVolumeSell');
     } else if (amountReceive != null &&
-        amountReceive.toDouble() < minVolumeReceive) {
+        amountReceive!.toDouble() < minVolumeReceive!) {
       return appLocalizations.minValueBuy(
-          swapBloc.receiveCoinBalance.coin.abbr, '$minVolumeReceive');
-    } else if (matchingBid != null && matchingBid.minVolume != null) {
-      if (amountReceive != null && amountReceive < matchingBid.minVolume) {
+          swapBloc.receiveCoinBalance!.coin!.abbr!, '$minVolumeReceive');
+    } else if (matchingBid != null && matchingBid!.minVolume != null) {
+      if (amountReceive != null && amountReceive! < matchingBid!.minVolume!) {
         return appLocalizations.minValueOrder(
-          swapBloc.receiveCoinBalance.coin.abbr,
-          cutTrailingZeros(formatPrice(matchingBid.minVolume)),
-          swapBloc.sellCoinBalance.coin.abbr,
-          cutTrailingZeros(formatPrice(matchingBid.minVolume.toDouble() *
-              double.parse(matchingBid.price))),
+          swapBloc.receiveCoinBalance!.coin!.abbr!,
+          cutTrailingZeros(formatPrice(matchingBid!.minVolume))!,
+          swapBloc.sellCoinBalance!.coin!.abbr!,
+          cutTrailingZeros(formatPrice(matchingBid!.minVolume!.toDouble() *
+              double.parse(matchingBid!.price!)))!,
         );
       }
       return null;
@@ -72,13 +73,13 @@ class TradeFormValidator {
     }
   }
 
-  Future<String> _validateGas() async {
-    return await _validateGasFor(swapBloc.sellCoinBalance.coin.abbr) ??
-        await _validateGasFor(swapBloc.receiveCoinBalance.coin.abbr);
+  Future<String?> _validateGas() async {
+    return await _validateGasFor(swapBloc.sellCoinBalance!.coin!.abbr) ??
+        await _validateGasFor(swapBloc.receiveCoinBalance!.coin!.abbr);
   }
 
-  Future<String> _validateGasFor(String coin) async {
-    final String gasCoin = coinsBloc.getCoinByAbbr(coin)?.payGasIn;
+  Future<String?> _validateGasFor(String? coin) async {
+    final String? gasCoin = coinsBloc.getCoinByAbbr(coin)?.payGasIn;
     if (gasCoin == null) return null;
 
     if (!coinsBloc.isCoinActive(gasCoin)) {
@@ -96,16 +97,16 @@ class TradeFormValidator {
         return null;
       }
     } else {
-      final CoinFee totalGasFee = swapBloc.tradePreimage.totalFees
-          .firstWhere((item) => item.coin == gasCoin, orElse: () => null);
+      final CoinFee? totalGasFee = swapBloc.tradePreimage!.totalFees!
+          .firstWhereOrNull((item) => item.coin == gasCoin);
       if (totalGasFee != null) {
         final double totalGasAmount =
             double.tryParse(totalGasFee.amount ?? '0') ?? 0;
         final double gasBalance =
-            coinsBloc.getBalanceByAbbr(gasCoin).balance.balance.toDouble();
+            coinsBloc.getBalanceByAbbr(gasCoin)!.balance!.balance!.toDouble();
         if (totalGasAmount > gasBalance) {
           return appLocalizations.swapGasAmountRequired(
-              gasCoin, cutTrailingZeros(formatPrice(totalGasAmount, 4)));
+              gasCoin, cutTrailingZeros(formatPrice(totalGasAmount, 4))!);
         }
       }
     }

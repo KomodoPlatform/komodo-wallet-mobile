@@ -22,9 +22,9 @@ class GetTradeFee {
         coin: json['coin'],
       );
 
-  String userpass;
-  String method;
-  String coin;
+  String? userpass;
+  String? method;
+  String? coin;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass,

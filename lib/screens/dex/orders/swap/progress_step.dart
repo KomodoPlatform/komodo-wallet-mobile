@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 class ProgressStep extends StatefulWidget {
   const ProgressStep({
-    @required this.estimatedTotalSpeed,
-    @required this.actualTotalSpeed,
-    @required this.estimatedStepSpeed,
-    @required this.actualStepSpeed,
+    required this.estimatedTotalSpeed,
+    required this.actualTotalSpeed,
+    required this.estimatedStepSpeed,
+    required this.actualStepSpeed,
   });
 
-  final Duration estimatedTotalSpeed;
-  final Duration actualTotalSpeed;
-  final Duration estimatedStepSpeed;
-  final Duration actualStepSpeed;
+  final Duration? estimatedTotalSpeed;
+  final Duration? actualTotalSpeed;
+  final Duration? estimatedStepSpeed;
+  final Duration? actualStepSpeed;
 
   @override
   _ProgressStepState createState() => _ProgressStepState();
@@ -25,8 +25,8 @@ class _ProgressStepState extends State<ProgressStep> {
         return 0;
       }
 
-      double share = widget.estimatedStepSpeed.inMilliseconds /
-          widget.estimatedTotalSpeed.inMilliseconds;
+      double share = widget.estimatedStepSpeed!.inMilliseconds /
+          widget.estimatedTotalSpeed!.inMilliseconds;
       if (share < 0.01) share = 0.01;
       if (share > 1) share = 1;
       return share;
@@ -37,8 +37,8 @@ class _ProgressStepState extends State<ProgressStep> {
         return 0;
       }
 
-      double share = widget.actualStepSpeed.inMilliseconds /
-          widget.estimatedTotalSpeed.inMilliseconds;
+      double share = widget.actualStepSpeed!.inMilliseconds /
+          widget.estimatedTotalSpeed!.inMilliseconds;
       if (share < 0.01) share = 0.01;
       if (share > 1) share = 1;
       return share;
@@ -59,7 +59,7 @@ class _ProgressStepState extends State<ProgressStep> {
                     widthFactor: getEstimatedShare(),
                     child: Container(
                       height: 2,
-                      color: Theme.of(context).textTheme.bodyText1.color,
+                      color: Theme.of(context).textTheme.bodyText1!.color,
                     ),
                   ),
                 ],

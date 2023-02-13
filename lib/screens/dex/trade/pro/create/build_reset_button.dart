@@ -29,7 +29,7 @@ class _BuildResetButtonState extends State<BuildResetButton> {
     return TextButton(
       key: const Key('clear-trade-button'),
       onPressed: _enabled ? tradeForm.reset : null,
-      child: Text(AppLocalizations.of(context).reset),
+      child: Text(AppLocalizations.of(context)!.reset),
     );
   }
 

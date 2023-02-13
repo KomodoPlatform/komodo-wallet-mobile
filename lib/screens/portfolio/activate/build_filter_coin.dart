@@ -4,16 +4,16 @@ import '../../../app_config/app_config.dart';
 
 class BuildFilterCoin extends StatefulWidget {
   const BuildFilterCoin({
-    Key key,
+    Key? key,
     this.typeFilter,
     this.allCoinsTypes,
     this.onSelected,
     this.focusNode,
   }) : super(key: key);
-  final String typeFilter;
-  final List<String> allCoinsTypes;
-  final Function(String) onSelected;
-  final FocusNode focusNode;
+  final String? typeFilter;
+  final List<String>? allCoinsTypes;
+  final Function(String)? onSelected;
+  final FocusNode? focusNode;
 
   @override
   State<BuildFilterCoin> createState() => _BuildFilterCoinState();
@@ -39,7 +39,7 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
-                    widget.typeFilter.toUpperCase(),
+                    widget.typeFilter!.toUpperCase(),
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   SizedBox(width: 8),
@@ -47,8 +47,8 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
                       ? InkWell(
                           key: const Key('clear-filter-protocol'),
                           onTap: () {
-                            widget.onSelected('');
-                            widget.focusNode.requestFocus();
+                            widget.onSelected!('');
+                            widget.focusNode!.requestFocus();
                           },
                           child: Icon(
                             Icons.close,
@@ -70,9 +70,9 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
 
   void _showMenu() {
     final RenderBox button =
-        _globalKey.currentContext.findRenderObject() as RenderBox;
+        _globalKey.currentContext!.findRenderObject() as RenderBox;
     final RenderBox overlay =
-        Navigator.of(context).overlay.context.findRenderObject() as RenderBox;
+        Navigator.of(context).overlay!.context.findRenderObject() as RenderBox;
     const Offset offset = Offset.zero;
 
     final RelativeRect position = RelativeRect.fromRect(
@@ -92,12 +92,12 @@ class _BuildFilterCoinState extends State<BuildFilterCoin> {
   }
 
   List<PopupMenuEntry<String>> _buildMenuItem() {
-    return widget.allCoinsTypes.map((String protocolType) {
+    return widget.allCoinsTypes!.map((String protocolType) {
       return PopupMenuItem<String>(
         key: Key('filter-item-' + protocolType),
         value: protocolType,
         onTap: () {
-          widget.onSelected(protocolType);
+          widget.onSelected!(protocolType);
         },
         child: Text(
           appConfig.allProtocolNames[protocolType] ?? '',

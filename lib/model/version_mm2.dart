@@ -6,6 +6,6 @@ class VersionMm2 {
         datetime: json['datetime'] ?? '',
       );
 
-  String result;
-  String datetime;
+  String? result;
+  String? datetime;
 }

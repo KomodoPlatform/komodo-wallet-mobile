@@ -17,16 +17,16 @@ class BuyForm extends StatefulWidget {
 class _BuyFormState extends State<BuyForm> {
   final _amtCtrl = TextEditingController();
   final _focusNode = FocusNode();
-  ConstructorProvider _constrProvider;
-  CexProvider _cexProvider;
+  ConstructorProvider? _constrProvider;
+  CexProvider? _cexProvider;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _constrProvider.addListener(_onDataChange);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _constrProvider!.addListener(_onDataChange);
 
       _onDataChange(); // fill the form with current data on page load
-      if (_constrProvider.sellCoin == null) {
+      if (_constrProvider!.sellCoin == null) {
         _focusNode.requestFocus();
       } else {
         unfocusEverything();
@@ -38,7 +38,7 @@ class _BuyFormState extends State<BuyForm> {
 
   @override
   void dispose() {
-    _constrProvider.removeListener(_onDataChange);
+    _constrProvider!.removeListener(_onDataChange);
     super.dispose();
   }
 
@@ -70,7 +70,7 @@ class _BuyFormState extends State<BuyForm> {
           controller: _amtCtrl,
           focusNode: _focusNode,
           keyboardType: TextInputType.numberWithOptions(decimal: true),
-          onChanged: _constrProvider.onBuyAmtFieldChange,
+          onChanged: _constrProvider!.onBuyAmtFieldChange,
           inputFormatters: <TextInputFormatter>[
             DecimalTextInputFormatter(
                 decimalRange: appConfig.tradeFormPrecision),
@@ -97,12 +97,12 @@ class _BuyFormState extends State<BuyForm> {
         visualDensity: VisualDensity.compact,
         contentPadding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
         horizontalTitleGap: 0,
-        onTap: () => _constrProvider.buyCoin = null,
+        onTap: () => _constrProvider!.buyCoin = null,
         leading: CircleAvatar(
           radius: 8,
-          backgroundImage: AssetImage(getCoinIconPath(_constrProvider.buyCoin)),
+          backgroundImage: AssetImage(getCoinIconPath(_constrProvider!.buyCoin)),
         ),
-        title: Text(_constrProvider.buyCoin),
+        title: Text(_constrProvider!.buyCoin!),
         trailing: Icon(
           Icons.clear,
           size: 16,
@@ -112,43 +112,43 @@ class _BuyFormState extends State<BuyForm> {
   }
 
   Widget _buildFiatAmt() {
-    final Rational buyAmount = _constrProvider.buyAmount;
-    final double usdPrice = _cexProvider.getUsdPrice(_constrProvider.buyCoin);
+    final Rational? buyAmount = _constrProvider!.buyAmount;
+    final double? usdPrice = _cexProvider!.getUsdPrice(_constrProvider!.buyCoin);
     double usdAmt = 0.0;
     if (buyAmount != null && buyAmount.toDouble() > 0) {
-      usdAmt = buyAmount.toDouble() * usdPrice;
+      usdAmt = buyAmount.toDouble() * usdPrice!;
     }
 
     if (usdAmt == 0) return SizedBox();
 
     return Text(
-      _cexProvider.convert(usdAmt),
+      _cexProvider!.convert(usdAmt)!,
       style: Theme.of(context)
           .textTheme
-          .caption
+          .caption!
           .copyWith(color: _getFiatColor(), fontSize: 11),
     );
   }
 
-  Color _getFiatColor() {
-    Color color = Theme.of(context).textTheme.bodyText1.color;
+  Color? _getFiatColor() {
+    Color? color = Theme.of(context).textTheme.bodyText1!.color;
 
-    final String sellCoin = _constrProvider.sellCoin;
-    final String buyCoin = _constrProvider.buyCoin;
-    final Rational buyAmount = _constrProvider.buyAmount;
-    final Rational sellAmount = _constrProvider.sellAmount;
+    final String? sellCoin = _constrProvider!.sellCoin;
+    final String? buyCoin = _constrProvider!.buyCoin;
+    final Rational? buyAmount = _constrProvider!.buyAmount;
+    final Rational? sellAmount = _constrProvider!.sellAmount;
     if (sellCoin == null) return color;
     if (buyCoin == null) return color;
     if (sellAmount == null || sellAmount.toDouble() == 0) return color;
     if (buyAmount == null || buyAmount.toDouble() == 0) return color;
 
-    final sellCoinUsdPrice = _cexProvider.getUsdPrice(sellCoin);
-    final buyCoinUsdPrice = _cexProvider.getUsdPrice(buyCoin);
+    final sellCoinUsdPrice = _cexProvider!.getUsdPrice(sellCoin);
+    final buyCoinUsdPrice = _cexProvider!.getUsdPrice(buyCoin);
 
     if (sellCoinUsdPrice == 0 || buyCoinUsdPrice == 0) return color;
 
-    final double sellAmtUsd = sellAmount.toDouble() * sellCoinUsdPrice;
-    final double buyAmtUsd = buyAmount.toDouble() * buyCoinUsdPrice;
+    final double sellAmtUsd = sellAmount.toDouble() * sellCoinUsdPrice!;
+    final double buyAmtUsd = buyAmount.toDouble() * buyCoinUsdPrice!;
 
     if (sellAmtUsd > buyAmtUsd) {
       color = Colors.orange.withAlpha(200);
@@ -162,17 +162,17 @@ class _BuyFormState extends State<BuyForm> {
   void _onDataChange() {
     if (!mounted) return;
 
-    if (_constrProvider.buyAmount == null) {
+    if (_constrProvider!.buyAmount == null) {
       _amtCtrl.clear();
       return;
     }
 
-    final String newFormatted = cutTrailingZeros(_constrProvider.buyAmount
+    final String? newFormatted = cutTrailingZeros(_constrProvider!.buyAmount!
         .toStringAsFixed(appConfig.tradeFormPrecision));
-    final String currentFormatted = cutTrailingZeros(_amtCtrl.text);
+    final String? currentFormatted = cutTrailingZeros(_amtCtrl.text);
 
     if (currentFormatted != newFormatted) {
-      _amtCtrl.text = newFormatted;
+      _amtCtrl.text = newFormatted!;
       moveCursorToEnd(_amtCtrl);
     }
   }

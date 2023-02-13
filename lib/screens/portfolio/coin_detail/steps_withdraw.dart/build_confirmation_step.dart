@@ -16,7 +16,7 @@ import '../../../../widgets/secondary_button.dart';
 
 class BuildConfirmationStep extends StatefulWidget {
   const BuildConfirmationStep({
-    Key key,
+    Key? key,
     this.coinBalance,
     this.amountToPay,
     this.addressToSend,
@@ -26,13 +26,13 @@ class BuildConfirmationStep extends StatefulWidget {
     this.onConfirmPressed,
   }) : super(key: key);
 
-  final Function onCancel;
-  final Function onNoInternet;
-  final Function onError;
-  final Function(WithdrawResponse) onConfirmPressed;
-  final CoinBalance coinBalance;
-  final String amountToPay;
-  final String addressToSend;
+  final Function? onCancel;
+  final Function? onNoInternet;
+  final Function? onError;
+  final Function(WithdrawResponse?)? onConfirmPressed;
+  final CoinBalance? coinBalance;
+  final String? amountToPay;
+  final String? addressToSend;
 
   @override
   _BuildConfirmationStepState createState() => _BuildConfirmationStepState();
@@ -47,20 +47,20 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Fee customFee;
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Fee? customFee;
       if (coinsDetailBloc.customFee != null) {
-        bool isERC = isErcType(widget.coinBalance.coin);
+        bool isERC = isErcType(widget.coinBalance!.coin);
         if (isERC) {
           customFee = Fee(
             type: 'EthGas',
-            gas: coinsDetailBloc.customFee.gas,
-            gasPrice: coinsDetailBloc.customFee.gasPrice,
+            gas: coinsDetailBloc.customFee!.gas,
+            gasPrice: coinsDetailBloc.customFee!.gasPrice,
           );
         } else {
           customFee = Fee(
             type: 'UtxoFixed',
-            amount: coinsDetailBloc.customFee.amount,
+            amount: coinsDetailBloc.customFee!.amount,
           );
         }
       }
@@ -71,11 +71,11 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
               GetWithdraw(
                 userpass: mmSe.userpass,
                 fee: customFee,
-                coin: widget.coinBalance.coin.abbr,
+                coin: widget.coinBalance!.coin!.abbr,
                 to: widget.addressToSend,
                 amount: widget.amountToPay,
-                max: double.parse(widget.coinBalance.balance.getBalance()) ==
-                    double.parse(widget.amountToPay),
+                max: double.parse(widget.coinBalance!.balance!.getBalance()) ==
+                    double.parse(widget.amountToPay!),
               ))
           .then((dynamic res) {
         setState(() => _withdrawResponse = res);
@@ -94,25 +94,25 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
         return _buildErrorMessage();
       }
 
-      final bool needGas = fee.coin != widget.coinBalance.coin.abbr;
+      final bool needGas = fee.coin != widget.coinBalance!.coin!.abbr;
       bool isGasActive = false;
       bool notEnoughGas = false;
 
-      double amountToPay = double.parse(widget.amountToPay);
+      double amountToPay = double.parse(widget.amountToPay!);
       double amountUserReceive = amountToPay;
-      if (!needGas) amountToPay += fee.amount;
-      final double userBalance = widget.coinBalance.balance.balance.toDouble();
+      if (!needGas) amountToPay += fee.amount!;
+      final double userBalance = widget.coinBalance!.balance!.balance!.toDouble();
 
       if (amountToPay > userBalance) {
         amountToPay = userBalance;
-        if (!needGas) amountUserReceive -= fee.amount;
+        if (!needGas) amountUserReceive -= fee.amount!;
       }
 
       bool isButtonActive;
       if (needGas) {
-        final CoinBalance gasBalance = coinsBloc.getBalanceByAbbr(fee.coin);
+        final CoinBalance? gasBalance = coinsBloc.getBalanceByAbbr(fee.coin);
         isGasActive = gasBalance != null;
-        if (isGasActive && fee.amount > gasBalance.balance.balance.toDouble()) {
+        if (isGasActive && fee.amount! > gasBalance.balance!.balance!.toDouble()) {
           notEnoughGas = true;
         }
 
@@ -129,7 +129,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    AppLocalizations.of(context).youAreSending,
+                    AppLocalizations.of(context)!.youAreSending,
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   const SizedBox(
@@ -147,7 +147,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                         width: 4,
                       ),
                       Text(
-                        widget.coinBalance.coin.abbr,
+                        widget.coinBalance!.coin!.abbr!,
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ],
@@ -160,7 +160,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       Text(
-                        fee.amount.toStringAsFixed(8),
+                        fee.amount!.toStringAsFixed(8),
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       const SizedBox(
@@ -168,8 +168,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                       ),
                       Text(
                         needGas
-                            ? AppLocalizations.of(context).gasFee(fee.coin)
-                            : AppLocalizations.of(context).networkFee,
+                            ? AppLocalizations.of(context)!.gasFee(fee.coin!)
+                            : AppLocalizations.of(context)!.networkFee,
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ],
@@ -179,10 +179,10 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                          AppLocalizations.of(context).notEnoughGas(fee.coin),
+                          AppLocalizations.of(context)!.notEnoughGas(fee.coin!),
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1
+                              .bodyText1!
                               .copyWith(color: Theme.of(context).errorColor),
                         ),
                       ],
@@ -192,10 +192,10 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                          AppLocalizations.of(context).gasNotActive(fee.coin),
+                          AppLocalizations.of(context)!.gasNotActive(fee.coin!),
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1
+                              .bodyText1!
                               .copyWith(color: Theme.of(context).errorColor),
                         ),
                       ],
@@ -207,7 +207,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                       width: double.infinity,
                       color: Theme.of(context)
                           .textSelectionTheme
-                          .selectionColor
+                          .selectionColor!
                           .withOpacity(0.4),
                     ),
                   ),
@@ -225,7 +225,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 2),
                         child: Text(
-                          widget.coinBalance.coin.abbr,
+                          widget.coinBalance!.coin!.abbr!,
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
                       ),
@@ -235,14 +235,14 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                     height: 16,
                   ),
                   Text(
-                    AppLocalizations.of(context).toAddress,
+                    AppLocalizations.of(context)!.toAddress,
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   const SizedBox(
                     height: 24,
                   ),
                   AutoSizeText(
-                    widget.addressToSend,
+                    widget.addressToSend!,
                     style: Theme.of(context).textTheme.bodyText2,
                     maxLines: 1,
                   ),
@@ -254,12 +254,12 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                       Expanded(
                         child: SecondaryButton(
                           text:
-                              AppLocalizations.of(context).cancel.toUpperCase(),
+                              AppLocalizations.of(context)!.cancel.toUpperCase(),
                           onPressed: () {
                             setState(() {
                               _closeStep = true;
                             });
-                            widget.onCancel();
+                            widget.onCancel!();
                           },
                         ),
                       ),
@@ -270,7 +270,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                         child: Builder(builder: (BuildContext context) {
                           return PrimaryButton(
                             key: const Key('primary-button-confirm'),
-                            text: AppLocalizations.of(context)
+                            text: AppLocalizations.of(context)!
                                 .confirm
                                 .toUpperCase(),
                             onPressed: isButtonActive
@@ -300,7 +300,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   }
 
   Widget _buildErrorMessage() {
-    final String detailedMessage =
+    final String? detailedMessage =
         _withdrawResponse is ErrorString ? _withdrawResponse.error : null;
 
     return Center(
@@ -311,7 +311,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
             Text(
               detailedMessage != null && _showDetailedError
                   ? detailedMessage
-                  : AppLocalizations.of(context).withdrawConfirmError,
+                  : AppLocalizations.of(context)!.withdrawConfirmError,
               style: TextStyle(color: Theme.of(context).errorColor),
             ),
             SizedBox(height: 48),
@@ -319,15 +319,15 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
               children: [
                 Expanded(
                   child: SecondaryButton(
-                    text: AppLocalizations.of(context).back.toUpperCase(),
-                    onPressed: widget.onCancel,
+                    text: AppLocalizations.of(context)!.back.toUpperCase(),
+                    onPressed: widget.onCancel as void Function()?,
                   ),
                 ),
                 if (detailedMessage != null && !_showDetailedError) ...{
                   SizedBox(width: 8),
                   Expanded(
                     child: SecondaryButton(
-                      text: AppLocalizations.of(context).details.toUpperCase(),
+                      text: AppLocalizations.of(context)!.details.toUpperCase(),
                       onPressed: () {
                         setState(() => _showDetailedError = true);
                       },
@@ -344,23 +344,23 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
 
   Future<void> _onPressedConfirmWithdraw(double sendAmount) async {
     if (mainBloc.networkStatus != NetworkStatus.Online) {
-      widget.onNoInternet();
+      widget.onNoInternet!();
     } else if (_withdrawResponse is WithdrawResponse) {
-      widget.onConfirmPressed(_withdrawResponse);
+      widget.onConfirmPressed!(_withdrawResponse);
     } else {
-      widget.onError();
+      widget.onError!();
     }
   }
 
   CoinAmt _extractFee(WithdrawResponse res) {
-    String coin = res.feeDetails.coin ?? '';
-    if (coin.isEmpty) coin = widget.coinBalance.coin.abbr;
+    String coin = res.feeDetails!.coin ?? '';
+    if (coin.isEmpty) coin = widget.coinBalance!.coin!.abbr!;
 
     double amount;
     try {
-      amount = double.parse(res.feeDetails.amount);
+      amount = double.parse(res.feeDetails!.amount!);
     } catch (_) {
-      amount = double.parse(res.feeDetails.totalFee);
+      amount = double.parse(res.feeDetails!.totalFee!);
     }
 
     if (amount == null) return null;
@@ -375,6 +375,6 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
 class CoinAmt {
   CoinAmt({this.amount, this.coin});
 
-  double amount;
-  String coin;
+  double? amount;
+  String? coin;
 }

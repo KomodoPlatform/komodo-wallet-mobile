@@ -17,7 +17,7 @@ class ViewSeedUnlockPage extends StatefulWidget {
 
 class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
   bool passwordSuccess = false;
-  String seed;
+  String? seed;
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +28,11 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.onBackground,
           title:
-              Text(AppLocalizations.of(context).viewSeedAndKeys.toUpperCase()),
+              Text(AppLocalizations.of(context)!.viewSeedAndKeys.toUpperCase()),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text(AppLocalizations.of(context).done.toUpperCase()),
+              child: Text(AppLocalizations.of(context)!.done.toUpperCase()),
             )
           ],
         ),
@@ -77,10 +77,10 @@ class UnlockPassword extends StatefulWidget {
   const UnlockPassword(
       {this.onSuccess, this.onError, this.icon, this.currentWallet});
 
-  final Function(String) onSuccess;
-  final Function(String) onError;
-  final SvgPicture icon;
-  final Wallet currentWallet;
+  final Function(String)? onSuccess;
+  final Function(String)? onError;
+  final SvgPicture? icon;
+  final Wallet? currentWallet;
 
   @override
   _UnlockPasswordState createState() => _UnlockPasswordState();
@@ -104,10 +104,10 @@ class _UnlockPasswordState extends State<UnlockPassword> {
       padding: const EdgeInsets.all(16),
       children: <Widget>[
         const SizedBox(height: 32),
-        widget.icon,
+        widget.icon!,
         const SizedBox(height: 100),
         Text(
-          AppLocalizations.of(context).enterpassword,
+          AppLocalizations.of(context)!.enterpassword,
           style: Theme.of(context).textTheme.bodyText2,
         ),
         const SizedBox(height: 8),
@@ -134,7 +134,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
           ),
           style: Theme.of(context).textTheme.bodyText2,
           decoration: InputDecoration(
-            hintText: AppLocalizations.of(context).hintCurrentPassword,
+            hintText: AppLocalizations.of(context)!.hintCurrentPassword,
             suffixIcon: PasswordVisibilityControl(
               isFocused: isFocus,
               onVisibilityChange: (bool isPasswordObscured) {
@@ -151,7 +151,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
           child: isLoading
               ? const Center(child: CircularProgressIndicator())
               : PrimaryButton(
-                  text: AppLocalizations.of(context).checkSeedPhraseButton1,
+                  text: AppLocalizations.of(context)!.checkSeedPhraseButton1,
                   onPressed: isContinueEnabled
                       ? () => _checkPassword(controller.text)
                       : null,
@@ -167,15 +167,15 @@ class _UnlockPasswordState extends State<UnlockPassword> {
     setState(() {
       isLoading = true;
     });
-    final String seed = await entryptionTool.readData(
+    final String? seed = await entryptionTool.readData(
         KeyEncryption.SEED, widget.currentWallet, data);
     setState(() {
       isLoading = false;
     });
     if (seed != null) {
-      widget.onSuccess(seed);
+      widget.onSuccess!(seed);
     } else {
-      widget.onError(AppLocalizations.of(context).wrongPassword);
+      widget.onError!(AppLocalizations.of(context)!.wrongPassword);
     }
   }
 }

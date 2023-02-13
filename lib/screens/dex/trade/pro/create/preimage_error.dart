@@ -8,15 +8,15 @@ import '../../../../../widgets/custom_simple_dialog.dart';
 class PreimageError extends StatefulWidget {
   const PreimageError(this.apiErrorMessage);
 
-  final String apiErrorMessage;
+  final String? apiErrorMessage;
 
   @override
   _PreimageErrorState createState() => _PreimageErrorState();
 }
 
 class _PreimageErrorState extends State<PreimageError> {
-  BuildContext _mainContext;
-  String _validatorError;
+  late BuildContext _mainContext;
+  String? _validatorError;
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +28,11 @@ class _PreimageErrorState extends State<PreimageError> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FutureBuilder<String>(
+            FutureBuilder<String?>(
                 future: TradeFormValidator().errorMessage,
                 builder: (context, snapshot) {
                   _validatorError =
-                      snapshot.data ?? AppLocalizations.of(context).invalidSwap;
+                      snapshot.data ?? AppLocalizations.of(context)!.invalidSwap;
 
                   return Flexible(
                       child: RichText(
@@ -41,7 +41,7 @@ class _PreimageErrorState extends State<PreimageError> {
                         text: _validatorError,
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText1
+                            .bodyText1!
                             .copyWith(color: Theme.of(context).errorColor),
                         children: [
                           WidgetSpan(
@@ -65,7 +65,7 @@ class _PreimageErrorState extends State<PreimageError> {
             context: context,
             builder: (BuildContext context) {
               return CustomSimpleDialog(
-                title: Text(AppLocalizations.of(context).invalidSwap,
+                title: Text(AppLocalizations.of(context)!.invalidSwap,
                     style: TextStyle(fontSize: 18)),
                 children: [
                   Column(
@@ -81,7 +81,7 @@ class _PreimageErrorState extends State<PreimageError> {
                     children: [
                       ElevatedButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        child: Text(AppLocalizations.of(context).okButton),
+                        child: Text(AppLocalizations.of(context)!.okButton),
                       ),
                     ],
                   )
@@ -92,7 +92,7 @@ class _PreimageErrorState extends State<PreimageError> {
     );
   }
 
-  Widget _buildApiErrorMessage(String message) {
+  Widget _buildApiErrorMessage(String? message) {
     if (message == null) return SizedBox();
 
     bool _showDetails = false;
@@ -113,14 +113,14 @@ class _PreimageErrorState extends State<PreimageError> {
                 child: Row(
                   children: [
                     Text(
-                      AppLocalizations.of(context).showDetails,
+                      AppLocalizations.of(context)!.showDetails,
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     Icon(
                       _showDetails
                           ? Icons.arrow_drop_up
                           : Icons.arrow_drop_down,
-                      color: Theme.of(context).textTheme.bodyText1.color,
+                      color: Theme.of(context).textTheme.bodyText1!.color,
                       size: 16,
                     )
                   ],
@@ -146,10 +146,10 @@ class _PreimageErrorState extends State<PreimageError> {
                           maxHeight: MediaQuery.of(context).size.height * 0.3),
                       child: SingleChildScrollView(
                         child: Text(
-                          widget.apiErrorMessage +
-                              widget.apiErrorMessage +
-                              widget.apiErrorMessage +
-                              widget.apiErrorMessage,
+                          widget.apiErrorMessage! +
+                              widget.apiErrorMessage! +
+                              widget.apiErrorMessage! +
+                              widget.apiErrorMessage!,
                           style: TextStyle(
                             fontSize: 12,
                             fontFamily: 'monospace',
@@ -169,7 +169,7 @@ class _PreimageErrorState extends State<PreimageError> {
   Widget _builValidatorMessage() {
     return Column(children: [
       Text(
-        _validatorError,
+        _validatorError!,
         style: TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.bold,

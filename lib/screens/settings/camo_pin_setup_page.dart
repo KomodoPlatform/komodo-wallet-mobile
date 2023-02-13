@@ -17,8 +17,8 @@ class CamoPinSetupPage extends StatefulWidget {
 }
 
 class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
-  String _matchingPinErrorMessage;
-  WalletSecuritySettingsProvider walletSecuritySettingsProvider;
+  String? _matchingPinErrorMessage;
+  late WalletSecuritySettingsProvider walletSecuritySettingsProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         context.read<WalletSecuritySettingsProvider>();
 
     _matchingPinErrorMessage =
-        AppLocalizations.of(context).matchingCamoPinError;
+        AppLocalizations.of(context)!.matchingCamoPinError;
     _showMatchingPinPopupIfNeeded();
 
     if (walletSecuritySettingsProvider.activateBioProtection &&
@@ -38,8 +38,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         stream: camoBloc.outIsCamoActive,
         builder: (context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) return SizedBox();
-          if (snapshot.data) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (snapshot.data!) {
+            WidgetsBinding.instance!.addPostFrameCallback((_) {
               Navigator.popUntil(context, ModalRoute.withName('/'));
             });
             return SizedBox();
@@ -49,7 +49,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
             context: context,
             child: Scaffold(
               appBar: AppBar(
-                title: Text(AppLocalizations.of(context).camoPinTitle),
+                title: Text(AppLocalizations.of(context)!.camoPinTitle),
               ),
               body: SingleChildScrollView(
                 child: Container(
@@ -85,7 +85,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
               if (!camoEnabled.hasData) return SizedBox();
 
               return Opacity(
-                opacity: camoEnabled.data ? 1 : 0.5,
+                opacity: camoEnabled.data! ? 1 : 0.5,
                 child: Card(
                   child: Column(
                     children: <Widget>[
@@ -95,7 +95,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                           children: <Widget>[
                             Expanded(
                                 child: Text(
-                              AppLocalizations.of(context).fakeBalanceAmt,
+                              AppLocalizations.of(context)!.fakeBalanceAmt,
                               style: const TextStyle(fontSize: 18),
                             )),
                             Text(
@@ -115,8 +115,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                           label: camoFraction.data.toString(),
                           min: 1,
                           max: 50,
-                          value: camoFraction.data.toDouble(),
-                          onChanged: camoEnabled.data
+                          value: camoFraction.data!.toDouble(),
+                          onChanged: camoEnabled.data!
                               ? (double value) {
                                   camoBloc.camoFraction = value.round();
                                 }
@@ -135,7 +135,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
       return Container(
         padding: const EdgeInsets.all(18),
         child: Text(
-          AppLocalizations.of(context).camoPinBioProtectionConflict,
+          AppLocalizations.of(context)!.camoPinBioProtectionConflict,
           style: TextStyle(
             color: Theme.of(context).errorColor,
             height: 1.2,
@@ -150,23 +150,23 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         builder: (context, camoEnabled) {
           if (camoEnabled.data != true) return SizedBox();
 
-          return FutureBuilder<String>(
+          return FutureBuilder<String?>(
               future: EncryptionTool().read('pin'),
-              builder: (context, AsyncSnapshot<String> normalPin) {
+              builder: (context, AsyncSnapshot<String?> normalPin) {
                 if (!normalPin.hasData) return SizedBox();
 
                 if (walletSecuritySettingsProvider.activatePinProtection) {
-                  return StreamBuilder<String>(
+                  return StreamBuilder<String?>(
                       initialData: camoBloc.camoPinValue,
                       stream: camoBloc.outCamoPinValue,
-                      builder: (context, AsyncSnapshot<String> camoPin) {
+                      builder: (context, AsyncSnapshot<String?> camoPin) {
                         if (!camoPin.hasData) return SizedBox();
                         if (camoPin.data != normalPin.data) return SizedBox();
 
                         return Container(
                           padding: const EdgeInsets.all(18),
                           child: Text(
-                            _matchingPinErrorMessage,
+                            _matchingPinErrorMessage!,
                             style: TextStyle(
                               color: Theme.of(context).errorColor,
                               height: 1.2,
@@ -178,7 +178,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                   return Container(
                     padding: const EdgeInsets.all(18),
                     child: Text(
-                      AppLocalizations.of(context).generalPinNotActive,
+                      AppLocalizations.of(context)!.generalPinNotActive,
                       style: TextStyle(
                         color: Theme.of(context).errorColor,
                         height: 1.2,
@@ -194,11 +194,11 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
     return FutureBuilder(
         future: camoBloc.getCamoPinValue(),
         builder: (context, snap) {
-          return StreamBuilder<String>(
+          return StreamBuilder<String?>(
               initialData: camoBloc.camoPinValue,
               stream: camoBloc.outCamoPinValue,
-              builder: (context, AsyncSnapshot<String> camoPinSnapshot) {
-                final String camoPin =
+              builder: (context, AsyncSnapshot<String?> camoPinSnapshot) {
+                final String? camoPin =
                     camoPinSnapshot.hasData ? camoPinSnapshot.data : null;
 
                 return StreamBuilder<bool>(
@@ -208,7 +208,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                         (context, AsyncSnapshot<bool> camoEnabledSnapshot) {
                       if (!camoEnabledSnapshot.hasData) return SizedBox();
 
-                      final bool isEnabled = camoEnabledSnapshot.data;
+                      final bool isEnabled = camoEnabledSnapshot.data!;
                       return Opacity(
                         opacity: isEnabled ? 1 : 0.5,
                         child: Card(
@@ -225,7 +225,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Text(
-                                                AppLocalizations.of(context)
+                                                AppLocalizations.of(context)!
                                                     .camoPinNotFound,
                                                 style: TextStyle(
                                                   fontSize: 18,
@@ -236,13 +236,13 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                                 ),
                                               ),
                                               Text(
-                                                AppLocalizations.of(context)
+                                                AppLocalizations.of(context)!
                                                     .camoPinCreate,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText2
-                                                      .color
+                                                      .bodyText2!
+                                                      .color!
                                                       .withOpacity(0.7),
                                                   fontSize: 14,
                                                 ),
@@ -253,11 +253,11 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              FutureBuilder<String>(
+                                              FutureBuilder<String?>(
                                                   future: EncryptionTool()
                                                       .read('pin'),
                                                   builder: (context,
-                                                      AsyncSnapshot<String>
+                                                      AsyncSnapshot<String?>
                                                           normalPin) {
                                                     if (!normalPin.hasData)
                                                       return SizedBox();
@@ -266,7 +266,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                                         camoPinSnapshot.data)
                                                       return Text(
                                                         AppLocalizations.of(
-                                                                context)
+                                                                context)!
                                                             .camoPinSaved,
                                                         style: const TextStyle(
                                                           fontSize: 18,
@@ -275,7 +275,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
 
                                                     return Text(
                                                       AppLocalizations.of(
-                                                              context)
+                                                              context)!
                                                           .camoPinInvalid,
                                                       style: TextStyle(
                                                         fontSize: 18,
@@ -285,13 +285,13 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                                     );
                                                   }),
                                               Text(
-                                                AppLocalizations.of(context)
+                                                AppLocalizations.of(context)!
                                                     .camoPinChange,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText2
-                                                      .color
+                                                      .bodyText2!
+                                                      .color!
                                                       .withOpacity(0.7),
                                                   fontSize: 14,
                                                 ),
@@ -316,7 +316,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         context,
         MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => UnlockWalletPage(
-                  textButton: AppLocalizations.of(context).unlock,
+                  textButton: AppLocalizations.of(context)!.unlock,
                   wallet: walletBloc.currentWallet,
                   isSignWithSeedIsEnabled: false,
                   onSuccess: (_, String password) {
@@ -324,9 +324,9 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                       context,
                       MaterialPageRoute<dynamic>(
                         builder: (BuildContext context) => PinPage(
-                          title: AppLocalizations.of(context).camoSetupTitle,
+                          title: AppLocalizations.of(context)!.camoSetupTitle,
                           subTitle:
-                              AppLocalizations.of(context).camoSetupSubtitle,
+                              AppLocalizations.of(context)!.camoSetupSubtitle,
                           pinStatus: PinStatus.CREATE_CAMO_PIN,
                           password: password,
                           onSuccess: () {
@@ -348,10 +348,10 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         horizontal: 12,
         vertical: 24,
       ),
-      child: Text(AppLocalizations.of(context).camoPinDesc,
+      child: Text(AppLocalizations.of(context)!.camoPinDesc,
           style: TextStyle(
             height: 1.3,
-            color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.6),
+            color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.6),
           )),
     );
   }
@@ -367,8 +367,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
           return Card(
             child: SwitchListTile(
               title: Text(isEnabled
-                  ? AppLocalizations.of(context).camoPinOn
-                  : AppLocalizations.of(context).camoPinOff),
+                  ? AppLocalizations.of(context)!.camoPinOn
+                  : AppLocalizations.of(context)!.camoPinOff),
               value: isEnabled,
               onChanged: walletSecuritySettingsProvider.activateBioProtection
                   ? null
@@ -379,7 +379,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
   }
 
   Future<void> _switchEnabled(bool val) async {
-    final String savedPin = await EncryptionTool().read('camoPin');
+    final String? savedPin = await EncryptionTool().read('camoPin');
 
     if (savedPin != null) camoBloc.isCamoEnabled = val;
     if (val && savedPin == null) _startPinSetup();
@@ -388,8 +388,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
   Future<void> _showMatchingPinPopupIfNeeded() async {
     if (!camoBloc.shouldWarnBadCamoPin) return;
 
-    final String normalPin = await EncryptionTool().read('pin');
-    final String camoPin = await EncryptionTool().read('camoPin');
+    final String? normalPin = await EncryptionTool().read('pin');
+    final String? camoPin = await EncryptionTool().read('camoPin');
 
     if (normalPin == null || camoPin == null) return;
     if (normalPin.isEmpty || camoPin.isEmpty) return;
@@ -397,10 +397,10 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
 
     showConfirmationDialog(
         context: context,
-        title: AppLocalizations.of(context).matchingCamoTitle,
+        title: AppLocalizations.of(context)!.matchingCamoTitle,
         message: _matchingPinErrorMessage,
         iconColor: Theme.of(context).errorColor,
-        confirmButtonText: AppLocalizations.of(context).matchingCamoChange,
+        confirmButtonText: AppLocalizations.of(context)!.matchingCamoChange,
         onConfirm: () {
           _startPinSetup();
         });

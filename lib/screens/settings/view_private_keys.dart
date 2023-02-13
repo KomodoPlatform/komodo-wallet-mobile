@@ -19,12 +19,12 @@ class ViewPrivateKeys extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         if (!snapshot.hasData) return SizedBox();
-        final data = snapshot.data;
-        data.sort((a, b) => a.coin.abbr.compareTo(b.coin.abbr));
-        final zebra = <String, bool>{};
+        final data = snapshot.data!;
+        data.sort((a, b) => a.coin!.abbr!.compareTo(b.coin!.abbr!));
+        final zebra = <String?, bool>{};
         bool zebraVal = false;
         for (CoinBalance cb in data) {
-          zebra.putIfAbsent(cb.coin.abbr, () => zebraVal);
+          zebra.putIfAbsent(cb.coin!.abbr, () => zebraVal);
           zebraVal = !zebraVal;
         }
         return Padding(
@@ -36,7 +36,7 @@ class ViewPrivateKeys extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      AppLocalizations.of(context).privateKeys,
+                      AppLocalizations.of(context)!.privateKeys,
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
@@ -47,7 +47,7 @@ class ViewPrivateKeys extends StatelessWidget {
               ),
               ...data.map(
                 (cb) {
-                  final coin = cb.coin.abbr;
+                  final coin = cb.coin!.abbr;
                   return CoinPrivKey(
                     coin: coin,
                     zebra: zebra[coin] ?? false,
@@ -63,24 +63,24 @@ class ViewPrivateKeys extends StatelessWidget {
 }
 
 class CoinPrivKey extends StatefulWidget {
-  const CoinPrivKey({Key key, this.coin, this.zebra}) : super(key: key);
+  const CoinPrivKey({Key? key, this.coin, this.zebra}) : super(key: key);
 
-  final String coin;
-  final bool zebra;
+  final String? coin;
+  final bool? zebra;
 
   @override
   _CoinPrivKeyState createState() => _CoinPrivKeyState();
 }
 
 class _CoinPrivKeyState extends State<CoinPrivKey> {
-  BuildContext mContext;
+  late BuildContext mContext;
 
   @override
   Widget build(BuildContext context) {
     setState(() => mContext = context);
 
     return Material(
-        color: widget.zebra
+        color: widget.zebra!
             ? Theme.of(context).scaffoldBackgroundColor
             : Theme.of(context).cardColor,
         child: InkWell(
@@ -114,7 +114,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                         SizedBox(
                           width: 8.0,
                         ),
-                        Text(widget.coin),
+                        Text(widget.coin!),
                       ],
                     ),
                     Expanded(child: SizedBox()),
@@ -137,7 +137,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
             if (!snapshot.hasData)
               return Center(child: CircularProgressIndicator());
 
-            final String privKey = snapshot.data.result.privKey;
+            final String privKey = snapshot.data!.result!.privKey!;
 
             return Column(
               children: <Widget>[
@@ -153,11 +153,11 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                     SizedBox(
                       width: 4.0,
                     ),
-                    Text(widget.coin),
+                    Text(widget.coin!),
                     SizedBox(
                       width: 6.0,
                     ),
-                    Text(AppLocalizations.of(context).privateKey + ':')
+                    Text(AppLocalizations.of(context)!.privateKey + ':')
                   ],
                 ),
                 SizedBox(height: 16),
@@ -179,7 +179,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                   child: Text(privKey,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .copyWith(fontFamily: 'monospace')),
                 ),
                 const SizedBox(height: 12),
@@ -188,7 +188,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                   children: <Widget>[
                     ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: Text(AppLocalizations.of(context).close),
+                      child: Text(AppLocalizations.of(context)!.close),
                     ),
                   ],
                 ),

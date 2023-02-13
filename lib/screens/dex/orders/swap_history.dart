@@ -16,10 +16,10 @@ class SwapHistory extends StatefulWidget {
     this.onFiltersChange,
   });
 
-  final ScrollController scrollCtrl;
-  final bool showFilters;
-  final Function(ActiveFilters) onFiltersChange;
-  final ActiveFilters activeFilters;
+  final ScrollController? scrollCtrl;
+  final bool? showFilters;
+  final Function(ActiveFilters)? onFiltersChange;
+  final ActiveFilters? activeFilters;
 
   @override
   _SwapHistoryState createState() => _SwapHistoryState();
@@ -36,7 +36,7 @@ class _SwapHistoryState extends State<SwapHistory> {
         initialData: swapMonitor.swaps,
         builder:
             (BuildContext context, AsyncSnapshot<Iterable<Swap>> snapshot) {
-          final List<Swap> swaps = snapshot.data.toList();
+          final List<Swap> swaps = snapshot.data!.toList();
 
           swaps.removeWhere((Swap swap) =>
               swap.status != Status.SWAP_FAILED &&
@@ -63,12 +63,12 @@ class _SwapHistoryState extends State<SwapHistory> {
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
             controller: widget.scrollCtrl,
             children: [
-              if (widget.showFilters) _buildFilters(swaps),
+              if (widget.showFilters!) _buildFilters(swaps),
               if (swapsFiltered.isEmpty) ...{
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 4,
                   child:
-                      Center(child: Text(AppLocalizations.of(context).noSwaps)),
+                      Center(child: Text(AppLocalizations.of(context)!.noSwaps)),
                 )
               },
               if (swapsFiltered.isNotEmpty) ...{
@@ -94,7 +94,7 @@ class _SwapHistoryState extends State<SwapHistory> {
           activeFilters: widget.activeFilters,
           onChange: (ActiveFilters filters) {
             setState(() => _currentPage = 1);
-            widget.onFiltersChange(filters);
+            widget.onFiltersChange!(filters);
           },
         ),
       ),
@@ -103,22 +103,22 @@ class _SwapHistoryState extends State<SwapHistory> {
 
   List<Swap> _filter(List<Swap> unfiltered) {
     final List<Swap> filtered = [];
-    final String sellCoinFilter = widget.activeFilters?.sellCoin;
-    final String receiveCoinFilter = widget.activeFilters?.receiveCoin;
-    final OrderType typeFilter = widget.activeFilters?.type;
-    final DateTime startFilter = widget.activeFilters?.start;
-    final DateTime endFilter = widget.activeFilters?.end;
-    final Status statusFilter = widget.activeFilters?.status;
+    final String? sellCoinFilter = widget.activeFilters?.sellCoin;
+    final String? receiveCoinFilter = widget.activeFilters?.receiveCoin;
+    final OrderType? typeFilter = widget.activeFilters?.type;
+    final DateTime? startFilter = widget.activeFilters?.start;
+    final DateTime? endFilter = widget.activeFilters?.end;
+    final Status? statusFilter = widget.activeFilters?.status;
 
     for (Swap item in unfiltered) {
       bool isMatched = true;
 
-      final String sellCoin = item.isMaker ? item.makerAbbr : item.takerAbbr;
-      final String receiveCoin = item.isMaker ? item.takerAbbr : item.makerAbbr;
+      final String? sellCoin = item.isMaker ? item.makerAbbr : item.takerAbbr;
+      final String? receiveCoin = item.isMaker ? item.takerAbbr : item.makerAbbr;
       final OrderType type = item.isMaker ? OrderType.MAKER : OrderType.TAKER;
       final DateTime date = DateTime.fromMillisecondsSinceEpoch(
           item.started?.timestamp ?? DateTime.now().millisecondsSinceEpoch);
-      final Status status = item.status;
+      final Status? status = item.status;
 
       if (sellCoinFilter != null && (sellCoinFilter != sellCoin)) {
         isMatched = false;
@@ -152,7 +152,7 @@ class _SwapHistoryState extends State<SwapHistory> {
         perPage: _perPage,
         onChanged: (int newPage) {
           setState(() => _currentPage = newPage);
-          widget.scrollCtrl.jumpTo(0);
+          widget.scrollCtrl!.jumpTo(0);
         },
       ),
     );

@@ -58,8 +58,8 @@ class _OrdersPageState extends State<OrdersPage> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      AppLocalizations.of(context).ordersActive + ' ',
-                      style: Theme.of(context).textTheme.button.copyWith(
+                      AppLocalizations.of(context)!.ordersActive + ' ',
+                      style: Theme.of(context).textTheme.button!.copyWith(
                             color: _currentTab == OrdersTab.active
                                 ? Theme.of(context).colorScheme.secondary
                                 : null,
@@ -84,8 +84,8 @@ class _OrdersPageState extends State<OrdersPage> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      AppLocalizations.of(context).ordersHistory + ' ',
-                      style: Theme.of(context).textTheme.button.copyWith(
+                      AppLocalizations.of(context)!.ordersHistory + ' ',
+                      style: Theme.of(context).textTheme.button!.copyWith(
                             color: _currentTab == OrdersTab.history
                                 ? Theme.of(context).colorScheme.secondary
                                 : null,
@@ -128,19 +128,19 @@ class _OrdersPageState extends State<OrdersPage> {
     return FiltersButton(
       activeFilters: _activeFilters[_currentTab],
       onPressed: () async {
-        if (_scrollCtrl[_currentTab].offset > 0) {
-          if (!_showFilters[_currentTab]) {
+        if (_scrollCtrl[_currentTab]!.offset > 0) {
+          if (!_showFilters[_currentTab]!) {
             setState(() => _showFilters[_currentTab] = true);
           }
           await Future<dynamic>.delayed(Duration(milliseconds: 100));
-          _scrollCtrl[_currentTab].animateTo(
-            _scrollCtrl[_currentTab].position.minScrollExtent,
+          _scrollCtrl[_currentTab]!.animateTo(
+            _scrollCtrl[_currentTab]!.position.minScrollExtent,
             duration: Duration(milliseconds: 200),
             curve: Curves.easeIn,
           );
         } else {
           setState(
-              () => _showFilters[_currentTab] = !_showFilters[_currentTab]);
+              () => _showFilters[_currentTab] = !_showFilters[_currentTab]!);
         }
       },
       isActive: _showFilters[_currentTab],
@@ -155,7 +155,7 @@ class _OrdersPageState extends State<OrdersPage> {
             (BuildContext context, AsyncSnapshot<Iterable<Swap>> snapshot) {
           if (!snapshot.hasData) return SizedBox();
 
-          final List<Swap> completed = snapshot.data
+          final List<Swap> completed = snapshot.data!
               .where((Swap item) =>
                   item.status == Status.SWAP_SUCCESSFUL ||
                   item.status == Status.SWAP_FAILED ||
@@ -164,7 +164,7 @@ class _OrdersPageState extends State<OrdersPage> {
 
           return Text(
             '(${completed.length})',
-            style: Theme.of(context).textTheme.button.copyWith(
+            style: Theme.of(context).textTheme.button!.copyWith(
                   color: _currentTab == OrdersTab.history
                       ? Theme.of(context).colorScheme.secondary
                       : null,
@@ -180,13 +180,13 @@ class _OrdersPageState extends State<OrdersPage> {
       builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (!snapshot.hasData) return SizedBox();
 
-        final List<dynamic> active = snapshot.data
+        final List<dynamic> active = snapshot.data!
             .where((dynamic item) => item is Order || item is Swap)
             .toList();
 
         return Text(
           '(${active.length})',
-          style: Theme.of(context).textTheme.button.copyWith(
+          style: Theme.of(context).textTheme.button!.copyWith(
                 color: _currentTab == OrdersTab.active
                     ? Theme.of(context).colorScheme.secondary
                     : null,

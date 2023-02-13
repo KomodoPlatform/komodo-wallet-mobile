@@ -7,16 +7,16 @@ import '../../../../model/order.dart';
 class BuildTakerCountdown extends StatefulWidget {
   const BuildTakerCountdown(this.uuid, {this.style});
 
-  final String uuid;
-  final TextStyle style;
+  final String? uuid;
+  final TextStyle? style;
 
   @override
   _BuildTakerCountdownState createState() => _BuildTakerCountdownState();
 }
 
 class _BuildTakerCountdownState extends State<BuildTakerCountdown> {
-  Timer _timer;
-  TextStyle _style;
+  Timer? _timer;
+  TextStyle? _style;
 
   @override
   void initState() {
@@ -33,12 +33,12 @@ class _BuildTakerCountdownState extends State<BuildTakerCountdown> {
   @override
   Widget build(BuildContext context) {
     _style ??= widget.style ??
-        Theme.of(context).textTheme.bodyText2.copyWith(
+        Theme.of(context).textTheme.bodyText2!.copyWith(
             fontWeight: FontWeight.w300,
             color:
-                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.5));
+                Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.5));
 
-    final Order takerOrder = ordersBloc.orderSwaps.firstWhere((dynamic order) {
+    final Order? takerOrder = ordersBloc.orderSwaps.firstWhere((dynamic order) {
       return order is Order &&
           order.uuid == widget.uuid &&
           order.orderType == OrderType.TAKER;
@@ -48,7 +48,7 @@ class _BuildTakerCountdownState extends State<BuildTakerCountdown> {
 
     final int secondsLeft = 30 -
         (DateTime.now().millisecondsSinceEpoch / 1000).floor() +
-        takerOrder.createdAt;
+        takerOrder.createdAt!;
 
     return Row(
       children: [

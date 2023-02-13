@@ -23,11 +23,11 @@ class Balance {
         coin: json['coin'] ?? '',
       );
 
-  String address;
-  Decimal balance;
-  Decimal unspendableBalance;
-  Decimal lockedBySwaps;
-  String coin;
+  String? address;
+  Decimal? balance;
+  Decimal? unspendableBalance;
+  Decimal? lockedBySwaps;
+  String? coin;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'address': address ?? '',
@@ -39,10 +39,10 @@ class Balance {
         'coin': coin ?? '',
       };
 
-  String getBalance() => deci2s(balance);
-  String getUnspendableBalance() =>
-      unspendableBalance == null ? null : deci2s(unspendableBalance);
-  String getRealBalance() => deci2s(balance - lockedBySwaps);
+  String getBalance() => deci2s(balance!);
+  String? getUnspendableBalance() =>
+      unspendableBalance == null ? null : deci2s(unspendableBalance!);
+  String getRealBalance() => deci2s(balance! - lockedBySwaps!);
 
   void camouflageIfNeeded() {
     if (!camoBloc.isCamoActive) return;

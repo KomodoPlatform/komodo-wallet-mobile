@@ -6,7 +6,7 @@ import '../authentification/check_passphrase_page.dart';
 import '../../widgets/primary_button.dart';
 
 class NewAccountPage extends StatefulWidget {
-  const NewAccountPage({Key key}) : super(key: key);
+  const NewAccountPage({Key? key}) : super(key: key);
 
   @override
   _NewAccountPageState createState() => _NewAccountPageState();
@@ -32,7 +32,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.onBackground,
-          title: Text(AppLocalizations.of(context).newAccountUpper),
+          title: Text(AppLocalizations.of(context)!.newAccountUpper),
         ),
         body: ListView(
           key: const Key('new-account-scrollable'),
@@ -52,7 +52,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
 
   Widget _buildTitle() {
     return Text(
-      AppLocalizations.of(context).seedPhraseTitle,
+      AppLocalizations.of(context)!.seedPhraseTitle,
       style: Theme.of(context).textTheme.headline6,
       textAlign: TextAlign.center,
     );
@@ -81,7 +81,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
         key: const Key('seed-phrase'),
         style: Theme.of(context)
             .textTheme
-            .bodyText2
+            .bodyText2!
             .copyWith(color: Theme.of(context).errorColor),
         textAlign: TextAlign.center,
       ),
@@ -125,14 +125,14 @@ class _NewAccountPageState extends State<NewAccountPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                AppLocalizations.of(context).getBackupPhrase,
+                AppLocalizations.of(context)!.getBackupPhrase,
                 style: Theme.of(context).textTheme.subtitle2,
               ),
               const SizedBox(
                 height: 6,
               ),
               Text(
-                AppLocalizations.of(context).recommendSeedMessage,
+                AppLocalizations.of(context)!.recommendSeedMessage,
                 style: Theme.of(context).textTheme.bodyText2,
               )
             ],
@@ -145,7 +145,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
   Widget _buildNextButton() {
     return PrimaryButton(
       key: const Key('create-seed-button'),
-      text: AppLocalizations.of(context).next,
+      text: AppLocalizations.of(context)!.next,
       onPressed: () => Navigator.push<dynamic>(
         context,
         MaterialPageRoute<dynamic>(

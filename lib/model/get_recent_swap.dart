@@ -24,10 +24,10 @@ class GetRecentSwap {
         limit: json['limit'] ?? 0,
       );
 
-  String userpass;
+  String? userpass;
   String method;
-  String fromUuid;
-  int limit;
+  String? fromUuid;
+  int? limit;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass ?? '',

@@ -18,7 +18,7 @@ class SendRawTransactionResponse {
   factory SendRawTransactionResponse.fromJson(Map<String, dynamic> json) =>
       SendRawTransactionResponse(txHash: json['tx_hash'] ?? '');
 
-  String txHash;
+  String? txHash;
 
   Map<String, dynamic> toJson() => <String, dynamic>{'tx_hash': txHash ?? ''};
 }

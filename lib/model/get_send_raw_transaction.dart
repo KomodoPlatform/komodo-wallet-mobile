@@ -27,9 +27,9 @@ class GetSendRawTransaction {
       );
 
   String method;
-  String coin;
-  String txHex;
-  String userpass;
+  String? coin;
+  String? txHex;
+  String? userpass;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method ?? '',

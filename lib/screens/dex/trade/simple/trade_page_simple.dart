@@ -11,7 +11,7 @@ import '../../../dex/trade/simple/create/sell_form.dart';
 import 'package:provider/provider.dart';
 
 class TradePageSimple extends StatefulWidget {
-  const TradePageSimple({Key key}) : super(key: key);
+  const TradePageSimple({Key? key}) : super(key: key);
 
   @override
   State<TradePageSimple> createState() => _TradePageSimpleState();
@@ -19,8 +19,8 @@ class TradePageSimple extends StatefulWidget {
 
 class _TradePageSimpleState extends State<TradePageSimple> {
   final _key = GlobalKey();
-  OrderBookProvider _obProvider;
-  ConstructorProvider _constrProvider;
+  OrderBookProvider? _obProvider;
+  ConstructorProvider? _constrProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +28,14 @@ class _TradePageSimpleState extends State<TradePageSimple> {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
 
     final content = TradePageSimpleContent(key: _key);
-    return _constrProvider.anyLists()
+    return _constrProvider!.anyLists()
         ? content
         : SingleChildScrollView(child: content);
   }
 }
 
 class TradePageSimpleContent extends StatefulWidget {
-  const TradePageSimpleContent({Key key}) : super(key: key);
+  const TradePageSimpleContent({Key? key}) : super(key: key);
 
   @override
   _TradePageSimpleContentState createState() => _TradePageSimpleContentState();
@@ -48,7 +48,7 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
   final _buyFocusNode = FocusNode();
   String _sellSearchTerm = '';
   String _buySearchTerm = '';
-  ConstructorProvider _constrProvider;
+  ConstructorProvider? _constrProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
           _buildProgressBar(),
           SizedBox(height: 12),
           Flexible(
-            flex: _constrProvider.anyLists() ? 1 : 0,
+            flex: _constrProvider!.anyLists() ? 1 : 0,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -90,7 +90,7 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
           child: Row(
             children: [
               Text(
-                AppLocalizations.of(context).simpleTradeSellTitle + ':',
+                AppLocalizations.of(context)!.simpleTradeSellTitle + ':',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               _buildSearchField(Market.SELL),
@@ -99,11 +99,11 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
         ),
         SizedBox(height: 6),
         Flexible(
-          flex: _constrProvider.anyLists() ? 1 : 0,
+          flex: _constrProvider!.anyLists() ? 1 : 0,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              _constrProvider.sellCoin == null
+              _constrProvider!.sellCoin == null
                   ? CoinsList(
                       type: Market.SELL,
                       searchTerm: _sellSearchTerm,
@@ -134,7 +134,7 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
           child: Row(
             children: [
               Text(
-                AppLocalizations.of(context).simpleTradeBuyTitle + ':',
+                AppLocalizations.of(context)!.simpleTradeBuyTitle + ':',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               _buildSearchField(Market.BUY),
@@ -143,11 +143,11 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
         ),
         SizedBox(height: 6),
         Flexible(
-          flex: _constrProvider.anyLists() ? 1 : 0,
+          flex: _constrProvider!.anyLists() ? 1 : 0,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              _constrProvider.buyCoin == null
+              _constrProvider!.buyCoin == null
                   ? CoinsList(
                       type: Market.BUY,
                       searchTerm: _buySearchTerm,
@@ -174,13 +174,13 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
     FocusNode focusNode;
     String currentTerm;
     if (type == Market.SELL) {
-      if (_constrProvider.sellCoin != null) return SizedBox(height: 18);
+      if (_constrProvider!.sellCoin != null) return SizedBox(height: 18);
 
       controller = _sellSearchCtrl;
       focusNode = _sellFocusNode;
       currentTerm = _sellSearchTerm;
     } else {
-      if (_constrProvider.buyCoin != null) return SizedBox(height: 18);
+      if (_constrProvider!.buyCoin != null) return SizedBox(height: 18);
 
       controller = _buySearchCtrl;
       focusNode = _buyFocusNode;
@@ -261,7 +261,7 @@ class _TradePageSimpleContentState extends State<TradePageSimpleContent> {
     return SizedBox(
       height: 1,
       child:
-          _constrProvider.inProgress ? LinearProgressIndicator() : SizedBox(),
+          _constrProvider!.inProgress ? LinearProgressIndicator() : SizedBox(),
     );
   }
 }

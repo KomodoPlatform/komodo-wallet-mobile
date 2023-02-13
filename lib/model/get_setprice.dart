@@ -42,17 +42,17 @@ class GetSetPrice {
         relConfs: json['rel_confs'],
       );
 
-  String userpass;
-  String method;
-  String base;
-  String rel;
-  bool max;
-  bool cancelPrevious;
-  double minVolume;
-  bool baseNota;
-  int baseConfs;
-  bool relNota;
-  int relConfs;
+  String? userpass;
+  String? method;
+  String? base;
+  String? rel;
+  bool? max;
+  bool? cancelPrevious;
+  double? minVolume;
+  bool? baseNota;
+  int? baseConfs;
+  bool? relNota;
+  int? relConfs;
   dynamic price; // numerical String or {'numer': '1', 'denom': '3'}
   dynamic volume; // https://bit.ly/2O2DxWh
 

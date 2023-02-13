@@ -16,8 +16,8 @@ class CustomJob {
   double _period;
   int _timeout;
   JobCallback _callback;
-  DateTime _started;
-  DateTime _finished;
+  DateTime? _started;
+  DateTime? _finished;
 }
 
 JobService jobService = JobService();
@@ -27,7 +27,7 @@ JobService jobService = JobService();
 /// and against invoking a job while the previous invocation has not been finished yet.
 class JobService {
   final Map<String, CustomJob> _jobs = {};
-  DateTime _lastRun, _lastPeriodic;
+  DateTime? _lastRun, _lastPeriodic;
 
   static const int _many = 2147483647;
 
@@ -35,9 +35,9 @@ class JobService {
     // If we aren't invoked then we are missing a timer.
     final now = DateTime.now();
     final runDelta =
-        _lastRun != null ? now.difference(_lastRun).inMilliseconds : _many;
+        _lastRun != null ? now.difference(_lastRun!).inMilliseconds : _many;
     final periodicDelta = _lastPeriodic != null
-        ? now.difference(_lastPeriodic).inMilliseconds
+        ? now.difference(_lastPeriodic!).inMilliseconds
         : _many;
     if (runDelta > 2222 && periodicDelta > 3333) {
       _lastPeriodic = now;
@@ -56,9 +56,9 @@ class JobService {
       {int timeout = 333}) {
     _maintenance();
     if (_jobs.containsKey(name)) {
-      _jobs[name]._period = period;
-      _jobs[name]._timeout = timeout;
-      _jobs[name]._callback = cb;
+      _jobs[name]!._period = period;
+      _jobs[name]!._timeout = timeout;
+      _jobs[name]!._callback = cb;
     } else {
       _jobs[name] = CustomJob(name, period, timeout, cb);
     }
@@ -66,7 +66,7 @@ class JobService {
 
   void suspend(String name) {
     if (_jobs.containsKey(name)) {
-      _jobs[name]._period = 0.0;
+      _jobs[name]!._period = 0.0;
     }
   }
 
@@ -75,7 +75,7 @@ class JobService {
 
     if (_lastRun != null) {
       // #637: Guard against duplicate timers reducing performance.
-      final deltaMs = now.difference(_lastRun).inMilliseconds;
+      final deltaMs = now.difference(_lastRun!).inMilliseconds;
       if (deltaMs < 777) return;
     }
 
@@ -85,18 +85,18 @@ class JobService {
       if (job._period == 0.0) continue;
 
       if (job._started != null) {
-        final startDeltaMs = now.difference(job._started).inMilliseconds;
+        final startDeltaMs = now.difference(job._started!).inMilliseconds;
         if (startDeltaMs < job._period * 1000.0) continue;
       }
 
       // If still running.
       if (job._started != null && job._finished == null) {
         // Guard against time going backwards.
-        if (now.millisecondsSinceEpoch < job._started.millisecondsSinceEpoch) {
+        if (now.millisecondsSinceEpoch < job._started!.millisecondsSinceEpoch) {
           continue;
         }
 
-        final startDeltaMs = now.difference(job._started).inMilliseconds;
+        final startDeltaMs = now.difference(job._started!).inMilliseconds;
         if (startDeltaMs < job._timeout * 1000) {
           continue;
         } else {
@@ -105,7 +105,7 @@ class JobService {
       }
 
       if (job._finished != null) {
-        final finishDeltaMs = now.difference(job._finished).inMilliseconds;
+        final finishDeltaMs = now.difference(job._finished!).inMilliseconds;
         if (finishDeltaMs < 100) continue;
       }
 

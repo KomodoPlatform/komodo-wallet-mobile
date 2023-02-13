@@ -10,7 +10,7 @@ class BuildTradeDetails extends StatefulWidget {
 }
 
 class _BuildTradeDetailsState extends State<BuildTradeDetails> {
-  ConstructorProvider _constrProvider;
+  ConstructorProvider? _constrProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +25,11 @@ class _BuildTradeDetailsState extends State<BuildTradeDetails> {
   }
 
   Widget _buildFees() {
-    if (_constrProvider.matchingOrder != null) {
+    if (_constrProvider!.matchingOrder != null) {
       return Container(
         padding: EdgeInsets.fromLTRB(12, 24, 12, 12),
         child: BuildDetailedFeesSimple(
-          preimage: _constrProvider.preimage,
+          preimage: _constrProvider!.preimage,
           alignCenter: true,
           hideIfLow: true,
         ),

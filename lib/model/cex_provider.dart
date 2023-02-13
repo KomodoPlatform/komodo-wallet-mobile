@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -25,13 +26,13 @@ class CexProvider extends ChangeNotifier {
     return _findChain(pair) != null;
   }
 
-  Future<ChartData> getCandles(
-    String pair, [
+  Future<ChartData?> getCandles(
+    String? pair, [
     double duration = 5.0 * 60,
   ]) async {
     if (_charts[pair] == null) {
       await _updateChart(pair);
-    } else if (DateTime.now().millisecondsSinceEpoch - _charts[pair].updated >
+    } else if (DateTime.now().millisecondsSinceEpoch - _charts[pair]!.updated! >
         duration * 1000) {
       await _updateChart(pair);
     }
@@ -39,13 +40,13 @@ class CexProvider extends ChangeNotifier {
     return _charts[pair];
   }
 
-  double getUsdPrice(String abbr) => cexPrices.getUsdPrice(abbr);
-  double getCexRate([CoinsPair pair]) => cexPrices.getCexRate(pair);
+  double? getUsdPrice(String? abbr) => cexPrices.getUsdPrice(abbr);
+  double? getCexRate([CoinsPair? pair]) => cexPrices.getCexRate(pair);
 
-  String convert(
-    double volume, {
-    String from,
-    String to,
+  String? convert(
+    double? volume, {
+    String? from,
+    String? to,
     bool hidden = false,
     bool showSymbol = true,
   }) =>
@@ -58,14 +59,14 @@ class CexProvider extends ChangeNotifier {
       );
 
   List<String> get fiatList => cexPrices.fiatList;
-  String get currency => cexPrices.currencies[cexPrices.activeCurrency];
-  String get selectedFiat => cexPrices.selectedFiat;
-  String get selectedFiatSymbol => cexPrices.selectedFiatSymbol;
-  set selectedFiat(String value) => cexPrices.selectedFiat = value;
+  String? get currency => cexPrices.currencies![cexPrices.activeCurrency];
+  String? get selectedFiat => cexPrices.selectedFiat;
+  String? get selectedFiatSymbol => cexPrices.selectedFiatSymbol;
+  set selectedFiat(String? value) => cexPrices.selectedFiat = value;
 
-  String _withdrawCurrency;
-  String get withdrawCurrency => _withdrawCurrency;
-  set withdrawCurrency(String value) {
+  String? _withdrawCurrency;
+  String? get withdrawCurrency => _withdrawCurrency;
+  set withdrawCurrency(String? value) {
     _withdrawCurrency = value;
     notifyListeners();
   }
@@ -73,7 +74,7 @@ class CexProvider extends ChangeNotifier {
   void switchCurrency() {
     int idx = cexPrices.activeCurrency;
     idx++;
-    if (idx + 1 > cexPrices.currencies.length) idx = 0;
+    if (idx + 1 > cexPrices.currencies!.length) idx = 0;
     cexPrices.activeCurrency = idx;
   }
 
@@ -87,13 +88,13 @@ class CexProvider extends ChangeNotifier {
 
   final String _chartsUrl = appConfig.candlestickData;
   final Uri _tickersListUrl = Uri.parse(appConfig.candlestickTickersList);
-  final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
+  final Map<String?, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
   bool _updatingChart = false;
-  List<String> _tickers;
+  List<String>? _tickers;
 
   void _updateRates() => cexPrices.updateRates();
 
-  List<String> _getTickers() {
+  List<String>? _getTickers() {
     if (_tickers != null) return _tickers;
 
     _updateTickersList();
@@ -102,21 +103,21 @@ class CexProvider extends ChangeNotifier {
 
   Future<void> _updateTickersList() async {
     http.Response _res;
-    String _body;
+    late String _body;
     try {
       _res = await http.get(_tickersListUrl).timeout(
         const Duration(seconds: 60),
         onTimeout: () {
           Log('cex_provider', 'Fetching tickers timed out');
           return;
-        },
+        } as FutureOr<Response> Function()?,
       );
       _body = _res.body;
     } catch (e) {
       Log('cex_provider', 'Failed to fetch tickers list: $e');
     }
 
-    List<dynamic> json;
+    List<dynamic>? json;
     try {
       json = jsonDecode(_body);
     } catch (e) {
@@ -130,18 +131,18 @@ class CexProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> _updateChart(String pair) async {
+  Future<void> _updateChart(String? pair) async {
     if (_updatingChart) return;
 
-    final List<ChainLink> chain = _findChain(pair);
+    final List<ChainLink>? chain = _findChain(pair!);
     if (chain == null) throw 'No chart data available';
 
-    Map<String, dynamic> json0;
-    Map<String, dynamic> json1;
+    Map<String, dynamic>? json0;
+    Map<String, dynamic>? json1;
 
     _updatingChart = true;
     if (_charts[pair] != null) {
-      _charts[pair].status = ChartStatus.fetching;
+      _charts[pair]!.status = ChartStatus.fetching;
     }
     try {
       json0 = await _fetchChartData(chain[0]);
@@ -168,47 +169,47 @@ class CexProvider extends ChangeNotifier {
       final List<CandleData> _durationData = [];
 
       for (var candle in list) {
-        double open = chain[0].reverse
+        double? open = chain[0].reverse!
             ? 1 / candle['open'].toDouble()
             : candle['open'].toDouble();
-        double high = chain[0].reverse
+        double? high = chain[0].reverse!
             ? 1 / candle['high'].toDouble()
             : candle['high'].toDouble();
-        double low = chain[0].reverse
+        double? low = chain[0].reverse!
             ? 1 / candle['low'].toDouble()
             : candle['low'].toDouble();
-        double close = chain[0].reverse
+        double? close = chain[0].reverse!
             ? 1 / candle['close'].toDouble()
             : candle['close'].toDouble();
-        double volume = chain[0].reverse
+        double? volume = chain[0].reverse!
             ? candle['quote_volume'].toDouble()
             : candle['volume'].toDouble();
-        double quoteVolume = chain[0].reverse
+        double? quoteVolume = chain[0].reverse!
             ? candle['volume'].toDouble()
             : candle['quote_volume'].toDouble();
-        final int timestamp = candle['timestamp'];
+        final int? timestamp = candle['timestamp'];
 
         if (chain.length > 1) {
           dynamic secondCandle;
           try {
             secondCandle =
-                json1[duration].toList().firstWhere((dynamic candle) {
+                json1![duration].toList().firstWhere((dynamic candle) {
               return candle['timestamp'] == timestamp;
             });
           } catch (_) {}
 
           if (secondCandle == null) continue;
 
-          final double secondOpen = chain[1].reverse
+          final double? secondOpen = chain[1].reverse!
               ? 1 / secondCandle['open'].toDouble()
               : secondCandle['open'].toDouble();
-          final double secondHigh = chain[1].reverse
+          final double? secondHigh = chain[1].reverse!
               ? 1 / secondCandle['high'].toDouble()
               : secondCandle['high'].toDouble();
-          final double secondLow = chain[1].reverse
+          final double? secondLow = chain[1].reverse!
               ? 1 / secondCandle['low'].toDouble()
               : secondCandle['low'].toDouble();
-          final double secondClose = chain[1].reverse
+          final double? secondClose = chain[1].reverse!
               ? 1 / secondCandle['close'].toDouble()
               : secondCandle['close'].toDouble();
 
@@ -216,10 +217,10 @@ class CexProvider extends ChangeNotifier {
               chain[0].base == pair.split('-')[1].toLowerCase() ||
                   chain[0].rel == pair.split('-')[1].toLowerCase();
 
-          open = reversed ? 1 / (open * secondOpen) : open * secondOpen;
-          close = reversed ? 1 / (close * secondClose) : close * secondClose;
-          high = reversed ? 1 / (high * secondHigh) : high * secondHigh;
-          low = reversed ? 1 / (low * secondLow) : low * secondLow;
+          open = reversed ? 1 / (open! * secondOpen!) : open! * secondOpen!;
+          close = reversed ? 1 / (close! * secondClose!) : close! * secondClose!;
+          high = reversed ? 1 / (high! * secondHigh!) : high! * secondHigh!;
+          low = reversed ? 1 / (low! * secondLow!) : low! * secondLow!;
           volume = null;
           quoteVolume = null;
         }
@@ -251,7 +252,7 @@ class CexProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Map<String, dynamic>> _fetchChartData(ChainLink link) async {
+  Future<Map<String, dynamic>?> _fetchChartData(ChainLink link) async {
     final String pair = '${link.rel}-${link.base}';
     http.Response _res;
     String _body;
@@ -263,7 +264,7 @@ class CexProvider extends ChangeNotifier {
         onTimeout: () {
           Log('cex_provider', 'Fetching $pair data timed out');
           throw 'Fetching $pair timed out';
-        },
+        } as FutureOr<Response> Function()?,
       );
       _body = _res.body;
     } catch (e) {
@@ -271,7 +272,7 @@ class CexProvider extends ChangeNotifier {
       rethrow;
     }
 
-    Map<String, dynamic> json;
+    Map<String, dynamic>? json;
     try {
       json = jsonDecode(_body);
     } catch (e) {
@@ -282,13 +283,13 @@ class CexProvider extends ChangeNotifier {
     return json;
   }
 
-  List<ChainLink> _findChain(String pair) {
+  List<ChainLink>? _findChain(String pair) {
     final List<String> abbr = pair.split('-');
     if (abbr[0] == abbr[1]) return null;
     final String base = abbr[1].toLowerCase();
     final String rel = abbr[0].toLowerCase();
-    final List<String> tickers = _getTickers();
-    List<ChainLink> chain;
+    final List<String>? tickers = _getTickers();
+    List<ChainLink>? chain;
 
     if (tickers == null) return null;
 
@@ -329,8 +330,8 @@ class CexProvider extends ChangeNotifier {
         base: firstLinkCoins[1],
         reverse: firstLinkCoins[1] == rel || firstLinkCoins[1] == base,
       );
-      final String secondRel =
-          firstLink.reverse ? firstLink.rel : firstLink.base;
+      final String? secondRel =
+          firstLink.reverse! ? firstLink.rel : firstLink.base;
       final String secondBase = firstLinkCoins.contains(rel) ? base : rel;
 
       for (String secondLink in tickers) {
@@ -368,8 +369,8 @@ class CexPrices {
 
   Future<void> _init() async {
     prefs = await SharedPreferences.getInstance();
-    activeCurrency = prefs.getInt('activeCurrency') ?? 0;
-    _selectedFiat = prefs.getString('selectedFiat') ?? 'USD';
+    activeCurrency = prefs!.getInt('activeCurrency') ?? 0;
+    _selectedFiat = prefs!.getString('selectedFiat') ?? 'USD';
     currencies = [_selectedFiat, ...appConfig.coinsFiat];
 
     Timer.periodic(const Duration(seconds: 60), (_) {
@@ -380,7 +381,7 @@ class CexPrices {
     });
   }
 
-  List<String> currencies;
+  List<String?>? currencies;
 
   int get activeCurrency => _activeCurrency;
   set activeCurrency(int value) {
@@ -389,47 +390,47 @@ class CexPrices {
     _notifyListeners();
   }
 
-  String get selectedFiat => _selectedFiat;
-  set selectedFiat(String value) {
+  String? get selectedFiat => _selectedFiat;
+  set selectedFiat(String? value) {
     if (_isFiat(value)) {
       _selectedFiat = value;
-      currencies[0] = value;
-      prefs?.setString('selectedFiat', value);
+      currencies![0] = value;
+      prefs?.setString('selectedFiat', value!);
       _notifyListeners();
     }
   }
 
-  String get selectedFiatSymbol {
+  String? get selectedFiatSymbol {
     if (selectedFiat == null) return null;
     return NumberFormat.simpleCurrency(name: selectedFiat).currencySymbol;
   }
 
   List<String> get fiatList => _fiatCurrencies?.keys?.toList();
 
-  SharedPreferences prefs;
-  String _selectedFiat;
-  int _activeCurrency;
+  SharedPreferences? prefs;
+  String? _selectedFiat;
+  late int _activeCurrency;
   final Map<String, double> _fiatCurrencies = {};
   final List<CexProvider> _providers = [];
-  final Map<String, Map<String, double>> _prices = {};
+  final Map<String?, Map<String, double>> _prices = {};
   bool _fetchingPrices = false;
 
   Future<void> updateRates() async {
     http.Response _res;
-    String _body;
+    late String _body;
     try {
       _res = await http.get(Uri.parse(appConfig.fiatPricesEndpoint)).timeout(
         const Duration(seconds: 60),
         onTimeout: () {
           throw 'Fetching rates timed out';
-        },
+        } as FutureOr<Response> Function()?,
       );
       _body = _res.body;
     } catch (e) {
       Log('cex_provider', 'Failed to fetch rates: $e');
     }
 
-    Map<String, dynamic> json;
+    Map<String, dynamic>? json;
     try {
       json = jsonDecode(_body);
     } catch (e) {
@@ -451,26 +452,26 @@ class CexPrices {
     _notifyListeners();
   }
 
-  double getUsdPrice(String abbr) {
+  double? getUsdPrice(String? abbr) {
     if (abbr == 'USD') return 1;
     if (abbr == 'SFUSD') return 1;
     if (_isFiat(abbr)) {
-      return 1 / _getFiatRate(abbr);
+      return 1 / _getFiatRate(abbr)!;
     }
 
-    double price = 0.0;
+    double? price = 0.0;
     try {
-      price = _prices[abbr]['usd'];
+      price = _prices[abbr]!['usd'];
     } catch (_) {}
 
     return price;
   }
 
-  double getCexRate([CoinsPair pair]) {
+  double? getCexRate([CoinsPair? pair]) {
     pair ??= syncOrderbook.activePair;
 
-    final double buyUsdPrice = getUsdPrice(pair.buy.abbr);
-    final double sellUsdPrice = getUsdPrice(pair.sell.abbr);
+    final double? buyUsdPrice = getUsdPrice(pair!.buy!.abbr);
+    final double? sellUsdPrice = getUsdPrice(pair.sell!.abbr);
 
     if (buyUsdPrice == null || sellUsdPrice == null) return null;
     if (buyUsdPrice == 0.0 || sellUsdPrice == 0.0) return 0.0;
@@ -478,40 +479,40 @@ class CexPrices {
     return sellUsdPrice / buyUsdPrice;
   }
 
-  String convert(
-    double volume, {
-    String from,
-    String to,
+  String? convert(
+    double? volume, {
+    String? from,
+    String? to,
     bool hidden = false,
     bool showSymbol = true,
   }) {
     from ??= 'USD';
-    to ??= currencies == null ? null : currencies[_activeCurrency];
+    to ??= currencies == null ? null : currencies![_activeCurrency];
 
     if (from == null || to == null) return '';
 
-    final double fromUsdPrice = getUsdPrice(from);
-    double convertedVolume;
+    final double? fromUsdPrice = getUsdPrice(from);
+    double? convertedVolume;
     if (from == to) {
       convertedVolume = volume;
     } else {
-      double convertionPrice;
+      double? convertionPrice;
       try {
-        convertionPrice = _prices[from][to.toLowerCase()];
+        convertionPrice = _prices[from]![to.toLowerCase()];
       } catch (_) {}
-      final double toUsdPrice = getUsdPrice(to);
+      final double? toUsdPrice = getUsdPrice(to);
       if (toUsdPrice != null && toUsdPrice != 0.00) {
-        convertionPrice ??= fromUsdPrice / toUsdPrice;
-        convertedVolume = volume * convertionPrice;
+        convertionPrice ??= fromUsdPrice! / toUsdPrice;
+        convertedVolume = volume! * convertionPrice;
       } else {
         convertedVolume = 0.00;
       }
     }
 
-    final String sign = convertedVolume < 0 ? '-' : '';
+    final String sign = convertedVolume! < 0 ? '-' : '';
     convertedVolume = convertedVolume.abs();
 
-    String converted;
+    String? converted;
     if (_isFiat(to)) {
       converted = convertedVolume.toStringAsFixed(2);
       if (convertedVolume != 0.00 && converted == '0.00')
@@ -547,26 +548,26 @@ class CexPrices {
     }
   }
 
-  double _getFiatRate(String abbr) {
-    return _fiatCurrencies[abbr];
+  double? _getFiatRate(String? abbr) {
+    return _fiatCurrencies[abbr!];
   }
 
-  bool _isFiat(String abbr) {
+  bool _isFiat(String? abbr) {
     if (abbr == 'USD') return true;
-    return _fiatCurrencies[abbr] != null;
+    return _fiatCurrencies[abbr!] != null;
   }
 
-  Future<void> updatePrices([List<Coin> coinsList]) async {
+  Future<void> updatePrices([List<Coin?>? coinsList]) async {
     // All available coins, inculding not active.
-    final List<Coin> allCoins = (await coins).values.toList();
-    final List<String> ids =
+    final List<Coin> allCoins = (await coins)!.values.toList();
+    final List<String?> ids =
         allCoins.map((Coin coin) => coin.coingeckoId).toList();
 
-    for (String abbr in currencies) {
+    for (String? abbr in currencies!) {
       if (ids.contains(abbr)) continue;
 
-      final Coin coin =
-          allCoins.firstWhere((Coin c) => c.abbr == abbr, orElse: () => null);
+      final Coin? coin =
+          allCoins.firstWhereOrNull((Coin c) => c.abbr == abbr);
       if (coin == null) continue;
 
       ids.add(coin.coingeckoId);
@@ -587,7 +588,7 @@ class CexPrices {
     if (_fetchingPrices) return false;
     _fetchingPrices = true;
     http.Response _res;
-    String _body;
+    late String _body;
     try {
       _res = await http.get(Uri.parse(url)).timeout(
         const Duration(seconds: 60),
@@ -595,7 +596,7 @@ class CexPrices {
           Log('cex_provider', 'Fetching usd prices timed out');
           _fetchingPrices = false;
           return;
-        },
+        } as FutureOr<Response> Function()?,
       );
       _body = _res.body;
     } catch (e) {
@@ -604,7 +605,7 @@ class CexPrices {
 
     _fetchingPrices = false;
 
-    Map<String, dynamic> json;
+    Map<String, dynamic>? json;
     try {
       json = jsonDecode(_body);
     } catch (e) {
@@ -618,7 +619,7 @@ class CexPrices {
     }
 
     // All available coins, inculding not active.
-    final List<Coin> allCoins = (await coins).values.toList();
+    final List<Coin> allCoins = (await coins)!.values.toList();
 
     json.forEach((String ticker, dynamic pricesData) {
       // Some coins are presented in multiple networks,
@@ -640,7 +641,7 @@ class CexPrices {
           return;
         }
 
-        final String coinAbbr = coin.abbr;
+        final String? coinAbbr = coin.abbr;
         _prices[coinAbbr] = {};
 
         pricesData.forEach((String currency, dynamic price) {
@@ -653,7 +654,7 @@ class CexPrices {
           } catch (_) {
             priceDouble = 0.00;
           }
-          _prices[coinAbbr]['usd'] = priceDouble;
+          _prices[coinAbbr]!['usd'] = priceDouble;
         });
       }
     });
@@ -665,7 +666,7 @@ class CexPrices {
     if (_fetchingPrices) return false;
     _fetchingPrices = true;
     http.Response _res;
-    String _body;
+    late String _body;
     try {
       _res = await http.get(Uri.parse(url)).timeout(
         const Duration(seconds: 60),
@@ -673,7 +674,7 @@ class CexPrices {
           Log('cex_provider', 'Fetching usd prices timed out');
           _fetchingPrices = false;
           return;
-        },
+        } as FutureOr<Response> Function()?,
       );
       _body = _res.body;
     } catch (e) {
@@ -682,7 +683,7 @@ class CexPrices {
 
     _fetchingPrices = false;
 
-    Map<String, dynamic> json;
+    Map<String, dynamic>? json;
     try {
       json = jsonDecode(_body);
     } catch (e) {
@@ -696,7 +697,7 @@ class CexPrices {
     }
 
     // All available coins, inculding not active.
-    final List<Coin> allCoins = (await coins).values.toList();
+    final List<Coin> allCoins = (await coins)!.values.toList();
 
     json.forEach((String coingeckoId, dynamic pricesData) {
       // Some coins are presented in multiple networks,
@@ -709,7 +710,7 @@ class CexPrices {
       for (Coin coin in coins) {
         if (!(pricesData['enough_volume'] ?? true)) return;
 
-        final String coinAbbr = coin.abbr;
+        final String? coinAbbr = coin.abbr;
         _prices[coinAbbr] = {};
 
         pricesData.forEach((String currency, dynamic price) {
@@ -722,7 +723,7 @@ class CexPrices {
           } catch (_) {
             priceDouble = 0.00;
           }
-          _prices[coinAbbr][currency] = priceDouble;
+          _prices[coinAbbr]![currency] = priceDouble;
         });
       }
     });
@@ -749,14 +750,14 @@ class ChainLink {
     this.base,
     this.reverse,
   });
-  String rel;
-  String base;
-  bool reverse;
+  String? rel;
+  String? base;
+  bool? reverse;
 }
 
 class ChartData {
   ChartData({
-    @required this.data,
+    required this.data,
     this.pair,
     this.chain,
     this.updated,
@@ -764,10 +765,10 @@ class ChartData {
   });
 
   Map<String, List<CandleData>> data;
-  String pair;
-  List<ChainLink> chain;
-  int updated; // timestamp, milliseconds
-  ChartStatus status;
+  String? pair;
+  List<ChainLink>? chain;
+  int? updated; // timestamp, milliseconds
+  ChartStatus? status;
 }
 
 enum ChartStatus {
@@ -778,22 +779,22 @@ enum ChartStatus {
 
 class CandleData {
   CandleData({
-    @required this.closeTime,
-    @required this.openPrice,
-    @required this.highPrice,
-    @required this.lowPrice,
-    @required this.closePrice,
+    required this.closeTime,
+    required this.openPrice,
+    required this.highPrice,
+    required this.lowPrice,
+    required this.closePrice,
     this.volume,
     this.quoteVolume,
   });
 
-  int closeTime;
-  double openPrice;
-  double highPrice;
-  double lowPrice;
-  double closePrice;
-  double volume;
-  double quoteVolume;
+  int? closeTime;
+  double? openPrice;
+  double? highPrice;
+  double? lowPrice;
+  double? closePrice;
+  double? volume;
+  double? quoteVolume;
 }
 
 List<String> _tickersFallBack = [

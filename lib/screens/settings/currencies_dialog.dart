@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 void showCurrenciesDialog(BuildContext context) {
   final CexProvider cexProvider =
       Provider.of<CexProvider>(context, listen: false);
-  final String current = cexProvider.selectedFiat;
+  final String? current = cexProvider.selectedFiat;
   final List<String> available = cexProvider.fiatList;
   if (available == null || available.isEmpty) return;
 
@@ -26,7 +26,7 @@ void showCurrenciesDialog(BuildContext context) {
 
   final List<Widget> options = [];
   for (String currency in sorted) {
-    Image flag;
+    Image? flag;
     try {
       flag = Image.asset('assets/currency-flags/${currency.toLowerCase()}.png');
     } catch (_) {}
@@ -75,7 +75,7 @@ void showCurrenciesDialog(BuildContext context) {
       builder: (BuildContext context) {
         return CustomSimpleDialog(
           hasHorizontalPadding: false,
-          title: Text(AppLocalizations.of(context).currencyDialogTitle),
+          title: Text(AppLocalizations.of(context)!.currencyDialogTitle),
           children: <Widget>[
             ...options,
           ],

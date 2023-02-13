@@ -21,10 +21,10 @@ class SetPriceResponse {
         result: Result.fromJson(json['result']) ?? Result(),
       );
 
-  Result result;
+  Result? result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson() ?? Result().toJson(),
+        'result': result!.toJson() ?? Result().toJson(),
       };
 }
 
@@ -58,15 +58,15 @@ class Result {
         uuid: json['uuid'] ?? '',
       );
 
-  String base;
-  String rel;
-  String maxBaseVol;
-  String minBaseVol;
-  int createdAt;
-  Map<String, Match> matches;
-  String price;
-  List<String> startedSwaps;
-  String uuid;
+  String? base;
+  String? rel;
+  String? maxBaseVol;
+  String? minBaseVol;
+  int? createdAt;
+  Map<String, Match>? matches;
+  String? price;
+  List<String>? startedSwaps;
+  String? uuid;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'base': base ?? '',
@@ -74,13 +74,13 @@ class Result {
         'max_base_vol': maxBaseVol ?? '',
         'min_base_vol': minBaseVol ?? '',
         'created_at': createdAt ?? 0,
-        'matches': Map<dynamic, dynamic>.from(matches).map<dynamic, dynamic>(
+        'matches': Map<dynamic, dynamic>.from(matches!).map<dynamic, dynamic>(
                 (dynamic k, dynamic v) =>
                     MapEntry<String, dynamic>(k, v.toJson())) ??
             <String, Match>{},
         'price': price ?? '',
         'started_swaps':
-            List<dynamic>.from(startedSwaps.map<dynamic>((dynamic x) => x)) ??
+            List<dynamic>.from(startedSwaps!.map<dynamic>((dynamic x) => x)) ??
                 <String>[],
         'uuid': uuid ?? '',
       };

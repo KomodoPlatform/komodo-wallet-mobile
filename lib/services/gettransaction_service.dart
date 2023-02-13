@@ -14,7 +14,7 @@ class GetTransactionService {
   int numTxs = 0;
   bool coinAvailable = false;
   bool out = false;
-  int numTx = 0;
+  int? numTx = 0;
   // Below getTransaction function does fetch transaction details from blockexplorer API - this is a alpha feature and
   // is being replaced with our own SPV solution for the beta release. Hence why the below URLs and data is not set through config file
   //
@@ -42,10 +42,10 @@ class GetTransactionService {
           await http.get(Uri.parse(pubkeyApi + 'addr/' + pubkey));
       final Map<dynamic, dynamic> decoded = jsonDecode(response.body);
       numTx = decoded['txApperances'];
-      if (numTx > 10) {
+      if (numTx! > 10) {
         numTx = 10;
       }
-      for (int i = 0; i < numTx; i++) {
+      for (int i = 0; i < numTx!; i++) {
         out = false;
         final Response response = await http
             .get(Uri.parse(pubkeyApi + 'tx/' + decoded['transactions'][i]));
@@ -87,7 +87,7 @@ class GetTransactionService {
       final Response response = await http.get(Uri.parse(pubkeyApi));
       final List<dynamic> decoded = jsonDecode(response.body);
       numTx = decoded.length;
-      for (int i = 0; i < numTx; i++) {
+      for (int i = 0; i < numTx!; i++) {
         out = false;
         transactions.add(Transaction(
             txid: decoded[i]['hash'],

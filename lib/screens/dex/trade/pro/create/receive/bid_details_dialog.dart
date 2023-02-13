@@ -9,9 +9,9 @@ import '../../../../../../model/orderbook.dart';
 import '../../../../../../widgets/shared_preferences_builder.dart';
 
 void openBidDetailsDialog({
-  BuildContext context,
-  Ask bid,
-  Function onSelect,
+  required BuildContext context,
+  Ask? bid,
+  Function? onSelect,
 }) {
   dialogBloc.dialog = showDialog<void>(
       context: context,
@@ -30,7 +30,7 @@ void openBidDetailsDialog({
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Expanded(
-                            child: Text(AppLocalizations.of(context)
+                            child: Text(AppLocalizations.of(context)!
                                 .orderDetailsTitle)),
                         IconButton(
                           onPressed: () {
@@ -48,7 +48,7 @@ void openBidDetailsDialog({
                       if (showSettings)
                         SwitchListTile(
                           title: Text(
-                            AppLocalizations.of(context).orderDetailsSettings,
+                            AppLocalizations.of(context)!.orderDetailsSettings,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           value: showOrderDetailsByTap,
@@ -73,7 +73,7 @@ void openBidDetailsDialog({
                           children: <Widget>[
                             TextButton(
                               onPressed: () => dialogBloc.closeDialog(context),
-                              child: Text(AppLocalizations.of(context)
+                              child: Text(AppLocalizations.of(context)!
                                   .orderDetailsCancel),
                             ),
                             const SizedBox(width: 12),
@@ -81,9 +81,9 @@ void openBidDetailsDialog({
                               key: const Key('confirm-details'),
                               onPressed: () {
                                 dialogBloc.closeDialog(context);
-                                onSelect();
+                                onSelect!();
                               },
-                              child: Text(AppLocalizations.of(context)
+                              child: Text(AppLocalizations.of(context)!
                                   .orderDetailsSelect),
                             )
                           ],

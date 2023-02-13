@@ -3,9 +3,9 @@ class WalletSecuritySettings {
   bool activateBioProtection;
   bool enableCamo;
   bool isCamoActive;
-  int camoFraction;
-  String camoBalance;
-  int camoSessionStartedAt;
+  int? camoFraction;
+  String? camoBalance;
+  int? camoSessionStartedAt;
   bool logOutOnExit;
 
   WalletSecuritySettings({

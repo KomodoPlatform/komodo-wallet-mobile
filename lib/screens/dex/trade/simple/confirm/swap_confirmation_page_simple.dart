@@ -34,15 +34,15 @@ class SwapConfirmationPageSimple extends StatefulWidget {
 
 class _SwapConfirmationPageSimpleState
     extends State<SwapConfirmationPageSimple> {
-  ConstructorProvider _constrProvider;
-  CexProvider _cexProvider;
+  ConstructorProvider? _constrProvider;
+  CexProvider? _cexProvider;
   bool _inProgress = false;
-  LinkedHashMap _batteryData;
-  Timer _batteryTimer;
-  ProtectionSettings _protectionSettings;
-  Coin _sellCoin;
-  Coin _buyCoin;
-  double _sellAmtUsd;
+  LinkedHashMap? _batteryData;
+  Timer? _batteryTimer;
+  ProtectionSettings? _protectionSettings;
+  Coin? _sellCoin;
+  Coin? _buyCoin;
+  double? _sellAmtUsd;
 
   @override
   void initState() {
@@ -62,19 +62,19 @@ class _SwapConfirmationPageSimpleState
     _cexProvider ??= Provider.of<CexProvider>(context);
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
 
-    _sellCoin ??= coinsBloc.getCoinByAbbr(_constrProvider.sellCoin);
-    _buyCoin ??= coinsBloc.getCoinByAbbr(_constrProvider.buyCoin);
+    _sellCoin ??= coinsBloc.getCoinByAbbr(_constrProvider!.sellCoin);
+    _buyCoin ??= coinsBloc.getCoinByAbbr(_constrProvider!.buyCoin);
 
     _protectionSettings ??= ProtectionSettings(
-      requiredConfirmations: _buyCoin.requiredConfirmations,
-      requiresNotarization: _buyCoin.requiresNotarization ?? false,
+      requiredConfirmations: _buyCoin!.requiredConfirmations,
+      requiresNotarization: _buyCoin!.requiresNotarization ?? false,
     );
 
     return LockScreen(
       context: context,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).swapDetailTitle),
+          title: Text(AppLocalizations.of(context)!.swapDetailTitle),
         ),
         body: !_hasData()
             ? SizedBox()
@@ -103,7 +103,7 @@ class _SwapConfirmationPageSimpleState
   }
 
   Future<void> _checkBattery(dynamic _) async {
-    LinkedHashMap battery;
+    LinkedHashMap? battery;
     try {
       battery = await MMService.nativeC.invokeMethod('battery');
     } catch (e) {
@@ -116,16 +116,16 @@ class _SwapConfirmationPageSimpleState
       });
   }
 
-  bool _isBatteryCritical() {
-    if (_batteryData == null || _batteryData['level'] == null) return false;
-    if (_batteryData['charging']) return false;
+  bool? _isBatteryCritical() {
+    if (_batteryData == null || _batteryData!['level'] == null) return false;
+    if (_batteryData!['charging']) return false;
 
-    return (_batteryData['level'] * 100).round() <=
+    return (_batteryData!['level'] * 100).round() <=
         appConfig.batteryLevelCritical;
   }
 
   bool _hasData() {
-    return _constrProvider.sellCoin != null && _constrProvider.buyCoin != null;
+    return _constrProvider!.sellCoin != null && _constrProvider!.buyCoin != null;
   }
 
   Widget _buildExchangeRate() {
@@ -153,15 +153,15 @@ class _SwapConfirmationPageSimpleState
             color: Theme.of(context).highlightColor,
           ),
         )),
-        child: BuildDetailedFeesSimple(preimage: _constrProvider.preimage),
+        child: BuildDetailedFeesSimple(preimage: _constrProvider!.preimage),
       ),
     );
   }
 
   Widget _buildCoinSwapDetail() {
-    final String amountSell = cutTrailingZeros(_constrProvider.sellAmount
+    final String? amountSell = cutTrailingZeros(_constrProvider!.sellAmount!
         .toStringAsFixed(appConfig.tradeFormPrecision));
-    final String amountReceive = cutTrailingZeros(_constrProvider.buyAmount
+    final String? amountReceive = cutTrailingZeros(_constrProvider!.buyAmount!
         .toStringAsFixed(appConfig.tradeFormPrecision));
 
     return Stack(
@@ -188,14 +188,14 @@ class _SwapConfirmationPageSimpleState
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(AppLocalizations.of(context).send,
-                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      Text(AppLocalizations.of(context)!.send,
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                 color: Theme.of(context).colorScheme.secondary,
                                 fontWeight: FontWeight.w100,
                               )),
                       SizedBox(height: 8),
                       AutoScrollText(
-                        text: '$amountSell ${_constrProvider.sellCoin}',
+                        text: '$amountSell ${_constrProvider!.sellCoin}',
                         style: Theme.of(context).textTheme.headline6,
                       ),
                       SizedBox(height: 8),
@@ -232,14 +232,14 @@ class _SwapConfirmationPageSimpleState
                             _buildReceiveFiat(),
                             SizedBox(height: 4),
                             AutoScrollText(
-                              text: '$amountReceive ${_constrProvider.buyCoin}',
+                              text: '$amountReceive ${_constrProvider!.buyCoin}',
                               style: Theme.of(context).textTheme.headline6,
                             ),
                             SizedBox(height: 8),
-                            Text(AppLocalizations.of(context).receive,
+                            Text(AppLocalizations.of(context)!.receive,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText2
+                                    .bodyText2!
                                     .copyWith(
                                       color: Theme.of(context)
                                           .colorScheme
@@ -270,10 +270,10 @@ class _SwapConfirmationPageSimpleState
   }
 
   Widget _buildTradeWarning() {
-    if (_constrProvider.warning == null) return SizedBox();
+    if (_constrProvider!.warning == null) return SizedBox();
 
     return _buildWarning(
-      text: _constrProvider.warning,
+      text: _constrProvider!.warning!,
       iconData: Icons.notification_important,
     );
   }
@@ -287,7 +287,7 @@ class _SwapConfirmationPageSimpleState
 
         return _buildWarning(
           text:
-              AppLocalizations.of(context).mobileDataWarning(appConfig.appName),
+              AppLocalizations.of(context)!.mobileDataWarning(appConfig.appName),
           iconData: Icons.network_check,
         );
       },
@@ -297,24 +297,24 @@ class _SwapConfirmationPageSimpleState
   Widget _buildBatteryWarning() {
     if (_batteryData == null) return SizedBox();
 
-    final double level = _batteryData['level'];
-    final bool isInLowPowerMode = _batteryData['lowPowerMode'];
-    final bool isCharging = _batteryData['charging'];
+    final double? level = _batteryData!['level'];
+    final bool? isInLowPowerMode = _batteryData!['lowPowerMode'];
+    final bool isCharging = _batteryData!['charging'];
 
     if (isCharging) return SizedBox();
 
     String message = '';
-    Color color;
+    Color? color;
 
-    if (_isBatteryCritical()) {
-      message = AppLocalizations.of(context)
+    if (_isBatteryCritical()!) {
+      message = AppLocalizations.of(context)!
           .batteryCriticalError('${appConfig.batteryLevelCritical}');
       color = Theme.of(context).errorColor;
-    } else if (level < appConfig.batteryLevelLow / 100) {
-      message = AppLocalizations.of(context)
+    } else if (level! < appConfig.batteryLevelLow / 100) {
+      message = AppLocalizations.of(context)!
           .batteryLowWarning('${appConfig.batteryLevelLow}');
-    } else if (isInLowPowerMode) {
-      message = AppLocalizations.of(context).batterySavingWarning;
+    } else if (isInLowPowerMode!) {
+      message = AppLocalizations.of(context)!.batterySavingWarning;
     }
 
     if (message.isEmpty) return SizedBox();
@@ -327,12 +327,12 @@ class _SwapConfirmationPageSimpleState
   }
 
   Widget _buildTestCoinWarning() {
-    String warningMessage;
-    if (_sellCoin.testCoin && !_buyCoin.testCoin) {
-      warningMessage = AppLocalizations.of(context).sellTestCoinWarning;
+    String? warningMessage;
+    if (_sellCoin!.testCoin! && !_buyCoin!.testCoin!) {
+      warningMessage = AppLocalizations.of(context)!.sellTestCoinWarning;
     }
-    if (_buyCoin.testCoin && !_sellCoin.testCoin) {
-      warningMessage = AppLocalizations.of(context).buyTestCoinWarning;
+    if (_buyCoin!.testCoin! && !_sellCoin!.testCoin!) {
+      warningMessage = AppLocalizations.of(context)!.buyTestCoinWarning;
     }
 
     if (warningMessage == null) {
@@ -342,10 +342,10 @@ class _SwapConfirmationPageSimpleState
     }
   }
 
-  Widget _buildWarning({String text, IconData iconData, Color color}) {
+  Widget _buildWarning({required String text, IconData? iconData, Color? color}) {
     color ??= (Theme.of(context).brightness == Brightness.light
             ? Colors.yellow[700]
-            : Colors.yellow[100])
+            : Colors.yellow[100])!
         .withAlpha(200);
 
     return Container(
@@ -368,7 +368,7 @@ class _SwapConfirmationPageSimpleState
                 text,
                 style: Theme.of(context)
                     .textTheme
-                    .caption
+                    .caption!
                     .copyWith(color: Theme.of(context).primaryColor),
               ),
             ),
@@ -380,32 +380,32 @@ class _SwapConfirmationPageSimpleState
 
   Widget _buildSellFiat() {
     setState(() {
-      _sellAmtUsd = _constrProvider.sellAmount.toDouble() *
-          _cexProvider.getUsdPrice(_constrProvider.sellCoin);
+      _sellAmtUsd = _constrProvider!.sellAmount!.toDouble() *
+          _cexProvider!.getUsdPrice(_constrProvider!.sellCoin)!;
     });
 
     if (_sellAmtUsd == 0) return SizedBox();
 
     return Text(
-      _cexProvider.convert(_sellAmtUsd),
+      _cexProvider!.convert(_sellAmtUsd)!,
       style: Theme.of(context).textTheme.caption,
     );
   }
 
   Widget _buildReceiveFiat() {
-    final double receiveeAmtUsd = _constrProvider.buyAmount.toDouble() *
-        _cexProvider.getUsdPrice(_constrProvider.buyCoin);
+    final double receiveeAmtUsd = _constrProvider!.buyAmount!.toDouble() *
+        _cexProvider!.getUsdPrice(_constrProvider!.buyCoin)!;
     if (receiveeAmtUsd == 0) return SizedBox();
 
-    Color color;
-    if (_sellAmtUsd > 0) {
-      if (receiveeAmtUsd > _sellAmtUsd) color = Colors.green;
-      if (receiveeAmtUsd < _sellAmtUsd) color = Colors.orange;
+    Color? color;
+    if (_sellAmtUsd! > 0) {
+      if (receiveeAmtUsd > _sellAmtUsd!) color = Colors.green;
+      if (receiveeAmtUsd < _sellAmtUsd!) color = Colors.orange;
     }
 
     return Text(
-      _cexProvider.convert(receiveeAmtUsd),
-      style: Theme.of(context).textTheme.caption.copyWith(color: color),
+      _cexProvider!.convert(receiveeAmtUsd)!,
+      style: Theme.of(context).textTheme.caption!.copyWith(color: color),
     );
   }
 
@@ -432,14 +432,14 @@ class _SwapConfirmationPageSimpleState
                         child: Column(
                           children: <Widget>[
                             Text(
-                              AppLocalizations.of(context).infoTrade1,
+                              AppLocalizations.of(context)!.infoTrade1,
                               style: Theme.of(context).textTheme.subtitle2,
                             ),
                             const SizedBox(
                               height: 16,
                             ),
                             Text(
-                              AppLocalizations.of(context).infoTrade2,
+                              AppLocalizations.of(context)!.infoTrade2,
                               style: Theme.of(context).textTheme.bodyText2,
                             )
                           ],
@@ -472,7 +472,7 @@ class _SwapConfirmationPageSimpleState
   }
 
   Widget _buildButtons() {
-    final bool disabled = _inProgress || _isBatteryCritical();
+    final bool disabled = _inProgress || _isBatteryCritical()!;
 
     return Container(
       padding: EdgeInsets.fromLTRB(16, 16, 16, 56),
@@ -487,7 +487,7 @@ class _SwapConfirmationPageSimpleState
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              child: Text(AppLocalizations.of(context).back.toUpperCase()),
+              child: Text(AppLocalizations.of(context)!.back.toUpperCase()),
             ),
           ),
           SizedBox(width: 12),
@@ -501,9 +501,9 @@ class _SwapConfirmationPageSimpleState
                         : () async {
                             setState(() => _inProgress = true);
 
-                            await _constrProvider.makeSwap(
+                            await _constrProvider!.makeSwap(
                               buyOrderType: BuyOrderType.FillOrKill,
-                              protectionSettings: _protectionSettings,
+                              protectionSettings: _protectionSettings!,
                               onSuccess: (dynamic re) =>
                                   _goToNextScreen(context, re),
                               onError: (dynamic err) =>
@@ -535,7 +535,7 @@ class _SwapConfirmationPageSimpleState
     String errorDisplay =
         error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
     if (error.error.contains('is too low, required')) {
-      errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
+      errorDisplay = AppLocalizations.of(context)!.notEnoughtBalanceForFee;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 4),
@@ -552,9 +552,9 @@ class _SwapConfirmationPageSimpleState
         result: MmSwap(
           uuid: response.result.uuid,
           myInfo: SwapMyInfo(
-              myAmount: cutTrailingZeros(_constrProvider.sellAmount
+              myAmount: cutTrailingZeros(_constrProvider!.sellAmount!
                   .toStringAsFixed(appConfig.tradeFormPrecision)),
-              otherAmount: cutTrailingZeros(_constrProvider.buyAmount
+              otherAmount: cutTrailingZeros(_constrProvider!.buyAmount!
                   .toStringAsFixed(appConfig.tradeFormPrecision)),
               myCoin: response.result.rel,
               otherCoin: response.result.base,
@@ -568,6 +568,6 @@ class _SwapConfirmationPageSimpleState
       ),
     );
 
-    _constrProvider.reset();
+    _constrProvider!.reset();
   }
 }

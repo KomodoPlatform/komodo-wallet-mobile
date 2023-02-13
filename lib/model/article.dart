@@ -40,19 +40,19 @@ class Article {
         author: json['author'] ?? '',
       );
 
-  String id;
-  String title;
-  String header;
-  String body;
-  String keywords;
-  String author;
-  List<String> media;
-  DateTime creationDate;
-  bool isSavedArticle;
-  int v;
+  String? id;
+  String? title;
+  String? header;
+  String? body;
+  String? keywords;
+  String? author;
+  List<String>? media;
+  DateTime? creationDate;
+  bool? isSavedArticle;
+  int? v;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'media': List<String>.from(media.map<String>((dynamic x) => x)) ??
+        'media': List<String>.from(media!.map<String>((dynamic x) => x)) ??
             <String>[],
         '_id': id ?? '',
         'title': title ?? '',
@@ -60,12 +60,12 @@ class Article {
         'body': body ?? '',
         'keywords': keywords ?? '',
         'isSavedArticle': isSavedArticle ?? false,
-        'creation_date': creationDate.toIso8601String() ?? DateTime.now(),
+        'creation_date': creationDate!.toIso8601String() ?? DateTime.now(),
         '__v': v ?? 1,
         'author': author ?? '',
       };
 
   String getTimeFormat() {
-    return DateFormat('dd/MM/yyyy').format(creationDate);
+    return DateFormat('dd/MM/yyyy').format(creationDate!);
   }
 }

@@ -7,14 +7,14 @@ import '../../../localizations.dart';
 import '../../../widgets/custom_simple_dialog.dart';
 
 void showFaucetDialog({
-  @required BuildContext context,
-  @required String coin,
-  @required String address,
+  required BuildContext context,
+  required String? coin,
+  required String? address,
 }) {
   dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return FutureBuilder<Map<String, dynamic>>(
+        return FutureBuilder<Map<String, dynamic>?>(
             future: callFaucet(coin, address),
             builder: (context, snapshot) {
               return CustomSimpleDialog(
@@ -28,11 +28,11 @@ void showFaucetDialog({
                         snapshot.hasData
                             ? _buildFaucetResponse(
                                 context: context,
-                                response: snapshot.data,
+                                response: snapshot.data!,
                               )
                             : _buildFaucetProgress(
                                 context: context,
-                                coin: coin,
+                                coin: coin!,
                               ),
                         SizedBox(height: 12),
                         Row(
@@ -40,7 +40,7 @@ void showFaucetDialog({
                           children: [
                             ElevatedButton(
                               onPressed: () => Navigator.of(context).pop(),
-                              child: Text(AppLocalizations.of(context).close),
+                              child: Text(AppLocalizations.of(context)!.close),
                             ),
                           ],
                         ),
@@ -54,8 +54,8 @@ void showFaucetDialog({
 }
 
 Widget _buildFaucetProgress({
-  @required BuildContext context,
-  @required String coin,
+  required BuildContext context,
+  required String coin,
 }) {
   return Container(
     padding: const EdgeInsets.only(top: 5),
@@ -71,7 +71,7 @@ Widget _buildFaucetProgress({
         ),
         SizedBox(height: 16),
         Text(
-          AppLocalizations.of(context).faucetInProgress(coin),
+          AppLocalizations.of(context)!.faucetInProgress(coin),
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ],
@@ -80,15 +80,15 @@ Widget _buildFaucetProgress({
 }
 
 Widget _buildFaucetResponse({
-  @required BuildContext context,
-  @required Map<String, dynamic> response,
+  required BuildContext context,
+  required Map<String, dynamic> response,
 }) {
   switch (response['Status']) {
     case 'Success':
       return Column(
         children: <Widget>[
           Text(
-            AppLocalizations.of(context).faucetSuccess.toUpperCase(),
+            AppLocalizations.of(context)!.faucetSuccess.toUpperCase(),
             style: const TextStyle(
               color: Colors.green,
               fontSize: 20,
@@ -106,7 +106,7 @@ Widget _buildFaucetResponse({
       return Column(
         children: <Widget>[
           Text(
-            AppLocalizations.of(context).faucetError.toUpperCase(),
+            AppLocalizations.of(context)!.faucetError.toUpperCase(),
             style: TextStyle(
               color: Theme.of(context).errorColor,
               fontSize: 20,
@@ -140,7 +140,7 @@ Widget _buildFaucetResponse({
   }
 }
 
-Future<Map<String, dynamic>> callFaucet(String coin, String address) async {
+Future<Map<String, dynamic>?> callFaucet(String? coin, String? address) async {
   String body;
   http.Response response;
   try {
@@ -148,7 +148,7 @@ Future<Map<String, dynamic>> callFaucet(String coin, String address) async {
         .get(Uri.parse('https://faucet.komodo.live/faucet/$coin/$address'))
         .timeout(const Duration(seconds: 30), onTimeout: () {
       throw AppLocalizations().faucetTimedOut;
-    });
+    } as FutureOr<Response> Function()?);
     body = response.body;
   } catch (e) {
     return <String, dynamic>{

@@ -14,14 +14,14 @@ class MultiOrderConfirm extends StatefulWidget {
 }
 
 class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
-  MultiOrderProvider multiOrderProvider;
+  MultiOrderProvider? multiOrderProvider;
   final List<String> expanded = [];
   bool inProgress = false;
 
   @override
   Widget build(BuildContext context) {
     multiOrderProvider ??= Provider.of<MultiOrderProvider>(context);
-    final Map<String, MultiOrderRelCoin> rel = multiOrderProvider.relCoins;
+    final Map<String?, MultiOrderRelCoin> rel = multiOrderProvider!.relCoins;
 
     return Column(
       children: <Widget>[
@@ -41,7 +41,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                   Container(
                     padding: const EdgeInsets.fromLTRB(6, 12, 6, 12),
                     child: Text(
-                      AppLocalizations.of(context)
+                      AppLocalizations.of(context)!
                           .multiConfirmTitle(rel.length),
                       style: Theme.of(context).textTheme.subtitle2,
                     ),
@@ -69,9 +69,9 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
             onPressed: inProgress
                 ? null
                 : () {
-                    multiOrderProvider.validated = false;
+                    multiOrderProvider!.validated = false;
                   },
-            child: Text(AppLocalizations.of(context).multiConfirmCancel),
+            child: Text(AppLocalizations.of(context)!.multiConfirmCancel),
           ),
           ElevatedButton(
             key: const Key('confirm-create-multi-order'),
@@ -81,16 +81,16 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                     setState(() {
                       inProgress = true;
                     });
-                    await multiOrderProvider.create();
+                    await multiOrderProvider!.create();
                     setState(() {
                       inProgress = false;
-                      if (multiOrderProvider.relCoins.isEmpty) {
-                        multiOrderProvider.reset();
+                      if (multiOrderProvider!.relCoins.isEmpty) {
+                        multiOrderProvider!.reset();
                         swapBloc.setIndexTabDex(1);
                       }
                     });
                   },
-            child: Text(AppLocalizations.of(context).multiConfirmConfirm),
+            child: Text(AppLocalizations.of(context)!.multiConfirmConfirm),
           ),
         ],
       ),
@@ -123,12 +123,12 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
   List<Widget> _buildRows() {
     final List<Widget> rows = [];
 
-    multiOrderProvider.relCoins.forEach((coin, _) {
+    multiOrderProvider!.relCoins.forEach((coin, _) {
       rows.add(
         Card(
           child: Column(
             children: <Widget>[
-              _buildTitle(coin),
+              _buildTitle(coin!),
               if (expanded.contains(coin))
                 Column(
                   children: <Widget>[
@@ -144,8 +144,8 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
     return rows;
   }
 
-  Widget _buildProtectionSettings(String abbr) {
-    final Coin coin = coinsBloc.getCoinByAbbr(abbr);
+  Widget _buildProtectionSettings(String? abbr) {
+    final Coin? coin = coinsBloc.getCoinByAbbr(abbr);
     return Container(
       color: Theme.of(context).highlightColor.withAlpha(10),
       padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
@@ -153,7 +153,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
         coin: coin,
         activeColor: Colors.transparent,
         onChange: (ProtectionSettings settings) {
-          multiOrderProvider.setProtectionSettings(abbr, settings);
+          multiOrderProvider!.setProtectionSettings(abbr, settings);
         },
       ),
     );
@@ -182,17 +182,17 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Text(multiOrderProvider.baseCoin),
+                        Text(multiOrderProvider!.baseCoin!),
                         const SizedBox(width: 2),
                         CircleAvatar(
                           maxRadius: 9,
                           backgroundImage: AssetImage(
-                              getCoinIconPath(multiOrderProvider.baseCoin)),
+                              getCoinIconPath(multiOrderProvider!.baseCoin)),
                         ),
                       ],
                     ),
                     Text(
-                      formatPrice(multiOrderProvider.baseAmt, 8),
+                      formatPrice(multiOrderProvider!.baseAmt, 8)!,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -218,7 +218,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                       ],
                     ),
                     Text(
-                      formatPrice(multiOrderProvider.getRelCoinAmt(coin), 8),
+                      formatPrice(multiOrderProvider!.getRelCoinAmt(coin), 8)!,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -240,14 +240,14 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
   }
 
   Widget _buildError(String coin) {
-    final String error = multiOrderProvider.getError(coin);
+    final String? error = multiOrderProvider!.getError(coin);
     if (error == null) return SizedBox();
 
     return Container(
       padding: const EdgeInsets.only(top: 4),
       child: Text(
         error,
-        style: Theme.of(context).textTheme.caption.copyWith(
+        style: Theme.of(context).textTheme.caption!.copyWith(
               color: Theme.of(context).errorColor,
             ),
       ),
@@ -275,14 +275,14 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            AppLocalizations.of(context).infoTrade1,
+                            AppLocalizations.of(context)!.infoTrade1,
                             style: Theme.of(context).textTheme.subtitle2,
                           ),
                           const SizedBox(
                             height: 16,
                           ),
                           Text(
-                            AppLocalizations.of(context).infoTrade2,
+                            AppLocalizations.of(context)!.infoTrade2,
                             style: Theme.of(context).textTheme.bodyText2,
                           )
                         ],

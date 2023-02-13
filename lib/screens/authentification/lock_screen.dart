@@ -30,16 +30,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Also handles the application startup.
 class LockScreen extends StatefulWidget {
   const LockScreen({
-    Key key,
+    Key? key,
     this.pinStatus = PinStatus.NORMAL_PIN,
     this.child,
     this.onSuccess,
-    @required this.context,
+    required this.context,
   }) : super(key: key);
 
   final PinStatus pinStatus;
-  final Widget child;
-  final Function onSuccess;
+  final Widget? child;
+  final Function? onSuccess;
   final BuildContext context;
 
   @override
@@ -48,16 +48,16 @@ class LockScreen extends StatefulWidget {
 
 class _LockScreenState extends State<LockScreen> {
   final LocalAuthentication auth = LocalAuthentication();
-  String password;
+  String? password;
   bool isInitPassword = false;
-  UpdatesProvider updatesProvider;
+  late UpdatesProvider updatesProvider;
   bool shouldUpdate = false;
 
   Future<void> _initScreen() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool isPinCreationInProgress =
         prefs.containsKey('is_pin_creation_in_progress');
-    final Wallet currentWallet = await Db.getCurrentWallet();
+    final Wallet? currentWallet = await Db.getCurrentWallet();
 
     if (password == null && isPinCreationInProgress && currentWallet != null) {
       Navigator.push<dynamic>(
@@ -65,7 +65,7 @@ class _LockScreenState extends State<LockScreen> {
         MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => UnlockWalletPage(
                   isCreatedPin: true,
-                  textButton: AppLocalizations.of(context).login,
+                  textButton: AppLocalizations.of(context)!.login,
                   wallet: currentWallet,
                   onSuccess: (String seed, String password) async {
                     setState(() {
@@ -79,7 +79,7 @@ class _LockScreenState extends State<LockScreen> {
   }
 
   final Connectivity _connectivity = Connectivity();
-  StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     Log('lock_screen connectivity: ]', result.toString());
@@ -110,13 +110,13 @@ class _LockScreenState extends State<LockScreen> {
   @override
   void initState() {
     super.initState();
-    final ScreenArguments args =
-        ModalRoute.of(widget.context).settings.arguments;
+    final ScreenArguments? args =
+        ModalRoute.of(widget.context)!.settings.arguments as ScreenArguments?;
     password = args?.password;
     _initScreen();
 
     initConnectivity();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
       pinScreenOrientation(context);
 
       if (updatesProvider.status == null &&
@@ -143,7 +143,7 @@ class _LockScreenState extends State<LockScreen> {
     final walletSecuritySettingsProvider =
         context.read<WalletSecuritySettingsProvider>();
 
-    Widget _buildSplash({String message}) {
+    Widget _buildSplash({String? message}) {
       return Scaffold(
         body: Center(
           child: Column(
@@ -171,7 +171,7 @@ class _LockScreenState extends State<LockScreen> {
                         message,
                         style: TextStyle(
                           fontSize: 13,
-                          color: Theme.of(context).textTheme.caption.color,
+                          color: Theme.of(context).textTheme.caption!.color,
                         ),
                       ),
                     ),
@@ -186,9 +186,9 @@ class _LockScreenState extends State<LockScreen> {
     }
 
     if (!startup.live) {
-      final RegExpMatch _tailMatch =
+      final RegExpMatch? _tailMatch =
           RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
-      final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
+      final String? _logTail = _tailMatch == null ? '' : _tailMatch[0];
       return _buildSplash(message: _logTail);
     } else if (updatesProvider.status == null &&
         mainBloc.networkStatus == NetworkStatus.Online) {
@@ -206,18 +206,18 @@ class _LockScreenState extends State<LockScreen> {
               (BuildContext context, AsyncSnapshot<dynamic> outShowCreatePin) {
             if (outShowCreatePin.hasData &&
                 outShowCreatePin.data == PinStatus.NORMAL_PIN) {
-              if (isLogin.hasData && isLogin.data) {
+              if (isLogin.hasData && isLogin.data!) {
                 return StreamBuilder<bool>(
                   initialData: authBloc.showLock,
                   stream: authBloc.outShowLock,
                   builder:
                       (BuildContext context, AsyncSnapshot<bool> outShowLock) {
-                    if (outShowLock.hasData && outShowLock.data) {
+                    if (outShowLock.hasData && outShowLock.data!) {
                       if (walletSecuritySettingsProvider
                           .activatePinProtection) {
                         return Stack(
                           children: <Widget>[
-                            FutureBuilder<bool>(
+                            FutureBuilder<bool?>(
                               future: canCheckBiometrics,
                               builder: (BuildContext context,
                                   AsyncSnapshot<dynamic> snapshot) {
@@ -225,7 +225,7 @@ class _LockScreenState extends State<LockScreen> {
                                     snapshot.data &&
                                     widget.pinStatus == PinStatus.NORMAL_PIN) {
                                   Log.println('lock_screen:141', snapshot.data);
-                                  if (isLogin.hasData && isLogin.data) {
+                                  if (isLogin.hasData && isLogin.data!) {
                                     authenticateBiometrics(
                                             context, widget.pinStatus)
                                         .then((_) {
@@ -254,12 +254,12 @@ class _LockScreenState extends State<LockScreen> {
                                   )
                                 : PinPage(
                                     title:
-                                        AppLocalizations.of(context).lockScreen,
-                                    subTitle: AppLocalizations.of(context)
+                                        AppLocalizations.of(context)!.lockScreen,
+                                    subTitle: AppLocalizations.of(context)!
                                         .enterPinCode,
                                     pinStatus: widget.pinStatus,
                                     isFromChangingPin: false,
-                                    onSuccess: widget.onSuccess,
+                                    onSuccess: widget.onSuccess as void Function()?,
                                   ),
                           ],
                         );
@@ -282,7 +282,7 @@ class _LockScreenState extends State<LockScreen> {
                                       ),
                                     ],
                                   )
-                                : widget.child;
+                                : widget.child!;
                       }
                     } else {
                       if (widget.child == null &&
@@ -290,13 +290,13 @@ class _LockScreenState extends State<LockScreen> {
                               widget.pinStatus ==
                                   PinStatus.DISABLED_PIN_BIOMETRIC))
                         return PinPage(
-                          title: AppLocalizations.of(context).lockScreen,
-                          subTitle: AppLocalizations.of(context).enterPinCode,
+                          title: AppLocalizations.of(context)!.lockScreen,
+                          subTitle: AppLocalizations.of(context)!.enterPinCode,
                           pinStatus: widget.pinStatus,
                           isFromChangingPin: false,
                         );
                       else
-                        return widget.child;
+                        return widget.child!;
                     }
                   },
                 );
@@ -305,8 +305,8 @@ class _LockScreenState extends State<LockScreen> {
               }
             } else {
               return PinPage(
-                title: AppLocalizations.of(context).createPin,
-                subTitle: AppLocalizations.of(context).enterNewPinCode,
+                title: AppLocalizations.of(context)!.createPin,
+                subTitle: AppLocalizations.of(context)!.enterNewPinCode,
                 pinStatus: PinStatus.CREATE_PIN,
                 password: password,
                 isFromChangingPin: false,
@@ -321,13 +321,13 @@ class _LockScreenState extends State<LockScreen> {
 
 class BiometricPage extends StatefulWidget {
   const BiometricPage({
-    Key key,
+    Key? key,
     this.pinStatus,
     this.onSuccess,
   }) : super(key: key);
 
-  final PinStatus pinStatus;
-  final Function onSuccess;
+  final PinStatus? pinStatus;
+  final Function? onSuccess;
 
   @override
   _BiometricPageState createState() => _BiometricPageState();
@@ -338,8 +338,8 @@ class _BiometricPageState extends State<BiometricPage> {
 
   @override
   void initState() {
-    canCheckBiometrics.then((bool onValue) async {
-      if (onValue && (widget.pinStatus == PinStatus.NORMAL_PIN)) {
+    canCheckBiometrics.then((bool? onValue) async {
+      if (onValue! && (widget.pinStatus == PinStatus.NORMAL_PIN)) {
         final LocalAuthentication auth = LocalAuthentication();
         final List<BiometricType> availableBiometrics =
             await auth.getAvailableBiometrics();
@@ -363,7 +363,7 @@ class _BiometricPageState extends State<BiometricPage> {
       appBar: AppBarStatus(
         context: context,
         pinStatus: PinStatus.NORMAL_PIN,
-        title: AppLocalizations.of(context).fingerprint,
+        title: AppLocalizations.of(context)!.fingerprint,
       ),
       body: Center(
         child: Column(
@@ -380,7 +380,7 @@ class _BiometricPageState extends State<BiometricPage> {
               onPressed: () =>
                   authenticateBiometrics(context, widget.pinStatus),
               child:
-                  Text(AppLocalizations.of(context).authenticate.toUpperCase()),
+                  Text(AppLocalizations.of(context)!.authenticate.toUpperCase()),
             )
           ],
         ),

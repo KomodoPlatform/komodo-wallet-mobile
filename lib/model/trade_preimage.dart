@@ -15,7 +15,7 @@ class TradePreimage {
   });
 
   factory TradePreimage.fromJson(Map<String, dynamic> json) {
-    final Map<String, dynamic> result = json['result'];
+    final Map<String, dynamic>? result = json['result'];
     if (result == null) throw 'Failed to parse trade_preimage result';
 
     return TradePreimage(
@@ -32,25 +32,25 @@ class TradePreimage {
         request: GetTradePreimage.fromJson(result['request']));
   }
 
-  CoinFee baseCoinFee;
-  CoinFee relCoinFee;
-  String volume;
-  Map<String, dynamic> volumeFract; // {'numer': '1', 'denom': '3'}
-  CoinFee takerFee;
-  CoinFee feeToSendTakerFee;
-  List<CoinFee> totalFees;
+  CoinFee? baseCoinFee;
+  CoinFee? relCoinFee;
+  String? volume;
+  Map<String, dynamic>? volumeFract; // {'numer': '1', 'denom': '3'}
+  CoinFee? takerFee;
+  CoinFee? feeToSendTakerFee;
+  List<CoinFee>? totalFees;
   dynamic request; // GetTradePreimage or GetTradePreimage2
-  RpcError error; // Used by RPC 2.0
+  RpcError? error; // Used by RPC 2.0
 
   Map<String, dynamic> toJson() {
     final result = <String, dynamic>{
-      'base_coin_fee': baseCoinFee.toJson(),
-      'rel_coin_fee': relCoinFee.toJson(),
-      'taker_fee': takerFee.toJson(),
+      'base_coin_fee': baseCoinFee!.toJson(),
+      'rel_coin_fee': relCoinFee!.toJson(),
+      'taker_fee': takerFee!.toJson(),
       'volume': volume,
       if (volumeFract != null) 'volume_fraction': volumeFract,
       'fee_to_send_taker_fee': feeToSendTakerFee,
-      'total_fees': totalFees.map((item) => item.toJson()).toList(),
+      'total_fees': totalFees!.map((item) => item.toJson()).toList(),
       if (request != null) 'request': request.toJson(),
     };
 
@@ -68,7 +68,7 @@ class CoinFee {
     this.paidFromTradingVol,
   });
 
-  factory CoinFee.fromJson(Map<String, dynamic> json) {
+  factory CoinFee.fromJson(Map<String, dynamic>? json) {
     if (json == null) return null;
 
     return CoinFee(
@@ -79,10 +79,10 @@ class CoinFee {
     );
   }
 
-  String coin;
-  String amount;
-  Map<String, dynamic> amountFract; // {'numer': '1', 'denom': '3'}
-  bool paidFromTradingVol;
+  String? coin;
+  String? amount;
+  Map<String, dynamic>? amountFract; // {'numer': '1', 'denom': '3'}
+  bool? paidFromTradingVol;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

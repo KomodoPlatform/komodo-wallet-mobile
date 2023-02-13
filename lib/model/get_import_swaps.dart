@@ -11,9 +11,9 @@ class GetImportSwaps {
     this.swaps,
   });
 
-  String userpass;
+  String? userpass;
   String method;
-  List<MmSwap> swaps;
+  List<MmSwap?>? swaps;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass ?? '',

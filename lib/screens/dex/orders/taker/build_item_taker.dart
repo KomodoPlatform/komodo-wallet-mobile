@@ -65,7 +65,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                         Row(
                           children: <Widget>[
                             Text(
-                              widget.order.rel,
+                              widget.order.rel!,
                               style: const TextStyle(fontSize: 20),
                             ),
                             const SizedBox(width: 4),
@@ -73,7 +73,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                           ],
                         ),
                         Text(
-                          formatPrice(widget.order.relAmount, 8),
+                          formatPrice(widget.order.relAmount, 8)!,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -92,13 +92,13 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                             _buildIcon(widget.order.base),
                             const SizedBox(width: 4),
                             Text(
-                              widget.order.base,
+                              widget.order.base!,
                               style: const TextStyle(fontSize: 20),
                             ),
                           ],
                         ),
                         Text(
-                          formatPrice(widget.order.baseAmount, 8),
+                          formatPrice(widget.order.baseAmount, 8)!,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -110,10 +110,10 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                 const SizedBox(
                   height: 4,
                 ),
-                FutureBuilder<String>(
+                FutureBuilder<String?>(
                     future: Db.getNote(widget.order.uuid),
                     builder:
-                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                        (BuildContext context, AsyncSnapshot<String?> snapshot) {
                       if (!snapshot.hasData) {
                         return SizedBox();
                       }
@@ -131,7 +131,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  snapshot.data,
+                                  snapshot.data!,
                                   style: Theme.of(context).textTheme.bodyText1,
                                   maxLines: _isNoteExpanded ? null : 1,
                                   overflow: _isNoteExpanded
@@ -153,7 +153,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                     Text(
                       DateFormat('dd MMM yyyy HH:mm').format(
                           DateTime.fromMillisecondsSinceEpoch(
-                              widget.order.createdAt * 1000)),
+                              widget.order.createdAt! * 1000)),
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
@@ -166,7 +166,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            AppLocalizations.of(context).orderMatching,
+                            AppLocalizations.of(context)!.orderMatching,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           BuildTakerCountdown(widget.order.uuid,
@@ -174,7 +174,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                         ],
                       ),
                     ),
-                    if (widget.order.cancelable)
+                    if (widget.order.cancelable!)
                       SizedBox(
                         height: 30,
                         child: OutlinedButton(
@@ -197,7 +197,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text(AppLocalizations.of(context)
+                                Text(AppLocalizations.of(context)!
                                     .cancel
                                     .toUpperCase())
                               ],
@@ -223,7 +223,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
     );
   }
 
-  Widget _buildIcon(String coin) {
+  Widget _buildIcon(String? coin) {
     return SizedBox(
       height: 25,
       width: 25,

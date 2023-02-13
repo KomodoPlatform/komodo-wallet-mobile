@@ -29,9 +29,9 @@ class CamoBloc implements GenericBlocBase {
   bool _isCamoActive = false;
   bool _isCamoEnabled = false;
   int _camoFraction = 10; // % of real balance
-  int _sessionStartedAt; // milliseconds since Epoch
+  int? _sessionStartedAt; // milliseconds since Epoch
   bool shouldWarnBadCamoPin = false;
-  String _camoPinValue;
+  String? _camoPinValue;
 
   final StreamController<bool> _isCamoActiveController =
       StreamController<bool>.broadcast();
@@ -48,10 +48,10 @@ class CamoBloc implements GenericBlocBase {
   Sink<int> get _inCamoFraction => _camoFractionController.sink;
   Stream<int> get outCamoFraction => _camoFractionController.stream;
 
-  final StreamController<String> _camoPinValueController =
-      StreamController<String>.broadcast();
-  Sink<String> get _inCamoPinValue => _camoPinValueController.sink;
-  Stream<String> get outCamoPinValue => _camoPinValueController.stream;
+  final StreamController<String?> _camoPinValueController =
+      StreamController<String?>.broadcast();
+  Sink<String?> get _inCamoPinValue => _camoPinValueController.sink;
+  Stream<String?> get outCamoPinValue => _camoPinValueController.stream;
 
   @override
   void dispose() {
@@ -62,7 +62,7 @@ class CamoBloc implements GenericBlocBase {
   }
 
   void camouflageBalance(Balance balance) {
-    final String balanceStr = walletSecuritySettingsProvider.camoBalance;
+    final String balanceStr = walletSecuritySettingsProvider.camoBalance!;
     dynamic json;
     try {
       json = jsonDecode(balanceStr);
@@ -74,10 +74,10 @@ class CamoBloc implements GenericBlocBase {
     if (json[balance.coin] == null) {
       json[balance.coin] = balance.balance.toString();
       walletSecuritySettingsProvider.camoBalance = jsonEncode(json);
-      fakeBalance = balance.balance.toDouble() * _camoFraction / 100;
+      fakeBalance = balance.balance!.toDouble() * _camoFraction / 100;
     } else {
       final double balanceDelta =
-          double.parse(json[balance.coin]) - balance.balance.toDouble();
+          double.parse(json[balance.coin]) - balance.balance!.toDouble();
       fakeBalance =
           double.parse(json[balance.coin]) * _camoFraction / 100 - balanceDelta;
     }
@@ -89,28 +89,28 @@ class CamoBloc implements GenericBlocBase {
   void camouflageTransaction(Transaction transaction) {
     if (_isNewTransaction(transaction)) return;
 
-    if (transaction.spentByMe.isNotEmpty) {
+    if (transaction.spentByMe!.isNotEmpty) {
       transaction.spentByMe =
-          (double.parse(transaction.spentByMe) * _camoFraction / 100)
+          (double.parse(transaction.spentByMe!) * _camoFraction / 100)
               .toString();
     }
 
-    if (transaction.receivedByMe.isNotEmpty) {
+    if (transaction.receivedByMe!.isNotEmpty) {
       transaction.receivedByMe =
-          (double.parse(transaction.receivedByMe) * _camoFraction / 100)
+          (double.parse(transaction.receivedByMe!) * _camoFraction / 100)
               .toString();
     }
 
-    if (transaction.myBalanceChange.isNotEmpty) {
+    if (transaction.myBalanceChange!.isNotEmpty) {
       transaction.myBalanceChange =
-          (double.parse(transaction.myBalanceChange) * _camoFraction / 100)
+          (double.parse(transaction.myBalanceChange!) * _camoFraction / 100)
               .toString();
     }
   }
 
   bool _isNewTransaction(Transaction transaction) {
     if (transaction.timestamp == 0) return true;
-    if (transaction.timestamp * 1000 > _sessionStartedAt) return true;
+    if (transaction.timestamp! * 1000 > _sessionStartedAt!) return true;
 
     return false;
   }
@@ -128,7 +128,7 @@ class CamoBloc implements GenericBlocBase {
     if (val) {
       _sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
       walletSecuritySettingsProvider.enableCamo = true;
-      walletSecuritySettingsProvider.camoSessionStartedAt = _sessionStartedAt;
+      walletSecuritySettingsProvider.camoSessionStartedAt = _sessionStartedAt!;
       walletSecuritySettingsProvider.camoBalance = null;
     }
   }
@@ -147,7 +147,7 @@ class CamoBloc implements GenericBlocBase {
     walletSecuritySettingsProvider.camoFraction = val;
   }
 
-  String get camoPinValue => _camoPinValue;
+  String? get camoPinValue => _camoPinValue;
 
   Future<void> getCamoPinValue() async {
     final camoPin = await EncryptionTool().read('camoPin');

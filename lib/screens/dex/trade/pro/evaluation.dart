@@ -27,16 +27,16 @@ class _EvaluationState extends State<Evaluation> {
   final double _sliderH = 4;
   final double _neutralRange = 5; // % - show lower values in neutral color
   bool _showDetails = false;
-  double _sliderW;
-  num _sign;
-  double _percent;
-  int _indicatorRange;
-  String _buyAbbr;
-  String _sellAbbr;
-  double _rate;
-  double _cexRate;
+  double? _sliderW;
+  late num _sign;
+  late double _percent;
+  late int _indicatorRange;
+  String? _buyAbbr;
+  String? _sellAbbr;
+  double? _rate;
+  double? _cexRate;
 
-  CexProvider _cexProvider;
+  CexProvider? _cexProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +74,15 @@ class _EvaluationState extends State<Evaluation> {
     }
 
     _rate = tradeForm.getExchangeRate();
-    _cexRate = _cexProvider.getCexRate(
+    _cexRate = _cexProvider!.getCexRate(
         CoinsPair(sell: Coin(abbr: _sellAbbr), buy: Coin(abbr: _buyAbbr)));
 
     if (_rate == null || _cexRate == null || _cexRate == 0.0) return;
 
     _sliderW = MediaQuery.of(context).size.width / 5 * 3;
 
-    _sign = (_rate - _cexRate).sign;
-    _percent = ((_rate - _cexRate) * 100 / _cexRate).abs();
+    _sign = (_rate! - _cexRate!).sign;
+    _percent = ((_rate! - _cexRate!) * 100 / _cexRate!).abs();
     if (_percent > 99.99) _percent = 99.99;
     if (_percent < -99.99) _percent = -99.99;
     _indicatorRange = (_neutralRange * 2).round();
@@ -90,7 +90,7 @@ class _EvaluationState extends State<Evaluation> {
       // log_n(x) = log_e(x) / log_e(n)
       final power = (math.log(_percent) / math.log(10)).ceil();
       // Round up to the closest power of 10
-      _indicatorRange = math.pow(10, power);
+      _indicatorRange = math.pow(10, power) as int;
     }
   }
 
@@ -112,7 +112,7 @@ class _EvaluationState extends State<Evaluation> {
             Icon(
               _showDetails ? Icons.arrow_drop_up : Icons.arrow_drop_down,
               size: 16,
-              color: Theme.of(context).textTheme.bodyText1.color,
+              color: Theme.of(context).textTheme.bodyText1!.color,
             )
           ],
         ),
@@ -164,9 +164,9 @@ class _EvaluationState extends State<Evaluation> {
   }
 
   Widget _buildEvaluationHeader() {
-    final String percentString = formatPrice(_percent.toString(), 2);
+    final String? percentString = formatPrice(_percent.toString(), 2);
     Widget message;
-    Color color;
+    Color? color;
 
     switch (_sign) {
       case 1:
@@ -174,17 +174,17 @@ class _EvaluationState extends State<Evaluation> {
           color = Colors.green;
           message = Row(children: [
             Text(
-              AppLocalizations.of(context).exchangeExpedient + ': ',
+              AppLocalizations.of(context)!.exchangeExpedient + ': ',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             Text(
               '+$percentString% ',
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
-                    color: color ?? Theme.of(context).textTheme.bodyText2.color,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    color: color ?? Theme.of(context).textTheme.bodyText2!.color,
                   ),
             ),
             Text(
-              AppLocalizations.of(context).comparedToCex,
+              AppLocalizations.of(context)!.comparedToCex,
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ]);
@@ -197,17 +197,17 @@ class _EvaluationState extends State<Evaluation> {
           }
           message = Row(children: [
             Text(
-              AppLocalizations.of(context).exchangeExpensive + ': ',
+              AppLocalizations.of(context)!.exchangeExpensive + ': ',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             Text(
               '-$percentString% ',
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
-                    color: color ?? Theme.of(context).textTheme.bodyText2.color,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    color: color ?? Theme.of(context).textTheme.bodyText2!.color,
                   ),
             ),
             Text(
-              AppLocalizations.of(context).comparedToCex,
+              AppLocalizations.of(context)!.comparedToCex,
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ]);
@@ -216,7 +216,7 @@ class _EvaluationState extends State<Evaluation> {
       default:
         {
           message = Text(
-            AppLocalizations.of(context).exchangeIdentical,
+            AppLocalizations.of(context)!.exchangeIdentical,
             style: Theme.of(context).textTheme.bodyText1,
           );
         }
@@ -249,7 +249,7 @@ class _EvaluationState extends State<Evaluation> {
                   left: 0,
                   top: _sliderH / 2,
                   child: Container(
-                    width: _sliderW / 2,
+                    width: _sliderW! / 2,
                     height: _sliderH,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -259,10 +259,10 @@ class _EvaluationState extends State<Evaluation> {
                     ),
                   )),
               Positioned(
-                  left: _sliderW / 2,
+                  left: _sliderW! / 2,
                   top: _sliderH / 2,
                   child: Container(
-                    width: _sliderW / 2,
+                    width: _sliderW! / 2,
                     height: _sliderH,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -272,8 +272,8 @@ class _EvaluationState extends State<Evaluation> {
                     ),
                   )),
               Positioned(
-                  left: ((_sliderW / 2) - _sliderH / 2) +
-                      _sign * _percent * _sliderW / _indicatorRange / 2,
+                  left: ((_sliderW! / 2) - _sliderH / 2) +
+                      _sign * _percent * _sliderW! / _indicatorRange / 2,
                   top: 0,
                   width: _sliderH,
                   height: _sliderH * 2,

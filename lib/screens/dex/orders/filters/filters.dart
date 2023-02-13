@@ -18,10 +18,10 @@ class Filters extends StatefulWidget {
     this.showStatus = false,
   });
 
-  final List<dynamic> items;
-  final Function(ActiveFilters) onChange;
-  final Function filter;
-  final ActiveFilters activeFilters;
+  final List<dynamic>? items;
+  final Function(ActiveFilters?)? onChange;
+  final Function? filter;
+  final ActiveFilters? activeFilters;
   final bool showStatus;
 
   @override
@@ -29,7 +29,7 @@ class Filters extends StatefulWidget {
 }
 
 class _FiltersState extends State<Filters> {
-  ActiveFilters _filters;
+  ActiveFilters? _filters;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _FiltersState extends State<Filters> {
       TextButton(
         child: Row(
           children: [
-            Text(AppLocalizations.of(context).filtersClearAll.toUpperCase()),
+            Text(AppLocalizations.of(context)!.filtersClearAll.toUpperCase()),
             const SizedBox(width: 8),
             Icon(Icons.clear)
           ],
@@ -71,21 +71,21 @@ class _FiltersState extends State<Filters> {
           setState(() {
             _filters = ActiveFilters();
           });
-          widget.onChange(_filters);
+          widget.onChange!(_filters);
         },
       ),
     ]);
   }
 
   Widget _buildStatusFilter() {
-    final Status current = _filters.status;
-    final Color color =
-        current == null ? Theme.of(context).textTheme.bodyText1.color : null;
+    final Status? current = _filters!.status;
+    final Color? color =
+        current == null ? Theme.of(context).textTheme.bodyText1!.color : null;
 
     return Row(children: [
       Expanded(
         child: Text(
-          AppLocalizations.of(context).filtersStatus + ':',
+          AppLocalizations.of(context)!.filtersStatus + ':',
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
@@ -106,10 +106,10 @@ class _FiltersState extends State<Filters> {
               Expanded(
                 child: AutoScrollText(
                   text: current == null
-                      ? AppLocalizations.of(context).filtersAll
+                      ? AppLocalizations.of(context)!.filtersAll
                       : current == Status.SWAP_SUCCESSFUL
-                          ? AppLocalizations.of(context).filtersSuccessful
-                          : AppLocalizations.of(context).filtersFailed,
+                          ? AppLocalizations.of(context)!.filtersSuccessful
+                          : AppLocalizations.of(context)!.filtersFailed,
                   style: TextStyle(color: color),
                 ),
               ),
@@ -128,22 +128,22 @@ class _FiltersState extends State<Filters> {
             ? null
             : () {
                 setState(() {
-                  _filters.status = null;
+                  _filters!.status = null;
                 });
-                _filters.matches = widget.filter(widget.items).length;
-                widget.onChange(_filters);
+                _filters!.matches = widget.filter!(widget.items).length;
+                widget.onChange!(_filters);
               },
       ),
     ]);
   }
 
   void _openStatusDialog() {
-    final Status temp = _filters.status;
-    _filters.status = Status.SWAP_SUCCESSFUL;
-    final int successfulPredictor = widget.filter(widget.items).length;
-    _filters.status = Status.SWAP_FAILED;
-    final int failedPredictor = widget.filter(widget.items).length;
-    _filters.status = temp;
+    final Status? temp = _filters!.status;
+    _filters!.status = Status.SWAP_SUCCESSFUL;
+    final int? successfulPredictor = widget.filter!(widget.items).length;
+    _filters!.status = Status.SWAP_FAILED;
+    final int? failedPredictor = widget.filter!(widget.items).length;
+    _filters!.status = temp;
 
     dialogBloc.dialog = showDialog<void>(
         context: context,
@@ -153,27 +153,27 @@ class _FiltersState extends State<Filters> {
             children: [
               InkWell(
                 onTap: () {
-                  setState(() => _filters.status = null);
-                  _filters.matches = widget.filter(widget.items).length;
-                  widget.onChange(_filters);
+                  setState(() => _filters!.status = null);
+                  _filters!.matches = widget.filter!(widget.items).length;
+                  widget.onChange!(_filters);
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
                     padding: const EdgeInsets.all(12),
-                    child: Text(AppLocalizations.of(context).filtersAll)),
+                    child: Text(AppLocalizations.of(context)!.filtersAll)),
               ),
               InkWell(
                 onTap: () {
-                  setState(() => _filters.status = Status.SWAP_SUCCESSFUL);
-                  _filters.matches = widget.filter(widget.items).length;
-                  widget.onChange(_filters);
+                  setState(() => _filters!.status = Status.SWAP_SUCCESSFUL);
+                  _filters!.matches = widget.filter!(widget.items).length;
+                  widget.onChange!(_filters);
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
                     padding: const EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        Text(AppLocalizations.of(context).filtersSuccessful),
+                        Text(AppLocalizations.of(context)!.filtersSuccessful),
                         Text(
                           ' ($successfulPredictor)',
                           style: Theme.of(context).textTheme.caption,
@@ -183,16 +183,16 @@ class _FiltersState extends State<Filters> {
               ),
               InkWell(
                 onTap: () {
-                  setState(() => _filters.status = Status.SWAP_FAILED);
-                  _filters.matches = widget.filter(widget.items).length;
-                  widget.onChange(_filters);
+                  setState(() => _filters!.status = Status.SWAP_FAILED);
+                  _filters!.matches = widget.filter!(widget.items).length;
+                  widget.onChange!(_filters);
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
                     padding: const EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        Text(AppLocalizations.of(context).filtersFailed),
+                        Text(AppLocalizations.of(context)!.filtersFailed),
                         Text(
                           ' ($failedPredictor)',
                           style: Theme.of(context).textTheme.caption,
@@ -206,17 +206,17 @@ class _FiltersState extends State<Filters> {
   }
 
   Widget _buildDateFilter(DateFilterType dateType) {
-    final DateTime current =
-        dateType == DateFilterType.START ? _filters.start : _filters.end;
-    final Color color =
-        current == null ? Theme.of(context).textTheme.bodyText1.color : null;
+    final DateTime? current =
+        dateType == DateFilterType.START ? _filters!.start : _filters!.end;
+    final Color? color =
+        current == null ? Theme.of(context).textTheme.bodyText1!.color : null;
 
     return Row(children: [
       Expanded(
         child: Text(
           dateType == DateFilterType.START
-              ? '${AppLocalizations.of(context).filtersFrom}:'
-              : '${AppLocalizations.of(context).filtersTo}:',
+              ? '${AppLocalizations.of(context)!.filtersFrom}:'
+              : '${AppLocalizations.of(context)!.filtersTo}:',
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
@@ -257,11 +257,11 @@ class _FiltersState extends State<Filters> {
             : () {
                 setState(() {
                   dateType == DateFilterType.START
-                      ? _filters.start = null
-                      : _filters.end = null;
+                      ? _filters!.start = null
+                      : _filters!.end = null;
                 });
-                _filters.matches = widget.filter(widget.items).length;
-                widget.onChange(_filters);
+                _filters!.matches = widget.filter!(widget.items).length;
+                widget.onChange!(_filters);
               },
       )
     ]);
@@ -274,36 +274,36 @@ class _FiltersState extends State<Filters> {
     final DateTime today = DateTime.now();
     final date = await showDatePicker(
         context: context,
-        firstDate: typeIsStart ? first : (_filters.start ?? first),
-        lastDate: typeIsStart ? (_filters.end ?? today) : today,
-        initialDate: (typeIsStart ? _filters.start : _filters.end) ??
-            (_filters.end ?? today),
+        firstDate: typeIsStart ? first : (_filters!.start ?? first),
+        lastDate: typeIsStart ? (_filters!.end ?? today) : today,
+        initialDate: (typeIsStart ? _filters!.start : _filters!.end) ??
+            (_filters!.end ?? today),
         helpText: (typeIsStart
-                ? AppLocalizations.of(context).filtersFrom
-                : AppLocalizations.of(context).filtersTo)
+                ? AppLocalizations.of(context)!.filtersFrom
+                : AppLocalizations.of(context)!.filtersTo)
             .toUpperCase());
 
     if (date is DateTime) {
       setState(() {
         dateType == DateFilterType.START
-            ? _filters.start = date
-            : _filters.end = date
+            ? _filters!.start = date
+            : _filters!.end = date
                 .add(const Duration(days: 1) - const Duration(milliseconds: 1));
       });
-      _filters.matches = widget.filter(widget.items).length;
-      widget.onChange(_filters);
+      _filters!.matches = widget.filter!(widget.items).length;
+      widget.onChange!(_filters);
     }
   }
 
   Widget _buildTypeFilter() {
-    final OrderType current = widget.activeFilters.type;
-    final Color color =
-        current == null ? Theme.of(context).textTheme.bodyText1.color : null;
+    final OrderType? current = widget.activeFilters!.type;
+    final Color? color =
+        current == null ? Theme.of(context).textTheme.bodyText1!.color : null;
 
     return Row(children: [
       Expanded(
         child: Text(
-          AppLocalizations.of(context).filtersType + ':',
+          AppLocalizations.of(context)!.filtersType + ':',
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
@@ -324,10 +324,10 @@ class _FiltersState extends State<Filters> {
               Expanded(
                 child: AutoScrollText(
                   text: current == null
-                      ? AppLocalizations.of(context).filtersAll
+                      ? AppLocalizations.of(context)!.filtersAll
                       : current == OrderType.MAKER
-                          ? AppLocalizations.of(context).filtersMaker
-                          : AppLocalizations.of(context).filtersTaker,
+                          ? AppLocalizations.of(context)!.filtersMaker
+                          : AppLocalizations.of(context)!.filtersTaker,
                   style: TextStyle(color: color),
                 ),
               ),
@@ -346,22 +346,22 @@ class _FiltersState extends State<Filters> {
             ? null
             : () {
                 setState(() {
-                  _filters.type = null;
+                  _filters!.type = null;
                 });
-                _filters.matches = widget.filter(widget.items).length;
-                widget.onChange(_filters);
+                _filters!.matches = widget.filter!(widget.items).length;
+                widget.onChange!(_filters);
               },
       ),
     ]);
   }
 
   void _openTypeDialog() {
-    final OrderType temp = _filters.type;
-    _filters.type = OrderType.MAKER;
-    final int makerPredictor = widget.filter(widget.items).length;
-    _filters.type = OrderType.TAKER;
-    final int takerPredictor = widget.filter(widget.items).length;
-    _filters.type = temp;
+    final OrderType? temp = _filters!.type;
+    _filters!.type = OrderType.MAKER;
+    final int? makerPredictor = widget.filter!(widget.items).length;
+    _filters!.type = OrderType.TAKER;
+    final int? takerPredictor = widget.filter!(widget.items).length;
+    _filters!.type = temp;
 
     dialogBloc.dialog = showDialog<void>(
         context: context,
@@ -371,27 +371,27 @@ class _FiltersState extends State<Filters> {
             children: [
               InkWell(
                 onTap: () {
-                  setState(() => _filters.type = null);
-                  _filters.matches = widget.filter(widget.items).length;
-                  widget.onChange(_filters);
+                  setState(() => _filters!.type = null);
+                  _filters!.matches = widget.filter!(widget.items).length;
+                  widget.onChange!(_filters);
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
                     padding: const EdgeInsets.all(12),
-                    child: Text(AppLocalizations.of(context).all)),
+                    child: Text(AppLocalizations.of(context)!.all)),
               ),
               InkWell(
                 onTap: () {
-                  setState(() => _filters.type = OrderType.MAKER);
-                  _filters.matches = widget.filter(widget.items).length;
-                  widget.onChange(_filters);
+                  setState(() => _filters!.type = OrderType.MAKER);
+                  _filters!.matches = widget.filter!(widget.items).length;
+                  widget.onChange!(_filters);
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
                     padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        Text(AppLocalizations.of(context).filtersMaker),
+                        Text(AppLocalizations.of(context)!.filtersMaker),
                         Text(
                           ' ($makerPredictor)',
                           style: Theme.of(context).textTheme.caption,
@@ -401,16 +401,16 @@ class _FiltersState extends State<Filters> {
               ),
               InkWell(
                 onTap: () {
-                  setState(() => _filters.type = OrderType.TAKER);
-                  _filters.matches = widget.filter(widget.items).length;
-                  widget.onChange(_filters);
+                  setState(() => _filters!.type = OrderType.TAKER);
+                  _filters!.matches = widget.filter!(widget.items).length;
+                  widget.onChange!(_filters);
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
                     padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        Text(AppLocalizations.of(context).filtersTaker),
+                        Text(AppLocalizations.of(context)!.filtersTaker),
                         Text(
                           ' ($takerPredictor)',
                           style: Theme.of(context).textTheme.caption,
@@ -424,8 +424,8 @@ class _FiltersState extends State<Filters> {
   }
 
   Widget _buildCoinFilter(Market market) {
-    final String current =
-        market == Market.SELL ? _filters.sellCoin : _filters.receiveCoin;
+    final String? current =
+        market == Market.SELL ? _filters!.sellCoin : _filters!.receiveCoin;
 
     return Row(
       mainAxisSize: MainAxisSize.max,
@@ -433,8 +433,8 @@ class _FiltersState extends State<Filters> {
         Expanded(
           child: Text(
             market == Market.SELL
-                ? AppLocalizations.of(context).filtersSell + ':'
-                : AppLocalizations.of(context).filtersReceive + ':',
+                ? AppLocalizations.of(context)!.filtersSell + ':'
+                : AppLocalizations.of(context)!.filtersReceive + ':',
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
@@ -445,11 +445,11 @@ class _FiltersState extends State<Filters> {
               : () {
                   setState(() {
                     market == Market.SELL
-                        ? _filters.sellCoin = null
-                        : _filters.receiveCoin = null;
+                        ? _filters!.sellCoin = null
+                        : _filters!.receiveCoin = null;
                   });
-                  _filters.matches = widget.filter(widget.items).length;
-                  widget.onChange(_filters);
+                  _filters!.matches = widget.filter!(widget.items).length;
+                  widget.onChange!(_filters);
                 },
         )
       ],
@@ -457,10 +457,10 @@ class _FiltersState extends State<Filters> {
   }
 
   Widget _buildCoinSelect(Market market) {
-    final String current =
-        market == Market.SELL ? _filters.sellCoin : _filters.receiveCoin;
-    final Color color =
-        current == null ? Theme.of(context).textTheme.bodyText1.color : null;
+    final String? current =
+        market == Market.SELL ? _filters!.sellCoin : _filters!.receiveCoin;
+    final Color? color =
+        current == null ? Theme.of(context).textTheme.bodyText1!.color : null;
 
     return InkWell(
       onTap: () => _openCoinsDialog(market),
@@ -485,7 +485,7 @@ class _FiltersState extends State<Filters> {
             SizedBox(width: 4),
             Expanded(
               child: AutoScrollText(
-                text: current ?? AppLocalizations.of(context).filtersAll,
+                text: current ?? AppLocalizations.of(context)!.filtersAll,
                 style: TextStyle(color: color),
               ),
             ),
@@ -502,28 +502,28 @@ class _FiltersState extends State<Filters> {
   }
 
   void _openCoinsDialog(Market market) {
-    final List<String> coins = _getCoins(market);
+    final List<String?> coins = _getCoins(market);
 
-    final List<Widget> items = coins.map((String coin) {
-      final String temp =
-          market == Market.SELL ? _filters.sellCoin : _filters.receiveCoin;
+    final List<Widget> items = coins.map((String? coin) {
+      final String? temp =
+          market == Market.SELL ? _filters!.sellCoin : _filters!.receiveCoin;
       market == Market.SELL
-          ? _filters.sellCoin = coin
-          : _filters.receiveCoin = coin;
-      final int predictor = widget.filter(widget.items).length;
+          ? _filters!.sellCoin = coin
+          : _filters!.receiveCoin = coin;
+      final int? predictor = widget.filter!(widget.items).length;
       market == Market.SELL
-          ? _filters.sellCoin = temp
-          : _filters.receiveCoin = temp;
+          ? _filters!.sellCoin = temp
+          : _filters!.receiveCoin = temp;
 
       return InkWell(
         onTap: () {
           setState(() {
             market == Market.SELL
-                ? _filters.sellCoin = coin
-                : _filters.receiveCoin = coin;
+                ? _filters!.sellCoin = coin
+                : _filters!.receiveCoin = coin;
           });
-          _filters.matches = widget.filter(widget.items).length;
-          widget.onChange(_filters);
+          _filters!.matches = widget.filter!(widget.items).length;
+          widget.onChange!(_filters);
           dialogBloc.closeDialog(context);
         },
         child: Container(
@@ -535,7 +535,7 @@ class _FiltersState extends State<Filters> {
                 backgroundImage: AssetImage(getCoinIconPath(coin)),
               ),
               SizedBox(width: 4),
-              Text(coin),
+              Text(coin!),
               SizedBox(width: 4),
               Text(
                 ' ($predictor)',
@@ -553,11 +553,11 @@ class _FiltersState extends State<Filters> {
           onTap: () {
             setState(() {
               market == Market.SELL
-                  ? _filters.sellCoin = null
-                  : _filters.receiveCoin = null;
+                  ? _filters!.sellCoin = null
+                  : _filters!.receiveCoin = null;
             });
-            _filters.matches = widget.filter(widget.items).length;
-            widget.onChange(_filters);
+            _filters!.matches = widget.filter!(widget.items).length;
+            widget.onChange!(_filters);
             dialogBloc.closeDialog(context);
           },
           child: Container(
@@ -568,7 +568,7 @@ class _FiltersState extends State<Filters> {
                     radius: 8,
                     backgroundColor: Theme.of(context).highlightColor),
                 const SizedBox(width: 8),
-                Text(AppLocalizations.of(context).filtersAll),
+                Text(AppLocalizations.of(context)!.filtersAll),
               ],
             ),
           ),
@@ -584,12 +584,12 @@ class _FiltersState extends State<Filters> {
         }).then((dynamic _) => dialogBloc.dialog = null);
   }
 
-  List<String> _getCoins(Market market) {
-    final List<String> list = [];
+  List<String?> _getCoins(Market market) {
+    final List<String?> list = [];
 
-    for (dynamic item in widget.items) {
+    for (dynamic item in widget.items!) {
       if (item is Order) {
-        String coin;
+        String? coin;
         switch (market) {
           case Market.SELL:
             coin = item.orderType == OrderType.MAKER ? item.base : item.rel;
@@ -600,7 +600,7 @@ class _FiltersState extends State<Filters> {
         }
         if (!list.contains(coin)) list.add(coin);
       } else if (item is Swap) {
-        String coin;
+        String? coin;
         switch (market) {
           case Market.SELL:
             coin = item.isMaker ? item.makerAbbr : item.takerAbbr;
@@ -617,7 +617,7 @@ class _FiltersState extends State<Filters> {
   }
 
   Widget _buildIndividualClearButtonHelper(
-      {@required VoidCallback onPresseed}) {
+      {required VoidCallback? onPresseed}) {
     return IconButton(
       visualDensity: VisualDensity.compact,
       icon: const Icon(Icons.clear),
@@ -640,13 +640,13 @@ class ActiveFilters {
     this.status,
   });
 
-  int matches;
-  String sellCoin;
-  String receiveCoin;
-  DateTime start;
-  DateTime end;
-  OrderType type;
-  Status status;
+  int? matches;
+  String? sellCoin;
+  String? receiveCoin;
+  DateTime? start;
+  DateTime? end;
+  OrderType? type;
+  Status? status;
 
   bool get anyActive =>
       sellCoin != null ||

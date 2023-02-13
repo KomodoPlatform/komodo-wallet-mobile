@@ -11,16 +11,16 @@ import '../../widgets/primary_button.dart';
 
 class UnlockWalletPage extends StatefulWidget {
   const UnlockWalletPage({
-    Key key,
-    @required this.wallet,
+    Key? key,
+    required this.wallet,
     this.onSuccess,
     this.isSignWithSeedIsEnabled = true,
-    @required this.textButton,
+    required this.textButton,
     this.isCreatedPin = false,
   }) : super(key: key);
 
-  final Wallet wallet;
-  final Function(String seed, String password) onSuccess;
+  final Wallet? wallet;
+  final Function(String seed, String password)? onSuccess;
   final bool isSignWithSeedIsEnabled;
   final String textButton;
   final bool isCreatedPin;
@@ -46,7 +46,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
               ? IconButton(
                   key: Key('settings-pin-logout'),
                   onPressed: () async {
-                    await Db.deleteWallet(widget.wallet);
+                    await Db.deleteWallet(widget.wallet!);
                     await authBloc.logout();
                     Navigator.pop(context);
                   },
@@ -77,12 +77,12 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context).unlock.toUpperCase(),
+              AppLocalizations.of(context)!.unlock.toUpperCase(),
               style: Theme.of(context).textTheme.headline3,
               textAlign: TextAlign.center,
             ),
             Text(
-              AppLocalizations.of(context).yourWallet,
+              AppLocalizations.of(context)!.yourWallet,
               style: Theme.of(context).textTheme.headline6,
               textAlign: TextAlign.center,
             ),
@@ -117,7 +117,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                 ),
                 style: Theme.of(context).textTheme.bodyText2,
                 decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context).hintEnterPassword,
+                  hintText: AppLocalizations.of(context)!.hintEnterPassword,
                   suffixIcon: PasswordVisibilityControl(
                     isFocused: false,
                     onVisibilityChange: (bool isPasswordObscured) {
@@ -145,7 +145,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                           ),
                           isLoading
                               ? Text(
-                                  AppLocalizations.of(context).decryptingWallet,
+                                  AppLocalizations.of(context)!.decryptingWallet,
                                   style: Theme.of(context).textTheme.bodyText2,
                                 )
                               : SizedBox()
@@ -177,9 +177,9 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      AppLocalizations.of(context).signInWithSeedPhrase,
+                      AppLocalizations.of(context)!.signInWithSeedPhrase,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           decoration: TextDecoration.underline,
                           decorationColor: Colors.white),
                     ),
@@ -201,7 +201,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
     walletBloc
         .loginWithPassword(context, controller.text, widget.wallet)
         .then((String data) async {
-      await widget.onSuccess(data, controller.text);
+      await widget.onSuccess!(data, controller.text);
       setState(() {
         isLoading = false;
       });
@@ -209,7 +209,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
       ScaffoldMessenger.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(mContext).errorColor,
-        content: Text(AppLocalizations.of(context).wrongPassword),
+        content: Text(AppLocalizations.of(context)!.wrongPassword),
       ));
     }).whenComplete(() {
       if (mounted) {

@@ -16,16 +16,16 @@ class SellForm extends StatefulWidget {
 class _SellFormState extends State<SellForm> {
   final _amtCtrl = TextEditingController();
   final _focusNode = FocusNode();
-  ConstructorProvider _constrProvider;
-  CexProvider _cexProvider;
+  ConstructorProvider? _constrProvider;
+  CexProvider? _cexProvider;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _constrProvider.addListener(_onDataChange);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _constrProvider!.addListener(_onDataChange);
       _onDataChange(); // fill the form with current data on page load
 
-      if (_constrProvider.buyCoin == null) {
+      if (_constrProvider!.buyCoin == null) {
         _focusNode.requestFocus();
       } else {
         unfocusEverything();
@@ -77,19 +77,19 @@ class _SellFormState extends State<SellForm> {
   }
 
   Widget _buildButton(double pct) {
-    final Rational buttonAmt = _constrProvider.maxSellAmt *
+    final Rational buttonAmt = _constrProvider!.maxSellAmt! *
         Rational.parse('$pct') /
         Rational.parse('100');
-    final String formattedButtonAmt = cutTrailingZeros(
+    final String? formattedButtonAmt = cutTrailingZeros(
         buttonAmt.toStringAsFixed(appConfig.tradeFormPrecision));
     final bool isActive = formattedButtonAmt == _amtCtrl.text;
-    final bool disabled = (_constrProvider.maxSellAmt?.toDouble() ?? 0) == 0;
+    final bool disabled = (_constrProvider!.maxSellAmt?.toDouble() ?? 0) == 0;
 
     return Expanded(
       child: InkWell(
         onTap: isActive || disabled
             ? null
-            : () => _constrProvider.sellAmount = buttonAmt,
+            : () => _constrProvider!.sellAmount = buttonAmt,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 0),
           decoration: BoxDecoration(
@@ -103,7 +103,7 @@ class _SellFormState extends State<SellForm> {
           alignment: Alignment.center,
           child: Text(
             '${cutTrailingZeros(pct.toString())}%',
-            style: Theme.of(context).textTheme.caption.copyWith(
+            style: Theme.of(context).textTheme.caption!.copyWith(
                   color: disabled
                       ? Theme.of(context).disabledColor.withOpacity(0.5)
                       : isActive
@@ -123,7 +123,7 @@ class _SellFormState extends State<SellForm> {
         TextFormField(
           key: const Key('amount-field'),
           controller: _amtCtrl,
-          onChanged: _constrProvider.onSellAmtFieldChange,
+          onChanged: _constrProvider!.onSellAmtFieldChange,
           focusNode: _focusNode,
           keyboardType: TextInputType.numberWithOptions(decimal: true),
           inputFormatters: <TextInputFormatter>[
@@ -152,13 +152,13 @@ class _SellFormState extends State<SellForm> {
         visualDensity: VisualDensity.compact,
         contentPadding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
         horizontalTitleGap: 0,
-        onTap: () => _constrProvider.sellCoin = null,
+        onTap: () => _constrProvider!.sellCoin = null,
         leading: CircleAvatar(
           radius: 8,
           backgroundImage:
-              AssetImage(getCoinIconPath(_constrProvider.sellCoin)),
+              AssetImage(getCoinIconPath(_constrProvider!.sellCoin)),
         ),
-        title: Text(_constrProvider.sellCoin),
+        title: Text(_constrProvider!.sellCoin!),
         trailing: Icon(
           Icons.clear,
           size: 16,
@@ -168,35 +168,35 @@ class _SellFormState extends State<SellForm> {
   }
 
   Widget _buildFiatAmt() {
-    final Rational sellAmount = _constrProvider.sellAmount;
-    final double usdPrice = _cexProvider.getUsdPrice(_constrProvider.sellCoin);
+    final Rational? sellAmount = _constrProvider!.sellAmount;
+    final double? usdPrice = _cexProvider!.getUsdPrice(_constrProvider!.sellCoin);
     double usdAmt = 0.0;
     if (sellAmount != null && sellAmount.toDouble() > 0) {
-      usdAmt = _constrProvider.sellAmount.toDouble() * usdPrice;
+      usdAmt = _constrProvider!.sellAmount!.toDouble() * usdPrice!;
     }
 
     if (usdAmt == 0) return SizedBox();
     return Text(
-      _cexProvider.convert(usdAmt),
-      style: Theme.of(context).textTheme.caption.copyWith(
-          color: Theme.of(context).textTheme.bodyText1.color, fontSize: 11),
+      _cexProvider!.convert(usdAmt)!,
+      style: Theme.of(context).textTheme.caption!.copyWith(
+          color: Theme.of(context).textTheme.bodyText1!.color, fontSize: 11),
     );
   }
 
   void _onDataChange() {
     if (!mounted) return;
 
-    if (_constrProvider.sellAmount == null) {
+    if (_constrProvider!.sellAmount == null) {
       _amtCtrl.clear();
       return;
     }
 
-    final String newFormatted = cutTrailingZeros(_constrProvider.sellAmount
+    final String? newFormatted = cutTrailingZeros(_constrProvider!.sellAmount!
         .toStringAsFixed(appConfig.tradeFormPrecision));
-    final String currentFormatted = cutTrailingZeros(_amtCtrl.text);
+    final String? currentFormatted = cutTrailingZeros(_amtCtrl.text);
 
     if (currentFormatted != newFormatted) {
-      _amtCtrl.text = newFormatted;
+      _amtCtrl.text = newFormatted!;
       moveCursorToEnd(_amtCtrl);
     }
   }

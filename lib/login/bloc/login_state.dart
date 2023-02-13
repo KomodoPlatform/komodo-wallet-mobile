@@ -11,11 +11,11 @@ abstract class _LoginState {
     this.error,
   });
 
-  final FormzStatus status;
+  final FormzStatus? status;
 
-  final String error;
+  final String? error;
 
-  final Pin pin;
+  final Pin? pin;
 
   // Let's avoid storing the correct pin in state. Rather, let's call the
   // repository to check the pin when submitted.
@@ -29,9 +29,9 @@ abstract class _LoginState {
 class LoginState extends _LoginState {
   LoginState({
     // PinStatus pinStatus,
-    Pin pin,
-    FormzStatus status,
-    String error,
+    Pin? pin,
+    FormzStatus? status,
+    String? error,
   }) : super(
           pin: pin,
           status: status,
@@ -41,10 +41,10 @@ class LoginState extends _LoginState {
 
   LoginState copyWith({
     // PinStatus pinStatus,
-    Pin pin,
-    FormzStatus status,
-    String error,
-    String correctPin,
+    Pin? pin,
+    FormzStatus? status,
+    String? error,
+    String? correctPin,
   }) {
     return LoginState(
       // pinStatus: pinStatus ?? this.pinStatus,
@@ -71,7 +71,7 @@ class LoginStateInitial extends LoginState {
 
 class LoginStatePinSubmitted extends LoginState {
   LoginStatePinSubmitted({
-    Pin pin,
+    Pin? pin,
   }) : super(
           pin: pin,
           // correctPin: correctPin,
@@ -81,7 +81,7 @@ class LoginStatePinSubmitted extends LoginState {
 
 class LoginStatePinSubmittedSuccess extends LoginState {
   LoginStatePinSubmittedSuccess({
-    Pin pin,
+    Pin? pin,
   }) : super(
           pin: pin,
           status: FormzStatus.submissionSuccess,
@@ -90,8 +90,8 @@ class LoginStatePinSubmittedSuccess extends LoginState {
 
 class LoginStatePinSubmittedFailure extends LoginState {
   LoginStatePinSubmittedFailure({
-    Pin pin,
-    String error,
+    Pin? pin,
+    String? error,
   }) : super(
           pin: pin,
           status: FormzStatus.submissionFailure,
@@ -101,11 +101,11 @@ class LoginStatePinSubmittedFailure extends LoginState {
 
 class LoginStateSetPin extends LoginState {
   LoginStateSetPin({
-    Pin pin,
+    Pin? pin,
   }) : super(
           pin: pin,
           status: FormzStatus.submissionInProgress,
         );
 
-  Pin pinConfirmation;
+  Pin? pinConfirmation;
 }

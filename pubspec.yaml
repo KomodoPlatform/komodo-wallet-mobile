@@ -12,7 +12,7 @@ version: 0.6.0
 publish_to: none
 
 environment:
-  sdk: ">=2.10.5 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 # We're using specific (pinned) plugin versions in order to help us review the dependency upgrades.
 # KomodoPlatform plugin upgrades should be created as new branches, with PR into master;
@@ -161,6 +161,7 @@ dependencies:
     git:
       url: https://github.com/KomodoPlatform/dart-uuid.git
       ref: c9a37bc675fd3fa715db2d929dc66d15ec09ad27 #3.0.5
+  collection: ^1.15.0-nullsafety.4
 
 
 dev_dependencies:

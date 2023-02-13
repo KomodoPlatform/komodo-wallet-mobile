@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 Widget buildRedDot(
   BuildContext context, {
-  double right = 0,
-  double left,
+  double? right = 0,
+  double? left,
   double top = 0,
-  double bottom,
+  double? bottom,
 }) {
   return Positioned(
       right: right,

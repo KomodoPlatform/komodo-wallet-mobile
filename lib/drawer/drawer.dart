@@ -17,7 +17,7 @@ import '../widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatefulWidget {
-  const AppDrawer(this.mContext, {Key key}) : super(key: key);
+  const AppDrawer(this.mContext, {Key? key}) : super(key: key);
 
   final BuildContext mContext;
 
@@ -26,7 +26,7 @@ class AppDrawer extends StatefulWidget {
 }
 
 class _AppDrawerState extends State<AppDrawer> {
-  CexProvider cexProvider;
+  late CexProvider cexProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -84,13 +84,13 @@ class _AppDrawerState extends State<AppDrawer> {
                             height: 18,
                           ),
                           const SizedBox(width: 4),
-                          FutureBuilder<Wallet>(
+                          FutureBuilder<Wallet?>(
                               future: Db.getCurrentWallet(),
                               builder: (BuildContext context,
-                                  AsyncSnapshot<Wallet> snapshot) {
+                                  AsyncSnapshot<Wallet?> snapshot) {
                                 if (!snapshot.hasData) return SizedBox();
                                 return Text(
-                                  snapshot.data.name,
+                                  snapshot.data!.name!,
                                   style: const TextStyle(
                                       fontSize: 18, color: Colors.white),
                                   overflow: TextOverflow.ellipsis,
@@ -108,7 +108,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 padding: EdgeInsets.all(0),
                 children: <Widget>[
                   _buildDrawerItem(
-                    title: Text(AppLocalizations.of(context).soundSettingsLink),
+                    title: Text(AppLocalizations.of(context)!.soundSettingsLink),
                     onTap: () {
                       Navigator.of(context).pop();
                       Navigator.push<dynamic>(
@@ -148,7 +148,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               AsyncSnapshot<dynamic> snapshot) {
                             return Row(
                               children: <Widget>[
-                                Text(AppLocalizations.of(context).language),
+                                Text(AppLocalizations.of(context)!.language),
                                 Text(
                                   snapshot.hasData
                                       ? ' (${snapshot.data})'.toUpperCase()
@@ -172,13 +172,13 @@ class _AppDrawerState extends State<AppDrawer> {
                   _buildDrawerItem(
                       title: Row(
                         children: <Widget>[
-                          Text(AppLocalizations.of(context).currency),
+                          Text(AppLocalizations.of(context)!.currency),
                           if (cexProvider.selectedFiat != null)
                             Text(' (${cexProvider.selectedFiat})'),
                         ],
                       ),
                       onTap: () => showCurrenciesDialog(context),
-                      leading: cexProvider.selectedFiatSymbol.length > 1
+                      leading: cexProvider.selectedFiatSymbol!.length > 1
                           ? const Icon(Icons.account_balance_wallet,
                               key: Key('side-nav-currency'), size: 16)
                           : Text(' ${cexProvider.selectedFiatSymbol}')),
@@ -189,8 +189,8 @@ class _AppDrawerState extends State<AppDrawer> {
                         (BuildContext context, AsyncSnapshot<bool> snapshot) {
                       return SwitchListTile(
                         secondary: const Icon(Icons.money_off, size: 16),
-                        title: Text(AppLocalizations.of(context).hideBalance),
-                        value: !snapshot.data ?? false,
+                        title: Text(AppLocalizations.of(context)!.hideBalance),
+                        value: !snapshot.data! ?? false,
                         onChanged: (bool dataSwitch) {
                           settingsBloc.setShowBalance(!dataSwitch);
                         },
@@ -202,7 +202,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     endIndent: 20,
                   ),
                   _buildDrawerItem(
-                      title: Text(AppLocalizations.of(context).addressBook),
+                      title: Text(AppLocalizations.of(context)!.addressBook),
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.push<dynamic>(
@@ -218,7 +218,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     endIndent: 20,
                   ),
                   _buildDrawerItem(
-                      title: Text(AppLocalizations.of(context).settings),
+                      title: Text(AppLocalizations.of(context)!.settings),
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.push<dynamic>(
@@ -230,7 +230,7 @@ class _AppDrawerState extends State<AppDrawer> {
                       leading: const Icon(Icons.settings,
                           key: Key('side-nav-settings'), size: 16)),
                   _buildDrawerItem(
-                      title: Text(AppLocalizations.of(context).helpLink),
+                      title: Text(AppLocalizations.of(context)!.helpLink),
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.push<dynamic>(
@@ -246,7 +246,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     builder:
                         (BuildContext context, AsyncSnapshot<bool> snapshot) {
                       return SwitchListTile(
-                        title: Text(AppLocalizations.of(context).switchTheme),
+                        title: Text(AppLocalizations.of(context)!.switchTheme),
                         secondary: const Icon(Icons.brush, size: 16),
                         value: snapshot.data ?? false,
                         onChanged: (bool dataSwitch) {
@@ -266,7 +266,7 @@ class _AppDrawerState extends State<AppDrawer> {
                       Navigator.pop(context);
                       showLogoutConfirmation(widget.mContext);
                     },
-                    title: Text(AppLocalizations.of(context).logout),
+                    title: Text(AppLocalizations.of(context)!.logout),
                   ),
                 ],
               ),
@@ -278,15 +278,15 @@ class _AppDrawerState extends State<AppDrawer> {
   }
 
   Widget _buildDrawerItem({
-    Function onTap,
-    Widget title,
-    Widget leading,
-    Widget trailing,
+    Function? onTap,
+    Widget? title,
+    required Widget leading,
+    Widget? trailing,
   }) {
     trailing ??= const Icon(Icons.chevron_right);
 
     return ListTile(
-      onTap: onTap,
+      onTap: onTap as void Function()?,
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [leading],

@@ -35,14 +35,14 @@ class ActiveCoin {
     }
   }
 
-  String coin;
-  String address;
-  String balance;
-  String lockedBySwaps;
-  String result;
-  int requiredConfirmations;
-  int matureConfirmations;
-  bool requiresNotarization;
+  String? coin;
+  String? address;
+  String? balance;
+  String? lockedBySwaps;
+  String? result;
+  int? requiredConfirmations;
+  int? matureConfirmations;
+  bool? requiresNotarization;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'coin': coin ?? '',

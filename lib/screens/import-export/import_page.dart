@@ -39,8 +39,8 @@ class _ImportPageState extends State<ImportPage> {
   final _passController = TextEditingController();
   bool _isPassObscured = true;
   bool _done = false;
-  Backup _all;
-  Backup _selected;
+  Backup? _all;
+  late Backup _selected;
   int _numSwapsImported = 0;
 
   @override
@@ -50,7 +50,7 @@ class _ImportPageState extends State<ImportPage> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).importTitle),
+          title: Text(AppLocalizations.of(context)!.importTitle),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -76,12 +76,12 @@ class _ImportPageState extends State<ImportPage> {
 
   Widget _buildSuccess() {
     return ExportImportSuccess(
-      title: AppLocalizations.of(context).importSuccessTitle,
+      title: AppLocalizations.of(context)!.importSuccessTitle,
       items: {
-        AppLocalizations.of(context).exportNotesTitle: _selected.notes.length,
-        AppLocalizations.of(context).exportContactsTitle:
-            _selected.contacts.length,
-        AppLocalizations.of(context).exportSwapsTitle: _numSwapsImported,
+        AppLocalizations.of(context)!.exportNotesTitle: _selected.notes!.length,
+        AppLocalizations.of(context)!.exportContactsTitle:
+            _selected.contacts!.length,
+        AppLocalizations.of(context)!.exportSwapsTitle: _numSwapsImported,
       },
     );
   }
@@ -101,16 +101,16 @@ class _ImportPageState extends State<ImportPage> {
             });
           }
         },
-        text: AppLocalizations.of(context).importButton,
+        text: AppLocalizations.of(context)!.importButton,
       ),
     );
   }
 
   bool _validate() {
-    if (_selected.notes.isEmpty &&
-        _selected.contacts.isEmpty &&
-        _selected.swaps.isEmpty) {
-      _showError(AppLocalizations.of(context).noItemsToImport);
+    if (_selected.notes!.isEmpty &&
+        _selected.contacts!.isEmpty &&
+        _selected.swaps!.isEmpty) {
+      _showError(AppLocalizations.of(context)!.noItemsToImport);
       return false;
     }
 
@@ -118,7 +118,7 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   Future<int> _importSwaps() async {
-    final List<MmSwap> listSwaps = [];
+    final List<MmSwap?> listSwaps = [];
 
     _selected.swaps?.forEach((uuid, swap) {
       listSwaps.add(swap);
@@ -127,15 +127,15 @@ class _ImportPageState extends State<ImportPage> {
     final dynamic r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
 
     if (r is ErrorString) {
-      _showError(AppLocalizations.of(context).couldntImportError + r.error);
+      _showError(AppLocalizations.of(context)!.couldntImportError + r.error);
       return 0;
     }
 
     if (r is ImportSwaps) {
-      if (r.result.skipped.isNotEmpty) {
-        _showError(AppLocalizations.of(context).importSomeItemsSkippedWarning);
+      if (r.result!.skipped!.isNotEmpty) {
+        _showError(AppLocalizations.of(context)!.importSomeItemsSkippedWarning);
       }
-      return r.result.imported.length;
+      return r.result!.imported!.length;
     }
 
     return 0;
@@ -147,7 +147,7 @@ class _ImportPageState extends State<ImportPage> {
     await provider.init();
 
     _selected.contacts?.forEach((uid, contact) {
-      final Contact existing = provider.contactByUid(uid);
+      final Contact? existing = provider.contactByUid(uid);
       if (existing == null) {
         provider.addContact(contact);
       } else {
@@ -157,10 +157,10 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   Future<void> _importNotes() async {
-    for (String id in _selected.notes.keys) {
-      final String note = _selected.notes[id];
+    for (String? id in _selected.notes!.keys) {
+      final String? note = _selected.notes![id];
 
-      final String existingNote = await Db.getNote(id);
+      final String? existingNote = await Db.getNote(id);
       if (existingNote == null) {
         await Db.saveNote(id, note);
         continue;
@@ -172,7 +172,7 @@ class _ImportPageState extends State<ImportPage> {
         context: context,
         builder: (context) {
           return CustomSimpleDialog(
-            title: Text(AppLocalizations.of(context).alreadyExists),
+            title: Text(AppLocalizations.of(context)!.alreadyExists),
             children: <Widget>[
               OverwriteDialogContent(
                   currentValue: existingNote,
@@ -203,12 +203,12 @@ class _ImportPageState extends State<ImportPage> {
   Widget _buildNotes() {
     final List<ExportImportListItem> items = [];
 
-    _all.notes.forEach((String id, dynamic note) {
+    _all!.notes!.forEach((String? id, dynamic note) {
       items.add(ExportImportListItem(
-          checked: _selected.notes.containsKey(id),
+          checked: _selected.notes!.containsKey(id),
           onChange: (bool val) {
             setState(() {
-              val ? _selected.notes[id] = note : _selected.notes.remove(id);
+              val ? _selected.notes![id] = note : _selected.notes!.remove(id);
             });
           },
           child: Text(
@@ -221,21 +221,21 @@ class _ImportPageState extends State<ImportPage> {
 
     return ExportImportList(
       items: items,
-      title: AppLocalizations.of(context).exportNotesTitle,
+      title: AppLocalizations.of(context)!.exportNotesTitle,
     );
   }
 
   Widget _buildContacts() {
     final List<ExportImportListItem> items = [];
 
-    _all.contacts.forEach((String id, dynamic contact) {
+    _all!.contacts!.forEach((String? id, dynamic contact) {
       items.add(ExportImportListItem(
-          checked: _selected.contacts.containsKey(id),
+          checked: _selected.contacts!.containsKey(id),
           onChange: (bool val) {
             setState(() {
               val
-                  ? _selected.contacts[id] = contact
-                  : _selected.contacts.remove(id);
+                  ? _selected.contacts![id] = contact
+                  : _selected.contacts!.remove(id);
             });
           },
           child: Column(
@@ -256,8 +256,8 @@ class _ImportPageState extends State<ImportPage> {
                         fontSize: 10,
                         color: Theme.of(context)
                             .textTheme
-                            .bodyText2
-                            .color
+                            .bodyText2!
+                            .color!
                             .withOpacity(0.7)),
                   ));
                 }
@@ -272,37 +272,37 @@ class _ImportPageState extends State<ImportPage> {
 
     return ExportImportList(
       items: items,
-      title: AppLocalizations.of(context).exportContactsTitle,
+      title: AppLocalizations.of(context)!.exportContactsTitle,
     );
   }
 
   Widget _buildSwaps() {
     final List<ExportImportListItem> items = [];
 
-    _all.swaps.forEach((String id, MmSwap swap) {
-      final myInfo = extractMyInfoFromSwap(swap);
-      final myCoin = myInfo['myCoin'];
+    _all!.swaps!.forEach((String? id, MmSwap? swap) {
+      final myInfo = extractMyInfoFromSwap(swap!);
+      final myCoin = myInfo['myCoin']!;
       final myAmount = myInfo['myAmount'];
-      final otherCoin = myInfo['otherCoin'];
+      final otherCoin = myInfo['otherCoin']!;
       final otherAmount = myInfo['otherAmount'];
-      final startedAt = extractStartedAtFromSwap(swap);
+      final startedAt = extractStartedAtFromSwap(swap)!;
 
       items.add(
         ExportImportListItem(
-          checked: _selected.swaps.containsKey(id),
+          checked: _selected.swaps!.containsKey(id),
           onChange: (bool val) {
             setState(() {
-              val ? _selected.swaps[id] = swap : _selected.swaps.remove(id);
+              val ? _selected.swaps![id] = swap : _selected.swaps!.remove(id);
             });
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               truncateMiddle(
-                swap.uuid,
+                swap.uuid!,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2
+                    .bodyText2!
                     .copyWith(fontSize: 14),
               ),
               SizedBox(height: 2),
@@ -311,12 +311,12 @@ class _ImportPageState extends State<ImportPage> {
                   Text(
                     DateFormat('dd MMM yyyy HH:mm').format(
                         DateTime.fromMillisecondsSinceEpoch(startedAt * 1000)),
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           fontSize: 14,
                           color: Theme.of(context)
                               .textTheme
-                              .bodyText2
-                              .color
+                              .bodyText2!
+                              .color!
                               .withOpacity(0.5),
                         ),
                   ),
@@ -324,16 +324,16 @@ class _ImportPageState extends State<ImportPage> {
                   Text(
                     (swap.type == 'Maker' || swap.type == 'Taker')
                         ? swap.type == 'Maker'
-                            ? AppLocalizations.of(context).makerOrder
-                            : AppLocalizations.of(context).takerOrder
-                        : swap.type +
-                            AppLocalizations.of(context).orderTypePartial,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            ? AppLocalizations.of(context)!.makerOrder
+                            : AppLocalizations.of(context)!.takerOrder
+                        : swap.type! +
+                            AppLocalizations.of(context)!.orderTypePartial,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           fontSize: 14,
                           color: Theme.of(context)
                               .textTheme
-                              .bodyText2
-                              .color
+                              .bodyText2!
+                              .color!
                               .withOpacity(0.5),
                         ),
                   ),
@@ -343,7 +343,7 @@ class _ImportPageState extends State<ImportPage> {
               Row(
                 children: <Widget>[
                   Text(
-                    cutTrailingZeros(formatPrice(myAmount, 4)) + ' ' + myCoin,
+                    cutTrailingZeros(formatPrice(myAmount, 4))! + ' ' + myCoin,
                   ),
                   SizedBox(width: 4),
                   Image.asset(
@@ -354,7 +354,7 @@ class _ImportPageState extends State<ImportPage> {
                   Icon(Icons.swap_horiz),
                   SizedBox(width: 8),
                   Text(
-                    cutTrailingZeros(formatPrice(otherAmount, 4)) +
+                    cutTrailingZeros(formatPrice(otherAmount, 4))! +
                         ' ' +
                         otherCoin,
                   ),
@@ -373,17 +373,17 @@ class _ImportPageState extends State<ImportPage> {
 
     return ExportImportList(
       items: items,
-      title: AppLocalizations.of(context).exportSwapsTitle,
+      title: AppLocalizations.of(context)!.exportSwapsTitle,
     );
   }
 
   Widget _buildImportHeader() {
     return Container(
       padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-      child: Text(AppLocalizations.of(context).importDesc,
+      child: Text(AppLocalizations.of(context)!.importDesc,
           style: TextStyle(
             height: 1.3,
-            color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7),
+            color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.7),
           )),
     );
   }
@@ -392,22 +392,22 @@ class _ImportPageState extends State<ImportPage> {
     return Container(
       padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
       child: _loading
-          ? Text(AppLocalizations.of(context).importLoading,
+          ? Text(AppLocalizations.of(context)!.importLoading,
               style: TextStyle(
                 height: 1.3,
                 color: Theme.of(context)
                     .textTheme
-                    .bodyText2
-                    .color
+                    .bodyText2!
+                    .color!
                     .withOpacity(0.7),
               ))
-          : Text(AppLocalizations.of(context).importLoadDesc,
+          : Text(AppLocalizations.of(context)!.importLoadDesc,
               style: TextStyle(
                 height: 1.3,
                 color: Theme.of(context)
                     .textTheme
-                    .bodyText2
-                    .color
+                    .bodyText2!
+                    .color!
                     .withOpacity(0.7),
               )),
     );
@@ -422,7 +422,7 @@ class _ImportPageState extends State<ImportPage> {
             : () async {
                 setState(() => _loading = true);
 
-                FilePickerResult filePickerResult;
+                FilePickerResult? filePickerResult;
                 final int lockCookie = lockService.enteringFilePicker();
                 try {
                   filePickerResult = await FilePicker.platform.pickFiles();
@@ -436,22 +436,22 @@ class _ImportPageState extends State<ImportPage> {
                   return;
                 }
 
-                File file;
+                File? file;
                 if (filePickerResult.count != 0) {
                   final pFile = filePickerResult.files[0];
                   if (pFile == null) {
-                    _showError(AppLocalizations.of(context).importFileNotFound);
+                    _showError(AppLocalizations.of(context)!.importFileNotFound);
                     return;
                   }
 
-                  file = File(pFile.path);
+                  file = File(pFile.path!);
                   if (!file.existsSync()) {
-                    _showError(AppLocalizations.of(context).importFileNotFound);
+                    _showError(AppLocalizations.of(context)!.importFileNotFound);
                     return;
                   }
                 }
 
-                final Map<String, dynamic> decrypted = await _decrypt(file);
+                final Map<String, dynamic>? decrypted = await _decrypt(file);
                 setState(() => _loading = false);
                 if (decrypted == null) return;
 
@@ -460,12 +460,12 @@ class _ImportPageState extends State<ImportPage> {
                   _selected = Backup.fromJson(decrypted);
                 });
               },
-        text: AppLocalizations.of(context).selectFileImport,
+        text: AppLocalizations.of(context)!.selectFileImport,
       ),
     );
   }
 
-  Future<Map<String, dynamic>> _decrypt(File file) async {
+  Future<Map<String, dynamic>?> _decrypt(File? file) async {
     setState(() => _isPassObscured = true);
     _passController.text = '';
 
@@ -475,7 +475,7 @@ class _ImportPageState extends State<ImportPage> {
       barrierDismissible: false,
       builder: (context) => StatefulBuilder(builder: (context, setState) {
         return CustomSimpleDialog(
-          title: Text(AppLocalizations.of(context).importPassword),
+          title: Text(AppLocalizations.of(context)!.importPassword),
           children: <Widget>[
             TextField(
               controller: _passController,
@@ -493,7 +493,7 @@ class _ImportPageState extends State<ImportPage> {
               style: Theme.of(context).textTheme.bodyText2,
               decoration: InputDecoration(
                 errorMaxLines: 6,
-                hintText: AppLocalizations.of(context).hintPassword,
+                hintText: AppLocalizations.of(context)!.hintPassword,
                 suffixIcon: PasswordVisibilityControl(
                   onVisibilityChange: (bool isPasswordObscured) {
                     setState(() {
@@ -509,12 +509,12 @@ class _ImportPageState extends State<ImportPage> {
               children: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text(AppLocalizations.of(context).importPassCancel),
+                  child: Text(AppLocalizations.of(context)!.importPassCancel),
                 ),
                 SizedBox(width: 12),
                 ElevatedButton(
                   onPressed: () => Navigator.pop(context, _passController.text),
-                  child: Text(AppLocalizations.of(context).importPassOk),
+                  child: Text(AppLocalizations.of(context)!.importPassOk),
                 ),
               ],
             ),
@@ -527,18 +527,18 @@ class _ImportPageState extends State<ImportPage> {
     if (pass == null) return null;
 
     if (pass.isEmpty) {
-      _showError(AppLocalizations.of(context).emptyExportPass);
+      _showError(AppLocalizations.of(context)!.emptyExportPass);
       return null;
     }
 
     try {
-      final String str = await file.readAsString();
+      final String str = await file!.readAsString();
 
-      final decrypted = EncryptionTool().decryptData(pass, str);
+      final decrypted = EncryptionTool().decryptData(pass, str)!;
       return jsonDecode(decrypted);
     } catch (e) {
       Log('import_page]', 'Failed to decrypt file: $e');
-      _showError(AppLocalizations.of(context).importDecryptError);
+      _showError(AppLocalizations.of(context)!.importDecryptError);
       return null;
     }
   }

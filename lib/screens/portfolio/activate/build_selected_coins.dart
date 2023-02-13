@@ -23,15 +23,15 @@ class BuildSelectedCoins extends StatelessWidget {
                   (e) => Padding(
                     padding: EdgeInsets.symmetric(horizontal: 4.0),
                     child: Chip(
-                      key: Key('selected-chip-${e.coin.abbr}'),
+                      key: Key('selected-chip-${e.coin!.abbr}'),
                       backgroundColor: Theme.of(context).toggleableActiveColor,
                       avatar: Image.asset(
-                        getCoinIconPath(e.coin.abbr),
+                        getCoinIconPath(e.coin!.abbr),
                         height: 20,
                         width: 20,
                       ),
                       label: Text(
-                        e.coin.name,
+                        e.coin!.name!,
                         style: Theme.of(context).textTheme.subtitle1,
                       ),
                       deleteIcon: Icon(Icons.cancel),

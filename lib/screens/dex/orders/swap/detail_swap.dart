@@ -8,9 +8,9 @@ import '../../../dex/orders/swap/swap_detail_note.dart';
 import '../../../../utils/utils.dart';
 
 class DetailSwap extends StatefulWidget {
-  const DetailSwap({@required this.swap});
+  const DetailSwap({required this.swap});
 
-  final Swap swap;
+  final Swap? swap;
 
   @override
   _DetailSwapState createState() => _DetailSwapState();
@@ -33,13 +33,13 @@ class _DetailSwapState extends State<DetailSwap> {
             children: [
               Expanded(
                 child: Text(
-                  AppLocalizations.of(context).tradeDetail + ':',
-                  style: Theme.of(context).textTheme.subtitle2.copyWith(
+                  AppLocalizations.of(context)!.tradeDetail + ':',
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
                       color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              _buildMakerTakerBadge(widget.swap.result.type == 'Maker'),
+              _buildMakerTakerBadge(widget.swap!.result!.type == 'Maker'),
             ],
           ),
         ),
@@ -47,26 +47,26 @@ class _DetailSwapState extends State<DetailSwap> {
           padding:
               const EdgeInsets.only(top: 16, left: 24, right: 24, bottom: 4),
           child: Text(
-            AppLocalizations.of(context).requestedTrade + ':',
+            AppLocalizations.of(context)!.requestedTrade + ':',
             style: Theme.of(context)
                 .textTheme
-                .bodyText1
+                .bodyText1!
                 .copyWith(fontWeight: FontWeight.w400),
           ),
         ),
         _buildAmountSwap(),
-        SwapDetailNote(widget.swap.result.uuid),
+        SwapDetailNote(widget.swap!.result!.uuid),
         Padding(
           padding: const EdgeInsets.only(top: 16),
           child: _buildInfo(
-            AppLocalizations.of(context).swapUUID,
-            widget.swap.result.uuid,
+            AppLocalizations.of(context)!.swapUUID,
+            widget.swap!.result!.uuid!,
           ),
         ),
         const SizedBox(
           height: 8,
         ),
-        DetailedSwapSteps(uuid: widget.swap.result.uuid),
+        DetailedSwapSteps(uuid: widget.swap!.result!.uuid),
         const SizedBox(
           height: 32,
         ),
@@ -79,7 +79,7 @@ class _DetailSwapState extends State<DetailSwap> {
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         border: Border.all(
-          color: Theme.of(context).textTheme.caption.color.withAlpha(100),
+          color: Theme.of(context).textTheme.caption!.color!.withAlpha(100),
           style: BorderStyle.solid,
           width: 1,
         ),
@@ -89,8 +89,8 @@ class _DetailSwapState extends State<DetailSwap> {
         padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
         child: Text(
           isMaker
-              ? AppLocalizations.of(context).makerOrder
-              : AppLocalizations.of(context).takerOrder,
+              ? AppLocalizations.of(context)!.makerOrder
+              : AppLocalizations.of(context)!.takerOrder,
           style: Theme.of(context).textTheme.caption,
         ),
       ),
@@ -135,10 +135,10 @@ class _DetailSwapState extends State<DetailSwap> {
   }
 
   Widget _buildAmountSwap() {
-    final myInfo = extractMyInfoFromSwap(widget.swap.result);
-    final myCoin = myInfo['myCoin'];
+    final myInfo = extractMyInfoFromSwap(widget.swap!.result!);
+    final myCoin = myInfo['myCoin']!;
     final myAmount = myInfo['myAmount'];
-    final otherCoin = myInfo['otherCoin'];
+    final otherCoin = myInfo['otherCoin']!;
     final otherAmount = myInfo['otherAmount'];
 
     return Padding(
@@ -176,18 +176,18 @@ class _DetailSwapState extends State<DetailSwap> {
             TableRow(
               children: [
                 Text(
-                  AppLocalizations.of(context).sell.toUpperCase(),
+                  AppLocalizations.of(context)!.sell.toUpperCase(),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1
+                      .bodyText1!
                       .copyWith(fontWeight: FontWeight.w400),
                 ),
                 SizedBox(),
                 Text(
-                  AppLocalizations.of(context).receive.toUpperCase(),
+                  AppLocalizations.of(context)!.receive.toUpperCase(),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1
+                      .bodyText1!
                       .copyWith(fontWeight: FontWeight.w400),
                   textAlign: TextAlign.right,
                 ),
@@ -197,30 +197,30 @@ class _DetailSwapState extends State<DetailSwap> {
         ));
   }
 
-  Widget _buildTextAmount(String coin, String amount,
+  Widget _buildTextAmount(String coin, String? amount,
       {TextAlign textAlign = TextAlign.left}) {
     // Only apply camouflage to swap history,
     // show current active swaps as is
     final bool shouldCamouflage = camoBloc.isCamoActive &&
-        (widget.swap.status == Status.SWAP_SUCCESSFUL ||
-            widget.swap.status == Status.SWAP_FAILED ||
-            widget.swap.status == Status.TIME_OUT);
+        (widget.swap!.status == Status.SWAP_SUCCESSFUL ||
+            widget.swap!.status == Status.SWAP_FAILED ||
+            widget.swap!.status == Status.TIME_OUT);
 
     if (shouldCamouflage) {
-      amount = (double.parse(amount) * camoBloc.camoFraction / 100).toString();
+      amount = (double.parse(amount!) * camoBloc.camoFraction / 100).toString();
     }
 
     return Row(
       children: [
         Expanded(
           child: Text(
-            cutTrailingZeros(double.parse(amount)
-                    .toStringAsFixed(appConfig.tradeFormPrecision)) +
+            cutTrailingZeros(double.parse(amount!)
+                    .toStringAsFixed(appConfig.tradeFormPrecision))! +
                 ' ' +
                 coin,
             style: Theme.of(context)
                 .textTheme
-                .bodyText2
+                .bodyText2!
                 .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
             textAlign: textAlign,
           ),

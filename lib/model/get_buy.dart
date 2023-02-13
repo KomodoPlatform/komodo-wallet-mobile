@@ -26,7 +26,7 @@ class GetBuySell {
   });
 
   factory GetBuySell.fromJson(Map<String, dynamic> json) {
-    final String typeStr =
+    final String? typeStr =
         json['order_type'] != null && json['order_type']['type'] != null
             ? json['order_type']['type']
             : null;
@@ -55,15 +55,15 @@ class GetBuySell {
     );
   }
 
-  String userpass;
+  String? userpass;
   String method;
-  String base;
-  String rel;
-  BuyOrderType orderType;
-  bool baseNota;
-  int baseConfs;
-  bool relNota;
-  int relConfs;
+  String? base;
+  String? rel;
+  BuyOrderType? orderType;
+  bool? baseNota;
+  int? baseConfs;
+  bool? relNota;
+  int? relConfs;
   dynamic price; // numerical String or {'numer': '1', 'denom': '3'}
   dynamic volume; // https://bit.ly/2O2DxWh
 

@@ -12,7 +12,7 @@ import '../../widgets/select_language_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {
-  const AuthenticatePage({Key key}) : super(key: key);
+  const AuthenticatePage({Key? key}) : super(key: key);
 
   @override
   _AuthenticatePageState createState() => _AuthenticatePageState();
@@ -37,7 +37,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
         initialData: walletBloc.wallets,
         stream: walletBloc.outWallets,
         builder: (BuildContext context, AsyncSnapshot<List<Wallet>> snapshot) {
-          return snapshot.data.isNotEmpty
+          return snapshot.data!.isNotEmpty
               ? BuildScreenAuthMultiWallets(
                   wallets: snapshot.data,
                 )
@@ -48,14 +48,14 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
 
 class BoxButton extends StatelessWidget {
   const BoxButton({
-    Key key,
+    Key? key,
     this.text,
     this.assetPath,
-    @required this.onPressed,
+    required this.onPressed,
   }) : super(key: key);
 
-  final String text;
-  final String assetPath;
+  final String? text;
+  final String? assetPath;
   final Function onPressed;
 
   @override
@@ -64,7 +64,7 @@ class BoxButton extends StatelessWidget {
 
     return InkWell(
       borderRadius: borderRadius,
-      onTap: onPressed,
+      onTap: onPressed as void Function()?,
       child: Container(
         decoration: BoxDecoration(
             border: Border.all(
@@ -78,12 +78,12 @@ class BoxButton extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SvgPicture.asset(assetPath, height: 40),
+                SvgPicture.asset(assetPath!, height: 40),
                 const SizedBox(
                   height: 8,
                 ),
                 Text(
-                  text.toUpperCase(),
+                  text!.toUpperCase(),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyText2,
                 )
@@ -97,9 +97,9 @@ class BoxButton extends StatelessWidget {
 }
 
 class BuildScreenAuthMultiWallets extends StatelessWidget {
-  const BuildScreenAuthMultiWallets({Key key, this.wallets}) : super(key: key);
+  const BuildScreenAuthMultiWallets({Key? key, this.wallets}) : super(key: key);
 
-  final List<Wallet> wallets;
+  final List<Wallet>? wallets;
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +132,7 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16),
-          ...wallets.map<Widget>((element) {
+          ...wallets!.map<Widget>((element) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: _buildItemWallet(element, context),
@@ -145,14 +145,14 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
 
   Widget _buildItemWallet(Wallet wallet, BuildContext context) {
     return ListTile(
-      key: Key('logged-out-wallet-' + wallet.name),
+      key: Key('logged-out-wallet-' + wallet.name!),
       contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
       tileColor: Colors.transparent,
       onTap: () => Navigator.push<dynamic>(
         context,
         MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => UnlockWalletPage(
-            textButton: AppLocalizations.of(context).login,
+            textButton: AppLocalizations.of(context)!.login,
             wallet: wallet,
             onSuccess: (String seed, String password) async {
               authBloc.showLock = false;
@@ -168,10 +168,10 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
         radius: 30,
         child: Center(
           child: Text(
-            wallet.name.substring(0, 1),
+            wallet.name!.substring(0, 1),
             style: Theme.of(context)
                 .textTheme
-                .headline6
+                .headline6!
                 .copyWith(color: Theme.of(context).scaffoldBackgroundColor),
           ),
         ),
@@ -180,7 +180,7 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
             : Colors.white.withOpacity(0.6),
       ),
       title: Text(
-        wallet.name,
+        wallet.name!,
         style: Theme.of(context).textTheme.bodyText2,
       ),
       trailing: _buildDeleteButton(wallet, context),
@@ -207,7 +207,7 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
           context,
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => UnlockWalletPage(
-              textButton: AppLocalizations.of(context).unlock,
+              textButton: AppLocalizations.of(context)!.unlock,
               wallet: wallet,
               isSignWithSeedIsEnabled: false,
               onSuccess: (_, String password) async {
@@ -227,7 +227,7 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
 }
 
 class BuildScreenAuth extends StatefulWidget {
-  const BuildScreenAuth({Key key}) : super(key: key);
+  const BuildScreenAuth({Key? key}) : super(key: key);
 
   @override
   _BuildScreenAuthState createState() => _BuildScreenAuthState();
@@ -296,13 +296,13 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
 }
 
 class CreateWalletButton extends StatelessWidget {
-  const CreateWalletButton({Key key}) : super(key: key);
+  const CreateWalletButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BoxButton(
       key: const Key('createWalletButton'),
-      text: AppLocalizations.of(context).createAWallet,
+      text: AppLocalizations.of(context)!.createAWallet,
       assetPath: Theme.of(context).brightness == Brightness.light
           ? 'assets/svg_light/create_wallet.svg'
           : 'assets/svg/create_wallet.svg',
@@ -316,13 +316,13 @@ class CreateWalletButton extends StatelessWidget {
 }
 
 class RestoreButton extends StatelessWidget {
-  const RestoreButton({Key key}) : super(key: key);
+  const RestoreButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BoxButton(
       key: const Key('restoreWallet'),
-      text: AppLocalizations.of(context).restoreWallet,
+      text: AppLocalizations.of(context)!.restoreWallet,
       assetPath: Theme.of(context).brightness == Brightness.light
           ? 'assets/svg_light/lock_off.svg'
           : 'assets/svg/lock_off.svg',

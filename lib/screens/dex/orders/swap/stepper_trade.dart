@@ -6,8 +6,8 @@ import '../../../dex/orders/swap/progress_swap.dart';
 class StepperTrade extends StatefulWidget {
   const StepperTrade({this.swap, this.onStepFinish});
 
-  final Swap swap;
-  final Function onStepFinish;
+  final Swap? swap;
+  final Function? onStepFinish;
 
   @override
   _StepperTradeState createState() => _StepperTradeState();
@@ -16,14 +16,14 @@ class StepperTrade extends StatefulWidget {
 class _StepperTradeState extends State<StepperTrade> {
   @override
   Widget build(BuildContext context) {
-    if (widget.swap.result != null && widget.swap.result.myInfo == null) {
-      widget.swap.status = Status.SWAP_FAILED;
+    if (widget.swap!.result != null && widget.swap!.result!.myInfo == null) {
+      widget.swap!.status = Status.SWAP_FAILED;
     }
 
     return ListView(
       children: <Widget>[
         ProgressSwap(
-            uuid: widget.swap.result.uuid, onFinished: widget.onStepFinish),
+            uuid: widget.swap!.result!.uuid, onFinished: widget.onStepFinish),
         if (widget.swap != null)
           DetailSwap(
             swap: widget.swap,

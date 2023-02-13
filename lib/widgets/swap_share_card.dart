@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import '../model/swap.dart';
 import '../utils/utils.dart';
@@ -6,23 +7,23 @@ import 'package:intl/intl.dart';
 import '../localizations.dart';
 
 class SwapShareCard extends StatelessWidget {
-  const SwapShareCard({Key key, @required this.swap}) : super(key: key);
+  const SwapShareCard({Key? key, required this.swap}) : super(key: key);
 
-  final Swap swap;
+  final Swap? swap;
 
   @override
   Widget build(BuildContext context) {
-    final startedEvent = swap.result.events
-        .firstWhere((e) => e.event.type == 'Started', orElse: () => null);
-    final finishedEvent = swap.result.events
-        .firstWhere((e) => e.event.type == 'Finished', orElse: () => null);
+    final startedEvent = swap!.result!.events!
+        .firstWhereOrNull((e) => e.event!.type == 'Started');
+    final finishedEvent = swap!.result!.events!
+        .firstWhereOrNull((e) => e.event!.type == 'Finished');
     int durationMinutes = 0;
     String dateFormatted = '';
     if (finishedEvent != null && startedEvent != null) {
       final startTime = DateTime.fromMillisecondsSinceEpoch(
-          startedEvent.event.data.startedAt * 1000);
+          startedEvent.event!.data!.startedAt! * 1000);
       final finalTime =
-          DateTime.fromMillisecondsSinceEpoch(finishedEvent.timestamp);
+          DateTime.fromMillisecondsSinceEpoch(finishedEvent.timestamp!);
 
       final DateFormat formatter = DateFormat.yMMMd();
 
@@ -32,10 +33,10 @@ class SwapShareCard extends StatelessWidget {
       dateFormatted = formatter.format(finalTime);
     }
 
-    final myInfo = extractMyInfoFromSwap(swap.result);
-    final myCoin = myInfo['myCoin'];
+    final myInfo = extractMyInfoFromSwap(swap!.result!);
+    final myCoin = myInfo['myCoin']!;
     final myAmount = myInfo['myAmount'];
-    final otherCoin = myInfo['otherCoin'];
+    final otherCoin = myInfo['otherCoin']!;
     final otherAmount = myInfo['otherAmount'];
     return DefaultTextStyle.merge(
       style: TextStyle(color: Colors.white),
@@ -64,7 +65,7 @@ class SwapShareCard extends StatelessWidget {
                               height: 24,
                             ),
                             Text(
-                              AppLocalizations.of(context).poweredOnKmd,
+                              AppLocalizations.of(context)!.poweredOnKmd,
                               style: TextStyle(fontSize: 4),
                             ),
                           ],
@@ -96,7 +97,7 @@ class SwapShareCard extends StatelessWidget {
                                       ),
                                       Text(
                                         cutTrailingZeros(
-                                                formatPrice(myAmount, 4)) +
+                                                formatPrice(myAmount, 4))! +
                                             ' ' +
                                             myCoin,
                                         style: TextStyle(fontSize: 6),
@@ -123,7 +124,7 @@ class SwapShareCard extends StatelessWidget {
                                       ),
                                       Text(
                                         cutTrailingZeros(
-                                                formatPrice(otherAmount, 4)) +
+                                                formatPrice(otherAmount, 4))! +
                                             ' ' +
                                             otherCoin,
                                         style: const TextStyle(fontSize: 6),
@@ -149,7 +150,7 @@ class SwapShareCard extends StatelessWidget {
                               children: [
                                 Text(
                                   toInitialUpper(
-                                      AppLocalizations.of(context).details),
+                                      AppLocalizations.of(context)!.details),
                                   style: TextStyle(
                                     color: Colors.blue,
                                     fontSize: 6,
@@ -169,7 +170,7 @@ class SwapShareCard extends StatelessWidget {
                             TableRow(
                               children: [
                                 Text(
-                                  AppLocalizations.of(context).date,
+                                  AppLocalizations.of(context)!.date,
                                   style: TextStyle(fontSize: 6),
                                 ),
                                 const SizedBox(),
@@ -183,12 +184,12 @@ class SwapShareCard extends StatelessWidget {
                             TableRow(
                               children: [
                                 Text(
-                                  AppLocalizations.of(context).duration,
+                                  AppLocalizations.of(context)!.duration,
                                   style: TextStyle(fontSize: 6),
                                 ),
                                 const SizedBox(),
                                 Text(
-                                  '$durationMinutes ${AppLocalizations.of(context).longMinutes}',
+                                  '$durationMinutes ${AppLocalizations.of(context)!.longMinutes}',
                                   style: const TextStyle(fontSize: 6),
                                   textAlign: TextAlign.left,
                                 ),
@@ -202,7 +203,7 @@ class SwapShareCard extends StatelessWidget {
                                 ),
                                 const SizedBox(),
                                 Text(
-                                  swap.result.myOrderUuid,
+                                  swap!.result!.myOrderUuid!,
                                   style: const TextStyle(fontSize: 4),
                                   textAlign: TextAlign.left,
                                 ),

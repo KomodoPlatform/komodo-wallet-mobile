@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 Future<void> enterPinCode(
   WidgetTester tester, {
-  @required String pin,
+  required String pin,
 }) async {
   for (int i = 0; i < pin.length; i++) {
     final Finder digit = find.text(pin[i]);

@@ -10,7 +10,7 @@ import '../../localizations.dart';
 class CoinsPriceList extends StatefulWidget {
   const CoinsPriceList({this.onItemTap});
 
-  final Function(Coin) onItemTap;
+  final Function(Coin?)? onItemTap;
 
   @override
   _CoinsPriceListState createState() => _CoinsPriceListState();
@@ -32,13 +32,13 @@ class _CoinsPriceListState extends State<CoinsPriceList> {
       stream: coinsBloc.outCoins,
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
-        if (snapshot.data != null && snapshot.data.isNotEmpty) {
+        if (snapshot.data != null && snapshot.data!.isNotEmpty) {
           final List<CoinBalance> _sortedList =
-              coinsBloc.sortCoinsWithoutTestCoins(snapshot.data);
+              coinsBloc.sortCoinsWithoutTestCoins(snapshot.data!);
           return _sortedList.isEmpty
               ? Center(
                   child: Text(
-                    AppLocalizations.of(context).noCoinFound,
+                    AppLocalizations.of(context)!.noCoinFound,
                     style: TextStyle(fontSize: 18),
                   ),
                 )
@@ -62,10 +62,10 @@ class _CoinsPriceListState extends State<CoinsPriceList> {
                       itemBuilder: (BuildContext context, int index) {
                         return BuildCoinPriceListItem(
                           key: Key('coin-' +
-                              _sortedList[index].coin.abbr.toUpperCase()),
+                              _sortedList[index].coin!.abbr!.toUpperCase()),
                           coinBalance: _sortedList[index],
                           onTap: () {
-                            widget.onItemTap(_sortedList[index].coin);
+                            widget.onItemTap!(_sortedList[index].coin);
                           },
                         );
                       }),

@@ -21,18 +21,18 @@ enum SwapStepStatus {
 class DetailedSwapSteps extends StatefulWidget {
   const DetailedSwapSteps({this.uuid});
 
-  final String uuid;
+  final String? uuid;
 
   @override
   _DetailedSwapStepsState createState() => _DetailedSwapStepsState();
 }
 
 class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
-  Swap swap;
-  Timer timer;
+  late Swap swap;
+  Timer? timer;
   bool isInProgress = true;
-  Duration estimatedTotalSpeed;
-  Duration actualTotalSpeed;
+  Duration? estimatedTotalSpeed;
+  Duration? actualTotalSpeed;
   bool _openSpoiler = false;
 
   @override
@@ -40,7 +40,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     super.initState();
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() {});
-      if (!isInProgress) timer.cancel();
+      if (!isInProgress) timer!.cancel();
     });
   }
 
@@ -65,11 +65,11 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     SwapStepStatus _getStatus(int index) {
       if (index == swap.step) return SwapStepStatus.inProgress;
       if (index < swap.step) {
-        if (index + 1 > swap.result.successEvents.length) {
+        if (index + 1 > swap.result!.successEvents!.length) {
           return SwapStepStatus.failed;
         }
-        if (swap.result.events[index].event.type ==
-            swap.result.successEvents[index]) {
+        if (swap.result!.events![index].event!.type ==
+            swap.result!.successEvents![index]) {
           return SwapStepStatus.success;
         } else {
           return SwapStepStatus.failed;
@@ -78,52 +78,52 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       return SwapStepStatus.pending;
     }
 
-    Duration _getEstimatedSpeed(int index) {
+    Duration? _getEstimatedSpeed(int index) {
       if (index == 0) return const Duration(seconds: 30);
 
-      final StepSpeed stepSpeed = _swapProvider.stepSpeed(
+      final StepSpeed? stepSpeed = _swapProvider.stepSpeed(
         widget.uuid,
-        swap.result.successEvents[index - 1],
-        swap.result.successEvents[index],
+        swap.result!.successEvents![index - 1],
+        swap.result!.successEvents![index],
       );
-      return stepSpeed != null ? Duration(milliseconds: stepSpeed.speed) : null;
+      return stepSpeed != null ? Duration(milliseconds: stepSpeed.speed!) : null;
     }
 
-    Duration _getEstimatedDeviation(int index) {
+    Duration? _getEstimatedDeviation(int index) {
       if (index == 0) return null;
 
-      final StepSpeed stepSpeed = _swapProvider.stepSpeed(
+      final StepSpeed? stepSpeed = _swapProvider.stepSpeed(
         widget.uuid,
-        swap.result.successEvents[index - 1],
-        swap.result.successEvents[index],
+        swap.result!.successEvents![index - 1],
+        swap.result!.successEvents![index],
       );
       return stepSpeed != null
-          ? Duration(milliseconds: stepSpeed.deviation)
+          ? Duration(milliseconds: stepSpeed.deviation!)
           : null;
     }
 
-    Duration _getActualSpeed(int index) {
+    Duration? _getActualSpeed(int index) {
       if (index == 0 && swap.result == null) return null;
       if (index > swap.step) return null;
 
-      int fromTimestamp;
+      int? fromTimestamp;
       if (index == 0) {
         // yurii: for some reason swap.result.myInfo.startedAt
         // returns seconds since epoch instead of milliseconds
-        fromTimestamp = extractStartedAtFromSwap(swap.result) * 1000;
+        fromTimestamp = extractStartedAtFromSwap(swap.result!)! * 1000;
       } else {
-        fromTimestamp = swap.result.events[index - 1].timestamp;
+        fromTimestamp = swap.result!.events![index - 1].timestamp;
       }
       switch (_getStatus(index)) {
         case SwapStepStatus.inProgress:
           return Duration(
               milliseconds:
-                  DateTime.now().millisecondsSinceEpoch - fromTimestamp);
+                  DateTime.now().millisecondsSinceEpoch - fromTimestamp!);
           break;
         case SwapStepStatus.failed:
         case SwapStepStatus.success:
-          final int toTimeStamp = swap.result.events[index].timestamp;
-          return Duration(milliseconds: toTimeStamp - fromTimestamp);
+          final int toTimeStamp = swap.result!.events![index].timestamp!;
+          return Duration(milliseconds: toTimeStamp - fromTimestamp!);
           break;
         default:
           return null;
@@ -131,23 +131,23 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     }
 
     String _getTxHash(Swap swap, int i) {
-      if (i > swap.result.events.length - 1) return '';
-      if (i > swap.result.successEvents.length - 1) return '';
+      if (i > swap.result!.events!.length - 1) return '';
+      if (i > swap.result!.successEvents!.length - 1) return '';
 
-      if (swap.result.successEvents[i] != 'TakerPaymentSpent') {
-        return swap.result.events[i].event.data?.txHash ?? '';
+      if (swap.result!.successEvents![i] != 'TakerPaymentSpent') {
+        return swap.result!.events![i].event!.data?.txHash ?? '';
       } else {
         if (swap.isTaker) {
-          return swap.result.events[i].event.data?.transaction?.txHash ?? '';
+          return swap.result!.events![i].event!.data?.transaction?.txHash ?? '';
         } else {
-          return swap.result.events[i].event.data?.txHash ?? '';
+          return swap.result!.events![i].event!.data?.txHash ?? '';
         }
       }
     }
 
     Widget _buildFirstStep() {
       return DetailedSwapStep(
-        title: AppLocalizations.of(context).swapStarted,
+        title: AppLocalizations.of(context)!.swapStarted,
         status: _getStatus(0),
         estimatedSpeed: _getEstimatedSpeed(0),
         estimatedDeviation: _getEstimatedDeviation(0),
@@ -164,13 +164,13 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
 
       final List<Widget> list = [];
 
-      int failedOnStep;
-      for (int i = 1; i < swap.result.successEvents.length; i++) {
+      int? failedOnStep;
+      for (int i = 1; i < swap.result!.successEvents!.length; i++) {
         final SwapStepStatus status = _getStatus(i);
         if (failedOnStep != null) break;
         list.add(DetailedSwapStep(
-          title: swap.result.successEvents[i],
-          txHash: swap.result.successEvents[i].toLowerCase().contains('taker')
+          title: swap.result!.successEvents![i],
+          txHash: swap.result!.successEvents![i].toLowerCase().contains('taker')
               ? swap.takerCoin == null
                   ? null
                   : swap.doWeNeed0xPrefixForTaker
@@ -182,7 +182,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                       ? '0x' + _getTxHash(swap, i)
                       : _getTxHash(swap, i),
           explorerUrl:
-              swap.result.successEvents[i].toLowerCase().contains('taker')
+              swap.result!.successEvents![i].toLowerCase().contains('taker')
                   ? swap.takerExplorerUrl
                   : swap.makerExplorerUrl,
           status: status,
@@ -199,8 +199,8 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       }
 
       if (failedOnStep != null) {
-        for (int e = failedOnStep; e < swap.result.events.length; e++) {
-          final String errorEventType = swap.result.events[e].event.type;
+        for (int e = failedOnStep; e < swap.result!.events!.length; e++) {
+          final String errorEventType = swap.result!.events![e].event!.type!;
           final SwapStepStatus status =
               errorEventType.toLowerCase().contains('failed')
                   ? SwapStepStatus.failed
@@ -253,17 +253,17 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     void _updateTotals() {
       if (swap.step == 0) return;
 
-      Duration estimatedSumSpeed = const Duration(seconds: 0);
+      Duration? estimatedSumSpeed = const Duration(seconds: 0);
       Duration actualSumSpeed = const Duration(seconds: 0);
 
-      for (var i = 0; i < swap.result.successEvents.length; i++) {
+      for (var i = 0; i < swap.result!.successEvents!.length; i++) {
         final SwapStepStatus status = _getStatus(i);
 
         final Duration actualStepSpeed =
             _getActualSpeed(i) ?? const Duration(seconds: 0);
         actualSumSpeed = durationSum([actualSumSpeed, actualStepSpeed]);
 
-        Duration estimatedStepSpeed = _getEstimatedSpeed(i);
+        Duration? estimatedStepSpeed = _getEstimatedSpeed(i);
         if (estimatedStepSpeed == null) {
           // If one of the steps does not have estimated speed data
           // we can not calculate total estimated swap speed
@@ -303,7 +303,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(AppLocalizations.of(context).swapTotal + ':'),
+                  Text(AppLocalizations.of(context)!.swapTotal + ':'),
                   if (estimatedTotalSpeed != null)
                     ProgressStep(
                       actualTotalSpeed: actualTotalSpeed,
@@ -313,7 +313,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                     ),
                   Row(
                     children: <Widget>[
-                      Text(AppLocalizations.of(context).swapCurrent + ': ',
+                      Text(AppLocalizations.of(context)!.swapCurrent + ': ',
                           style: TextStyle(
                             fontSize: 13,
                             color: Theme.of(context).colorScheme.secondary,
@@ -333,7 +333,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                                     )),
                                 const SizedBox(width: 4),
                                 Text(
-                                    AppLocalizations.of(context).swapEstimated +
+                                    AppLocalizations.of(context)!.swapEstimated +
                                         ': ',
                                     style: TextStyle(
                                       fontSize: 13,
@@ -366,7 +366,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            AppLocalizations.of(context).swapProgress + ':',
+            AppLocalizations.of(context)!.swapProgress + ':',
             style: Theme.of(context).textTheme.bodyText1,
           ),
           const SizedBox(height: 8),
@@ -386,11 +386,11 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                 children: [
                   Text(
                     _openSpoiler
-                        ? AppLocalizations.of(context).closeMessage
-                        : AppLocalizations.of(context).openMessage,
+                        ? AppLocalizations.of(context)!.closeMessage
+                        : AppLocalizations.of(context)!.openMessage,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyText1!
                         .copyWith(color: Colors.red),
                   ),
                   SizedBox(height: 6),

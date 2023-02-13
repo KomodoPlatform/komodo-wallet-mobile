@@ -5,9 +5,9 @@ import '../../widgets/password_visibility_control.dart';
 import '../../widgets/primary_button.dart';
 
 class CreatePasswordPage extends StatefulWidget {
-  const CreatePasswordPage({Key key, @required this.seed}) : super(key: key);
+  const CreatePasswordPage({Key? key, required this.seed}) : super(key: key);
 
-  final String seed;
+  final String? seed;
 
   @override
   _CreatePasswordPageState createState() => _CreatePasswordPageState();
@@ -36,7 +36,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     final String text2 = controller2.text;
     if (text.isEmpty ||
         text2.isEmpty ||
-        !_formKey.currentState.validate() ||
+        !_formKey.currentState!.validate() ||
         controller1.text != controller2.text) {
       setState(() {
         isValidPassword = false;
@@ -49,9 +49,9 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   }
 
   bool _validateInputs() {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
 //    If all data are correct then save data to out variables
-      _formKey.currentState.save();
+      _formKey.currentState!.save();
       return true;
     } else {
 //    If all data are not valid then start auto validation.
@@ -77,7 +77,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
           children: <Widget>[
             Text(
-              AppLocalizations.of(context).titleCreatePassword,
+              AppLocalizations.of(context)!.titleCreatePassword,
               style: Theme.of(context).textTheme.headline6,
             ),
             const SizedBox(height: 24),
@@ -100,17 +100,17 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 selectAll: false,
               ),
               obscureText: isObscured,
-              validator: (String arg) {
+              validator: (String? arg) {
                 final RegExp exp =
                     RegExp(r'^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\W)).{12,}$');
-                return !arg.contains(exp)
-                    ? AppLocalizations.of(context).passwordRequirement
+                return !arg!.contains(exp)
+                    ? AppLocalizations.of(context)!.passwordRequirement
                     : null;
               },
               style: Theme.of(context).textTheme.bodyText2,
               decoration: InputDecoration(
                 errorMaxLines: 6,
-                hintText: AppLocalizations.of(context).hintPassword,
+                hintText: AppLocalizations.of(context)!.hintPassword,
                 suffixIcon: PasswordVisibilityControl(
                   onVisibilityChange: (bool isPasswordObscured) {
                     setState(() {
@@ -142,7 +142,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 },
                 style: Theme.of(context).textTheme.bodyText2,
                 decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context).hintConfirmPassword,
+                  hintText: AppLocalizations.of(context)!.hintConfirmPassword,
                 ),
               );
             }),
@@ -152,7 +152,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 children: <Widget>[
                   PrimaryButton(
                     key: const Key('confirm-password'),
-                    text: AppLocalizations.of(context).confirmPassword,
+                    text: AppLocalizations.of(context)!.confirmPassword,
                     onPressed: isValidPassword
                         ? () => _checkValidation(context)
                         : null,
@@ -172,7 +172,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
       if (controller1.text == controller2.text) {
         _nextPage();
       } else {
-        _showError(context, AppLocalizations.of(context).wrongPassword);
+        _showError(context, AppLocalizations.of(context)!.wrongPassword);
       }
     }
   }

@@ -15,7 +15,7 @@ import '../../../../widgets/sound_volume_button.dart';
 class MakerOrderDetailsPage extends StatefulWidget {
   const MakerOrderDetailsPage(this.orderId);
 
-  final String orderId;
+  final String? orderId;
 
   @override
   _MakerOrderDetailsPageState createState() => _MakerOrderDetailsPageState();
@@ -28,7 +28,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
       context: context,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).makerDetailsTitle),
+          title: Text(AppLocalizations.of(context)!.makerDetailsTitle),
           actions: const <Widget>[
             SoundVolumeButton(),
           ],
@@ -37,14 +37,14 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
             initialData: ordersBloc.orderSwaps,
             stream: ordersBloc.outOrderSwaps,
             builder: (context, snapshot) {
-              Order order;
+              Order? order;
               try {
-                order = snapshot.data.firstWhere((dynamic item) =>
+                order = snapshot.data!.firstWhere((dynamic item) =>
                     item is Order && item.uuid == widget.orderId);
               } catch (_) {}
 
               if (order == null) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
                   if (mounted) Navigator.of(context).pop();
                 });
                 return SizedBox();
@@ -63,7 +63,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
                           child: MakerOrderAmtAndPrice(order),
                         ),
                       ),
-                      if (order.cancelable) _buildCancelButton(order),
+                      if (order.cancelable!) _buildCancelButton(order),
                       _buildId(order),
                       _buildDate(order),
                       _buildNote(order),
@@ -84,7 +84,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            AppLocalizations.of(context).noteTitle + ':',
+            AppLocalizations.of(context)!.noteTitle + ':',
             style: Theme.of(context).textTheme.bodyText1,
           ),
           MakerOrderNote(order),
@@ -95,7 +95,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
 
   Widget _buildHistory(Order order) {
     final bool hasSwaps =
-        order.startedSwaps != null && order.startedSwaps.isNotEmpty;
+        order.startedSwaps != null && order.startedSwaps!.isNotEmpty;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
@@ -115,7 +115,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
                   ? Container(
                       padding: const EdgeInsets.only(left: 4),
                       child: Text(
-                          AppLocalizations.of(context).makerDetailsNoSwaps))
+                          AppLocalizations.of(context)!.makerDetailsNoSwaps))
                   : _buildSwaps(order)),
         ],
       ),
@@ -128,7 +128,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
       children: <Widget>[
         Container(
             padding: const EdgeInsets.fromLTRB(4, 4, 0, 8),
-            child: Text(AppLocalizations.of(context).makerDetailsSwaps + ':')),
+            child: Text(AppLocalizations.of(context)!.makerDetailsSwaps + ':')),
         MakerOrderSwaps(order),
       ],
     );
@@ -143,7 +143,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
           Container(
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
             child: Text(
-              AppLocalizations.of(context).makerDetailsCreated + ':',
+              AppLocalizations.of(context)!.makerDetailsCreated + ':',
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
@@ -151,7 +151,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
               padding: const EdgeInsets.all(8),
               child: Text(DateFormat('dd MMM yyyy HH:mm').format(
                   DateTime.fromMillisecondsSinceEpoch(
-                      order.createdAt * 1000)))),
+                      order.createdAt! * 1000)))),
         ],
       ),
     );
@@ -166,7 +166,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
           Container(
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
             child: Text(
-              AppLocalizations.of(context).makerDetailsId + ':',
+              AppLocalizations.of(context)!.makerDetailsId + ':',
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
@@ -175,7 +175,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
               onTap: () => copyToClipBoard(context, order.uuid),
               child: Container(
                 padding: const EdgeInsets.all(8),
-                child: Text(order.uuid),
+                child: Text(order.uuid!),
               ),
             );
           }),
@@ -205,7 +205,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(AppLocalizations.of(context)
+                Text(AppLocalizations.of(context)!
                     .makerDetailsCancel
                     .toUpperCase()),
               ],
@@ -217,7 +217,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
   }
 }
 
-void showCancelConfirmation(BuildContext mContext, String uuid) {
+void showCancelConfirmation(BuildContext mContext, String? uuid) {
   showCancelOrderDialog(
     context: mContext,
     key: const Key('settings-cancel-order-yes'),

@@ -26,12 +26,12 @@ import 'rewards_page.dart';
 
 class ItemCoin extends StatefulWidget {
   const ItemCoin({
-    Key key,
-    @required this.mContext,
+    Key? key,
+    required this.mContext,
     this.coinBalance,
   }) : super(key: key);
 
-  final CoinBalance coinBalance;
+  final CoinBalance? coinBalance;
   final BuildContext mContext;
 
   @override
@@ -40,14 +40,14 @@ class ItemCoin extends StatefulWidget {
 
 class _ItemCoinState extends State<ItemCoin>
     with SingleTickerProviderStateMixin {
-  RewardsProvider rewardsProvider;
+  RewardsProvider? rewardsProvider;
 
   @override
   Widget build(BuildContext context) {
     final CexProvider cexProvider = Provider.of<CexProvider>(context);
     rewardsProvider ??= Provider.of<RewardsProvider>(context);
-    final Coin coin = widget.coinBalance.coin;
-    final Balance balance = widget.coinBalance.balance;
+    final Coin coin = widget.coinBalance!.coin!;
+    final Balance balance = widget.coinBalance!.balance!;
     final NumberFormat f = NumberFormat('###,##0.########');
     final List<Widget> actions = <Widget>[];
     if (double.parse(balance.getBalance()) > 0) {
@@ -56,7 +56,7 @@ class _ItemCoinState extends State<ItemCoin>
           '${coin.abbr} balance: ${balance.balance}'
               '; locked_by_swaps: ${balance.lockedBySwaps}');
       actions.add(SlidableAction(
-        label: AppLocalizations.of(context).send,
+        label: AppLocalizations.of(context)!.send,
         backgroundColor: Colors.white,
         icon: Icons.arrow_upward,
         onPressed: (context) async {
@@ -73,7 +73,7 @@ class _ItemCoinState extends State<ItemCoin>
       ));
     }
     actions.add(SlidableAction(
-      label: AppLocalizations.of(context).receive,
+      label: AppLocalizations.of(context)!.receive,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       icon: Icons.arrow_downward,
       onPressed: (mContext) {
@@ -82,7 +82,7 @@ class _ItemCoinState extends State<ItemCoin>
     ));
     if (!coin.walletOnly && double.parse(balance.getBalance()) > 0) {
       actions.add(SlidableAction(
-        label: AppLocalizations.of(context).swap.toUpperCase(),
+        label: AppLocalizations.of(context)!.swap.toUpperCase(),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         icon: Icons.swap_vert,
         onPressed: (context) {
@@ -114,11 +114,11 @@ class _ItemCoinState extends State<ItemCoin>
           children: [
             SlidableAction(
               key: Key('disable-coin'),
-              label: AppLocalizations.of(context).remove.toUpperCase(),
+              label: AppLocalizations.of(context)!.remove.toUpperCase(),
               backgroundColor: Theme.of(context).errorColor,
               icon: Icons.delete,
               onPressed: (context) async {
-                if (coin.isDefault) {
+                if (coin.isDefault!) {
                   await showCantRemoveDefaultCoin(context, coin);
                 } else {
                   await showConfirmationRemoveCoin(context, coin);
@@ -130,7 +130,7 @@ class _ItemCoinState extends State<ItemCoin>
         child: Builder(builder: (BuildContext context) {
           return InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
-            onLongPress: () => Slidable.of(context).openStartActionPane(),
+            onLongPress: () => Slidable.of(context)!.openStartActionPane(),
             onTap: () async {
               //if (coin.suspended) {
               //showSuspendedDilog(context, coin: coin);
@@ -156,7 +156,7 @@ class _ItemCoinState extends State<ItemCoin>
                 children: <Widget>[
                   Container(
                     height: 128,
-                    color: Color(int.parse(coin.colorCoin)),
+                    color: Color(int.parse(coin.colorCoin!)),
                     width: 8,
                   ),
                   const SizedBox(width: 14),
@@ -184,7 +184,7 @@ class _ItemCoinState extends State<ItemCoin>
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          coin.name.toUpperCase(),
+                          coin.name!.toUpperCase(),
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
@@ -206,7 +206,7 @@ class _ItemCoinState extends State<ItemCoin>
                                   AsyncSnapshot<bool> snapshot) {
                                 String amount = f
                                     .format(double.parse(balance.getBalance()));
-                                if (snapshot.hasData && !snapshot.data)
+                                if (snapshot.hasData && !snapshot.data!)
                                   amount = '**.**';
                                 return AutoSizeText(
                                   '$amount ${coin.abbr}',
@@ -221,16 +221,16 @@ class _ItemCoinState extends State<ItemCoin>
                               builder: (BuildContext context,
                                   AsyncSnapshot<bool> snapshot) {
                                 bool hidden = false;
-                                if (snapshot.hasData && !snapshot.data)
+                                if (snapshot.hasData && !snapshot.data!)
                                   hidden = true;
                                 return Text(
                                   cexProvider.convert(
-                                    widget.coinBalance.balanceUSD,
+                                    widget.coinBalance!.balanceUSD,
                                     hidden: hidden,
-                                  ),
+                                  )!,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText1
+                                      .bodyText1!
                                       .copyWith(
                                         color: Colors.grey,
                                       ),
@@ -260,17 +260,17 @@ class _ItemCoinState extends State<ItemCoin>
   }
 
   Widget _buildClaimButton() {
-    final bool needClaimButton = widget.coinBalance.coin.abbr == 'KMD' &&
-        double.parse(widget.coinBalance.balance.getBalance()) >= 10;
+    final bool needClaimButton = widget.coinBalance!.coin!.abbr == 'KMD' &&
+        double.parse(widget.coinBalance!.balance!.getBalance()) >= 10;
 
     if (!needClaimButton) return SizedBox();
 
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: OutlinedButton(
-        onPressed: !widget.coinBalance.coin.suspended
+        onPressed: !widget.coinBalance!.coin!.suspended
             ? () async {
-                rewardsProvider.update();
+                rewardsProvider!.update();
                 Navigator.push<dynamic>(
                   context,
                   MaterialPageRoute<dynamic>(
@@ -281,7 +281,7 @@ class _ItemCoinState extends State<ItemCoin>
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
           textStyle:
-              Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
+              Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12),
           side: BorderSide(color: Theme.of(context).colorScheme.secondary),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
@@ -290,7 +290,7 @@ class _ItemCoinState extends State<ItemCoin>
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            if (!widget.coinBalance.coin.suspended && rewardsProvider.needClaim)
+            if (!widget.coinBalance!.coin!.suspended && rewardsProvider!.needClaim)
               Container(
                 padding: const EdgeInsets.only(right: 4),
                 child: Stack(
@@ -303,7 +303,7 @@ class _ItemCoinState extends State<ItemCoin>
                   ],
                 ),
               ),
-            Text(AppLocalizations.of(context).rewardsButton.toUpperCase())
+            Text(AppLocalizations.of(context)!.rewardsButton.toUpperCase())
           ],
         ),
       ),
@@ -311,16 +311,16 @@ class _ItemCoinState extends State<ItemCoin>
   }
 
   Widget _buildFaucetButton() {
-    return appConfig.defaultTestCoins.contains(widget.coinBalance.coin.abbr)
+    return appConfig.defaultTestCoins.contains(widget.coinBalance!.coin!.abbr)
         ? Padding(
             padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
             child: OutlinedButton(
-              onPressed: !widget.coinBalance.coin.suspended
+              onPressed: !widget.coinBalance!.coin!.suspended
                   ? () async {
                       showFaucetDialog(
                           context: context,
-                          coin: widget.coinBalance.coin.abbr,
-                          address: widget.coinBalance.balance.address);
+                          coin: widget.coinBalance!.coin!.abbr,
+                          address: widget.coinBalance!.balance!.address);
                     }
                   : null,
               style: OutlinedButton.styleFrom(
@@ -328,7 +328,7 @@ class _ItemCoinState extends State<ItemCoin>
                     const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
                 textStyle: Theme.of(context)
                     .textTheme
-                    .bodyText2
+                    .bodyText2!
                     .copyWith(fontSize: 12),
                 side:
                     BorderSide(color: Theme.of(context).colorScheme.secondary),
@@ -336,7 +336,7 @@ class _ItemCoinState extends State<ItemCoin>
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              child: Text(AppLocalizations.of(context).faucetName),
+              child: Text(AppLocalizations.of(context)!.faucetName),
             ),
           )
         : SizedBox();
@@ -350,13 +350,13 @@ class _ItemCoinState extends State<ItemCoin>
   }
 
   Widget _buildWalletOnly() {
-    if (!widget.coinBalance.coin.walletOnly) return SizedBox();
+    if (!widget.coinBalance!.coin!.walletOnly) return SizedBox();
 
     return Padding(
       padding: EdgeInsets.only(top: 8, left: 4),
       child: InkWell(
           onTap: () {
-            ScaffoldMessengerState scaffoldMessenger;
+            ScaffoldMessengerState? scaffoldMessenger;
             try {
               scaffoldMessenger = ScaffoldMessenger.of(context);
             } catch (_) {}
@@ -364,7 +364,7 @@ class _ItemCoinState extends State<ItemCoin>
             if (scaffoldMessenger != null) {
               scaffoldMessenger.showSnackBar(SnackBar(
                 duration: Duration(seconds: 2),
-                content: Text(AppLocalizations.of(context).dexIsNotAvailable),
+                content: Text(AppLocalizations.of(context)!.dexIsNotAvailable),
               ));
             }
           },
@@ -375,10 +375,10 @@ class _ItemCoinState extends State<ItemCoin>
             ),
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
             child: Text(
-              AppLocalizations.of(context).walletOnly.toUpperCase(),
+              AppLocalizations.of(context)!.walletOnly.toUpperCase(),
               style: Theme.of(context)
                   .textTheme
-                  .caption
+                  .caption!
                   .copyWith(fontFamily: 'RobotoCondensed'),
             ),
           )),

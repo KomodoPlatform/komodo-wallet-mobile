@@ -20,18 +20,18 @@ class RewardsPage extends StatefulWidget {
 }
 
 class _RewardsPageState extends State<RewardsPage> {
-  RewardsProvider rewardsProvider;
+  late RewardsProvider rewardsProvider;
 
   @override
   Widget build(BuildContext context) {
     rewardsProvider = Provider.of<RewardsProvider>(context);
-    final List<RewardsItem> rewards = rewardsProvider.rewards;
+    final List<RewardsItem>? rewards = rewardsProvider.rewards;
 
     return LockScreen(
       context: context,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).rewardsTitle),
+          title: Text(AppLocalizations.of(context)!.rewardsTitle),
         ),
         body: rewardsProvider.errorMessage != null
             ? Center(child: _buildErrorMessage())
@@ -73,7 +73,7 @@ class _RewardsPageState extends State<RewardsPage> {
       alignment: const Alignment(0, 0),
       height: 36,
       child: Text(
-        rewardsProvider.errorMessage,
+        rewardsProvider.errorMessage!,
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.pink),
       ),
@@ -91,7 +91,7 @@ class _RewardsPageState extends State<RewardsPage> {
           children: <Widget>[
             Flexible(
               child: Text(
-                AppLocalizations.of(context).rewardsReadMore,
+                AppLocalizations.of(context)!.rewardsReadMore,
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.blue,
@@ -125,7 +125,7 @@ class _RewardsPageState extends State<RewardsPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                text: AppLocalizations.of(context).rewardsCancel),
+                text: AppLocalizations.of(context)!.rewardsCancel),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -137,7 +137,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   : () {
                       rewardsProvider.receive();
                     },
-              text: AppLocalizations.of(context).rewardsReceive,
+              text: AppLocalizations.of(context)!.rewardsReceive,
               backgroundColor: const Color.fromARGB(255, 1, 102, 129),
             ),
           )),
@@ -162,7 +162,7 @@ class _RewardsPageState extends State<RewardsPage> {
               ? Container(
                   padding: const EdgeInsets.only(top: 10),
                   child: Text(
-                    rewardsProvider.successMessage,
+                    rewardsProvider.successMessage!,
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.green),
                   ),
@@ -180,7 +180,7 @@ class _RewardsPageState extends State<RewardsPage> {
                         Builder(builder: (context) {
                           final cexProvider =
                               Provider.of<CexProvider>(context, listen: false);
-                          final double price = cexProvider.getUsdPrice('KMD');
+                          final double price = cexProvider.getUsdPrice('KMD')!;
 
                           final amountUsd = total * price;
                           return Row(
@@ -196,10 +196,10 @@ class _RewardsPageState extends State<RewardsPage> {
                               ),
                               const SizedBox(width: 2),
                               Text(
-                                cexProvider.convert(amountUsd),
+                                cexProvider.convert(amountUsd)!,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle2
+                                    .subtitle2!
                                     .copyWith(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w100,
@@ -220,7 +220,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   : Container(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        AppLocalizations.of(context).noRewards,
+                        AppLocalizations.of(context)!.noRewards,
                       ),
                     ),
           _buildErrorMessage(),
@@ -231,8 +231,8 @@ class _RewardsPageState extends State<RewardsPage> {
 
   Widget _buildTable() {
     final List<TableRow> rows = [];
-    for (int i = 0; i < rewardsProvider.rewards.length; i++) {
-      final RewardsItem item = rewardsProvider.rewards[i];
+    for (int i = 0; i < rewardsProvider.rewards!.length; i++) {
+      final RewardsItem item = rewardsProvider.rewards![i];
       rows.add(_buildTableRow(i, item));
     }
 
@@ -249,7 +249,7 @@ class _RewardsPageState extends State<RewardsPage> {
             bottom: 4,
           ),
           child: Text(
-            AppLocalizations.of(context).rewardsTableTitle,
+            AppLocalizations.of(context)!.rewardsTableTitle,
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
@@ -274,7 +274,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 12, right: 8, top: 8, bottom: 8),
                   child: Text(
-                    AppLocalizations.of(context).rewardsTableUXTO,
+                    AppLocalizations.of(context)!.rewardsTableUXTO,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -285,7 +285,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 8, bottom: 8),
                   child: Text(
-                    AppLocalizations.of(context).rewardsTableRewards,
+                    AppLocalizations.of(context)!.rewardsTableRewards,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -298,7 +298,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   child: Row(
                     children: [
                       Text(
-                        AppLocalizations.of(context).rewardsTableFiat,
+                        AppLocalizations.of(context)!.rewardsTableFiat,
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
@@ -317,7 +317,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 8, bottom: 8),
                   child: Text(
-                    AppLocalizations.of(context).rewardsTableTime,
+                    AppLocalizations.of(context)!.rewardsTableTime,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -329,7 +329,7 @@ class _RewardsPageState extends State<RewardsPage> {
                       left: 8, right: 12, top: 8, bottom: 8),
                   alignment: const Alignment(0, 0),
                   child: Text(
-                    AppLocalizations.of(context).rewardsTableStatus,
+                    AppLocalizations.of(context)!.rewardsTableStatus,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -355,7 +355,7 @@ class _RewardsPageState extends State<RewardsPage> {
             padding:
                 const EdgeInsets.only(left: 12, right: 8, top: 12, bottom: 12),
             child: Text(
-              formatPrice(item.amount, 4),
+              formatPrice(item.amount, 4)!,
               maxLines: 1,
               style: const TextStyle(fontSize: 13),
             ),
@@ -379,7 +379,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 12, bottom: 12),
                   child: Text(
-                    formatPrice(item.reward, 4),
+                    formatPrice(item.reward, 4)!,
                     maxLines: 1,
                     style: const TextStyle(
                       fontSize: 13,
@@ -402,9 +402,9 @@ class _RewardsPageState extends State<RewardsPage> {
               : Builder(builder: (context) {
                   final cexProvider =
                       Provider.of<CexProvider>(context, listen: false);
-                  final double price = cexProvider.getUsdPrice('KMD');
+                  final double price = cexProvider.getUsdPrice('KMD')!;
 
-                  final amountUsd = item.reward * price;
+                  final amountUsd = item.reward! * price;
                   return Container(
                     padding: const EdgeInsets.only(
                         left: 8, right: 8, top: 12, bottom: 12),
@@ -431,7 +431,7 @@ class _RewardsPageState extends State<RewardsPage> {
                 ? SizedBox()
                 : Builder(builder: (context) {
                     final duration = Duration(
-                        milliseconds: item.stopAt * 1000 -
+                        milliseconds: item.stopAt! * 1000 -
                             DateTime.now().millisecondsSinceEpoch);
 
                     return Text(
@@ -462,7 +462,7 @@ class _RewardsPageState extends State<RewardsPage> {
                     padding: const EdgeInsets.only(
                         left: 8, right: 12, top: 12, bottom: 12),
                     child: Text(
-                      item.error['short'],
+                      item.error!['short']!,
                       maxLines: 1,
                       style: TextStyle(
                         color: Theme.of(context).hintColor.withAlpha(150),
@@ -479,13 +479,13 @@ class _RewardsPageState extends State<RewardsPage> {
         context: context,
         builder: (BuildContext context) {
           return CustomSimpleDialog(
-            title: Text(AppLocalizations.of(context).rewardsPopupTitle),
+            title: Text(AppLocalizations.of(context)!.rewardsPopupTitle),
             children: <Widget>[
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(item.error['long']),
+                  Text(item.error!['long']!),
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -493,7 +493,7 @@ class _RewardsPageState extends State<RewardsPage> {
                       ElevatedButton(
                         onPressed: () => dialogBloc.closeDialog(context),
                         child:
-                            Text(AppLocalizations.of(context).rewardsPopupOk),
+                            Text(AppLocalizations.of(context)!.rewardsPopupOk),
                       )
                     ],
                   )
@@ -510,15 +510,15 @@ class _RewardsPageState extends State<RewardsPage> {
     final int mm = duration.inMinutes;
 
     if (dd > 0) {
-      return AppLocalizations.of(context).rewardsTimeDays(dd);
+      return AppLocalizations.of(context)!.rewardsTimeDays(dd);
     }
     if (hh > 0) {
       String minutes = mm.remainder(60).toString();
       if (minutes.length < 2) minutes = '0$minutes';
-      return AppLocalizations.of(context).rewardsTimeHours(hh, minutes);
+      return AppLocalizations.of(context)!.rewardsTimeHours(hh, minutes);
     }
     if (mm > 0) {
-      return AppLocalizations.of(context).rewardsTimeMin(mm);
+      return AppLocalizations.of(context)!.rewardsTimeMin(mm);
     }
     return '-';
   }

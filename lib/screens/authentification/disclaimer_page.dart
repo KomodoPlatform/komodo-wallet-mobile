@@ -18,16 +18,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DisclaimerPage extends StatefulWidget {
   const DisclaimerPage({
-    Key key,
+    Key? key,
     this.password,
     this.seed,
     this.onSuccess,
     this.readOnly = false,
   }) : super(key: key);
 
-  final String password;
-  final String seed;
-  final Function onSuccess;
+  final String? password;
+  final String? seed;
+  final Function? onSuccess;
   final bool readOnly;
 
   @override
@@ -39,7 +39,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
   bool isLoading = false;
   bool _checkBoxEULA = false;
   bool _checkBoxTOC = false;
-  Timer timer;
+  late Timer timer;
 
   @override
   void initState() {
@@ -66,7 +66,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                     Checkbox(
                       key: const Key('checkbox-eula'),
                       value: _checkBoxEULA,
-                      onChanged: (bool value) {
+                      onChanged: (bool? value) {
                         setState(() {
                           _checkBoxEULA = !_checkBoxEULA;
                         });
@@ -75,8 +75,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                     Flexible(
                       child: RichText(
                         text: TextSpan(
-                          text: AppLocalizations.of(context).accepteula,
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          text: AppLocalizations.of(context)!.accepteula,
+                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                                 decoration: TextDecoration.underline,
                               ),
                           recognizer: TapGestureRecognizer()
@@ -86,7 +86,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                                   builder: (BuildContext context) {
                                     return ScrollableDialog(
                                       title: Text(
-                                        AppLocalizations.of(context)
+                                        AppLocalizations.of(context)!
                                             .eulaTitle1(appConfig.appName),
                                       ),
                                       children: [EULAContents()],
@@ -96,7 +96,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                                           Navigator.of(context).pop();
                                         },
                                         text:
-                                            AppLocalizations.of(context).close,
+                                            AppLocalizations.of(context)!.close,
                                       ),
                                       mustScrollToBottom: false,
                                     );
@@ -113,7 +113,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                     Checkbox(
                       key: const Key('checkbox-toc'),
                       value: _checkBoxTOC,
-                      onChanged: (bool value) {
+                      onChanged: (bool? value) {
                         setState(() {
                           _checkBoxTOC = !_checkBoxTOC;
                         });
@@ -122,8 +122,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                     Flexible(
                       child: RichText(
                         text: TextSpan(
-                          text: AppLocalizations.of(context).accepttac,
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          text: AppLocalizations.of(context)!.accepttac,
+                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                                 decoration: TextDecoration.underline,
                               ),
                           recognizer: TapGestureRecognizer()
@@ -133,7 +133,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                                   builder: (BuildContext context) {
                                     return ScrollableDialog(
                                       title: Text(
-                                        AppLocalizations.of(context).eulaTitle2,
+                                        AppLocalizations.of(context)!.eulaTitle2,
                                       ),
                                       children: [TACContents()],
                                       verticalButtons: PrimaryButton(
@@ -142,7 +142,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                                           Navigator.of(context).pop();
                                         },
                                         text:
-                                            AppLocalizations.of(context).close,
+                                            AppLocalizations.of(context)!.close,
                                       ),
                                       mustScrollToBottom: false,
                                     );
@@ -157,7 +157,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: Text(
-                    AppLocalizations.of(context).confirmeula,
+                    AppLocalizations.of(context)!.confirmeula,
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
@@ -170,8 +170,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                 ? _nextPage
                 : null,
             text: widget.readOnly
-                ? AppLocalizations.of(context).close
-                : AppLocalizations.of(context).next,
+                ? AppLocalizations.of(context)!.close
+                : AppLocalizations.of(context)!.next,
             isLoading: isLoading,
           ),
           if (isLoading) ...[
@@ -179,7 +179,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
               height: 8,
             ),
             Text(
-              AppLocalizations.of(context).encryptingWallet,
+              AppLocalizations.of(context)!.encryptingWallet,
               style: Theme.of(context).textTheme.bodyText2,
             )
           ]
@@ -189,7 +189,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).disclaimerAndTos),
+          title: Text(AppLocalizations.of(context)!.disclaimerAndTos),
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.onBackground,
         ),
@@ -215,7 +215,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
       });
 
       final EncryptionTool encryptionTool = EncryptionTool();
-      final Wallet wallet = walletBloc.currentWallet;
+      final Wallet wallet = walletBloc.currentWallet!;
       walletBloc.currentWallet = wallet;
 
       await encryptionTool
@@ -232,7 +232,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
         setState(() {
           isLoading = false;
         });
-        widget.onSuccess();
+        widget.onSuccess!();
       });
     }
   }

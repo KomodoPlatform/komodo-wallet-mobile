@@ -17,10 +17,10 @@ class Orders {
         result: Result.fromJson(json['result']) ?? Result(),
       );
 
-  Result result;
+  Result? result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson() ?? '',
+        'result': result!.toJson() ?? '',
       };
 }
 
@@ -41,15 +41,15 @@ class Result {
             <String, TakerOrder>{},
       );
 
-  Map<String, MakerOrder> makerOrders;
-  Map<String, TakerOrder> takerOrders;
+  Map<String, MakerOrder>? makerOrders;
+  Map<String, TakerOrder>? takerOrders;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'maker_orders': Map<dynamic, dynamic>.from(makerOrders)
+        'maker_orders': Map<dynamic, dynamic>.from(makerOrders!)
                 .map<dynamic, dynamic>((dynamic k, dynamic v) =>
                     MapEntry<String, dynamic>(k, v.toJson())) ??
             <String, MakerOrder>{},
-        'taker_orders': Map<dynamic, dynamic>.from(takerOrders)
+        'taker_orders': Map<dynamic, dynamic>.from(takerOrders!)
                 .map<dynamic, dynamic>((dynamic k, dynamic v) =>
                     MapEntry<String, dynamic>(k, v.toJson())) ??
             <String, TakerOrder>{},
@@ -90,24 +90,24 @@ class MakerOrder {
         uuid: json['uuid'] ?? '',
       );
 
-  String base;
-  int createdAt;
-  String availableAmount;
-  bool cancellable;
-  Map<String, Match> matches;
-  String maxBaseVol;
-  String minBaseVol;
-  String price;
-  String rel;
-  List<String> startedSwaps;
-  String uuid;
+  String? base;
+  int? createdAt;
+  String? availableAmount;
+  bool? cancellable;
+  Map<String, Match>? matches;
+  String? maxBaseVol;
+  String? minBaseVol;
+  String? price;
+  String? rel;
+  List<String>? startedSwaps;
+  String? uuid;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'base': base ?? '',
         'created_at': createdAt ?? 0,
         'available_amount': availableAmount ?? '',
         'cancellable': cancellable ?? false,
-        'matches': Map<dynamic, dynamic>.from(matches).map<dynamic, dynamic>(
+        'matches': Map<dynamic, dynamic>.from(matches!).map<dynamic, dynamic>(
                 (dynamic k, dynamic v) =>
                     MapEntry<String, dynamic>(k, v.toJson())) ??
             <String, Match>{},
@@ -116,7 +116,7 @@ class MakerOrder {
         'price': price ?? '',
         'rel': rel ?? '',
         'started_swaps':
-            List<dynamic>.from(startedSwaps.map<dynamic>((dynamic x) => x)) ??
+            List<dynamic>.from(startedSwaps!.map<dynamic>((dynamic x) => x)) ??
                 <String>[],
         'uuid': uuid ?? '',
       };
@@ -146,11 +146,11 @@ class Match {
             : Request.fromJson(json['reserved']),
       );
 
-  Connect connect;
-  Connect connected;
-  int lastUpdated;
-  Request request;
-  Request reserved;
+  Connect? connect;
+  Connect? connected;
+  int? lastUpdated;
+  Request? request;
+  Request? reserved;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'connect': connect?.toJson(),
@@ -178,11 +178,11 @@ class Connect {
         takerOrderUuid: json['taker_order_uuid'] ?? '',
       );
 
-  String destPubKey;
-  String makerOrderUuid;
-  String method;
-  String senderPubkey;
-  String takerOrderUuid;
+  String? destPubKey;
+  String? makerOrderUuid;
+  String? method;
+  String? senderPubkey;
+  String? takerOrderUuid;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'dest_pub_key': destPubKey ?? '',
@@ -222,17 +222,17 @@ class Request {
         takerOrderUuid: json['taker_order_uuid'] ?? '',
       );
 
-  String action;
-  String base;
-  String baseAmount;
-  String destPubKey;
-  String method;
-  String rel;
-  String relAmount;
-  String senderPubkey;
-  String uuid;
-  String makerOrderUuid;
-  String takerOrderUuid;
+  String? action;
+  String? base;
+  String? baseAmount;
+  String? destPubKey;
+  String? method;
+  String? rel;
+  String? relAmount;
+  String? senderPubkey;
+  String? uuid;
+  String? makerOrderUuid;
+  String? takerOrderUuid;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'action': action ?? '',
@@ -268,20 +268,20 @@ class TakerOrder {
         request: Request.fromJson(json['request']) ?? Request(),
       );
 
-  int createdAt;
-  bool cancellable;
-  Map<String, Match> matches;
-  Request request;
+  int? createdAt;
+  bool? cancellable;
+  Map<String, Match>? matches;
+  Request? request;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'created_at': createdAt ?? 0,
         'cancellable': cancellable ?? false,
         'matches': matches == null
             ? null
-            : Map<dynamic, dynamic>.from(matches).map<dynamic, dynamic>(
+            : Map<dynamic, dynamic>.from(matches!).map<dynamic, dynamic>(
                 (dynamic k, dynamic v) =>
                     MapEntry<String, dynamic>(k, v.toJson())),
-        'request': request.toJson() ?? Request(),
+        'request': request!.toJson() ?? Request(),
       };
 }
 
@@ -289,10 +289,10 @@ class EnumValues<T> {
   EnumValues(this.map);
 
   Map<String, T> map;
-  Map<T, String> reverseMap;
+  Map<T?, String>? reverseMap;
 
-  Map<T, String> get reverse {
-    reverseMap ??= map.map((String k, T v) => MapEntry<dynamic, dynamic>(v, k));
+  Map<T?, String>? get reverse {
+    reverseMap ??= map.map((String k, T v) => MapEntry<dynamic, dynamic>(v, k) as MapEntry<T?, String>);
     return reverseMap;
   }
 }

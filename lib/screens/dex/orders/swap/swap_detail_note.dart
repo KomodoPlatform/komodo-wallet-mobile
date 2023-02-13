@@ -7,13 +7,13 @@ import '../../../../utils/utils.dart';
 class SwapDetailNote extends StatefulWidget {
   const SwapDetailNote(this.uuid);
 
-  final String uuid;
+  final String? uuid;
   @override
   State<SwapDetailNote> createState() => _SwapDetailNoteState();
 }
 
 class _SwapDetailNoteState extends State<SwapDetailNote> {
-  String noteText;
+  String? noteText;
   bool isNoteEdit = false;
   bool isNoteExpanded = false;
   final noteTextController = TextEditingController();
@@ -25,7 +25,7 @@ class _SwapDetailNoteState extends State<SwapDetailNote> {
     Db.getNote(widget.uuid).then((n) {
       setState(() {
         noteText = n;
-        noteTextController.text = noteText;
+        noteTextController.text = noteText!;
       });
     });
   }
@@ -55,7 +55,7 @@ class _SwapDetailNoteState extends State<SwapDetailNote> {
                       noteText = noteTextController.text;
                       focusNode.requestFocus();
 
-                      if (noteText != null && noteText.isNotEmpty) {
+                      if (noteText != null && noteText!.isNotEmpty) {
                         setState(() {
                           isNoteExpanded = !isNoteExpanded;
                         });
@@ -76,7 +76,7 @@ class _SwapDetailNoteState extends State<SwapDetailNote> {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 6),
                               child: Text(
-                                AppLocalizations.of(context).noteTitle + ':',
+                                AppLocalizations.of(context)!.noteTitle + ':',
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
@@ -97,13 +97,13 @@ class _SwapDetailNoteState extends State<SwapDetailNote> {
                                     ),
                                   )
                                 : Text(
-                                    (noteText == null || noteText.isEmpty)
-                                        ? AppLocalizations.of(context)
+                                    (noteText == null || noteText!.isEmpty)
+                                        ? AppLocalizations.of(context)!
                                             .notePlaceholder
-                                        : noteText,
+                                        : noteText!,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText2
+                                        .bodyText2!
                                         .copyWith(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
@@ -122,9 +122,9 @@ class _SwapDetailNoteState extends State<SwapDetailNote> {
                             () {
                               if (isNoteEdit) {
                                 noteText = noteTextController.text.trim();
-                                noteTextController.text = noteText;
+                                noteTextController.text = noteText!;
 
-                                noteText.isNotEmpty
+                                noteText!.isNotEmpty
                                     ? Db.saveNote(widget.uuid, noteText)
                                     : Db.deleteNote(widget.uuid);
 

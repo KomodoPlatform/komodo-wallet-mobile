@@ -18,15 +18,15 @@ class MultiOrderRelList extends StatefulWidget {
 }
 
 class _MultiOrderRelListState extends State<MultiOrderRelList> {
-  MultiOrderProvider multiOrderProvider;
-  CexProvider cexProvider;
-  final Map<String, TextEditingController> amtCtrls = {};
-  final Map<String, FocusNode> amtFocusNodes = {};
+  MultiOrderProvider? multiOrderProvider;
+  CexProvider? cexProvider;
+  final Map<String?, TextEditingController> amtCtrls = {};
+  final Map<String?, FocusNode> amtFocusNodes = {};
   final TextEditingController fiatAmtCtrl = TextEditingController();
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _updateAmtFields();
     });
     super.initState();
@@ -60,7 +60,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               }
 
               final List<CoinBalance> availableToBuy =
-                  coinsBloc.sortCoins(snapshot.data);
+                  coinsBloc.sortCoins(snapshot.data!);
 
               return Column(
                 children: [
@@ -70,7 +70,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       Container(
                         padding: const EdgeInsets.fromLTRB(16, 14, 0, 0),
                         child: Text(
-                          AppLocalizations.of(context).multiTablePrice,
+                          AppLocalizations.of(context)!.multiTablePrice,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
@@ -78,7 +78,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                         child: Container(
                           padding: const EdgeInsets.fromLTRB(0, 14, 12, 0),
                           child: Text(
-                            AppLocalizations.of(context).multiTableAmt,
+                            AppLocalizations.of(context)!.multiTableAmt,
                             style: Theme.of(context).textTheme.bodyText1,
                             textAlign: TextAlign.right,
                           ),
@@ -103,10 +103,10 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
           if (!snapshot.hasData) return SizedBox();
 
           bool allSelected = true;
-          for (CoinBalance item in snapshot.data) {
-            if (item.coin.abbr == multiOrderProvider.baseCoin) continue;
+          for (CoinBalance item in snapshot.data!) {
+            if (item.coin!.abbr == multiOrderProvider!.baseCoin) continue;
 
-            if (!multiOrderProvider.isRelCoinSelected(item.coin.abbr)) {
+            if (!multiOrderProvider!.isRelCoinSelected(item.coin!.abbr)) {
               allSelected = false;
               break;
             }
@@ -119,12 +119,12 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
             child: InkWell(
               onTap: () {
                 final bool val = !allSelected;
-                for (CoinBalance item in snapshot.data) {
+                for (CoinBalance item in snapshot.data!) {
                   if (!val) {
-                    amtCtrls[item.coin.abbr]?.text = '';
-                    multiOrderProvider.selectRelCoin(item.coin.abbr, false);
+                    amtCtrls[item.coin!.abbr]?.text = '';
+                    multiOrderProvider!.selectRelCoin(item.coin!.abbr, false);
                   } else {
-                    multiOrderProvider.selectRelCoin(item.coin.abbr, true);
+                    multiOrderProvider!.selectRelCoin(item.coin!.abbr, true);
                   }
                 }
                 _updateAmtFields();
@@ -139,14 +139,14 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       border: Border.all(
                         color: allSelected
                             ? Theme.of(context).colorScheme.secondary
-                            : Theme.of(context).textTheme.bodyText1.color,
+                            : Theme.of(context).textTheme.bodyText1!.color!,
                       )),
                   child: Icon(
                     Icons.done_all,
                     size: 11,
                     color: allSelected
                         ? Theme.of(context).colorScheme.secondary
-                        : Theme.of(context).textTheme.bodyText1.color,
+                        : Theme.of(context).textTheme.bodyText1!.color,
                   ),
                 ),
               ),
@@ -162,7 +162,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
         children: <Widget>[
           Expanded(
             child: Text(
-              AppLocalizations.of(context).multiReceiveTitle,
+              AppLocalizations.of(context)!.multiReceiveTitle,
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
@@ -185,11 +185,11 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
         builder: (context) {
           return CustomSimpleDialog(
             children: <Widget>[
-              Text(AppLocalizations.of(context).multiFiatDesc),
+              Text(AppLocalizations.of(context)!.multiFiatDesc),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('${cexProvider.selectedFiatSymbol} '),
+                  Text('${cexProvider!.selectedFiatSymbol} '),
                   Flexible(
                     flex: 1,
                     child: TextField(
@@ -215,12 +215,12 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       fiatAmtCtrl.text = '';
                       dialogBloc.closeDialog(context);
                     },
-                    child: Text(AppLocalizations.of(context).multiFiatCancel),
+                    child: Text(AppLocalizations.of(context)!.multiFiatCancel),
                   ),
                   const SizedBox(width: 12),
                   ElevatedButton(
                     onPressed: () {
-                      double fiatAmt;
+                      double? fiatAmt;
                       try {
                         fiatAmt = double.parse(fiatAmtCtrl.text);
                       } catch (_) {}
@@ -230,10 +230,10 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       if (fiatAmt == null || fiatAmt == 0) return;
 
                       final double usdAmt = fiatAmt *
-                          cexProvider.getUsdPrice(cexProvider.selectedFiat);
+                          cexProvider!.getUsdPrice(cexProvider!.selectedFiat)!;
                       _autofill(usdAmt);
                     },
-                    child: Text(AppLocalizations.of(context).multiFiatFill),
+                    child: Text(AppLocalizations.of(context)!.multiFiatFill),
                   ),
                 ],
               ),
@@ -241,22 +241,22 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
           );
         }).then((dynamic _) => dialogBloc.dialog = null);
 
-    final double baseFiatAmt = _getBaseFiatAmt();
+    final double? baseFiatAmt = _getBaseFiatAmt();
     if (baseFiatAmt != null) {
-      fiatAmtCtrl.text = cutTrailingZeros(formatPrice(baseFiatAmt, 2));
+      fiatAmtCtrl.text = cutTrailingZeros(formatPrice(baseFiatAmt, 2))!;
     }
   }
 
-  double _getBaseFiatAmt() {
-    if (multiOrderProvider.baseAmt == null) return null;
+  double? _getBaseFiatAmt() {
+    if (multiOrderProvider!.baseAmt == null) return null;
 
-    final double baseUsdPrice =
-        cexProvider.getUsdPrice(multiOrderProvider.baseCoin);
+    final double? baseUsdPrice =
+        cexProvider!.getUsdPrice(multiOrderProvider!.baseCoin);
     if (baseUsdPrice == null || baseUsdPrice == 0) return null;
 
-    return multiOrderProvider.baseAmt *
+    return multiOrderProvider!.baseAmt! *
         baseUsdPrice /
-        cexProvider.getUsdPrice(cexProvider.selectedFiat);
+        cexProvider!.getUsdPrice(cexProvider!.selectedFiat)!;
   }
 
   List<Widget> _buildRows(List<CoinBalance> data) {
@@ -264,36 +264,36 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
 
     int count = 0;
     for (CoinBalance item in data) {
-      if (item.coin.walletOnly) continue;
-      if (item.coin.suspended) continue;
-      if (item.coin.abbr == multiOrderProvider.baseCoin) continue;
+      if (item.coin!.walletOnly) continue;
+      if (item.coin!.suspended) continue;
+      if (item.coin!.abbr == multiOrderProvider!.baseCoin) continue;
 
-      final Color color = count % 2 == 0
+      final Color? color = count % 2 == 0
           ? Theme.of(context).highlightColor.withAlpha(15)
           : null;
 
-      amtCtrls[item.coin.abbr] ??= TextEditingController();
-      amtFocusNodes[item.coin.abbr] ??= FocusNode();
+      amtCtrls[item.coin!.abbr] ??= TextEditingController();
+      amtFocusNodes[item.coin!.abbr] ??= FocusNode();
 
       list.add(
         MultiOrderRelItem(
             item: item,
             color: color,
-            controller: amtCtrls[item.coin.abbr],
-            focusNode: amtFocusNodes[item.coin.abbr],
+            controller: amtCtrls[item.coin!.abbr],
+            focusNode: amtFocusNodes[item.coin!.abbr],
             onSelectChange: (bool val) {
-              multiOrderProvider.selectRelCoin(item.coin.abbr, val);
+              multiOrderProvider!.selectRelCoin(item.coin!.abbr, val);
               if (val) {
                 _updateAmtFields();
                 _calculateAmts();
-                if (multiOrderProvider.relCoins[item.coin.abbr].amount ==
+                if (multiOrderProvider!.relCoins[item.coin!.abbr]!.amount ==
                     null) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) =>
+                  WidgetsBinding.instance!.addPostFrameCallback((_) =>
                       FocusScope.of(context)
-                          .requestFocus(amtFocusNodes[item.coin.abbr]));
+                          .requestFocus(amtFocusNodes[item.coin!.abbr]));
                 }
               } else {
-                amtCtrls[item.coin.abbr].text = '';
+                amtCtrls[item.coin!.abbr]!.text = '';
               }
             }),
       );
@@ -306,54 +306,54 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
 
   void _autofill(double sourceUsdAmt) {
     for (CoinBalance item in coinsBloc.coinBalance) {
-      if (multiOrderProvider.baseCoin == item.coin.abbr) continue;
-      final double usdPrice = cexProvider.getUsdPrice(item.coin.abbr);
-      multiOrderProvider.selectRelCoin(item.coin.abbr, false);
+      if (multiOrderProvider!.baseCoin == item.coin!.abbr) continue;
+      final double? usdPrice = cexProvider!.getUsdPrice(item.coin!.abbr);
+      multiOrderProvider!.selectRelCoin(item.coin!.abbr, false);
       if (usdPrice == null || usdPrice == 0) continue;
 
-      multiOrderProvider.selectRelCoin(item.coin.abbr, true);
+      multiOrderProvider!.selectRelCoin(item.coin!.abbr, true);
     }
 
     _calculateAmts(sourceUsdAmt);
   }
 
-  void _calculateAmts([double sourceUsdAmt]) {
+  void _calculateAmts([double? sourceUsdAmt]) {
     if (sourceUsdAmt == null)
-      for (String abbr in multiOrderProvider.relCoins.keys) {
-        final double relAmt = multiOrderProvider.relCoins[abbr]?.amount;
+      for (String? abbr in multiOrderProvider!.relCoins.keys) {
+        final double? relAmt = multiOrderProvider!.relCoins[abbr]?.amount;
         if (relAmt == null || relAmt == 0) continue;
 
-        final double sourceUsdPrice = cexProvider.getUsdPrice(abbr);
+        final double? sourceUsdPrice = cexProvider!.getUsdPrice(abbr);
         if (sourceUsdPrice == null || sourceUsdPrice == 0) continue;
 
         sourceUsdAmt = relAmt * sourceUsdPrice;
         break;
       }
 
-    sourceUsdAmt ??= (multiOrderProvider.baseAmt ?? 0) *
-        cexProvider.getUsdPrice(multiOrderProvider.baseCoin);
+    sourceUsdAmt ??= (multiOrderProvider!.baseAmt ?? 0) *
+        cexProvider!.getUsdPrice(multiOrderProvider!.baseCoin)!;
 
     if (sourceUsdAmt == null || sourceUsdAmt == 0) return;
 
-    multiOrderProvider.relCoins.forEach((abbr, MultiOrderRelCoin coin) {
+    multiOrderProvider!.relCoins.forEach((abbr, MultiOrderRelCoin coin) {
       if (coin.amount != null) return;
 
-      final double targetUsdPrice = cexProvider.getUsdPrice(abbr);
+      final double? targetUsdPrice = cexProvider!.getUsdPrice(abbr);
       if (targetUsdPrice == null || targetUsdPrice == 0) return;
 
-      multiOrderProvider.setRelCoinAmt(
-          abbr, double.parse(formatPrice(sourceUsdAmt / targetUsdPrice)));
+      multiOrderProvider!.setRelCoinAmt(
+          abbr, double.parse(formatPrice(sourceUsdAmt! / targetUsdPrice)!));
     });
 
     _updateAmtFields();
   }
 
   void _updateAmtFields() {
-    multiOrderProvider.relCoins.forEach((abbr, coin) {
+    multiOrderProvider!.relCoins.forEach((abbr, coin) {
       if (coin?.amount == null || coin?.amount == 0) {
         amtCtrls[abbr]?.text = '';
       } else {
-        amtCtrls[abbr]?.text = cutTrailingZeros(formatPrice(coin.amount));
+        amtCtrls[abbr]?.text = cutTrailingZeros(formatPrice(coin.amount))!;
       }
     });
   }

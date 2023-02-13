@@ -49,8 +49,8 @@ class RpcError {
     );
   }
 
-  RpcErrorType type;
-  String message;
+  RpcErrorType? type;
+  String? message;
   dynamic data;
 }
 

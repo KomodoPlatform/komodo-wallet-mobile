@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -88,9 +89,9 @@ Future<void> _forceCheckNetworkStatus() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key key, this.password}) : super(key: key);
+  const MyApp({Key? key, this.password}) : super(key: key);
 
-  final String password;
+  final String? password;
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -103,12 +104,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     _initCheckNetworkStatus();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
@@ -154,10 +155,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         behavior: HitTestBehavior.translucent,
         onPointerDown: (_) => lockService.pointerEvent(context),
         onPointerUp: (_) => lockService.pointerEvent(context),
-        child: StreamBuilder<Locale>(
+        child: StreamBuilder<Locale?>(
             stream: mainBloc.outcurrentLocale,
             builder:
-                (BuildContext context, AsyncSnapshot<Locale> currentLocale) {
+                (BuildContext context, AsyncSnapshot<Locale?> currentLocale) {
               return SharedPreferencesBuilder<dynamic>(
                   pref: 'current_languages',
                   builder: (BuildContext context,
@@ -201,16 +202,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
-  Timer timer;
+  Timer? timer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  IntentDataProvider _intentDataProvider;
+  IntentDataProvider? _intentDataProvider;
 
   final List<Widget> _children = <Widget>[
     CoinsPage(),
@@ -223,8 +224,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _intentDataProvider?.grabData();
       pinScreenOrientation(context);
     });
@@ -235,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     timer?.cancel();
     super.dispose();
   }
@@ -264,7 +265,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           key: _scaffoldKey,
           endDrawer: AppDrawer(context),
           resizeToAvoidBottomInset: true,
-          body: _children[snapshot.data],
+          body: _children[snapshot.data!],
           bottomNavigationBar: Material(
             elevation: 8.0,
             child: Container(
@@ -290,33 +291,33 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   void _emptyIntentData() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _intentDataProvider.emptyIntentData();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _intentDataProvider!.emptyIntentData();
     });
   }
 
   Future<void> _handleIntentData(GlobalKey<ScaffoldState> scaffoldKey) async {
-    final data = _intentDataProvider.intentData;
+    final data = _intentDataProvider!.intentData;
     if (data == null) return;
 
     while (coinsBloc.coinBalance.isEmpty) {
       await Future<dynamic>.delayed(const Duration(milliseconds: 100));
     }
 
-    CoinBalance coinBalance;
+    CoinBalance? coinBalance;
     if (data.screen == ScreenSelection.Ethereum) {
       coinBalance = coinsBloc.coinBalance
-          .firstWhere((cb) => cb.coin.abbr == 'ETH', orElse: () => null);
+          .firstWhereOrNull((cb) => cb.coin!.abbr == 'ETH');
     } else if (data.screen == ScreenSelection.Bitcoin) {
       coinBalance = coinsBloc.coinBalance
-          .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () => null);
+          .firstWhereOrNull((cb) => cb.coin!.abbr == 'BTC');
     } else {
       _emptyIntentData();
       return;
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final Uri uri = Uri.tryParse(data.payload);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      final Uri? uri = Uri.tryParse(data.payload!);
 
       if (uri == null) return;
 
@@ -345,8 +346,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     });
   }
 
-  Widget networkStatusStreamBuilder(int indexTab) {
-    final FeedProvider feedProvider =
+  Widget networkStatusStreamBuilder(int? indexTab) {
+    final FeedProvider? feedProvider =
         appConfig.isFeedEnabled ? Provider.of<FeedProvider>(context) : null;
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
@@ -354,7 +355,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       initialData: mainBloc.networkStatus,
       stream: mainBloc.outNetworkStatus,
       builder: (BuildContext context, AsyncSnapshot<NetworkStatus> network) {
-        final NetworkStatus networkStatus = network.data;
+        final NetworkStatus? networkStatus = network.data;
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -369,7 +370,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: Text(
-                              AppLocalizations.of(context).internetRestored,
+                              AppLocalizations.of(context)!.internetRestored,
                               style: const TextStyle(
                                 color: Colors.white,
                               ),
@@ -381,7 +382,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                           child: Row(
                             children: [
                               Text(
-                                AppLocalizations.of(context).noInternet,
+                                AppLocalizations.of(context)!.noInternet,
                                 style: const TextStyle(
                                   color: Colors.white,
                                 ),
@@ -409,7 +410,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                           NetworkStatus.Checking)
                                         const SizedBox(width: 8),
                                       Text(
-                                        AppLocalizations.of(context)
+                                        AppLocalizations.of(context)!
                                             .internetRefreshButton,
                                         style: const TextStyle(
                                           color: Colors.white,
@@ -432,7 +433,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               onTap: onTabTapped,
-              currentIndex: indexTab,
+              currentIndex: indexTab!,
               elevation: 0,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
@@ -440,16 +441,16 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       Icons.account_balance_wallet,
                       key: Key('main-nav-portfolio'),
                     ),
-                    label: AppLocalizations.of(context).portfolio),
+                    label: AppLocalizations.of(context)!.portfolio),
                 BottomNavigationBarItem(
                     icon: const Icon(Icons.swap_vert, key: Key('main-nav-dex')),
-                    label: AppLocalizations.of(context).dex),
+                    label: AppLocalizations.of(context)!.dex),
                 BottomNavigationBarItem(
                   icon: const Icon(
                     Icons.show_chart,
                     key: Key('main-nav-markets'),
                   ),
-                  label: AppLocalizations.of(context).marketsTab,
+                  label: AppLocalizations.of(context)!.marketsTab,
                 ),
                 if (appConfig.isFeedEnabled)
                   BottomNavigationBarItem(
@@ -457,10 +458,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         children: <Widget>[
                           const Icon(Icons.library_books,
                               key: Key('main-nav-feed')),
-                          if (feedProvider.hasNewItems) buildRedDot(context),
+                          if (feedProvider!.hasNewItems) buildRedDot(context),
                         ],
                       ),
-                      label: AppLocalizations.of(context).feedTab),
+                      label: AppLocalizations.of(context)!.feedTab),
                 BottomNavigationBarItem(
                     icon: Stack(
                       children: <Widget>[
@@ -469,7 +470,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                           buildRedDot(context),
                       ],
                     ),
-                    label: AppLocalizations.of(context).moreTab),
+                    label: AppLocalizations.of(context)!.moreTab),
               ],
             )
           ],
@@ -486,7 +487,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     if (index < _children.length) {
       mainBloc.setCurrentIndexTab(index);
     } else {
-      _scaffoldKey.currentState.openEndDrawer();
+      _scaffoldKey.currentState!.openEndDrawer();
     }
   }
 }

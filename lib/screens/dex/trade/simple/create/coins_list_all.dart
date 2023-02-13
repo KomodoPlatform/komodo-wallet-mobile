@@ -14,17 +14,17 @@ import 'package:provider/provider.dart';
 class CoinsListAll extends StatefulWidget {
   const CoinsListAll({this.type, this.searchTerm});
 
-  final Market type;
-  final String searchTerm;
+  final Market? type;
+  final String? searchTerm;
 
   @override
   _CoinsListAllState createState() => _CoinsListAllState();
 }
 
 class _CoinsListAllState extends State<CoinsListAll> {
-  ConstructorProvider _constrProvider;
-  OrderBookProvider _obProvider;
-  int _timer;
+  ConstructorProvider? _constrProvider;
+  OrderBookProvider? _obProvider;
+  int? _timer;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _CoinsListAllState extends State<CoinsListAll> {
     if (items.isEmpty) {
       final int now = DateTime.now().millisecondsSinceEpoch;
       setState(() => _timer ??= now);
-      if (now - _timer > 1000) {
+      if (now - _timer! > 1000) {
         return EmptyListMessage();
       } else {
         return _buildProgress();
@@ -65,10 +65,10 @@ class _CoinsListAllState extends State<CoinsListAll> {
 
   Widget _buildCoinItem(ListAllItem item) {
     String keyName = widget.type == Market.SELL
-        ? 'sell-${item.coin.abbr}'
-        : 'buy-${item.coin.abbr}';
+        ? 'sell-${item.coin!.abbr}'
+        : 'buy-${item.coin!.abbr}';
     return Opacity(
-      opacity: item.coin.isActive ? 1 : 0.3,
+      opacity: item.coin!.isActive ? 1 : 0.3,
       child: Card(
         margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
         child: ListTile(
@@ -76,8 +76,8 @@ class _CoinsListAllState extends State<CoinsListAll> {
           visualDensity: VisualDensity.compact,
           onTap: () {
             widget.type == Market.SELL
-                ? _constrProvider.sellCoin = item.coin.abbr
-                : _constrProvider.buyCoin = item.coin.abbr;
+                ? _constrProvider!.sellCoin = item.coin!.abbr
+                : _constrProvider!.buyCoin = item.coin!.abbr;
           },
           minLeadingWidth: 16,
           dense: true,
@@ -85,10 +85,10 @@ class _CoinsListAllState extends State<CoinsListAll> {
           horizontalTitleGap: 8,
           leading: CircleAvatar(
             radius: 8,
-            backgroundImage: AssetImage(getCoinIconPath(item.coin.abbr)),
+            backgroundImage: AssetImage(getCoinIconPath(item.coin!.abbr)),
           ),
           title: Text(
-            item.coin.abbr,
+            item.coin!.abbr!,
             style: Theme.of(context).textTheme.bodyText1,
           ),
           trailing: widget.type == Market.SELL
@@ -107,15 +107,15 @@ class _CoinsListAllState extends State<CoinsListAll> {
     final List<CoinBalance> active = coinsBloc.coinBalance;
 
     for (CoinBalance coinBalance in active) {
-      if (coinBalance.coin.walletOnly) continue;
-      if (coinBalance.coin.suspended) continue;
+      if (coinBalance.coin!.walletOnly) continue;
+      if (coinBalance.coin!.suspended) continue;
 
-      final String term = widget.searchTerm.trim().toLowerCase();
+      final String term = widget.searchTerm!.trim().toLowerCase();
       if (term.isNotEmpty) {
-        final Coin coin = coinBalance.coin;
+        final Coin coin = coinBalance.coin!;
         bool matched = false;
-        if (coin.abbr.toLowerCase().contains(term)) matched = true;
-        if (coin.name.toLowerCase().contains(term)) matched = true;
+        if (coin.abbr!.toLowerCase().contains(term)) matched = true;
+        if (coin.name!.toLowerCase().contains(term)) matched = true;
 
         if (!matched) continue;
       }
@@ -130,11 +130,11 @@ class _CoinsListAllState extends State<CoinsListAll> {
 class ListAllItem {
   ListAllItem({this.coin});
 
-  String get balance {
+  String? get balance {
     final Decimal coinBalance =
-        coinsBloc.getBalanceByAbbr(coin.abbr)?.balance?.balance ?? deci(0);
+        coinsBloc.getBalanceByAbbr(coin!.abbr)?.balance?.balance ?? deci(0);
     return cutTrailingZeros(formatPrice(coinBalance));
   }
 
-  Coin coin;
+  Coin? coin;
 }

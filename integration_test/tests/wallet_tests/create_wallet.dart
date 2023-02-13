@@ -8,7 +8,7 @@ import '../../helpers/create_password.dart';
 import '../../helpers/parsers.dart';
 
 Future<void> createWalletToTest(WidgetTester tester,
-    {String walletName}) async {
+    {String? walletName}) async {
   // create wallet to be used in following tests
   walletName ??= 'my-wallet';
   final Finder createWalletButton = find.byKey(const Key('createWalletButton'));
@@ -38,7 +38,7 @@ Future<void> createWalletToTest(WidgetTester tester,
     await tester.tap(copySeedButton);
     await tester.pump(Duration(seconds: 1));
     final List<String> seedPhrase =
-        tester.widget<Text>(seedPhraseText).data.split(' ');
+        tester.widget<Text>(seedPhraseText).data!.split(' ');
     await tester.tap(confirmSeedButton);
     await tester.pump(Duration(seconds: 1));
 
@@ -73,14 +73,14 @@ Future<void> _confirmSeedPhrase(
   final Finder continueCheckButton = find.byKey(const Key('continue-check'));
 
   // enter correct word
-  int wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data);
+  int wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data!)!;
   await tester.enterText(seedPhraseField, seedPhrase[wordPosition - 1]);
   await tester.pump(Duration(seconds: 1));
   await tester.tap(continueCheckButton);
   await tester.pump(Duration(seconds: 1));
 
   // enter incorrect word
-  wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data);
+  wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data!)!;
   await tester.enterText(seedPhraseField, 'incorrect_word');
   await tester.pump(Duration(seconds: 1));
   expect(
@@ -97,7 +97,7 @@ Future<void> _confirmSeedPhrase(
   await tester.pump(Duration(seconds: 1));
 
   // press incorrect button
-  wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data);
+  wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data!)!;
   final allWordButtons = tester.widgetList<ElevatedButton>(
     find.descendant(
       of: find.byKey(const Key('seed-word-buttons')),
@@ -108,7 +108,7 @@ Future<void> _confirmSeedPhrase(
     final text = button.child as Text;
     if (text.data == seedPhrase[wordPosition - 1]) continue;
 
-    await tester.tap(find.text(text.data));
+    await tester.tap(find.text(text.data!));
     await tester.pump(Duration(seconds: 1));
     expect(
       tester.widget<PrimaryButton>(continueCheckButton).onPressed == null,
@@ -119,7 +119,7 @@ Future<void> _confirmSeedPhrase(
   }
 
   // press correct button
-  wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data);
+  wordPosition = parseFirstInt(tester.widget<Text>(whichWord).data!)!;
   await tester.tap(find.text(seedPhrase[wordPosition - 1]));
   await tester.pump(Duration(seconds: 1));
   await tester.tap(continueCheckButton);

@@ -10,13 +10,13 @@ class MultiOrderPage extends StatefulWidget {
 }
 
 class _MultiOrderPageState extends State<MultiOrderPage> {
-  MultiOrderProvider multiOrderProvider;
+  MultiOrderProvider? multiOrderProvider;
 
   @override
   Widget build(BuildContext context) {
     multiOrderProvider ??= Provider.of<MultiOrderProvider>(context);
 
-    return multiOrderProvider.validated
+    return multiOrderProvider!.validated
         ? MultiOrderConfirm()
         : MultiOrderCreate();
   }

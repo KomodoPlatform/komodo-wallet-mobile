@@ -3,17 +3,17 @@ import '../services/mm_service.dart';
 import '../utils/utils.dart';
 
 class IntentDataProvider extends ChangeNotifier {
-  IntentData _intentData;
+  IntentData? _intentData;
 
-  IntentData get intentData => _intentData;
+  IntentData? get intentData => _intentData;
 
   Future<void> grabData() async {
-    final String data =
+    final String? data =
         await MMService.nativeC.invokeMethod<String>('get_intent_data');
     if (data == null) return;
 
     //Check if is payment uri
-    final Uri uri = Uri.tryParse(data);
+    final Uri? uri = Uri.tryParse(data);
     if (uri == null) return;
 
     final PaymentUriInfo uriInfo = PaymentUriInfo.fromUri(uri);
@@ -49,8 +49,8 @@ class IntentDataProvider extends ChangeNotifier {
 class IntentData {
   IntentData({this.screen, this.payload});
 
-  final ScreenSelection screen;
-  final String payload;
+  final ScreenSelection? screen;
+  final String? payload;
 }
 
 enum ScreenSelection { None, Bitcoin, Ethereum }

@@ -6,17 +6,17 @@ import '../generic_blocs/swap_bloc.dart';
 import '../localizations.dart';
 import '../widgets/custom_simple_dialog.dart';
 
-void showCancelOrderDialog({BuildContext context, Key key, String uuid}) {
+void showCancelOrderDialog({BuildContext? context, Key? key, String? uuid}) {
   if (!settingsBloc.showCancelOrderDialog) {
     ordersBloc.cancelOrder(uuid);
     return;
   }
   bool askCancelOrderAgain = true;
   dialogBloc.dialog = showDialog<void>(
-      context: context,
+      context: context!,
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
-          return StreamBuilder<List<String>>(
+          return StreamBuilder<List<String?>>(
               initialData: swapBloc.currentSwaps,
               stream: swapBloc.outCurrentSwaps,
               builder: (context, snapshot) {
@@ -28,15 +28,15 @@ void showCancelOrderDialog({BuildContext context, Key key, String uuid}) {
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                       const SizedBox(width: 12),
-                      Text(AppLocalizations.of(context).cancelOrder),
+                      Text(AppLocalizations.of(context)!.cancelOrder),
                     ],
                   ),
                   children: <Widget>[
-                    Text(AppLocalizations.of(context).confirmCancel),
+                    Text(AppLocalizations.of(context)!.confirmCancel),
                     const SizedBox(height: 12),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12.0, top: 6.0),
-                      child: Text(AppLocalizations.of(context).noteOnOrder),
+                      child: Text(AppLocalizations.of(context)!.noteOnOrder),
                     ),
                     const SizedBox(height: 12),
                     Row(
@@ -61,7 +61,7 @@ void showCancelOrderDialog({BuildContext context, Key key, String uuid}) {
                               });
                             },
                             child: Text(
-                                AppLocalizations.of(context).dontAskAgain)),
+                                AppLocalizations.of(context)!.dontAskAgain)),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -72,14 +72,14 @@ void showCancelOrderDialog({BuildContext context, Key key, String uuid}) {
                           key: const Key('settings-cancel-order-no'),
                           onPressed: () => dialogBloc.closeDialog(context),
                           child: Text(
-                            AppLocalizations.of(context).no,
+                            AppLocalizations.of(context)!.no,
                             maxLines: 1,
                           ),
                         ),
                         const SizedBox(width: 12),
                         ElevatedButton(
                           key: key ?? const Key('confirm-button-key'),
-                          onPressed: snapshot.data.contains(uuid)
+                          onPressed: snapshot.data!.contains(uuid)
                               ? null
                               : () {
                                   settingsBloc.setShowCancelOrderDialog(
@@ -88,7 +88,7 @@ void showCancelOrderDialog({BuildContext context, Key key, String uuid}) {
                                   ordersBloc.cancelOrder(uuid);
                                 },
                           child: Text(
-                            AppLocalizations.of(context).yes,
+                            AppLocalizations.of(context)!.yes,
                             maxLines: 1,
                           ),
                         ),

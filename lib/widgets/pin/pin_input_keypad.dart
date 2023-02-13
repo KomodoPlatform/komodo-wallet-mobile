@@ -2,11 +2,11 @@ part of 'pin_input.dart';
 
 class _KeyPad extends StatelessWidget {
   const _KeyPad({
-    Key key,
-    @required this.readOnly,
-    @required this.onChanged,
-    @required this.value,
-    @required this.canPressBackspace,
+    Key? key,
+    required this.readOnly,
+    required this.onChanged,
+    required this.value,
+    required this.canPressBackspace,
   }) : super(key: key);
 
   final bool readOnly;

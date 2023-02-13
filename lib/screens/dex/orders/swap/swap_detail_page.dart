@@ -11,22 +11,22 @@ import '../../../dex/orders/swap/stepper_trade.dart';
 import '../../../../widgets/sound_volume_button.dart';
 
 class SwapDetailPage extends StatefulWidget {
-  const SwapDetailPage({@required this.swap});
+  const SwapDetailPage({required this.swap});
 
-  final Swap swap;
+  final Swap? swap;
 
   @override
   _SwapDetailPageState createState() => _SwapDetailPageState();
 }
 
 class _SwapDetailPageState extends State<SwapDetailPage> {
-  Swap _swapData = Swap();
+  Swap? _swapData = Swap();
   bool _orderWasCreated = false;
 
   @override
   void initState() {
-    if (widget.swap.status != null &&
-        widget.swap.status == Status.SWAP_SUCCESSFUL)
+    if (widget.swap!.status != null &&
+        widget.swap!.status == Status.SWAP_SUCCESSFUL)
       swapHistoryBloc.isAnimationStepFinalIsFinish = true;
     super.initState();
   }
@@ -61,14 +61,14 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
                   builder: (BuildContext context,
                       AsyncSnapshot<Iterable<Swap>> swapsSnapshot) {
                     if (swapsSnapshot.data != null &&
-                        swapsSnapshot.data.isNotEmpty) {
+                        swapsSnapshot.data!.isNotEmpty) {
                       _swapData = widget.swap;
-                      for (Swap swap in swapsSnapshot.data) {
-                        if (swap.result.uuid == widget.swap.result.uuid) {
+                      for (Swap swap in swapsSnapshot.data!) {
+                        if (swap.result!.uuid == widget.swap!.result!.uuid) {
                           _swapData = swap;
                         }
                       }
-                      if (_swapData.status == Status.SWAP_SUCCESSFUL &&
+                      if (_swapData!.status == Status.SWAP_SUCCESSFUL &&
                           swapHistoryBloc.isAnimationStepFinalIsFinish) {
                         return FinalTradeSuccess(swap: _swapData);
                       } else {
@@ -112,17 +112,17 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
 
     dynamic existingOrderOrSwap =
         ordersBloc.orderSwaps.firstWhere((dynamic item) {
-      return item is Order && item.uuid == widget.swap.result.uuid;
+      return item is Order && item.uuid == widget.swap!.result!.uuid;
     }, orElse: () => null);
 
-    existingOrderOrSwap ??= swapMonitor.swap(widget.swap.result.uuid);
+    existingOrderOrSwap ??= swapMonitor.swap(widget.swap!.result!.uuid);
 
     if (_orderWasCreated && existingOrderOrSwap == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (mounted) Navigator.pop(context);
       });
     } else if (!_orderWasCreated) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (mounted) setState(() => _orderWasCreated = true);
       });
     }
@@ -131,15 +131,15 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
   void _switchToMakerIfConverted(AsyncSnapshot<List<dynamic>> ordersSnapshot) {
     if (!ordersSnapshot.hasData) return;
 
-    final Order makerOrder = ordersBloc.orderSwaps.firstWhere((dynamic order) {
+    final Order? makerOrder = ordersBloc.orderSwaps.firstWhere((dynamic order) {
       return order is Order &&
-          order.uuid == widget.swap.result.uuid &&
+          order.uuid == widget.swap!.result!.uuid &&
           order.orderType == OrderType.MAKER;
     }, orElse: () => null);
 
     if (makerOrder == null) return;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.pushReplacement<dynamic, dynamic>(
         context,
         MaterialPageRoute<dynamic>(

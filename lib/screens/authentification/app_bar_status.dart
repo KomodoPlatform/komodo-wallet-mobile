@@ -4,15 +4,15 @@ import '../authentification/logout_confirmation.dart';
 
 class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
   AppBarStatus({
-    Key key,
-    @required this.pinStatus,
-    @required this.context,
-    @required this.title,
+    Key? key,
+    required this.pinStatus,
+    required this.context,
+    required this.title,
   }) : super(key: key);
 
-  final PinStatus pinStatus;
+  final PinStatus? pinStatus;
   final BuildContext context;
-  final String title;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
         return AppBar(
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.onBackground,
-          title: Text(title),
+          title: Text(title!),
         );
         break;
       default:
@@ -42,7 +42,7 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
               splashRadius: 24,
             ),
           ],
-          title: Text(title),
+          title: Text(title!),
         );
     }
   }

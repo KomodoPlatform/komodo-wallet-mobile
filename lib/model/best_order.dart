@@ -11,7 +11,7 @@ class BestOrders {
     final BestOrders bestOrders = BestOrders(request: json['request']);
     if (json['result'] == null) return bestOrders;
 
-    final Market action = bestOrders.request.action;
+    final Market? action = bestOrders.request!.action;
 
     json['result'].forEach((String ticker, dynamic items) {
       bestOrders.result ??= {};
@@ -19,18 +19,18 @@ class BestOrders {
       for (dynamic item in items) {
         item['action'] = action;
         item['other_coin'] =
-            action == Market.SELL ? bestOrders.request.coin : ticker;
+            action == Market.SELL ? bestOrders.request!.coin : ticker;
         list.add(BestOrder.fromJson(item));
       }
-      bestOrders.result[ticker] = list;
+      bestOrders.result![ticker] = list;
     });
 
     return bestOrders;
   }
 
-  Map<String, List<BestOrder>> result;
-  ErrorString error;
-  GetBestOrders request;
+  Map<String, List<BestOrder>>? result;
+  ErrorString? error;
+  GetBestOrders? request;
 }
 
 class BestOrder {
@@ -58,12 +58,12 @@ class BestOrder {
     );
   }
 
-  Rational price;
-  Rational maxVolume;
-  Rational minVolume;
-  String coin;
-  String otherCoin;
-  bool isMine;
-  String address;
-  Market action;
+  Rational? price;
+  Rational? maxVolume;
+  Rational? minVolume;
+  String? coin;
+  String? otherCoin;
+  bool? isMine;
+  String? address;
+  Market? action;
 }

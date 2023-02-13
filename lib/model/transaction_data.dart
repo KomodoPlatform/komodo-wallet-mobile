@@ -30,9 +30,9 @@ class Transaction {
       from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
           <String>[],
       internalId: json['internal_id'] ?? '',
-      myBalanceChange: json['my_balance_change'] ?? 0.0,
-      receivedByMe: json['received_by_me'] ?? 0.0,
-      spentByMe: json['spent_by_me'] ?? 0.0,
+      myBalanceChange: json['my_balance_change'] ?? 0.0 as String?,
+      receivedByMe: json['received_by_me'] ?? 0.0 as String?,
+      spentByMe: json['spent_by_me'] ?? 0.0 as String?,
       timestamp: json['timestamp'] ?? 0,
       to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
           <String>[],
@@ -42,27 +42,27 @@ class Transaction {
     );
   }
 
-  int blockHeight;
-  String coin;
-  int confirmations;
-  FeeDetails feeDetails;
-  List<String> from;
-  String internalId;
-  String myBalanceChange;
-  String receivedByMe;
-  String spentByMe;
-  int timestamp;
-  List<String> to;
-  String totalAmount;
-  String txHash;
-  String txHex;
+  int? blockHeight;
+  String? coin;
+  int? confirmations;
+  FeeDetails? feeDetails;
+  List<String>? from;
+  String? internalId;
+  String? myBalanceChange;
+  String? receivedByMe;
+  String? spentByMe;
+  int? timestamp;
+  List<String>? to;
+  String? totalAmount;
+  String? txHash;
+  String? txHex;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'block_height': blockHeight ?? 0.0,
         'coin': coin ?? '',
         'confirmations': confirmations ?? 0,
         'fee_details': feeDetails?.toJson(),
-        'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
+        'from': List<dynamic>.from(from!.map<dynamic>((dynamic x) => x)) ??
             <String>[],
         'internal_id': internalId ?? '',
         'my_balance_change': myBalanceChange ?? 0.0,
@@ -70,7 +70,7 @@ class Transaction {
         'spent_by_me': spentByMe ?? 0.0,
         'timestamp': timestamp ?? 0,
         'to':
-            List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
+            List<dynamic>.from(to!.map<dynamic>((dynamic x) => x)) ?? <String>[],
         'total_amount': totalAmount ?? '',
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',
@@ -79,18 +79,18 @@ class Transaction {
   String getTimeFormat() {
     if (timestamp == 0 && confirmations == 0) {
       return 'unconfirmed';
-    } else if (timestamp == 0 && confirmations > 0) {
+    } else if (timestamp == 0 && confirmations! > 0) {
       return 'confirmed';
     } else {
       return DateFormat('dd MMM yyyy HH:mm')
-          .format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
+          .format(DateTime.fromMillisecondsSinceEpoch(timestamp! * 1000));
     }
   }
 
   List<String> getToAddress() {
-    final List<String> toAddress = List.from(to);
+    final List<String> toAddress = List.from(to!);
     if (toAddress.length > 1) {
-      toAddress.removeWhere((String toItem) => toItem == from[0]);
+      toAddress.removeWhere((String toItem) => toItem == from![0]);
     }
     return toAddress;
   }
@@ -126,12 +126,12 @@ class FeeDetails {
     return feeDetails;
   }
 
-  String amount;
-  String coin;
-  int gas;
-  int gasLimit;
+  String? amount;
+  String? coin;
+  int? gas;
+  int? gasLimit;
   dynamic gasPrice; // String for erc, int for qrc
-  String totalFee;
+  String? totalFee;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'amount': amount ?? 0.0,

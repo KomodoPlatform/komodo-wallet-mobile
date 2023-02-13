@@ -219,7 +219,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m99(amount, coin) => "Recibirás ${amount} ${coin}";
 
-  final messages = _notInlinedMessages(_notInlinedMessages);
+  final Map<String, dynamic> messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function> {
     "Active" : MessageLookupByLibrary.simpleMessage("Activo"),
     "Applause" : MessageLookupByLibrary.simpleMessage("Aplausos"),

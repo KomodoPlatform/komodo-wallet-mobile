@@ -24,9 +24,9 @@ class BlocManager {
 
   //===========================  Repositories  ===========================
   // TODO: Add 'late' and 'final' after null safety
-  SharedPreferences _prefs;
+  SharedPreferences? _prefs;
 
-  AuthenticationRepository _authenticationRepository;
+  AuthenticationRepository? _authenticationRepository;
 
   //=====================================================================
 
@@ -36,7 +36,7 @@ class BlocManager {
   // Initialize HydratedBloc
   Future<void> _initPersistance() async {
     final storage = await HydratedStorage.build(
-      storageDirectory: await applicationDocumentsDirectory,
+      storageDirectory: await (applicationDocumentsDirectory as FutureOr<Directory>),
     );
 
     HydratedBloc.storage = storage;
@@ -53,7 +53,7 @@ class BlocManager {
         Future(() async {
           _authenticationRepository = AuthenticationRepository();
 
-          await _authenticationRepository.init();
+          await _authenticationRepository!.init();
         }),
         Future(() async => _prefs = await SharedPreferences.getInstance()),
       ];

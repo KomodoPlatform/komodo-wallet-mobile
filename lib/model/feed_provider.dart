@@ -17,8 +17,8 @@ class FeedProvider extends ChangeNotifier {
     });
   }
 
-  Timer _ticker;
-  List<NewsItem> _news;
+  Timer? _ticker;
+  List<NewsItem>? _news;
   bool _isNewsFetching = false;
   bool _hasNewItems = false;
   AppLocalizations localizations = AppLocalizations();
@@ -36,7 +36,7 @@ class FeedProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<NewsItem> getNews() => _news;
+  List<NewsItem>? getNews() => _news;
   Future<String> updateNews() => _updateNews();
 
   /// If news was successfully fetched and proceed,
@@ -45,7 +45,7 @@ class FeedProvider extends ChangeNotifier {
   Future<String> _updateNews() async {
     _isNewsFetching = true;
     notifyListeners();
-    http.Response response;
+    http.Response? response;
 
     try {
       response = await http.get(Uri.parse(appConfig.feedProviderSourceUrl));
@@ -58,9 +58,9 @@ class FeedProvider extends ChangeNotifier {
       return localizations.feedUnableToUpdate;
     }
 
-    List<NewsItem> news;
+    List<NewsItem>? news;
     try {
-      news = _newsFromJson(response.body);
+      news = _newsFromJson(response!.body);
     } catch (e) {
       Log('feed_provider:52', '_updateNews] $e');
     }
@@ -69,20 +69,20 @@ class FeedProvider extends ChangeNotifier {
     }
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String cachedNews = prefs.getString('cachedNews');
+    final String? cachedNews = prefs.getString('cachedNews');
     if (cachedNews != null &&
-        _newsFromJson(cachedNews)[0].date == news[0].date) {
+        _newsFromJson(cachedNews)![0].date == news[0].date) {
       return localizations.feedUpToDate;
     }
 
-    prefs.setString('cachedNews', response.body);
+    prefs.setString('cachedNews', response!.body);
     _hasNewItems = true;
     _news = news;
 
     notifService.show(NotifObj(
       title: localizations.feedNotifTitle(appConfig.appCompanyShort),
-      text: _news[0].content,
-      uid: 'feed_${_news[0].date}',
+      text: _news![0].content,
+      uid: 'feed_${_news![0].date}',
     ));
 
     notifyListeners();
@@ -90,9 +90,9 @@ class FeedProvider extends ChangeNotifier {
   }
 
   Future<void> _updateData() async {
-    if (_news == null || _news.isEmpty) {
+    if (_news == null || _news!.isEmpty) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String cachedNews = prefs.getString('cachedNews');
+      final String? cachedNews = prefs.getString('cachedNews');
       if (cachedNews != null) {
         _news = _newsFromJson(cachedNews);
         notifyListeners();
@@ -107,11 +107,11 @@ class FeedProvider extends ChangeNotifier {
     }
   }
 
-  List<NewsItem> _newsFromJson(String body) {
+  List<NewsItem>? _newsFromJson(String body) {
     final List<dynamic> json = jsonDecode(body);
-    List<NewsItem> news;
+    List<NewsItem>? news;
     for (dynamic item in json) {
-      final String content = item['content'];
+      final String? content = item['content'];
       if (content == null || content.isEmpty) continue;
       news ??= [];
       news.add(NewsItem(
@@ -126,15 +126,15 @@ class FeedProvider extends ChangeNotifier {
 class NewsItem {
   NewsItem({this.date, this.content, this.source});
 
-  String date;
-  String content;
-  NewsSource source;
+  String? date;
+  String? content;
+  NewsSource? source;
 }
 
 class NewsSource {
   NewsSource({this.name, this.url, this.pic});
 
-  String name;
-  String url;
-  String pic;
+  String? name;
+  String? url;
+  String? pic;
 }

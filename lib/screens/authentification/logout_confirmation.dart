@@ -12,9 +12,9 @@ void showLogoutConfirmation(BuildContext mContext) {
 
   showConfirmationDialog(
     context: context,
-    title: AppLocalizations.of(context).logout,
-    message: AppLocalizations.of(context).logoutWarning,
-    confirmButtonText: AppLocalizations.of(context).logout,
+    title: AppLocalizations.of(context)!.logout,
+    message: AppLocalizations.of(context)!.logoutWarning,
+    confirmButtonText: AppLocalizations.of(context)!.logout,
     icon: Icons.exit_to_app,
     iconColor: Theme.of(context).errorColor,
     key: const Key('settings-logout-yes'),

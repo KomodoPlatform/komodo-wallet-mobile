@@ -6,8 +6,8 @@ import '../../widgets/secondary_button.dart';
 class ViewSeed extends StatelessWidget {
   const ViewSeed({this.seed, this.context});
 
-  final String seed;
-  final BuildContext context;
+  final String? seed;
+  final BuildContext? context;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ViewSeed extends StatelessWidget {
           Row(
             children: [
               Text(
-                AppLocalizations.of(context).seedPhrase,
+                AppLocalizations.of(context)!.seedPhrase,
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ],
@@ -37,7 +37,7 @@ class ViewSeed extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      seed,
+                      seed!,
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                   ),
@@ -48,7 +48,7 @@ class ViewSeed extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: SecondaryButton(
-                        text: AppLocalizations.of(context).clipboardCopy,
+                        text: AppLocalizations.of(context)!.clipboardCopy,
                         onPressed: () {
                           copyToClipBoard(context, seed);
                         },

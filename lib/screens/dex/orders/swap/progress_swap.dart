@@ -10,8 +10,8 @@ import 'package:vector_math/vector_math_64.dart' as math;
 class ProgressSwap extends StatefulWidget {
   const ProgressSwap({this.uuid, this.onFinished});
 
-  final String uuid;
-  final Function onFinished;
+  final String? uuid;
+  final Function? onFinished;
 
   @override
   _ProgressSwapState createState() => _ProgressSwapState();
@@ -19,15 +19,15 @@ class ProgressSwap extends StatefulWidget {
 
 class _ProgressSwapState extends State<ProgressSwap>
     with SingleTickerProviderStateMixin {
-  AnimationController _radialProgressAnimationController;
-  Animation<double> _progressAnimation;
+  late AnimationController _radialProgressAnimationController;
+  Animation<double>? _progressAnimation;
   final Duration fadeInDuration = const Duration(milliseconds: 500);
   final Duration fillDuration = const Duration(seconds: 1);
 
   double progressDegrees = 0;
   int count = 0;
-  Swap prevSwap = Swap();
-  Swap swap;
+  Swap? prevSwap = Swap();
+  Swap? swap;
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class _ProgressSwapState extends State<ProgressSwap>
         setState(() {
           progressDegrees = _progressAnimation?.value ?? progressDegrees;
           if (progressDegrees == 360) {
-            widget.onFinished();
+            widget.onFinished!();
           }
         });
       });
@@ -67,9 +67,9 @@ class _ProgressSwapState extends State<ProgressSwap>
     swap =
         _swapProvider.swap(widget.uuid) ?? Swap(status: Status.ORDER_MATCHING);
 
-    if (swap.step != prevSwap.step) {
+    if (swap!.step != prevSwap!.step) {
       prevSwap = swap;
-      _animateTo((360 / swap.steps) * swap.step);
+      _animateTo((360 / swap!.steps) * swap!.step);
     }
 
     final double heightScreen = MediaQuery.of(context).size.height * 0.06;
@@ -98,15 +98,15 @@ class _ProgressSwapState extends State<ProgressSwap>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      '${AppLocalizations.of(context).step} ',
+                      '${AppLocalizations.of(context)!.step} ',
                       style: Theme.of(context).textTheme.subtitle2,
                     ),
                     Text(
-                      swap.statusStep.toString(),
-                      style: Theme.of(context).textTheme.subtitle2.copyWith(
+                      swap!.statusStep.toString(),
+                      style: Theme.of(context).textTheme.subtitle2!.copyWith(
                           color: Theme.of(context).colorScheme.secondary),
                     ),
-                    Text('/${swap.statusSteps}',
+                    Text('/${swap!.statusSteps}',
                         style: Theme.of(context).textTheme.subtitle2),
                   ],
                 ),
@@ -117,10 +117,10 @@ class _ProgressSwapState extends State<ProgressSwap>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                swapHistoryBloc.getSwapStatusString(context, swap.status),
+                swapHistoryBloc.getSwapStatusString(context, swap!.status),
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2
+                    .bodyText2!
                     .copyWith(fontWeight: FontWeight.w300),
               ),
               BuildTakerCountdown(widget.uuid),
@@ -133,9 +133,9 @@ class _ProgressSwapState extends State<ProgressSwap>
 }
 
 class RadialPainter extends CustomPainter {
-  const RadialPainter({@required this.context, this.progressInDegrees});
+  const RadialPainter({required this.context, this.progressInDegrees});
 
-  final double progressInDegrees;
+  final double? progressInDegrees;
   final BuildContext context;
 
   @override
@@ -161,7 +161,7 @@ class RadialPainter extends CustomPainter {
     canvas.drawArc(
         Rect.fromCircle(center: center, radius: size.width / 2),
         math.radians(-90),
-        math.radians(progressInDegrees),
+        math.radians(progressInDegrees!),
         false,
         progressPaint);
   }

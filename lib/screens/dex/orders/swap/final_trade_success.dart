@@ -15,9 +15,9 @@ import '../../../../widgets/swap_share_card.dart';
 import 'package:share/share.dart';
 
 class FinalTradeSuccess extends StatefulWidget {
-  const FinalTradeSuccess({@required this.swap});
+  const FinalTradeSuccess({required this.swap});
 
-  final Swap swap;
+  final Swap? swap;
 
   @override
   _FinalTradeSuccessState createState() => _FinalTradeSuccessState();
@@ -25,8 +25,8 @@ class FinalTradeSuccess extends StatefulWidget {
 
 class _FinalTradeSuccessState extends State<FinalTradeSuccess>
     with SingleTickerProviderStateMixin {
-  AnimationController animationController;
-  Animation<dynamic> animation;
+  AnimationController? animationController;
+  Animation<dynamic>? animation;
 
   @override
   void initState() {
@@ -37,8 +37,8 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
     );
 
     animation = Tween<double>(begin: -0.5, end: 0.0).animate(CurvedAnimation(
-        parent: animationController, curve: Curves.fastOutSlowIn));
-    animationController.forward();
+        parent: animationController!, curve: Curves.fastOutSlowIn));
+    animationController!.forward();
   }
 
   @override
@@ -52,7 +52,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
     final GlobalKey repaintKey = GlobalKey();
 
     return FadeTransition(
-      opacity: animationController.drive(CurveTween(curve: Curves.easeOut)),
+      opacity: animationController!.drive(CurveTween(curve: Curves.easeOut)),
       child: ListView(
         children: <Widget>[
           Stack(
@@ -89,7 +89,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                   ),
                   Column(
                     children: <Widget>[
-                      Text(AppLocalizations.of(context).trade,
+                      Text(AppLocalizations.of(context)!.trade,
                           style: Theme.of(context).textTheme.headline6),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,10 +98,10 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                             child: SizedBox(),
                           ),
                           Text(
-                            AppLocalizations.of(context).tradeCompleted,
+                            AppLocalizations.of(context)!.tradeCompleted,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline6
+                                .headline6!
                                 .copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
@@ -150,16 +150,16 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
 
   Future<void> _shareCard(GlobalKey repaintKey) async {
     final RenderRepaintBoundary boundary =
-        repaintKey.currentContext.findRenderObject();
+        repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     final ui.Image image = await boundary.toImage(pixelRatio: 4);
-    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final byteData = await (image.toByteData(format: ui.ImageByteFormat.png) as FutureOr<ByteData>);
     final pngBytes = byteData.buffer.asUint8List();
 
-    final String directory = (await applicationDocumentsDirectory).path;
-    final imgFile = File('$directory/${widget.swap.result.uuid}.png');
+    final String directory = (await applicationDocumentsDirectory)!.path;
+    final imgFile = File('$directory/${widget.swap!.result!.uuid}.png');
     await imgFile.writeAsBytes(pngBytes);
 
-    final myInfo = extractMyInfoFromSwap(widget.swap.result);
+    final myInfo = extractMyInfoFromSwap(widget.swap!.result!);
     final myCoin = myInfo['myCoin'];
     final otherCoin = myInfo['otherCoin'];
 

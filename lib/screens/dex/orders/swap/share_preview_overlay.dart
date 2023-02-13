@@ -21,7 +21,7 @@ class SharePreviewOverlay extends ModalRoute<void> {
   Color get barrierColor => Colors.black.withOpacity(0.9);
 
   @override
-  String get barrierLabel => null;
+  String? get barrierLabel => null;
 
   @override
   bool get maintainState => true;
@@ -52,7 +52,7 @@ class SharePreviewOverlay extends ModalRoute<void> {
             SizedBox(height: 100),
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(AppLocalizations.of(context).closePreview),
+              child: Text(AppLocalizations.of(context)!.closePreview),
             )
           ],
         ),

@@ -9,8 +9,8 @@ import '../../../../../../utils/utils.dart';
 import '../../../../../../widgets/custom_simple_dialog.dart';
 
 void openSelectSellCoinDialog({
-  BuildContext context,
-  Function(CoinBalance) onDone,
+  required BuildContext context,
+  Function(CoinBalance)? onDone,
 }) {
   final List<SimpleDialogOption> coinItemsList =
       _coinItemsList(context: context, onSelected: onDone);
@@ -22,7 +22,7 @@ void openSelectSellCoinDialog({
             ? CustomSimpleDialog(
                 key: const Key('sell-coin-dialog'),
                 hasHorizontalPadding: false,
-                title: Text(AppLocalizations.of(context).sell),
+                title: Text(AppLocalizations.of(context)!.sell),
                 children: coinItemsList,
               )
             : CustomSimpleDialog(
@@ -36,7 +36,7 @@ void openSelectSellCoinDialog({
                     const SizedBox(
                       height: 16,
                     ),
-                    Text(AppLocalizations.of(context).noFunds,
+                    Text(AppLocalizations.of(context)!.noFunds,
                         style: Theme.of(context).textTheme.headline6),
                     const SizedBox(
                       height: 16,
@@ -44,10 +44,10 @@ void openSelectSellCoinDialog({
                   ],
                 ),
                 children: <Widget>[
-                  Text(AppLocalizations.of(context).noFundsDetected,
+                  Text(AppLocalizations.of(context)!.noFundsDetected,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2
+                          .bodyText2!
                           .copyWith(color: Theme.of(context).hintColor)),
                   const SizedBox(
                     height: 24,
@@ -60,7 +60,7 @@ void openSelectSellCoinDialog({
                           Navigator.of(context).pop();
                           mainBloc.setCurrentIndexTab(0);
                         },
-                        child: Text(AppLocalizations.of(context).goToPorfolio),
+                        child: Text(AppLocalizations.of(context)!.goToPorfolio),
                       )
                     ],
                   ),
@@ -70,20 +70,20 @@ void openSelectSellCoinDialog({
 }
 
 List<SimpleDialogOption> _coinItemsList({
-  BuildContext context,
-  Function(CoinBalance) onSelected,
+  BuildContext? context,
+  Function(CoinBalance)? onSelected,
 }) {
   final List<SimpleDialogOption> listDialog = <SimpleDialogOption>[];
   for (CoinBalance coin in coinsBloc.coinBalance) {
-    if ((!coin.coin.suspended) &&
-        (!coin.coin.walletOnly) &&
-        double.parse(coin.balance.getBalance()) > 0) {
+    if ((!coin.coin!.suspended) &&
+        (!coin.coin!.walletOnly) &&
+        double.parse(coin.balance!.getBalance()) > 0) {
       final SimpleDialogOption dialogItem = SimpleDialogOption(
-        key: Key('item-dialog-${coin.coin.abbr.toLowerCase()}-sell'),
+        key: Key('item-dialog-${coin.coin!.abbr!.toLowerCase()}-sell'),
         onPressed: () {
-          onSelected(coin);
+          onSelected!(coin);
 
-          Navigator.pop(context);
+          Navigator.pop(context!);
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,7 +92,7 @@ List<SimpleDialogOption> _coinItemsList({
                 height: 30,
                 width: 30,
                 child: Image.asset(
-                  getCoinIconPath(coin.coin.abbr),
+                  getCoinIconPath(coin.coin!.abbr),
                 )),
             Expanded(child: SizedBox()),
             Row(
@@ -103,7 +103,7 @@ List<SimpleDialogOption> _coinItemsList({
                     stream: settingsBloc.outShowBalance,
                     builder:
                         (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                      String amount = coin.balance.getBalance();
+                      String amount = coin.balance!.getBalance();
                       if (snapshot.hasData && snapshot.data == false) {
                         amount = '**.**';
                       }
@@ -113,8 +113,8 @@ List<SimpleDialogOption> _coinItemsList({
                   width: 4,
                 ),
                 Text(
-                  coin.coin.abbr,
-                  style: Theme.of(context).textTheme.caption,
+                  coin.coin!.abbr!,
+                  style: Theme.of(context!).textTheme.caption,
                 )
               ],
             )

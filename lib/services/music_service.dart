@@ -42,22 +42,22 @@ class MusicService {
   }
 
   /// Initially `null` (unknown) in order to trigger `recommendsPeriodicUpdates`.
-  MusicMode musicMode;
+  MusicMode? musicMode;
 
   /// Whether the volume is currently up.
   bool _on = true;
 
   /// Application directory, with `_customName` files in it.
-  Directory _docs;
+  Directory? _docs;
 
   /// Triggers reconfiguration of the player.
   bool _reload = false;
 
-  AudioPlayer _audioPlayer;
-  AudioCache _player;
+  AudioPlayer? _audioPlayer;
+  late AudioCache _player;
 
-  Iterable<Swap> _successfulSwaps;
-  Iterable<Swap> _failedSwaps;
+  Iterable<Swap>? _successfulSwaps;
+  Iterable<Swap>? _failedSwaps;
 
   void makePlayer() {
     // On iOS we're using the “audio.m” implementation instead.
@@ -66,7 +66,7 @@ class MusicService {
     _audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
     _player = AudioCache(prefix: 'assets/audio/', fixedPlayer: _audioPlayer);
 
-    _audioPlayer.onPlayerError.listen((String ev) {
+    _audioPlayer!.onPlayerError.listen((String ev) {
       Log('music_service:72', 'onPlayerError: ' + ev);
     });
 
@@ -79,7 +79,7 @@ class MusicService {
   }
 
   /// Pick the current music mode based on the list of all the orders and SWAPs.
-  MusicMode _pickMode(List<Order> orders, MusicMode prevMode) {
+  MusicMode _pickMode(List<Order> orders, MusicMode? prevMode) {
     if (prevMode == MusicMode.ACTIVE && _anyNewSuccessfulSwaps()) {
       Log('music_service]', 'pickMode: MusicMode.APPLAUSE');
       return MusicMode.APPLAUSE;
@@ -91,7 +91,7 @@ class MusicService {
     }
 
     for (final Order order in orders) {
-      final String shortId = order.uuid.substring(0, 4);
+      final String shortId = order.uuid!.substring(0, 4);
       if (order.orderType == OrderType.MAKER) {
         Log('music_service:118',
             'pickMode] maker order $shortId, MusicMode.MAKER');
@@ -105,7 +105,7 @@ class MusicService {
     }
 
     for (final Swap swap in swapMonitor.swaps) {
-      final String uuid = swap.result.uuid;
+      final String uuid = swap.result!.uuid!;
       final String shortId = uuid.substring(0, 4);
 
       final bool active = swap.status != Status.SWAP_FAILED &&
@@ -129,7 +129,7 @@ class MusicService {
 
     bool haveNew = false;
     if (_successfulSwaps != null && successfulNew != null) {
-      haveNew = _successfulSwaps.length < successfulNew.length;
+      haveNew = _successfulSwaps!.length < successfulNew.length;
     }
 
     _successfulSwaps = successfulNew;
@@ -142,14 +142,14 @@ class MusicService {
 
     bool haveNew = false;
     if (_failedSwaps != null && failedNew != null) {
-      haveNew = _failedSwaps.length < failedNew.length;
+      haveNew = _failedSwaps!.length < failedNew.length;
     }
 
     _failedSwaps = failedNew;
     return haveNew;
   }
 
-  String _customName(MusicMode mode) => mode == MusicMode.TAKER
+  String? _customName(MusicMode mode) => mode == MusicMode.TAKER
       ? 'tick-tock.mp3'
       : mode == MusicMode.MAKER
           ? 'maker_order_placed.mp3'
@@ -162,7 +162,7 @@ class MusicService {
                       : null;
 
   Future<void> setSoundPath(MusicMode mode, String path) async {
-    final String name = _customName(mode);
+    final String? name = _customName(mode);
     if (name == null) throw Exception('unexpected mode: $mode');
 
     // NB: In my experience on iOS the `path` points into an "Inbox" application directory.
@@ -172,7 +172,7 @@ class MusicService {
     // - https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
 
     if (_docs == null) throw Exception('Application directory is missing');
-    final String target = _docs.path.toString() + '/' + name;
+    final String target = _docs!.path.toString() + '/' + name;
     final File file = File(path);
     Log('music_service:152', 'copying $path to $target');
     await file.copy(target);
@@ -205,8 +205,8 @@ class MusicService {
       _reload = false;
       // Recreating the player in order for it not to use a previous instance of the sound file.
       if (Platform.isAndroid) {
-        _audioPlayer.stop();
-        _audioPlayer.release();
+        _audioPlayer!.stop();
+        _audioPlayer!.release();
         _player.clearAll();
         makePlayer();
       }
@@ -216,16 +216,16 @@ class MusicService {
     if (!changes) return;
 
     // Switch to a custom sound file if it is present in the docs.
-    File customFile;
-    final String customName = _customName(newMode);
+    File? customFile;
+    final String? customName = _customName(newMode);
     if (_docs != null && customName != null) {
-      final File custom = File(_docs.path.toString() + '/' + customName);
+      final File custom = File(_docs!.path.toString() + '/' + customName);
       if (custom.existsSync()) customFile = custom;
     }
 
     const String defaultPath = 'none.mp3';
 
-    final String path = customFile != null
+    final String? path = customFile != null
         ? (Platform.isAndroid ? customFile.path : customName)
         : defaultPath;
     Log('music_service:233', 'path: $path');
@@ -236,23 +236,23 @@ class MusicService {
         _player.loadedFiles[customFile.path] = Uri.file(customFile.path);
 
       if (newMode == MusicMode.TAKER) {
-        _player.loop(path, volume: volume());
+        _player.loop(path!, volume: volume());
       } else if (newMode == MusicMode.MAKER) {
-        _player.loop(path, volume: volume());
+        _player.loop(path!, volume: volume());
       } else if (newMode == MusicMode.ACTIVE) {
-        _player.loop(path, volume: volume());
+        _player.loop(path!, volume: volume());
       } else if (newMode == MusicMode.FAILED) {
-        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play(path, volume: volume());
+        _audioPlayer!.setReleaseMode(ReleaseMode.RELEASE);
+        _player.play(path!, volume: volume());
       } else if (newMode == MusicMode.APPLAUSE) {
-        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play(path, volume: volume());
+        _audioPlayer!.setReleaseMode(ReleaseMode.RELEASE);
+        _player.play(path!, volume: volume());
       } else if (newMode == MusicMode.SILENT) {
-        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play(path, volume: volume());
+        _audioPlayer!.setReleaseMode(ReleaseMode.RELEASE);
+        _player.play(path!, volume: volume());
       } else {
         Log('music_service:255', 'Unexpected music mode: $newMode');
-        _audioPlayer.stop();
+        _audioPlayer!.stop();
       }
     } else {
       await MMService.nativeC.invokeMethod<int>('audio_volume', volume());
@@ -267,7 +267,7 @@ class MusicService {
             .invokeMethod<int>('audio_fg', <String, dynamic>{'path': path});
         if (rc != 0) Log('music_service:269', 'audio_fg rc: $rc');
       } else if (newMode == MusicMode.SILENT) {
-        final int response =
+        final int? response =
             await MMService.nativeC.invokeMethod<int>('audio_stop');
         if (response != 0) Log('music_service', 'audio_stop: $response');
       } else {
@@ -311,7 +311,7 @@ class MusicService {
   void flip() {
     _on = !_on;
     if (Platform.isAndroid) {
-      _audioPlayer.setVolume(volume());
+      _audioPlayer!.setVolume(volume());
     } else {
       () async {
         await MMService.nativeC.invokeMethod<int>('audio_volume', volume());

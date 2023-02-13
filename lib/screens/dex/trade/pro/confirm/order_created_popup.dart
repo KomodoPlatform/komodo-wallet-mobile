@@ -8,9 +8,9 @@ void showOrderCreatedDialog(BuildContext context) {
   dialogBloc.dialog = showDialog<dynamic>(
           builder: (BuildContext context) {
             return CustomSimpleDialog(
-              title: Text(AppLocalizations.of(context).orderCreated),
+              title: Text(AppLocalizations.of(context)!.orderCreated),
               children: <Widget>[
-                Text(AppLocalizations.of(context).orderCreatedInfo),
+                Text(AppLocalizations.of(context)!.orderCreatedInfo),
                 SizedBox(height: 16),
               ],
               verticalButtons: [
@@ -19,14 +19,14 @@ void showOrderCreatedDialog(BuildContext context) {
                     swapBloc.setIndexTabDex(1);
                     Navigator.of(context).pop();
                   },
-                  child: Text(AppLocalizations.of(context).showMyOrders),
+                  child: Text(AppLocalizations.of(context)!.showMyOrders),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text(AppLocalizations.of(context).close),
+                  child: Text(AppLocalizations.of(context)!.close),
                 )
               ],
             );

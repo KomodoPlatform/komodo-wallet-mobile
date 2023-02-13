@@ -11,11 +11,11 @@ class OverwriteDialogContent extends StatefulWidget {
     this.onMerge,
   });
 
-  final String currentValue;
-  final String newValue;
-  final Function onSkip;
-  final Function onOverwrite;
-  final Function(String) onMerge;
+  final String? currentValue;
+  final String? newValue;
+  final Function? onSkip;
+  final Function? onOverwrite;
+  final Function(String)? onMerge;
 
   @override
   _OverwriteDialogContentState createState() => _OverwriteDialogContentState();
@@ -37,18 +37,18 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          AppLocalizations.of(context).currentValue,
+          AppLocalizations.of(context)!.currentValue,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         SizedBox(height: 4),
-        Text(widget.currentValue),
+        Text(widget.currentValue!),
         SizedBox(height: 12),
         Text(
-          AppLocalizations.of(context).newValue,
+          AppLocalizations.of(context)!.newValue,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         SizedBox(height: 4),
-        Text(widget.newValue),
+        Text(widget.newValue!),
         SizedBox(height: 12),
         if (merging) _buildMergingField(),
         Column(
@@ -56,8 +56,8 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
           children: merging
               ? <Widget>[
                   ElevatedButton(
-                    onPressed: () => widget.onMerge(mergedValueController.text),
-                    child: Text(AppLocalizations.of(context).saveMerged),
+                    onPressed: () => widget.onMerge!(mergedValueController.text),
+                    child: Text(AppLocalizations.of(context)!.saveMerged),
                   ),
                   TextButton(
                     onPressed: () {
@@ -65,7 +65,7 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
                         merging = false;
                       });
                     },
-                    child: Text(AppLocalizations.of(context).back),
+                    child: Text(AppLocalizations.of(context)!.back),
                   ),
                 ]
               : <Widget>[
@@ -75,15 +75,15 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
                         merging = true;
                       });
                     },
-                    child: Text(AppLocalizations.of(context).merge),
+                    child: Text(AppLocalizations.of(context)!.merge),
                   ),
                   ElevatedButton(
-                    onPressed: widget.onSkip,
-                    child: Text(AppLocalizations.of(context).skip),
+                    onPressed: widget.onSkip as void Function()?,
+                    child: Text(AppLocalizations.of(context)!.skip),
                   ),
                   ElevatedButton(
-                    onPressed: widget.onOverwrite,
-                    child: Text(AppLocalizations.of(context).overwrite),
+                    onPressed: widget.onOverwrite as void Function()?,
+                    child: Text(AppLocalizations.of(context)!.overwrite),
                   ),
                 ],
         )
@@ -96,7 +96,7 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          AppLocalizations.of(context).mergedValue,
+          AppLocalizations.of(context)!.mergedValue,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         SizedBox(height: 4),

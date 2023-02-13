@@ -18,10 +18,10 @@ class UpdatesProvider extends ChangeNotifier {
 
   final AppLocalizations _localizations = AppLocalizations();
   bool isFetching = false;
-  UpdateStatus status;
-  String currentVersion;
-  String newVersion;
-  String message;
+  UpdateStatus? status;
+  String? currentVersion;
+  String? newVersion;
+  String? message;
 
   final String url = appConfig.updateCheckerEndpoint;
 
@@ -55,7 +55,7 @@ class UpdatesProvider extends ChangeNotifier {
     }
 
     http.Response response;
-    Map<String, dynamic> json;
+    Map<String, dynamic>? json;
 
     try {
       response = await http
@@ -75,7 +75,7 @@ class UpdatesProvider extends ChangeNotifier {
           status = UpdateStatus.upToDate;
           notifyListeners();
           return;
-        },
+        } as FutureOr<Response> Function()?,
       );
 
       json = jsonDecode(response.body);
@@ -89,10 +89,10 @@ class UpdatesProvider extends ChangeNotifier {
       return;
     }
 
-    message = json['message'];
-    final String jsonVersion = json['newVersion'];
+    message = json!['message'];
+    final String? jsonVersion = json['newVersion'];
     if (jsonVersion != null && currentVersion != null) {
-      if (jsonVersion.compareTo(currentVersion) > 0) {
+      if (jsonVersion.compareTo(currentVersion!) > 0) {
         newVersion = jsonVersion;
       } else {
         isFetching = false;
@@ -136,7 +136,7 @@ class UpdatesProvider extends ChangeNotifier {
           title: _localizations.updatesNotifTitle,
           text: newVersion == null
               ? _localizations.updatesNotifAvailable
-              : _localizations.updatesNotifAvailableVersion(newVersion),
+              : _localizations.updatesNotifAvailableVersion(newVersion!),
           uid: 'version_update',
         ),
       );

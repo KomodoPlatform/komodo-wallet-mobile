@@ -10,19 +10,19 @@ class FiltersButton extends StatelessWidget {
     this.isActive,
   });
 
-  final String text;
-  final Function onPressed;
-  final ActiveFilters activeFilters;
-  final bool isActive;
+  final String? text;
+  final Function? onPressed;
+  final ActiveFilters? activeFilters;
+  final bool? isActive;
 
   @override
   Widget build(BuildContext context) {
-    final Color color = activeFilters.anyActive
+    final Color? color = activeFilters!.anyActive
         ? Theme.of(context).colorScheme.secondary
         : null;
 
     return InkWell(
-      onTap: onPressed,
+      onTap: onPressed as void Function()?,
       child: Container(
         padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
         child: Row(
@@ -38,21 +38,21 @@ class FiltersButton extends StatelessWidget {
             ),
             const SizedBox(width: 2),
             Text(
-              text ?? AppLocalizations.of(context).filtersButton,
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              text ?? AppLocalizations.of(context)!.filtersButton,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     color: color,
                   ),
             ),
-            if (activeFilters.anyActive)
+            if (activeFilters!.anyActive)
               Text(
-                ' (${activeFilters.matches})',
-                style: Theme.of(context).textTheme.bodyText1.copyWith(
+                ' (${activeFilters!.matches})',
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
                       color: color,
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
                     ),
               ),
-            Icon(isActive ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+            Icon(isActive! ? Icons.arrow_drop_up : Icons.arrow_drop_down,
                 size: 14, color: color),
           ],
         ),

@@ -15,8 +15,8 @@ class MakerOrderNote extends StatefulWidget {
 }
 
 class _MakerOrderNoteState extends State<MakerOrderNote> {
-  String noteId;
-  String noteText;
+  String? noteId;
+  String? noteText;
   final noteTextController = TextEditingController();
   bool isEdit = false;
   bool isExpanded = false;
@@ -29,7 +29,7 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
     Db.getNote(noteId).then((n) {
       setState(() {
         noteText = n;
-        noteTextController.text = noteText;
+        noteTextController.text = noteText!;
       });
     });
   }
@@ -74,9 +74,9 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
                       : Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Text(
-                            (noteText == null || noteText.isEmpty)
-                                ? AppLocalizations.of(context).notePlaceholder
-                                : noteText,
+                            (noteText == null || noteText!.isEmpty)
+                                ? AppLocalizations.of(context)!.notePlaceholder
+                                : noteText!,
                             maxLines: isExpanded ? null : 1,
                             overflow: isExpanded ? null : TextOverflow.ellipsis,
                           ),
@@ -91,7 +91,7 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
                           noteTextController.text =
                               noteTextController.text.trim();
                           noteText = noteTextController.text;
-                          noteText.isNotEmpty
+                          noteText!.isNotEmpty
                               ? Db.saveNote(noteId, noteText)
                               : Db.deleteNote(noteId);
 

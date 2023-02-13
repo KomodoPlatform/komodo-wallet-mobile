@@ -10,7 +10,7 @@ class OrderDetailsPage extends StatelessWidget {
     this.order,
   });
 
-  final Ask order;
+  final Ask? order;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class OrderDetailsPage extends StatelessWidget {
       context: context,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).marketsOrderDetails),
+          title: Text(AppLocalizations.of(context)!.marketsOrderDetails),
         ),
         body: SingleChildScrollView(
           child: GestureDetector(

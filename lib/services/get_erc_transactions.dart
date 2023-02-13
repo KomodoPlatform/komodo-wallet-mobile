@@ -5,6 +5,7 @@ import '../model/coin.dart';
 import '../model/coin_balance.dart';
 import '../model/coin_type.dart';
 import '../model/error_code.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import '../model/transaction_data.dart';
@@ -37,21 +38,20 @@ class GetErcTransactions {
   final String avaxUrl = appConfig.avaxUrl;
   final String avxUrl = appConfig.avxUrl;
 
-  Future<dynamic> getTransactions({Coin coin, String fromId}) async {
+  Future<dynamic> getTransactions({Coin? coin, String? fromId}) async {
     if (!isErcType(coin)) return;
 
     // Endpoint returns all tx at ones, and `fromId` only has value
     // if some txs was already fetched, so no need to fetch same txs again
     if (fromId != null) return;
 
-    final CoinBalance coinBalance = coinsBloc.coinBalance.firstWhere(
-        (balance) => balance.coin.abbr == coin.abbr,
-        orElse: () => null);
+    final CoinBalance? coinBalance = coinsBloc.coinBalance.firstWhereOrNull(
+        (balance) => balance.coin!.abbr == coin!.abbr);
     if (coinBalance == null) return;
-    final String address = coinBalance.balance.address;
+    final String? address = coinBalance.balance!.address;
 
-    String url;
-    switch (coin.type) {
+    late String url;
+    switch (coin!.type) {
       case CoinType.utxo:
       case CoinType.slp:
       case CoinType.smartChain:
@@ -120,8 +120,8 @@ class GetErcTransactions {
       return;
     }
 
-    transactions.result.transactions
-        .sort((a, b) => b.timestamp.compareTo(a.timestamp));
+    transactions.result!.transactions!
+        .sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
     transactions.result?.syncStatus?.state ??= 'Finished';
 
     _fixTestCoinsNaming(transactions, coin);
@@ -133,24 +133,23 @@ class GetErcTransactions {
     String mainUrl,
     String protocolUrl,
   ) {
-    CoinBalance coinBalance = coinsBloc.coinBalance.firstWhere(
-        (balance) => balance.coin.abbr == coin.abbr,
-        orElse: () => null);
-    final String address = coinBalance.balance.address;
+    CoinBalance coinBalance = coinsBloc.coinBalance.firstWhereOrNull(
+        (balance) => balance.coin!.abbr == coin.abbr)!;
+    final String? address = coinBalance.balance!.address;
 
     return (coin.protocol?.type == 'ETH'
             ? '$mainUrl/$address'
-            : '$protocolUrl/${coin.protocol.protocolData.contractAddress}/$address') +
-        (coin.testCoin ? '&testnet=true' : '');
+            : '$protocolUrl/${coin.protocol!.protocolData!.contractAddress}/$address') +
+        (coin.testCoin! ? '&testnet=true' : '');
   }
 
   // https://github.com/KomodoPlatform/AtomicDEX-mobile/pull/1078#issuecomment-808705710
   Transactions _fixTestCoinsNaming(
       Transactions transactions, Coin originalCoin) {
-    if (!originalCoin.testCoin) return transactions;
+    if (!originalCoin.testCoin!) return transactions;
 
-    for (Transaction tx in transactions.result.transactions) {
-      String feeCoin;
+    for (Transaction tx in transactions.result!.transactions!) {
+      String? feeCoin;
       switch (originalCoin.abbr) {
         case 'ETHR':
           feeCoin = 'ETHR';
@@ -168,7 +167,7 @@ class GetErcTransactions {
       }
 
       tx.coin = originalCoin.abbr;
-      tx.feeDetails.coin = feeCoin;
+      tx.feeDetails!.coin = feeCoin;
     }
 
     return transactions;

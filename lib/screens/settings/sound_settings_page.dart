@@ -22,24 +22,24 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-              AppLocalizations.of(context).soundSettingsTitle.toUpperCase()),
+              AppLocalizations.of(context)!.soundSettingsTitle.toUpperCase()),
         ),
         body: Column(
           children: [
             Container(
               padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-              child: Text(AppLocalizations.of(context).soundsExplanation,
+              child: Text(AppLocalizations.of(context)!.soundsExplanation,
                   style: TextStyle(
                     height: 1.3,
                     color: Theme.of(context)
                         .textTheme
-                        .bodyText2
-                        .color
+                        .bodyText2!
+                        .color!
                         .withOpacity(0.7),
                   )),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).soundOption),
+              title: Text(AppLocalizations.of(context)!.soundOption),
               trailing:
                   const SoundVolumeButton(key: Key('settings-sound-button')),
               tileColor: Theme.of(context).primaryColor,
@@ -49,36 +49,36 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
             ),
             SoundPicker(
                 MusicMode.TAKER,
-                AppLocalizations.of(context).soundTaker,
-                AppLocalizations.of(context).soundTakerDesc),
+                AppLocalizations.of(context)!.soundTaker,
+                AppLocalizations.of(context)!.soundTakerDesc),
             const SizedBox(
               height: 1,
             ),
             SoundPicker(
                 MusicMode.MAKER,
-                AppLocalizations.of(context).soundMaker,
-                AppLocalizations.of(context).soundMakerDesc),
+                AppLocalizations.of(context)!.soundMaker,
+                AppLocalizations.of(context)!.soundMakerDesc),
             const SizedBox(
               height: 1,
             ),
             SoundPicker(
                 MusicMode.ACTIVE,
-                AppLocalizations.of(context).soundActive,
-                AppLocalizations.of(context).soundActiveDesc),
+                AppLocalizations.of(context)!.soundActive,
+                AppLocalizations.of(context)!.soundActiveDesc),
             const SizedBox(
               height: 1,
             ),
             SoundPicker(
                 MusicMode.FAILED,
-                AppLocalizations.of(context).soundFailed,
-                AppLocalizations.of(context).soundFailedDesc),
+                AppLocalizations.of(context)!.soundFailed,
+                AppLocalizations.of(context)!.soundFailedDesc),
             const SizedBox(
               height: 1,
             ),
             SoundPicker(
                 MusicMode.APPLAUSE,
-                AppLocalizations.of(context).soundApplause,
-                AppLocalizations.of(context).soundApplauseDesc),
+                AppLocalizations.of(context)!.soundApplause,
+                AppLocalizations.of(context)!.soundApplauseDesc),
           ],
         ),
       ),
@@ -87,7 +87,7 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
 }
 
 /// See if the file is an auudio file we can play.
-bool checkAudioFile(String path) {
+bool checkAudioFile(String? path) {
   if (path == null) return false;
   return path.endsWith('.mp3') || path.endsWith('.wav');
 }
@@ -104,7 +104,7 @@ class FilePickerButton extends StatelessWidget {
         icon: Icon(Icons.folder_open),
         color: Theme.of(context).toggleableActiveColor,
         onPressed: () async {
-          FilePickerResult filePickerResult;
+          FilePickerResult? filePickerResult;
           final int lockCookie = lockService.enteringFilePicker();
           try {
             filePickerResult = await FilePicker.platform.pickFiles();
@@ -115,7 +115,7 @@ class FilePickerButton extends StatelessWidget {
 
           if (filePickerResult == null) return;
 
-          PlatformFile pFile;
+          PlatformFile? pFile;
           if (filePickerResult.count != 0) {
             pFile = filePickerResult.files[0];
             if (pFile == null) {
@@ -126,16 +126,16 @@ class FilePickerButton extends StatelessWidget {
           // On iOS this happens *after* pin lock, but very close in time to it (same second),
           // on Android/debug *before* pin lock,
           // chance is it's unordered.
-          Log('setting_page:811', 'file picked: ${pFile.path}');
+          Log('setting_page:811', 'file picked: ${pFile!.path}');
 
           final bool ck = checkAudioFile(pFile.path);
           if (!ck) {
             dialogBloc.dialog = showDialog<dynamic>(
               context: context,
               builder: (context) => CustomSimpleDialog(
-                title: Text(AppLocalizations.of(context).soundCantPlayThat),
+                title: Text(AppLocalizations.of(context)!.soundCantPlayThat),
                 children: <Widget>[
-                  Text(AppLocalizations.of(context)
+                  Text(AppLocalizations.of(context)!
                       .soundCantPlayThatMsg(description)),
                   const SizedBox(height: 12),
                   Row(
@@ -143,7 +143,7 @@ class FilePickerButton extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        child: Text(AppLocalizations.of(context).warningOkBtn),
+                        child: Text(AppLocalizations.of(context)!.warningOkBtn),
                       ),
                     ],
                   ),
@@ -152,7 +152,7 @@ class FilePickerButton extends StatelessWidget {
             ).then((dynamic _) => dialogBloc.dialog = null);
             return;
           }
-          await musicService.setSoundPath(musicMode, pFile.path);
+          await musicService.setSoundPath(musicMode, pFile.path!);
         });
   }
 }
@@ -164,7 +164,7 @@ class SoundPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-        message: AppLocalizations.of(context).soundPlayedWhen(description),
+        message: AppLocalizations.of(context)!.soundPlayedWhen(description),
         child: ListTile(
           title: Text(name, style: Theme.of(context).textTheme.bodyText2),
           trailing: FilePickerButton(musicMode, description),

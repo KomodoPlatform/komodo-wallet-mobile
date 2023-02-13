@@ -30,27 +30,27 @@ class SwapProvider extends ChangeNotifier {
   void notify() => notifyListeners();
 
   Iterable<Swap> get swaps => swapMonitor.swaps;
-  Swap swap(String uuid) => swapMonitor.swap(uuid);
+  Swap? swap(String? uuid) => swapMonitor.swap(uuid);
 
   bool notarizationAvailable(Coin coin) {
     return coin.requiresNotarization != null;
   }
 
-  String swapDescription(String uuid) {
-    final Swap swap = this.swap(uuid);
+  String swapDescription(String? uuid) {
+    final Swap? swap = this.swap(uuid);
     if (swap == null) return '';
-    final MmSwap rswap = swap.result;
+    final MmSwap? rswap = swap.result;
     if (rswap == null) return '';
-    if (rswap.events.isEmpty) return '';
-    final bool finished = rswap.events.last.event.type == 'Finished';
+    if (rswap.events!.isEmpty) return '';
+    final bool finished = rswap.events!.last.event!.type == 'Finished';
     // Event before 'Finished'.
-    final SwapEEL ev = rswap.events.reversed
+    final SwapEEL? ev = rswap.events!.reversed
         .map((ev) => ev.event)
-        .firstWhere((ev) => ev.type != 'Finished');
+        .firstWhere((ev) => ev!.type != 'Finished');
     if (ev == null) return '';
 
     // Whether the swap is a successful one (so far).
-    final bool succ = rswap.successEvents.contains(ev.type);
+    final bool succ = rswap.successEvents!.contains(ev.type);
 
     final StringBuffer text = StringBuffer();
     if (succ) {
@@ -62,21 +62,21 @@ class SwapProvider extends ChangeNotifier {
   }
 
   void _failEv(StringBuffer text, MmSwap rswap) {
-    final SwapEL deviation = rswap.events.firstWhere(
-        (SwapEL ev) => !rswap.successEvents.contains(ev.event.type));
+    final SwapEL deviation = rswap.events!.firstWhere(
+        (SwapEL ev) => !rswap.successEvents!.contains(ev.event!.type));
     if (deviation == null) return;
-    text.writeln('Failure ${deviation.event.type}');
-    if (deviation.event.data.error.isNotEmpty) {
+    text.writeln('Failure ${deviation.event!.type}');
+    if (deviation.event!.data!.error!.isNotEmpty) {
       text.writeln('--- raw error message ---');
-      text.writeln(deviation.event.data.error);
+      text.writeln(deviation.event!.data!.error);
     }
   }
 
   /// If we've seen different states reached from the current one then share these observations.
   void _transitions(StringBuffer text, Swap swap, SwapEEL ev) {
     final Map<String, int> knownTransitions = {};
-    final String pref = ev.type + '→';
-    final String makerCoin = swap?.makerCoin?.abbr,
+    final String pref = ev.type! + '→';
+    final String? makerCoin = swap?.makerCoin?.abbr,
         takerCoin = swap?.takerCoin?.abbr;
     final ens = swapMonitor._swapMetrics.values;
     for (SwapMetrics metrics in ens) {
@@ -95,7 +95,7 @@ class SwapProvider extends ChangeNotifier {
       text.writeln('Next step was');
       final int total = knownTransitions.values.reduce((a, b) => a + b);
       for (String trans in knownTransitions.keys) {
-        final int count = knownTransitions[trans];
+        final int? count = knownTransitions[trans];
         text.writeln(' $trans: $count/$total');
       }
     }
@@ -105,9 +105,9 @@ class SwapProvider extends ChangeNotifier {
   /// tries to estimate the speed of transition [from]
   /// one step [to] another of a given [uuid] swap.
   /// Returns `null` if no estimate is currently available.
-  StepSpeed stepSpeed(String uuid, String from, String to) {
-    final Swap swap = this.swap(uuid);
-    final String makerCoin = swap?.makerCoin?.abbr,
+  StepSpeed? stepSpeed(String? uuid, String from, String to) {
+    final Swap? swap = this.swap(uuid);
+    final String? makerCoin = swap?.makerCoin?.abbr,
         takerCoin = swap?.takerCoin?.abbr;
 
     final String transition = '$from→$to';
@@ -118,12 +118,12 @@ class SwapProvider extends ChangeNotifier {
       if (makerCoin != null && makerCoin != metrics.makerCoin) continue;
       if (takerCoin != null && takerCoin != metrics.takerCoin) continue;
 
-      final int speed = metrics.stepSpeed[transition];
+      final int? speed = metrics.stepSpeed[transition];
       if (speed == null) continue;
       values.add(speed.toDouble());
     }
     if (values.isEmpty) return null;
-    final int speed = mean(values).round();
+    final int speed = mean(values)!.round();
     final int dev = deviation(values).round();
     return StepSpeed(speed: speed, deviation: dev);
   }
@@ -133,8 +133,8 @@ class StepSpeed {
   StepSpeed({this.speed, this.deviation});
 
   /// Speed estimate of step transition, in milliseconds.
-  int speed;
-  int deviation;
+  int? speed;
+  int? deviation;
 }
 
 SwapMonitor swapMonitor = SwapMonitor();
@@ -147,13 +147,13 @@ class SwapMonitor {
     _loadPrefs();
   }
 
-  SharedPreferences _prefs;
+  SharedPreferences? _prefs;
 
   /// [ChangeNotifier] proxies linked to this singleton.
   final Set<SwapProvider> _providers = {};
 
   /// Loaded from MM.
-  Map<String, Swap> _swaps = {};
+  Map<String?, Swap> _swaps = {};
 
   /// SwapMetrics entities created from our swaps.
   final Map<String, SwapMetrics> _swapMetrics = {};
@@ -174,7 +174,7 @@ class SwapMonitor {
 
   /// Fresh status of swap [uuid].
   /// cf. https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#my-swap-status
-  Swap swap(String uuid) {
+  Swap? swap(String? uuid) {
     if (uuid == null) return null;
     return _swaps[uuid];
   }
@@ -188,9 +188,9 @@ class SwapMonitor {
     final RecentSwaps rswaps =
         await MM.getRecentSwaps(GetRecentSwap(limit: 10000, fromUuid: null));
 
-    final Map<String, Swap> swaps = {};
-    for (MmSwap rswap in rswaps.result.swaps) {
-      final String uuid = rswap.uuid;
+    final Map<String?, Swap> swaps = {};
+    for (MmSwap rswap in rswaps.result!.swaps!) {
+      final String? uuid = rswap.uuid;
       swaps[uuid] = Swap(result: rswap, status: rswap.status);
       _saveSwapMetrics(rswap);
     }
@@ -200,8 +200,8 @@ class SwapMonitor {
 
     final List<Swap> swapList = List.from(swaps.values);
     swapList.sort((a, b) {
-      return extractStartedAtFromSwap(b.result)
-          .compareTo(extractStartedAtFromSwap(a.result));
+      return extractStartedAtFromSwap(b.result!)!
+          .compareTo(extractStartedAtFromSwap(a.result!)!);
     });
 
     swapHistoryBloc.inSwaps.add(swapList);
@@ -209,16 +209,16 @@ class SwapMonitor {
 
   /// Store swap information
   void _saveSwapMetrics(MmSwap mswap) {
-    if (mswap.events.isEmpty) return;
+    if (mswap.events!.isEmpty) return;
 
     // See if we have already saved this version of the swap.
     final String id = SwapMetrics.swap2id(mswap);
-    final int timestamp = mswap.events.last.timestamp;
+    final int? timestamp = mswap.events!.last.timestamp;
     if (_swapMetrics[id]?.timestamp == timestamp) return;
 
     // Skip old swaps.
     final int now = DateTime.now().millisecondsSinceEpoch;
-    if ((now - timestamp).abs() > 86400) return;
+    if ((now - timestamp!).abs() > 86400) return;
 
     final SwapMetrics metrics = SwapMetrics.from(timestamp, mswap);
     if (metrics.makerCoin == null) return; // No Start event.
@@ -229,17 +229,17 @@ class SwapMonitor {
   Future<void> _loadPrefs() async {
     _prefs ??= await SharedPreferences.getInstance();
 
-    final String encodedMetrics = _prefs.getString('swapMetrics');
+    final String? encodedMetrics = _prefs!.getString('swapMetrics');
     if (encodedMetrics == null) return;
 
-    Map<String, dynamic> decodedMetrics;
+    Map<String, dynamic>? decodedMetrics;
     try {
       decodedMetrics = jsonDecode(encodedMetrics);
     } catch (e) {
       return;
     }
 
-    decodedMetrics.forEach((id, dynamic item) {
+    decodedMetrics!.forEach((id, dynamic item) {
       SwapMetrics fromJson;
       try {
         fromJson = SwapMetrics.fromJson(item);
@@ -260,7 +260,7 @@ class SwapMonitor {
       return;
     }
 
-    _prefs.setString('swapMetrics', encodedMetrics);
+    _prefs!.setString('swapMetrics', encodedMetrics);
   }
 }
 
@@ -272,19 +272,19 @@ class SwapMetrics {
     assert(mmVersion == mmSe.mmVersion);
     mmDate = mmSe.mmDate;
 
-    for (int ix = 0; ix < mswap.events.length - 1; ++ix) {
-      final SwapEL eva = mswap.events[ix];
-      final SwapEL adam = mswap.events[ix + 1];
-      final String evaT = eva.event.type;
-      final String adamT = adam.event.type;
-      final int delta = adam.timestamp - eva.timestamp;
+    for (int ix = 0; ix < mswap.events!.length - 1; ++ix) {
+      final SwapEL eva = mswap.events![ix];
+      final SwapEL adam = mswap.events![ix + 1];
+      final String? evaT = eva.event!.type;
+      final String? adamT = adam.event!.type;
+      final int delta = adam.timestamp! - eva.timestamp!;
       if (delta < 0) {
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
 
       if (evaT == 'Started') {
-        final SwapEF data = eva.event.data;
+        final SwapEF data = eva.event!.data!;
         makerCoin = data.makerCoin;
         takerCoin = data.takerCoin;
         makerPaymentConfirmations = data.makerPaymentConfirmations;
@@ -292,8 +292,8 @@ class SwapMetrics {
         makerPaymentRequiresNota = data.makerPaymentRequiresNota;
         takerPaymentRequiresNota = data.takerPaymentRequiresNota;
         myPersistentPub = data.myPersistentPub;
-        taker = data.taker.isNotEmpty ? data.taker : null;
-        maker = data.maker.isNotEmpty ? data.maker : null;
+        taker = data.taker!.isNotEmpty ? data.taker : null;
+        maker = data.maker!.isNotEmpty ? data.maker : null;
       }
     }
   }
@@ -319,45 +319,45 @@ class SwapMetrics {
   }
 
   static String swap2id(MmSwap mswap) =>
-      mswap.uuid + '/' + (mswap.type == 'Taker' ? 't' : 'm');
+      mswap.uuid! + '/' + (mswap.type == 'Taker' ? 't' : 'm');
 
   /// SwapMetrics entity ID: “${swap_uuid}/${type}”, where $type is “t” for Taker and “m” for Maker
-  String id;
+  String? id;
 
   /// Ticker of maker coin
-  String makerCoin;
+  String? makerCoin;
 
   /// Ticker of taker coin
-  String takerCoin;
+  String? takerCoin;
 
   /// Time of last swap event, in milliseconds since UNIX epoch
-  int timestamp;
+  int? timestamp;
 
   /// Time between swap states in milliseconds
   LinkedHashMap<String, int> stepSpeed = LinkedHashMap<String, int>.of({});
 
   /// Name and version of UI
-  String gui;
+  String? gui;
 
   /// MM commit hash
-  String mmVersion;
+  String? mmVersion;
 
   // The date corresponding to the MM commit hash, YYYY-MM-DD
-  String mmDate;
+  String? mmDate;
 
   // NB: These options only represent one side of the story
   // (the Taker settings for Taker swaps, the Maker settings for Maker swaps)
-  int makerPaymentConfirmations, takerPaymentConfirmations;
-  bool makerPaymentRequiresNota, takerPaymentRequiresNota;
+  int? makerPaymentConfirmations, takerPaymentConfirmations;
+  bool? makerPaymentRequiresNota, takerPaymentRequiresNota;
 
-  String myPersistentPub;
+  String? myPersistentPub;
 
   /// On tracking concerns:
   /// https://gitlab.com/artemciy/mm-pubsub-db/-/blob/2342fa23/373-p2p-order-matching.md#L115
-  String taker, maker;
+  String? taker, maker;
 
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> json;
+  Map<String, dynamic>? toJson() {
+    Map<String, dynamic>? json;
     try {
       json = <String, dynamic>{
         'id': id,

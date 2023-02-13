@@ -11,9 +11,9 @@ class Server {
         disableCertVerification: json['disable_cert_verification'] ?? false,
       );
 
-  String url;
-  String protocol;
-  bool disableCertVerification;
+  String? url;
+  String? protocol;
+  bool? disableCertVerification;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'url': url ?? '',

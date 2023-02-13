@@ -1,9 +1,9 @@
-int parseFirstInt(String string) {
+int? parseFirstInt(String string) {
   final regexp = RegExp(r'[0-9]+');
-  final match = regexp.firstMatch(string);
+  final match = regexp.firstMatch(string)!;
 
   try {
-    return int.parse(match.group(0));
+    return int.parse(match.group(0)!);
   } catch (_) {
     return null;
   }

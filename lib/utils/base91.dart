@@ -23,8 +23,8 @@ class Base91 {
 
   final String alphabet;
   final int base = 91;
-  List<int> _encodingTable;
-  List<int> _decodingTable;
+  late List<int> _encodingTable;
+  late List<int> _decodingTable;
 
   Uint8List encode(Uint8List bytes) {
     int ebq = 0;
@@ -58,7 +58,7 @@ class Base91 {
     return Uint8List.fromList(result);
   }
 
-  String encodeUtf8(String sv) => utf8.decode(encode(utf8.encode(sv)));
+  String encodeUtf8(String sv) => utf8.decode(encode(utf8.encode(sv) as Uint8List));
 
   Uint8List decode(Uint8List bytes) {
     final List<int> result = [];
@@ -88,5 +88,5 @@ class Base91 {
     return Uint8List.fromList(result);
   }
 
-  String decodeUtf8(String sv) => utf8.decode(decode(utf8.encode(sv)));
+  String decodeUtf8(String sv) => utf8.decode(decode(utf8.encode(sv) as Uint8List));
 }

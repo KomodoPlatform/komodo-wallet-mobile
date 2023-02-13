@@ -10,8 +10,8 @@ part 'bloc_manager.dart';
 
 class BlocManagerWidget extends StatelessWidget {
   const BlocManagerWidget({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   final Widget child;

@@ -24,7 +24,7 @@ import '../authentification/app_bar_status.dart';
 
 class PinPage extends StatefulWidget {
   const PinPage({
-    Key key,
+    Key? key,
     this.title,
     this.subTitle,
     this.pinStatus,
@@ -35,15 +35,15 @@ class PinPage extends StatefulWidget {
   }) : super(key: key);
 
   @required
-  final String title;
+  final String? title;
   @required
-  final String subTitle;
+  final String? subTitle;
   @required
-  final PinStatus pinStatus;
-  final String code;
+  final PinStatus? pinStatus;
+  final String? code;
   final bool isFromChangingPin;
-  final String password;
-  final VoidCallback onSuccess;
+  final String? password;
+  final VoidCallback? onSuccess;
 
   @override
   _PinPageState createState() => _PinPageState();
@@ -52,14 +52,14 @@ class PinPage extends StatefulWidget {
 class _PinPageState extends State<PinPage> {
   String _error = '';
   bool _isLoading = false;
-  String _correctPin;
-  String _camoPin;
+  String? _correctPin;
+  String? _camoPin;
 
   @override
   void initState() {
     _initCorrectPin();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.pinStatus == PinStatus.NORMAL_PIN) {
         dialogBloc.closeDialog(context);
       }
@@ -88,7 +88,7 @@ class _PinPageState extends State<PinPage> {
                 obscureText: true,
                 length: 6,
                 readOnly: isBlocLoading || _isLoading,
-                value: context.watch<LoginBloc>().state.pin.value,
+                value: context.watch<LoginBloc>().state.pin!.value,
                 onChanged: (String pin) => context.read<LoginBloc>().add(
                       LoginPinInputChanged(pin),
                     ),
@@ -109,7 +109,7 @@ class _PinPageState extends State<PinPage> {
           const SizedBox(
             height: 8,
           ),
-          Text(AppLocalizations.of(context).configureWallet)
+          Text(AppLocalizations.of(context)!.configureWallet)
         ],
       ),
     );
@@ -123,7 +123,7 @@ class _PinPageState extends State<PinPage> {
     camoBloc.isCamoActive = false;
 
     setState(() {
-      _error = AppLocalizations.of(context).errorTryAgain;
+      _error = AppLocalizations.of(context)!.errorTryAgain;
     });
   }
 
@@ -131,8 +131,8 @@ class _PinPageState extends State<PinPage> {
     final EncryptionTool encryptionTool = EncryptionTool();
     await pauseUntil(() async => await encryptionTool.read('pin') != null);
 
-    final String normalPin = await encryptionTool.read('pin');
-    final String camoPin = await encryptionTool.read('camoPin');
+    final String? normalPin = await encryptionTool.read('pin');
+    final String? camoPin = await encryptionTool.read('camoPin');
     setState(() {
       _correctPin = normalPin;
       _camoPin = camoPin;
@@ -140,7 +140,7 @@ class _PinPageState extends State<PinPage> {
   }
 
   Future<void> _initCorrectPin() async {
-    final PinStatus pinStatus = widget.pinStatus;
+    final PinStatus? pinStatus = widget.pinStatus;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (pinStatus == PinStatus.CREATE_PIN ||
@@ -186,7 +186,7 @@ class _PinPageState extends State<PinPage> {
               loadSnapshot: loadSnapshot);
         }
         if (widget.onSuccess != null) {
-          widget.onSuccess();
+          widget.onSuccess!();
         }
         break;
 
@@ -200,7 +200,7 @@ class _PinPageState extends State<PinPage> {
         break;
 
       case PinStatus.CONFIRM_PIN:
-        final Wallet wallet = await Db.getCurrentWallet();
+        final Wallet? wallet = await Db.getCurrentWallet();
         setState(() {
           _isLoading = true;
         });
@@ -234,7 +234,7 @@ class _PinPageState extends State<PinPage> {
         break;
 
       case PinStatus.CONFIRM_CAMO_PIN:
-        final Wallet wallet = await Db.getCurrentWallet();
+        final Wallet? wallet = await Db.getCurrentWallet();
         if (wallet != null) {
           await EncryptionTool()
               .writeData(KeyEncryption.CAMOPIN, wallet, widget.password,
@@ -249,7 +249,7 @@ class _PinPageState extends State<PinPage> {
 
         camoBloc.shouldWarnBadCamoPin = true;
         if (widget.onSuccess != null) {
-          widget.onSuccess();
+          widget.onSuccess!();
         }
         Navigator.popUntil(context, ModalRoute.withName('/camoSetup'));
         break;
@@ -274,8 +274,8 @@ class _PinPageState extends State<PinPage> {
         await prefs.setString('pin_create', code);
         final materialPage = PageTransition(
             child: PinPage(
-          title: AppLocalizations.of(context).confirmPin,
-          subTitle: AppLocalizations.of(context).confirmPin,
+          title: AppLocalizations.of(context)!.confirmPin,
+          subTitle: AppLocalizations.of(context)!.confirmPin,
           code: code,
           pinStatus: PinStatus.CONFIRM_PIN,
           password: widget.password,
@@ -288,8 +288,8 @@ class _PinPageState extends State<PinPage> {
         await prefs.setString('pin_create', code);
         final materialPage = PageTransition(
             child: PinPage(
-          title: AppLocalizations.of(context).confirmPin,
-          subTitle: AppLocalizations.of(context).confirmPin,
+          title: AppLocalizations.of(context)!.confirmPin,
+          subTitle: AppLocalizations.of(context)!.confirmPin,
           code: code,
           pinStatus: PinStatus.CONFIRM_PIN,
           password: widget.password,
@@ -305,8 +305,8 @@ class _PinPageState extends State<PinPage> {
         await prefs.setString('camo_pin_create', code);
         final materialPage = PageTransition(
             child: PinPage(
-          title: AppLocalizations.of(context).camouflageSetup,
-          subTitle: AppLocalizations.of(context).confirmCamouflageSetup,
+          title: AppLocalizations.of(context)!.camouflageSetup,
+          subTitle: AppLocalizations.of(context)!.confirmCamouflageSetup,
           code: code,
           onSuccess: widget.onSuccess,
           pinStatus: PinStatus.CONFIRM_CAMO_PIN,

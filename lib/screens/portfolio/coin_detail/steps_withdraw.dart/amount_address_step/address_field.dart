@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 class AddressField extends StatefulWidget {
   const AddressField({
-    Key key,
+    Key? key,
     this.onScan,
     this.controller,
     this.addressFormat,
@@ -20,11 +20,11 @@ class AddressField extends StatefulWidget {
     this.onChanged,
   }) : super(key: key);
 
-  final Function onScan;
-  final TextEditingController controller;
-  final Map<String, dynamic> addressFormat;
-  final Coin coin;
-  final Function(String) onChanged;
+  final Function? onScan;
+  final TextEditingController? controller;
+  final Map<String, dynamic>? addressFormat;
+  final Coin? coin;
+  final Function(String)? onChanged;
 
   @override
   _AddressFieldState createState() => _AddressFieldState();
@@ -33,18 +33,18 @@ class AddressField extends StatefulWidget {
 class _AddressFieldState extends State<AddressField> {
   bool mm2Validated = false;
   bool autovalidate = false;
-  String convertMessage;
+  String? convertMessage;
 
   @override
   void initState() {
     _isCoinActive();
-    widget.controller.addListener(() {
+    widget.controller!.addListener(() {
       if (!mounted) return;
       _validate();
     });
 
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _updateAddressFromClipboard();
     });
   }
@@ -55,18 +55,18 @@ class _AddressFieldState extends State<AddressField> {
     super.dispose();
   }
 
-  Timer _coinIsActiveCountdown;
+  Timer? _coinIsActiveCountdown;
 
   Future<void> _isCoinActive() async {
     _coinIsActiveCountdown =
         Timer.periodic(Duration(milliseconds: 300), (_) async {
-      if (widget.controller.text.isEmpty) return;
+      if (widget.controller!.text.isEmpty) return;
       final dynamic error = await MM.validateAddress(
-        address: widget.controller.text,
-        coin: widget.coin.abbr,
+        address: widget.controller!.text,
+        coin: widget.coin!.abbr,
       );
       if (error == null) {
-        _coinIsActiveCountdown.cancel();
+        _coinIsActiveCountdown!.cancel();
         _validate();
       } else {
         await Future.delayed(Duration(milliseconds: 300));
@@ -88,7 +88,7 @@ class _AddressFieldState extends State<AddressField> {
                   splashRadius: 24,
                   padding: EdgeInsets.all(0),
                   visualDensity: VisualDensity.compact,
-                  onPressed: widget.onScan,
+                  onPressed: widget.onScan as void Function()?,
                   icon: Icon(Icons.add_a_photo),
                 ),
               ),
@@ -109,7 +109,7 @@ class _AddressFieldState extends State<AddressField> {
                   style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).addressSend,
+                    labelText: AppLocalizations.of(context)!.addressSend,
                     suffixIcon: IconButton(
                       splashRadius: 24,
                       onPressed: () => Navigator.push<dynamic>(
@@ -127,15 +127,15 @@ class _AddressFieldState extends State<AddressField> {
                     ),
                   ),
                   // The validator receives the text the user has typed in
-                  validator: (String value) {
-                    if (value.isEmpty && coinsDetailBloc.isCancel) {
+                  validator: (String? value) {
+                    if (value!.isEmpty && coinsDetailBloc.isCancel) {
                       return null;
                     }
                     if (value.isEmpty) {
-                      return AppLocalizations.of(context).errorValueNotEmpty;
+                      return AppLocalizations.of(context)!.errorValueNotEmpty;
                     }
                     if (!mm2Validated) {
-                      return 'Invalid ${widget.coin.abbr} address';
+                      return 'Invalid ${widget.coin!.abbr} address';
                     }
 
                     return null;
@@ -154,7 +154,7 @@ class _AddressFieldState extends State<AddressField> {
     final AddressBookProvider addressBookProvider =
         Provider.of<AddressBookProvider>(context, listen: false);
     if (addressBookProvider.clipboard != null) {
-      widget.controller.text = addressBookProvider.clipboard;
+      widget.controller!.text = addressBookProvider.clipboard!;
       addressBookProvider.clipboard = null;
     }
   }
@@ -166,30 +166,30 @@ class _AddressFieldState extends State<AddressField> {
       children: <Widget>[
         Expanded(
             child: Text(
-          convertMessage,
+          convertMessage!,
           style: Theme.of(context)
               .textTheme
-              .caption
+              .caption!
               .copyWith(color: Theme.of(context).colorScheme.secondary),
         )),
         ElevatedButton(
           onPressed: () async {
-            final String converted = await MM.convertLegacyAddress(
-              address: widget.controller.text,
-              coin: widget.coin.abbr,
+            final String? converted = await MM.convertLegacyAddress(
+              address: widget.controller!.text,
+              coin: widget.coin!.abbr,
             );
             if (converted == null) return;
 
             setState(() {
               autovalidate = true;
             });
-            widget.controller.text = converted;
+            widget.controller!.text = converted;
             await Future<dynamic>.delayed(const Duration(milliseconds: 100));
             setState(() {
               autovalidate = false;
             });
           },
-          child: Text(AppLocalizations.of(context).convert),
+          child: Text(AppLocalizations.of(context)!.convert),
         ),
       ],
     );
@@ -197,8 +197,8 @@ class _AddressFieldState extends State<AddressField> {
 
   Future<void> _validate() async {
     final dynamic error = await MM.validateAddress(
-      address: widget.controller.text,
-      coin: widget.coin.abbr,
+      address: widget.controller!.text,
+      coin: widget.coin!.abbr,
     );
 
     // if valid
@@ -232,7 +232,7 @@ class _AddressFieldState extends State<AddressField> {
       });
     }
 
-    if (widget.controller.text.isEmpty) {
+    if (widget.controller!.text.isEmpty) {
       setState(() {
         autovalidate = false;
       });

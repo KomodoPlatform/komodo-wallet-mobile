@@ -23,7 +23,7 @@ class _SellAmountFieldState extends State<SellAmountField> {
 
     swapBloc.outAmountSell.listen(_onDataChange);
 
-    WidgetsBinding.instance
+    WidgetsBinding.instance!
         .addPostFrameCallback((_) => _onDataChange(swapBloc.amountSell));
   }
 
@@ -53,25 +53,25 @@ class _SellAmountFieldState extends State<SellAmountField> {
         style: Theme.of(context).textTheme.subtitle2,
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
-          hintText: AppLocalizations.of(context).amountToSell,
+          hintText: AppLocalizations.of(context)!.amountToSell,
         ),
       ),
     );
   }
 
-  void _onDataChange(Rational value) {
+  void _onDataChange(Rational? value) {
     if (!mounted) return;
     if (value == null) {
       _ctrl.clear();
       return;
     }
 
-    final String newFormatted =
+    final String? newFormatted =
         cutTrailingZeros(value.toStringAsFixed(appConfig.tradeFormPrecision));
-    final String currentFormatted = cutTrailingZeros(_ctrl.text);
+    final String? currentFormatted = cutTrailingZeros(_ctrl.text);
 
     if (newFormatted != currentFormatted) {
-      _ctrl.text = newFormatted;
+      _ctrl.text = newFormatted!;
       moveCursorToEnd(_ctrl);
     }
   }

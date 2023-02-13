@@ -25,8 +25,8 @@ class NotifService {
 
   final AppLocalizations _localizations = AppLocalizations();
   final Map<String, Swap> _swaps = {};
-  List<String> _transactions;
-  final List<String> _notifIds = [];
+  List<String?>? _transactions;
+  final List<String?> _notifIds = [];
 
   Future<void> init() async {
     if (initialized) return;
@@ -66,7 +66,7 @@ class NotifService {
 
     jobService.install('checkRewards', 300, (j) async {
       if (!mmSe.running) return;
-      final List<RewardsItem> rewards = await MM.getRewardsInfo();
+      final List<RewardsItem>? rewards = await MM.getRewardsInfo();
       if (rewards == null || rewards.isEmpty) return;
 
       for (RewardsItem item in rewards) {
@@ -74,7 +74,7 @@ class NotifService {
 
         final Duration timeLeft = Duration(
             milliseconds:
-                item.stopAt * 1000 - DateTime.now().millisecondsSinceEpoch);
+                item.stopAt! * 1000 - DateTime.now().millisecondsSinceEpoch);
         if (timeLeft.inDays < 2 && (item.reward ?? 0) > 0) {
           final String uid = 'rewards_${item.stopAt}';
           if (!_notifIds.contains(uid)) {
@@ -101,8 +101,8 @@ class NotifService {
       for (CoinBalance coin in coins) {
         if (isErcType(coin.coin)) continue;
 
-        final String abbr = coin.coin.abbr;
-        final String address = coin.balance.address;
+        final String? abbr = coin.coin!.abbr;
+        final String? address = coin.balance!.address;
         final dynamic res = await MM.getTransactions(
             mmSe.client,
             GetTxHistory(
@@ -112,9 +112,9 @@ class NotifService {
             ));
         if (res is! Transactions) continue;
 
-        for (Transaction tx in res.result.transactions) {
-          if (tx.to.contains(address)) {
-            if (double.parse(tx.myBalanceChange) < 0) continue;
+        for (Transaction tx in res.result!.transactions!) {
+          if (tx.to!.contains(address)) {
+            if (double.parse(tx.myBalanceChange!) < 0) continue;
             transactions.add(tx);
           }
         }
@@ -129,14 +129,14 @@ class NotifService {
     if (_transactions == null) return;
 
     for (Transaction tx in transactions) {
-      if (_transactions.contains(tx.internalId)) continue;
+      if (_transactions!.contains(tx.internalId)) continue;
 
       final double now = DateTime.now().millisecondsSinceEpoch / 1000;
-      if (tx.timestamp > 0 && (now - tx.timestamp > 3600)) continue;
+      if (tx.timestamp! > 0 && (now - tx.timestamp! > 3600)) continue;
 
       show(NotifObj(
         title: _localizations.notifTxTitle,
-        text: _localizations.notifTxText(tx.coin),
+        text: _localizations.notifTxText(tx.coin!),
         uid: tx.internalId,
       ));
     }
@@ -145,7 +145,7 @@ class NotifService {
   void _saveTransactions(List<Transaction> transactions) {
     _transactions ??= [];
     for (Transaction tx in transactions) {
-      _transactions.add(tx.internalId);
+      _transactions!.add(tx.internalId);
     }
   }
 
@@ -159,14 +159,14 @@ class NotifService {
   }
 
   void _checkOrdersStatusChange(Iterable<dynamic> swaps) {
-    for (Swap swap in swaps) {
-      final String uuid = swap.result?.uuid;
+    for (Swap swap in swaps as Iterable<Swap>) {
+      final String? uuid = swap.result?.uuid;
       if (uuid == null) return;
 
       String title;
       String text;
 
-      final myInfo = extractMyInfoFromSwap(swap.result);
+      final myInfo = extractMyInfoFromSwap(swap.result!);
       final myCoin = myInfo['myCoin'];
       final otherCoin = myInfo['otherCoin'];
 
@@ -177,19 +177,19 @@ class NotifService {
           case Status.SWAP_SUCCESSFUL:
             {
               title = _localizations.notifSwapCompletedTitle;
-              text = _localizations.notifSwapCompletedText(myCoin, otherCoin);
+              text = _localizations.notifSwapCompletedText(myCoin!, otherCoin!);
               break;
             }
           case Status.SWAP_FAILED:
             {
               title = _localizations.notifSwapFailedTitle;
-              text = _localizations.notifSwapFailedText(myCoin, otherCoin);
+              text = _localizations.notifSwapFailedText(myCoin!, otherCoin!);
               break;
             }
           case Status.TIME_OUT:
             {
               title = _localizations.notifSwapTimeoutTitle;
-              text = _localizations.notifSwapTimeoutText(myCoin, otherCoin);
+              text = _localizations.notifSwapTimeoutText(myCoin!, otherCoin!);
               break;
             }
           default:
@@ -206,7 +206,7 @@ class NotifService {
           case Status.ORDER_MATCHED:
             {
               title = _localizations.notifSwapStartedTitle;
-              text = _localizations.notifSwapStartedText(myCoin, otherCoin);
+              text = _localizations.notifSwapStartedText(myCoin!, otherCoin!);
               break;
             }
           default:
@@ -219,21 +219,21 @@ class NotifService {
       show(NotifObj(
         title: title,
         text: text,
-        uid: swap.result.uuid,
+        uid: swap.result!.uuid,
       ));
     }
   }
 
   void _saveOrders(Iterable<Swap> swaps) {
     for (Swap swap in swaps) {
-      final String uuid = swap.result?.uuid;
+      final String? uuid = swap.result?.uuid;
       if (uuid == null) return;
 
       _swaps[uuid] = swap;
     }
   }
 
-  String _translateSwapStatus(Status status) {
+  String _translateSwapStatus(Status? status) {
     switch (status) {
       case Status.ORDER_MATCHING:
         return _localizations.orderMatching;
@@ -266,7 +266,7 @@ class NotifObj {
     this.uid,
   });
 
-  String title;
-  String text;
-  String uid;
+  String? title;
+  String? text;
+  String? uid;
 }

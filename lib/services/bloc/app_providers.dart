@@ -19,8 +19,8 @@ import '../../../model/wallet_security_settings_provider.dart';
 
 class AppProviderManager extends StatelessWidget {
   const AppProviderManager({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   final Widget child;

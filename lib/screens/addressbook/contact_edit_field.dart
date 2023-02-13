@@ -5,7 +5,7 @@ import '../../services/lock_service.dart';
 
 class ContactEditField extends StatefulWidget {
   const ContactEditField({
-    Key key,
+    Key? key,
     this.name,
     this.label,
     this.value,
@@ -19,17 +19,17 @@ class ContactEditField extends StatefulWidget {
     this.validator,
   }) : super(key: key);
 
-  final String name;
+  final String? name;
   final bool autofocus;
   final bool removable;
-  final String label;
-  final String value;
-  final Color color;
-  final Function(String) onChange;
-  final Function(String) validator;
-  final Function onRemove;
-  final EdgeInsets padding;
-  final Widget icon;
+  final String? label;
+  final String? value;
+  final Color? color;
+  final Function(String)? onChange;
+  final Function(String)? validator;
+  final Function? onRemove;
+  final EdgeInsets? padding;
+  final Widget? icon;
 
   @override
   _ContactEditFieldState createState() => _ContactEditFieldState();
@@ -42,7 +42,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
   @override
   void initState() {
     if (widget.value != null) {
-      controller.text = widget.value;
+      controller.text = widget.value!;
     }
     super.initState();
   }
@@ -55,7 +55,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.autofocus) focusNode.requestFocus();
     });
 
@@ -72,7 +72,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Row(
-                        children: <Widget>[
+                        children: <Widget?>[
                           if (widget.icon != null) ...[
                             widget.icon,
                             const SizedBox(width: 8),
@@ -99,16 +99,16 @@ class _ContactEditFieldState extends State<ContactEditField> {
                           ],
                           Expanded(
                             child: TextFormField(
-                              key: Key(widget.name + '-address-field'),
+                              key: Key(widget.name! + '-address-field'),
                               controller: controller,
                               focusNode: focusNode,
                               textCapitalization: TextCapitalization.words,
                               maxLength: 100,
                               onChanged: (String value) {
                                 if (widget.onChange == null) return;
-                                widget.onChange(value);
+                                widget.onChange!(value);
                               },
-                              validator: widget.validator,
+                              validator: widget.validator as String? Function(String?)?,
                               autocorrect: false,
                               enableInteractiveSelection: true,
                             ),
@@ -119,7 +119,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                                 size: 24,
                                 onPressed: () {
                                   if (widget.onRemove != null)
-                                    widget.onRemove();
+                                    widget.onRemove!();
                                 },
                                 child: const Icon(
                                   Icons.remove,
@@ -144,7 +144,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
       setState(() {
         controller.text = result;
       });
-      widget.onChange(result);
+      widget.onChange!(result);
     }
 
     lockService.qrScannerReturned(lockCookie);

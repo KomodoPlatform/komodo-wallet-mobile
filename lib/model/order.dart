@@ -14,29 +14,29 @@ class Order {
       this.createdAt,
       this.cancelable});
 
-  String base;
-  String baseAmount;
-  double minVolume;
-  String rel;
-  OrderType orderType;
-  String relAmount;
-  String uuid;
-  int createdAt;
-  bool cancelable;
-  List<String> startedSwaps;
+  String? base;
+  String? baseAmount;
+  double? minVolume;
+  String? rel;
+  OrderType? orderType;
+  String? relAmount;
+  String? uuid;
+  int? createdAt;
+  bool? cancelable;
+  List<String>? startedSwaps;
 
   int compareToOrder(Order other) {
-    int order = other.createdAt.compareTo(createdAt);
-    if (order == 0) order = base.compareTo(other.base);
-    if (order == 0) order = rel.compareTo(other.rel);
+    int order = other.createdAt!.compareTo(createdAt!);
+    if (order == 0) order = base!.compareTo(other.base!);
+    if (order == 0) order = rel!.compareTo(other.rel!);
     return order;
   }
 
   int compareToSwap(Swap other) {
     int order = 0;
-    order = extractStartedAtFromSwap(other.result).compareTo(createdAt);
+    order = extractStartedAtFromSwap(other.result!)!.compareTo(createdAt!);
     if (order == 0)
-      order = createdAt.compareTo(extractStartedAtFromSwap(other.result));
+      order = createdAt!.compareTo(extractStartedAtFromSwap(other.result!)!);
 
     return order;
   }

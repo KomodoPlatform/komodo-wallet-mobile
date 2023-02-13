@@ -9,13 +9,13 @@ class OrderbookDepth {
         pair: Pair.fromJson(json['pair']));
   }
 
-  Pair pair;
-  Depth depth;
+  Pair? pair;
+  Depth? depth;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'pair': pair.toJson(),
-      'depth': depth.toJson(),
+      'pair': pair!.toJson(),
+      'depth': depth!.toJson(),
     };
   }
 }
@@ -30,8 +30,8 @@ class Depth {
     );
   }
 
-  int asks;
-  int bids;
+  int? asks;
+  int? bids;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

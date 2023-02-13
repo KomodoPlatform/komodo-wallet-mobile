@@ -21,8 +21,8 @@ class GetRecoverFundsOfSwap {
       );
 
   String method;
-  Params params;
-  String userpass;
+  Params? params;
+  String? userpass;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method ?? '',
@@ -40,7 +40,7 @@ class Params {
         uuid: json['uuid'] ?? '',
       );
 
-  String uuid;
+  String? uuid;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'uuid': uuid ?? '',

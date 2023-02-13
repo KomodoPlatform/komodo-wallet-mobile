@@ -8,9 +8,9 @@ import 'package:komodo_dex/localizations.dart';
 
 class ScrollableDialog extends StatefulWidget {
   const ScrollableDialog({
-    Key key,
+    Key? key,
     this.title,
-    @required this.children,
+    required this.children,
     this.padding = const EdgeInsets.all(16.0),
     this.verticalButtons,
     this.mustScrollToBottom = false,
@@ -28,7 +28,7 @@ class ScrollableDialog extends StatefulWidget {
 
   /// The title widget, if any, keep it null for no title. Title is shown
   /// above the scrollable area.
-  final Widget title;
+  final Widget? title;
 
   /// Same as the children you would use on SimpleDialog
   final List<Widget> children;
@@ -38,7 +38,7 @@ class ScrollableDialog extends StatefulWidget {
 
   /// The List of vertical buttons. If mustScrollToBottom is true, this is only
   /// shown once the user has scrolled to the bottom.
-  final Widget verticalButtons;
+  final Widget? verticalButtons;
 
   /// Whether user must scroll to bottom before the vertical buttons are shown.
   /// NB: If using this widget in a dialog with mustScrollToBottom set to true
@@ -60,7 +60,7 @@ class _ScrollableDialogState extends State<ScrollableDialog> {
 
     // Run scroll listener even on first frame. This is to take into
     // consideration if the scrollable contents are too short to scroll.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _scrollListener();
     });
   }
@@ -123,8 +123,8 @@ class _ScrollableDialogState extends State<ScrollableDialog> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: DefaultTextStyle(
-        child: widget.title,
-        style: Theme.of(context).textTheme.headline6,
+        child: widget.title!,
+        style: Theme.of(context).textTheme.headline6!,
       ),
     );
   }
@@ -151,7 +151,7 @@ class _ScrollableDialogState extends State<ScrollableDialog> {
       padding: const EdgeInsets.all(16.0),
       child: (widget.mustScrollToBottom && !_isScrolledToBottom)
           ? Text(
-              AppLocalizations.of(context).accepteula,
+              AppLocalizations.of(context)!.accepteula,
               style: TextStyle(
                 color: Colors.grey,
               ),

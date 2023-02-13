@@ -11,22 +11,22 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage>
     with SingleTickerProviderStateMixin {
-  TabController _controllerTabs;
+  TabController? _controllerTabs;
   @override
   void initState() {
     _controllerTabs = TabController(length: 1, vsync: this);
-    _controllerTabs.addListener(_getIndex);
+    _controllerTabs!.addListener(_getIndex);
     super.initState();
   }
 
   @override
   void dispose() {
-    _controllerTabs.dispose();
+    _controllerTabs!.dispose();
     super.dispose();
   }
 
   void _getIndex() {
-    Log.println('media_page:38', _controllerTabs.index);
+    Log.println('media_page:38', _controllerTabs!.index);
   }
 
   @override
@@ -47,13 +47,13 @@ class _FeedPageState extends State<FeedPage>
             indicator: CustomTabIndicator(context: context),
             controller: _controllerTabs,
             tabs: <Widget>[
-              Tab(text: AppLocalizations.of(context).feedNewsTab.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.feedNewsTab.toUpperCase()),
             ],
           ),
         ),
       );
 
-      return _isSmallScreen && _controllerTabs.length > 1
+      return _isSmallScreen && _controllerTabs!.length > 1
           ? PreferredSize(
               preferredSize: const Size.fromHeight(80),
               child: AppBar(
@@ -68,13 +68,13 @@ class _FeedPageState extends State<FeedPage>
               ),
             )
           : AppBar(
-              title: Text(AppLocalizations.of(context).feedTitle.toUpperCase()),
+              title: Text(AppLocalizations.of(context)!.feedTitle.toUpperCase()),
               automaticallyImplyLeading: false,
             );
     }
 
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar() as PreferredSizeWidget?,
       body: TabBarView(
         controller: _controllerTabs,
         children: <Widget>[

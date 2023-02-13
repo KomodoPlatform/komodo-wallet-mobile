@@ -7,8 +7,8 @@ class MmParentSlpEnable {
     this.coin,
   });
 
-  Coin coin;
-  String userpass;
+  Coin? coin;
+  String? userpass;
   String method;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -16,12 +16,12 @@ class MmParentSlpEnable {
         'userpass': userpass,
         'method': method,
         'params': {
-          'ticker': coin.abbr,
+          'ticker': coin!.abbr,
           'allow_slp_unsafe_conf': false,
-          'bchd_urls': coin.bchdUrls,
+          'bchd_urls': coin!.bchdUrls,
           'mode': {
             'rpc': 'Electrum',
-            'rpc_data': {'servers': Coin.getServerList(coin.serverList)}
+            'rpc_data': {'servers': Coin.getServerList(coin!.serverList!)}
           },
           'tx_history': true,
           'slp_tokens_requests': [],
@@ -36,8 +36,8 @@ class MmChildSlpEnable {
     this.coin,
   });
 
-  Coin coin;
-  String userpass;
+  Coin? coin;
+  String? userpass;
   String method;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -45,9 +45,9 @@ class MmChildSlpEnable {
         'userpass': userpass,
         'method': method,
         'params': {
-          'ticker': coin.abbr,
+          'ticker': coin!.abbr,
           'activation_params': {
-            'required_confirmations': coin.requiredConfirmations
+            'required_confirmations': coin!.requiredConfirmations
           },
         }
       };

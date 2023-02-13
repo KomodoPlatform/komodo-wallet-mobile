@@ -7,6 +7,7 @@ import '../../../../../model/get_trade_preimage.dart';
 import '../../../../../model/setprice_response.dart';
 import '../../../../../model/trade_preimage.dart';
 import '../../../../dex/trade/pro/confirm/protection_control.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:rational/rational.dart';
 import '../../../../../model/buy_response.dart';
 import '../../../../../model/get_buy.dart';
@@ -20,7 +21,7 @@ import '../../../../../model/orderbook.dart';
 import '../../../../../utils/utils.dart';
 
 class TradeForm {
-  Timer _typingTimer;
+  Timer? _typingTimer;
 
   Future<void> onSellAmountFieldChange(String text) async {
     _typingTimer?.cancel();
@@ -44,8 +45,8 @@ class TradeForm {
     }
 
     if (swapBloc.amountSell != null) {
-      final String currentText = cutTrailingZeros(
-          swapBloc.amountSell.toStringAsFixed(appConfig.tradeFormPrecision));
+      final String? currentText = cutTrailingZeros(
+          swapBloc.amountSell!.toStringAsFixed(appConfig.tradeFormPrecision));
       if (newText == currentText) return;
     }
 
@@ -54,7 +55,7 @@ class TradeForm {
 
   void updateAmountSell(Rational amount) {
     // If greater than max available balance
-    final double maxAmount = _getMaxSellAmount();
+    final double maxAmount = _getMaxSellAmount()!;
     if (amount.toDouble() >= maxAmount) {
       amount = Rational.parse(maxAmount.toString());
       swapBloc.setIsMaxActive(true);
@@ -62,11 +63,11 @@ class TradeForm {
       swapBloc.setIsMaxActive(false);
     }
 
-    final Ask matchingBid = swapBloc.matchingBid;
+    final Ask? matchingBid = swapBloc.matchingBid;
     if (matchingBid != null) {
-      final Rational bidPrice = fract2rat(matchingBid.priceFract) ??
-          Rational.parse(matchingBid.price);
-      final Rational bidVolume = fract2rat(matchingBid.maxvolumeFract) ??
+      final Rational bidPrice = fract2rat(matchingBid.priceFract!) ??
+          Rational.parse(matchingBid.price!);
+      final Rational bidVolume = fract2rat(matchingBid.maxvolumeFract!) ??
           Rational.parse(matchingBid.maxvolume.toString());
 
       // If greater than matching bid max receive volume
@@ -99,8 +100,8 @@ class TradeForm {
     }
 
     if (swapBloc.amountReceive != null) {
-      final String currentText = cutTrailingZeros(
-          swapBloc.amountReceive.toStringAsFixed(appConfig.tradeFormPrecision));
+      final String? currentText = cutTrailingZeros(
+          swapBloc.amountReceive!.toStringAsFixed(appConfig.tradeFormPrecision));
       if (newText == currentText) return;
     }
 
@@ -112,24 +113,24 @@ class TradeForm {
   }
 
   Future<void> makeSwap({
-    ProtectionSettings protectionSettings,
-    BuyOrderType buyOrderType,
-    String minVolume,
-    Function(dynamic) onSuccess,
-    Function(dynamic) onError,
+    ProtectionSettings? protectionSettings,
+    BuyOrderType? buyOrderType,
+    String? minVolume,
+    Function(dynamic)? onSuccess,
+    Function(dynamic)? onError,
   }) async {
     Log('trade_form', 'Starting a swap…');
 
     if (swapBloc.matchingBid != null) {
       await _takerOrder(
-        protectionSettings: protectionSettings,
+        protectionSettings: protectionSettings!,
         buyOrderType: buyOrderType,
         onSuccess: onSuccess,
         onError: onError,
       );
     } else {
       await _makerOrder(
-          protectionSettings: protectionSettings,
+          protectionSettings: protectionSettings!,
           minVolume: minVolume,
           onSuccess: onSuccess,
           onError: onError);
@@ -137,20 +138,20 @@ class TradeForm {
   }
 
   Future<void> _takerOrder({
-    BuyOrderType buyOrderType,
-    ProtectionSettings protectionSettings,
-    Function(dynamic) onSuccess,
-    Function(dynamic) onError,
+    BuyOrderType? buyOrderType,
+    required ProtectionSettings protectionSettings,
+    Function(dynamic)? onSuccess,
+    Function(dynamic)? onError,
   }) async {
-    final Rational price = fract2rat(swapBloc.matchingBid.priceFract) ??
-        Rational.parse(swapBloc.matchingBid.price);
+    final Rational price = fract2rat(swapBloc.matchingBid!.priceFract!) ??
+        Rational.parse(swapBloc.matchingBid!.price!);
 
-    Rational volume;
+    Rational? volume;
     if (swapBloc.shouldBuyOut) {
-      volume = fract2rat(swapBloc.matchingBid.maxvolumeFract) ??
-          Rational.parse(swapBloc.matchingBid.maxvolume.toString());
+      volume = fract2rat(swapBloc.matchingBid!.maxvolumeFract!) ??
+          Rational.parse(swapBloc.matchingBid!.maxvolume.toString());
     } else if (swapBloc.isSellMaxActive && swapBloc.maxTakerVolume != null) {
-      volume = swapBloc.maxTakerVolume / price;
+      volume = swapBloc.maxTakerVolume! / price;
     } else {
       volume = swapBloc.amountReceive;
     }
@@ -158,13 +159,13 @@ class TradeForm {
     final dynamic re = await MM.postBuy(
       mmSe.client,
       GetBuySell(
-        base: swapBloc.receiveCoinBalance.coin.abbr,
-        rel: swapBloc.sellCoinBalance.coin.abbr,
+        base: swapBloc.receiveCoinBalance!.coin!.abbr,
+        rel: swapBloc.sellCoinBalance!.coin!.abbr,
         orderType: buyOrderType,
         baseNota: protectionSettings.requiresNotarization,
         baseConfs: protectionSettings.requiredConfirmations,
         volume: {
-          'numer': volume.numerator.toString(),
+          'numer': volume!.numerator.toString(),
           'denom': volume.denominator.toString(),
         },
         price: {
@@ -175,27 +176,27 @@ class TradeForm {
     );
 
     if (re is BuyResponse) {
-      onSuccess(re);
+      onSuccess!(re);
     } else {
-      onError(re);
+      onError!(re);
     }
   }
 
   Future<void> _makerOrder({
-    ProtectionSettings protectionSettings,
-    String minVolume,
-    Function(dynamic) onSuccess,
-    Function(dynamic) onError,
+    required ProtectionSettings protectionSettings,
+    String? minVolume,
+    Function(dynamic)? onSuccess,
+    Function(dynamic)? onError,
   }) async {
-    final amountSell = swapBloc.amountSell;
-    final amountReceive = swapBloc.amountReceive;
+    final amountSell = swapBloc.amountSell!;
+    final amountReceive = swapBloc.amountReceive!;
     final Rational price = amountReceive / amountSell;
 
     final dynamic re = await MM.postSetPrice(
         mmSe.client,
         GetSetPrice(
-          base: swapBloc.sellCoinBalance.coin.abbr,
-          rel: swapBloc.receiveCoinBalance.coin.abbr,
+          base: swapBloc.sellCoinBalance!.coin!.abbr,
+          rel: swapBloc.receiveCoinBalance!.coin!.abbr,
           cancelPrevious: false,
           max: swapBloc.isSellMaxActive,
           minVolume: double.tryParse(minVolume ?? ''),
@@ -214,37 +215,37 @@ class TradeForm {
         ));
 
     if (re is SetPriceResponse) {
-      onSuccess(re);
+      onSuccess!(re);
     } else {
-      onError(re);
+      onError!(re);
     }
   }
 
-  double getExchangeRate() {
+  double? getExchangeRate() {
     if (swapBloc.amountSell == null ||
         (swapBloc.amountSell?.toDouble() ?? 0) == 0) return null;
     if (swapBloc.amountReceive == null ||
         (swapBloc.amountReceive?.toDouble() ?? 0) == 0) return null;
 
-    return (swapBloc.amountReceive / swapBloc.amountSell).toDouble();
+    return (swapBloc.amountReceive! / swapBloc.amountSell!).toDouble();
   }
 
-  Future<double> minVolumeDefault(String base,
-      {String rel, double price}) async {
-    double min;
+  Future<double?> minVolumeDefault(String? base,
+      {String? rel, double? price}) async {
+    double? min;
     try {
       min = await MM.getMinTradingVolume(GetMinTradingVolume(coin: base));
     } catch (_) {}
 
     assert(rel == null || price != null);
     if (rel != null && price != null) {
-      double minRel;
+      double? minRel;
       try {
         minRel = await MM.getMinTradingVolume(GetMinTradingVolume(coin: rel));
       } catch (_) {}
       if (minRel != null) {
         final double minRelQuote = minRel / price;
-        min = max(min, minRelQuote);
+        min = max(min!, minRelQuote);
       }
     }
 
@@ -257,57 +258,56 @@ class TradeForm {
     if (max != swapBloc.amountSell) updateAmountSell(max);
   }
 
-  double _getMaxSellAmount() {
+  double? _getMaxSellAmount() {
     if (swapBloc.sellCoinBalance == null) return null;
 
     if (swapBloc.matchingBid != null && swapBloc.maxTakerVolume != null) {
       /// maxTakerVolume should be floored to [precision]
       /// instead of rounding
-      double maxTakerVolume = swapBloc.maxTakerVolume.toDouble();
+      double maxTakerVolume = swapBloc.maxTakerVolume!.toDouble();
       maxTakerVolume =
           (maxTakerVolume * pow(10, appConfig.tradeFormPrecision)).floor() /
               pow(10, appConfig.tradeFormPrecision);
       return maxTakerVolume;
     }
 
-    final double fromPreimage = _getMaxFromPreimage();
+    final double? fromPreimage = _getMaxFromPreimage();
     if (fromPreimage != null) {
       return fromPreimage;
     }
 
-    final double sellCoinBalance = double.tryParse(swapBloc
-            .sellCoinBalance.balance.balance
+    final double? sellCoinBalance = double.tryParse(swapBloc
+            .sellCoinBalance!.balance!.balance!
             .toStringAsFixed(appConfig.tradeFormPrecision) ??
         '0');
     return sellCoinBalance;
   }
 
-  double _getMaxFromPreimage() {
-    final TradePreimage preimage = swapBloc.tradePreimage;
+  double? _getMaxFromPreimage() {
+    final TradePreimage? preimage = swapBloc.tradePreimage;
     if (preimage == null) return null;
 
     // If tradePreimage contains volume use it for max volume
-    final String volume = preimage.volume;
+    final String? volume = preimage.volume;
     if (volume != null) {
-      final double volumeDouble = double.tryParse(volume);
+      final double volumeDouble = double.tryParse(volume)!;
       return double.parse(
           volumeDouble.toStringAsFixed(appConfig.tradeFormPrecision));
     }
 
     // If tradePreimage doesn't contain volume - trying to calculate it
-    final CoinFee totalSellCoinFee = preimage.totalFees.firstWhere(
-      (fee) => fee.coin == swapBloc.sellCoinBalance.coin.abbr,
-      orElse: () => null,
+    final CoinFee? totalSellCoinFee = preimage.totalFees!.firstWhereOrNull(
+      (fee) => fee.coin == swapBloc.sellCoinBalance!.coin!.abbr,
     );
     final double calculatedVolume =
-        swapBloc.sellCoinBalance.balance.balance.toDouble() -
+        swapBloc.sellCoinBalance!.balance!.balance!.toDouble() -
             (double.tryParse(totalSellCoinFee?.amount ?? '0') ?? 0.0);
     return double.parse(
         calculatedVolume.toStringAsFixed(appConfig.tradeFormPrecision));
   }
 
   // Updates swapBloc.tradePreimage and returns error String or null
-  Future<String> updateTradePreimage() async {
+  Future<String?> updateTradePreimage() async {
     if (swapBloc.sellCoinBalance == null ||
         swapBloc.receiveCoinBalance == null ||
         (swapBloc.amountSell?.toDouble() ?? 0) == 0 ||
@@ -318,20 +318,20 @@ class TradeForm {
 
     final getTradePreimageRequest = swapBloc.matchingBid == null
         ? GetTradePreimage(
-            base: swapBloc.sellCoinBalance.coin.abbr,
-            rel: swapBloc.receiveCoinBalance.coin.abbr,
+            base: swapBloc.sellCoinBalance!.coin!.abbr,
+            rel: swapBloc.receiveCoinBalance!.coin!.abbr,
             max: swapBloc.isSellMaxActive ?? false,
             swapMethod: 'setprice',
-            volume: swapBloc.amountSell.toDouble().toString(),
-            price: (swapBloc.amountReceive / swapBloc.amountSell)
+            volume: swapBloc.amountSell!.toDouble().toString(),
+            price: (swapBloc.amountReceive! / swapBloc.amountSell!)
                 .toDouble()
                 .toString())
         : GetTradePreimage(
-            base: swapBloc.receiveCoinBalance.coin.abbr,
-            rel: swapBloc.sellCoinBalance.coin.abbr,
+            base: swapBloc.receiveCoinBalance!.coin!.abbr,
+            rel: swapBloc.sellCoinBalance!.coin!.abbr,
             swapMethod: 'buy',
-            volume: swapBloc.amountReceive.toDouble().toString(),
-            price: (swapBloc.amountSell / swapBloc.amountReceive)
+            volume: swapBloc.amountReceive!.toDouble().toString(),
+            price: (swapBloc.amountSell! / swapBloc.amountReceive!)
                 .toDouble()
                 .toString());
 

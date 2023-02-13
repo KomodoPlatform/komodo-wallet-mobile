@@ -4,9 +4,9 @@ import '../model/coin.dart';
 import '../model/coin_type.dart';
 
 class BuildProtocolChip extends StatelessWidget {
-  const BuildProtocolChip(this.coin, {Key key}) : super(key: key);
+  const BuildProtocolChip(this.coin, {Key? key}) : super(key: key);
 
-  final Coin coin;
+  final Coin? coin;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +17,11 @@ class BuildProtocolChip extends StatelessWidget {
       color: const Color.fromRGBO(20, 117, 186, 1),
     );
     final TextStyle style =
-        Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.white);
+        Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.white);
 
     Widget chip = SizedBox();
 
-    switch (coin.type) {
+    switch (coin!.type) {
       case CoinType.utxo:
         chip = const SizedBox.shrink();
         break;
@@ -47,7 +47,7 @@ class BuildProtocolChip extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Text(
-                labels[coin.type.name] ?? coin.type.name.toUpperCase(),
+                labels[coin!.type!.name] ?? coin!.type!.name.toUpperCase(),
                 style: style,
               ),
             ],
@@ -56,7 +56,7 @@ class BuildProtocolChip extends StatelessWidget {
         break;
 
       case CoinType.smartChain:
-        chip = coin.abbr == 'KMD'
+        chip = coin!.abbr == 'KMD'
             ? const SizedBox.shrink()
             : InkWell(
                 onTap: () {
@@ -64,7 +64,7 @@ class BuildProtocolChip extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         duration: Duration(seconds: 2),
-                        content: Text(AppLocalizations.of(context).builtOnKmd),
+                        content: Text(AppLocalizations.of(context)!.builtOnKmd),
                       ),
                     );
                   } catch (_) {}
@@ -90,7 +90,7 @@ class BuildProtocolChip extends StatelessWidget {
     final Map<String, String> labels = {};
 
     for (CoinType type in CoinType.values) {
-      String label;
+      String? label;
 
       switch (type) {
         // UTXO's dont have any chip.
@@ -100,43 +100,43 @@ class BuildProtocolChip extends StatelessWidget {
         case CoinType.smartChain:
           break;
         case CoinType.bep:
-          label = AppLocalizations.of(context).tagBEP20;
+          label = AppLocalizations.of(context)!.tagBEP20;
           break;
         case CoinType.erc:
-          label = AppLocalizations.of(context).tagERC20;
+          label = AppLocalizations.of(context)!.tagERC20;
           break;
         case CoinType.etc:
-          label = AppLocalizations.of(context).tagETC;
+          label = AppLocalizations.of(context)!.tagETC;
           break;
         case CoinType.avx:
-          label = AppLocalizations.of(context).tagAVX20;
+          label = AppLocalizations.of(context)!.tagAVX20;
           break;
         case CoinType.hrc:
-          label = AppLocalizations.of(context).tagHRC20;
+          label = AppLocalizations.of(context)!.tagHRC20;
           break;
         case CoinType.hco:
-          label = AppLocalizations.of(context).tagHCO20;
+          label = AppLocalizations.of(context)!.tagHCO20;
           break;
         case CoinType.krc:
-          label = AppLocalizations.of(context).tagKRC20;
+          label = AppLocalizations.of(context)!.tagKRC20;
           break;
         case CoinType.ubiq:
-          label = AppLocalizations.of(context).tagUBQ;
+          label = AppLocalizations.of(context)!.tagUBQ;
           break;
         case CoinType.qrc:
-          label = AppLocalizations.of(context).tagQRC20;
+          label = AppLocalizations.of(context)!.tagQRC20;
           break;
         case CoinType.sbch:
-          label = AppLocalizations.of(context).tagSBCH;
+          label = AppLocalizations.of(context)!.tagSBCH;
           break;
         case CoinType.ftm:
-          label = AppLocalizations.of(context).tagFTM20;
+          label = AppLocalizations.of(context)!.tagFTM20;
           break;
         case CoinType.plg:
-          label = AppLocalizations.of(context).tagPLG20;
+          label = AppLocalizations.of(context)!.tagPLG20;
           break;
         case CoinType.mvr:
-          label = AppLocalizations.of(context).tagMVR20;
+          label = AppLocalizations.of(context)!.tagMVR20;
           break;
       }
 

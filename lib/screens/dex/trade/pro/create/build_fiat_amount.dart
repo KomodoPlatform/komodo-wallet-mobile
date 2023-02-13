@@ -16,16 +16,16 @@ class BuildFiatAmount extends StatelessWidget {
   Widget build(BuildContext context) {
     final cexProvider = Provider.of<CexProvider>(context);
 
-    final double amount = market == Market.SELL
+    final double? amount = market == Market.SELL
         ? swapBloc.amountSell?.toDouble()
         : swapBloc.amountReceive?.toDouble();
-    final Coin coin = market == Market.SELL
+    final Coin? coin = market == Market.SELL
         ? swapBloc.sellCoinBalance?.coin
         : swapBloc.receiveCoinBalance?.coin;
 
     if (amount == null || coin == null || amount == 0) return _spacer();
 
-    final double price = cexProvider.getUsdPrice(coin.abbr);
+    final double? price = cexProvider.getUsdPrice(coin.abbr);
     if (price == null || price == 0) return _spacer();
 
     final double amountUsd = amount * price;
@@ -40,7 +40,7 @@ class BuildFiatAmount extends StatelessWidget {
         ),
         const SizedBox(width: 2),
         Text(
-          cexProvider.convert(amountUsd),
+          cexProvider.convert(amountUsd)!,
           style: TextStyle(
               fontSize: 12,
               color: Theme.of(context).brightness == Brightness.light

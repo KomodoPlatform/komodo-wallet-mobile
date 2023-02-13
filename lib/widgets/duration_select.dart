@@ -13,10 +13,10 @@ class DurationSelect extends StatefulWidget {
     this.onChange,
   });
 
-  final String value;
-  final List<String> options;
-  final bool disabled;
-  final Function(String) onChange;
+  final String? value;
+  final List<String>? options;
+  final bool? disabled;
+  final Function(String)? onChange;
 
   @override
   _DurationSelectState createState() => _DurationSelectState();
@@ -26,17 +26,17 @@ class _DurationSelectState extends State<DurationSelect> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: !widget.disabled
+      onPressed: !widget.disabled!
           ? () {
-              _buildDurationDialog(widget.options);
+              _buildDurationDialog(widget.options!);
             }
           : null,
       style: elevatedButtonSmallButtonStyle(),
       child: Row(
         children: <Widget>[
           Text(
-            _durations[widget.value] ??
-                AppLocalizations.of(context).duration.toLowerCase(),
+            _durations[widget.value!] ??
+                AppLocalizations.of(context)!.duration.toLowerCase(),
             style: const TextStyle(fontSize: 12),
           ),
           Icon(
@@ -56,7 +56,7 @@ class _DurationSelectState extends State<DurationSelect> {
         options.add(
           SimpleDialogOption(
             onPressed: () {
-              widget.onChange(duration);
+              widget.onChange!(duration);
               dialogBloc.closeDialog(context);
             },
             child: Row(
@@ -90,7 +90,7 @@ class _DurationSelectState extends State<DurationSelect> {
         builder: (context) {
           return CustomSimpleDialog(
             hasHorizontalPadding: false,
-            title: Text(AppLocalizations.of(context).duration),
+            title: Text(AppLocalizations.of(context)!.duration),
             children: options,
           );
         }).then((dynamic _) => dialogBloc.dialog = null);

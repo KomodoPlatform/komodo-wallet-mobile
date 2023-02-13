@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../app_config/theme_data.dart';
@@ -17,27 +18,27 @@ import '../../widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ContactEdit extends StatefulWidget {
-  const ContactEdit({Key key, this.contact}) : super(key: key);
+  const ContactEdit({Key? key, this.contact}) : super(key: key);
 
-  final Contact contact;
+  final Contact? contact;
 
   @override
   _ContactEditState createState() => _ContactEditState();
 }
 
 class _ContactEditState extends State<ContactEdit> {
-  Contact _editContact;
-  String _hashBeforeEdit;
-  AddressBookProvider _provider;
-  String _focusOn;
+  Contact? _editContact;
+  String? _hashBeforeEdit;
+  late AddressBookProvider _provider;
+  String? _focusOn;
 
   @override
   void initState() {
     super.initState();
     _editContact = widget.contact != null
-        ? Contact.fromJson(widget.contact.toJson())
+        ? Contact.fromJson(widget.contact!.toJson())
         : Contact();
-    _hashBeforeEdit = jsonEncode(_editContact.toJson());
+    _hashBeforeEdit = jsonEncode(_editContact!.toJson());
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -62,8 +63,8 @@ class _ContactEditState extends State<ContactEdit> {
             appBar: AppBar(
               title: Text(
                 widget.contact == null
-                    ? AppLocalizations.of(context).createContact
-                    : AppLocalizations.of(context).editContact,
+                    ? AppLocalizations.of(context)!.createContact
+                    : AppLocalizations.of(context)!.editContact,
                 key: const Key('contact_edit-title'),
               ),
               actions: <Widget>[
@@ -89,23 +90,23 @@ class _ContactEditState extends State<ContactEdit> {
                           ContactEditField(
                             name: 'name',
                             label:
-                                AppLocalizations.of(context).contactTitleName,
+                                AppLocalizations.of(context)!.contactTitleName,
                             icon: Icon(
                               Icons.account_circle,
                               size: 16,
                             ),
-                            value: _editContact.name,
+                            value: _editContact!.name,
                             removable: false,
                             autofocus:
                                 widget.contact == null && _focusOn == null,
                             onChange: (String value) {
                               setState(() {
-                                _editContact.name = value;
+                                _editContact!.name = value;
                               });
                             },
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return AppLocalizations.of(context).emptyName;
+                                return AppLocalizations.of(context)!.emptyName;
                               }
 
                               return null;
@@ -131,7 +132,7 @@ class _ContactEditState extends State<ContactEdit> {
                                   ),
                                 );
 
-                              return snapshot.data;
+                              return snapshot.data!;
                             },
                           ),
                         ],
@@ -145,13 +146,13 @@ class _ContactEditState extends State<ContactEdit> {
                           TextButton(
                             onPressed: _exitPage,
                             child: Text(
-                                AppLocalizations.of(context).contactCancel),
+                                AppLocalizations.of(context)!.contactCancel),
                           ),
                           TextButton(
                             key: const Key('save-address'),
                             onPressed: _saveContact,
                             child:
-                                Text(AppLocalizations.of(context).contactSave),
+                                Text(AppLocalizations.of(context)!.contactSave),
                           ),
                         ],
                       ),
@@ -167,14 +168,14 @@ class _ContactEditState extends State<ContactEdit> {
   }
 
   Future<bool> _exitPage() async {
-    final bool wasEdited = _hashBeforeEdit != jsonEncode(_editContact.toJson());
+    final bool wasEdited = _hashBeforeEdit != jsonEncode(_editContact!.toJson());
     if (wasEdited) {
       showConfirmationDialog(
-          confirmButtonText: AppLocalizations.of(context).contactDiscardBtn,
+          confirmButtonText: AppLocalizations.of(context)!.contactDiscardBtn,
           context: context,
           icon: Icons.arrow_back,
-          title: AppLocalizations.of(context).contactExit,
-          message: AppLocalizations.of(context).contactExitWarning,
+          title: AppLocalizations.of(context)!.contactExit,
+          message: AppLocalizations.of(context)!.contactExitWarning,
           onConfirm: () {
             Navigator.of(context).pop();
           });
@@ -186,17 +187,17 @@ class _ContactEditState extends State<ContactEdit> {
   }
 
   Future<Widget> _buildAddresses() async {
-    if (_editContact.addresses == null || _editContact.addresses.isEmpty)
+    if (_editContact!.addresses == null || _editContact!.addresses!.isEmpty)
       return SizedBox();
 
     final List<Widget> addresses = [];
-    final List<Coin> all = (await coins).values.toList();
+    final List<Coin> all = (await coins)!.values.toList();
 
-    for (var abbr in _editContact.addresses.keys) {
-      final String value = _editContact.addresses[abbr];
+    for (var abbr in _editContact!.addresses!.keys) {
+      final String? value = _editContact!.addresses![abbr];
 
-      final String name = all
-          .firstWhere((Coin coin) => coin.abbr == abbr, orElse: () => null)
+      final String? name = all
+          .firstWhereOrNull((Coin coin) => coin.abbr == abbr)
           ?.name;
 
       String label = '$name ($abbr)';
@@ -219,12 +220,12 @@ class _ContactEditState extends State<ContactEdit> {
           removable: true,
           onChange: (String value) {
             setState(() {
-              _editContact.addresses[abbr] = value;
+              _editContact!.addresses![abbr] = value;
             });
           },
           validator: (String value) {
             if (value.isEmpty) {
-              return AppLocalizations.of(context).emptyCoin(abbr);
+              return AppLocalizations.of(context)!.emptyCoin(abbr!);
             }
 
             return null;
@@ -234,7 +235,7 @@ class _ContactEditState extends State<ContactEdit> {
               _focusOn = '';
               unfocusEverything();
             });
-            _editContact.addresses.removeWhere((k, v) => k == abbr);
+            _editContact!.addresses!.removeWhere((k, v) => k == abbr);
           },
           autofocus: abbr == _focusOn,
         ),
@@ -252,7 +253,7 @@ class _ContactEditState extends State<ContactEdit> {
     );
   }
 
-  Widget _buildCoinIcon(String abbr) {
+  Widget _buildCoinIcon(String? abbr) {
     return CircleAvatar(
       maxRadius: 8,
       backgroundImage: AssetImage(getCoinIconPath(abbr)),
@@ -268,17 +269,17 @@ class _ContactEditState extends State<ContactEdit> {
           onPressed: () => _showCoinSelectDialog(),
           style: elevatedButtonSmallButtonStyle(),
           icon: const Icon(Icons.add, size: 16),
-          label: Text(AppLocalizations.of(context).addressAdd),
+          label: Text(AppLocalizations.of(context)!.addressAdd),
         ),
       ],
     );
   }
 
-  List<SimpleDialogOption> _buildCoinDialogOption(List<Coin> coins) {
+  List<SimpleDialogOption> _buildCoinDialogOption(List<Coin?> coins) {
     return coins.map(
       (coin) {
         return SimpleDialogOption(
-          key: Key('selected-coin-${coin.abbr}'),
+          key: Key('selected-coin-${coin!.abbr}'),
           onPressed: () => _createAddress(coin),
           child: Padding(
             padding: const EdgeInsets.only(
@@ -291,7 +292,7 @@ class _ContactEditState extends State<ContactEdit> {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    coin.name,
+                    coin.name!,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 18),
                   ),
@@ -323,14 +324,14 @@ class _ContactEditState extends State<ContactEdit> {
           );
         }).then((dynamic _) => dialogBloc.dialog = null);
 
-    final List<Coin> all = (await coins).values.toList();
-    all.sort((Coin a, Coin b) => a.name.compareTo(b.name));
+    final List<Coin> all = (await coins)!.values.toList();
+    all.sort((Coin a, Coin b) => a.name!.compareTo(b.name!));
     dialogBloc.closeDialog(context);
     await Future<dynamic>.delayed(const Duration(seconds: 0));
 
-    final coinsList = _editContact.addresses != null
+    final List<Coin?> coinsList = _editContact!.addresses != null
         ? all
-            .where((Coin c) => !_editContact.addresses.containsKey(c.abbr))
+            .where((Coin c) => !_editContact!.addresses!.containsKey(c.abbr))
             .toList()
         : all;
 
@@ -342,7 +343,7 @@ class _ContactEditState extends State<ContactEdit> {
               return CustomSimpleDialog(
                 key: const Key('select-coin-list'),
                 hasHorizontalPadding: false,
-                title: Text(AppLocalizations.of(context).addressSelectCoin),
+                title: Text(AppLocalizations.of(context)!.addressSelectCoin),
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -360,7 +361,7 @@ class _ContactEditState extends State<ContactEdit> {
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           hintText:
-                              AppLocalizations.of(context).searchForTicker,
+                              AppLocalizations.of(context)!.searchForTicker,
                         ),
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(16),
@@ -379,9 +380,9 @@ class _ContactEditState extends State<ContactEdit> {
   }
 
   void _createAddress(Coin coin) {
-    _editContact.addresses ??= {};
+    _editContact!.addresses ??= {};
 
-    String addressKey;
+    String? addressKey;
     if (coin.type == CoinType.smartChain) {
       addressKey = 'KMD';
     } else if (coin.abbr == 'SMTF-v2') {
@@ -389,14 +390,14 @@ class _ContactEditState extends State<ContactEdit> {
       addressKey = 'SMTF-v2';
     } else if (coin.protocol?.protocolData?.platform != null) {
       // All 'children' assets have same address as 'parent' coin
-      addressKey = coin.protocol.protocolData.platform;
+      addressKey = coin.protocol!.protocolData!.platform;
     } else {
       // All 'parent' coins and UTXO's
       addressKey = coin.abbr;
     }
 
     setState(() {
-      _editContact.addresses[addressKey] ??= '';
+      _editContact!.addresses![addressKey] ??= '';
       _focusOn = addressKey;
     });
 
@@ -406,12 +407,12 @@ class _ContactEditState extends State<ContactEdit> {
   void _showDeleteConfiramtion() {
     showConfirmationDialog(
       context: context,
-      title: AppLocalizations.of(context).contactDelete,
+      title: AppLocalizations.of(context)!.contactDelete,
       icon: Icons.delete,
       iconColor: Theme.of(context).errorColor,
       message:
-          AppLocalizations.of(context).contactDeleteWarning(_editContact.name),
-      confirmButtonText: AppLocalizations.of(context).contactDeleteBtn,
+          AppLocalizations.of(context)!.contactDeleteWarning(_editContact!.name!),
+      confirmButtonText: AppLocalizations.of(context)!.contactDeleteBtn,
       onConfirm: () => _deleteContact(),
     );
   }
@@ -423,7 +424,7 @@ class _ContactEditState extends State<ContactEdit> {
   }
 
   void _saveContact() {
-    if (!_formKey.currentState.validate()) {
+    if (!_formKey.currentState!.validate()) {
       setState(() {
         _autovalidate = true;
       });
@@ -431,11 +432,11 @@ class _ContactEditState extends State<ContactEdit> {
     }
 
     if (widget.contact != null) {
-      _provider.updateContact(_editContact);
+      _provider.updateContact(_editContact!);
     } else {
       _provider.createContact(
-        name: _editContact.name,
-        addresses: _editContact.addresses,
+        name: _editContact!.name,
+        addresses: _editContact!.addresses,
       );
     }
 

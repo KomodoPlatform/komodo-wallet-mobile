@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 class CustomTabIndicator extends Decoration {
   const CustomTabIndicator({this.context});
 
-  final BuildContext context;
+  final BuildContext? context;
 
   @override
-  _CustomPainter createBoxPainter([VoidCallback onChanged]) {
+  _CustomPainter createBoxPainter([VoidCallback? onChanged]) {
     return _CustomPainter(context, this, onChanged);
   }
 }
 
 class _CustomPainter extends BoxPainter {
-  _CustomPainter(this.context, this.decoration, VoidCallback onChanged)
+  _CustomPainter(this.context, this.decoration, VoidCallback? onChanged)
       : assert(decoration != null),
         super(onChanged);
 
   final CustomTabIndicator decoration;
-  final BuildContext context;
+  final BuildContext? context;
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
@@ -28,11 +28,11 @@ class _CustomPainter extends BoxPainter {
     //configuration.size tells us about the height and width of the tab.
     // final Rect rect = offset & configuration.size;
     final Rect rect = Offset(offset.dx - 1,
-            (configuration.size.height / 2) - indicatorHeight / 2) &
-        Size(configuration.size.width + 2, indicatorHeight);
+            (configuration.size!.height / 2) - indicatorHeight / 2) &
+        Size(configuration.size!.width + 2, indicatorHeight);
 
     final Paint paint = Paint();
-    paint.color = Theme.of(context).colorScheme.secondary;
+    paint.color = Theme.of(context!).colorScheme.secondary;
     paint.style = PaintingStyle.stroke;
     paint.strokeWidth = 2.0;
 

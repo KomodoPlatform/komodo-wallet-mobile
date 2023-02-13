@@ -5,9 +5,9 @@ import '../../../utils/utils.dart';
 import '../../../widgets/auto_scroll_text.dart';
 
 class BuildItemCoin extends StatefulWidget {
-  const BuildItemCoin({Key key, this.coin}) : super(key: key);
+  const BuildItemCoin({Key? key, this.coin}) : super(key: key);
 
-  final Coin coin;
+  final Coin? coin;
 
   @override
   _BuildItemCoinState createState() => _BuildItemCoinState();
@@ -20,13 +20,13 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
         initialData: coinsBloc.coinBeforeActivation,
         stream: coinsBloc.outCoinBeforeActivation,
         builder: (context, snapshot) {
-          final CoinToActivate coinToActivate = snapshot.data
-              .firstWhere((item) => item.coin.abbr == widget.coin.abbr);
+          final CoinToActivate coinToActivate = snapshot.data!
+              .firstWhere((item) => item.coin!.abbr == widget.coin!.abbr);
 
           // todo(MRC): Optimize this to use CheckboxListTile in a future point in time
           return InkWell(
             onTap: () => coinsBloc.setCoinBeforeActivation(
-                widget.coin, !coinToActivate.isActive),
+                widget.coin, !coinToActivate.isActive!),
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 16, bottom: 16, left: 50, right: 16),
@@ -37,7 +37,7 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                     width: 15,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
-                        color: coinToActivate.isActive
+                        color: coinToActivate.isActive!
                             ? Theme.of(context).toggleableActiveColor
                             : Colors.transparent,
                         border: Border.all(
@@ -46,14 +46,14 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                   ),
                   const SizedBox(width: 24),
                   Image.asset(
-                    getCoinIconPath(widget.coin.abbr),
+                    getCoinIconPath(widget.coin!.abbr),
                     height: 40,
                     width: 40,
                   ),
                   const SizedBox(width: 24),
                   Expanded(
                     child: AutoScrollText(
-                      text: '${widget.coin.name} (${widget.coin.abbr})',
+                      text: '${widget.coin!.name} (${widget.coin!.abbr})',
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                   )

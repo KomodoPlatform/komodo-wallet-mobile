@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 class CexFiatPreview extends StatelessWidget {
   const CexFiatPreview({
-    Key key,
+    Key? key,
     this.amount,
     this.coinAbbr,
     this.colorCex,
@@ -14,17 +14,17 @@ class CexFiatPreview extends StatelessWidget {
     this.currencyType,
   }) : super(key: key);
 
-  final String amount;
-  final String coinAbbr;
-  final Color colorCex;
-  final TextStyle textStyle;
-  final String currencyType;
+  final String? amount;
+  final String? coinAbbr;
+  final Color? colorCex;
+  final TextStyle? textStyle;
+  final String? currencyType;
 
   @override
   Widget build(BuildContext context) {
     final cexProvider = Provider.of<CexProvider>(context);
-    final amountParsed = double.tryParse(amount) ?? 0.0;
-    String convertedValue;
+    final amountParsed = double.tryParse(amount!) ?? 0.0;
+    String? convertedValue;
 
     if (currencyType != coinAbbr) {
       convertedValue =
@@ -45,7 +45,7 @@ class CexFiatPreview extends StatelessWidget {
         ),
         SizedBox(width: 2),
         Text(
-          convertedValue,
+          convertedValue!,
           style: textStyle ??
               TextStyle(
                 fontSize: 14,

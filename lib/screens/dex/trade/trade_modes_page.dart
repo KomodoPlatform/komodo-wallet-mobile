@@ -15,7 +15,7 @@ class _TradeModesPageState extends State<TradeModesPage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  TabController _tradeTabController;
+  TabController? _tradeTabController;
 
   @override
   void initState() {
@@ -24,8 +24,8 @@ class _TradeModesPageState extends State<TradeModesPage>
       vsync: this,
       initialIndex: mainBloc.tradeMode,
     );
-    _tradeTabController.addListener(() {
-      mainBloc.tradeMode = _tradeTabController.index;
+    _tradeTabController!.addListener(() {
+      mainBloc.tradeMode = _tradeTabController!.index;
     });
 
     super.initState();
@@ -47,7 +47,7 @@ class _TradeModesPageState extends State<TradeModesPage>
   Widget _buildSwitcher() {
     final style = Theme.of(context)
         .textTheme
-        .caption
+        .caption!
         .copyWith(color: Theme.of(context).colorScheme.onPrimary);
 
     return PreferredSize(
@@ -59,7 +59,7 @@ class _TradeModesPageState extends State<TradeModesPage>
           children: [
             Expanded(
                 child: Text(
-              AppLocalizations.of(context).tradingMode,
+              AppLocalizations.of(context)!.tradingMode,
               style: style,
             )),
             Flexible(
@@ -79,7 +79,7 @@ class _TradeModesPageState extends State<TradeModesPage>
                     key: const Key('advanced-tab'),
                   ),
                   Tab(
-                    child: Text(AppLocalizations.of(context).multiTab,
+                    child: Text(AppLocalizations.of(context)!.multiTab,
                         style: style),
                     key: const Key('multi-tab'),
                   ),
@@ -102,7 +102,7 @@ class _TradeModesPageState extends State<TradeModesPage>
       initialData: mainBloc.tradeMode,
       stream: mainBloc.outTradeMode,
       builder: (context, snapshot) {
-        return views[snapshot.data];
+        return views[snapshot.data!];
       },
     );
   }

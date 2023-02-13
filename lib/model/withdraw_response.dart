@@ -51,29 +51,29 @@ class WithdrawResponse {
     );
   }
 
-  int blockHeight;
-  String coin;
-  FeeDetails feeDetails;
-  List<String> from;
-  String myBalanceChange;
-  String receivedByMe;
-  String spentByMe;
-  List<String> to;
-  String totalAmount;
-  String txHash;
-  String txHex;
+  int? blockHeight;
+  String? coin;
+  FeeDetails? feeDetails;
+  List<String>? from;
+  String? myBalanceChange;
+  String? receivedByMe;
+  String? spentByMe;
+  List<String>? to;
+  String? totalAmount;
+  String? txHash;
+  String? txHex;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'block_height': blockHeight ?? 0,
         'coin': coin ?? '',
         'fee_details': feeDetails?.toJson(),
-        'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
+        'from': List<dynamic>.from(from!.map<dynamic>((dynamic x) => x)) ??
             <String>[],
         'my_balance_change': myBalanceChange ?? '',
         'received_by_me': receivedByMe ?? '',
         'spent_by_me': spentByMe ?? '',
         'to':
-            List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
+            List<dynamic>.from(to!.map<dynamic>((dynamic x) => x)) ?? <String>[],
         'total_amount': totalAmount ?? '',
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',

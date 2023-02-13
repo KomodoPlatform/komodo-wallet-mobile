@@ -8,8 +8,8 @@ class ExportImportList extends StatefulWidget {
     this.items,
   });
 
-  final String title;
-  final List<ExportImportListItem> items;
+  final String? title;
+  final List<ExportImportListItem>? items;
 
   @override
   _ExportImportListState createState() => _ExportImportListState();
@@ -33,14 +33,14 @@ class _ExportImportListState extends State<ExportImportList> {
                 contentPadding: EdgeInsets.symmetric(horizontal: 8),
                 controlAffinity: ListTileControlAffinity.leading,
                 value: _areAllItemsChecked(),
-                onChanged: (bool val) {
+                onChanged: (bool? val) {
                   _setAllItems(val);
                 },
                 title: Row(
                   children: [
-                    Text(widget.title),
+                    Text(widget.title!),
                     Text(
-                      ' (${_getCheckedQtt()}/${_haveItems() ? widget.items.length : '0'})',
+                      ' (${_getCheckedQtt()}/${_haveItems() ? widget.items!.length : '0'})',
                       style: Theme.of(context).textTheme.caption,
                     ),
                   ],
@@ -70,7 +70,7 @@ class _ExportImportListState extends State<ExportImportList> {
         padding: EdgeInsets.fromLTRB(24, 24, 12, 24),
         color: Theme.of(context).primaryColor,
         child: Text(
-          AppLocalizations.of(context).nothingFound,
+          AppLocalizations.of(context)!.nothingFound,
           style: Theme.of(context).textTheme.caption,
         ),
       );
@@ -78,13 +78,13 @@ class _ExportImportListState extends State<ExportImportList> {
 
     final List<Widget> list = ListTile.divideTiles(
       color: Theme.of(context).dividerColor,
-      tiles: widget.items.map(
+      tiles: widget.items!.map(
         (item) => Padding(
           padding: EdgeInsets.only(left: 4),
           child: CheckboxListTile(
             value: item.checked,
-            onChanged: (bool val) {
-              item.onChange(val);
+            onChanged: (bool? val) {
+              item.onChange!(val);
             },
             title: item.child,
             controlAffinity: ListTileControlAffinity.leading,
@@ -103,24 +103,24 @@ class _ExportImportListState extends State<ExportImportList> {
     );
   }
 
-  void _setAllItems(bool checked) {
-    for (ExportImportListItem item in widget.items) {
-      item.onChange(checked);
+  void _setAllItems(bool? checked) {
+    for (ExportImportListItem item in widget.items!) {
+      item.onChange!(checked);
     }
   }
 
   bool _areAllItemsChecked() {
     if (!_haveItems()) return false;
-    return _getCheckedQtt() == widget.items.length;
+    return _getCheckedQtt() == widget.items!.length;
   }
 
   bool _haveItems() {
-    return widget.items != null && widget.items.isNotEmpty;
+    return widget.items != null && widget.items!.isNotEmpty;
   }
 
   int _getCheckedQtt() {
     if (!_haveItems()) return 0;
 
-    return widget.items.where((item) => item.checked).length;
+    return widget.items!.where((item) => item.checked!).length;
   }
 }

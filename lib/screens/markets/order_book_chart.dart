@@ -5,8 +5,8 @@ import '../../model/orderbook.dart';
 
 class OrderBookChart extends StatelessWidget {
   const OrderBookChart({
-    @required this.sortedAsks,
-    @required this.sortedBids,
+    required this.sortedAsks,
+    required this.sortedBids,
   });
 
   final List<Ask> sortedAsks;
@@ -20,14 +20,14 @@ class OrderBookChart extends StatelessWidget {
 
     for (int i = 0; i < sortedAsks.length; i++) {
       final double prevTotal = i > 0 ? _askTotals[_askTotals.length - 1] : 0;
-      _askTotals.add(prevTotal + sortedAsks[i].maxvolume.toDouble());
+      _askTotals.add(prevTotal + sortedAsks[i].maxvolume!.toDouble());
     }
 
     for (int i = 0; i < sortedBids.length; i++) {
       final double prevTotal = i > 0 ? _bidTotals[_bidTotals.length - 1] : 0;
       final Ask bid = sortedBids[i];
       _bidTotals.add(
-          prevTotal + (bid.maxvolume.toDouble() * double.parse(bid.price)));
+          prevTotal + (bid.maxvolume!.toDouble() * double.parse(bid.price!)));
     }
 
     _maxAmount = max(

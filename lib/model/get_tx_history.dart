@@ -19,15 +19,15 @@ class GetTxHistory {
     this.fromId,
   });
 
-  String userpass;
+  String? userpass;
   String method;
-  String coin;
-  int limit;
-  String fromId;
+  String? coin;
+  int? limit;
+  String? fromId;
 
   Map<String, dynamic> toJson() {
     // slp coins uses the rpc 2.0 methods
-    Coin coinToEnable = coinsBloc.getKnownCoinByAbbr(coin);
+    Coin? coinToEnable = coinsBloc.getKnownCoinByAbbr(coin);
     return isSlpParent(coinToEnable) || isSlpChild(coinToEnable)
         ? <String, dynamic>{
             'userpass': userpass ?? '',
@@ -43,7 +43,7 @@ class GetTxHistory {
             'coin': coin ?? '',
             'limit': limit ?? 0,
             'from_id': fromId,
-            'decimals': coinToEnable.decimals
+            'decimals': coinToEnable!.decimals
           };
   }
 }

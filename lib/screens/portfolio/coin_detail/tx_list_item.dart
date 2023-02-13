@@ -13,15 +13,15 @@ import '../transaction_detail.dart';
 class TransactionListItem extends StatefulWidget {
   const TransactionListItem({this.transaction, this.currentCoinBalance});
 
-  final Transaction transaction;
-  final CoinBalance currentCoinBalance;
+  final Transaction? transaction;
+  final CoinBalance? currentCoinBalance;
 
   @override
   _TransactionListItemState createState() => _TransactionListItemState();
 }
 
 class _TransactionListItemState extends State<TransactionListItem> {
-  CexProvider cexProvider;
+  CexProvider? cexProvider;
   bool isNoteExpanded = false;
 
   @override
@@ -30,7 +30,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
 
     final TextStyle subtitle = Theme.of(context)
         .textTheme
-        .subtitle1
+        .subtitle1!
         .copyWith(fontWeight: FontWeight.bold);
 
     return Card(
@@ -58,12 +58,12 @@ class _TransactionListItemState extends State<TransactionListItem> {
                         shape: BoxShape.circle,
                         border: Border.all(
                             color: double.parse(
-                                        widget.transaction.myBalanceChange) >
+                                        widget.transaction!.myBalanceChange!) >
                                     0
                                 ? Colors.green
                                 : Colors.redAccent,
                             width: 2)),
-                    child: double.parse(widget.transaction.myBalanceChange) > 0
+                    child: double.parse(widget.transaction!.myBalanceChange!) > 0
                         ? Icon(Icons.arrow_downward)
                         : Icon(Icons.arrow_upward)),
               ),
@@ -81,14 +81,14 @@ class _TransactionListItemState extends State<TransactionListItem> {
                           builder: (BuildContext context,
                               AsyncSnapshot<bool> snapshot) {
                             final amount =
-                                deci(widget.transaction.myBalanceChange);
+                                deci(widget.transaction!.myBalanceChange);
                             String amountString = deci2s(amount);
                             if (snapshot.hasData && snapshot.data == false) {
                               amountString =
                                   (amount.toDouble() < 0 ? '-' : '') + '**.**';
                             }
                             return AutoSizeText(
-                              '${amount.toDouble() > 0 ? '+' : ''}$amountString ${widget.currentCoinBalance.coin.abbr}',
+                              '${amount.toDouble() > 0 ? '+' : ''}$amountString ${widget.currentCoinBalance!.coin!.abbr}',
                               maxLines: 1,
                               style: subtitle,
                               textAlign: TextAlign.end,
@@ -100,7 +100,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
                         stream: settingsBloc.outShowBalance,
                         builder: (BuildContext context,
                             AsyncSnapshot<bool> snapshot) {
-                          if (widget.currentCoinBalance.priceForOne == null) {
+                          if (widget.currentCoinBalance!.priceForOne == null) {
                             return const Padding(
                                 padding: EdgeInsets.only(
                                     left: 16, right: 16, bottom: 16, top: 8),
@@ -113,8 +113,8 @@ class _TransactionListItemState extends State<TransactionListItem> {
                                 ));
                           } else {
                             final usdAmount =
-                                deci(widget.currentCoinBalance.priceForOne) *
-                                    deci(widget.transaction.myBalanceChange);
+                                deci(widget.currentCoinBalance!.priceForOne) *
+                                    deci(widget.transaction!.myBalanceChange);
                             if (usdAmount != deci(0)) {
                               bool hidden = false;
                               if (snapshot.hasData && snapshot.data == false) {
@@ -124,10 +124,10 @@ class _TransactionListItemState extends State<TransactionListItem> {
                                 padding: const EdgeInsets.only(
                                     left: 16, right: 16, bottom: 16, top: 8),
                                 child: Text(
-                                  cexProvider.convert(
+                                  cexProvider!.convert(
                                     usdAmount.toDouble(),
                                     hidden: hidden,
-                                  ),
+                                  )!,
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               );
@@ -140,9 +140,9 @@ class _TransactionListItemState extends State<TransactionListItem> {
               ),
             ],
           ),
-          FutureBuilder<String>(
-              future: Db.getNote(widget.transaction.txHash),
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          FutureBuilder<String?>(
+              future: Db.getNote(widget.transaction!.txHash),
+              builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
                 if (!snapshot.hasData) {
                   return SizedBox();
                 }
@@ -156,7 +156,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8.0),
                     child: Text(
-                      snapshot.data,
+                      snapshot.data!,
                       maxLines: isNoteExpanded ? null : 1,
                       overflow: isNoteExpanded ? null : TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyText1,
@@ -177,8 +177,8 @@ class _TransactionListItemState extends State<TransactionListItem> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Text(
-                    widget.transaction.getTimeFormat(),
-                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    widget.transaction!.getTimeFormat(),
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           color: Colors.grey,
                         ),
                   ),
@@ -186,7 +186,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
                 Expanded(child: SizedBox()),
                 Builder(
                   builder: (BuildContext context) {
-                    return widget.transaction.confirmations > 0
+                    return widget.transaction!.confirmations! > 0
                         ? Container(
                             height: 12,
                             width: 12,

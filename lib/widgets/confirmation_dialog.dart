@@ -5,19 +5,19 @@ import '../utils/utils.dart';
 import '../widgets/custom_simple_dialog.dart';
 
 void showConfirmationDialog({
-  BuildContext context,
-  String title,
+  required BuildContext context,
+  String? title,
   IconData icon = Icons.warning,
-  Color iconColor,
-  String message,
-  Function onConfirm,
-  String confirmButtonText,
-  Key key,
+  Color? iconColor,
+  String? message,
+  Function? onConfirm,
+  String? confirmButtonText,
+  Key? key,
 }) {
-  title ??= AppLocalizations.of(context).confirm;
-  confirmButtonText ??= AppLocalizations.of(context).confirm;
+  title ??= AppLocalizations.of(context)!.confirm;
+  confirmButtonText ??= AppLocalizations.of(context)!.confirm;
   message ??=
-      toInitialUpper(AppLocalizations.of(context).areYouSure.toLowerCase());
+      toInitialUpper(AppLocalizations.of(context)!.areYouSure.toLowerCase());
   dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -29,11 +29,11 @@ void showConfirmationDialog({
                 color: iconColor ?? Theme.of(context).colorScheme.onSurface,
               ),
               const SizedBox(width: 12),
-              Text(title),
+              Text(title!),
             ],
           ),
           children: <Widget>[
-            Text(message),
+            Text(message!),
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -41,7 +41,7 @@ void showConfirmationDialog({
                 TextButton(
                   onPressed: () => dialogBloc.closeDialog(context),
                   child: Text(
-                    AppLocalizations.of(context).cancel,
+                    AppLocalizations.of(context)!.cancel,
                     maxLines: 1,
                   ),
                 ),
@@ -53,7 +53,7 @@ void showConfirmationDialog({
                     if (onConfirm != null) onConfirm();
                   },
                   child: Text(
-                    confirmButtonText,
+                    confirmButtonText!,
                     maxLines: 1,
                   ),
                 ),

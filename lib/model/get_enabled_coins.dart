@@ -5,7 +5,7 @@ class GetEnabledCoins {
   });
 
   String method;
-  String userpass;
+  String? userpass;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

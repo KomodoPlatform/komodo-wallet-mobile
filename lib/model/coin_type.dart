@@ -1,5 +1,7 @@
 // anchor: protocols support
 
+import 'package:collection/collection.dart' show IterableExtension;
+
 enum CoinType {
   utxo,
   slp,
@@ -19,9 +21,8 @@ enum CoinType {
   avx,
 }
 
-CoinType coinTypeFromString(String value) {
-  return CoinType.values.firstWhere(
+CoinType? coinTypeFromString(String? value) {
+  return CoinType.values.firstWhereOrNull(
     (e) => e.name.toUpperCase() == value?.toUpperCase(),
-    orElse: () => null,
   );
 }

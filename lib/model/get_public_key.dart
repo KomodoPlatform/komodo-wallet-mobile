@@ -19,7 +19,7 @@ class GetPublicKey {
       );
 
   String mmrpc;
-  String userpass;
+  String? userpass;
   String method;
 
   Map<String, dynamic> toJson() => <String, dynamic>{

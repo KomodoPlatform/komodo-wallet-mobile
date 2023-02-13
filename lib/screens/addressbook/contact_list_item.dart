@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import '../../generic_blocs/coins_bloc.dart';
 import '../../generic_blocs/dialog_bloc.dart';
@@ -15,7 +16,7 @@ import 'package:provider/provider.dart';
 class ContactListItem extends StatefulWidget {
   const ContactListItem(
     this.contact, {
-    Key key,
+    Key? key,
     this.shouldPop = false,
     this.coin,
     this.expanded = false,
@@ -23,7 +24,7 @@ class ContactListItem extends StatefulWidget {
 
   final Contact contact;
   final bool shouldPop;
-  final Coin coin;
+  final Coin? coin;
   final bool expanded;
 
   @override
@@ -32,7 +33,7 @@ class ContactListItem extends StatefulWidget {
 
 class _ContactListItemState extends State<ContactListItem> {
   bool expanded = false;
-  AddressBookProvider addressBookProvider;
+  late AddressBookProvider addressBookProvider;
 
   @override
   void initState() {
@@ -55,8 +56,8 @@ class _ContactListItemState extends State<ContactListItem> {
             });
           },
           title: Text(
-            widget.contact.name,
-            key: Key(widget.contact.name),
+            widget.contact.name!,
+            key: Key(widget.contact.name!),
           ),
         ),
         if (expanded)
@@ -76,7 +77,7 @@ class _ContactListItemState extends State<ContactListItem> {
                     ),
                   ),
                   icon: const Icon(Icons.edit, size: 16),
-                  label: Text(AppLocalizations.of(context).contactEdit),
+                  label: Text(AppLocalizations.of(context)!.contactEdit),
                 )
               ],
             ),
@@ -85,18 +86,18 @@ class _ContactListItemState extends State<ContactListItem> {
     );
   }
 
-  String _getCoinTypeAbbr() {
-    if (widget.coin.type == CoinType.smartChain) return 'KMD';
+  String? _getCoinTypeAbbr() {
+    if (widget.coin!.type == CoinType.smartChain) return 'KMD';
 
-    final String platform = widget.coin.protocol?.protocolData?.platform;
-    return platform ?? widget.coin.abbr;
+    final String? platform = widget.coin!.protocol?.protocolData?.platform;
+    return platform ?? widget.coin!.abbr;
   }
 
   Widget _buildAddressesList() {
     final List<Widget> addresses = [];
 
     widget.contact.addresses?.forEach(
-      (String abbr, String value) {
+      (String? abbr, String value) {
         if (widget.coin != null && _getCoinTypeAbbr() != abbr) return;
 
         addresses.add(
@@ -128,7 +129,7 @@ class _ContactListItemState extends State<ContactListItem> {
                               value,
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2
+                                  .subtitle2!
                                   .copyWith(
                                     color:
                                         Theme.of(context).colorScheme.secondary,
@@ -158,7 +159,7 @@ class _ContactListItemState extends State<ContactListItem> {
         child: Row(
           children: <Widget>[
             Text(
-              AppLocalizations.of(context).addressNotFound,
+              AppLocalizations.of(context)!.addressNotFound,
               style: TextStyle(
                 color: Theme.of(context).disabledColor,
                 fontSize: 14,
@@ -174,17 +175,16 @@ class _ContactListItemState extends State<ContactListItem> {
     );
   }
 
-  void _tryToSend(String abbr, String value) {
-    final CoinBalance coinBalance = coinsBloc.coinBalance.firstWhere(
+  void _tryToSend(String? abbr, String value) {
+    final CoinBalance? coinBalance = coinsBloc.coinBalance.firstWhereOrNull(
       (CoinBalance balance) {
-        return balance.coin.abbr == abbr;
+        return balance.coin!.abbr == abbr;
       },
-      orElse: () => null,
     );
     if (widget.coin == null && coinBalance == null) {
       _showWarning(
-        title: AppLocalizations.of(context).noSuchCoin,
-        message: AppLocalizations.of(context).addressCoinInactive(abbr),
+        title: AppLocalizations.of(context)!.noSuchCoin,
+        message: AppLocalizations.of(context)!.addressCoinInactive(abbr!),
       );
       return;
     }
@@ -204,7 +204,7 @@ class _ContactListItemState extends State<ContactListItem> {
     }
   }
 
-  void _showWarning({String title, String message}) {
+  void _showWarning({String? title, String? message}) {
     dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -213,7 +213,7 @@ class _ContactListItemState extends State<ContactListItem> {
             children: <Widget>[
               const Icon(Icons.warning),
               const SizedBox(width: 8),
-              Text(title),
+              Text(title!),
             ],
           ),
           children: <Widget>[
@@ -221,7 +221,7 @@ class _ContactListItemState extends State<ContactListItem> {
               children: <Widget>[
                 Flexible(
                     child: Text(
-                  message,
+                  message!,
                   textAlign: TextAlign.justify,
                   style: const TextStyle(
                     height: 1.4,
@@ -235,7 +235,7 @@ class _ContactListItemState extends State<ContactListItem> {
               children: [
                 ElevatedButton(
                   onPressed: () => dialogBloc.closeDialog(context),
-                  child: Text(AppLocalizations.of(context).warningOkBtn),
+                  child: Text(AppLocalizations.of(context)!.warningOkBtn),
                 ),
               ],
             ),

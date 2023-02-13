@@ -2,15 +2,15 @@ part of 'pin_input.dart';
 
 class _PinInputKey extends StatelessWidget {
   const _PinInputKey({
-    Key key,
+    Key? key,
     this.text,
-    @required this.value,
-    @required this.onPressed,
+    required this.value,
+    required this.onPressed,
   }) : super(key: key);
 
-  final String text;
+  final String? text;
   final String value;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class _PinInputKey extends StatelessWidget {
           ),
           if (text?.isNotEmpty == true)
             Text(
-              text,
+              text!,
               style: Theme.of(context).textTheme.caption,
             ),
         ],

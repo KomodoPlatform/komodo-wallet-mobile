@@ -13,8 +13,8 @@ import '../../../../localizations.dart';
 class BuildItemSwap extends StatefulWidget {
   const BuildItemSwap({this.context, this.swap});
 
-  final BuildContext context;
-  final Swap swap;
+  final BuildContext? context;
+  final Swap? swap;
 
   @override
   _BuildItemSwapState createState() => _BuildItemSwapState();
@@ -27,17 +27,17 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
   @override
   Widget build(BuildContext context) {
     final String swapStatus =
-        swapHistoryBloc.getSwapStatusString(context, widget.swap.status);
+        swapHistoryBloc.getSwapStatusString(context, widget.swap!.status);
     final Color colorStatus =
-        swapHistoryBloc.getColorStatus(widget.swap.status);
-    final String stepStatus = swapHistoryBloc.getStepStatus(widget.swap.status);
+        swapHistoryBloc.getColorStatus(widget.swap!.status);
+    final String stepStatus = swapHistoryBloc.getStepStatus(widget.swap!.status);
 
-    final myInfo = extractMyInfoFromSwap(widget.swap.result);
-    final myCoin = myInfo['myCoin'];
+    final myInfo = extractMyInfoFromSwap(widget.swap!.result!);
+    final myCoin = myInfo['myCoin']!;
     final myAmount = myInfo['myAmount'];
-    final otherCoin = myInfo['otherCoin'];
+    final otherCoin = myInfo['otherCoin']!;
     final otherAmount = myInfo['otherAmount'];
-    final startedAt = extractStartedAtFromSwap(widget.swap.result);
+    final startedAt = extractStartedAtFromSwap(widget.swap!.result!)!;
 
     return Card(
         child: InkWell(
@@ -75,7 +75,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                           ],
                         ),
                         Text(
-                          formatPrice(myAmount, 8),
+                          formatPrice(myAmount, 8)!,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -100,7 +100,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                           ],
                         ),
                         Text(
-                          formatPrice(otherAmount, 8),
+                          formatPrice(otherAmount, 8)!,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -112,10 +112,10 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                 const SizedBox(
                   height: 4,
                 ),
-                FutureBuilder<String>(
-                    future: Db.getNote(widget.swap.result.uuid),
+                FutureBuilder<String?>(
+                    future: Db.getNote(widget.swap!.result!.uuid),
                     builder:
-                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                        (BuildContext context, AsyncSnapshot<String?> snapshot) {
                       if (!snapshot.hasData) {
                         return SizedBox();
                       }
@@ -133,7 +133,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  snapshot.data,
+                                  snapshot.data!,
                                   style: Theme.of(context).textTheme.bodyText1,
                                   maxLines: isNoteExpanded ? null : 1,
                                   overflow: isNoteExpanded
@@ -182,7 +182,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                             Text(stepStatus,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .caption
+                                    .caption!
                                     .copyWith(color: Colors.white)),
                             const SizedBox(
                               width: 4,
@@ -190,7 +190,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                             Text(swapStatus,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
+                                    .bodyText1!
                                     .copyWith(
                                       color: Colors.white,
                                     ))
@@ -200,7 +200,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                     )
                   ],
                 ),
-                if (widget.swap.result.recoverable)
+                if (widget.swap!.result!.recoverable)
                   recoverIsLoading
                       ? Padding(
                           padding: const EdgeInsets.all(16),
@@ -219,20 +219,20 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                 recoverIsLoading = true;
                               });
                               swapHistoryBloc
-                                  .recoverFund(widget.swap)
+                                  .recoverFund(widget.swap!)
                                   .then((dynamic result) {
                                 if (result is RecoverFundsOfSwap) {
                                   showMessage(
                                       context,
-                                      AppLocalizations.of(context)
-                                          .unlockSuccess(result.result.coin,
-                                              result.result.txHash));
+                                      AppLocalizations.of(context)!
+                                          .unlockSuccess(result.result!.coin!,
+                                              result.result!.txHash!));
                                 } else if (result is ErrorString) {
                                   showErrorMessage(context, result.error);
                                 }
-                              }).then((_) => setState(() {
+                              }).then(((_) => setState(() {
                                         recoverIsLoading = false;
-                                      }));
+                                      })) as FutureOr<_> Function(Null));
                             },
                             style: TextButton.styleFrom(
                               primary: Theme.of(context).primaryColor,
@@ -243,7 +243,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                               ),
                             ),
                             child:
-                                Text(AppLocalizations.of(context).unlockFunds),
+                                Text(AppLocalizations.of(context)!.unlockFunds),
                           ),
                         ),
               ],
@@ -265,8 +265,8 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
     );
   }
 
-  String getAmountToBuy(Swap swap) {
-    final myInfo = extractMyInfoFromSwap(widget.swap.result);
+  String? getAmountToBuy(Swap swap) {
+    final myInfo = extractMyInfoFromSwap(widget.swap!.result!);
     final otherAmount = myInfo['otherAmount'];
     return otherAmount;
   }

@@ -34,8 +34,8 @@ class _OrderFillState extends State<OrderFill> {
         ),
         const SizedBox(width: 8),
         Text(
-          AppLocalizations.of(context).orderFilled(cutTrailingZeros(
-              (getFill(widget.order) * 100).toStringAsPrecision(3))),
+          AppLocalizations.of(context)!.orderFilled(cutTrailingZeros(
+              (getFill(widget.order) * 100).toStringAsPrecision(3))!),
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ],
@@ -45,8 +45,8 @@ class _OrderFillState extends State<OrderFill> {
 
 class FillPainter extends CustomPainter {
   FillPainter({
-    @required this.context,
-    @required this.order,
+    required this.context,
+    required this.order,
   });
 
   final BuildContext context;
@@ -67,16 +67,16 @@ class FillPainter extends CustomPainter {
       ..strokeWidth = size.width * 1.1 / 2;
 
     double fillProgress = 0;
-    for (String swapId in order.startedSwaps) {
-      final Swap swap = swapMonitor.swap(swapId);
+    for (String swapId in order.startedSwaps!) {
+      final Swap? swap = swapMonitor.swap(swapId);
       if (swap == null) continue;
 
       fillPaint.color = swapHistoryBloc.getColorStatus(swap.status);
 
-      final myInfo = extractMyInfoFromSwap(swap.result);
-      final myAmount = myInfo['myAmount'];
+      final myInfo = extractMyInfoFromSwap(swap.result!);
+      final myAmount = myInfo['myAmount']!;
       final double swapFill =
-          double.parse(myAmount) / double.parse(order.baseAmount);
+          double.parse(myAmount) / double.parse(order.baseAmount!);
 
       canvas.drawArc(
           Rect.fromCircle(center: center, radius: size.width / 4),
@@ -98,16 +98,16 @@ class FillPainter extends CustomPainter {
 /// filled by started swaps.
 /// '0' if no swaps were started, '1' if order was filled in full.
 double getFill(Order order) {
-  if (order.startedSwaps == null || order.startedSwaps.isEmpty) return 0;
+  if (order.startedSwaps == null || order.startedSwaps!.isEmpty) return 0;
 
   double fill = 0;
-  for (String swapId in order.startedSwaps) {
-    final Swap swap = swapMonitor.swap(swapId);
+  for (String swapId in order.startedSwaps!) {
+    final Swap? swap = swapMonitor.swap(swapId);
     if (swap == null) continue;
 
-    final myInfo = extractMyInfoFromSwap(swap.result);
-    final myAmount = myInfo['myAmount'];
-    fill += double.parse(myAmount) / double.parse(order.baseAmount);
+    final myInfo = extractMyInfoFromSwap(swap.result!);
+    final myAmount = myInfo['myAmount']!;
+    fill += double.parse(myAmount) / double.parse(order.baseAmount!);
   }
   return fill;
 }

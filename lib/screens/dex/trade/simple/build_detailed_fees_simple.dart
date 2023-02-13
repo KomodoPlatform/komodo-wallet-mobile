@@ -16,9 +16,9 @@ class BuildDetailedFeesSimple extends StatefulWidget {
     this.hideIfLow = false,
   });
 
-  final TradePreimage preimage;
+  final TradePreimage? preimage;
   final bool alignCenter;
-  final TextStyle style;
+  final TextStyle? style;
   final bool hideIfLow;
 
   @override
@@ -27,16 +27,16 @@ class BuildDetailedFeesSimple extends StatefulWidget {
 
 class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
   final double _lowFeeLimit = 0.05;
-  TextStyle _style;
-  CexProvider _cexProvider;
+  TextStyle? _style;
+  CexProvider? _cexProvider;
   bool _showDetails = false;
   bool _isLarge = false;
-  String _sellCoin;
-  String _receiveCoin;
-  CoinFee _sellTxFee;
-  CoinFee _receiveTxFee;
-  CoinFee _dexFee;
-  CoinFee _feeToSendDexFee;
+  String? _sellCoin;
+  String? _receiveCoin;
+  CoinFee? _sellTxFee;
+  CoinFee? _receiveTxFee;
+  CoinFee? _dexFee;
+  CoinFee? _feeToSendDexFee;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
                           : MainAxisAlignment.start,
                       children: [
                         Text(
-                          AppLocalizations.of(context).totalFees,
+                          AppLocalizations.of(context)!.totalFees,
                           style: widget.style ??
                               Theme.of(context).textTheme.bodyText1,
                         ),
@@ -70,10 +70,10 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
     _style = widget.style ?? Theme.of(context).textTheme.bodyText1;
 
     if (widget.preimage != null) {
-      final bool isTaker = widget.preimage.request.swapMethod == 'buy';
-      final TradePreimage preimage = widget.preimage;
+      final bool isTaker = widget.preimage!.request.swapMethod == 'buy';
+      final TradePreimage? preimage = widget.preimage;
       setState(() {
-        _sellCoin = isTaker ? preimage.request.rel : preimage.request.base;
+        _sellCoin = isTaker ? preimage!.request.rel : preimage!.request.base;
         _receiveCoin = isTaker ? preimage.request.base : preimage.request.rel;
         _sellTxFee = isTaker ? preimage.relCoinFee : preimage.baseCoinFee;
         _sellTxFee = isTaker ? preimage.relCoinFee : preimage.baseCoinFee;
@@ -118,26 +118,26 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
               : MainAxisAlignment.start,
           children: [
             Text(
-              AppLocalizations.of(context).totalFees + ' ',
+              AppLocalizations.of(context)!.totalFees + ' ',
               style: _style,
             ),
             Flexible(
               child: Text(
                 total,
-                style: _style.copyWith(
+                style: _style!.copyWith(
                     color: _isLarge
                         ? Colors.orange
                         : Theme.of(context)
                             .textTheme
-                            .bodyText2
-                            .color
+                            .bodyText2!
+                            .color!
                             .withAlpha(220)),
               ),
             ),
             Icon(
               _showDetails ? Icons.arrow_drop_up : Icons.arrow_drop_down,
               size: 16,
-              color: _style.color,
+              color: _style!.color,
             ),
           ],
         ),
@@ -149,15 +149,15 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
     setState(() => _isLarge = false);
 
     final String nbsp = String.fromCharCode(0x00A0);
-    final Map<String, double> normalizedTotals = {
+    final Map<String?, double> normalizedTotals = {
       'USD': 0,
     };
 
-    for (int i = 0; i < widget.preimage.totalFees.length; i++) {
-      final CoinFee fee = widget.preimage.totalFees[i];
+    for (int i = 0; i < widget.preimage!.totalFees!.length; i++) {
+      final CoinFee fee = widget.preimage!.totalFees![i];
 
       final double feeUsdAmount = (double.tryParse(fee.amount ?? '0') ?? 0) *
-          _cexProvider.getUsdPrice(fee.coin);
+          _cexProvider!.getUsdPrice(fee.coin)!;
 
       if (feeUsdAmount > 0) {
         normalizedTotals['USD'] += feeUsdAmount;
@@ -168,12 +168,12 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
     }
 
     String totalFees = '';
-    normalizedTotals.forEach((String coin, double amount) {
+    normalizedTotals.forEach((String? coin, double amount) {
       if (amount == 0) return;
 
       if (totalFees.isNotEmpty) totalFees += ' +$nbsp';
       if (coin == 'USD') {
-        totalFees += _cexProvider.convert(amount);
+        totalFees += _cexProvider!.convert(amount)!;
       } else {
         totalFees += '${cutTrailingZeros(formatPrice(amount, 4))}$nbsp$coin';
       }
@@ -184,25 +184,25 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
     return totalFees;
   }
 
-  void _checkIfLarge(double amtUsd) {
-    final bool isTaker = widget.preimage.request.swapMethod == 'buy';
-    final String sellCoin =
-        isTaker ? widget.preimage.request.rel : widget.preimage.request.base;
+  void _checkIfLarge(double? amtUsd) {
+    final bool isTaker = widget.preimage!.request.swapMethod == 'buy';
+    final String? sellCoin =
+        isTaker ? widget.preimage!.request.rel : widget.preimage!.request.base;
 
-    final double requestVolume = widget.preimage.request.volume is Rational
-        ? widget.preimage.request.volume.toDouble()
-        : double.parse(widget.preimage.request.volume);
+    final double? requestVolume = widget.preimage!.request.volume is Rational
+        ? widget.preimage!.request.volume.toDouble()
+        : double.parse(widget.preimage!.request.volume);
 
-    final double requestPrice = widget.preimage.request.price is Rational
-        ? widget.preimage.request.price.toDouble()
-        : double.parse(widget.preimage.request.price);
+    final double? requestPrice = widget.preimage!.request.price is Rational
+        ? widget.preimage!.request.price.toDouble()
+        : double.parse(widget.preimage!.request.price);
 
     final double amountSell =
-        isTaker ? requestVolume * requestPrice : requestVolume;
+        isTaker ? requestVolume! * requestPrice! : requestVolume!;
 
-    final double sellAmtUsd = amountSell * cexPrices.getUsdPrice(sellCoin);
+    final double sellAmtUsd = amountSell * cexPrices.getUsdPrice(sellCoin)!;
     if (sellAmtUsd > 0) {
-      setState(() => _isLarge = amtUsd > sellAmtUsd * _lowFeeLimit);
+      setState(() => _isLarge = amtUsd! > sellAmtUsd * _lowFeeLimit);
     }
   }
 
@@ -225,51 +225,51 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
           padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
           color: Theme.of(context).highlightColor.withAlpha(25),
           child: Text(
-            AppLocalizations.of(context).paidFromBalance,
+            AppLocalizations.of(context)!.paidFromBalance,
             style: Theme.of(context).textTheme.caption,
           ),
         ),
         SizedBox(height: 4),
-        if (_sellTxFee != null && !_sellTxFee.paidFromTradingVol)
+        if (_sellTxFee != null && !_sellTxFee!.paidFromTradingVol!)
           Container(
             padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
             child: Text(
-              '• ${cutTrailingZeros(formatPrice(_sellTxFee.amount))} '
-              '${_sellTxFee.coin} '
-              '(${_cexProvider.convert(double.tryParse(_sellTxFee.amount), from: _sellTxFee.coin)}): '
+              '• ${cutTrailingZeros(formatPrice(_sellTxFee!.amount))} '
+              '${_sellTxFee!.coin} '
+              '(${_cexProvider!.convert(double.tryParse(_sellTxFee!.amount!), from: _sellTxFee!.coin)}): '
               'send $_sellCoin tx fee',
               style: Theme.of(context).textTheme.caption,
             ),
           ),
-        if (_receiveTxFee != null && !_receiveTxFee.paidFromTradingVol)
+        if (_receiveTxFee != null && !_receiveTxFee!.paidFromTradingVol!)
           Container(
             padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
             child: Text(
-              '• ${cutTrailingZeros(formatPrice(_receiveTxFee.amount))} '
-              '${_receiveTxFee.coin} '
-              '(${_cexProvider.convert(double.tryParse(_receiveTxFee.amount), from: _receiveTxFee.coin)}): '
+              '• ${cutTrailingZeros(formatPrice(_receiveTxFee!.amount))} '
+              '${_receiveTxFee!.coin} '
+              '(${_cexProvider!.convert(double.tryParse(_receiveTxFee!.amount!), from: _receiveTxFee!.coin)}): '
               'receive $_receiveCoin tx fee',
               style: Theme.of(context).textTheme.caption,
             ),
           ),
-        if (_dexFee != null && !_dexFee.paidFromTradingVol)
+        if (_dexFee != null && !_dexFee!.paidFromTradingVol!)
           Container(
             padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
             child: Text(
-              '• ${cutTrailingZeros(formatPrice(_dexFee.amount))} '
-              '${_dexFee.coin} '
-              '(${_cexProvider.convert(double.tryParse(_dexFee.amount), from: _dexFee.coin)}): '
+              '• ${cutTrailingZeros(formatPrice(_dexFee!.amount))} '
+              '${_dexFee!.coin} '
+              '(${_cexProvider!.convert(double.tryParse(_dexFee!.amount!), from: _dexFee!.coin)}): '
               'trading fee',
               style: Theme.of(context).textTheme.caption,
             ),
           ),
-        if (_feeToSendDexFee != null && !_feeToSendDexFee.paidFromTradingVol)
+        if (_feeToSendDexFee != null && !_feeToSendDexFee!.paidFromTradingVol!)
           Container(
             padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
             child: Text(
-              '• ${cutTrailingZeros(formatPrice(_feeToSendDexFee.amount))} '
-              '${_feeToSendDexFee.coin} '
-              '(${_cexProvider.convert(double.tryParse(_feeToSendDexFee.amount), from: _feeToSendDexFee.coin)}): '
+              '• ${cutTrailingZeros(formatPrice(_feeToSendDexFee!.amount))} '
+              '${_feeToSendDexFee!.coin} '
+              '(${_cexProvider!.convert(double.tryParse(_feeToSendDexFee!.amount!), from: _feeToSendDexFee!.coin)}): '
               'send trading fee tx fee',
               style: Theme.of(context).textTheme.caption,
             ),
@@ -281,49 +281,49 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
   Widget _buildPaidFromTrade() {
     final List<Widget> items = [];
 
-    if (_sellTxFee != null && _sellTxFee.paidFromTradingVol)
+    if (_sellTxFee != null && _sellTxFee!.paidFromTradingVol!)
       items.add(Container(
         padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
         child: Text(
-          '• ${cutTrailingZeros(formatPrice(_sellTxFee.amount))} '
-          '${_sellTxFee.coin} '
-          '(${_cexProvider.convert(double.tryParse(_sellTxFee.amount), from: _sellTxFee.coin)}): '
+          '• ${cutTrailingZeros(formatPrice(_sellTxFee!.amount))} '
+          '${_sellTxFee!.coin} '
+          '(${_cexProvider!.convert(double.tryParse(_sellTxFee!.amount!), from: _sellTxFee!.coin)}): '
           'send $_sellCoin tx fee',
           style: Theme.of(context).textTheme.caption,
         ),
       ));
 
-    if (_receiveTxFee != null && _receiveTxFee.paidFromTradingVol)
+    if (_receiveTxFee != null && _receiveTxFee!.paidFromTradingVol!)
       items.add(Container(
         padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
         child: Text(
-          '• ${cutTrailingZeros(formatPrice(_receiveTxFee.amount))} '
-          '${_receiveTxFee.coin} '
-          '(${_cexProvider.convert(double.tryParse(_receiveTxFee.amount), from: _receiveTxFee.coin)}): '
+          '• ${cutTrailingZeros(formatPrice(_receiveTxFee!.amount))} '
+          '${_receiveTxFee!.coin} '
+          '(${_cexProvider!.convert(double.tryParse(_receiveTxFee!.amount!), from: _receiveTxFee!.coin)}): '
           'receive $_receiveCoin tx fee',
           style: Theme.of(context).textTheme.caption,
         ),
       ));
 
-    if (_dexFee != null && _dexFee.paidFromTradingVol)
+    if (_dexFee != null && _dexFee!.paidFromTradingVol!)
       items.add(Container(
         padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
         child: Text(
-          '• ${cutTrailingZeros(formatPrice(_dexFee.amount))} '
-          '${_dexFee.coin} '
-          '(${_cexProvider.convert(double.tryParse(_dexFee.amount), from: _dexFee.coin)}): '
+          '• ${cutTrailingZeros(formatPrice(_dexFee!.amount))} '
+          '${_dexFee!.coin} '
+          '(${_cexProvider!.convert(double.tryParse(_dexFee!.amount!), from: _dexFee!.coin)}): '
           'trading fee',
           style: Theme.of(context).textTheme.caption,
         ),
       ));
 
-    if (_feeToSendDexFee != null && _feeToSendDexFee.paidFromTradingVol)
+    if (_feeToSendDexFee != null && _feeToSendDexFee!.paidFromTradingVol!)
       items.add(Container(
         padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
         child: Text(
-          '• ${cutTrailingZeros(formatPrice(_feeToSendDexFee.amount))} '
-          '${_feeToSendDexFee.coin} '
-          '(${_cexProvider.convert(double.tryParse(_feeToSendDexFee.amount), from: _feeToSendDexFee.coin)}): '
+          '• ${cutTrailingZeros(formatPrice(_feeToSendDexFee!.amount))} '
+          '${_feeToSendDexFee!.coin} '
+          '(${_cexProvider!.convert(double.tryParse(_feeToSendDexFee!.amount!), from: _feeToSendDexFee!.coin)}): '
           'send trading fee tx fee',
           style: Theme.of(context).textTheme.caption,
         ),
@@ -345,7 +345,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
           padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
           color: Theme.of(context).highlightColor.withAlpha(25),
           child: Text(
-            AppLocalizations.of(context).paidFromVolume,
+            AppLocalizations.of(context)!.paidFromVolume,
             style: Theme.of(context).textTheme.caption,
           ),
         ),

@@ -13,19 +13,19 @@ class GetBestOrders {
     this.action,
   });
 
-  String userpass;
+  String? userpass;
   String method;
-  String coin;
-  Rational volume;
-  Market action;
+  String? coin;
+  Rational? volume;
+  Market? action;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method,
         'userpass': userpass,
         'coin': coin,
         'volume': {
-          'numer': volume.numerator.toString(),
-          'denom': volume.denominator.toString(),
+          'numer': volume!.numerator.toString(),
+          'denom': volume!.denominator.toString(),
         },
         'action': action == Market.BUY ? 'buy' : 'sell',
       };

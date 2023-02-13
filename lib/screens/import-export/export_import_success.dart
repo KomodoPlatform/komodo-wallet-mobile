@@ -4,8 +4,8 @@ import '../../localizations.dart';
 class ExportImportSuccess extends StatefulWidget {
   const ExportImportSuccess({this.title, this.items});
 
-  final String title;
-  final Map<String, int> items;
+  final String? title;
+  final Map<String, int>? items;
 
   @override
   _ExportImportSuccessState createState() => _ExportImportSuccessState();
@@ -18,7 +18,7 @@ class _ExportImportSuccessState extends State<ExportImportSuccess> {
       padding: EdgeInsets.fromLTRB(48, 24, 48, 24),
       child: Column(
         children: [
-          Text(widget.title),
+          Text(widget.title!),
           SizedBox(height: 24),
           Table(
             columnWidths: const {
@@ -30,7 +30,7 @@ class _ExportImportSuccessState extends State<ExportImportSuccess> {
           ElevatedButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              AppLocalizations.of(context).okButton,
+              AppLocalizations.of(context)!.okButton,
             ),
           ),
         ],

@@ -19,28 +19,28 @@ class MatchingBidsTable extends StatefulWidget {
     this.onCreateOrder,
   });
 
-  final double headerHeight;
-  final double lineHeight;
-  final List<Ask> bidsList;
-  final Function(Ask) onCreateOrder;
+  final double? headerHeight;
+  final double? lineHeight;
+  final List<Ask>? bidsList;
+  final Function(Ask)? onCreateOrder;
 
   @override
   _MatchingBidsTableState createState() => _MatchingBidsTableState();
 }
 
 class _MatchingBidsTableState extends State<MatchingBidsTable> {
-  AddressBookProvider _addressBookProvider;
-  OrderBookProvider _orderBookProvider;
+  AddressBookProvider? _addressBookProvider;
+  OrderBookProvider? _orderBookProvider;
 
-  final Rational _sellAmount = swapBloc.amountSell;
+  final Rational? _sellAmount = swapBloc.amountSell;
 
   @override
   Widget build(BuildContext context) {
     _addressBookProvider ??= Provider.of<AddressBookProvider>(context);
     _orderBookProvider ??= Provider.of<OrderBookProvider>(context);
 
-    final String _sellCoin = _orderBookProvider.activePair.sell.abbr;
-    final String _receiveCoin = _orderBookProvider.activePair.buy.abbr;
+    final String? _sellCoin = _orderBookProvider!.activePair!.sell!.abbr;
+    final String? _receiveCoin = _orderBookProvider!.activePair!.buy!.abbr;
 
     final List<TableRow> bidsRows = <TableRow>[];
     widget.bidsList
@@ -64,10 +64,10 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
               right: 6,
             ),
             child: Text(
-              '${AppLocalizations.of(context).price}'
+              '${AppLocalizations.of(context)!.price}'
               ' ($_receiveCoin)',
               style:
-                  Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 14),
+                  Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 14),
             ),
           ),
           Container(
@@ -77,11 +77,11 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
               left: 6,
             ),
             child: Text(
-              '${AppLocalizations.of(context).availableVolume}'
+              '${AppLocalizations.of(context)!.availableVolume}'
               ' ($_receiveCoin)',
               textAlign: TextAlign.end,
               style:
-                  Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 14),
+                  Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 14),
             ),
           ),
           Container(
@@ -91,11 +91,11 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
               left: 6,
             ),
             child: Text(
-              '${AppLocalizations.of(context).availableVolume}'
+              '${AppLocalizations.of(context)!.availableVolume}'
               ' ($_sellCoin)',
               textAlign: TextAlign.right,
               style:
-                  Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 14),
+                  Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 14),
             ),
           ),
           Container(
@@ -106,11 +106,11 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
               right: 12,
             ),
             child: Text(
-              '${AppLocalizations.of(context).receive.toLowerCase()}'
+              '${AppLocalizations.of(context)!.receive.toLowerCase()}'
               ' ($_receiveCoin)',
               textAlign: TextAlign.right,
               style:
-                  Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 14),
+                  Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 14),
             ),
           ),
         ]),
@@ -141,15 +141,15 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
             child: Row(
               children: <Widget>[
                 Text(
-                  formatPrice(1 / double.parse(bid.price)),
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  formatPrice(1 / double.parse(bid.price!))!,
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         fontSize: 13,
                         color: Theme.of(context).brightness == Brightness.light
                             ? Colors.green
                             : Colors.greenAccent,
                       ),
                 ),
-                if (_addressBookProvider.contactByAddress(bid.address) != null)
+                if (_addressBookProvider!.contactByAddress(bid.address) != null)
                   Flexible(
                     child: Container(
                       padding: const EdgeInsets.only(left: 2),
@@ -192,9 +192,9 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
                   color: Theme.of(context).highlightColor,
                 ))),
             child: Text(
-              formatPrice(bid.maxvolume.toDouble()),
+              formatPrice(bid.maxvolume!.toDouble())!,
               style:
-                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 13),
+                  Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 13),
             ),
           ),
           onTap: () => _onBidTap(bid),
@@ -215,9 +215,9 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
                   color: Theme.of(context).highlightColor,
                 ))),
             child: Text(
-              formatPrice(bid.maxvolume.toDouble() * double.parse(bid.price)),
+              formatPrice(bid.maxvolume!.toDouble() * double.parse(bid.price!))!,
               style:
-                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 13),
+                  Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 13),
             ),
           ),
           onTap: () => _onBidTap(bid),
@@ -239,10 +239,10 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
                   color: Theme.of(context).highlightColor,
                 ))),
             child: Text(
-              formatPrice(bid.getReceiveAmount(_sellAmount)),
+              formatPrice(bid.getReceiveAmount(_sellAmount!))!,
               style: Theme.of(context)
                   .textTheme
-                  .bodyText2
+                  .bodyText2!
                   .copyWith(fontWeight: FontWeight.w500, fontSize: 14),
             ),
           ),
@@ -279,13 +279,13 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
 
   void _createOrder(Ask bid) {
     final Rational maxSellAmt = swapBloc.maxTakerVolume ??
-        Rational.parse(swapBloc.sellCoinBalance.balance.balance.toString());
+        Rational.parse(swapBloc.sellCoinBalance!.balance!.balance.toString());
     final bool isEnoughVolume =
-        !(bid.minVolume != null && maxSellAmt < (bid.minVolume * bid.priceRat));
+        !(bid.minVolume != null && maxSellAmt < (bid.minVolume! * bid.priceRat));
 
     if (isEnoughVolume) {
       Navigator.of(context).pop();
-      widget.onCreateOrder(bid);
+      widget.onCreateOrder!(bid);
     } else {
       openNotEnoughVolumeDialog(context, bid);
     }

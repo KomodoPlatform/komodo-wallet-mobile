@@ -8,7 +8,7 @@ class CandlesIcon extends StatelessWidget {
   });
 
   final double size;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {

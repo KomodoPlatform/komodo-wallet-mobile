@@ -14,7 +14,7 @@ class BuildTradeButton extends StatefulWidget {
 }
 
 class _BuildTradeButtonState extends State<BuildTradeButton> {
-  List<StreamSubscription> _listeners;
+  late List<StreamSubscription> _listeners;
   bool _enabled = false;
 
   @override
@@ -50,7 +50,7 @@ class _BuildTradeButtonState extends State<BuildTradeButton> {
       child: PrimaryButton(
         key: const Key('trade-button'),
         onPressed: _enabled ? () => _validateAndConfirm(context) : null,
-        text: AppLocalizations.of(context).trade,
+        text: AppLocalizations.of(context)!.trade,
       ),
     );
   }
@@ -89,8 +89,8 @@ class _BuildTradeButtonState extends State<BuildTradeButton> {
         swapBloc.receiveCoinBalance != null &&
         swapBloc.amountSell != null &&
         swapBloc.amountReceive != null &&
-        swapBloc.amountSell.toDouble() > 0 &&
-        swapBloc.amountReceive.toDouble() > 0;
+        swapBloc.amountSell!.toDouble() > 0 &&
+        swapBloc.amountReceive!.toDouble() > 0;
 
     setState(() => _enabled = isEnabled);
   }

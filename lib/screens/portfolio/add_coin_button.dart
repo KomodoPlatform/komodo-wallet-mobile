@@ -14,17 +14,17 @@ import '../../../../widgets/custom_simple_dialog.dart';
 import '../../widgets/primary_button.dart';
 
 class AddCoinButton extends StatelessWidget {
-  const AddCoinButton({Key key, this.isCollapsed = false}) : super(key: key);
+  const AddCoinButton({Key? key, this.isCollapsed = false}) : super(key: key);
 
   final bool isCollapsed;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<CoinToActivate>(
+    return StreamBuilder<CoinToActivate?>(
         initialData: coinsBloc.currentActiveCoin,
         stream: coinsBloc.outcurrentActiveCoin,
         builder:
-            (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+            (BuildContext context, AsyncSnapshot<CoinToActivate?> snapshot) {
           if (snapshot.data != null) {
             return isCollapsed
                 ? Container(
@@ -46,8 +46,8 @@ class AddCoinButton extends StatelessWidget {
                       const SizedBox(
                         height: 8,
                       ),
-                      Text(snapshot.data.currentStatus ??
-                          AppLocalizations.of(context).connecting),
+                      Text(snapshot.data!.currentStatus ??
+                          AppLocalizations.of(context)!.connecting),
                       const SizedBox(
                         height: 8,
                       ),
@@ -65,7 +65,7 @@ class AddCoinButton extends StatelessWidget {
                       child: OutlinedButton(
                         style: Theme.of(context)
                             .outlinedButtonTheme
-                            .style
+                            .style!
                             .copyWith(
                               shape: MaterialStateProperty.all(
                                 const CircleBorder(),
@@ -80,7 +80,7 @@ class AddCoinButton extends StatelessWidget {
                   return PrimaryButton(
                     key: const Key('add-coins-button'),
                     icon: Icon(Icons.add),
-                    text: AppLocalizations.of(context).addCoin,
+                    text: AppLocalizations.of(context)!.addCoin,
                     onPressed: () => _showAddCoinPage(context),
                   );
                 } else {
@@ -97,7 +97,7 @@ class AddCoinButton extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(context).errorColor,
-        content: Text(AppLocalizations.of(context).noInternet),
+        content: Text(AppLocalizations.of(context)!.noInternet),
       ));
     } else {
       final numCoinsEnabled = coinsBloc.coinBalance.length;
@@ -111,20 +111,20 @@ class AddCoinButton extends StatelessWidget {
           builder: (BuildContext context) {
             return CustomSimpleDialog(
               title:
-                  Text(AppLocalizations.of(context).tooManyAssetsEnabledTitle),
+                  Text(AppLocalizations.of(context)!.tooManyAssetsEnabledTitle),
               children: [
-                Text(AppLocalizations.of(context).tooManyAssetsEnabledSpan1 +
+                Text(AppLocalizations.of(context)!.tooManyAssetsEnabledSpan1 +
                     numCoinsEnabled.toString() +
-                    AppLocalizations.of(context).tooManyAssetsEnabledSpan2 +
+                    AppLocalizations.of(context)!.tooManyAssetsEnabledSpan2 +
                     maxCoinPerPlatform.toString() +
-                    AppLocalizations.of(context).tooManyAssetsEnabledSpan3),
+                    AppLocalizations.of(context)!.tooManyAssetsEnabledSpan3),
                 SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
                       onPressed: () => dialogBloc.closeDialog(context),
-                      child: Text(AppLocalizations.of(context).warningOkBtn),
+                      child: Text(AppLocalizations.of(context)!.warningOkBtn),
                     ),
                   ],
                 ),
@@ -145,7 +145,7 @@ class AddCoinButton extends StatelessWidget {
   /// Returns `true` if there are coins we can still activate, `false` if all of them activated.
   Future<bool> _buildAddCoinButton() async {
     final active = await Db.activeCoins;
-    final known = await coins;
+    final known = await (coins as FutureOr<LinkedHashMap<String?, Coin>>);
     return active.length < known.length;
   }
 }

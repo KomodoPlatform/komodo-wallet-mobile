@@ -7,7 +7,7 @@ part 'pin_input_keypad.dart';
 @immutable
 class PinInput extends StatelessWidget {
   final String value;
-  final String errorMessage;
+  final String? errorMessage;
 
   final bool errorState;
   final bool readOnly;
@@ -15,11 +15,11 @@ class PinInput extends StatelessWidget {
 
   final int length;
 
-  final void Function(String) onChanged;
-  final void Function(String) onPinComplete;
+  final void Function(String)? onChanged;
+  final void Function(String)? onPinComplete;
 
   const PinInput({
-    @required this.value,
+    required this.value,
     this.errorMessage,
     this.errorState = false,
     this.readOnly = false,
@@ -39,10 +39,10 @@ class PinInput extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Text(
-              errorMessage,
+              errorMessage!,
               style: Theme.of(context)
                   .textTheme
-                  .caption
+                  .caption!
                   .copyWith(color: Colors.red),
             ),
           ),
@@ -114,11 +114,11 @@ class PinInput extends StatelessWidget {
     if (newValue == value) return;
 
     // Report the change.
-    onChanged(newValue);
+    onChanged!(newValue);
 
     // If the field is complete, report the that the pin is complete.
     if (newValue.length == length && onPinComplete != null)
-      onPinComplete(newValue);
+      onPinComplete!(newValue);
   }
 
   bool get canPressBackspace => value.isNotEmpty && !readOnly;

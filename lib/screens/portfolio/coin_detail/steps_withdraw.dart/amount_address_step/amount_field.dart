@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 class AmountField extends StatefulWidget {
   const AmountField({
-    Key key,
+    Key? key,
     this.onMaxValue,
     this.focusNode,
     this.controller,
@@ -22,11 +22,11 @@ class AmountField extends StatefulWidget {
   }) : super(key: key);
 
   final bool autoFocus;
-  final CoinBalance coinBalance;
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final Function onMaxValue;
-  final Function(String) onChanged;
+  final CoinBalance? coinBalance;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final Function? onMaxValue;
+  final Function(String)? onChanged;
 
   @override
   _AmountFieldState createState() => _AmountFieldState();
@@ -34,79 +34,79 @@ class AmountField extends StatefulWidget {
 
 class _AmountFieldState extends State<AmountField> {
   String amountPreview = '';
-  CexProvider cexProvider;
+  late CexProvider cexProvider;
   bool isMaxPressed = false;
 
   @override
   void dispose() {
-    widget.controller.removeListener(_amountPreviewListener);
+    widget.controller!.removeListener(_amountPreviewListener);
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    widget.controller.addListener(_amountPreviewListener);
+    widget.controller!.addListener(_amountPreviewListener);
   }
 
   void _onChange() {
-    if (widget.controller.text.isEmpty) return;
+    if (widget.controller!.text.isEmpty) return;
     final double amount =
-        double.parse(widget.controller.text.replaceAll(',', '.'));
+        double.parse(widget.controller!.text.replaceAll(',', '.'));
     if (cexProvider.withdrawCurrency == 'USD') {
-      if (isMaxPressed || (amount > widget.coinBalance.balanceUSD)) {
+      if (isMaxPressed || (amount > widget.coinBalance!.balanceUSD!)) {
         _setMaxValue();
       }
     } else if (cexProvider.withdrawCurrency ==
-        cexProvider.selectedFiat.toUpperCase()) {
+        cexProvider.selectedFiat!.toUpperCase()) {
       final double convertedBalance = double.parse(cexProvider.convert(
-          widget.coinBalance.balanceUSD,
+          widget.coinBalance!.balanceUSD,
           showSymbol: false,
-          to: cexProvider.selectedFiat.toUpperCase()));
+          to: cexProvider.selectedFiat!.toUpperCase())!);
 
       if (isMaxPressed || (amount > convertedBalance)) {
         _setMaxValue();
       }
     } else {
       if (isMaxPressed ||
-          amount > widget.coinBalance.balance.balance.toDouble()) {
+          amount > widget.coinBalance!.balance!.balance!.toDouble()) {
         _setMaxValue();
       }
     }
   }
 
   Future<void> _setMaxValue() async {
-    widget.focusNode.unfocus();
+    widget.focusNode!.unfocus();
 
     if (cexProvider.withdrawCurrency == 'USD') {
       final String coinBalanceUsd = cexProvider
-          .convert(widget.coinBalance.balanceUSD, showSymbol: false, to: 'USD');
+          .convert(widget.coinBalance!.balanceUSD, showSymbol: false, to: 'USD')!;
 
-      widget.controller.text = coinBalanceUsd;
+      widget.controller!.text = coinBalanceUsd;
     } else if (cexProvider.withdrawCurrency ==
-        cexProvider.selectedFiat.toUpperCase()) {
-      widget.controller.text = cexProvider.convert(
-          widget.coinBalance.balanceUSD,
+        cexProvider.selectedFiat!.toUpperCase()) {
+      widget.controller!.text = cexProvider.convert(
+          widget.coinBalance!.balanceUSD,
           showSymbol: false,
-          to: cexProvider.selectedFiat);
+          to: cexProvider.selectedFiat)!;
     } else {
-      widget.controller.text = widget.coinBalance.balance.getBalance();
+      widget.controller!.text = widget.coinBalance!.balance!.getBalance();
     }
 
     await Future<dynamic>.delayed(const Duration(milliseconds: 0), () {
       FocusScope.of(context).requestFocus(widget.focusNode);
     });
 
-    coinsDetailBloc.setAmountToSend(widget.controller.text);
+    coinsDetailBloc.setAmountToSend(widget.controller!.text);
   }
 
   void _amountPreviewListener() {
     setState(() {
-      amountPreview = widget.controller.text;
+      amountPreview = widget.controller!.text;
     });
   }
 
-  _onCurrencyTypeChange(String currency) {
+  _onCurrencyTypeChange(String? currency) {
     setState(() {
       isMaxPressed = false;
     });
@@ -140,7 +140,7 @@ class _AmountFieldState extends State<AmountField> {
                         borderRadius: BorderRadius.circular(6.0),
                       ),
                     ),
-                    child: Text(AppLocalizations.of(context).max),
+                    child: Text(AppLocalizations.of(context)!.max),
                   ),
                 ),
                 const SizedBox(
@@ -152,11 +152,11 @@ class _AmountFieldState extends State<AmountField> {
                       stream: coinsBloc.outCoins,
                       builder: (BuildContext context,
                           AsyncSnapshot<List<CoinBalance>> snapshot) {
-                        CoinBalance currentCoinBalance;
+                        late CoinBalance currentCoinBalance;
                         if (snapshot.hasData) {
-                          for (CoinBalance coinBalance in snapshot.data) {
-                            if (coinBalance.coin.abbr ==
-                                widget.coinBalance.coin.abbr) {
+                          for (CoinBalance coinBalance in snapshot.data!) {
+                            if (coinBalance.coin!.abbr ==
+                                widget.coinBalance!.coin!.abbr) {
                               currentCoinBalance = coinBalance;
                             }
                           }
@@ -172,7 +172,7 @@ class _AmountFieldState extends State<AmountField> {
                           focusNode: widget.focusNode,
                           controller: widget.controller,
                           autofocus: widget.autoFocus,
-                          autovalidateMode: widget.controller.text.isNotEmpty
+                          autovalidateMode: widget.controller!.text.isNotEmpty
                               ? AutovalidateMode.always
                               : AutovalidateMode.disabled,
                           textInputAction: TextInputAction.done,
@@ -185,19 +185,19 @@ class _AmountFieldState extends State<AmountField> {
                             coinsDetailBloc.setAmountToSend(amount);
                             setState(() => isMaxPressed = false);
                             _onChange();
-                            widget.onChanged(amount);
+                            widget.onChanged!(amount);
                           },
                           decoration: InputDecoration(
-                              labelText: AppLocalizations.of(context).amount,
+                              labelText: AppLocalizations.of(context)!.amount,
                               suffixIcon: Padding(
                                 padding: EdgeInsets.only(right: 8.0),
-                                child: widget.coinBalance.balanceUSD == 0
+                                child: widget.coinBalance!.balanceUSD == 0
                                     ? Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            widget.coinBalance.coin.abbr
+                                            widget.coinBalance!.coin!.abbr!
                                                 .toUpperCase(),
                                             style: Theme.of(context)
                                                 .textTheme
@@ -213,15 +213,15 @@ class _AmountFieldState extends State<AmountField> {
                                             Theme.of(context).primaryColor,
                                         items: [
                                           'USD',
-                                          widget.coinBalance.coin.abbr
+                                          widget.coinBalance!.coin!.abbr!
                                               .toUpperCase(),
                                           if (cexProvider.selectedFiat != 'USD')
                                             cexProvider.selectedFiat,
-                                        ].map((String value) {
+                                        ].map((String? value) {
                                           return DropdownMenuItem<String>(
                                             value: value,
                                             child: Text(
-                                              value,
+                                              value!,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1,
@@ -232,14 +232,14 @@ class _AmountFieldState extends State<AmountField> {
                                       ),
                               )),
                           // The validator receives the text the user has typed in
-                          validator: (String value) {
-                            if (value.isEmpty && coinsDetailBloc.isCancel) {
+                          validator: (String? value) {
+                            if (value!.isEmpty && coinsDetailBloc.isCancel) {
                               return null;
                             }
                             value = value.replaceAll(',', '.');
 
                             if (value.isEmpty || double.parse(value) <= 0) {
-                              return AppLocalizations.of(context)
+                              return AppLocalizations.of(context)!
                                   .errorValueNotEmpty;
                             }
 
@@ -249,26 +249,26 @@ class _AmountFieldState extends State<AmountField> {
                             if (cexProvider.withdrawCurrency == 'USD') {
                               final String convertedBalance = cexProvider
                                   .convert(currentCoinBalance.balanceUSD,
-                                      showSymbol: false, to: 'USD');
+                                      showSymbol: false, to: 'USD')!;
                               coinBalanceUsd = double.parse(convertedBalance);
                             } else if (cexProvider.withdrawCurrency ==
-                                cexProvider.selectedFiat.toUpperCase()) {
+                                cexProvider.selectedFiat!.toUpperCase()) {
                               final String convertedBalance = cexProvider
                                   .convert(currentCoinBalance.balanceUSD,
                                       showSymbol: false,
-                                      to: cexProvider.selectedFiat);
+                                      to: cexProvider.selectedFiat)!;
                               print(convertedBalance);
 
                               coinBalanceUsd = double.parse(convertedBalance);
                             } else {
                               final String convertedBalance =
-                                  currentCoinBalance.balance.getBalance();
+                                  currentCoinBalance.balance!.getBalance();
 
                               coinBalanceUsd = double.parse(convertedBalance);
                             }
 
                             if (currentAmount > coinBalanceUsd) {
-                              return AppLocalizations.of(context)
+                              return AppLocalizations.of(context)!
                                   .errorAmountBalance;
                             }
                             return null;
@@ -283,7 +283,7 @@ class _AmountFieldState extends State<AmountField> {
               children: <Widget>[
                 CexFiatPreview(
                   amount: amountPreview,
-                  coinAbbr: widget.coinBalance.coin.abbr,
+                  coinAbbr: widget.coinBalance!.coin!.abbr,
                   currencyType: cexProvider.withdrawCurrency,
                 ),
               ],

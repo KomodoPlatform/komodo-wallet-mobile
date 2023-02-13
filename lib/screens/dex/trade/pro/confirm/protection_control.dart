@@ -7,27 +7,27 @@ import 'package:provider/provider.dart';
 
 class ProtectionControl extends StatefulWidget {
   const ProtectionControl({
-    @required this.coin,
+    required this.coin,
     this.onChange,
     this.activeColor,
   });
 
-  final Coin coin;
-  final Function(ProtectionSettings) onChange;
-  final Color activeColor;
+  final Coin? coin;
+  final Function(ProtectionSettings)? onChange;
+  final Color? activeColor;
 
   @override
   _ProtectionControlState createState() => _ProtectionControlState();
 }
 
 class _ProtectionControlState extends State<ProtectionControl> {
-  SwapProvider swapProvider;
+  late SwapProvider swapProvider;
   bool useCustom = false;
   bool dpowRequired = false;
   bool dpowAvailable = false;
   final int minConfs = 1;
   final int maxConfs = 5;
-  int confs;
+  int? confs;
   final String dPoWInfoUrl =
       'https://komodoplatform.com/security-delayed-proof-of-work-dpow/';
   final Color warningColor = Colors.red.withAlpha(200);
@@ -36,19 +36,19 @@ class _ProtectionControlState extends State<ProtectionControl> {
   void initState() {
     super.initState();
     setState(() {
-      dpowRequired = widget.coin.requiresNotarization ?? false;
-      confs = widget.coin.requiredConfirmations ?? minConfs;
-      if (confs < minConfs) confs = minConfs;
-      if (confs > maxConfs) confs = maxConfs;
+      dpowRequired = widget.coin!.requiresNotarization ?? false;
+      confs = widget.coin!.requiredConfirmations ?? minConfs;
+      if (confs! < minConfs) confs = minConfs;
+      if (confs! > maxConfs) confs = maxConfs;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     swapProvider = Provider.of<SwapProvider>(context);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       setState(() {
-        dpowAvailable = swapProvider.notarizationAvailable(widget.coin);
+        dpowAvailable = swapProvider.notarizationAvailable(widget.coin!);
       });
     });
 
@@ -58,7 +58,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Text(
-            'Incoming  ${widget.coin.abbr} txs protection settings:',
+            'Incoming  ${widget.coin!.abbr} txs protection settings:',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyText1,
           ),
@@ -120,9 +120,9 @@ class _ProtectionControlState extends State<ProtectionControl> {
                 child: _builddPowLink(),
               ),
               Text(
-                (widget.coin.requiresNotarization ?? false)
-                    ? AppLocalizations.of(context).protectionCtrlOn
-                    : AppLocalizations.of(context).protectionCtrlOff,
+                (widget.coin!.requiresNotarization ?? false)
+                    ? AppLocalizations.of(context)!.protectionCtrlOn
+                    : AppLocalizations.of(context)!.protectionCtrlOff,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
@@ -137,14 +137,14 @@ class _ProtectionControlState extends State<ProtectionControl> {
             children: <Widget>[
               Expanded(
                   child: Text(
-                AppLocalizations.of(context).protectionCtrlConfirmations + ': ',
+                AppLocalizations.of(context)!.protectionCtrlConfirmations + ': ',
               )),
               Text(
-                (widget.coin.requiresNotarization ?? false)
-                    ? AppLocalizations.of(context).protectionCtrlOn
-                    : widget.coin.requiredConfirmations == null
+                (widget.coin!.requiresNotarization ?? false)
+                    ? AppLocalizations.of(context)!.protectionCtrlOn
+                    : widget.coin!.requiredConfirmations == null
                         ? '1'
-                        : widget.coin.requiredConfirmations.toString(),
+                        : widget.coin!.requiredConfirmations.toString(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
@@ -167,7 +167,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Text(
-            AppLocalizations.of(context).dPow + ' ',
+            AppLocalizations.of(context)!.dPow + ' ',
           ),
           Icon(
             Icons.open_in_new,
@@ -206,7 +206,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
                 ),
                 const SizedBox(width: 3),
                 Text(
-                  AppLocalizations.of(context).protectionCtrlCustom,
+                  AppLocalizations.of(context)!.protectionCtrlCustom,
                 ),
               ],
             ),
@@ -218,7 +218,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
 
   Widget _buildWarning() {
     if (useCustom &&
-        (widget.coin.requiresNotarization ?? false) &&
+        (widget.coin!.requiresNotarization ?? false) &&
         !dpowRequired) {
       return Column(
         children: <Widget>[
@@ -240,7 +240,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    AppLocalizations.of(context).protectionCtrlWarning,
+                    AppLocalizations.of(context)!.protectionCtrlWarning,
                     style: TextStyle(
                       color: warningColor,
                     ),
@@ -296,12 +296,12 @@ class _ProtectionControlState extends State<ProtectionControl> {
             children: <Widget>[
               Expanded(
                 child: Text(
-                    AppLocalizations.of(context).protectionCtrlConfirmations +
+                    AppLocalizations.of(context)!.protectionCtrlConfirmations +
                         ':'),
               ),
               dpowRequired
                   ? Text(
-                      AppLocalizations.of(context).protectionCtrlOn,
+                      AppLocalizations.of(context)!.protectionCtrlOn,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )
                   : Text(
@@ -325,7 +325,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
         label: confs.toString(),
         min: minConfs.toDouble(),
         max: maxConfs.toDouble(),
-        value: confs.toDouble(),
+        value: confs!.toDouble(),
         onChanged: (double value) {
           setState(() {
             confs = value.round();
@@ -343,17 +343,17 @@ class _ProtectionControlState extends State<ProtectionControl> {
             requiredConfirmations: confs,
           )
         : ProtectionSettings(
-            requiredConfirmations: widget.coin.requiredConfirmations,
-            requiresNotarization: widget.coin.requiresNotarization ?? false,
+            requiredConfirmations: widget.coin!.requiredConfirmations,
+            requiresNotarization: widget.coin!.requiresNotarization ?? false,
           );
 
-    widget.onChange(protectionSettings);
+    widget.onChange!(protectionSettings);
   }
 }
 
 class ProtectionSettings {
   ProtectionSettings({this.requiresNotarization, this.requiredConfirmations});
 
-  bool requiresNotarization;
-  int requiredConfirmations;
+  bool? requiresNotarization;
+  int? requiredConfirmations;
 }

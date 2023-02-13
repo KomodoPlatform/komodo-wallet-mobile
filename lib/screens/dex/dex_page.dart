@@ -13,7 +13,7 @@ class DexPage extends StatefulWidget {
 }
 
 class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
-  TabController tabController;
+  TabController? tabController;
 
   @override
   void initState() {
@@ -24,13 +24,13 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
     ordersBloc.updateOrdersSwaps();
 
     swapBloc.outIndexTab.listen((int onData) {
-      if (mounted) setState(() => tabController.index = onData);
+      if (mounted) setState(() => tabController!.index = onData);
     });
   }
 
   @override
   void dispose() {
-    tabController.dispose();
+    tabController!.dispose();
     super.dispose();
   }
 
@@ -51,11 +51,11 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
             controller: tabController,
             tabs: <Widget>[
               Tab(
-                text: AppLocalizations.of(context).swap.toUpperCase(),
+                text: AppLocalizations.of(context)!.swap.toUpperCase(),
                 key: const Key('swap-tab'),
               ),
               Tab(
-                text: AppLocalizations.of(context).orders.toUpperCase(),
+                text: AppLocalizations.of(context)!.orders.toUpperCase(),
                 key: const Key('orders-tab'),
               ),
             ],
@@ -78,7 +78,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
         length: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: _buildAppBar(),
+          appBar: _buildAppBar() as PreferredSizeWidget?,
           body: Builder(builder: (BuildContext context) {
             return TabBarView(
               controller: tabController,

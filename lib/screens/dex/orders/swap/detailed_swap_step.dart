@@ -19,23 +19,23 @@ class DetailedSwapStep extends StatelessWidget {
     this.index,
   });
 
-  final String title;
-  final String txHash;
-  final String explorerUrl;
-  final SwapStepStatus status;
-  final Duration estimatedSpeed;
-  final Duration estimatedDeviation;
-  final Duration actualSpeed;
-  final Duration estimatedTotalSpeed;
-  final Duration actualTotalSpeed;
-  final int index;
+  final String? title;
+  final String? txHash;
+  final String? explorerUrl;
+  final SwapStepStatus? status;
+  final Duration? estimatedSpeed;
+  final Duration? estimatedDeviation;
+  final Duration? actualSpeed;
+  final Duration? estimatedTotalSpeed;
+  final Duration? actualTotalSpeed;
+  final int? index;
 
   @override
   Widget build(BuildContext context) {
-    final Color _disabledColor = Theme.of(context).textTheme.bodyText1.color;
+    final Color? _disabledColor = Theme.of(context).textTheme.bodyText1!.color;
     final Color _accentColor = Theme.of(context).colorScheme.secondary;
 
-    Widget _buildStepStatusIcon(SwapStepStatus status) {
+    Widget _buildStepStatusIcon(SwapStepStatus? status) {
       Widget icon = SizedBox();
       switch (status) {
         case SwapStepStatus.pending:
@@ -78,14 +78,14 @@ class DetailedSwapStep extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: () => launchURL(explorerUrl + txHash),
+          onTap: () => launchURL(explorerUrl! + txHash!),
           child: Padding(
             padding: EdgeInsets.fromLTRB(6, 2, 4, 2),
             child: Row(
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 2, 0),
-                  child: Text(AppLocalizations.of(context).viewInExplorerButton,
+                  child: Text(AppLocalizations.of(context)!.viewInExplorerButton,
                       style: Theme.of(context).textTheme.caption),
                 ),
                 Padding(
@@ -120,7 +120,7 @@ class DetailedSwapStep extends StatelessWidget {
                   txHash ?? '',
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1
+                      .bodyText1!
                       .copyWith(fontFamily: 'monospace'),
                 ),
               ),
@@ -142,7 +142,7 @@ class DetailedSwapStep extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(title,
+                  Text(title!,
                       style: TextStyle(
                         color: status == SwapStepStatus.pending
                             ? _disabledColor
@@ -163,7 +163,7 @@ class DetailedSwapStep extends StatelessWidget {
                   ),
                   Row(
                     children: <Widget>[
-                      Text(AppLocalizations.of(context).swapCurrent + ': ',
+                      Text(AppLocalizations.of(context)!.swapCurrent + ': ',
                           style: TextStyle(
                             fontSize: 13,
                             color: status == SwapStepStatus.pending
@@ -192,7 +192,7 @@ class DetailedSwapStep extends StatelessWidget {
                                 )),
                             const SizedBox(width: 4),
                             Text(
-                                AppLocalizations.of(context).swapEstimated +
+                                AppLocalizations.of(context)!.swapEstimated +
                                     ': ',
                                 style: TextStyle(
                                   fontSize: 13,

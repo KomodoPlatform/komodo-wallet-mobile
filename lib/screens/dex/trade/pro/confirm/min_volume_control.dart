@@ -9,16 +9,16 @@ import '../../../../../utils/utils.dart';
 
 class MinVolumeControl extends StatefulWidget {
   const MinVolumeControl({
-    @required this.base,
+    required this.base,
     this.rel,
     this.price,
     this.onChange,
   });
 
-  final String base;
-  final String rel;
-  final Rational price;
-  final Function(String, bool) onChange;
+  final String? base;
+  final String? rel;
+  final Rational? price;
+  final Function(String?, bool)? onChange;
 
   @override
   _MinVolumeControlState createState() => _MinVolumeControlState();
@@ -27,16 +27,16 @@ class MinVolumeControl extends StatefulWidget {
 class _MinVolumeControlState extends State<MinVolumeControl> {
   final TextEditingController _valueCtrl = TextEditingController();
   bool _isActive = false;
-  double _defaultValue;
-  String _value;
+  double? _defaultValue;
+  String? _value;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<double>(
+    return FutureBuilder<double?>(
         future: tradeForm.minVolumeDefault(
           widget.base,
           rel: widget.rel,
-          price: widget.price.toDouble(),
+          price: widget.price!.toDouble(),
         ),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return SizedBox();
@@ -57,7 +57,7 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
         Padding(
           padding: const EdgeInsets.fromLTRB(8, 12, 8, 4),
           child: Text(
-            '${AppLocalizations.of(context).minVolumeTitle}:',
+            '${AppLocalizations.of(context)!.minVolumeTitle}:',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyText1,
           ),
@@ -79,7 +79,7 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
                             AssetImage(getCoinIconPath(widget.base)),
                       ),
                       SizedBox(width: 2),
-                      Text(widget.base),
+                      Text(widget.base!),
                     ],
                   ),
                   SizedBox(width: 6),
@@ -102,7 +102,7 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
                         setState(() {
                           _value = text;
                         });
-                        widget.onChange(_value, _validate(_value) == null);
+                        widget.onChange!(_value, _validate(_value) == null);
                       },
                     ),
                   ),
@@ -116,11 +116,11 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
   }
 
   Widget _buildToggle() {
-    return FutureBuilder<double>(
+    return FutureBuilder<double?>(
         future: tradeForm.minVolumeDefault(
           widget.base,
           rel: widget.rel,
-          price: widget.price.toDouble(),
+          price: widget.price!.toDouble(),
         ),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return SizedBox();
@@ -135,10 +135,10 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
               if (_isActive) {
                 setState(() =>
                     _value ??= cutTrailingZeros(formatPrice(snapshot.data)));
-                _valueCtrl.text = _value;
-                widget.onChange(_value, _validate(_value) == null);
+                _valueCtrl.text = _value!;
+                widget.onChange!(_value, _validate(_value) == null);
               } else {
-                widget.onChange(null, true);
+                widget.onChange!(null, true);
               }
             },
             child: Padding(
@@ -152,7 +152,7 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
                   const SizedBox(width: 3),
                   Expanded(
                     child: Text(
-                      AppLocalizations.of(context).minVolumeToggle,
+                      AppLocalizations.of(context)!.minVolumeToggle,
                     ),
                   ),
                 ],
@@ -162,23 +162,23 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
         });
   }
 
-  String _validate(String value) {
+  String? _validate(String? value) {
     if (value == null || value.isEmpty) return null;
 
     Rational minVolumeValue;
     try {
       minVolumeValue = Rational.parse(value);
     } catch (_) {
-      return AppLocalizations.of(context).nonNumericInput;
+      return AppLocalizations.of(context)!.nonNumericInput;
     }
 
-    final Rational amountToSell = swapBloc.amountSell;
+    final Rational? amountToSell = swapBloc.amountSell;
 
-    if (minVolumeValue.toDouble() < _defaultValue) {
-      return AppLocalizations.of(context)
-          .minVolumeInput(_defaultValue, swapBloc.sellCoinBalance.coin.abbr);
+    if (minVolumeValue.toDouble() < _defaultValue!) {
+      return AppLocalizations.of(context)!
+          .minVolumeInput(_defaultValue!, swapBloc.sellCoinBalance!.coin!.abbr!);
     } else if (amountToSell != null && minVolumeValue > amountToSell) {
-      return AppLocalizations.of(context).minVolumeIsTDH;
+      return AppLocalizations.of(context)!.minVolumeIsTDH;
     } else {
       return null;
     }

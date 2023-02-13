@@ -14,7 +14,7 @@ class MarketsPage extends StatefulWidget {
 
 class _MarketsPageState extends State<MarketsPage>
     with TickerProviderStateMixin {
-  TabController tabController;
+  TabController? tabController;
   bool init = false;
 
   @override
@@ -28,10 +28,10 @@ class _MarketsPageState extends State<MarketsPage>
   Widget build(BuildContext context) {
     final OrderBookProvider _orderBookProvider =
         Provider.of<OrderBookProvider>(context);
-    final CoinsPair _activePair = _orderBookProvider.activePair;
+    final CoinsPair? _activePair = _orderBookProvider.activePair;
 
     if (!init && (_activePair?.buy != null || _activePair?.sell != null)) {
-      tabController.index = 1;
+      tabController!.index = 1;
     }
     init = true;
 
@@ -51,10 +51,10 @@ class _MarketsPageState extends State<MarketsPage>
             controller: tabController,
             tabs: <Widget>[
               Tab(
-                text: AppLocalizations.of(context).marketsPrice,
+                text: AppLocalizations.of(context)!.marketsPrice,
               ),
               Tab(
-                text: AppLocalizations.of(context).marketsOrderbook,
+                text: AppLocalizations.of(context)!.marketsOrderbook,
               )
             ],
           ),
@@ -78,7 +78,7 @@ class _MarketsPageState extends State<MarketsPage>
           : AppBar(
               title: Center(
                   child: Text(
-                AppLocalizations.of(context).marketsTitle,
+                AppLocalizations.of(context)!.marketsTitle,
                 key: const Key('markets-title'),
               )),
               bottom: PreferredSize(
@@ -95,14 +95,14 @@ class _MarketsPageState extends State<MarketsPage>
     }
 
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar() as PreferredSizeWidget?,
       body: Builder(builder: (BuildContext context) {
         return TabBarView(
           controller: tabController,
           children: <Widget>[
             CoinsPriceList(onItemTap: (Coin coin) {
               _orderBookProvider.activePair = CoinsPair(sell: coin, buy: null);
-              tabController.index = 1;
+              tabController!.index = 1;
             }),
             const OrderBookPage(),
           ],

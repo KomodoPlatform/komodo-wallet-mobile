@@ -17,10 +17,10 @@ class TradeFee {
         result: Result.fromJson(json['result']),
       );
 
-  Result result;
+  Result? result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson(),
+        'result': result!.toJson(),
       };
 }
 
@@ -35,8 +35,8 @@ class Result {
         coin: json['coin'],
       );
 
-  String amount;
-  String coin;
+  String? amount;
+  String? coin;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'amount': amount,

@@ -10,9 +10,9 @@ class GetOrderbookDepth {
     this.pairs,
   });
 
-  String userpass;
+  String? userpass;
   String method;
-  List<List<String>> pairs;
+  List<List<String>>? pairs;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass ?? '',

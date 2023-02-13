@@ -22,7 +22,7 @@ import 'build_filter_coin.dart';
 class SelectCoinsPage extends StatefulWidget {
   const SelectCoinsPage({this.coinsToActivate});
 
-  final Function(List<Coin>) coinsToActivate;
+  final Function(List<Coin>)? coinsToActivate;
 
   @override
   _SelectCoinsPageState createState() => _SelectCoinsPageState();
@@ -30,9 +30,9 @@ class SelectCoinsPage extends StatefulWidget {
 
 class _SelectCoinsPageState extends State<SelectCoinsPage> {
   bool _isDone = false;
-  StreamSubscription<bool> _listenerClosePage;
-  StreamSubscription<List<CoinToActivate>> _listenerCoinsActivated;
-  List<Coin> _currentCoins = <Coin>[];
+  late StreamSubscription<bool> _listenerClosePage;
+  late StreamSubscription<List<CoinToActivate>> _listenerCoinsActivated;
+  List<Coin?> _currentCoins = <Coin?>[];
   List<Widget> _listViewItems = <Widget>[];
   List<CoinToActivate> _coinsToActivate = [];
 
@@ -51,7 +51,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
     _listenerCoinsActivated = coinsBloc.outCoinBeforeActivation.listen((data) {
       setState(() {
-        _coinsToActivate = data.where((element) => element.isActive).toList();
+        _coinsToActivate = data.where((element) => element.isActive!).toList();
       });
     });
     super.initState();
@@ -83,7 +83,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 type: typeFilter,
                 focusNode: myFocusNode,
                 controller: controller,
-                onFilterCoins: (List<Coin> coinsFiltered) {
+                onFilterCoins: (List<Coin?> coinsFiltered) {
                   setState(() {
                     _currentCoins = coinsFiltered;
                     _listViewItems = _buildListView();
@@ -97,7 +97,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                   focusNode: myFocusNode,
                   onSelected: (String aType) async {
                     typeFilter = aType;
-                    List<Coin> coinsFiltered = await coinsBloc
+                    List<Coin?> coinsFiltered = await coinsBloc
                         .getAllNotActiveCoinsWithFilter(controller.text, aType);
                     setState(() {
                       _currentCoins = coinsFiltered;
@@ -107,11 +107,11 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 )
               ],
             ),
-            body: StreamBuilder<CoinToActivate>(
+            body: StreamBuilder<CoinToActivate?>(
                 initialData: coinsBloc.currentActiveCoin,
                 stream: coinsBloc.outcurrentActiveCoin,
                 builder: (BuildContext context,
-                    AsyncSnapshot<CoinToActivate> snapshot) {
+                    AsyncSnapshot<CoinToActivate?> snapshot) {
                   if (snapshot.data != null) {
                     return LoadingCoin();
                   } else {
@@ -143,11 +143,11 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   void _initCoinList() async {
     for (CoinToActivate coinToActivate in coinsBloc.coinBeforeActivation) {
       _currentCoins
-          .removeWhere((Coin coin) => coin.abbr == coinToActivate.coin.abbr);
+          .removeWhere((Coin? coin) => coin!.abbr == coinToActivate.coin!.abbr);
       _currentCoins.add(coinToActivate.coin);
     }
 
-    final Map<String, List<Coin>> coinsMap = getCoinsMap();
+    final Map<String, List<Coin?>> coinsMap = getCoinsMap();
     allCoinsTypes = coinsMap.keys.toList()
       ..sort((String a, String b) => b.compareTo(a));
 
@@ -163,10 +163,10 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
         child: Text(
-          AppLocalizations.of(context).selectCoinInfo,
+          AppLocalizations.of(context)!.selectCoinInfo,
           style: Theme.of(context)
               .textTheme
-              .bodyText1
+              .bodyText1!
               .copyWith(color: Theme.of(context).colorScheme.onBackground),
         ),
       ),
@@ -179,15 +179,15 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
   List<String> allCoinsTypes = [];
 
-  Map<String, List<Coin>> getCoinsMap() {
-    final Map<String, List<Coin>> coinsMap = <String, List<Coin>>{};
+  Map<String, List<Coin?>> getCoinsMap() {
+    final Map<String, List<Coin?>> coinsMap = <String, List<Coin?>>{};
 
-    for (Coin c in _currentCoins) {
-      if (c.testCoin) continue;
-      if (!coinsMap.containsKey(c.type.name)) {
-        coinsMap.putIfAbsent(c.type.name, () => [c]);
+    for (Coin? c in _currentCoins) {
+      if (c!.testCoin!) continue;
+      if (!coinsMap.containsKey(c.type!.name)) {
+        coinsMap.putIfAbsent(c.type!.name, () => [c]);
       } else {
-        coinsMap[c.type.name].add(c);
+        coinsMap[c.type!.name]!.add(c);
       }
     }
 
@@ -199,7 +199,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       return [
         Center(
           child: Text(
-            AppLocalizations.of(context).noCoinFound,
+            AppLocalizations.of(context)!.noCoinFound,
             style: Theme.of(context).textTheme.bodyText1,
           ),
         )
@@ -208,14 +208,14 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
     final List<Widget> list = <Widget>[];
 
-    final Map<String, List<Coin>> coinsMap = <String, List<Coin>>{};
+    final Map<String, List<Coin?>> coinsMap = <String, List<Coin?>>{};
 
-    for (Coin c in _currentCoins) {
-      if (c.testCoin) continue;
-      if (!coinsMap.containsKey(c.type.name)) {
-        coinsMap.putIfAbsent(c.type.name, () => [c]);
+    for (Coin? c in _currentCoins) {
+      if (c!.testCoin!) continue;
+      if (!coinsMap.containsKey(c.type!.name)) {
+        coinsMap.putIfAbsent(c.type!.name, () => [c]);
       } else {
-        coinsMap[c.type.name].add(c);
+        coinsMap[c.type!.name]!.add(c);
       }
     }
 
@@ -229,21 +229,21 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         filterType: typeFilter,
       ));
 
-      List<Coin> _tCoins = coinsMap[type];
-      _tCoins.sort((Coin a, Coin b) =>
-          a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      List<Coin?> _tCoins = coinsMap[type]!;
+      _tCoins.sort((Coin? a, Coin? b) =>
+          a!.name!.toLowerCase().compareTo(b!.name!.toLowerCase()));
 
-      for (Coin coin in _tCoins) {
+      for (Coin? coin in _tCoins) {
         list.add(BuildItemCoin(
-          key: Key('coin-activate-${coin.abbr}'),
+          key: Key('coin-activate-${coin!.abbr}'),
           coin: coin,
         ));
       }
     }
 
-    final List<Coin> testCoins = _currentCoins
-        .where((Coin c) =>
-            (c.testCoin && settingsBloc.enableTestCoins) ||
+    final List<Coin?> testCoins = _currentCoins
+        .where((Coin? c) =>
+            (c!.testCoin! && settingsBloc.enableTestCoins) ||
             appConfig.defaultTestCoins.contains(c.abbr))
         .toList();
     if (testCoins.isNotEmpty) {
@@ -253,11 +253,11 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         query: controller.text,
       ));
 
-      testCoins.sort((Coin a, Coin b) =>
-          a.name.toLowerCase().compareTo(b.name.toLowerCase()));
-      for (Coin testCoin in testCoins) {
+      testCoins.sort((Coin? a, Coin? b) =>
+          a!.name!.toLowerCase().compareTo(b!.name!.toLowerCase()));
+      for (Coin? testCoin in testCoins) {
         list.add(BuildItemCoin(
-          key: Key('coin-activate-${testCoin.abbr}'),
+          key: Key('coin-activate-${testCoin!.abbr}'),
           coin: testCoin,
         ));
       }
@@ -268,7 +268,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
   Widget _buildDoneButton() {
     int selected = coinsBloc.coinBeforeActivation
-        .where((element) => element.isActive)
+        .where((element) => element.isActive!)
         .length;
     int activated = coinsBloc.coinBalance.length;
 
@@ -289,8 +289,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                   AsyncSnapshot<List<CoinToActivate>> snapshot) {
                 bool isButtonActive = false;
                 if (snapshot.hasData) {
-                  for (CoinToActivate coinToActivate in snapshot.data) {
-                    if (coinToActivate.isActive) {
+                  for (CoinToActivate coinToActivate in snapshot.data!) {
+                    if (coinToActivate.isActive!) {
                       isButtonActive = true;
                     }
                   }
@@ -298,20 +298,20 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                 return Column(mainAxisSize: MainAxisSize.min, children: [
                   if (remainingSpace - selected == 0)
                     Text(
-                      AppLocalizations.of(context).coinsActivatedLimitReached,
+                      AppLocalizations.of(context)!.coinsActivatedLimitReached,
                       style: Theme.of(context)
                           .textTheme
-                          .subtitle2
+                          .subtitle2!
                           .apply(color: Theme.of(context).colorScheme.error),
                     ),
                   Text(
-                    AppLocalizations.of(context)
+                    AppLocalizations.of(context)!
                         .enable(selected, remainingSpace - selected),
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   PrimaryButton(
                     key: const Key('done-activate-coins'),
-                    text: AppLocalizations.of(context).done,
+                    text: AppLocalizations.of(context)!.done,
                     isLoading: _isDone,
                     onPressed: isButtonActive ? _pressDoneButton : null,
                   )
@@ -325,7 +325,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   void _pressDoneButton() {
     final numCoinsEnabled = coinsBloc.coinBalance.length;
     final numCoinsTryingEnable =
-        coinsBloc.coinBeforeActivation.where((c) => c.isActive).toList().length;
+        coinsBloc.coinBeforeActivation.where((c) => c.isActive!).toList().length;
     final maxCoinPerPlatform = Platform.isAndroid
         ? appConfig.maxCoinsEnabledAndroid
         : appConfig.maxCoinEnabledIOS;
@@ -336,22 +336,22 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         builder: (BuildContext context) {
           return CustomSimpleDialog(
             title:
-                Text(AppLocalizations.of(context).enablingTooManyAssetsTitle),
+                Text(AppLocalizations.of(context)!.enablingTooManyAssetsTitle),
             children: [
-              Text(AppLocalizations.of(context).enablingTooManyAssetsSpan1 +
+              Text(AppLocalizations.of(context)!.enablingTooManyAssetsSpan1 +
                   numCoinsEnabled.toString() +
-                  AppLocalizations.of(context).enablingTooManyAssetsSpan2 +
+                  AppLocalizations.of(context)!.enablingTooManyAssetsSpan2 +
                   numCoinsTryingEnable.toString() +
-                  AppLocalizations.of(context).enablingTooManyAssetsSpan3 +
+                  AppLocalizations.of(context)!.enablingTooManyAssetsSpan3 +
                   maxCoinPerPlatform.toString() +
-                  AppLocalizations.of(context).enablingTooManyAssetsSpan4),
+                  AppLocalizations.of(context)!.enablingTooManyAssetsSpan4),
               SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
                     onPressed: () => dialogBloc.closeDialog(context),
-                    child: Text(AppLocalizations.of(context).warningOkBtn),
+                    child: Text(AppLocalizations.of(context)!.warningOkBtn),
                   ),
                 ],
               ),

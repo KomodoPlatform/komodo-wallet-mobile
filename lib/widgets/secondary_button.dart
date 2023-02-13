@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class SecondaryButton extends StatelessWidget {
   const SecondaryButton({
-    Key key,
-    @required this.onPressed,
+    Key? key,
+    required this.onPressed,
     this.text,
     this.child,
     this.isDarkMode = true,
@@ -13,25 +13,25 @@ class SecondaryButton extends StatelessWidget {
     this.textColor = Colors.black,
   }) : super(key: key);
 
-  final VoidCallback onPressed;
-  final String text;
-  final Widget child;
+  final VoidCallback? onPressed;
+  final String? text;
+  final Widget? child;
   final bool isDarkMode;
   final Color borderColor;
-  final Color textColor;
-  final double height;
-  final double width;
+  final Color? textColor;
+  final double? height;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
-    Widget child;
+    Widget? child;
     bool isSend = false;
     if (text != null) {
       if (text == 'SEND') {
         isSend = true;
       }
       child = Text(
-        text.toUpperCase(),
+        text!.toUpperCase(),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       );
@@ -58,7 +58,7 @@ class SecondaryButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(30.0),
           ),
         ),
-        child: child,
+        child: child!,
       ),
     );
   }

@@ -11,7 +11,7 @@ class MultiOrderCreate extends StatefulWidget {
 }
 
 class _MultiOrderCreateState extends State<MultiOrderCreate> {
-  MultiOrderProvider multiOrderProvider;
+  MultiOrderProvider? multiOrderProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
   Widget _buildProgressBar() {
     return SizedBox(
       height: 1,
-      child: multiOrderProvider.processing()
+      child: multiOrderProvider!.processing()
           ? LinearProgressIndicator()
           : SizedBox(),
     );
@@ -48,22 +48,22 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
 
   Widget _buildButton() {
     bool allowCreate = true;
-    if (multiOrderProvider.baseCoin == null) allowCreate = false;
-    if (multiOrderProvider.relCoins.isEmpty) allowCreate = false;
-    if (multiOrderProvider.processing()) allowCreate = false;
+    if (multiOrderProvider!.baseCoin == null) allowCreate = false;
+    if (multiOrderProvider!.relCoins.isEmpty) allowCreate = false;
+    if (multiOrderProvider!.processing()) allowCreate = false;
 
-    final int qtt = multiOrderProvider.relCoins.length;
+    final int qtt = multiOrderProvider!.relCoins.length;
 
     return ElevatedButton(
       key: const Key('create-multi-order'),
       onPressed: allowCreate
           ? () async {
-              if (await multiOrderProvider.validate()) {
-                multiOrderProvider.validated = true;
+              if (await multiOrderProvider!.validate()) {
+                multiOrderProvider!.validated = true;
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(
-                  AppLocalizations.of(context).multiFixErrors,
+                  AppLocalizations.of(context)!.multiFixErrors,
                   style: TextStyle(
                     color: Theme.of(context).errorColor,
                   ),
@@ -72,12 +72,12 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
             }
           : null,
       child: Text(qtt > 0
-          ? (AppLocalizations.of(context).multiCreate +
+          ? (AppLocalizations.of(context)!.multiCreate +
               ' $qtt ' +
               (qtt > 1
-                  ? AppLocalizations.of(context).multiCreateOrders
-                  : AppLocalizations.of(context).multiCreateOrder))
-          : AppLocalizations.of(context).multiCreate),
+                  ? AppLocalizations.of(context)!.multiCreateOrders
+                  : AppLocalizations.of(context)!.multiCreateOrder))
+          : AppLocalizations.of(context)!.multiCreate),
     );
   }
 }

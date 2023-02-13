@@ -58,7 +58,7 @@ Future<void> createMultiSwap(WidgetTester tester) async {
   }
 }
 
-Future<void> _sellAspect(WidgetTester tester, {String amount}) async {
+Future<void> _sellAspect(WidgetTester tester, {required String amount}) async {
   final Finder openSellDialog = find.byKey(const Key('coin-select-sell'));
   final Finder sellMortyCoin = find.byKey(const Key('item-dialog-morty-sell'));
   final Finder sellAmountField = find.byKey(const Key('input-text-sell'));

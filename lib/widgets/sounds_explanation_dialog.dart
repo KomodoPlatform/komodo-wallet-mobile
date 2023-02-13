@@ -20,16 +20,16 @@ Future<void> showSoundsDialog(BuildContext context) async {
                 color: Theme.of(context).colorScheme.secondary,
               ),
               SizedBox(width: 4),
-              Text(AppLocalizations.of(context).soundsDialogTitle),
+              Text(AppLocalizations.of(context)!.soundsDialogTitle),
             ],
           ),
           children: <Widget>[
             Text(
-              AppLocalizations.of(context).soundsExplanation,
+              AppLocalizations.of(context)!.soundsExplanation,
               textAlign: TextAlign.justify,
             ),
             Text(
-              AppLocalizations.of(context).soundsNote,
+              AppLocalizations.of(context)!.soundsNote,
               textAlign: TextAlign.justify,
             ),
             SizedBox(height: 12),
@@ -42,9 +42,9 @@ Future<void> showSoundsDialog(BuildContext context) async {
                       if (!snapshot.hasData) return SizedBox();
 
                       return Checkbox(
-                          value: !snapshot.data,
+                          value: !snapshot.data!,
                           onChanged: (val) {
-                            settingsBloc.setShowSoundsDialog(!val);
+                            settingsBloc.setShowSoundsDialog(!val!);
                           });
                     }),
                 SizedBox(width: 8),
@@ -55,7 +55,7 @@ Future<void> showSoundsDialog(BuildContext context) async {
                           !settingsBloc.showSoundsExplanationDialog);
                     },
                     child:
-                        Text(AppLocalizations.of(context).soundsDoNotShowAgain),
+                        Text(AppLocalizations.of(context)!.soundsDoNotShowAgain),
                   ),
                 ),
               ],
@@ -73,7 +73,7 @@ Future<void> showSoundsDialog(BuildContext context) async {
                       ),
                     );
                   },
-                  child: Text(AppLocalizations.of(context).settings),
+                  child: Text(AppLocalizations.of(context)!.settings),
                 ),
                 SizedBox(width: 12),
                 ElevatedButton(
@@ -81,7 +81,7 @@ Future<void> showSoundsDialog(BuildContext context) async {
                     dialogBloc.dialog = null;
                     Navigator.of(context).pop();
                   },
-                  child: Text(AppLocalizations.of(context).close),
+                  child: Text(AppLocalizations.of(context)!.close),
                 ),
               ],
             ),

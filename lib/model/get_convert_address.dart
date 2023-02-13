@@ -11,12 +11,12 @@ class GetConvertAddress {
   });
 
   String method;
-  String userpass;
-  String from;
-  String coin;
+  String? userpass;
+  String? from;
+  String? coin;
 
   Map<String, dynamic> toJson() {
-    final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
+    final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin)!;
     final bool isERC = isErcType(coinBalance.coin);
 
     return <String, dynamic>{

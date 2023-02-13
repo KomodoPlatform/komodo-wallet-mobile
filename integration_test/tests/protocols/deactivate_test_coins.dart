@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 
 Future<void> deactivateTestCoins(WidgetTester tester,
-    {List<String> coinsToDeactivate}) async {
+    {required List<String> coinsToDeactivate}) async {
   final Finder disableCoin = find.byKey(const Key('disable-coin'));
   final Finder confirmDisable = find.byKey(const Key('confirm-disable'));
   final Finder coinsList = find.byKey(const Key('list-view-coins'));

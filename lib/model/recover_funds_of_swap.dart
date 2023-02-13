@@ -20,10 +20,10 @@ class RecoverFundsOfSwap {
         result: Result.fromJson(json['result']),
       );
 
-  Result result;
+  Result? result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson(),
+        'result': result!.toJson(),
       };
 }
 
@@ -42,10 +42,10 @@ class Result {
         txHex: json['tx_hex'],
       );
 
-  String action;
-  String coin;
-  String txHash;
-  String txHex;
+  String? action;
+  String? coin;
+  String? txHash;
+  String? txHex;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'action': action,

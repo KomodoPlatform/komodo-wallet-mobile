@@ -10,15 +10,15 @@ class NewsTab extends StatefulWidget {
 }
 
 class _NewsTabState extends State<NewsTab> {
-  FeedProvider _feedProvider;
-  List<NewsItem> _news;
+  late FeedProvider _feedProvider;
+  List<NewsItem>? _news;
 
   @override
   Widget build(BuildContext context) {
     _feedProvider = Provider.of<FeedProvider>(context);
     _news = _feedProvider.getNews();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (_feedProvider.hasNewItems) {
         _feedProvider.hasNewItems = false;
       }
@@ -28,10 +28,10 @@ class _NewsTabState extends State<NewsTab> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (_news.isEmpty) {
+    if (_news!.isEmpty) {
       return Center(
           child: Text(
-        AppLocalizations.of(context).feedNotFound,
+        AppLocalizations.of(context)!.feedNotFound,
         style: const TextStyle(fontSize: 13),
       ));
     }
@@ -55,7 +55,7 @@ class _NewsTabState extends State<NewsTab> {
               final String updateResponse = await _feedProvider.updateNews();
               String message;
               if (updateResponse == 'ok') {
-                message = AppLocalizations.of(context).feedUpdated;
+                message = AppLocalizations.of(context)!.feedUpdated;
               } else {
                 message = updateResponse;
               }
@@ -68,7 +68,7 @@ class _NewsTabState extends State<NewsTab> {
                 duration: const Duration(seconds: 1),
                 action: SnackBarAction(
                   textColor: Theme.of(context).colorScheme.secondary,
-                  label: AppLocalizations.of(context).snackbarDismiss,
+                  label: AppLocalizations.of(context)!.snackbarDismiss,
                   onPressed: () {
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   },
@@ -77,11 +77,11 @@ class _NewsTabState extends State<NewsTab> {
             },
             child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                itemCount: _news.length,
+                itemCount: _news!.length,
                 itemBuilder: (BuildContext context, int i) {
                   return Column(
                     children: <Widget>[
-                      BuildNewsItem(_news[i]),
+                      BuildNewsItem(_news![i]),
                     ],
                   );
                 }),

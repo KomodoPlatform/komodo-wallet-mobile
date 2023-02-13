@@ -50,8 +50,8 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   String version = '';
-  CexProvider cexProvider;
-  WalletSecuritySettingsProvider walletSecuritySettingsProvider;
+  CexProvider? cexProvider;
+  late WalletSecuritySettingsProvider walletSecuritySettingsProvider;
 
   @override
   void initState() {
@@ -79,7 +79,7 @@ class _SettingPageState extends State<SettingPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalizations.of(context).settings.toUpperCase(),
+            AppLocalizations.of(context)!.settings.toUpperCase(),
             key: const Key('settings-title'),
           ),
           elevation: Theme.of(context).brightness == Brightness.light ? 3 : 0,
@@ -87,9 +87,9 @@ class _SettingPageState extends State<SettingPage> {
         body: ListView(
           key: const Key('settings-scrollable'),
           children: <Widget>[
-            _buildTitle(AppLocalizations.of(context).logoutsettings),
+            _buildTitle(AppLocalizations.of(context)!.logoutsettings),
             _buildLogOutOnExit(),
-            _buildTitle(AppLocalizations.of(context).security),
+            _buildTitle(AppLocalizations.of(context)!.security),
             _buildActivatePIN(),
             const SizedBox(height: 1),
             _buildActivateBiometric(),
@@ -102,7 +102,7 @@ class _SettingPageState extends State<SettingPage> {
             const SizedBox(height: 1),
             _buildSendFeedback(),
             if (walletBloc.currentWallet != null) ...[
-              _buildTitle(AppLocalizations.of(context).backupTitle),
+              _buildTitle(AppLocalizations.of(context)!.backupTitle),
               _buildViewSeed(),
               const SizedBox(height: 1),
             ],
@@ -114,11 +114,11 @@ class _SettingPageState extends State<SettingPage> {
             const SizedBox(
               height: 1,
             ),
-            _buildTitle(AppLocalizations.of(context).oldLogsTitle),
+            _buildTitle(AppLocalizations.of(context)!.oldLogsTitle),
             BuildOldLogs(),
-            _buildTitle(AppLocalizations.of(context).legalTitle),
+            _buildTitle(AppLocalizations.of(context)!.legalTitle),
             _buildDisclaimerToS(),
-            _buildTitle(AppLocalizations.of(context).developerTitle),
+            _buildTitle(AppLocalizations.of(context)!.developerTitle),
             _buildEnableTestCoins(),
             _buildTitle(version),
             if (appConfig.isUpdateCheckerEnabled) _buildUpdate(),
@@ -135,7 +135,7 @@ class _SettingPageState extends State<SettingPage> {
   Future<String> _getVersionApplication() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String version =
-        AppLocalizations.of(context).version + ' : ' + packageInfo.version;
+        AppLocalizations.of(context)!.version + ' : ' + packageInfo.version;
 
     version += ' - ${mmSe.mmVersion}';
 
@@ -156,7 +156,7 @@ class _SettingPageState extends State<SettingPage> {
     return SwitchListTile(
       title: Text(AppLocalizations.of(
         context,
-      ).activateAccessPin),
+      )!.activateAccessPin),
       tileColor: Theme.of(context).primaryColor,
       value: walletSecuritySettingsProvider.activatePinProtection ?? false,
       onChanged: (
@@ -198,18 +198,18 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildActivateBiometric() {
-    return FutureBuilder<bool>(
+    return FutureBuilder<bool?>(
       initialData: false,
       future: canCheckBiometrics,
       builder: (
         BuildContext context,
-        AsyncSnapshot<bool> snapshot,
+        AsyncSnapshot<bool?> snapshot,
       ) {
-        if (snapshot.hasData && snapshot.data) {
+        if (snapshot.hasData && snapshot.data!) {
           return SwitchListTile(
             title: Text(AppLocalizations.of(
               context,
-            ).activateAccessBiometric),
+            )!.activateAccessBiometric),
             tileColor: Theme.of(context).primaryColor,
             value:
                 walletSecuritySettingsProvider.activateBioProtection ?? false,
@@ -254,7 +254,7 @@ class _SettingPageState extends State<SettingPage> {
     return SwitchListTile(
       title: Text(AppLocalizations.of(
         context,
-      ).disableScreenshots),
+      )!.disableScreenshots),
       tileColor: Theme.of(context).primaryColor,
       value: walletSecuritySettingsProvider.disallowScreenshot,
       onChanged: (bool switchValue) async {
@@ -263,7 +263,7 @@ class _SettingPageState extends State<SettingPage> {
             context,
             MaterialPageRoute<dynamic>(
               builder: (BuildContext context) => UnlockWalletPage(
-                  textButton: AppLocalizations.of(context).unlock,
+                  textButton: AppLocalizations.of(context)!.unlock,
                   wallet: walletBloc.currentWallet,
                   isSignWithSeedIsEnabled: false,
                   onSuccess: (_, __) {
@@ -295,15 +295,15 @@ class _SettingPageState extends State<SettingPage> {
         builder: (BuildContext context) {
           return CustomSimpleDialog(
             title: Text(
-                AppLocalizations.of(context).camoPinBioProtectionConflictTitle),
+                AppLocalizations.of(context)!.camoPinBioProtectionConflictTitle),
             children: <Widget>[
-              Text(AppLocalizations.of(context).camoPinBioProtectionConflict),
+              Text(AppLocalizations.of(context)!.camoPinBioProtectionConflict),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text(AppLocalizations.of(context).warningOkBtn),
+                    child: Text(AppLocalizations.of(context)!.warningOkBtn),
                   ),
                 ],
               ),
@@ -322,7 +322,7 @@ class _SettingPageState extends State<SettingPage> {
           if (snapshot.data == true) return SizedBox();
 
           return _chevronListTileHelper(
-            title: Text(AppLocalizations.of(context).camoPinLink),
+            title: Text(AppLocalizations.of(context)!.camoPinLink),
             onTap: () {
               Navigator.push<dynamic>(
                   context,
@@ -336,12 +336,12 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildChangePIN() {
     return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context).changePin),
+      title: Text(AppLocalizations.of(context)!.changePin),
       onTap: () => Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
               builder: (BuildContext context) => UnlockWalletPage(
-                    textButton: AppLocalizations.of(context).unlock,
+                    textButton: AppLocalizations.of(context)!.unlock,
                     wallet: walletBloc.currentWallet,
                     isSignWithSeedIsEnabled: false,
                     onSuccess: (_, String password) {
@@ -349,8 +349,8 @@ class _SettingPageState extends State<SettingPage> {
                           context,
                           MaterialPageRoute<dynamic>(
                               builder: (BuildContext context) => PinPage(
-                                  title: AppLocalizations.of(context).createPin,
-                                  subTitle: AppLocalizations.of(context)
+                                  title: AppLocalizations.of(context)!.createPin,
+                                  subTitle: AppLocalizations.of(context)!
                                       .enterNewPinCode,
                                   pinStatus: PinStatus.CHANGE_PIN,
                                   password: password)));
@@ -361,14 +361,14 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildSendFeedback() {
     return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context).feedback),
+      title: Text(AppLocalizations.of(context)!.feedback),
       onTap: () => _shareFileDialog(),
     );
   }
 
   Widget _buildViewSeed() {
     return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context).viewSeedAndKeys),
+      title: Text(AppLocalizations.of(context)!.viewSeedAndKeys),
       onTap: () {
         Navigator.push<dynamic>(
             context,
@@ -380,7 +380,7 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildExport() {
     return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context).exportLink),
+      title: Text(AppLocalizations.of(context)!.exportLink),
       onTap: () {
         Navigator.push<dynamic>(
             context,
@@ -392,7 +392,7 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildImport() {
     return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context).importLink),
+      title: Text(AppLocalizations.of(context)!.importLink),
       onTap: () {
         Navigator.push<dynamic>(
             context,
@@ -404,7 +404,7 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildImportSwap() {
     return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context).importSingleSwapLink),
+      title: Text(AppLocalizations.of(context)!.importSingleSwapLink),
       onTap: () {
         Navigator.push<dynamic>(
             context,
@@ -416,7 +416,7 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildDisclaimerToS() {
     return _chevronListTileHelper(
-        title: Text(AppLocalizations.of(context).disclaimerAndTos),
+        title: Text(AppLocalizations.of(context)!.disclaimerAndTos),
         onTap: () {
           showDialog(
             context: context,
@@ -427,16 +427,16 @@ class _SettingPageState extends State<SettingPage> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  text: AppLocalizations.of(context).close,
+                  text: AppLocalizations.of(context)!.close,
                 ),
                 children: [
                   Text(
-                      AppLocalizations.of(context)
+                      AppLocalizations.of(context)!
                           .eulaTitle1(appConfig.appName),
                       style: Theme.of(context).textTheme.headline6),
                   EULAContents(),
                   const SizedBox(height: 16),
-                  Text(AppLocalizations.of(context).eulaTitle2,
+                  Text(AppLocalizations.of(context)!.eulaTitle2,
                       style: Theme.of(context).textTheme.headline6),
                   TACContents(),
                 ]),
@@ -452,7 +452,7 @@ class _SettingPageState extends State<SettingPage> {
       title: Stack(
         clipBehavior: Clip.none,
         children: <Widget>[
-          Text(AppLocalizations.of(context).checkForUpdates),
+          Text(AppLocalizations.of(context)!.checkForUpdates),
           if (updatesProvider.status != UpdateStatus.upToDate)
             buildRedDot(context, right: -12),
         ],
@@ -479,7 +479,7 @@ class _SettingPageState extends State<SettingPage> {
               !walletSecuritySettingsProvider.logOutOnExit;
         });
       },
-      title: Text(AppLocalizations.of(context).logoutOnExit),
+      title: Text(AppLocalizations.of(context)!.logoutOnExit),
       tileColor: Theme.of(context).primaryColor,
     );
   }
@@ -495,10 +495,10 @@ class _SettingPageState extends State<SettingPage> {
         ),
       ),
       title: Text(
-        AppLocalizations.of(context).deleteWallet,
+        AppLocalizations.of(context)!.deleteWallet,
         style: Theme.of(context)
             .textTheme
-            .subtitle1
+            .subtitle1!
             .copyWith(color: Theme.of(context).colorScheme.onError),
       ),
       onTap: () => _showDialogDeleteWallet(),
@@ -506,8 +506,8 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   ListTile _chevronListTileHelper({
-    @required Widget title,
-    GestureTapCallback onTap,
+    required Widget title,
+    GestureTapCallback? onTap,
   }) {
     return ListTile(
       onTap: onTap,
@@ -524,7 +524,7 @@ class _SettingPageState extends State<SettingPage> {
       stream: settingsBloc.outEnableTestCoins,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return SwitchListTile(
-          title: Text(AppLocalizations.of(context).enableTestCoins),
+          title: Text(AppLocalizations.of(context)!.enableTestCoins),
           value: snapshot.data ?? false,
           onChanged: (bool dataSwitch) {
             settingsBloc.setEnableTestCoins(dataSwitch);
@@ -540,7 +540,7 @@ class _SettingPageState extends State<SettingPage> {
       context,
       MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => UnlockWalletPage(
-                textButton: AppLocalizations.of(context).unlock,
+                textButton: AppLocalizations.of(context)!.unlock,
                 wallet: walletBloc.currentWallet,
                 isSignWithSeedIsEnabled: false,
                 onSuccess: (_, String password) {
@@ -567,7 +567,7 @@ class _SettingPageState extends State<SettingPage> {
       for (Swap swap in swapMonitor.swaps) {
         final started = swap.started;
         if (started == null) continue;
-        final tim = DateTime.fromMillisecondsSinceEpoch(started.timestamp);
+        final tim = DateTime.fromMillisecondsSinceEpoch(started.timestamp!);
         final delta = now.difference(tim);
         if (delta.inDays > 7) continue; // Skip old swaps.
         log.sink.write(json.encode(swap.toJson) + '\n\n');
@@ -602,7 +602,7 @@ class _SettingPageState extends State<SettingPage> {
     if (af.existsSync()) af.deleteSync();
     final enc = arch.GZipEncoder();
     Log('setting_page:745', 'Creating dex.log.gz out of $got log bytes…');
-    af.writeAsBytesSync(enc.encode(buf));
+    af.writeAsBytesSync(enc.encode(buf)!);
     final len = af.lengthSync();
     Log('setting_page:748', 'Compression produced $len bytes.');
 
@@ -618,26 +618,26 @@ class _SettingPageState extends State<SettingPage> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CustomSimpleDialog(
-            title: Text(AppLocalizations.of(context).feedback),
+            title: Text(AppLocalizations.of(context)!.feedback),
             children: <Widget>[
-              Text(AppLocalizations.of(context).warningShareLogs),
+              Text(AppLocalizations.of(context)!.warningShareLogs),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text(AppLocalizations.of(context).cancel),
+                    child: Text(AppLocalizations.of(context)!.cancel),
                   ),
                   const SizedBox(width: 12),
                   ElevatedButton(
                     key: const Key('setting-share-button'),
                     onPressed: _shareLogs,
                     child: Text(
-                      AppLocalizations.of(context).share,
+                      AppLocalizations.of(context)!.share,
                       style: Theme.of(context)
                           .textTheme
-                          .button
+                          .button!
                           .copyWith(color: Colors.white),
                     ),
                   )
@@ -670,7 +670,7 @@ class _ShowLoadingDeleteState extends State<ShowLoadingDelete> {
             SizedBox(
               width: 16,
             ),
-            Text(AppLocalizations.of(context).deletingWallet)
+            Text(AppLocalizations.of(context)!.deletingWallet)
           ],
         ))
       ],
@@ -699,14 +699,14 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
     return ListTile(
       trailing: ElevatedButton(
         onPressed: () {
-          for (File f in _listLogs) {
+          for (File f in _listLogs as Iterable<File>) {
             f.deleteSync();
           }
           _update();
         },
-        child: Text(AppLocalizations.of(context).oldLogsDelete),
+        child: Text(AppLocalizations.of(context)!.oldLogsDelete),
       ),
-      title: Text(AppLocalizations.of(context).oldLogsUsed +
+      title: Text(AppLocalizations.of(context)!.oldLogsUsed +
           ': ' +
           (_sizeMb >= 1000
               ? '${(_sizeMb / 1000).toStringAsFixed(2)} GB'
@@ -721,7 +721,7 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
   }
 
   void _updateOldLogsList() {
-    final dirList = applicationDocumentsDirectorySync.listSync();
+    final dirList = applicationDocumentsDirectorySync!.listSync();
     setState(() {
       _listLogs = dirList
           .whereType<File>()
@@ -731,7 +731,7 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
   }
 
   Future<void> _updateLogsSize() async {
-    final dirPath = applicationDocumentsDirectorySync.path;
+    final dirPath = applicationDocumentsDirectorySync!.path;
     setState(() {
       _sizeMb = mmSe.dirStatSync(dirPath);
     });

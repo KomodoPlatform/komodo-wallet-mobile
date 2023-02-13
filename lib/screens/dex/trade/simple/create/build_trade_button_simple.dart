@@ -13,13 +13,13 @@ class BuildTradeButtonSimple extends StatefulWidget {
 }
 
 class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
-  ConstructorProvider _constrProvider;
+  ConstructorProvider? _constrProvider;
 
   @override
   Widget build(BuildContext context) {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
 
-    if (_constrProvider.matchingOrder == null) return SizedBox();
+    if (_constrProvider!.matchingOrder == null) return SizedBox();
 
     return Opacity(
       opacity: _isEnabled() ? 1 : 0.6,
@@ -40,7 +40,7 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              child: Text(AppLocalizations.of(context).next.toUpperCase()),
+              child: Text(AppLocalizations.of(context)!.next.toUpperCase()),
             ),
           ),
           SizedBox(width: 70),
@@ -50,13 +50,13 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
   }
 
   Future<void> _validateAndConfirm(BuildContext mContext) async {
-    String errorMessage;
+    String? errorMessage;
     if (mainBloc.networkStatus != NetworkStatus.Online) {
-      return errorMessage = AppLocalizations.of(context).noInternet;
+      return errorMessage = AppLocalizations.of(context)!.noInternet;
     }
 
     if (errorMessage == null) {
-      _constrProvider.warning = null;
+      _constrProvider!.warning = null;
       Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
@@ -70,15 +70,15 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
   }
 
   bool _isEnabled() {
-    if (_constrProvider.inProgress) return false;
-    if (_constrProvider.error != null) return false;
-    if (_constrProvider.preimage == null) return false;
-    if (_constrProvider.matchingOrder == null) return false;
-    if (_constrProvider.sellCoin == null || _constrProvider.buyCoin == null) {
+    if (_constrProvider!.inProgress) return false;
+    if (_constrProvider!.error != null) return false;
+    if (_constrProvider!.preimage == null) return false;
+    if (_constrProvider!.matchingOrder == null) return false;
+    if (_constrProvider!.sellCoin == null || _constrProvider!.buyCoin == null) {
       return false;
     }
-    if ((_constrProvider.sellAmount?.toDouble() ?? 0) == 0) return false;
-    if ((_constrProvider.buyAmount?.toDouble() ?? 0) == 0) return false;
+    if ((_constrProvider!.sellAmount?.toDouble() ?? 0) == 0) return false;
+    if ((_constrProvider!.buyAmount?.toDouble() ?? 0) == 0) return false;
 
     return true;
   }

@@ -14,39 +14,39 @@ import '../../app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {
-  const BuildCoinPriceListItem({this.coinBalance, this.onTap, Key key})
+  const BuildCoinPriceListItem({this.coinBalance, this.onTap, Key? key})
       : super(key: key);
 
-  final CoinBalance coinBalance;
-  final Function onTap;
+  final CoinBalance? coinBalance;
+  final Function? onTap;
 
   @override
   _BuildCoinPriceListItemState createState() => _BuildCoinPriceListItemState();
 }
 
 class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
-  Coin coin;
-  Balance balance;
+  Coin? coin;
+  Balance? balance;
   bool expanded = false;
   bool fetching = false; // todo(yurii): will get flag from CexProvider
   bool quotedChart = false;
   String chartDuration = '3600';
-  CexProvider cexProvider;
-  String _currency;
+  late CexProvider cexProvider;
+  String? _currency;
 
   @override
   Widget build(BuildContext context) {
     cexProvider = Provider.of<CexProvider>(context);
     final bool _hasNonzeroPrice =
-        double.parse(widget.coinBalance.priceForOne ?? '0') > 0;
-    coin = widget.coinBalance.coin;
-    balance = widget.coinBalance.balance;
+        double.parse(widget.coinBalance!.priceForOne ?? '0') > 0;
+    coin = widget.coinBalance!.coin;
+    balance = widget.coinBalance!.balance;
 
-    _currency = cexProvider.currency.toLowerCase() == 'usd'
+    _currency = cexProvider.currency!.toLowerCase() == 'usd'
         ? 'USDC'
-        : cexProvider.currency.toUpperCase();
+        : cexProvider.currency!.toUpperCase();
     final bool _hasChartData = cexProvider
-        .isChartAvailable('${widget.coinBalance.coin.abbr}-$_currency');
+        .isChartAvailable('${widget.coinBalance!.coin!.abbr}-$_currency');
 
     return Column(
       children: <Widget>[
@@ -54,7 +54,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Container(
-              color: Color(int.parse(coin.colorCoin)),
+              color: Color(int.parse(coin!.colorCoin!)),
               width: 8,
               height: 64,
             ),
@@ -68,7 +68,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                       children: <Widget>[
                         Expanded(
                             child: InkWell(
-                          onTap: widget.onTap,
+                          onTap: widget.onTap as void Function()?,
                           child: Container(
                             height: 64,
                             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -78,14 +78,14 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                   radius: 18,
                                   backgroundColor: Colors.transparent,
                                   backgroundImage:
-                                      AssetImage(getCoinIconPath(balance.coin)),
+                                      AssetImage(getCoinIconPath(balance!.coin)),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  coin.name.toUpperCase(),
+                                  coin!.name!.toUpperCase(),
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
+                                      .subtitle2!
                                       .copyWith(fontSize: 14),
                                 )
                               ],
@@ -115,11 +115,11 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                       ),
                                       Text(
                                         cexProvider.convert(double.parse(
-                                          widget.coinBalance.priceForOne,
-                                        )),
+                                          widget.coinBalance!.priceForOne!,
+                                        ))!,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .subtitle2
+                                            .subtitle2!
                                             .copyWith(
                                                 color: Theme.of(context)
                                                             .brightness ==
@@ -171,48 +171,48 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
           Opacity(
             opacity: 0.3,
             child: Container(
-              color: Color(int.parse(coin.colorCoin)),
+              color: Color(int.parse(coin!.colorCoin!)),
               width: 8,
               height: controlsBarHeight + chartHeight,
             ),
           ),
           Expanded(
-            child: FutureBuilder<ChartData>(
+            child: FutureBuilder<ChartData?>(
               future: cexProvider.getCandles(
-                '${widget.coinBalance.coin.abbr}-$_currency',
+                '${widget.coinBalance!.coin!.abbr}-$_currency',
                 double.parse(chartDuration),
               ),
               builder:
-                  (BuildContext context, AsyncSnapshot<ChartData> snapshot) {
-                List<CandleData> candles;
+                  (BuildContext context, AsyncSnapshot<ChartData?> snapshot) {
+                List<CandleData>? candles;
                 if (snapshot.hasData) {
-                  if (snapshot.data.data[chartDuration].isEmpty) {
-                    List<String> all = snapshot.data.data.keys.toList();
+                  if (snapshot.data!.data[chartDuration]!.isEmpty) {
+                    List<String> all = snapshot.data!.data.keys.toList();
                     int nextDuration = all.indexOf(chartDuration) + 1;
                     if (all.length > nextDuration)
                       chartDuration = all[nextDuration];
                     return SizedBox();
                   }
 
-                  candles = snapshot.data.data[chartDuration];
+                  candles = snapshot.data!.data[chartDuration];
                   if (candles == null) {
-                    chartDuration = snapshot.data.data.keys.first;
-                    candles = snapshot.data.data[chartDuration];
+                    chartDuration = snapshot.data!.data.keys.first;
+                    candles = snapshot.data!.data[chartDuration];
                   }
                 }
 
                 List<Widget> _buildDisclaimer() {
-                  if (!snapshot.hasData || snapshot.data.chain.length < 2)
+                  if (!snapshot.hasData || snapshot.data!.chain!.length < 2)
                     return [];
 
-                  final String mediateBase = snapshot.data.chain[0].reverse
-                      ? snapshot.data.chain[0].rel.toUpperCase()
-                      : snapshot.data.chain[0].base.toUpperCase();
+                  final String mediateBase = snapshot.data!.chain![0].reverse!
+                      ? snapshot.data!.chain![0].rel!.toUpperCase()
+                      : snapshot.data!.chain![0].base!.toUpperCase();
 
                   return [
                     const SizedBox(width: 4),
                     Text(
-                      '(based on ${widget.coinBalance.coin.abbr}/$mediateBase)',
+                      '(based on ${widget.coinBalance!.coin!.abbr}/$mediateBase)',
                       style: TextStyle(
                           fontSize: 12,
                           color:
@@ -260,8 +260,8 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                               style: elevatedButtonSmallButtonStyle(),
                               child: Text(
                                 quotedChart
-                                    ? '$_currency/${widget.coinBalance.coin.abbr}'
-                                    : '${widget.coinBalance.coin.abbr}/$_currency',
+                                    ? '$_currency/${widget.coinBalance!.coin!.abbr}'
+                                    : '${widget.coinBalance!.coin!.abbr}/$_currency',
                                 style: const TextStyle(fontSize: 12),
                               )),
                         ],
@@ -287,7 +287,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                     : Colors.white.withOpacity(.4))
                             : snapshot.hasError
                                 ? Center(
-                                    child: Text(AppLocalizations.of(context)
+                                    child: Text(AppLocalizations.of(context)!
                                         .candleChartError),
                                   )
                                 : const Center(

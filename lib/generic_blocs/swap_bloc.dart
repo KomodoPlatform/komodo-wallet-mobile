@@ -10,48 +10,48 @@ import '../model/trade_preimage.dart';
 import '../widgets/bloc_provider.dart';
 
 class SwapBloc implements GenericBlocBase {
-  CoinBalance sellCoinBalance;
-  CoinBalance receiveCoinBalance;
+  CoinBalance? sellCoinBalance;
+  CoinBalance? receiveCoinBalance;
   bool enabledSellField = false;
   bool enabledReceiveField = false;
-  Rational amountSell;
-  Rational amountReceive;
-  Ask matchingBid;
+  Rational? amountSell;
+  Rational? amountReceive;
+  Ask? matchingBid;
   bool shouldBuyOut = false;
   bool isSellMaxActive = false;
-  TradePreimage _tradePreimage;
+  TradePreimage? _tradePreimage;
   bool _processing = false;
-  Rational maxTakerVolume;
-  String _preimageError;
-  String _validatorError;
-  final List<String> _currentSwaps = [];
+  Rational? maxTakerVolume;
+  String? _preimageError;
+  String? _validatorError;
+  final List<String?> _currentSwaps = [];
   bool autovalidate = false;
 
   // Using to guide user directly to active orders list
   int indexTab = 0;
 
-  final StreamController<CoinBalance> _receiveCoinBalanceController =
-      StreamController<CoinBalance>.broadcast();
-  Sink<CoinBalance> get _inReceiveCoinBalance =>
+  final StreamController<CoinBalance?> _receiveCoinBalanceController =
+      StreamController<CoinBalance?>.broadcast();
+  Sink<CoinBalance?> get _inReceiveCoinBalance =>
       _receiveCoinBalanceController.sink;
-  Stream<CoinBalance> get outReceiveCoinBalance =>
+  Stream<CoinBalance?> get outReceiveCoinBalance =>
       _receiveCoinBalanceController.stream;
 
-  final StreamController<CoinBalance> _sellCoinBalanceController =
-      StreamController<CoinBalance>.broadcast();
-  Sink<CoinBalance> get _inSellCoinBalance => _sellCoinBalanceController.sink;
-  Stream<CoinBalance> get outSellCoinBalance =>
+  final StreamController<CoinBalance?> _sellCoinBalanceController =
+      StreamController<CoinBalance?>.broadcast();
+  Sink<CoinBalance?> get _inSellCoinBalance => _sellCoinBalanceController.sink;
+  Stream<CoinBalance?> get outSellCoinBalance =>
       _sellCoinBalanceController.stream;
 
-  final StreamController<Rational> _amountSellController =
-      StreamController<Rational>.broadcast();
-  Sink<Rational> get _inAmountSell => _amountSellController.sink;
-  Stream<Rational> get outAmountSell => _amountSellController.stream;
+  final StreamController<Rational?> _amountSellController =
+      StreamController<Rational?>.broadcast();
+  Sink<Rational?> get _inAmountSell => _amountSellController.sink;
+  Stream<Rational?> get outAmountSell => _amountSellController.stream;
 
-  final StreamController<Rational> _amountReceiveController =
-      StreamController<Rational>.broadcast();
-  Sink<Rational> get _inAmountReceive => _amountReceiveController.sink;
-  Stream<Rational> get outAmountReceive => _amountReceiveController.stream;
+  final StreamController<Rational?> _amountReceiveController =
+      StreamController<Rational?>.broadcast();
+  Sink<Rational?> get _inAmountReceive => _amountReceiveController.sink;
+  Stream<Rational?> get outAmountReceive => _amountReceiveController.stream;
 
   final StreamController<int> _indexTabController =
       StreamController<int>.broadcast();
@@ -68,34 +68,34 @@ class SwapBloc implements GenericBlocBase {
   Sink<bool> get _inIsMaxActive => _isMaxActiveController.sink;
   Stream<bool> get outIsMaxActive => _isMaxActiveController.stream;
 
-  final StreamController<Ask> _matchingBidController =
-      StreamController<Ask>.broadcast();
-  Sink<Ask> get _inMatchingBid => _matchingBidController.sink;
-  Stream<Ask> get outMatchingBid => _matchingBidController.stream;
+  final StreamController<Ask?> _matchingBidController =
+      StreamController<Ask?>.broadcast();
+  Sink<Ask?> get _inMatchingBid => _matchingBidController.sink;
+  Stream<Ask?> get outMatchingBid => _matchingBidController.stream;
 
-  final StreamController<TradePreimage> _tradePreimageController =
-      StreamController<TradePreimage>.broadcast();
-  Sink<TradePreimage> get _inTradePreimage => _tradePreimageController.sink;
-  Stream<TradePreimage> get outTradePreimage => _tradePreimageController.stream;
+  final StreamController<TradePreimage?> _tradePreimageController =
+      StreamController<TradePreimage?>.broadcast();
+  Sink<TradePreimage?> get _inTradePreimage => _tradePreimageController.sink;
+  Stream<TradePreimage?> get outTradePreimage => _tradePreimageController.stream;
 
   final StreamController<bool> _processingController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inProcessing => _processingController.sink;
   Stream<bool> get outProcessing => _processingController.stream;
 
-  final StreamController<String> _preimageErrorController =
-      StreamController<String>.broadcast();
-  Sink<String> get _inPreimageError => _preimageErrorController.sink;
-  Stream<String> get outPreimageError => _preimageErrorController.stream;
+  final StreamController<String?> _preimageErrorController =
+      StreamController<String?>.broadcast();
+  Sink<String?> get _inPreimageError => _preimageErrorController.sink;
+  Stream<String?> get outPreimageError => _preimageErrorController.stream;
 
-  final StreamController<String> _validatorErrorController =
-      StreamController<String>.broadcast();
-  Sink<String> get _inValidatorError => _validatorErrorController.sink;
-  Stream<String> get outValidatorError => _validatorErrorController.stream;
+  final StreamController<String?> _validatorErrorController =
+      StreamController<String?>.broadcast();
+  Sink<String?> get _inValidatorError => _validatorErrorController.sink;
+  Stream<String?> get outValidatorError => _validatorErrorController.stream;
 
   final StreamController<List<String>> _currentSwapsController =
       StreamController<List<String>>.broadcast();
-  Sink<List<String>> get _inCurrentSwaps => _currentSwapsController.sink;
+  Sink<List<String?>> get _inCurrentSwaps => _currentSwapsController.sink;
   Stream<List<String>> get outCurrentSwaps => _currentSwapsController.stream;
 
   @override
@@ -123,12 +123,12 @@ class SwapBloc implements GenericBlocBase {
     _inEnabledSellField.add(this.enabledSellField);
   }
 
-  void setAmountSell(Rational amount) {
+  void setAmountSell(Rational? amount) {
     amountSell = amount;
     _inAmountSell.add(amountSell);
   }
 
-  void setAmountReceive(Rational amount) {
+  void setAmountReceive(Rational? amount) {
     amountReceive = amount;
     _inAmountReceive.add(amountReceive);
   }
@@ -138,13 +138,13 @@ class SwapBloc implements GenericBlocBase {
     _inIndexTab.add(indexTab);
   }
 
-  void updateReceiveCoin(String coin) {
-    final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
+  void updateReceiveCoin(String? coin) {
+    final CoinBalance? coinBalance = coinsBloc.getBalanceByAbbr(coin);
     receiveCoinBalance = coinBalance;
     _inReceiveCoinBalance.add(coinBalance);
   }
 
-  void updateSellCoin(CoinBalance coinBalance) {
+  void updateSellCoin(CoinBalance? coinBalance) {
     syncOrderbook.activePair = CoinsPair(sell: coinBalance?.coin, buy: null);
     sellCoinBalance = coinBalance;
     _inSellCoinBalance.add(sellCoinBalance);
@@ -160,24 +160,24 @@ class SwapBloc implements GenericBlocBase {
 
     try {
       maxTakerVolume = await MM.getMaxTakerVolume(
-          GetMaxTakerVolume(coin: sellCoinBalance.coin.abbr));
+          GetMaxTakerVolume(coin: sellCoinBalance!.coin!.abbr));
     } catch (_) {
       maxTakerVolume = null;
     }
   }
 
-  void updateMatchingBid(Ask bid) {
+  void updateMatchingBid(Ask? bid) {
     matchingBid = bid;
     _inMatchingBid.add(matchingBid);
   }
 
-  TradePreimage get tradePreimage => _tradePreimage;
-  set tradePreimage(TradePreimage value) {
+  TradePreimage? get tradePreimage => _tradePreimage;
+  set tradePreimage(TradePreimage? value) {
     _tradePreimage = value;
     _inTradePreimage.add(_tradePreimage);
   }
 
-  Timer _processingTimer;
+  Timer? _processingTimer;
   bool get processing => _processing;
   set processing(bool value) {
     _processingTimer?.cancel();
@@ -197,20 +197,20 @@ class SwapBloc implements GenericBlocBase {
     }
   }
 
-  String get preimageError => _preimageError;
-  set preimageError(String value) {
+  String? get preimageError => _preimageError;
+  set preimageError(String? value) {
     _preimageError = value;
     _inPreimageError.add(_preimageError);
   }
 
-  String get validatorError => _validatorError;
-  set validatorError(String value) {
+  String? get validatorError => _validatorError;
+  set validatorError(String? value) {
     _validatorError = value;
     _inValidatorError.add(_validatorError);
   }
 
-  List<String> get currentSwaps => _currentSwaps;
-  set currentSwaps(List<String> value) {
+  List<String?> get currentSwaps => _currentSwaps;
+  set currentSwaps(List<String?> value) {
     _currentSwaps.addAll(value);
     _inCurrentSwaps.add(_currentSwaps);
   }

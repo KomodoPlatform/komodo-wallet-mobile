@@ -26,7 +26,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
   bool _loading = false;
   bool _done = false;
   bool _success = false;
-  MmSwap _swap;
+  MmSwap? _swap;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).importSingleSwapTitle),
+          title: Text(AppLocalizations.of(context)!.importSingleSwapTitle),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -62,14 +62,14 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
       return Container(
         padding: EdgeInsets.fromLTRB(48, 24, 48, 24),
         child: Center(
-          child: Text(AppLocalizations.of(context).importSwapFailed),
+          child: Text(AppLocalizations.of(context)!.importSwapFailed),
         ),
       );
     }
     return ExportImportSuccess(
-      title: AppLocalizations.of(context).importSuccessTitle,
+      title: AppLocalizations.of(context)!.importSuccessTitle,
       items: {
-        AppLocalizations.of(context).exportSwapsTitle: 1,
+        AppLocalizations.of(context)!.exportSwapsTitle: 1,
       },
     );
   }
@@ -87,14 +87,14 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
             });
           }
         },
-        text: AppLocalizations.of(context).importButton,
+        text: AppLocalizations.of(context)!.importButton,
       ),
     );
   }
 
   bool _validate() {
     if (_swap == null) {
-      _showError(AppLocalizations.of(context).noItemsToImport);
+      _showError(AppLocalizations.of(context)!.noItemsToImport);
       return false;
     }
 
@@ -102,21 +102,21 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
   }
 
   Future<bool> _importSwaps() async {
-    final List<MmSwap> listSwaps = [];
+    final List<MmSwap?> listSwaps = [];
 
     listSwaps.add(_swap);
 
     final dynamic r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
 
     if (r is ErrorString) {
-      _showError(AppLocalizations.of(context).couldntImportError + r.error);
+      _showError(AppLocalizations.of(context)!.couldntImportError + r.error);
       return false;
     }
 
     if (r is ImportSwaps) {
-      if (r.result.skipped.isNotEmpty) {
-        _showError(AppLocalizations.of(context).couldntImportError +
-            r.result.skipped[_swap.uuid]);
+      if (r.result!.skipped!.isNotEmpty) {
+        _showError(AppLocalizations.of(context)!.couldntImportError +
+            r.result!.skipped![_swap!.uuid!]);
         return false;
       }
 
@@ -133,35 +133,35 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           truncateMiddle(
-            _swap.uuid,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 14),
+            _swap!.uuid!,
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 14),
           ),
           SizedBox(height: 2),
           Text(
-            _swap.type == 'Maker'
-                ? AppLocalizations.of(context).makerOrder
-                : AppLocalizations.of(context).takerOrder,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            _swap!.type == 'Maker'
+                ? AppLocalizations.of(context)!.makerOrder
+                : AppLocalizations.of(context)!.takerOrder,
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   fontSize: 14,
                   color: Theme.of(context)
                       .textTheme
-                      .bodyText2
-                      .color
+                      .bodyText2!
+                      .color!
                       .withOpacity(0.5),
                 ),
           ),
           SizedBox(height: 2),
           Builder(builder: (context) {
-            final myInfo = extractMyInfoFromSwap(_swap);
-            final myCoin = myInfo['myCoin'];
+            final myInfo = extractMyInfoFromSwap(_swap!);
+            final myCoin = myInfo['myCoin']!;
             final myAmount = myInfo['myAmount'];
-            final otherCoin = myInfo['otherCoin'];
+            final otherCoin = myInfo['otherCoin']!;
             final otherAmount = myInfo['otherAmount'];
 
             return Row(
               children: <Widget>[
                 Text(
-                  cutTrailingZeros(formatPrice(myAmount, 4)) + ' ' + myCoin,
+                  cutTrailingZeros(formatPrice(myAmount, 4))! + ' ' + myCoin,
                 ),
                 SizedBox(width: 4),
                 Image.asset(
@@ -172,7 +172,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
                 Icon(Icons.swap_horiz),
                 SizedBox(width: 8),
                 Text(
-                  cutTrailingZeros(formatPrice(otherAmount, 4)) +
+                  cutTrailingZeros(formatPrice(otherAmount, 4))! +
                       ' ' +
                       otherCoin,
                 ),
@@ -192,10 +192,10 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
   Widget _buildImportHeader() {
     return Container(
       padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-      child: Text(AppLocalizations.of(context).importDesc,
+      child: Text(AppLocalizations.of(context)!.importDesc,
           style: TextStyle(
             height: 1.3,
-            color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7),
+            color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.7),
           )),
     );
   }
@@ -204,22 +204,22 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
     return Container(
       padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
       child: _loading
-          ? Text(AppLocalizations.of(context).importLoading,
+          ? Text(AppLocalizations.of(context)!.importLoading,
               style: TextStyle(
                 height: 1.3,
                 color: Theme.of(context)
                     .textTheme
-                    .bodyText2
-                    .color
+                    .bodyText2!
+                    .color!
                     .withOpacity(0.7),
               ))
-          : Text(AppLocalizations.of(context).importLoadSwapDesc,
+          : Text(AppLocalizations.of(context)!.importLoadSwapDesc,
               style: TextStyle(
                 height: 1.3,
                 color: Theme.of(context)
                     .textTheme
-                    .bodyText2
-                    .color
+                    .bodyText2!
+                    .color!
                     .withOpacity(0.7),
               )),
     );
@@ -234,7 +234,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
             : () async {
                 setState(() => _loading = true);
 
-                FilePickerResult filePickerResult;
+                FilePickerResult? filePickerResult;
                 final int lockCookie = lockService.enteringFilePicker();
                 try {
                   filePickerResult = await FilePicker.platform.pickFiles();
@@ -248,22 +248,22 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
                   return;
                 }
 
-                File file;
+                late File file;
                 if (filePickerResult.count != 0) {
                   final pFile = filePickerResult.files[0];
                   if (pFile == null) {
-                    _showError(AppLocalizations.of(context).importFileNotFound);
+                    _showError(AppLocalizations.of(context)!.importFileNotFound);
                     return;
                   }
 
-                  file = File(pFile.path);
+                  file = File(pFile.path!);
                   if (!file.existsSync()) {
-                    _showError(AppLocalizations.of(context).importFileNotFound);
+                    _showError(AppLocalizations.of(context)!.importFileNotFound);
                     return;
                   }
                 }
 
-                final Map<String, dynamic> data = await _getSwapData(file);
+                final Map<String, dynamic> data = await (_getSwapData(file) as FutureOr<Map<String, dynamic>>);
                 setState(() => _loading = false);
 
                 try {
@@ -274,11 +274,11 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
                   });
                 } catch (e) {
                   _showError(
-                      AppLocalizations.of(context).importInvalidSwapData);
+                      AppLocalizations.of(context)!.importInvalidSwapData);
                   Log('import_swap_page:281]', e.toString());
                 }
               },
-        text: AppLocalizations.of(context).selectFileImport,
+        text: AppLocalizations.of(context)!.selectFileImport,
       ),
     );
   }
@@ -290,10 +290,10 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
     if (data.type != 'Taker' && data.type != 'Maker') throw error;
 
     if (data.myInfo != null) {
-      if ((data.myInfo.myCoin ?? '').isEmpty) throw error;
-      if ((data.myInfo.myAmount ?? '').isEmpty) throw error;
-      if ((data.myInfo.otherCoin ?? '').isEmpty) throw error;
-      if ((data.myInfo.otherAmount ?? '').isEmpty) throw error;
+      if ((data.myInfo!.myCoin ?? '').isEmpty) throw error;
+      if ((data.myInfo!.myAmount ?? '').isEmpty) throw error;
+      if ((data.myInfo!.otherCoin ?? '').isEmpty) throw error;
+      if ((data.myInfo!.otherAmount ?? '').isEmpty) throw error;
     } else {
       if ((data.makerCoin ?? '').isEmpty) throw error;
       if ((data.takerCoin ?? '').isEmpty) throw error;
@@ -302,13 +302,13 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
     }
   }
 
-  Future<Map<String, dynamic>> _getSwapData(File file) async {
+  Future<Map<String, dynamic>?> _getSwapData(File file) async {
     try {
       final String str = await file.readAsString();
       return jsonDecode(str);
     } catch (e) {
       Log('import_swap_page]', 'Failed to get swap data: $e');
-      _showError(AppLocalizations.of(context).importSwapJsonDecodingError);
+      _showError(AppLocalizations.of(context)!.importSwapJsonDecodingError);
       return null;
     }
   }

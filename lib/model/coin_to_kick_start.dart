@@ -20,10 +20,10 @@ class CoinToKickStart {
           result: List<String>.from(json['result'].map((dynamic x) => x)) ??
               <String>[]);
 
-  List<String> result;
+  List<String>? result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': List<dynamic>.from(result.map<dynamic>((dynamic x) => x)) ??
+        'result': List<dynamic>.from(result!.map<dynamic>((dynamic x) => x)) ??
             <String>[]
       };
 }

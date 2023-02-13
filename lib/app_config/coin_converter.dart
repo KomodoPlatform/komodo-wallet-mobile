@@ -11,7 +11,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
   List allCoinsList = [];
 
   coinsResponse.forEach((abbr, coinData) {
-    String proto = _getType(coinData['type']);
+    String? proto = _getType(coinData['type']);
 
     if (_excludedCoins.contains(abbr) || proto == null) {
       return; // unsupported protocols should be skipped
@@ -44,7 +44,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
 
 List<String> get _excludedCoins => [];
 
-String _getType(String coin) {
+String? _getType(String? coin) {
   // absent protocols
   // [RSK Smart Bitcoin, Arbitrum, Moonbeam, ZHTLC]
   CoinType type;
@@ -377,7 +377,7 @@ String _getColor(String coin) {
   };
   String defaultColor = 'F9F9F9';
 
-  return '0xFF${allColors[getCoinTicker(coin)]?.replaceAll('#', '') ?? defaultColor}';
+  return '0xFF${allColors[getCoinTicker(coin)!]?.replaceAll('#', '') ?? defaultColor}';
 
   // todo coins using the [defaultColor]: get their colors
   //  [BANANO, BONE, BTU, CUMMIES, DOGGY, FLOKI, GM, KOIN, PGX, SCA, RSR, ZILLA, INK, SPC, HPY, HLC, QBT, OC, PUT, BEST, CHSB, CHZ, DX, HEX, LEASH, MLN, OKB, PNK, S4F, SHIB, SHR, SKL, SRM, TMTG, TRAC, TTT, UBT, UMA, UOS, UQC, UTK, VGX, XOR, ZINU]

@@ -14,10 +14,10 @@ String getWithdrawToJson(GetWithdraw data) {
   if (data.amount == null) {
     tmpJson.remove('amount');
   }
-  if (data.max == null || !data.max || camoBloc.isCamoActive) {
+  if (data.max == null || !data.max! || camoBloc.isCamoActive) {
     tmpJson.remove('max');
   }
-  if (data.fee == null || data.fee.type == null) {
+  if (data.fee == null || data.fee!.type == null) {
     tmpJson.remove('fee');
   }
   return json.encode(tmpJson);
@@ -45,12 +45,12 @@ class GetWithdraw {
       );
 
   String method;
-  String amount;
-  String coin;
-  String to;
-  bool max;
-  String userpass;
-  Fee fee;
+  String? amount;
+  String? coin;
+  String? to;
+  bool? max;
+  String? userpass;
+  Fee? fee;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method ?? '',
@@ -59,7 +59,7 @@ class GetWithdraw {
         'max': max ?? false,
         'coin': coin ?? '',
         'userpass': userpass ?? '',
-        if (fee != null) 'fee': fee.toJson(),
+        if (fee != null) 'fee': fee!.toJson(),
       };
 }
 
@@ -76,13 +76,13 @@ class Fee {
         gasPrice: json['gas_price'],
         gas: json['gas'],
       );
-  String
+  String?
       type; // type of transaction fee, possible values: UtxoFixed, UtxoPerKbyte, EthGas
-  String
+  String?
       amount; // fee amount in coin units, used only when type is UtxoFixed (fixed amount not depending on tx size) or UtxoPerKbyte (amount per Kbyte).
-  String
+  String?
       gasPrice; // used only when fee type is EthGas. Sets the gas price in `gwei` units
-  int gas; // used only when fee type is EthGas. Sets the gas limit for transaction
+  int? gas; // used only when fee type is EthGas. Sets the gas limit for transaction
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type,

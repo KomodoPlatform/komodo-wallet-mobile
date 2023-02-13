@@ -5,26 +5,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesBuilder<T> extends StatelessWidget {
   const SharedPreferencesBuilder({
-    Key key,
-    @required this.pref,
-    @required this.builder,
+    Key? key,
+    required this.pref,
+    required this.builder,
     this.initialData,
   }) : super(key: key);
 
   final String pref;
-  final AsyncWidgetBuilder<T> builder;
-  final T initialData;
+  final AsyncWidgetBuilder<T?> builder;
+  final T? initialData;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<T>(
+    return FutureBuilder<T?>(
         future: _future(),
-        builder: (BuildContext context, AsyncSnapshot<T> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<T?> snapshot) {
           return builder(context, snapshot);
         });
   }
 
-  Future<T> _future() async {
-    return (await SharedPreferences.getInstance()).get(pref);
+  Future<T?> _future() async {
+    return (await SharedPreferences.getInstance()).get(pref) as FutureOr<T?>;
   }
 }

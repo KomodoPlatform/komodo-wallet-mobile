@@ -19,10 +19,10 @@ class ActiveOrders extends StatefulWidget {
     this.onFiltersChange,
   });
 
-  final ScrollController scrollCtrl;
-  final bool showFilters;
-  final Function(ActiveFilters) onFiltersChange;
-  final ActiveFilters activeFilters;
+  final ScrollController? scrollCtrl;
+  final bool? showFilters;
+  final Function(ActiveFilters)? onFiltersChange;
+  final ActiveFilters? activeFilters;
 
   @override
   _ActiveOrdersState createState() => _ActiveOrdersState();
@@ -46,8 +46,8 @@ class _ActiveOrdersState extends State<ActiveOrders> {
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (!snapshot.hasData) return const SizedBox();
 
-          List<dynamic> orderSwaps = snapshot.data;
-          orderSwaps = snapshot.data.reversed.toList();
+          List<dynamic>? orderSwaps = snapshot.data;
+          orderSwaps = snapshot.data!.reversed.toList();
           final List<dynamic> orderSwapsFiltered = _filter(orderSwaps);
 
           final int start = (_currentPage - 1) * _perPage;
@@ -56,7 +56,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
           final List<Widget> orderSwapsWidget = orderSwapsFiltered
               .map((dynamic item) {
                 if (item is Swap) {
-                  swapBloc.currentSwaps = [item.result.myOrderUuid];
+                  swapBloc.currentSwaps = [item.result!.myOrderUuid];
                   return BuildItemSwap(context: context, swap: item);
                 } else if (item is Order) {
                   switch (item.orderType) {
@@ -79,7 +79,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
             controller: widget.scrollCtrl,
             key: const Key('active-order-list'),
             children: [
-              if (widget.showFilters) _buildFilters(orderSwaps),
+              if (widget.showFilters!) _buildFilters(orderSwaps),
               if (orderSwapsFiltered.isNotEmpty) ...{
                 _buildPagination(orderSwapsFiltered),
                 ...orderSwapsWidget,
@@ -89,7 +89,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 4,
                   child: Center(
-                      child: Text(AppLocalizations.of(context).noOrders)),
+                      child: Text(AppLocalizations.of(context)!.noOrders)),
                 )
               },
               const SizedBox(height: 10),
@@ -109,7 +109,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
           activeFilters: widget.activeFilters,
           onChange: (ActiveFilters filters) {
             setState(() => _currentPage = 1);
-            widget.onFiltersChange(filters);
+            widget.onFiltersChange!(filters);
           },
         ),
       ),
@@ -118,24 +118,24 @@ class _ActiveOrdersState extends State<ActiveOrders> {
 
   List<dynamic> _filter(List<dynamic> unfiltered) {
     final List<dynamic> filtered = <dynamic>[];
-    final String sellCoinFilter = widget.activeFilters?.sellCoin;
-    final String receiveCoinFilter = widget.activeFilters?.receiveCoin;
-    final OrderType typeFilter = widget.activeFilters?.type;
-    final DateTime startFilter = widget.activeFilters?.start;
-    final DateTime endFilter = widget.activeFilters?.end;
+    final String? sellCoinFilter = widget.activeFilters?.sellCoin;
+    final String? receiveCoinFilter = widget.activeFilters?.receiveCoin;
+    final OrderType? typeFilter = widget.activeFilters?.type;
+    final DateTime? startFilter = widget.activeFilters?.start;
+    final DateTime? endFilter = widget.activeFilters?.end;
 
     for (dynamic item in unfiltered) {
-      String sellCoin;
-      String receiveCoin;
-      OrderType type;
-      DateTime date;
+      String? sellCoin;
+      String? receiveCoin;
+      OrderType? type;
+      late DateTime date;
       bool isMatched = true;
 
       if (item is Order) {
         sellCoin = item.orderType == OrderType.MAKER ? item.base : item.rel;
         receiveCoin = item.orderType == OrderType.MAKER ? item.rel : item.base;
         type = item.orderType;
-        date = DateTime.fromMillisecondsSinceEpoch(item.createdAt * 1000);
+        date = DateTime.fromMillisecondsSinceEpoch(item.createdAt! * 1000);
       } else if (item is Swap) {
         sellCoin = item.isMaker ? item.makerAbbr : item.takerAbbr;
         receiveCoin = item.isMaker ? item.takerAbbr : item.makerAbbr;
@@ -175,7 +175,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
         perPage: _perPage,
         onChanged: (int newPage) {
           setState(() => _currentPage = newPage);
-          widget.scrollCtrl.jumpTo(0);
+          widget.scrollCtrl!.jumpTo(0);
         },
       ),
     );

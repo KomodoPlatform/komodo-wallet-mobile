@@ -24,25 +24,25 @@ class CoinsPage extends StatefulWidget {
 }
 
 class _CoinsPageState extends State<CoinsPage> {
-  CexProvider _cexProvider;
-  ScrollController _scrollController;
+  late CexProvider _cexProvider;
+  ScrollController? _scrollController;
   double _heightFactor = 2.3;
-  BuildContext contextMain;
+  BuildContext? contextMain;
   NumberFormat f = NumberFormat('###,##0.0#');
-  double _heightScreen;
-  double _heightSliver;
-  double _widthScreen;
+  late double _heightScreen;
+  late double _heightSliver;
+  late double _widthScreen;
 
   void _scrollListener() {
     setState(() {
-      _heightFactor = (exp(-_scrollController.offset / 60) * 1.3) + 1;
+      _heightFactor = (exp(-_scrollController!.offset / 60) * 1.3) + 1;
     });
   }
 
   @override
   void initState() {
     _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
+    _scrollController!.addListener(_scrollListener);
     if (mmSe.running) coinsBloc.updateCoinBalances();
     super.initState();
   }
@@ -55,8 +55,8 @@ class _CoinsPageState extends State<CoinsPage> {
     _heightSliver = _heightScreen * 0.25 - MediaQuery.of(context).padding.top;
     if (_heightSliver < 125) _heightSliver = 125;
 
-    final bool isCollapsed = _scrollController.hasClients &&
-        _scrollController.offset > _heightSliver;
+    final bool isCollapsed = _scrollController!.hasClients &&
+        _scrollController!.offset > _heightSliver;
 
     return Scaffold(
         body: NestedScrollView(
@@ -106,9 +106,9 @@ class _CoinsPageState extends State<CoinsPage> {
                                           double totalBalanceUSD = 0;
 
                                           for (CoinBalance coinBalance
-                                              in snapshot.data) {
+                                              in snapshot.data!) {
                                             totalBalanceUSD +=
-                                                coinBalance.balanceUSD;
+                                                coinBalance.balanceUSD!;
                                           }
                                           return StreamBuilder<bool>(
                                             initialData:
@@ -118,14 +118,14 @@ class _CoinsPageState extends State<CoinsPage> {
                                                 AsyncSnapshot<bool> snapshot) {
                                               bool hidden = false;
                                               if (snapshot.hasData &&
-                                                  !snapshot.data) {
+                                                  !snapshot.data!) {
                                                 hidden = true;
                                               }
                                               final String amountText =
                                                   _cexProvider.convert(
                                                 totalBalanceUSD,
                                                 hidden: hidden,
-                                              );
+                                              )!;
                                               return TextButton(
                                                 onPressed: () => _cexProvider
                                                     .switchCurrency(),
@@ -178,7 +178,7 @@ class _CoinsPageState extends State<CoinsPage> {
                                           builder: (BuildContext context,
                                               AsyncSnapshot<bool> snapshot) {
                                             return snapshot.hasData &&
-                                                    snapshot.data
+                                                    snapshot.data!
                                                 ? BarGraph()
                                                 : SizedBox();
                                           })
@@ -233,11 +233,11 @@ class _CoinsPageState extends State<CoinsPage> {
   }
 
   Widget _buildProgressIndicator() {
-    return StreamBuilder<CoinToActivate>(
+    return StreamBuilder<CoinToActivate?>(
         initialData: coinsBloc.currentActiveCoin,
         stream: coinsBloc.outcurrentActiveCoin,
         builder:
-            (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+            (BuildContext context, AsyncSnapshot<CoinToActivate?> snapshot) {
           return snapshot.data != null
               ? const SizedBox(
                   height: 2,
@@ -272,16 +272,16 @@ class BarGraphState extends State<BarGraph> {
         if (snapshot.data != null) {
           double sumOfAllBalances = 0;
 
-          for (CoinBalance coinBalance in snapshot.data) {
-            sumOfAllBalances += coinBalance.balanceUSD;
+          for (CoinBalance coinBalance in snapshot.data!) {
+            sumOfAllBalances += coinBalance.balanceUSD!;
           }
 
-          for (CoinBalance coinBalance in snapshot.data) {
-            if (coinBalance.balanceUSD > 0) {
+          for (CoinBalance coinBalance in snapshot.data!) {
+            if (coinBalance.balanceUSD! > 0) {
               barItem.add(Container(
-                color: Color(int.parse(coinBalance.coin.colorCoin)),
+                color: Color(int.parse(coinBalance.coin!.colorCoin!)),
                 width: _widthBar *
-                    (((coinBalance.balanceUSD * 100) / sumOfAllBalances) / 100),
+                    (((coinBalance.balanceUSD! * 100) / sumOfAllBalances) / 100),
               ));
             }
           }
@@ -307,7 +307,7 @@ class BarGraphState extends State<BarGraph> {
 }
 
 class LoadAsset extends StatefulWidget {
-  const LoadAsset({Key key}) : super(key: key);
+  const LoadAsset({Key? key}) : super(key: key);
 
   @override
   LoadAssetState createState() {
@@ -329,8 +329,8 @@ class LoadAssetState extends State<LoadAsset> {
         if (snapshot.data != null) {
           int assetNumber = 0;
 
-          for (CoinBalance coinBalance in snapshot.data) {
-            if (double.parse(coinBalance.balance.getBalance()) > 0) {
+          for (CoinBalance coinBalance in snapshot.data!) {
+            if (double.parse(coinBalance.balance!.getBalance()) > 0) {
               assetNumber++;
             }
           }
@@ -341,8 +341,8 @@ class LoadAssetState extends State<LoadAsset> {
           ));
           listRet.add(
             Text(
-              AppLocalizations.of(context).numberAssets(assetNumber.toString()),
-              style: Theme.of(context).textTheme.caption.copyWith(color: color),
+              AppLocalizations.of(context)!.numberAssets(assetNumber.toString()),
+              style: Theme.of(context).textTheme.caption!.copyWith(color: color),
             ),
           );
           listRet.add(Icon(
@@ -371,7 +371,7 @@ class LoadAssetState extends State<LoadAsset> {
 }
 
 class ListCoins extends StatefulWidget {
-  const ListCoins({Key key}) : super(key: key);
+  const ListCoins({Key? key}) : super(key: key);
 
   @override
   ListCoinsState createState() {
@@ -402,9 +402,9 @@ class ListCoinsState extends State<ListCoins> {
             key: _refreshIndicatorKey,
             onRefresh: () => coinsBloc.updateCoinBalances(),
             child: Builder(builder: (BuildContext context) {
-              if (snapshot.data != null && snapshot.data.isNotEmpty) {
+              if (snapshot.data != null && snapshot.data!.isNotEmpty) {
                 final List<CoinBalance> _coinsSorted =
-                    coinsBloc.sortCoins(snapshot.data);
+                    coinsBloc.sortCoins(snapshot.data!);
 
                 return SlidableAutoCloseBehavior(
                   child: ListView.separated(
@@ -413,7 +413,7 @@ class ListCoinsState extends State<ListCoins> {
                     itemCount: _coinsSorted.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ItemCoin(
-                        key: Key('coin-list-${_coinsSorted[index].coin.abbr}'),
+                        key: Key('coin-list-${_coinsSorted[index].coin!.abbr}'),
                         mContext: context,
                         coinBalance: _coinsSorted[index],
                       );
@@ -425,7 +425,7 @@ class ListCoinsState extends State<ListCoins> {
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();
-              } else if (snapshot.data.isEmpty) {
+              } else if (snapshot.data!.isEmpty) {
                 // MRC: Add center to fix random UI glitch
                 // due to loading Add Button
                 return Center(
@@ -436,7 +436,7 @@ class ListCoinsState extends State<ListCoins> {
                         key: const Key('add-coin-button-empty'),
                         isCollapsed: true,
                       ),
-                      Text(AppLocalizations.of(context).pleaseAddCoin),
+                      Text(AppLocalizations.of(context)!.pleaseAddCoin),
                     ],
                   ),
                 );

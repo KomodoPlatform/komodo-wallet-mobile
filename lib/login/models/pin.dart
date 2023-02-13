@@ -7,7 +7,7 @@ class Pin extends FormzInput<String, PinValidationError> {
   const Pin.dirty([String value = '']) : super.dirty(value);
 
   @override
-  PinValidationError validator(String value) {
+  PinValidationError? validator(String value) {
     if (value.isEmpty) return PinValidationError.empty;
     if (value.length < 6) return PinValidationError.length;
     return null;

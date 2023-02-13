@@ -9,15 +9,15 @@ class BuildTradeMessage extends StatefulWidget {
 }
 
 class _BuildTradeMessageState extends State<BuildTradeMessage> {
-  ConstructorProvider _constrProvider;
-  String _error;
-  String _warning;
+  ConstructorProvider? _constrProvider;
+  String? _error;
+  String? _warning;
 
   @override
   Widget build(BuildContext context) {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
-    _error = _constrProvider.error;
-    _warning = _constrProvider.warning;
+    _error = _constrProvider!.error;
+    _warning = _constrProvider!.warning;
 
     if (_error == null && _warning == null) return SizedBox();
 
@@ -42,7 +42,7 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
   }
 
   Widget _buildWarning() {
-    final Color color = Theme.of(context).textTheme.bodyText1.color;
+    final Color color = Theme.of(context).textTheme.bodyText1!.color!;
 
     return Container(
       padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
@@ -59,16 +59,16 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
           SizedBox(width: 8),
           Expanded(
             child: Text(
-              _warning,
+              _warning!,
               style: Theme.of(context)
                   .textTheme
-                  .caption
+                  .caption!
                   .copyWith(color: color, fontSize: 13),
             ),
           ),
           // todo(MRC): Port to IconButton
           InkWell(
-            onTap: () => _constrProvider.warning = null,
+            onTap: () => _constrProvider!.warning = null,
             child: Container(
               padding: EdgeInsets.fromLTRB(6, 6, 8, 6),
               child: Icon(
@@ -87,7 +87,7 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
   Widget _buildError() {
     final Color color = Theme.of(context).errorColor;
 
-    List<String> errors = _error.split('.');
+    List<String> errors = _error!.split('.');
     String first = errors.first;
     errors.remove(first);
     String details = errors.join('. ');
@@ -112,7 +112,7 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
                   first,
                   style: Theme.of(context)
                       .textTheme
-                      .caption
+                      .caption!
                       .copyWith(color: color, fontSize: 13),
                 ),
                 if (showErrorDetails)
@@ -120,7 +120,7 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
                     '\n' + details.trim(),
                     style: Theme.of(context)
                         .textTheme
-                        .caption
+                        .caption!
                         .copyWith(color: color, fontSize: 13),
                   ),
               ],
@@ -139,7 +139,7 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
                     showErrorDetails
                         ? Icons.arrow_drop_up
                         : Icons.arrow_drop_down,
-                    color: Theme.of(context).textTheme.bodyText1.color,
+                    color: Theme.of(context).textTheme.bodyText1!.color,
                     size: 16,
                   ),
                 ),

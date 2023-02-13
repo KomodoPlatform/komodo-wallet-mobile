@@ -4,7 +4,7 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/suc
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 
 Future<void> sendTestCoins(WidgetTester tester,
-    {String address, String amount = '1', List<String> coins}) async {
+    {String? address, String amount = '1', required List<String> coins}) async {
   final Finder openSendButton = find.byKey(const Key('open-SEND'));
   final Finder addressField = find.byKey(const Key('send-address-field'));
   final Finder amountField = find.byKey(const Key('send-amount-field'));
@@ -30,7 +30,7 @@ Future<void> sendTestCoins(WidgetTester tester,
       await tester.pumpAndSettle();
       await tester.tap(openSendButton);
       await tester.pumpAndSettle();
-      await tester.enterText(addressField, address);
+      await tester.enterText(addressField, address!);
       await tester.pumpAndSettle();
       await tester.enterText(amountField, amount);
       await tester.pumpAndSettle();

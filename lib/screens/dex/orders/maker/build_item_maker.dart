@@ -47,7 +47,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                       Row(
                         children: <Widget>[
                           Text(
-                            widget.order.base,
+                            widget.order.base!,
                             style: const TextStyle(fontSize: 20),
                           ),
                           const SizedBox(width: 4),
@@ -74,7 +74,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                           _buildIcon(widget.order.rel),
                           const SizedBox(width: 4),
                           Text(
-                            widget.order.rel,
+                            widget.order.rel!,
                             style: const TextStyle(fontSize: 20),
                           ),
                         ],
@@ -98,7 +98,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                   Text(
                     DateFormat('dd MMM yyyy HH:mm').format(
                         DateTime.fromMillisecondsSinceEpoch(
-                            widget.order.createdAt * 1000)),
+                            widget.order.createdAt! * 1000)),
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ],
@@ -106,10 +106,10 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
               const SizedBox(
                 height: 5,
               ),
-              FutureBuilder<String>(
+              FutureBuilder<String?>(
                   future: Db.getNote('maker_${widget.order.uuid}'),
                   builder:
-                      (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      (BuildContext context, AsyncSnapshot<String?> snapshot) {
                     if (!snapshot.hasData) {
                       return SizedBox();
                     }
@@ -127,7 +127,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                           children: <Widget>[
                             Expanded(
                               child: Text(
-                                snapshot.data,
+                                snapshot.data!,
                                 style: Theme.of(context).textTheme.bodyText1,
                                 maxLines: isNoteExpanded ? null : 1,
                                 overflow: isNoteExpanded
@@ -147,7 +147,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                     widget.order,
                     size: 15,
                   ),
-                  widget.order.cancelable
+                  widget.order.cancelable!
                       ? SizedBox(
                           height: 30,
                           child: OutlinedButton(
@@ -172,7 +172,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                      AppLocalizations.of(context)
+                                      AppLocalizations.of(context)!
                                           .cancel
                                           .toUpperCase(),
                                       style:
@@ -200,7 +200,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
     );
   }
 
-  Widget _buildIcon(String coin) {
+  Widget _buildIcon(String? coin) {
     return CircleAvatar(
       maxRadius: 12,
       backgroundColor: Colors.transparent,

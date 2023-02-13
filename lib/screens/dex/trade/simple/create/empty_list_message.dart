@@ -9,7 +9,7 @@ class EmptyListMessage extends StatelessWidget {
       padding: EdgeInsets.only(right: 12),
       child: Center(
         child: Text(
-          AppLocalizations.of(context).nothingFound,
+          AppLocalizations.of(context)!.nothingFound,
           style: Theme.of(context).textTheme.caption,
         ),
       ),

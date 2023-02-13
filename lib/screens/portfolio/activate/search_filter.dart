@@ -6,7 +6,7 @@ import '../../../model/coin.dart';
 
 class SearchFieldFilterCoin extends StatefulWidget {
   const SearchFieldFilterCoin({
-    Key key,
+    Key? key,
     this.onFilterCoins,
     this.clear,
     this.type,
@@ -14,11 +14,11 @@ class SearchFieldFilterCoin extends StatefulWidget {
     this.focusNode,
   }) : super(key: key);
 
-  final Function(List<Coin>) onFilterCoins;
-  final Function clear;
-  final String type;
-  final TextEditingController controller;
-  final FocusNode focusNode;
+  final Function(List<Coin?>)? onFilterCoins;
+  final Function? clear;
+  final String? type;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
 
   @override
   _SearchFieldFilterCoinState createState() => _SearchFieldFilterCoinState();
@@ -59,15 +59,15 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
             Icons.search,
             color: Theme.of(context).colorScheme.onSurface,
           ),
-          hintText: AppLocalizations.of(context).searchFilterCoin,
+          hintText: AppLocalizations.of(context)!.searchFilterCoin,
           fillColor: color,
           filled: true,
           suffixIcon: !isEmptyQuery
               ? IconButton(
                   splashRadius: 24,
                   onPressed: () {
-                    widget.clear();
-                    widget.controller.clear();
+                    widget.clear!();
+                    widget.controller!.clear();
                     setState(() {
                       isEmptyQuery = true;
                     });
@@ -84,7 +84,7 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
         ),
         onChanged: (String query) async {
           isEmptyQuery = query.isEmpty;
-          widget.onFilterCoins(await coinsBloc.getAllNotActiveCoinsWithFilter(
+          widget.onFilterCoins!(await coinsBloc.getAllNotActiveCoinsWithFilter(
               query, widget.type));
         },
       ),

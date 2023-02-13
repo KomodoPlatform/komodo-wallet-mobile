@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../generic_blocs/coins_bloc.dart';
@@ -14,27 +15,27 @@ import '../utils/utils.dart';
 
 class RewardsProvider extends ChangeNotifier {
   final AppLocalizations _localizations = AppLocalizations();
-  List<RewardsItem> _rewards;
+  List<RewardsItem>? _rewards;
   double _total = 0.0;
-  int _updateTimer;
+  int? _updateTimer;
 
   bool claimInProgress = false;
   bool updateInProgress = false;
-  String errorMessage;
-  String successMessage;
+  String? errorMessage;
+  String? successMessage;
 
-  List<RewardsItem> get rewards => _rewards;
+  List<RewardsItem>? get rewards => _rewards;
   double get total => _total;
 
   bool get needClaim {
     if (_rewards == null) return false;
 
-    for (RewardsItem item in _rewards) {
+    for (RewardsItem item in _rewards!) {
       if (item.stopAt == null) continue;
 
       final Duration timeLeft = Duration(
         milliseconds:
-            item.stopAt * 1000 - DateTime.now().millisecondsSinceEpoch,
+            item.stopAt! * 1000 - DateTime.now().millisecondsSinceEpoch,
       );
       if (timeLeft.inDays < 2 && (item.reward ?? 0) > 0) {
         return true;
@@ -57,7 +58,7 @@ class RewardsProvider extends ChangeNotifier {
           GetWithdraw(
             userpass: mmSe.userpass,
             coin: 'KMD',
-            to: _kmdBalance().balance.address,
+            to: _kmdBalance()!.balance!.address,
             max: true,
           ));
     } catch (e) {
@@ -65,7 +66,7 @@ class RewardsProvider extends ChangeNotifier {
     }
 
     if (res is WithdrawResponse && res.coin == 'KMD') {
-      _total = double.parse(res.myBalanceChange);
+      _total = double.parse(res.myBalanceChange!);
     } else {
       _total = 0.0;
     }
@@ -80,7 +81,7 @@ class RewardsProvider extends ChangeNotifier {
     successMessage = null;
     notifyListeners();
 
-    List<RewardsItem> list;
+    List<RewardsItem>? list;
     try {
       list = await MM.getRewardsInfo();
     } catch (e) {
@@ -103,14 +104,14 @@ class RewardsProvider extends ChangeNotifier {
   // will return updated data, while 'receive' step is in progress.
   Future<void> _updateInfoUntilSuccessOrTimeOut(int timeOut) async {
     _updateTimer ??= DateTime.now().millisecondsSinceEpoch;
-    final List<RewardsItem> prevRewards = List.from(_rewards);
+    final List<RewardsItem> prevRewards = List.from(_rewards!);
 
     await _updateInfo();
     await _updateTotal();
 
     final bool isTimedOut =
-        DateTime.now().millisecondsSinceEpoch - _updateTimer > timeOut;
-    final bool isUpdated = !_rewardsEquals(prevRewards, _rewards);
+        DateTime.now().millisecondsSinceEpoch - _updateTimer! > timeOut;
+    final bool isUpdated = !_rewardsEquals(prevRewards, _rewards!);
 
     if (isUpdated || isTimedOut) {
       _updateTimer = null;
@@ -145,7 +146,7 @@ class RewardsProvider extends ChangeNotifier {
           GetWithdraw(
             userpass: mmSe.userpass,
             coin: 'KMD',
-            to: _kmdBalance().balance.address,
+            to: _kmdBalance()!.balance!.address,
             max: true,
           ));
     } catch (e) {
@@ -168,7 +169,7 @@ class RewardsProvider extends ChangeNotifier {
       _setError(e);
     }
 
-    if (tx is! SendRawTransactionResponse || tx.txHash.isEmpty) {
+    if (tx is! SendRawTransactionResponse || tx.txHash!.isEmpty) {
       _setError();
       claimInProgress = false;
       return;
@@ -176,21 +177,20 @@ class RewardsProvider extends ChangeNotifier {
 
     await _updateInfoUntilSuccessOrTimeOut(30000);
     successMessage =
-        _localizations.rewardsSuccess(formatPrice(res.myBalanceChange));
+        _localizations.rewardsSuccess(formatPrice(res.myBalanceChange)!);
 
     claimInProgress = false;
     notifyListeners();
   }
 
-  void _setError([String e]) {
+  void _setError([String? e]) {
     errorMessage = _localizations.rewardsError;
     notifyListeners();
   }
 
-  CoinBalance _kmdBalance() {
-    return coinsBloc.coinBalance.firstWhere(
-        (balance) => balance.coin.abbr == 'KMD',
-        orElse: () => null);
+  CoinBalance? _kmdBalance() {
+    return coinsBloc.coinBalance.firstWhereOrNull(
+        (balance) => balance.coin!.abbr == 'KMD');
   }
 }
 
@@ -207,13 +207,13 @@ class RewardsItem {
   factory RewardsItem.fromJson(Map<String, dynamic> json) {
     final AppLocalizations _localizations = AppLocalizations();
 
-    final double reward = json['accrued_rewards']['Accrued'] != null
+    final double? reward = json['accrued_rewards']['Accrued'] != null
         ? double.parse(json['accrued_rewards']['Accrued'])
         : null;
 
-    final String error = json['accrued_rewards']['NotAccruedReason'];
+    final String? error = json['accrued_rewards']['NotAccruedReason'];
     String errorMessage;
-    String errorMessageLong;
+    String? errorMessageLong;
     switch (error) {
       case 'UtxoAmountLessThanTen':
         errorMessage = _localizations.rewardsLowAmountShort;
@@ -242,10 +242,10 @@ class RewardsItem {
     );
   }
 
-  int index;
-  double amount;
-  double reward;
-  int startAt;
-  int stopAt;
-  Map<String, String> error;
+  int? index;
+  double? amount;
+  double? reward;
+  int? startAt;
+  int? stopAt;
+  Map<String, String?>? error;
 }

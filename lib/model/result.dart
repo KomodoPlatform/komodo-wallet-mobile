@@ -18,7 +18,7 @@ class ResultSuccess {
         result: json['result'] ?? '',
       );
 
-  String result;
+  String? result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'result': result ?? '',

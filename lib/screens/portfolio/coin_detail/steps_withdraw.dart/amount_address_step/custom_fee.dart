@@ -10,13 +10,13 @@ import '../../../../../utils/utils.dart';
 
 class CustomFee extends StatefulWidget {
   const CustomFee(
-      {Key key, this.amount, this.coin, this.scrollController, this.onChanged})
+      {Key? key, this.amount, this.coin, this.scrollController, this.onChanged})
       : super(key: key);
 
-  final String amount;
-  final Coin coin;
-  final ScrollController scrollController;
-  final Function(String) onChanged;
+  final String? amount;
+  final Coin? coin;
+  final ScrollController? scrollController;
+  final Function(String)? onChanged;
   @override
   _CustomFeeState createState() => _CustomFeeState();
 }
@@ -34,7 +34,7 @@ class _CustomFeeState extends State<CustomFee> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text(
-                AppLocalizations.of(context).customFee,
+                AppLocalizations.of(context)!.customFee,
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               Switch(
@@ -60,10 +60,10 @@ class _CustomFeeState extends State<CustomFee> {
             secondChild: Column(
               children: <Widget>[
                 Text(
-                  AppLocalizations.of(context).customFeeWarning,
+                  AppLocalizations.of(context)!.customFeeWarning,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
+                      .bodyText2!
                       .copyWith(color: Theme.of(context).errorColor),
                 ),
                 isErcType(widget.coin)
@@ -88,17 +88,17 @@ class _CustomFeeState extends State<CustomFee> {
 
 class CustomFeeFieldERC extends StatefulWidget {
   const CustomFeeFieldERC(
-      {Key key,
+      {Key? key,
       this.isCustomFeeActive,
       this.coin,
       this.scrollController,
       this.onChanged})
       : super(key: key);
 
-  final bool isCustomFeeActive;
-  final Coin coin;
-  final ScrollController scrollController;
-  final Function(String) onChanged;
+  final bool? isCustomFeeActive;
+  final Coin? coin;
+  final ScrollController? scrollController;
+  final Function(String)? onChanged;
 
   @override
   _CustomFeeFieldERCState createState() => _CustomFeeFieldERCState();
@@ -109,12 +109,12 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
@@ -142,20 +142,20 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
                   textAlign: TextAlign.end,
                   onChanged: widget.onChanged,
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).gasLimit,
+                    labelText: AppLocalizations.of(context)!.gasLimit,
                   ),
-                  validator: (String value) {
-                    if (widget.isCustomFeeActive) {
-                      value = value.replaceAll(',', '.');
+                  validator: (String? value) {
+                    if (widget.isCustomFeeActive!) {
+                      value = value!.replaceAll(',', '.');
 
                       if (value.isEmpty || double.parse(value) < 0) {
-                        return AppLocalizations.of(context).errorValueNotEmpty;
+                        return AppLocalizations.of(context)!.errorValueNotEmpty;
                       }
                       final double currentAmount = double.parse(value);
-                      String type = widget.coin.type.name;
-                      double standardFee = appConfig.standardFees[type].first;
+                      String type = widget.coin!.type!.name;
+                      double standardFee = appConfig.standardFees[type]!.first;
                       if (currentAmount < standardFee) {
-                        return AppLocalizations.of(context)
+                        return AppLocalizations.of(context)!
                             .limitError(standardFee.toInt());
                       }
                       coinsDetailBloc.setCustomFee(Fee(
@@ -176,7 +176,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
           child: Focus(
             onFocusChange: (a) {
               if (a) {
-                widget.scrollController.animateTo(
+                widget.scrollController!.animateTo(
                   120,
                   curve: Curves.easeOut,
                   duration: const Duration(milliseconds: 300),
@@ -196,20 +196,20 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
               textAlign: TextAlign.end,
               onChanged: widget.onChanged,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]',
+                labelText: AppLocalizations.of(context)!.gasPrice + ' [Gwei]',
               ),
-              validator: (String value) {
-                if (widget.isCustomFeeActive) {
-                  value = value.replaceAll(',', '.');
+              validator: (String? value) {
+                if (widget.isCustomFeeActive!) {
+                  value = value!.replaceAll(',', '.');
 
                   if (value.isEmpty || double.parse(value) < 0) {
-                    return AppLocalizations.of(context).errorValueNotEmpty;
+                    return AppLocalizations.of(context)!.errorValueNotEmpty;
                   }
                   final double currentAmount = double.parse(value);
-                  String type = widget.coin.type.name;
-                  int standardFee = appConfig.standardFees[type].last.toInt();
+                  String type = widget.coin!.type!.name;
+                  int standardFee = appConfig.standardFees[type]!.last.toInt();
                   if (currentAmount < standardFee) {
-                    return AppLocalizations.of(context).gweiError(standardFee);
+                    return AppLocalizations.of(context)!.gweiError(standardFee);
                   }
                   coinsDetailBloc.setCustomFee(Fee(
                       gas: int.parse(_gasController.text.replaceAll(',', '.')),
@@ -227,17 +227,17 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
 
 class CustomFeeFieldSmartChain extends StatefulWidget {
   const CustomFeeFieldSmartChain(
-      {Key key,
+      {Key? key,
       this.isCustomFeeActive,
       this.coin,
       this.scrollController,
       this.onChanged})
       : super(key: key);
 
-  final bool isCustomFeeActive;
-  final Coin coin;
-  final ScrollController scrollController;
-  final Function(String) onChanged;
+  final bool? isCustomFeeActive;
+  final Coin? coin;
+  final ScrollController? scrollController;
+  final Function(String)? onChanged;
 
   @override
   _CustomFeeFieldSmartChainState createState() =>
@@ -249,12 +249,12 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
@@ -268,7 +268,7 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain>
             child: Focus(
               onFocusChange: (a) {
                 if (a) {
-                  widget.scrollController.animateTo(
+                  widget.scrollController!.animateTo(
                     120,
                     curve: Curves.easeOut,
                     duration: const Duration(milliseconds: 300),
@@ -287,29 +287,29 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain>
                 style: Theme.of(context).textTheme.bodyText2,
                 textAlign: TextAlign.end,
                 decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context).customFee +
-                      '[${widget.coin.abbr}]',
+                  labelText: AppLocalizations.of(context)!.customFee +
+                      '[${widget.coin!.abbr}]',
                 ),
                 // The validator receives the text the user has typed in
-                validator: (String value) {
-                  if (widget.isCustomFeeActive) {
-                    value = value.replaceAll(',', '.');
+                validator: (String? value) {
+                  if (widget.isCustomFeeActive!) {
+                    value = value!.replaceAll(',', '.');
 
                     if (value.isEmpty || double.parse(value) < 0) {
-                      return AppLocalizations.of(context).errorValueNotEmpty;
+                      return AppLocalizations.of(context)!.errorValueNotEmpty;
                     }
 
                     final double currentAmount = double.parse(value);
 
                     if (currentAmount >
                         double.parse(coinsDetailBloc.amountToSend ?? '0')) {
-                      return AppLocalizations.of(context).errorAmountBalance;
+                      return AppLocalizations.of(context)!.errorAmountBalance;
                     }
 
-                    String type = widget.coin.type.name;
-                    double standardFee = appConfig.standardFees[type].first;
+                    String type = widget.coin!.type!.name;
+                    double standardFee = appConfig.standardFees[type]!.first;
                     if (currentAmount < standardFee) {
-                      return AppLocalizations.of(context)
+                      return AppLocalizations.of(context)!
                           .feesError(standardFee);
                     }
 

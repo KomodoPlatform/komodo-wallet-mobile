@@ -17,10 +17,10 @@ class BuildNewsItem extends StatefulWidget {
 
 class _BuildNewsItemState extends State<BuildNewsItem>
     with SingleTickerProviderStateMixin {
-  List<TapGestureRecognizer> _recognizers;
+  late List<TapGestureRecognizer> _recognizers;
   bool _collapsed = true;
-  AnimationController expandController;
-  Animation<double> expandAnimation;
+  late AnimationController expandController;
+  late Animation<double> expandAnimation;
 
   @override
   void initState() {
@@ -74,7 +74,7 @@ class _BuildNewsItemState extends State<BuildNewsItem>
         CircleAvatar(
           radius: 18,
           backgroundImage:
-              _source.pic != null ? NetworkImage(_source.pic) : null,
+              _source.pic != null ? NetworkImage(_source.pic!) : null,
           backgroundColor: Theme.of(context).highlightColor,
           child: _source.pic == null
               ? Icon(
@@ -90,11 +90,11 @@ class _BuildNewsItemState extends State<BuildNewsItem>
             children: <Widget>[
               GestureDetector(
                 onTap:
-                    _source.url == null ? null : () => launchURL(_source.url),
+                    _source.url == null ? null : () => launchURL(_source.url!),
                 child: Text(
-                  _source.name,
+                  _source.name!,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
                         color: Colors.blue,
                       ),
                 ),
@@ -109,17 +109,17 @@ class _BuildNewsItemState extends State<BuildNewsItem>
   }
 
   Widget _buildDate() {
-    String _date;
+    String? _date;
     try {
       _date = humanDate(
-          DateTime.parse(widget.newsItem.date).millisecondsSinceEpoch);
+          DateTime.parse(widget.newsItem.date!).millisecondsSinceEpoch);
     } catch (_) {}
 
     return _date == null ? Container(width: 0) : Text(_date);
   }
 
   Widget _buildContent() {
-    if (widget.newsItem.content == null || widget.newsItem.content.isEmpty) {
+    if (widget.newsItem.content == null || widget.newsItem.content!.isEmpty) {
       return SizedBox();
     }
     final NewsArticle _article = NewsArticle(widget.newsItem.content);
@@ -146,7 +146,7 @@ class _BuildNewsItemState extends State<BuildNewsItem>
               },
               child: Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 16, right: 16),
-                child: Text(AppLocalizations.of(context).feedReadMore,
+                child: Text(AppLocalizations.of(context)!.feedReadMore,
                     style: TextStyle(fontSize: 16, color: Colors.blue)),
               ),
             ),

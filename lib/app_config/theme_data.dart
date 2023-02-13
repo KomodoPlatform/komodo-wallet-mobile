@@ -221,7 +221,7 @@ const Color cexColorLight = Color.fromRGBO(24, 35, 49, 0.6);
 
 /// The SmallButton style for a ElevatedButton
 /// Replaces the old SmallButton widget
-ButtonStyle elevatedButtonSmallButtonStyle({EdgeInsets padding}) =>
+ButtonStyle elevatedButtonSmallButtonStyle({EdgeInsets? padding}) =>
     ElevatedButton.styleFrom(
       elevation: 0,
       padding: padding,

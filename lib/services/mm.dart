@@ -69,7 +69,7 @@ import 'mm_service.dart';
 class UserpassBody {
   UserpassBody({this.body, this.client});
   dynamic body;
-  http.Client client;
+  http.Client? client;
 }
 
 // AG: Planning to get rid of `res` and turn `MM` into a const:
@@ -81,7 +81,7 @@ ApiProvider MM = ApiProvider();
 
 class ApiProvider {
   String url = 'http://localhost:${appConfig.rpcPort}';
-  Response res;
+  late Response res;
 
   Response _saveRes(String method, Response res) {
     final String loggedBody = res.body.toString();
@@ -133,7 +133,7 @@ class ApiProvider {
     GetSwap body,
   ) async =>
       await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
+          (UserpassBody userBody) => userBody.client!
               .post(Uri.parse(url), body: getSwapToJson(userBody.body))
               .then((Response r) => _saveRes('getSwapStatus', r))
               .then<dynamic>((Response res) => swapFromJson(res.body))
@@ -146,7 +146,7 @@ class ApiProvider {
     GetOrderbook body,
   ) async =>
       await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
+          (UserpassBody userBody) => userBody.client!
                   .post(Uri.parse(url), body: getOrderbookToJson(userBody.body))
                   .then((Response r) =>
                       _saveRes('getOrderbook_api_providers:110', r))
@@ -161,7 +161,7 @@ class ApiProvider {
   void _assert200(Response r) {
     if (r.body.isEmpty) throw ErrorString('HTTP ${r.statusCode} empty');
     if (r.statusCode != 200) {
-      String emsg;
+      String? emsg;
       try {
         // See if the body is a JSON error.
         emsg = ErrorString.fromJson(json.decode(r.body)).error;
@@ -170,13 +170,13 @@ class ApiProvider {
         // Treat the body as a potentially useful but untrusted error message.
         emsg = r.body
             .replaceAll(RegExp('[^a-zA-Z0-9, :\]\.-]+'), '.')
-            .replaceFirstMapped(RegExp('^(.{0,99}).*'), (Match m) => m[1]);
+            .replaceFirstMapped(RegExp('^(.{0,99}).*'), (Match m) => m[1]!);
       }
       throw ErrorString('HTTP ${r.statusCode}: $emsg');
     }
   }
 
-  Future<Balance> getBalance(GetBalance gb, {http.Client client}) async {
+  Future<Balance> getBalance(GetBalance gb, {http.Client? client}) async {
     // AG: HTTP handling is improved in this method.
     //     After using it for a while and seeing that it works as expected
     //     we should refactor the rest of the methods accordingly.
@@ -184,7 +184,7 @@ class ApiProvider {
     client ??= mmSe.client;
     try {
       final userBody = await _assertUserpass(client, gb);
-      final r = await userBody.client
+      final r = await userBody.client!
           .post(Uri.parse(url), body: getBalanceToJson(userBody.body));
       _assert200(r);
       _saveRes('getBalance', r);
@@ -211,7 +211,7 @@ class ApiProvider {
       await _assertUserpass(client, body)
           .then<dynamic>((UserpassBody userBody) {
         body.method = 'buy';
-        return userBody.client
+        return userBody.client!
             .post(Uri.parse(url), body: getBuyToJson(userBody.body))
             .then((Response r) => _saveRes('postBuy', r))
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
@@ -229,7 +229,7 @@ class ApiProvider {
       await _assertUserpass(client, body)
           .then<dynamic>((UserpassBody userBody) {
         body.method = 'sell';
-        return userBody.client
+        return userBody.client!
             .post(Uri.parse(url), body: getBuyToJson(userBody.body))
             .then((Response r) => _saveRes('postSell', r))
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
@@ -238,7 +238,7 @@ class ApiProvider {
                 _catchErrorString('postSell', e, 'Error on post sell'));
       });
 
-  Future<void> simPanic({http.Client client}) async {
+  Future<void> simPanic({http.Client? client}) async {
     client ??= mmSe.client;
     final req = <String, dynamic>{
       'method': 'sim_panic',
@@ -252,15 +252,15 @@ class ApiProvider {
     if (err.error.isNotEmpty) throw removeLineFromMM2(err);
   }
 
-  String enableCoinImpl(Coin coin) {
+  String enableCoinImpl(Coin? coin) {
     if (isErcType(coin))
       return json.encode(MmEnable(
         userpass: mmSe.userpass,
-        coin: coin.abbr,
+        coin: coin!.abbr,
         txHistory: false,
         swapContractAddress: coin.swapContractAddress,
         fallbackSwapContract: coin.fallbackSwapContract,
-        urls: List<String>.from(coin.serverList.map((e) => e.url)),
+        urls: List<String>.from(coin.serverList!.map((e) => e.url)),
       ).toJson());
 
     if (isSlpParent(coin))
@@ -278,8 +278,8 @@ class ApiProvider {
     final electrum = <String, dynamic>{
       'method': 'electrum',
       'userpass': mmSe.userpass,
-      'coin': coin.abbr,
-      'servers': Coin.getServerList(coin.serverList),
+      'coin': coin!.abbr,
+      'servers': Coin.getServerList(coin.serverList!),
       'mm2': coin.mm2,
       'tx_history': true,
       'required_confirmations': coin.requiredConfirmations,
@@ -287,9 +287,9 @@ class ApiProvider {
         'mature_confirmations': coin.matureConfirmations,
       'requires_notarization': coin.requiresNotarization ?? false,
       'address_format': coin.addressFormat,
-      if (coin.swapContractAddress.isNotEmpty)
+      if (coin.swapContractAddress!.isNotEmpty)
         'swap_contract_address': coin.swapContractAddress,
-      if (coin.fallbackSwapContract.isNotEmpty)
+      if (coin.fallbackSwapContract!.isNotEmpty)
         'fallback_swap_contract': coin.fallbackSwapContract,
       if (coin.bchdUrls != null) 'bchd_urls': coin.bchdUrls
     };
@@ -303,7 +303,7 @@ class ApiProvider {
     GetSetPrice body,
   ) async =>
       await _assertUserpass(client, body)
-          .then<dynamic>((UserpassBody userBody) => userBody.client
+          .then<dynamic>((UserpassBody userBody) => userBody.client!
               .post(Uri.parse(url), body: getSetPriceToJson(userBody.body))
               .then((Response r) => _saveRes('postSetPrice', r))
               .then<dynamic>(
@@ -317,7 +317,7 @@ class ApiProvider {
     GetTxHistory body,
   ) async =>
       await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
+          (UserpassBody userBody) => userBody.client!
               .post(Uri.parse(url), body: getTxHistoryToJson(userBody.body))
               .then((Response r) => _saveRes('getTransactions', r))
               .then<dynamic>((Response res) => transactionsFromJson(res.body))
@@ -326,10 +326,10 @@ class ApiProvider {
                   'getTransactions', e, 'Error on get transactions')));
 
   Future<RecentSwaps> getRecentSwaps(GetRecentSwap grs,
-      {http.Client client}) async {
+      {http.Client? client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(client, grs);
-    final r = await userBody.client
+    final r = await userBody.client!
         .post(Uri.parse(url), body: getRecentSwapToJson(userBody.body));
     _assert200(r);
     _saveRes('getRecentSwaps', r);
@@ -347,7 +347,7 @@ class ApiProvider {
     BaseService body,
   ) async =>
       await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
+          (UserpassBody userBody) => userBody.client!
               .post(Uri.parse(url), body: baseServiceToJson(userBody.body))
               .then((Response r) => _saveRes('getMyOrders', r))
               .then<dynamic>((Response res) => ordersFromJson(res.body))
@@ -359,12 +359,12 @@ class ApiProvider {
     GetCancelOrder body,
   ) async =>
       await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
+          (UserpassBody userBody) => userBody.client!
               .post(Uri.parse(url), body: getCancelOrderToJson(userBody.body))
               .then((Response r) => _saveRes('cancelOrder', r))
               .then((Response res) => resultSuccessFromJson(res.body))
               .then((ResultSuccess data) =>
-                  data.result.isEmpty ? errorStringFromJson(res.body) : data)
+                  data.result!.isEmpty ? errorStringFromJson(res.body) : data)
               .catchError((dynamic e) => _catchErrorString(
                   'cancelOrder', e, 'Error on cancel order')));
 
@@ -374,7 +374,7 @@ class ApiProvider {
     BaseService body,
   ) async =>
       await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
+          (UserpassBody userBody) => userBody.client!
               .post(Uri.parse(url), body: baseServiceToJson(userBody.body))
               .then((Response r) => _saveRes('getCoinToKickStart', r))
               .then<dynamic>(
@@ -388,14 +388,14 @@ class ApiProvider {
   ) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody
-              .client
+              .client!
               .post(Uri.parse(url),
                   body: getSendRawTransactionToJson(userBody.body))
               .then((Response r) => _saveRes('postRawTransaction', r))
               .then((Response res) =>
                   sendRawTransactionResponseFromJson(res.body))
               .then((SendRawTransactionResponse data) =>
-                  data.txHash.isEmpty ? errorStringFromJson(res.body) : data)
+                  data.txHash!.isEmpty ? errorStringFromJson(res.body) : data)
               .catchError((dynamic e) => errorStringFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
                   'postRawTransaction', e, 'Error on post raw transaction')));
@@ -424,7 +424,7 @@ class ApiProvider {
     GetTradeFee body,
   ) async =>
       await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
+          (UserpassBody userBody) => userBody.client!
               .post(Uri.parse(url), body: getTradeFeeToJson(userBody.body))
               .then((Response r) => _saveRes('getTradeFee', r))
               .then<dynamic>((Response res) => tradeFeeFromJson(res.body))
@@ -432,12 +432,12 @@ class ApiProvider {
                   'getTradeFee', e, 'Error on get tradeFee')));
 
   Future<VersionMm2> getVersionMM2(BaseService body,
-      {http.Client client}) async {
+      {http.Client? client}) async {
     client ??= mmSe.client;
 
     try {
       final userBody = await _assertUserpass(client, body);
-      final r = await userBody.client
+      final r = await userBody.client!
           .post(Uri.parse(url), body: baseServiceToJson(userBody.body));
       _assert200(r);
       _saveRes('getVersionMM2', r);
@@ -456,10 +456,10 @@ class ApiProvider {
 
   /// Returns a parsed JSON of the MM metrics
   /// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-tutorials/atomicdex-metrics.html
-  Future<dynamic> getMetricsMM2(BaseService body, {http.Client client}) async {
+  Future<dynamic> getMetricsMM2(BaseService body, {http.Client? client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(client, body);
-    final r = await userBody.client
+    final r = await userBody.client!
         .post(Uri.parse(url), body: baseServiceToJson(userBody.body));
     _assert200(r);
 
@@ -477,7 +477,7 @@ class ApiProvider {
   }
 
   Future<DisableCoin> disableCoin(GetDisableCoin req,
-      {http.Client client}) async {
+      {http.Client? client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(client, req);
     final r =
@@ -498,7 +498,7 @@ class ApiProvider {
     GetRecoverFundsOfSwap body,
   ) async =>
       await _assertUserpass(client, body).then<dynamic>((UserpassBody userBody) => userBody
-          .client
+          .client!
           .post(Uri.parse(url),
               body: getRecoverFundsOfSwapToJson(userBody.body))
           .then((Response r) => _saveRes('recoverFundsOfSwap', r))
@@ -513,8 +513,8 @@ class ApiProvider {
 
   /// https://github.com/KomodoPlatform/developer-docs/pull/171/files
   /// https://github.com/KomodoPlatform/atomicDEX-API/commit/a00c2863210ce9a262bb579a74249dbb04a94efc
-  Future<List<dynamic>> batch(List<Map<String, dynamic>> batch,
-      {http.Client client}) async {
+  Future<List<dynamic>> batch(List<Map<String, dynamic>?> batch,
+      {http.Client? client}) async {
     client ??= mmSe.client;
     final r = await client.post(Uri.parse(url), body: json.encode(batch));
     _assert200(r);
@@ -523,7 +523,7 @@ class ApiProvider {
     return List<dynamic>.from(json.decode(r.body));
   }
 
-  Future<List<dynamic>> getEnabledCoins({http.Client client}) async {
+  Future<List<dynamic>?> getEnabledCoins({http.Client? client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(
       client,
@@ -543,7 +543,7 @@ class ApiProvider {
     return jbody['result'].toList();
   }
 
-  Future<List<RewardsItem>> getRewardsInfo({http.Client client}) async {
+  Future<List<RewardsItem>?> getRewardsInfo({http.Client? client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(
       client,
@@ -560,7 +560,7 @@ class ApiProvider {
     final error = ErrorString.fromJson(jbody);
     if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
-    List<RewardsItem> list;
+    List<RewardsItem>? list;
     try {
       for (dynamic item in jbody['result']) {
         list ??= [];
@@ -574,10 +574,10 @@ class ApiProvider {
   }
 
   /// returns `null` if address is valid, and String [reason] if not
-  Future<String> validateAddress({
-    @required String address,
-    @required String coin,
-    http.Client client,
+  Future<String?> validateAddress({
+    required String address,
+    required String? coin,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(
@@ -606,10 +606,10 @@ class ApiProvider {
   }
 
   /// Returns converted address, or `null` if convertion failed
-  Future<String> convertLegacyAddress({
-    @required String address,
-    @required String coin,
-    http.Client client,
+  Future<String?> convertLegacyAddress({
+    required String address,
+    required String? coin,
+    http.Client? client,
   }) async {
     if (await validateAddress(address: address, coin: coin) == null) {
       // address already valid
@@ -637,11 +637,11 @@ class ApiProvider {
     return jbody['result']['address'];
   }
 
-  Future<PrivKey> getPrivKey(GetPrivKey gpk, {http.Client client}) async {
+  Future<PrivKey> getPrivKey(GetPrivKey gpk, {http.Client? client}) async {
     client ??= mmSe.client;
     try {
       final userBody = await _assertUserpass(client, gpk);
-      final r = await userBody.client
+      final r = await userBody.client!
           .post(Uri.parse(url), body: getPrivKeyToJson(userBody.body));
       _assert200(r);
       _saveRes('getPrivKey', r);
@@ -662,13 +662,13 @@ class ApiProvider {
 
   Future<TradePreimage> getTradePreimage(
     GetTradePreimage request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
     try {
       final userBody = await _assertUserpass(client, request);
-      final response = await userBody.client
+      final response = await userBody.client!
           .post(Uri.parse(url), body: getTradePreimageToJson(userBody.body));
       _assert200(response);
       _saveRes('getTradePreimage', response);
@@ -688,7 +688,7 @@ class ApiProvider {
 
   Future<TradePreimage> getTradePreimage2(
     GetTradePreimage2 request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
@@ -696,7 +696,7 @@ class ApiProvider {
 
     Response response;
     try {
-      response = await userBody.client
+      response = await userBody.client!
           .post(Uri.parse(url), body: getTradePreimage2ToJson(userBody.body));
       _saveRes('getTradePreimage2', response);
     } catch (e) {
@@ -729,7 +729,7 @@ class ApiProvider {
       );
     }
 
-    TradePreimage preimage;
+    TradePreimage? preimage;
     try {
       preimage = TradePreimage.fromJson(jbody);
     } catch (_) {}
@@ -746,15 +746,15 @@ class ApiProvider {
     return preimage;
   }
 
-  Future<Rational> getMaxTakerVolume(
+  Future<Rational?> getMaxTakerVolume(
     GetMaxTakerVolume request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
     try {
       final userBody = await _assertUserpass(client, request);
-      final response = await userBody.client
+      final response = await userBody.client!
           .post(Uri.parse(url), body: getMaxTakerVolumeToJson(userBody.body));
       _assert200(response);
       _saveRes('getMaxTakerVolume', response);
@@ -770,15 +770,15 @@ class ApiProvider {
     }
   }
 
-  Future<double> getMinTradingVolume(
+  Future<double?> getMinTradingVolume(
     GetMinTradingVolume request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
     try {
       final userBody = await _assertUserpass(client, request);
-      final response = await userBody.client
+      final response = await userBody.client!
           .post(Uri.parse(url), body: getMinTradingVolumeToJson(userBody.body));
       _assert200(response);
       _saveRes('getMinTradingVolume', response);
@@ -797,13 +797,13 @@ class ApiProvider {
 
   Future<dynamic> getImportSwaps(
     GetImportSwaps request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
     try {
       final userBody = await _assertUserpass(client, request);
-      final response = await userBody.client
+      final response = await userBody.client!
           .post(Uri.parse(url), body: getImportSwapsToJson(userBody.body));
       _assert200(response);
       _saveRes('getImportSwaps', response);
@@ -823,13 +823,13 @@ class ApiProvider {
 
   Future<dynamic> getOrderbookDepth(
     GetOrderbookDepth request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
     try {
       final userBody = await _assertUserpass(client, request);
-      final response = await userBody.client
+      final response = await userBody.client!
           .post(Uri.parse(url), body: getOrderbookDepthToJson(userBody.body));
       _assert200(response);
       _saveRes('getOrderbookDepth', response);
@@ -855,14 +855,14 @@ class ApiProvider {
 
   Future<BestOrders> getBestOrders(
     GetBestOrders request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
     try {
       final userBody = await _assertUserpass(client, request);
       final String body = getBestOrdersToJson(userBody.body);
-      final response = await userBody.client.post(Uri.parse(url), body: body);
+      final response = await userBody.client!.post(Uri.parse(url), body: body);
       _assert200(response);
       _saveRes('getBestOrders', response);
 
@@ -880,7 +880,7 @@ class ApiProvider {
     }
   }
 
-  Future<bool> isRpcUp([http.Client client]) async {
+  Future<bool> isRpcUp([http.Client? client]) async {
     client ??= mmSe.client;
 
     bool isUp = false;
@@ -896,11 +896,11 @@ class ApiProvider {
     return isUp;
   }
 
-  Future<PublicKey> getPublicKey([http.Client client]) async {
+  Future<PublicKey> getPublicKey([http.Client? client]) async {
     client ??= mmSe.client;
     try {
       final userBody = await _assertUserpass(client, GetPublicKey());
-      final r = await userBody.client
+      final r = await userBody.client!
           .post(Uri.parse(url), body: getPublicKeyToJson(userBody.body));
       _assert200(r);
       _saveRes('getPublicKey', r);

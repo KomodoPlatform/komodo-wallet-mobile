@@ -17,10 +17,10 @@ class ErrorCode {
         error: Error.fromJson(json['error']) ?? Error(),
       );
 
-  Error error;
+  Error? error;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'error': error.toJson() ?? '',
+        'error': error!.toJson() ?? '',
       };
 }
 

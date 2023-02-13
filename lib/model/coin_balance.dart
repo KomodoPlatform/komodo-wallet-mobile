@@ -11,21 +11,21 @@ class CoinBalance {
     priceForOne = json['priceForOne'];
   }
 
-  Coin coin;
-  Balance balance;
-  double balanceUSD;
-  String priceForOne;
+  Coin? coin;
+  Balance? balance;
+  double? balanceUSD;
+  String? priceForOne;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'coin': coin.toJson(),
-      'balance': balance.toJson(),
+      'coin': coin!.toJson(),
+      'balance': balance!.toJson(),
       'balanceUSD': balanceUSD,
       'priceForOne': priceForOne,
     };
   }
 
   String getBalanceUSD() {
-    return balanceUSD.toStringAsFixed(2);
+    return balanceUSD!.toStringAsFixed(2);
   }
 }

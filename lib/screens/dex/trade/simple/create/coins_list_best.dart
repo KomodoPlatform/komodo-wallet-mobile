@@ -16,17 +16,17 @@ import 'package:provider/provider.dart';
 class CoinsListBest extends StatefulWidget {
   const CoinsListBest({this.type, this.searchTerm});
 
-  final Market type;
-  final String searchTerm;
+  final Market? type;
+  final String? searchTerm;
 
   @override
   _CoinsListBestState createState() => _CoinsListBestState();
 }
 
 class _CoinsListBestState extends State<CoinsListBest> {
-  ConstructorProvider _constrProvider;
-  CexProvider _cexProvider;
-  int _timer;
+  ConstructorProvider? _constrProvider;
+  CexProvider? _cexProvider;
+  int? _timer;
   bool _showAll = false;
 
   @override
@@ -43,11 +43,11 @@ class _CoinsListBestState extends State<CoinsListBest> {
     return Container(
       padding: EdgeInsets.only(left: 12),
       child: FutureBuilder<BestOrders>(
-        future: _constrProvider.getBestOrders(widget.type),
+        future: _constrProvider!.getBestOrders(widget.type),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return _buildProgressIndicator();
 
-          final BestOrders bestOrders = snapshot.data;
+          final BestOrders bestOrders = snapshot.data!;
           if (bestOrders.error != null) {
             return _buildErrorHandler(bestOrders.error);
           }
@@ -59,12 +59,12 @@ class _CoinsListBestState extends State<CoinsListBest> {
     );
   }
 
-  Widget _buildErrorHandler(ErrorString error) {
+  Widget _buildErrorHandler(ErrorString? error) {
     // Showing spinner for 2sec before actual error message
     // in case mm2 is restarting after app wakeup
     final int now = DateTime.now().millisecondsSinceEpoch;
-    if (_timer != null && now - _timer > 2000) {
-      return _buildErrorMessage(error);
+    if (_timer != null && now - _timer! > 2000) {
+      return _buildErrorMessage(error!);
     } else {
       _timer ??= now;
       return _buildProgressIndicator();
@@ -87,7 +87,7 @@ class _CoinsListBestState extends State<CoinsListBest> {
             error.error,
             style: Theme.of(context)
                 .textTheme
-                .caption
+                .caption!
                 .copyWith(color: Theme.of(context).errorColor),
           ),
         ),
@@ -103,62 +103,62 @@ class _CoinsListBestState extends State<CoinsListBest> {
 
         return ListView(
           shrinkWrap: true,
-          children: snapshot.data,
+          children: snapshot.data!,
         );
       },
     );
   }
 
   Future<List<Widget>> _buildItems(BestOrders bestOrders) async {
-    final Iterable tickers = bestOrders?.result?.keys;
+    final Iterable? tickers = bestOrders?.result?.keys;
     if (tickers == null) return [EmptyListMessage()];
 
     final List<BestOrder> topOrdersList = [];
-    for (String ticker in tickers) {
-      final BestOrder topOrder = _constrProvider.getTickerTopOrder(
-        bestOrders.result[ticker],
+    for (String ticker in tickers as Iterable<String>) {
+      final BestOrder? topOrder = _constrProvider!.getTickerTopOrder(
+        bestOrders.result![ticker]!,
         widget.type,
       );
       if (topOrder != null) topOrdersList.add(topOrder);
     }
 
     topOrdersList.sort((a, b) {
-      final String aCoin = a.action == Market.SELL ? a.coin : a.otherCoin;
-      final String bCoin = b.action == Market.SELL ? b.coin : b.otherCoin;
-      final aCexPrice = _cexProvider.getUsdPrice(aCoin);
-      final bCexPrice = _cexProvider.getUsdPrice(bCoin);
+      final String? aCoin = a.action == Market.SELL ? a.coin : a.otherCoin;
+      final String? bCoin = b.action == Market.SELL ? b.coin : b.otherCoin;
+      final aCexPrice = _cexProvider!.getUsdPrice(aCoin);
+      final bCexPrice = _cexProvider!.getUsdPrice(bCoin);
 
       if (aCexPrice == 0 && bCexPrice != 0) return 1;
       if (aCexPrice != 0 && bCexPrice == 0) return -1;
 
-      if (b.price.toDouble() * bCexPrice > a.price.toDouble() * aCexPrice) {
+      if (b.price!.toDouble() * bCexPrice! > a.price!.toDouble() * aCexPrice!) {
         return a.action == Market.SELL ? 1 : -1;
       }
-      if (b.price.toDouble() * bCexPrice < a.price.toDouble() * aCexPrice) {
+      if (b.price!.toDouble() * bCexPrice < a.price!.toDouble() * aCexPrice) {
         return a.action == Market.SELL ? -1 : 1;
       }
 
-      return aCoin.compareTo(bCoin);
+      return aCoin!.compareTo(bCoin!);
     });
 
     final known = await coins;
     final List<Widget> items = [];
     bool switcherDisabled = true;
     for (BestOrder topOrder in topOrdersList) {
-      final String abbr =
+      final String? abbr =
           topOrder.action == Market.BUY ? topOrder.otherCoin : topOrder.coin;
 
-      final Coin coin = known[abbr];
-      final String term = widget.searchTerm.toLowerCase().trim();
+      final Coin? coin = known![abbr];
+      final String term = widget.searchTerm!.toLowerCase().trim();
       if (term.isNotEmpty) {
         bool matched = false;
-        if (coin.abbr.toLowerCase().contains(term)) matched = true;
-        if (coin.name.toLowerCase().contains(term)) matched = true;
+        if (coin!.abbr!.toLowerCase().contains(term)) matched = true;
+        if (coin.name!.toLowerCase().contains(term)) matched = true;
 
         if (!matched) continue;
       }
 
-      final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(abbr);
+      final CoinBalance? coinBalance = coinsBloc.getBalanceByAbbr(abbr);
       final bool isActive = coinBalance != null;
       final bool hasBalance =
           (coinBalance?.balance?.balance ?? deci(0)).toDouble() > 0;
@@ -190,8 +190,8 @@ class _CoinsListBestState extends State<CoinsListBest> {
             padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
             child: Text(
                 _showAll
-                    ? AppLocalizations.of(context).simpleTradeShowLess
-                    : AppLocalizations.of(context).simpleTradeShowMore,
+                    ? AppLocalizations.of(context)!.simpleTradeShowLess
+                    : AppLocalizations.of(context)!.simpleTradeShowMore,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyText1),
           ),

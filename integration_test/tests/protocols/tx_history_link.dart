@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 
 Future<void> openTxHistoryLink(WidgetTester tester,
-    {List<String> coins}) async {
+    {required List<String> coins}) async {
   final Finder txHistoryButton = find.byKey(const Key('tx-explorer-button'));
   final Finder coinsList = find.byKey(const Key('list-view-coins'));
   final Finder portfolioTab = find.byKey(const Key('main-nav-portfolio'));

@@ -10,11 +10,11 @@ class Shake extends StatefulWidget {
   final Widget child;
 
   const Shake.x({
-    @required this.active,
+    required this.active,
     this.cycles = 3,
     this.amplitude = 4,
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -23,8 +23,8 @@ class Shake extends StatefulWidget {
 
 class _ShakeState extends State<Shake> with SingleTickerProviderStateMixin {
   int _currentCycles = 0;
-  AnimationController _controller;
-  Animation _animation;
+  late AnimationController _controller;
+  Animation? _animation;
 
   bool get _isActive => widget.active && _currentCycles < widget.cycles;
 

@@ -21,19 +21,19 @@ class MultiOrderRelItem extends StatefulWidget {
     this.onSelectChange,
   });
 
-  final CoinBalance item;
-  final Color color;
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final Function(bool) onSelectChange;
+  final CoinBalance? item;
+  final Color? color;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final Function(bool)? onSelectChange;
 
   @override
   _MultiOrderRelItemState createState() => _MultiOrderRelItemState();
 }
 
 class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
-  MultiOrderProvider _multiOrderProvider;
-  CexProvider _cexProvider;
+  MultiOrderProvider? _multiOrderProvider;
+  CexProvider? _cexProvider;
   bool _showDetailedError = false;
 
   @override
@@ -44,7 +44,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
     return SwitchListTile(
       tileColor: widget.color,
       contentPadding: EdgeInsets.symmetric(horizontal: 0),
-      key: Key('coin-select-buy-' + widget.item.coin.abbr.toLowerCase()),
+      key: Key('coin-select-buy-' + widget.item!.coin!.abbr!.toLowerCase()),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -59,13 +59,13 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
         ],
       ),
       value:
-          _multiOrderProvider.isRelCoinSelected(widget.item.coin.abbr) ?? false,
+          _multiOrderProvider!.isRelCoinSelected(widget.item!.coin!.abbr) ?? false,
       onChanged: widget.onSelectChange,
     );
   }
 
   Widget _buildError() {
-    final String error = _multiOrderProvider.getError(widget.item.coin.abbr);
+    final String? error = _multiOrderProvider!.getError(widget.item!.coin!.abbr);
 
     return error == null
         ? SizedBox()
@@ -89,7 +89,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                       maxLines: _showDetailedError ? null : 3,
                       style: Theme.of(context)
                           .textTheme
-                          .caption
+                          .caption!
                           .copyWith(color: Theme.of(context).errorColor),
                     ),
                   ),
@@ -107,8 +107,8 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
   }
 
   Widget _buildFees() {
-    final TradePreimage preimage =
-        _multiOrderProvider.getPreimage(widget.item.coin.abbr);
+    final TradePreimage? preimage =
+        _multiOrderProvider!.getPreimage(widget.item!.coin!.abbr);
 
     return preimage == null
         ? SizedBox()
@@ -117,8 +117,8 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
             child: BuildDetailedFees(
               preimage: preimage,
-              style: Theme.of(context).textTheme.caption.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1.color,
+              style: Theme.of(context).textTheme.caption!.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
                   ),
             ),
           );
@@ -126,7 +126,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
 
   Widget _buildTitle() {
     return Opacity(
-      opacity: _multiOrderProvider.isRelCoinSelected(widget.item.coin.abbr)
+      opacity: _multiOrderProvider!.isRelCoinSelected(widget.item!.coin!.abbr)
           ? 1
           : 0.5,
       child: ConstrainedBox(
@@ -142,11 +142,11 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                   CircleAvatar(
                     maxRadius: 6,
                     backgroundImage:
-                        AssetImage(getCoinIconPath(widget.item.coin.abbr)),
+                        AssetImage(getCoinIconPath(widget.item!.coin!.abbr)),
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    widget.item.coin.abbr,
+                    widget.item!.coin!.abbr!,
                     maxLines: 1,
                   ),
                 ],
@@ -161,17 +161,17 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
   }
 
   Widget _buildPrice() {
-    final double sellAmt = _multiOrderProvider.baseAmt;
-    final double relAmt =
-        _multiOrderProvider.getRelCoinAmt(widget.item.coin.abbr);
+    final double? sellAmt = _multiOrderProvider!.baseAmt;
+    final double? relAmt =
+        _multiOrderProvider!.getRelCoinAmt(widget.item!.coin!.abbr);
     if (relAmt == null || relAmt == 0) return SizedBox();
     if (sellAmt == null || sellAmt == 0) return SizedBox();
 
     final double price = relAmt / sellAmt;
-    final double cexPrice = _cexProvider.getCexRate(CoinsPair(
-        buy: widget.item.coin,
-        sell: coinsBloc.getCoinByAbbr(_multiOrderProvider.baseCoin)));
-    double delta;
+    final double? cexPrice = _cexProvider!.getCexRate(CoinsPair(
+        buy: widget.item!.coin,
+        sell: coinsBloc.getCoinByAbbr(_multiOrderProvider!.baseCoin)));
+    double? delta;
     if (cexPrice != null && cexPrice != 0) {
       delta = (price - cexPrice) * 100 / cexPrice;
       if (delta > 99.99) delta = 99.99;
@@ -182,7 +182,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: <Widget>[
         Text(
-          formatPrice(price),
+          formatPrice(price)!,
           style: TextStyle(
             fontSize: 13,
             color: Theme.of(context).disabledColor,
@@ -193,7 +193,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
     );
   }
 
-  Widget _buildDelta(double delta) {
+  Widget _buildDelta(double? delta) {
     if (delta == null) return SizedBox();
 
     return Row(
@@ -232,16 +232,16 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
   }
 
   Widget _buildAmount() {
-    if (!_multiOrderProvider.isRelCoinSelected(widget.item.coin.abbr))
+    if (!_multiOrderProvider!.isRelCoinSelected(widget.item!.coin!.abbr))
       return SizedBox();
 
     final double usdPrice =
-        _cexProvider.getUsdPrice(widget.item.coin.abbr) ?? 0;
+        _cexProvider!.getUsdPrice(widget.item!.coin!.abbr) ?? 0;
     final double usdAmt =
-        (_multiOrderProvider.getRelCoinAmt(widget.item.coin.abbr) ?? 0) *
+        (_multiOrderProvider!.getRelCoinAmt(widget.item!.coin!.abbr) ?? 0) *
             usdPrice;
-    final String convertedAmt =
-        usdAmt > 0 ? _cexProvider.convert(usdAmt) : null;
+    final String? convertedAmt =
+        usdAmt > 0 ? _cexProvider!.convert(usdAmt) : null;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
@@ -257,7 +257,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
               ),
               child: TextField(
                 key: Key(
-                    'input-text-buy-' + widget.item.coin.abbr.toLowerCase()),
+                    'input-text-buy-' + widget.item!.coin!.abbr!.toLowerCase()),
                 controller: widget.controller,
                 focusNode: widget.focusNode,
                 textAlign: TextAlign.right,
@@ -272,9 +272,9 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                   DecimalTextInputFormatter(decimalRange: 8),
                 ],
                 onChanged: (String value) {
-                  final double amnt = double.tryParse(value ?? '');
-                  _multiOrderProvider.setRelCoinAmt(
-                      widget.item.coin.abbr, amnt);
+                  final double? amnt = double.tryParse(value ?? '');
+                  _multiOrderProvider!.setRelCoinAmt(
+                      widget.item!.coin!.abbr, amnt);
                 },
               ),
             ),

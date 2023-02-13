@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../localizations.dart';
 
 class SelectLanguageButton extends StatefulWidget {
-  const SelectLanguageButton({Key key}) : super(key: key);
+  const SelectLanguageButton({Key? key}) : super(key: key);
 
   @override
   _SelectLanguageButtonState createState() => _SelectLanguageButtonState();
@@ -46,7 +46,7 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
           builder: (BuildContext context) {
             return CustomSimpleDialog(
               hasHorizontalPadding: false,
-              title: Text(AppLocalizations.of(context).selectLanguage),
+              title: Text(AppLocalizations.of(context)!.selectLanguage),
               children: [
                 ...mainBloc.supportedLocales
                     .map((Locale loc) => BuildLanguageDialogOption(
@@ -80,15 +80,15 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
 
 class BuildLanguageDialogOption extends StatefulWidget {
   const BuildLanguageDialogOption({
-    Key key,
+    Key? key,
     this.locale,
     this.currentLoc,
     this.onChange,
   }) : super(key: key);
 
-  final Locale locale;
-  final Locale currentLoc;
-  final Function(Locale) onChange;
+  final Locale? locale;
+  final Locale? currentLoc;
+  final Function(Locale?)? onChange;
 
   @override
   _BuildLanguageDialogOptionState createState() =>
@@ -101,15 +101,15 @@ class _BuildLanguageDialogOptionState extends State<BuildLanguageDialogOption> {
     return SimpleDialogOption(
       padding: EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 24),
       onPressed: () {
-        widget.onChange(widget.locale);
+        widget.onChange!(widget.locale);
       },
       child: Row(
         children: [
-          Radio<Locale>(
+          Radio<Locale?>(
             value: widget.locale,
             groupValue: widget.currentLoc,
-            onChanged: (Locale value) {
-              widget.onChange(value);
+            onChanged: (Locale? value) {
+              widget.onChange!(value);
             },
           ),
           LanguageFlagIcon(
@@ -118,7 +118,7 @@ class _BuildLanguageDialogOptionState extends State<BuildLanguageDialogOption> {
           ),
           SizedBox(width: 8),
           Text(
-              settingsBloc.getNameLanguage(context, widget.locale.languageCode))
+              settingsBloc.getNameLanguage(context, widget.locale!.languageCode))
         ],
       ),
     );

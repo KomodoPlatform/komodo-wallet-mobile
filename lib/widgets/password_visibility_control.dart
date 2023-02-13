@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 /// https://github.com/flutter/engine/blob/d1c71e5206bd9546f4ff64b7336c4e74e3f4ccfd/shell/platform/android/io/flutter/plugin/editing/TextInputPlugin.java#L93-L99
 class PasswordVisibilityControl extends StatefulWidget {
   const PasswordVisibilityControl({this.onVisibilityChange, this.isFocused});
-  final void Function(bool) onVisibilityChange;
-  final bool isFocused;
+  final void Function(bool)? onVisibilityChange;
+  final bool? isFocused;
 
   @override
   _PasswordVisibilityControlState createState() =>
@@ -16,10 +16,10 @@ class PasswordVisibilityControl extends StatefulWidget {
 }
 
 class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
-  Timer _timer;
+  Timer? _timer;
   bool _isObscured = true;
-  Offset _tapStartPosition;
-  bool isFocus;
+  late Offset _tapStartPosition;
+  bool? isFocus;
   @override
   void initState() {
     super.initState();
@@ -27,12 +27,12 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
   }
 
   void _setObscureTo(bool isObscured) {
-    if (_timer != null) _timer.cancel();
+    if (_timer != null) _timer!.cancel();
     if (mounted)
       setState(() {
         _isObscured = isObscured;
       });
-    widget.onVisibilityChange(_isObscured);
+    widget.onVisibilityChange!(_isObscured);
   }
 
   bool _wasLongPressMoved(Offset position) {
@@ -65,7 +65,7 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
         });
       },
       onLongPressStart: (LongPressStartDetails details) {
-        if (_timer != null) _timer.cancel();
+        if (_timer != null) _timer!.cancel();
       },
       onLongPressEnd: (LongPressEndDetails details) {
         _setObscureTo(true);

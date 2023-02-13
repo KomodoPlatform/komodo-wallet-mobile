@@ -8,6 +8,7 @@ import '../generic_blocs/coins_bloc.dart';
 import '../model/order.dart';
 import '../model/recent_swaps.dart';
 import '../utils/utils.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 
 enum Status {
   ORDER_MATCHING,
@@ -33,30 +34,30 @@ class Swap {
         result: MmSwap.fromJson(json['result']) ?? MmSwap(),
       );
 
-  MmSwap result;
-  Status status;
+  MmSwap? result;
+  Status? status;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
-        'result': result.toJson ?? MmSwap().toJson,
+        'result': result!.toJson ?? MmSwap().toJson,
       };
 
   int compareToSwap(Swap other) {
     int order = 0;
 
-    order = extractStartedAtFromSwap(other.result)
-        .compareTo(extractStartedAtFromSwap(result));
+    order = extractStartedAtFromSwap(other.result!)!
+        .compareTo(extractStartedAtFromSwap(result!)!);
     if (order == 0)
-      order = extractStartedAtFromSwap(result)
-          .compareTo(extractStartedAtFromSwap(other.result));
+      order = extractStartedAtFromSwap(result!)!
+          .compareTo(extractStartedAtFromSwap(other.result!)!);
 
     return order;
   }
 
   int compareToOrder(Order other) {
     int order = 0;
-    order = other.createdAt.compareTo(extractStartedAtFromSwap(result));
+    order = other.createdAt!.compareTo(extractStartedAtFromSwap(result!)!);
     if (order == 0)
-      order = extractStartedAtFromSwap(result).compareTo(other.createdAt);
+      order = extractStartedAtFromSwap(result!)!.compareTo(other.createdAt!);
 
     return order;
   }
@@ -97,24 +98,24 @@ class Swap {
   /// If user acts as a Taker during current
   /// swap then returns [true], [false] otherwise.
   bool get isTaker {
-    if (result.type == 'Taker') return true;
+    if (result!.type == 'Taker') return true;
     return false;
   }
 
   /// If user acts as a Maker during current
   /// swap then returns [true], [false] otherwise.
   bool get isMaker {
-    if (result.type == 'Maker') return true;
+    if (result!.type == 'Maker') return true;
     return false;
   }
 
   bool get doWeNeed0xPrefixForMaker {
-    if (makerCoin.swapContractAddress.startsWith('0x')) return true;
+    if (makerCoin!.swapContractAddress!.startsWith('0x')) return true;
     return false;
   }
 
   bool get doWeNeed0xPrefixForTaker {
-    if (takerCoin.swapContractAddress.startsWith('0x')) return true;
+    if (takerCoin!.swapContractAddress!.startsWith('0x')) return true;
     return false;
   }
 
@@ -123,8 +124,8 @@ class Swap {
   String get makerExplorerUrl {
     if (makerCoin != null) {
       String middle =
-          makerCoin.explorerTxUrl.isEmpty ? 'tx/' : makerCoin.explorerTxUrl;
-      return makerCoin.explorerUrl + middle;
+          makerCoin!.explorerTxUrl!.isEmpty ? 'tx/' : makerCoin!.explorerTxUrl!;
+      return makerCoin!.explorerUrl! + middle;
     }
     return '';
   }
@@ -134,8 +135,8 @@ class Swap {
   String get takerExplorerUrl {
     if (takerCoin != null) {
       String middle =
-          takerCoin.explorerTxUrl.isEmpty ? 'tx/' : takerCoin.explorerTxUrl;
-      return takerCoin.explorerUrl + middle;
+          takerCoin!.explorerTxUrl!.isEmpty ? 'tx/' : takerCoin!.explorerTxUrl!;
+      return takerCoin!.explorerUrl! + middle;
     }
     return '';
   }
@@ -144,18 +145,17 @@ class Swap {
   int get step => result?.events?.length ?? 0;
 
   /// 'Started' event data
-  SwapEL get started =>
-      result?.events?.firstWhere((SwapEL ev) => ev.event.type == 'Started',
-          orElse: () => null);
+  SwapEL? get started =>
+      result?.events?.firstWhereOrNull((SwapEL ev) => ev.event!.type == 'Started');
 
   /// Maker ticker abbriviation
-  String get makerAbbr => started?.event?.data?.makerCoin;
+  String? get makerAbbr => started?.event?.data?.makerCoin;
 
   /// Taker ticker abbriviation
-  String get takerAbbr => started?.event?.data?.takerCoin;
+  String? get takerAbbr => started?.event?.data?.takerCoin;
 
   /// Maker coin instance
-  Coin get makerCoin {
+  Coin? get makerCoin {
     final c = coinsBloc.getCoinByAbbr(makerAbbr);
     if (c != null) return c;
     final kc = coinsBloc.getKnownCoinByAbbr(makerAbbr);
@@ -163,7 +163,7 @@ class Swap {
   }
 
   /// Taker coin instance
-  Coin get takerCoin {
+  Coin? get takerCoin {
     final c = coinsBloc.getCoinByAbbr(takerAbbr);
     if (c != null) return c;
     final kc = coinsBloc.getKnownCoinByAbbr(takerAbbr);

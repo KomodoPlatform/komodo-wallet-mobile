@@ -21,16 +21,16 @@ class Transactions {
         result: Result.fromJson(json['result']),
       );
 
-  Result result;
+  Result? result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson(),
+        'result': result!.toJson(),
       };
 
   void camouflageIfNeeded() {
     if (!camoBloc.isCamoActive) return;
 
-    result.transactions.forEach(camoBloc.camouflageTransaction);
+    result!.transactions!.forEach(camoBloc.camouflageTransaction);
   }
 }
 
@@ -58,13 +58,13 @@ class Result {
             json['transactions'].map((dynamic x) => Transaction.fromJson(x))),
       );
 
-  String fromId;
-  int currentBlock;
-  SyncStatus syncStatus;
-  int limit;
-  int skipped;
-  int total;
-  List<Transaction> transactions;
+  String? fromId;
+  int? currentBlock;
+  SyncStatus? syncStatus;
+  int? limit;
+  int? skipped;
+  int? total;
+  List<Transaction>? transactions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'from_id': fromId,
@@ -72,9 +72,9 @@ class Result {
         'limit': limit ?? 0,
         'skipped': skipped ?? 0,
         'total': total ?? 0,
-        'sync_status': syncStatus.toJson() ?? SyncStatus().toJson(),
+        'sync_status': syncStatus!.toJson() ?? SyncStatus().toJson(),
         'transactions': List<dynamic>.from(
-            transactions.map<dynamic>((dynamic x) => x.toJson())),
+            transactions!.map<dynamic>((dynamic x) => x.toJson())),
       };
 }
 
@@ -91,8 +91,8 @@ class SyncStatus {
         state: json['state'] ?? '',
       );
 
-  AdditionalInfo additionalInfo;
-  String state;
+  AdditionalInfo? additionalInfo;
+  String? state;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'additional_info': additionalInfo?.toJson(),
@@ -115,10 +115,10 @@ class AdditionalInfo {
         blocksLeft: json['blocks_left'] ?? 0,
       );
 
-  int code;
-  String message;
-  int transactionsLeft;
-  int blocksLeft;
+  int? code;
+  String? message;
+  int? transactionsLeft;
+  int? blocksLeft;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'code': code ?? 0,

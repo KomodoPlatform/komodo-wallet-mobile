@@ -20,13 +20,13 @@ class WalletBloc implements GenericBlocBase {
   Sink<List<Wallet>> get _inWallets => _walletsController.sink;
   Stream<List<Wallet>> get outWallets => _walletsController.stream;
 
-  Wallet currentWallet;
+  Wallet? currentWallet;
 
   // Streams to handle the list coin
-  final StreamController<Wallet> _currentWalletController =
-      StreamController<Wallet>.broadcast();
-  Sink<Wallet> get _inCurrentWallet => _currentWalletController.sink;
-  Stream<Wallet> get outCurrentWallet => _currentWalletController.stream;
+  final StreamController<Wallet?> _currentWalletController =
+      StreamController<Wallet?>.broadcast();
+  Sink<Wallet?> get _inCurrentWallet => _currentWalletController.sink;
+  Stream<Wallet?> get outCurrentWallet => _currentWalletController.stream;
 
   @override
   void dispose() {
@@ -42,17 +42,17 @@ class WalletBloc implements GenericBlocBase {
   }
 
   Future<String> loginWithPassword(
-      BuildContext context, String password, Wallet wallet) async {
+      BuildContext context, String password, Wallet? wallet) async {
     final EncryptionTool entryptionTool = EncryptionTool();
-    final String seedPhrase =
+    final String? seedPhrase =
         await entryptionTool.readData(KeyEncryption.SEED, wallet, password);
 
     if (seedPhrase != null) {
-      final securitySettings = await Db.getWalletSecuritySettings(wallet);
+      final securitySettings = await Db.getWalletSecuritySettings(wallet!);
       await Db.saveCurrentWallet(wallet, securitySettings);
       return seedPhrase;
     } else {
-      throw AppLocalizations.of(context).wrongPassword;
+      throw AppLocalizations.of(context)!.wrongPassword;
     }
   }
 
@@ -61,7 +61,7 @@ class WalletBloc implements GenericBlocBase {
     _inCurrentWallet.add(currentWallet);
   }
 
-  void setCurrentWallet(Wallet wallet) {
+  void setCurrentWallet(Wallet? wallet) {
     currentWallet = wallet;
     _inCurrentWallet.add(currentWallet);
   }
@@ -71,7 +71,7 @@ class WalletBloc implements GenericBlocBase {
     authBloc.logout();
   }
 
-  Future<void> deleteSeedPhrase(String password, Wallet wallet) async {
+  Future<void> deleteSeedPhrase(String? password, Wallet? wallet) async {
     final EncryptionTool entryptionTool = EncryptionTool();
     await entryptionTool.deleteData(KeyEncryption.SEED, wallet, password);
     await entryptionTool.deleteData(KeyEncryption.PIN, wallet, password);

@@ -23,14 +23,14 @@ class OrderBookPage extends StatefulWidget {
 }
 
 class _OrderBookPageState extends State<OrderBookPage> {
-  OrderBookProvider _orderBookProvider;
-  CexProvider _cexProvider;
+  late OrderBookProvider _orderBookProvider;
+  late CexProvider _cexProvider;
   bool _hasBothCoins = false;
   bool _hasChartsData = false;
-  String _pairStr;
+  String? _pairStr;
   bool _showChart = false;
   String _chartDuration = '3600';
-  List<String> _durationData;
+  List<String>? _durationData;
   int listLength = 0;
   int listLimit = 25;
   int listLimitMin = 25;
@@ -43,9 +43,9 @@ class _OrderBookPageState extends State<OrderBookPage> {
     _hasBothCoins = _orderBookProvider.activePair?.sell != null &&
         _orderBookProvider.activePair?.buy != null;
     _pairStr = _hasBothCoins
-        ? '${_orderBookProvider.activePair.sell.abbr}-${_orderBookProvider.activePair.buy.abbr}'
+        ? '${_orderBookProvider.activePair!.sell!.abbr}-${_orderBookProvider.activePair!.buy!.abbr}'
         : null;
-    _hasChartsData = _hasBothCoins && _cexProvider.isChartAvailable(_pairStr);
+    _hasChartsData = _hasBothCoins && _cexProvider.isChartAvailable(_pairStr!);
 
     return ListView(
       children: <Widget>[
@@ -160,8 +160,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
             child: Row(
               children: [
                 Text(
-                  AppLocalizations.of(context).marketsChart,
-                  style: Theme.of(context).textTheme.button.copyWith(
+                  AppLocalizations.of(context)!.marketsChart,
+                  style: Theme.of(context).textTheme.button!.copyWith(
                         color: !_showChart
                             ? Theme.of(context).brightness == Brightness.light
                                 ? cexColorLight
@@ -191,8 +191,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: Text(
-              AppLocalizations.of(context).marketsDepth,
-              style: Theme.of(context).textTheme.button.copyWith(
+              AppLocalizations.of(context)!.marketsDepth,
+              style: Theme.of(context).textTheme.button!.copyWith(
                     color: _showChart
                         ? Theme.of(context).brightness == Brightness.light
                             ? cexColorLight
@@ -214,17 +214,17 @@ class _OrderBookPageState extends State<OrderBookPage> {
       ),
       child: SizedBox(
         height: MediaQuery.of(context).size.height / 2,
-        child: FutureBuilder<ChartData>(
+        child: FutureBuilder<ChartData?>(
           future: _cexProvider.getCandles(
             _pairStr,
             double.parse(_chartDuration),
           ),
           builder: (
             BuildContext context,
-            AsyncSnapshot<ChartData> snapshot,
+            AsyncSnapshot<ChartData?> snapshot,
           ) {
             if (!snapshot.hasData) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
                 setState(() {
                   _durationData = null;
                 });
@@ -234,17 +234,17 @@ class _OrderBookPageState extends State<OrderBookPage> {
               );
             }
 
-            WidgetsBinding.instance.addPostFrameCallback((_) {
+            WidgetsBinding.instance!.addPostFrameCallback((_) {
               if (!mounted) return;
               setState(() {
-                _durationData = snapshot.data.data.keys.toList();
+                _durationData = snapshot.data!.data.keys.toList();
               });
             });
 
             return ClipRect(
               clipBehavior: Clip.hardEdge,
               child: CandleChart(
-                  data: snapshot.data.data[_chartDuration],
+                  data: snapshot.data!.data[_chartDuration],
                   duration: int.parse(_chartDuration),
                   textColor: Theme.of(context).brightness == Brightness.light
                       ? Colors.black
@@ -263,11 +263,11 @@ class _OrderBookPageState extends State<OrderBookPage> {
     if (!_hasBothCoins) {
       return Center(
         heightFactor: 10,
-        child: Text(AppLocalizations.of(context).marketsSelectCoins),
+        child: Text(AppLocalizations.of(context)!.marketsSelectCoins),
       );
     }
 
-    Orderbook _pairOrderBook;
+    Orderbook? _pairOrderBook;
 
     try {
       _pairOrderBook = _orderBookProvider.getOrderBook();
@@ -278,9 +278,9 @@ class _OrderBookPageState extends State<OrderBookPage> {
     }
 
     final List<Ask> _sortedAsks =
-        OrderBookProvider.sortByPrice(_pairOrderBook.asks);
+        OrderBookProvider.sortByPrice(_pairOrderBook.asks)!;
     final List<Ask> _sortedBids =
-        OrderBookProvider.sortByPrice(_pairOrderBook.bids, quotePrice: true);
+        OrderBookProvider.sortByPrice(_pairOrderBook.bids, quotePrice: true)!;
 
     setState(() {
       listLength = max(_sortedBids.length, _sortedAsks.length);

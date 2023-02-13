@@ -35,16 +35,16 @@ class ConfigMm2 {
         rpcPort: json['rpcport'],
       );
 
-  String gui;
-  int netid;
-  int client;
-  String userhome;
-  String passphrase;
-  String rpcPassword;
-  List<dynamic> coins;
-  String dbdir;
+  String? gui;
+  int? netid;
+  int? client;
+  String? userhome;
+  String? passphrase;
+  String? rpcPassword;
+  List<dynamic>? coins;
+  String? dbdir;
   bool allowWeakPassword;
-  int rpcPort;
+  int? rpcPort;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'gui': gui,

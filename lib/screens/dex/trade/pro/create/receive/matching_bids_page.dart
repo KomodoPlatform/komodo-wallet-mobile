@@ -15,17 +15,17 @@ import '../../../../../../../../app_config/theme_data.dart';
 
 class MatchingBidsPage extends StatefulWidget {
   const MatchingBidsPage({
-    Key key,
+    Key? key,
     this.sellAmount,
     this.onCreateOrder,
     this.onCreateNoOrder,
     this.baseCoin,
   }) : super(key: key);
 
-  final double sellAmount;
-  final Function(Ask) onCreateOrder;
-  final Function(String) onCreateNoOrder;
-  final String baseCoin;
+  final double? sellAmount;
+  final Function(Ask)? onCreateOrder;
+  final Function(String)? onCreateNoOrder;
+  final String? baseCoin;
 
   @override
   _MatchingBidsPageState createState() => _MatchingBidsPageState();
@@ -36,26 +36,26 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
   static const double _lineHeight = 50;
   static const int _listLimitMin = 25;
   static const int _listLimitStep = 5;
-  int _listLength = 0;
+  int? _listLength = 0;
   int _listLimit = 25;
-  OrderBookProvider _orderBookProvider;
-  CexProvider _cexProvider;
+  OrderBookProvider? _orderBookProvider;
+  CexProvider? _cexProvider;
 
   @override
   Widget build(BuildContext context) {
     _cexProvider ??= Provider.of<CexProvider>(context);
     _orderBookProvider ??= Provider.of<OrderBookProvider>(context);
 
-    final receiveCoin = _orderBookProvider.activePair.buy.abbr;
-    final Orderbook orderbook = _orderBookProvider?.getOrderBook();
-    List<Ask> bidsList = orderbook?.bids;
+    final receiveCoin = _orderBookProvider!.activePair!.buy!.abbr;
+    final Orderbook? orderbook = _orderBookProvider?.getOrderBook();
+    List<Ask>? bidsList = orderbook?.bids;
 
     bidsList = OrderBookProvider.sortByPrice(bidsList, quotePrice: true);
     setState(() {
       _listLength = bidsList?.length;
     });
     if ((_listLength ?? 0) > _listLimit)
-      bidsList = bidsList.sublist(0, _listLimit);
+      bidsList = bidsList!.sublist(0, _listLimit);
 
     return LockScreen(
       context: context,
@@ -65,7 +65,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
             children: <Widget>[
               Expanded(
                 child: Text(
-                  AppLocalizations.of(context).receiveLower,
+                  AppLocalizations.of(context)!.receiveLower,
                   key: const Key('title-ask-orders'),
                 ),
               ),
@@ -87,12 +87,12 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                     )
                   : ListView(
                       children: <Widget>[
-                        bidsList.isEmpty
+                        bidsList!.isEmpty
                             ? Container(
                                 alignment: const Alignment(0, 0),
                                 padding: const EdgeInsets.only(top: 30),
                                 child: Text(
-                                  AppLocalizations.of(context).noMatchingOrders,
+                                  AppLocalizations.of(context)!.noMatchingOrders,
                                   style: TextStyle(
                                     fontSize: 14,
                                   ),
@@ -143,7 +143,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
   }
 
   Widget _buildLimitButton() {
-    if (_listLength < _listLimit && _listLimit == _listLimitMin)
+    if (_listLength! < _listLimit && _listLimit == _listLimitMin)
       return SizedBox();
 
     return Container(
@@ -165,13 +165,13 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                 child: Container(
                   padding: EdgeInsets.all(6),
                   child: Text(
-                    AppLocalizations.of(context).less,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    AppLocalizations.of(context)!.less,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                   ),
                 )),
-          if (_listLength > _listLimit)
+          if (_listLength! > _listLimit)
             InkWell(
                 onTap: () {
                   setState(() {
@@ -181,8 +181,8 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                 child: Container(
                   padding: EdgeInsets.all(6),
                   child: Text(
-                    AppLocalizations.of(context).moreTab,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    AppLocalizations.of(context)!.moreTab,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                   ),
@@ -193,7 +193,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
   }
 
   Widget _buildCexRate() {
-    final double cexRate = _cexProvider.getCexRate() ?? 0.0;
+    final double cexRate = _cexProvider!.getCexRate() ?? 0.0;
 
     if (cexRate == 0.0) return SizedBox();
 
@@ -205,7 +205,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
         ),
         const SizedBox(width: 2),
         Text(
-          formatPrice(cexRate),
+          formatPrice(cexRate)!,
           style: TextStyle(
               fontSize: 14,
               color: Theme.of(context).brightness == Brightness.light

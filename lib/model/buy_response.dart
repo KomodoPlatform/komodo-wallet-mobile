@@ -18,10 +18,10 @@ class BuyResponse {
         result: Result.fromJson(json['result']) ?? Result(),
       );
 
-  Result result;
+  Result? result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson() ?? Result(),
+        'result': result!.toJson() ?? Result(),
       };
 }
 
@@ -50,15 +50,15 @@ class Result {
         uuid: json['uuid'] ?? '',
       );
 
-  String action;
-  String base;
-  String baseAmount;
-  String destPubKey;
-  String method;
-  String rel;
-  String relAmount;
-  String senderPubkey;
-  String uuid;
+  String? action;
+  String? base;
+  String? baseAmount;
+  String? destPubKey;
+  String? method;
+  String? rel;
+  String? relAmount;
+  String? senderPubkey;
+  String? uuid;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'action': action ?? '',

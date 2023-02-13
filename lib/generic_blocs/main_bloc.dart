@@ -29,12 +29,12 @@ class MainBloc implements GenericBlocBase {
 
   bool isUrlLaucherIsOpen = false;
 
-  Locale currentLocale;
+  Locale? currentLocale;
 
-  final StreamController<Locale> _currentLocaleController =
-      StreamController<Locale>.broadcast();
-  Sink<Locale> get _inCurrentLocale => _currentLocaleController.sink;
-  Stream<Locale> get outcurrentLocale => _currentLocaleController.stream;
+  final StreamController<Locale?> _currentLocaleController =
+      StreamController<Locale?>.broadcast();
+  Sink<Locale?> get _inCurrentLocale => _currentLocaleController.sink;
+  Stream<Locale?> get outcurrentLocale => _currentLocaleController.stream;
 
   bool _isInBackground = false;
   final StreamController<bool> _isInBackgroundController =

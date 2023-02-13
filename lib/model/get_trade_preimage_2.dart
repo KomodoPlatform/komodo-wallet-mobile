@@ -38,15 +38,15 @@ class GetTradePreimage2 {
     );
   }
 
-  String userpass;
+  String? userpass;
   String method;
   String mmrpc;
-  String base;
-  String rel;
-  String swapMethod; // 'buy', 'sell' or 'setprice'
-  Rational volume;
-  Rational price;
-  bool max;
+  String? base;
+  String? rel;
+  String? swapMethod; // 'buy', 'sell' or 'setprice'
+  Rational? volume;
+  Rational? price;
+  bool? max;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{
@@ -59,13 +59,13 @@ class GetTradePreimage2 {
         'swap_method': swapMethod,
         if (volume != null)
           'volume': {
-            'numer': volume.numerator.toString(),
-            'denom': volume.denominator.toString(),
+            'numer': volume!.numerator.toString(),
+            'denom': volume!.denominator.toString(),
           },
         if (price != null)
           'price': {
-            'numer': price.numerator.toString(),
-            'denom': price.denominator.toString(),
+            'numer': price!.numerator.toString(),
+            'denom': price!.denominator.toString(),
           },
         if (max != null) 'max': max,
       },

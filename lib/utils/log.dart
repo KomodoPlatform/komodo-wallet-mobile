@@ -56,7 +56,7 @@ class Log {
   /// Loop through saved log files from latest to older, and delete
   /// all files above overall [limitMB] size, except the today's one
   static Future<void> maintain() async {
-    Directory directory = await applicationDocumentsDirectory;
+    Directory directory = await (applicationDocumentsDirectory as FutureOr<Directory>);
     final List<File> logs = directory
         .listSync()
         .whereType<File>()

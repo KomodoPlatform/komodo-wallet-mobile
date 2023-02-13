@@ -12,24 +12,24 @@ import '../../../../../../model/orderbook.dart';
 
 class MatchingOrderbooks extends StatefulWidget {
   const MatchingOrderbooks({
-    Key key,
+    Key? key,
     this.sellAmount,
     this.onCreatePressed,
     this.onBidSelected,
     this.orderbooksDepth,
   }) : super(key: key);
 
-  final double sellAmount;
-  final Function(String) onCreatePressed;
-  final Function(Ask) onBidSelected;
-  final List<OrderbookDepth> orderbooksDepth; // for integration tests
+  final double? sellAmount;
+  final Function(String)? onCreatePressed;
+  final Function(Ask)? onBidSelected;
+  final List<OrderbookDepth>? orderbooksDepth; // for integration tests
 
   @override
   _MatchingOrderbooksState createState() => _MatchingOrderbooksState();
 }
 
 class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
-  OrderBookProvider orderBookProvider;
+  late OrderBookProvider orderBookProvider;
   final searchTextController = TextEditingController();
 
   @override
@@ -41,7 +41,7 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
     return StatefulBuilder(builder: (context, setState) {
       return CustomSimpleDialog(
         hasHorizontalPadding: false,
-        title: Text(AppLocalizations.of(context).receiveLower),
+        title: Text(AppLocalizations.of(context)!.receiveLower),
         key: const Key('receive-list-coins'),
         children: [
           Padding(
@@ -58,7 +58,7 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
                     Icons.search,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
-                  hintText: AppLocalizations.of(context).searchForTicker,
+                  hintText: AppLocalizations.of(context)!.searchForTicker,
                 ),
                 maxLength: 16,
               ),
@@ -67,22 +67,22 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
           ...orderbooksDepth
               .where((obDepth) {
                 final coinBalance =
-                    coinsBloc.getBalanceByAbbr(obDepth.pair.rel);
+                    coinsBloc.getBalanceByAbbr(obDepth.pair!.rel);
                 return coinBalance != null &&
-                    (!coinBalance.coin.suspended) &&
-                    (!coinBalance.coin.walletOnly);
+                    (!coinBalance.coin!.suspended) &&
+                    (!coinBalance.coin!.walletOnly);
               })
               .where((obDepth) {
                 final String searchTerm =
                     searchTextController.text.trim().toLowerCase();
-                final Coin relCoin = coinsBloc.getCoinByAbbr(obDepth.pair.rel);
+                final Coin relCoin = coinsBloc.getCoinByAbbr(obDepth.pair!.rel)!;
 
-                return relCoin.abbr.toLowerCase().contains(searchTerm) ||
-                    relCoin.name.toLowerCase().contains(searchTerm);
+                return relCoin.abbr!.toLowerCase().contains(searchTerm) ||
+                    relCoin.name!.toLowerCase().contains(searchTerm);
               })
               .map((OrderbookDepth obDepth) => MatchingOrderbookItem(
                   key: ValueKey(
-                      'orderbook-item-${obDepth.pair.rel.toLowerCase()}'),
+                      'orderbook-item-${obDepth.pair!.rel!.toLowerCase()}'),
                   orderbookDepth: obDepth,
                   onCreatePressed: widget.onCreatePressed,
                   onBidSelected: widget.onBidSelected,
@@ -102,8 +102,8 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
 
 class CreateOrder extends StatelessWidget {
   const CreateOrder({this.onCreateNoOrder, this.coin});
-  final Function(String) onCreateNoOrder;
-  final String coin;
+  final Function(String?)? onCreateNoOrder;
+  final String? coin;
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +111,7 @@ class CreateOrder extends StatelessWidget {
       padding: const EdgeInsets.only(top: 16),
       child: InkWell(
         onTap: () {
-          onCreateNoOrder(coin);
+          onCreateNoOrder!(coin);
           Navigator.of(context).pop();
         },
         child: Padding(
@@ -128,10 +128,10 @@ class CreateOrder extends StatelessWidget {
                 width: 16,
               ),
               Text(
-                AppLocalizations.of(context).noOrderAvailable,
+                AppLocalizations.of(context)!.noOrderAvailable,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2
+                    .bodyText2!
                     .copyWith(color: Theme.of(context).colorScheme.secondary),
               )
             ],

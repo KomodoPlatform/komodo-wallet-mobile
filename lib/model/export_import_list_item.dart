@@ -7,7 +7,7 @@ class ExportImportListItem {
     this.onChange,
   });
 
-  Widget child;
-  bool checked;
-  Function(bool) onChange;
+  Widget? child;
+  bool? checked;
+  Function(bool?)? onChange;
 }

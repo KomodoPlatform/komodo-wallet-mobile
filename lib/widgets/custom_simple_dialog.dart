@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class CustomSimpleDialog extends StatelessWidget {
   const CustomSimpleDialog({
-    Key key,
-    @required this.children,
+    Key? key,
+    required this.children,
     this.title,
     this.hasHorizontalPadding = true,
     this.verticalButtons,
@@ -13,13 +13,13 @@ class CustomSimpleDialog extends StatelessWidget {
   final List<Widget> children;
 
   /// The title widget, if any, keep it null for no title
-  final Widget title;
+  final Widget? title;
 
   /// Whether to use a big or small amount of horizontal padding
   final bool hasHorizontalPadding;
 
   /// The List of vertical button, if any, keep it null for no vertical buttons
-  final List<Widget> verticalButtons;
+  final List<Widget>? verticalButtons;
 
   @override
   Widget build(BuildContext context) {

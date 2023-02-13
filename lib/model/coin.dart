@@ -10,7 +10,7 @@ import '../model/get_active_coin.dart';
 import '../utils/log.dart';
 import '../utils/utils.dart';
 
-LinkedHashMap<String, Coin> _coins;
+LinkedHashMap<String?, Coin>? _coins;
 bool _coinsInvoked = false;
 
 /// A cached list of coins.
@@ -23,7 +23,7 @@ bool _coinsInvoked = false;
 ///
 /// A coin can be absent from “coins.json” and fully defined in “coins_config.json”,
 /// the “VOTE” coin is currently defined that way.
-Future<LinkedHashMap<String, Coin>> get coins async {
+Future<LinkedHashMap<String?, Coin>?> get coins async {
   // Protect from loading coins multiple times from parallel green threads.
   if (_coinsInvoked) {
     await pauseUntil(() => _coins != null);
@@ -35,16 +35,16 @@ Future<LinkedHashMap<String, Coin>> get coins async {
   const ci = 'assets/coins.json';
   final cis = await rootBundle.loadString(ci, cache: false);
   final List<dynamic> cil = json.decode(cis);
-  final Map<String, Map<String, dynamic>> cim = {};
+  final Map<String?, Map<String, dynamic>> cim = {};
   for (dynamic js in cil) cim[js['coin']] = Map<String, dynamic>.from(js);
 
   Log('coin:36', 'Loading “coins_config.json…');
   final List<dynamic> ccl = await convertCoinsConfigToAppConfig();
-  final coins = LinkedHashMap<String, Coin>.of({});
+  final coins = LinkedHashMap<String?, Coin>.of({});
   for (dynamic js in ccl) {
-    final String ticker = js['abbr'];
+    final String? ticker = js['abbr'];
     final config = Map<String, dynamic>.of(js);
-    Map<String, dynamic> init = cim[ticker];
+    Map<String, dynamic>? init = cim[ticker];
     if (init == null) {
       Log('coin:46', 'Coin $ticker is not in coins.json”');
       init = config;
@@ -67,7 +67,7 @@ class Coin {
   /// Construct the coin from two JSON maps:
   /// [init] is from coins.json, an exact copy of https://github.com/jl777/coins/blob/master/coins;
   /// [config] is from coins_config.json, for fields that are missing from [init].
-  Coin.fromJson(Map<String, dynamic> init, Map<String, dynamic> config) {
+  Coin.fromJson(Map<String, dynamic>? init, Map<String, dynamic>? config) {
     init ??= <String, dynamic>{};
     config ??= <String, dynamic>{};
 
@@ -92,9 +92,9 @@ class Coin {
       config['serverList'].forEach((v) {
         // backward compatibility
         if (v is String) {
-          serverList.add(Server.fromJson({'url': v}));
+          serverList!.add(Server.fromJson({'url': v}));
         } else {
-          serverList.add(Server.fromJson(v));
+          serverList!.add(Server.fromJson(v));
         }
       });
     }
@@ -128,44 +128,44 @@ class Coin {
     return list;
   }
 
-  CoinType type;
+  CoinType? type;
 
-  String name;
-  int txfee;
-  double priceUsd;
-  int mm2;
+  String? name;
+  int? txfee;
+  double? priceUsd;
+  int? mm2;
 
   /// Aka "coin", "ticker".
-  String abbr;
-  String coingeckoId;
-  bool testCoin;
-  String colorCoin;
-  List<String> bchdUrls;
-  List<Server> serverList;
-  String explorerUrl;
-  String swapContractAddress;
-  String fallbackSwapContract;
+  String? abbr;
+  String? coingeckoId;
+  bool? testCoin;
+  String? colorCoin;
+  List<String>? bchdUrls;
+  List<Server>? serverList;
+  String? explorerUrl;
+  String? swapContractAddress;
+  String? fallbackSwapContract;
 
   /// NB: If the initial value is `null` then it might be updated from MM during the coin activation.
-  int requiredConfirmations;
-  int matureConfirmations;
-  bool requiresNotarization;
-  Map<String, dynamic> addressFormat;
+  int? requiredConfirmations;
+  int? matureConfirmations;
+  bool? requiresNotarization;
+  Map<String, dynamic>? addressFormat;
 
   // Whether to block disabling this coin
-  bool isDefault;
+  bool? isDefault;
 
   // Whether to disable swaps for that coin
-  bool walletOnly;
+  late bool walletOnly;
 
-  Protocol protocol;
-  String explorerTxUrl;
+  Protocol? protocol;
+  String? explorerTxUrl;
 
-  String explorerAddressUrl;
-  int decimals;
+  String? explorerAddressUrl;
+  int? decimals;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'type': type.name ?? '',
+        'type': type!.name ?? '',
         'name': name ?? '',
         'txfee': txfee ?? 0,
         'priceUSD': priceUsd ?? 0.0,
@@ -181,25 +181,25 @@ class Coin {
         'mature_confirmations': matureConfirmations,
         'requires_notarization': requiresNotarization,
         'address_format': addressFormat,
-        if (serverList != null) 'serverList': getServerList(serverList),
-        if (protocol != null) 'protocol': protocol.toJson(),
+        if (serverList != null) 'serverList': getServerList(serverList!),
+        if (protocol != null) 'protocol': protocol!.toJson(),
         if (explorerTxUrl != null) 'explorer_tx_url': explorerTxUrl,
         if (explorerAddressUrl != null)
           'explorer_address_url': explorerAddressUrl,
         if (decimals != null) 'decimals': decimals,
         if (bchdUrls != null)
-          'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
+          'bchd_urls': List<dynamic>.from(bchdUrls!.map<String>((x) => x)),
       };
 
   String getTxFeeSatoshi() {
-    int txFeeRes = 0;
+    int? txFeeRes = 0;
     if (txfee != null) {
       txFeeRes = txfee;
     }
-    return (txFeeRes / 100000000).toString();
+    return (txFeeRes! / 100000000).toString();
   }
 
-  String get payGasIn {
+  String? get payGasIn {
     // todo (yurii): find reliable way to determine gas coin
     if (abbr == 'ETH') return 'ETH';
     if (abbr == 'ETHR') return 'ETHR';
@@ -227,13 +227,13 @@ class Protocol {
     }
   }
 
-  String type;
-  ProtocolData protocolData;
+  String? type;
+  ProtocolData? protocolData;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'type': type,
-      if (protocolData != null) 'protocol_data': protocolData.toJson(),
+      if (protocolData != null) 'protocol_data': protocolData!.toJson(),
     };
   }
 }
@@ -253,12 +253,12 @@ class ProtocolData {
     requiredConfirmations = json['required_confirmations'];
   }
 
-  String platform;
-  String contractAddress;
-  String slpPrefix;
-  int decimals;
-  int requiredConfirmations;
-  String tokenId;
+  String? platform;
+  String? contractAddress;
+  String? slpPrefix;
+  int? decimals;
+  int? requiredConfirmations;
+  String? tokenId;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

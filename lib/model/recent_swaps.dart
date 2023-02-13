@@ -16,10 +16,10 @@ class RecentSwaps {
         result: Result.fromJson(json['result']) ?? Result(),
       );
 
-  Result result;
+  Result? result;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
-        'result': result.toJson ?? Result().toJson,
+        'result': result!.toJson ?? Result().toJson,
       };
 }
 
@@ -43,11 +43,11 @@ class Result {
         total: json['total'] ?? 0,
       );
 
-  String fromUuid;
-  int limit;
-  int skipped;
-  List<MmSwap> swaps;
-  int total;
+  String? fromUuid;
+  int? limit;
+  int? skipped;
+  List<MmSwap>? swaps;
+  int? total;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
         'from_uuid': fromUuid,
@@ -55,7 +55,7 @@ class Result {
         'skipped': skipped ?? 0,
         'swaps': swaps == null
             ? null
-            : List<dynamic>.from(swaps.map<dynamic>((MmSwap x) => x.toJson)),
+            : List<dynamic>.from(swaps!.map<dynamic>((MmSwap x) => x.toJson)),
         'total': total ?? 0,
       };
 }
@@ -78,13 +78,13 @@ class MmSwap {
     events = List<SwapEL>.from(
         json['events'].map((dynamic x) => SwapEL.fromJson(x)));
     try {
-      final Map<String, dynamic> myInfoJs = json['my_info'];
+      final Map<String, dynamic>? myInfoJs = json['my_info'];
       if (myInfoJs != null) myInfo = SwapMyInfo.fromJson(myInfoJs);
     } catch (ex, trace) {
       Log('recent_swaps:84', '!my_info: $ex, $trace');
     }
     successEvents = List<String>.from(json['success_events']);
-    type = json['type'] ?? _getType(successEvents);
+    type = json['type'] ?? _getType(successEvents!);
     uuid = json['uuid'];
     _recoverable = json['recoverable'];
     gui = json['gui'];
@@ -97,7 +97,7 @@ class MmSwap {
   }
 
   /// returns swap type ('Taker' or 'Maker') based on swap events list
-  String _getType(List<String> events) {
+  String? _getType(List<String> events) {
     for (String event in events) {
       if (event == 'TakerFeeSent') return 'Taker';
       if (event == 'TakerFeeValidated') return 'Maker';
@@ -107,34 +107,34 @@ class MmSwap {
   }
 
   /// if at least 1 of the events happens, the swap is considered a failure
-  List<String> errorEvents;
+  List<String>? errorEvents;
 
   /// events that occurred during the swap
-  List<SwapEL> events;
+  List<SwapEL>? events;
 
   /// this object maps event data to make displaying swap data in a GUI simpler (my_coin, my_amount, etc.)
-  SwapMyInfo myInfo;
+  SwapMyInfo? myInfo;
 
   /// the contents are listed in the order in which they should occur in the events array
-  List<String> successEvents;
+  List<String>? successEvents;
 
   /// whether the node acted as a market Maker or Taker
-  String type;
-  String uuid;
+  String? type;
+  String? uuid;
 
   /// whether the swap can be recovered using the recover_funds_of_swap API command.
   /// MM does not record the state regarding whether the swap was recovered or not.
   /// MM allows as many calls to the recover_funds_of_swap method as necessary, in case of errors
-  bool _recoverable;
+  bool? _recoverable;
 
   bool get recoverable {
-    if (!_recoverable) return false;
+    if (!_recoverable!) return false;
 
     // If the “TakerPaymentSent” did not happen then MM would reply with “Taker payment is not found, swap is not recoverable”
     // cf. https://github.com/ca333/komodoDEX/issues/711
-    if (successEvents.contains('TakerPaymentSent') &&
-        events
-            .where((SwapEL ev) => ev.event.type == 'TakerPaymentSent')
+    if (successEvents!.contains('TakerPaymentSent') &&
+        events!
+            .where((SwapEL ev) => ev.event!.type == 'TakerPaymentSent')
             .isEmpty) {
       return false;
     }
@@ -142,26 +142,26 @@ class MmSwap {
     return true;
   }
 
-  String gui, mmVersion;
+  String? gui, mmVersion;
 
-  String makerCoin;
-  String makerAmount;
+  String? makerCoin;
+  String? makerAmount;
 
-  String takerCoin;
-  String takerAmount;
+  String? takerCoin;
+  String? takerAmount;
 
-  String myOrderUuid;
+  String? myOrderUuid;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'error_events':
-            List<dynamic>.from(errorEvents.map<dynamic>((dynamic x) => x)) ??
+            List<dynamic>.from(errorEvents!.map<dynamic>((dynamic x) => x)) ??
                 <String>[],
-        'events': events.map((e) => e.toJson).toList(),
+        'events': events!.map((e) => e.toJson).toList(),
         // MRC: For the specific case of export and then import of null myInfo swaps,
         // it's easier to deal with an exported null myInfo than with a non-null empty myInfo
         'my_info': myInfo,
         'success_events':
-            List<dynamic>.from(successEvents.map<dynamic>((dynamic x) => x)) ??
+            List<dynamic>.from(successEvents!.map<dynamic>((dynamic x) => x)) ??
                 <String>[],
         'type': type ?? '',
         'uuid': uuid ?? '',
@@ -178,11 +178,11 @@ class MmSwap {
   Status get status {
     // cf. SwapHistoryBloc::getStatusSwap
     bool started = false, negotiated = false;
-    for (SwapEL ev in events) {
-      if (errorEvents.contains(ev.event.type)) return Status.SWAP_FAILED;
-      if (ev.event.type == 'Finished') return Status.SWAP_SUCCESSFUL;
-      if (ev.event.type == 'Started') started = true;
-      if (ev.event.type == 'Negotiated') negotiated = true;
+    for (SwapEL ev in events!) {
+      if (errorEvents!.contains(ev.event!.type)) return Status.SWAP_FAILED;
+      if (ev.event!.type == 'Finished') return Status.SWAP_SUCCESSFUL;
+      if (ev.event!.type == 'Started') started = true;
+      if (ev.event!.type == 'Negotiated') negotiated = true;
     }
     if (negotiated) return Status.SWAP_ONGOING;
     if (started) return Status.ORDER_MATCHED;
@@ -202,11 +202,11 @@ class SwapEL {
         timestamp: json['timestamp'] ?? 0,
       );
 
-  SwapEEL event;
-  int timestamp;
+  SwapEEL? event;
+  int? timestamp;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
-        'event': event.toJson ?? SwapEEL().toJson,
+        'event': event!.toJson ?? SwapEEL().toJson,
         'timestamp': timestamp ?? 0,
       };
 }
@@ -223,8 +223,8 @@ class SwapEEL {
         type: json['type'] ?? '',
       );
 
-  SwapEF data;
-  String type;
+  SwapEF? data;
+  String? type;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
         'data': data?.toJson(),
@@ -333,68 +333,68 @@ class SwapEF {
   /// The sender can refund the transaction when the lock duration is passed
   /// The taker payment is locked for the lock duration
   /// The maker payment is locked for lock duration * 2
-  int lockDuration;
-  String makerAmount;
-  String makerCoin;
-  int makerCoinStartBlock;
-  int makerPaymentConfirmations;
+  int? lockDuration;
+  String? makerAmount;
+  String? makerCoin;
+  int? makerCoinStartBlock;
+  int? makerPaymentConfirmations;
 
   /// Whether dPoW notarization is required for makerCoin
-  bool makerPaymentRequiresNota;
-  int makerPaymentLock;
+  bool? makerPaymentRequiresNota;
+  int? makerPaymentLock;
 
   /// 66 bytes version of our p2p ID
   /// The 64 bytes version is the suffix (the tail) of the 66 bytes one
   /// If we are a Maker, then this is the `makerPubkey` field in the Taker swap JSON
   /// If we are a Taker, then this is the `takerPubkey` field in the Maker swap JSON
-  String myPersistentPub;
+  String? myPersistentPub;
 
-  String secret;
-  int startedAt;
+  String? secret;
+  int? startedAt;
 
   /// The p2p ID of taker node
   /// 64 bytes (256 bits * hexadecimal)
-  String taker;
+  String? taker;
 
   // NB: The `taker` is actually a part (a suffix) of the `takerPubkey`
   // The difference is that the `taker` is exactly 64 bytes (256 bits * hexadecimal)
   // whereas the `takerPubkey` is one byte longer
-  String takerPubkey;
+  String? takerPubkey;
 
-  String takerAmount;
-  String takerCoin;
-  int takerCoinStartBlock;
-  int takerPaymentConfirmations;
+  String? takerAmount;
+  String? takerCoin;
+  int? takerCoinStartBlock;
+  int? takerPaymentConfirmations;
 
   /// whether dPoW notarization is required for takerCoin
-  bool takerPaymentRequiresNota;
-  String uuid;
-  int takerPaymentLocktime;
-  int blockHeight;
-  String coin;
-  FeeDetails feeDetails;
-  List<String> from;
-  String internalId;
-  String myBalanceChange;
-  String receivedByMe;
-  String spentByMe;
-  int timestamp;
-  List<String> to;
-  String totalAmount;
-  String txHash;
-  String txHex;
+  bool? takerPaymentRequiresNota;
+  String? uuid;
+  int? takerPaymentLocktime;
+  int? blockHeight;
+  String? coin;
+  FeeDetails? feeDetails;
+  List<String>? from;
+  String? internalId;
+  String? myBalanceChange;
+  String? receivedByMe;
+  String? spentByMe;
+  int? timestamp;
+  List<String>? to;
+  String? totalAmount;
+  String? txHash;
+  String? txHex;
 
   /// the p2p ID of maker node
-  String maker;
-  int makerPaymentWait;
-  int takerPaymentLock;
-  int makerPaymentLocktime;
-  String makerPubkey;
-  String secretHash;
-  Transaction transaction;
-  String error;
+  String? maker;
+  int? makerPaymentWait;
+  int? takerPaymentLock;
+  int? makerPaymentLocktime;
+  String? makerPubkey;
+  String? secretHash;
+  Transaction? transaction;
+  String? error;
 
-  int waitUntil;
+  int? waitUntil;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'lock_duration': lockDuration ?? 0,
@@ -421,7 +421,7 @@ class SwapEF {
         'fee_details': feeDetails?.toJson(),
         'from': from == null
             ? null
-            : List<dynamic>.from(from.map<dynamic>((String x) => x)),
+            : List<dynamic>.from(from!.map<dynamic>((String x) => x)),
         'internal_id': internalId ?? '',
         'my_balance_change': myBalanceChange ?? '',
         'received_by_me': receivedByMe ?? '',
@@ -429,7 +429,7 @@ class SwapEF {
         'timestamp': timestamp ?? 0,
         'to': to == null
             ? null
-            : List<dynamic>.from(to.map<dynamic>((String x) => x)),
+            : List<dynamic>.from(to!.map<dynamic>((String x) => x)),
         'total_amount': totalAmount ?? '',
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',
@@ -484,25 +484,25 @@ class Transaction {
         txHex: json['tx_hex'] ?? '',
       );
 
-  int blockHeight;
-  String coin;
-  FeeDetails feeDetails;
-  List<String> from;
-  String internalId;
-  String myBalanceChange;
-  String receivedByMe;
-  String spentByMe;
-  int timestamp;
-  List<String> to;
-  String totalAmount;
-  String txHash;
-  String txHex;
+  int? blockHeight;
+  String? coin;
+  FeeDetails? feeDetails;
+  List<String>? from;
+  String? internalId;
+  String? myBalanceChange;
+  String? receivedByMe;
+  String? spentByMe;
+  int? timestamp;
+  List<String>? to;
+  String? totalAmount;
+  String? txHash;
+  String? txHex;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'block_height': blockHeight ?? 0,
         'coin': coin ?? '',
         'fee_details': feeDetails?.toJson(),
-        'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
+        'from': List<dynamic>.from(from!.map<dynamic>((dynamic x) => x)) ??
             <String>[],
         'internal_id': internalId ?? '',
         'my_balance_change': myBalanceChange ?? '',
@@ -510,7 +510,7 @@ class Transaction {
         'spent_by_me': spentByMe ?? '',
         'timestamp': timestamp ?? 0,
         'to':
-            List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
+            List<dynamic>.from(to!.map<dynamic>((dynamic x) => x)) ?? <String>[],
         'total_amount': totalAmount ?? '',
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',
@@ -534,11 +534,11 @@ class SwapMyInfo {
         startedAt: json['started_at'] ?? 0,
       );
 
-  String myAmount;
-  String myCoin;
-  String otherAmount;
-  String otherCoin;
-  int startedAt;
+  String? myAmount;
+  String? myCoin;
+  String? otherAmount;
+  String? otherCoin;
+  int? startedAt;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'my_amount': myAmount ?? '',

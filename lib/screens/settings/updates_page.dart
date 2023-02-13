@@ -12,18 +12,18 @@ class UpdatesPage extends StatefulWidget {
   const UpdatesPage({this.refresh = false, this.onSkip});
 
   final bool refresh;
-  final Function onSkip;
+  final Function? onSkip;
 
   @override
   _UpdatesPageState createState() => _UpdatesPageState();
 }
 
 class _UpdatesPageState extends State<UpdatesPage> {
-  UpdatesProvider updatesProvider;
+  late UpdatesProvider updatesProvider;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.refresh) updatesProvider.check();
     });
 
@@ -40,7 +40,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(
-              AppLocalizations.of(context).updatesTitle(appConfig.appName)),
+              AppLocalizations.of(context)!.updatesTitle(appConfig.appName)),
         ),
         body: RefreshIndicator(
           color: Theme.of(context).colorScheme.secondary,
@@ -64,8 +64,8 @@ class _UpdatesPageState extends State<UpdatesPage> {
                                 ? 'assets/branding/logo_app_light.png'
                                 : 'assets/branding/logo_app.png'),
                         const SizedBox(height: 12),
-                        Text(AppLocalizations.of(context).updatesCurrentVersion(
-                            updatesProvider.currentVersion)),
+                        Text(AppLocalizations.of(context)!.updatesCurrentVersion(
+                            updatesProvider.currentVersion!)),
                         const SizedBox(height: 4),
                         updatesProvider.isFetching
                             ? Row(
@@ -77,15 +77,15 @@ class _UpdatesPageState extends State<UpdatesPage> {
                                       child: CircularProgressIndicator(
                                           strokeWidth: 2)),
                                   const SizedBox(width: 6),
-                                  Text(AppLocalizations.of(context)
+                                  Text(AppLocalizations.of(context)!
                                       .updatesChecking)
                                 ],
                               )
                             : updatesProvider.status == UpdateStatus.upToDate
-                                ? Text(AppLocalizations.of(context)
+                                ? Text(AppLocalizations.of(context)!
                                     .updatesUpToDate)
                                 : Text(
-                                    AppLocalizations.of(context)
+                                    AppLocalizations.of(context)!
                                             .updatesAvailable +
                                         (updatesProvider.newVersion == null
                                             ? ''
@@ -108,7 +108,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
                       Divider(
                         height: 60,
                       ),
-                      Text(updatesProvider.message),
+                      Text(updatesProvider.message!),
                     ],
                   ),
                 ),
@@ -133,7 +133,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
-                        child: Text(AppLocalizations.of(context).updatesUpdate),
+                        child: Text(AppLocalizations.of(context)!.updatesUpdate),
                       ),
                       if (updatesProvider.status == UpdateStatus.available ||
                           updatesProvider.status ==
@@ -141,7 +141,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
                         const SizedBox(width: 12),
                         ElevatedButton(
                           onPressed: () {
-                            if (widget.onSkip != null) widget.onSkip();
+                            if (widget.onSkip != null) widget.onSkip!();
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Theme.of(context).dialogBackgroundColor,
@@ -149,12 +149,12 @@ class _UpdatesPageState extends State<UpdatesPage> {
                               side: BorderSide(
                                   color: Theme.of(context)
                                       .textTheme
-                                      .caption
-                                      .color),
+                                      .caption!
+                                      .color!),
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
-                          child: Text(AppLocalizations.of(context).updatesSkip),
+                          child: Text(AppLocalizations.of(context)!.updatesSkip),
                         )
                       ]
                     ],

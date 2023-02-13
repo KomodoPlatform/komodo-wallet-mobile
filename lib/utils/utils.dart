@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,8 +31,8 @@ import 'package:rational/rational.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 
-void copyToClipBoard(BuildContext context, String str) {
-  ScaffoldMessengerState scaffoldMessenger;
+void copyToClipBoard(BuildContext context, String? str) {
+  ScaffoldMessengerState? scaffoldMessenger;
   try {
     scaffoldMessenger = ScaffoldMessenger.of(context);
   } catch (_) {}
@@ -39,7 +40,7 @@ void copyToClipBoard(BuildContext context, String str) {
   if (scaffoldMessenger != null) {
     scaffoldMessenger.showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
-      content: Text(AppLocalizations.of(context).clipboard),
+      content: Text(AppLocalizations.of(context)!.clipboard),
     ));
   }
   Clipboard.setData(ClipboardData(text: str));
@@ -59,7 +60,7 @@ Decimal deci(dynamic dv) {
   throw Exception('Neither string nor double: $dv');
 }
 
-Rational tryParseRat(String text) {
+Rational? tryParseRat(String text) {
   try {
     return Rational.parse(text);
   } catch (_) {
@@ -67,7 +68,7 @@ Rational tryParseRat(String text) {
   }
 }
 
-String getCoinIconPath(String abbr) {
+String getCoinIconPath(String? abbr) {
   List<String> coinsWithoutIcons = [
     'AWR',
     'CFUN',
@@ -77,20 +78,20 @@ String getCoinIconPath(String abbr) {
     'PLY',
     'WID',
   ];
-  String ticker = getCoinTicker(abbr).replaceAll('-OLD', '').toLowerCase();
+  String ticker = getCoinTicker(abbr)!.replaceAll('-OLD', '').toLowerCase();
   if (coinsWithoutIcons.contains(abbr)) ticker = 'adexbsc';
 
   return 'assets/coin-icons/$ticker.png';
 }
 
-String getCoinTicker(String abbr) {
+String? getCoinTicker(String? abbr) {
   for (String suffix in appConfig.protocolSuffixes) {
-    abbr = abbr.replaceAll('-$suffix', '');
+    abbr = abbr!.replaceAll('-$suffix', '');
   }
   return abbr;
 }
 
-Rational deci2rat(Decimal decimal) {
+Rational? deci2rat(Decimal? decimal) {
   try {
     return Rational.parse(decimal.toString());
   } catch (_) {
@@ -98,7 +99,7 @@ Rational deci2rat(Decimal decimal) {
   }
 }
 
-Rational fract2rat(Map<String, dynamic> fract) {
+Rational? fract2rat(Map<String, dynamic> fract) {
   try {
     final rat = Rational(
       BigInt.from(double.parse(fract['numer'])),
@@ -111,7 +112,7 @@ Rational fract2rat(Map<String, dynamic> fract) {
   }
 }
 
-Map<String, dynamic> rat2fract(Rational rat) {
+Map<String, dynamic>? rat2fract(Rational rat) {
   try {
     return <String, dynamic>{
       'numer': rat.numerator.toString(),
@@ -178,9 +179,9 @@ void showErrorMessage(BuildContext mContext, String error) {
   ));
 }
 
-bool _canCheckBiometrics;
+bool? _canCheckBiometrics;
 
-Future<bool> get canCheckBiometrics async {
+Future<bool?> get canCheckBiometrics async {
   final LocalAuthentication auth = LocalAuthentication();
   if (_canCheckBiometrics == null) {
     try {
@@ -198,12 +199,12 @@ Future<bool> get canCheckBiometrics async {
 /// Widget tree builders would often invoke this function several times in a row
 /// (due to poor BLoC optimization perhaps?), leading to a flickering prompt on iOS.
 /// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
-Future<bool> authenticateBiometrics(BuildContext context, PinStatus pinStatus,
+Future<bool> authenticateBiometrics(BuildContext context, PinStatus? pinStatus,
     {bool authorize = false}) async {
   final walletSecuritySettingsProvider =
       context.read<WalletSecuritySettingsProvider>();
   if (mainBloc.isInBackground) {
-    StreamSubscription listener;
+    late StreamSubscription listener;
     listener = mainBloc.outIsInBackground.listen((bool isInBackground) {
       listener.cancel();
       if (!isInBackground) authenticateBiometrics(context, pinStatus);
@@ -226,13 +227,13 @@ Future<bool> authenticateBiometrics(BuildContext context, PinStatus pinStatus,
       didAuthenticate = await localAuth.authenticate(
           biometricOnly: true,
           stickyAuth: true,
-          localizedReason: AppLocalizations.of(context).lockScreenAuth);
+          localizedReason: AppLocalizations.of(context)!.lockScreenAuth);
     } on PlatformException catch (e) {
       // AG, 2020-02-07, observed a race:
       // "ex: Can not perform this action after onSaveInstanceState" is thrown and unlocks `_activeAuthenticateWithBiometrics`;
       // a second `authenticateWithBiometrics` then leads to "ex: Authentication in progress" and crash.
       // Rewriting the biometrics support (cf. #668) might be one way to fix that.
-      Log.println('utils:312', 'authenticateWithBiometrics ex: ' + e.message);
+      Log.println('utils:312', 'authenticateWithBiometrics ex: ' + e.message!);
     }
 
     await pauseUntil(() => !mainBloc.isInBackground);
@@ -255,13 +256,13 @@ Future<bool> authenticateBiometrics(BuildContext context, PinStatus pinStatus,
   }
 }
 
-Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
+Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin? coin) async {
   return dialogBloc.dialog = showDialog<void>(
       context: mContext,
       builder: (BuildContext context) {
         return CustomSimpleDialog(
           title: Text(
-            AppLocalizations.of(context).cantDeleteDefaultCoinTitle + coin.abbr,
+            AppLocalizations.of(context)!.cantDeleteDefaultCoinTitle + coin!.abbr!,
           ),
           children: <Widget>[
             RichText(
@@ -272,10 +273,10 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
                       text: coin.name,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2
+                          .bodyText2!
                           .copyWith(fontWeight: FontWeight.bold)),
                   TextSpan(
-                      text: AppLocalizations.of(context)
+                      text: AppLocalizations.of(context)!
                           .cantDeleteDefaultCoinSpan),
                 ],
               ),
@@ -287,7 +288,7 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text(
-                      AppLocalizations.of(context).cantDeleteDefaultCoinOk),
+                      AppLocalizations.of(context)!.cantDeleteDefaultCoinOk),
                 ),
               ],
             ),
@@ -299,25 +300,25 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
 }
 
 Future<void> showConfirmationRemoveCoin(
-    BuildContext mContext, Coin coin) async {
+    BuildContext mContext, Coin? coin) async {
   return dialogBloc.dialog = showDialog<void>(
       context: mContext,
       builder: (BuildContext context) {
         return CustomSimpleDialog(
-          title: Text(AppLocalizations.of(context).deleteConfirm),
+          title: Text(AppLocalizations.of(context)!.deleteConfirm),
           children: <Widget>[
             RichText(
                 text: TextSpan(
                     style: Theme.of(context).textTheme.bodyText2,
                     children: <TextSpan>[
-                  TextSpan(text: AppLocalizations.of(context).deleteSpan1),
+                  TextSpan(text: AppLocalizations.of(context)!.deleteSpan1),
                   TextSpan(
-                      text: coin.name,
+                      text: coin!.name,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2
+                          .bodyText2!
                           .copyWith(fontWeight: FontWeight.bold)),
-                  TextSpan(text: AppLocalizations.of(context).deleteSpan2),
+                  TextSpan(text: AppLocalizations.of(context)!.deleteSpan2),
                 ])),
             const SizedBox(height: 12),
             Row(
@@ -325,7 +326,7 @@ Future<void> showConfirmationRemoveCoin(
               children: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text(AppLocalizations.of(context).cancel),
+                  child: Text(AppLocalizations.of(context)!.cancel),
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton(
@@ -341,7 +342,7 @@ Future<void> showConfirmationRemoveCoin(
                   style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).errorColor,
                   ),
-                  child: Text(AppLocalizations.of(context).confirm),
+                  child: Text(AppLocalizations.of(context)!.confirm),
                 )
               ],
             ),
@@ -363,7 +364,7 @@ Future<void> launchURL(String url) async {
   }
 }
 
-Duration durationSum(List<Duration> list) {
+Duration durationSum(List<Duration?> list) {
   int ms = 0;
   for (int i = 0; i < list.length; i++) {
     ms += list[i]?.inMilliseconds ?? 0;
@@ -375,7 +376,7 @@ Duration durationSum(List<Duration> list) {
 /// seconds ('55s') if < 1min,
 /// minutes and seconds ('5m 5s') if < 1 hour,
 /// and hours, minutes, and seconds ('25h 25m 25s') if > 1 hour
-String durationFormat(Duration duration) {
+String durationFormat(Duration? duration) {
   if (duration == null) return '-';
 
   final int hh = duration.inHours;
@@ -400,45 +401,45 @@ String durationFormat(Duration duration) {
   return formatted;
 }
 
-double mean(List<double> values) {
+double? mean(List<double> values) {
   if (values == null || values.isEmpty) return null;
   final double sum = values.reduce((sum, current) => sum + current);
   return sum / values.length;
 }
 
 double deviation(List<double> values) {
-  final double average = mean(values);
+  final double? average = mean(values);
   final List<double> squares = [];
   for (var i = 0; i < values.length; i++) {
-    squares.add(pow(values[i] - average, 2));
+    squares.add(pow(values[i] - average!, 2) as double);
   }
-  final averageSquares = mean(squares);
+  final averageSquares = mean(squares)!;
 
   return sqrt(averageSquares);
 }
 
-Directory _applicationDocumentsDirectory;
+Directory? _applicationDocumentsDirectory;
 
 void setDebugDocumentsDirectory(Directory directory) {
   if (!isInDebugMode) throw Exception('Not in debug');
   _applicationDocumentsDirectory = directory;
 }
 
-Future<Directory> get applicationDocumentsDirectory async {
+Future<Directory?> get applicationDocumentsDirectory async {
   _applicationDocumentsDirectory ??= await getApplicationDocumentsDirectory();
   return _applicationDocumentsDirectory;
 }
 
 /// Cached synchronous access to the application directory.
 /// Returns `null` if the application directory is not known yet.
-Directory get applicationDocumentsDirectorySync =>
+Directory? get applicationDocumentsDirectorySync =>
     _applicationDocumentsDirectory;
 
 Future<void> sleepMs(int ms) async {
   await Future<void>.delayed(Duration(milliseconds: ms));
 }
 
-Future<void> pauseUntil(Function cond, {int maxMs}) async {
+Future<void> pauseUntil(Function cond, {int? maxMs}) async {
   maxMs ??= 10000;
   final int start = DateTime.now().millisecondsSinceEpoch;
 
@@ -477,23 +478,23 @@ bool get isInDebugMode {
   return inDebugMode;
 }
 
-bool isErcType(Coin coin) {
-  final String protocolType = coin?.protocol?.type;
+bool isErcType(Coin? coin) {
+  final String? protocolType = coin?.protocol?.type;
   return protocolType == 'ERC20' || protocolType == 'ETH';
 }
 
-bool isSlpParent(Coin coin) {
-  final String protocolType = coin?.protocol?.type;
+bool isSlpParent(Coin? coin) {
+  final String? protocolType = coin?.protocol?.type;
   return protocolType == 'BCH';
 }
 
-bool isSlpChild(Coin coin) {
-  final String protocolType = coin?.protocol?.type;
+bool isSlpChild(Coin? coin) {
+  final String? protocolType = coin?.protocol?.type;
   return protocolType == 'SLPTOKEN';
 }
 
-String humanDate(int epoch) {
-  DateTime _dateTime;
+String? humanDate(int epoch) {
+  DateTime? _dateTime;
   try {
     _dateTime = DateTime.fromMillisecondsSinceEpoch(epoch);
   } catch (e) {
@@ -512,7 +513,7 @@ String humanDate(int epoch) {
   return DateFormat('MMMM d y, HH:mm').format(_dateTime);
 }
 
-String formatPrice(dynamic value, [int digits = 6, int fraction = 2]) {
+String? formatPrice(dynamic value, [int digits = 6, int fraction = 2]) {
   if (value == null) return null;
 
   if (value is String) value = double.parse(value);
@@ -530,7 +531,7 @@ String formatPrice(dynamic value, [int digits = 6, int fraction = 2]) {
   }
 }
 
-String cutTrailingZeros(String str) {
+String? cutTrailingZeros(String? str) {
   if (str == null) return null;
 
   String loop(String input) {
@@ -550,7 +551,7 @@ String cutTrailingZeros(String str) {
   return loop(str);
 }
 
-Widget truncateMiddle(String string, {TextStyle style}) {
+Widget truncateMiddle(String string, {TextStyle? style}) {
   if (string.length < 6)
     return Text(
       string,
@@ -619,8 +620,8 @@ class PaymentUriInfo {
   PaymentUriInfo({this.scheme, this.abbr, this.address, this.amount});
 
   factory PaymentUriInfo.fromUri(Uri uri) {
-    String address;
-    double amount;
+    String? address;
+    double? amount;
     String abbr;
 
     if (uri.scheme == 'bitcoin') {
@@ -630,7 +631,7 @@ class PaymentUriInfo {
           address = uri.pathSegments[0];
         if (uri.queryParameters != null) {
           if (uri.queryParameters.containsKey('amount'))
-            amount = double.tryParse(uri.queryParameters['amount']);
+            amount = double.tryParse(uri.queryParameters['amount']!);
         }
       }
     } else if (uri.scheme == 'ethereum') {
@@ -640,7 +641,7 @@ class PaymentUriInfo {
           address = uri.pathSegments[0];
         if (uri.queryParameters != null) {
           if (uri.queryParameters.containsKey('value'))
-            amount = double.tryParse(uri.queryParameters['value']);
+            amount = double.tryParse(uri.queryParameters['value']!);
           if (amount != null) amount = amount * pow(10, -18);
         }
       }
@@ -656,19 +657,19 @@ class PaymentUriInfo {
     );
   }
 
-  final String scheme;
-  final String abbr;
-  final String address;
-  final String amount;
+  final String? scheme;
+  final String? abbr;
+  final String? address;
+  final String? amount;
 }
 
 void showUriDetailsDialog(
     BuildContext context, PaymentUriInfo uriInfo, Function callbackIfAccepted) {
   if (uriInfo == null) return;
 
-  final String amount = cutTrailingZeros(formatPrice(uriInfo.amount));
-  final String abbr = uriInfo.abbr;
-  final String address = uriInfo.address;
+  final String? amount = cutTrailingZeros(formatPrice(uriInfo.amount));
+  final String? abbr = uriInfo.abbr;
+  final String? address = uriInfo.address;
 
   if (amount == null || abbr == null || address == null) return;
 
@@ -679,7 +680,7 @@ void showUriDetailsDialog(
     builder: (context) {
       return CustomSimpleDialog(
         title: Text(
-          AppLocalizations.of(context).paymentUriDetailsTitle,
+          AppLocalizations.of(context)!.paymentUriDetailsTitle,
           style: TextStyle(fontSize: 24),
         ),
         children: <Widget>[
@@ -722,7 +723,7 @@ void showUriDetailsDialog(
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(AppLocalizations.of(context).paymentUriDetailsAddressSpan +
+              Text(AppLocalizations.of(context)!.paymentUriDetailsAddressSpan +
                   ':'),
             ],
           ),
@@ -731,7 +732,7 @@ void showUriDetailsDialog(
           SizedBox(height: 24),
           if (!isActivated) ...{
             Text(
-              AppLocalizations.of(context).paymentUriInactiveCoin(abbr),
+              AppLocalizations.of(context)!.paymentUriInactiveCoin(abbr),
               style: TextStyle(color: Theme.of(context).errorColor),
             ),
             SizedBox(height: 24),
@@ -740,7 +741,7 @@ void showUriDetailsDialog(
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text(AppLocalizations.of(context).okButton),
+                  child: Text(AppLocalizations.of(context)!.okButton),
                 )
               ],
             )
@@ -751,7 +752,7 @@ void showUriDetailsDialog(
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child:
-                      Text(AppLocalizations.of(context).paymentUriDetailsDeny),
+                      Text(AppLocalizations.of(context)!.paymentUriDetailsDeny),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -759,7 +760,7 @@ void showUriDetailsDialog(
                     callbackIfAccepted();
                   },
                   child: Text(
-                      AppLocalizations.of(context).paymentUriDetailsAccept),
+                      AppLocalizations.of(context)!.paymentUriDetailsAccept),
                 )
               ],
             )
@@ -781,16 +782,16 @@ String getRandomWord() {
   return words[Random().nextInt(words.length)];
 }
 
-List<Coin> filterCoinsByQuery(List<Coin> coins, String query,
-    {String type = ''}) {
+List<Coin?> filterCoinsByQuery(List<Coin?> coins, String query,
+    {String? type = ''}) {
   if (coins == null || coins.isEmpty) return [];
-  List<Coin> list =
-      coins.where((Coin coin) => isCoinPresent(coin, query, type)).toList();
+  List<Coin?> list =
+      coins.where((Coin? coin) => isCoinPresent(coin!, query, type!)).toList();
 
   return list;
 }
 
-Future<String> scanQr(BuildContext context) async {
+Future<String?> scanQr(BuildContext context) async {
   unfocusEverything();
   await Future.delayed(const Duration(milliseconds: 200));
   return await Navigator.of(context).push<String>(
@@ -835,14 +836,14 @@ String generatePassword(bool _isWithLetters, bool _isWithUppercase,
   return _result;
 }
 
-Map<String, String> extractMyInfoFromSwap(MmSwap swap) {
-  String myCoin, myAmount, otherCoin, otherAmount;
+Map<String, String?> extractMyInfoFromSwap(MmSwap swap) {
+  String? myCoin, myAmount, otherCoin, otherAmount;
 
   if (swap.myInfo != null) {
-    myCoin = swap.myInfo.myCoin;
-    myAmount = swap.myInfo.myAmount;
-    otherCoin = swap.myInfo.otherCoin;
-    otherAmount = swap.myInfo.otherAmount;
+    myCoin = swap.myInfo!.myCoin;
+    myAmount = swap.myInfo!.myAmount;
+    otherCoin = swap.myInfo!.otherCoin;
+    otherAmount = swap.myInfo!.otherAmount;
   } else {
     myCoin = swap.type == 'Maker' ? swap.makerCoin : swap.takerCoin;
     myAmount = swap.type == 'Maker' ? swap.makerAmount : swap.takerAmount;
@@ -852,7 +853,7 @@ Map<String, String> extractMyInfoFromSwap(MmSwap swap) {
     otherAmount = swap.type == 'Maker' ? swap.takerAmount : swap.makerAmount;
   }
 
-  return <String, String>{
+  return <String, String?>{
     'myCoin': myCoin,
     'myAmount': myAmount,
     'otherCoin': otherCoin,
@@ -860,16 +861,15 @@ Map<String, String> extractMyInfoFromSwap(MmSwap swap) {
   };
 }
 
-int extractStartedAtFromSwap(MmSwap swap) {
-  final startEvent = swap.events.firstWhere(
-      (ev) => ev.event.type == 'Started' || ev.event.type == 'StartFailed',
-      orElse: () => null);
+int? extractStartedAtFromSwap(MmSwap swap) {
+  final startEvent = swap.events!.firstWhereOrNull(
+      (ev) => ev.event!.type == 'Started' || ev.event!.type == 'StartFailed');
   if (startEvent != null) {
     // MRC: I believe, for now, it's easier to just divide the timestamp by 1000
     // rather than switching the logic on all uses of StartedAt
-    return startEvent.event.data.startedAt != 0
-        ? startEvent.event.data.startedAt
-        : (startEvent.timestamp / 1000).floor();
+    return startEvent.event!.data!.startedAt != 0
+        ? startEvent.event!.data!.startedAt
+        : (startEvent.timestamp! / 1000).floor();
   }
   return 0;
 }
@@ -894,8 +894,8 @@ String toInitialUpper(String val) {
   return initial.toUpperCase() + rest;
 }
 
-bool isCoinPresent(Coin coin, String query, String filter) {
-  return coin.type.name.toLowerCase().contains(filter.toLowerCase()) &&
-      (coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
-          coin.name.toLowerCase().contains(query.trim().toLowerCase()));
+bool isCoinPresent(Coin coin, String? query, String filter) {
+  return coin.type!.name.toLowerCase().contains(filter.toLowerCase()) &&
+      (coin.abbr!.toLowerCase().contains(query!.trim().toLowerCase()) ||
+          coin.name!.toLowerCase().contains(query.trim().toLowerCase()));
 }

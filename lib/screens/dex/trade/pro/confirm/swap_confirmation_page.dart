@@ -34,18 +34,18 @@ class SwapConfirmationPage extends StatefulWidget {
 }
 
 class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
-  CexProvider _cexProvider;
+  CexProvider? _cexProvider;
   bool _inProgress = false;
-  String _minVolume;
+  String? _minVolume;
   bool _isMinVolumeValid = true;
   BuyOrderType _buyOrderType = BuyOrderType.FillOrKill;
-  LinkedHashMap _batteryData;
-  Timer _batteryTimer;
+  LinkedHashMap? _batteryData;
+  Timer? _batteryTimer;
   ProtectionSettings _protectionSettings = ProtectionSettings(
     requiredConfirmations:
-        swapBloc.receiveCoinBalance.coin.requiredConfirmations,
+        swapBloc.receiveCoinBalance!.coin!.requiredConfirmations,
     requiresNotarization:
-        swapBloc.receiveCoinBalance.coin.requiresNotarization ?? false,
+        swapBloc.receiveCoinBalance!.coin!.requiresNotarization ?? false,
   );
 
   @override
@@ -69,7 +69,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
       context: context,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).swapDetailTitle),
+          title: Text(AppLocalizations.of(context)!.swapDetailTitle),
         ),
         body: !_hasData()
             ? SizedBox()
@@ -98,9 +98,9 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     ),
                     if (swapBloc.matchingBid == null)
                       MinVolumeControl(
-                          base: swapBloc.sellCoinBalance.coin.abbr,
-                          rel: swapBloc.receiveCoinBalance.coin.abbr,
-                          price: swapBloc.amountReceive / swapBloc.amountSell,
+                          base: swapBloc.sellCoinBalance!.coin!.abbr,
+                          rel: swapBloc.receiveCoinBalance!.coin!.abbr,
+                          price: swapBloc.amountReceive! / swapBloc.amountSell!,
                           onChange: (String value, bool isValid) {
                             setState(() {
                               _minVolume = value;
@@ -119,7 +119,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Future<void> _checkBattery(dynamic _) async {
-    LinkedHashMap battery;
+    LinkedHashMap? battery;
     try {
       battery = await MMService.nativeC.invokeMethod('battery');
     } catch (e) {
@@ -132,11 +132,11 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
       });
   }
 
-  bool _isBatteryCritical() {
-    if (_batteryData == null || _batteryData['level'] == null) return false;
-    if (_batteryData['charging']) return false;
+  bool? _isBatteryCritical() {
+    if (_batteryData == null || _batteryData!['level'] == null) return false;
+    if (_batteryData!['charging']) return false;
 
-    return (_batteryData['level'] * 100).round() <=
+    return (_batteryData!['level'] * 100).round() <=
         appConfig.batteryLevelCritical;
   }
 
@@ -213,7 +213,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                 const SizedBox(width: 3),
                 Expanded(
                   child: Text(
-                    AppLocalizations.of(context).buyOrderType,
+                    AppLocalizations.of(context)!.buyOrderType,
                   ),
                 ),
               ],
@@ -225,10 +225,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildCoinSwapDetail() {
-    final String amountSell = cutTrailingZeros(
-        swapBloc.amountSell.toStringAsFixed(appConfig.tradeFormPrecision));
-    final String amountReceive = cutTrailingZeros(
-        swapBloc.amountReceive.toStringAsFixed(appConfig.tradeFormPrecision));
+    final String? amountSell = cutTrailingZeros(
+        swapBloc.amountSell!.toStringAsFixed(appConfig.tradeFormPrecision));
+    final String? amountReceive = cutTrailingZeros(
+        swapBloc.amountReceive!.toStringAsFixed(appConfig.tradeFormPrecision));
 
     return Column(
       children: <Widget>[
@@ -251,13 +251,13 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(AppLocalizations.of(context).sell,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  Text(AppLocalizations.of(context)!.sell,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: Theme.of(context).colorScheme.secondary,
                             fontWeight: FontWeight.w100,
                           )),
                   Text(
-                    '$amountSell ${swapBloc.sellCoinBalance.coin.abbr}',
+                    '$amountSell ${swapBloc.sellCoinBalance!.coin!.abbr}',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6,
                   ),
@@ -295,21 +295,21 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                       children: <Widget>[
                         _buildReceiveFiat(),
                         Text(
-                          '$amountReceive ${swapBloc.receiveCoinBalance.coin.abbr}',
+                          '$amountReceive ${swapBloc.receiveCoinBalance!.coin!.abbr}',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headline6,
                         ),
                         Text(
-                            AppLocalizations.of(context)
+                            AppLocalizations.of(context)!
                                     .receive
                                     .substring(0, 1) +
-                                AppLocalizations.of(context)
+                                AppLocalizations.of(context)!
                                     .receive
                                     .toLowerCase()
                                     .substring(1),
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2
+                                .bodyText2!
                                 .copyWith(
                                   color:
                                       Theme.of(context).colorScheme.secondary,
@@ -348,7 +348,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
 
         return _buildWarning(
           text:
-              AppLocalizations.of(context).mobileDataWarning(appConfig.appName),
+              AppLocalizations.of(context)!.mobileDataWarning(appConfig.appName),
           iconData: Icons.network_check,
         );
       },
@@ -358,24 +358,24 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   Widget _buildBatteryWarning() {
     if (_batteryData == null) return SizedBox();
 
-    final double level = _batteryData['level'];
-    final bool isInLowPowerMode = _batteryData['lowPowerMode'];
-    final bool isCharging = _batteryData['charging'];
+    final double? level = _batteryData!['level'];
+    final bool? isInLowPowerMode = _batteryData!['lowPowerMode'];
+    final bool isCharging = _batteryData!['charging'];
 
     if (isCharging) return SizedBox();
 
     String message = '';
-    Color color;
+    Color? color;
 
-    if (_isBatteryCritical()) {
-      message = AppLocalizations.of(context)
+    if (_isBatteryCritical()!) {
+      message = AppLocalizations.of(context)!
           .batteryCriticalError('${appConfig.batteryLevelCritical}');
       color = Theme.of(context).errorColor;
-    } else if (level < appConfig.batteryLevelLow / 100) {
-      message = AppLocalizations.of(context)
+    } else if (level! < appConfig.batteryLevelLow / 100) {
+      message = AppLocalizations.of(context)!
           .batteryLowWarning('${appConfig.batteryLevelLow}');
-    } else if (isInLowPowerMode) {
-      message = AppLocalizations.of(context).batterySavingWarning;
+    } else if (isInLowPowerMode!) {
+      message = AppLocalizations.of(context)!.batterySavingWarning;
     }
 
     if (message.isEmpty) return SizedBox();
@@ -388,15 +388,15 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildTestCoinWarning() {
-    final Coin coinSell = swapBloc.sellCoinBalance.coin;
-    final Coin coinBuy = swapBloc.receiveCoinBalance.coin;
+    final Coin coinSell = swapBloc.sellCoinBalance!.coin!;
+    final Coin coinBuy = swapBloc.receiveCoinBalance!.coin!;
 
-    String warningMessage;
-    if (coinSell.testCoin && !coinBuy.testCoin) {
-      warningMessage = AppLocalizations.of(context).sellTestCoinWarning;
+    String? warningMessage;
+    if (coinSell.testCoin! && !coinBuy.testCoin!) {
+      warningMessage = AppLocalizations.of(context)!.sellTestCoinWarning;
     }
-    if (coinBuy.testCoin && !coinSell.testCoin) {
-      warningMessage = AppLocalizations.of(context).buyTestCoinWarning;
+    if (coinBuy.testCoin! && !coinSell.testCoin!) {
+      warningMessage = AppLocalizations.of(context)!.buyTestCoinWarning;
     }
 
     if (warningMessage == null) {
@@ -406,10 +406,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     }
   }
 
-  Widget _buildWarning({String text, IconData iconData, Color color}) {
+  Widget _buildWarning({required String text, IconData? iconData, Color? color}) {
     color ??= (Theme.of(context).brightness == Brightness.light
             ? Colors.yellow[700]
-            : Colors.yellow[100])
+            : Colors.yellow[100])!
         .withAlpha(200);
 
     return Container(
@@ -432,7 +432,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                 text,
                 style: Theme.of(context)
                     .textTheme
-                    .caption
+                    .caption!
                     .copyWith(color: Theme.of(context).primaryColor),
               ),
             ),
@@ -443,23 +443,23 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildSellFiat() {
-    final double sellAmtUsd = swapBloc.amountSell.toDouble() *
-        _cexProvider.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
+    final double sellAmtUsd = swapBloc.amountSell!.toDouble() *
+        _cexProvider!.getUsdPrice(swapBloc.sellCoinBalance!.coin!.abbr)!;
     if (sellAmtUsd == 0) return SizedBox();
 
     return Text(
-      _cexProvider.convert(sellAmtUsd),
+      _cexProvider!.convert(sellAmtUsd)!,
       style: Theme.of(context).textTheme.caption,
     );
   }
 
   Widget _buildReceiveFiat() {
-    final double receiveeAmtUsd = swapBloc.amountReceive.toDouble() *
-        _cexProvider.getUsdPrice(swapBloc.receiveCoinBalance.coin.abbr);
+    final double receiveeAmtUsd = swapBloc.amountReceive!.toDouble() *
+        _cexProvider!.getUsdPrice(swapBloc.receiveCoinBalance!.coin!.abbr)!;
     if (receiveeAmtUsd == 0) return SizedBox();
 
     return Text(
-      _cexProvider.convert(receiveeAmtUsd),
+      _cexProvider!.convert(receiveeAmtUsd)!,
       style: Theme.of(context).textTheme.caption,
     );
   }
@@ -484,10 +484,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            AppLocalizations.of(context).infoTrade1,
+                            AppLocalizations.of(context)!.infoTrade1,
                             style: Theme.of(context)
                                 .textTheme
-                                .subtitle2
+                                .subtitle2!
                                 .copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
@@ -497,10 +497,10 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                             height: 16,
                           ),
                           Text(
-                            AppLocalizations.of(context).infoTrade2,
+                            AppLocalizations.of(context)!.infoTrade2,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2
+                                .bodyText2!
                                 .copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
@@ -536,7 +536,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
 
   Widget _buildButtons() {
     final bool disabled =
-        _inProgress || !_isMinVolumeValid || _isBatteryCritical();
+        _inProgress || !_isMinVolumeValid || _isBatteryCritical()!;
 
     return Builder(builder: (context) {
       return Column(
@@ -573,7 +573,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     ),
                   ),
                   child:
-                      Text(AppLocalizations.of(context).confirm.toUpperCase()),
+                      Text(AppLocalizations.of(context)!.confirm.toUpperCase()),
                 ),
           const SizedBox(
             height: 8,
@@ -587,7 +587,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                 borderRadius: BorderRadius.circular(30.0),
               ),
             ),
-            child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
+            child: Text(AppLocalizations.of(context)!.cancel.toUpperCase()),
           ),
         ],
       );
@@ -603,7 +603,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     String errorDisplay =
         error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
     if (error.error.contains('is too low, required')) {
-      errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
+      errorDisplay = AppLocalizations.of(context)!.notEnoughtBalanceForFee;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 4),
@@ -621,9 +621,9 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           result: MmSwap(
             uuid: response.result.uuid,
             myInfo: SwapMyInfo(
-                myAmount: cutTrailingZeros(swapBloc.amountSell
+                myAmount: cutTrailingZeros(swapBloc.amountSell!
                     .toStringAsFixed(appConfig.tradeFormPrecision)),
-                otherAmount: cutTrailingZeros(swapBloc.amountReceive
+                otherAmount: cutTrailingZeros(swapBloc.amountReceive!
                     .toStringAsFixed(appConfig.tradeFormPrecision)),
                 myCoin: response.result.rel,
                 otherCoin: response.result.base,

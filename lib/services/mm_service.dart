@@ -34,7 +34,7 @@ class MMService {
   MMService._internal();
 
   List<dynamic> balances = <dynamic>[];
-  Process mm2Process;
+  Process? mm2Process;
   List<Coin> coins = <Coin>[];
 
   /// Switched on when we hear from MM.
@@ -43,16 +43,16 @@ class MMService {
 
   String url = 'http://localhost:${appConfig.rpcPort}';
   String userpass = '';
-  Stream<List<int>> streamSubscriptionStdout;
+  Stream<List<int>>? streamSubscriptionStdout;
 
   /// MM commit hash
-  String mmVersion;
+  String? mmVersion;
 
   // The date corresponding to the MM commit hash, YYYY-MM-DD
-  String mmDate;
+  String? mmDate;
 
   /// Our name and version
-  String gui;
+  String? gui;
 
   /// We're using the netid of 7777 currently
   /// But it's possible in theory to connect the UI to MM running on a different netid
@@ -60,17 +60,17 @@ class MMService {
 
   /// Effective memory used by the application, MiB
   /// As of now it is specific to iOS
-  int footprint;
+  int? footprint;
 
   /// Resident set size of the application, MiB
   /// As of now it is specific to iOS
-  int rs;
+  int? rs;
 
   /// Number of files used by the application (iOS)
-  int files;
+  int? files;
 
   /// Time when the metrics were last updated
-  int metricsLM;
+  int? metricsLM;
 
   /// Channel to native code.
   static MethodChannel nativeC = MethodChannel(
@@ -94,17 +94,17 @@ class MMService {
     metrics = metrics['metrics'];
     if (metrics is! List<dynamic>) return;
 
-    final Map<String, int> traffic = {};
+    final Map<String?, int> traffic = {};
     for (var item in metrics) {
       if (item is! Map<String, dynamic>) continue;
       if (item['key'] is! String) continue;
       if (item['value'] is! int) continue;
-      final String key = item['key'];
-      final int value = item['value'];
+      final String? key = item['key'];
+      final int? value = item['value'];
       if (key == 'rpc_client.traffic.in' ||
           key == 'rpc_client.traffic.out' ||
           key == 'tx.history.response.total_length') {
-        traffic[key] = (traffic[key] ?? 0) + value;
+        traffic[key] = (traffic[key] ?? 0) + value!;
       } else {
         // Uncomment to see what other metrics keys we have from MM:
         //Log('mm_service:123', 'metrics key ' + item['key']);
@@ -125,14 +125,14 @@ class MMService {
       }
       // Not implemented on Android YET.
       if (Platform.isIOS) {
-        final js = await nativeC.invokeMethod<String>('metrics');
+        final js = await (nativeC.invokeMethod<String>('metrics') as FutureOr<String>);
         //Log('mm_service:142', 'metrics: $js');
         final Map<String, dynamic> mjs = json.decode(js);
         footprint = mjs['footprint'];
         rs = mjs['rs'];
         files = mjs['files'];
         metricsLM = DateTime.now().millisecondsSinceEpoch;
-        if (files > 200) {
+        if (files! > 200) {
           Log('mm_service:149',
               'Warning, a large number of opened files, $files/256: $js');
         }
@@ -140,7 +140,7 @@ class MMService {
     });
   }
 
-  Future<void> init(String passphrase) async {
+  Future<void> init(String? passphrase) async {
     final String rpcPass = _createRpcPass();
     await mmSe.runBin(rpcPass);
     metrics();
@@ -228,12 +228,12 @@ class MMService {
     return true;
   }
 
-  String get filesPath => applicationDocumentsDirectorySync == null
+  String? get filesPath => applicationDocumentsDirectorySync == null
       ? null
-      : applicationDocumentsDirectorySync.path + '/';
+      : applicationDocumentsDirectorySync!.path + '/';
 
   /// Returns a log file matching the present [now] time.
-  FileAndSink currentLog({DateTime now}) {
+  FileAndSink currentLog({DateTime? now}) {
     // Time can fluctuate back and forth due to time syncronization and such.
     // Hence we're using a map that allows us to direct the log entries
     // to a log file precisely matching the `now` time,
@@ -241,9 +241,9 @@ class MMService {
     // This in turn allows us to make the log lines shorter
     // by only mentioning the current time (and not date) in a line.
 
-    final files = Directory(filesPath);
+    final files = Directory(filesPath!);
     // removes the last file until the total space is less than 500mb
-    while (dirStatSync(filesPath) > Log.limitMB) {
+    while (dirStatSync(filesPath!) > Log.limitMB) {
       // get only log files in case we have other files(not-log) in the folder
       List<FileSystemEntity> _files = files
           .listSync()
@@ -282,13 +282,13 @@ class MMService {
       final mat = logName.firstMatch(name);
       if (mat == null) continue;
       if (en.statSync().type != FileSystemEntityType.file) continue;
-      final int year = int.parse(mat[1]);
-      final int month = int.parse(mat[2]);
-      final int day = int.parse(mat[3]);
+      final int year = int.parse(mat[1]!);
+      final int month = int.parse(mat[2]!);
+      final int day = int.parse(mat[3]!);
       final enDate = DateTime(year, month, day);
       if (enDate.isAfter(now)) continue;
       final int delta = now.difference(enDate).inDays;
-      if (delta > 3) unlink.add(en);
+      if (delta > 3) unlink.add(en as File);
     }
     for (File en in unlink) en.deleteSync();
 
@@ -328,12 +328,12 @@ class MMService {
   }
 
   Future<void> runBin(String rpcPass) async {
-    final String passphrase = await EncryptionTool().read('passphrase');
+    final String? passphrase = await EncryptionTool().read('passphrase');
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
     gui = 'atomicDEX ${packageInfo.version} $os';
     if (Platform.isAndroid) {
-      final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
+      final buildTime = await (nativeC.invokeMethod<int>('BUILD_TIME') as FutureOr<int>);
       gui += '; BT=${buildTime ~/ 1000}';
     }
 
@@ -355,8 +355,8 @@ class MMService {
         .listen(_onNativeLog, onError: _onNativeLogError);
 
     try {
-      final int errorCode = await nativeC.invokeMethod<dynamic>(
-          'start', <String, String>{'params': startParam}); //start mm2
+      final int? errorCode = await (nativeC.invokeMethod<dynamic>(
+          'start', <String, String>{'params': startParam}) as FutureOr<int?>); //start mm2
       final Mm2Error error = mm2ErrorFrom(errorCode);
       if (error != Mm2Error.ok) {
         if (error == Mm2Error.already_runs) {
@@ -377,7 +377,7 @@ class MMService {
           timer.cancel();
         }
 
-        checkStatusMm2().then((int onValue) {
+        checkStatusMm2().then((int? onValue) {
           final status = mm2StatusFrom(onValue);
           Log('mm_service:313', 'mm2_main_status: $status');
           if (status == Mm2Status.ready) {
@@ -407,7 +407,7 @@ class MMService {
     }
   }
 
-  void log2file(String chunk, {DateTime now}) {
+  void log2file(String chunk, {DateTime? now}) {
     if (chunk == null) return;
     if (!chunk.endsWith('\n')) chunk += '\n';
 
@@ -433,19 +433,19 @@ class MMService {
   }
 
   /// Process a line of MM log.
-  void _onLog(String chunk) {
+  void _onLog(String? chunk) {
     Log('mm_service:338', chunk);
   }
 
-  void _onNativeLog(Object event) {
-    _onLog(event);
+  void _onNativeLog(Object? event) {
+    _onLog(event as String?);
   }
 
   void _onNativeLogError(Object error) {
     Log('mm_service:415', error);
   }
 
-  Future<List<dynamic>> readJsonCoinInit() async {
+  Future<List<dynamic>?> readJsonCoinInit() async {
     try {
       return jsonDecode(await rootBundle.loadString('assets/coins.json'));
     } catch (e) {
@@ -478,7 +478,7 @@ class MMService {
     }
   }
 
-  Future<int> checkStatusMm2() async {
+  Future<int?> checkStatusMm2() async {
     return await nativeC.invokeMethod('status');
   }
 
@@ -508,7 +508,7 @@ class MMService {
       Log('mm_service', 'mm2 is not running, return');
       return;
     }
-    final int errorCode = await nativeC.invokeMethod<int>('stop');
+    final int? errorCode = await nativeC.invokeMethod<int>('stop');
     final Mm2StopError error = mm2StopErrorFrom(errorCode);
     Log('mm_service', 'stopmm2: $error');
 
@@ -530,18 +530,18 @@ class MMService {
     /// If [running], but enabled coins list is empty,
     /// it means that mm2 was restarted from Swift, and we
     /// should reenable active coins ones again
-    if ((await MM.getEnabledCoins()).isEmpty) initCoinsAndLoad();
+    if ((await MM.getEnabledCoins())!.isEmpty) initCoinsAndLoad();
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
     Log('mm_service', 'getAllBalances');
-    final List<Coin> coins = await coinsBloc.electrumCoins();
+    final List<Coin?> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
       final List<Future<Balance>> futureBalances = <Future<Balance>>[];
 
-      for (Coin coin in coins) {
-        futureBalances.add(MM.getBalance(GetBalance(coin: coin.abbr)));
+      for (Coin? coin in coins) {
+        futureBalances.add(MM.getBalance(GetBalance(coin: coin!.abbr)));
       }
       return await Future.wait<Balance>(futureBalances);
     } else {
@@ -583,7 +583,7 @@ enum Mm2Status {
   unknown,
 }
 
-Mm2Error mm2ErrorFrom(int errorCode) {
+Mm2Error mm2ErrorFrom(int? errorCode) {
   switch (errorCode) {
     case 0:
       return Mm2Error.ok;
@@ -600,7 +600,7 @@ Mm2Error mm2ErrorFrom(int errorCode) {
   }
 }
 
-Mm2StopError mm2StopErrorFrom(int errorCode) {
+Mm2StopError mm2StopErrorFrom(int? errorCode) {
   switch (errorCode) {
     case 0:
       return Mm2StopError.ok;
@@ -612,7 +612,7 @@ Mm2StopError mm2StopErrorFrom(int errorCode) {
   return Mm2StopError.unknown;
 }
 
-Mm2Status mm2StatusFrom(int statusCode) {
+Mm2Status mm2StatusFrom(int? statusCode) {
   switch (statusCode) {
     case 0:
       return Mm2Status.not_running;

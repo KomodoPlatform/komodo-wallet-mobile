@@ -10,27 +10,27 @@ import 'package:rational/rational.dart';
 class CoinsList extends StatefulWidget {
   const CoinsList({this.type, this.searchTerm});
 
-  final Market type;
-  final String searchTerm;
+  final Market? type;
+  final String? searchTerm;
 
   @override
   _CoinsListState createState() => _CoinsListState();
 }
 
 class _CoinsListState extends State<CoinsList> {
-  ConstructorProvider _constrProvider;
+  ConstructorProvider? _constrProvider;
 
   @override
   Widget build(BuildContext context) {
     _constrProvider ??= Provider.of<ConstructorProvider>(context);
 
-    final String _counterCoin = widget.type == Market.SELL
-        ? _constrProvider.buyCoin
-        : _constrProvider.sellCoin;
+    final String? _counterCoin = widget.type == Market.SELL
+        ? _constrProvider!.buyCoin
+        : _constrProvider!.sellCoin;
 
-    final Rational _counterAmount = widget.type == Market.SELL
-        ? _constrProvider.buyAmount
-        : _constrProvider.sellAmount;
+    final Rational? _counterAmount = widget.type == Market.SELL
+        ? _constrProvider!.buyAmount
+        : _constrProvider!.sellAmount;
 
     if (_counterCoin == null) {
       return CoinsListAll(type: widget.type, searchTerm: widget.searchTerm);
@@ -45,12 +45,12 @@ class _CoinsListState extends State<CoinsList> {
   }
 
   Widget _buildAmtMessage() {
-    final String coin = widget.type == Market.SELL
-        ? _constrProvider.buyCoin
-        : _constrProvider.sellCoin;
+    final String? coin = widget.type == Market.SELL
+        ? _constrProvider!.buyCoin
+        : _constrProvider!.sellCoin;
     final String message = widget.type == Market.SELL
-        ? AppLocalizations.of(context).simpleTradeBuyHint(coin)
-        : AppLocalizations.of(context).simpleTradeSellHint(coin);
+        ? AppLocalizations.of(context)!.simpleTradeBuyHint(coin!)
+        : AppLocalizations.of(context)!.simpleTradeSellHint(coin!);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -60,7 +60,7 @@ class _CoinsListState extends State<CoinsList> {
               padding: EdgeInsets.only(bottom: 5),
               child: Icon(
                 Icons.arrow_left,
-                color: Theme.of(context).textTheme.bodyText1.color,
+                color: Theme.of(context).textTheme.bodyText1!.color,
               )),
         },
         Expanded(
@@ -81,7 +81,7 @@ class _CoinsListState extends State<CoinsList> {
               padding: EdgeInsets.only(bottom: 5),
               child: Icon(
                 Icons.arrow_right,
-                color: Theme.of(context).textTheme.bodyText1.color,
+                color: Theme.of(context).textTheme.bodyText1!.color,
               )),
           SizedBox(width: 6),
         }

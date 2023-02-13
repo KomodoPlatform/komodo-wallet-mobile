@@ -15,13 +15,13 @@ class MakerOrderSwaps extends StatefulWidget {
 }
 
 class _MakerOrderSwapsState extends State<MakerOrderSwaps> {
-  SwapProvider swapProvider;
+  SwapProvider? swapProvider;
 
   @override
   Widget build(BuildContext context) {
     swapProvider ??= Provider.of<SwapProvider>(context);
 
-    if (widget.order.startedSwaps == null || widget.order.startedSwaps.isEmpty)
+    if (widget.order.startedSwaps == null || widget.order.startedSwaps!.isEmpty)
       return SizedBox();
 
     return Column(
@@ -32,11 +32,11 @@ class _MakerOrderSwapsState extends State<MakerOrderSwaps> {
   List<Widget> buildFilteredSwaps() {
     final List<Widget> filtered = [];
 
-    for (Swap swap in swapProvider.swaps) {
-      final String swapId = swap.result?.uuid;
+    for (Swap swap in swapProvider!.swaps) {
+      final String? swapId = swap.result?.uuid;
       if (swapId == null) continue;
 
-      if (widget.order.startedSwaps.contains(swapId)) {
+      if (widget.order.startedSwaps!.contains(swapId)) {
         filtered.add(BuildItemSwap(
           context: context,
           swap: swap,

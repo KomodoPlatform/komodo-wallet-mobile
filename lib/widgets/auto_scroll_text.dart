@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 
 class AutoScrollText extends StatefulWidget {
   const AutoScrollText({
-    Key key,
+    Key? key,
     this.text,
     this.style,
     this.delayBefore = const Duration(seconds: 2),
     this.duration = const Duration(seconds: 1),
     this.delayBetween = const Duration(milliseconds: 2000),
   }) : super(key: key);
-  final String text;
-  final TextStyle style;
+  final String? text;
+  final TextStyle? style;
   final Duration delayBefore;
   final Duration duration;
   final Duration delayBetween;
@@ -28,7 +28,7 @@ class _AutoScrollTextState extends State<AutoScrollText> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _animate();
     });
   }

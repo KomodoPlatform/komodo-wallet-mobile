@@ -7,7 +7,7 @@ import '../../helpers/create_new_pin.dart';
 import '../../helpers/create_password.dart';
 
 Future<void> restoreWalletToTest(WidgetTester tester,
-    {String existingWalletName}) async {
+    {String? existingWalletName}) async {
   // Restores wallet to be used in following tests
   const String seedPhrase =
       'hazard slam top rail jacket ecology trash first stock nut swift thought youth rack slot regular wasp bulk spatial legal staff change way brush';

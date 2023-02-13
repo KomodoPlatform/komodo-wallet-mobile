@@ -41,7 +41,7 @@ class AuthenticateBloc extends GenericBlocBase {
   Future<void> init() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('isPassphraseIsSaved') != null &&
-        prefs.getBool('isPassphraseIsSaved')) {
+        prefs.getBool('isPassphraseIsSaved')!) {
       isLogin = true;
       _inIsLogin.add(true);
     } else {
@@ -68,7 +68,7 @@ class AuthenticateBloc extends GenericBlocBase {
     _pinStatusController.close();
   }
 
-  Future<void> login(String passphrase, String password,
+  Future<void> login(String? passphrase, String? password,
       {bool loadSnapshot = true}) async {
     mainBloc.setCurrentIndexTab(0);
     walletBloc.setCurrentWallet(await Db.getCurrentWallet());
@@ -89,11 +89,11 @@ class AuthenticateBloc extends GenericBlocBase {
     _inIsLogin.add(true);
   }
 
-  Future<void> _checkPINStatus(String password) async {
-    final Wallet wallet = await Db.getCurrentWallet();
+  Future<void> _checkPINStatus(String? password) async {
+    final Wallet? wallet = await Db.getCurrentWallet();
     final EncryptionTool entryptionTool = EncryptionTool();
 
-    String pin, camoPin;
+    String? pin, camoPin;
     if (wallet != null && password != null) {
       pin = await entryptionTool.readData(KeyEncryption.PIN, wallet, password);
       camoPin = await entryptionTool.readData(
@@ -108,7 +108,7 @@ class AuthenticateBloc extends GenericBlocBase {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
       if (prefs.getBool('isPassphraseIsSaved') != null &&
-          prefs.getBool('isPassphraseIsSaved')) {
+          prefs.getBool('isPassphraseIsSaved')!) {
         updateStatusPin(PinStatus.NORMAL_PIN);
       } else {
         updateStatusPin(PinStatus.CREATE_PIN);
@@ -118,7 +118,7 @@ class AuthenticateBloc extends GenericBlocBase {
     }
   }
 
-  Future<void> loginUI(bool isLogin, String passphrase, String password) async {
+  Future<void> loginUI(bool isLogin, String? passphrase, String? password) async {
     await _checkPINStatus(password);
     await EncryptionTool().write('passphrase', passphrase);
     final SharedPreferences prefs = await SharedPreferences.getInstance();

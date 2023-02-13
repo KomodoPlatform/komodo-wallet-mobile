@@ -15,8 +15,8 @@ class HtmlParser extends StatefulWidget {
   });
 
   final String html;
-  final TextStyle textStyle;
-  final TextStyle linkStyle;
+  final TextStyle? textStyle;
+  final TextStyle? linkStyle;
 
   @override
   _HtmlParserState createState() => _HtmlParserState();
@@ -24,8 +24,8 @@ class HtmlParser extends StatefulWidget {
 
 class _HtmlParserState extends State<HtmlParser> {
   final List<TapGestureRecognizer> recognizers = [];
-  TextStyle textStyle;
-  TextStyle linkStyle;
+  TextStyle? textStyle;
+  TextStyle? linkStyle;
 
   @override
   void dispose() {
@@ -39,12 +39,12 @@ class _HtmlParserState extends State<HtmlParser> {
   Widget build(BuildContext context) {
     textStyle = widget.textStyle ?? const TextStyle();
     linkStyle = widget.linkStyle ?? const TextStyle();
-    final List<String> chunks = _splitLinks(widget.html);
+    final List<String?> chunks = _splitLinks(widget.html);
     final List<InlineSpan> children = [];
 
-    for (String chunk in chunks) {
-      final RegExpMatch linkMatch =
-          RegExp('<a[^>]+href=\"(.*?)\"[^>]*>(.*)?<\/a>').firstMatch(chunk);
+    for (String? chunk in chunks) {
+      final RegExpMatch? linkMatch =
+          RegExp('<a[^>]+href=\"(.*?)\"[^>]*>(.*)?<\/a>').firstMatch(chunk!);
 
       if (linkMatch == null) {
         children.add(TextSpan(
@@ -62,8 +62,8 @@ class _HtmlParserState extends State<HtmlParser> {
     ));
   }
 
-  List<String> _splitLinks(String text) {
-    final List<String> list = [];
+  List<String?> _splitLinks(String text) {
+    final List<String?> list = [];
     final Iterable<RegExpMatch> allMatches =
         RegExp(r'(^|.*?)(<a[^>]*>.*?<\/a>|$)').allMatches(text);
 
@@ -76,11 +76,11 @@ class _HtmlParserState extends State<HtmlParser> {
   }
 
   InlineSpan _buildClickable(RegExpMatch match) {
-    recognizers.add(TapGestureRecognizer()..onTap = () => launchURL(match[1]));
+    recognizers.add(TapGestureRecognizer()..onTap = () => launchURL(match[1]!));
 
     return TextSpan(
       text: match[2],
-      style: textStyle.merge(linkStyle),
+      style: textStyle!.merge(linkStyle),
       recognizer: recognizers.last,
     );
   }

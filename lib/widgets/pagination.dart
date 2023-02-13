@@ -10,22 +10,22 @@ class Pagination extends StatefulWidget {
     this.onChanged,
   });
 
-  final int total;
-  final int perPage;
-  final int currentPage;
-  final double buttonSize;
-  final double buttonMargin;
-  final Function(int) onChanged;
+  final int? total;
+  final int? perPage;
+  final int? currentPage;
+  final double? buttonSize;
+  final double? buttonMargin;
+  final Function(int)? onChanged;
 
   @override
   _PaginationState createState() => _PaginationState();
 }
 
 class _PaginationState extends State<Pagination> {
-  int _perPage;
-  int _currentPage;
-  double _buttonSize;
-  double _buttonMargin;
+  late int _perPage;
+  int? _currentPage;
+  double? _buttonSize;
+  late double _buttonMargin;
   final ScrollController _scrollCtrl = ScrollController();
 
   @override
@@ -44,10 +44,10 @@ class _PaginationState extends State<Pagination> {
     _buttonMargin = widget.buttonMargin ?? 2;
 
     if (widget.total == null || widget.total == 0) return SizedBox();
-    if (widget.total <= _perPage) return SizedBox();
+    if (widget.total! <= _perPage) return SizedBox();
 
-    int pages = widget.total ~/ _perPage;
-    if (pages * _perPage < widget.total) pages++;
+    int pages = widget.total! ~/ _perPage;
+    if (pages * _perPage < widget.total!) pages++;
 
     final List<Widget> buttons = [];
     for (int i = 1; i < pages + 1; i++) {
@@ -70,14 +70,14 @@ class _PaginationState extends State<Pagination> {
   Widget _buildButton(int i) {
     final int first = (i - 1) * _perPage + 1;
     int last = i * _perPage;
-    if (last > widget.total) last = widget.total;
+    if (last > widget.total!) last = widget.total!;
 
     return InkWell(
-      onTap: i == _currentPage ? null : () => widget.onChanged(i),
+      onTap: i == _currentPage ? null : () => widget.onChanged!(i),
       child: Container(
         padding: EdgeInsets.all(_buttonMargin),
         child: ConstrainedBox(
-          constraints: BoxConstraints(minWidth: _buttonSize),
+          constraints: BoxConstraints(minWidth: _buttonSize!),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
@@ -125,13 +125,13 @@ class _PaginationState extends State<Pagination> {
     );
   }
 
-  void _scrollTo(int i) {
-    final RenderBox rb = context.findRenderObject();
+  void _scrollTo(int? i) {
+    final RenderBox rb = context.findRenderObject() as RenderBox;
     if (!rb.hasSize) return;
 
-    double targetPosition = (i - 1) * (_buttonSize + _buttonMargin * 2) -
+    double targetPosition = (i! - 1) * (_buttonSize! + _buttonMargin * 2) -
         rb.size.width / 2 +
-        (_buttonSize + _buttonMargin * 2) / 2;
+        (_buttonSize! + _buttonMargin * 2) / 2;
     if (targetPosition < 0) targetPosition = 0;
     if (targetPosition > _scrollCtrl.position.maxScrollExtent)
       targetPosition = _scrollCtrl.position.maxScrollExtent;

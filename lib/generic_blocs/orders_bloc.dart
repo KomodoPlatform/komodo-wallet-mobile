@@ -16,19 +16,19 @@ import '../widgets/bloc_provider.dart';
 OrdersBloc ordersBloc = OrdersBloc();
 
 class OrdersBloc implements GenericBlocBase {
-  List<Order> orders;
+  List<Order>? orders;
 
-  final StreamController<List<Order>> _ordersController =
-      StreamController<List<Order>>.broadcast();
-  Sink<List<Order>> get _inOrders => _ordersController.sink;
-  Stream<List<Order>> get outOrders => _ordersController.stream;
+  final StreamController<List<Order>?> _ordersController =
+      StreamController<List<Order>?>.broadcast();
+  Sink<List<Order>?> get _inOrders => _ordersController.sink;
+  Stream<List<Order>?> get outOrders => _ordersController.stream;
 
-  Orders currentOrders;
+  Orders? currentOrders;
 
-  final StreamController<Orders> _currentOrdersController =
-      StreamController<Orders>.broadcast();
-  Sink<Orders> get _inCurrentOrders => _currentOrdersController.sink;
-  Stream<Orders> get outCurrentOrders => _currentOrdersController.stream;
+  final StreamController<Orders?> _currentOrdersController =
+      StreamController<Orders?>.broadcast();
+  Sink<Orders?> get _inCurrentOrders => _currentOrdersController.sink;
+  Stream<Orders?> get outCurrentOrders => _currentOrdersController.stream;
 
   List<dynamic> orderSwaps = <dynamic>[];
   final StreamController<List<dynamic>> _orderSwapsController =
@@ -51,31 +51,31 @@ class OrdersBloc implements GenericBlocBase {
         final List<Order> orders = <Order>[];
 
         for (MapEntry<String, TakerOrder> entry
-            in newOrders.result.takerOrders.entries) {
+            in newOrders.result!.takerOrders!.entries) {
           orders.add(Order(
               cancelable: entry.value.cancellable,
-              base: entry.value.request.base,
-              rel: entry.value.request.rel,
+              base: entry.value.request!.base,
+              rel: entry.value.request!.rel,
               orderType: OrderType.TAKER,
-              createdAt: entry.value.createdAt ~/ 1000,
-              baseAmount: entry.value.request.baseAmount,
-              relAmount: entry.value.request.relAmount,
+              createdAt: entry.value.createdAt! ~/ 1000,
+              baseAmount: entry.value.request!.baseAmount,
+              relAmount: entry.value.request!.relAmount,
               uuid: entry.key));
         }
 
         for (MapEntry<String, MakerOrder> entry
-            in newOrders.result.makerOrders.entries) {
+            in newOrders.result!.makerOrders!.entries) {
           orders.add(Order(
               cancelable: entry.value.cancellable,
               baseAmount: entry.value.maxBaseVol,
-              minVolume: double.tryParse(entry.value.minBaseVol),
+              minVolume: double.tryParse(entry.value.minBaseVol!),
               base: entry.value.base,
               rel: entry.value.rel,
               orderType: OrderType.MAKER,
               startedSwaps: entry.value.startedSwaps,
-              createdAt: entry.value.createdAt ~/ 1000,
-              relAmount: (Decimal.parse(entry.value.price) *
-                      Decimal.parse(entry.value.maxBaseVol))
+              createdAt: entry.value.createdAt! ~/ 1000,
+              relAmount: (Decimal.parse(entry.value.price!) *
+                      Decimal.parse(entry.value.maxBaseVol!))
                   .toString(),
               uuid: entry.key));
         }
@@ -97,7 +97,7 @@ class OrdersBloc implements GenericBlocBase {
 
     final List<Swap> swaps = swapMonitor.swaps.toList();
     for (Swap swap in swaps) {
-      if (swap.result.uuid.startsWith('e852'))
+      if (swap.result!.uuid!.startsWith('e852'))
         Log('orders_bloc:100', 'swap status: ${swap.status}');
     }
     swaps.removeWhere((Swap swap) =>
@@ -105,7 +105,7 @@ class OrdersBloc implements GenericBlocBase {
         swap.status == Status.SWAP_SUCCESSFUL ||
         swap.status == Status.TIME_OUT);
 
-    final List<Order> orders = this.orders;
+    final List<Order> orders = this.orders!;
 
     await musicService.play(orders);
 
@@ -127,7 +127,7 @@ class OrdersBloc implements GenericBlocBase {
     _inOrderSwaps.add(ordersSwaps);
   }
 
-  Future<void> cancelOrder(String uuid) async {
+  Future<void> cancelOrder(String? uuid) async {
     try {
       await ApiProvider().cancelOrder(mmSe.client, GetCancelOrder(uuid: uuid));
       orderSwaps.removeWhere((dynamic orderSwap) {

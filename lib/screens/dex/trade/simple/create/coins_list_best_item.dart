@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import '../../../../../localizations.dart';
 import '../../../../../app_config/app_config.dart';
@@ -17,7 +18,7 @@ import '../../../../../model/swap_constructor_provider.dart';
 import 'package:provider/provider.dart';
 
 class CoinsListBestItem extends StatefulWidget {
-  const CoinsListBestItem(this.order, {Key key}) : super(key: key);
+  const CoinsListBestItem(this.order, {Key? key}) : super(key: key);
 
   final BestOrder order;
 
@@ -27,11 +28,11 @@ class CoinsListBestItem extends StatefulWidget {
 
 class _CoinsListBestItemState extends State<CoinsListBestItem>
     with AutomaticKeepAliveClientMixin {
-  ConstructorProvider _constrProvider;
-  CexProvider _cexProvider;
-  String _coin;
+  ConstructorProvider? _constrProvider;
+  CexProvider? _cexProvider;
+  String? _coin;
   bool _expanded = false;
-  String _error;
+  String? _error;
   bool _activationInProgress = false;
 
   @override
@@ -51,9 +52,8 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
         initialData: coinsBloc.coinBalance,
         stream: coinsBloc.outCoins,
         builder: (context, snapshot) {
-          final bool isCoinActive = snapshot.data.firstWhere(
-                  (item) => item.coin.abbr == _coin,
-                  orElse: () => null) !=
+          final bool isCoinActive = snapshot.data!.firstWhereOrNull(
+                  (item) => item.coin!.abbr == _coin) !=
               null;
 
           return Card(
@@ -96,14 +96,14 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
           backgroundImage: AssetImage(getCoinIconPath(_coin)),
         ),
         SizedBox(width: 4),
-        Text(_coin),
+        Text(_coin!),
       ],
     );
   }
 
   Future<void> _handleTap(bool isCoinActive) async {
     if (isCoinActive) {
-      await _constrProvider.selectOrder(widget.order);
+      await _constrProvider!.selectOrder(widget.order);
     } else {
       _toggle();
     }
@@ -137,10 +137,10 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
               child: _buildButton(
                 onPressed: () => _toggle(),
                 child: Text(
-                  AppLocalizations.of(context).simpleTradeClose,
+                  AppLocalizations.of(context)!.simpleTradeClose,
                   style: Theme.of(context)
                       .textTheme
-                      .caption
+                      .caption!
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 color: Colors.transparent,
@@ -161,8 +161,8 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
                           color: Theme.of(context).primaryColor,
                         ),
                   Text(
-                    AppLocalizations.of(context).simpleTradeActivate,
-                    style: Theme.of(context).textTheme.caption.copyWith(
+                    AppLocalizations.of(context)!.simpleTradeActivate,
+                    style: Theme.of(context).textTheme.caption!.copyWith(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold),
                   ),
@@ -208,35 +208,35 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
       setState(() => _activationInProgress = false);
       if (wasActivated) {
         _toggle();
-        await _constrProvider.selectOrder(widget.order);
+        await _constrProvider!.selectOrder(widget.order);
       } else {
         setState(() => _error =
-            AppLocalizations.of(context).simpleTradeUnableActivate(_coin));
+            AppLocalizations.of(context)!.simpleTradeUnableActivate(_coin!));
       }
     } else {
       setState(() {
         _error =
-            AppLocalizations.of(context).simpleTradeMaxActiveCoins(maxCoins);
+            AppLocalizations.of(context)!.simpleTradeMaxActiveCoins(maxCoins);
       });
     }
   }
 
   Widget _buildExpandedMessage() {
     if (_error != null) {
-      return Text(_error,
-          style: Theme.of(context).textTheme.caption.copyWith(
+      return Text(_error!,
+          style: Theme.of(context).textTheme.caption!.copyWith(
                 color: Theme.of(context).errorColor,
               ));
     } else {
-      return Text(AppLocalizations.of(context).simpleTradeNotActive(_coin),
-          style: Theme.of(context).textTheme.caption.copyWith(
+      return Text(AppLocalizations.of(context)!.simpleTradeNotActive(_coin!),
+          style: Theme.of(context).textTheme.caption!.copyWith(
                 color: Theme.of(context).colorScheme.secondary,
               ));
     }
   }
 
   Future<bool> _activate() async {
-    final Coin inactive = (await coins)[_coin];
+    final Coin? inactive = (await coins)![_coin];
     if (inactive == null) {
       return false;
     }
@@ -249,10 +249,10 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
   }
 
   Widget _buildButton({
-    Color color,
-    Function onPressed,
-    Widget child,
-    bool disabled,
+    Color? color,
+    Function? onPressed,
+    Widget? child,
+    bool? disabled,
   }) {
     disabled ??= false;
     color = disabled
@@ -262,7 +262,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     return Opacity(
       opacity: disabled ? 0.5 : 1,
       child: InkWell(
-        onTap: disabled ? null : onPressed,
+        onTap: disabled ? null : onPressed as void Function()?,
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
@@ -281,25 +281,25 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
   }
 
   Widget _buildFiatAmt() {
-    final String counterCoin = widget.order.action == Market.BUY
-        ? _constrProvider.buyCoin
-        : _constrProvider.sellCoin;
-    final Rational counterAmount = widget.order.action == Market.BUY
-        ? _constrProvider.buyAmount
-        : _constrProvider.sellAmount;
-    final double cexPrice = _cexProvider.getUsdPrice(_coin);
-    final double counterCexPrice = _cexProvider.getUsdPrice(counterCoin);
+    final String? counterCoin = widget.order.action == Market.BUY
+        ? _constrProvider!.buyCoin
+        : _constrProvider!.sellCoin;
+    final Rational? counterAmount = widget.order.action == Market.BUY
+        ? _constrProvider!.buyAmount
+        : _constrProvider!.sellAmount;
+    final double? cexPrice = _cexProvider!.getUsdPrice(_coin);
+    final double? counterCexPrice = _cexProvider!.getUsdPrice(counterCoin);
 
-    String receiveStr;
-    Color color = Theme.of(context).textTheme.caption.color;
+    String? receiveStr;
+    Color? color = Theme.of(context).textTheme.caption!.color;
 
     if (cexPrice != 0) {
       final double receiveAmtUsd =
-          cexPrice * widget.order.price.toDouble() * counterAmount.toDouble();
-      receiveStr = _cexProvider.convert(receiveAmtUsd);
+          cexPrice! * widget.order.price!.toDouble() * counterAmount!.toDouble();
+      receiveStr = _cexProvider!.convert(receiveAmtUsd);
 
       if (counterCexPrice != 0) {
-        final double counterAmtUsd = counterAmount.toDouble() * counterCexPrice;
+        final double counterAmtUsd = counterAmount.toDouble() * counterCexPrice!;
         if (counterAmtUsd > receiveAmtUsd) {
           color = widget.order.action == Market.BUY
               ? Colors.green
@@ -312,8 +312,8 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
       }
     } else {
       final double receiveAmt =
-          widget.order.price.toDouble() * counterAmount.toDouble();
-      receiveStr = cutTrailingZeros(formatPrice(receiveAmt)) + ' ' + _coin;
+          widget.order.price!.toDouble() * counterAmount!.toDouble();
+      receiveStr = cutTrailingZeros(formatPrice(receiveAmt))! + ' ' + _coin!;
     }
 
     return Row(
@@ -324,7 +324,7 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
             text: receiveStr,
             style: Theme.of(context)
                 .textTheme
-                .caption
+                .caption!
                 .copyWith(color: color, fontSize: 11),
           ),
         ),

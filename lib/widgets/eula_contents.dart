@@ -8,7 +8,7 @@ class EULAContents extends StatelessWidget {
     return RichText(
       text: TextSpan(children: [
         TextSpan(
-            text: AppLocalizations.of(context)
+            text: AppLocalizations.of(context)!
                 .eulaParagraphe1(appConfig.appName, appConfig.appCompanyLong),
             style: Theme.of(context).textTheme.bodyText2),
         TextSpan(text: '\n\n'),

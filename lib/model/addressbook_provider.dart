@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import '../utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,31 +11,30 @@ class AddressBookProvider extends ChangeNotifier {
     _init();
   }
 
-  String clipboard;
+  String? clipboard;
   bool _initialized = false;
 
   Future<void> init() async {
     if (!_initialized) await _init();
   }
 
-  Future<List<Contact>> get contacts async {
+  Future<List<Contact>?> get contacts async {
     await pauseUntil(() => _contacts != null);
     return _contacts;
   }
 
-  Contact contactByUid(String uid) {
-    return _contacts.firstWhere(
+  Contact? contactByUid(String? uid) {
+    return _contacts!.firstWhereOrNull(
       (Contact c) => c.uid == uid,
-      orElse: () => null,
     );
   }
 
-  Contact contactByAddress(String address) {
+  Contact? contactByAddress(String? address) {
     if (_contacts == null) return null;
 
-    Contact found;
-    for (Contact contact in _contacts) {
-      contact.addresses?.forEach((String abbr, String value) {
+    Contact? found;
+    for (Contact contact in _contacts!) {
+      contact.addresses?.forEach((String? abbr, String value) {
         if (value == address) found = contact;
       });
     }
@@ -43,7 +43,7 @@ class AddressBookProvider extends ChangeNotifier {
   }
 
   void updateContact(Contact contact) {
-    final Contact existing = contactByUid(contact.uid);
+    final Contact? existing = contactByUid(contact.uid);
 
     if (existing != null) {
       existing.name = contact.name;
@@ -54,11 +54,11 @@ class AddressBookProvider extends ChangeNotifier {
   }
 
   Contact createContact({
-    String name,
-    Map<String, String> addresses,
+    String? name,
+    Map<String?, String>? addresses,
   }) {
     final Contact contact = Contact.create(name, addresses);
-    _contacts.add(contact);
+    _contacts!.add(contact);
     _saveContacts();
     notifyListeners();
 
@@ -67,19 +67,19 @@ class AddressBookProvider extends ChangeNotifier {
 
   void addContact(Contact contact) {
     if (contactByUid(contact.uid) != null) return;
-    _contacts.add(contact);
+    _contacts!.add(contact);
     _saveContacts();
     notifyListeners();
   }
 
-  void deleteContact(Contact contact) {
-    _contacts.remove(contact);
+  void deleteContact(Contact? contact) {
+    _contacts!.remove(contact);
     _saveContacts();
     notifyListeners();
   }
 
-  SharedPreferences _prefs;
-  List<Contact> _contacts;
+  late SharedPreferences _prefs;
+  List<Contact>? _contacts;
 
   Future<void> _init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -88,7 +88,7 @@ class AddressBookProvider extends ChangeNotifier {
   }
 
   void _loadContacts() {
-    String saved;
+    String? saved;
     try {
       saved = _prefs.getString('addressBook');
     } catch (_) {}
@@ -111,7 +111,7 @@ class AddressBookProvider extends ChangeNotifier {
   void _saveContacts() {
     final List<dynamic> json = <dynamic>[];
 
-    for (Contact contact in _contacts) {
+    for (Contact contact in _contacts!) {
       json.add(contact.toJson());
     }
 
@@ -127,10 +127,10 @@ class Contact {
   });
 
   factory Contact.fromJson(Map<String, dynamic> json) {
-    Map<String, String> addresses;
+    Map<String, String>? addresses;
     json['addresses']?.forEach((String key, dynamic value) {
       addresses ??= {};
-      addresses[key] = value;
+      addresses![key] = value;
     });
 
     return Contact(
@@ -141,8 +141,8 @@ class Contact {
   }
 
   factory Contact.create(
-    String name,
-    Map<String, String> addresses,
+    String? name,
+    Map<String?, String>? addresses,
   ) =>
       Contact(
         name: name,
@@ -151,10 +151,10 @@ class Contact {
       );
 
   Map<String, dynamic> toJson() {
-    Map<String, String> addresses;
-    this.addresses?.forEach((String key, String value) {
+    Map<String?, String>? addresses;
+    this.addresses?.forEach((String? key, String value) {
       addresses ??= {};
-      addresses[key] = value;
+      addresses![key] = value;
     });
 
     return <String, dynamic>{
@@ -164,7 +164,7 @@ class Contact {
     };
   }
 
-  String uid;
-  String name;
-  Map<String, String> addresses;
+  String? uid;
+  String? name;
+  Map<String?, String>? addresses;
 }

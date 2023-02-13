@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScan extends StatefulWidget {
-  const QRScan({Key key}) : super(key: key);
+  const QRScan({Key? key}) : super(key: key);
 
   @override
   State<QRScan> createState() => _QRScanState();
@@ -26,7 +26,7 @@ class _QRScanState extends State<QRScan> {
               debugPrint('Failed to scan Barcode');
             } else {
               gotQR = true;
-              final String code = barcode.rawValue;
+              final String? code = barcode.rawValue;
               if (code != null) {
                 debugPrint('Barcode found! $code');
                 ScaffoldMessenger.of(context).showSnackBar(

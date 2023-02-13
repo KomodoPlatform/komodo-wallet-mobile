@@ -11,23 +11,23 @@ import 'package:provider/provider.dart';
 
 class AddressBookPage extends StatefulWidget {
   const AddressBookPage({
-    Key key,
+    Key? key,
     this.coin,
     this.shouldPop = false,
     this.contact,
   }) : super(key: key);
 
-  final Coin coin;
+  final Coin? coin;
   final bool shouldPop;
-  final Contact contact;
+  final Contact? contact;
 
   @override
   _AddressBookState createState() => _AddressBookState();
 }
 
 class _AddressBookState extends State<AddressBookPage> {
-  AddressBookProvider provider;
-  Coin coin;
+  late AddressBookProvider provider;
+  Coin? coin;
   bool isSearchOpen = false;
   String searchPhrase = '';
 
@@ -47,8 +47,8 @@ class _AddressBookState extends State<AddressBookPage> {
         appBar: AppBar(
           title: Text(
             widget.contact == null
-                ? AppLocalizations.of(context).addressBookTitle
-                : AppLocalizations.of(context).contactTitle,
+                ? AppLocalizations.of(context)!.addressBookTitle
+                : AppLocalizations.of(context)!.contactTitle,
             key: const Key('addressbook-title'),
           ),
         ),
@@ -61,20 +61,20 @@ class _AddressBookState extends State<AddressBookPage> {
               child: FutureBuilder(
                 future: provider.contacts,
                 builder: (BuildContext context,
-                    AsyncSnapshot<List<Contact>> snapshot) {
+                    AsyncSnapshot<List<Contact>?> snapshot) {
                   if (!snapshot.hasData || snapshot.data == null) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  final List<Contact> contacts = List.from(snapshot.data);
+                  final List<Contact> contacts = List.from(snapshot.data!);
                   contacts.sort((Contact a, Contact b) {
-                    return a.name.compareTo(b.name);
+                    return a.name!.compareTo(b.name!);
                   });
 
                   if (contacts.isEmpty)
                     return Center(
                         child: Text(
-                            AppLocalizations.of(context).addressBookEmpty));
+                            AppLocalizations.of(context)!.addressBookEmpty));
 
                   return ContactsList(
                     contacts,
@@ -160,8 +160,8 @@ class _AddressBookState extends State<AddressBookPage> {
   Widget _buildActiveFilters() {
     if (coin == null) return SizedBox();
 
-    String title = coin.abbr;
-    switch (coin.type) {
+    String? title = coin!.abbr;
+    switch (coin!.type) {
       case CoinType.smartChain:
         title = 'KMD & SmartChains';
         break;
@@ -208,7 +208,7 @@ class _AddressBookState extends State<AddressBookPage> {
         title = 'SLP tokens';
         break;
       case CoinType.utxo:
-        if (coin.abbr == 'QTUM') title = 'QTUM & QRC tokens';
+        if (coin!.abbr == 'QTUM') title = 'QTUM & QRC tokens';
         break;
     }
 
@@ -216,9 +216,9 @@ class _AddressBookState extends State<AddressBookPage> {
       padding: const EdgeInsets.all(12),
       child: Center(
         child: Text(
-          AppLocalizations.of(context).addressBookFilter(title),
+          AppLocalizations.of(context)!.addressBookFilter(title!),
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
+          style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 color: Theme.of(context).colorScheme.secondary,
               ),
         ),

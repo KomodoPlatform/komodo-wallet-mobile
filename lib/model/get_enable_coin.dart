@@ -20,20 +20,20 @@ class MmEnable {
         fallbackSwapContract: json['fallback_swap_contract'] ?? '',
       );
 
-  String userpass;
+  String? userpass;
   String method;
-  String coin;
-  List<String> urls;
-  String swapContractAddress;
-  String fallbackSwapContract;
-  bool txHistory;
+  String? coin;
+  List<String>? urls;
+  String? swapContractAddress;
+  String? fallbackSwapContract;
+  bool? txHistory;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass ?? '',
         'method': method ?? '',
         'coin': coin ?? '',
         'tx_history': txHistory ?? false,
-        'urls': List<dynamic>.from(urls.map<dynamic>((String x) => x)) ??
+        'urls': List<dynamic>.from(urls!.map<dynamic>((String x) => x)) ??
             <String>[],
         'swap_contract_address': swapContractAddress,
         'fallback_swap_contract': fallbackSwapContract,

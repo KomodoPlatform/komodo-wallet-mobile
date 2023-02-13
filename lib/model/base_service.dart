@@ -20,8 +20,8 @@ class BaseService {
         method: json['method'] ?? '',
       );
 
-  String userpass;
-  String method;
+  String? userpass;
+  String? method;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass ?? '',

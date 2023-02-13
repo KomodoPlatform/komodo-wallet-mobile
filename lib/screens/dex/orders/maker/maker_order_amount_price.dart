@@ -21,7 +21,7 @@ class MakerOrderAmtAndPrice extends StatefulWidget {
 }
 
 class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
-  CexProvider cexProvider;
+  CexProvider? cexProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
 
   List<TableRow> _buildBase() {
     final double filled =
-        getFill(widget.order) * double.parse(widget.order.baseAmount);
+        getFill(widget.order) * double.parse(widget.order.baseAmount!);
 
     return [
       TableRow(children: [
@@ -52,7 +52,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(right: 6),
           child: Text(
-            AppLocalizations.of(context).makerDetailsSell + ':',
+            AppLocalizations.of(context)!.makerDetailsSell + ':',
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
@@ -70,7 +70,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    widget.order.base,
+                    widget.order.base!,
                     style: TextStyle(fontSize: 20),
                   ),
                   const SizedBox(width: 12),
@@ -78,15 +78,15 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                          cutTrailingZeros(double.parse(widget.order.baseAmount)
-                              .toStringAsFixed(appConfig.tradeFormPrecision)),
+                          cutTrailingZeros(double.parse(widget.order.baseAmount!)
+                              .toStringAsFixed(appConfig.tradeFormPrecision))!,
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       if (filled > 0)
                         Text(
                             cutTrailingZeros(
-                                (double.parse(widget.order.baseAmount) - filled)
+                                (double.parse(widget.order.baseAmount!) - filled)
                                     .toStringAsFixed(
-                                        appConfig.tradeFormPrecision)),
+                                        appConfig.tradeFormPrecision))!,
                             style: TextStyle(
                               fontSize: 10,
                             )),
@@ -104,7 +104,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
 
   Widget _buildMinVolume() {
     if (widget.order.minVolume == null) return SizedBox();
-    if (widget.order.minVolume <= 0.00777) return SizedBox();
+    if (widget.order.minVolume! <= 0.00777) return SizedBox();
 
     return Row(
       children: <Widget>[
@@ -117,9 +117,9 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
           child: Row(
             children: [
               Text(
-                '${AppLocalizations.of(context).orderDetailsMin} '
+                '${AppLocalizations.of(context)!.orderDetailsMin} '
                 '${widget.order.base} '
-                '${cutTrailingZeros(widget.order.minVolume.toStringAsFixed(appConfig.tradeFormPrecision))}',
+                '${cutTrailingZeros(widget.order.minVolume!.toStringAsFixed(appConfig.tradeFormPrecision))}',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
@@ -134,7 +134,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
 
   List<TableRow> _buildRel() {
     final double filled =
-        getFill(widget.order) * double.parse(widget.order.relAmount);
+        getFill(widget.order) * double.parse(widget.order.relAmount!);
 
     return [
       TableRow(children: [
@@ -143,7 +143,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(right: 6),
           child: Text(
-            AppLocalizations.of(context).makerDetailsFor + ':',
+            AppLocalizations.of(context)!.makerDetailsFor + ':',
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
@@ -158,7 +158,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
               ),
               const SizedBox(width: 4),
               Text(
-                widget.order.rel,
+                widget.order.rel!,
                 style: TextStyle(fontSize: 20),
               ),
               const SizedBox(width: 12),
@@ -166,15 +166,15 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    cutTrailingZeros(double.parse(widget.order.relAmount)
-                        .toStringAsFixed(appConfig.tradeFormPrecision)),
+                    cutTrailingZeros(double.parse(widget.order.relAmount!)
+                        .toStringAsFixed(appConfig.tradeFormPrecision))!,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   if (filled > 0)
                     Text(
                         cutTrailingZeros(
-                            (double.parse(widget.order.relAmount) - filled)
-                                .toStringAsFixed(appConfig.tradeFormPrecision)),
+                            (double.parse(widget.order.relAmount!) - filled)
+                                .toStringAsFixed(appConfig.tradeFormPrecision))!,
                         style: TextStyle(
                           fontSize: 10,
                         )),
@@ -195,7 +195,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
             height: 30,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text(AppLocalizations.of(context).makerDetailsPrice + ':',
+            child: Text(AppLocalizations.of(context)!.makerDetailsPrice + ':',
                 style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
@@ -203,9 +203,9 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
             child: Row(
               children: <Widget>[
                 Text(
-                  cutTrailingZeros((double.parse(widget.order.relAmount) /
-                          double.parse(widget.order.baseAmount))
-                      .toStringAsFixed(appConfig.tradeFormPrecision)),
+                  cutTrailingZeros((double.parse(widget.order.relAmount!) /
+                          double.parse(widget.order.baseAmount!))
+                      .toStringAsFixed(appConfig.tradeFormPrecision))!,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 6),
@@ -225,9 +225,9 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
             child: Row(
               children: <Widget>[
                 Text(
-                  cutTrailingZeros((double.parse(widget.order.baseAmount) /
-                          double.parse(widget.order.relAmount))
-                      .toStringAsFixed(appConfig.tradeFormPrecision)),
+                  cutTrailingZeros((double.parse(widget.order.baseAmount!) /
+                          double.parse(widget.order.relAmount!))
+                      .toStringAsFixed(appConfig.tradeFormPrecision))!,
                   style: const TextStyle(
                     fontSize: 13,
                   ),
@@ -247,15 +247,15 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
   }
 
   List<TableRow> _buildCexchangeRate() {
-    final double cexPrice = cexProvider.getCexRate(CoinsPair(
+    final double cexPrice = cexProvider!.getCexRate(CoinsPair(
           sell: Coin(abbr: widget.order.base),
           buy: Coin(abbr: widget.order.rel),
         )) ??
         0.0;
     if (cexPrice == 0) return [];
 
-    final double price = double.parse(widget.order.relAmount) /
-        double.parse(widget.order.baseAmount);
+    final double price = double.parse(widget.order.relAmount!) /
+        double.parse(widget.order.baseAmount!);
     double delta = (price - cexPrice) * 100 / cexPrice;
     if (delta < -99.99) delta = -99.99;
     if (delta > 99.99) delta = 99.99;
@@ -267,21 +267,21 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
     switch (sign) {
       case 1:
         {
-          message = AppLocalizations.of(context)
-              .orderDetailsExpedient(formatPrice(delta, 2));
+          message = AppLocalizations.of(context)!
+              .orderDetailsExpedient(formatPrice(delta, 2)!);
           color = Colors.green;
           break;
         }
       case -1:
         {
-          message = AppLocalizations.of(context)
-              .orderDetailsExpensive(formatPrice(delta, 2));
+          message = AppLocalizations.of(context)!
+              .orderDetailsExpensive(formatPrice(delta, 2)!);
           color = Colors.orange;
           break;
         }
       default:
         {
-          message = AppLocalizations.of(context).orderDetailsIdentical;
+          message = AppLocalizations.of(context)!.orderDetailsIdentical;
           color = Theme.of(context).brightness == Brightness.light
               ? cexColorLight.withAlpha(150)
               : cexColor.withAlpha(150);
@@ -298,11 +298,11 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
               children: <Widget>[
                 CexMarker(
                   context,
-                  color: Theme.of(context).textTheme.bodyText1.color,
+                  color: Theme.of(context).textTheme.bodyText1!.color,
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  AppLocalizations.of(context).cex,
+                  AppLocalizations.of(context)!.cex,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],

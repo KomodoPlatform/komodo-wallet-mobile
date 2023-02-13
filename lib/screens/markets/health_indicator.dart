@@ -12,10 +12,10 @@ class HealthIndicator extends StatelessWidget {
   });
 
   final int value;
-  final int min;
-  final int max;
-  final Color color;
-  final double size;
+  final int? min;
+  final int? max;
+  final Color? color;
+  final double? size;
 
   @override
   Widget build(BuildContext context) {

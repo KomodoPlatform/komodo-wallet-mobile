@@ -7,16 +7,16 @@ import '../../widgets/language_flag_icon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectLanguagePage extends StatefulWidget {
-  const SelectLanguagePage({Key key, this.currentLoc}) : super(key: key);
+  const SelectLanguagePage({Key? key, this.currentLoc}) : super(key: key);
 
-  final Locale currentLoc;
+  final Locale? currentLoc;
 
   @override
   _SelectLanguagePageState createState() => _SelectLanguagePageState();
 }
 
 class _SelectLanguagePageState extends State<SelectLanguagePage> {
-  Locale _currentLoc;
+  Locale? _currentLoc;
   @override
   void initState() {
     super.initState();
@@ -29,7 +29,7 @@ class _SelectLanguagePageState extends State<SelectLanguagePage> {
       context: context,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).settingLanguageTitle),
+          title: Text(AppLocalizations.of(context)!.settingLanguageTitle),
         ),
         body: ListView(
           children: mainBloc.supportedLocales
@@ -57,12 +57,12 @@ class _SelectLanguagePageState extends State<SelectLanguagePage> {
 
 class BuildItemLanguage extends StatefulWidget {
   const BuildItemLanguage(
-      {Key key, this.locale, this.currentLoc, this.onChange})
+      {Key? key, this.locale, this.currentLoc, this.onChange})
       : super(key: key);
 
-  final Locale locale;
-  final Locale currentLoc;
-  final Function(Locale) onChange;
+  final Locale? locale;
+  final Locale? currentLoc;
+  final Function(Locale?)? onChange;
 
   @override
   _BuildItemLanguageState createState() => _BuildItemLanguageState();
@@ -80,13 +80,13 @@ class _BuildItemLanguageState extends State<BuildItemLanguage> {
   Widget build(BuildContext context) {
     return ListTile(
         onTap: () {
-          widget.onChange(widget.locale);
+          widget.onChange!(widget.locale);
         },
-        leading: Radio<Locale>(
+        leading: Radio<Locale?>(
           value: widget.locale,
           groupValue: widget.currentLoc,
-          onChanged: (Locale value) {
-            widget.onChange(value);
+          onChanged: (Locale? value) {
+            widget.onChange!(value);
           },
         ),
         title: Row(
@@ -94,7 +94,7 @@ class _BuildItemLanguageState extends State<BuildItemLanguage> {
             LanguageFlagIcon(loc: widget.locale, size: 32),
             SizedBox(width: 16),
             Text(settingsBloc.getNameLanguage(
-                context, widget.locale.languageCode)),
+                context, widget.locale!.languageCode)),
           ],
         ));
   }

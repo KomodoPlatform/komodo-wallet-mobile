@@ -37,7 +37,7 @@ class _WelcomePageState extends State<WelcomePage> {
               ? 'assets/svg_light/welcome_wallet.svg'
               : 'assets/svg/welcome_wallet.svg'),
           Text(
-            AppLocalizations.of(context).welcomeTitle,
+            AppLocalizations.of(context)!.welcomeTitle,
             key: const Key('titleCreateWallet'),
             style: Theme.of(context).textTheme.headline5,
             textAlign: TextAlign.center,
@@ -45,22 +45,22 @@ class _WelcomePageState extends State<WelcomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(AppLocalizations.of(context).to + ' ',
+              Text(AppLocalizations.of(context)!.to + ' ',
                   style: Theme.of(context).textTheme.subtitle1),
               Text(
                 toInitialUpper(appConfig.appName) + ' ',
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle1
+                    .subtitle1!
                     .copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
-              Text(AppLocalizations.of(context).welcomeWallet,
+              Text(AppLocalizations.of(context)!.welcomeWallet,
                   style: Theme.of(context).textTheme.subtitle1),
             ],
           ),
           SizedBox(height: 24),
           Text(
-            AppLocalizations.of(context)
+            AppLocalizations.of(context)!
                 .welcomeInfo(toInitialUpper(appConfig.appName)),
             style: Theme.of(context).textTheme.bodyText1,
           ),
@@ -70,38 +70,38 @@ class _WelcomePageState extends State<WelcomePage> {
             maxLength: 40,
             controller: controller,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (String str) {
-              if (str.isEmpty) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
+            validator: (String? str) {
+              if (str!.isEmpty) {
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
                   setState(() {
                     isButtonLoginEnabled = false;
                   });
                 });
-                return AppLocalizations.of(context).emptyWallet;
+                return AppLocalizations.of(context)!.emptyWallet;
               }
               if (str.length > 40) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
                   setState(() {
                     isButtonLoginEnabled = false;
                   });
                 });
-                return AppLocalizations.of(context).walletMaxChar;
+                return AppLocalizations.of(context)!.walletMaxChar;
               }
 
               final allWallets = walletBloc.wallets;
               if (allWallets != null && allWallets.isNotEmpty) {
-                final List<String> walletsNames =
+                final List<String?> walletsNames =
                     allWallets.map((w) => w.name).toList();
                 if (walletsNames.contains(str)) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                  WidgetsBinding.instance!.addPostFrameCallback((_) {
                     setState(() {
                       isButtonLoginEnabled = false;
                     });
                   });
-                  return AppLocalizations.of(context).walletInUse;
+                  return AppLocalizations.of(context)!.walletInUse;
                 }
               }
-              WidgetsBinding.instance.addPostFrameCallback((_) {
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
                 setState(() {
                   isButtonLoginEnabled = true;
                 });
@@ -112,13 +112,13 @@ class _WelcomePageState extends State<WelcomePage> {
             autocorrect: false,
             enableInteractiveSelection: true,
             decoration: InputDecoration(
-              hintText: AppLocalizations.of(context).hintNameYourWallet,
+              hintText: AppLocalizations.of(context)!.hintNameYourWallet,
             ),
           ),
           SizedBox(height: 24),
           PrimaryButton(
             onPressed: isButtonLoginEnabled ? () => _newPage() : null,
-            text: AppLocalizations.of(context).welcomeLetSetUp,
+            text: AppLocalizations.of(context)!.welcomeLetSetUp,
             key: const Key('welcome-setup'),
           ),
         ],

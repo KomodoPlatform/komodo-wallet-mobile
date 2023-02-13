@@ -18,9 +18,9 @@ class GetPrivKey {
         coin: json['coin'] ?? '',
       );
 
-  String userpass;
+  String? userpass;
   String method;
-  String coin;
+  String? coin;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass ?? '',

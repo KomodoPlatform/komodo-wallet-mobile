@@ -7,19 +7,19 @@ import '../../../../../../utils/utils.dart';
 import '../../../../../../widgets/custom_simple_dialog.dart';
 
 void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
-  final String baseCoin = swapBloc.sellCoinBalance.coin.abbr;
+  final String? baseCoin = swapBloc.sellCoinBalance!.coin!.abbr;
 
   dialogBloc.dialog = showDialog<void>(
       context: context,
       builder: (context) {
         return CustomSimpleDialog(
           title: Text(
-            AppLocalizations.of(context).insufficientTitle,
+            AppLocalizations.of(context)!.insufficientTitle,
             maxLines: 1,
             style: TextStyle(fontSize: 22),
           ),
           children: [
-            Text('${AppLocalizations.of(context).insufficientText}:'),
+            Text('${AppLocalizations.of(context)!.insufficientText}:'),
             SizedBox(height: 10),
             Row(
               children: [
@@ -38,7 +38,7 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
                       SizedBox(width: 4),
                       Text(
                           '${ask.coin} ' +
-                              cutTrailingZeros(formatPrice(ask.minVolume)),
+                              cutTrailingZeros(formatPrice(ask.minVolume))!,
                           style: TextStyle(
                             color: Theme.of(context).primaryColorDark,
                             fontWeight: FontWeight.w400,
@@ -56,7 +56,7 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
                   backgroundImage: AssetImage(getCoinIconPath(baseCoin)),
                 ),
                 SizedBox(width: 3),
-                Text(baseCoin,
+                Text(baseCoin!,
                     style: TextStyle(
                       fontSize: 12,
                       color: Theme.of(context).disabledColor,
@@ -64,7 +64,7 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
                 SizedBox(width: 2),
                 Text(
                     cutTrailingZeros(formatPrice(
-                        ask.minVolume.toDouble() * double.parse(ask.price))),
+                        ask.minVolume!.toDouble() * double.parse(ask.price!)))!,
                     style: TextStyle(
                       fontSize: 12,
                       color: Theme.of(context).disabledColor,
@@ -77,7 +77,7 @@ void openNotEnoughVolumeDialog(BuildContext context, Ask ask) {
               children: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text(AppLocalizations.of(context).close),
+                  child: Text(AppLocalizations.of(context)!.close),
                 ),
               ],
             ),

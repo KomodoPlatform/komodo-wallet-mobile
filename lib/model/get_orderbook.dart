@@ -24,10 +24,10 @@ class GetOrderbook {
         rel: json['rel'] ?? '',
       );
 
-  String userpass;
+  String? userpass;
   String method;
-  String base;
-  String rel;
+  String? base;
+  String? rel;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass ?? '',

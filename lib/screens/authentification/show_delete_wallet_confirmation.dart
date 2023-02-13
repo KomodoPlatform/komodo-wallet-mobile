@@ -7,7 +7,7 @@ import '../../generic_blocs/dialog_bloc.dart';
 import '../../widgets/custom_simple_dialog.dart';
 
 Future<void> showDeleteWalletConfirmation(BuildContext context,
-    {Wallet wallet, String password}) async {
+    {Wallet? wallet, String? password}) async {
   wallet ??= walletBloc.currentWallet;
 
   dialogBloc.dialog = showDialog<dynamic>(
@@ -23,10 +23,10 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
                 height: 16,
               ),
               Text(
-                AppLocalizations.of(context).deleteWallet.toUpperCase(),
+                AppLocalizations.of(context)!.deleteWallet.toUpperCase(),
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
+                    .headline6!
                     .copyWith(color: Theme.of(context).errorColor),
               ),
               const SizedBox(
@@ -39,29 +39,29 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
               textAlign: TextAlign.center,
               text: TextSpan(children: <InlineSpan>[
                 TextSpan(
-                    text: AppLocalizations.of(context).settingDialogSpan1,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    text: AppLocalizations.of(context)!.settingDialogSpan1,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: Theme.of(context)
                             .textTheme
-                            .bodyText2
-                            .color
+                            .bodyText2!
+                            .color!
                             .withOpacity(0.8))),
                 TextSpan(
-                    text: walletBloc.currentWallet.name,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    text: walletBloc.currentWallet!.name,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: Theme.of(context)
                             .textTheme
-                            .bodyText2
-                            .color
+                            .bodyText2!
+                            .color!
                             .withOpacity(0.8),
                         fontWeight: FontWeight.bold)),
                 TextSpan(
-                    text: AppLocalizations.of(context).settingDialogSpan2,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    text: AppLocalizations.of(context)!.settingDialogSpan2,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: Theme.of(context)
                             .textTheme
-                            .bodyText2
-                            .color
+                            .bodyText2!
+                            .color!
                             .withOpacity(0.8))),
               ]),
             ),
@@ -73,29 +73,29 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <InlineSpan>[
                   TextSpan(
-                      text: AppLocalizations.of(context).settingDialogSpan3,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      text: AppLocalizations.of(context)!.settingDialogSpan3,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: Theme.of(context)
                               .textTheme
-                              .bodyText2
-                              .color
+                              .bodyText2!
+                              .color!
                               .withOpacity(0.8))),
                   TextSpan(
-                      text: AppLocalizations.of(context).settingDialogSpan4,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      text: AppLocalizations.of(context)!.settingDialogSpan4,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: Theme.of(context)
                               .textTheme
-                              .bodyText2
-                              .color
+                              .bodyText2!
+                              .color!
                               .withOpacity(0.8),
                           fontWeight: FontWeight.bold)),
                   TextSpan(
-                      text: AppLocalizations.of(context).settingDialogSpan5,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      text: AppLocalizations.of(context)!.settingDialogSpan5,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: Theme.of(context)
                               .textTheme
-                              .bodyText2
-                              .color
+                              .bodyText2!
+                              .color!
                               .withOpacity(0.8))),
                 ]),
               ),
@@ -109,7 +109,7 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
                 children: <Widget>[
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text(AppLocalizations.of(context).cancel),
+                    child: Text(AppLocalizations.of(context)!.cancel),
                   ),
                   const SizedBox(
                     width: 12,
@@ -121,7 +121,7 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
                         : () async {
                             setState(() => loading = true);
                             await walletBloc.deleteSeedPhrase(password, wallet);
-                            await walletBloc.deleteWallet(wallet);
+                            await walletBloc.deleteWallet(wallet!);
                             await walletBloc.getWalletsSaved();
 
                             Navigator.of(context).pop();
@@ -139,7 +139,7 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
                           ),
                           const SizedBox(width: 4),
                         },
-                        Text(AppLocalizations.of(context).delete),
+                        Text(AppLocalizations.of(context)!.delete),
                       ],
                     ),
                   )

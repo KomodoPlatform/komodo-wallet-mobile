@@ -11,8 +11,8 @@ WalletSecuritySettingsProvider walletSecuritySettingsProvider =
 class WalletSecuritySettingsProvider extends ChangeNotifier {
   // MRC: Needed to support using in Blocs
   // Should prefer using Provider when possible.
-  WalletSecuritySettings _walletSecuritySettings = WalletSecuritySettings();
-  SharedPreferences _prefs;
+  WalletSecuritySettings? _walletSecuritySettings = WalletSecuritySettings();
+  late SharedPreferences _prefs;
   bool _isInitialized = false;
 
   bool get isInitialized => _isInitialized;
@@ -123,14 +123,14 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
     await pauseUntil(() => _isInitialized);
     _walletSecuritySettings = await Db.getCurrentWalletSecuritySettings();
 
-    final pinProtection = _walletSecuritySettings.activatePinProtection;
-    final bioProtection = _walletSecuritySettings.activateBioProtection;
-    final camoEnabled = _walletSecuritySettings.enableCamo;
-    final camoActive = _walletSecuritySettings.isCamoActive;
-    final camoFraction = _walletSecuritySettings.camoFraction;
-    final camoBalance = _walletSecuritySettings.camoBalance;
-    final camoSessionStartedAt = _walletSecuritySettings.camoSessionStartedAt;
-    final logOutOnExitList = _walletSecuritySettings.logOutOnExit;
+    final pinProtection = _walletSecuritySettings!.activatePinProtection;
+    final bioProtection = _walletSecuritySettings!.activateBioProtection;
+    final camoEnabled = _walletSecuritySettings!.enableCamo;
+    final camoActive = _walletSecuritySettings!.isCamoActive;
+    final camoFraction = _walletSecuritySettings!.camoFraction;
+    final camoBalance = _walletSecuritySettings!.camoBalance;
+    final camoSessionStartedAt = _walletSecuritySettings!.camoSessionStartedAt;
+    final logOutOnExitList = _walletSecuritySettings!.logOutOnExit;
 
     await _prefs.setBool('switch_pin', pinProtection);
     await _prefs.setBool('switch_pin_biometric', bioProtection);
@@ -144,16 +144,16 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   }
 
   Future<void> _updateDb({bool allWallets = false}) async {
-    await Db.updateWalletSecuritySettings(_walletSecuritySettings,
+    await Db.updateWalletSecuritySettings(_walletSecuritySettings!,
         allWallets: allWallets);
   }
 
   bool get activatePinProtection =>
       _prefs.getBool('switch_pin') ??
-      _walletSecuritySettings.activatePinProtection;
+      _walletSecuritySettings!.activatePinProtection;
 
   set activatePinProtection(bool v) {
-    _walletSecuritySettings.activatePinProtection = v;
+    _walletSecuritySettings!.activatePinProtection = v;
     _prefs.setBool('switch_pin', v);
 
     _updateDb().then((value) => notifyListeners());
@@ -161,20 +161,20 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
 
   bool get logOutOnExit =>
       _prefs.getBool('switch_pin_log_out_on_exit') ??
-      _walletSecuritySettings.logOutOnExit;
+      _walletSecuritySettings!.logOutOnExit;
 
   set logOutOnExit(bool v) {
-    _walletSecuritySettings.logOutOnExit = v;
+    _walletSecuritySettings!.logOutOnExit = v;
     _prefs.setBool('switch_pin_log_out_on_exit', v);
     _updateDb().then((value) => notifyListeners());
   }
 
   bool get activateBioProtection =>
       _prefs.getBool('switch_pin_biometric') ??
-      _walletSecuritySettings.activateBioProtection;
+      _walletSecuritySettings!.activateBioProtection;
 
   set activateBioProtection(bool v) {
-    _walletSecuritySettings.activateBioProtection = v;
+    _walletSecuritySettings!.activateBioProtection = v;
     _prefs.setBool('switch_pin_biometric', v);
 
     _updateDb().then((value) => notifyListeners());
@@ -189,10 +189,10 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   }
 
   bool get enableCamo =>
-      _prefs.getBool('isCamoEnabled') ?? _walletSecuritySettings.enableCamo;
+      _prefs.getBool('isCamoEnabled') ?? _walletSecuritySettings!.enableCamo;
 
   set enableCamo(bool v) {
-    _walletSecuritySettings.enableCamo = v;
+    _walletSecuritySettings!.enableCamo = v;
     _prefs.setBool('isCamoEnabled', v);
 
     _updateDb().then((value) => notifyListeners());
@@ -207,20 +207,20 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   }
 
   int get camoFraction =>
-      _prefs.getInt('camoFraction') ?? _walletSecuritySettings.camoFraction;
+      _prefs.getInt('camoFraction') ?? _walletSecuritySettings!.camoFraction!;
 
   set camoFraction(int v) {
-    _walletSecuritySettings.camoFraction = v;
+    _walletSecuritySettings!.camoFraction = v;
     _prefs.setInt('camoFraction', v);
 
     _updateDb().then((value) => notifyListeners());
   }
 
-  String get camoBalance =>
-      _prefs.getString('camoBalance') ?? _walletSecuritySettings.camoBalance;
+  String? get camoBalance =>
+      _prefs.getString('camoBalance') ?? _walletSecuritySettings!.camoBalance;
 
-  set camoBalance(String v) {
-    _walletSecuritySettings.camoBalance = v;
+  set camoBalance(String? v) {
+    _walletSecuritySettings!.camoBalance = v;
     if (v == null) {
       _prefs.remove('camoBalance');
     } else {
@@ -231,10 +231,10 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
 
   int get camoSessionStartedAt =>
       _prefs.getInt('camoSessionStartedAt') ??
-      _walletSecuritySettings.camoSessionStartedAt;
+      _walletSecuritySettings!.camoSessionStartedAt!;
 
   set camoSessionStartedAt(int v) {
-    _walletSecuritySettings.camoSessionStartedAt = v;
+    _walletSecuritySettings!.camoSessionStartedAt = v;
     _prefs.setInt('camoSessionStartedAt', v);
 
     _updateDb().then((value) => notifyListeners());

@@ -7,7 +7,7 @@ import '../../../generic_blocs/dialog_bloc.dart';
 import '../../../model/coin.dart';
 import '../../../utils/utils.dart';
 
-void showCopyDialog(BuildContext mContext, String address, Coin coin) {
+void showCopyDialog(BuildContext mContext, String? address, Coin? coin) {
   dialogBloc.dialog = showDialog<dynamic>(
     context: mContext,
     builder: (BuildContext context) {
@@ -26,7 +26,7 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
                     child: QrImage(
                       foregroundColor: Colors.black,
                       backgroundColor: Colors.white,
-                      data: address,
+                      data: address!,
                     ),
                   ),
                 ),
@@ -64,7 +64,7 @@ void showCopyDialog(BuildContext mContext, String address, Coin coin) {
                     ElevatedButton(
                       key: Key('close-dialog'),
                       onPressed: () => Navigator.of(context).pop(),
-                      child: Text(AppLocalizations.of(context).close),
+                      child: Text(AppLocalizations.of(context)!.close),
                     ),
                   ],
                 ),

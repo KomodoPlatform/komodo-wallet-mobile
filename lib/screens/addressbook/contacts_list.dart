@@ -8,7 +8,7 @@ import '../addressbook/contact_list_item.dart';
 class ContactsList extends StatefulWidget {
   const ContactsList(
     this.contacts, {
-    Key key,
+    Key? key,
     this.shouldPop = false,
     this.coin,
     this.contact,
@@ -17,9 +17,9 @@ class ContactsList extends StatefulWidget {
 
   final List<Contact> contacts;
   final bool shouldPop;
-  final Coin coin;
-  final Contact contact;
-  final String searchPhrase;
+  final Coin? coin;
+  final Contact? contact;
+  final String? searchPhrase;
 
   @override
   _ContactsListState createState() => _ContactsListState();
@@ -32,7 +32,7 @@ class _ContactsListState extends State<ContactsList> {
 
     if (list.isEmpty)
       return Center(
-        child: Text(AppLocalizations.of(context).contactNotFound),
+        child: Text(AppLocalizations.of(context)!.contactNotFound),
       );
 
     return ListView(
@@ -48,7 +48,7 @@ class _ContactsListState extends State<ContactsList> {
         : widget.contacts;
 
     String indexLetter = '';
-    List<Widget> indexBlock;
+    List<Widget>? indexBlock;
 
     for (Contact contact in contacts) {
       if (widget.contact != null && contact != widget.contact) {
@@ -60,10 +60,10 @@ class _ContactsListState extends State<ContactsList> {
       }
 
       final bool shouldCreateBlock =
-          contact.name[0] != indexLetter || widget.searchPhrase != '';
+          contact.name![0] != indexLetter || widget.searchPhrase != '';
 
       if (shouldCreateBlock) {
-        indexLetter = contact.name[0];
+        indexLetter = contact.name![0];
         _addBlockToList(indexBlock, list);
         indexBlock = [];
 
@@ -76,7 +76,7 @@ class _ContactsListState extends State<ContactsList> {
               padding: const EdgeInsets.only(left: 24),
               child: Text(
                 indexLetter,
-                style: Theme.of(context).textTheme.headline5.copyWith(
+                style: Theme.of(context).textTheme.headline5!.copyWith(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
               ),
@@ -85,7 +85,7 @@ class _ContactsListState extends State<ContactsList> {
         }
       }
 
-      indexBlock.add(ContactListItem(
+      indexBlock!.add(ContactListItem(
         contact,
         shouldPop: widget.shouldPop,
         coin: widget.coin,
@@ -99,24 +99,24 @@ class _ContactsListState extends State<ContactsList> {
   }
 
   List<Contact> _getContactsContainingCoinAddress() {
-    final Coin coin = widget.coin;
+    final Coin? coin = widget.coin;
     if (coin == null) return widget.contacts;
 
     return widget.contacts.where((contact) {
-      if (contact.addresses == null || contact.addresses.isEmpty) {
+      if (contact.addresses == null || contact.addresses!.isEmpty) {
         return false;
       }
-      if (contact.addresses.containsKey(coin.abbr)) {
+      if (contact.addresses!.containsKey(coin.abbr)) {
         return true;
       }
 
       if (coin.type == CoinType.smartChain &&
-          contact.addresses.containsKey('KMD')) {
+          contact.addresses!.containsKey('KMD')) {
         return true;
       }
 
-      final String platform = coin.protocol?.protocolData?.platform;
-      if (platform != null && contact.addresses.containsKey(platform)) {
+      final String? platform = coin.protocol?.protocolData?.platform;
+      if (platform != null && contact.addresses!.containsKey(platform)) {
         return true;
       }
 
@@ -124,7 +124,7 @@ class _ContactsListState extends State<ContactsList> {
     }).toList();
   }
 
-  void _addBlockToList(List<Widget> block, List<Widget> list) {
+  void _addBlockToList(List<Widget>? block, List<Widget> list) {
     if (block == null || block.isEmpty) return;
 
     final List<Widget> blockList = [];
@@ -162,8 +162,8 @@ class _ContactsListState extends State<ContactsList> {
   }
 
   bool _isRelevant(Contact contact) {
-    return contact.name
+    return contact.name!
         .toLowerCase()
-        .contains(widget.searchPhrase.toLowerCase());
+        .contains(widget.searchPhrase!.toLowerCase());
   }
 }

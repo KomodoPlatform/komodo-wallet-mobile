@@ -16,29 +16,29 @@ import 'package:provider/provider.dart';
 class BuildOrderDetails extends StatefulWidget {
   const BuildOrderDetails(this.order, {this.sellAmount});
 
-  final Ask order;
-  final Rational sellAmount;
+  final Ask? order;
+  final Rational? sellAmount;
 
   @override
   _BuildOrderDetailsState createState() => _BuildOrderDetailsState();
 }
 
 class _BuildOrderDetailsState extends State<BuildOrderDetails> {
-  OrderBookProvider _orderBookProvider;
-  AddressBookProvider _addressBookProvider;
-  CexProvider _cexProvider;
-  bool _isAsk;
-  CoinsPair _activePair;
-  Contact _contact;
+  OrderBookProvider? _orderBookProvider;
+  AddressBookProvider? _addressBookProvider;
+  CexProvider? _cexProvider;
+  late bool _isAsk;
+  CoinsPair? _activePair;
+  Contact? _contact;
 
   @override
   Widget build(BuildContext context) {
     _orderBookProvider ??= Provider.of<OrderBookProvider>(context);
     _addressBookProvider ??= Provider.of<AddressBookProvider>(context);
     _cexProvider ??= Provider.of<CexProvider>(context);
-    _contact = _addressBookProvider.contactByAddress(widget.order.address);
-    _activePair = _orderBookProvider.activePair;
-    _isAsk = _activePair.sell.abbr == widget.order.coin;
+    _contact = _addressBookProvider!.contactByAddress(widget.order!.address);
+    _activePair = _orderBookProvider!.activePair;
+    _isAsk = _activePair!.sell!.abbr == widget.order!.coin;
 
     return Container(
       width: double.infinity,
@@ -74,9 +74,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
   }
 
   Widget _buildOwnerWarning() {
-    final String orderAdress = widget.order.address;
+    final String orderAdress = widget.order!.address!;
     final String myAddress =
-        coinsBloc.getBalanceByAbbr(widget.order.coin)?.balance?.address;
+        coinsBloc.getBalanceByAbbr(widget.order!.coin)?.balance?.address!;
 
     if (orderAdress.toLowerCase() != myAddress.toLowerCase()) return SizedBox();
 
@@ -93,7 +93,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 color: _isAsk ? Colors.red : Colors.green,
               )),
           TextSpan(
-            text: AppLocalizations.of(context).ownOrder,
+            text: AppLocalizations.of(context)!.ownOrder,
             style: TextStyle(
                 color: _isAsk ? Colors.red : Colors.green, fontSize: 20),
           ),
@@ -110,7 +110,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 30,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text(AppLocalizations.of(context).orderDetailsPrice,
+            child: Text(AppLocalizations.of(context)!.orderDetailsPrice,
                 style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
@@ -119,14 +119,14 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
               children: <Widget>[
                 Text(
                   formatPrice(_isAsk
-                      ? widget.order.price
-                      : (1 / double.parse(widget.order.price)).toString()),
+                      ? widget.order!.price
+                      : (1 / double.parse(widget.order!.price!)).toString())!,
                   style: TextStyle(color: _isAsk ? Colors.red : Colors.green),
                 ),
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    '${_activePair.buy.abbr} / 1${_activePair.sell.abbr}',
+                    '${_activePair!.buy!.abbr} / 1${_activePair!.sell!.abbr}',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -145,8 +145,8 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
               children: <Widget>[
                 Text(
                   formatPrice(!_isAsk
-                      ? widget.order.price
-                      : (1 / double.parse(widget.order.price)).toString()),
+                      ? widget.order!.price
+                      : (1 / double.parse(widget.order!.price!)).toString())!,
                   style: const TextStyle(
                     fontSize: 13,
                   ),
@@ -154,7 +154,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                      '${_activePair.sell.abbr} / 1${_activePair.buy.abbr}',
+                      '${_activePair!.sell!.abbr} / 1${_activePair!.buy!.abbr}',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -171,10 +171,10 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
   }
 
   List<TableRow> _buildCexchangeRate() {
-    final double cexPrice = _cexProvider.getCexRate() ?? 0.0;
+    final double cexPrice = _cexProvider!.getCexRate() ?? 0.0;
     if (cexPrice == 0 || widget.sellAmount == null) return [];
 
-    final double orderPrice = 1 / double.parse(widget.order.price);
+    final double orderPrice = 1 / double.parse(widget.order!.price!);
     double delta = (orderPrice - cexPrice) * 100 / cexPrice;
     if (delta < -99.99) delta = -99.99;
     if (delta > 99.99) delta = 99.99;
@@ -184,19 +184,19 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
     switch (sign) {
       case 1:
         {
-          message = AppLocalizations.of(context)
-              .orderDetailsExpedient(formatPrice(delta, 2));
+          message = AppLocalizations.of(context)!
+              .orderDetailsExpedient(formatPrice(delta, 2)!);
           break;
         }
       case -1:
         {
-          message = AppLocalizations.of(context)
-              .orderDetailsExpensive(formatPrice(delta, 2));
+          message = AppLocalizations.of(context)!
+              .orderDetailsExpensive(formatPrice(delta, 2)!);
           break;
         }
       default:
         {
-          message = AppLocalizations.of(context).orderDetailsIdentical;
+          message = AppLocalizations.of(context)!.orderDetailsIdentical;
         }
     }
 
@@ -235,7 +235,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 40,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text(AppLocalizations.of(context).orderDetailsSells,
+            child: Text(AppLocalizations.of(context)!.orderDetailsSells,
                 style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
@@ -247,15 +247,15 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     CircleAvatar(
                       radius: 7,
                       backgroundImage: _isAsk
-                          ? AssetImage(getCoinIconPath(_activePair.sell.abbr))
-                          : AssetImage(getCoinIconPath(_activePair.buy.abbr)),
+                          ? AssetImage(getCoinIconPath(_activePair!.sell!.abbr))
+                          : AssetImage(getCoinIconPath(_activePair!.buy!.abbr)),
                     ),
                     const SizedBox(width: 4),
-                    Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
+                    Text(_isAsk ? _activePair!.sell!.abbr! : _activePair!.buy!.abbr!),
                     const SizedBox(width: 12),
                     Text(
-                      formatPrice(widget.order.maxvolume.toString()),
-                      style: Theme.of(context).textTheme.subtitle2.copyWith(
+                      formatPrice(widget.order!.maxvolume.toString())!,
+                      style: Theme.of(context).textTheme.subtitle2!.copyWith(
                             fontWeight: FontWeight.normal,
                           ),
                     ),
@@ -273,7 +273,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 40,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text(AppLocalizations.of(context).orderDetailsFor,
+            child: Text(AppLocalizations.of(context)!.orderDetailsFor,
                 style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
@@ -283,16 +283,16 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 CircleAvatar(
                   radius: 7,
                   backgroundImage: _isAsk
-                      ? AssetImage(getCoinIconPath(_activePair.buy.abbr))
-                      : AssetImage(getCoinIconPath(_activePair.sell.abbr)),
+                      ? AssetImage(getCoinIconPath(_activePair!.buy!.abbr))
+                      : AssetImage(getCoinIconPath(_activePair!.sell!.abbr)),
                 ),
                 const SizedBox(width: 4),
-                Text(_isAsk ? _activePair.buy.abbr : _activePair.sell.abbr),
+                Text(_isAsk ? _activePair!.buy!.abbr! : _activePair!.sell!.abbr!),
                 const SizedBox(width: 12),
                 Text(
                   formatPrice(
-                      '${widget.order.maxvolume.toDouble() * double.parse(widget.order.price)}'),
-                  style: Theme.of(context).textTheme.subtitle2.copyWith(
+                      '${widget.order!.maxvolume!.toDouble() * double.parse(widget.order!.price!)}')!,
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
                 ),
@@ -305,18 +305,18 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
   }
 
   bool _isEnoughVolume() {
-    if (widget.order.minVolume == null) return true;
+    if (widget.order!.minVolume == null) return true;
     if (widget.sellAmount == null) return true;
 
     final double myVolume =
-        widget.order.getReceiveAmount(widget.sellAmount).toDouble();
+        widget.order!.getReceiveAmount(widget.sellAmount!).toDouble();
 
-    return myVolume >= widget.order.minVolume.toDouble();
+    return myVolume >= widget.order!.minVolume!.toDouble();
   }
 
   Widget _buildMinVolume() {
-    if (widget.order.minVolume == null) return SizedBox();
-    if (widget.order.minVolume <= Rational.parse('0.00777')) return SizedBox();
+    if (widget.order!.minVolume == null) return SizedBox();
+    if (widget.order!.minVolume! <= Rational.parse('0.00777')) return SizedBox();
 
     return Row(
       children: <Widget>[
@@ -330,9 +330,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
           child: Row(
             children: [
               Text(
-                '${AppLocalizations.of(context).orderDetailsMin} '
-                '${widget.order.coin} '
-                '${cutTrailingZeros(formatPrice(widget.order.minVolume))}',
+                '${AppLocalizations.of(context)!.orderDetailsMin} '
+                '${widget.order!.coin} '
+                '${cutTrailingZeros(formatPrice(widget.order!.minVolume))}',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
@@ -360,7 +360,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 40,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text(AppLocalizations.of(context).orderDetailsReceive,
+            child: Text(AppLocalizations.of(context)!.orderDetailsReceive,
                 style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
@@ -372,17 +372,17 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     CircleAvatar(
                       radius: 7,
                       backgroundImage: _isAsk
-                          ? AssetImage(getCoinIconPath(_activePair.sell.abbr))
-                          : AssetImage(getCoinIconPath(_activePair.buy.abbr)),
+                          ? AssetImage(getCoinIconPath(_activePair!.sell!.abbr))
+                          : AssetImage(getCoinIconPath(_activePair!.buy!.abbr)),
                     ),
                     const SizedBox(width: 4),
-                    Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
+                    Text(_isAsk ? _activePair!.sell!.abbr! : _activePair!.buy!.abbr!),
                     const SizedBox(width: 12),
                     Text(
-                      cutTrailingZeros(widget.order
-                          .getReceiveAmount(widget.sellAmount)
-                          .toStringAsFixed(appConfig.tradeFormPrecision)),
-                      style: Theme.of(context).textTheme.subtitle2.copyWith(
+                      cutTrailingZeros(widget.order!
+                          .getReceiveAmount(widget.sellAmount!)
+                          .toStringAsFixed(appConfig.tradeFormPrecision))!,
+                      style: Theme.of(context).textTheme.subtitle2!.copyWith(
                             fontWeight: FontWeight.normal,
                           ),
                     ),
@@ -400,7 +400,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 40,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text(AppLocalizations.of(context).orderDetailsSpend,
+            child: Text(AppLocalizations.of(context)!.orderDetailsSpend,
                 style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
@@ -410,19 +410,19 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 CircleAvatar(
                   radius: 7,
                   backgroundImage: _isAsk
-                      ? AssetImage(getCoinIconPath(_activePair.buy.abbr))
-                      : AssetImage(getCoinIconPath(_activePair.sell.abbr)),
+                      ? AssetImage(getCoinIconPath(_activePair!.buy!.abbr))
+                      : AssetImage(getCoinIconPath(_activePair!.sell!.abbr)),
                 ),
                 const SizedBox(width: 4),
-                Text(_isAsk ? _activePair.buy.abbr : _activePair.sell.abbr),
+                Text(_isAsk ? _activePair!.buy!.abbr! : _activePair!.sell!.abbr!),
                 const SizedBox(width: 12),
                 Text(
-                  cutTrailingZeros((widget.order
-                              .getReceiveAmount(widget.sellAmount)
+                  cutTrailingZeros((widget.order!
+                              .getReceiveAmount(widget.sellAmount!)
                               .toDouble() *
-                          double.parse(widget.order.price))
-                      .toStringAsFixed(appConfig.tradeFormPrecision)),
-                  style: Theme.of(context).textTheme.subtitle2.copyWith(
+                          double.parse(widget.order!.price!))
+                      .toStringAsFixed(appConfig.tradeFormPrecision))!,
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
                 ),
@@ -442,7 +442,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 40,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text(AppLocalizations.of(context).orderDetailsAddress,
+            child: Text(AppLocalizations.of(context)!.orderDetailsAddress,
                 style: Theme.of(context).textTheme.bodyText1),
           ),
           _contact == null ? _buildAddressButton() : _buildContactButton(),
@@ -453,11 +453,11 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
 
   Widget _buildAddressButton() {
     return InkWell(
-      onTap: () => copyToClipBoard(context, widget.order.address),
+      onTap: () => copyToClipBoard(context, widget.order!.address),
       child: Container(
         padding: const EdgeInsets.only(left: 6, right: 12),
         height: 40,
-        child: truncateMiddle(widget.order.address),
+        child: truncateMiddle(widget.order!.address!),
       ),
     );
   }
@@ -483,7 +483,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             ),
             const SizedBox(width: 8),
             Text(
-              _contact.name,
+              _contact!.name!,
             )
           ],
         ),

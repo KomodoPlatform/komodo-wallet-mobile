@@ -20,11 +20,11 @@ class ExchangeRate extends StatefulWidget {
 
 class _ExchangeRateState extends State<ExchangeRate> {
   bool _showDetails = false;
-  String _buyAbbr;
-  String _sellAbbr;
-  double _rate;
+  String? _buyAbbr;
+  String? _sellAbbr;
+  double? _rate;
 
-  CexProvider _cexProvider;
+  CexProvider? _cexProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
                   : MainAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context).exchangeRate,
+                  AppLocalizations.of(context)!.exchangeRate,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
@@ -108,7 +108,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
   Widget _buildRateHeader() {
     if (_rate == null) return SizedBox();
 
-    final String exchangeRate = formatPrice(_rate);
+    final String? exchangeRate = formatPrice(_rate);
     return Row(
       children: [
         Text(
@@ -119,11 +119,11 @@ class _ExchangeRateState extends State<ExchangeRate> {
           '$exchangeRate ',
           style: Theme.of(context)
               .textTheme
-              .bodyText1
-              .copyWith(color: Theme.of(context).textTheme.bodyText2.color),
+              .bodyText1!
+              .copyWith(color: Theme.of(context).textTheme.bodyText2!.color),
         ),
         Text(
-          _buyAbbr,
+          _buyAbbr!,
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ],
@@ -131,7 +131,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
   }
 
   Widget _buildBackRate() {
-    final String exchangeRateBack = formatPrice(1 / _rate);
+    final String? exchangeRateBack = formatPrice(1 / _rate!);
 
     return Text(
       '1 $_buyAbbr = $exchangeRateBack $_sellAbbr',

@@ -7,9 +7,9 @@ class GetValidateAddress {
   });
 
   String method;
-  String userpass;
-  String address;
-  String coin;
+  String? userpass;
+  String? address;
+  String? coin;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

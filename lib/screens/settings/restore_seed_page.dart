@@ -17,7 +17,7 @@ class RestoreSeedPage extends StatefulWidget {
 class _RestoreSeedPageState extends State<RestoreSeedPage> {
   TextEditingController controllerSeed = TextEditingController();
   bool _isButtonDisabled = false;
-  bool _isLogin;
+  late bool _isLogin;
   bool _isSeedHidden = true;
   bool _checkBox = false;
 
@@ -39,7 +39,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            '${AppLocalizations.of(context).login[0].toUpperCase()}${AppLocalizations.of(context).login.substring(1)}'),
+            '${AppLocalizations.of(context)!.login[0].toUpperCase()}${AppLocalizations.of(context)!.login.substring(1)}'),
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.onBackground,
       ),
@@ -62,7 +62,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
 
   Widget _buildTitle() {
     return Text(
-      AppLocalizations.of(context).enterSeedPhrase,
+      AppLocalizations.of(context)!.enterSeedPhrase,
       style: Theme.of(context).textTheme.headline6,
       textAlign: TextAlign.center,
     );
@@ -88,7 +88,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
       maxLines: _isSeedHidden ? 1 : null,
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
-        hintText: AppLocalizations.of(context).exampleHintSeed,
+        hintText: AppLocalizations.of(context)!.exampleHintSeed,
         suffixIcon: PasswordVisibilityControl(
           onVisibilityChange: (bool isObscured) {
             if (mounted)
@@ -129,8 +129,8 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
     return CheckboxListTile(
       key: const Key('checkbox-custom-seed'),
       value: _checkBox,
-      onChanged: (bool data) async {
-        final bool confirmed = await _showCustomSeedWarning(data);
+      onChanged: (bool? data) async {
+        final bool confirmed = await _showCustomSeedWarning(data!);
         if (!confirmed) return;
         setState(() {
           _checkBox = !_checkBox;
@@ -140,7 +140,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
       controlAffinity: ListTileControlAffinity.leading,
       contentPadding: EdgeInsets.all(0),
       title: Text(
-        AppLocalizations.of(context).allowCustomSeed,
+        AppLocalizations.of(context)!.allowCustomSeed,
         style: Theme.of(context).textTheme.bodyText1,
       ),
     );
@@ -150,16 +150,16 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
     if (!value) return true;
 
     dialogBloc.dialog = Future<void>(() {});
-    final bool confirmed = await showDialog<bool>(
+    final bool? confirmed = await showDialog<bool>(
         context: context,
         builder: (context) {
           bool enabled = false;
           return StatefulBuilder(builder: (context, setState) {
             return CustomSimpleDialog(
-              title: Text(AppLocalizations.of(context).warning),
+              title: Text(AppLocalizations.of(context)!.warning),
               children: [
-                Text(AppLocalizations.of(context).customSeedWarning(
-                    AppLocalizations.of(context).iUnderstand)),
+                Text(AppLocalizations.of(context)!.customSeedWarning(
+                    AppLocalizations.of(context)!.iUnderstand)),
                 Theme(
                   data: Theme.of(context).copyWith(
                       inputDecorationTheme: gefaultUnderlineInputTheme),
@@ -168,7 +168,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                     onChanged: (String text) {
                       setState(() {
                         enabled = text.trim().toLowerCase() ==
-                            AppLocalizations.of(context)
+                            AppLocalizations.of(context)!
                                 .iUnderstand
                                 .toLowerCase();
                       });
@@ -181,7 +181,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                   children: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: Text(AppLocalizations.of(context).cancelButton),
+                      child: Text(AppLocalizations.of(context)!.cancelButton),
                     ),
                     SizedBox(width: 12),
                     ElevatedButton(
@@ -190,7 +190,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                           : () {
                               Navigator.pop(context, true);
                             },
-                      child: Text(AppLocalizations.of(context).okButton),
+                      child: Text(AppLocalizations.of(context)!.okButton),
                     ),
                   ],
                 )
@@ -208,7 +208,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         ? const Center(child: CircularProgressIndicator())
         : PrimaryButton(
             key: const Key('confirm-seed-button'),
-            text: AppLocalizations.of(context).confirm,
+            text: AppLocalizations.of(context)!.confirm,
             onPressed: _isButtonDisabled ? null : _onLoginPressed);
   }
 

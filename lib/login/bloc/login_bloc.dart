@@ -27,8 +27,8 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     on<LoginPinFailure>(_onPinLoginFailure);
   }
 
-  final SharedPreferences prefs;
-  final AuthenticationRepository authenticationRepository;
+  final SharedPreferences? prefs;
+  final AuthenticationRepository? authenticationRepository;
 
   void _onPinInputChanged(
     LoginPinInputChanged event,

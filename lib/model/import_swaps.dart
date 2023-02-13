@@ -7,7 +7,7 @@ class ImportSwaps {
         result: Result.fromJson(json['result']) ?? Result(),
       );
 
-  Result result;
+  Result? result;
 }
 
 class Result {
@@ -21,8 +21,8 @@ class Result {
         skipped: json['skipped'],
       );
 
-  List<dynamic> imported;
-  Map<String, dynamic> skipped;
+  List<dynamic>? imported;
+  Map<String, dynamic>? skipped;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'imported': imported,

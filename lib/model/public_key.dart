@@ -12,15 +12,15 @@ class PublicKey {
   factory PublicKey.fromJson(Map<String, dynamic> json) => PublicKey(
         mmrpc: json['mmrpc'] ?? '',
         result: Result.fromJson(json['result']),
-        id: json['id'] ?? '',
+        id: json['id'] ?? '' as int?,
       );
 
-  String mmrpc;
-  Result result;
-  int id;
+  String? mmrpc;
+  Result? result;
+  int? id;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson(),
+        'result': result!.toJson(),
       };
 }
 
@@ -31,7 +31,7 @@ class Result {
         publicKey: json['public_key'] ?? '',
       );
 
-  String publicKey;
+  String? publicKey;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'public_key': publicKey ?? '',

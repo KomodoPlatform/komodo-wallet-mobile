@@ -8,8 +8,8 @@ class Pair {
     );
   }
 
-  String base;
-  String rel;
+  String? base;
+  String? rel;
 
   List<dynamic> toJson() {
     return <dynamic>[

@@ -12,7 +12,7 @@ class SettingsBloc implements GenericBlocBase {
     _loadPrefs();
   }
 
-  SharedPreferences _prefs;
+  late SharedPreferences _prefs;
 
   Future<void> _loadPrefs() async {
     _prefs = await SharedPreferences.getInstance();
@@ -70,40 +70,40 @@ class SettingsBloc implements GenericBlocBase {
   String getNameLanguage(BuildContext context, String languageCode) {
     switch (languageCode) {
       case 'en':
-        return AppLocalizations.of(context).englishLanguage;
+        return AppLocalizations.of(context)!.englishLanguage;
         break;
       case 'fr':
-        return AppLocalizations.of(context).frenchLanguage;
+        return AppLocalizations.of(context)!.frenchLanguage;
         break;
       case 'de':
-        return AppLocalizations.of(context).deutscheLanguage;
+        return AppLocalizations.of(context)!.deutscheLanguage;
         break;
       case 'zh':
-        return AppLocalizations.of(context).chineseLanguage;
+        return AppLocalizations.of(context)!.chineseLanguage;
         break;
       case 'ru':
-        return AppLocalizations.of(context).russianLanguage;
+        return AppLocalizations.of(context)!.russianLanguage;
         break;
       case 'ja':
-        return AppLocalizations.of(context).japaneseLanguage;
+        return AppLocalizations.of(context)!.japaneseLanguage;
         break;
       case 'tr':
-        return AppLocalizations.of(context).turkishLanguage;
+        return AppLocalizations.of(context)!.turkishLanguage;
         break;
       case 'hu':
-        return AppLocalizations.of(context).hungarianLanguage;
+        return AppLocalizations.of(context)!.hungarianLanguage;
         break;
       case 'es':
-        return AppLocalizations.of(context).spanishLanguage;
+        return AppLocalizations.of(context)!.spanishLanguage;
         break;
       case 'ko':
-        return AppLocalizations.of(context).koreanLanguage;
+        return AppLocalizations.of(context)!.koreanLanguage;
         break;
       case 'uk':
-        return AppLocalizations.of(context).ukrainianLanguage;
+        return AppLocalizations.of(context)!.ukrainianLanguage;
         break;
       default:
-        return AppLocalizations.of(context).englishLanguage;
+        return AppLocalizations.of(context)!.englishLanguage;
     }
   }
 

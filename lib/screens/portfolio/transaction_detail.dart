@@ -18,8 +18,8 @@ import '../addressbook/addressbook_page.dart';
 class TransactionDetail extends StatefulWidget {
   const TransactionDetail({this.transaction, this.coinBalance});
 
-  final Transaction transaction;
-  final CoinBalance coinBalance;
+  final Transaction? transaction;
+  final CoinBalance? coinBalance;
 
   @override
   _TransactionDetailState createState() => _TransactionDetailState();
@@ -45,17 +45,17 @@ class _TransactionDetailState extends State<TransactionDetail> {
               icon: Icon(Icons.share),
               onPressed: () {
                 final String fromOrTo = double.parse(
-                            widget.transaction.myBalanceChange) >
+                            widget.transaction!.myBalanceChange!) >
                         0
-                    ? '${AppLocalizations.of(context).from}: ${widget.transaction.from[0]}'
-                    : '${AppLocalizations.of(context).to} ${widget.transaction.to.length > 1 ? widget.transaction.to[1] : widget.transaction.to[0]}';
+                    ? '${AppLocalizations.of(context)!.from}: ${widget.transaction!.from![0]}'
+                    : '${AppLocalizations.of(context)!.to} ${widget.transaction!.to!.length > 1 ? widget.transaction!.to![1] : widget.transaction!.to![0]}';
                 String fee = '';
-                if (widget.transaction.feeDetails != null &&
-                    widget.transaction.feeDetails.amount != null) {
-                  fee = widget.transaction.feeDetails.amount.toString();
+                if (widget.transaction!.feeDetails != null &&
+                    widget.transaction!.feeDetails!.amount != null) {
+                  fee = widget.transaction!.feeDetails!.amount.toString();
                 }
                 final String dataToShare =
-                    'Transaction detail:\nAmount: ${widget.transaction.myBalanceChange} ${widget.transaction.coin}\nDate: ${widget.transaction.getTimeFormat()}\nBlock: ${widget.transaction.blockHeight}\nConfirmations: ${widget.transaction.confirmations}\nFee: $fee ${widget.transaction.coin}\n$fromOrTo\nTx Hash: ${widget.transaction.txHash}';
+                    'Transaction detail:\nAmount: ${widget.transaction!.myBalanceChange} ${widget.transaction!.coin}\nDate: ${widget.transaction!.getTimeFormat()}\nBlock: ${widget.transaction!.blockHeight}\nConfirmations: ${widget.transaction!.confirmations}\nFee: $fee ${widget.transaction!.coin}\n$fromOrTo\nTx Hash: ${widget.transaction!.txHash}';
                 mainBloc.isUrlLaucherIsOpen = true;
 
                 Share.share(dataToShare);
@@ -65,13 +65,13 @@ class _TransactionDetailState extends State<TransactionDetail> {
               splashRadius: 24,
               icon: Icon(Icons.open_in_browser),
               onPressed: () {
-                String middle = widget.coinBalance.coin.explorerTxUrl.isEmpty
+                String middle = widget.coinBalance!.coin!.explorerTxUrl!.isEmpty
                     ? 'tx/'
-                    : widget.coinBalance.coin.explorerTxUrl;
+                    : widget.coinBalance!.coin!.explorerTxUrl!;
 
-                launchURL(widget.coinBalance.coin.explorerUrl +
+                launchURL(widget.coinBalance!.coin!.explorerUrl! +
                     middle +
-                    widget.transaction.txHash);
+                    widget.transaction!.txHash!);
               },
             )
           ],
@@ -84,7 +84,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
   }
 
   Widget _buildHeader() {
-    final Transaction tx = widget.transaction;
+    final Transaction tx = widget.transaction!;
     return Container(
       height: 200,
       color: Theme.of(context).primaryColor,
@@ -131,22 +131,22 @@ class _TransactionDetailState extends State<TransactionDetail> {
               children: <Widget>[
                 Text(
                   tx.getTimeFormat(),
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         color: Colors.grey,
                       ),
                 ),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    color: tx.confirmations > 0
+                    color: tx.confirmations! > 0
                         ? Colors.lightGreen
                         : Colors.red.shade500,
                   ),
                   padding:
                       const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                  child: tx.confirmations > 0
-                      ? Text(AppLocalizations.of(context).txConfirmed)
-                      : Text(AppLocalizations.of(context).txNotConfirmed),
+                  child: tx.confirmations! > 0
+                      ? Text(AppLocalizations.of(context)!.txConfirmed)
+                      : Text(AppLocalizations.of(context)!.txNotConfirmed),
                 )
               ],
             ),
@@ -167,7 +167,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
       ),
     );
 
-    Widget _usdAmount(String priceForOne) {
+    Widget _usdAmount(String? priceForOne) {
       if (priceForOne == null) return _progressIndicator;
 
       if (double.parse(priceForOne) == 0) return SizedBox();
@@ -178,18 +178,18 @@ class _TransactionDetailState extends State<TransactionDetail> {
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             bool hidden = false;
             final double amount = double.parse(priceForOne) *
-                double.parse(widget.transaction.myBalanceChange);
+                double.parse(widget.transaction!.myBalanceChange!);
             if (snapshot.hasData && snapshot.data == false) hidden = true;
 
             return Text(
-              cexProvider.convert(amount, hidden: hidden),
+              cexProvider.convert(amount, hidden: hidden)!,
               style: Theme.of(context).textTheme.bodyText1,
             );
           });
     }
 
-    if (widget.coinBalance.priceForOne != null)
-      return _usdAmount(widget.coinBalance.priceForOne);
+    if (widget.coinBalance!.priceForOne != null)
+      return _usdAmount(widget.coinBalance!.priceForOne);
 
     return StreamBuilder(
         stream: coinsBloc.outCoins,
@@ -197,11 +197,11 @@ class _TransactionDetailState extends State<TransactionDetail> {
             (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
           if (!snapshot.hasData) return _progressIndicator;
 
-          String priceForOne;
+          String? priceForOne;
           try {
-            priceForOne = snapshot.data
+            priceForOne = snapshot.data!
                 .firstWhere((CoinBalance balance) =>
-                    balance.coin.abbr == widget.coinBalance.coin.abbr)
+                    balance.coin!.abbr == widget.coinBalance!.coin!.abbr)
                 .priceForOne;
           } catch (_) {}
 
@@ -212,54 +212,54 @@ class _TransactionDetailState extends State<TransactionDetail> {
   Widget _buildListDetails() {
     return Column(
       children: <Widget>[
-        if (widget.transaction.blockHeight > 0)
+        if (widget.transaction!.blockHeight! > 0)
           ItemTransationDetail(
-              title: AppLocalizations.of(context).txBlock,
-              data: widget.transaction.blockHeight.toString()),
+              title: AppLocalizations.of(context)!.txBlock,
+              data: widget.transaction!.blockHeight.toString()),
         ItemTransationDetail(
-            title: AppLocalizations.of(context).txConfirmations,
-            data: widget.transaction.confirmations.toString()),
+            title: AppLocalizations.of(context)!.txConfirmations,
+            data: widget.transaction!.confirmations.toString()),
         ItemTransationDetail(
-            title: AppLocalizations.of(context).txFee, data: _getFee()),
-        double.parse(widget.transaction.myBalanceChange) > 0
+            title: AppLocalizations.of(context)!.txFee, data: _getFee()),
+        double.parse(widget.transaction!.myBalanceChange!) > 0
             ? ItemTransationDetail(
-                title: AppLocalizations.of(context).from,
-                data: widget.transaction.from[0])
+                title: AppLocalizations.of(context)!.from,
+                data: widget.transaction!.from![0])
             : ItemTransationDetail(
-                title: AppLocalizations.of(context).to,
-                data: widget.transaction.getToAddress().isNotEmpty
-                    ? widget.transaction.getToAddress()[0]
+                title: AppLocalizations.of(context)!.to,
+                data: widget.transaction!.getToAddress().isNotEmpty
+                    ? widget.transaction!.getToAddress()[0]
                     : ''),
         ItemTransationDetail(
-            title: AppLocalizations.of(context).txHash,
-            data: widget.transaction.txHash),
+            title: AppLocalizations.of(context)!.txHash,
+            data: widget.transaction!.txHash),
         ItemTransactionNote(
-            title: AppLocalizations.of(context).noteTitle,
-            txHash: widget.transaction.txHash),
+            title: AppLocalizations.of(context)!.noteTitle,
+            txHash: widget.transaction!.txHash!),
       ],
     );
   }
 
   String _getFee() {
-    String fee = '';
+    String? fee = '';
 
-    if (widget.transaction.feeDetails.amount == null ||
-        widget.transaction.feeDetails.amount.isEmpty) {
-      fee = widget.transaction.feeDetails?.totalFee.toString();
+    if (widget.transaction!.feeDetails!.amount == null ||
+        widget.transaction!.feeDetails!.amount!.isEmpty) {
+      fee = widget.transaction!.feeDetails?.totalFee.toString();
     } else {
-      fee = widget.transaction.feeDetails?.amount.toString();
+      fee = widget.transaction!.feeDetails?.amount.toString();
     }
 
     try {
       // QTUM gas-refund (coinbase) txs
-      if (double.parse(fee) < 0 && widget.transaction.coin == 'QTUM')
+      if (double.parse(fee!) < 0 && widget.transaction!.coin == 'QTUM')
         return '0';
     } catch (_) {}
 
     fee = cutTrailingZeros(formatPrice(fee, 8));
 
-    String feeCoin = widget.transaction.feeDetails.coin;
-    if (feeCoin == null || feeCoin.isEmpty) feeCoin = widget.transaction.coin;
+    String? feeCoin = widget.transaction!.feeDetails!.coin;
+    if (feeCoin == null || feeCoin.isEmpty) feeCoin = widget.transaction!.coin;
 
     return '$fee $feeCoin';
   }
@@ -268,14 +268,14 @@ class _TransactionDetailState extends State<TransactionDetail> {
 class ItemTransationDetail extends StatelessWidget {
   const ItemTransationDetail({this.title, this.data});
 
-  final String title;
-  final String data;
+  final String? title;
+  final String? data;
 
   @override
   Widget build(BuildContext context) {
     final AddressBookProvider addressBookProvider =
         Provider.of<AddressBookProvider>(context);
-    final Contact contact = addressBookProvider.contactByAddress(data);
+    final Contact? contact = addressBookProvider.contactByAddress(data);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -283,7 +283,7 @@ class ItemTransationDetail extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            title,
+            title!,
             style: Theme.of(context).textTheme.subtitle1,
           ),
           const SizedBox(
@@ -309,8 +309,8 @@ class ItemTransationDetail extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: contact == null
                     ? AutoSizeText(
-                        data,
-                        style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        data!,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
                               color: Colors.grey,
                             ),
                         textAlign: TextAlign.end,
@@ -324,9 +324,9 @@ class ItemTransationDetail extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           AutoSizeText(
-                            contact.name,
+                            contact.name!,
                             style:
-                                Theme.of(context).textTheme.bodyText1.copyWith(
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
                                       color: Colors.white,
                                     ),
                           )
@@ -343,8 +343,8 @@ class ItemTransationDetail extends StatelessWidget {
 
 class ItemTransactionNote extends StatefulWidget {
   const ItemTransactionNote({
-    @required this.title,
-    @required this.txHash,
+    required this.title,
+    required this.txHash,
   }) : assert(txHash != null);
 
   final String title;
@@ -355,7 +355,7 @@ class ItemTransactionNote extends StatefulWidget {
 }
 
 class _ItemTransactionNoteState extends State<ItemTransactionNote> {
-  String noteText;
+  String? noteText;
   final noteTextController = TextEditingController();
   bool isEdit = false;
   bool isExpanded = false;
@@ -367,7 +367,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
     Db.getNote(widget.txHash).then((n) {
       setState(() {
         noteText = n;
-        noteTextController.text = noteText;
+        noteTextController.text = noteText!;
       });
     });
   }
@@ -398,7 +398,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                     noteTextController.text = noteTextController.text.trim();
                     noteText = noteTextController.text;
                     focusNode.requestFocus();
-                    if (noteText != null && noteText.isNotEmpty)
+                    if (noteText != null && noteText!.isNotEmpty)
                       setState(() {
                         isExpanded = !isExpanded;
                       });
@@ -417,11 +417,11 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                       : Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           child: Text(
-                            (noteText == null || noteText.isEmpty)
-                                ? AppLocalizations.of(context).notePlaceholder
-                                : noteText,
+                            (noteText == null || noteText!.isEmpty)
+                                ? AppLocalizations.of(context)!.notePlaceholder
+                                : noteText!,
                             style:
-                                Theme.of(context).textTheme.bodyText2.copyWith(
+                                Theme.of(context).textTheme.bodyText2!.copyWith(
                                       color: Colors.grey,
                                     ),
                             maxLines: isExpanded ? null : 1,
@@ -439,7 +439,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                           noteTextController.text =
                               noteTextController.text.trim();
                           noteText = noteTextController.text;
-                          noteText.isNotEmpty
+                          noteText!.isNotEmpty
                               ? Db.saveNote(widget.txHash, noteText)
                               : Db.deleteNote(widget.txHash);
 

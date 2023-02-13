@@ -30,9 +30,9 @@ class Backup {
     );
   }
 
-  Map<String, String> notes;
-  Map<String, Contact> contacts;
-  Map<String, MmSwap> swaps;
+  Map<String?, String?>? notes;
+  Map<String?, Contact>? contacts;
+  Map<String?, MmSwap?>? swaps;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

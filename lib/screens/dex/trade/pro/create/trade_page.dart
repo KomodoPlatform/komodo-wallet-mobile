@@ -32,17 +32,17 @@ import 'package:provider/provider.dart';
 class TradePage extends StatefulWidget {
   const TradePage({this.mContext});
 
-  final BuildContext mContext;
+  final BuildContext? mContext;
 
   @override
   _TradePageState createState() => _TradePageState();
 }
 
 class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
-  CexProvider _cexProvider;
-  OrderBookProvider _orderBookProvider;
+  CexProvider? _cexProvider;
+  OrderBookProvider? _orderBookProvider;
   final _listeners = <StreamSubscription<dynamic>>[];
-  Timer _updateTimer;
+  Timer? _updateTimer;
 
   @override
   void initState() {
@@ -98,7 +98,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       builder: (context, snapshot) {
         return SizedBox(
           height: 1,
-          child: snapshot.data ? LinearProgressIndicator() : SizedBox(),
+          child: snapshot.data! ? LinearProgressIndicator() : SizedBox(),
         );
       },
     );
@@ -145,14 +145,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 TableRow(
                   children: [
                     Text(
-                      AppLocalizations.of(context).selectCoin,
+                      AppLocalizations.of(context)!.selectCoin,
                       style: Theme.of(context).textTheme.subtitle2,
                     ),
                     SizedBox(),
                     Text(
                       market == Market.SELL
-                          ? AppLocalizations.of(context).sell
-                          : AppLocalizations.of(context).receiveLower,
+                          ? AppLocalizations.of(context)!.sell
+                          : AppLocalizations.of(context)!.receiveLower,
                       style: Theme.of(context).textTheme.subtitle2,
                     ),
                   ],
@@ -193,7 +193,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildFeesOrError() {
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
         initialData: swapBloc.preimageError,
         stream: swapBloc.outPreimageError,
         builder: (context, preimageError) {
@@ -202,7 +202,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 padding: EdgeInsets.fromLTRB(24, 12, 24, 10),
                 child: PreimageError(preimageError.data));
           } else {
-            return StreamBuilder<String>(
+            return StreamBuilder<String?>(
                 initialData: swapBloc.validatorError,
                 stream: swapBloc.outValidatorError,
                 builder: (context, validatorError) {
@@ -210,15 +210,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     return Container(
                         padding: EdgeInsets.fromLTRB(24, 12, 24, 10),
                         child: Text(
-                          validatorError.data,
+                          validatorError.data!,
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1
+                              .bodyText1!
                               .copyWith(color: Theme.of(context).errorColor),
                         ));
                   } else {
-                    return StreamBuilder<TradePreimage>(
+                    return StreamBuilder<TradePreimage?>(
                         initialData: swapBloc.tradePreimage,
                         stream: swapBloc.outTradePreimage,
                         builder: (context, snapshot) {
@@ -241,7 +241,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       initialData: swapBloc.enabledSellField,
       stream: swapBloc.outEnabledSellField,
       builder: (context, enabledSnapshot) {
-        return market == Market.SELL && enabledSnapshot.data
+        return market == Market.SELL && enabledSnapshot.data!
             ? TextButton(
                 style: TextButton.styleFrom(
                   visualDensity: VisualDensity.compact,
@@ -251,7 +251,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     initialData: swapBloc.isSellMaxActive,
                     stream: swapBloc.outIsMaxActive,
                     builder: (context, maxSnapshot) {
-                      return Text(AppLocalizations.of(context).max);
+                      return Text(AppLocalizations.of(context)!.max);
                     }),
               )
             : SizedBox();
@@ -264,7 +264,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         'trade_page:719', 'coin-select-${market.toString().toLowerCase()}');
     return SizedBox(
       child: market == Market.BUY
-          ? StreamBuilder<CoinBalance>(
+          ? StreamBuilder<CoinBalance?>(
               key: Key('coin-select-buy'),
               initialData: swapBloc.receiveCoinBalance,
               stream: swapBloc.outReceiveCoinBalance,
@@ -273,7 +273,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 onTap: () async => _openSelectCoinDialog(market),
               ),
             )
-          : StreamBuilder<CoinBalance>(
+          : StreamBuilder<CoinBalance?>(
               key: Key('coin-select-sell'),
               initialData: swapBloc.sellCoinBalance,
               stream: swapBloc.outSellCoinBalance,
@@ -286,8 +286,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildSelectorCoin({
-    @required Coin coin,
-    @required GestureTapCallback onTap,
+    required Coin? coin,
+    required GestureTapCallback onTap,
   }) {
     return Opacity(
       opacity: coin == null ? 0.2 : 1,
@@ -321,15 +321,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<void> _openSelectCoinDialog(Market market) async {
     if (market == Market.BUY) {
-      if (swapBloc.amountSell == null || swapBloc.amountSell.toDouble() <= 0) {
-        _showSnackbar(AppLocalizations.of(context).enterSellAmount);
+      if (swapBloc.amountSell == null || swapBloc.amountSell!.toDouble() <= 0) {
+        _showSnackbar(AppLocalizations.of(context)!.enterSellAmount);
         return;
       }
 
       if (!swapBloc.processing) {
         openSelectReceiveCoinDialog(
           context: context,
-          amountSell: swapBloc.amountSell.toDouble(),
+          amountSell: swapBloc.amountSell!.toDouble(),
           onSelect: (Ask bid) => _performTakerOrder(bid),
           onCreate: (String coin) => _performMakerOrder(coin),
         );
@@ -339,7 +339,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         context: context,
         onDone: (coin) {
           tradeForm.reset();
-          Log('trade_page', 'sell coin selected: ${coin.coin.abbr}');
+          Log('trade_page', 'sell coin selected: ${coin.coin!.abbr}');
 
           swapBloc.updateSellCoin(coin);
           swapBloc.setEnabledSellField(true);
@@ -371,11 +371,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     swapBloc.enabledReceiveField = false;
     swapBloc.updateReceiveCoin(bid.coin);
-    tradeForm.updateAmountReceive(bid.getReceiveAmount(swapBloc.amountSell));
+    tradeForm.updateAmountReceive(bid.getReceiveAmount(swapBloc.amountSell!));
 
-    final Rational amountSell = swapBloc.amountSell;
-    final Rational bidPrice = fract2rat(bid.priceFract);
-    final Rational bidVolume = fract2rat(bid.maxvolumeFract);
+    final Rational amountSell = swapBloc.amountSell!;
+    final Rational bidPrice = fract2rat(bid.priceFract!)!;
+    final Rational bidVolume = fract2rat(bid.maxvolumeFract!)!;
 
     if (amountSell > bidVolume * bidPrice) {
       tradeForm.updateAmountSell(bidVolume * bidPrice);
@@ -407,7 +407,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<void> _updateFees() async {
     if (!mounted) return;
     swapBloc.preimageError = null;
-    final String error = await tradeForm.updateTradePreimage();
+    final String? error = await tradeForm.updateTradePreimage();
 
     if (error != null) {
       swapBloc.preimageError = error;

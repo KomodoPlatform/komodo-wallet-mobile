@@ -4,21 +4,21 @@ import '../model/get_withdraw.dart';
 import '../widgets/bloc_provider.dart';
 
 class CoinDetailBloc implements GenericBlocBase {
-  Fee customFee;
+  Fee? customFee;
 
-  final StreamController<Fee> _customFeeController =
-      StreamController<Fee>.broadcast();
+  final StreamController<Fee?> _customFeeController =
+      StreamController<Fee?>.broadcast();
 
-  Sink<Fee> get _inCustomFee => _customFeeController.sink;
-  Stream<Fee> get outCustomFee => _customFeeController.stream;
+  Sink<Fee?> get _inCustomFee => _customFeeController.sink;
+  Stream<Fee?> get outCustomFee => _customFeeController.stream;
 
-  String amountToSend;
+  String? amountToSend;
 
-  final StreamController<String> _amountToSendController =
-      StreamController<String>.broadcast();
+  final StreamController<String?> _amountToSendController =
+      StreamController<String?>.broadcast();
 
-  Sink<String> get _inAmountToSend => _amountToSendController.sink;
-  Stream<String> get outAmountToSend => _amountToSendController.stream;
+  Sink<String?> get _inAmountToSend => _amountToSendController.sink;
+  Stream<String?> get outAmountToSend => _amountToSendController.stream;
 
   bool isCancel = false;
 
