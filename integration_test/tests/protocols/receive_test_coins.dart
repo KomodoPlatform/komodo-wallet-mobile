@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 
-Future<void> receiveTestCoins(WidgetTester tester, {required List<String> coins}) async {
+Future<void> receiveTestCoins(WidgetTester tester,
+    {required List<String> coins}) async {
   final Finder receiveCoin = find.byKey(const Key('receive-coin'));
   final Finder copyAddress = find.byKey(const Key('copy-address'));
   final Finder closeDialog = find.byKey(const Key('close-dialog'));
@@ -37,7 +38,7 @@ Future<void> receiveTestCoins(WidgetTester tester, {required List<String> coins}
       await tester.pumpAndSettle();
     }
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

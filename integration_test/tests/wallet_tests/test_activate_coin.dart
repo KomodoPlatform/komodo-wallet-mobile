@@ -68,7 +68,7 @@ Future<void> testActivateCoins(WidgetTester tester) async {
     await tester.dragUntilVisible(
         ethCoinHomeItem, homeList, const Offset(0, -15));
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

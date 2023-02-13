@@ -31,7 +31,7 @@ Future<void> cancelSwap(WidgetTester tester) async {
 
     // Order has been cancelled
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

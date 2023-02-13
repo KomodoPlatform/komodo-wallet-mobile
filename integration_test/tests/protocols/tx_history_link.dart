@@ -34,7 +34,7 @@ Future<void> openTxHistoryLink(WidgetTester tester,
       await tester.pumpAndSettle();
     }
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

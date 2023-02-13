@@ -75,7 +75,7 @@ Future<void> restoreWalletToTest(WidgetTester tester,
     // ============== pin_page.dart ================== //
     await createNewPin(tester);
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

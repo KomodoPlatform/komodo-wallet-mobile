@@ -65,7 +65,7 @@ Future<void> addAddressToTest(WidgetTester tester,
     await tester.pageBack();
     await tester.pumpAndSettle();
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

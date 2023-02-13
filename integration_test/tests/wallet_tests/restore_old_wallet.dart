@@ -17,7 +17,7 @@ Future<void> restoreOldWallet(WidgetTester tester) async {
 
     await _enterPassword(tester);
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

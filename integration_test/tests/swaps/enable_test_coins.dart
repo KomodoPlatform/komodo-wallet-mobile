@@ -38,7 +38,7 @@ Future<void> enableTestCoin(WidgetTester tester) async {
       reason: 'Screen is not on the Home page',
     );
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

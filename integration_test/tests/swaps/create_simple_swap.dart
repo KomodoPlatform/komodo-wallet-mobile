@@ -54,7 +54,7 @@ Future<void> createSimpleSwap(WidgetTester tester) async {
     await tester.pumpAndSettle();
     // Order has been created
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

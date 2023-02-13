@@ -48,7 +48,7 @@ Future<void> checkTestCoinsInMarket(WidgetTester tester) async {
       reason: 'MORTY coin is in the Markets page',
     );
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

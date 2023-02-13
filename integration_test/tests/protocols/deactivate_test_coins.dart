@@ -54,7 +54,7 @@ Future<void> deactivateTestCoins(WidgetTester tester,
     // BTC and KMD should be active
 
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

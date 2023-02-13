@@ -47,7 +47,7 @@ Future<void> sendTestCoins(WidgetTester tester,
       await tester.pumpAndSettle();
     }
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

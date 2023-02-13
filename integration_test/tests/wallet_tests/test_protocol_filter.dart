@@ -93,7 +93,7 @@ Future<void> testCoinsProtocolFilter(WidgetTester tester) async {
     await tester.tap(confirmAddAssetsButton);
     await tester.pumpAndSettle();
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

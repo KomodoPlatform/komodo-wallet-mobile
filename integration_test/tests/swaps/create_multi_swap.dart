@@ -53,7 +53,7 @@ Future<void> createMultiSwap(WidgetTester tester) async {
     );
     // Order has been created
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }

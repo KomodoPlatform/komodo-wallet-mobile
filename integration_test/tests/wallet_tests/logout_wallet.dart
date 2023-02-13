@@ -22,7 +22,7 @@ Future<void> logOut(WidgetTester tester) async {
       reason: 'Logout has been confirmed, but screen not on Authenticate Page',
     );
   } catch (e) {
-    print(e?.message ?? e);
+    print(e);
     rethrow;
   }
 }
