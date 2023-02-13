@@ -6,7 +6,6 @@ import '../blocs/coins_bloc.dart';
 import 'coin.dart';
 import 'coin_type.dart';
 
-
 class GetWithdraw {
   GetWithdraw({
     this.method = 'withdraw',
@@ -16,10 +15,12 @@ class GetWithdraw {
     this.max,
     this.userpass,
     this.fee,
+    this.memo,
   });
 
   String method;
   String amount;
+  String memo;
   String coin;
   String to;
   bool max;
@@ -42,6 +43,7 @@ class GetWithdraw {
         : <String, dynamic>{
             'method': method ?? '',
             if (amount != null) 'amount': amount,
+            if (memo != null) 'memo': memo,
             'to': to ?? '',
             'max': max ?? false,
             'coin': coin ?? '',

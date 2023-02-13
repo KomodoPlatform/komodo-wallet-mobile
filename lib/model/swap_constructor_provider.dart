@@ -480,18 +480,23 @@ class ConstructorProvider extends ChangeNotifier {
             ' to pay fees';
         break;
       case RpcErrorType.NotSufficientBalance:
-        str = '${error.data['coin']} balance is not sufficient for trade. '
+        str = '${error.data['coin']} balance is not sufficient for trade, '
             'Min required balance is '
-            '${cutTrailingZeros(formatPrice(error.data['required']))} '
+            '${cutTrailingZeros(formatPrice(error.data['required']))}. '
             '${error.data['coin']}';
         break;
       case RpcErrorType.VolumeTooLow:
         str =
-            'Min volume is ${cutTrailingZeros(formatPrice(error.data['threshold']))}'
+            'Min volume is ${cutTrailingZeros(formatPrice(error.data['threshold']))}.'
             ' ${error.data['coin']}';
         break;
+      case RpcErrorType.Transport:
+        str =
+            "Trade can't be started, Please check if you have enough funds for gas."
+            ' Error: ${error.data}';
+        break;
       default:
-        str = error.message ?? 'Something went wrong. Please try again.';
+        str = error.message ?? 'Something went wrong, please try again.';
     }
 
     return str;

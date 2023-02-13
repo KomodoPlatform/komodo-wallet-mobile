@@ -54,6 +54,7 @@ class CoinsBloc implements BlocBase {
   LinkedHashMap<String, Coin> get knownCoins => _knownCoins;
 
   List<CoinBalance> coinBalance = <CoinBalance>[];
+  List<String> coinsWithLessThan10kVol = [];
 
   // Streams to handle the list coin
   final StreamController<List<CoinBalance>> _coinsController =
@@ -111,7 +112,8 @@ class CoinsBloc implements BlocBase {
     final Set<Coin> suspendedCoins = {};
 
     for (CoinBalance balance in coinBalance) {
-      if (balance.coin.suspended) suspendedCoins.add(balance.coin);
+      if (balance.coin.suspended)
+        suspendedCoins.add(getKnownCoinByAbbr(balance.coin.abbr));
     }
 
     return suspendedCoins;
@@ -319,6 +321,26 @@ class CoinsBloc implements BlocBase {
     await deactivateCoins(<Coin>[coin]);
   }
 
+  Future<void> removeIrisCoin(Coin coin, List<CoinBalance> irisTokens) async {
+    if (coin.suspended) {
+      _removeSuspendedCoin(coin);
+      for (var e in irisTokens) {
+        e.coin.suspended = true;
+        _removeSuspendedCoin(e.coin);
+      }
+      return;
+    }
+
+    await removeCoinBalance(coin);
+    final res = await MM.disableCoin(GetDisableCoin(coin: coin.abbr));
+    removeCoinLocal(coin, res);
+    syncOrderbook.updateActivePair();
+    for (var e in irisTokens) {
+      e.coin.suspended = true;
+      _removeSuspendedCoin(e.coin);
+    }
+  }
+
   Future<void> removeCoin(Coin coin) async {
     if (coin.suspended) {
       _removeSuspendedCoin(coin);
@@ -357,7 +379,9 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
-  Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
+  Future<void> updateTransactions(
+      CoinBalance coinBalance, int limit, String fromId) async {
+    Coin coin = coinBalance.coin;
     try {
       dynamic transactions;
 
@@ -420,10 +444,10 @@ class CoinsBloc implements BlocBase {
     _isRetryActivatingRunning = false;
   }
 
-  Future<List> enableSlpParentCoins(List<Coin> slpCoins) async {
-    if (slpCoins.isEmpty) return [];
+  Future<List> enablePreParentCoins(List<Coin> parentCoins) async {
+    if (parentCoins.isEmpty) return [];
     List<Map<String, dynamic>> batch = [];
-    for (Coin coin in slpCoins) {
+    for (Coin coin in parentCoins) {
       batch.add(json.decode(MM.enableCoinImpl(coin)));
     }
     return await MM.batch(batch);
@@ -435,32 +459,38 @@ class CoinsBloc implements BlocBase {
     await pauseUntil(() => !_coinsLock, maxMs: 3000);
     _coinsLock = true;
 
-    // list of slp-parent-coins
-    List<Coin> slpCoins = [];
-    for (Coin coin in coins.where((element) => isSlpChild(element))) {
+    // list of needed-parent-coins
+    List<Coin> preEnabledCoins = [];
+    for (Coin coin
+        in coins.where((element) => hasParentPreInstalled(element))) {
       String platform = coin?.protocol?.protocolData?.platform;
       bool isParentEnabled =
           coinBalance.any((element) => element.coin.abbr == platform);
       if (!isParentEnabled) //parent coin is already enabled
-        slpCoins.add(getKnownCoinByAbbr(coin.protocol.protocolData.platform));
+        preEnabledCoins
+            .add(getKnownCoinByAbbr(coin.protocol.protocolData.platform));
     }
-    slpCoins = slpCoins.toSet().toList();
+    preEnabledCoins = preEnabledCoins.toSet().toList();
 
     // remove zcash-coins from the coin list
     coins = zcashBloc.removeZcashCoins(coins);
 
     // remove slp-parent-coins from the main coin list
     coins.removeWhere((coin) => slpCoins.contains(coin));
+    
+    // remove needed-parent-coins from the main coin list
+    coins.removeWhere((coin) => preEnabledCoins.contains(coin));
+    
     // activate remaining coins using a batch request to speed up the coin activation.
     final List<Map<String, dynamic>> batch = [];
     for (Coin coin in coins) {
       batch.add(json.decode(MM.enableCoinImpl(coin)));
     }
     // activate slp-parent-coins first before others.
-    final slpReplies = await enableSlpParentCoins(slpCoins);
+    final preEnabledCoinReplies = await enablePreParentCoins(preEnabledCoins);
     final replies = await MM.batch(batch);
-    coins.addAll(slpCoins);
-    replies.addAll(slpReplies);
+    coins.addAll(preEnabledCoins);
+    replies.addAll(preEnabledCoinReplies);
     if (replies.length != coins.length) {
       throw Exception(
           'Unexpected number of replies: ${replies.length} != ${coins.length}');
@@ -727,9 +757,10 @@ class CoinsBloc implements BlocBase {
     return _sorted;
   }
 
-  Future<Transaction> getLatestTransaction(Coin coin) async {
+  Future<Transaction> getLatestTransaction(CoinBalance coinBalance) async {
     const int limit = 1;
     const String fromId = null;
+    Coin coin = coinBalance.coin;
     try {
       dynamic transactions;
       if (isErcType(coin)) {

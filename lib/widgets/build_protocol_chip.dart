@@ -28,6 +28,8 @@ class BuildProtocolChip extends StatelessWidget {
       case CoinType.slp:
         chip = const SizedBox.shrink();
         break;
+      case CoinType.iris:
+      case CoinType.cosmos:
       case CoinType.erc:
       case CoinType.qrc:
       case CoinType.mvr:
@@ -98,6 +100,8 @@ class BuildProtocolChip extends StatelessWidget {
         // Smart chains have dedicated chip with icon.
         case CoinType.utxo:
         case CoinType.slp:
+        case CoinType.iris:
+        case CoinType.cosmos:
         case CoinType.smartChain:
           break;
         case CoinType.bep:

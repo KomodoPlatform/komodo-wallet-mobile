@@ -1,7 +1,11 @@
 import 'dart:async';
-import 'package:rational/rational.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/caution_label.dart';
+import 'package:provider/provider.dart';
+import 'package:rational/rational.dart';
+
 import '../../../../../blocs/swap_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../../model/cex_provider.dart';
@@ -11,6 +15,9 @@ import '../../../../../model/market.dart';
 import '../../../../../model/order_book_provider.dart';
 import '../../../../../model/orderbook.dart';
 import '../../../../../model/trade_preimage.dart';
+import '../../../../../utils/log.dart';
+import '../../../../../utils/utils.dart';
+import '../../../../../widgets/auto_scroll_text.dart';
 import '../../../../dex/trade/build_detailed_fees.dart';
 import '../../../../dex/trade/pro/create/build_fiat_amount.dart';
 import '../../../../dex/trade/pro/create/build_reset_button.dart';
@@ -24,10 +31,6 @@ import '../../../../dex/trade/pro/create/trade_form.dart';
 import '../../../../dex/trade/pro/create/trade_form_validator.dart';
 import '../../../../dex/trade/pro/evaluation.dart';
 import '../../../../dex/trade/pro/exchange_rate.dart';
-import '../../../../../widgets/auto_scroll_text.dart';
-import '../../../../../utils/log.dart';
-import '../../../../../utils/utils.dart';
-import 'package:provider/provider.dart';
 
 class TradePage extends StatefulWidget {
   const TradePage({this.mContext});
@@ -81,6 +84,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               ExchangeRate(alignCenter: true),
               SizedBox(height: 8),
               Evaluation(alignCenter: true),
+              SizedBox(height: 8),
+              CautionLabel(),
               SizedBox(height: 20),
               BuildTradeButton(),
               BuildResetButton(),

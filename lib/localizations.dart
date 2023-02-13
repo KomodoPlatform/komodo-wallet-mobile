@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
@@ -355,7 +357,7 @@ class AppLocalizations {
         args: <Object>[name],
       );
   String get connecting => Intl.message('Connecting...', name: 'connecting');
-  String get addCoin => Intl.message('Activate coin', name: 'addCoin');
+  String get addCoin => Intl.message('Add Coin', name: 'addCoin');
   String numberAssets(String assets) => Intl.message('$assets Assets',
       args: <Object>[assets], name: 'numberAssets');
   String get enterSeedPhrase =>
@@ -494,6 +496,21 @@ class AppLocalizations {
       Intl.message('Please input data', name: 'errorValueNotEmpty');
   String get errorAmountBalance =>
       Intl.message('Not enough balance', name: 'errorAmountBalance');
+  String gweiError(int value) => Intl.message(
+        'Gwei must be up to $value',
+        name: 'gweiErrorMessage',
+        args: <Object>[value],
+      );
+  String feesError(double value) => Intl.message(
+        'Fees must be up to $value',
+        name: 'feesError',
+        args: <Object>[value],
+      );
+  String limitError(int value) => Intl.message(
+        'Limit must be up to $value',
+        name: 'limitErrorMessage',
+        args: <Object>[value],
+      );
   String get errorNotAValidAddress =>
       Intl.message('Not a valid address', name: 'errorNotAValidAddress');
   String get errorNotAValidAddressSegWit =>
@@ -579,6 +596,7 @@ class AppLocalizations {
       Intl.message('Confirmations', name: 'txConfirmations');
   String get txFee => Intl.message('Fee', name: 'txFee');
   String get txHash => Intl.message('Transaction ID', name: 'txHash');
+  String get memo => Intl.message('Memo', name: 'memo');
   String get noSwaps => Intl.message('No history.', name: 'noSwaps');
   String get trade => Intl.message('TRADE', name: 'trade');
   String get reset => Intl.message('CLEAR', name: 'reset');
@@ -768,6 +786,11 @@ class AppLocalizations {
   String get exchangeTitle => Intl.message('EXCHANGE', name: 'exchangeTitle');
   String get orders => Intl.message('orders', name: 'orders');
   String get selectCoin => Intl.message('Select coin', name: 'selectCoin');
+  String lessThanCaution(String coinName) => Intl.message(
+        '❗Caution! Market for $coinName has less than \$10k 24h trading-volume!',
+        name: 'lessThanCaution',
+        args: <Object>[coinName],
+      );
   String get selectLanguage =>
       Intl.message('Select Language', name: 'selectLanguage');
   String get noFunds => Intl.message('No funds', name: 'noFunds');
@@ -929,6 +952,11 @@ class AppLocalizations {
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
   String get searchFilterSubtitleSLP =>
       Intl.message('Select all SLP tokens', name: 'searchFilterSubtitleSLP');
+  String get searchFilterSubtitleCosmos =>
+      Intl.message('Select all Cosmos Network',
+          name: 'searchFilterSubtitleCosmos');
+  String get searchFilterSubtitleIris =>
+      Intl.message('Select all Iris Network', name: 'searchFilterSubtitleIris');
   String get searchFilterSubtitleKRC =>
       Intl.message('Select all Kucoin tokens', name: 'searchFilterSubtitleKRC');
   String get searchFilterSubtitleHRC =>
@@ -998,8 +1026,10 @@ class AppLocalizations {
   String get deleteSpan1 =>
       Intl.message('Do you want to remove ', name: 'deleteSpan1');
   String get deleteSpan2 => Intl.message(
-      ' from your portfolio? All unmatched orders will be canceled.',
+      ' from your portfolio? All unmatched orders will be canceled. ',
       name: 'deleteSpan2');
+  String get deleteSpan3 =>
+      Intl.message(' will also be deactivated', name: 'deleteSpan3');
   String get cantDeleteDefaultCoinTitle =>
       Intl.message("Can't disable ", name: 'cantDeleteDefaultCoinTitle');
   String get cantDeleteDefaultCoinSpan =>
@@ -1049,6 +1079,7 @@ class AppLocalizations {
 
   // --- sound configuration ---
 
+  String get optional => Intl.message('Optional');
   String get soundTitle => Intl.message('Sound');
   String get soundOption => Intl.message('Play at full volume');
   String get soundTaker => Intl.message('Taker');
@@ -1425,6 +1456,8 @@ class AppLocalizations {
       Intl.message('Identical to CEX', name: 'exchangeIdentical');
   String get comparedToCex =>
       Intl.message('compared to CEX', name: 'comparedToCex');
+  String get comparedTo24hrCex =>
+      Intl.message('compared to avg. 24h CEX price', name: 'comparedTo24hrCex');
 
   String get ordersActive => Intl.message('Active', name: 'ordersActive');
   String get ordersHistory => Intl.message('History', name: 'ordersHistory');

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../model/feed_provider.dart';
 import '../screens/help-feedback/support_channel_item.dart';
 
@@ -24,6 +25,8 @@ class AppConfig {
   List<String> get coinsFiat => ['BTC', 'KMD'];
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
+        'ATOM',
+        'OSMO',
         'BET',
         'BOTS',
         'CELR-ARB20',
@@ -56,20 +59,21 @@ class AppConfig {
         'VOTE2022'
       ];
 
-  final List<String> protocolSuffixes = [
-    'QRC20',
-    'ERC20',
-    'BEP20',
-    'PLG20',
-    'FTM20',
-    'HRC20',
-    'MVR20',
-    'HCO20',
-    'KRC20',
-    'AVX20',
-    'SLP',
-    'OLD',
-  ];
+  List<String> get protocolSuffixes => [
+        'QRC20',
+        'ERC20',
+        'BEP20',
+        'PLG20',
+        'FTM20',
+        'HRC20',
+        'MVR20',
+        'HCO20',
+        'KRC20',
+        'AVX20',
+        'SLP',
+        'OLD',
+        'IBC_IRIS',
+      ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
   Map<String, String> get allProtocolNames => {
         'utxo': 'UTXO',
@@ -89,7 +93,30 @@ class AppConfig {
         'sbch': 'SmartBCH (SBCH)',
         'slp': 'SLP Tokens',
         'zhtlc': 'ZHTLC',
+        'iris': 'Iris Network',
+        'cosmos': 'Cosmos Network',
       };
+
+  // ERC: [0]= limit , [1] = gwei
+  // smartchains : [0] = fee
+  Map<String, List<double>> standardFees = {
+    'utxo': [0],
+    'smartChain': [0],
+    'erc': [0, 0],
+    'bep': [0, 0],
+    'qrc': [0, 0],
+    'plg': [0, 0],
+    'ftm': [0, 0],
+    'hrc': [0, 0],
+    'avx': [0, 0],
+    'hco': [0, 0],
+    'mvr': [0, 0],
+    'krc': [0, 0],
+    'ubiq': [0, 0],
+    'etc': [0, 0],
+    'sbch': [0, 0],
+    'slp': [0, 0],
+  };
 
   bool get isSwapShareCardEnabled => true;
 

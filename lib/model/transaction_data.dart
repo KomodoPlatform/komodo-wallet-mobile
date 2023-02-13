@@ -13,6 +13,7 @@ class Transaction {
     this.receivedByMe,
     this.spentByMe,
     this.timestamp,
+    this.memo,
     this.to,
     this.totalAmount,
     this.txHash,
@@ -22,7 +23,8 @@ class Transaction {
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
-      blockHeight: json['block_height'] ?? 0, //toDouble()
+      blockHeight:
+          int.tryParse(json['block_height']?.toString()) ?? 0, //toDouble()
       coin: json['coin'] ?? '',
       confirmations: json['confirmations'] ?? 0,
       feeDetails: json['fee_details'] == null
@@ -32,13 +34,14 @@ class Transaction {
           <String>[],
       internalId: json['internal_id']?.toString() ?? '',
       transactionFee: json['transaction_fee']?.toString() ?? '',
-      myBalanceChange: json['my_balance_change'] ?? 0.0,
-      receivedByMe: json['received_by_me'] ?? 0.0,
-      spentByMe: json['spent_by_me'] ?? 0.0,
+      myBalanceChange: json['my_balance_change']?.toString() ?? 0.0,
+      receivedByMe: json['received_by_me']?.toString() ?? 0.0,
+      spentByMe: json['spent_by_me']?.toString() ?? 0.0,
       timestamp: json['timestamp'] ?? 0,
+      memo: json['memo'] ?? '0',
       to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
           <String>[],
-      totalAmount: json['total_amount'] ?? '',
+      totalAmount: json['total_amount']?.toString() ?? '',
       txHash: json['tx_hash'] ?? '',
       txHex: json['tx_hex'] ?? '',
     );
@@ -54,6 +57,7 @@ class Transaction {
   String receivedByMe;
   String spentByMe;
   int timestamp;
+  String memo;
   List<String> to;
   String totalAmount;
   String transactionFee;
@@ -73,6 +77,7 @@ class Transaction {
         'received_by_me': receivedByMe ?? 0.0,
         'spent_by_me': spentByMe ?? 0.0,
         'timestamp': timestamp ?? 0,
+        'memo': memo ?? '',
         'to':
             List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
         'total_amount': totalAmount ?? '',
@@ -117,7 +122,7 @@ class FeeDetails {
       gas: json['gas'] ?? 0,
       gasLimit: json['gas_limit'],
       gasPrice: json['gas_price'] ?? '',
-      totalFee: json['total_fee'] ?? '', // ETH and ERC20 tokens
+      totalFee: json['total_fee']?.toString() ?? '', // ETH and ERC20 tokens
     );
 
     try {
