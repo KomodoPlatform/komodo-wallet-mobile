@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../../app_config/app_config.dart';
 import '../../../../../blocs/coin_detail_bloc.dart';
 import '../../../../../blocs/coins_bloc.dart';
 import '../../../../../localizations.dart';
-import '../../../../../app_config/app_config.dart';
 import '../../../../../model/cex_provider.dart';
 import '../../../../../model/coin_balance.dart';
 import '../../../../../utils/decimal_text_input_formatter.dart';
 import '../../../../../widgets/cex_fiat_preview.dart';
-import 'package:provider/provider.dart';
 
 class AmountField extends StatefulWidget {
   const AmountField({

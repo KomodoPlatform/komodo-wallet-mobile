@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:komodo_dex/model/coin_type.dart';
+
 import '../blocs/coins_bloc.dart';
 import '../utils/utils.dart';
 import 'coin.dart';
@@ -28,7 +30,11 @@ class GetTxHistory {
   Map<String, dynamic> toJson() {
     // slp coins uses the rpc 2.0 methods
     Coin coinToEnable = coinsBloc.getKnownCoinByAbbr(coin);
-    return isSlpParent(coinToEnable) || isSlpChild(coinToEnable)
+
+    bool v2Coins = isSlp(coinToEnable) ||
+        coinToEnable.type == CoinType.iris ||
+        coinToEnable.type == CoinType.cosmos;
+    return v2Coins
         ? <String, dynamic>{
             'userpass': userpass ?? '',
             'method': method ?? '',

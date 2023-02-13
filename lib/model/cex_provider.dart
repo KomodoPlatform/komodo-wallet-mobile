@@ -1,16 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../app_config/app_config.dart';
+import '../model/coin.dart';
 import '../model/coin_type.dart';
 import '../model/order_book_provider.dart';
 import '../services/mm_service.dart';
 import '../utils/log.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../model/coin.dart';
 import '../utils/utils.dart';
 
 class CexProvider extends ChangeNotifier {
@@ -634,13 +636,16 @@ class CexPrices {
       double volume24h = double.tryParse(pricesData['volume24h']) ?? 0;
 
       for (Coin coin in coins) {
+        final String coinAbbr = coin.abbr;
         if (coin.type == CoinType.smartChain) {
           // enough_volume for all smartChain tokens is always true :. proceed
         } else if (lastPrice * volume24h < minVolume) {
-          return;
+          // add the coin to minVolume < 10k list
+          coinsBloc.coinsWithLessThan10kVol.add(coinAbbr);
+          coinsBloc.coinsWithLessThan10kVol =
+              coinsBloc.coinsWithLessThan10kVol.toSet().toList();
         }
 
-        final String coinAbbr = coin.abbr;
         _prices[coinAbbr] = {};
 
         pricesData.forEach((String currency, dynamic price) {

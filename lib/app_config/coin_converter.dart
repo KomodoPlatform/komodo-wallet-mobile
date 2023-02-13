@@ -11,7 +11,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
   List allCoinsList = [];
 
   coinsResponse.forEach((abbr, coinData) {
-    String proto = _getType(coinData['type']);
+    String proto = _getType(coinData['type'], abbr);
 
     if (_excludedCoins.contains(abbr) || proto == null) {
       return; // unsupported protocols should be skipped
@@ -24,9 +24,12 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       'colorCoin': _getColor(abbr),
       'type': proto,
       'explorerUrl': coinData['explorer_url'],
+      'serverList': coinData['nodes'] ??
+          coinData['electrum'] ??
+          coinData['rpc_urls'] ??
+          [],
       'explorer_tx_url': coinData['explorer_tx_url'],
       'explorer_address_url': coinData['explorer_address_url'],
-      'serverList': coinData['nodes'] ?? coinData['electrum'] ?? [],
       'testCoin': coinData['is_testnet'] ?? false,
       'walletOnly': coinData['wallet_only'],
       if (coinData['swap_contract_address'] != null)
@@ -36,6 +39,8 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       if (coinData['fallback_swap_contract'] != null)
         'fallback_swap_contract': coinData['fallback_swap_contract'],
       if (coinData['bchd_urls'] != null) 'bchd_urls': coinData['bchd_urls'],
+      if (coinData['avg_block_time'] != null)
+        'avg_block_time': coinData['avg_block_time'],
     });
   });
 
@@ -44,9 +49,10 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
 
 List<String> get _excludedCoins => [];
 
-String _getType(String coin) {
+String _getType(String coin, String abbr) {
   // absent protocols
   // [RSK Smart Bitcoin, Arbitrum, Moonbeam, ZHTLC]
+  if (abbr == 'IRIS') return 'iris';
   CoinType type;
   switch (coin) {
     case 'UTXO':
@@ -96,6 +102,12 @@ String _getType(String coin) {
       break;
     case 'AVX-20':
       type = CoinType.avx;
+      break;
+    case 'TENDERMINT':
+      type = CoinType.cosmos;
+      break;
+    case 'TENDERMINTTOKEN':
+      type = CoinType.iris;
       break;
     default:
       return null; // for other protocols not yet added on the mobile

@@ -25,6 +25,8 @@ class AppConfig {
   List<String> get coinsFiat => ['BTC', 'KMD'];
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
+        'ATOM',
+        'OSMO',
         'BET',
         'BOTS',
         'CELR-ARB20',
@@ -57,20 +59,21 @@ class AppConfig {
         'VOTE2022'
       ];
 
-  final List<String> protocolSuffixes = [
-    'QRC20',
-    'ERC20',
-    'BEP20',
-    'PLG20',
-    'FTM20',
-    'HRC20',
-    'MVR20',
-    'HCO20',
-    'KRC20',
-    'AVX20',
-    'SLP',
-    'OLD',
-  ];
+  List<String> get protocolSuffixes => [
+        'QRC20',
+        'ERC20',
+        'BEP20',
+        'PLG20',
+        'FTM20',
+        'HRC20',
+        'MVR20',
+        'HCO20',
+        'KRC20',
+        'AVX20',
+        'SLP',
+        'OLD',
+        'IBC_IRIS',
+      ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
   Map<String, String> get allProtocolNames => {
         'utxo': 'UTXO',
@@ -89,6 +92,8 @@ class AppConfig {
         'etc': 'Ethereum Classic (ETC)',
         'sbch': 'SmartBCH (SBCH)',
         'slp': 'SLP Tokens',
+        'iris': 'Iris Network',
+        'cosmos': 'Cosmos Network',
       };
 
   // ERC: [0]= limit , [1] = gwei
