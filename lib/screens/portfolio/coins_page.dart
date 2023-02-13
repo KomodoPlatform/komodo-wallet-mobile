@@ -4,25 +4,17 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/blocs/zcash_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../app_config/app_config.dart';
-import 'add_coin_button.dart';
 import '../../../../blocs/coins_bloc.dart';
 import '../../../../blocs/settings_bloc.dart';
-import '../../../../blocs/zcash_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin_balance.dart';
-import '../../../../services/db/database.dart';
 import '../../../../services/mm_service.dart';
-import '../../../../widgets/custom_simple_dialog.dart';
-import '../portfolio/activate/select_coins_page.dart';
 import '../portfolio/loading_coin.dart';
-import '../portfolio/loading_coin.dart';
-import '../../../../services/mm_service.dart';
-import 'package:provider/provider.dart';
-
+import 'add_coin_button.dart';
 import 'item_coin.dart';
 import 'item_zcoin.dart';
 
@@ -165,82 +157,37 @@ class _CoinsPageState extends State<CoinsPage> {
                                               child:
                                                   const CircularProgressIndicator());
                                         }
-                                        return StreamBuilder<bool>(
+                                      }),
+                                ),
+                              ),
+                              background: Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 16),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      const LoadAsset(),
+                                      const SizedBox(
+                                        height: 14.0,
+                                      ),
+                                      StreamBuilder<bool>(
                                           initialData: settingsBloc.showBalance,
                                           stream: settingsBloc.outShowBalance,
                                           builder: (BuildContext context,
                                               AsyncSnapshot<bool> snapshot) {
-                                            bool hidden = false;
-                                            if (snapshot.hasData &&
-                                                !snapshot.data) {
-                                              hidden = true;
-                                            }
-                                            final String amountText =
-                                                _cexProvider.convert(
-                                              totalBalanceUSD,
-                                              hidden: hidden,
-                                            );
-                                            return TextButton(
-                                              onPressed: () =>
-                                                  _cexProvider.switchCurrency(),
-                                              style: TextButton.styleFrom(
-                                                primary: _heightFactor < 1.3
-                                                    ? Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.light
-                                                        ? Colors.black
-                                                            .withOpacity(0.8)
-                                                        : Colors.white
-                                                    : Colors.white
-                                                        .withOpacity(0.8),
-                                                textStyle: Theme.of(context)
-                                                    .textTheme
-                                                    .headline6,
-                                              ),
-                                              child: AutoSizeText(
-                                                amountText,
-                                                maxFontSize: 18,
-                                                minFontSize: 12,
-                                                maxLines: 1,
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      } else {
-                                        return Center(
-                                            child:
-                                                const CircularProgressIndicator());
-                                      }
-                                    }),
-                              ),
-                            ),
-                            background: Container(
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 16),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    const LoadAsset(),
-                                    const SizedBox(
-                                      height: 14.0,
-                                    ),
-                                    StreamBuilder<bool>(
-                                        initialData: settingsBloc.showBalance,
-                                        stream: settingsBloc.outShowBalance,
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<bool> snapshot) {
-                                          return snapshot.hasData &&
-                                                  snapshot.data
-                                              ? BarGraph()
-                                              : SizedBox();
-                                        })
-                                  ],
+                                            return snapshot.hasData &&
+                                                    snapshot.data
+                                                ? BarGraph()
+                                                : SizedBox();
+                                          })
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              height: _heightScreen * 0.35,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
+                                height: _heightScreen * 0.35,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
                                   begin: Alignment.bottomLeft,
                                   end: Alignment.topRight,
                                   stops: const <double>[0.01, 1],
@@ -248,10 +195,8 @@ class _CoinsPageState extends State<CoinsPage> {
                                     Color.fromRGBO(98, 90, 229, 1),
                                     Color.fromRGBO(45, 184, 240, 1),
                                   ],
-                                ),
-                              ),
-                            ),
-                          ),
+                                )),
+                              )),
                           Positioned(
                             left: 0,
                             right: 0,
@@ -294,7 +239,10 @@ class _CoinsPageState extends State<CoinsPage> {
         builder:
             (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
           return snapshot.data != null
-              ? const SizedBox(height: 2, child: LinearProgressIndicator())
+              ? const SizedBox(
+                  height: 2,
+                  child: LinearProgressIndicator(),
+                )
               : SizedBox();
         });
   }
@@ -464,17 +412,19 @@ class ListCoinsState extends State<ListCoins> {
                   children: [
                     _buildZCashProgressIndicator(),
                     ListView.separated(
+                      padding: const EdgeInsets.all(0),
                       key: const Key('list-view-coins'),
                       itemCount: _coinsSorted.length,
                       shrinkWrap: true,
                       physics: ClampingScrollPhysics(),
-                      padding: EdgeInsets.zero,
                       itemBuilder: (BuildContext context, int index) {
-                          return ItemCoin(
-                            key: Key('coin-list-${_coinsSorted[index].coin.abbr}'),
-                            mContext: context,
-                            coinBalance: _coinsSorted[index],
-                          );
+                        return ItemCoin(
+                          key:
+                              Key('coin-list-${_coinsSorted[index].coin.abbr}'),
+                          mContext: context,
+                          coinBalance: _coinsSorted[index],
+                        );
+                        // }
                       },
                       separatorBuilder: (context, _) =>
                           Divider(color: Theme.of(context).colorScheme.surface),

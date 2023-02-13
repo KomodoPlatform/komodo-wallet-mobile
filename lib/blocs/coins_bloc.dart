@@ -475,12 +475,9 @@ class CoinsBloc implements BlocBase {
     // remove zcash-coins from the coin list
     coins = zcashBloc.removeZcashCoins(coins);
 
-    // remove slp-parent-coins from the main coin list
-    coins.removeWhere((coin) => slpCoins.contains(coin));
-    
     // remove needed-parent-coins from the main coin list
     coins.removeWhere((coin) => preEnabledCoins.contains(coin));
-    
+
     // activate remaining coins using a batch request to speed up the coin activation.
     final List<Map<String, dynamic>> batch = [];
     for (Coin coin in coins) {

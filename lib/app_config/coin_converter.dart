@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:flutter/services.dart';
+
 import '../model/coin_type.dart';
 import '../utils/utils.dart';
 
@@ -107,6 +109,7 @@ String _getType(String coin, String abbr) {
       break;
     case 'ZHTLC':
       type = CoinType.zhtlc;
+      break;
     case 'TENDERMINT':
       type = CoinType.cosmos;
       break;
