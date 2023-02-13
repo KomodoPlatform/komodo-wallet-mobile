@@ -25,10 +25,13 @@ linter:
   # MRC: Rules below are in alphabetical order for easier maintenance
   rules:
 
+    # TODO: Disable this and make changes. This is a bad practice and should be avoided.
     # MRC: Most of our uses of print are non-vital
     # Disabling for now, but we might want to re-enable in the future
     avoid_print: false
 
+    # TODO: Disable this and make changes. Whilst this may be the norm in other languages
+    # it is not in Dart.
     # MRC: Flutter really wants us to use lowerCamelCase for constants
     # I won't do it for now, so disabling the linter rule
     constant_identifier_names: false
@@ -48,6 +51,8 @@ linter:
     # MRC: Too many occurrences to fix at once, disabling for now
     prefer_const_constructors: false
 
+    # TODO: Disable and make changes. Whilst this may be the norm in other languages
+    # it is not in Dart.
     # MRC: This is a bit of personal preference, but I prefer single quotes strings
     # over double quotes strings. If it causes problems or deeply annoys somebody else
     # I have no problem in disabling it
@@ -57,6 +62,8 @@ linter:
     # I will have to figure out the reason for that first, then we might reenable
     unnecessary_string_escapes: false
 
+    # TODO: Fix this. Not passing key to widget constructors is a bad practice
+    # and may have performance/stability implications.
     # MRC: Too many occurrences to fix at once, disabling it for now
     use_key_in_widget_constructors: false
 
