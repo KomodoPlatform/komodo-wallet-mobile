@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/utils/log.dart';
 import '../../../generic_blocs/dialog_bloc.dart';
 import '../../../localizations.dart';
 import '../../../widgets/custom_simple_dialog.dart';
@@ -146,26 +148,20 @@ Future<Map<String, dynamic>?> callFaucet(String? coin, String? address) async {
   try {
     response = await http
         .get(Uri.parse('https://faucet.komodo.live/faucet/$coin/$address'))
-        .timeout(const Duration(seconds: 30), onTimeout: () {
-      throw AppLocalizations().faucetTimedOut;
-    } as FutureOr<Response> Function()?);
+        .timeout(
+          const Duration(seconds: 30),
+        );
     body = response.body;
-  } catch (e) {
-    return <String, dynamic>{
-      'Status': 'Error',
-      'Result': <String, String>{
-        'Message': e,
-      },
-    };
-  }
 
-  try {
     return jsonDecode(body);
+  } on TimeoutException catch (e) {
+    Log('faucet', 'Faucet timed out: $e');
+    return Future.error(AppLocalizations().faucetTimedOut);
   } catch (e) {
     return <String, dynamic>{
       'Status': 'Error',
       'Result': <String, String>{
-        'Message': e,
+        'Message': e.toString(),
       },
     };
   }

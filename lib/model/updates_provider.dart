@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -60,33 +61,29 @@ class UpdatesProvider extends ChangeNotifier {
     try {
       response = await http
           .post(
-        Uri.parse(url),
-        body: jsonEncode({
-          'currentVersion': currentVersion,
-          'platform': Platform.isAndroid ? 'android' : 'ios',
-        }),
-      )
+            Uri.parse(url),
+            body: jsonEncode({
+              'currentVersion': currentVersion,
+              'platform': Platform.isAndroid ? 'android' : 'ios',
+            }),
+          )
           .timeout(
-        const Duration(seconds: 5),
-        onTimeout: () {
-          Log('updates_provider:47', '_check] Timeout');
-
-          isFetching = false;
-          status = UpdateStatus.upToDate;
-          notifyListeners();
-          return;
-        } as FutureOr<Response> Function()?,
-      );
+            const Duration(seconds: 5),
+          );
 
       json = jsonDecode(response.body);
-    } catch (e) {
-      Log('updates_provider:47', '_check] $e');
+    } on TimeoutException catch (_) {
+      Log('updates_provider:76', '_check] Timeout');
 
-      isFetching = false;
-      status = UpdateStatus.upToDate;
+      return Future.error('Check timed out');
+    } catch (e) {
+      Log('updates_provider:80', '_check] $e');
+
       mainBloc.setNetworkStatus(NetworkStatus.Offline);
+    } finally {
+      status = UpdateStatus.upToDate;
+      isFetching = false;
       notifyListeners();
-      return;
     }
 
     message = json!['message'];

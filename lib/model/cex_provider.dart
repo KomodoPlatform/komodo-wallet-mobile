@@ -106,15 +106,15 @@ class CexProvider extends ChangeNotifier {
     late String _body;
     try {
       _res = await http.get(_tickersListUrl).timeout(
-        const Duration(seconds: 60),
-        onTimeout: () {
-          Log('cex_provider', 'Fetching tickers timed out');
-          return;
-        } as FutureOr<Response> Function()?,
-      );
+            const Duration(seconds: 60),
+          );
       _body = _res.body;
+    } on TimeoutException catch (e) {
+      Log('cex_provider', 'Timeout caused failure to fetch tickers list: $e');
+      return Future.error('Timeout caused failure to fetch tickers list');
     } catch (e) {
       Log('cex_provider', 'Failed to fetch tickers list: $e');
+      return Future.error('Failed to fetch tickers list');
     }
 
     List<dynamic>? json;
@@ -260,16 +260,19 @@ class CexProvider extends ChangeNotifier {
       _res = await http
           .get(Uri.parse('$_chartsUrl/${pair.toLowerCase()}'))
           .timeout(
-        const Duration(seconds: 60),
-        onTimeout: () {
-          Log('cex_provider', 'Fetching $pair data timed out');
-          throw 'Fetching $pair timed out';
-        } as FutureOr<Response> Function()?,
-      );
+            const Duration(seconds: 60),
+          );
       _body = _res.body;
-    } catch (e) {
+    }
+    //
+    on TimeoutException catch (e) {
+      Log('cex_provider', 'Fetching $pair data timed out: $e');
+      return Future.error('Fetching $pair timed out');
+    }
+    //
+    catch (e) {
       Log('cex_provider', 'Failed to fetch data: $e');
-      rethrow;
+      return Future.error('Failed to fetch data');
     }
 
     Map<String, dynamic>? json;
@@ -420,14 +423,20 @@ class CexPrices {
     late String _body;
     try {
       _res = await http.get(Uri.parse(appConfig.fiatPricesEndpoint)).timeout(
-        const Duration(seconds: 60),
-        onTimeout: () {
-          throw 'Fetching rates timed out';
-        } as FutureOr<Response> Function()?,
-      );
+            const Duration(seconds: 60),
+          );
       _body = _res.body;
-    } catch (e) {
+    }
+    //
+    on TimeoutException catch (e) {
+      Log('cex_provider',
+          'Fetching rates from ${appConfig.fiatPricesEndpoint} timed out: $e');
+      return Future.error('Fetching rates timed out');
+    }
+    //
+    catch (e) {
       Log('cex_provider', 'Failed to fetch rates: $e');
+      return Future.error('Failed to fetch rates.');
     }
 
     Map<String, dynamic>? json;
@@ -566,8 +575,7 @@ class CexPrices {
     for (String? abbr in currencies!) {
       if (ids.contains(abbr)) continue;
 
-      final Coin? coin =
-          allCoins.firstWhereOrNull((Coin c) => c.abbr == abbr);
+      final Coin? coin = allCoins.firstWhereOrNull((Coin c) => c.abbr == abbr);
       if (coin == null) continue;
 
       ids.add(coin.coingeckoId);
@@ -591,16 +599,17 @@ class CexPrices {
     late String _body;
     try {
       _res = await http.get(Uri.parse(url)).timeout(
-        const Duration(seconds: 60),
-        onTimeout: () {
-          Log('cex_provider', 'Fetching usd prices timed out');
-          _fetchingPrices = false;
-          return;
-        } as FutureOr<Response> Function()?,
-      );
+            const Duration(seconds: 60),
+          );
       _body = _res.body;
+    } on TimeoutException catch (e) {
+      Log('cex_provider', 'Fetching usd prices timed out: $e');
+      return Future.error('Fetching usd rates timed out');
     } catch (e) {
       Log('cex_provider', 'Failed to fetch usd prices: $e');
+      return Future.error('Failed to fetch usd prices');
+    } finally {
+      _fetchingPrices = false;
     }
 
     _fetchingPrices = false;
@@ -669,16 +678,17 @@ class CexPrices {
     late String _body;
     try {
       _res = await http.get(Uri.parse(url)).timeout(
-        const Duration(seconds: 60),
-        onTimeout: () {
-          Log('cex_provider', 'Fetching usd prices timed out');
-          _fetchingPrices = false;
-          return;
-        } as FutureOr<Response> Function()?,
-      );
+            const Duration(seconds: 60),
+          );
       _body = _res.body;
+    } on TimeoutException catch (e) {
+      Log('cex_provider', 'Fetching usd prices timed out: $e');
+      return Future.error('Fetching rates timed out');
     } catch (e) {
       Log('cex_provider', 'Failed to fetch usd prices: $e');
+      return Future.error('Failed to fetch usd prices');
+    } finally {
+      _fetchingPrices = false;
     }
 
     _fetchingPrices = false;
