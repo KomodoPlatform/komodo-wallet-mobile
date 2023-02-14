@@ -52,6 +52,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     _listeners.add(swapBloc.outAmountSell.listen(_onFormStateChange));
     _listeners.add(swapBloc.outAmountReceive.listen(_onFormStateChange));
 
+    tradeForm.updateMaxSellAmount();
+
     _onFormStateChange(null);
 
     super.initState();
@@ -61,7 +63,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void dispose() {
     _listeners.map((listener) => listener?.cancel());
     _updateTimer?.cancel();
-
+    tradeForm.cancelMaxSellAmount();
     super.dispose();
   }
 
@@ -348,6 +350,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
           swapBloc.updateSellCoin(coin);
           swapBloc.setEnabledSellField(true);
+          tradeForm.updateMaxSellAmount();
         },
       );
     }
