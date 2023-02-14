@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../app_config/theme_data.dart';

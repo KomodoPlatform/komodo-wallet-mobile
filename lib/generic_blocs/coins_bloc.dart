@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 import 'dart:convert';
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:decimal/decimal.dart';
 import '../app_config/app_config.dart';
 import '../generic_blocs/main_bloc.dart';
@@ -134,13 +133,13 @@ class CoinsBloc implements GenericBlocBase {
   }
 
   CoinBalance? getBalanceByAbbr(String? abbr) {
-    return coinBalance.firstWhereOrNull(
-        (CoinBalance balance) => balance.coin!.abbr == abbr);
+    return coinBalance
+        .firstWhereOrNull((CoinBalance balance) => balance.coin!.abbr == abbr);
   }
 
   bool isCoinActive(String coin) {
-    final CoinBalance? balance = coinBalance.firstWhereOrNull(
-        (CoinBalance bal) => bal.coin!.abbr == coin);
+    final CoinBalance? balance = coinBalance
+        .firstWhereOrNull((CoinBalance bal) => bal.coin!.abbr == coin);
 
     return balance != null;
   }
@@ -381,7 +380,7 @@ class CoinsBloc implements GenericBlocBase {
         _inTransactions.add(this.transactions);
       } else if (transactions is ErrorCode) {
         _inTransactions.add(transactions);
-        return transactions;
+        return Future.error(transactions);
       }
     } catch (e) {
       Log('coins_bloc:244', e);
@@ -435,7 +434,8 @@ class CoinsBloc implements GenericBlocBase {
       bool isParentEnabled =
           coinBalance.any((element) => element.coin!.abbr == platform);
       if (!isParentEnabled) //parent coin is already enabled
-        slpCoins.add(getKnownCoinByAbbr(coin!.protocol!.protocolData!.platform));
+        slpCoins
+            .add(getKnownCoinByAbbr(coin!.protocol!.protocolData!.platform));
     }
     slpCoins = slpCoins.toSet().toList();
 
@@ -496,7 +496,8 @@ class CoinsBloc implements GenericBlocBase {
   }
 
   Future<void> _syncCoinsStateWithApi() async {
-    final List<dynamic> apiCoinsJson = await (MM.getEnabledCoins() as FutureOr<List<dynamic>>);
+    final List<dynamic> apiCoinsJson =
+        await (MM.getEnabledCoins() as FutureOr<List<dynamic>>);
     final List<String?> apiCoins = [];
 
     for (dynamic item in apiCoinsJson) {

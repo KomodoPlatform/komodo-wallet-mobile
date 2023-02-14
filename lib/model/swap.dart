@@ -8,7 +8,6 @@ import '../generic_blocs/coins_bloc.dart';
 import '../model/order.dart';
 import '../model/recent_swaps.dart';
 import '../utils/utils.dart';
-import 'package:collection/collection.dart' show IterableExtension;
 
 enum Status {
   ORDER_MATCHING,

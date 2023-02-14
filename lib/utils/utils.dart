@@ -1,11 +1,13 @@
+export '../utils/iterable_utils.dart';
+
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:bip39/bip39.dart' as bip39;
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import '../utils/iterable_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import '../app_config/app_config.dart';
@@ -256,13 +258,15 @@ Future<bool> authenticateBiometrics(BuildContext context, PinStatus? pinStatus,
   }
 }
 
-Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin? coin) async {
+Future<void> showCantRemoveDefaultCoin(
+    BuildContext mContext, Coin? coin) async {
   return dialogBloc.dialog = showDialog<void>(
       context: mContext,
       builder: (BuildContext context) {
         return CustomSimpleDialog(
           title: Text(
-            AppLocalizations.of(context)!.cantDeleteDefaultCoinTitle + coin!.abbr!,
+            AppLocalizations.of(context)!.cantDeleteDefaultCoinTitle +
+                coin!.abbr!,
           ),
           children: <Widget>[
             RichText(

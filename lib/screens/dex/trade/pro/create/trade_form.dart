@@ -7,7 +7,6 @@ import '../../../../../model/get_trade_preimage.dart';
 import '../../../../../model/setprice_response.dart';
 import '../../../../../model/trade_preimage.dart';
 import '../../../../dex/trade/pro/confirm/protection_control.dart';
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:rational/rational.dart';
 import '../../../../../model/buy_response.dart';
 import '../../../../../model/get_buy.dart';

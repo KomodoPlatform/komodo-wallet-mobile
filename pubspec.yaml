@@ -26,6 +26,9 @@ dependencies:
   flutter_localizations: # flutter.dev
     sdk: flutter
 
+  #-----Flutter first party packages-----
+  # collection: ^1.15.0-nullsafety.4 # Auto import by Dart null safety migration tool. Replaced with own util.
+
 
   #-----flutter.dev, dart.dev--------
 

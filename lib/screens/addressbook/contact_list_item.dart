@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import '../../generic_blocs/coins_bloc.dart';
 import '../../generic_blocs/dialog_bloc.dart';

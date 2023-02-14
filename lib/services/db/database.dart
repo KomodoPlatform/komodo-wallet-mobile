@@ -9,7 +9,6 @@ import '../../model/wallet.dart';
 import '../../model/wallet_security_settings.dart';
 import '../../utils/log.dart';
 import '../../utils/utils.dart';
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

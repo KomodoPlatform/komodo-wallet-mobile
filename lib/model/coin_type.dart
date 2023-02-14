@@ -1,6 +1,6 @@
 // anchor: protocols support
 
-import 'package:collection/collection.dart' show IterableExtension;
+import 'package:komodo_dex/utils/iterable_utils.dart';
 
 enum CoinType {
   utxo,

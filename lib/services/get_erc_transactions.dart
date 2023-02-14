@@ -5,7 +5,6 @@ import '../model/coin.dart';
 import '../model/coin_balance.dart';
 import '../model/coin_type.dart';
 import '../model/error_code.dart';
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import '../model/transaction_data.dart';

@@ -1,5 +1,4 @@
 import '../../../../dex/trade/pro/create/trade_form.dart';
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:rational/rational.dart';
 import '../../../../../generic_blocs/coins_bloc.dart';
 import '../../../../../generic_blocs/main_bloc.dart';
