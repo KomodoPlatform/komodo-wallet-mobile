@@ -11414,7 +11414,6 @@
   },
   {
     "coin": "ATOM",
-    "avg_block_time": 7,
     "avg_blocktime": 7,
     "name": "cosmos",
     "fname": "Cosmos",
@@ -11432,7 +11431,6 @@
   },
   {
     "coin": "IRIS",
-    "avg_block_time": 7,
     "avg_blocktime": 7,
     "name": "iris",
     "fname": "Iris",
@@ -11450,7 +11448,6 @@
   },
   {
     "coin": "OSMO",
-    "avg_block_time": 6,
     "avg_blocktime": 6,
     "name": "osmosis",
     "fname": "Osmosis",
@@ -11471,7 +11468,6 @@
     "coin": "ATOM-IBC_IRIS",
     "name": "cosmos_ibc_iris",
     "fname": "Cosmos IBC-IRIS",
-    "avg_block_time": 7,
     "avg_blocktime": 7,
     "mm2": 1,
     "protocol": {
