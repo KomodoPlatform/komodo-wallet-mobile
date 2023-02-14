@@ -11414,7 +11414,7 @@
   },
   {
     "coin": "ATOM",
-    "avg_blocktime": 7,
+    "avg_blocktime": 6,
     "name": "cosmos",
     "fname": "Cosmos",
     "mm2": 1,
