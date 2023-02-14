@@ -13413,7 +13413,7 @@
   },
   {
     "coin": "OSMO",
-    "avg_blocktime": 7,
+    "avg_blocktime": 6,
     "name": "osmosis",
     "fname": "Osmosis",
     "mm2": 1,
