@@ -114,7 +114,7 @@ class Coin {
     explorerTxUrl = config['explorer_tx_url'] ?? '';
     explorerAddressUrl = config['explorer_address_url'] ?? '';
     decimals = init['decimals'];
-    avgBlockTime = init['avg_block_time'];
+    avgBlockTime = init['avg_blocktime'];
   }
 
   // Coin suspended if was activated by user earlier,
@@ -188,7 +188,7 @@ class Coin {
         if (explorerAddressUrl != null)
           'explorer_address_url': explorerAddressUrl,
         if (decimals != null) 'decimals': decimals,
-        if (avgBlockTime != null) 'avg_block_time': avgBlockTime,
+        if (avgBlockTime != null) 'avg_blocktime': avgBlockTime,
         if (bchdUrls != null)
           'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
       };
