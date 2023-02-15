@@ -1,6 +1,6 @@
 [![Build Status](https://app.bitrise.io/app/bc464ad88d40bb68/status.svg?token=tnpzqFp_7vrcsQYqWSIVBQ&branch=dev)](https://app.bitrise.io/app/bc464ad88d40bb68)  
 # atomicDEX v0.6.1
-Komodo Platform's hybrid mutlicoin DEX-wallet. 
+Komodo Platform's hybrid multicoin DEX-wallet. 
 
 ## Getting Started
 
