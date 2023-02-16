@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+
 import '../app_config/app_config.dart';
 import '../app_config/coin_converter.dart';
 import '../blocs/coins_bloc.dart';
@@ -114,7 +115,6 @@ class Coin {
     explorerTxUrl = config['explorer_tx_url'] ?? '';
     explorerAddressUrl = config['explorer_address_url'] ?? '';
     decimals = init['decimals'];
-    avgBlockTime = init['avg_block_time'];
   }
 
   // Coin suspended if was activated by user earlier,
@@ -161,7 +161,6 @@ class Coin {
 
   Protocol protocol;
   String explorerTxUrl;
-  int avgBlockTime;
   String explorerAddressUrl;
   int decimals;
 
@@ -188,7 +187,6 @@ class Coin {
         if (explorerAddressUrl != null)
           'explorer_address_url': explorerAddressUrl,
         if (decimals != null) 'decimals': decimals,
-        if (avgBlockTime != null) 'avg_block_time': avgBlockTime,
         if (bchdUrls != null)
           'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
       };
