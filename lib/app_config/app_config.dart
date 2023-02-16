@@ -73,6 +73,7 @@ class AppConfig {
         'SLP',
         'OLD',
         'IBC_IRIS',
+        'segwit',
       ];
   List<String> get defaultTestCoins => ['RICK', 'MORTY'];
   Map<String, String> get allProtocolNames => {
