@@ -314,7 +314,8 @@ class AppLocalizations {
           name: 'question_10', args: [appName]);
   String answer_10(String appName) => Intl.message(
       '$appName is available for mobile on both Android and iPhone,'
-      ' and for desktop on Windows, Mac, and Linux operating systems.',
+      ' and for desktop on <a href="https://atomicdex.io/">'
+      'Windows, Mac, and Linux operating systems</a>.',
       name: 'answer_10',
       args: [appName]);
 

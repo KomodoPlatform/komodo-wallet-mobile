@@ -48,7 +48,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
   @override
   void dispose() {
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
