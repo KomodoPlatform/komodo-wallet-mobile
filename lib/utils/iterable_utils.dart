@@ -1,4 +1,3 @@
-
 //========= Collection-related methods inspired by package:collection ==========
 // Could be replaced with package:collection in the future.
 
@@ -22,6 +21,11 @@ extension IterableUtils<T> on Iterable<T> {
       if (predicate(element)) return element;
     }
     return null;
+  }
+
+  /// Returns all non-null elements of the given [iterable].
+  Iterable<T> whereNotNull() {
+    return where((T? element) => element != null).cast<T>();
   }
 }
 

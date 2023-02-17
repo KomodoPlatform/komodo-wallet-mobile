@@ -1,4 +1,5 @@
 export '../utils/iterable_utils.dart';
+export '../utils/map_utils.dart';
 
 import 'dart:async';
 import 'dart:io';
