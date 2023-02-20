@@ -16,12 +16,19 @@ Ubuntu: `sudo apt-get update && sudo apt-get install -y coreutils jq`
 
 MacOS: `brew install coreutils jq`, [Brew software](https://brew.sh/)
 
-Windows: `choco install jq`, [Choco sowftware](https://chocolatey.org/)
+Windows: `choco install jq`, [Choco software](https://chocolatey.org/)
 
 
 ## Build and run
 
 https://github.com/KomodoPlatform/AtomicDEX-mobile/wiki/Project-Setup#build-and-run
+
+
+## Run/Build with screenshot and video recording ON
+
+```
+flutter run --dart-define=screenshot=true
+```
 
 
 ## AtomicDEX API library (libmm2.a) version:

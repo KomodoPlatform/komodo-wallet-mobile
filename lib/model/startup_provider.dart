@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
+import 'package:komodo_dex/services/mm_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../blocs/authenticate_bloc.dart';
 import '../blocs/camo_bloc.dart';
 import '../model/wallet_security_settings_provider.dart';
 import '../utils/encryption_tool.dart';
 import '../utils/log.dart';
 import '../utils/utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Shares the progress on startup tasks with the UI
 class StartupProvider extends ChangeNotifier {
@@ -82,6 +84,13 @@ class Startup {
           walletSecuritySettingsProvider.activatePinProtection)) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
+    }
+
+    const screenshot = bool.fromEnvironment('screenshot', defaultValue: false);
+    print(screenshot);
+    if (screenshot) {
+      prefs.setBool('disallowScreenshot', false);
+      MMService.nativeC.invokeMethod('is_screenshot');
     }
   }
 
