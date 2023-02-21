@@ -33,8 +33,8 @@ flutter run --dart-define=screenshot=true
 
 ## AtomicDEX API library (libmm2.a) version:
 
-2.1.9967
-e60bf648f
+2.1.10108
+adde21b26
 http://195.201.0.6/dev/
 
 ## Flutter version
