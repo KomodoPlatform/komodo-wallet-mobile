@@ -99,8 +99,8 @@ class TradeForm {
     }
 
     if (swapBloc.amountReceive != null) {
-      final String? currentText = cutTrailingZeros(
-          swapBloc.amountReceive!.toStringAsFixed(appConfig.tradeFormPrecision));
+      final String? currentText = cutTrailingZeros(swapBloc.amountReceive!
+          .toStringAsFixed(appConfig.tradeFormPrecision));
       if (newText == currentText) return;
     }
 

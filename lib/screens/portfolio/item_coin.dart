@@ -99,13 +99,11 @@ class _ItemCoinState extends State<ItemCoin>
     return Opacity(
       opacity: coin.suspended ? 0.3 : 1,
       child: Slidable(
-        startActionPane: coin.suspended
+        startActionPane: coin.suspended && actions.isNotEmpty == true
             ? null
             : ActionPane(
                 motion: const DrawerMotion(),
-                extentRatio: (actions != null && actions.isNotEmpty)
-                    ? (actions.length * 0.3).clamp(0.3, 1.0)
-                    : null,
+                extentRatio: (actions.length * 0.3).clamp(0.3, 1.0),
                 children: actions,
               ),
         endActionPane: ActionPane(
@@ -290,7 +288,8 @@ class _ItemCoinState extends State<ItemCoin>
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            if (!widget.coinBalance!.coin!.suspended && rewardsProvider!.needClaim)
+            if (!widget.coinBalance!.coin!.suspended &&
+                rewardsProvider!.needClaim)
               Container(
                 padding: const EdgeInsets.only(right: 4),
                 child: Stack(

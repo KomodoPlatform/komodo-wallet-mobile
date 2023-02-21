@@ -125,7 +125,8 @@ class MMService {
       }
       // Not implemented on Android YET.
       if (Platform.isIOS) {
-        final js = await (nativeC.invokeMethod<String>('metrics') as FutureOr<String>);
+        final js =
+            await (nativeC.invokeMethod<String>('metrics') as FutureOr<String>);
         //Log('mm_service:142', 'metrics: $js');
         final Map<String, dynamic> mjs = json.decode(js);
         footprint = mjs['footprint'];
@@ -333,8 +334,9 @@ class MMService {
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
     gui = 'atomicDEX ${packageInfo.version} $os';
     if (Platform.isAndroid) {
-      final buildTime = await (nativeC.invokeMethod<int>('BUILD_TIME') as FutureOr<int>);
-      gui += '; BT=${buildTime ~/ 1000}';
+      final buildTime =
+          await (nativeC.invokeMethod<int>('BUILD_TIME') as FutureOr<int>);
+      gui = (gui ?? '') + '; BT=${buildTime ~/ 1000}';
     }
 
     final String startParam = configMm2ToJson(ConfigMm2(
@@ -356,7 +358,8 @@ class MMService {
 
     try {
       final int? errorCode = await (nativeC.invokeMethod<dynamic>(
-          'start', <String, String>{'params': startParam}) as FutureOr<int?>); //start mm2
+              'start', <String, String>{'params': startParam})
+          as FutureOr<int?>); //start mm2
       final Mm2Error error = mm2ErrorFrom(errorCode);
       if (error != Mm2Error.ok) {
         if (error == Mm2Error.already_runs) {

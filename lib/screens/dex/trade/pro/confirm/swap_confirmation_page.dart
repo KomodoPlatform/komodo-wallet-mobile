@@ -101,7 +101,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                           base: swapBloc.sellCoinBalance!.coin!.abbr,
                           rel: swapBloc.receiveCoinBalance!.coin!.abbr,
                           price: swapBloc.amountReceive! / swapBloc.amountSell!,
-                          onChange: (String value, bool isValid) {
+                          onChange: (String? value, bool isValid) {
                             setState(() {
                               _minVolume = value;
                               _isMinVolumeValid = isValid;
@@ -347,8 +347,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         if (snapshot.data == ConnectivityResult.wifi) return SizedBox();
 
         return _buildWarning(
-          text:
-              AppLocalizations.of(context)!.mobileDataWarning(appConfig.appName),
+          text: AppLocalizations.of(context)!
+              .mobileDataWarning(appConfig.appName),
           iconData: Icons.network_check,
         );
       },
@@ -406,7 +406,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     }
   }
 
-  Widget _buildWarning({required String text, IconData? iconData, Color? color}) {
+  Widget _buildWarning(
+      {required String text, IconData? iconData, Color? color}) {
     color ??= (Theme.of(context).brightness == Brightness.light
             ? Colors.yellow[700]
             : Colors.yellow[100])!

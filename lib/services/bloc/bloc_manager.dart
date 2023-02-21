@@ -36,7 +36,7 @@ class BlocManager {
   // Initialize HydratedBloc
   Future<void> _initPersistance() async {
     final storage = await HydratedStorage.build(
-      storageDirectory: await (applicationDocumentsDirectory as FutureOr<Directory>),
+      storageDirectory: await applicationDocumentsDirectory,
     );
 
     HydratedBloc.storage = storage;

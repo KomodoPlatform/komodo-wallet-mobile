@@ -34,9 +34,11 @@ class Orderbook {
   factory Orderbook.fromJson(Map<String, dynamic> json) => Orderbook(
         bids: json['bids'] == null
             ? null
-            : List<Ask>.from(json['bids'].map((dynamic x) => Ask.fromJson(x)))
-                .where((Ask bid) => bid != null)
-                .toList(),
+            : List<Ask>.from(
+                json['bids'].map(
+                  (dynamic x) => x == null ? null : Ask.fromJson(x),
+                ),
+              ).where((Ask? bid) => bid != null).toList(),
         numbids: json['numbids'] ?? 0,
         asks: json['asks'] == null
             ? null
@@ -92,9 +94,9 @@ class Ask {
     this.zcredits,
   });
 
-  factory Ask.fromJson(Map<String, dynamic> json) {
-    if (isInfinite(json['price'])) return null;
-    if (isInfinite(json['maxvolume'])) return null;
+  static Ask fromJson(Map<String, dynamic> json) {
+    // if (isInfinite(json['price'])) return null;
+    // if (isInfinite(json['maxvolume'])) return null;
 
     return Ask(
       coin: json['coin'] ?? '',
@@ -149,8 +151,31 @@ class Ask {
   Decimal getReceivePrice() => deci('1') / deci(price);
 
   bool isMine() {
-    final String myAddress = coinsBloc.getBalanceByAbbr(coin)!.balance!.address!;
+    final String myAddress =
+        coinsBloc.getBalanceByAbbr(coin)!.balance!.address!;
 
     return myAddress.toLowerCase() == address!.toLowerCase();
+  }
+
+  /// Deep copy of the object
+  Ask deepCopy() {
+    return Ask(
+      coin: coin == null ? null : String.fromCharCodes(coin!.codeUnits),
+      address:
+          address == null ? null : String.fromCharCodes(address!.codeUnits),
+      price: price == null ? null : String.fromCharCodes(price!.codeUnits),
+      priceFract:
+          priceFract == null ? null : Map<String, dynamic>.from(priceFract!),
+      maxvolume:
+          maxvolume == null ? null : Decimal.parse(maxvolume!.toString()),
+      maxvolumeFract: maxvolumeFract == null
+          ? null
+          : Map<String, dynamic>.from(maxvolumeFract!),
+      minVolume:
+          minVolume == null ? null : Rational.parse(minVolume!.toString()),
+      pubkey: pubkey == null ? null : String.fromCharCodes(pubkey!.codeUnits),
+      age: age == null ? null : int.tryParse(age!.toString()),
+      zcredits: zcredits == null ? null : int.tryParse(zcredits!.toString()),
+    );
   }
 }

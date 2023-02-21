@@ -44,8 +44,8 @@ class GetErcTransactions {
     // if some txs was already fetched, so no need to fetch same txs again
     if (fromId != null) return;
 
-    final CoinBalance? coinBalance = coinsBloc.coinBalance.firstWhereOrNull(
-        (balance) => balance.coin!.abbr == coin!.abbr);
+    final CoinBalance? coinBalance = coinsBloc.coinBalance
+        .firstWhereOrNull((balance) => balance.coin!.abbr == coin!.abbr);
     if (coinBalance == null) return;
     final String? address = coinBalance.balance!.address;
 
@@ -100,7 +100,7 @@ class GetErcTransactions {
       body = response.body;
     } catch (e) {
       Log('get_erc_transactions', 'getTransactions/fetch] $e');
-      return ErrorCode(error: Error(message: e));
+      return ErrorCode(error: Error(message: e.toString()));
     }
 
     final String result =
@@ -132,8 +132,8 @@ class GetErcTransactions {
     String mainUrl,
     String protocolUrl,
   ) {
-    CoinBalance coinBalance = coinsBloc.coinBalance.firstWhereOrNull(
-        (balance) => balance.coin!.abbr == coin.abbr)!;
+    CoinBalance coinBalance = coinsBloc.coinBalance
+        .firstWhereOrNull((balance) => balance.coin!.abbr == coin.abbr)!;
     final String? address = coinBalance.balance!.address;
 
     return (coin.protocol?.type == 'ETH'

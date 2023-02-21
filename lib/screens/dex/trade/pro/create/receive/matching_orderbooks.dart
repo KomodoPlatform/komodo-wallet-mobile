@@ -75,7 +75,8 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
               .where((obDepth) {
                 final String searchTerm =
                     searchTextController.text.trim().toLowerCase();
-                final Coin relCoin = coinsBloc.getCoinByAbbr(obDepth.pair!.rel)!;
+                final Coin relCoin =
+                    coinsBloc.getCoinByAbbr(obDepth.pair!.rel)!;
 
                 return relCoin.abbr!.toLowerCase().contains(searchTerm) ||
                     relCoin.name!.toLowerCase().contains(searchTerm);
@@ -102,7 +103,7 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
 
 class CreateOrder extends StatelessWidget {
   const CreateOrder({this.onCreateNoOrder, this.coin});
-  final Function(String?)? onCreateNoOrder;
+  final Function(String)? onCreateNoOrder;
   final String? coin;
 
   @override
@@ -110,10 +111,12 @@ class CreateOrder extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: InkWell(
-        onTap: () {
-          onCreateNoOrder!(coin);
-          Navigator.of(context).pop();
-        },
+        onTap: onCreateNoOrder == null || coin == null
+            ? null
+            : () {
+                onCreateNoOrder!(coin!);
+                Navigator.of(context).pop();
+              },
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(

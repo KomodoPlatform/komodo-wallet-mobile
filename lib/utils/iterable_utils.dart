@@ -1,15 +1,18 @@
 //========= Collection-related methods inspired by package:collection ==========
 // Could be replaced with package:collection in the future.
 
-/// Utilties for working with collections, inspired by package:collection.
+/// Utilties for working with collections which can return null.
+/// Inspired by package:collection.
 extension IterableUtils<T> on Iterable<T> {
   /// Returns the element at the given [index] in the [iterable], or `null` if the
   /// [index] is out of bounds.
   T? elementAtOrNull(int index) {
-    if (index < 0) return null;
-    for (final T element in this) {
-      if (index == 0) return element;
-      index--;
+    if (index >= 0) {
+      int i = 0;
+      for (final T? element in this) {
+        if (i == index) return element;
+        i++;
+      }
     }
     return null;
   }
@@ -22,12 +25,28 @@ extension IterableUtils<T> on Iterable<T> {
     }
     return null;
   }
+}
 
+/// Utilties for working with iterables where the elements can be null.
+extension IterableNullableUtils<T> on Iterable<T?> {
   /// Returns all non-null elements of the given [iterable].
-  Iterable<T> whereNotNull() {
-    return where((T? element) => element != null).cast<T>();
+  Iterable<T> whereNotNull() sync* {
+    for (var element in this) {
+      if (element != null) yield element;
+    }
   }
 }
+
+/// Convenience utilities for working with list that use IterableNullableUtils
+extension ListNullableUtils<T> on List<T?> {
+  /// Returns all non-null elements of the given [iterable].
+  List<T> whereNotNull() {
+    return IterableNullableUtils(this).whereNotNull().toList();
+  }
+}
+
+
+
 
 //
 //===========================================================================

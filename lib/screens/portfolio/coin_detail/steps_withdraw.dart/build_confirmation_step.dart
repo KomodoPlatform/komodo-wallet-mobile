@@ -29,7 +29,7 @@ class BuildConfirmationStep extends StatefulWidget {
   final Function? onCancel;
   final Function? onNoInternet;
   final Function? onError;
-  final Function(WithdrawResponse?)? onConfirmPressed;
+  final Function(WithdrawResponse)? onConfirmPressed;
   final CoinBalance? coinBalance;
   final String? amountToPay;
   final String? addressToSend;
@@ -101,7 +101,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
       double amountToPay = double.parse(widget.amountToPay!);
       double amountUserReceive = amountToPay;
       if (!needGas) amountToPay += fee.amount!;
-      final double userBalance = widget.coinBalance!.balance!.balance!.toDouble();
+      final double userBalance =
+          widget.coinBalance!.balance!.balance!.toDouble();
 
       if (amountToPay > userBalance) {
         amountToPay = userBalance;
@@ -112,7 +113,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
       if (needGas) {
         final CoinBalance? gasBalance = coinsBloc.getBalanceByAbbr(fee.coin);
         isGasActive = gasBalance != null;
-        if (isGasActive && fee.amount! > gasBalance.balance!.balance!.toDouble()) {
+        if (isGasActive &&
+            fee.amount! > gasBalance.balance!.balance!.toDouble()) {
           notEnoughGas = true;
         }
 
@@ -253,8 +255,9 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                     children: <Widget>[
                       Expanded(
                         child: SecondaryButton(
-                          text:
-                              AppLocalizations.of(context)!.cancel.toUpperCase(),
+                          text: AppLocalizations.of(context)!
+                              .cancel
+                              .toUpperCase(),
                           onPressed: () {
                             setState(() {
                               _closeStep = true;
@@ -362,8 +365,6 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
     } catch (_) {
       amount = double.parse(res.feeDetails!.totalFee!);
     }
-
-    if (amount == null) return null;
 
     return CoinAmt(
       coin: coin,

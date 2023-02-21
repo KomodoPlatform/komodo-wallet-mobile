@@ -76,12 +76,12 @@ class OrderBookProvider extends ChangeNotifier {
   /// Returns [list] of Ask(), sorted by price (DESC),
   /// then by volume (DESC),
   /// then by age (DESC)
-  static List<Ask>? sortByPrice(List<Ask>? list, {bool quotePrice = false}) {
-    if (list == null || list.isEmpty) return list;
+  static List<Ask> sortByPrice(List<Ask> list, {bool quotePrice = false}) {
+    if (list.isEmpty) return list;
 
     final List<Ask> sorted = quotePrice
-        ? list.map((Ask ask) {
-            final Ask quoteAsk = Ask.fromJson(ask.toJson());
+        ? list.whereNotNull().map((Ask ask) {
+            final Ask quoteAsk = ask.deepCopy();
             quoteAsk.price = '${1 / double.parse(ask.price!)}';
             quoteAsk.priceFract = ask.priceFract == null
                 ? null
@@ -177,7 +177,8 @@ class SyncOrderbook {
     if (_updatingDepth) await pauseUntil(() => !_updatingDepth);
 
     bool wasChanged = false;
-    final LinkedHashMap<String?, Coin> known = await (coins as FutureOr<LinkedHashMap<String?, Coin>>);
+    final LinkedHashMap<String?, Coin> known =
+        await (coins as FutureOr<LinkedHashMap<String?, Coin>>);
     final List<CoinBalance> active = coinsBloc.coinBalance;
 
     active.removeWhere((e) => e.coin!.walletOnly);

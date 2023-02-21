@@ -527,7 +527,7 @@ class _ChartPainter extends CustomPainter {
         _price(candle.openPrice),
         _price(candle.lowPrice),
         _price(candle.closePrice),
-      ].reduce(min);
+      ].whereNotNull().reduce(min);
 
       if (minPrice == null || lowest! < minPrice) {
         minPrice = lowest;
@@ -545,9 +545,9 @@ class _ChartPainter extends CustomPainter {
         _price(candle.openPrice),
         _price(candle.highPrice),
         _price(candle.closePrice),
-      ].reduce(max);
+      ].whereNotNull().reduce(max);
 
-      if (maxPrice == null || highest! > maxPrice) {
+      if (maxPrice == null || (highest! > maxPrice)) {
         maxPrice = highest;
       }
     }

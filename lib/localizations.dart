@@ -16,6 +16,9 @@ class AppLocalizations {
     });
   }
 
+  // TODO: Consider refactoring in future to follow Flutter conventions
+  // Type.of<T>() methods should return non-nullable types. If we want to
+  // return null, we should use Type.maybeOf<T>() instead.
   static AppLocalizations? of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }

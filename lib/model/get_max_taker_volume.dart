@@ -11,8 +11,6 @@ class GetMaxTakerVolume {
   });
 
   factory GetMaxTakerVolume.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null;
-
     return GetMaxTakerVolume(
       userpass: json['userpass'] ?? '',
       method: json['method'] ?? '',

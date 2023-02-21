@@ -16,11 +16,11 @@ class IntentDataProvider extends ChangeNotifier {
     final Uri? uri = Uri.tryParse(data);
     if (uri == null) return;
 
-    final PaymentUriInfo uriInfo = PaymentUriInfo.fromUri(uri);
+    final PaymentUriInfo? uriInfo = PaymentUriInfo.tryFromUri(uri);
 
     // ScreenSelection might be useful in the future for other types of intent
     ScreenSelection screen;
-    switch (uriInfo.scheme) {
+    switch (uriInfo?.scheme) {
       case 'bitcoin':
         screen = ScreenSelection.Bitcoin;
         break;

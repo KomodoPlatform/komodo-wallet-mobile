@@ -11,8 +11,6 @@ class GetMinTradingVolume {
   });
 
   factory GetMinTradingVolume.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null;
-
     return GetMinTradingVolume(
       userpass: json['userpass'] ?? '',
       method: json['method'] ?? '',

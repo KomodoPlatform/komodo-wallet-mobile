@@ -164,7 +164,6 @@ dependencies:
     git:
       url: https://github.com/KomodoPlatform/dart-uuid.git
       ref: c9a37bc675fd3fa715db2d929dc66d15ec09ad27 #3.0.5
-  collection: ^1.15.0-nullsafety.4
 
 
 dev_dependencies:

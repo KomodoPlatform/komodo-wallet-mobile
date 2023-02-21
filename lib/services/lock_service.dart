@@ -125,7 +125,7 @@ class LockService {
     //Log.println('lock_service:123', 'pointerEvent');
     if (_inFilePicker != 0) {
       _inFilePicker = 0;
-      _lock(context);
+      _lock(context.read<WalletSecuritySettingsProvider>());
     }
 
     // If there is a tap then we have returned from the QR.
@@ -152,21 +152,20 @@ class LockService {
   /// but we can treat them as a signal that the visibility was affected, triggering the lock screen.
   void lockSignal(BuildContext context) {
     Log.println('lock_service:152', 'lockSignal');
-    if (_inFilePicker == 0) _lock(context);
+    if (_inFilePicker == 0)
+      _lock(context.read<WalletSecuritySettingsProvider>());
   }
 
-  void _lock(BuildContext context) {
-    final walletSecuritySettingsProvider =
-        context.read<WalletSecuritySettingsProvider>();
+  void _lock(WalletSecuritySettingsProvider? walletSecuritySettingsProvider) {
     if (authBloc.showLock) return; // Already showing the lock.
     if (inQrScanner) return; // Don't lock while we're scanning QR.
     if (walletBloc.currentWallet != null) {
-      if (walletSecuritySettingsProvider.logOutOnExit) {
+      if (walletSecuritySettingsProvider?.logOutOnExit == true) {
         authBloc.logout();
       }
     }
 
-    if (walletSecuritySettingsProvider.activatePinProtection == false)
+    if (walletSecuritySettingsProvider?.activatePinProtection == false)
       return; // PIN turned off
 
     // Lock signals are coming *concurrently and in parallel* with the returns

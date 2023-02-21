@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -134,7 +135,8 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
         children: [
           truncateMiddle(
             _swap!.uuid!,
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 14),
+            style:
+                Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 14),
           ),
           SizedBox(height: 2),
           Text(
@@ -195,7 +197,8 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
       child: Text(AppLocalizations.of(context)!.importDesc,
           style: TextStyle(
             height: 1.3,
-            color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.7),
+            color:
+                Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.7),
           )),
     );
   }
@@ -252,18 +255,21 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
                 if (filePickerResult.count != 0) {
                   final pFile = filePickerResult.files[0];
                   if (pFile == null) {
-                    _showError(AppLocalizations.of(context)!.importFileNotFound);
+                    _showError(
+                        AppLocalizations.of(context)!.importFileNotFound);
                     return;
                   }
 
                   file = File(pFile.path!);
                   if (!file.existsSync()) {
-                    _showError(AppLocalizations.of(context)!.importFileNotFound);
+                    _showError(
+                        AppLocalizations.of(context)!.importFileNotFound);
                     return;
                   }
                 }
 
-                final Map<String, dynamic> data = await (_getSwapData(file) as FutureOr<Map<String, dynamic>>);
+                final Map<String, dynamic> data = await (_getSwapData(file)
+                    as FutureOr<Map<String, dynamic>>);
                 setState(() => _loading = false);
 
                 try {

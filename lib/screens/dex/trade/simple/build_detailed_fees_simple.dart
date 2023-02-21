@@ -149,7 +149,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
     setState(() => _isLarge = false);
 
     final String nbsp = String.fromCharCode(0x00A0);
-    final Map<String?, double> normalizedTotals = {
+    final Map<String, double> normalizedTotals = {
       'USD': 0,
     };
 
@@ -160,7 +160,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
           _cexProvider!.getUsdPrice(fee.coin)!;
 
       if (feeUsdAmount > 0) {
-        normalizedTotals['USD'] += feeUsdAmount;
+        normalizedTotals['USD'] = normalizedTotals['USD']! + feeUsdAmount;
       } else {
         final double amount = double.tryParse(fee.amount ?? '0') ?? 0;
         if (amount > 0) normalizedTotals[fee.coin] = amount;

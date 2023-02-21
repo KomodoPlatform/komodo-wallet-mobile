@@ -150,7 +150,7 @@ class RewardsProvider extends ChangeNotifier {
           ));
     } catch (e) {
       Log('rewards_provider', 'receive/postWithdraw] $e');
-      _setError(e);
+      _setError(e.toString());
     }
 
     if (res is! WithdrawResponse) {
@@ -165,7 +165,7 @@ class RewardsProvider extends ChangeNotifier {
           mmSe.client, GetSendRawTransaction(coin: 'KMD', txHex: res.txHex));
     } catch (e) {
       Log('rewards_provider', 'receive/postRawTransaction] $e');
-      _setError(e);
+      _setError(e.toString());
     }
 
     if (tx is! SendRawTransactionResponse || tx.txHash!.isEmpty) {
@@ -188,8 +188,8 @@ class RewardsProvider extends ChangeNotifier {
   }
 
   CoinBalance? _kmdBalance() {
-    return coinsBloc.coinBalance.firstWhereOrNull(
-        (balance) => balance.coin!.abbr == 'KMD');
+    return coinsBloc.coinBalance
+        .firstWhereOrNull((balance) => balance.coin!.abbr == 'KMD');
   }
 }
 

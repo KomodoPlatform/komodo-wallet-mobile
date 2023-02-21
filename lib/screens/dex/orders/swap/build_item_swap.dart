@@ -30,7 +30,8 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
         swapHistoryBloc.getSwapStatusString(context, widget.swap!.status);
     final Color colorStatus =
         swapHistoryBloc.getColorStatus(widget.swap!.status);
-    final String stepStatus = swapHistoryBloc.getStepStatus(widget.swap!.status);
+    final String stepStatus =
+        swapHistoryBloc.getStepStatus(widget.swap!.status);
 
     final myInfo = extractMyInfoFromSwap(widget.swap!.result!);
     final myCoin = myInfo['myCoin']!;
@@ -114,8 +115,8 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                 ),
                 FutureBuilder<String?>(
                     future: Db.getNote(widget.swap!.result!.uuid),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<String?> snapshot) {
                       if (!snapshot.hasData) {
                         return SizedBox();
                       }
@@ -230,9 +231,11 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                 } else if (result is ErrorString) {
                                   showErrorMessage(context, result.error);
                                 }
-                              }).then(((_) => setState(() {
-                                        recoverIsLoading = false;
-                                      })) as FutureOr<_> Function(Null));
+                              }).then(
+                                ((_) => setState(() {
+                                      recoverIsLoading = false;
+                                    })),
+                              );
                             },
                             style: TextButton.styleFrom(
                               primary: Theme.of(context).primaryColor,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -148,7 +150,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
           (cb) => cb.coin!.abbr == widget.coinBalance!.coin!.abbr);
       final amountDecimal = deci(uriInfo.amount);
 
-      if (coinBalance != null && coinBalance.balance!.balance! >= amountDecimal) {
+      if (coinBalance != null &&
+          coinBalance.balance!.balance! >= amountDecimal) {
         widget.amountController!.text = uriInfo.amount!;
       } else {
         showinsufficientBalanceDialog(amountDecimal);
@@ -157,7 +160,9 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   }
 
   void handleQrAdress(String address) {
-    widget.addressController!.text = address;
+    setState(() {
+      widget.addressController!.text = address;
+    });
   }
 
   void showWrongCoinDialog(PaymentUriInfo uriInfo) {
@@ -192,7 +197,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       context: context,
       builder: (BuildContext context) {
         return CustomSimpleDialog(
-          title: Text(AppLocalizations.of(context)!.uriInsufficientBalanceTitle),
+          title:
+              Text(AppLocalizations.of(context)!.uriInsufficientBalanceTitle),
           children: <Widget>[
             Text(
               AppLocalizations.of(context)!.uriInsufficientBalanceSpan1 +
@@ -251,10 +257,19 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     });
   }
 
+  PaymentUriInfo? _tryParseInfo(String? address) {
+    if (address == null) return null;
+    final addressParsed = Uri.tryParse(address.trim());
+
+    return addressParsed == null
+        ? null
+        : PaymentUriInfo.tryFromUri(addressParsed);
+  }
+
   Future<void> scan() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool haveCameraAccess =
-        !(await (MMService.nativeC.invokeMethod<bool>('is_camera_denied') as FutureOr<bool>));
+    final bool haveCameraAccess = !(await (MMService.nativeC
+        .invokeMethod<bool>('is_camera_denied') as FutureOr<bool>));
     final bool wasDeniedByUser = prefs.getBool('camera_denied_by_user') == true;
     if (!haveCameraAccess) {
       if (wasDeniedByUser) {
@@ -267,23 +282,18 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
 
     final int lockCookie = lockService.enteringQrScanner();
 
-    final result = await scanQr(context);
-    if (result == null) {
-      setState(() {
-        barcode = 'Error';
-      });
-    } else {
-      final address = result;
-      final uri = Uri.tryParse(address.trim());
+    final scanResult = await scanQr(context);
 
-      setState(() {
-        final PaymentUriInfo uriInfo = PaymentUriInfo.fromUri(uri!);
-        if (uriInfo != null) {
-          handlePaymentData(uriInfo);
-        } else {
-          handleQrAdress(address);
-        }
-      });
+    final paymentUriInfo = _tryParseInfo(scanResult);
+
+    if (paymentUriInfo != null) {
+      handlePaymentData(paymentUriInfo);
+    } else if (scanResult != null) {
+      handleQrAdress(scanResult);
+    } else {
+      setState(() => barcode = 'Error');
+
+      return;
     }
 
     lockService.qrScannerReturned(lockCookie);

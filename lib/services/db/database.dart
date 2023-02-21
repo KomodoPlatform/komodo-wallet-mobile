@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -29,7 +30,8 @@ class Db {
   }
 
   static Future<Database> _initDB() async {
-    final Directory documentsDirectory = await (applicationDocumentsDirectory as FutureOr<Directory>);
+    final Directory documentsDirectory =
+        await (applicationDocumentsDirectory as FutureOr<Directory>);
     final String path = join(documentsDirectory.path, 'AtomicDEX.db');
     String _articleTable = '''
       CREATE TABLE ArticlesSaved (
@@ -468,7 +470,7 @@ class Db {
   static Future<void> deleteNote(String? id) async {
     final Database db = await (Db.db as FutureOr<Database>);
 
-    return await db.delete('Notes', where: 'id = ?', whereArgs: <String?>[id]);
+    await db.delete('Notes', where: 'id = ?', whereArgs: <String?>[id]);
   }
 
   static Future<int> saveNote(String? id, String? note) async {

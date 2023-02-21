@@ -10,7 +10,7 @@ void showCurrenciesDialog(BuildContext context) {
       Provider.of<CexProvider>(context, listen: false);
   final String? current = cexProvider.selectedFiat;
   final List<String> available = cexProvider.fiatList;
-  if (available == null || available.isEmpty) return;
+  if (available?.isEmpty ?? false) return;
 
   const List<String> primary = ['USD', 'EUR', 'GBP', 'CNY', 'RUB', 'TRY'];
 

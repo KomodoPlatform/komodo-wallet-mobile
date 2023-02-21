@@ -7,20 +7,20 @@ import '../../widgets/language_flag_icon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectLanguagePage extends StatefulWidget {
-  const SelectLanguagePage({Key? key, this.currentLoc}) : super(key: key);
+  SelectLanguagePage({Key? key, required this.currentLoc}) : super(key: key);
 
-  final Locale? currentLoc;
+  Locale currentLoc;
 
   @override
   _SelectLanguagePageState createState() => _SelectLanguagePageState();
 }
 
 class _SelectLanguagePageState extends State<SelectLanguagePage> {
-  Locale? _currentLoc;
+  late Locale _currentLoc;
+
   @override
   void initState() {
     super.initState();
-    _currentLoc = widget.currentLoc;
   }
 
   @override
@@ -35,10 +35,11 @@ class _SelectLanguagePageState extends State<SelectLanguagePage> {
           children: mainBloc.supportedLocales
               .map((Locale loc) => BuildItemLanguage(
                     locale: loc,
-                    currentLoc: _currentLoc,
+                    currentLoc: widget.currentLoc,
                     onChange: (Locale loc) {
                       setState(() {
                         _currentLoc = loc;
+
                         mainBloc.setNewLanguage(loc);
                         SharedPreferences.getInstance()
                             .then((SharedPreferences prefs) {
@@ -57,44 +58,45 @@ class _SelectLanguagePageState extends State<SelectLanguagePage> {
 
 class BuildItemLanguage extends StatefulWidget {
   const BuildItemLanguage(
-      {Key? key, this.locale, this.currentLoc, this.onChange})
+      {Key? key, required this.locale, required this.currentLoc, this.onChange})
       : super(key: key);
 
-  final Locale? locale;
-  final Locale? currentLoc;
-  final Function(Locale?)? onChange;
+  final Locale locale;
+  final Locale currentLoc;
+  final Function(Locale)? onChange;
 
   @override
   _BuildItemLanguageState createState() => _BuildItemLanguageState();
 }
 
 class _BuildItemLanguageState extends State<BuildItemLanguage> {
-  String getGenericLocale(String localeCode) {
-    switch (localeCode) {
-      default:
-        return '';
-    }
-  }
+  bool get _isEnabled => widget.onChange != null;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        onTap: () {
-          widget.onChange!(widget.locale);
-        },
+        onTap: !_isEnabled
+            ? null
+            : () {
+                widget.onChange!(widget.locale);
+              },
         leading: Radio<Locale?>(
           value: widget.locale,
           groupValue: widget.currentLoc,
-          onChanged: (Locale? value) {
-            widget.onChange!(value);
-          },
+          onChanged: !_isEnabled
+              ? null
+              : (Locale? value) {
+                  if (value != null) {
+                    widget.onChange!(value);
+                  }
+                },
         ),
         title: Row(
           children: [
             LanguageFlagIcon(loc: widget.locale, size: 32),
             SizedBox(width: 16),
             Text(settingsBloc.getNameLanguage(
-                context, widget.locale!.languageCode)),
+                context, widget.locale.languageCode)),
           ],
         ));
   }

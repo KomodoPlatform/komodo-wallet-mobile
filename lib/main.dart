@@ -316,11 +316,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     }
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      final Uri? uri = Uri.tryParse(data.payload!);
+      final Uri? uri = Uri.tryParse(data.payload ?? '');
 
       if (uri == null) return;
 
-      final PaymentUriInfo uriInfo = PaymentUriInfo.fromUri(uri);
+      final PaymentUriInfo? uriInfo = PaymentUriInfo.tryFromUri(uri);
 
       if (uriInfo == null) return;
 

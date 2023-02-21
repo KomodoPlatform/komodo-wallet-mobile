@@ -430,9 +430,9 @@ void setDebugDocumentsDirectory(Directory directory) {
   _applicationDocumentsDirectory = directory;
 }
 
-Future<Directory?> get applicationDocumentsDirectory async {
+Future<Directory> get applicationDocumentsDirectory async {
   _applicationDocumentsDirectory ??= await getApplicationDocumentsDirectory();
-  return _applicationDocumentsDirectory;
+  return _applicationDocumentsDirectory!;
 }
 
 /// Cached synchronous access to the application directory.
@@ -624,7 +624,7 @@ void pinScreenOrientation(BuildContext context) {
 class PaymentUriInfo {
   PaymentUriInfo({this.scheme, this.abbr, this.address, this.amount});
 
-  factory PaymentUriInfo.fromUri(Uri uri) {
+  static PaymentUriInfo? tryFromUri(Uri uri) {
     String? address;
     double? amount;
     String abbr;
@@ -652,6 +652,7 @@ class PaymentUriInfo {
       }
     } else {
       return null;
+      // throw Exception('Unsupported scheme: ${uri.scheme}');
     }
 
     return PaymentUriInfo(

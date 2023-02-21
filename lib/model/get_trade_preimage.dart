@@ -16,17 +16,15 @@ class GetTradePreimage {
   });
 
   factory GetTradePreimage.fromJson(Map<String, dynamic>? json) {
-    if (json == null) return null;
-
     return GetTradePreimage(
-      userpass: json['userpass'] ?? '',
-      method: json['method'] ?? '',
-      base: json['base'] ?? '',
-      rel: json['rel'] ?? '',
-      swapMethod: json['swap_method'] ?? '',
-      volume: json['volume'] ?? '',
-      price: json['price'] ?? '',
-      max: json['max'] ?? false,
+      userpass: json?['userpass'] ?? '',
+      method: json?['method'] ?? '',
+      base: json?['base'] ?? '',
+      rel: json?['rel'] ?? '',
+      swapMethod: json?['swap_method'] ?? '',
+      volume: json?['volume'] ?? '',
+      price: json?['price'] ?? '',
+      max: json?['max'] ?? false,
     );
   }
 

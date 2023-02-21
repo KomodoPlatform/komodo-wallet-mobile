@@ -22,17 +22,16 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
     if (_constrProvider!.matchingOrder == null) return SizedBox();
 
     return Opacity(
-      opacity: _isEnabled() ? 1 : 0.6,
+      opacity: _isEnabled ? 1 : 0.6,
       child: Row(
         children: [
           SizedBox(width: 70),
           Expanded(
             child: ElevatedButton(
               key: const Key('trade-button-simple'),
-              onPressed:
-                  _isEnabled() ? () => _validateAndConfirm(context) : null,
+              onPressed: _isEnabled ? () => _validateAndConfirm(context) : null,
               style: ElevatedButton.styleFrom(
-                onPrimary: _isEnabled() ? null : Theme.of(context).hintColor,
+                onPrimary: _isEnabled ? null : Theme.of(context).hintColor,
                 padding: const EdgeInsets.symmetric(
                   vertical: 16,
                 ),
@@ -52,7 +51,8 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
   Future<void> _validateAndConfirm(BuildContext mContext) async {
     String? errorMessage;
     if (mainBloc.networkStatus != NetworkStatus.Online) {
-      return errorMessage = AppLocalizations.of(context)!.noInternet;
+      errorMessage = AppLocalizations.of(context)!.noInternet;
+      return Future.error(errorMessage);
     }
 
     if (errorMessage == null) {
@@ -69,7 +69,7 @@ class _BuildTradeButtonSimpleState extends State<BuildTradeButtonSimple> {
     }
   }
 
-  bool _isEnabled() {
+  bool get _isEnabled {
     if (_constrProvider!.inProgress) return false;
     if (_constrProvider!.error != null) return false;
     if (_constrProvider!.preimage == null) return false;

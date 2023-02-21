@@ -67,8 +67,8 @@ class _SwapHistoryState extends State<SwapHistory> {
               if (swapsFiltered.isEmpty) ...{
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 4,
-                  child:
-                      Center(child: Text(AppLocalizations.of(context)!.noSwaps)),
+                  child: Center(
+                      child: Text(AppLocalizations.of(context)!.noSwaps)),
                 )
               },
               if (swapsFiltered.isNotEmpty) ...{
@@ -82,13 +82,13 @@ class _SwapHistoryState extends State<SwapHistory> {
         });
   }
 
-  Widget _buildFilters(List<Swap> swaps) {
+  Widget _buildFilters(List<dynamic> swaps) {
     return Padding(
       padding: EdgeInsets.fromLTRB(12, 0, 8, 0),
       child: Container(
         padding: EdgeInsets.fromLTRB(12, 12, 4, 12),
         child: Filters(
-          items: swaps,
+          items: swaps.cast<Swap>(),
           filter: _filter,
           showStatus: true,
           activeFilters: widget.activeFilters,
@@ -114,7 +114,8 @@ class _SwapHistoryState extends State<SwapHistory> {
       bool isMatched = true;
 
       final String? sellCoin = item.isMaker ? item.makerAbbr : item.takerAbbr;
-      final String? receiveCoin = item.isMaker ? item.takerAbbr : item.makerAbbr;
+      final String? receiveCoin =
+          item.isMaker ? item.takerAbbr : item.makerAbbr;
       final OrderType type = item.isMaker ? OrderType.MAKER : OrderType.TAKER;
       final DateTime date = DateTime.fromMillisecondsSinceEpoch(
           item.started?.timestamp ?? DateTime.now().millisecondsSinceEpoch);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:rational/rational.dart';
 import 'package:provider/provider.dart';
 
@@ -145,9 +146,18 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
           _cexProvider!.getUsdPrice(fee.coin)!;
 
       if (feeUsdAmount > 0) {
-        normalizedTotals['USD'] += feeUsdAmount;
+        double? currentUsdAmount = normalizedTotals['USD'];
+
+        if (currentUsdAmount == null) {
+          currentUsdAmount = 0;
+          Log(
+            'warn:normalized-usd-null',
+            'Warn: Normalized USD total is null. Setting to 0',
+          );
+        }
+        currentUsdAmount += feeUsdAmount;
       } else {
-        final double amount = double.tryParse(fee.amount ?? '0') ?? 0;
+        final double amount = double.tryParse(fee.amount) ?? 0;
         if (amount > 0) normalizedTotals[fee.coin] = amount;
       }
     }

@@ -206,9 +206,11 @@ class _ImportPageState extends State<ImportPage> {
     _all!.notes!.forEach((String? id, dynamic note) {
       items.add(ExportImportListItem(
           checked: _selected.notes!.containsKey(id),
-          onChange: (bool val) {
+          onChange: (bool? val) {
             setState(() {
-              val ? _selected.notes![id] = note : _selected.notes!.remove(id);
+              val == true
+                  ? _selected.notes![id] = note
+                  : _selected.notes!.remove(id);
             });
           },
           child: Text(
@@ -231,9 +233,9 @@ class _ImportPageState extends State<ImportPage> {
     _all!.contacts!.forEach((String? id, dynamic contact) {
       items.add(ExportImportListItem(
           checked: _selected.contacts!.containsKey(id),
-          onChange: (bool val) {
+          onChange: (bool? val) {
             setState(() {
-              val
+              val == true
                   ? _selected.contacts![id] = contact
                   : _selected.contacts!.remove(id);
             });
@@ -290,9 +292,11 @@ class _ImportPageState extends State<ImportPage> {
       items.add(
         ExportImportListItem(
           checked: _selected.swaps!.containsKey(id),
-          onChange: (bool val) {
+          onChange: (bool? val) {
             setState(() {
-              val ? _selected.swaps![id] = swap : _selected.swaps!.remove(id);
+              val == true
+                  ? _selected.swaps![id] = swap
+                  : _selected.swaps!.remove(id);
             });
           },
           child: Column(
@@ -383,7 +387,8 @@ class _ImportPageState extends State<ImportPage> {
       child: Text(AppLocalizations.of(context)!.importDesc,
           style: TextStyle(
             height: 1.3,
-            color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.7),
+            color:
+                Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.7),
           )),
     );
   }
@@ -440,13 +445,15 @@ class _ImportPageState extends State<ImportPage> {
                 if (filePickerResult.count != 0) {
                   final pFile = filePickerResult.files[0];
                   if (pFile == null) {
-                    _showError(AppLocalizations.of(context)!.importFileNotFound);
+                    _showError(
+                        AppLocalizations.of(context)!.importFileNotFound);
                     return;
                   }
 
                   file = File(pFile.path!);
                   if (!file.existsSync()) {
-                    _showError(AppLocalizations.of(context)!.importFileNotFound);
+                    _showError(
+                        AppLocalizations.of(context)!.importFileNotFound);
                     return;
                   }
                 }

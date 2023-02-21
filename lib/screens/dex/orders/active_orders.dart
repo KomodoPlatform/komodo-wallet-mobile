@@ -41,12 +41,14 @@ class _ActiveOrdersState extends State<ActiveOrders> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<dynamic>>(
+        // TODO: Future refactor: If you value your sanity, please don't use
+        // dynamic lists.
         initialData: ordersBloc.orderSwaps,
         stream: ordersBloc.outOrderSwaps,
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (!snapshot.hasData) return const SizedBox();
 
-          List<dynamic>? orderSwaps = snapshot.data;
+          List<dynamic> orderSwaps = snapshot.data ?? [];
           orderSwaps = snapshot.data!.reversed.toList();
           final List<dynamic> orderSwapsFiltered = _filter(orderSwaps);
 
@@ -79,7 +81,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
             controller: widget.scrollCtrl,
             key: const Key('active-order-list'),
             children: [
-              if (widget.showFilters!) _buildFilters(orderSwaps),
+              if (widget.showFilters!) _buildFilters(orderSwaps ?? []),
               if (orderSwapsFiltered.isNotEmpty) ...{
                 _buildPagination(orderSwapsFiltered),
                 ...orderSwapsWidget,
@@ -107,10 +109,12 @@ class _ActiveOrdersState extends State<ActiveOrders> {
           items: orderSwaps,
           filter: _filter,
           activeFilters: widget.activeFilters,
-          onChange: (ActiveFilters filters) {
-            setState(() => _currentPage = 1);
-            widget.onFiltersChange!(filters);
-          },
+          onChange: widget.onFiltersChange == null
+              ? null
+              : (ActiveFilters filters) {
+                  setState(() => _currentPage = 1);
+                  widget.onFiltersChange!(filters);
+                },
         ),
       ),
     );

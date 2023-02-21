@@ -150,8 +150,9 @@ class CexProvider extends ChangeNotifier {
       }
     } catch (_) {
       _updatingChart = false;
-      if (_charts[pair] != null) {
-        _charts[pair]
+      final pairData = _charts[pair];
+      if (pairData != null) {
+        pairData
           ..status = ChartStatus.error
           ..updated = DateTime.now().millisecondsSinceEpoch;
       }
@@ -217,7 +218,8 @@ class CexProvider extends ChangeNotifier {
                   chain[0].rel == pair.split('-')[1].toLowerCase();
 
           open = reversed ? 1 / (open! * secondOpen!) : open! * secondOpen!;
-          close = reversed ? 1 / (close! * secondClose!) : close! * secondClose!;
+          close =
+              reversed ? 1 / (close! * secondClose!) : close! * secondClose!;
           high = reversed ? 1 / (high! * secondHigh!) : high! * secondHigh!;
           low = reversed ? 1 / (low! * secondLow!) : low! * secondLow!;
           volume = null;
@@ -407,7 +409,7 @@ class CexPrices {
     return NumberFormat.simpleCurrency(name: selectedFiat).currencySymbol;
   }
 
-  List<String> get fiatList => _fiatCurrencies?.keys?.toList();
+  List<String> get fiatList => _fiatCurrencies.keys.toList();
 
   SharedPreferences? prefs;
   String? _selectedFiat;
@@ -573,7 +575,6 @@ class CexPrices {
 
     for (String? abbr in currencies!) {
       if (ids.contains(abbr)) continue;
-
       final Coin? coin = allCoins.firstWhereOrNull((Coin c) => c.abbr == abbr);
       if (coin == null) continue;
 

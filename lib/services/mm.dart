@@ -704,7 +704,7 @@ class ApiProvider {
         request: request,
         error: RpcError(
           type: RpcErrorType.connectionError,
-          message: e,
+          message: e.toString(),
         ),
       );
     }
@@ -717,7 +717,7 @@ class ApiProvider {
         request: request,
         error: RpcError(
           type: RpcErrorType.decodingError,
-          message: e,
+          message: e.toString(),
         ),
       );
     }

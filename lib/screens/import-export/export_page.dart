@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -83,7 +84,8 @@ class _ExportPageState extends State<ExportPage> {
 
   Future<void> _loadContacts() async {
     final List<Contact> contacts =
-        await (Provider.of<AddressBookProvider>(context, listen: false).contacts as FutureOr<List<Contact>>);
+        await (Provider.of<AddressBookProvider>(context, listen: false).contacts
+            as FutureOr<List<Contact>>);
 
     for (Contact contact in contacts) {
       setState(() {
@@ -128,7 +130,8 @@ class _ExportPageState extends State<ExportPage> {
       child: Text(AppLocalizations.of(context)!.exportDesc,
           style: TextStyle(
             height: 1.3,
-            color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.7),
+            color:
+                Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.7),
           )),
     );
   }
@@ -137,21 +140,24 @@ class _ExportPageState extends State<ExportPage> {
     if (_all.notes == null) return SizedBox();
 
     final List<ExportImportListItem> items = [];
-    _all.notes!.forEach((id, note) {
+
+    for (String id in _all.notes!.keys.whereNotNull()) {
       items.add(ExportImportListItem(
           checked: _selected.notes!.containsKey(id),
-          onChange: (bool val) {
+          onChange: (bool? val) {
             setState(() {
-              val ? _selected.notes![id] = note : _selected.notes!.remove(id);
+              val == true
+                  ? _selected.notes![id] = _all.notes![id]
+                  : _selected.notes!.remove(id);
             });
           },
           child: Text(
-            note!,
+            _all.notes![id]!,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.caption,
           )));
-    });
+    }
 
     return ExportImportList(
       items: items,
@@ -169,7 +175,7 @@ class _ExportPageState extends State<ExportPage> {
         checked: _selected.contacts!.containsKey(uid),
         onChange: (val) {
           setState(() {
-            val
+            val == true
                 ? _selected.contacts![uid] = contact
                 : _selected.contacts!.remove(uid);
           });
@@ -230,7 +236,9 @@ class _ExportPageState extends State<ExportPage> {
         checked: _selected.swaps!.containsKey(uuid),
         onChange: (val) {
           setState(() {
-            val ? _selected.swaps![uuid] = swap : _selected.swaps!.remove(uuid);
+            val == true
+                ? _selected.swaps![uuid] = swap
+                : _selected.swaps!.remove(uuid);
           });
         },
         child: Column(

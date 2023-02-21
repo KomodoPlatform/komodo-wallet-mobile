@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import '../../../../app_config/app_config.dart';
 import '../../../../generic_blocs/dialog_bloc.dart';
 import '../../../../localizations.dart';
@@ -152,7 +154,8 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
     final RenderRepaintBoundary boundary =
         repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     final ui.Image image = await boundary.toImage(pixelRatio: 4);
-    final byteData = await (image.toByteData(format: ui.ImageByteFormat.png) as FutureOr<ByteData>);
+    final byteData = await (image.toByteData(format: ui.ImageByteFormat.png)
+        as FutureOr<ByteData>);
     final pngBytes = byteData.buffer.asUint8List();
 
     final String directory = (await applicationDocumentsDirectory)!.path;

@@ -11,16 +11,17 @@ import '../../../../widgets/auto_scroll_text.dart';
 
 class Filters extends StatefulWidget {
   const Filters({
-    this.items,
-    this.activeFilters,
-    this.onChange,
-    this.filter,
+    this.items = const [],
+    required this.activeFilters,
+    required this.onChange,
+    required this.filter,
     this.showStatus = false,
   });
 
-  final List<dynamic>? items;
-  final Function(ActiveFilters?)? onChange;
+  final List<dynamic> items;
+  final void Function(ActiveFilters)? onChange;
   final Function? filter;
+  // final Function(List<dynamic>?) filter;
   final ActiveFilters? activeFilters;
   final bool showStatus;
 
@@ -30,6 +31,9 @@ class Filters extends StatefulWidget {
 
 class _FiltersState extends State<Filters> {
   ActiveFilters? _filters;
+
+  bool get isFiltersEnabled =>
+      _filters != null && widget.onChange != null && widget.filter != null;
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +71,14 @@ class _FiltersState extends State<Filters> {
             Icon(Icons.clear)
           ],
         ),
-        onPressed: () {
-          setState(() {
-            _filters = ActiveFilters();
-          });
-          widget.onChange!(_filters);
-        },
+        onPressed: !isFiltersEnabled
+            ? null
+            : () {
+                setState(() {
+                  _filters = ActiveFilters();
+                });
+                widget.onChange!(_filters!);
+              },
       ),
     ]);
   }
@@ -124,15 +130,16 @@ class _FiltersState extends State<Filters> {
         ),
       ),
       _buildIndividualClearButtonHelper(
-        onPresseed: current == null
-            ? null
-            : () {
-                setState(() {
-                  _filters!.status = null;
-                });
-                _filters!.matches = widget.filter!(widget.items).length;
-                widget.onChange!(_filters);
-              },
+        onPresseed:
+            current == null || !isFiltersEnabled || widget.filter == null
+                ? null
+                : () {
+                    setState(() {
+                      _filters!.status = null;
+                    });
+                    _filters!.matches = widget.filter!(widget.items).length;
+                    widget.onChange!(_filters!);
+                  },
       ),
     ]);
   }
@@ -152,23 +159,28 @@ class _FiltersState extends State<Filters> {
             hasHorizontalPadding: false,
             children: [
               InkWell(
-                onTap: () {
-                  setState(() => _filters!.status = null);
-                  _filters!.matches = widget.filter!(widget.items).length;
-                  widget.onChange!(_filters);
-                  dialogBloc.closeDialog(context);
-                },
+                onTap: !isFiltersEnabled
+                    ? null
+                    : () {
+                        setState(() => _filters!.status = null);
+                        _filters!.matches = widget.filter!(widget.items).length;
+                        widget.onChange!(_filters!);
+                        dialogBloc.closeDialog(context);
+                      },
                 child: Container(
                     padding: const EdgeInsets.all(12),
                     child: Text(AppLocalizations.of(context)!.filtersAll)),
               ),
               InkWell(
-                onTap: () {
-                  setState(() => _filters!.status = Status.SWAP_SUCCESSFUL);
-                  _filters!.matches = widget.filter!(widget.items).length;
-                  widget.onChange!(_filters);
-                  dialogBloc.closeDialog(context);
-                },
+                onTap: !isFiltersEnabled
+                    ? null
+                    : () {
+                        setState(
+                            () => _filters!.status = Status.SWAP_SUCCESSFUL);
+                        _filters!.matches = widget.filter!(widget.items).length;
+                        widget.onChange!(_filters!);
+                        dialogBloc.closeDialog(context);
+                      },
                 child: Container(
                     padding: const EdgeInsets.all(12),
                     child: Row(
@@ -182,12 +194,14 @@ class _FiltersState extends State<Filters> {
                     )),
               ),
               InkWell(
-                onTap: () {
-                  setState(() => _filters!.status = Status.SWAP_FAILED);
-                  _filters!.matches = widget.filter!(widget.items).length;
-                  widget.onChange!(_filters);
-                  dialogBloc.closeDialog(context);
-                },
+                onTap: !isFiltersEnabled
+                    ? null
+                    : () {
+                        setState(() => _filters!.status = Status.SWAP_FAILED);
+                        _filters!.matches = widget.filter!(widget.items).length;
+                        widget.onChange!(_filters!);
+                        dialogBloc.closeDialog(context);
+                      },
                 child: Container(
                     padding: const EdgeInsets.all(12),
                     child: Row(
@@ -252,7 +266,7 @@ class _FiltersState extends State<Filters> {
         ),
       ),
       _buildIndividualClearButtonHelper(
-        onPresseed: current == null
+        onPresseed: current == null || !isFiltersEnabled
             ? null
             : () {
                 setState(() {
@@ -261,7 +275,7 @@ class _FiltersState extends State<Filters> {
                       : _filters!.end = null;
                 });
                 _filters!.matches = widget.filter!(widget.items).length;
-                widget.onChange!(_filters);
+                widget.onChange!(_filters!);
               },
       )
     ]);
@@ -291,7 +305,7 @@ class _FiltersState extends State<Filters> {
                 .add(const Duration(days: 1) - const Duration(milliseconds: 1));
       });
       _filters!.matches = widget.filter!(widget.items).length;
-      widget.onChange!(_filters);
+      widget.onChange!(_filters!);
     }
   }
 
@@ -342,14 +356,14 @@ class _FiltersState extends State<Filters> {
         ),
       ),
       _buildIndividualClearButtonHelper(
-        onPresseed: current == null
+        onPresseed: current == null || !isFiltersEnabled
             ? null
             : () {
                 setState(() {
                   _filters!.type = null;
                 });
                 _filters!.matches = widget.filter!(widget.items).length;
-                widget.onChange!(_filters);
+                widget.onChange!(_filters!);
               },
       ),
     ]);
@@ -370,23 +384,27 @@ class _FiltersState extends State<Filters> {
             hasHorizontalPadding: false,
             children: [
               InkWell(
-                onTap: () {
-                  setState(() => _filters!.type = null);
-                  _filters!.matches = widget.filter!(widget.items).length;
-                  widget.onChange!(_filters);
-                  dialogBloc.closeDialog(context);
-                },
+                onTap: !isFiltersEnabled
+                    ? null
+                    : () {
+                        setState(() => _filters!.type = null);
+                        _filters!.matches = widget.filter!(widget.items).length;
+                        widget.onChange!(_filters!);
+                        dialogBloc.closeDialog(context);
+                      },
                 child: Container(
                     padding: const EdgeInsets.all(12),
                     child: Text(AppLocalizations.of(context)!.all)),
               ),
               InkWell(
-                onTap: () {
-                  setState(() => _filters!.type = OrderType.MAKER);
-                  _filters!.matches = widget.filter!(widget.items).length;
-                  widget.onChange!(_filters);
-                  dialogBloc.closeDialog(context);
-                },
+                onTap: !isFiltersEnabled
+                    ? null
+                    : () {
+                        setState(() => _filters!.type = OrderType.MAKER);
+                        _filters!.matches = widget.filter!(widget.items).length;
+                        widget.onChange!(_filters!);
+                        dialogBloc.closeDialog(context);
+                      },
                 child: Container(
                     padding: EdgeInsets.all(12),
                     child: Row(
@@ -400,12 +418,14 @@ class _FiltersState extends State<Filters> {
                     )),
               ),
               InkWell(
-                onTap: () {
-                  setState(() => _filters!.type = OrderType.TAKER);
-                  _filters!.matches = widget.filter!(widget.items).length;
-                  widget.onChange!(_filters);
-                  dialogBloc.closeDialog(context);
-                },
+                onTap: !isFiltersEnabled
+                    ? null
+                    : () {
+                        setState(() => _filters!.type = OrderType.TAKER);
+                        _filters!.matches = widget.filter!(widget.items).length;
+                        widget.onChange!(_filters!);
+                        dialogBloc.closeDialog(context);
+                      },
                 child: Container(
                     padding: EdgeInsets.all(12),
                     child: Row(
@@ -440,7 +460,7 @@ class _FiltersState extends State<Filters> {
         ),
         _buildCoinSelect(market),
         _buildIndividualClearButtonHelper(
-          onPresseed: current == null
+          onPresseed: current == null || !isFiltersEnabled
               ? null
               : () {
                   setState(() {
@@ -449,7 +469,7 @@ class _FiltersState extends State<Filters> {
                         : _filters!.receiveCoin = null;
                   });
                   _filters!.matches = widget.filter!(widget.items).length;
-                  widget.onChange!(_filters);
+                  widget.onChange!(_filters!);
                 },
         )
       ],
@@ -516,16 +536,18 @@ class _FiltersState extends State<Filters> {
           : _filters!.receiveCoin = temp;
 
       return InkWell(
-        onTap: () {
-          setState(() {
-            market == Market.SELL
-                ? _filters!.sellCoin = coin
-                : _filters!.receiveCoin = coin;
-          });
-          _filters!.matches = widget.filter!(widget.items).length;
-          widget.onChange!(_filters);
-          dialogBloc.closeDialog(context);
-        },
+        onTap: !isFiltersEnabled
+            ? null
+            : () {
+                setState(() {
+                  market == Market.SELL
+                      ? _filters!.sellCoin = coin
+                      : _filters!.receiveCoin = coin;
+                });
+                _filters!.matches = widget.filter!(widget.items).length;
+                widget.onChange!(_filters!);
+                dialogBloc.closeDialog(context);
+              },
         child: Container(
           padding: EdgeInsets.all(12),
           child: Row(
@@ -550,16 +572,18 @@ class _FiltersState extends State<Filters> {
     items.insert(
         0,
         InkWell(
-          onTap: () {
-            setState(() {
-              market == Market.SELL
-                  ? _filters!.sellCoin = null
-                  : _filters!.receiveCoin = null;
-            });
-            _filters!.matches = widget.filter!(widget.items).length;
-            widget.onChange!(_filters);
-            dialogBloc.closeDialog(context);
-          },
+          onTap: !isFiltersEnabled
+              ? null
+              : () {
+                  setState(() {
+                    market == Market.SELL
+                        ? _filters!.sellCoin = null
+                        : _filters!.receiveCoin = null;
+                  });
+                  _filters!.matches = widget.filter!(widget.items).length;
+                  widget.onChange!(_filters!);
+                  dialogBloc.closeDialog(context);
+                },
           child: Container(
             padding: EdgeInsets.all(12),
             child: Row(

@@ -90,7 +90,8 @@ class _CoinDetailState extends State<CoinDetail> {
     cexProvider ??= Provider.of<CexProvider>(context, listen: false);
     // set default coin
     Future.delayed(Duration.zero, () {
-      cexProvider!.withdrawCurrency = widget.coinBalance!.coin!.abbr!.toUpperCase();
+      cexProvider!.withdrawCurrency =
+          widget.coinBalance!.coin!.abbr!.toUpperCase();
     });
 
     isSendIsActive = widget.isSendIsActive;
@@ -241,7 +242,8 @@ class _CoinDetailState extends State<CoinDetail> {
             ],
           ),
           centerTitle: false,
-          backgroundColor: Color(int.parse(currentCoinBalance!.coin!.colorCoin!)),
+          backgroundColor:
+              Color(int.parse(currentCoinBalance!.coin!.colorCoin!)),
         ),
         body: Builder(builder: (BuildContext context) {
           mainContext = context;
@@ -363,8 +365,8 @@ class _CoinDetailState extends State<CoinDetail> {
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              child:
-                  Text(AppLocalizations.of(context)!.seeTxHistory.toUpperCase()),
+              child: Text(
+                  AppLocalizations.of(context)!.seeTxHistory.toUpperCase()),
             ),
           ),
         ],
@@ -542,8 +544,9 @@ class _CoinDetailState extends State<CoinDetail> {
   Widget _buildHeaderCoinDetail(BuildContext mContext) {
     return Column(
       children: <Widget>[
-        if (currentCoinBalance!.coin!.protocol?.protocolData != null)
-          _buildContractAddress(currentCoinBalance!.coin!.protocol?.protocolData!),
+        if (currentCoinBalance?.coin?.protocol?.protocolData != null)
+          _buildContractAddress(
+              currentCoinBalance!.coin!.protocol!.protocolData!),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 48),
           child: StreamBuilder<List<CoinBalance>>(
@@ -553,7 +556,8 @@ class _CoinDetailState extends State<CoinDetail> {
                   AsyncSnapshot<List<CoinBalance>> snapshot) {
                 if (snapshot.hasData) {
                   for (CoinBalance coinBalance in snapshot.data!) {
-                    if (coinBalance.coin!.abbr == currentCoinBalance!.coin!.abbr) {
+                    if (coinBalance.coin!.abbr ==
+                        currentCoinBalance!.coin!.abbr) {
                       currentCoinBalance = coinBalance;
                     }
                   }
@@ -565,8 +569,9 @@ class _CoinDetailState extends State<CoinDetail> {
                           AsyncSnapshot<bool> showBalance) {
                         String coinBalance =
                             currentCoinBalance!.balance!.getBalance();
-                        final String? unspendableBalance =
-                            currentCoinBalance!.balance!.getUnspendableBalance();
+                        final String? unspendableBalance = currentCoinBalance!
+                            .balance!
+                            .getUnspendableBalance();
                         bool hidden = false;
                         if (showBalance.hasData && showBalance.data == false) {
                           coinBalance = '**.**';
@@ -575,7 +580,9 @@ class _CoinDetailState extends State<CoinDetail> {
                         return Column(
                           children: <Widget>[
                             Text(
-                              coinBalance + ' ' + currentCoinBalance!.coin!.abbr!,
+                              coinBalance +
+                                  ' ' +
+                                  currentCoinBalance!.coin!.abbr!,
                               style: Theme.of(context).textTheme.headline5,
                               textAlign: TextAlign.center,
                             ),
@@ -754,7 +761,8 @@ class _CoinDetailState extends State<CoinDetail> {
                       );
                     },
             ),
-            if (!currentCoinBalance!.coin!.suspended && rewardsProvider!.needClaim)
+            if (!currentCoinBalance!.coin!.suspended &&
+                rewardsProvider!.needClaim)
               buildRedDot(
                 context,
                 right: null,

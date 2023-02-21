@@ -11,6 +11,7 @@ import '../markets/candlestick_chart.dart';
 import '../markets/coin_select.dart';
 import '../markets/order_book_chart.dart';
 import '../markets/order_book_table.dart';
+import '../../utils/utils.dart';
 import '../../widgets/candles_icon.dart';
 import '../../widgets/duration_select.dart';
 import 'package:provider/provider.dart';
@@ -83,7 +84,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                   type: CoinType.base,
                   pairedCoin: _orderBookProvider.activePair?.buy,
                   compact: MediaQuery.of(context).size.width < 360,
-                  onChange: (Coin value) {
+                  onChange: (Coin? value) {
                     setState(() {
                       _showChart = false;
                     });
@@ -116,7 +117,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 type: CoinType.rel,
                 pairedCoin: _orderBookProvider.activePair?.sell,
                 compact: MediaQuery.of(context).size.width < 360,
-                onChange: (Coin value) {
+                onChange: (Coin? value) {
                   setState(() {
                     _showChart = false;
                   });
@@ -277,10 +278,14 @@ class _OrderBookPageState extends State<OrderBookPage> {
       return const Center(heightFactor: 10, child: CircularProgressIndicator());
     }
 
-    final List<Ask> _sortedAsks =
-        OrderBookProvider.sortByPrice(_pairOrderBook.asks)!;
-    final List<Ask> _sortedBids =
-        OrderBookProvider.sortByPrice(_pairOrderBook.bids, quotePrice: true)!;
+    final List<Ask> _sortedAsks = OrderBookProvider.sortByPrice(
+      _pairOrderBook.asks?.whereNotNull() ?? [],
+    );
+
+    final List<Ask> _sortedBids = OrderBookProvider.sortByPrice(
+      _pairOrderBook.bids?.whereNotNull() ?? [],
+      quotePrice: true,
+    );
 
     setState(() {
       listLength = max(_sortedBids.length, _sortedAsks.length);

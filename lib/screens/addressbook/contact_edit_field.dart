@@ -72,9 +72,9 @@ class _ContactEditFieldState extends State<ContactEditField> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Row(
-                        children: <Widget?>[
+                        children: [
                           if (widget.icon != null) ...[
-                            widget.icon,
+                            widget.icon!,
                             const SizedBox(width: 8),
                           ],
                           Text('${widget.label}:'),
@@ -108,7 +108,8 @@ class _ContactEditFieldState extends State<ContactEditField> {
                                 if (widget.onChange == null) return;
                                 widget.onChange!(value);
                               },
-                              validator: widget.validator as String? Function(String?)?,
+                              validator: widget.validator as String? Function(
+                                  String?)?,
                               autocorrect: false,
                               enableInteractiveSelection: true,
                             ),

@@ -19,8 +19,6 @@ class GetTradePreimage2 {
   });
 
   factory GetTradePreimage2.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null;
-
     return GetTradePreimage2(
       userpass: json['userpass'] ?? '',
       method: json['method'] ?? '',

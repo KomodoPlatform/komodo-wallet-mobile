@@ -48,14 +48,14 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
 
     final receiveCoin = _orderBookProvider!.activePair!.buy!.abbr;
     final Orderbook? orderbook = _orderBookProvider?.getOrderBook();
-    List<Ask>? bidsList = orderbook?.bids;
+    List<Ask> bidsList = orderbook?.bids ?? [];
 
     bidsList = OrderBookProvider.sortByPrice(bidsList, quotePrice: true);
     setState(() {
-      _listLength = bidsList?.length;
+      _listLength = bidsList.length;
     });
     if ((_listLength ?? 0) > _listLimit)
-      bidsList = bidsList!.sublist(0, _listLimit);
+      bidsList = bidsList.sublist(0, _listLimit);
 
     return LockScreen(
       context: context,
@@ -92,7 +92,8 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
                                 alignment: const Alignment(0, 0),
                                 padding: const EdgeInsets.only(top: 30),
                                 child: Text(
-                                  AppLocalizations.of(context)!.noMatchingOrders,
+                                  AppLocalizations.of(context)!
+                                      .noMatchingOrders,
                                   style: TextStyle(
                                     fontSize: 14,
                                   ),
@@ -152,7 +153,7 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            'Showing $_listLimit of ${max(_listLength, _listLimit)} orders. ',
+            'Showing $_listLimit of ${max(_listLength ?? 0, _listLimit)} orders. ',
             style: Theme.of(context).textTheme.bodyText1,
           ),
           if (_listLimit > _listLimitMin)

@@ -88,10 +88,12 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   @override
   Map<String, dynamic> toJson(LoginState state) {
     // TODO: implement toJson
+    return {};
   }
 
   @override
   LoginState fromJson(Map<String, dynamic> json) {
     // TODO: implement fromJson
+    return LoginStateInitial();
   }
 }

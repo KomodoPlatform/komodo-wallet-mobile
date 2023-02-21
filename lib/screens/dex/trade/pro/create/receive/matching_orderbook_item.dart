@@ -19,7 +19,7 @@ class MatchingOrderbookItem extends StatelessWidget {
 
   final OrderbookDepth? orderbookDepth;
   final double? sellAmount;
-  final Function(String?)? onCreatePressed;
+  final Function(String)? onCreatePressed;
   final Function(Ask)? onBidSelected;
 
   @override
@@ -33,8 +33,9 @@ class MatchingOrderbookItem extends StatelessWidget {
           buy: coinsBloc.getCoinByAbbr(orderbookDepth!.pair!.rel),
         );
 
-        if ((orderbookDepth!.depth!.bids ?? 0) == 0) {
-          onCreatePressed!(orderbookDepth!.pair!.rel);
+        if ((orderbookDepth?.depth?.bids ?? 0) == 0 &&
+            onCreatePressed != null) {
+          onCreatePressed!(orderbookDepth!.pair!.rel!);
           Navigator.pop(context);
         } else {
           Navigator.pushReplacement<dynamic, dynamic>(
@@ -74,8 +75,8 @@ class MatchingOrderbookItem extends StatelessWidget {
                                 text: AppLocalizations.of(context)!.clickToSee,
                                 style: Theme.of(context).textTheme.bodyText2),
                             TextSpan(
-                                text:
-                                    orderbookDepth!.depth!.bids.toString() + ' ',
+                                text: orderbookDepth!.depth!.bids.toString() +
+                                    ' ',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText2!

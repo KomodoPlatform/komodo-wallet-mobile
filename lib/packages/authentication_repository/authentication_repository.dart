@@ -33,27 +33,33 @@ class AuthenticationRepository {
   }
 
   Future<bool> getBioProtection() async {
-    //
+    // TODO: implement getBioProtection
+    throw UnimplementedError();
   }
 
   Future<void> setLogOutOnExit(bool value) async {
-    //
+    // TODO: implement setLogOutOnExit
+    throw UnimplementedError();
   }
 
   Future<bool> getLogOutOnExit(bool value) async {
-    //
+    // TODO: implement getLogOutOnExit
+    throw UnimplementedError();
   }
 
   Future<bool> validatePin(String pin) async {
-    //
+    // TODO: implement validatePin
+    throw UnimplementedError();
   }
 
   Future<void> loginWithPin(String pin) async {
-    //
+    // TODO: implement loginWithPin
+    throw UnimplementedError();
   }
 
   Future<bool> validateCamoPin(String pin) async {
-    //
+    // TODO: implement validateCamoPin
+    throw UnimplementedError();
   }
 
   Future<void> loginWithCamoPin(String pin) async {

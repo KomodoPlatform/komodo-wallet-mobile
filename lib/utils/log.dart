@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import '../services/mm_service.dart';
@@ -7,9 +8,8 @@ class Log {
   /// Log the [message].
   /// The [key] points at the code line location
   /// (updated automatically with https://github.com/ArtemGr/log-loc-rs).
-  factory Log(String key, dynamic message) {
+  Log(String key, dynamic message) {
     Log.println(key, message);
-    return null;
   }
 
   /// This function can be used in a hot-reload debugging session to focus on certain sections of the log.
@@ -56,7 +56,8 @@ class Log {
   /// Loop through saved log files from latest to older, and delete
   /// all files above overall [limitMB] size, except the today's one
   static Future<void> maintain() async {
-    Directory directory = await (applicationDocumentsDirectory as FutureOr<Directory>);
+    Directory directory =
+        await (applicationDocumentsDirectory as FutureOr<Directory>);
     final List<File> logs = directory
         .listSync()
         .whereType<File>()

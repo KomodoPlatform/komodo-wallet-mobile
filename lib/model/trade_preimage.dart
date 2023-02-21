@@ -62,15 +62,13 @@ class TradePreimage {
 
 class CoinFee {
   CoinFee({
-    this.coin,
-    this.amount,
-    this.amountFract,
-    this.paidFromTradingVol,
+    required this.coin,
+    required this.amount,
+    required this.amountFract,
+    required this.paidFromTradingVol,
   });
 
-  factory CoinFee.fromJson(Map<String, dynamic>? json) {
-    if (json == null) return null;
-
+  factory CoinFee.fromJson(Map<String, dynamic> json) {
     return CoinFee(
       coin: json['coin'] ?? '',
       amount: json['amount'] ?? '',
@@ -79,10 +77,10 @@ class CoinFee {
     );
   }
 
-  String? coin;
-  String? amount;
-  Map<String, dynamic>? amountFract; // {'numer': '1', 'denom': '3'}
-  bool? paidFromTradingVol;
+  String coin;
+  String amount;
+  Map<String, dynamic> amountFract; // {'numer': '1', 'denom': '3'}
+  bool paidFromTradingVol;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

@@ -14,7 +14,7 @@ class DecimalTextInputFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     TextSelection newSelection = newValue.selection;
-    String truncated = newValue?.text?.replaceAll(',', '.');
+    String truncated = newValue.text.replaceAll(',', '.');
 
     if (decimalRange != null) {
       final String value = newValue.text;

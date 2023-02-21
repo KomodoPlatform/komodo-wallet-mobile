@@ -103,8 +103,10 @@ class _LockScreenState extends State<LockScreen> {
           _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     } on PlatformException catch (e) {
       Log('lock_screen connectivity: ]', '$e');
+      return Future.error(e);
     }
-    return _updateConnectionStatus;
+    Log('lock_screen connectivity: ]',
+        'initConnectivity: $_updateConnectionStatus');
   }
 
   @override
@@ -253,13 +255,14 @@ class _LockScreenState extends State<LockScreen> {
                                     },
                                   )
                                 : PinPage(
-                                    title:
-                                        AppLocalizations.of(context)!.lockScreen,
+                                    title: AppLocalizations.of(context)!
+                                        .lockScreen,
                                     subTitle: AppLocalizations.of(context)!
                                         .enterPinCode,
                                     pinStatus: widget.pinStatus,
                                     isFromChangingPin: false,
-                                    onSuccess: widget.onSuccess as void Function()?,
+                                    onSuccess:
+                                        widget.onSuccess as void Function()?,
                                   ),
                           ],
                         );
@@ -379,8 +382,8 @@ class _BiometricPageState extends State<BiometricPage> {
             ElevatedButton(
               onPressed: () =>
                   authenticateBiometrics(context, widget.pinStatus),
-              child:
-                  Text(AppLocalizations.of(context)!.authenticate.toUpperCase()),
+              child: Text(
+                  AppLocalizations.of(context)!.authenticate.toUpperCase()),
             )
           ],
         ),

@@ -75,10 +75,11 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
 
   Widget _buildOwnerWarning() {
     final String orderAdress = widget.order!.address!;
-    final String myAddress =
+    final String? myAddress =
         coinsBloc.getBalanceByAbbr(widget.order!.coin)?.balance?.address!;
 
-    if (orderAdress.toLowerCase() != myAddress.toLowerCase()) return SizedBox();
+    if (myAddress == null ||
+        orderAdress.toLowerCase() != myAddress.toLowerCase()) return SizedBox();
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -251,7 +252,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                           : AssetImage(getCoinIconPath(_activePair!.buy!.abbr)),
                     ),
                     const SizedBox(width: 4),
-                    Text(_isAsk ? _activePair!.sell!.abbr! : _activePair!.buy!.abbr!),
+                    Text(_isAsk
+                        ? _activePair!.sell!.abbr!
+                        : _activePair!.buy!.abbr!),
                     const SizedBox(width: 12),
                     Text(
                       formatPrice(widget.order!.maxvolume.toString())!,
@@ -287,7 +290,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                       : AssetImage(getCoinIconPath(_activePair!.sell!.abbr)),
                 ),
                 const SizedBox(width: 4),
-                Text(_isAsk ? _activePair!.buy!.abbr! : _activePair!.sell!.abbr!),
+                Text(_isAsk
+                    ? _activePair!.buy!.abbr!
+                    : _activePair!.sell!.abbr!),
                 const SizedBox(width: 12),
                 Text(
                   formatPrice(
@@ -316,7 +321,8 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
 
   Widget _buildMinVolume() {
     if (widget.order!.minVolume == null) return SizedBox();
-    if (widget.order!.minVolume! <= Rational.parse('0.00777')) return SizedBox();
+    if (widget.order!.minVolume! <= Rational.parse('0.00777'))
+      return SizedBox();
 
     return Row(
       children: <Widget>[
@@ -376,7 +382,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                           : AssetImage(getCoinIconPath(_activePair!.buy!.abbr)),
                     ),
                     const SizedBox(width: 4),
-                    Text(_isAsk ? _activePair!.sell!.abbr! : _activePair!.buy!.abbr!),
+                    Text(_isAsk
+                        ? _activePair!.sell!.abbr!
+                        : _activePair!.buy!.abbr!),
                     const SizedBox(width: 12),
                     Text(
                       cutTrailingZeros(widget.order!
@@ -414,7 +422,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                       : AssetImage(getCoinIconPath(_activePair!.sell!.abbr)),
                 ),
                 const SizedBox(width: 4),
-                Text(_isAsk ? _activePair!.buy!.abbr! : _activePair!.sell!.abbr!),
+                Text(_isAsk
+                    ? _activePair!.buy!.abbr!
+                    : _activePair!.sell!.abbr!),
                 const SizedBox(width: 12),
                 Text(
                   cutTrailingZeros((widget.order!

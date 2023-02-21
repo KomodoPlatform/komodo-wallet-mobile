@@ -52,12 +52,12 @@ class _SelectLanguageButtonState extends State<SelectLanguageButton> {
                     .map((Locale loc) => BuildLanguageDialogOption(
                           locale: loc,
                           currentLoc: _currentLoc,
-                          onChange: (Locale loc) {
+                          onChange: (Locale? loc) {
                             setState(() {
-                              _currentLoc = loc;
+                              _currentLoc = loc!;
                             });
 
-                            mainBloc.setNewLanguage(loc);
+                            mainBloc.setNewLanguage(loc!);
                             SharedPreferences.getInstance()
                                 .then((SharedPreferences prefs) {
                               prefs.setString(
@@ -117,8 +117,8 @@ class _BuildLanguageDialogOptionState extends State<BuildLanguageDialogOption> {
             size: 32,
           ),
           SizedBox(width: 8),
-          Text(
-              settingsBloc.getNameLanguage(context, widget.locale!.languageCode))
+          Text(settingsBloc.getNameLanguage(
+              context, widget.locale!.languageCode))
         ],
       ),
     );

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../model/wallet.dart';
 import 'package:dargon2_flutter/dargon2_flutter.dart';
@@ -23,15 +25,20 @@ class EncryptionTool {
 
   Future<bool> isPasswordValid(
       KeyEncryption key, Wallet? wallet, String? password) async {
+    if (password == null) return false;
+
     if (key == KeyEncryption.SEED) {
       bool isValid = false;
       try {
         isValid = await argon2.verifyHashString(
-          password!,
-          await (storage.read(key: keyPassword(key, wallet!)) as FutureOr<String>),
+          password,
+          await (storage.read(key: keyPassword(key, wallet!))
+              as FutureOr<String>),
           type: Argon2Type.id,
         );
-      } catch (_) {}
+      } catch (e) {
+        print('Error while verifying password: ${e.toString()}');
+      }
 
       return isValid;
     } else {
@@ -119,6 +126,9 @@ class EncryptionTool {
           .then((bool onValue) async =>
               await storage.read(key: keyData(key, wallet!, password)));
 
+  // TODO: Refactor according to style guidelines. This code seems to be
+  // following a similar pattern to Javascript's promises. Prefer async
+  // blocks and await instead.
   Future<void> deleteData(
           KeyEncryption key, Wallet? wallet, String? password) async =>
       await isPasswordValid(key, wallet, password)
