@@ -3,8 +3,9 @@
 //     final swap = swapFromJson(jsonString);
 
 import 'dart:convert';
-import '../model/coin.dart';
+
 import '../blocs/coins_bloc.dart';
+import '../model/coin.dart';
 import '../model/order.dart';
 import '../model/recent_swaps.dart';
 import '../utils/utils.dart';
@@ -149,24 +150,24 @@ class Swap {
           orElse: () => null);
 
   /// Maker ticker abbriviation
-  String get makerAbbr => started?.event?.data?.makerCoin;
+  String get makerAbbr => started?.event?.data?.makerCoin ?? result.makerCoin;
 
   /// Taker ticker abbriviation
-  String get takerAbbr => started?.event?.data?.takerCoin;
+  String get takerAbbr => started?.event?.data?.takerCoin ?? result.takerCoin;
 
   /// Maker coin instance
   Coin get makerCoin {
-    final c = coinsBloc.getCoinByAbbr(makerAbbr);
+    final c = coinsBloc.getCoinByAbbr(makerAbbr ?? result.makerCoin);
     if (c != null) return c;
-    final kc = coinsBloc.getKnownCoinByAbbr(makerAbbr);
+    final kc = coinsBloc.getKnownCoinByAbbr(makerAbbr ?? result.makerCoin);
     return kc;
   }
 
   /// Taker coin instance
   Coin get takerCoin {
-    final c = coinsBloc.getCoinByAbbr(takerAbbr);
+    final c = coinsBloc.getCoinByAbbr(takerAbbr ?? result.takerCoin);
     if (c != null) return c;
-    final kc = coinsBloc.getKnownCoinByAbbr(takerAbbr);
+    final kc = coinsBloc.getKnownCoinByAbbr(takerAbbr ?? result.takerCoin);
     return kc;
   }
 }
