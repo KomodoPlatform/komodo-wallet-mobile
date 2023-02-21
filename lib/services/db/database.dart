@@ -17,16 +17,16 @@ class Db {
   static Database? _db;
   static bool _initInvoked = false;
 
-  static Future<Database?> get db async {
+  static Future<Database> get db async {
     // Protect the database from being opened and initialized multiple times.
     if (_initInvoked) {
       await pauseUntil(() => _db != null);
-      return _db;
+      return _db!;
     }
 
     _initInvoked = true;
     _db = await _initDB();
-    return _db;
+    return _db!;
   }
 
   static Future<Database> _initDB() async {
