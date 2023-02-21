@@ -28,6 +28,8 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
   }
 
   Future<void> migrateSecuritySettings() async {
+    final stopwatch = Stopwatch()..start();
+
     await pauseUntil(() => _isInitialized);
     Log('wallet_security_settings_provider',
         'Migrating wallet security settings');
@@ -112,10 +114,15 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
 
       await _prefs.remove('wallet_security_settings_migration_in_progress');
       await _prefs.remove('wallet_security_settings_migrated');
+
+      Log('migrateSecuritySettings',
+          'Migrate wallet security settings and initialize completed successfully and took ${stopwatch.elapsedMilliseconds}ms');
     } catch (e) {
       Log('security_settings_provider',
           'Failed to migrate wallet security settings, error: ${e.toString()}');
       rethrow;
+    } finally {
+      stopwatch.reset();
     }
   }
 

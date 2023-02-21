@@ -47,6 +47,8 @@ class Startup {
   }
 
   Future<void> _start() async {
+    final Stopwatch stopwatch = Stopwatch()..start();
+
     // delete old logs
     await Log.maintain();
 
@@ -62,6 +64,8 @@ class Startup {
 
     _live = true;
     _notifyListeners();
+
+    Log('startup', 'Startup sequence completed in ${stopwatch.elapsed}');
   }
 
   /// Start MM but only if the passphrase is currently unlocked.
