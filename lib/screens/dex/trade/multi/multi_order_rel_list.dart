@@ -310,6 +310,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   void _autofill(double sourceUsdAmt) {
     for (CoinBalance item in coinsBloc.coinBalance) {
       if (multiOrderProvider.baseCoin == item.coin.abbr) continue;
+      if (item.coin.walletOnly) continue;
       final double usdPrice = cexProvider.getUsdPrice(item.coin.abbr);
       multiOrderProvider.selectRelCoin(item.coin.abbr, false);
       if (usdPrice == null || usdPrice == 0) continue;
