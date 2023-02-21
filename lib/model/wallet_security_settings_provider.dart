@@ -213,10 +213,10 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int get camoFraction =>
-      _prefs.getInt('camoFraction') ?? _walletSecuritySettings!.camoFraction!;
+  int? get camoFraction =>
+      _prefs.getInt('camoFraction') ?? _walletSecuritySettings?.camoFraction;
 
-  set camoFraction(int v) {
+  setCamoFraction(int v) {
     _walletSecuritySettings!.camoFraction = v;
     _prefs.setInt('camoFraction', v);
 
@@ -236,11 +236,11 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
     _updateDb().then((value) => notifyListeners());
   }
 
-  int get camoSessionStartedAt =>
+  int? get camoSessionStartedAt =>
       _prefs.getInt('camoSessionStartedAt') ??
-      _walletSecuritySettings!.camoSessionStartedAt!;
+      _walletSecuritySettings?.camoSessionStartedAt;
 
-  set camoSessionStartedAt(int v) {
+  setCamoSessionStartedAt(int v) {
     _walletSecuritySettings!.camoSessionStartedAt = v;
     _prefs.setInt('camoSessionStartedAt', v);
 

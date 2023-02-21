@@ -128,7 +128,7 @@ class CamoBloc implements GenericBlocBase {
     if (val) {
       _sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
       walletSecuritySettingsProvider.enableCamo = true;
-      walletSecuritySettingsProvider.camoSessionStartedAt = _sessionStartedAt!;
+      walletSecuritySettingsProvider.setCamoSessionStartedAt(_sessionStartedAt!);
       walletSecuritySettingsProvider.camoBalance = null;
     }
   }
@@ -144,7 +144,7 @@ class CamoBloc implements GenericBlocBase {
   set camoFraction(int val) {
     _camoFraction = val;
     _inCamoFraction.add(val);
-    walletSecuritySettingsProvider.camoFraction = val;
+    walletSecuritySettingsProvider.setCamoFraction(val);
   }
 
   String? get camoPinValue => _camoPinValue;
