@@ -26,6 +26,7 @@ class AppConfig {
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
         'ATOM',
+        'RBTC',
         'OSMO',
         'BET',
         'BOTS',
