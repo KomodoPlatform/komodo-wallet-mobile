@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../app_config/app_config.dart';
 import '../../generic_blocs/authenticate_bloc.dart';
 import '../../generic_blocs/wallet_bloc.dart';
+import '../../localizations.dart';
 import '../../model/wallet.dart';
 import '../../services/db/database.dart';
 import '../../utils/encryption_tool.dart';
@@ -13,8 +16,6 @@ import '../../widgets/eula_contents.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/scrollable_dialog.dart';
 import '../../widgets/tac_contents.dart';
-import '../../localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DisclaimerPage extends StatefulWidget {
   const DisclaimerPage({
@@ -39,7 +40,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
   bool isLoading = false;
   bool _checkBoxEULA = false;
   bool _checkBoxTOC = false;
-  late Timer timer;
+  Timer? timer;
 
   @override
   void initState() {
@@ -48,7 +49,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
   @override
   void dispose() {
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -76,9 +77,10 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                       child: RichText(
                         text: TextSpan(
                           text: AppLocalizations.of(context)!.accepteula,
-                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                decoration: TextDecoration.underline,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    decoration: TextDecoration.underline,
+                                  ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               showDialog(
@@ -123,9 +125,10 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                       child: RichText(
                         text: TextSpan(
                           text: AppLocalizations.of(context)!.accepttac,
-                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                decoration: TextDecoration.underline,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    decoration: TextDecoration.underline,
+                                  ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               showDialog(
@@ -133,7 +136,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                                   builder: (BuildContext context) {
                                     return ScrollableDialog(
                                       title: Text(
-                                        AppLocalizations.of(context)!.eulaTitle2,
+                                        AppLocalizations.of(context)!
+                                            .eulaTitle2,
                                       ),
                                       children: [TACContents()],
                                       verticalButtons: PrimaryButton(

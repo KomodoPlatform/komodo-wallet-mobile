@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../../generic_blocs/wallet_bloc.dart';
 import '../../model/article.dart';
@@ -10,8 +12,6 @@ import '../../model/wallet.dart';
 import '../../model/wallet_security_settings.dart';
 import '../../utils/log.dart';
 import '../../utils/utils.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 
 class Db {
   static Database? _db;
@@ -371,14 +371,14 @@ class Db {
   static bool _activeFromDb = false;
 
   static Future<List<String>> getCoinsFromDb() async {
-    final Database db = await (Db.db as FutureOr<Database>);
-    final wallet = await (getCurrentWallet() as FutureOr<Wallet>);
+    final Database db = await (Db.db);
+    final wallet = await (getCurrentWallet());
 
     final r = await db.query(
       'ListOfCoinsActivated',
       columns: ['coins'],
       where: 'wallet_id = ?',
-      whereArgs: [wallet.id],
+      whereArgs: [wallet?.id],
     );
     if (r != null && r.isNotEmpty) {
       final row = r.first;
@@ -405,17 +405,17 @@ class Db {
     _activeFromDb = true;
     if (_active.isNotEmpty) return _active;
 
-    final known = await (coins as FutureOr<LinkedHashMap<String?, Coin>>);
+    final known = await (coins);
 
     // Search for coins with 'isDefault' flag
-    Iterable<String?> defaultCoins = known.values
+    Iterable<String?>? defaultCoins = known?.values
         .where((Coin coin) => coin.isDefault == true)
         .map<String?>((Coin coin) => coin.abbr);
 
     // If no 'isDefault' coins provided, use the first two coins by default
-    if (defaultCoins.isEmpty) defaultCoins = known.keys.take(2);
+    if (defaultCoins!.isEmpty) defaultCoins = known?.keys.take(2);
 
-    _active.addAll(defaultCoins);
+    _active.addAll(defaultCoins!);
 
     return _active;
   }
@@ -425,7 +425,7 @@ class Db {
     _active.add(coin.abbr);
     final coinsString = _active.join(',');
 
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await (Db.db);
     final wallet = await (getCurrentWallet() as FutureOr<Wallet>);
 
     // Check if coins for current wallet are saved

@@ -1,9 +1,11 @@
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:komodo_dex/generic_blocs/authenticate_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:komodo_dex/login/models/pin.dart';
 import 'package:komodo_dex/packages/authentication_repository/authentication_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../generic_blocs/authenticate_bloc.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -41,10 +43,10 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
       ),
     );
 
-    // If the pin is valid, submit it.
+/*    // If the pin is valid, submit it.
     if (pin.valid) {
       add(LoginPinSubmitted());
-    }
+    }*/
   }
 
   void _onPinLoginSuccess(

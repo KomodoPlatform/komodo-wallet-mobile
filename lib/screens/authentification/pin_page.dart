@@ -1,25 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:komodo_dex/login/bloc/login_bloc.dart';
 import 'package:komodo_dex/widgets/pin/pin_input.dart';
-import 'package:komodo_dex/widgets/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generic_blocs/authenticate_bloc.dart';
-import '../../generic_blocs/camo_bloc.dart';
-import '../../generic_blocs/coins_bloc.dart';
 import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
-import '../../model/wallet.dart';
-import '../../model/wallet_security_settings_provider.dart';
-import '../../services/db/database.dart';
-import '../../services/mm_service.dart';
-import '../../utils/encryption_tool.dart';
-import '../../utils/log.dart';
-import '../../utils/utils.dart';
 import '../authentification/app_bar_status.dart';
 
 class PinPage extends StatefulWidget {
@@ -50,15 +37,10 @@ class PinPage extends StatefulWidget {
 }
 
 class _PinPageState extends State<PinPage> {
-  String _error = '';
   bool _isLoading = false;
-  String? _correctPin;
-  String? _camoPin;
 
   @override
   void initState() {
-    _initCorrectPin();
-
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.pinStatus == PinStatus.NORMAL_PIN) {
         dialogBloc.closeDialog(context);
@@ -92,6 +74,14 @@ class _PinPageState extends State<PinPage> {
                 onChanged: (String pin) => context.read<LoginBloc>().add(
                       LoginPinInputChanged(pin),
                     ),
+                onPinComplete: (String pin) => context.read<LoginBloc>().add(
+                      LoginPinSubmitted(
+                          widget.password,
+                          pin,
+                          widget.isFromChangingPin,
+                          widget.onSuccess,
+                          widget.pinStatus),
+                    ),
               ),
             )
           : _buildLoading(),
@@ -113,234 +103,5 @@ class _PinPageState extends State<PinPage> {
         ],
       ),
     );
-  }
-
-// @ologunB A lot of the methods here would need to be transplanted to the
-// login or authentication repository (for API-related stuff) or the bloc
-// for managing the API calls and business logic.
-
-  void _onErrorPinEntered() {
-    camoBloc.isCamoActive = false;
-
-    setState(() {
-      _error = AppLocalizations.of(context)!.errorTryAgain;
-    });
-  }
-
-  Future<void> _setNormalPin() async {
-    final EncryptionTool encryptionTool = EncryptionTool();
-    await pauseUntil(() async => await encryptionTool.read('pin') != null);
-
-    final String? normalPin = await encryptionTool.read('pin');
-    final String? camoPin = await encryptionTool.read('camoPin');
-    setState(() {
-      _correctPin = normalPin;
-      _camoPin = camoPin;
-    });
-  }
-
-  Future<void> _initCorrectPin() async {
-    final PinStatus? pinStatus = widget.pinStatus;
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (pinStatus == PinStatus.CREATE_PIN ||
-        pinStatus == PinStatus.CHANGE_PIN) {
-      setState(() {
-        _correctPin = null;
-      });
-    } else if (pinStatus == PinStatus.CONFIRM_PIN) {
-      authBloc.showLock = false;
-      setState(() {
-        _correctPin = prefs.getString('pin_create');
-      });
-    } else if (pinStatus == PinStatus.CREATE_CAMO_PIN) {
-      setState(() {
-        _correctPin = null;
-      });
-    } else if (pinStatus == PinStatus.CONFIRM_CAMO_PIN) {
-      authBloc.showLock = false;
-      setState(() {
-        _correctPin = prefs.getString('camo_pin_create');
-      });
-    } else {
-      await _setNormalPin();
-    }
-  }
-
-  Future<void> _onCodeSuccess(String code) async {
-    final walletSecuritySettingsProvider =
-        context.read<WalletSecuritySettingsProvider>();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    switch (widget.pinStatus) {
-      case PinStatus.NORMAL_PIN:
-        bool loadSnapshot = true;
-        if (camoBloc.isCamoActive) {
-          coinsBloc.resetCoinBalance();
-          loadSnapshot = false;
-        }
-
-        authBloc.showLock = false;
-        if (!mmSe.running) {
-          await authBloc.login(await EncryptionTool().read('passphrase'), null,
-              loadSnapshot: loadSnapshot);
-        }
-        if (widget.onSuccess != null) {
-          widget.onSuccess!();
-        }
-        break;
-
-      case PinStatus.CHANGE_PIN:
-        break;
-      case PinStatus.CREATE_PIN:
-        await prefs.setBool('is_pin_creation_in_progress', true);
-        break;
-      case PinStatus.CREATE_CAMO_PIN:
-        await prefs.setBool('is_camo_pin_creation_in_progress', true);
-        break;
-
-      case PinStatus.CONFIRM_PIN:
-        final Wallet? wallet = await Db.getCurrentWallet();
-        setState(() {
-          _isLoading = true;
-        });
-        if (wallet != null) {
-          await EncryptionTool()
-              .writeData(
-                  KeyEncryption.PIN, wallet, widget.password, code.toString())
-              .catchError((dynamic e) => Log.println('pin_page:90', e));
-        }
-
-        await EncryptionTool().write('pin', code.toString());
-        authBloc.showLock = false;
-        authBloc.updateStatusPin(PinStatus.NORMAL_PIN);
-        if (!widget.isFromChangingPin) {
-          if (!mmSe.running) {
-            await authBloc.login(
-                await EncryptionTool().read('passphrase'), widget.password);
-          }
-        } else {
-          Navigator.pop(context);
-        }
-        Navigator.pop(context);
-
-        await prefs.remove('pin_create');
-        await prefs.remove('is_pin_creation_in_progress');
-
-        if (mounted)
-          setState(() {
-            _isLoading = false;
-          });
-        break;
-
-      case PinStatus.CONFIRM_CAMO_PIN:
-        final Wallet? wallet = await Db.getCurrentWallet();
-        if (wallet != null) {
-          await EncryptionTool()
-              .writeData(KeyEncryption.CAMOPIN, wallet, widget.password,
-                  code.toString())
-              .catchError((dynamic e) => Log.println('pin_page:90', e));
-        }
-
-        await EncryptionTool().write('camoPin', code.toString());
-
-        await prefs.remove('camo_pin_create');
-        await prefs.remove('is_camo_pin_creation_in_progress');
-
-        camoBloc.shouldWarnBadCamoPin = true;
-        if (widget.onSuccess != null) {
-          widget.onSuccess!();
-        }
-        Navigator.popUntil(context, ModalRoute.withName('/camoSetup'));
-        break;
-
-      case PinStatus.DISABLED_PIN:
-        walletSecuritySettingsProvider.activatePinProtection = true;
-        Navigator.pop(context);
-        break;
-      case PinStatus.DISABLED_PIN_BIOMETRIC:
-        walletSecuritySettingsProvider.activateBioProtection = false;
-        Navigator.pop(context);
-        break;
-    }
-  }
-
-  Future<void> _onCodeFail(dynamic code) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    switch (widget.pinStatus) {
-      case PinStatus.CREATE_PIN:
-        await prefs.setBool('is_pin_creation_in_progress', true);
-        await prefs.setString('pin_create', code);
-        final materialPage = PageTransition(
-            child: PinPage(
-          title: AppLocalizations.of(context)!.confirmPin,
-          subTitle: AppLocalizations.of(context)!.confirmPin,
-          code: code,
-          pinStatus: PinStatus.CONFIRM_PIN,
-          password: widget.password,
-        ));
-
-        Navigator.push<dynamic>(context, materialPage);
-        break;
-
-      case PinStatus.CHANGE_PIN:
-        await prefs.setString('pin_create', code);
-        final materialPage = PageTransition(
-            child: PinPage(
-          title: AppLocalizations.of(context)!.confirmPin,
-          subTitle: AppLocalizations.of(context)!.confirmPin,
-          code: code,
-          pinStatus: PinStatus.CONFIRM_PIN,
-          password: widget.password,
-          isFromChangingPin: true,
-        ));
-
-        Navigator.pushReplacement<dynamic, dynamic>(context, materialPage);
-        break;
-
-      case PinStatus.CREATE_CAMO_PIN:
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('is_camo_pin_creation_in_progress', true);
-        await prefs.setString('camo_pin_create', code);
-        final materialPage = PageTransition(
-            child: PinPage(
-          title: AppLocalizations.of(context)!.camouflageSetup,
-          subTitle: AppLocalizations.of(context)!.confirmCamouflageSetup,
-          code: code,
-          onSuccess: widget.onSuccess,
-          pinStatus: PinStatus.CONFIRM_CAMO_PIN,
-          password: widget.password,
-        ));
-
-        Navigator.pushReplacement<dynamic, dynamic>(context, materialPage);
-        break;
-
-      default:
-        if (_isCamoPinCode(code)) {
-          _onCamoPinEntered(code);
-        } else {
-          _onErrorPinEntered();
-        }
-        break;
-    }
-  }
-
-  bool _isCamoPinCode(dynamic code) {
-    return widget.pinStatus == PinStatus.NORMAL_PIN &&
-        (!walletSecuritySettingsProvider.activateBioProtection &&
-            camoBloc.isCamoEnabled) &&
-        _camoPin != null &&
-        code == _camoPin;
-  }
-
-  void _onCamoPinEntered(dynamic code) {
-    if (!camoBloc.isCamoActive) {
-      coinsBloc.resetCoinBalance();
-      camoBloc.isCamoActive = true;
-      Navigator.popUntil(context, ModalRoute.withName('/'));
-    }
-
-    _onCodeSuccess(code);
   }
 }
