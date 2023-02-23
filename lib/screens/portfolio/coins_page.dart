@@ -1,25 +1,17 @@
-import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'add_coin_button.dart';
 import '../../../../blocs/coins_bloc.dart';
-import '../../../../blocs/dialog_bloc.dart';
-import '../../../../blocs/main_bloc.dart';
 import '../../../../blocs/settings_bloc.dart';
 import '../../../../localizations.dart';
-import '../../../../app_config/app_config.dart';
 import '../../../../model/cex_provider.dart';
-import '../../../../model/coin.dart';
 import '../../../../model/coin_balance.dart';
-import '../portfolio/activate/select_coins_page.dart';
 import '../portfolio/loading_coin.dart';
-import '../../../../services/db/database.dart';
 import '../../../../services/mm_service.dart';
-import '../../../../widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 import 'item_coin.dart';
@@ -61,6 +53,9 @@ class _CoinsPageState extends State<CoinsPage> {
     _heightSliver = _heightScreen * 0.25 - MediaQuery.of(context).padding.top;
     if (_heightSliver < 125) _heightSliver = 125;
 
+    final bool isCollapsed = _scrollController.hasClients &&
+        _scrollController.offset > _heightSliver;
+
     return Scaffold(
         body: NestedScrollView(
             controller: _scrollController,
@@ -69,8 +64,23 @@ class _CoinsPageState extends State<CoinsPage> {
               return <Widget>[
                 SliverAppBar(
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  expandedHeight: _heightSliver,
+                  expandedHeight: 130,
                   pinned: true,
+                  actions: [
+                    AnimatedOpacity(
+                      opacity: isCollapsed ? 1 : 0,
+                      duration: Duration(milliseconds: 600),
+                      curve: Curves.easeInOutExpo,
+                      child: IgnorePointer(
+                        ignoring: !isCollapsed,
+                        child: AddCoinButton(
+                          key: Key('add-coin-button-collapsed'),
+                          isCollapsed: true,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                  ],
                   flexibleSpace: Builder(
                     builder: (BuildContext context) {
                       return Stack(
@@ -79,7 +89,7 @@ class _CoinsPageState extends State<CoinsPage> {
                               collapseMode: CollapseMode.pin,
                               centerTitle: true,
                               titlePadding:
-                                  EdgeInsetsDirectional.only(bottom: 10),
+                                  EdgeInsetsDirectional.only(bottom: 4),
                               title: SizedBox(
                                 width: _widthScreen * 0.5,
                                 child: Center(
@@ -118,7 +128,7 @@ class _CoinsPageState extends State<CoinsPage> {
                                                 onPressed: () => _cexProvider
                                                     .switchCurrency(),
                                                 style: TextButton.styleFrom(
-                                                  primary: _heightFactor < 1.3
+                                                  primary: isCollapsed
                                                       ? Theme.of(context)
                                                                   .brightness ==
                                                               Brightness.light
@@ -196,6 +206,22 @@ class _CoinsPageState extends State<CoinsPage> {
                     },
                   ),
                   automaticallyImplyLeading: false,
+                ),
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  toolbarHeight: 48,
+                  flexibleSpace: Center(
+                    child: IntrinsicWidth(
+                      // Child has infite width. We want to change so that it
+                      // ignores the infinite width and takes up min width.
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: AddCoinButton(key: Key('add-coin-button')),
+                      ),
+                    ),
+                  ),
+                  pinned: false,
                 ),
               ];
             },
@@ -375,28 +401,21 @@ class ListCoinsState extends State<ListCoins> {
             onRefresh: () => coinsBloc.updateCoinBalances(),
             child: Builder(builder: (BuildContext context) {
               if (snapshot.data != null && snapshot.data.isNotEmpty) {
-                final List<dynamic> datas = <dynamic>[];
-
-                final List<CoinBalance> _sorted =
+                final List<CoinBalance> _coinsSorted =
                     coinsBloc.sortCoins(snapshot.data);
 
-                datas.addAll(_sorted);
-                datas.add(true);
                 return SlidableAutoCloseBehavior(
                   child: ListView.separated(
-                    key: const Key('list-view-coins'),
-                    itemCount: datas.length,
                     padding: const EdgeInsets.all(0),
+                    key: const Key('list-view-coins'),
+                    itemCount: _coinsSorted.length,
                     itemBuilder: (BuildContext context, int index) {
-                      if (datas[index] is bool) {
-                        return const AddCoinButton(key: Key('add-coin'));
-                      } else {
-                        return ItemCoin(
-                          key: Key('coin-list-${datas[index].coin.abbr}'),
-                          mContext: context,
-                          coinBalance: datas[index],
-                        );
-                      }
+                      return ItemCoin(
+                        key: Key('coin-list-${_coinsSorted[index].coin.abbr}'),
+                        mContext: context,
+                        coinBalance: _coinsSorted[index],
+                      );
+                      // }
                     },
                     separatorBuilder: (context, _) =>
                         Divider(color: Theme.of(context).colorScheme.surface),
@@ -411,7 +430,10 @@ class ListCoinsState extends State<ListCoins> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      AddCoinButton(),
+                      AddCoinButton(
+                        key: const Key('add-coin-button-empty'),
+                        isCollapsed: true,
+                      ),
                       Text(AppLocalizations.of(context).pleaseAddCoin),
                     ],
                   ),
@@ -422,137 +444,5 @@ class ListCoinsState extends State<ListCoins> {
             }));
       },
     );
-  }
-}
-
-class AddCoinButton extends StatefulWidget {
-  const AddCoinButton({Key key}) : super(key: key);
-
-  @override
-  _AddCoinButtonState createState() => _AddCoinButtonState();
-}
-
-class _AddCoinButtonState extends State<AddCoinButton> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        StreamBuilder<CoinToActivate>(
-            initialData: coinsBloc.currentActiveCoin,
-            stream: coinsBloc.outcurrentActiveCoin,
-            builder:
-                (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-              if (snapshot.data != null) {
-                return Column(
-                  children: <Widget>[
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const CircularProgressIndicator(),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Text(snapshot.data.currentStatus ??
-                        AppLocalizations.of(context).connecting),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                  ],
-                );
-              } else {
-                return FutureBuilder<bool>(
-                  future: _buildAddCoinButton(),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                    if (snapshot.data != null && snapshot.data) {
-                      return Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Center(
-                              child: FloatingActionButton(
-                            key: const Key('adding-coins'),
-                            child: Icon(Icons.add),
-                            onPressed: () {
-                              if (mainBloc.networkStatus !=
-                                  NetworkStatus.Online) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  duration: const Duration(seconds: 2),
-                                  backgroundColor: Theme.of(context).errorColor,
-                                  content: Text(
-                                      AppLocalizations.of(context).noInternet),
-                                ));
-                              } else {
-                                final numCoinsEnabled =
-                                    coinsBloc.coinBalance.length;
-                                final maxCoinPerPlatform = Platform.isAndroid
-                                    ? appConfig.maxCoinsEnabledAndroid
-                                    : appConfig.maxCoinEnabledIOS;
-                                if (numCoinsEnabled >= maxCoinPerPlatform) {
-                                  dialogBloc.closeDialog(context);
-                                  dialogBloc.dialog = showDialog<void>(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return CustomSimpleDialog(
-                                        title: Text(AppLocalizations.of(context)
-                                            .tooManyAssetsEnabledTitle),
-                                        children: [
-                                          Text(AppLocalizations.of(context)
-                                                  .tooManyAssetsEnabledSpan1 +
-                                              numCoinsEnabled.toString() +
-                                              AppLocalizations.of(context)
-                                                  .tooManyAssetsEnabledSpan2 +
-                                              maxCoinPerPlatform.toString() +
-                                              AppLocalizations.of(context)
-                                                  .tooManyAssetsEnabledSpan3),
-                                          SizedBox(height: 12),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              ElevatedButton(
-                                                onPressed: () => dialogBloc
-                                                    .closeDialog(context),
-                                                child: Text(
-                                                    AppLocalizations.of(context)
-                                                        .warningOkBtn),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ).then(
-                                      (dynamic _) => dialogBloc.dialog = null);
-                                } else {
-                                  Navigator.push<dynamic>(
-                                    context,
-                                    MaterialPageRoute<dynamic>(
-                                        builder: (BuildContext context) =>
-                                            const SelectCoinsPage()),
-                                  );
-                                }
-                              }
-                            },
-                          )),
-                        ),
-                      );
-                    } else {
-                      return SizedBox();
-                    }
-                  },
-                );
-              }
-            }),
-      ],
-    );
-  }
-
-  /// Returns `true` if there are coins we can still activate, `false` if all of them activated.
-  Future<bool> _buildAddCoinButton() async {
-    final active = await Db.activeCoins;
-    final known = await coins;
-    return active.length < known.length;
   }
 }

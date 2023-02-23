@@ -7,6 +7,7 @@ import '../app_config/app_config.dart';
 import '../model/best_order.dart';
 import '../model/get_best_orders.dart';
 import '../model/get_enable_slp_coin.dart';
+import '../model/get_enable_tendermint.dart';
 import '../model/get_import_swaps.dart';
 import '../model/get_min_trading_volume.dart';
 import '../model/get_orderbook_depth.dart';
@@ -238,20 +239,6 @@ class ApiProvider {
                 _catchErrorString('postSell', e, 'Error on post sell'));
       });
 
-  Future<void> simPanic({http.Client client}) async {
-    client ??= mmSe.client;
-    final req = <String, dynamic>{
-      'method': 'sim_panic',
-      'userpass': mmSe.userpass,
-      'mode': 'simple'
-    };
-    final r = await client.post(Uri.parse(url), body: json.encode(req));
-    _assert200(r);
-    final dynamic jbody = json.decode(r.body);
-    final err = ErrorString.fromJson(jbody);
-    if (err.error.isNotEmpty) throw removeLineFromMM2(err);
-  }
-
   String enableCoinImpl(Coin coin) {
     if (isErcType(coin))
       return json.encode(MmEnable(
@@ -262,7 +249,16 @@ class ApiProvider {
         fallbackSwapContract: coin.fallbackSwapContract,
         urls: List<String>.from(coin.serverList.map((e) => e.url)),
       ).toJson());
-
+    if (coin?.protocol?.type == 'TENDERMINTTOKEN')
+      return json.encode(MmTendermintTokenEnable(
+        userpass: mmSe.userpass,
+        coin: coin,
+      ).toJson());
+    if (coin?.protocol?.type == 'TENDERMINT')
+      return json.encode(MmTendermintAssetEnable(
+        userpass: mmSe.userpass,
+        coin: coin,
+      ).toJson());
     if (isSlpParent(coin))
       return json.encode(MmParentSlpEnable(
         userpass: mmSe.userpass,

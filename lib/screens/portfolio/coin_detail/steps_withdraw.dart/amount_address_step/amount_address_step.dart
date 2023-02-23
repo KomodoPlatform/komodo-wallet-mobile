@@ -1,22 +1,23 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../../../app_config/app_config.dart';
-import '../../../../../model/coin_balance.dart';
-import '../../../../../model/coin_type.dart';
-import '../../../../../widgets/custom_simple_dialog.dart';
+import '../../../../../blocs/coin_detail_bloc.dart';
 import '../../../../../blocs/coins_bloc.dart';
 import '../../../../../blocs/dialog_bloc.dart';
-import '../../../../../utils/utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../blocs/coin_detail_bloc.dart';
 import '../../../../../localizations.dart';
+import '../../../../../model/coin_balance.dart';
+import '../../../../../model/coin_type.dart';
+import '../../../../../services/lock_service.dart';
+import '../../../../../services/mm_service.dart';
+import '../../../../../utils/utils.dart';
+import '../../../../../widgets/custom_simple_dialog.dart';
+import '../../../../../widgets/primary_button.dart';
+import '../../../../../widgets/secondary_button.dart';
 import '../../../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
 import '../../../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_field.dart';
 import '../../../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/custom_fee.dart';
-import '../../../../../services/lock_service.dart';
-import '../../../../../services/mm_service.dart';
-import '../../../../../widgets/primary_button.dart';
-import '../../../../../widgets/secondary_button.dart';
-import 'package:decimal/decimal.dart';
 
 class AmountAddressStep extends StatefulWidget {
   const AmountAddressStep({
@@ -31,6 +32,7 @@ class AmountAddressStep extends StatefulWidget {
     this.coinBalance,
     this.paymentUriInfo,
     this.scrollController,
+    this.memoController,
   }) : super(key: key);
 
   final Function onCancel;
@@ -39,6 +41,7 @@ class AmountAddressStep extends StatefulWidget {
   final Function onWithdrawPressed;
   final TextEditingController amountController;
   final TextEditingController addressController;
+  final TextEditingController memoController;
   final bool autoFocus;
   final CoinBalance coinBalance;
   final PaymentUriInfo paymentUriInfo;
@@ -88,12 +91,37 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               coin: widget.coinBalance.coin,
               onChanged: onChanged,
             ),
+            // Only show for tendermint tokens
+            if (widget.coinBalance.coin.type == CoinType.cosmos ||
+                widget.coinBalance.coin.type == CoinType.iris)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: TextFormField(
+                  key: const Key('send-memo-field'),
+                  autofocus: false,
+                  autocorrect: false,
+                  maxLength: 256,
+                  enableSuggestions: false,
+                  controller: widget.memoController,
+                  textInputAction: TextInputAction.done,
+                  keyboardType: TextInputType.text,
+                  style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.end,
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context).memo,
+                    hintText: AppLocalizations.of(context).optional,
+                  ),
+                ),
+              ),
             // Temporary disable custom fee for qrc20 tokens
-            if (widget.coinBalance.coin.type != CoinType.qrc)
+            if (widget.coinBalance.coin.type != CoinType.qrc &&
+                widget.coinBalance.coin.type != CoinType.cosmos &&
+                widget.coinBalance.coin.type != CoinType.iris)
               CustomFee(
                 coin: widget.coinBalance.coin,
                 amount: widget.amountController.text,
                 scrollController: widget.scrollController,
+                onChanged: onChanged,
               ),
             Row(
               children: <Widget>[

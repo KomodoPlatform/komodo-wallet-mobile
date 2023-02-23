@@ -68,7 +68,8 @@ class AuthenticateBloc extends BlocBase {
     _pinStatusController.close();
   }
 
-  Future<void> login(String passphrase, String password) async {
+  Future<void> login(String passphrase, String password,
+      {bool loadSnapshot = true}) async {
     mainBloc.setCurrentIndexTab(0);
     walletBloc.setCurrentWallet(await Db.getCurrentWallet());
     await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
@@ -78,7 +79,7 @@ class AuthenticateBloc extends BlocBase {
     await EncryptionTool().write('passphrase', passphrase);
     prefs.setBool('isPassphraseIsSaved', true);
 
-    await coinsBloc.loadWalletSnapshot();
+    if (loadSnapshot) await coinsBloc.loadWalletSnapshot();
 
     await mmSe.init(passphrase);
 

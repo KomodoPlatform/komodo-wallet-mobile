@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import '../../blocs/coins_bloc.dart';
 import '../../blocs/dialog_bloc.dart';
 import '../../localizations.dart';
@@ -94,15 +95,17 @@ class _CoinSelectState extends State<CoinSelect> {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return StreamBuilder(
+          return StreamBuilder<List<CoinBalance>>(
             initialData: coinsBloc.coinBalance,
             stream: coinsBloc.outCoins,
             builder: (context, snapshot) {
               if (!snapshot.hasData || snapshot.data == null) {
                 return _buildProgressDialog();
               }
+              List<CoinBalance> data = snapshot.data;
+              data.removeWhere((e) => e.coin.walletOnly);
 
-              return _buildList(snapshot.data);
+              return _buildList(data);
             },
           );
         }).then((dynamic _) => dialogBloc.dialog = null);

@@ -384,9 +384,6 @@ class _ContactEditState extends State<ContactEdit> {
     String addressKey;
     if (coin.type == CoinType.smartChain) {
       addressKey = 'KMD';
-    } else if (coin.abbr == 'SMTF-v2') {
-      // Special case, biz-devs request
-      addressKey = 'SMTF-v2';
     } else if (coin.protocol?.protocolData?.platform != null) {
       // All 'children' assets have same address as 'parent' coin
       addressKey = coin.protocol.protocolData.platform;

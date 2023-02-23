@@ -114,6 +114,12 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
       case CoinType.slp:
         return AppLocalizations.of(context).searchFilterSubtitleSLP;
         break;
+      case CoinType.iris:
+        return AppLocalizations.of(context).searchFilterSubtitleIris;
+        break;
+      case CoinType.cosmos:
+        return AppLocalizations.of(context).searchFilterSubtitleCosmos;
+        break;
     }
 
     // titleType == null for test assets

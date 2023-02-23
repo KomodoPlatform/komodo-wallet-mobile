@@ -1,24 +1,26 @@
 import 'dart:async';
 import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:rational/rational.dart';
+
+import '../app_config/app_config.dart';
+import '../blocs/coins_bloc.dart';
+import '../model/best_order.dart';
 import '../model/buy_response.dart';
+import '../model/coin.dart';
+import '../model/coin_balance.dart';
+import '../model/get_best_orders.dart';
 import '../model/get_buy.dart';
+import '../model/get_max_taker_volume.dart';
 import '../model/get_trade_preimage_2.dart';
 import '../model/market.dart';
 import '../model/rpc_error.dart';
-import '../screens/dex/trade/pro/confirm/protection_control.dart';
-import '../services/mm_service.dart';
-import 'package:rational/rational.dart';
-import '../app_config/app_config.dart';
-import '../model/coin.dart';
-import '../model/get_max_taker_volume.dart';
 import '../model/trade_preimage.dart';
-import '../model/get_best_orders.dart';
-import '../model/best_order.dart';
+import '../screens/dex/trade/pro/confirm/protection_control.dart';
 import '../services/mm.dart';
+import '../services/mm_service.dart';
 import '../utils/utils.dart';
-import '../blocs/coins_bloc.dart';
-import '../model/coin_balance.dart';
 
 class ConstructorProvider extends ChangeNotifier {
   ConstructorProvider() {
@@ -480,18 +482,23 @@ class ConstructorProvider extends ChangeNotifier {
             ' to pay fees';
         break;
       case RpcErrorType.NotSufficientBalance:
-        str = '${error.data['coin']} balance is not sufficient for trade. '
+        str = '${error.data['coin']} balance is not sufficient for trade, '
             'Min required balance is '
-            '${cutTrailingZeros(formatPrice(error.data['required']))} '
+            '${cutTrailingZeros(formatPrice(error.data['required']))}. '
             '${error.data['coin']}';
         break;
       case RpcErrorType.VolumeTooLow:
         str =
-            'Min volume is ${cutTrailingZeros(formatPrice(error.data['threshold']))}'
+            'Min volume is ${cutTrailingZeros(formatPrice(error.data['threshold']))}.'
             ' ${error.data['coin']}';
         break;
+      case RpcErrorType.Transport:
+        str =
+            "Trade can't be started, Please check if you have enough funds for gas."
+            ' Error: ${error.data}';
+        break;
       default:
-        str = error.message ?? 'Something went wrong. Please try again.';
+        str = error.message ?? 'Something went wrong, please try again.';
     }
 
     return str;

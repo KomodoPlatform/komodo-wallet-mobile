@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import '../../../../../model/swap_constructor_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -82,9 +83,14 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
     );
   }
 
+  bool showErrorDetails = false;
   Widget _buildError() {
     final Color color = Theme.of(context).errorColor;
 
+    List<String> errors = _error.split('.');
+    String first = errors.first;
+    errors.remove(first);
+    String details = errors.join('. ');
     return Container(
       padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
       decoration: BoxDecoration(
@@ -99,14 +105,56 @@ class _BuildTradeMessageState extends State<BuildTradeMessage> {
           ),
           SizedBox(width: 8),
           Expanded(
-            child: Text(
-              _error,
-              style: Theme.of(context)
-                  .textTheme
-                  .caption
-                  .copyWith(color: color, fontSize: 13),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Text(
+                  first,
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption
+                      .copyWith(color: color, fontSize: 13),
+                ),
+                if (showErrorDetails)
+                  Text(
+                    '\n' + details.trim(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption
+                        .copyWith(color: color, fontSize: 13),
+                  ),
+              ],
             ),
           ),
+          SizedBox(width: 8),
+          if (details.isNotEmpty)
+            Column(
+              children: [
+                InkWell(
+                  onTap: () {
+                    showErrorDetails = !showErrorDetails;
+                    setState(() {});
+                  },
+                  child: Icon(
+                    showErrorDetails
+                        ? Icons.arrow_drop_up
+                        : Icons.arrow_drop_down,
+                    color: Theme.of(context).textTheme.bodyText1.color,
+                    size: 16,
+                  ),
+                ),
+                if (showErrorDetails)
+                  Padding(
+                    padding: EdgeInsets.only(top: 18.0),
+                    child: IconButton(
+                      icon: Icon(Icons.copy, size: 18),
+                      onPressed: () {
+                        copyToClipBoard(context, _error);
+                      },
+                    ),
+                  ),
+              ],
+            ),
         ],
       ),
     );

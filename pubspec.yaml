@@ -7,7 +7,7 @@ description: Multicoin Wallet with DEX gateway
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.6.0
+version: 0.6.1
 
 publish_to: none
 
@@ -106,10 +106,10 @@ dependencies:
       url: https://github.com/KomodoPlatform/bip39-dart.git
       ref: 3633daa2026b98c523ae9a091322be2903f7a8ab #1.0.6
 
-  pin_code_view: # last reviewed c0b6516
+  pin_code_view: # last reviewed c0b6516 -> da9f0f4 by yurii-khi
     git:
       url: https://github.com/KomodoPlatform/pin_code_view.git
-      ref: d471b040206870b002cf0154772c1bca4c5dfe46
+      ref: da9f0f4a7b315f05e6d7e9f3f3d3a3644d7c042f
 
   intl_generator: # newly added, wasn't reviewed
     git:
