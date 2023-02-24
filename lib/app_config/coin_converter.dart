@@ -325,8 +325,6 @@ String _getColor(String coin) {
     'SBCH': '#74dd54',
     'SFUSD': '#9881B8',
     'SIBM': '#0C4855',
-    'SMTF': '#F75836',
-    'SMTF-v2': '#F75836',
     'SNT': '#596BED',
     'SNX': '#00D1FF',
     'SOL': '#7BFBB5',

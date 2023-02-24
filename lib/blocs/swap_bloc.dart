@@ -1,12 +1,16 @@
 import 'dart:async';
-import '../model/get_max_taker_volume.dart';
-import '../model/order_book_provider.dart';
-import '../services/mm.dart';
+
+import 'package:decimal/decimal.dart';
 import 'package:rational/rational.dart';
+
 import '../blocs/coins_bloc.dart';
 import '../model/coin_balance.dart';
+import '../model/get_max_taker_volume.dart';
+import '../model/order_book_provider.dart';
 import '../model/orderbook.dart';
 import '../model/trade_preimage.dart';
+import '../services/mm.dart';
+import '../utils/utils.dart';
 import '../widgets/bloc_provider.dart';
 
 class SwapBloc implements BlocBase {
@@ -149,10 +153,22 @@ class SwapBloc implements BlocBase {
     sellCoinBalance = coinBalance;
     _inSellCoinBalance.add(sellCoinBalance);
 
-    _updateMaxTakerVolume();
+    updateMaxTakerVolume();
   }
 
-  Future<void> _updateMaxTakerVolume() async {
+  void updateFieldBalances() {
+    if (sellCoinBalance == null) return;
+    sellCoinBalance.balance.balance =
+        Decimal.parse(maxTakerVolume.toDecimalString());
+    _inSellCoinBalance.add(sellCoinBalance);
+
+    if (amountSell == null) return;
+    if (deci(amountSell) > sellCoinBalance.balance.balance) {
+      setAmountSell(maxTakerVolume);
+    }
+  }
+
+  Future<void> updateMaxTakerVolume() async {
     if (sellCoinBalance == null) {
       maxTakerVolume = null;
       return;
