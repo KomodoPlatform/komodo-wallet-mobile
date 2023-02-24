@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,8 +25,8 @@ class BlocManagerWidget extends StatelessWidget {
         // Instantiate all BLoCs here
         BlocProvider<LoginBloc>(
           create: (BuildContext context) => LoginBloc(
-            prefs: BlocManager()._prefs,
-            authenticationRepository: BlocManager()._authenticationRepository,
+            prefs: BlocManager()._prefs!,
+            authenticationRepository: BlocManager()._authenticationRepository!,
           ),
         ),
       ],

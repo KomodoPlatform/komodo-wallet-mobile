@@ -45,7 +45,7 @@ dependencies:
 
   http: 0.13.4 # dart.dev (Note: Supports null safety)
 
-  crypto: 3.0.1 # dart.dev (Note: Supports null safety)
+  crypto: 3.0.2 # dart.dev (Note: Supports null safety)
 
   hydrated_bloc:
     git:
