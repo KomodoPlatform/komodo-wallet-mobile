@@ -17,8 +17,8 @@ const throttleDuration = Duration(milliseconds: 5000);
 
 class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   LoginBloc({
-    this.prefs,
-    this.authenticationRepository,
+    required this.prefs,
+    required this.authenticationRepository,
   }) : super(LoginStateInitial()) {
     on<LoginPinInputChanged>(_onPinInputChanged);
 
@@ -29,8 +29,8 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     on<LoginPinFailure>(_onPinLoginFailure);
   }
 
-  final SharedPreferences? prefs;
-  final AuthenticationRepository? authenticationRepository;
+  final SharedPreferences prefs;
+  final AuthenticationRepository authenticationRepository;
 
   void _onPinInputChanged(
     LoginPinInputChanged event,
@@ -42,19 +42,9 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
         pin: pin,
       ),
     );
-
-/*    // If the pin is valid, submit it.
-    if (pin.valid) {
-      add(LoginPinSubmitted());
-    }*/
   }
 
-  void _onPinLoginSuccess(
-    LoginPinSuccess event,
-    Emitter<LoginState> emit,
-  ) {
-    // TODO(@ologunB): Implement this method.
-  }
+  void _onPinLoginSuccess(LoginPinSuccess event, Emitter<LoginState> emit) {}
 
   void _onPinLoginFailure(
     LoginPinFailure event,
@@ -69,6 +59,11 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   ) async {
     // Emit state to indicate that the pin is being checked.
     emit(LoginStatePinSubmitted(pin: state.pin));
+
+    await authenticationRepository.initParameters(event.password, event.code,
+        event.onSuccess, event.pinStatus, event.isFromChangingPin);
+    bool status = await authenticationRepository.validatePin();
+    print(status);
 
     // TODO(@ologunB): Reference applicable repository methods + state changes here.
     // E.g. (Suggestions, not complete):
