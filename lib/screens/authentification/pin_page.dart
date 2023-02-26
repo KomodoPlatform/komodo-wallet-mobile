@@ -1,22 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/camo_bloc.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
-import 'package:komodo_dex/screens/authentification/app_bar_status.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/page_transition.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../blocs/authenticate_bloc.dart';
+import '../../blocs/camo_bloc.dart';
+import '../../blocs/coins_bloc.dart';
+import '../../blocs/dialog_bloc.dart';
+import '../../localizations.dart';
+import '../../model/wallet.dart';
+import '../../model/wallet_security_settings_provider.dart';
+import '../../services/db/database.dart';
+import '../../services/mm_service.dart';
+import '../../utils/encryption_tool.dart';
+import '../../utils/log.dart';
+import '../../utils/utils.dart';
+import '../authentification/app_bar_status.dart';
 
 class PinPage extends StatefulWidget {
   const PinPage({
@@ -98,6 +100,7 @@ class _PinPageState extends State<PinPage> {
               correctPin: _correctPin,
               onCodeFail: _onCodeFail,
               onCodeSuccess: _onCodeSuccess,
+              clearOnAppStateChange: true,
             )
           : _buildLoading(),
     );
@@ -175,14 +178,16 @@ class _PinPageState extends State<PinPage> {
 
     switch (widget.pinStatus) {
       case PinStatus.NORMAL_PIN:
+        bool loadSnapshot = true;
         if (camoBloc.isCamoActive) {
           coinsBloc.resetCoinBalance();
-          camoBloc.isCamoActive = false;
+          loadSnapshot = false;
         }
 
         authBloc.showLock = false;
         if (!mmSe.running) {
-          await authBloc.login(await EncryptionTool().read('passphrase'), null);
+          await authBloc.login(await EncryptionTool().read('passphrase'), null,
+              loadSnapshot: loadSnapshot);
         }
         if (widget.onSuccess != null) {
           widget.onSuccess();
@@ -226,9 +231,10 @@ class _PinPageState extends State<PinPage> {
         await prefs.remove('pin_create');
         await prefs.remove('is_pin_creation_in_progress');
 
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted)
+          setState(() {
+            _isLoading = false;
+          });
         break;
 
       case PinStatus.CONFIRM_CAMO_PIN:
@@ -246,6 +252,9 @@ class _PinPageState extends State<PinPage> {
         await prefs.remove('is_camo_pin_creation_in_progress');
 
         camoBloc.shouldWarnBadCamoPin = true;
+        if (widget.onSuccess != null) {
+          widget.onSuccess();
+        }
         Navigator.popUntil(context, ModalRoute.withName('/camoSetup'));
         break;
 
@@ -264,52 +273,49 @@ class _PinPageState extends State<PinPage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     switch (widget.pinStatus) {
-      case (PinStatus.CREATE_PIN):
+      case PinStatus.CREATE_PIN:
         await prefs.setBool('is_pin_creation_in_progress', true);
         await prefs.setString('pin_create', code);
-        final MaterialPageRoute<dynamic> materialPage =
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => PinPage(
-                      title: AppLocalizations.of(context).confirmPin,
-                      subTitle: AppLocalizations.of(context).confirmPin,
-                      code: code,
-                      pinStatus: PinStatus.CONFIRM_PIN,
-                      password: widget.password,
-                    ));
+        final materialPage = PageTransition(
+            child: PinPage(
+          title: AppLocalizations.of(context).confirmPin,
+          subTitle: AppLocalizations.of(context).confirmPin,
+          code: code,
+          pinStatus: PinStatus.CONFIRM_PIN,
+          password: widget.password,
+        ));
 
         Navigator.push<dynamic>(context, materialPage);
         break;
 
-      case (PinStatus.CHANGE_PIN):
+      case PinStatus.CHANGE_PIN:
         await prefs.setString('pin_create', code);
-        final MaterialPageRoute<dynamic> materialPage =
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => PinPage(
-                      title: AppLocalizations.of(context).confirmPin,
-                      subTitle: AppLocalizations.of(context).confirmPin,
-                      code: code,
-                      pinStatus: PinStatus.CONFIRM_PIN,
-                      password: widget.password,
-                      isFromChangingPin: true,
-                    ));
+        final materialPage = PageTransition(
+            child: PinPage(
+          title: AppLocalizations.of(context).confirmPin,
+          subTitle: AppLocalizations.of(context).confirmPin,
+          code: code,
+          pinStatus: PinStatus.CONFIRM_PIN,
+          password: widget.password,
+          isFromChangingPin: true,
+        ));
 
         Navigator.pushReplacement<dynamic, dynamic>(context, materialPage);
         break;
 
-      case (PinStatus.CREATE_CAMO_PIN):
+      case PinStatus.CREATE_CAMO_PIN:
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('is_camo_pin_creation_in_progress', true);
         await prefs.setString('camo_pin_create', code);
-        final MaterialPageRoute<dynamic> materialPage =
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => PinPage(
-                      title: AppLocalizations.of(context).camouflageSetup,
-                      subTitle:
-                          AppLocalizations.of(context).confirmCamouflageSetup,
-                      code: code,
-                      pinStatus: PinStatus.CONFIRM_CAMO_PIN,
-                      password: widget.password,
-                    ));
+        final materialPage = PageTransition(
+            child: PinPage(
+          title: AppLocalizations.of(context).camouflageSetup,
+          subTitle: AppLocalizations.of(context).confirmCamouflageSetup,
+          code: code,
+          onSuccess: widget.onSuccess,
+          pinStatus: PinStatus.CONFIRM_CAMO_PIN,
+          password: widget.password,
+        ));
 
         Navigator.pushReplacement<dynamic, dynamic>(context, materialPage);
         break;

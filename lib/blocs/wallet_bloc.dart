@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/widgets/bloc_provider.dart';
+import '../blocs/authenticate_bloc.dart';
+import '../localizations.dart';
+import '../model/wallet.dart';
+import '../services/db/database.dart';
+import '../utils/encryption_tool.dart';
+import '../widgets/bloc_provider.dart';
 import 'package:uuid/uuid.dart';
 
 WalletBloc walletBloc = WalletBloc();

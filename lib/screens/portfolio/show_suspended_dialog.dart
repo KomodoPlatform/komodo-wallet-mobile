@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../../localizations.dart';
+import '../../model/coin.dart';
+import '../../blocs/dialog_bloc.dart';
+import '../../widgets/custom_simple_dialog.dart';
 
 Future<void> showSuspendedDilog(BuildContext context,
     {@required Coin coin}) async {

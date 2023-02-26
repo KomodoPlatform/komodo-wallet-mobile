@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../utils/utils.dart';
 
 class LanguageFlagIcon extends StatelessWidget {
   const LanguageFlagIcon({Key key, this.loc, this.size}) : super(key: key);

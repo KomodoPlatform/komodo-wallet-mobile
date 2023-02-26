@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
-import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../../app_config/app_config.dart';
+import '../../../../../blocs/coin_detail_bloc.dart';
+import '../../../../../blocs/coins_bloc.dart';
+import '../../../../../localizations.dart';
+import '../../../../../model/cex_provider.dart';
+import '../../../../../model/coin_balance.dart';
+import '../../../../../utils/decimal_text_input_formatter.dart';
+import '../../../../../widgets/cex_fiat_preview.dart';
 
 class AmountField extends StatefulWidget {
   const AmountField({

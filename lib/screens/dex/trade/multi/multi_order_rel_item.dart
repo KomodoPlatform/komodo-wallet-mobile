@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/multi_order_provider.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/screens/dex/trade/build_detailed_fees.dart';
-import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
+import '../../../../blocs/coins_bloc.dart';
+import '../../../../model/cex_provider.dart';
+import '../../../../model/coin_balance.dart';
+import '../../../../model/multi_order_provider.dart';
+import '../../../../model/order_book_provider.dart';
+import '../../../../model/trade_preimage.dart';
+import '../../../dex/trade/build_detailed_fees.dart';
+import '../../../../utils/decimal_text_input_formatter.dart';
+import '../../../../utils/utils.dart';
+import '../../../../app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class MultiOrderRelItem extends StatefulWidget {
@@ -70,11 +70,13 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
     return error == null
         ? SizedBox()
         : InkWell(
-            onTap: () {
-              setState(() {
-                _showDetailedError = !_showDetailedError;
-              });
-            },
+            onTap: error.length > 100
+                ? () {
+                    setState(() {
+                      _showDetailedError = !_showDetailedError;
+                    });
+                  }
+                : null,
             child: Container(
               width: double.infinity,
               padding: EdgeInsets.fromLTRB(16, 0, 8, 0),
@@ -84,19 +86,20 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                   Expanded(
                     child: Text(
                       error,
-                      maxLines: _showDetailedError ? null : 1,
+                      maxLines: _showDetailedError ? null : 3,
                       style: Theme.of(context)
                           .textTheme
                           .caption
                           .copyWith(color: Theme.of(context).errorColor),
                     ),
                   ),
-                  Icon(
-                    _showDetailedError
-                        ? Icons.arrow_drop_up
-                        : Icons.arrow_drop_down,
-                    size: 14,
-                  )
+                  if (error.length > 100)
+                    Icon(
+                      _showDetailedError
+                          ? Icons.arrow_drop_up
+                          : Icons.arrow_drop_down,
+                      size: 18,
+                    )
                 ],
               ),
             ),
@@ -247,7 +250,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
         children: <Widget>[
           Container(
             height: 32,
-            padding: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(top: 0),
             child: Theme(
               data: Theme.of(context).copyWith(
                 inputDecorationTheme: gefaultUnderlineInputTheme,

@@ -1,13 +1,13 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/services/lock_service.dart';
-import 'package:komodo_dex/services/music_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/sound_volume_button.dart';
+import '../../blocs/dialog_bloc.dart';
+import '../../localizations.dart';
+import '../authentification/lock_screen.dart';
+import '../../services/lock_service.dart';
+import '../../services/music_service.dart';
+import '../../utils/log.dart';
+import '../../widgets/custom_simple_dialog.dart';
+import '../../widgets/sound_volume_button.dart';
 
 class SoundSettingsPage extends StatefulWidget {
   @override

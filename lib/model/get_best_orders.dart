@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:komodo_dex/model/market.dart';
+import '../model/market.dart';
 import 'package:rational/rational.dart';
 
 String getBestOrdersToJson(GetBestOrders data) => json.encode(data.toJson());

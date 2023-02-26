@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form_validator.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
+import '../../../../../blocs/dialog_bloc.dart';
+import '../../../../../localizations.dart';
+import '../../../../dex/trade/pro/create/trade_form_validator.dart';
+import '../../../../../utils/utils.dart';
+import '../../../../../widgets/custom_simple_dialog.dart';
 
 class PreimageError extends StatefulWidget {
   const PreimageError(this.apiErrorMessage);

@@ -1,13 +1,13 @@
-import 'package:komodo_dex/app_config/theme_data.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
+import '../../../../../../app_config/theme_data.dart';
+import '../../../../../dex/trade/pro/create/trade_form.dart';
 import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../../../app_config/app_config.dart';
+import '../../../../../../blocs/swap_bloc.dart';
+import '../../../../../../localizations.dart';
+import '../../../../../../utils/decimal_text_input_formatter.dart';
+import '../../../../../../utils/utils.dart';
 
 class SellAmountField extends StatefulWidget {
   @override

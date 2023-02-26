@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/progress_step.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 
+import '../../../../localizations.dart';
+import '../../../../utils/utils.dart';
+import '../../../dex/orders/swap/progress_step.dart';
 import 'detailed_swap_steps.dart';
 
 class DetailedSwapStep extends StatelessWidget {
@@ -17,10 +18,12 @@ class DetailedSwapStep extends StatelessWidget {
     this.estimatedTotalSpeed,
     this.actualTotalSpeed,
     this.index,
+    this.coinType,
   });
 
   final String title;
   final String txHash;
+  final CoinType coinType;
   final String explorerUrl;
   final SwapStepStatus status;
   final Duration estimatedSpeed;
@@ -78,7 +81,15 @@ class DetailedSwapStep extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: () => launchURL(explorerUrl + 'tx/' + txHash),
+          onTap: () {
+            String hash = '';
+            if (coinType == CoinType.iris || coinType == CoinType.cosmos) {
+              hash = txHash.toUpperCase();
+            } else {
+              hash = txHash;
+            }
+            launchURL(explorerUrl + hash);
+          },
           child: Padding(
             padding: EdgeInsets.fromLTRB(6, 2, 4, 2),
             child: Row(

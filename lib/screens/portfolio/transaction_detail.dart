@@ -1,19 +1,21 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/transaction_data.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import 'package:komodo_dex/model/addressbook_provider.dart';
-import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
+
+import '../../blocs/coins_bloc.dart';
+import '../../blocs/main_bloc.dart';
+import '../../blocs/settings_bloc.dart';
+import '../../localizations.dart';
+import '../../model/addressbook_provider.dart';
+import '../../model/cex_provider.dart';
+import '../../model/coin_balance.dart';
+import '../../model/transaction_data.dart';
+import '../../services/db/database.dart';
+import '../../utils/utils.dart';
+import '../addressbook/addressbook_page.dart';
+import '../authentification/lock_screen.dart';
 
 class TransactionDetail extends StatefulWidget {
   const TransactionDetail({this.transaction, this.coinBalance});
@@ -64,9 +66,18 @@ class _TransactionDetailState extends State<TransactionDetail> {
             IconButton(
               splashRadius: 24,
               icon: Icon(Icons.open_in_browser),
-              onPressed: () => launchURL(widget.coinBalance.coin.explorerUrl +
-                  'tx/' +
-                  widget.transaction.txHash),
+              onPressed: () {
+                String middle = widget.coinBalance.coin.explorerTxUrl.isEmpty
+                    ? 'tx/'
+                    : widget.coinBalance.coin.explorerTxUrl;
+
+                CoinType coinType = widget.coinBalance.coin.type;
+                String hash = widget.transaction.txHash;
+                if (coinType == CoinType.iris || coinType == CoinType.cosmos) {
+                  hash = hash.toUpperCase();
+                }
+                launchURL(widget.coinBalance.coin.explorerUrl + middle + hash);
+              },
             )
           ],
         ),
@@ -227,6 +238,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
         ItemTransationDetail(
             title: AppLocalizations.of(context).txHash,
             data: widget.transaction.txHash),
+        if (widget.transaction.memo.isNotEmpty)
+          ItemTransationDetail(
+              title: AppLocalizations.of(context).memo,
+              data: widget.transaction.memo),
         ItemTransactionNote(
             title: AppLocalizations.of(context).noteTitle,
             txHash: widget.transaction.txHash),

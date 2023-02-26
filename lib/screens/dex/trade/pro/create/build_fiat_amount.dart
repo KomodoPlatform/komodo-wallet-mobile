@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/market.dart';
-import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
+import '../../../../../blocs/swap_bloc.dart';
+import '../../../../../model/cex_provider.dart';
+import '../../../../../model/coin.dart';
+import '../../../../../model/market.dart';
+import '../../../../../widgets/cex_data_marker.dart';
+import '../../../../../app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class BuildFiatAmount extends StatelessWidget {

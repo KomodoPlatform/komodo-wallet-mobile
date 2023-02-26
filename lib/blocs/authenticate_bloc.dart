@@ -1,18 +1,18 @@
 import 'dart:async';
 
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/media_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/blocs/wallet_bloc.dart';
-import 'package:komodo_dex/model/balance.dart';
-import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/services/notif_service.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/widgets/bloc_provider.dart';
+import '../blocs/coins_bloc.dart';
+import '../blocs/main_bloc.dart';
+import '../blocs/media_bloc.dart';
+import '../blocs/settings_bloc.dart';
+import '../blocs/wallet_bloc.dart';
+import '../model/balance.dart';
+import '../model/wallet.dart';
+import '../model/wallet_security_settings_provider.dart';
+import '../services/db/database.dart';
+import '../services/mm_service.dart';
+import '../services/notif_service.dart';
+import '../utils/encryption_tool.dart';
+import '../widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticateBloc extends BlocBase {
@@ -68,7 +68,8 @@ class AuthenticateBloc extends BlocBase {
     _pinStatusController.close();
   }
 
-  Future<void> login(String passphrase, String password) async {
+  Future<void> login(String passphrase, String password,
+      {bool loadSnapshot = true}) async {
     mainBloc.setCurrentIndexTab(0);
     walletBloc.setCurrentWallet(await Db.getCurrentWallet());
     await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
@@ -78,7 +79,7 @@ class AuthenticateBloc extends BlocBase {
     await EncryptionTool().write('passphrase', passphrase);
     prefs.setBool('isPassphraseIsSaved', true);
 
-    await coinsBloc.loadWalletSnapshot();
+    if (loadSnapshot) await coinsBloc.loadWalletSnapshot();
 
     await mmSe.init(passphrase);
 

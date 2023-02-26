@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../model/coin_type.dart';
+import '../utils/utils.dart';
 
 Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
   final String coins =
@@ -11,7 +11,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
   List allCoinsList = [];
 
   coinsResponse.forEach((abbr, coinData) {
-    String proto = _getType(coinData['type']);
+    String proto = _getType(coinData['type'], abbr);
 
     if (_excludedCoins.contains(abbr) || proto == null) {
       return; // unsupported protocols should be skipped
@@ -24,8 +24,14 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       'colorCoin': _getColor(abbr),
       'type': proto,
       'explorerUrl': coinData['explorer_url'],
-      'serverList': coinData['nodes'] ?? coinData['electrum'] ?? [],
+      'serverList': coinData['nodes'] ??
+          coinData['electrum'] ??
+          coinData['rpc_urls'] ??
+          [],
+      'explorer_tx_url': coinData['explorer_tx_url'],
+      'explorer_address_url': coinData['explorer_address_url'],
       'testCoin': coinData['is_testnet'] ?? false,
+      'walletOnly': coinData['wallet_only'],
       if (coinData['swap_contract_address'] != null)
         'swap_contract_address': coinData['swap_contract_address'],
       if (coinData['contract_address'] != null)
@@ -41,9 +47,10 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
 
 List<String> get _excludedCoins => [];
 
-String _getType(String coin) {
+String _getType(String coin, String abbr) {
   // absent protocols
   // [RSK Smart Bitcoin, Arbitrum, Moonbeam, ZHTLC]
+  if (abbr == 'IRIS') return 'iris';
   CoinType type;
   switch (coin) {
     case 'UTXO':
@@ -93,6 +100,12 @@ String _getType(String coin) {
       break;
     case 'AVX-20':
       type = CoinType.avx;
+      break;
+    case 'TENDERMINT':
+      type = CoinType.cosmos;
+      break;
+    case 'TENDERMINTTOKEN':
+      type = CoinType.iris;
       break;
     default:
       return null; // for other protocols not yet added on the mobile
@@ -303,8 +316,6 @@ String _getColor(String coin) {
     'SBCH': '#74dd54',
     'SFUSD': '#9881B8',
     'SIBM': '#0C4855',
-    'SMTF': '#F75836',
-    'SMTF-v2': '#F75836',
     'SNT': '#596BED',
     'SNX': '#00D1FF',
     'SOL': '#7BFBB5',

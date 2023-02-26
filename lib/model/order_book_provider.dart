@@ -2,21 +2,21 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_orderbook_depth.dart';
-import 'package:komodo_dex/model/market.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/orderbook_depth.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/markets/coin_select.dart';
-import 'package:komodo_dex/services/job_service.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../blocs/coins_bloc.dart';
+import '../model/coin.dart';
+import '../model/coin_balance.dart';
+import '../model/error_string.dart';
+import '../model/get_orderbook_depth.dart';
+import '../model/market.dart';
+import '../model/orderbook.dart';
+import '../model/orderbook_depth.dart';
+import '../model/swap.dart';
+import '../screens/markets/coin_select.dart';
+import '../services/job_service.dart';
+import '../services/mm.dart';
+import '../services/mm_service.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
 import 'get_orderbook.dart';
 
 class OrderBookProvider extends ChangeNotifier {
@@ -180,6 +180,7 @@ class SyncOrderbook {
     final LinkedHashMap<String, Coin> known = await coins;
     final List<CoinBalance> active = coinsBloc.coinBalance;
 
+    active.removeWhere((e) => e.coin.walletOnly);
     final Coin coin = known[abbr];
 
     for (CoinBalance coinBalance in active) {
@@ -205,6 +206,7 @@ class SyncOrderbook {
 
     bool wasChanged = false;
     final List<CoinBalance> coinsList = coinsBloc.coinBalance;
+    coinsList.removeWhere((e) => e.coin.walletOnly);
 
     for (CoinBalance coinBalance in coinsList) {
       if (coinBalance.coin.abbr == coin.abbr) continue;

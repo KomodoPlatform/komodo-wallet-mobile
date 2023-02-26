@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:komodo_dex/model/wallet_security_settings.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../model/wallet_security_settings.dart';
+import '../services/db/database.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 WalletSecuritySettingsProvider walletSecuritySettingsProvider =
@@ -178,6 +178,14 @@ class WalletSecuritySettingsProvider extends ChangeNotifier {
     _prefs.setBool('switch_pin_biometric', v);
 
     _updateDb().then((value) => notifyListeners());
+  }
+
+  bool get disallowScreenshot => _prefs.getBool('disallowScreenshot') ?? true;
+
+  set disallowScreenshot(bool v) {
+    _prefs.setBool('disallowScreenshot', v);
+
+    notifyListeners();
   }
 
   bool get enableCamo =>

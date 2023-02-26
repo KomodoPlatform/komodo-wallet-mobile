@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../blocs/coins_bloc.dart';
+import '../../../localizations.dart';
+import '../../../model/coin_type.dart';
+import '../../../utils/utils.dart';
 
 class BuildTypeHeader extends StatefulWidget {
   const BuildTypeHeader({Key key, this.type, this.filterType, this.query})
@@ -113,6 +113,12 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
         return AppLocalizations.of(context).searchFilterSubtitleSmartChain;
       case CoinType.slp:
         return AppLocalizations.of(context).searchFilterSubtitleSLP;
+        break;
+      case CoinType.iris:
+        return AppLocalizations.of(context).searchFilterSubtitleIris;
+        break;
+      case CoinType.cosmos:
+        return AppLocalizations.of(context).searchFilterSubtitleCosmos;
         break;
     }
 

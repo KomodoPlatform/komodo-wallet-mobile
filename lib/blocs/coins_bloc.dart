@@ -1,34 +1,37 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:decimal/decimal.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/model/active_coin.dart';
-import 'package:komodo_dex/model/balance.dart';
-import 'package:komodo_dex/model/base_service.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/coin_to_kick_start.dart';
-import 'package:komodo_dex/model/disable_coin.dart';
-import 'package:komodo_dex/model/error_code.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_balance.dart';
-import 'package:komodo_dex/model/get_disable_coin.dart';
-import 'package:komodo_dex/model/get_tx_history.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/transaction_data.dart';
-import 'package:komodo_dex/model/transactions.dart';
-import 'package:komodo_dex/services/get_erc_transactions.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/bloc_provider.dart';
-import 'package:komodo_dex/services/job_service.dart';
+
+import '../app_config/app_config.dart';
+import '../blocs/main_bloc.dart';
+import '../blocs/settings_bloc.dart';
+import '../model/active_coin.dart';
+import '../model/balance.dart';
+import '../model/base_service.dart';
+import '../model/cex_provider.dart';
+import '../model/coin.dart';
+import '../model/coin_balance.dart';
+import '../model/coin_to_kick_start.dart';
+import '../model/disable_coin.dart';
+import '../model/error_code.dart';
+import '../model/error_string.dart';
+import '../model/get_balance.dart';
+import '../model/get_disable_coin.dart';
+import '../model/get_tx_history.dart';
+import '../model/order_book_provider.dart';
+import '../model/transaction_data.dart';
+import '../model/transactions.dart';
+import '../services/db/database.dart';
+import '../services/get_erc_transactions.dart';
+import '../services/job_service.dart';
+import '../services/mm.dart';
+import '../services/mm_service.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
+import '../widgets/bloc_provider.dart';
 
 class CoinsBloc implements BlocBase {
   CoinsBloc() {
@@ -49,6 +52,7 @@ class CoinsBloc implements BlocBase {
   LinkedHashMap<String, Coin> get knownCoins => _knownCoins;
 
   List<CoinBalance> coinBalance = <CoinBalance>[];
+  List<String> coinsWithLessThan10kVol = [];
 
   // Streams to handle the list coin
   final StreamController<List<CoinBalance>> _coinsController =
@@ -106,7 +110,8 @@ class CoinsBloc implements BlocBase {
     final Set<Coin> suspendedCoins = {};
 
     for (CoinBalance balance in coinBalance) {
-      if (balance.coin.suspended) suspendedCoins.add(balance.coin);
+      if (balance.coin.suspended)
+        suspendedCoins.add(getKnownCoinByAbbr(balance.coin.abbr));
     }
 
     return suspendedCoins;
@@ -155,28 +160,46 @@ class CoinsBloc implements BlocBase {
     _inCoinBeforeActivation.add(this.coinBeforeActivation);
   }
 
+  bool canActivate(List<CoinToActivate> list) {
+    int activated = coinBalance.length;
+    int selected = list.where((element) => element.isActive).length;
+
+    int maxCoinLength = Platform.isIOS
+        ? appConfig.maxCoinEnabledIOS
+        : appConfig.maxCoinsEnabledAndroid;
+
+    return maxCoinLength > selected + activated;
+  }
+
   void setCoinBeforeActivation(Coin coin, bool isActive) {
     coinBeforeActivation
         .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
 
-    // auto add parent coin if not enabled previously
-    // if the parent is then removed intentionally by the user
-    // it wont be enabled. But if SLP coins are even removed after auto adding
-    // they will be forced enabled because parent coins are needed enabled before
-    // SLP coins can enable
-    String platform = coin?.protocol?.protocolData?.platform;
-    bool isParentEnabled =
-        coinBalance.any((element) => element.coin.abbr == platform);
-    if (isActive && platform != null && !isParentEnabled) {
-      Coin parentCoin = getKnownCoinByAbbr(platform);
-      coinBeforeActivation.removeWhere(
-          (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
-      coinBeforeActivation.add(
-        CoinToActivate(coin: parentCoin, isActive: isActive),
-      );
-    }
+    if (isActive && canActivate(coinBeforeActivation)) {
+      coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
 
-    coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
+      // auto add parent coin if not enabled previously
+      // if the parent is then removed intentionally by the user
+      // it wont be enabled. But if SLP coins are even removed after auto adding
+      // they will be forced enabled because parent coins are needed enabled before
+      // SLP coins can enable
+      String platform = coin?.protocol?.protocolData?.platform;
+      bool isParentEnabled =
+          coinBalance.any((element) => element.coin.abbr == platform);
+      if (isActive &&
+          platform != null &&
+          !isParentEnabled &&
+          canActivate(coinBeforeActivation)) {
+        Coin parentCoin = getKnownCoinByAbbr(platform);
+        coinBeforeActivation.removeWhere(
+            (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
+        coinBeforeActivation.add(
+          CoinToActivate(coin: parentCoin, isActive: isActive),
+        );
+      }
+    } else {
+      coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
+    }
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
@@ -186,35 +209,63 @@ class CoinsBloc implements BlocBase {
     String query,
     String filterType,
   }) {
-    final List<CoinToActivate> list = [];
-    for (CoinToActivate item in coinBeforeActivation) {
-      bool shouldChange = false;
+    coinBeforeActivation.sort((a, b) =>
+        a.coin.name.toUpperCase().compareTo(b.coin.name.toUpperCase()));
 
-      if (isCoinPresent(item.coin, query, filterType)) {
-        shouldChange =
-            item.coin.testCoin ? type == null : item.coin.type.name == type;
-      }
+    List<CoinToActivate> typeList = coinBeforeActivation
+        .where((coin) =>
+            (coin.coin.type.name == (coin.coin.testCoin ? null : type)) &&
+            isCoinPresent(coin.coin, query, filterType))
+        .toList();
 
-      if (shouldChange) {
+    int selected = coinBeforeActivation
+        .where((element) =>
+            element.isActive &&
+            !typeList.map((e) => e.coin.abbr).contains(element.coin.abbr))
+        .length;
+    int activated = coinBalance.length;
+
+    int maxCoinLength = Platform.isIOS
+        ? appConfig.maxCoinEnabledIOS
+        : appConfig.maxCoinsEnabledAndroid;
+
+    int remaining = maxCoinLength - activated - selected;
+    int counter = 0;
+    List<String> _tempList = [];
+
+    for (int i = 0; i < typeList.length; i++) {
+      Coin coin = typeList[i].coin;
+      coinBeforeActivation
+          .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
+
+      String platform = coin?.protocol?.protocolData?.platform;
+
+      if (isActive && counter < remaining) {
+        coinBeforeActivation
+            .add(CoinToActivate(coin: coin, isActive: isActive));
+        if (!_tempList.contains(coin.abbr)) counter++;
+
         // auto add parent coin if not enabled previously
-        String platform = item.coin?.protocol?.protocolData?.platform;
+        if (platform == null) continue;
         bool isParentEnabled =
             coinBalance.any((element) => element.coin.abbr == platform);
-        if (isActive && platform != null && !isParentEnabled) {
+        bool selectedParent = coinBeforeActivation.any(
+            (element) => element.coin.abbr == platform && !element.isActive);
+        if (selectedParent && !isParentEnabled) {
           Coin parentCoin = getKnownCoinByAbbr(platform);
+          _tempList.add(parentCoin.abbr);
           coinBeforeActivation.removeWhere(
               (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
-          coinBeforeActivation.add(
-            CoinToActivate(coin: parentCoin, isActive: isActive),
-          );
+
+          coinBeforeActivation
+              .add(CoinToActivate(coin: parentCoin, isActive: true));
+
+          counter++;
         }
-        list.add(CoinToActivate(coin: item.coin, isActive: isActive));
       } else {
-        list.add(item);
+        coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
       }
     }
-
-    coinBeforeActivation = list;
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
@@ -266,6 +317,26 @@ class CoinsBloc implements BlocBase {
     await deactivateCoins(<Coin>[coin]);
   }
 
+  Future<void> removeIrisCoin(Coin coin, List<CoinBalance> irisTokens) async {
+    if (coin.suspended) {
+      _removeSuspendedCoin(coin);
+      for (var e in irisTokens) {
+        e.coin.suspended = true;
+        _removeSuspendedCoin(e.coin);
+      }
+      return;
+    }
+
+    await removeCoinBalance(coin);
+    final res = await MM.disableCoin(GetDisableCoin(coin: coin.abbr));
+    removeCoinLocal(coin, res);
+    syncOrderbook.updateActivePair();
+    for (var e in irisTokens) {
+      e.coin.suspended = true;
+      _removeSuspendedCoin(e.coin);
+    }
+  }
+
   Future<void> removeCoin(Coin coin) async {
     if (coin.suspended) {
       _removeSuspendedCoin(coin);
@@ -304,7 +375,9 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
-  Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
+  Future<void> updateTransactions(
+      CoinBalance coinBalance, int limit, String fromId) async {
+    Coin coin = coinBalance.coin;
     try {
       dynamic transactions;
 
@@ -367,10 +440,10 @@ class CoinsBloc implements BlocBase {
     _isRetryActivatingRunning = false;
   }
 
-  Future<List> enableSlpParentCoins(List<Coin> slpCoins) async {
-    if (slpCoins.isEmpty) return [];
+  Future<List> enablePreParentCoins(List<Coin> parentCoins) async {
+    if (parentCoins.isEmpty) return [];
     List<Map<String, dynamic>> batch = [];
-    for (Coin coin in slpCoins) {
+    for (Coin coin in parentCoins) {
       batch.add(json.decode(MM.enableCoinImpl(coin)));
     }
     return await MM.batch(batch);
@@ -382,29 +455,31 @@ class CoinsBloc implements BlocBase {
     await pauseUntil(() => !_coinsLock, maxMs: 3000);
     _coinsLock = true;
 
-    // list of slp-parent-coins
-    List<Coin> slpCoins = [];
-    for (Coin coin in coins.where((element) => isSlpChild(element))) {
+    // list of needed-parent-coins
+    List<Coin> preEnabledCoins = [];
+    for (Coin coin
+        in coins.where((element) => hasParentPreInstalled(element))) {
       String platform = coin?.protocol?.protocolData?.platform;
       bool isParentEnabled =
           coinBalance.any((element) => element.coin.abbr == platform);
       if (!isParentEnabled) //parent coin is already enabled
-        slpCoins.add(getKnownCoinByAbbr(coin.protocol.protocolData.platform));
+        preEnabledCoins
+            .add(getKnownCoinByAbbr(coin.protocol.protocolData.platform));
     }
-    slpCoins = slpCoins.toSet().toList();
+    preEnabledCoins = preEnabledCoins.toSet().toList();
 
-    // remove slp-parent-coins from the main coin list
-    coins.removeWhere((coin) => slpCoins.contains(coin));
+    // remove needed-parent-coins from the main coin list
+    coins.removeWhere((coin) => preEnabledCoins.contains(coin));
     // activate remaining coins using a batch request to speed up the coin activation.
     final List<Map<String, dynamic>> batch = [];
     for (Coin coin in coins) {
       batch.add(json.decode(MM.enableCoinImpl(coin)));
     }
     // activate slp-parent-coins first before others.
-    final slpReplies = await enableSlpParentCoins(slpCoins);
+    final preEnabledCoinReplies = await enablePreParentCoins(preEnabledCoins);
     final replies = await MM.batch(batch);
-    coins.addAll(slpCoins);
-    replies.addAll(slpReplies);
+    coins.addAll(preEnabledCoins);
+    replies.addAll(preEnabledCoinReplies);
     if (replies.length != coins.length) {
       throw Exception(
           'Unexpected number of replies: ${replies.length} != ${coins.length}');
@@ -662,9 +737,10 @@ class CoinsBloc implements BlocBase {
     return _sorted;
   }
 
-  Future<Transaction> getLatestTransaction(Coin coin) async {
+  Future<Transaction> getLatestTransaction(CoinBalance coinBalance) async {
     const int limit = 1;
     const String fromId = null;
+    Coin coin = coinBalance.coin;
     try {
       dynamic transactions;
       if (isErcType(coin)) {

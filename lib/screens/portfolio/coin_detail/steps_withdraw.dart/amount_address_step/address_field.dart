@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/addressbook_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../../../blocs/coin_detail_bloc.dart';
+import '../../../../../localizations.dart';
+import '../../../../../model/addressbook_provider.dart';
+import '../../../../../model/coin.dart';
+import '../../../../addressbook/addressbook_page.dart';
+import '../../../../../services/mm.dart';
+import '../../../../../utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class AddressField extends StatefulWidget {

@@ -2,13 +2,14 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/app_config/coin_converter.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/coin_type.dart';
-import 'package:komodo_dex/model/get_active_coin.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+
+import '../app_config/app_config.dart';
+import '../app_config/coin_converter.dart';
+import '../blocs/coins_bloc.dart';
+import '../model/coin_type.dart';
+import '../model/get_active_coin.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
 
 LinkedHashMap<String, Coin> _coins;
 bool _coinsInvoked = false;
@@ -110,8 +111,9 @@ class Coin {
     if (config['bchd_urls'] != null) {
       bchdUrls = List<String>.from(config['bchd_urls']);
     }
-    dust = init['dust'];
-    chainId = init['chain_id'];
+    explorerTxUrl = config['explorer_tx_url'] ?? '';
+    explorerAddressUrl = config['explorer_address_url'] ?? '';
+    decimals = init['decimals'];
   }
 
   // Coin suspended if was activated by user earlier,
@@ -157,9 +159,9 @@ class Coin {
   bool walletOnly;
 
   Protocol protocol;
-  int dust;
-
-  int chainId;
+  String explorerTxUrl;
+  String explorerAddressUrl;
+  int decimals;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type.name ?? '',
@@ -180,8 +182,10 @@ class Coin {
         'address_format': addressFormat,
         if (serverList != null) 'serverList': getServerList(serverList),
         if (protocol != null) 'protocol': protocol.toJson(),
-        if (dust != null) 'dust': dust,
-        if (chainId != null) 'chain_id': chainId,
+        if (explorerTxUrl != null) 'explorer_tx_url': explorerTxUrl,
+        if (explorerAddressUrl != null)
+          'explorer_address_url': explorerAddressUrl,
+        if (decimals != null) 'decimals': decimals,
         if (bchdUrls != null)
           'bchd_urls': List<dynamic>.from(bchdUrls.map<String>((x) => x)),
       };

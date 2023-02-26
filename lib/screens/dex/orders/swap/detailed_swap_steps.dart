@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/detailed_swap_step.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/progress_step.dart';
-import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../../localizations.dart';
+import '../../../../model/swap.dart';
+import '../../../../model/swap_provider.dart';
+import '../../../../utils/utils.dart';
+import '../../../dex/orders/swap/detailed_swap_step.dart';
+import '../../../dex/orders/swap/progress_step.dart';
 
 enum SwapStepStatus {
   pending,
@@ -185,6 +186,9 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
               swap.result.successEvents[i].toLowerCase().contains('taker')
                   ? swap.takerExplorerUrl
                   : swap.makerExplorerUrl,
+          coinType: swap.result.successEvents[i].toLowerCase().contains('taker')
+              ? swap.takerCoin.type
+              : swap.makerCoin.type,
           status: status,
           estimatedSpeed: _getEstimatedSpeed(i),
           estimatedDeviation: _getEstimatedDeviation(i),
@@ -211,6 +215,9 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
             explorerUrl: errorEventType.contains('Taker')
                 ? swap.takerExplorerUrl
                 : swap.makerExplorerUrl,
+            coinType: errorEventType.contains('Taker')
+                ? swap.takerCoin.type
+                : swap.makerCoin.type,
             status: status,
             actualSpeed: e == failedOnStep ? null : _getActualSpeed(e),
             index: e,

@@ -1,6 +1,6 @@
-import 'package:komodo_dex/model/addressbook_provider.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/utils/log.dart';
+import '../model/addressbook_provider.dart';
+import '../model/recent_swaps.dart';
+import '../utils/log.dart';
 
 class Backup {
   Backup({

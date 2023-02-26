@@ -1,23 +1,26 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/model/get_min_trading_volume.dart';
-import 'package:komodo_dex/model/get_trade_preimage.dart';
-import 'package:komodo_dex/model/setprice_response.dart';
-import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/confirm/protection_control.dart';
 import 'package:rational/rational.dart';
-import 'package:komodo_dex/model/buy_response.dart';
-import 'package:komodo_dex/model/get_buy.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/model/get_setprice.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/utils/utils.dart';
+
+import '../../../../../app_config/app_config.dart';
+import '../../../../../blocs/coins_bloc.dart';
+import '../../../../../blocs/swap_bloc.dart';
+import '../../../../../model/buy_response.dart';
+import '../../../../../model/get_buy.dart';
+import '../../../../../model/get_min_trading_volume.dart';
+import '../../../../../model/get_setprice.dart';
+import '../../../../../model/get_trade_preimage.dart';
+import '../../../../../model/order_book_provider.dart';
+import '../../../../../model/orderbook.dart';
+import '../../../../../model/setprice_response.dart';
+import '../../../../../model/trade_preimage.dart';
+import '../../../../../services/job_service.dart';
+import '../../../../../services/mm.dart';
+import '../../../../../services/mm_service.dart';
+import '../../../../../utils/log.dart';
+import '../../../../../utils/utils.dart';
+import '../../../../dex/trade/pro/confirm/protection_control.dart';
 
 class TradeForm {
   Timer _typingTimer;
@@ -304,6 +307,24 @@ class TradeForm {
             (double.tryParse(totalSellCoinFee?.amount ?? '0') ?? 0.0);
     return double.parse(
         calculatedVolume.toStringAsFixed(appConfig.tradeFormPrecision));
+  }
+
+  void updateMaxSellAmount() {
+    cancelMaxSellAmount();
+    jobService.install('updateMaxSellAmount', 10, (j) async {
+      if (!mmSe.running || swapBloc.sellCoinBalance == null) return;
+      await _updateMaxSellAmount();
+    });
+  }
+
+  Future<void> _updateMaxSellAmount() async {
+    await swapBloc.updateMaxTakerVolume();
+    await coinsBloc.updateCoinBalances();
+    swapBloc.updateFieldBalances();
+  }
+
+  void cancelMaxSellAmount() {
+    jobService.suspend('updateMaxSellAmount');
   }
 
   // Updates swapBloc.tradePreimage and returns error String or null

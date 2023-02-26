@@ -3,35 +3,36 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/model/best_order.dart';
-import 'package:komodo_dex/model/get_best_orders.dart';
-import 'package:komodo_dex/model/get_enable_slp_coin.dart';
-import 'package:komodo_dex/model/get_import_swaps.dart';
-import 'package:komodo_dex/model/get_min_trading_volume.dart';
-import 'package:komodo_dex/model/get_orderbook_depth.dart';
-import 'package:komodo_dex/model/get_public_key.dart';
-import 'package:komodo_dex/model/get_trade_preimage_2.dart';
-import 'package:komodo_dex/model/import_swaps.dart';
-import 'package:komodo_dex/model/orderbook_depth.dart';
-import 'package:komodo_dex/model/public_key.dart';
-import 'package:komodo_dex/model/rpc_error.dart';
+import '../app_config/app_config.dart';
+import '../model/best_order.dart';
+import '../model/get_best_orders.dart';
+import '../model/get_enable_slp_coin.dart';
+import '../model/get_enable_tendermint.dart';
+import '../model/get_import_swaps.dart';
+import '../model/get_min_trading_volume.dart';
+import '../model/get_orderbook_depth.dart';
+import '../model/get_public_key.dart';
+import '../model/get_trade_preimage_2.dart';
+import '../model/import_swaps.dart';
+import '../model/orderbook_depth.dart';
+import '../model/public_key.dart';
+import '../model/rpc_error.dart';
 import 'package:rational/rational.dart';
-import 'package:komodo_dex/model/get_convert_address.dart';
-import 'package:komodo_dex/model/get_enabled_coins.dart';
-import 'package:komodo_dex/model/get_max_taker_volume.dart';
-import 'package:komodo_dex/model/get_priv_key.dart';
-import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
-import 'package:komodo_dex/model/get_rewards_info.dart';
-import 'package:komodo_dex/model/get_trade_preimage.dart';
-import 'package:komodo_dex/model/get_validate_address.dart';
-import 'package:komodo_dex/model/priv_key.dart';
-import 'package:komodo_dex/model/recover_funds_of_swap.dart';
-import 'package:komodo_dex/model/rewards_provider.dart';
-import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/model/version_mm2.dart';
-import 'package:komodo_dex/services/music_service.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../model/get_convert_address.dart';
+import '../model/get_enabled_coins.dart';
+import '../model/get_max_taker_volume.dart';
+import '../model/get_priv_key.dart';
+import '../model/get_recover_funds_of_swap.dart';
+import '../model/get_rewards_info.dart';
+import '../model/get_trade_preimage.dart';
+import '../model/get_validate_address.dart';
+import '../model/priv_key.dart';
+import '../model/recover_funds_of_swap.dart';
+import '../model/rewards_provider.dart';
+import '../model/trade_preimage.dart';
+import '../model/version_mm2.dart';
+import '../services/music_service.dart';
+import '../utils/utils.dart';
 
 import '../model/balance.dart';
 import '../model/base_service.dart';
@@ -238,20 +239,6 @@ class ApiProvider {
                 _catchErrorString('postSell', e, 'Error on post sell'));
       });
 
-  Future<void> simPanic({http.Client client}) async {
-    client ??= mmSe.client;
-    final req = <String, dynamic>{
-      'method': 'sim_panic',
-      'userpass': mmSe.userpass,
-      'mode': 'simple'
-    };
-    final r = await client.post(Uri.parse(url), body: json.encode(req));
-    _assert200(r);
-    final dynamic jbody = json.decode(r.body);
-    final err = ErrorString.fromJson(jbody);
-    if (err.error.isNotEmpty) throw removeLineFromMM2(err);
-  }
-
   String enableCoinImpl(Coin coin) {
     if (isErcType(coin))
       return json.encode(MmEnable(
@@ -262,7 +249,16 @@ class ApiProvider {
         fallbackSwapContract: coin.fallbackSwapContract,
         urls: List<String>.from(coin.serverList.map((e) => e.url)),
       ).toJson());
-
+    if (coin?.protocol?.type == 'TENDERMINTTOKEN')
+      return json.encode(MmTendermintTokenEnable(
+        userpass: mmSe.userpass,
+        coin: coin,
+      ).toJson());
+    if (coin?.protocol?.type == 'TENDERMINT')
+      return json.encode(MmTendermintAssetEnable(
+        userpass: mmSe.userpass,
+        coin: coin,
+      ).toJson());
     if (isSlpParent(coin))
       return json.encode(MmParentSlpEnable(
         userpass: mmSe.userpass,

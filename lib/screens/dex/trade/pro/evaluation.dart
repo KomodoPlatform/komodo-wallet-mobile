@@ -1,16 +1,18 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/pro/create/trade_form.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../app_config/theme_data.dart';
+import '../../../../blocs/swap_bloc.dart';
+import '../../../../localizations.dart';
+import '../../../../model/cex_provider.dart';
+import '../../../../model/coin.dart';
+import '../../../../model/order_book_provider.dart';
+import '../../../../utils/utils.dart';
+import '../../../../widgets/cex_data_marker.dart';
+import '../../../dex/trade/pro/create/trade_form.dart';
 
 class Evaluation extends StatefulWidget {
   const Evaluation({
@@ -109,11 +111,6 @@ class _EvaluationState extends State<Evaluation> {
               : MainAxisAlignment.start,
           children: [
             _buildEvaluationHeader(),
-            Icon(
-              _showDetails ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-              size: 16,
-              color: Theme.of(context).textTheme.bodyText1.color,
-            )
           ],
         ),
       ),
@@ -167,27 +164,19 @@ class _EvaluationState extends State<Evaluation> {
     final String percentString = formatPrice(_percent.toString(), 2);
     Widget message;
     Color color;
+    bool lessThan10kVol =
+        coinsBloc.coinsWithLessThan10kVol.contains(_buyAbbr) ||
+            coinsBloc.coinsWithLessThan10kVol.contains(_sellAbbr);
 
     switch (_sign) {
       case 1:
         {
-          color = Colors.green;
-          message = Row(children: [
-            Text(
-              AppLocalizations.of(context).exchangeExpedient + ': ',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            Text(
-              '+$percentString% ',
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
-                    color: color ?? Theme.of(context).textTheme.bodyText2.color,
-                  ),
-            ),
-            Text(
-              AppLocalizations.of(context).comparedToCex,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ]);
+          message = _message(
+            AppLocalizations.of(context).exchangeExpedient,
+            percentString,
+            Colors.green,
+            lessThan10kVol,
+          );
           break;
         }
       case -1:
@@ -195,22 +184,13 @@ class _EvaluationState extends State<Evaluation> {
           if (_percent > _neutralRange) {
             color = Colors.orange;
           }
-          message = Row(children: [
-            Text(
-              AppLocalizations.of(context).exchangeExpensive + ': ',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            Text(
-              '-$percentString% ',
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
-                    color: color ?? Theme.of(context).textTheme.bodyText2.color,
-                  ),
-            ),
-            Text(
-              AppLocalizations.of(context).comparedToCex,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ]);
+          message = _message(
+            AppLocalizations.of(context).exchangeExpensive,
+            percentString,
+            color,
+            lessThan10kVol,
+          );
+
           break;
         }
       default:
@@ -223,6 +203,42 @@ class _EvaluationState extends State<Evaluation> {
     }
 
     return message;
+  }
+
+  Widget _message(
+      String msg, String percentString, Color color, bool lessThan10kVol) {
+    return Expanded(
+      child: RichText(
+        textAlign: widget.alignCenter ? TextAlign.center : TextAlign.start,
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: msg + ': ',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            TextSpan(
+              text: '+$percentString% ',
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    color: color ?? Theme.of(context).textTheme.bodyText2.color,
+                  ),
+            ),
+            TextSpan(
+              text: lessThan10kVol
+                  ? AppLocalizations.of(context).comparedTo24hrCex
+                  : AppLocalizations.of(context).comparedToCex,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            WidgetSpan(
+              child: Icon(
+                _showDetails ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                size: 16,
+                color: Theme.of(context).textTheme.bodyText1.color,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildEvaluationSlider() {

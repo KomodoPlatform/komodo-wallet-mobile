@@ -2,16 +2,16 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/get_recent_swap.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/swap.dart';
+import '../model/get_recent_swap.dart';
+import '../model/recent_swaps.dart';
+import '../model/swap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../blocs/swap_history_bloc.dart';
+import '../model/coin.dart';
+import '../services/mm.dart';
+import '../services/mm_service.dart';
+import '../utils/utils.dart';
 
 // todo(AG): at "_goToNextScreen] swap started…" create a virtual
 // swap that would allow the UI to better track

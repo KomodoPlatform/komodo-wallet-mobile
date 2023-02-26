@@ -1,18 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_withdraw.dart';
-import 'package:komodo_dex/model/withdraw_response.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
+import '../../../../blocs/coin_detail_bloc.dart';
+import '../../../../blocs/coins_bloc.dart';
+import '../../../../blocs/main_bloc.dart';
+import '../../../../localizations.dart';
+import '../../../../model/coin_balance.dart';
+import '../../../../model/error_string.dart';
+import '../../../../model/get_withdraw.dart';
+import '../../../../model/withdraw_response.dart';
+import '../../../../services/mm.dart';
+import '../../../../services/mm_service.dart';
+import '../../../../utils/utils.dart';
+import '../../../../widgets/primary_button.dart';
+import '../../../../widgets/secondary_button.dart';
 
 class BuildConfirmationStep extends StatefulWidget {
   const BuildConfirmationStep({
@@ -24,6 +24,7 @@ class BuildConfirmationStep extends StatefulWidget {
     this.onError,
     this.onNoInternet,
     this.onConfirmPressed,
+    this.memo,
   }) : super(key: key);
 
   final Function onCancel;
@@ -33,6 +34,7 @@ class BuildConfirmationStep extends StatefulWidget {
   final CoinBalance coinBalance;
   final String amountToPay;
   final String addressToSend;
+  final String memo;
 
   @override
   _BuildConfirmationStepState createState() => _BuildConfirmationStepState();
@@ -74,6 +76,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                 coin: widget.coinBalance.coin.abbr,
                 to: widget.addressToSend,
                 amount: widget.amountToPay,
+                memo: widget.memo,
                 max: double.parse(widget.coinBalance.balance.getBalance()) ==
                     double.parse(widget.amountToPay),
               ))
@@ -232,20 +235,36 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                     ],
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: 24,
                   ),
                   Text(
                     AppLocalizations.of(context).toAddress,
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 16,
                   ),
                   AutoSizeText(
                     widget.addressToSend,
                     style: Theme.of(context).textTheme.bodyText2,
                     maxLines: 1,
                   ),
+                  if (widget.memo.isNotEmpty) ...[
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    Text(
+                      AppLocalizations.of(context).memo,
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      widget.memo,
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                  ],
                   const SizedBox(
                     height: 24,
                   ),

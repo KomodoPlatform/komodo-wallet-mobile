@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../utils/utils.dart';
 
 class SupportChannelItem extends StatelessWidget {
   const SupportChannelItem(this.data);

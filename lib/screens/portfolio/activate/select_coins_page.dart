@@ -2,19 +2,19 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/portfolio/activate/build_item_coin.dart';
-import 'package:komodo_dex/screens/portfolio/activate/build_type_header.dart';
-import 'package:komodo_dex/screens/portfolio/activate/search_filter.dart';
-import 'package:komodo_dex/screens/portfolio/loading_coin.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
+import '../../../blocs/coins_bloc.dart';
+import '../../../blocs/dialog_bloc.dart';
+import '../../../blocs/settings_bloc.dart';
+import '../../../localizations.dart';
+import '../../../app_config/app_config.dart';
+import '../../../model/coin.dart';
+import '../../authentification/lock_screen.dart';
+import '../../portfolio/activate/build_item_coin.dart';
+import '../../portfolio/activate/build_type_header.dart';
+import '../../portfolio/activate/search_filter.dart';
+import '../../portfolio/loading_coin.dart';
+import '../../../widgets/custom_simple_dialog.dart';
+import '../../../widgets/primary_button.dart';
 import 'build_selected_coins.dart';
 
 import 'build_filter_coin.dart';
@@ -267,8 +267,18 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   }
 
   Widget _buildDoneButton() {
+    int selected = coinsBloc.coinBeforeActivation
+        .where((element) => element.isActive)
+        .length;
+    int activated = coinsBloc.coinBalance.length;
+
+    int maxCoinLength = Platform.isIOS
+        ? appConfig.maxCoinEnabledIOS
+        : appConfig.maxCoinsEnabledAndroid;
+
+    int remainingSpace = maxCoinLength - activated;
     return SizedBox(
-      height: 60,
+      height: 80,
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -285,12 +295,27 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                     }
                   }
                 }
-                return PrimaryButton(
-                  key: const Key('done-activate-coins'),
-                  text: AppLocalizations.of(context).done,
-                  isLoading: _isDone,
-                  onPressed: isButtonActive ? _pressDoneButton : null,
-                );
+                return Column(mainAxisSize: MainAxisSize.min, children: [
+                  if (remainingSpace - selected == 0)
+                    Text(
+                      AppLocalizations.of(context).coinsActivatedLimitReached,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          .apply(color: Theme.of(context).colorScheme.error),
+                    ),
+                  Text(
+                    AppLocalizations.of(context)
+                        .enable(selected, remainingSpace - selected),
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                  PrimaryButton(
+                    key: const Key('done-activate-coins'),
+                    text: AppLocalizations.of(context).done,
+                    isLoading: _isDone,
+                    onPressed: isButtonActive ? _pressDoneButton : null,
+                  )
+                ]);
               }),
         ),
       ),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:rational/rational.dart';
 import 'package:provider/provider.dart';
 
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../../model/cex_provider.dart';
+import '../../../model/trade_preimage.dart';
+import '../../../utils/utils.dart';
 
 import '../../../localizations.dart';
 

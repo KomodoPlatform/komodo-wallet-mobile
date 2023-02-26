@@ -3,27 +3,26 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/model/version_mm2.dart';
+import '../app_config/app_config.dart';
+import '../model/version_mm2.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart'
     show EventChannel, MethodChannel, rootBundle, SystemChannels;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
-import 'package:komodo_dex/model/balance.dart';
-import 'package:komodo_dex/model/base_service.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_init.dart';
-import 'package:komodo_dex/model/config_mm2.dart';
-import 'package:komodo_dex/model/get_balance.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/job_service.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../blocs/coins_bloc.dart';
+import '../blocs/orders_bloc.dart';
+import '../model/balance.dart';
+import '../model/base_service.dart';
+import '../model/coin.dart';
+import '../model/config_mm2.dart';
+import '../model/get_balance.dart';
+import '../model/swap_provider.dart';
+import '../services/mm.dart';
+import '../services/job_service.dart';
+import '../utils/encryption_tool.dart';
+import '../utils/log.dart';
+import '../utils/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /// Singleton shorthand for `MMService()`, Market Maker API.
@@ -446,9 +445,9 @@ class MMService {
     Log('mm_service:415', error);
   }
 
-  Future<List<CoinInit>> readJsonCoinInit() async {
+  Future<List<dynamic>> readJsonCoinInit() async {
     try {
-      return coinInitFromJson(await rootBundle.loadString('assets/coins.json'));
+      return jsonDecode(await rootBundle.loadString('assets/coins.json'));
     } catch (e) {
       if (kDebugMode) {
         Log('mm_service', 'readJsonCoinInit] $e');
@@ -457,7 +456,7 @@ class MMService {
             ' See README.md for details.');
         SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
       }
-      return <CoinInit>[];
+      return [];
     }
   }
 

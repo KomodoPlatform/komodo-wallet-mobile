@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
@@ -48,10 +50,10 @@ class AppLocalizations {
   // --- Branding - EULA ---
 
   String eulaTitle1(String appName) =>
-      Intl.message('End-User License Agreement (EULA) of $appName mobile:\n\n',
+      Intl.message('End-User License Agreement (EULA) of $appName mobile',
           name: 'eulaTitle1', args: [appName]);
   String get eulaTitle2 =>
-      Intl.message('TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)\n\n',
+      Intl.message('TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)',
           name: 'eulaTitle2');
   String get eulaTitle3 =>
       Intl.message('TERMS AND CONDITIONS OF USE AND DISCLAIMER\n\n',
@@ -312,7 +314,8 @@ class AppLocalizations {
           name: 'question_10', args: [appName]);
   String answer_10(String appName) => Intl.message(
       '$appName is available for mobile on both Android and iPhone,'
-      ' and for desktop on Windows, Mac, and Linux operating systems.',
+      ' and for desktop on <a href="https://atomicdex.io/">'
+      'Windows, Mac, and Linux operating systems</a>.',
       name: 'answer_10',
       args: [appName]);
 
@@ -355,7 +358,7 @@ class AppLocalizations {
         args: <Object>[name],
       );
   String get connecting => Intl.message('Connecting...', name: 'connecting');
-  String get addCoin => Intl.message('Activate coin', name: 'addCoin');
+  String get addCoin => Intl.message('Add Coin', name: 'addCoin');
   String numberAssets(String assets) => Intl.message('$assets Assets',
       args: <Object>[assets], name: 'numberAssets');
   String get enterSeedPhrase =>
@@ -427,6 +430,8 @@ class AppLocalizations {
   String get security => Intl.message('Security', name: 'security');
   String get activateAccessPin =>
       Intl.message('Activate PIN protection', name: 'activateAccessPin');
+  String get disableScreenshots =>
+      Intl.message('Disable Screenshots/Preview', name: 'disableScreenshots');
   String get lockScreen => Intl.message('Screen is locked', name: 'lockScreen');
   String get changePin => Intl.message('Change PIN code', name: 'changePin');
   String get logout => Intl.message('Log Out', name: 'logout');
@@ -492,6 +497,21 @@ class AppLocalizations {
       Intl.message('Please input data', name: 'errorValueNotEmpty');
   String get errorAmountBalance =>
       Intl.message('Not enough balance', name: 'errorAmountBalance');
+  String gweiError(int value) => Intl.message(
+        'Gwei must be up to $value',
+        name: 'gweiErrorMessage',
+        args: <Object>[value],
+      );
+  String feesError(double value) => Intl.message(
+        'Fees must be up to $value',
+        name: 'feesError',
+        args: <Object>[value],
+      );
+  String limitError(int value) => Intl.message(
+        'Limit must be up to $value',
+        name: 'limitErrorMessage',
+        args: <Object>[value],
+      );
   String get errorNotAValidAddress =>
       Intl.message('Not a valid address', name: 'errorNotAValidAddress');
   String get errorNotAValidAddressSegWit =>
@@ -573,6 +593,7 @@ class AppLocalizations {
       Intl.message('Confirmations', name: 'txConfirmations');
   String get txFee => Intl.message('Fee', name: 'txFee');
   String get txHash => Intl.message('Transaction ID', name: 'txHash');
+  String get memo => Intl.message('Memo', name: 'memo');
   String get noSwaps => Intl.message('No history.', name: 'noSwaps');
   String get trade => Intl.message('TRADE', name: 'trade');
   String get reset => Intl.message('CLEAR', name: 'reset');
@@ -587,6 +608,11 @@ class AppLocalizations {
   String get mediaBrowse => Intl.message('BROWSE', name: 'mediaBrowse');
   String get mediaSaved => Intl.message('SAVED', name: 'mediaSaved');
 
+  String enable(int selected, int remains) => Intl.message(
+        'You can still enable $remains, Selected: $selected',
+        name: 'enable',
+        args: [selected, remains],
+      );
   String get mediaNotSavedDescription =>
       Intl.message('YOU HAVE NO SAVED ARTICLES',
           name: 'mediaNotSavedDescription');
@@ -758,6 +784,11 @@ class AppLocalizations {
   String get exchangeTitle => Intl.message('EXCHANGE', name: 'exchangeTitle');
   String get orders => Intl.message('orders', name: 'orders');
   String get selectCoin => Intl.message('Select coin', name: 'selectCoin');
+  String lessThanCaution(String coinName) => Intl.message(
+        '❗Caution! Market for $coinName has less than \$10k 24h trading-volume!',
+        name: 'lessThanCaution',
+        args: <Object>[coinName],
+      );
   String get selectLanguage =>
       Intl.message('Select Language', name: 'selectLanguage');
   String get noFunds => Intl.message('No funds', name: 'noFunds');
@@ -834,7 +865,7 @@ class AppLocalizations {
   String get accepttac =>
       Intl.message('Accept TERMS and CONDITIONS', name: 'accepttac');
   String get confirmeula => Intl.message(
-      'By clicking the below buttons you confirm to have read the \'EULA\' and \'Terms and Conditions\' and accept these',
+      'By clicking the button below, you confirm to have read and accept the \'EULA\' and \'Terms and Conditions\'.',
       name: 'confirmeula');
   String gasFee(String coin) =>
       Intl.message('$coin fee', name: 'gasFee', args: <Object>[coin]);
@@ -919,6 +950,11 @@ class AppLocalizations {
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
   String get searchFilterSubtitleSLP =>
       Intl.message('Select all SLP tokens', name: 'searchFilterSubtitleSLP');
+  String get searchFilterSubtitleCosmos =>
+      Intl.message('Select all Cosmos Network',
+          name: 'searchFilterSubtitleCosmos');
+  String get searchFilterSubtitleIris =>
+      Intl.message('Select all Iris Network', name: 'searchFilterSubtitleIris');
   String get searchFilterSubtitleKRC =>
       Intl.message('Select all Kucoin tokens', name: 'searchFilterSubtitleKRC');
   String get searchFilterSubtitleHRC =>
@@ -985,8 +1021,10 @@ class AppLocalizations {
   String get deleteSpan1 =>
       Intl.message('Do you want to remove ', name: 'deleteSpan1');
   String get deleteSpan2 => Intl.message(
-      ' from your portfolio? All unmatched orders will be canceled.',
+      ' from your portfolio? All unmatched orders will be canceled. ',
       name: 'deleteSpan2');
+  String get deleteSpan3 =>
+      Intl.message(' will also be deactivated', name: 'deleteSpan3');
   String get cantDeleteDefaultCoinTitle =>
       Intl.message("Can't disable ", name: 'cantDeleteDefaultCoinTitle');
   String get cantDeleteDefaultCoinSpan =>
@@ -1022,8 +1060,7 @@ class AppLocalizations {
       Intl.message('Hungarian', name: 'hungarianLanguage');
   String get spanishLanguage =>
       Intl.message('Spanish', name: 'spanishLanguage');
-  String get koreanLanguage =>
-      Intl.message('Korean', name: 'koreanLanguage');
+  String get koreanLanguage => Intl.message('Korean', name: 'koreanLanguage');
   String get ukrainianLanguage =>
       Intl.message('Ukrainian', name: 'ukrainianLanguage');
   String get faucetName => Intl.message('FAUCET', name: 'faucetName');
@@ -1037,6 +1074,7 @@ class AppLocalizations {
 
   // --- sound configuration ---
 
+  String get optional => Intl.message('Optional');
   String get soundTitle => Intl.message('Sound');
   String get soundOption => Intl.message('Play at full volume');
   String get soundTaker => Intl.message('Taker');
@@ -1413,6 +1451,8 @@ class AppLocalizations {
       Intl.message('Identical to CEX', name: 'exchangeIdentical');
   String get comparedToCex =>
       Intl.message('compared to CEX', name: 'comparedToCex');
+  String get comparedTo24hrCex =>
+      Intl.message('compared to avg. 24h CEX price', name: 'comparedTo24hrCex');
 
   String get ordersActive => Intl.message('Active', name: 'ordersActive');
   String get ordersHistory => Intl.message('History', name: 'ordersHistory');
@@ -1525,6 +1565,10 @@ class AppLocalizations {
   String get closePreview =>
       Intl.message('Close preview', name: 'closePreview');
   String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
+
+  // TODO: localize this message for all languages
+  String get scrollToContinue =>
+      Intl.message('Scroll to bottom to continue...', name: 'scrollToContinue');
 
   String get developerTitle =>
       Intl.message('Developer', name: 'developerTitle');
@@ -1676,8 +1720,11 @@ class AppLocalizations {
       Intl.message(' more. Enabled assets max limit is ',
           name: 'enablingTooManyAssetsSpan3');
   String get enablingTooManyAssetsSpan4 =>
-      Intl.message('. Please disable some before new ones adding.',
+      Intl.message('. Please disable some assets before adding more.',
           name: 'enablingTooManyAssetsSpan4');
+  String get coinsActivatedLimitReached =>
+      Intl.message('You have selected the max number of assets',
+          name: 'coinsActivatedLimitReached');
 
   String get tooManyAssetsEnabledTitle =>
       Intl.message('Too many assets enabled',
@@ -1688,7 +1735,7 @@ class AppLocalizations {
       Intl.message(' assets enabled. Enabled assets max limit is ',
           name: 'tooManyAssetsEnabledSpan2');
   String get tooManyAssetsEnabledSpan3 =>
-      Intl.message('. Please disable some before new ones adding.',
+      Intl.message('. Please disable some assets before adding more.',
           name: 'tooManyAssetsEnabledSpan3');
 
   String get paymentUriDetailsTitle =>

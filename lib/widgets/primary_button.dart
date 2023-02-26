@@ -8,6 +8,7 @@ class PrimaryButton extends StatelessWidget {
     this.isLoading = false,
     this.isDarkMode = true,
     this.backgroundColor,
+    this.icon,
   }) : super(key: key);
 
   final VoidCallback onPressed;
@@ -16,26 +17,40 @@ class PrimaryButton extends StatelessWidget {
   final bool isDarkMode;
   final Color backgroundColor;
 
+  /// Nullable. If null, then an ElevatedButton is used. Otherwise, an
+  /// ElevatedButton.icon is used.
+  final Icon icon;
+
   @override
   Widget build(BuildContext context) {
+    final buttonStyle = ElevatedButton.styleFrom(
+      primary: backgroundColor ?? Theme.of(context).colorScheme.secondary,
+      minimumSize: const Size.fromHeight(48),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+    );
+
+    final textWidget = Text(text.toUpperCase());
+
     return SizedBox(
       width: double.infinity,
       child: isLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : ElevatedButton(
-              onPressed: onPressed,
-              style: ElevatedButton.styleFrom(
-                primary:
-                    backgroundColor ?? Theme.of(context).colorScheme.secondary,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+          : icon != null
+              ? ElevatedButton.icon(
+                  onPressed: onPressed,
+                  style: buttonStyle,
+                  icon: icon,
+                  label: textWidget,
+                )
+              : ElevatedButton(
+                  onPressed: onPressed,
+                  style: buttonStyle,
+                  child: textWidget,
                 ),
-              ),
-              child: Text(text.toUpperCase()),
-            ),
     );
   }
 }

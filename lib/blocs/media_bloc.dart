@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:http/http.dart';
-import 'package:komodo_dex/model/article.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/widgets/bloc_provider.dart';
+import '../model/article.dart';
+import '../services/db/database.dart';
+import '../utils/log.dart';
+import '../widgets/bloc_provider.dart';
 import 'package:http/http.dart' as http;
 
 MediaBloc mediaBloc = MediaBloc();

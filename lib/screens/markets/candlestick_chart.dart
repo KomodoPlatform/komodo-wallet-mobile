@@ -2,8 +2,8 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart' hide TextStyle;
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import '../../model/cex_provider.dart';
+import '../../utils/utils.dart';
 
 class CandleChart extends StatefulWidget {
   const CandleChart({

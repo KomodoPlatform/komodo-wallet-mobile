@@ -3,11 +3,12 @@
 //     final swap = swapFromJson(jsonString);
 
 import 'dart:convert';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/utils/utils.dart';
+
+import '../blocs/coins_bloc.dart';
+import '../model/coin.dart';
+import '../model/order.dart';
+import '../model/recent_swaps.dart';
+import '../utils/utils.dart';
 
 enum Status {
   ORDER_MATCHING,
@@ -121,14 +122,22 @@ class Swap {
   /// Returns a maker explorer url if
   /// it exists, otherwise an empty string.
   String get makerExplorerUrl {
-    if (makerCoin != null) return makerCoin.explorerUrl;
+    if (makerCoin != null) {
+      String middle =
+          makerCoin.explorerTxUrl.isEmpty ? 'tx/' : makerCoin.explorerTxUrl;
+      return makerCoin.explorerUrl + middle;
+    }
     return '';
   }
 
   /// Returns a taker explorer url if
   /// it exists, otherwise an empty string.
   String get takerExplorerUrl {
-    if (takerCoin != null) return takerCoin.explorerUrl;
+    if (takerCoin != null) {
+      String middle =
+          takerCoin.explorerTxUrl.isEmpty ? 'tx/' : takerCoin.explorerTxUrl;
+      return takerCoin.explorerUrl + middle;
+    }
     return '';
   }
 
@@ -141,24 +150,24 @@ class Swap {
           orElse: () => null);
 
   /// Maker ticker abbriviation
-  String get makerAbbr => started?.event?.data?.makerCoin;
+  String get makerAbbr => started?.event?.data?.makerCoin ?? result.makerCoin;
 
   /// Taker ticker abbriviation
-  String get takerAbbr => started?.event?.data?.takerCoin;
+  String get takerAbbr => started?.event?.data?.takerCoin ?? result.takerCoin;
 
   /// Maker coin instance
   Coin get makerCoin {
-    final c = coinsBloc.getCoinByAbbr(makerAbbr);
+    final c = coinsBloc.getCoinByAbbr(makerAbbr ?? result.makerCoin);
     if (c != null) return c;
-    final kc = coinsBloc.getKnownCoinByAbbr(makerAbbr);
+    final kc = coinsBloc.getKnownCoinByAbbr(makerAbbr ?? result.makerCoin);
     return kc;
   }
 
   /// Taker coin instance
   Coin get takerCoin {
-    final c = coinsBloc.getCoinByAbbr(takerAbbr);
+    final c = coinsBloc.getCoinByAbbr(takerAbbr ?? result.takerCoin);
     if (c != null) return c;
-    final kc = coinsBloc.getKnownCoinByAbbr(takerAbbr);
+    final kc = coinsBloc.getKnownCoinByAbbr(takerAbbr ?? result.takerCoin);
     return kc;
   }
 }

@@ -7,28 +7,30 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/wallet_security_settings_provider.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/services/lock_service.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/qr_view.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:provider/provider.dart';
+
+import '../app_config/app_config.dart';
+import '../blocs/authenticate_bloc.dart';
+import '../blocs/coins_bloc.dart';
+import '../blocs/dialog_bloc.dart';
+import '../blocs/main_bloc.dart';
+import '../localizations.dart';
+import '../model/coin.dart';
+import '../model/coin_balance.dart';
+import '../model/error_string.dart';
+import '../model/recent_swaps.dart';
+import '../model/wallet_security_settings_provider.dart';
+import '../services/lock_service.dart';
+import '../services/mm_service.dart';
+import '../utils/encryption_tool.dart';
+import '../utils/log.dart';
+import '../widgets/cex_fiat_preview.dart';
+import '../widgets/custom_simple_dialog.dart';
+import '../widgets/qr_view.dart';
 
 void copyToClipBoard(BuildContext context, String str) {
   ScaffoldMessengerState scaffoldMessenger;
@@ -77,7 +79,7 @@ String getCoinIconPath(String abbr) {
     'PLY',
     'WID',
   ];
-  String ticker = getCoinTicker(abbr).replaceAll('-OLD', '').toLowerCase();
+  String ticker = getCoinTicker(abbr).toLowerCase();
   if (coinsWithoutIcons.contains(abbr)) ticker = 'adexbsc';
 
   return 'assets/coin-icons/$ticker.png';
@@ -300,6 +302,12 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
 
 Future<void> showConfirmationRemoveCoin(
     BuildContext mContext, Coin coin) async {
+  List<CoinBalance> irisTokens = [];
+  if (coin.abbr == 'IRIS') {
+    irisTokens = coinsBloc.coinBalance
+        .where((e) => e.coin.abbr == 'ATOM-IBC_IRIS')
+        .toList();
+  }
   return dialogBloc.dialog = showDialog<void>(
       context: mContext,
       builder: (BuildContext context) {
@@ -318,6 +326,15 @@ Future<void> showConfirmationRemoveCoin(
                           .bodyText2
                           .copyWith(fontWeight: FontWeight.bold)),
                   TextSpan(text: AppLocalizations.of(context).deleteSpan2),
+                  if (irisTokens.isNotEmpty)
+                    TextSpan(
+                        text: irisTokens.map((e) => e.coin.name).join(', '),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .copyWith(fontWeight: FontWeight.bold)),
+                  if (irisTokens.isNotEmpty)
+                    TextSpan(text: AppLocalizations.of(context).deleteSpan3),
                 ])),
             const SizedBox(height: 12),
             Row(
@@ -332,7 +349,9 @@ Future<void> showConfirmationRemoveCoin(
                   key: Key('confirm-disable'),
                   onPressed: () async {
                     try {
-                      await coinsBloc.removeCoin(coin);
+                      irisTokens.isEmpty
+                          ? await coinsBloc.removeCoin(coin)
+                          : await coinsBloc.removeIrisCoin(coin, irisTokens);
                     } on ErrorString catch (ex) {
                       showMessage(mContext, ex.error);
                     }
@@ -490,6 +509,16 @@ bool isSlpParent(Coin coin) {
 bool isSlpChild(Coin coin) {
   final String protocolType = coin?.protocol?.type;
   return protocolType == 'SLPTOKEN';
+}
+
+bool isSlp(Coin coin) {
+  return isSlpParent(coin) || isSlpChild(coin);
+}
+
+bool hasParentPreInstalled(Coin coin) {
+  final String protocolType = coin?.protocol?.type;
+  return protocolType == 'SLPTOKEN' ||
+      coin?.protocol?.protocolData?.platform == 'IRIS';
 }
 
 String humanDate(int epoch) {

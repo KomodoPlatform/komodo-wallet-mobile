@@ -1,21 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/model/orderbook_depth.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/auto_scroll_text.dart';
-import 'package:komodo_dex/widgets/candles_icon.dart';
-import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
-import 'package:komodo_dex/widgets/photo_widget.dart';
-import 'package:komodo_dex/app_config/theme_data.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
+import '../../blocs/coins_bloc.dart';
+import '../../blocs/dialog_bloc.dart';
+import '../../localizations.dart';
+import '../../model/cex_provider.dart';
+import '../../model/coin.dart';
+import '../../model/coin_balance.dart';
+import '../../model/order_book_provider.dart';
+import '../../model/orderbook_depth.dart';
+import '../../services/mm_service.dart';
+import '../../utils/utils.dart';
+import '../../widgets/auto_scroll_text.dart';
+import '../../widgets/candles_icon.dart';
+import '../../widgets/custom_simple_dialog.dart';
+import '../../widgets/photo_widget.dart';
+import '../../app_config/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class CoinSelect extends StatefulWidget {
@@ -94,15 +95,17 @@ class _CoinSelectState extends State<CoinSelect> {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return StreamBuilder(
+          return StreamBuilder<List<CoinBalance>>(
             initialData: coinsBloc.coinBalance,
             stream: coinsBloc.outCoins,
             builder: (context, snapshot) {
               if (!snapshot.hasData || snapshot.data == null) {
                 return _buildProgressDialog();
               }
+              List<CoinBalance> data = snapshot.data;
+              data.removeWhere((e) => e.coin.walletOnly);
 
-              return _buildList(snapshot.data);
+              return _buildList(data);
             },
           );
         }).then((dynamic _) => dialogBloc.dialog = null);

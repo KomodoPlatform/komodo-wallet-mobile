@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_type.dart';
+import '../localizations.dart';
+import '../model/coin.dart';
+import '../model/coin_type.dart';
 
 class BuildProtocolChip extends StatelessWidget {
   const BuildProtocolChip(this.coin, {Key key}) : super(key: key);
@@ -28,6 +28,8 @@ class BuildProtocolChip extends StatelessWidget {
       case CoinType.slp:
         chip = const SizedBox.shrink();
         break;
+      case CoinType.iris:
+      case CoinType.cosmos:
       case CoinType.erc:
       case CoinType.qrc:
       case CoinType.mvr:
@@ -97,6 +99,8 @@ class BuildProtocolChip extends StatelessWidget {
         // Smart chains have dedicated chip with icon.
         case CoinType.utxo:
         case CoinType.slp:
+        case CoinType.iris:
+        case CoinType.cosmos:
         case CoinType.smartChain:
           break;
         case CoinType.bep:
