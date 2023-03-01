@@ -4,8 +4,8 @@ import 'dart:math';
 import 'package:rational/rational.dart';
 
 import '../../../../../app_config/app_config.dart';
-import '../../../../../blocs/coins_bloc.dart';
-import '../../../../../blocs/swap_bloc.dart';
+import '../../../../../generic_blocs/coins_bloc.dart';
+import '../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../model/buy_response.dart';
 import '../../../../../model/get_buy.dart';
 import '../../../../../model/get_min_trading_volume.dart';

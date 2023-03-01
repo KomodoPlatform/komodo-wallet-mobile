@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../../blocs/dialog_bloc.dart';
+import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
 import '../../model/addressbook_provider.dart';
 import '../../model/backup.dart';

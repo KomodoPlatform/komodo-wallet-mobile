@@ -11,7 +11,7 @@ import '../../../../../widgets/auto_scroll_text.dart';
 import '../../../../../utils/utils.dart';
 import 'package:rational/rational.dart';
 
-import '../../../../../blocs/coins_bloc.dart';
+import '../../../../../generic_blocs/coins_bloc.dart';
 import '../../../../../model/best_order.dart';
 import '../../../../../model/swap_constructor_provider.dart';
 import 'package:provider/provider.dart';

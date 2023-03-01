@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import '../blocs/camo_bloc.dart';
+import '../generic_blocs/camo_bloc.dart';
 import '../model/transaction_data.dart';
 
 Transactions transactionsFromJson(String str) =>

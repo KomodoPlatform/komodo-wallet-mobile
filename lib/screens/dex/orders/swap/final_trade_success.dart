@@ -4,7 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../../../../app_config/app_config.dart';
-import '../../../../blocs/dialog_bloc.dart';
+import '../../../../generic_blocs/dialog_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../model/swap.dart';
 import 'package:flutter_svg/flutter_svg.dart';

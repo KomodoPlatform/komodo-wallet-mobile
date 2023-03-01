@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../../app_config/theme_data.dart';
-import '../../../../../../blocs/coins_bloc.dart';
+import '../../../../../../generic_blocs/coins_bloc.dart';
 import '../../../../../../model/coin.dart';
 import '../../../../../../model/orderbook_depth.dart';
 import '../../../../../dex/trade/pro/create/receive/matching_orderbook_item.dart';

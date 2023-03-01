@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../blocs/authenticate_bloc.dart';
+import '../../generic_blocs/authenticate_bloc.dart';
 import '../authentification/logout_confirmation.dart';
 
 class AppBarStatus extends StatelessWidget with PreferredSizeWidget {

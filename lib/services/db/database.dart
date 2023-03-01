@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import '../../blocs/wallet_bloc.dart';
+import '../../generic_blocs/wallet_bloc.dart';
 import '../../model/article.dart';
 import '../../model/coin.dart';
 import '../../model/wallet.dart';

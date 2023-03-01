@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../blocs/camo_bloc.dart';
+import '../generic_blocs/camo_bloc.dart';
 import '../utils/utils.dart';
 import 'package:decimal/decimal.dart';
 

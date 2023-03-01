@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../app_config/app_config.dart';
-import '../../../../blocs/camo_bloc.dart';
+import '../../../../generic_blocs/camo_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../model/swap.dart';
 import '../../../dex/orders/swap/detailed_swap_steps.dart';

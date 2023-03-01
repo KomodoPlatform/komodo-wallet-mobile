@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/generic_blocs/coins_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app_config/app_config.dart';

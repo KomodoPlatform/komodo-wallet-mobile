@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'package:komodo_dex/model/coin_type.dart';
 
-import '../blocs/coins_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
 import '../utils/utils.dart';
 import 'coin.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../../../../blocs/swap_bloc.dart';
+import '../../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../markets/build_order_details.dart';
 import '../../../../../../widgets/custom_simple_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../../blocs/dialog_bloc.dart';
+import '../../../../../../generic_blocs/dialog_bloc.dart';
 import '../../../../../../localizations.dart';
 import '../../../../../../model/orderbook.dart';
 import '../../../../../../widgets/shared_preferences_builder.dart';

@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../blocs/authenticate_bloc.dart';
-import '../../blocs/camo_bloc.dart';
-import '../../blocs/coins_bloc.dart';
-import '../../blocs/main_bloc.dart';
+import '../../generic_blocs/authenticate_bloc.dart';
+import '../../generic_blocs/camo_bloc.dart';
+import '../../generic_blocs/coins_bloc.dart';
+import '../../generic_blocs/main_bloc.dart';
 import '../../localizations.dart';
 import '../../model/startup_provider.dart';
 import '../../model/updates_provider.dart';

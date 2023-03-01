@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import '../blocs/coins_bloc.dart';
-import '../blocs/main_bloc.dart';
-import '../blocs/media_bloc.dart';
-import '../blocs/settings_bloc.dart';
-import '../blocs/wallet_bloc.dart';
+import 'coins_bloc.dart';
+import 'main_bloc.dart';
+import 'media_bloc.dart';
+import 'settings_bloc.dart';
+import 'wallet_bloc.dart';
 import '../model/balance.dart';
 import '../model/wallet.dart';
 import '../model/wallet_security_settings_provider.dart';

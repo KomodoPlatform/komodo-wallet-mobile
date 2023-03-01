@@ -14,10 +14,10 @@ import 'package:rational/rational.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../app_config/app_config.dart';
-import '../blocs/authenticate_bloc.dart';
-import '../blocs/coins_bloc.dart';
-import '../blocs/dialog_bloc.dart';
-import '../blocs/main_bloc.dart';
+import '../generic_blocs/authenticate_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
+import '../generic_blocs/dialog_bloc.dart';
+import '../generic_blocs/main_bloc.dart';
 import '../localizations.dart';
 import '../model/coin.dart';
 import '../model/coin_balance.dart';

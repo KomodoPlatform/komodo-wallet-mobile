@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import '../../../../blocs/coins_bloc.dart';
-import '../../../../blocs/dialog_bloc.dart';
-import '../../../../blocs/main_bloc.dart';
+import '../../generic_blocs/coins_bloc.dart';
+import '../../generic_blocs/dialog_bloc.dart';
+import '../../generic_blocs/main_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../app_config/app_config.dart';
 import '../../../../model/coin.dart';

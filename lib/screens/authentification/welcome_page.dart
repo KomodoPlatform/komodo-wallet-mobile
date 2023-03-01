@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../app_config/app_config.dart';
-import '../../blocs/wallet_bloc.dart';
+import '../../generic_blocs/wallet_bloc.dart';
 import '../../localizations.dart';
 import '../authentification/new_account_page.dart';
 import '../settings/restore_seed_page.dart';

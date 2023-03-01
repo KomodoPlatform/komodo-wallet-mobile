@@ -1,11 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/generic_blocs/coins_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../app_config/theme_data.dart';
-import '../../../../blocs/swap_bloc.dart';
+import '../../../../generic_blocs/swap_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin.dart';

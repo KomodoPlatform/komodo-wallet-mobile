@@ -1,6 +1,6 @@
 import 'package:rational/rational.dart';
 import 'package:flutter/material.dart';
-import '../../../../../../blocs/swap_bloc.dart';
+import '../../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../../model/order_book_provider.dart';
 import '../../../../../dex/trade/pro/create/receive/bid_details_dialog.dart';
 import '../../../../../dex/trade/pro/create/receive/not_enough_volume_dialog.dart';

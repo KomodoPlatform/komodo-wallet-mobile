@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../blocs/main_bloc.dart';
+import '../../../generic_blocs/main_bloc.dart';
 import '../../../localizations.dart';
 import '../../dex/trade/multi/multi_order_page.dart';
 import '../../dex/trade/pro/create/trade_page.dart';

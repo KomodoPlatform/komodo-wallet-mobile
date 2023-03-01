@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../../../blocs/orders_bloc.dart';
+import '../../../../generic_blocs/orders_bloc.dart';
 import '../../../../model/order.dart';
 
 class BuildTakerCountdown extends StatefulWidget {

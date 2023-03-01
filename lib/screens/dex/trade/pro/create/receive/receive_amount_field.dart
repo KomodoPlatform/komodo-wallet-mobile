@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../app_config/theme_data.dart';
 import 'package:rational/rational.dart';
 import 'package:flutter/services.dart';
-import '../../../../../../../blocs/swap_bloc.dart';
+import '../../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../../app_config/app_config.dart';
 import '../../../../../dex/trade/pro/create/trade_form.dart';
 import '../../../../../../utils/decimal_text_input_formatter.dart';

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
-import '../../blocs/coins_bloc.dart';
-import '../../blocs/dialog_bloc.dart';
+import '../../generic_blocs/coins_bloc.dart';
+import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
 import '../../model/cex_provider.dart';
 import '../../model/coin.dart';

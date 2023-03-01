@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../blocs/coins_bloc.dart';
+import '../../../generic_blocs/coins_bloc.dart';
 import '../../../utils/utils.dart';
 
 class BuildSelectedCoins extends StatelessWidget {

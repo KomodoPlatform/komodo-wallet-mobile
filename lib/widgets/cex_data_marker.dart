@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../blocs/dialog_bloc.dart';
+import '../generic_blocs/dialog_bloc.dart';
 import '../localizations.dart';
 import '../widgets/custom_simple_dialog.dart';
 import '../widgets/html_parser.dart';

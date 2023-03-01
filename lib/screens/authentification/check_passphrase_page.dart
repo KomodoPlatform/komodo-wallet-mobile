@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import '../../blocs/check_passphrase_bloc.dart';
+import '../../generic_blocs/check_passphrase_bloc.dart';
 import '../../localizations.dart';
 import '../authentification/create_password_page.dart';
 import '../../utils/utils.dart';

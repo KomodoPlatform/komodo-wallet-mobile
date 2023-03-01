@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../blocs/authenticate_bloc.dart';
-import '../../blocs/camo_bloc.dart';
-import '../../blocs/wallet_bloc.dart';
+import '../../generic_blocs/authenticate_bloc.dart';
+import '../../generic_blocs/camo_bloc.dart';
+import '../../generic_blocs/wallet_bloc.dart';
 import '../../localizations.dart';
 import '../../model/wallet_security_settings_provider.dart';
 import '../authentification/lock_screen.dart';

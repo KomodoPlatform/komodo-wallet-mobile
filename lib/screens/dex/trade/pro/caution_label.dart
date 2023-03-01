@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
+import 'package:komodo_dex/generic_blocs/coins_bloc.dart';
+import 'package:komodo_dex/generic_blocs/swap_bloc.dart';
 
 import '../../../../localizations.dart';
 

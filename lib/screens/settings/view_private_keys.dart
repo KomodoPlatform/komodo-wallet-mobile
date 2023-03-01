@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../blocs/coins_bloc.dart';
-import '../../blocs/dialog_bloc.dart';
+import '../../generic_blocs/coins_bloc.dart';
+import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
 import '../../model/coin_balance.dart';
 import '../../model/get_priv_key.dart';

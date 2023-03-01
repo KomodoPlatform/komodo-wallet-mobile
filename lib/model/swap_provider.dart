@@ -7,7 +7,7 @@ import '../model/recent_swaps.dart';
 import '../model/swap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../blocs/swap_history_bloc.dart';
+import '../generic_blocs/swap_history_bloc.dart';
 import '../model/coin.dart';
 import '../services/mm.dart';
 import '../services/mm_service.dart';

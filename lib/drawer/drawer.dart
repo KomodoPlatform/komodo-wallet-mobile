@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../blocs/settings_bloc.dart';
+import '../generic_blocs/settings_bloc.dart';
 import '../localizations.dart';
 import '../model/cex_provider.dart';
 import '../model/wallet.dart';

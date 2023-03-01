@@ -6,7 +6,7 @@ import 'package:komodo_dex/screens/dex/trade/pro/caution_label.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
 
-import '../../../../../blocs/swap_bloc.dart';
+import '../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../../model/cex_provider.dart';
 import '../../../../../model/coin.dart';

@@ -1,6 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
-import '../../../../../blocs/coins_bloc.dart';
+import '../../../../../generic_blocs/coins_bloc.dart';
 import '../../../../../model/coin.dart';
 import '../../../../../model/coin_balance.dart';
 import '../../../../../model/market.dart';

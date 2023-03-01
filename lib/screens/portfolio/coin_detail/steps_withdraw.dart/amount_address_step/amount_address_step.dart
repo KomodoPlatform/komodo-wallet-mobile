@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../app_config/app_config.dart';
-import '../../../../../blocs/coin_detail_bloc.dart';
-import '../../../../../blocs/coins_bloc.dart';
-import '../../../../../blocs/dialog_bloc.dart';
+import '../../../../../generic_blocs/coin_detail_bloc.dart';
+import '../../../../../generic_blocs/coins_bloc.dart';
+import '../../../../../generic_blocs/dialog_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../../model/coin_balance.dart';
 import '../../../../../model/coin_type.dart';

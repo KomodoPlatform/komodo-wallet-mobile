@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../blocs/wallet_bloc.dart';
+import '../../generic_blocs/wallet_bloc.dart';
 import '../../localizations.dart';
 import '../../model/wallet.dart';
 import '../authentification/lock_screen.dart';

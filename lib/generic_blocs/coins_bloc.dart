@@ -6,8 +6,8 @@ import 'dart:io';
 import 'package:decimal/decimal.dart';
 
 import '../app_config/app_config.dart';
-import '../blocs/main_bloc.dart';
-import '../blocs/settings_bloc.dart';
+import 'main_bloc.dart';
+import 'settings_bloc.dart';
 import '../model/active_coin.dart';
 import '../model/balance.dart';
 import '../model/base_service.dart';

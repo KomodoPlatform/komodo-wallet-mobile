@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:decimal/decimal.dart';
 import 'package:rational/rational.dart';
 
-import '../blocs/coins_bloc.dart';
+import 'coins_bloc.dart';
 import '../model/coin_balance.dart';
 import '../model/get_max_taker_volume.dart';
 import '../model/order_book_provider.dart';

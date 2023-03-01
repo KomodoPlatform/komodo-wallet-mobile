@@ -1,4 +1,4 @@
-import '../blocs/coins_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
 import '../model/coin_balance.dart';
 import '../utils/utils.dart';
 

@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../app_config/app_config.dart';
-import '../../../../../blocs/coin_detail_bloc.dart';
-import '../../../../../blocs/coins_bloc.dart';
+import '../../../../../generic_blocs/coin_detail_bloc.dart';
+import '../../../../../generic_blocs/coins_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../../model/cex_provider.dart';
 import '../../../../../model/coin_balance.dart';

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../blocs/authenticate_bloc.dart';
+import 'authenticate_bloc.dart';
 import '../localizations.dart';
 import '../model/wallet.dart';
 import '../services/db/database.dart';

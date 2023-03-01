@@ -5,10 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
-import '../../../../blocs/coin_detail_bloc.dart';
-import '../../../../blocs/coins_bloc.dart';
-import '../../../../blocs/main_bloc.dart';
-import '../../../../blocs/settings_bloc.dart';
+import '../../../generic_blocs/coin_detail_bloc.dart';
+import '../../../generic_blocs/coins_bloc.dart';
+import '../../../generic_blocs/main_bloc.dart';
+import '../../../generic_blocs/settings_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin.dart';

@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../blocs/authenticate_bloc.dart';
-import '../blocs/camo_bloc.dart';
+import '../generic_blocs/authenticate_bloc.dart';
+import '../generic_blocs/camo_bloc.dart';
 import '../model/wallet_security_settings_provider.dart';
 import '../utils/encryption_tool.dart';
 import '../utils/log.dart';

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../../../../blocs/swap_bloc.dart';
+import '../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../dex/trade/pro/confirm/swap_confirmation_page.dart';
 import '../../../../dex/trade/pro/create/trade_form_validator.dart';

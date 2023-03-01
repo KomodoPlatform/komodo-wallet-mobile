@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import '../blocs/coins_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
 import '../model/coin.dart';
 import '../model/order.dart';
 import '../model/recent_swaps.dart';

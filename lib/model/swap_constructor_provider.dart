@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:rational/rational.dart';
 
 import '../app_config/app_config.dart';
-import '../blocs/coins_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
 import '../model/best_order.dart';
 import '../model/buy_response.dart';
 import '../model/coin.dart';
