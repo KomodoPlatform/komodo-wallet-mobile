@@ -11,7 +11,7 @@ import 'package:uuid/uuid.dart';
 
 WalletBloc walletBloc = WalletBloc();
 
-class WalletBloc implements BlocBase {
+class WalletBloc implements GenericBlocBase {
   List<Wallet> wallets = <Wallet>[];
 
   // Streams to handle the list coin

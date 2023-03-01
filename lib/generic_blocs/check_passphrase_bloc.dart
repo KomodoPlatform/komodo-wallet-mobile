@@ -4,7 +4,7 @@ import '../widgets/bloc_provider.dart';
 
 CheckPassphraseBloc checkPassphraseBloc = CheckPassphraseBloc();
 
-class CheckPassphraseBloc extends BlocBase {
+class CheckPassphraseBloc extends GenericBlocBase {
   String word = '';
 
   final StreamController<String> _wordController =

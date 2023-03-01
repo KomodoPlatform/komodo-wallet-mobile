@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 MediaBloc mediaBloc = MediaBloc();
 
-class MediaBloc implements BlocBase {
+class MediaBloc implements GenericBlocBase {
   List<Article> articles = <Article>[];
   List<Article> articlesSaved = <Article>[];
 

@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 SettingsBloc settingsBloc = SettingsBloc();
 
-class SettingsBloc implements BlocBase {
+class SettingsBloc implements GenericBlocBase {
   SettingsBloc() {
     _loadPrefs();
   }

@@ -15,7 +15,7 @@ import '../widgets/bloc_provider.dart';
 
 OrdersBloc ordersBloc = OrdersBloc();
 
-class OrdersBloc implements BlocBase {
+class OrdersBloc implements GenericBlocBase {
   List<Order> orders;
 
   final StreamController<List<Order>> _ordersController =

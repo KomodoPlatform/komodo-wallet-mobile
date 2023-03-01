@@ -1,12 +1,12 @@
 // Generic Interface for all BLoCs
 import 'package:flutter/material.dart';
 
-abstract class BlocBase {
+abstract class GenericBlocBase {
   void dispose();
 }
 
 // Generic BLoC provider
-class BlocProvider<T extends BlocBase> extends StatefulWidget {
+class BlocProvider<T extends GenericBlocBase> extends StatefulWidget {
   const BlocProvider({
     Key key,
     @required this.child,
@@ -19,14 +19,14 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
   @override
   _BlocProviderState<T> createState() => _BlocProviderState<T>();
 
-  static T of<T extends BlocBase>(BuildContext context) {
+  static T of<T extends GenericBlocBase>(BuildContext context) {
     final BlocProvider<T> provider =
         context.findAncestorWidgetOfExactType<BlocProvider<T>>();
     return provider.bloc;
   }
 }
 
-class _BlocProviderState<T> extends State<BlocProvider<BlocBase>> {
+class _BlocProviderState<T> extends State<BlocProvider<GenericBlocBase>> {
   @override
   void dispose() {
     widget.bloc.dispose();

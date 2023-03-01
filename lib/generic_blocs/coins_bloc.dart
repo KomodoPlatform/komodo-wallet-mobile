@@ -33,7 +33,7 @@ import '../utils/log.dart';
 import '../utils/utils.dart';
 import '../widgets/bloc_provider.dart';
 
-class CoinsBloc implements BlocBase {
+class CoinsBloc implements GenericBlocBase {
   CoinsBloc() {
     Timer.periodic(const Duration(seconds: 10), (_) {
       if (!mmSe.running) return;

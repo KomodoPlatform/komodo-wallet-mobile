@@ -11,7 +11,7 @@ import '../model/transaction_data.dart';
 
 CamoBloc camoBloc = CamoBloc();
 
-class CamoBloc implements BlocBase {
+class CamoBloc implements GenericBlocBase {
   Future<void> init() => _loadPrefs();
 
   Future<void> _loadPrefs() async {

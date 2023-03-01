@@ -11,7 +11,7 @@ import '../widgets/bloc_provider.dart';
 
 SwapHistoryBloc swapHistoryBloc = SwapHistoryBloc();
 
-class SwapHistoryBloc implements BlocBase {
+class SwapHistoryBloc implements GenericBlocBase {
   // BLoC list of swaps.
   // AG: Should eventually refactor the UI code to use the `SwapProvider` instead.
   final StreamController<Iterable<Swap>> _swapsController =

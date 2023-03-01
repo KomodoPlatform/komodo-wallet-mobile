@@ -3,7 +3,7 @@ import 'dart:async';
 import '../model/get_withdraw.dart';
 import '../widgets/bloc_provider.dart';
 
-class CoinDetailBloc implements BlocBase {
+class CoinDetailBloc implements GenericBlocBase {
   Fee customFee;
 
   final StreamController<Fee> _customFeeController =

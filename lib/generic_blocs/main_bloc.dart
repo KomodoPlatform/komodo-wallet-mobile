@@ -6,7 +6,7 @@ import '../utils/log.dart';
 
 MainBloc mainBloc = MainBloc();
 
-class MainBloc implements BlocBase {
+class MainBloc implements GenericBlocBase {
   int currentIndexTab = 0;
   int _tradeMode = 0; // 0: simple, 1: advanced, 2: multi
 

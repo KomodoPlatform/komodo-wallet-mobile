@@ -13,7 +13,7 @@ import '../services/mm.dart';
 import '../utils/utils.dart';
 import '../widgets/bloc_provider.dart';
 
-class SwapBloc implements BlocBase {
+class SwapBloc implements GenericBlocBase {
   CoinBalance sellCoinBalance;
   CoinBalance receiveCoinBalance;
   bool enabledSellField = false;
