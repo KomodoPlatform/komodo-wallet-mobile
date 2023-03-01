@@ -59,8 +59,8 @@ Future<void> startApp() async {
   }
 }
 
-BlocProvider<AuthenticateBloc> _myAppWithProviders =
-    BlocProvider<AuthenticateBloc>(
+GenericBlocProvider<AuthenticateBloc> _myAppWithProviders =
+    GenericBlocProvider<AuthenticateBloc>(
         bloc: AuthenticateBloc(),
         child: MultiProvider(
           providers: [
