@@ -456,14 +456,14 @@ class Db {
     _active.remove(ticker);
     final coinsString = _active.join(',');
 
-    final Database db = await (Db.db as FutureOr<Database>);
-    final wallet = await (getCurrentWallet() as FutureOr<Wallet>);
+    final Database db = await (Db.db as Future<Database>);
+    final wallet = await (getCurrentWallet() as Future<Wallet?>);
 
     await db.update(
       'ListOfCoinsActivated',
       <String, String>{'coins': coinsString},
       where: 'wallet_id = ?',
-      whereArgs: [wallet.id],
+      whereArgs: [wallet?.id],
     );
   }
 

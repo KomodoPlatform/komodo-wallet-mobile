@@ -27,6 +27,7 @@ class BlocManager {
   SharedPreferences? _prefs;
 
   AuthenticationRepository? _authenticationRepository;
+  LoginRepository? _loginRepository;
 
   //=====================================================================
 
@@ -52,8 +53,10 @@ class BlocManager {
       final futures = <Future<void>>[
         Future(() async {
           _authenticationRepository = AuthenticationRepository();
+          _loginRepository = LoginRepository();
 
           await _authenticationRepository!.init();
+          await _loginRepository!.init();
         }),
         Future(() async => _prefs = await SharedPreferences.getInstance()),
       ];
@@ -62,7 +65,7 @@ class BlocManager {
 
       // Initialize repositories which depend on other repositories
     } catch (e) {
-      print("Fatal error: Error initializing repositories. App should exit.");
+      print('Fatal error: Error initializing repositories. App should exit.');
       print(e);
       rethrow;
     }

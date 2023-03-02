@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:komodo_dex/login/models/pin.dart';
-import 'package:komodo_dex/packages/authentication_repository/authentication_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generic_blocs/authenticate_bloc.dart';
+import '../models/pin.dart';
+import 'login_repo.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -18,7 +18,7 @@ const throttleDuration = Duration(milliseconds: 5000);
 class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   LoginBloc({
     required this.prefs,
-    required this.authenticationRepository,
+    required this.loginRepository,
   }) : super(LoginStateInitial()) {
     on<LoginPinInputChanged>(_onPinInputChanged);
 
@@ -30,7 +30,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   }
 
   final SharedPreferences prefs;
-  final AuthenticationRepository authenticationRepository;
+  final LoginRepository loginRepository;
 
   void _onPinInputChanged(
     LoginPinInputChanged event,
@@ -60,10 +60,34 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     // Emit state to indicate that the pin is being checked.
     emit(LoginStatePinSubmitted(pin: state.pin));
 
-    await authenticationRepository.initParameters(event.password, event.code,
-        event.onSuccess, event.pinStatus, event.isFromChangingPin);
-    bool status = await authenticationRepository.validatePin();
-    print(status);
+    await loginRepository.initParameters(
+        event.password,
+        event.code,
+        event.onSuccess,
+        event.postSuccess,
+        event.postFailed,
+        event.pinStatus,
+        event.isFromChangingPin);
+    try {
+       emit(
+        state.copyWith(
+          status: FormzStatus.submissionInProgress,
+        ),
+      );
+      await loginRepository.validatePin();
+
+      emit(
+        state.copyWith(status: FormzStatus.submissionSuccess),
+      );
+    } catch (e) {
+
+      emit(
+        state.copyWith(
+          status: FormzStatus.submissionFailure,
+          error: e.toString(),
+        ),
+      );
+    }
 
     // TODO(@ologunB): Reference applicable repository methods + state changes here.
     // E.g. (Suggestions, not complete):

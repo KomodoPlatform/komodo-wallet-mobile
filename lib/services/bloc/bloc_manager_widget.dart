@@ -8,6 +8,8 @@ import 'package:komodo_dex/packages/authentication_repository/authentication_rep
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../login/bloc/login_repo.dart';
+
 part 'bloc_manager.dart';
 
 class BlocManagerWidget extends StatelessWidget {
@@ -26,7 +28,7 @@ class BlocManagerWidget extends StatelessWidget {
         BlocProvider<LoginBloc>(
           create: (BuildContext context) => LoginBloc(
             prefs: BlocManager()._prefs!,
-            authenticationRepository: BlocManager()._authenticationRepository!,
+            loginRepository: BlocManager()._loginRepository!,
           ),
         ),
       ],

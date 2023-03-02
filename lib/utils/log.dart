@@ -34,7 +34,7 @@ class Log {
     if (pass(key, message)) {
       // Flutter debugging console
       // and also iOS system log.
-      print(messageToPrint);
+      //  print(messageToPrint);
     }
 
     //via os_log://MMService.nativeC.invokeMethod<String>('log', messageToPrint);

@@ -1,12 +1,12 @@
 import 'dart:async';
-
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../model/wallet.dart';
-import 'package:dargon2_flutter/dargon2_flutter.dart';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:dargon2_flutter/dargon2_flutter.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../model/wallet.dart';
 
 class EncryptionTool {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -136,7 +136,7 @@ class EncryptionTool {
           .then((bool res) async {
         await storage.delete(key: keyPassword(key, wallet!));
       }).then(((_) async =>
-              await storage.delete(key: keyData(key, wallet!, password))) as FutureOr<void> Function(Null));
+              await storage.delete(key: keyData(key, wallet!, password))));
 
   Future<void> write(String key, String? data) async =>
       await storage.write(key: key, value: data);

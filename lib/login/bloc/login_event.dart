@@ -12,12 +12,14 @@ class LoginPinInputChanged extends LoginEvent {
 
 class LoginPinSubmitted extends LoginEvent {
   const LoginPinSubmitted(this.password, this.code, this.isFromChangingPin,
-      this.onSuccess, this.pinStatus);
+      this.onSuccess, this.pinStatus, this.postSuccess, this.postFailed);
   final PinStatus? pinStatus;
   final String? code;
   final bool isFromChangingPin;
   final String? password;
   final VoidCallback? onSuccess;
+  final Function() postSuccess;
+  final Function() postFailed;
 }
 
 class LoginPinReset extends LoginEvent {
