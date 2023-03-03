@@ -1,28 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getWithdraw = getWithdrawFromJson(jsonString);
-
-import 'dart:convert';
-
-import '../generic_blocs/camo_bloc.dart';
-
-GetWithdraw getWithdrawFromJson(String str) =>
-    GetWithdraw.fromJson(json.decode(str));
-
-String getWithdrawToJson(GetWithdraw data) {
-  final Map<String, dynamic> tmpJson = data.toJson();
-  if (data.amount == null) {
-    tmpJson.remove('amount');
-  }
-  if (data.max == null || !data.max! || camoBloc.isCamoActive) {
-    tmpJson.remove('max');
-  }
-  if (data.fee == null || data.fee!.type == null) {
-    tmpJson.remove('fee');
-  }
-  return json.encode(tmpJson);
-}
-
 class GetWithdraw {
   GetWithdraw({
     this.method = 'withdraw',
@@ -32,34 +7,27 @@ class GetWithdraw {
     this.max,
     this.userpass,
     this.fee,
+    this.memo,
   });
 
-  factory GetWithdraw.fromJson(Map<String, dynamic> json) => GetWithdraw(
-        method: json['method'] ?? '',
-        amount: json['amount'] ?? '',
-        coin: json['coin'] ?? '',
-        to: json['to'] ?? '',
-        max: json['max'] ?? false,
-        userpass: json['userpass'] ?? '',
-        fee: Fee.fromJson(json['fee']) ?? Fee(),
-      );
-
   String method;
-  String? amount;
-  String? coin;
-  String? to;
-  bool? max;
-  String? userpass;
-  Fee? fee;
+  String amount;
+  String memo;
+  String coin;
+  String to;
+  bool max;
+  String userpass;
+  Fee fee;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method ?? '',
         if (amount != null) 'amount': amount,
+        if (memo != null) 'memo': memo,
         'to': to ?? '',
         'max': max ?? false,
         'coin': coin ?? '',
         'userpass': userpass ?? '',
-        if (fee != null) 'fee': fee!.toJson(),
+        if (fee != null) 'fee': fee.toJson(),
       };
 }
 
@@ -76,13 +44,13 @@ class Fee {
         gasPrice: json['gas_price'],
         gas: json['gas'],
       );
-  String?
+  String
       type; // type of transaction fee, possible values: UtxoFixed, UtxoPerKbyte, EthGas
-  String?
+  String
       amount; // fee amount in coin units, used only when type is UtxoFixed (fixed amount not depending on tx size) or UtxoPerKbyte (amount per Kbyte).
-  String?
+  String
       gasPrice; // used only when fee type is EthGas. Sets the gas price in `gwei` units
-  int? gas; // used only when fee type is EthGas. Sets the gas limit for transaction
+  int gas; // used only when fee type is EthGas. Sets the gas limit for transaction
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type,

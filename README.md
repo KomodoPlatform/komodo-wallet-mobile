@@ -1,6 +1,6 @@
 [![Build Status](https://app.bitrise.io/app/bc464ad88d40bb68/status.svg?token=tnpzqFp_7vrcsQYqWSIVBQ&branch=dev)](https://app.bitrise.io/app/bc464ad88d40bb68)  
-# atomicDEX v0.5.3
-Komodo Platform's hybrid mutlicoin DEX-wallet. 
+# atomicDEX v0.6.1
+Komodo Platform's hybrid multicoin DEX-wallet. 
 
 ## Getting Started
 
@@ -16,7 +16,7 @@ Ubuntu: `sudo apt-get update && sudo apt-get install -y coreutils jq`
 
 MacOS: `brew install coreutils jq`, [Brew software](https://brew.sh/)
 
-Windows: `choco install jq`, [Choco sowftware](https://chocolatey.org/)
+Windows: `choco install jq`, [Choco software](https://chocolatey.org/)
 
 
 ## Build and run
@@ -24,13 +24,18 @@ Windows: `choco install jq`, [Choco sowftware](https://chocolatey.org/)
 https://github.com/KomodoPlatform/AtomicDEX-mobile/wiki/Project-Setup#build-and-run
 
 
+## Run/Build with screenshot and video recording ON
+
+```
+flutter run --dart-define=screenshot=true
+```
+
+
 ## AtomicDEX API library (libmm2.a) version:
 
-2.1.9256  
-ffee29455  
-http://195.201.0.6/mm2.1/  
-
-
+2.1.10108
+adde21b26
+http://195.201.0.6/dev/
 
 ## Flutter version
 

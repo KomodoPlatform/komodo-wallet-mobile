@@ -11,7 +11,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
   List allCoinsList = [];
 
   coinsResponse.forEach((abbr, coinData) {
-    String? proto = _getType(coinData['type']);
+    String proto = _getType(coinData['type'], abbr);
 
     if (_excludedCoins.contains(abbr) || proto == null) {
       return; // unsupported protocols should be skipped
@@ -26,7 +26,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       'explorerUrl': coinData['explorer_url'],
       'explorer_tx_url': coinData['explorer_tx_url'],
       'explorer_address_url': coinData['explorer_address_url'],
-      'serverList': coinData['nodes'] ?? coinData['electrum'] ?? [],
+      'serverList': coinData['nodes'] ?? coinData['electrum'] ??  coinData['rpc_urls'] ??[],
       'testCoin': coinData['is_testnet'] ?? false,
       'walletOnly': coinData['wallet_only'],
       if (coinData['swap_contract_address'] != null)
@@ -44,9 +44,10 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
 
 List<String> get _excludedCoins => [];
 
-String? _getType(String? coin) {
+String _getType(String coin, String abbr) {
   // absent protocols
   // [RSK Smart Bitcoin, Arbitrum, Moonbeam, ZHTLC]
+  if (abbr == 'IRIS') return 'iris';
   CoinType type;
   switch (coin) {
     case 'UTXO':
@@ -96,6 +97,12 @@ String? _getType(String? coin) {
       break;
     case 'AVX-20':
       type = CoinType.avx;
+      break;
+    case 'TENDERMINT':
+      type = CoinType.cosmos;
+      break;
+    case 'TENDERMINTTOKEN':
+      type = CoinType.iris;
       break;
     default:
       return null; // for other protocols not yet added on the mobile
@@ -377,7 +384,7 @@ String _getColor(String coin) {
   };
   String defaultColor = 'F9F9F9';
 
-  return '0xFF${allColors[getCoinTicker(coin)!]?.replaceAll('#', '') ?? defaultColor}';
+  return '0xFF${allColors[getCoinTicker(coin)]?.replaceAll('#', '') ?? defaultColor}';
 
   // todo coins using the [defaultColor]: get their colors
   //  [BANANO, BONE, BTU, CUMMIES, DOGGY, FLOKI, GM, KOIN, PGX, SCA, RSR, ZILLA, INK, SPC, HPY, HLC, QBT, OC, PUT, BEST, CHSB, CHZ, DX, HEX, LEASH, MLN, OKB, PNK, S4F, SHIB, SHR, SKL, SRM, TMTG, TRAC, TTT, UBT, UMA, UOS, UQC, UTK, VGX, XOR, ZINU]

@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-
 import '../../generic_blocs/wallet_bloc.dart';
 import '../../model/article.dart';
 import '../../model/coin.dart';
@@ -12,26 +9,27 @@ import '../../model/wallet.dart';
 import '../../model/wallet_security_settings.dart';
 import '../../utils/log.dart';
 import '../../utils/utils.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 class Db {
-  static Database? _db;
+  static Database _db;
   static bool _initInvoked = false;
 
   static Future<Database> get db async {
     // Protect the database from being opened and initialized multiple times.
     if (_initInvoked) {
       await pauseUntil(() => _db != null);
-      return _db!;
+      return _db;
     }
 
     _initInvoked = true;
     _db = await _initDB();
-    return _db!;
+    return _db;
   }
 
   static Future<Database> _initDB() async {
-    final Directory documentsDirectory =
-        await (applicationDocumentsDirectory as FutureOr<Directory>);
+    final Directory documentsDirectory = await applicationDocumentsDirectory;
     final String path = join(documentsDirectory.path, 'AtomicDEX.db');
     String _articleTable = '''
       CREATE TABLE ArticlesSaved (
@@ -115,12 +113,12 @@ class Db {
           final batch = db.batch();
           // when migrating from version 1, run this for the coins activated migration
           if (oldVersion == 1) {
-            String? walletId;
+            String walletId;
             final currentWallet =
                 await db.query('CurrentWallet', columns: ['id'], limit: 1);
 
             if (currentWallet != null && currentWallet.isNotEmpty) {
-              walletId = currentWallet.first['id'] as String?;
+              walletId = currentWallet.first['id'];
 
               if (walletId != null && walletId.isNotEmpty) {
                 final coinsQuery =
@@ -206,7 +204,7 @@ class Db {
   }
 
   static Future<int> saveArticle(Article newArticle) async {
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
 
     final Map<String, dynamic> row = <String, dynamic>{
       'id': newArticle.id,
@@ -225,7 +223,7 @@ class Db {
   }
 
   static Future<List<Article>> getAllArticlesSaved() async {
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
 
     // Query the table for All The Article.
     final List<Map<String, dynamic>> maps = await db.query('ArticlesSaved');
@@ -248,7 +246,7 @@ class Db {
   }
 
   static Future<void> deleteArticle(Article article) async {
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
 
     // Remove the Article from the Database
     await db.delete(
@@ -261,13 +259,13 @@ class Db {
   }
 
   static Future<void> deleteAllArticles() async {
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
     await db.rawDelete('DELETE FROM ArticlesSaved');
   }
 
   static Future<int> saveWallet(Wallet newWallet,
-      [WalletSecuritySettings? walletSecuritySettings]) async {
-    final Database db = await (Db.db as FutureOr<Database>);
+      [WalletSecuritySettings walletSecuritySettings]) async {
+    final Database db = await Db.db;
 
     walletSecuritySettings ??= WalletSecuritySettings();
 
@@ -290,7 +288,7 @@ class Db {
   }
 
   static Future<List<Wallet>> getAllWallet() async {
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
 
     // Query the table for All The Article.
     final List<Map<String, dynamic>> maps = await db.query('Wallet');
@@ -305,21 +303,21 @@ class Db {
   }
 
   Future<void> deleteAllWallets() async {
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
     await db.rawDelete('DELETE FROM Wallet');
   }
 
   static Future<void> deleteWallet(Wallet wallet) async {
     Log('database:173', 'deleteWallet] id: ${wallet.id}');
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
     await db.delete('Wallet', where: 'id = ?', whereArgs: <dynamic>[wallet.id]);
   }
 
   static Future<int> saveCurrentWallet(Wallet currentWallet,
-      [WalletSecuritySettings? walletSecuritySettings]) async {
+      [WalletSecuritySettings walletSecuritySettings]) async {
     await deleteCurrentWallet();
     walletBloc.setCurrentWallet(currentWallet);
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
 
     walletSecuritySettings ??= WalletSecuritySettings();
 
@@ -341,8 +339,8 @@ class Db {
     return await db.insert('CurrentWallet ', row);
   }
 
-  static Future<Wallet?> getCurrentWallet() async {
-    final Database db = await (Db.db as FutureOr<Database>);
+  static Future<Wallet> getCurrentWallet() async {
+    final Database db = await Db.db;
 
     final List<Map<String, dynamic>> maps = await db.query('CurrentWallet');
 
@@ -360,29 +358,29 @@ class Db {
   }
 
   static Future<void> deleteCurrentWallet() async {
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
     await db.rawDelete('DELETE FROM CurrentWallet');
 
     // Needed so coins aren't accidentally reused between wallets
     _active.clear();
   }
 
-  static final Set<String?> _active = {};
+  static final Set<String> _active = {};
   static bool _activeFromDb = false;
 
   static Future<List<String>> getCoinsFromDb() async {
-    final Database db = await (Db.db);
-    final wallet = await (getCurrentWallet());
+    final Database db = await Db.db;
+    final wallet = await getCurrentWallet();
 
     final r = await db.query(
       'ListOfCoinsActivated',
       columns: ['coins'],
       where: 'wallet_id = ?',
-      whereArgs: [wallet?.id],
+      whereArgs: [wallet.id],
     );
     if (r != null && r.isNotEmpty) {
       final row = r.first;
-      final String? coins = row['coins'] as String?;
+      final String coins = row['coins'];
       if (coins != null && coins != '') {
         final listOfCoins = coins.split(',');
         if (listOfCoins != null && listOfCoins.isNotEmpty) {
@@ -393,7 +391,7 @@ class Db {
     return [];
   }
 
-  static Future<Set<String?>> get activeCoins async {
+  static Future<Set<String>> get activeCoins async {
     if (_active.isNotEmpty && _activeFromDb) return _active;
 
     final listOfCoins = await getCoinsFromDb();
@@ -405,17 +403,17 @@ class Db {
     _activeFromDb = true;
     if (_active.isNotEmpty) return _active;
 
-    final known = await (coins);
+    final known = await coins;
 
     // Search for coins with 'isDefault' flag
-    Iterable<String?>? defaultCoins = known?.values
+    Iterable<String> defaultCoins = known.values
         .where((Coin coin) => coin.isDefault == true)
-        .map<String?>((Coin coin) => coin.abbr);
+        .map<String>((Coin coin) => coin.abbr);
 
     // If no 'isDefault' coins provided, use the first two coins by default
-    if (defaultCoins!.isEmpty) defaultCoins = known?.keys.take(2);
+    if (defaultCoins.isEmpty) defaultCoins = known.keys.take(2);
 
-    _active.addAll(defaultCoins!);
+    _active.addAll(defaultCoins);
 
     return _active;
   }
@@ -425,8 +423,8 @@ class Db {
     _active.add(coin.abbr);
     final coinsString = _active.join(',');
 
-    final Database db = await (Db.db);
-    final wallet = await (getCurrentWallet() as FutureOr<Wallet>);
+    final Database db = await Db.db;
+    final wallet = await getCurrentWallet();
 
     // Check if coins for current wallet are saved
     final currentWallet = await db.query('ListOfCoinsActivated',
@@ -441,7 +439,7 @@ class Db {
     } else {
       await db.insert(
         'ListOfCoinsActivated',
-        <String, String?>{
+        <String, String>{
           'wallet_id': wallet.id,
           'coins': coinsString,
         },
@@ -450,34 +448,34 @@ class Db {
   }
 
   /// Remove the coin from the list of activated coins.
-  static Future<void> coinInactive(String? ticker) async {
+  static Future<void> coinInactive(String ticker) async {
     Log('database', 'coinInactive] removing $ticker from active coins');
 
     _active.remove(ticker);
     final coinsString = _active.join(',');
 
-    final Database db = await (Db.db as Future<Database>);
-    final wallet = await (getCurrentWallet() as Future<Wallet?>);
+    final Database db = await Db.db;
+    final wallet = await getCurrentWallet();
 
     await db.update(
       'ListOfCoinsActivated',
       <String, String>{'coins': coinsString},
       where: 'wallet_id = ?',
-      whereArgs: [wallet?.id],
+      whereArgs: [wallet.id],
     );
   }
 
-  static Future<void> deleteNote(String? id) async {
-    final Database db = await (Db.db as FutureOr<Database>);
+  static Future<void> deleteNote(String id) async {
+    final Database db = await Db.db;
 
-    await db.delete('Notes', where: 'id = ?', whereArgs: <String?>[id]);
+    return await db.delete('Notes', where: 'id = ?', whereArgs: <String>[id]);
   }
 
-  static Future<int> saveNote(String? id, String? note) async {
-    final Database db = await (Db.db as FutureOr<Database>);
+  static Future<int> saveNote(String id, String note) async {
+    final Database db = await Db.db;
 
     final r = await db
-        .rawQuery('SELECT COUNT(*) FROM Notes WHERE id = ?', <String?>[id]);
+        .rawQuery('SELECT COUNT(*) FROM Notes WHERE id = ?', <String>[id]);
     final count = Sqflite.firstIntValue(r);
 
     if (count == 0) {
@@ -492,17 +490,17 @@ class Db {
         'note': note,
       };
       return await db
-          .update('Notes', row, where: 'id = ?', whereArgs: <String?>[id]);
+          .update('Notes', row, where: 'id = ?', whereArgs: <String>[id]);
     }
   }
 
-  static Future<String?> getNote(String? id) async {
-    final Database db = await (Db.db as FutureOr<Database>);
+  static Future<String> getNote(String id) async {
+    final Database db = await Db.db;
 
     final List<Map<String, dynamic>> maps =
-        await db.query('Notes', where: 'id = ?', whereArgs: <String?>[id]);
+        await db.query('Notes', where: 'id = ?', whereArgs: <String>[id]);
 
-    final List<String?> notes = List<String?>.generate(maps.length, (int i) {
+    final List<String> notes = List<String>.generate(maps.length, (int i) {
       return maps[i]['note'];
     });
     if (notes.isEmpty) {
@@ -512,13 +510,13 @@ class Db {
     }
   }
 
-  static Future<Map<String?, String?>> getAllNotes() async {
-    final Database db = await (Db.db as FutureOr<Database>);
+  static Future<Map<String, String>> getAllNotes() async {
+    final Database db = await Db.db;
 
     final List<Map<String, dynamic>> maps = await db.query('Notes');
     Log('database:312', maps.length);
 
-    final Map<String?, String?> r = {for (var m in maps) m['id']: m['note']};
+    final Map<String, String> r = {for (var m in maps) m['id']: m['note']};
 
     return r;
   }
@@ -532,10 +530,10 @@ class Db {
   }
 
   static Future<void> saveWalletSnapshot(String jsonStr) async {
-    final Wallet? wallet = await getCurrentWallet();
+    final Wallet wallet = await getCurrentWallet();
     if (wallet == null) return;
 
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
     try {
       await db.insert('WalletSnapshot',
           <String, dynamic>{'wallet_id': wallet.id, 'snapshot': jsonStr},
@@ -543,28 +541,29 @@ class Db {
     } catch (_) {}
   }
 
-  static Future<String?> getWalletSnapshot() async {
-    final Wallet? wallet = await getCurrentWallet();
+  static Future<String> getWalletSnapshot() async {
+    final Wallet wallet = await getCurrentWallet();
     if (wallet == null) return null;
 
-    final Database db = await (Db.db as FutureOr<Database>);
-    List<Map<String, dynamic>>? maps;
+    final Database db = await Db.db;
+    List<Map<String, dynamic>> maps;
     try {
       maps = await db.query('WalletSnapshot');
     } catch (_) {}
     if (maps == null) return null;
 
-    final Map<String, dynamic>? entry = maps.firstWhereOrNull(
+    final Map<String, dynamic> entry = maps.firstWhere(
       (item) => item['wallet_id'] == wallet.id,
+      orElse: () => null,
     );
 
     if (entry == null) return null;
     return entry['snapshot'];
   }
 
-  static Future<WalletSecuritySettings?>
+  static Future<WalletSecuritySettings>
       getCurrentWalletSecuritySettings() async {
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
 
     final List<Map<String, dynamic>> maps = await db.query('CurrentWallet');
 
@@ -590,9 +589,9 @@ class Db {
     }
   }
 
-  static Future<WalletSecuritySettings?> getWalletSecuritySettings(
+  static Future<WalletSecuritySettings> getWalletSecuritySettings(
       Wallet wallet) async {
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
 
     final List<Map<String, dynamic>> maps = await db.query(
       'Wallet',
@@ -625,9 +624,9 @@ class Db {
   static Future<void> updateWalletSecuritySettings(
       WalletSecuritySettings walletSecuritySettings,
       {bool allWallets = false}) async {
-    final Database db = await (Db.db as FutureOr<Database>);
+    final Database db = await Db.db;
 
-    Wallet? currentWallet = await getCurrentWallet();
+    Wallet currentWallet = await getCurrentWallet();
 
     final batch = db.batch();
 
@@ -648,13 +647,13 @@ class Db {
       'Wallet',
       updateMap,
       where: allWallets ? null : 'id = ?',
-      whereArgs: allWallets ? null : [currentWallet!.id],
+      whereArgs: allWallets ? null : [currentWallet.id],
     );
     await db.update(
       'CurrentWallet',
       updateMap,
       where: allWallets ? null : 'id = ?',
-      whereArgs: allWallets ? null : [currentWallet!.id],
+      whereArgs: allWallets ? null : [currentWallet.id],
     );
 
     batch.commit();

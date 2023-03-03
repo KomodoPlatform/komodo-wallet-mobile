@@ -317,7 +317,8 @@ class AppLocalizations {
           name: 'question_10', args: [appName]);
   String answer_10(String appName) => Intl.message(
       '$appName is available for mobile on both Android and iPhone,'
-      ' and for desktop on Windows, Mac, and Linux operating systems.',
+      ' and for desktop on <a href="https://atomicdex.io/">'
+      'Windows, Mac, and Linux operating systems</a>.',
       name: 'answer_10',
       args: [appName]);
 
@@ -595,6 +596,7 @@ class AppLocalizations {
       Intl.message('Confirmations', name: 'txConfirmations');
   String get txFee => Intl.message('Fee', name: 'txFee');
   String get txHash => Intl.message('Transaction ID', name: 'txHash');
+  String get memo => Intl.message('Memo', name: 'memo');
   String get noSwaps => Intl.message('No history.', name: 'noSwaps');
   String get trade => Intl.message('TRADE', name: 'trade');
   String get reset => Intl.message('CLEAR', name: 'reset');
@@ -785,6 +787,11 @@ class AppLocalizations {
   String get exchangeTitle => Intl.message('EXCHANGE', name: 'exchangeTitle');
   String get orders => Intl.message('orders', name: 'orders');
   String get selectCoin => Intl.message('Select coin', name: 'selectCoin');
+  String lessThanCaution(String coinName) => Intl.message(
+        '❗Caution! Market for $coinName has less than \$10k 24h trading-volume!',
+        name: 'lessThanCaution',
+        args: <Object>[coinName],
+      );
   String get selectLanguage =>
       Intl.message('Select Language', name: 'selectLanguage');
   String get noFunds => Intl.message('No funds', name: 'noFunds');
@@ -946,6 +953,11 @@ class AppLocalizations {
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
   String get searchFilterSubtitleSLP =>
       Intl.message('Select all SLP tokens', name: 'searchFilterSubtitleSLP');
+  String get searchFilterSubtitleCosmos =>
+      Intl.message('Select all Cosmos Network',
+          name: 'searchFilterSubtitleCosmos');
+  String get searchFilterSubtitleIris =>
+      Intl.message('Select all Iris Network', name: 'searchFilterSubtitleIris');
   String get searchFilterSubtitleKRC =>
       Intl.message('Select all Kucoin tokens', name: 'searchFilterSubtitleKRC');
   String get searchFilterSubtitleHRC =>
@@ -1012,8 +1024,10 @@ class AppLocalizations {
   String get deleteSpan1 =>
       Intl.message('Do you want to remove ', name: 'deleteSpan1');
   String get deleteSpan2 => Intl.message(
-      ' from your portfolio? All unmatched orders will be canceled.',
+      ' from your portfolio? All unmatched orders will be canceled. ',
       name: 'deleteSpan2');
+  String get deleteSpan3 =>
+      Intl.message(' will also be deactivated', name: 'deleteSpan3');
   String get cantDeleteDefaultCoinTitle =>
       Intl.message("Can't disable ", name: 'cantDeleteDefaultCoinTitle');
   String get cantDeleteDefaultCoinSpan =>
@@ -1063,6 +1077,7 @@ class AppLocalizations {
 
   // --- sound configuration ---
 
+  String get optional => Intl.message('Optional');
   String get soundTitle => Intl.message('Sound');
   String get soundOption => Intl.message('Play at full volume');
   String get soundTaker => Intl.message('Taker');
@@ -1439,6 +1454,8 @@ class AppLocalizations {
       Intl.message('Identical to CEX', name: 'exchangeIdentical');
   String get comparedToCex =>
       Intl.message('compared to CEX', name: 'comparedToCex');
+  String get comparedTo24hrCex =>
+      Intl.message('compared to avg. 24h CEX price', name: 'comparedTo24hrCex');
 
   String get ordersActive => Intl.message('Active', name: 'ordersActive');
   String get ordersHistory => Intl.message('History', name: 'ordersHistory');

@@ -1,6 +1,3 @@
-export '../utils/iterable_utils.dart';
-export '../utils/map_utils.dart';
-
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
@@ -8,28 +5,31 @@ import 'dart:math';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
-import '../utils/iterable_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:rational/rational.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../app_config/app_config.dart';
-import '../generic_blocs/authenticate_bloc.dart';
-import '../generic_blocs/coins_bloc.dart';
-import '../generic_blocs/dialog_bloc.dart';
-import '../generic_blocs/main_bloc.dart';
+import '../blocs/authenticate_bloc.dart';
+import '../blocs/coins_bloc.dart';
+import '../blocs/dialog_bloc.dart';
+import '../blocs/main_bloc.dart';
 import '../localizations.dart';
 import '../model/coin.dart';
 import '../model/error_string.dart';
-import '../model/wallet_security_settings_provider.dart';
 import '../model/recent_swaps.dart';
+import '../model/wallet_security_settings_provider.dart';
 import '../services/lock_service.dart';
 import '../services/mm_service.dart';
 import '../utils/encryption_tool.dart';
 import '../utils/log.dart';
 import '../widgets/cex_fiat_preview.dart';
 import '../widgets/custom_simple_dialog.dart';
-import '../widgets/qr_view.dart';
-import 'package:local_auth/local_auth.dart';
-import 'package:path_provider/path_provider.dart';
+import '../widgets/qr_view/path_provider.dart';
 import 'package:rational/rational.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
@@ -81,7 +81,7 @@ String getCoinIconPath(String? abbr) {
     'PLY',
     'WID',
   ];
-  String ticker = getCoinTicker(abbr)!.replaceAll('-OLD', '').toLowerCase();
+  String ticker = getCoinTicker(abbr)!.toLowerCase();
   if (coinsWithoutIcons.contains(abbr)) ticker = 'adexbsc';
 
   return 'assets/coin-icons/$ticker.png';
@@ -305,40 +305,57 @@ Future<void> showCantRemoveDefaultCoin(
 }
 
 Future<void> showConfirmationRemoveCoin(
-    BuildContext mContext, Coin? coin) async {
+    BuildContext mContext, Coin coin) async {
+  List<CoinBalance> irisTokens = [];
+  if (coin.abbr == 'IRIS') {
+    irisTokens = coinsBloc.coinBalance
+        .where((e) => e.coin.abbr == 'ATOM-IBC_IRIS')
+        .toList();
+  }
   return dialogBloc.dialog = showDialog<void>(
       context: mContext,
       builder: (BuildContext context) {
         return CustomSimpleDialog(
-          title: Text(AppLocalizations.of(context)!.deleteConfirm),
+          title: Text(AppLocalizations.of(context).deleteConfirm),
           children: <Widget>[
             RichText(
                 text: TextSpan(
                     style: Theme.of(context).textTheme.bodyText2,
                     children: <TextSpan>[
-                  TextSpan(text: AppLocalizations.of(context)!.deleteSpan1),
-                  TextSpan(
-                      text: coin!.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2!
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  TextSpan(text: AppLocalizations.of(context)!.deleteSpan2),
-                ])),
+                      TextSpan(text: AppLocalizations.of(context).deleteSpan1),
+                      TextSpan(
+                          text: coin.name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .copyWith(fontWeight: FontWeight.bold)),
+                      TextSpan(text: AppLocalizations.of(context).deleteSpan2),
+                      if (irisTokens.isNotEmpty)
+                        TextSpan(
+                            text: irisTokens.map((e) => e.coin.name).join(', '),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(fontWeight: FontWeight.bold)),
+                      if (irisTokens.isNotEmpty)
+                        TextSpan(text: AppLocalizations.of(context).deleteSpan3),
+                    ])),
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text(AppLocalizations.of(context)!.cancel),
+                  child: Text(AppLocalizations.of(context).cancel),
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton(
                   key: Key('confirm-disable'),
                   onPressed: () async {
                     try {
-                      await coinsBloc.removeCoin(coin);
+                      irisTokens.isEmpty
+                          ? await coinsBloc.removeCoin(coin)
+                          : await coinsBloc.removeIrisCoin(coin, irisTokens);
                     } on ErrorString catch (ex) {
                       showMessage(mContext, ex.error);
                     }
@@ -347,7 +364,7 @@ Future<void> showConfirmationRemoveCoin(
                   style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).errorColor,
                   ),
-                  child: Text(AppLocalizations.of(context)!.confirm),
+                  child: Text(AppLocalizations.of(context).confirm),
                 )
               ],
             ),
@@ -865,6 +882,16 @@ Map<String, String?> extractMyInfoFromSwap(MmSwap swap) {
     'otherCoin': otherCoin,
     'otherAmount': otherAmount,
   };
+}
+
+bool isSlp(Coin coin) {
+  return isSlpParent(coin) || isSlpChild(coin);
+}
+
+bool hasParentPreInstalled(Coin coin) {
+  final String protocolType = coin?.protocol?.type;
+  return protocolType == 'SLPTOKEN' ||
+      coin?.protocol?.protocolData?.platform == 'IRIS';
 }
 
 int? extractStartedAtFromSwap(MmSwap swap) {

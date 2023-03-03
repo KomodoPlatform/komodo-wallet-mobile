@@ -1,16 +1,18 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/generic_blocs/coins_bloc.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../app_config/theme_data.dart';
 import '../../../../generic_blocs/swap_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin.dart';
 import '../../../../model/order_book_provider.dart';
-import '../../../dex/trade/pro/create/trade_form.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widgets/cex_data_marker.dart';
-import '../../../../app_config/theme_data.dart';
-import 'package:provider/provider.dart';
+import '../../../dex/trade/pro/create/trade_form.dart';
 
 class Evaluation extends StatefulWidget {
   const Evaluation({
@@ -27,16 +29,16 @@ class _EvaluationState extends State<Evaluation> {
   final double _sliderH = 4;
   final double _neutralRange = 5; // % - show lower values in neutral color
   bool _showDetails = false;
-  double? _sliderW;
-  late num _sign;
-  late double _percent;
-  late int _indicatorRange;
-  String? _buyAbbr;
-  String? _sellAbbr;
-  double? _rate;
-  double? _cexRate;
+  double _sliderW;
+  num _sign;
+  double _percent;
+  int _indicatorRange;
+  String _buyAbbr;
+  String _sellAbbr;
+  double _rate;
+  double _cexRate;
 
-  CexProvider? _cexProvider;
+  CexProvider _cexProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +76,15 @@ class _EvaluationState extends State<Evaluation> {
     }
 
     _rate = tradeForm.getExchangeRate();
-    _cexRate = _cexProvider!.getCexRate(
+    _cexRate = _cexProvider.getCexRate(
         CoinsPair(sell: Coin(abbr: _sellAbbr), buy: Coin(abbr: _buyAbbr)));
 
     if (_rate == null || _cexRate == null || _cexRate == 0.0) return;
 
     _sliderW = MediaQuery.of(context).size.width / 5 * 3;
 
-    _sign = (_rate! - _cexRate!).sign;
-    _percent = ((_rate! - _cexRate!) * 100 / _cexRate!).abs();
+    _sign = (_rate - _cexRate).sign;
+    _percent = ((_rate - _cexRate) * 100 / _cexRate).abs();
     if (_percent > 99.99) _percent = 99.99;
     if (_percent < -99.99) _percent = -99.99;
     _indicatorRange = (_neutralRange * 2).round();
@@ -90,7 +92,7 @@ class _EvaluationState extends State<Evaluation> {
       // log_n(x) = log_e(x) / log_e(n)
       final power = (math.log(_percent) / math.log(10)).ceil();
       // Round up to the closest power of 10
-      _indicatorRange = math.pow(10, power) as int;
+      _indicatorRange = math.pow(10, power);
     }
   }
 
@@ -109,11 +111,6 @@ class _EvaluationState extends State<Evaluation> {
               : MainAxisAlignment.start,
           children: [
             _buildEvaluationHeader(),
-            Icon(
-              _showDetails ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-              size: 16,
-              color: Theme.of(context).textTheme.bodyText1!.color,
-            )
           ],
         ),
       ),
@@ -164,30 +161,22 @@ class _EvaluationState extends State<Evaluation> {
   }
 
   Widget _buildEvaluationHeader() {
-    final String? percentString = formatPrice(_percent.toString(), 2);
+    final String percentString = formatPrice(_percent.toString(), 2);
     Widget message;
-    Color? color;
+    Color color;
+    bool lessThan10kVol =
+        coinsBloc.coinsWithLessThan10kVol.contains(_buyAbbr) ||
+            coinsBloc.coinsWithLessThan10kVol.contains(_sellAbbr);
 
     switch (_sign) {
       case 1:
         {
-          color = Colors.green;
-          message = Row(children: [
-            Text(
-              AppLocalizations.of(context)!.exchangeExpedient + ': ',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            Text(
-              '+$percentString% ',
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    color: color ?? Theme.of(context).textTheme.bodyText2!.color,
-                  ),
-            ),
-            Text(
-              AppLocalizations.of(context)!.comparedToCex,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ]);
+          message = _message(
+            AppLocalizations.of(context).exchangeExpedient,
+            percentString,
+            Colors.green,
+            lessThan10kVol,
+          );
           break;
         }
       case -1:
@@ -195,34 +184,61 @@ class _EvaluationState extends State<Evaluation> {
           if (_percent > _neutralRange) {
             color = Colors.orange;
           }
-          message = Row(children: [
-            Text(
-              AppLocalizations.of(context)!.exchangeExpensive + ': ',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            Text(
-              '-$percentString% ',
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    color: color ?? Theme.of(context).textTheme.bodyText2!.color,
-                  ),
-            ),
-            Text(
-              AppLocalizations.of(context)!.comparedToCex,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ]);
+          message = _message(
+            AppLocalizations.of(context).exchangeExpensive,
+            percentString,
+            color,
+            lessThan10kVol,
+          );
+
           break;
         }
       default:
         {
           message = Text(
-            AppLocalizations.of(context)!.exchangeIdentical,
+            AppLocalizations.of(context).exchangeIdentical,
             style: Theme.of(context).textTheme.bodyText1,
           );
         }
     }
 
     return message;
+  }
+
+  Widget _message(
+      String msg, String percentString, Color color, bool lessThan10kVol) {
+    return Expanded(
+      child: RichText(
+        textAlign: widget.alignCenter ? TextAlign.center : TextAlign.start,
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: msg + ': ',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            TextSpan(
+              text: '+$percentString% ',
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    color: color ?? Theme.of(context).textTheme.bodyText2.color,
+                  ),
+            ),
+            TextSpan(
+              text: lessThan10kVol
+                  ? AppLocalizations.of(context).comparedTo24hrCex
+                  : AppLocalizations.of(context).comparedToCex,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            WidgetSpan(
+              child: Icon(
+                _showDetails ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                size: 16,
+                color: Theme.of(context).textTheme.bodyText1.color,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildEvaluationSlider() {
@@ -249,7 +265,7 @@ class _EvaluationState extends State<Evaluation> {
                   left: 0,
                   top: _sliderH / 2,
                   child: Container(
-                    width: _sliderW! / 2,
+                    width: _sliderW / 2,
                     height: _sliderH,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -259,10 +275,10 @@ class _EvaluationState extends State<Evaluation> {
                     ),
                   )),
               Positioned(
-                  left: _sliderW! / 2,
+                  left: _sliderW / 2,
                   top: _sliderH / 2,
                   child: Container(
-                    width: _sliderW! / 2,
+                    width: _sliderW / 2,
                     height: _sliderH,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -272,8 +288,8 @@ class _EvaluationState extends State<Evaluation> {
                     ),
                   )),
               Positioned(
-                  left: ((_sliderW! / 2) - _sliderH / 2) +
-                      _sign * _percent * _sliderW! / _indicatorRange / 2,
+                  left: ((_sliderW / 2) - _sliderH / 2) +
+                      _sign * _percent * _sliderW / _indicatorRange / 2,
                   top: 0,
                   width: _sliderH,
                   height: _sliderH * 2,

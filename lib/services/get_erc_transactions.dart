@@ -53,6 +53,8 @@ class GetErcTransactions {
     switch (coin!.type) {
       case CoinType.utxo:
       case CoinType.slp:
+      case CoinType.iris:
+      case CoinType.cosmos:
       case CoinType.smartChain:
       case CoinType.qrc:
         break;

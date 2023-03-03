@@ -3,8 +3,10 @@
 //     final orderbook = orderbookFromJson(jsonString);
 
 import 'dart:convert';
+
 import 'package:decimal/decimal.dart';
 import 'package:rational/rational.dart';
+
 import '../generic_blocs/coins_bloc.dart';
 import '../utils/utils.dart';
 
@@ -36,13 +38,13 @@ class Orderbook {
             ? null
             : List<Ask>.from(
                 json['bids'].map(
-                  (dynamic x) => x == null ? null : Ask.fromJson(x),
+                  (dynamic x) => x == null ? null : Ask.fromJson(x, json['rel']),
                 ),
               ).where((Ask? bid) => bid != null).toList(),
         numbids: json['numbids'] ?? 0,
         asks: json['asks'] == null
             ? null
-            : List<Ask>.from(json['asks'].map((dynamic x) => Ask.fromJson(x)))
+            : List<Ask>.from(json['asks'].map((dynamic x) => Ask.fromJson(x, json['base'])))
                 .where((Ask ask) => ask != null)
                 .toList(),
         numasks: json['numasks'] ?? 0,
@@ -94,12 +96,12 @@ class Ask {
     this.zcredits,
   });
 
-  static Ask fromJson(Map<String, dynamic> json) {
+  static Ask fromJson(Map<String, dynamic> json, [String coin]) {
     // if (isInfinite(json['price'])) return null;
     // if (isInfinite(json['maxvolume'])) return null;
 
     return Ask(
-      coin: json['coin'] ?? '',
+      coin: coin ?? json['coin'] ?? '',
       address: json['address'] ?? '',
       price: json['price'] ?? 0.0 as String?,
       priceFract: json['price_fraction'],

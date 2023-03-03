@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 import '../../app_config/app_config.dart';
 import '../../localizations.dart';
+import '../../widgets/html_parser.dart';
 import '../authentification/lock_screen.dart';
 import '../help-feedback/support_channel_item.dart';
-import '../../widgets/html_parser.dart';
 
 class HelpPage extends StatefulWidget {
   @override
@@ -127,11 +128,18 @@ class _HelpPageState extends State<HelpPage> {
       },
       {
         'q': local!.question_10(appConfig.appName),
-        'a': Text(
-          local!.answer_10(appConfig.appName),
-          style: const TextStyle(
+        'a': HtmlParser(
+          local.answer_10(appConfig.appName),
+          textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
+            fontWeight: FontWeight.w400,
             height: 1.3,
             fontSize: 15,
+          ),
+          linkStyle: Theme.of(context).textTheme.subtitle1.copyWith(
+            fontWeight: FontWeight.w400,
+            height: 1.3,
+            fontSize: 15,
+            color: Color.fromRGBO(57, 161, 238, 1),
           ),
         ),
         'isExpanded': false,

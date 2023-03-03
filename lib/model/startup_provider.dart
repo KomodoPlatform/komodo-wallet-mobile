@@ -87,6 +87,12 @@ class Startup {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
     }
+
+    const screenshot = bool.fromEnvironment('screenshot', defaultValue: false);
+    if (screenshot) {
+      prefs.setBool('disallowScreenshot', false);
+      MMService.nativeC.invokeMethod('is_screenshot');
+    }
   }
 
   // --- link to StartupProvider ---

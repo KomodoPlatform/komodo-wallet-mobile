@@ -34,6 +34,7 @@ class AmountAddressStep extends StatefulWidget {
     this.coinBalance,
     this.paymentUriInfo,
     this.scrollController,
+    this.memoController,
   }) : super(key: key);
 
   final Function? onCancel;
@@ -42,6 +43,7 @@ class AmountAddressStep extends StatefulWidget {
   final Function? onWithdrawPressed;
   final TextEditingController? amountController;
   final TextEditingController? addressController;
+  final TextEditingController memoController;
   final bool autoFocus;
   final CoinBalance? coinBalance;
   final PaymentUriInfo? paymentUriInfo;
@@ -91,8 +93,32 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               coin: widget.coinBalance!.coin,
               onChanged: onChanged,
             ),
+            // Only show for tendermint tokens
+            if (widget.coinBalance.coin.type == CoinType.cosmos ||
+                widget.coinBalance.coin.type == CoinType.iris)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: TextFormField(
+                  key: const Key('send-memo-field'),
+                  autofocus: false,
+                  autocorrect: false,
+                  maxLength: 256,
+                  enableSuggestions: false,
+                  controller: widget.memoController,
+                  textInputAction: TextInputAction.done,
+                  keyboardType: TextInputType.text,
+                  style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.end,
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context).memo,
+                    hintText: AppLocalizations.of(context).optional,
+                  ),
+                ),
+              ),
             // Temporary disable custom fee for qrc20 tokens
-            if (widget.coinBalance!.coin!.type != CoinType.qrc)
+            if (widget.coinBalance.coin.type != CoinType.qrc &&
+                widget.coinBalance.coin.type != CoinType.cosmos &&
+                widget.coinBalance.coin.type != CoinType.iris)
               CustomFee(
                 coin: widget.coinBalance!.coin,
                 amount: widget.amountController!.text,

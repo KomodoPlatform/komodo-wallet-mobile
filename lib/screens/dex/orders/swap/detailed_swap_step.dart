@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../localizations.dart';
-import '../../../dex/orders/swap/progress_step.dart';
-import '../../../../utils/utils.dart';
 
+import '../../../../localizations.dart';
+import '../../../../utils/utils.dart';
+import '../../../dex/orders/swap/progress_step.dart';
 import 'detailed_swap_steps.dart';
 
 class DetailedSwapStep extends StatelessWidget {
@@ -78,14 +78,23 @@ class DetailedSwapStep extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: () => launchURL(explorerUrl! + txHash!),
+          onTap: () {
+            String hash = '';
+            if (coinType == CoinType.iris || coinType == CoinType.cosmos) {
+              hash = txHash.toUpperCase();
+            } else {
+              hash = txHash;
+            }
+            launchURL(explorerUrl + hash);
+          },
           child: Padding(
             padding: EdgeInsets.fromLTRB(6, 2, 4, 2),
             child: Row(
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 2, 0),
-                  child: Text(AppLocalizations.of(context)!.viewInExplorerButton,
+                  child: Text(
+                      AppLocalizations.of(context)!.viewInExplorerButton,
                       style: Theme.of(context).textTheme.caption),
                 ),
                 Padding(

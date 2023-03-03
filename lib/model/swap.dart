@@ -3,8 +3,9 @@
 //     final swap = swapFromJson(jsonString);
 
 import 'dart:convert';
-import '../model/coin.dart';
-import '../generic_blocs/coins_bloc.dart';
+
+import '../blocs/coins_bloc.dart';
+import '../model/coinins_bloc.dart';
 import '../model/order.dart';
 import '../model/recent_swaps.dart';
 import '../utils/utils.dart';
@@ -144,14 +145,14 @@ class Swap {
   int get step => result?.events?.length ?? 0;
 
   /// 'Started' event data
-  SwapEL? get started =>
-      result?.events?.firstWhereOrNull((SwapEL ev) => ev.event!.type == 'Started');
+  SwapEL? get started => result?.events
+      ?.firstWhereOrNull((SwapEL ev) => ev.event!.type == 'Started');
 
   /// Maker ticker abbriviation
-  String? get makerAbbr => started?.event?.data?.makerCoin;
+  String get makerAbbr => started?.event?.data?.makerCoin ?? result.makerCoin;
 
   /// Taker ticker abbriviation
-  String? get takerAbbr => started?.event?.data?.takerCoin;
+  String get takerAbbr => started?.event?.data?.takerCoin ?? result.takerCoin;
 
   /// Maker coin instance
   Coin? get makerCoin {

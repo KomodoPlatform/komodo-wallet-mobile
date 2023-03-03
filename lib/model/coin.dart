@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+
 import '../app_config/app_config.dart';
 import '../app_config/coin_converter.dart';
 import '../generic_blocs/coins_bloc.dart';
@@ -85,8 +86,7 @@ class Coin {
         '';
     colorCoin = config['colorCoin'] ?? '';
     isDefault = appConfig.defaultCoins.contains(abbr);
-    walletOnly =
-        config['walletOnly'] ?? appConfig.walletOnlyCoins.contains(abbr);
+    walletOnly = appConfig.walletOnlyCoins.contains(abbr);
     if (config['serverList'] != null) {
       serverList = <Server>[];
       config['serverList'].forEach((v) {

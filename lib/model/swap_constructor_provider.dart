@@ -1,24 +1,26 @@
 import 'dart:async';
 import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:rational/rational.dart';
+
+import '../app_config/app_config.dart';
+import '../blocs/coins_bloc.dart';
+import '../model/best_order.dart';
 import '../model/buy_response.dart';
+import '../model/coin.dart';
+import '../model/coin_balance.dart';
+import '../model/get_best_orders.dart';
 import '../model/get_buy.dart';
+import '../model/get_max_taker_volume.dart';
 import '../model/get_trade_preimage_2.dart';
 import '../model/market.dart';
 import '../model/rpc_error.dart';
-import '../screens/dex/trade/pro/confirm/protection_control.dart';
-import '../services/mm_service.dart';
-import 'package:rational/rational.dart';
-import '../app_config/app_config.dart';
-import '../model/coin.dart';
-import '../model/get_max_taker_volume.dart';
 import '../model/trade_preimage.dart';
-import '../model/get_best_orders.dart';
-import '../model/best_order.dart';
+import '../screens/dex/trade/pro/confirm/protection_control.dart';
 import '../services/mm.dart';
-import '../utils/utils.dart';
-import '../generic_blocs/coins_bloc.dart';
-import '../model/coin_balance.dart';
+import '../services/mm_service.dart';
+import '../utils/utils_balance.dart';
 
 class ConstructorProvider extends ChangeNotifier {
   ConstructorProvider() {
@@ -252,7 +254,7 @@ class ConstructorProvider extends ChangeNotifier {
       if (!known!.containsKey(ticker)) {
         bestOrders.result!.remove(ticker);
       }
-      if (coinsBloc.getCoinByAbbr(ticker)!.walletOnly) {
+      if (appConfig.walletOnlyCoins.contains(ticker)) {
         bestOrders.result!.remove(ticker);
       }
       final Coin? coin = coinsBloc.getCoinByAbbr(ticker);
@@ -381,7 +383,8 @@ class ConstructorProvider extends ChangeNotifier {
         type == Market.SELL ? _matchingOrder?.otherCoin : _matchingOrder?.coin;
 
     if (coin == null) return;
-    final BestOrder? topOrder = getTickerTopOrder(bestOrders.result![coin]!, type);
+    final BestOrder? topOrder =
+        getTickerTopOrder(bestOrders.result![coin]!, type);
     if (topOrder == null) return;
 
     if (topOrder.maxVolume == _matchingOrder!.maxVolume &&
