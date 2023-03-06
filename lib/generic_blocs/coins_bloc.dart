@@ -4,10 +4,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:decimal/decimal.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
 
 import '../app_config/app_config.dart';
-import 'main_bloc.dart';
-import 'settings_bloc.dart';
 import '../model/active_coin.dart';
 import '../model/balance.dart';
 import '../model/base_service.dart';
@@ -32,6 +31,8 @@ import '../services/mm_service.dart';
 import '../utils/log.dart';
 import '../utils/utils.dart';
 import '../widgets/bloc_provider.dart';
+import 'main_bloc.dart';
+import 'settings_bloc.dart';
 
 class CoinsBloc implements GenericBlocBase {
   CoinsBloc() {
@@ -47,9 +48,9 @@ class CoinsBloc implements GenericBlocBase {
         (j) => retryActivatingSuspendedCoins());
   }
 
-  LinkedHashMap<String, Coin> _knownCoins;
+  LinkedHashMap<String?, Coin?>? _knownCoins;
 
-  LinkedHashMap<String, Coin> get knownCoins => _knownCoins;
+  LinkedHashMap<String?, Coin?>? get knownCoins => _knownCoins;
 
   List<CoinBalance> coinBalance = <CoinBalance>[];
   List<String> coinsWithLessThan10kVol = [];
@@ -72,7 +73,7 @@ class CoinsBloc implements GenericBlocBase {
 
   // currentActiveCoin == null, when all coins
   // queued for activation are activated
-  CoinToActivate currentActiveCoin = CoinToActivate();
+  CoinToActivate? currentActiveCoin;
 
   // Streams to handle the list coin
   final StreamController<CoinToActivate> _currentActiveCoinController =
@@ -110,8 +111,8 @@ class CoinsBloc implements GenericBlocBase {
     final Set<Coin> suspendedCoins = {};
 
     for (CoinBalance balance in coinBalance) {
-      if (balance.coin.suspended)
-        suspendedCoins.add(getKnownCoinByAbbr(balance.coin.abbr));
+      if (balance.coin!.suspended)
+        suspendedCoins.add(getKnownCoinByAbbr(balance.coin?.abbr)!);
     }
 
     return suspendedCoins;
@@ -128,24 +129,24 @@ class CoinsBloc implements GenericBlocBase {
     _coinBeforeActivationController.close();
   }
 
-  Coin getCoinByAbbr(String abbr) {
+  Coin? getCoinByAbbr(String? abbr) {
     return getBalanceByAbbr(abbr)?.coin;
   }
 
-  Coin getKnownCoinByAbbr(String abbr) {
-    return knownCoins.containsKey(abbr) ? knownCoins[abbr] : null;
+  Coin? getKnownCoinByAbbr(String? abbr) {
+    return knownCoins!.containsKey(abbr) ? knownCoins![abbr] : null;
   }
 
-  CoinBalance getBalanceByAbbr(String abbr) {
-    return coinBalance.firstWhere(
-        (CoinBalance balance) => balance.coin.abbr == abbr,
-        orElse: () => null);
+  CoinBalance? getBalanceByAbbr(String? abbr) {
+    return coinBalance.firstWhereOrNull(
+      (CoinBalance balance) => balance.coin?.abbr == abbr,
+    );
   }
 
-  bool isCoinActive(String coin) {
-    final CoinBalance balance = coinBalance.firstWhere(
-        (CoinBalance bal) => bal.coin.abbr == coin,
-        orElse: () => null);
+  bool isCoinActive(String? coin) {
+    final CoinBalance? balance = coinBalance.firstWhereOrNull(
+      (CoinBalance bal) => bal.coin?.abbr == coin,
+    );
 
     return balance != null;
   }
@@ -183,18 +184,18 @@ class CoinsBloc implements GenericBlocBase {
       // it wont be enabled. But if SLP coins are even removed after auto adding
       // they will be forced enabled because parent coins are needed enabled before
       // SLP coins can enable
-      String platform = coin?.protocol?.protocolData?.platform;
+      String? platform = coin.protocol?.protocolData?.platform;
       bool isParentEnabled =
-          coinBalance.any((element) => element.coin.abbr == platform);
+          coinBalance.any((element) => element.coin?.abbr == platform);
       if (isActive &&
           platform != null &&
           !isParentEnabled &&
           canActivate(coinBeforeActivation)) {
-        Coin parentCoin = getKnownCoinByAbbr(platform);
+        Coin? parentCoin = getKnownCoinByAbbr(platform);
         coinBeforeActivation.removeWhere(
-            (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
+            (CoinToActivate item) => item.coin.abbr == parentCoin?.abbr);
         coinBeforeActivation.add(
-          CoinToActivate(coin: parentCoin, isActive: isActive),
+          CoinToActivate(coin: parentCoin!, isActive: isActive),
         );
       }
     } else {
@@ -204,18 +205,18 @@ class CoinsBloc implements GenericBlocBase {
   }
 
   void setCoinsBeforeActivationByType(
-    String type,
+    String? type,
     bool isActive, {
-    String query,
-    String filterType,
+    String? query,
+    String? filterType,
   }) {
     coinBeforeActivation.sort((a, b) =>
-        a.coin.name.toUpperCase().compareTo(b.coin.name.toUpperCase()));
+        a.coin.name!.toUpperCase().compareTo(b.coin.name!.toUpperCase()));
 
     List<CoinToActivate> typeList = coinBeforeActivation
         .where((coin) =>
-            (coin.coin.type.name == (coin.coin.testCoin ? null : type)) &&
-            isCoinPresent(coin.coin, query, filterType))
+            (coin.coin.type?.name == (coin.coin.testCoin! ? null : type)) &&
+            isCoinPresent(coin.coin, query, filterType!))
         .toList();
 
     int selected = coinBeforeActivation
@@ -238,7 +239,7 @@ class CoinsBloc implements GenericBlocBase {
       coinBeforeActivation
           .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
 
-      String platform = coin?.protocol?.protocolData?.platform;
+      String? platform = coin.protocol?.protocolData?.platform;
 
       if (isActive && counter < remaining) {
         coinBeforeActivation
@@ -248,12 +249,12 @@ class CoinsBloc implements GenericBlocBase {
         // auto add parent coin if not enabled previously
         if (platform == null) continue;
         bool isParentEnabled =
-            coinBalance.any((element) => element.coin.abbr == platform);
+            coinBalance.any((element) => element.coin?.abbr == platform);
         bool selectedParent = coinBeforeActivation.any(
             (element) => element.coin.abbr == platform && !element.isActive);
         if (selectedParent && !isParentEnabled) {
-          Coin parentCoin = getKnownCoinByAbbr(platform);
-          _tempList.add(parentCoin.abbr);
+          Coin? parentCoin = getKnownCoinByAbbr(platform);
+          _tempList.add(parentCoin!.abbr!);
           coinBeforeActivation.removeWhere(
               (CoinToActivate item) => item.coin.abbr == parentCoin.abbr);
 
@@ -295,13 +296,13 @@ class CoinsBloc implements GenericBlocBase {
   }
 
   Future<void> removeCoinBalance(Coin coin) async {
-    coinBalance.removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
+    coinBalance.removeWhere((CoinBalance item) => coin.abbr == item.coin?.abbr);
   }
 
   Future<void> removeCoinLocal(Coin coin, dynamic disableCoinRes) async {
     if (disableCoinRes is DisableCoin) {
       coinBalance
-          .removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
+          .removeWhere((CoinBalance item) => coin.abbr == item.coin?.abbr);
       updateCoins(coinBalance);
       await deactivateCoins(<Coin>[coin]);
     }
@@ -321,8 +322,8 @@ class CoinsBloc implements GenericBlocBase {
     if (coin.suspended) {
       _removeSuspendedCoin(coin);
       for (var e in irisTokens) {
-        e.coin.suspended = true;
-        _removeSuspendedCoin(e.coin);
+        e.coin?.suspended = true;
+        _removeSuspendedCoin(e.coin!);
       }
       return;
     }
@@ -332,8 +333,8 @@ class CoinsBloc implements GenericBlocBase {
     removeCoinLocal(coin, res);
     syncOrderbook.updateActivePair();
     for (var e in irisTokens) {
-      e.coin.suspended = true;
-      _removeSuspendedCoin(e.coin);
+      e.coin?.suspended = true;
+      _removeSuspendedCoin(e.coin!);
     }
   }
 
@@ -354,7 +355,7 @@ class CoinsBloc implements GenericBlocBase {
     int currentIndex = 0;
 
     coinBalance.asMap().forEach((int index, CoinBalance coinBalance) {
-      if (coinBalance.coin.abbr == coin.coin.abbr) {
+      if (coinBalance.coin?.abbr == coin.coin?.abbr) {
         exists = true;
         currentIndex = index;
       }
@@ -367,7 +368,7 @@ class CoinsBloc implements GenericBlocBase {
     }
     coinBalance.sort((CoinBalance b, CoinBalance a) {
       if (a.balanceUSD != null && b.balanceUSD != null) {
-        return a.balanceUSD.compareTo(b.balanceUSD);
+        return a.balanceUSD!.compareTo(b.balanceUSD!);
       } else {
         return 0;
       }
@@ -376,8 +377,8 @@ class CoinsBloc implements GenericBlocBase {
   }
 
   Future<void> updateTransactions(
-      CoinBalance coinBalance, int limit, String fromId) async {
-    Coin coin = coinBalance.coin;
+      CoinBalance coinBalance, int limit, String? fromId) async {
+    Coin? coin = coinBalance.coin;
     try {
       dynamic transactions;
 
@@ -386,7 +387,7 @@ class CoinsBloc implements GenericBlocBase {
             coin: coin, fromId: fromId);
       } else {
         transactions = await MM.getTransactions(mmSe.client,
-            GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+            GetTxHistory(coin: coin?.abbr, limit: limit, fromId: fromId));
       }
 
       if (transactions is Transactions) {
@@ -395,20 +396,19 @@ class CoinsBloc implements GenericBlocBase {
         if (fromId == null || fromId.isEmpty) {
           this.transactions = transactions;
         } else {
-          this.transactions.result.fromId = transactions.result.fromId;
-          this.transactions.result.limit = transactions.result.limit;
-          this.transactions.result.skipped = transactions.result.skipped;
-          this.transactions.result.total = transactions.result.total;
+          this.transactions.result.fromId = transactions.result?.fromId;
+          this.transactions.result.limit = transactions.result?.limit;
+          this.transactions.result.skipped = transactions.result?.skipped;
+          this.transactions.result.total = transactions.result?.total;
           this
               .transactions
               .result
               .transactions
-              .addAll(transactions.result.transactions);
+              .addAll(transactions.result?.transactions);
         }
         _inTransactions.add(this.transactions);
       } else if (transactions is ErrorCode) {
         _inTransactions.add(transactions);
-        return transactions;
       }
     } catch (e) {
       Log('coins_bloc:244', e);
@@ -459,12 +459,12 @@ class CoinsBloc implements GenericBlocBase {
     List<Coin> preEnabledCoins = [];
     for (Coin coin
         in coins.where((element) => hasParentPreInstalled(element))) {
-      String platform = coin?.protocol?.protocolData?.platform;
+      String? platform = coin.protocol?.protocolData?.platform;
       bool isParentEnabled =
-          coinBalance.any((element) => element.coin.abbr == platform);
+          coinBalance.any((element) => element.coin?.abbr == platform);
       if (!isParentEnabled) //parent coin is already enabled
         preEnabledCoins
-            .add(getKnownCoinByAbbr(coin.protocol.protocolData.platform));
+            .add(getKnownCoinByAbbr(coin.protocol?.protocolData?.platform)!);
     }
     preEnabledCoins = preEnabledCoins.toSet().toList();
 
@@ -513,7 +513,7 @@ class CoinsBloc implements GenericBlocBase {
       // Before actual coin activation, coinBalance can store
       // coins data (including balanceUSD) loaded from wallet snapshot,
       // created during previous session (#898)
-      final double preSavedUsdBalance = getBalanceByAbbr(acc.coin)?.balanceUSD;
+      final double? preSavedUsdBalance = getBalanceByAbbr(acc.coin)?.balanceUSD;
       cb.balanceUSD = preSavedUsdBalance ?? 0;
       updateOneCoin(cb);
     }
@@ -533,31 +533,31 @@ class CoinsBloc implements GenericBlocBase {
     }
 
     for (CoinBalance balance in coinBalance) {
-      bool shouldSuspend = !apiCoins.contains(balance.coin.abbr);
+      bool shouldSuspend = !apiCoins.contains(balance.coin?.abbr);
 
       if (shouldSuspend) {
-        balance.coin.suspended = true;
+        balance.coin?.suspended = true;
 
         Log('coins_bloc]',
-            '${balance.coin.abbr} had an error during activation and was suspended');
-      } else if (balance.coin.suspended) {
-        balance.coin.suspended = false;
+            '${balance.coin?.abbr} had an error during activation and was suspended');
+      } else if (balance.coin!.suspended) {
+        balance.coin?.suspended = false;
 
         Log('coins_bloc]',
-            '${balance.coin.abbr} did successfully activate and was un-suspended');
+            '${balance.coin?.abbr} did successfully activate and was un-suspended');
       }
 
       _inCoins.add(coinBalance);
     }
   }
 
-  void currentCoinActivate(CoinToActivate coinToActivate) {
+  void currentCoinActivate(CoinToActivate? coinToActivate) {
     currentActiveCoin = coinToActivate;
-    _inCurrentActiveCoin.add(currentActiveCoin);
+    _inCurrentActiveCoin.add(currentActiveCoin!);
   }
 
   Future<void> deactivateCoins(List<Coin> coinsToRemove) async {
-    for (Coin coin in coinsToRemove) await Db.coinInactive(coin.abbr);
+    for (Coin coin in coinsToRemove) await Db.coinInactive(coin.abbr!);
   }
 
   Future<void> resetCoinDefault() async {
@@ -568,10 +568,10 @@ class CoinsBloc implements GenericBlocBase {
     final ret = <Coin>[];
     final known = await coins;
     final List<String> deactivate = [];
-    for (String ticker in await Db.activeCoins) {
-      final coin = known[ticker];
+    for (String? ticker in await Db.activeCoins) {
+      final coin = known![ticker];
       if (coin == null) {
-        deactivate.add(ticker);
+        deactivate.add(ticker!);
         continue;
       }
       ret.add(coin);
@@ -588,7 +588,7 @@ class CoinsBloc implements GenericBlocBase {
   }
 
   Future<List<Coin>> getAllNotActiveCoins() async {
-    final all = (await coins).values.toList();
+    final all = (await coins)?.values.toList() ?? [];
     final active = await Db.activeCoins;
     final notActive = <Coin>[];
 
@@ -598,13 +598,13 @@ class CoinsBloc implements GenericBlocBase {
     }
 
     notActive.sort((Coin a, Coin b) =>
-        a.swapContractAddress.compareTo(b.swapContractAddress));
+        a.swapContractAddress!.compareTo(b.swapContractAddress!));
     return notActive;
   }
 
-  Future<List<Coin>> getAllNotActiveCoinsWithFilter(
+  Future<List<Coin?>?> getAllNotActiveCoinsWithFilter(
       String query, String type) async {
-    List<Coin> coinsActivate = await getAllNotActiveCoins();
+    List<Coin?>? coinsActivate = await getAllNotActiveCoins();
     coinsActivate = filterCoinsByQuery(coinsActivate, query, type: type);
     return coinsActivate;
   }
@@ -638,8 +638,8 @@ class CoinsBloc implements GenericBlocBase {
     for (Coin coin in coins) {
       try {
         final CoinBalance balance = await _getBalanceForCoin(coin);
-        if (balance.balance.address != null &&
-            balance.balance.address.isNotEmpty) {
+        if (balance.balance?.address != null &&
+            balance.balance!.address!.isNotEmpty) {
           updateOneCoin(balance);
         }
       } catch (ex) {
@@ -655,7 +655,7 @@ class CoinsBloc implements GenericBlocBase {
     for (CoinToActivate coinToActivate in coinBeforeActivation) {
       if (!coinToActivate.isActive) continue;
 
-      if (coinToActivate.coin.testCoin && !settingsBloc.enableTestCoins) {
+      if (coinToActivate.coin.testCoin! && !settingsBloc.enableTestCoins) {
         if (!appConfig.defaultTestCoins.contains(coinToActivate.coin.abbr))
           continue;
       }
@@ -669,7 +669,7 @@ class CoinsBloc implements GenericBlocBase {
   }
 
   Future<CoinBalance> _getBalanceForCoin(Coin coin) async {
-    Balance balance;
+    Balance? balance;
     try {
       balance = await MM
           .getBalance(GetBalance(coin: coin.abbr))
@@ -679,7 +679,7 @@ class CoinsBloc implements GenericBlocBase {
       balance = null;
     }
 
-    final double price = cexPrices.getUsdPrice(coin.abbr);
+    final double? price = cexPrices.getUsdPrice(coin.abbr);
 
     dynamic coinBalance;
     if (balance != null && coin.abbr == balance.coin) {
@@ -704,8 +704,8 @@ class CoinsBloc implements GenericBlocBase {
     if (ctks is CoinToKickStart) {
       Log('coins_bloc:496', 'kick_start coins: ${ctks.result}');
       final known = await coins;
-      for (String ticker in ctks.result) {
-        final coin = known[ticker];
+      for (String ticker in ctks.result!) {
+        final coin = known![ticker];
         if (coin == null) continue;
         await Db.coinActive(coin);
       }
@@ -715,16 +715,16 @@ class CoinsBloc implements GenericBlocBase {
   List<CoinBalance> sortCoins(List<CoinBalance> unsorted) {
     final List<CoinBalance> _sorted = List.from(unsorted);
     _sorted.sort((a, b) {
-      if (a.balanceUSD < b.balanceUSD) return 1;
-      if (a.balanceUSD > b.balanceUSD) return -1;
+      if (a.balanceUSD! < b.balanceUSD!) return 1;
+      if (a.balanceUSD! > b.balanceUSD!) return -1;
 
-      if (a.balance.balance < b.balance.balance) return 1;
-      if (a.balance.balance > b.balance.balance) return -1;
+      if (a.balance!.balance! < b.balance!.balance!) return 1;
+      if (a.balance!.balance! > b.balance!.balance!) return -1;
 
-      final int namesCompared = a.coin.name.compareTo(b.coin.name);
-      if (namesCompared != 0) return namesCompared;
+      final int? namesCompared = a.coin?.name?.compareTo(b.coin!.name!);
+      if (namesCompared != 0) return namesCompared!;
 
-      return a.coin.abbr.compareTo(b.coin.abbr);
+      return a.coin!.abbr!.compareTo(b.coin!.abbr!);
     });
 
     return _sorted;
@@ -733,14 +733,14 @@ class CoinsBloc implements GenericBlocBase {
   List<CoinBalance> sortCoinsWithoutTestCoins(List<CoinBalance> unsorted) {
     List<CoinBalance> _sorted = [];
     _sorted = sortCoins(unsorted);
-    _sorted.removeWhere((CoinBalance c) => c.coin.testCoin);
+    _sorted.removeWhere((CoinBalance c) => c.coin!.testCoin!);
     return _sorted;
   }
 
-  Future<Transaction> getLatestTransaction(CoinBalance coinBalance) async {
+  Future<Transaction?> getLatestTransaction(CoinBalance coinBalance) async {
     const int limit = 1;
-    const String fromId = null;
-    Coin coin = coinBalance.coin;
+    const String? fromId = null;
+    Coin? coin = coinBalance.coin;
     try {
       dynamic transactions;
       if (isErcType(coin)) {
@@ -748,13 +748,13 @@ class CoinsBloc implements GenericBlocBase {
             coin: coin, fromId: fromId);
       } else {
         transactions = await MM.getTransactions(mmSe.client,
-            GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+            GetTxHistory(coin: coin?.abbr, limit: limit, fromId: fromId));
       }
 
       if (transactions is Transactions) {
         transactions.camouflageIfNeeded();
-        if (transactions.result.transactions.isNotEmpty) {
-          return transactions.result.transactions[0];
+        if (transactions.result!.transactions!.isNotEmpty) {
+          return transactions.result!.transactions![0];
         }
         return null;
       } else if (transactions is ErrorCode) {
@@ -770,7 +770,7 @@ class CoinsBloc implements GenericBlocBase {
   bool _walletSnapshotInProgress = false;
   Future<void> _saveWalletSnapshot() async {
     if (_walletSnapshotInProgress) return;
-    if (coinBalance == null || coinBalance.isEmpty) return;
+    if (coinBalance.isEmpty) return;
 
     _walletSnapshotInProgress = true;
 
@@ -782,10 +782,10 @@ class CoinsBloc implements GenericBlocBase {
   }
 
   Future<void> loadWalletSnapshot() async {
-    final String jsonStr = await Db.getWalletSnapshot();
+    final String? jsonStr = await Db.getWalletSnapshot();
     if (jsonStr == null) return;
 
-    List<dynamic> items;
+    List<dynamic>? items;
     try {
       items = json.decode(jsonStr);
     } catch (e) {
@@ -798,7 +798,7 @@ class CoinsBloc implements GenericBlocBase {
     for (dynamic item in items) {
       final tmp = CoinBalance.fromJson(item);
       final currentCoins = await Db.activeCoins;
-      final abbr = tmp.coin.abbr;
+      final abbr = tmp.coin?.abbr;
       if (!currentCoins.contains(abbr)) {
         Log('coins_bloc',
             'loadWalletSnapshot] $abbr IS PRESENT on SNAPSHOT but was disabled by user, ignoring stored data...');
@@ -815,9 +815,10 @@ class CoinsBloc implements GenericBlocBase {
 CoinsBloc coinsBloc = CoinsBloc();
 
 class CoinToActivate {
-  CoinToActivate({this.coin, this.isActive, this.currentStatus});
+  CoinToActivate(
+      {required this.coin, required this.isActive, this.currentStatus});
 
   Coin coin;
-  String currentStatus;
+  String? currentStatus;
   bool isActive;
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../generic_blocs/authenticate_bloc.dart';
 import '../generic_blocs/camo_bloc.dart';
 import '../model/wallet_security_settings_provider.dart';
+import '../services/mm_service.dart';
 import '../utils/encryption_tool.dart';
 import '../utils/log.dart';
 import '../utils/utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Shares the progress on startup tasks with the UI
 class StartupProvider extends ChangeNotifier {

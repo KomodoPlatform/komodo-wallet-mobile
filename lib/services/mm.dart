@@ -1,74 +1,73 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
-import '../app_config/app_config.dart';
-import '../model/best_order.dart';
-import '../model/get_best_orders.dart';
-import '../model/get_enable_slp_coin.dart';
-import '../model/get_enable_tendermint.dart';
-import '../model/get_import_swaps.dart';
-import '../model/get_min_trading_volume.dart';
-import '../model/get_orderbook_depth.dart';
-import '../model/get_public_key.dart';
-import '../model/get_trade_preimage_2.dart';
-import '../model/import_swaps.dart';
-import '../model/orderbook_depth.dart';
-import '../model/public_key.dart';
-import '../model/rpc_error.dart';
 import 'package:rational/rational.dart';
-import '../model/get_convert_address.dart';
-import '../model/get_enabled_coins.dart';
-import '../model/get_max_taker_volume.dart';
-import '../model/get_priv_key.dart';
-import '../model/get_recover_funds_of_swap.dart';
-import '../model/get_rewards_info.dart';
-import '../model/get_trade_preimage.dart';
-import '../model/get_validate_address.dart';
-import '../model/priv_key.dart';
-import '../model/recover_funds_of_swap.dart';
-import '../model/rewards_provider.dart';
-import '../model/trade_preimage.dart';
-import '../model/version_mm2.dart';
-import '../services/music_service.dart';
-import '../utils/utils.dart';
 
+import '../app_config/app_config.dart';
 import '../model/balance.dart';
 import '../model/base_service.dart';
+import '../model/best_order.dart';
 import '../model/buy_response.dart';
 import '../model/coin.dart';
 import '../model/coin_to_kick_start.dart';
 import '../model/disable_coin.dart';
 import '../model/error_string.dart';
 import '../model/get_balance.dart';
+import '../model/get_best_orders.dart';
 import '../model/get_buy.dart';
 import '../model/get_cancel_order.dart';
+import '../model/get_convert_address.dart';
 import '../model/get_disable_coin.dart';
 import '../model/get_enable_coin.dart';
+import '../model/get_enable_slp_coin.dart';
+import '../model/get_enable_tendermint.dart';
+import '../model/get_enabled_coins.dart';
+import '../model/get_import_swaps.dart';
+import '../model/get_max_taker_volume.dart';
+import '../model/get_min_trading_volume.dart';
 import '../model/get_orderbook.dart';
+import '../model/get_orderbook_depth.dart';
+import '../model/get_priv_key.dart';
+import '../model/get_public_key.dart';
 import '../model/get_recent_swap.dart';
+import '../model/get_recover_funds_of_swap.dart';
+import '../model/get_rewards_info.dart';
 import '../model/get_send_raw_transaction.dart';
 import '../model/get_setprice.dart';
 import '../model/get_swap.dart';
 import '../model/get_trade_fee.dart';
+import '../model/get_trade_preimage.dart';
+import '../model/get_trade_preimage_2.dart';
 import '../model/get_tx_history.dart';
+import '../model/get_validate_address.dart';
 import '../model/get_withdraw.dart';
+import '../model/import_swaps.dart';
 import '../model/orderbook.dart';
+import '../model/orderbook_depth.dart';
 import '../model/orders.dart' hide Match;
+import '../model/priv_key.dart';
+import '../model/public_key.dart';
 import '../model/recent_swaps.dart';
+import '../model/recover_funds_of_swap.dart';
 import '../model/result.dart';
+import '../model/rewards_provider.dart';
+import '../model/rpc_error.dart';
 import '../model/send_raw_transaction_response.dart';
 import '../model/setprice_response.dart';
 import '../model/swap.dart';
 import '../model/trade_fee.dart';
+import '../model/trade_preimage.dart';
 import '../model/transactions.dart';
+import '../model/version_mm2.dart';
 import '../model/withdraw_response.dart';
+import '../services/music_service.dart';
 import '../utils/log.dart';
+import '../utils/utils.dart';
 import 'mm_service.dart';
 
 class UserpassBody {
-  UserpassBody({this.body, this.client});
+  UserpassBody({this.body, required this.client});
   dynamic body;
   http.Client client;
 }
@@ -82,7 +81,7 @@ ApiProvider MM = ApiProvider();
 
 class ApiProvider {
   String url = 'http://localhost:${appConfig.rpcPort}';
-  Response res;
+  late Response res;
 
   Response _saveRes(String method, Response res) {
     final String loggedBody = res.body.toString();
@@ -162,7 +161,7 @@ class ApiProvider {
   void _assert200(Response r) {
     if (r.body.isEmpty) throw ErrorString('HTTP ${r.statusCode} empty');
     if (r.statusCode != 200) {
-      String emsg;
+      String? emsg;
       try {
         // See if the body is a JSON error.
         emsg = ErrorString.fromJson(json.decode(r.body)).error;
@@ -171,13 +170,13 @@ class ApiProvider {
         // Treat the body as a potentially useful but untrusted error message.
         emsg = r.body
             .replaceAll(RegExp('[^a-zA-Z0-9, :\]\.-]+'), '.')
-            .replaceFirstMapped(RegExp('^(.{0,99}).*'), (Match m) => m[1]);
+            .replaceFirstMapped(RegExp('^(.{0,99}).*'), (Match m) => m.input);
       }
       throw ErrorString('HTTP ${r.statusCode}: $emsg');
     }
   }
 
-  Future<Balance> getBalance(GetBalance gb, {http.Client client}) async {
+  Future<Balance> getBalance(GetBalance gb, {http.Client? client}) async {
     // AG: HTTP handling is improved in this method.
     //     After using it for a while and seeing that it works as expected
     //     we should refactor the rest of the methods accordingly.
@@ -247,14 +246,14 @@ class ApiProvider {
         txHistory: false,
         swapContractAddress: coin.swapContractAddress,
         fallbackSwapContract: coin.fallbackSwapContract,
-        urls: List<String>.from(coin.serverList.map((e) => e.url)),
+        urls: List<String>.from(coin.serverList?.map((e) => e.url) ?? []),
       ).toJson());
-    if (coin?.protocol?.type == 'TENDERMINTTOKEN')
+    if (coin.protocol?.type == 'TENDERMINTTOKEN')
       return json.encode(MmTendermintTokenEnable(
         userpass: mmSe.userpass,
         coin: coin,
       ).toJson());
-    if (coin?.protocol?.type == 'TENDERMINT')
+    if (coin.protocol?.type == 'TENDERMINT')
       return json.encode(MmTendermintAssetEnable(
         userpass: mmSe.userpass,
         coin: coin,
@@ -275,7 +274,7 @@ class ApiProvider {
       'method': 'electrum',
       'userpass': mmSe.userpass,
       'coin': coin.abbr,
-      'servers': Coin.getServerList(coin.serverList),
+      'servers': Coin.getServerList(coin.serverList!),
       'mm2': coin.mm2,
       'tx_history': true,
       'required_confirmations': coin.requiredConfirmations,
@@ -283,9 +282,9 @@ class ApiProvider {
         'mature_confirmations': coin.matureConfirmations,
       'requires_notarization': coin.requiresNotarization ?? false,
       'address_format': coin.addressFormat,
-      if (coin.swapContractAddress.isNotEmpty)
+      if (coin.swapContractAddress!.isNotEmpty)
         'swap_contract_address': coin.swapContractAddress,
-      if (coin.fallbackSwapContract.isNotEmpty)
+      if (coin.fallbackSwapContract!.isNotEmpty)
         'fallback_swap_contract': coin.fallbackSwapContract,
       if (coin.bchdUrls != null) 'bchd_urls': coin.bchdUrls
     };
@@ -322,7 +321,7 @@ class ApiProvider {
                   'getTransactions', e, 'Error on get transactions')));
 
   Future<RecentSwaps> getRecentSwaps(GetRecentSwap grs,
-      {http.Client client}) async {
+      {http.Client? client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(client, grs);
     final r = await userBody.client
@@ -360,7 +359,7 @@ class ApiProvider {
               .then((Response r) => _saveRes('cancelOrder', r))
               .then((Response res) => resultSuccessFromJson(res.body))
               .then((ResultSuccess data) =>
-                  data.result.isEmpty ? errorStringFromJson(res.body) : data)
+                  data.result!.isEmpty ? errorStringFromJson(res.body) : data)
               .catchError((dynamic e) => _catchErrorString(
                   'cancelOrder', e, 'Error on cancel order')));
 
@@ -391,13 +390,13 @@ class ApiProvider {
               .then((Response res) =>
                   sendRawTransactionResponseFromJson(res.body))
               .then((SendRawTransactionResponse data) =>
-                  data.txHash.isEmpty ? errorStringFromJson(res.body) : data)
+                  data.txHash!.isEmpty ? errorStringFromJson(res.body) : data)
               .catchError((dynamic e) => errorStringFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
                   'postRawTransaction', e, 'Error on post raw transaction')));
 
   Future<dynamic> postWithdraw(
-    http.Client client,
+    http.Client? client,
     GetWithdraw body,
   ) async {
     client ??= mmSe.client;
@@ -428,7 +427,7 @@ class ApiProvider {
                   'getTradeFee', e, 'Error on get tradeFee')));
 
   Future<VersionMm2> getVersionMM2(BaseService body,
-      {http.Client client}) async {
+      {http.Client? client}) async {
     client ??= mmSe.client;
 
     try {
@@ -452,7 +451,7 @@ class ApiProvider {
 
   /// Returns a parsed JSON of the MM metrics
   /// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-tutorials/atomicdex-metrics.html
-  Future<dynamic> getMetricsMM2(BaseService body, {http.Client client}) async {
+  Future<dynamic> getMetricsMM2(BaseService body, {http.Client? client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(client, body);
     final r = await userBody.client
@@ -473,7 +472,7 @@ class ApiProvider {
   }
 
   Future<DisableCoin> disableCoin(GetDisableCoin req,
-      {http.Client client}) async {
+      {http.Client? client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(client, req);
     final r =
@@ -510,7 +509,7 @@ class ApiProvider {
   /// https://github.com/KomodoPlatform/developer-docs/pull/171/files
   /// https://github.com/KomodoPlatform/atomicDEX-API/commit/a00c2863210ce9a262bb579a74249dbb04a94efc
   Future<List<dynamic>> batch(List<Map<String, dynamic>> batch,
-      {http.Client client}) async {
+      {http.Client? client}) async {
     client ??= mmSe.client;
     final r = await client.post(Uri.parse(url), body: json.encode(batch));
     _assert200(r);
@@ -519,7 +518,7 @@ class ApiProvider {
     return List<dynamic>.from(json.decode(r.body));
   }
 
-  Future<List<dynamic>> getEnabledCoins({http.Client client}) async {
+  Future<List<dynamic>> getEnabledCoins({http.Client? client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(
       client,
@@ -539,7 +538,7 @@ class ApiProvider {
     return jbody['result'].toList();
   }
 
-  Future<List<RewardsItem>> getRewardsInfo({http.Client client}) async {
+  Future<List<RewardsItem>?> getRewardsInfo({http.Client? client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(
       client,
@@ -556,7 +555,7 @@ class ApiProvider {
     final error = ErrorString.fromJson(jbody);
     if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
-    List<RewardsItem> list;
+    List<RewardsItem>? list;
     try {
       for (dynamic item in jbody['result']) {
         list ??= [];
@@ -570,10 +569,10 @@ class ApiProvider {
   }
 
   /// returns `null` if address is valid, and String [reason] if not
-  Future<String> validateAddress({
-    @required String address,
-    @required String coin,
-    http.Client client,
+  Future<String?> validateAddress({
+    required String? address,
+    required String? coin,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(
@@ -602,10 +601,10 @@ class ApiProvider {
   }
 
   /// Returns converted address, or `null` if convertion failed
-  Future<String> convertLegacyAddress({
-    @required String address,
-    @required String coin,
-    http.Client client,
+  Future<String?> convertLegacyAddress({
+    required String? address,
+    required String? coin,
+    http.Client? client,
   }) async {
     if (await validateAddress(address: address, coin: coin) == null) {
       // address already valid
@@ -633,7 +632,7 @@ class ApiProvider {
     return jbody['result']['address'];
   }
 
-  Future<PrivKey> getPrivKey(GetPrivKey gpk, {http.Client client}) async {
+  Future<PrivKey> getPrivKey(GetPrivKey gpk, {http.Client? client}) async {
     client ??= mmSe.client;
     try {
       final userBody = await _assertUserpass(client, gpk);
@@ -658,7 +657,7 @@ class ApiProvider {
 
   Future<TradePreimage> getTradePreimage(
     GetTradePreimage request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
@@ -684,7 +683,7 @@ class ApiProvider {
 
   Future<TradePreimage> getTradePreimage2(
     GetTradePreimage2 request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
@@ -700,7 +699,7 @@ class ApiProvider {
         request: request,
         error: RpcError(
           type: RpcErrorType.connectionError,
-          message: e,
+          message: e.toString(),
         ),
       );
     }
@@ -713,7 +712,7 @@ class ApiProvider {
         request: request,
         error: RpcError(
           type: RpcErrorType.decodingError,
-          message: e,
+          message: e.toString(),
         ),
       );
     }
@@ -725,7 +724,7 @@ class ApiProvider {
       );
     }
 
-    TradePreimage preimage;
+    TradePreimage? preimage;
     try {
       preimage = TradePreimage.fromJson(jbody);
     } catch (_) {}
@@ -742,9 +741,9 @@ class ApiProvider {
     return preimage;
   }
 
-  Future<Rational> getMaxTakerVolume(
+  Future<Rational?> getMaxTakerVolume(
     GetMaxTakerVolume request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
@@ -766,9 +765,9 @@ class ApiProvider {
     }
   }
 
-  Future<double> getMinTradingVolume(
+  Future<double?> getMinTradingVolume(
     GetMinTradingVolume request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
@@ -784,7 +783,7 @@ class ApiProvider {
       final error = ErrorString.fromJson(jbody);
       if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
-      return double.tryParse(jbody['result']['min_trading_vol'] ?? '');
+      return double.tryParse(jbody['result']['min_trading_vol'] ?? '0');
     } catch (e) {
       throw _catchErrorString(
           'getMinTradingVolume', e, 'mm min_trading_volume] $e');
@@ -793,7 +792,7 @@ class ApiProvider {
 
   Future<dynamic> getImportSwaps(
     GetImportSwaps request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
@@ -819,7 +818,7 @@ class ApiProvider {
 
   Future<dynamic> getOrderbookDepth(
     GetOrderbookDepth request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
@@ -851,7 +850,7 @@ class ApiProvider {
 
   Future<BestOrders> getBestOrders(
     GetBestOrders request, {
-    http.Client client,
+    http.Client? client,
   }) async {
     client ??= mmSe.client;
 
@@ -876,15 +875,15 @@ class ApiProvider {
     }
   }
 
-  Future<bool> isRpcUp([http.Client client]) async {
+  Future<bool> isRpcUp([http.Client? client]) async {
     client ??= mmSe.client;
 
     bool isUp = false;
     try {
-      final VersionMm2 versionmm2 =
+      final VersionMm2? versionmm2 =
           await MM.getVersionMM2(BaseService(method: 'version'));
 
-      isUp = versionmm2 is VersionMm2 && versionmm2 != null;
+      isUp = versionmm2 is VersionMm2;
     } catch (e) {
       Log('mm', 'isRpcUp: $e');
     }
@@ -892,7 +891,7 @@ class ApiProvider {
     return isUp;
   }
 
-  Future<PublicKey> getPublicKey([http.Client client]) async {
+  Future<PublicKey> getPublicKey([http.Client? client]) async {
     client ??= mmSe.client;
     try {
       final userBody = await _assertUserpass(client, GetPublicKey());

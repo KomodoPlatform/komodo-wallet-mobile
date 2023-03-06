@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../../services/db/database.dart';
+import '../../../../../utils/utils.dart';
 import '../../../../generic_blocs/swap_history_bloc.dart';
+import '../../../../localizations.dart';
 import '../../../../model/error_string.dart';
 import '../../../../model/recover_funds_of_swap.dart';
 import '../../../../model/swap.dart';
 import '../../../dex/orders/swap/swap_detail_page.dart';
-import '../../../../../services/db/database.dart';
-import '../../../../../utils/utils.dart';
-
-import '../../../../localizations.dart';
 
 class BuildItemSwap extends StatefulWidget {
   const BuildItemSwap({this.context, this.swap});
@@ -114,7 +114,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                   height: 4,
                 ),
                 FutureBuilder<String?>(
-                    future: Db.getNote(widget.swap!.result!.uuid),
+                    future: Db.getNote(widget.swap!.result!.uuid!),
                     builder: (BuildContext context,
                         AsyncSnapshot<String?> snapshot) {
                       if (!snapshot.hasData) {

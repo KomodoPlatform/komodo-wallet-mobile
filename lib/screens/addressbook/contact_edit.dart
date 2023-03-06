@@ -2,19 +2,21 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
+import 'package:provider/provider.dart';
+
 import '../../app_config/theme_data.dart';
 import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
 import '../../model/addressbook_provider.dart';
 import '../../model/coin.dart';
 import '../../model/coin_type.dart';
-import '../addressbook/contact_edit_field.dart';
-import '../authentification/lock_screen.dart';
 import '../../utils/utils.dart';
 import '../../widgets/build_protocol_chip.dart';
 import '../../widgets/confirmation_dialog.dart';
 import '../../widgets/custom_simple_dialog.dart';
-import 'package:provider/provider.dart';
+import '../addressbook/contact_edit_field.dart';
+import '../authentification/lock_screen.dart';
 
 class ContactEdit extends StatefulWidget {
   const ContactEdit({Key? key, this.contact}) : super(key: key);
@@ -167,7 +169,8 @@ class _ContactEditState extends State<ContactEdit> {
   }
 
   Future<bool> _exitPage() async {
-    final bool wasEdited = _hashBeforeEdit != jsonEncode(_editContact!.toJson());
+    final bool wasEdited =
+        _hashBeforeEdit != jsonEncode(_editContact!.toJson());
     if (wasEdited) {
       showConfirmationDialog(
           confirmButtonText: AppLocalizations.of(context)!.contactDiscardBtn,
@@ -195,9 +198,8 @@ class _ContactEditState extends State<ContactEdit> {
     for (var abbr in _editContact!.addresses!.keys) {
       final String? value = _editContact!.addresses![abbr];
 
-      final String? name = all
-          .firstWhereOrNull((Coin coin) => coin.abbr == abbr)
-          ?.name;
+      final String? name =
+          all.firstWhereOrNull((Coin coin) => coin.abbr == abbr)?.name;
 
       String label = '$name ($abbr)';
       if (abbr == 'KMD') label = '$name (KMD & SmartChains)';
@@ -406,8 +408,8 @@ class _ContactEditState extends State<ContactEdit> {
       title: AppLocalizations.of(context)!.contactDelete,
       icon: Icons.delete,
       iconColor: Theme.of(context).errorColor,
-      message:
-          AppLocalizations.of(context)!.contactDeleteWarning(_editContact!.name!),
+      message: AppLocalizations.of(context)!
+          .contactDeleteWarning(_editContact!.name!),
       confirmButtonText: AppLocalizations.of(context)!.contactDeleteBtn,
       onConfirm: () => _deleteContact(),
     );

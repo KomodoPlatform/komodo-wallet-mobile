@@ -210,7 +210,7 @@ class Coin {
   }
 
   bool get isActive {
-    return coinsBloc.getBalanceByAbbr(abbr) != null;
+    return coinsBloc.getBalanceByAbbr(abbr!) != null;
   }
 }
 

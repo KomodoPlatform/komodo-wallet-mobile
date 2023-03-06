@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../model/swap.dart';
-import '../utils/utils.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
 
 import '../localizations.dart';
+import '../model/swap.dart';
+import '../utils/utils.dart';
 
 class SwapShareCard extends StatelessWidget {
   const SwapShareCard({Key? key, required this.swap}) : super(key: key);

@@ -2,24 +2,24 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import '../../../../generic_blocs/main_bloc.dart';
-import '../../../../generic_blocs/settings_bloc.dart';
-import '../../../../generic_blocs/swap_bloc.dart';
-import '../../../../generic_blocs/swap_history_bloc.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../localizations.dart';
 import '../../../../model/balance.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin.dart';
 import '../../../../model/coin_balance.dart';
 import '../../../../model/rewards_provider.dart';
-import '../portfolio/faucet_dialog.dart';
 import '../../../../utils/log.dart';
-import '../../../app_config/app_config.dart';
-import '../../utils/utils.dart';
 import '../../../../widgets/build_protocol_chip.dart';
 import '../../../../widgets/build_red_dot.dart';
-import 'package:provider/provider.dart';
-
+import '../../../app_config/app_config.dart';
+import '../../generic_blocs/main_bloc.dart';
+import '../../generic_blocs/settings_bloc.dart';
+import '../../generic_blocs/swap_bloc.dart';
+import '../../generic_blocs/swap_history_bloc.dart';
+import '../../utils/utils.dart';
+import '../portfolio/faucet_dialog.dart';
 import 'coin_detail/coin_detail.dart';
 import 'copy_dialog.dart';
 import 'rewards_page.dart';
@@ -64,7 +64,7 @@ class _ItemCoinState extends State<ItemCoin>
             context,
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => CoinDetail(
-                      coinBalance: widget.coinBalance,
+                      coinBalance: widget.coinBalance!,
                       isSendIsActive: true,
                     )),
           );
@@ -143,7 +143,7 @@ class _ItemCoinState extends State<ItemCoin>
                 context,
                 MaterialPageRoute<dynamic>(
                   builder: (BuildContext context) =>
-                      CoinDetail(coinBalance: widget.coinBalance),
+                      CoinDetail(coinBalance: widget.coinBalance!),
                 ),
               );
               cexProvider.withdrawCurrency = null;

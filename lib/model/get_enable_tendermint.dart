@@ -2,9 +2,9 @@ import 'coin.dart';
 
 class MmTendermintTokenEnable {
   MmTendermintTokenEnable({
-    this.userpass,
+    required this.userpass,
     this.method = 'enable_tendermint_token',
-    this.coin,
+    required this.coin,
   });
 
   Coin coin;
@@ -27,9 +27,9 @@ class MmTendermintTokenEnable {
 
 class MmTendermintAssetEnable {
   MmTendermintAssetEnable({
-    this.userpass,
+    required this.userpass,
     this.method = 'enable_tendermint_with_assets',
-    this.coin,
+    required this.coin,
   });
 
   Coin coin;
@@ -42,7 +42,7 @@ class MmTendermintAssetEnable {
         'method': method,
         'params': {
           'tokens_params': [],
-          'rpc_urls': coin.serverList.map((e) => e.url).toList(),
+          'rpc_urls': coin.serverList?.map((e) => e.url).toList(),
           'ticker': coin.abbr,
           'tx_history': true,
         }

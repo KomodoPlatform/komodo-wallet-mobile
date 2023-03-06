@@ -87,7 +87,9 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         swap.result!.successEvents![index - 1],
         swap.result!.successEvents![index],
       );
-      return stepSpeed != null ? Duration(milliseconds: stepSpeed.speed!) : null;
+      return stepSpeed != null
+          ? Duration(milliseconds: stepSpeed.speed!)
+          : null;
     }
 
     Duration? _getEstimatedDeviation(int index) {
@@ -120,12 +122,10 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
           return Duration(
               milliseconds:
                   DateTime.now().millisecondsSinceEpoch - fromTimestamp!);
-          break;
         case SwapStepStatus.failed:
         case SwapStepStatus.success:
           final int toTimeStamp = swap.result!.events![index].timestamp!;
           return Duration(milliseconds: toTimeStamp - fromTimestamp!);
-          break;
         default:
           return null;
       }
@@ -186,9 +186,10 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
               swap.result!.successEvents![i].toLowerCase().contains('taker')
                   ? swap.takerExplorerUrl
                   : swap.makerExplorerUrl,
-          coinType: swap.result.successEvents[i].toLowerCase().contains('taker')
-              ? swap.takerCoin.type
-              : swap.makerCoin.type,
+          coinType:
+              swap.result!.successEvents![i].toLowerCase().contains('taker')
+                  ? swap.takerCoin?.type
+                  : swap.makerCoin?.type,
           status: status,
           estimatedSpeed: _getEstimatedSpeed(i),
           estimatedDeviation: _getEstimatedDeviation(i),
@@ -216,8 +217,8 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                 ? swap.takerExplorerUrl
                 : swap.makerExplorerUrl,
             coinType: errorEventType.contains('Taker')
-                ? swap.takerCoin.type
-                : swap.makerCoin.type,
+                ? swap.takerCoin?.type
+                : swap.makerCoin?.type,
             status: status,
             actualSpeed: e == failedOnStep ? null : _getActualSpeed(e),
             index: e,
@@ -340,7 +341,8 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                                     )),
                                 const SizedBox(width: 4),
                                 Text(
-                                    AppLocalizations.of(context)!.swapEstimated +
+                                    AppLocalizations.of(context)!
+                                            .swapEstimated +
                                         ': ',
                                     style: TextStyle(
                                       fontSize: 13,

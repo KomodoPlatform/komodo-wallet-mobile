@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
+
 import '../generic_blocs/coins_bloc.dart';
 import '../localizations.dart';
 import '../model/coin_balance.dart';
@@ -57,7 +59,7 @@ class RewardsProvider extends ChangeNotifier {
           GetWithdraw(
             userpass: mmSe.userpass,
             coin: 'KMD',
-            to: _kmdBalance()!.balance!.address,
+            to: _kmdBalance()!.balance!.address!,
             max: true,
           ));
     } catch (e) {
@@ -145,7 +147,7 @@ class RewardsProvider extends ChangeNotifier {
           GetWithdraw(
             userpass: mmSe.userpass,
             coin: 'KMD',
-            to: _kmdBalance()!.balance!.address,
+            to: _kmdBalance()!.balance!.address!,
             max: true,
           ));
     } catch (e) {

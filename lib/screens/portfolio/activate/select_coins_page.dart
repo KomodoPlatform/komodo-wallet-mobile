@@ -2,22 +2,22 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
+import '../../../app_config/app_config.dart';
 import '../../../generic_blocs/coins_bloc.dart';
 import '../../../generic_blocs/dialog_bloc.dart';
 import '../../../generic_blocs/settings_bloc.dart';
 import '../../../localizations.dart';
-import '../../../app_config/app_config.dart';
 import '../../../model/coin.dart';
+import '../../../widgets/custom_simple_dialog.dart';
+import '../../../widgets/primary_button.dart';
 import '../../authentification/lock_screen.dart';
 import '../../portfolio/activate/build_item_coin.dart';
 import '../../portfolio/activate/build_type_header.dart';
 import '../../portfolio/activate/search_filter.dart';
 import '../../portfolio/loading_coin.dart';
-import '../../../widgets/custom_simple_dialog.dart';
-import '../../../widgets/primary_button.dart';
-import 'build_selected_coins.dart';
-
 import 'build_filter_coin.dart';
+import 'build_selected_coins.dart';
 
 class SelectCoinsPage extends StatefulWidget {
   const SelectCoinsPage({this.coinsToActivate});
@@ -97,10 +97,10 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                   focusNode: myFocusNode,
                   onSelected: (String aType) async {
                     typeFilter = aType;
-                    List<Coin?> coinsFiltered = await coinsBloc
+                    List<Coin?>? coinsFiltered = await coinsBloc
                         .getAllNotActiveCoinsWithFilter(controller.text, aType);
                     setState(() {
-                      _currentCoins = coinsFiltered;
+                      _currentCoins = coinsFiltered ?? [];
                       _listViewItems = _buildListView();
                     });
                   },
@@ -152,7 +152,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       ..sort((String a, String b) => b.compareTo(a));
 
     _currentCoins =
-        await coinsBloc.getAllNotActiveCoinsWithFilter('', typeFilter);
+        (await coinsBloc.getAllNotActiveCoinsWithFilter('', typeFilter))!;
     setState(() {
       _listViewItems = _buildListView();
     });
@@ -324,8 +324,10 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
   void _pressDoneButton() {
     final numCoinsEnabled = coinsBloc.coinBalance.length;
-    final numCoinsTryingEnable =
-        coinsBloc.coinBeforeActivation.where((c) => c.isActive!).toList().length;
+    final numCoinsTryingEnable = coinsBloc.coinBeforeActivation
+        .where((c) => c.isActive!)
+        .toList()
+        .length;
     final maxCoinPerPlatform = Platform.isAndroid
         ? appConfig.maxCoinsEnabledAndroid
         : appConfig.maxCoinEnabledIOS;

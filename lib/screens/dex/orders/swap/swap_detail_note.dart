@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../app_config/theme_data.dart';
 import '../../../../localizations.dart';
 import '../../../../services/db/database.dart';
@@ -22,7 +23,7 @@ class _SwapDetailNoteState extends State<SwapDetailNote> {
   @override
   void initState() {
     super.initState();
-    Db.getNote(widget.uuid).then((n) {
+    Db.getNote(widget.uuid!).then((n) {
       setState(() {
         noteText = n;
         noteTextController.text = noteText!;
@@ -125,8 +126,8 @@ class _SwapDetailNoteState extends State<SwapDetailNote> {
                                 noteTextController.text = noteText!;
 
                                 noteText!.isNotEmpty
-                                    ? Db.saveNote(widget.uuid, noteText)
-                                    : Db.deleteNote(widget.uuid);
+                                    ? Db.saveNote(widget.uuid!, noteText!)
+                                    : Db.deleteNote(widget.uuid!);
 
                                 setState(() {
                                   isNoteExpanded = false;

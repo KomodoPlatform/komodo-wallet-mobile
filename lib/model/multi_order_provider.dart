@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
+
 import '../generic_blocs/coins_bloc.dart';
 import '../localizations.dart';
 import '../model/get_trade_preimage.dart';
-import '../model/rpc_error.dart';
 import '../model/setprice_response.dart';
 import '../model/trade_preimage.dart';
 import '../screens/dex/trade/pro/confirm/protection_control.dart';
@@ -11,7 +12,6 @@ import '../services/mm.dart';
 import '../services/mm_service.dart';
 import '../utils/log.dart';
 import '../utils/utils.dart';
-
 import 'error_string.dart';
 import 'get_setprice.dart';
 
@@ -195,7 +195,7 @@ class MultiOrderProvider extends ChangeNotifier {
   }
 
   Future<String?> _validateGas(String? coin, TradePreimage? preimage) async {
-    final String? gasCoin = coinsBloc.getCoinByAbbr(coin)?.payGasIn;
+    final String? gasCoin = coinsBloc.getCoinByAbbr(coin!)?.payGasIn;
     if (gasCoin == null) return null;
 
     if (!coinsBloc.isCoinActive(gasCoin)) {
@@ -209,8 +209,8 @@ class MultiOrderProvider extends ChangeNotifier {
       // TBD: refactor when 'trade_preimage' will return detailed error
       return _localizations.swapGasAmount(gasCoin);
     } else {
-      final CoinFee? totalGasFee = preimage.totalFees!
-          .firstWhereOrNull((item) => item.coin == gasCoin);
+      final CoinFee? totalGasFee =
+          preimage.totalFees!.firstWhereOrNull((item) => item.coin == gasCoin);
       if (totalGasFee != null) {
         final double totalGasAmount =
             double.tryParse(totalGasFee.amount ?? '0') ?? 0;
@@ -268,7 +268,7 @@ class MultiOrderProvider extends ChangeNotifier {
   double? getMaxSellAmt() {
     if (baseCoin == null) return null;
 
-    return coinsBloc.getBalanceByAbbr(baseCoin)!.balance!.balance!.toDouble();
+    return coinsBloc.getBalanceByAbbr(baseCoin!)?.balance!.balance!.toDouble();
   }
 
   void _updateAllPreimages() {
@@ -279,7 +279,8 @@ class MultiOrderProvider extends ChangeNotifier {
     if (_baseCoin == null) return;
     if (_sellAmt == null || _sellAmt == 0.0) return;
     if (coin == null || _relCoins[coin] == null) return;
-    if (_relCoins[coin]!.amount == null || _relCoins[coin]!.amount == 0.0) return;
+    if (_relCoins[coin]!.amount == null || _relCoins[coin]!.amount == 0.0)
+      return;
 
     _relCoins[coin]!.processing = true;
     notifyListeners();

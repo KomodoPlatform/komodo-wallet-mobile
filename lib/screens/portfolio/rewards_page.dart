@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import '../../../generic_blocs/dialog_bloc.dart';
-import '../../../generic_blocs/settings_bloc.dart';
+import 'package:provider/provider.dart';
+
 import '../../../localizations.dart';
 import '../../../model/cex_provider.dart';
 import '../../../model/rewards_provider.dart';
-import '../authentification/lock_screen.dart';
 import '../../../utils/utils.dart';
 import '../../../widgets/auto_scroll_text.dart';
+import '../../app_config/theme_data.dart';
+import '../../generic_blocs/dialog_bloc.dart';
+import '../../generic_blocs/settings_bloc.dart';
 import '../../widgets/cex_data_marker.dart';
 import '../../widgets/custom_simple_dialog.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/secondary_button.dart';
-import '../../app_config/theme_data.dart';
-import 'package:provider/provider.dart';
+import '../authentification/lock_screen.dart';
 
 class RewardsPage extends StatefulWidget {
   @override

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:rational/rational.dart';
 
 import '../app_config/app_config.dart';
-import '../blocs/coins_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
 import '../model/best_order.dart';
 import '../model/buy_response.dart';
 import '../model/coin.dart';
@@ -20,7 +20,7 @@ import '../model/trade_preimage.dart';
 import '../screens/dex/trade/pro/confirm/protection_control.dart';
 import '../services/mm.dart';
 import '../services/mm_service.dart';
-import '../utils/utils_balance.dart';
+import '../utils/utils.dart';
 
 class ConstructorProvider extends ChangeNotifier {
   ConstructorProvider() {

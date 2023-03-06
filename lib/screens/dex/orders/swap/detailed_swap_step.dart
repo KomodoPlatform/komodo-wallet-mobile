@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../localizations.dart';
+import '../../../../model/coin_type.dart';
 import '../../../../utils/utils.dart';
 import '../../../dex/orders/swap/progress_step.dart';
 import 'detailed_swap_steps.dart';
@@ -17,6 +18,7 @@ class DetailedSwapStep extends StatelessWidget {
     this.estimatedTotalSpeed,
     this.actualTotalSpeed,
     this.index,
+    this.coinType,
   });
 
   final String? title;
@@ -29,6 +31,7 @@ class DetailedSwapStep extends StatelessWidget {
   final Duration? estimatedTotalSpeed;
   final Duration? actualTotalSpeed;
   final int? index;
+  final CoinType? coinType;
 
   @override
   Widget build(BuildContext context) {
@@ -79,13 +82,13 @@ class DetailedSwapStep extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            String hash = '';
+            String? hash = '';
             if (coinType == CoinType.iris || coinType == CoinType.cosmos) {
-              hash = txHash.toUpperCase();
+              hash = txHash!.toUpperCase();
             } else {
               hash = txHash;
             }
-            launchURL(explorerUrl + hash);
+            launchURL(explorerUrl! + hash!);
           },
           child: Padding(
             padding: EdgeInsets.fromLTRB(6, 2, 4, 2),

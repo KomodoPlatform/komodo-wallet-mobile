@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../../app_config/app_config.dart';
 import '../../../../../generic_blocs/coin_detail_bloc.dart';
 import '../../../../../generic_blocs/coins_bloc.dart';
 import '../../../../../localizations.dart';
-import '../../../../../app_config/app_config.dart';
 import '../../../../../model/cex_provider.dart';
 import '../../../../../model/coin_balance.dart';
 import '../../../../../utils/decimal_text_input_formatter.dart';
 import '../../../../../widgets/cex_fiat_preview.dart';
-import 'package:provider/provider.dart';
 
 class AmountField extends StatefulWidget {
   const AmountField({
@@ -79,8 +80,10 @@ class _AmountFieldState extends State<AmountField> {
     widget.focusNode!.unfocus();
 
     if (cexProvider.withdrawCurrency == 'USD') {
-      final String coinBalanceUsd = cexProvider
-          .convert(widget.coinBalance!.balanceUSD, showSymbol: false, to: 'USD')!;
+      final String coinBalanceUsd = cexProvider.convert(
+          widget.coinBalance!.balanceUSD,
+          showSymbol: false,
+          to: 'USD')!;
 
       widget.controller!.text = coinBalanceUsd;
     } else if (cexProvider.withdrawCurrency ==

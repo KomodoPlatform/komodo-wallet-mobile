@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
+import 'package:provider/provider.dart';
+
 import '../../generic_blocs/coins_bloc.dart';
 import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
@@ -6,11 +9,10 @@ import '../../model/addressbook_provider.dart';
 import '../../model/coin.dart';
 import '../../model/coin_balance.dart';
 import '../../model/coin_type.dart';
-import '../addressbook/contact_edit.dart';
-import '../portfolio/coin_detail/coin_detail.dart';
 import '../../utils/utils.dart';
 import '../../widgets/custom_simple_dialog.dart';
-import 'package:provider/provider.dart';
+import '../addressbook/contact_edit.dart';
+import '../portfolio/coin_detail/coin_detail.dart';
 
 class ContactListItem extends StatefulWidget {
   const ContactListItem(
@@ -196,7 +198,7 @@ class _ContactListItemState extends State<ContactListItem> {
           context,
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => CoinDetail(
-              coinBalance: coinBalance,
+              coinBalance: coinBalance!,
               isSendIsActive: true,
             ),
           ));

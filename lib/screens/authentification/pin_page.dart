@@ -40,7 +40,7 @@ class PinPage extends StatefulWidget {
 class _PinPageState extends State<PinPage> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (widget.pinStatus == PinStatus.NORMAL_PIN) {
         dialogBloc.closeDialog(context);
       }

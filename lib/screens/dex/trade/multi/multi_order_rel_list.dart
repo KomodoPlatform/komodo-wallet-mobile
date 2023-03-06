@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../blocs/coins_bloc.dart';
-import '../../../../blocs/dialog_bloc.dart';
+import '../../../../generic_blocs/coins_bloc.dart';
+import '../../../../generic_blocs/dialog_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin_balance.dart';
@@ -11,7 +11,7 @@ import '../../../../model/multi_order_provider.dart';
 import '../../../../utils/decimal_text_input_formatter.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widgets/custom_simple_dialog.dart';
-import '../../../dex/trade/multi/multi_order_rel_itemrovider/provider.dart';
+import 'multi_order_rel_item.dart';
 
 class MultiOrderRelList extends StatefulWidget {
   @override
@@ -105,7 +105,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
 
           bool allSelected = true;
           for (CoinBalance item in snapshot.data!) {
-            if (item.coin.walletOnly) continue;
+            if (item.coin!.walletOnly) continue;
             if (item.coin!.abbr == multiOrderProvider!.baseCoin) continue;
 
             if (!multiOrderProvider!.isRelCoinSelected(item.coin!.abbr)) {
@@ -122,7 +122,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               onTap: () {
                 final bool val = !allSelected;
                 for (CoinBalance item in snapshot.data!) {
-                  if (item.coin.walletOnly) continue;
+                  if (item.coin!.walletOnly) continue;
                   if (!val) {
                     amtCtrls[item.coin!.abbr]?.text = '';
                     multiOrderProvider!.selectRelCoin(item.coin!.abbr, false);
@@ -309,7 +309,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
 
   void _autofill(double sourceUsdAmt) {
     for (CoinBalance item in coinsBloc.coinBalance) {
-      if (item.coin.walletOnly) continue;
+      if (item.coin!.walletOnly) continue;
       if (multiOrderProvider!.baseCoin == item.coin!.abbr) continue;
       final double? usdPrice = cexProvider!.getUsdPrice(item.coin!.abbr);
       multiOrderProvider!.selectRelCoin(item.coin!.abbr, false);

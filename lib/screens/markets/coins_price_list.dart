@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../generic_blocs/coins_bloc.dart';
+
 import '../../../model/coin.dart';
 import '../../../model/coin_balance.dart';
-import '../markets/build_coin_price_list_item.dart';
-import '../../services/mm_service.dart';
-
+import '../../generic_blocs/coins_bloc.dart';
 import '../../localizations.dart';
+import '../../services/mm_service.dart';
+import 'build_coin_price_list_item.dart';
 
 class CoinsPriceList extends StatefulWidget {
   const CoinsPriceList({this.onItemTap});

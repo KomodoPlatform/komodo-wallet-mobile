@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../app_config/theme_data.dart';
 import '../../generic_blocs/coins_bloc.dart';
 import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
@@ -15,8 +18,6 @@ import '../../widgets/auto_scroll_text.dart';
 import '../../widgets/candles_icon.dart';
 import '../../widgets/custom_simple_dialog.dart';
 import '../../widgets/photo_widget.dart';
-import '../../app_config/theme_data.dart';
-import 'package:provider/provider.dart';
 
 class CoinSelect extends StatefulWidget {
   const CoinSelect({

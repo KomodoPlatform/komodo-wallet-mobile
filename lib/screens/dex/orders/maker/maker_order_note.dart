@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../app_config/theme_data.dart';
 import '../../../../localizations.dart';
 import '../../../../model/order.dart';
@@ -26,7 +27,7 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
   void initState() {
     super.initState();
     noteId = 'maker_${widget.order.uuid}';
-    Db.getNote(noteId).then((n) {
+    Db.getNote(noteId!).then((n) {
       setState(() {
         noteText = n;
         noteTextController.text = noteText!;
@@ -92,8 +93,8 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
                               noteTextController.text.trim();
                           noteText = noteTextController.text;
                           noteText!.isNotEmpty
-                              ? Db.saveNote(noteId, noteText)
-                              : Db.deleteNote(noteId);
+                              ? Db.saveNote(noteId!, noteText!)
+                              : Db.deleteNote(noteId!);
 
                           setState(() {
                             isExpanded = false;

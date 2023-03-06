@@ -1,16 +1,19 @@
 import 'dart:async';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:komodo_dex/services/bloc/app_providers.dart';
+import 'package:komodo_dex/services/bloc/bloc_manager_widget.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
+import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app_config/app_config.dart';
-import '../generic_blocs/coins_bloc.dart';
-import '../generic_blocs/main_bloc.dart';
-import '../generic_blocs/settings_bloc.dart';
 import '../drawer/drawer.dart';
 import '../localizations.dart';
 import '../model/coin_balance.dart';
@@ -23,30 +26,17 @@ import '../screens/feed/feed_page.dart';
 import '../screens/markets/markets_page.dart';
 import '../screens/portfolio/coin_detail/coin_detail.dart';
 import '../screens/portfolio/coins_page.dart';
-import 'services/bloc/bloc_manager_widget.dart';
 import '../services/lock_service.dart';
 import '../services/mm_service.dart';
 import '../utils/log.dart';
 import '../widgets/build_red_dot.dart';
 import 'app_config/theme_data.dart';
+import 'generic_blocs/coins_bloc.dart';
+import 'generic_blocs/main_bloc.dart';
+import 'generic_blocs/settings_bloc.dart';
 import 'model/startup_provider.dart';
-import 'services/bloc/app_providers.dart';
-import 'utils/utils.dart';
-import 'widgets/shared_preferences_builder.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Get the application directory. Result is cached.
-  await applicationDocumentsDirectory;
-
-  // BlocManager references cached application directory.
-  await BlocManager().init();
-
-  return startApp();
-}
-
-Future<void> startApp() async {
   try {
     mmSe.metrics();
     startup.start();
@@ -332,7 +322,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             context,
             MaterialPageRoute<dynamic>(
               builder: (context) => CoinDetail(
-                coinBalance: coinBalance,
+                coinBalance: coinBalance!,
                 isSendIsActive: true,
                 paymentUriInfo: uriInfo,
               ),

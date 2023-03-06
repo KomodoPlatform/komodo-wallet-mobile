@@ -1,23 +1,27 @@
 import 'dart:async';
 import 'dart:math';
 
-import '../../../../../app_config/app_config.dart';
-import '../../../../../model/get_min_trading_volume.dart';
-import '../../../../../model/get_trade_preimage.dart';
-import '../../../../../model/setprice_response.dart';
-import '../../../../../model/trade_preimage.dart';
-import '../../../../dex/trade/pro/confirm/protection_control.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
 import 'package:rational/rational.dart';
+
+import '../../../../../app_config/app_config.dart';
+import '../../../../../generic_blocs/coins_bloc.dart';
+import '../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../model/buy_response.dart';
 import '../../../../../model/get_buy.dart';
+import '../../../../../model/get_min_trading_volume.dart';
+import '../../../../../model/get_setprice.dart';
+import '../../../../../model/get_trade_preimage.dart';
+import '../../../../../model/order_book_provider.dart';
+import '../../../../../model/orderbook.dart';
+import '../../../../../model/setprice_response.dart';
+import '../../../../../model/trade_preimage.dart';
+import '../../../../../services/job_service.dart';
 import '../../../../../services/mm.dart';
 import '../../../../../services/mm_service.dart';
 import '../../../../../utils/log.dart';
-import '../../../../../model/get_setprice.dart';
-import '../../../../../generic_blocs/swap_bloc.dart';
-import '../../../../../model/order_book_provider.dart';
-import '../../../../../model/orderbook.dart';
 import '../../../../../utils/utils.dart';
+import '../../../../dex/trade/pro/confirm/protection_control.dart';
 
 class TradeForm {
   Timer? _typingTimer;
@@ -204,9 +208,9 @@ class TradeForm {
           volume: swapBloc.isSellMaxActive
               ? '0.00'
               : {
-            'numer': amountSell.numerator.toString(),
-            'denom': amountSell.denominator.toString(),
-          },
+                  'numer': amountSell.numerator.toString(),
+                  'denom': amountSell.denominator.toString(),
+                },
           price: {
             'numer': price.numerator.toString(),
             'denom': price.denominator.toString(),
@@ -276,8 +280,8 @@ class TradeForm {
     }
 
     final double? sellCoinBalance = double.tryParse(swapBloc
-        .sellCoinBalance!.balance!.balance!
-        .toStringAsFixed(appConfig.tradeFormPrecision) ??
+            .sellCoinBalance!.balance!.balance!
+            .toStringAsFixed(appConfig.tradeFormPrecision) ??
         '0');
     return sellCoinBalance;
   }
@@ -296,7 +300,7 @@ class TradeForm {
 
     // If tradePreimage doesn't contain volume - trying to calculate it
     final CoinFee? totalSellCoinFee = preimage.totalFees!.firstWhereOrNull(
-          (fee) => fee.coin == swapBloc.sellCoinBalance!.coin!.abbr,
+      (fee) => fee.coin == swapBloc.sellCoinBalance!.coin!.abbr,
     );
     final double calculatedVolume =
         swapBloc.sellCoinBalance!.balance!.balance!.toDouble() -
@@ -317,22 +321,22 @@ class TradeForm {
 
     final getTradePreimageRequest = swapBloc.matchingBid == null
         ? GetTradePreimage(
-        base: swapBloc.sellCoinBalance!.coin!.abbr,
-        rel: swapBloc.receiveCoinBalance!.coin!.abbr,
-        max: swapBloc.isSellMaxActive ?? false,
-        swapMethod: 'setprice',
-        volume: swapBloc.amountSell!.toDouble().toString(),
-        price: (swapBloc.amountReceive! / swapBloc.amountSell!)
-            .toDouble()
-            .toString())
+            base: swapBloc.sellCoinBalance!.coin!.abbr,
+            rel: swapBloc.receiveCoinBalance!.coin!.abbr,
+            max: swapBloc.isSellMaxActive ?? false,
+            swapMethod: 'setprice',
+            volume: swapBloc.amountSell!.toDouble().toString(),
+            price: (swapBloc.amountReceive! / swapBloc.amountSell!)
+                .toDouble()
+                .toString())
         : GetTradePreimage(
-        base: swapBloc.receiveCoinBalance!.coin!.abbr,
-        rel: swapBloc.sellCoinBalance!.coin!.abbr,
-        swapMethod: 'buy',
-        volume: swapBloc.amountReceive!.toDouble().toString(),
-        price: (swapBloc.amountSell! / swapBloc.amountReceive!)
-            .toDouble()
-            .toString());
+            base: swapBloc.receiveCoinBalance!.coin!.abbr,
+            rel: swapBloc.sellCoinBalance!.coin!.abbr,
+            swapMethod: 'buy',
+            volume: swapBloc.amountReceive!.toDouble().toString(),
+            price: (swapBloc.amountSell! / swapBloc.amountReceive!)
+                .toDouble()
+                .toString());
 
     TradePreimage tradePreimage;
 
@@ -368,7 +372,6 @@ class TradeForm {
   void cancelMaxSellAmount() {
     jobService.suspend('updateMaxSellAmount');
   }
-
 
   void reset() {
     Log('trade_form', 'form reseted');

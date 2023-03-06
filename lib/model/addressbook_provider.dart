@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import '../utils/utils.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+
+import '../utils/utils.dart';
 
 class AddressBookProvider extends ChangeNotifier {
   AddressBookProvider() {

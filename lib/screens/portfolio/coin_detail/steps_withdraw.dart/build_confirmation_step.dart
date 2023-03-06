@@ -35,7 +35,7 @@ class BuildConfirmationStep extends StatefulWidget {
   final CoinBalance? coinBalance;
   final String? amountToPay;
   final String? addressToSend;
-  final String memo;
+  final String? memo;
 
   @override
   _BuildConfirmationStepState createState() => _BuildConfirmationStepState();
@@ -74,8 +74,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
               GetWithdraw(
                 userpass: mmSe.userpass,
                 fee: customFee,
-                coin: widget.coinBalance!.coin!.abbr,
-                to: widget.addressToSend,
+                coin: widget.coinBalance!.coin!.abbr!,
+                to: widget.addressToSend!,
                 amount: widget.amountToPay,
                 memo: widget.memo,
                 max: double.parse(widget.coinBalance!.balance!.getBalance()) ==
@@ -252,19 +252,19 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                     style: Theme.of(context).textTheme.bodyText2,
                     maxLines: 1,
                   ),
-                  if (widget.memo.isNotEmpty) ...[
+                  if (widget.memo!.isNotEmpty) ...[
                     const SizedBox(
                       height: 24,
                     ),
                     Text(
-                      AppLocalizations.of(context).memo,
+                      AppLocalizations.of(context)!.memo,
                       style: Theme.of(context).textTheme.subtitle2,
                     ),
                     const SizedBox(
                       height: 16,
                     ),
                     Text(
-                      widget.memo,
+                      widget.memo!,
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                   ],

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../../../../localizations.dart';
 import '../../../../model/order.dart';
 import '../../../../model/recent_swaps.dart';
 import '../../../../model/swap.dart';
-import '../../../dex/orders/swap/swap_detail_page.dart';
-import '../../../dex/orders/taker/build_taker_countdown.dart';
 import '../../../../services/db/database.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widgets/cancel_order_dialog.dart';
+import '../../../dex/orders/swap/swap_detail_page.dart';
+import '../../../dex/orders/taker/build_taker_countdown.dart';
 
 class BuildItemTaker extends StatefulWidget {
   const BuildItemTaker(this.order);
@@ -111,9 +112,9 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                   height: 4,
                 ),
                 FutureBuilder<String?>(
-                    future: Db.getNote(widget.order.uuid),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                    future: Db.getNote(widget.order.uuid!),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<String?> snapshot) {
                       if (!snapshot.hasData) {
                         return SizedBox();
                       }

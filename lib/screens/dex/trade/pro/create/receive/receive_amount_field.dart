@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../../../../../app_config/theme_data.dart';
-import 'package:rational/rational.dart';
 import 'package:flutter/services.dart';
-import '../../../../../../../generic_blocs/swap_bloc.dart';
+import 'package:rational/rational.dart';
+
 import '../../../../../../app_config/app_config.dart';
-import '../../../../../dex/trade/pro/create/trade_form.dart';
+import '../../../../../../app_config/theme_data.dart';
+import '../../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../../utils/decimal_text_input_formatter.dart';
 import '../../../../../../utils/utils.dart';
+import '../trade_form.dart';
 
 class ReceiveAmountField extends StatefulWidget {
   @override
@@ -28,7 +29,7 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
 
   @override
   void dispose() {
-    _ctrl?.dispose();
+    _ctrl.dispose();
     super.dispose();
   }
 

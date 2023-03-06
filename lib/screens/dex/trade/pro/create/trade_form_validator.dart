@@ -1,5 +1,6 @@
-import '../../../../dex/trade/pro/create/trade_form.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
 import 'package:rational/rational.dart';
+
 import '../../../../../generic_blocs/coins_bloc.dart';
 import '../../../../../generic_blocs/main_bloc.dart';
 import '../../../../../generic_blocs/swap_bloc.dart';
@@ -8,6 +9,7 @@ import '../../../../../model/coin_balance.dart';
 import '../../../../../model/orderbook.dart';
 import '../../../../../model/trade_preimage.dart';
 import '../../../../../utils/utils.dart';
+import '../../../../dex/trade/pro/create/trade_form.dart';
 
 class TradeFormValidator {
   final CoinBalance? sellBalance = swapBloc.sellCoinBalance;
@@ -46,8 +48,8 @@ class TradeFormValidator {
   Future<String?> _validateMinValues() async {
     final double? minVolumeSell =
         await tradeForm.minVolumeDefault(swapBloc.sellCoinBalance!.coin!.abbr);
-    final double? minVolumeReceive =
-        await tradeForm.minVolumeDefault(swapBloc.receiveCoinBalance!.coin!.abbr);
+    final double? minVolumeReceive = await tradeForm
+        .minVolumeDefault(swapBloc.receiveCoinBalance!.coin!.abbr);
 
     if (amountSell != null && amountSell!.toDouble() < minVolumeSell!) {
       return appLocalizations.minValue(

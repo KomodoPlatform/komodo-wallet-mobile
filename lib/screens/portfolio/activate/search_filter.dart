@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../generic_blocs/coins_bloc.dart';
+
 import '../../../../localizations.dart';
+import '../../../generic_blocs/coins_bloc.dart';
 import '../../../model/coin.dart';
 
 class SearchFieldFilterCoin extends StatefulWidget {
@@ -84,8 +85,8 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
         ),
         onChanged: (String query) async {
           isEmptyQuery = query.isEmpty;
-          widget.onFilterCoins!(await coinsBloc.getAllNotActiveCoinsWithFilter(
-              query, widget.type));
+          widget.onFilterCoins!((await coinsBloc.getAllNotActiveCoinsWithFilter(
+              query, widget.type!))!);
         },
       ),
     );

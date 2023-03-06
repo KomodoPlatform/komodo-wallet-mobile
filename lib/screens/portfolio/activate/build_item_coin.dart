@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../generic_blocs/coins_bloc.dart';
 import '../../../model/coin.dart';
 import '../../../utils/utils.dart';
@@ -21,12 +22,12 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
         stream: coinsBloc.outCoinBeforeActivation,
         builder: (context, snapshot) {
           final CoinToActivate coinToActivate = snapshot.data!
-              .firstWhere((item) => item.coin!.abbr == widget.coin!.abbr);
+              .firstWhere((item) => item.coin.abbr == widget.coin!.abbr);
 
           // todo(MRC): Optimize this to use CheckboxListTile in a future point in time
           return InkWell(
             onTap: () => coinsBloc.setCoinBeforeActivation(
-                widget.coin, !coinToActivate.isActive!),
+                widget.coin!, !coinToActivate.isActive),
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 16, bottom: 16, left: 50, right: 16),
@@ -37,7 +38,7 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                     width: 15,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
-                        color: coinToActivate.isActive!
+                        color: coinToActivate.isActive
                             ? Theme.of(context).toggleableActiveColor
                             : Colors.transparent,
                         border: Border.all(

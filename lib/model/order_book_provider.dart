@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
+
 import '../generic_blocs/coins_bloc.dart';
 import '../model/coin.dart';
 import '../model/coin_balance.dart';
@@ -142,11 +144,11 @@ class SyncOrderbook {
   void updateActivePair() {
     // Check if coins in activePair are still activated
     if (_activePair?.sell != null &&
-        coinsBloc.getCoinByAbbr(_activePair!.sell!.abbr) == null) {
+        coinsBloc.getCoinByAbbr(_activePair!.sell!.abbr!) == null) {
       _activePair!.sell = null;
     }
     if (_activePair?.buy != null &&
-        coinsBloc.getCoinByAbbr(_activePair!.buy!.abbr) == null) {
+        coinsBloc.getCoinByAbbr(_activePair!.buy!.abbr!) == null) {
       _activePair!.buy = null;
     }
 

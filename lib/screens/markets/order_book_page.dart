@@ -1,20 +1,21 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
+import 'package:provider/provider.dart';
+
+import '../../app_config/theme_data.dart';
 import '../../localizations.dart';
 import '../../model/cex_provider.dart';
 import '../../model/coin.dart';
 import '../../model/order_book_provider.dart';
 import '../../model/orderbook.dart';
-import '../../app_config/theme_data.dart';
+import '../../widgets/candles_icon.dart';
+import '../../widgets/duration_select.dart';
 import '../markets/candlestick_chart.dart';
 import '../markets/coin_select.dart';
 import '../markets/order_book_chart.dart';
 import '../markets/order_book_table.dart';
-import '../../utils/utils.dart';
-import '../../widgets/candles_icon.dart';
-import '../../widgets/duration_select.dart';
-import 'package:provider/provider.dart';
 
 class OrderBookPage extends StatefulWidget {
   const OrderBookPage();

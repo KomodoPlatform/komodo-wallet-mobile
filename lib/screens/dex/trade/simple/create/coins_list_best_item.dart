@@ -1,20 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import '../../../../../localizations.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
+import 'package:provider/provider.dart';
+import 'package:rational/rational.dart';
+
 import '../../../../../app_config/app_config.dart';
+import '../../../../../generic_blocs/coins_bloc.dart';
+import '../../../../../localizations.dart';
+import '../../../../../model/best_order.dart';
 import '../../../../../model/cex_provider.dart';
 import '../../../../../model/coin.dart';
 import '../../../../../model/coin_balance.dart';
 import '../../../../../model/market.dart';
-import '../../../../../widgets/auto_scroll_text.dart';
-import '../../../../../utils/utils.dart';
-import 'package:rational/rational.dart';
-
-import '../../../../../generic_blocs/coins_bloc.dart';
-import '../../../../../model/best_order.dart';
 import '../../../../../model/swap_constructor_provider.dart';
-import 'package:provider/provider.dart';
+import '../../../../../utils/utils.dart';
+import '../../../../../widgets/auto_scroll_text.dart';
 
 class CoinsListBestItem extends StatefulWidget {
   const CoinsListBestItem(this.order, {Key? key}) : super(key: key);
@@ -51,8 +52,8 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
         initialData: coinsBloc.coinBalance,
         stream: coinsBloc.outCoins,
         builder: (context, snapshot) {
-          final bool isCoinActive = snapshot.data!.firstWhereOrNull(
-                  (item) => item.coin!.abbr == _coin) !=
+          final bool isCoinActive = snapshot.data!
+                  .firstWhereOrNull((item) => item.coin!.abbr == _coin) !=
               null;
 
           return Card(
@@ -293,12 +294,14 @@ class _CoinsListBestItemState extends State<CoinsListBestItem>
     Color? color = Theme.of(context).textTheme.caption!.color;
 
     if (cexPrice != 0) {
-      final double receiveAmtUsd =
-          cexPrice! * widget.order.price!.toDouble() * counterAmount!.toDouble();
+      final double receiveAmtUsd = cexPrice! *
+          widget.order.price!.toDouble() *
+          counterAmount!.toDouble();
       receiveStr = _cexProvider!.convert(receiveAmtUsd);
 
       if (counterCexPrice != 0) {
-        final double counterAmtUsd = counterAmount.toDouble() * counterCexPrice!;
+        final double counterAmtUsd =
+            counterAmount.toDouble() * counterCexPrice!;
         if (counterAmtUsd > receiveAmtUsd) {
           color = widget.order.action == Market.BUY
               ? Colors.green

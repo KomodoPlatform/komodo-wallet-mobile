@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app_config/app_config.dart';
+import '../generic_blocs/coins_bloc.dart';
 import '../model/coin.dart';
 import '../model/coin_type.dart';
 import '../model/order_book_provider.dart';
@@ -645,7 +647,7 @@ class CexPrices {
       double volume24h = double.tryParse(pricesData['volume24h']) ?? 0;
 
       for (Coin coin in coins) {
-        final String coinAbbr = coin.abbr;
+        final String coinAbbr = coin.abbr!;
         if (coin.type == CoinType.smartChain) {
           // enough_volume for all smartChain tokens is always true :. proceed
         } else if (lastPrice * volume24h < minVolume) {

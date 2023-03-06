@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../generic_blocs/coins_bloc.dart';
 import '../../../localizations.dart';
 import '../../../model/coin_type.dart';
@@ -69,57 +70,41 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
     switch (titleType) {
       case CoinType.erc:
         return AppLocalizations.of(context)!.searchFilterSubtitleERC;
-        break;
       case CoinType.hrc:
         return AppLocalizations.of(context)!.searchFilterSubtitleHRC;
-        break;
       case CoinType.bep:
         return AppLocalizations.of(context)!.searchFilterSubtitleBEP;
-        break;
       case CoinType.avx:
         return AppLocalizations.of(context)!.searchFilterSubtitleAVX;
-        break;
       case CoinType.plg:
         return AppLocalizations.of(context)!.searchFilterSubtitlePLG;
-        break;
       case CoinType.qrc:
         return AppLocalizations.of(context)!.searchFilterSubtitleQRC;
-        break;
       case CoinType.krc:
         return AppLocalizations.of(context)!.searchFilterSubtitleKRC;
-        break;
       case CoinType.etc:
         return AppLocalizations.of(context)!.searchFilterSubtitleETC;
-        break;
       case CoinType.sbch:
         return AppLocalizations.of(context)!.searchFilterSubtitleSBCH;
-        break;
       case CoinType.ubiq:
         return AppLocalizations.of(context)!.searchFilterSubtitleUBQ;
-        break;
       case CoinType.utxo:
         return AppLocalizations.of(context)!.searchFilterSubtitleutxo;
-        break;
       case CoinType.ftm:
         return AppLocalizations.of(context)!.searchFilterSubtitleFTM;
-        break;
       case CoinType.mvr:
         return AppLocalizations.of(context)!.searchFilterSubtitleMVR;
-        break;
       case CoinType.hco:
         return AppLocalizations.of(context)!.searchFilterSubtitleHCO;
-        break;
       case CoinType.smartChain:
         return AppLocalizations.of(context)!.searchFilterSubtitleSmartChain;
       case CoinType.slp:
         return AppLocalizations.of(context)!.searchFilterSubtitleSLP;
-        break;
       case CoinType.iris:
-        return AppLocalizations.of(context).searchFilterSubtitleIris;
-        break;
+        return AppLocalizations.of(context)!.searchFilterSubtitleIris;
       case CoinType.cosmos:
-        return AppLocalizations.of(context).searchFilterSubtitleCosmos;
-        break;
+        return AppLocalizations.of(context)!.searchFilterSubtitleCosmos;
+      default:
     }
 
     // titleType == null for test assets
@@ -130,31 +115,31 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
     bool areAllActive = true;
 
     for (CoinToActivate item in coinsBeforeActivation) {
-      if (item.isActive!) continue;
+      if (item.isActive) continue;
 
       // `widget.type == null` for test coins
       if (widget.type == null) {
-        if (isCoinPresent(item.coin!, widget.query, widget.filterType!) &&
-            item.coin!.testCoin!) {
-          if (item.isActive!)
+        if (isCoinPresent(item.coin, widget.query, widget.filterType!) &&
+            item.coin.testCoin!) {
+          if (item.isActive)
             continue;
           else
             areAllActive = false;
         } else if (widget.filterType!.isEmpty &&
             widget.query!.isEmpty &&
-            item.coin!.testCoin!) areAllActive = false;
+            item.coin.testCoin!) areAllActive = false;
       } else {
-        if (item.coin!.type!.name == widget.type &&
-            !item.coin!.testCoin! &&
-            isCoinPresent(item.coin!, widget.query, widget.filterType!)) {
-          if (item.isActive!)
+        if (item.coin.type!.name == widget.type &&
+            !item.coin.testCoin! &&
+            isCoinPresent(item.coin, widget.query, widget.filterType!)) {
+          if (item.isActive)
             continue;
           else
             areAllActive = false;
         } else if (widget.filterType!.isEmpty &&
             widget.query!.isEmpty &&
-            item.coin!.type!.name == widget.type &&
-            !item.coin!.testCoin!) areAllActive = false;
+            item.coin.type!.name == widget.type &&
+            !item.coin.testCoin!) areAllActive = false;
       }
     }
 

@@ -1,3 +1,7 @@
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'package:komodo_dex/utils/iterable_utils.dart';
+
 import '../app_config/app_config.dart';
 import '../generic_blocs/coins_bloc.dart';
 import '../localizations.dart';
@@ -5,8 +9,6 @@ import '../model/coin.dart';
 import '../model/coin_balance.dart';
 import '../model/coin_type.dart';
 import '../model/error_code.dart';
-import 'package:http/http.dart';
-import 'package:http/http.dart' as http;
 import '../model/transaction_data.dart';
 import '../model/transactions.dart';
 import '../utils/log.dart';
@@ -94,6 +96,8 @@ class GetErcTransactions {
       case CoinType.krc:
         url = _getErcTransactionHistoryUrl(coin, kcsUrl, krcUrl);
         break;
+      default:
+        break;
     }
 
     String body;
@@ -122,7 +126,7 @@ class GetErcTransactions {
     }
 
     transactions.result!.transactions!
-        .sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
+        .sort((a, b) => b.timestamp.compareTo(a.timestamp));
     transactions.result?.syncStatus?.state ??= 'Finished';
 
     _fixTestCoinsNaming(transactions, coin);

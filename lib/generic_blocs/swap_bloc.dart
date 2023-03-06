@@ -1,15 +1,17 @@
 import 'dart:async';
 
+import 'package:decimal/decimal.dart';
 import 'package:rational/rational.dart';
 
-import '../blocs/coins_bloc.dart';
 import '../model/coin_balance.dart';
 import '../model/get_max_taker_volume.dart';
 import '../model/order_book_provider.dart';
 import '../model/orderbook.dart';
 import '../model/trade_preimage.dart';
-import '../services/mmpreimage.dart';
+import '../services/mm.dart';
+import '../utils/utils.dart';
 import '../widgets/bloc_provider.dart';
+import 'coins_bloc.dart';
 
 class SwapBloc implements GenericBlocBase {
   CoinBalance? sellCoinBalance;
@@ -143,18 +145,18 @@ class SwapBloc implements GenericBlocBase {
 
   void updateFieldBalances() {
     if (sellCoinBalance == null) return;
-    sellCoinBalance.balance.balance =
-        Decimal.parse(maxTakerVolume.toDecimalString());
+    sellCoinBalance?.balance?.balance =
+        Decimal.parse(maxTakerVolume!.toDecimalString());
     _inSellCoinBalance.add(sellCoinBalance);
 
     if (amountSell == null) return;
-    if (deci(amountSell) > sellCoinBalance.balance.balance) {
+    if (deci(amountSell) > sellCoinBalance!.balance!.balance!) {
       setAmountSell(maxTakerVolume);
     }
   }
 
   void updateReceiveCoin(String? coin) {
-    final CoinBalance? coinBalance = coinsBloc.getBalanceByAbbr(coin);
+    final CoinBalance? coinBalance = coinsBloc.getBalanceByAbbr(coin ?? '');
     receiveCoinBalance = coinBalance;
     _inReceiveCoinBalance.add(coinBalance);
   }
@@ -164,10 +166,10 @@ class SwapBloc implements GenericBlocBase {
     sellCoinBalance = coinBalance;
     _inSellCoinBalance.add(sellCoinBalance);
 
-    _updateMaxTakerVolume();
+    updateMaxTakerVolume();
   }
 
-  Future<void> _updateMaxTakerVolume() async {
+  Future<void> updateMaxTakerVolume() async {
     if (sellCoinBalance == null) {
       maxTakerVolume = null;
       return;

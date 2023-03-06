@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:flutter/services.dart';
+
 import '../model/coin_type.dart';
 import '../utils/utils.dart';
 
@@ -11,7 +13,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
   List allCoinsList = [];
 
   coinsResponse.forEach((abbr, coinData) {
-    String proto = _getType(coinData['type'], abbr);
+    String? proto = _getType(coinData['type'], abbr);
 
     if (_excludedCoins.contains(abbr) || proto == null) {
       return; // unsupported protocols should be skipped
@@ -26,7 +28,10 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       'explorerUrl': coinData['explorer_url'],
       'explorer_tx_url': coinData['explorer_tx_url'],
       'explorer_address_url': coinData['explorer_address_url'],
-      'serverList': coinData['nodes'] ?? coinData['electrum'] ??  coinData['rpc_urls'] ??[],
+      'serverList': coinData['nodes'] ??
+          coinData['electrum'] ??
+          coinData['rpc_urls'] ??
+          [],
       'testCoin': coinData['is_testnet'] ?? false,
       'walletOnly': coinData['wallet_only'],
       if (coinData['swap_contract_address'] != null)
@@ -44,7 +49,7 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
 
 List<String> get _excludedCoins => [];
 
-String _getType(String coin, String abbr) {
+String? _getType(String coin, String abbr) {
   // absent protocols
   // [RSK Smart Bitcoin, Arbitrum, Moonbeam, ZHTLC]
   if (abbr == 'IRIS') return 'iris';

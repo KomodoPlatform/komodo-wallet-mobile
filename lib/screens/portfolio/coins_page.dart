@@ -2,20 +2,18 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'add_coin_button.dart';
-import '../../../../generic_blocs/coins_bloc.dart';
-import '../../../../generic_blocs/dialog_bloc.dart';
-import '../../../../generic_blocs/main_bloc.dart';
-import '../../../../generic_blocs/settings_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../localizations.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin_balance.dart';
-import '../portfolio/loading_coin.dart';
 import '../../../../services/mm_service.dart';
-import 'package:provider/provider.dart';
-
+import '../../generic_blocs/coins_bloc.dart';
+import '../../generic_blocs/settings_bloc.dart';
+import '../portfolio/loading_coin.dart';
+import 'add_coin_button.dart';
 import 'item_coin.dart';
 
 class CoinsPage extends StatefulWidget {
@@ -281,7 +279,8 @@ class BarGraphState extends State<BarGraph> {
               barItem.add(Container(
                 color: Color(int.parse(coinBalance.coin!.colorCoin!)),
                 width: _widthBar *
-                    (((coinBalance.balanceUSD! * 100) / sumOfAllBalances) / 100),
+                    (((coinBalance.balanceUSD! * 100) / sumOfAllBalances) /
+                        100),
               ));
             }
           }
@@ -341,8 +340,10 @@ class LoadAssetState extends State<LoadAsset> {
           ));
           listRet.add(
             Text(
-              AppLocalizations.of(context)!.numberAssets(assetNumber.toString()),
-              style: Theme.of(context).textTheme.caption!.copyWith(color: color),
+              AppLocalizations.of(context)!
+                  .numberAssets(assetNumber.toString()),
+              style:
+                  Theme.of(context).textTheme.caption!.copyWith(color: color),
             ),
           );
           listRet.add(Icon(

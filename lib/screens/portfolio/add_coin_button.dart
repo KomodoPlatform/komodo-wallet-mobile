@@ -3,16 +3,17 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import '../../../../generic_blocs/coins_bloc.dart';
-import '../../../../generic_blocs/dialog_bloc.dart';
-import '../../../../generic_blocs/main_bloc.dart';
-import '../../../../localizations.dart';
+
 import '../../../../app_config/app_config.dart';
+import '../../../../localizations.dart';
 import '../../../../model/coin.dart';
-import '../portfolio/activate/select_coins_page.dart';
 import '../../../../services/db/database.dart';
 import '../../../../widgets/custom_simple_dialog.dart';
+import '../../generic_blocs/coins_bloc.dart';
+import '../../generic_blocs/dialog_bloc.dart';
+import '../../generic_blocs/main_bloc.dart';
 import '../../widgets/primary_button.dart';
+import 'activate/select_coins_page.dart';
 
 class AddCoinButton extends StatelessWidget {
   const AddCoinButton({Key? key, this.isCollapsed = false}) : super(key: key);
@@ -146,7 +147,7 @@ class AddCoinButton extends StatelessWidget {
   /// Returns `true` if there are coins we can still activate, `false` if all of them activated.
   Future<bool> _buildAddCoinButton() async {
     final active = await Db.activeCoins;
-    final known = await (coins as FutureOr<LinkedHashMap<String?, Coin>>);
-    return active.length < known.length;
+    final LinkedHashMap<String?, Coin>? known = await coins;
+    return active.length < known!.length;
   }
 }

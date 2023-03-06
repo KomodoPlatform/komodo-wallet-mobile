@@ -2,26 +2,28 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:share/share.dart';
+
+import '../../localizations.dart';
 import '../../model/addressbook_provider.dart';
 import '../../model/backup.dart';
+import '../../model/export_import_list_item.dart';
 import '../../model/recent_swaps.dart';
 import '../../model/swap.dart';
 import '../../model/swap_provider.dart';
-import '../authentification/lock_screen.dart';
-import '../import-export/export_import_success.dart';
+import '../../services/db/database.dart';
 import '../../utils/encryption_tool.dart';
 import '../../utils/utils.dart';
 import '../../widgets/password_visibility_control.dart';
 import '../../widgets/primary_button.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:share/share.dart';
-import '../../model/export_import_list_item.dart';
-import '../../services/db/database.dart';
-import '../../localizations.dart';
+import '../authentification/lock_screen.dart';
 import '../import-export/export_import_list.dart';
+import '../import-export/export_import_success.dart';
 
 class ExportPage extends StatefulWidget {
   @override
@@ -187,7 +189,7 @@ class _ExportPageState extends State<ExportPage> {
             SizedBox(height: 2),
             Builder(builder: (context) {
               final List<String?> coins =
-                  contact.addresses?.keys?.toList() ?? [];
+                  contact.addresses?.keys.toList() ?? [];
               final List<Widget> coinsRow = [];
 
               for (int i = 0; i < coins.length; i++) {

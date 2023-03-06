@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
 import '../../model/addressbook_provider.dart';
@@ -13,10 +15,6 @@ import '../../model/export_import_list_item.dart';
 import '../../model/get_import_swaps.dart';
 import '../../model/import_swaps.dart';
 import '../../model/recent_swaps.dart';
-import '../authentification/lock_screen.dart';
-import '../import-export/export_import_list.dart';
-import '../import-export/export_import_success.dart';
-import '../import-export/overwrite_dialog_content.dart';
 import '../../services/db/database.dart';
 import '../../services/lock_service.dart';
 import '../../services/mm.dart';
@@ -26,7 +24,10 @@ import '../../utils/utils.dart';
 import '../../widgets/custom_simple_dialog.dart';
 import '../../widgets/password_visibility_control.dart';
 import '../../widgets/primary_button.dart';
-import 'package:provider/provider.dart';
+import '../authentification/lock_screen.dart';
+import '../import-export/export_import_list.dart';
+import '../import-export/export_import_success.dart';
+import '../import-export/overwrite_dialog_content.dart';
 
 class ImportPage extends StatefulWidget {
   @override
@@ -160,9 +161,9 @@ class _ImportPageState extends State<ImportPage> {
     for (String? id in _selected.notes!.keys) {
       final String? note = _selected.notes![id];
 
-      final String? existingNote = await Db.getNote(id);
+      final String? existingNote = await Db.getNote(id!);
       if (existingNote == null) {
-        await Db.saveNote(id, note);
+        await Db.saveNote(id, note!);
         continue;
       }
 
@@ -193,7 +194,7 @@ class _ImportPageState extends State<ImportPage> {
       );
       dialogBloc.dialog = null;
       if (choice == NoteImportChoice.Overwrite) {
-        await Db.saveNote(id, note);
+        await Db.saveNote(id, note!);
       } else if (choice == NoteImportChoice.Merge) {
         await Db.saveNote(id, mergedValue);
       }

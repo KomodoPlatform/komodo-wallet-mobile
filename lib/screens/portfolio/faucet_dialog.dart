@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/utils/log.dart';
+
 import '../../../generic_blocs/dialog_bloc.dart';
 import '../../../localizations.dart';
 import '../../../widgets/custom_simple_dialog.dart';

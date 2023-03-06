@@ -162,7 +162,8 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC>
                           gas: int.parse(
                               _gasController.text.replaceAll(',', '.')),
                           gasPrice:
-                              _gasPriceController.text.replaceAll(',', '.')));
+                              _gasPriceController.text.replaceAll(',', '.'),
+                          type: ''));
                     }
                     return null;
                   },

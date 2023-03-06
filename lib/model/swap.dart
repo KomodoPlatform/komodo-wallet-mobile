@@ -4,11 +4,13 @@
 
 import 'dart:convert';
 
-import '../blocs/coins_bloc.dart';
-import '../model/coinins_bloc.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
+
+import '../generic_blocs/coins_bloc.dart';
 import '../model/order.dart';
 import '../model/recent_swaps.dart';
 import '../utils/utils.dart';
+import 'coin.dart';
 
 enum Status {
   ORDER_MATCHING,
@@ -149,10 +151,10 @@ class Swap {
       ?.firstWhereOrNull((SwapEL ev) => ev.event!.type == 'Started');
 
   /// Maker ticker abbriviation
-  String get makerAbbr => started?.event?.data?.makerCoin ?? result.makerCoin;
+  String? get makerAbbr => started?.event?.data?.makerCoin ?? result?.makerCoin;
 
   /// Taker ticker abbriviation
-  String get takerAbbr => started?.event?.data?.takerCoin ?? result.takerCoin;
+  String? get takerAbbr => started?.event?.data?.takerCoin ?? result?.takerCoin;
 
   /// Maker coin instance
   Coin? get makerCoin {

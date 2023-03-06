@@ -2,19 +2,20 @@ import 'dart:async';
 
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../app_config/app_config.dart';
-import '../../../../../model/coin_balance.dart';
-import '../../../../../model/coin_type.dart';
-import '../../../../../widgets/custom_simple_dialog.dart';
+import '../../../../../generic_blocs/coin_detail_bloc.dart';
 import '../../../../../generic_blocs/coins_bloc.dart';
 import '../../../../../generic_blocs/dialog_bloc.dart';
-import '../../../../../utils/utils.dart';
-import '../../../../../generic_blocs/coin_detail_bloc.dart';
 import '../../../../../localizations.dart';
+import '../../../../../model/coin_balance.dart';
+import '../../../../../model/coin_type.dart';
 import '../../../../../services/lock_service.dart';
 import '../../../../../services/mm_service.dart';
+import '../../../../../utils/utils.dart';
+import '../../../../../widgets/custom_simple_dialog.dart';
 import '../../../../../widgets/primary_button.dart';
 import '../../../../../widgets/secondary_button.dart';
 import '../../../../portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
@@ -43,7 +44,7 @@ class AmountAddressStep extends StatefulWidget {
   final Function? onWithdrawPressed;
   final TextEditingController? amountController;
   final TextEditingController? addressController;
-  final TextEditingController memoController;
+  final TextEditingController? memoController;
   final bool autoFocus;
   final CoinBalance? coinBalance;
   final PaymentUriInfo? paymentUriInfo;
@@ -94,8 +95,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               onChanged: onChanged,
             ),
             // Only show for tendermint tokens
-            if (widget.coinBalance.coin.type == CoinType.cosmos ||
-                widget.coinBalance.coin.type == CoinType.iris)
+            if (widget.coinBalance?.coin?.type == CoinType.cosmos ||
+                widget.coinBalance?.coin?.type == CoinType.iris)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: TextFormField(
@@ -110,15 +111,15 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
                   style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).memo,
-                    hintText: AppLocalizations.of(context).optional,
+                    labelText: AppLocalizations.of(context)?.memo,
+                    hintText: AppLocalizations.of(context)?.optional,
                   ),
                 ),
               ),
             // Temporary disable custom fee for qrc20 tokens
-            if (widget.coinBalance.coin.type != CoinType.qrc &&
-                widget.coinBalance.coin.type != CoinType.cosmos &&
-                widget.coinBalance.coin.type != CoinType.iris)
+            if (widget.coinBalance?.coin?.type != CoinType.qrc &&
+                widget.coinBalance?.coin?.type != CoinType.cosmos &&
+                widget.coinBalance?.coin?.type != CoinType.iris)
               CustomFee(
                 coin: widget.coinBalance!.coin,
                 amount: widget.amountController!.text,

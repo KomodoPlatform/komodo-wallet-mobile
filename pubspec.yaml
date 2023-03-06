@@ -12,7 +12,7 @@ version: 0.6.1
 publish_to: none
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.16.0 <3.0.0'
 
 # We're using specific (pinned) plugin versions in order to help us review the dependency upgrades.
 # KomodoPlatform plugin upgrades should be created as new branches, with PR into master;
@@ -45,7 +45,7 @@ dependencies:
 
   http: 0.13.4 # dart.dev (Note: Supports null safety)
 
-  crypto: 3.0.2 # dart.dev (Note: Supports null safety)
+  crypto: 3.0.1 # dart.dev (Note: Supports null safety)
 
   hydrated_bloc:
     git:

@@ -7,6 +7,7 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -14,12 +15,13 @@ import 'package:rational/rational.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../app_config/app_config.dart';
-import '../blocs/authenticate_bloc.dart';
-import '../blocs/coins_bloc.dart';
-import '../blocs/dialog_bloc.dart';
-import '../blocs/main_bloc.dart';
+import '../generic_blocs/authenticate_bloc.dart';
+import '../generic_blocs/coins_bloc.dart';
+import '../generic_blocs/dialog_bloc.dart';
+import '../generic_blocs/main_bloc.dart';
 import '../localizations.dart';
 import '../model/coin.dart';
+import '../model/coin_balance.dart';
 import '../model/error_string.dart';
 import '../model/recent_swaps.dart';
 import '../model/wallet_security_settings_provider.dart';
@@ -29,10 +31,7 @@ import '../utils/encryption_tool.dart';
 import '../utils/log.dart';
 import '../widgets/cex_fiat_preview.dart';
 import '../widgets/custom_simple_dialog.dart';
-import '../widgets/qr_view/path_provider.dart';
-import 'package:rational/rational.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:provider/provider.dart';
+import '../widgets/qr_view.dart';
 
 void copyToClipBoard(BuildContext context, String? str) {
   ScaffoldMessengerState? scaffoldMessenger;
@@ -309,44 +308,44 @@ Future<void> showConfirmationRemoveCoin(
   List<CoinBalance> irisTokens = [];
   if (coin.abbr == 'IRIS') {
     irisTokens = coinsBloc.coinBalance
-        .where((e) => e.coin.abbr == 'ATOM-IBC_IRIS')
+        .where((e) => e.coin?.abbr == 'ATOM-IBC_IRIS')
         .toList();
   }
   return dialogBloc.dialog = showDialog<void>(
       context: mContext,
       builder: (BuildContext context) {
         return CustomSimpleDialog(
-          title: Text(AppLocalizations.of(context).deleteConfirm),
+          title: Text(AppLocalizations.of(context)!.deleteConfirm),
           children: <Widget>[
             RichText(
                 text: TextSpan(
                     style: Theme.of(context).textTheme.bodyText2,
                     children: <TextSpan>[
-                      TextSpan(text: AppLocalizations.of(context).deleteSpan1),
-                      TextSpan(
-                          text: coin.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2
-                              .copyWith(fontWeight: FontWeight.bold)),
-                      TextSpan(text: AppLocalizations.of(context).deleteSpan2),
-                      if (irisTokens.isNotEmpty)
-                        TextSpan(
-                            text: irisTokens.map((e) => e.coin.name).join(', '),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText2
-                                .copyWith(fontWeight: FontWeight.bold)),
-                      if (irisTokens.isNotEmpty)
-                        TextSpan(text: AppLocalizations.of(context).deleteSpan3),
-                    ])),
+                  TextSpan(text: AppLocalizations.of(context)?.deleteSpan1),
+                  TextSpan(
+                      text: coin.name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          ?.copyWith(fontWeight: FontWeight.bold)),
+                  TextSpan(text: AppLocalizations.of(context)?.deleteSpan2),
+                  if (irisTokens.isNotEmpty)
+                    TextSpan(
+                        text: irisTokens.map((e) => e.coin?.name).join(', '),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            ?.copyWith(fontWeight: FontWeight.bold)),
+                  if (irisTokens.isNotEmpty)
+                    TextSpan(text: AppLocalizations.of(context)?.deleteSpan3),
+                ])),
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text(AppLocalizations.of(context).cancel),
+                  child: Text(AppLocalizations.of(context)!.cancel),
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton(
@@ -364,7 +363,7 @@ Future<void> showConfirmationRemoveCoin(
                   style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).errorColor,
                   ),
-                  child: Text(AppLocalizations.of(context).confirm),
+                  child: Text(AppLocalizations.of(context)!.confirm),
                 )
               ],
             ),
@@ -805,7 +804,7 @@ String getRandomWord() {
   return words[Random().nextInt(words.length)];
 }
 
-List<Coin?> filterCoinsByQuery(List<Coin?> coins, String query,
+List<Coin?> filterCoinsByQuery(List<Coin?>? coins, String query,
     {String? type = ''}) {
   if (coins == null || coins.isEmpty) return [];
   List<Coin?> list =
@@ -889,9 +888,9 @@ bool isSlp(Coin coin) {
 }
 
 bool hasParentPreInstalled(Coin coin) {
-  final String protocolType = coin?.protocol?.type;
+  final String? protocolType = coin.protocol?.type;
   return protocolType == 'SLPTOKEN' ||
-      coin?.protocol?.protocolData?.platform == 'IRIS';
+      coin.protocol?.protocolData?.platform == 'IRIS';
 }
 
 int? extractStartedAtFromSwap(MmSwap swap) {
@@ -920,7 +919,7 @@ void moveCursorToEnd(TextEditingController controller) {
   );
 }
 
-String toInitialUpper(String val) {
+String toInitialUpper(String? val) {
   if (val == null || val.isEmpty) return '';
   final String initial = val.substring(0, 1);
   final String rest = val.substring(1);

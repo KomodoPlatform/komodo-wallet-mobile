@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../generic_blocs/coins_bloc.dart';
 import '../../../localizations.dart';
 
@@ -21,8 +22,8 @@ class _LoadingCoinState extends State<LoadingCoin> {
         StreamBuilder<CoinToActivate?>(
             initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
-            builder:
-                (BuildContext context, AsyncSnapshot<CoinToActivate?> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<CoinToActivate?> snapshot) {
               if (snapshot.data != null &&
                   snapshot.data!.currentStatus != null) {
                 return Text(snapshot.data!.currentStatus!);

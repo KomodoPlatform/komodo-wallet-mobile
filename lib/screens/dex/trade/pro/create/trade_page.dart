@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
 
-import '../../../../../blocs/swap_bloc.dart';
+import '../../../../../generic_blocs/swap_bloc.dart';
 import '../../../../../localizations.dart';
 import '../../../../../model/cex_provider.dart';
 import '../../../../../model/coin.dart';
@@ -29,7 +29,8 @@ import '../../../../dex/trade/pro/create/sell/sell_amount_field.dart';
 import '../../../../dex/trade/pro/create/trade_form.dart';
 import '../../../../dex/trade/pro/create/trade_form_validator.dart';
 import '../../../../dex/trade/pro/evaluation.dart';
-import '../../../../dex/trade/pro/exchange_rateprovider.dart';
+import '../caution_label.dart';
+import '../exchange_rate.dart';
 
 class TradePage extends StatefulWidget {
   const TradePage({this.mContext});
@@ -59,7 +60,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _listeners.map((listener) => listener?.cancel());
+    _listeners.map((listener) => listener.cancel());
     _updateTimer?.cancel();
     tradeForm.cancelMaxSellAmount();
 

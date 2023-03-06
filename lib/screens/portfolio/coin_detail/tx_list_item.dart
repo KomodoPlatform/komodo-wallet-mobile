@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import '../../../../generic_blocs/settings_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin_balance.dart';
 import '../../../../model/transaction_data.dart';
 import '../../../../services/db/database.dart';
 import '../../../../utils/utils.dart';
-import 'package:provider/provider.dart';
-
+import '../../../generic_blocs/settings_bloc.dart';
 import '../transaction_detail.dart';
 
 class TransactionListItem extends StatefulWidget {
@@ -63,9 +63,10 @@ class _TransactionListItemState extends State<TransactionListItem> {
                                 ? Colors.green
                                 : Colors.redAccent,
                             width: 2)),
-                    child: double.parse(widget.transaction!.myBalanceChange!) > 0
-                        ? Icon(Icons.arrow_downward)
-                        : Icon(Icons.arrow_upward)),
+                    child:
+                        double.parse(widget.transaction!.myBalanceChange!) > 0
+                            ? Icon(Icons.arrow_downward)
+                            : Icon(Icons.arrow_upward)),
               ),
               Expanded(
                 child: Column(
@@ -141,7 +142,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
             ],
           ),
           FutureBuilder<String?>(
-              future: Db.getNote(widget.transaction!.txHash),
+              future: Db.getNote(widget.transaction!.txHash!),
               builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
                 if (!snapshot.hasData) {
                   return SizedBox();
