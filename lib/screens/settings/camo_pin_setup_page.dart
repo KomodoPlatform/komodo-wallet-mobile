@@ -327,7 +327,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                           title: AppLocalizations.of(context)!.camoSetupTitle,
                           subTitle:
                               AppLocalizations.of(context)!.camoSetupSubtitle,
-                          pinStatus: PinStatus.CREATE_CAMO_PIN,
+                          //TODO(@CharlVS): Create camo pin page
+                          // pinStatus: PinStatus.CREATE_CAMO_PIN,
                           password: password,
                           onSuccess: () {
                             camoBloc.isCamoEnabled = true;
@@ -351,7 +352,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
       child: Text(AppLocalizations.of(context)!.camoPinDesc,
           style: TextStyle(
             height: 1.3,
-            color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.6),
+            color:
+                Theme.of(context).textTheme.bodyText2!.color!.withOpacity(0.6),
           )),
     );
   }

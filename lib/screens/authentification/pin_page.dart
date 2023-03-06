@@ -26,7 +26,7 @@ class PinPage extends StatefulWidget {
   final String? title;
   @required
   final String? subTitle;
-  @required
+  // @required
   final PinStatus? pinStatus;
   final String? code;
   final bool isFromChangingPin;
@@ -38,6 +38,8 @@ class PinPage extends StatefulWidget {
 }
 
 class _PinPageState extends State<PinPage> {
+  late LoginBloc _loginBloc;
+
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -51,28 +53,34 @@ class _PinPageState extends State<PinPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isBlocLoading = context.watch<LoginBloc>().state.status ==
-        FormzStatus.submissionInProgress;
+    _loginBloc = BlocProvider.of<LoginBloc>(context, listen: true);
+
+    final isBlocLoading = _loginBloc.state.isLoading;
 
     return Scaffold(
       appBar: !isBlocLoading
           ? AppBarStatus(
-              pinStatus: widget.pinStatus,
+              // pinStatus: widget.pinStatus,
+              pinStatus: null,
               title: widget.title,
               context: context,
             )
           : null,
       resizeToAvoidBottomInset: false,
-      body: !isBlocLoading
-          ? BlocListener<LoginBloc, LoginState>(
-              listener: (c, state) {
-                if (state is LoginPinFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(AppLocalizations.of(context)!.errorTryAgain),
-                  ));
-                }
-              },
-              child: Center(
+      body: BlocListener<LoginBloc, LoginState>(
+        listenWhen: (previous, current) => previous.status != current.status,
+        listener: (context, state) {
+          if (state is LoginStatePinSubmittedFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(AppLocalizations.of(context)!.errorTryAgain),
+              ),
+            );
+          }
+        },
+        child: _loginBloc.state.isLoading
+            ? _buildLoading()
+            : Center(
                 child: PinInput(
                   obscureText: true,
                   length: 6,
@@ -82,20 +90,11 @@ class _PinPageState extends State<PinPage> {
                         LoginPinInputChanged(pin),
                       ),
                   onPinComplete: (String pin) => context.read<LoginBloc>().add(
-                        LoginPinSubmitted(
-                          widget.password,
-                          pin,
-                          widget.isFromChangingPin,
-                          widget.onSuccess,
-                          widget.pinStatus,
-                          uiCodeSuccess,
-                          uiCodeFail,
-                        ),
+                        LoginPinSubmitted(pin),
                       ),
                 ),
               ),
-            )
-          : _buildLoading(),
+      ),
     );
   }
 

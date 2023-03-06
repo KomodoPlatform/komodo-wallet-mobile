@@ -156,7 +156,8 @@ class _SettingPageState extends State<SettingPage> {
     return SwitchListTile(
       title: Text(AppLocalizations.of(
         context,
-      )!.activateAccessPin),
+      )!
+          .activateAccessPin),
       tileColor: Theme.of(context).primaryColor,
       value: walletSecuritySettingsProvider.activatePinProtection ?? false,
       onChanged: (
@@ -209,7 +210,8 @@ class _SettingPageState extends State<SettingPage> {
           return SwitchListTile(
             title: Text(AppLocalizations.of(
               context,
-            )!.activateAccessBiometric),
+            )!
+                .activateAccessBiometric),
             tileColor: Theme.of(context).primaryColor,
             value:
                 walletSecuritySettingsProvider.activateBioProtection ?? false,
@@ -254,7 +256,8 @@ class _SettingPageState extends State<SettingPage> {
     return SwitchListTile(
       title: Text(AppLocalizations.of(
         context,
-      )!.disableScreenshots),
+      )!
+          .disableScreenshots),
       tileColor: Theme.of(context).primaryColor,
       value: walletSecuritySettingsProvider.disallowScreenshot,
       onChanged: (bool switchValue) async {
@@ -294,8 +297,8 @@ class _SettingPageState extends State<SettingPage> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CustomSimpleDialog(
-            title: Text(
-                AppLocalizations.of(context)!.camoPinBioProtectionConflictTitle),
+            title: Text(AppLocalizations.of(context)!
+                .camoPinBioProtectionConflictTitle),
             children: <Widget>[
               Text(AppLocalizations.of(context)!.camoPinBioProtectionConflict),
               Row(
@@ -349,10 +352,12 @@ class _SettingPageState extends State<SettingPage> {
                           context,
                           MaterialPageRoute<dynamic>(
                               builder: (BuildContext context) => PinPage(
-                                  title: AppLocalizations.of(context)!.createPin,
+                                  title:
+                                      AppLocalizations.of(context)!.createPin,
                                   subTitle: AppLocalizations.of(context)!
                                       .enterNewPinCode,
-                                  pinStatus: PinStatus.CHANGE_PIN,
+                                  // TODO(@CharlVS): Implement pin change
+                                  // pinStatus: PinStatus.CHANGE_PIN,
                                   password: password)));
                     },
                   ))),

@@ -35,21 +35,21 @@ class PinInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (errorState)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text(
-              errorMessage!,
-              style: Theme.of(context)
-                  .textTheme
-                  .caption!
-                  .copyWith(color: Colors.red),
-            ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Text(
+            errorMessage ?? '',
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(color: Colors.red),
           ),
-        Shake.x(
-          key: Key('pin-input-shake'),
-          active: errorState,
-          cycles: 4,
+        ),
+        ShakeWidget(
+          key: Key('pin-login-input-shake'),
+          // active: errorState,
+          // cycles: 4,
+          shake: errorState,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

@@ -42,10 +42,10 @@ class Startup {
   String get log => _log;
 
   /// Initiate the startup sequence
-  void start() {
+  Future<void> start() async {
     if (_started) return;
     _started = true;
-    _start(); // Will run in background
+    await _start(); // Will run in background
   }
 
   Future<void> _start() async {

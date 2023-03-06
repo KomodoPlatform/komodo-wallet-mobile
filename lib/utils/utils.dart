@@ -33,6 +33,12 @@ import '../widgets/cex_fiat_preview.dart';
 import '../widgets/custom_simple_dialog.dart';
 import '../widgets/qr_view.dart';
 
+Future<void> waitFor(Stopwatch stopwatch, Duration targetDuration) async {
+  while (stopwatch.elapsed < targetDuration) {
+    await Future.delayed(Duration(milliseconds: 100));
+  }
+}
+
 void copyToClipBoard(BuildContext context, String? str) {
   ScaffoldMessengerState? scaffoldMessenger;
   try {

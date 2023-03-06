@@ -48,17 +48,17 @@ class BlocManager {
       // Initialize sync constructor repositories
 
       // Initialize async repositories which cannot be initialized in parallel
+      _prefs = await SharedPreferences.getInstance();
 
       // Initialize async repositories which can be initialized in parallel
       final futures = <Future<void>>[
         Future(() async {
           _authenticationRepository = AuthenticationRepository();
-          _loginRepository = LoginRepository();
+          _loginRepository = LoginRepository(prefs: _prefs!);
 
           await _authenticationRepository!.init();
           await _loginRepository!.init();
         }),
-        Future(() async => _prefs = await SharedPreferences.getInstance()),
       ];
 
       await Future.wait(futures);

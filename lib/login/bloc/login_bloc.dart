@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:komodo_dex/packages/authentication_repository/authentication_repository.dart';
+import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generic_blocs/authenticate_bloc.dart';
@@ -14,6 +17,7 @@ part 'login_state.dart';
 // This could possibly also be done by using bloc's event transformers.
 // See: https://bloclibrary.dev/#/coreconcepts?id=advanced-event-transformations
 const throttleDuration = Duration(milliseconds: 5000);
+final loginLockoutTimer = Stopwatch();
 
 class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   LoginBloc({
@@ -21,12 +25,13 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     required this.loginRepository,
   }) : super(LoginStateInitial()) {
     on<LoginPinInputChanged>(_onPinInputChanged);
-
     on<LoginPinSubmitted>(_onPinLoginSubmitted);
-
     on<LoginPinSuccess>(_onPinLoginSuccess);
-
-    on<LoginPinFailure>(_onPinLoginFailure);
+    on<_LoginPinFailure>(_onPinLoginFailure);
+    // on<SetPinSubmitted>(_onSetPinSubmitted);
+    // on<SetPinSuccess>(_onSetPinSuccess);
+    // on<ResetPinSubmitted>(_onResetPinSubmitted);
+    // on<ResetPinSuccess>(_onResetPinSuccess);
   }
 
   final SharedPreferences prefs;
@@ -39,18 +44,48 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     final pin = Pin.dirty(event.pin);
     emit(
       state.copyWith(
+        status: Formz.validate([pin]),
         pin: pin,
       ),
     );
   }
 
-  void _onPinLoginSuccess(LoginPinSuccess event, Emitter<LoginState> emit) {}
+  void _onPinLoginSuccess(
+    LoginPinSuccess event,
+    Emitter<LoginState> emit,
+  ) async {
+    return await loginRepository.onPinLoginSuccess();
+
+    loginLockoutTimer
+      ..reset()
+      ..stop();
+  }
 
   void _onPinLoginFailure(
-    LoginPinFailure event,
+    _LoginPinFailure event,
     Emitter<LoginState> emit,
   ) {
-    // TODO(@ologunB): Implement this method.
+    // Start the timer if it's not already running. This is to prevent the user
+    // from brute-forcing the pin.
+    if (!loginLockoutTimer.isRunning) {
+      loginLockoutTimer
+        ..reset()
+        ..start();
+    }
+  }
+
+  Future<void> awaitLoginLockout() async {
+    // If the timer is running, wait for it to be done.
+    // Wait for the difference between the current time and the throttle
+    // duration.
+    if (loginLockoutTimer.isRunning) {
+      await waitFor(loginLockoutTimer, throttleDuration);
+    }
+
+    // Stop the timer and reset it.
+    loginLockoutTimer
+      ..stop()
+      ..reset();
   }
 
   void _onPinLoginSubmitted(
@@ -60,33 +95,32 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     // Emit state to indicate that the pin is being checked.
     emit(LoginStatePinSubmitted(pin: state.pin));
 
-    await loginRepository.initParameters(
-        event.password,
-        event.code,
-        event.onSuccess,
-        event.postSuccess,
-        event.postFailed,
-        event.pinStatus,
-        event.isFromChangingPin);
     try {
-       emit(
-        state.copyWith(
-          status: FormzStatus.submissionInProgress,
-        ),
-      );
-      await loginRepository.validatePin();
+      await awaitLoginLockout();
 
-      emit(
-        state.copyWith(status: FormzStatus.submissionSuccess),
-      );
+      await loginRepository.verifyPin(state.pin.value);
+
+      // TODO(@CharlVS): Check camo pin
+
+      emit(LoginStatePinSubmittedSuccess());
+    } on IncorrectPinException catch (e) {
+      emit(LoginStatePinSubmittedFailure(
+        pin: Pin.pure(),
+        error: 'Incorrect PIN. Please try again.',
+      ));
+
+      loginLockoutTimer.start();
     } catch (e) {
-
       emit(
         state.copyWith(
           status: FormzStatus.submissionFailure,
           error: e.toString(),
         ),
       );
+
+      debugPrint('[ERROR] LoginBloc: _onPinLoginSubmitted: $e');
+    } finally {
+      // Clear pin from state as a security measure after user logs in.
     }
 
     // TODO(@ologunB): Reference applicable repository methods + state changes here.
@@ -110,8 +144,8 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   JsonMap toJson(LoginState state) {
     // TODO: implement toJson
     return {
-      'status': state.status?.name,
-      'pin': state.pin?.toJson(),
+      'status': state.status.name,
+      'pin': state.pin.toJson(),
     };
   }
 
@@ -120,7 +154,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     return LoginState(
       status: FormzStatus.values
           .firstWhereOrNull((e) => e.name == json['status']) as FormzStatus,
-      pin: json['pin'] == null ? null : Pin.fromJson(json['pin'] as JsonMap),
+      pin: Pin.fromJson(json['pin'] as JsonMap),
     );
   }
 }

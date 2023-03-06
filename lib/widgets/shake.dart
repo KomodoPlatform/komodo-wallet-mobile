@@ -1,80 +1,56 @@
-// A widget which takes a child widget and a shake controller and shakes the child widget when the controller is triggered.
-
 import 'package:flutter/material.dart';
 
-/// NB: This is a WIP and is currently disabled
-class Shake extends StatefulWidget {
-  final bool active;
-  final int cycles;
-  final double amplitude;
-  final Widget child;
-
-  const Shake.x({
-    required this.active,
-    this.cycles = 3,
-    this.amplitude = 4,
+class ShakeWidget extends StatefulWidget {
+  const ShakeWidget({
     Key? key,
     required this.child,
+    required this.shake,
+    this.duration = const Duration(milliseconds: 200),
+    // TODO: Future feature
+    // this.period = const Duration(milliseconds: 200),
   }) : super(key: key);
 
+  final Widget child;
+
+  /// Trigger widget shake to start or end by changing this value
+  final bool shake;
+
+  final Duration duration;
+
+  // TODO: Future feature
+  // final Duration period;
+
   @override
-  _ShakeState createState() => _ShakeState();
+  _ShakeWidgetState createState() => _ShakeWidgetState();
 }
 
-class _ShakeState extends State<Shake> with SingleTickerProviderStateMixin {
-  int _currentCycles = 0;
+class _ShakeWidgetState extends State<ShakeWidget>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  Animation? _animation;
+  late Animation<double> _animation;
 
-  bool get _isActive => widget.active && _currentCycles < widget.cycles;
+  // TODO: Future feature
+  // int get _cycles =>
+  //     widget.duration.inMilliseconds ~/ widget.period.inMilliseconds;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 100),
+      duration: widget.duration,
+      value: 0.5,
+      lowerBound: 0,
+      upperBound: 1,
     );
-    _animation = Tween(begin: 0, end: widget.amplitude)
-        .chain(CurveTween(curve: Curves.easeIn))
-        .animate(_controller)
-      ..addListener(() {
-        setState(() {});
-      })
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          setState(() {
-            _currentCycles++;
-            if (_currentCycles == widget.cycles) {
-              _controller.stop();
-            }
-          });
-        }
-      });
-  }
-
-  @override
-  void didUpdateWidget(Shake oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.active) {
-      _controller.repeat(
-        reverse: true,
-        min: 0,
-        max: 1,
-        period: Duration(milliseconds: 50),
-      );
-      _currentCycles = 0;
-    } else {
-      _controller.reset();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: Offset.zero,
-      // offset: Offset(_animation.value * widget.amplitude - widget.amplitude, 0),
-      child: widget.child,
+    _animation = Tween<double>(begin: 1, end: -1)
+        // .chain(Tween<double>(begin: -1, end: 1))
+        // .chain(Tween<double>(begin: 1, end: 0))
+        .animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.linear,
+      ),
     );
   }
 
@@ -82,5 +58,36 @@ class _ShakeState extends State<Shake> with SingleTickerProviderStateMixin {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant ShakeWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.shake) {
+      // Future(() async {
+      // await _controller.animateTo(-1);
+
+      _controller.repeat(
+          reverse: true,
+          period: Duration(milliseconds: widget.duration.inMilliseconds ~/ 3));
+      Future.delayed(widget.duration, () {
+        _controller.animateTo(0.5).then((a) => _controller.stop());
+      });
+      // });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset((_animation.value) * 8, 0),
+          child: child,
+        );
+      },
+      child: widget.child,
+    );
   }
 }

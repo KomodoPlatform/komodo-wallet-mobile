@@ -3,6 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:komodo_dex/login/bloc/login_bloc.dart';
+import 'package:komodo_dex/login/screens/login_page.dart';
 import '../../generic_blocs/authenticate_bloc.dart';
 import '../../generic_blocs/camo_bloc.dart';
 import '../../generic_blocs/coins_bloc.dart';
@@ -254,15 +257,27 @@ class _LockScreenState extends State<LockScreen> {
                                       });
                                     },
                                   )
-                                : PinPage(
-                                    title: AppLocalizations.of(context)!
-                                        .lockScreen,
-                                    subTitle: AppLocalizations.of(context)!
-                                        .enterPinCode,
-                                    pinStatus: widget.pinStatus,
-                                    isFromChangingPin: false,
-                                    onSuccess:
-                                        widget.onSuccess as void Function()?,
+                                : BlocListener<LoginBloc, LoginState>(
+                                    listenWhen: (previous, current) =>
+                                        previous.status != current.status,
+                                    listener: (context, state) {
+                                      if (state
+                                          is LoginStatePinSubmittedSuccess) {
+                                        if (widget.onSuccess != null) {
+                                          widget.onSuccess!();
+                                        }
+                                      }
+                                    },
+                                    child: LoginPage(
+                                        // title: AppLocalizations.of(context)!
+                                        //     .lockScreen,
+                                        // subTitle: AppLocalizations.of(context)!
+                                        //     .enterPinCode,
+                                        // pinStatus: widget.pinStatus,
+                                        // isFromChangingPin: false,
+                                        // onSuccess:
+                                        //     widget.onSuccess as void Function()?,
+                                        ),
                                   ),
                           ],
                         );
@@ -295,8 +310,8 @@ class _LockScreenState extends State<LockScreen> {
                         return PinPage(
                           title: AppLocalizations.of(context)!.lockScreen,
                           subTitle: AppLocalizations.of(context)!.enterPinCode,
-                          pinStatus: widget.pinStatus,
-                          isFromChangingPin: false,
+                          // pinStatus: widget.pinStatus,
+                          // isFromChangingPin: false,
                         );
                       else
                         return widget.child!;
@@ -310,9 +325,9 @@ class _LockScreenState extends State<LockScreen> {
               return PinPage(
                 title: AppLocalizations.of(context)!.createPin,
                 subTitle: AppLocalizations.of(context)!.enterNewPinCode,
-                pinStatus: PinStatus.CREATE_PIN,
+                // pinStatus: PinStatus.CREATE_PIN,
                 password: password,
-                isFromChangingPin: false,
+                // isFromChangingPin: false,
               );
             }
           },
