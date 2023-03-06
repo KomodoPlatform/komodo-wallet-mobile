@@ -37,6 +37,7 @@ import 'generic_blocs/settings_bloc.dart';
 import 'model/startup_provider.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   try {
     mmSe.metrics();
     startup.start();
