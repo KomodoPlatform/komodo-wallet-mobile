@@ -20,13 +20,18 @@ class LoginPinReset extends LoginEvent {
 }
 
 class LoginPinSuccess extends LoginEvent {
-  const LoginPinSuccess(this.password, this.code, this.isFromChangingPin,
-      this.onSuccess, this.pinStatus);
-  final PinStatus? pinStatus;
-  final String? code;
-  final bool isFromChangingPin;
-  final String? password;
-  final VoidCallback? onSuccess;
+  const LoginPinSuccess(
+      // this.password,
+      // this.code,
+      // this.isFromChangingPin,
+      // this.onSuccess,
+      // this.pinStatus,
+      );
+  // final PinStatus? pinStatus;
+  // final String? code;
+  // final bool isFromChangingPin;
+  // final String? password;
+  // final VoidCallback? onSuccess;
 }
 
 class _LoginPinFailure extends LoginEvent {

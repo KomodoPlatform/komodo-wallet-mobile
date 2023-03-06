@@ -3,6 +3,7 @@ import 'package:formz/formz.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:komodo_dex/packages/authentication_repository/authentication_repository.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,11 +55,11 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     LoginPinSuccess event,
     Emitter<LoginState> emit,
   ) async {
-    return await loginRepository.onPinLoginSuccess();
-
     loginLockoutTimer
       ..reset()
       ..stop();
+
+    await loginRepository.onPinLoginSuccess();
   }
 
   void _onPinLoginFailure(
@@ -72,6 +73,11 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
         ..reset()
         ..start();
     }
+
+    emit(LoginStatePinSubmittedFailure(
+      pin: Pin.pure(),
+      error: event.error,
+    ));
   }
 
   Future<void> awaitLoginLockout() async {
@@ -102,26 +108,22 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
 
       // TODO(@CharlVS): Check camo pin
 
-      emit(LoginStatePinSubmittedSuccess());
-    } on IncorrectPinException catch (e) {
-      emit(LoginStatePinSubmittedFailure(
-        pin: Pin.pure(),
-        error: 'Incorrect PIN. Please try again.',
-      ));
+      add(LoginPinSuccess());
 
-      loginLockoutTimer.start();
+      //
+    } on IncorrectPinException catch (e) {
+      //
+
+      add(_LoginPinFailure('Incorrect PIN. Please try again.'));
+
+      //
     } catch (e) {
-      emit(
-        state.copyWith(
-          status: FormzStatus.submissionFailure,
-          error: e.toString(),
-        ),
-      );
+      add(_LoginPinFailure(e.toString()));
 
       debugPrint('[ERROR] LoginBloc: _onPinLoginSubmitted: $e');
-    } finally {
-      // Clear pin from state as a security measure after user logs in.
     }
+
+    add(LoginPinSuccess());
 
     // TODO(@ologunB): Reference applicable repository methods + state changes here.
     // E.g. (Suggestions, not complete):
