@@ -107,14 +107,20 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   // NB: toJson and fromJson methods are critical to restore state after
   // the app restarts as it's used by the HydratedBloc library.
   @override
-  Map<String, dynamic> toJson(LoginState state) {
+  JsonMap toJson(LoginState state) {
     // TODO: implement toJson
-    return {};
+    return {
+      'status': state.status?.name,
+      'pin': state.pin?.toJson(),
+    };
   }
 
   @override
-  LoginState fromJson(Map<String, dynamic> json) {
-    // TODO: implement fromJson
-    return LoginStateInitial();
+  LoginState fromJson(JsonMap json) {
+    return LoginState(
+      status: FormzStatus.values
+          .firstWhereOrNull((e) => e.name == json['status']) as FormzStatus,
+      pin: json['pin'] == null ? null : Pin.fromJson(json['pin'] as JsonMap),
+    );
   }
 }

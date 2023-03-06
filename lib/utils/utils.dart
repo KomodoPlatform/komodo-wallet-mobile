@@ -931,3 +931,5 @@ bool isCoinPresent(Coin coin, String? query, String filter) {
       (coin.abbr!.toLowerCase().contains(query!.trim().toLowerCase()) ||
           coin.name!.toLowerCase().contains(query.trim().toLowerCase()));
 }
+
+typedef JsonMap = Map<String, dynamic>;
