@@ -3,22 +3,34 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart' as arch;
-
-import '../../app_config/app_config.dart';
-import '../../generic_blocs/camo_bloc.dart';
-import '../../model/cex_provider.dart';
-import '../../model/swap.dart';
-import '../../model/swap_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
+import 'package:share/share.dart';
+
+import '../../app_config/app_config.dart';
 import '../../generic_blocs/authenticate_bloc.dart';
+import '../../generic_blocs/camo_bloc.dart';
 import '../../generic_blocs/dialog_bloc.dart';
 import '../../generic_blocs/main_bloc.dart';
 import '../../generic_blocs/settings_bloc.dart';
 import '../../generic_blocs/wallet_bloc.dart';
 import '../../localizations.dart';
+import '../../model/cex_provider.dart';
+import '../../model/swap.dart';
+import '../../model/swap_provider.dart';
 import '../../model/updates_provider.dart';
 import '../../model/wallet_security_settings_provider.dart';
+import '../../services/mm_service.dart';
+import '../../utils/log.dart';
+import '../../utils/utils.dart';
+import '../../widgets/build_red_dot.dart';
+import '../../widgets/custom_simple_dialog.dart';
+import '../../widgets/eula_contents.dart';
+import '../../widgets/primary_button.dart';
+import '../../widgets/scrollable_dialog.dart';
+import '../../widgets/tac_contents.dart';
 import '../authentification/lock_screen.dart';
 import '../authentification/pin_page.dart';
 import '../authentification/show_delete_wallet_confirmation.dart';
@@ -29,19 +41,6 @@ import '../import-export/import_swap_page.dart';
 import '../settings/camo_pin_setup_page.dart';
 import '../settings/updates_page.dart';
 import '../settings/view_seed_unlock_page.dart';
-import '../../services/mm_service.dart';
-import '../../utils/log.dart';
-import '../../utils/utils.dart';
-import '../../widgets/build_red_dot.dart';
-import '../../widgets/custom_simple_dialog.dart';
-import '../../widgets/eula_contents.dart';
-import '../../widgets/primary_button.dart';
-import '../../widgets/scrollable_dialog.dart';
-import '../../widgets/tac_contents.dart';
-
-import 'package:provider/provider.dart';
-import 'package:share/share.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -566,6 +565,7 @@ class _SettingPageState extends State<SettingPage> {
 
     final now = DateTime.now();
     final log = mmSe.currentLog(now: now);
+    if (log == null) return;
     if (swapMonitor.swaps.isEmpty) await swapMonitor.update();
     try {
       log.sink.write('\n\n--- my recent swaps ---\n\n');

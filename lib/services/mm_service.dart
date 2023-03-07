@@ -235,7 +235,7 @@ class MMService {
       : applicationDocumentsDirectorySync!.path + '/';
 
   /// Returns a log file matching the present [now] time.
-  FileAndSink currentLog({DateTime? now}) {
+  FileAndSink? currentLog({DateTime? now}) {
     // Time can fluctuate back and forth due to time syncronization and such.
     // Hence we're using a map that allows us to direct the log entries
     // to a log file precisely matching the `now` time,
@@ -243,6 +243,7 @@ class MMService {
     // This in turn allows us to make the log lines shorter
     // by only mentioning the current time (and not date) in a line.
 
+    if (filesPath == null) return null;
     final files = Directory(filesPath!);
     // removes the last file until the total space is less than 500mb
     while (dirStatSync(filesPath!) > Log.limitMB) {
@@ -409,13 +410,13 @@ class MMService {
     }
   }
 
-  void log2file(String chunk, {DateTime? now}) {
+  void log2file(String? chunk, {DateTime? now}) {
     if (chunk == null) return;
     if (!chunk.endsWith('\n')) chunk += '\n';
 
     now ??= DateTime.now();
-    final log = currentLog(now: now);
-
+    FileAndSink? log = currentLog(now: now);
+    if (log == null) return;
     // There's a chance that during life cycle transitions log file descriptor will be closed on iOS.
     // The try-catch will hopefully help us detect this and reopen the file.
     IOSink s = log.sink;

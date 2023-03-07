@@ -27,8 +27,8 @@ class BlocManagerWidget extends StatelessWidget {
         // Instantiate all BLoCs here
         BlocProvider<LoginBloc>(
           create: (BuildContext context) => LoginBloc(
-            prefs: BlocManager()._prefs!,
-            loginRepository: BlocManager()._loginRepository!,
+            prefs: BlocManager()._prefs,
+            loginRepository: BlocManager()._loginRepository,
           ),
         ),
       ],

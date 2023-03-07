@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
 import 'package:komodo_dex/login/bloc/login_bloc.dart';
 import 'package:komodo_dex/widgets/pin/pin_input.dart';
 
-import '../../generic_blocs/authenticate_bloc.dart';
 import '../../generic_blocs/dialog_bloc.dart';
 import '../../localizations.dart';
-import '../../widgets/page_transition.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -43,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
 
     _loginBloc = BlocProvider.of<LoginBloc>(context);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       // if (_loginBloc.pinStatus == PinStatus.NORMAL_PIN) {
       dialogBloc.closeDialog(context);
       // }

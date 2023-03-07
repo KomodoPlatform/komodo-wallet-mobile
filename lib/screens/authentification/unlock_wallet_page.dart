@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import '../../generic_blocs/authenticate_bloc.dart';
 import '../../generic_blocs/wallet_bloc.dart';
 import '../../localizations.dart';
 import '../../model/wallet.dart';
-import '../authentification/welcome_page.dart';
 import '../../services/db/database.dart';
 import '../../widgets/password_visibility_control.dart';
 import '../../widgets/primary_button.dart';
+import '../authentification/welcome_page.dart';
 
 class UnlockWalletPage extends StatefulWidget {
   const UnlockWalletPage({
@@ -145,7 +146,8 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                           ),
                           isLoading
                               ? Text(
-                                  AppLocalizations.of(context)!.decryptingWallet,
+                                  AppLocalizations.of(context)!
+                                      .decryptingWallet,
                                   style: Theme.of(context).textTheme.bodyText2,
                                 )
                               : SizedBox()

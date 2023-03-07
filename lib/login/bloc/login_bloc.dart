@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:komodo_dex/packages/authentication_repository/authentication_repository.dart';
-import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/iterable_utils.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../generic_blocs/authenticate_bloc.dart';
 import '../models/pin.dart';
 import 'login_repo.dart';
 
@@ -22,8 +19,8 @@ final loginLockoutTimer = Stopwatch();
 
 class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   LoginBloc({
-    required this.prefs,
-    required this.loginRepository,
+    this.prefs,
+    this.loginRepository,
   }) : super(LoginStateInitial()) {
     on<LoginPinInputChanged>(_onPinInputChanged);
     on<LoginPinSubmitted>(_onPinLoginSubmitted);
@@ -35,8 +32,8 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     // on<ResetPinSuccess>(_onResetPinSuccess);
   }
 
-  final SharedPreferences prefs;
-  final LoginRepository loginRepository;
+  final SharedPreferences? prefs;
+  final LoginRepository? loginRepository;
 
   void _onPinInputChanged(
     LoginPinInputChanged event,
@@ -59,7 +56,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
       ..reset()
       ..stop();
 
-    await loginRepository.onPinLoginSuccess();
+    await loginRepository!.onPinLoginSuccess();
   }
 
   void _onPinLoginFailure(
@@ -104,7 +101,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     try {
       await awaitLoginLockout();
 
-      await loginRepository.verifyPin(state.pin.value);
+      await loginRepository!.verifyPin(state.pin.value);
 
       // TODO(@CharlVS): Check camo pin
 
