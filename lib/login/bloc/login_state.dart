@@ -2,139 +2,109 @@ part of 'login_bloc.dart';
 
 // ========================= Abstract state class =========================
 
-///Abstract cookie-cutter state class.
-abstract class LoginStateAbstract {
+// This abstract class defines the common properties for all LoginState variations.
+abstract class LoginStateAbstract with FormzMixin {
   const LoginStateAbstract({
-    // this.pinStatus,
     required this.pin,
-    required this.status,
+    required this.submissionStatus,
     this.error,
   });
 
-  final FormzStatus status;
+  @override
+  List<FormzInput> get inputs => [pin];
 
-  final String? error;
-
-  final Pin pin;
-
-  // Let's avoid storing the correct pin in state. Rather, let's call the
-  // repository to check the pin when submitted.
-  // final String correctPin;
+  final FormzSubmissionStatus
+      submissionStatus; // The submission status of the form
+  final String? error; // A string representing any error that occurred
+  final Pin pin; // The pin entered by the user
 }
 
 // ========================= General use state =========================
 
-/// General use login state. Where possible, create a new state class for each
-/// event. This is a nice to have but not required.
+//TODO: Refactor this class into an abstract class to be in line with the
+// naming conventions. The convention suggests using either a single state
+// or multiple segmented states. This class is a hybrid of both.
 class LoginState extends LoginStateAbstract {
   LoginState({
-    // PinStatus pinStatus,
     required Pin pin,
-    required FormzStatus status,
+    required FormzSubmissionStatus submissionStatus,
     String? error,
   }) : super(
           pin: pin,
-          status: status,
+          submissionStatus: submissionStatus,
           error: error,
-          // correctPin: correctPin,
         );
 
-  bool get isLoading => status == FormzStatus.submissionInProgress;
-  bool get isError => status == FormzStatus.submissionFailure;
+  // Check if the form submission is in progress
+  bool get isLoading => submissionStatus.isInProgress;
 
+  // Check if the form submission has failed
+  bool get isError => submissionStatus.isFailure;
+
+  // Returns a new instance of LoginState with the updated properties
   LoginState copyWith({
-    // PinStatus pinStatus,
     Pin? pin,
-    FormzStatus? status,
+    FormzSubmissionStatus? submissionStatus,
     String? error,
-    String? correctPin,
   }) {
     return LoginState(
-      // pinStatus: pinStatus ?? this.pinStatus,
       pin: pin ?? this.pin,
-      status: status ?? this.status,
+      submissionStatus: submissionStatus ?? this.submissionStatus,
       error: error ?? this.error,
-      // correctPin: correctPin ?? this.correctPin,
     );
   }
 }
 
 // ========================= Event-specific states =========================
 
+// The initial state of the form when it is first rendered
 class LoginStateInitial extends LoginState {
   LoginStateInitial()
       : super(
-          // pinStatus: PinStatus.NORMAL_PIN,
           pin: const Pin.pure(),
           error: null,
-          // correctPin: '',
-          status: FormzStatus.pure,
+          submissionStatus: FormzSubmissionStatus.initial,
         );
 }
 
-// class LoginStateSetPin extends LoginState {
-//   LoginStateSetPin({
-//     Pin? pin,
-//     this.pinConfirmation,
-//   }) : super(
-//           pin: pin,
-//           status: FormzStatus.pure,
-//         );
-
-//   final Pin? pinConfirmation;
-
-//   bool get isLoading => status == FormzStatus.submissionInProgress;
-
-//   LoginStateSetPin copyWith({
-//     Pin? pin,
-//     Pin? pinConfirmation,
-//     FormzStatus? status,
-//     String? error,
-//   }) {
-//     return LoginStateSetPin(
-//       pin: pin ?? this.pin,
-//       pinConfirmation: pinConfirmation ?? this.pinConfirmation,
-//       status: status ?? this.status,
-//       error: error ?? this.error,
-//     );
-//   }
-// }
-
+// The state when the pin is submitted
 class LoginStatePinSubmitted extends LoginState {
   LoginStatePinSubmitted({
     required Pin pin,
   }) : super(
           pin: pin,
-          // correctPin: correctPin,
-          status: FormzStatus.submissionInProgress,
+          submissionStatus: FormzSubmissionStatus.inProgress,
         );
 }
 
+// The state when the pin submission is successful
 class LoginStatePinSubmittedSuccess extends LoginState {
   LoginStatePinSubmittedSuccess()
       : super(
           pin: Pin.pure(),
-          status: FormzStatus.submissionSuccess,
+          submissionStatus: FormzSubmissionStatus.success,
         );
 }
 
+// The state when the pin submission has failed
 class LoginStatePinSubmittedFailure extends LoginState {
   LoginStatePinSubmittedFailure({
     required Pin pin,
     required String error,
   }) : super(
           pin: pin,
-          status: FormzStatus.submissionFailure,
+          submissionStatus: FormzSubmissionStatus.failure,
           error: error,
         );
 }
 
+// The state when the pin input is updated by the user
 class LoginStateUpdateInput extends LoginState {
   LoginStateUpdateInput({
     required Pin pin,
   }) : super(
           pin: pin,
-          status: FormzStatus.submissionInProgress,
+          submissionStatus: FormzSubmissionStatus.inProgress,
         );
 
   Pin? pinConfirmation;

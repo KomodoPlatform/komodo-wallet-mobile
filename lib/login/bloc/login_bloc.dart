@@ -12,8 +12,6 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 /// Duration to throttle pin form submissions
-// This could possibly also be done by using bloc's event transformers.
-// See: https://bloclibrary.dev/#/coreconcepts?id=advanced-event-transformations
 const throttleDuration = Duration(milliseconds: 5000);
 final loginLockoutTimer = Stopwatch();
 
@@ -26,10 +24,6 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     on<LoginPinSubmitted>(_onPinLoginSubmitted);
     on<LoginPinSuccess>(_onPinLoginSuccess);
     on<_LoginPinFailure>(_onPinLoginFailure);
-    // on<SetPinSubmitted>(_onSetPinSubmitted);
-    // on<SetPinSuccess>(_onSetPinSuccess);
-    // on<ResetPinSubmitted>(_onResetPinSubmitted);
-    // on<ResetPinSuccess>(_onResetPinSuccess);
   }
 
   final SharedPreferences? prefs;
@@ -42,7 +36,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     final pin = Pin.dirty(event.pin);
     emit(
       state.copyWith(
-        status: Formz.validate([pin]),
+        submissionStatus: FormzSubmissionStatus.initial,
         pin: pin,
       ),
     );
@@ -63,8 +57,6 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     _LoginPinFailure event,
     Emitter<LoginState> emit,
   ) {
-    // Start the timer if it's not already running. This is to prevent the user
-    // from brute-forcing the pin.
     if (!loginLockoutTimer.isRunning) {
       loginLockoutTimer
         ..reset()
@@ -77,15 +69,18 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     ));
   }
 
+  /// This awaits a timeout from the time of last incorrect pin. This throttles
+  /// pin submissions to prevent brute force attacks. The optimal UX approach
+  /// is to only make the user wait if, after entering an incorrect pin, we
+  /// allow the user to start entering a new pin immediately. We only want to
+  /// force the user to wait if they have submitted a new pin attempt before
+  /// the timeout duration from the last incorrect pin has elapsed.
   Future<void> awaitLoginLockout() async {
-    // If the timer is running, wait for it to be done.
-    // Wait for the difference between the current time and the throttle
-    // duration.
     if (loginLockoutTimer.isRunning) {
-      await waitFor(loginLockoutTimer, throttleDuration);
+      await awaitDurationDifference(
+          loginLockoutTimer.elapsed, throttleDuration);
     }
 
-    // Stop the timer and reset it.
     loginLockoutTimer
       ..stop()
       ..reset();
@@ -95,7 +90,6 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     LoginPinSubmitted event,
     Emitter<LoginState> emit,
   ) async {
-    // Emit state to indicate that the pin is being checked.
     emit(LoginStatePinSubmitted(pin: state.pin));
 
     try {
@@ -103,47 +97,21 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
 
       await loginRepository!.verifyPin(state.pin.value);
 
-      // TODO(@CharlVS): Check camo pin
-
       add(LoginPinSuccess());
-
-      //
-    } on IncorrectPinException catch (e) {
-      //
-
+    } on IncorrectPinException catch (_) {
       add(_LoginPinFailure('Incorrect PIN. Please try again.'));
-
-      //
     } catch (e) {
       add(_LoginPinFailure(e.toString()));
-
       debugPrint('[ERROR] LoginBloc: _onPinLoginSubmitted: $e');
     }
-
-    add(LoginPinSuccess());
-
-    // TODO(@ologunB): Reference applicable repository methods + state changes here.
-    // E.g. (Suggestions, not complete):
-    // - Check if pin matches the camo pin.
-    // - If it does, emit LoginPinSuccess and call the authenticationRepository
-    // method to authenticate the user.
-    // - If it doesn't, check if it matches the normal pin.
-    // - If it does, emit LoginPinSuccess and call the authenticationRepository
-    // method to authenticate the user.
-    // - If it doesn't, emit LoginPinFailure.
   }
 
-  // TODO(@ologunB): Implement other bloc methods. For now, let's first focus
-  // on the login screen, then we can move on to the other screens for setting
-  // the pin, etc.
-
-  // NB: toJson and fromJson methods are critical to restore state after
+  // toJson and fromJson methods are critical to restore state after
   // the app restarts as it's used by the HydratedBloc library.
   @override
   JsonMap toJson(LoginState state) {
-    // TODO: implement toJson
     return {
-      'status': state.status.name,
+      'status': state.submissionStatus.toString(),
       'pin': state.pin.toJson(),
     };
   }
@@ -151,8 +119,9 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   @override
   LoginState fromJson(JsonMap json) {
     return LoginState(
-      status: FormzStatus.values
-          .firstWhereOrNull((e) => e.name == json['status']) as FormzStatus,
+      submissionStatus: FormzSubmissionStatus.values
+              .firstWhereOrNull((e) => e.toString() == json['status'])
+          as FormzSubmissionStatus,
       pin: Pin.fromJson(json['pin'] as JsonMap),
     );
   }

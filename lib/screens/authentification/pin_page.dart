@@ -68,7 +68,8 @@ class _PinPageState extends State<PinPage> {
           : null,
       resizeToAvoidBottomInset: false,
       body: BlocListener<LoginBloc, LoginState>(
-        listenWhen: (previous, current) => previous.status != current.status,
+        listenWhen: (previous, current) =>
+            previous.submissionStatus != current.submissionStatus,
         listener: (context, state) {
           if (state is LoginStatePinSubmittedFailure) {
             ScaffoldMessenger.of(context).showSnackBar(

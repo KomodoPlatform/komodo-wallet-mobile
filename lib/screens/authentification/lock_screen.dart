@@ -259,7 +259,8 @@ class _LockScreenState extends State<LockScreen> {
                                   )
                                 : BlocListener<LoginBloc, LoginState>(
                                     listenWhen: (previous, current) =>
-                                        previous.status != current.status,
+                                        previous.submissionStatus !=
+                                        current.submissionStatus,
                                     listener: (context, state) {
                                       if (state
                                           is LoginStatePinSubmittedSuccess) {
