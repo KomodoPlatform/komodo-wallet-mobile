@@ -45,7 +45,7 @@ dependencies:
 
   http: ^0.13.5 # dart.dev (Note: Supports null safety)
 
-  crypto: 3.0.1 # dart.dev (Note: Supports null safety)
+  crypto: 3.0.2 # dart.dev (Note: Supports null safety)
 
   # TODO: Security audit and switch to locked version github repo source before release.
   # This is so that we ensure we are developing with the latest version of the package
@@ -150,6 +150,8 @@ dependencies:
       path: sqflite/
       ref: 85d84b6f656764e4a4d6632dcc9913f4f47011e5 #2.0.0+4
   
+  # TODO: Security audit and switch back to github repo source for current version 
+  
   flutter_secure_storage: # last reviewed eef67d3d006b2c53453df183f7d4ac081948e110
     git:
       url: https://github.com/KomodoPlatform/flutter_secure_storage.git
@@ -192,6 +194,12 @@ dependencies:
   # TODO: Security audit and switch to github repo source for current version 
   # (NB! run 'flutter pub upgrade' and check pubspec.lock for current version)
   flutter_local_notifications: ^13.0.0
+
+  # TODO: Security audit and switch to github repo source for current version 
+  rational: ^2.2.2
+
+  # TODO: Security audit and switch to github repo source for current version 
+  provider: ^6.0.5
 
 dev_dependencies:
   integration_test:
