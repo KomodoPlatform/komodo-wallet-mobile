@@ -238,10 +238,17 @@ Future<bool> authenticateBiometrics(BuildContext context, PinStatus? pinStatus,
 
     try {
       didAuthenticate = await localAuth.authenticate(
+        localizedReason: AppLocalizations.of(context)!.lockScreenAuth,
+        options: const AuthenticationOptions(
           biometricOnly: true,
+          useErrorDialogs: true,
           stickyAuth: true,
-          localizedReason: AppLocalizations.of(context)!.lockScreenAuth);
+          sensitiveTransaction: true,
+        ),
+      );
     } on PlatformException catch (e) {
+      // TODO! Refactor as part of Bloc migration and ensure race conditions
+      // are handled properly.
       // AG, 2020-02-07, observed a race:
       // "ex: Can not perform this action after onSaveInstanceState" is thrown and unlocks `_activeAuthenticateWithBiometrics`;
       // a second `authenticateWithBiometrics` then leads to "ex: Authentication in progress" and crash.
