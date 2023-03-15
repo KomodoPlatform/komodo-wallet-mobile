@@ -194,6 +194,7 @@ dependencies:
   # TODO: Security audit and switch to github repo source for current version 
   # (NB! run 'flutter pub upgrade' and check pubspec.lock for current version)
   flutter_local_notifications: ^13.0.0
+  rational: ^2.2.2
 
   # TODO: Security audit and switch to github repo source for current version 
   rational: ^2.2.2

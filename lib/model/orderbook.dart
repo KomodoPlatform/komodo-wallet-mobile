@@ -152,7 +152,7 @@ class Ask {
     return buyAmount;
   }
 
-  Decimal getReceivePrice() => deci('1') / deci(price);
+  Decimal getReceivePrice() => (deci('1') / deci(price)).toDecimal();
 
   bool isMine() {
     final String myAddress =
