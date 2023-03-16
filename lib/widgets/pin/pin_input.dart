@@ -29,54 +29,61 @@ class PinInput extends StatelessWidget {
     this.onPinComplete,
   });
 
+  Color _circleColor(int index) {
+    if (errorState) {
+      return Colors.red;
+    }
+
+    if (_isCharacterFilled(index)) {
+      return obscureText ? Color(0xFF8EBEFF) : Colors.transparent;
+    }
+    return Color(0xFF1A3664);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Text(
-            errorMessage ?? '',
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: Colors.red),
+    return Container(
+      color: Colors.transparent,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Text(
+              errorMessage ?? '',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: Colors.red),
+            ),
           ),
-        ),
-        ShakeWidget(
-          key: Key('pin-login-input-shake'),
-          // active: errorState,
-          // cycles: 4,
-          shake: errorState,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: List.generate(
-              length,
-              (index) => Container(
-                key: Key('pin-input-container-$index'),
-                padding: const EdgeInsets.all(8.0),
-                constraints: const BoxConstraints(
-                  minWidth: 48,
-                  minHeight: 48,
-                ),
-                alignment: Alignment.center,
-                child: IconTheme(
-                  data: Theme.of(context).iconTheme.copyWith(
-                        color: errorState
-                            ? Colors.red
-                            : Theme.of(context).iconTheme.color,
-                        size: 24,
-                      ),
-                  child: AnimatedCrossFade(
-                    duration: const Duration(milliseconds: 150),
-                    crossFadeState: _isCharacterFilled(index)
-                        ? CrossFadeState.showFirst
-                        : CrossFadeState.showSecond,
-                    firstChild: obscureText || !_isCharacterFilled(index)
-                        ? Icon(Icons.circle, key: Key('pin-input-empty-$index'))
+          ShakeWidget(
+            key: Key('pin-login-input-shake'),
+            // active: errorState,
+            // cycles: 4,
+            shake: errorState,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: List.generate(
+                length,
+                (index) => Container(
+                  color: Colors.transparent,
+                  key: Key('pin-input-container-$index'),
+                  padding: const EdgeInsets.all(8.0),
+                  constraints: const BoxConstraints(
+                    minWidth: 48,
+                    minHeight: 48,
+                  ),
+                  alignment: Alignment.center,
+                  child: CircleAvatar(
+                    // #8EBEFF
+                    backgroundColor: _circleColor(index),
+                    radius: 12,
+                    key: Key('pin-input-circle-$index'),
+                    child: (obscureText || !_isCharacterFilled(index))
+                        ? null
                         : Text(
                             value[index],
                             key: Key('pin-input-empty-$index'),
@@ -84,21 +91,19 @@ class PinInput extends StatelessWidget {
                             textAlign: TextAlign.center,
                             softWrap: true,
                           ),
-                    secondChild: Icon(Icons.circle_outlined,
-                        key: Key('pin-input-filled-$index')),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        const SizedBox(height: 24),
-        _KeyPad(
-            readOnly: readOnly,
-            onChanged: _onChangedHandler,
-            value: value,
-            canPressBackspace: canPressBackspace),
-      ],
+          const SizedBox(height: 24),
+          _KeyPad(
+              readOnly: readOnly,
+              onChanged: _onChangedHandler,
+              value: value,
+              canPressBackspace: canPressBackspace),
+        ],
+      ),
     );
   }
 

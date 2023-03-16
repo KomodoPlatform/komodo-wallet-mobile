@@ -349,8 +349,7 @@ class AppLocalizations {
   // ---
 
   String get createPin => Intl.message('Create PIN', name: 'createPin');
-  String get enterPinCode =>
-      Intl.message('Enter your PIN code', name: 'enterPinCode');
+  String get enterPinCode => Intl.message('Enter Pin', name: 'enterPinCode');
   String get login => Intl.message('login', name: 'login');
   String get newAccount => Intl.message('new account', name: 'newAccount');
   String get newAccountUpper =>

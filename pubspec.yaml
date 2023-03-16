@@ -201,6 +201,7 @@ dependencies:
 
   # TODO: Security audit and switch to github repo source for current version 
   provider: ^6.0.5
+  google_fonts: ^4.0.3
 
 dev_dependencies:
   integration_test:

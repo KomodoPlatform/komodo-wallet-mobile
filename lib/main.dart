@@ -132,13 +132,20 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: [
       SystemUiOverlay.bottom,
       SystemUiOverlay.top,
     ]);
+
+    final systemUIBrightness = Theme.of(context).brightness == Brightness.dark
+        ? Brightness.light
+        : Brightness.dark;
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: getThemeDark().scaffoldBackgroundColor,
-      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarIconBrightness: systemUIBrightness,
+      statusBarBrightness: systemUIBrightness,
+      systemNavigationBarColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
     ));
 
     // Forward pointer events to LockService.

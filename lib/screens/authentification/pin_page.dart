@@ -10,6 +10,7 @@ import '../../localizations.dart';
 import '../../widgets/page_transition.dart';
 import '../authentification/app_bar_status.dart';
 
+@deprecated
 class PinPage extends StatefulWidget {
   const PinPage({
     Key? key,
