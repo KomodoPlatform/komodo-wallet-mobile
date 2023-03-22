@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../generic_blocs/authenticate_bloc.dart';
@@ -50,6 +51,7 @@ class Startup {
 
   Future<void> _start() async {
     final Stopwatch stopwatch = Stopwatch()..start();
+    await Db.init();
 
     // delete old logs
     await Log.maintain();
@@ -68,6 +70,10 @@ class Startup {
     _notifyListeners();
 
     Log('startup', 'Startup sequence completed in ${stopwatch.elapsed}');
+
+    stopwatch
+      ..stop()
+      ..reset();
   }
 
   /// Start MM but only if the passphrase is currently unlocked.

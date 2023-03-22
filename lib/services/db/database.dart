@@ -17,16 +17,62 @@ import '../../utils/utils.dart';
 class Db {
   static Database? _db;
   static bool _initInvoked = false;
+  static bool _isBusy = false;
+  static bool _isInitialized = false;
 
-  static Future<Database> get db async {
-    // Protect the database from being opened and initialized multiple times.
-    if (_initInvoked) {
-      await pauseUntil(() => _db != null);
-      return _db!;
+  static Database get sqlDbInstance => _isBusy
+      ? throw Exception(
+          'SQL database initialisation is busy. Wait for it to be ready.')
+      : !_isInitialized
+          ? throw Exception(
+              'SQL database is not initialized. Call init() first.')
+          : _db!;
+
+  static Future<void> init() async {
+    if (_isInitialized) throw Exception('SQL database is already initialized');
+
+    if (_isBusy) {
+      await pauseUntil(() => !_isBusy, maxMs: 3000);
+      if (_isBusy || !_isInitialized)
+        throw Exception(
+          'Tried to await for SQL database to be'
+          'initialized, but it timed out after 3000 ms',
+        );
+      return;
     }
 
-    _initInvoked = true;
-    _db = await _initDB();
+    try {
+      _initInvoked = true;
+      _isBusy = true;
+
+      _db = await _initDB();
+    } catch (e) {
+      // TODO: Cleanup failed DB initialization
+
+      rethrow;
+    } finally {
+      _isBusy = false;
+    }
+
+    // Set initialized
+    _isInitialized = true;
+  }
+
+  // Protect the database from being opened and initialized multiple times.
+  // This can be converted to sync, but there are a lot of places where
+  // this is being used as async. If the database has been initialized, this
+  // will return immediately.
+  static FutureOr<Database> get db async {
+    if (_db != null) return _db!;
+
+    if (!_isInitialized) {
+      //   throw Exception('SQL database is not initialized. Call init() first.');
+      await init();
+    }
+
+    if (_initInvoked || _isBusy) {
+      await pauseUntil(() => _db != null);
+    }
     return _db!;
   }
 
