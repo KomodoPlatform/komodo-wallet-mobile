@@ -1,3 +1,5 @@
+import 'package:komodo_dex/login/exceptions/auth_exceptions.dart';
+import 'package:komodo_dex/login/models/pin_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generic_blocs/authenticate_bloc.dart';
@@ -35,9 +37,33 @@ class LoginRepository {
 
   AppLocalizations loc = AppLocalizations();
 
-  Future<void> onPinLoginSuccess() async {
+  // The previous method [onPinLoginSuccess] was refactored because
+  // this method would log in without any authentication. Although we did first
+  // check in the legacy bloc if the pin was set, this was not a good solution
+  // for a public repository method. The effective name of the previous method
+  // was 'loginWithoutAuthentication'.
+  Future<void> loginWithPin(String pin, PinTypeName pinType) async {
+    await verifyPin(pin, pinType);
+    _performLogin(pinType);
+  }
+
+  Future<PinTypeName> loginWithPinAnyType(String pin) async {
+    PinTypeName pinType = await verifyPinAnyType(pin);
+    _performLogin(pinType);
+    return pinType;
+  }
+
+  Future<void> loginWithPassword(String password) async {
+    // Add logic here to verify the password if needed
+    _performLogin(null);
+  }
+
+  Future<void> _performLogin(PinTypeName? pinType) async {
+    //TODO (@ologunB): Please implement any logic here needed for specific
+    // login types. Ignore and remove this comment If no changes are needed.
+
     bool loadSnapshot = true;
-    if (camoBloc.isCamoActive) {
+    if (pinType == PinTypeName.camo || camoBloc.isCamoActive) {
       coinsBloc.resetCoinBalance();
       loadSnapshot = false;
     }
@@ -52,29 +78,11 @@ class LoginRepository {
     }
   }
 
-  void _onErrorPinEntered() {
-    camoBloc.isCamoActive = false;
-
-    throw AppLocalizations().errorTryAgain;
-  }
-
-  Future<bool> isPinSet() async {
-    final String? pin = await EncryptionTool().read('pin');
-    return pin != null;
-  }
-
-  Future<void> setNewPin(String pin) async {
-    // Check if the pin is correct or if it has not already been set.
-    if (await isPinSet()) {
-      throw PinAlreadySetException();
-    }
-
-    await _writePin(pin, password: '');
-  }
-
-  Future<void> _writePin(String pin, {required String password}) async {
-    // TODO: verify password
-
+  Future<void> _writePin(
+    String pin, {
+    required PinTypeName type,
+    required String password,
+  }) async {
     final Wallet? wallet = await Db.getCurrentWallet();
 
     if (wallet != null) {
@@ -84,20 +92,52 @@ class LoginRepository {
       //     .catchError((dynamic e) => Log.println('pin_page:90', e));
     }
 
-    await EncryptionTool().write('pin', pin);
+    if (type == PinTypeName.normal) {
+      await EncryptionTool().write('pin', pin);
+    } else if (type == PinTypeName.camo) {
+      await EncryptionTool().write('camoPin', pin);
+    } else {
+      throw UnimplementedError('Pin type not supported.');
+    }
   }
 
-  Future<void> resetPin({
-    required String currentPin,
+  /// Either set or reset a given pin type. If the pin type is already set, the
+  /// current pin must be provided. If the pin type is not set, the current pin
+  /// must be null.
+  Future<void> setPin({
     required String newPin,
+    required PinTypeName type,
+    String? currentPin,
   }) async {
-    await verifyPin(currentPin);
+    // Verify the current pin if it's provided
 
-    await _writePin(newPin, password: '');
-  }
+    // Check if the pin is already set for the provided type
 
-  Future<void> setCamoPin(String pin) async {
-    //
+    if (currentPin != null) {
+      await verifyPin(currentPin, type);
+    } else {
+      try {
+        await verifyPin('', type);
+      } on PinNotFoundException {
+        // The pin is not set for the provided type, continue with setting the pin
+      }
+    }
+
+    // Check if the new pin is already set for any other type
+    try {
+      await verifyPinAnyType(newPin);
+    } on PinNotFoundException {
+      // The new pin is not set for other types, continue with setting the pin
+    } on IncorrectPinException catch (e) {
+      if (e.types.any((PinTypeName t) => t != type)) {
+        throw PinAlreadySetForAnotherTypeException(e.types.single);
+      }
+    }
+
+    final password = await EncryptionTool().read('passphrase');
+
+    // Update the pin for the specified type
+    await _writePin(newPin, type: type, password: password!);
   }
 
   Future<void> setCamoPinEnabled(bool value) async {
@@ -123,51 +163,88 @@ class LoginRepository {
     throw UnimplementedError();
   }
 
-  /// Verifies the pin code. Throws an exception if the pin is incorrect.
-  Future<void> verifyPin(String pin) async {
-    final _correctPin = await EncryptionTool().read('pin');
+  Future<void> verifyPassword(String password) async {
+    final String? correctPassword = await EncryptionTool().read('passphrase');
 
-    if (_correctPin == null) {
-      throw PinNotFoundException();
+    if (correctPassword == null) {
+      throw PasswordNotSetException('Password not set.');
     }
 
-    if (pin != _correctPin) {
-      throw IncorrectPinException();
+    if (password != correctPassword) {
+      throw IncorrectPasswordException('The password provided is incorrect.');
     }
 
     return;
   }
 
-  Future<void> loginWithPin(String pin) async {
-    // TODO: implement loginWithPin
-    throw UnimplementedError();
+  /// Verifies the pin code. Throws an exception if the pin is incorrect.
+  Future<void> verifyPin(String pin, PinTypeName type) async {
+    String? correctPin;
+
+    if (type == PinTypeName.camo) {
+      correctPin = await EncryptionTool().read('camoPin');
+
+      //
+    } else if (type == PinTypeName.normal) {
+      correctPin = await EncryptionTool().read('pin');
+
+      //
+    } else {
+      throw UnimplementedError('Pin type not supported.');
+
+      //
+    }
+
+    if (correctPin == null) {
+      throw PinNotFoundException();
+    }
+
+    if (pin != correctPin) {
+      throw IncorrectPinException(types: [type]);
+    }
+
+    return;
   }
 
-  Future<bool> verifyCamoPin(String pin) async {
-    // TODO: implement validateCamoPin
-    throw UnimplementedError();
+  Future<PinTypeName> verifyPinAnyType(String pin) async {
+    /// Checks all types of pins and if none exist, throws
+    /// [PinNotFoundException]. If at least one exists, but the pin is incorrect,
+    /// throws [IncorrectPinException]. If any of the pins are correct, returns
+    /// the type of the pin.
+
+    List<PinTypeName> incorrectTypes = [];
+    List<PinTypeName> notFoundTypes = [];
+    List<PinTypeName> verifiedPinTypes = [];
+
+    for (PinTypeName type in PinTypeName.values) {
+      try {
+        await verifyPin(pin, type);
+        verifiedPinTypes.add(type);
+      } catch (e) {
+        if (e is IncorrectPinException) {
+          incorrectTypes.add(type);
+        } else if (e is PinNotFoundException) {
+          notFoundTypes.add(type);
+        } else {
+          // Rethrow any other exceptions
+          rethrow;
+        }
+      }
+    }
+
+    assert(
+      verifiedPinTypes.length <= 1,
+      'Multiple pin types should not have the same pin.',
+    );
+
+    if (verifiedPinTypes.isNotEmpty) {
+      return verifiedPinTypes.single;
+    } else if (incorrectTypes.length == PinTypeName.values.length) {
+      // If all pin types are incorrect, throw IncorrectPinException
+      throw IncorrectPinException(types: incorrectTypes);
+    } else {
+      // If none of the pins are set, throw PinNotFoundException
+      throw PinNotFoundException(types: notFoundTypes);
+    }
   }
-
-  Future<void> loginWithCamoPin(String pin) async {
-    //
-  }
-}
-
-// List of exceptions that can be thrown by the repository.
-class AuthenticationException implements Exception {
-  final String message;
-
-  AuthenticationException(this.message);
-}
-
-class PinNotFoundException extends AuthenticationException {
-  PinNotFoundException() : super('Pin not found. Try setting a pin first.');
-}
-
-class IncorrectPinException extends AuthenticationException {
-  IncorrectPinException() : super('Incorrect pin.');
-}
-
-class PinAlreadySetException extends AuthenticationException {
-  PinAlreadySetException() : super('Pin already set. Try resetting it first.');
 }
