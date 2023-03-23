@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:komodo_dex/login/exceptions/auth_exceptions.dart';
 import 'package:komodo_dex/login/models/pin_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,28 +16,74 @@ import '../../utils/encryption_tool.dart';
 import '../../utils/log.dart';
 import '../../utils/utils.dart';
 
+enum AuthState { uninitialized, authenticated, authenticating, unauthenticated }
+
+// TODO: Migrate parts of the application referencing the legacy coins/auth
+// blocs for authentication to a new AuthenticationBloc which listens to
+// the stream of authentication events from this repository.
+
+/// Repository for handling authentication logic. This repository is
+/// responsible for handling all authentication logic and should be used
+/// instead of the legacy authentication blocs. NB that this repository is
+/// not a singleton and should be instantiated in the widget tree.
 class LoginRepository {
   LoginRepository({
     required this.prefs,
-  });
+    required Db db,
+    required MMService marketMakerService,
+  })  : _db = db,
+        _marketMakerService = marketMakerService;
 
   bool _isInitialized = false;
 
   final SharedPreferences prefs;
 
+  final Db _db;
+
+  final MMService _marketMakerService;
+
+  AuthState? _lastAuthState;
+
+  final StreamController<AuthState> _authStateController =
+      StreamController<AuthState>.broadcast();
+
+  /// Stream for listening to changes in the authentication state. New listeners
+  /// will receive the latest authentication state.
+  /// The stream does not broadcast repeated events. If this causes any issues,
+  /// please remove the filter and implement the filtering logic in blocs
+  /// which do need to filter repeated events.
+  ///
+  /// NB: Currently we are in a transition phase from the legacy authentication
+  /// blocs managing authentication to this repository. Future blocs should
+  /// listen to this stream for authentication events. Also ensure that the
+  /// logic for mutating the authentication state is handled in this repository.
+  Stream<AuthState> get authState {
+    if (_lastAuthState != null) {
+      Future.microtask(() => _authStateController.sink.add(_lastAuthState!));
+    }
+    return _authStateController.stream;
+  }
+
+  /// Method for initializing the authentication repository. This method
   Future<void> init() async {
     if (_isInitialized)
       throw Exception('AuthenticationRepository is already initialized');
 
-    // do any necessary initialization here:
-
-    //
+    // Add any initialization logic migrated from the legacy blocs here
 
     // Set initialized
     _isInitialized = true;
   }
 
   AppLocalizations loc = AppLocalizations();
+
+  /// Internal method to handle any logic for specific changes in the
+  /// authentication state. This method filters out any repeated state events.
+  /// If this causes any issues, please remove the filter.
+  void _setAuthState(AuthState state) {
+    _lastAuthState = state;
+    _authStateController.sink.add(state);
+  }
 
   // The previous method [onPinLoginSuccess] was refactored because
   // this method would log in without any authentication. Although we did first
@@ -69,13 +117,15 @@ class LoginRepository {
     }
 
     authBloc.showLock = false;
-    if (!mmSe.running) {
+    if (!_marketMakerService.running) {
       await authBloc.login(await EncryptionTool().read('passphrase'), null,
           loadSnapshot: loadSnapshot);
 
       // Wait for mmService to be ready
-      await pauseUntil(() => mmSe.running, maxMs: 10000);
+      await pauseUntil(() => _marketMakerService.running, maxMs: 10000);
     }
+
+    _setAuthState(AuthState.authenticated);
   }
 
   Future<void> _writePin(
@@ -138,6 +188,15 @@ class LoginRepository {
 
     // Update the pin for the specified type
     await _writePin(newPin, type: type, password: password!);
+  }
+
+  Future<void> logout() async {
+    // Add any logic here for logging out
+    // TODO(@ologunB): Please implement any logic here needed for logging
+    // out. Ignore and remove this comment If no changes are needed.
+
+    // Set the authentication state to logged out
+    _setAuthState(AuthState.unauthenticated);
   }
 
   Future<void> setCamoPinEnabled(bool value) async {
@@ -246,5 +305,9 @@ class LoginRepository {
       // If none of the pins are set, throw PinNotFoundException
       throw PinNotFoundException(types: notFoundTypes);
     }
+  }
+
+  void dispose() {
+    _authStateController.close();
   }
 }
