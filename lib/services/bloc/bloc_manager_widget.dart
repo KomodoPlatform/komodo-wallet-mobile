@@ -3,11 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:komodo_dex/packages/authentication_repository/authentication_repository.dart';
 import 'package:komodo_dex/login/bloc/login_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../authentication/repository/authentication_repository.dart';
 
 part 'bloc_manager.dart';
 
@@ -27,13 +26,15 @@ class BlocManagerWidget extends StatelessWidget {
         BlocProvider<LoginBloc>(
           create: (BuildContext context) => LoginBloc(
             prefs: BlocManager.instance._prefs,
-            loginRepository: BlocManager.instance._authenticationRepository,
+            authenticationRepository:
+                BlocManager.instance._authenticationRepository,
           ),
         ),
         BlocProvider<PinResetBloc>(
           create: (BuildContext context) => PinResetBloc(
             prefs: BlocManager.instance._prefs,
-            loginRepository: BlocManager.instance._authenticationRepository!,
+            authenticationRepository:
+                BlocManager.instance._authenticationRepository!,
           ),
         ),
       ],

@@ -6,7 +6,7 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/pin.dart';
-import '../../authentication/repository/authentication_repository.dart';
+import '../../packages/authentication_repository/authentication_repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -18,7 +18,7 @@ final loginLockoutTimer = Stopwatch();
 class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   LoginBloc({
     this.prefs,
-    this.loginRepository,
+    this.authenticationRepository,
   }) : super(LoginStateInitial()) {
     on<LoginPinInputChanged>(_onPinInputChanged);
     on<LoginPinSubmitted>(_onPinLoginSubmitted);
@@ -27,7 +27,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   }
 
   final SharedPreferences? prefs;
-  final LoginRepository? loginRepository;
+  final AuthenticationRepository? authenticationRepository;
 
   void _onPinInputChanged(
     LoginPinInputChanged event,
