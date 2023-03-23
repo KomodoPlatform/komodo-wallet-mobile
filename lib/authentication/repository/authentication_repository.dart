@@ -26,8 +26,8 @@ enum AuthState { uninitialized, authenticated, authenticating, unauthenticated }
 /// responsible for handling all authentication logic and should be used
 /// instead of the legacy authentication blocs. NB that this repository is
 /// not a singleton and should be instantiated in the widget tree.
-class LoginRepository {
-  LoginRepository({
+class AuthenticationRepository {
+  AuthenticationRepository({
     required this.prefs,
     required Db db,
     required MMService marketMakerService,
