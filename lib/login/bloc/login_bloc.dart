@@ -6,7 +6,7 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/pin.dart';
-import 'login_repo.dart';
+import '../../authentication/repository/authentication_repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';

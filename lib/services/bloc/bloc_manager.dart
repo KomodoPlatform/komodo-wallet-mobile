@@ -26,8 +26,7 @@ class BlocManager {
   // TODO: Add 'late' and 'final' after null safety
   SharedPreferences? _prefs;
 
-  AuthenticationRepository? _authenticationRepository;
-  LoginRepository? _loginRepository;
+  late final AuthenticationRepository? _authenticationRepository;
 
   //=====================================================================
 
@@ -54,10 +53,8 @@ class BlocManager {
       final futures = <Future<void>>[
         Future(() async {
           _authenticationRepository = AuthenticationRepository();
-          _loginRepository = LoginRepository(prefs: _prefs!);
 
           await _authenticationRepository!.init();
-          await _loginRepository!.init();
         }),
       ];
 
