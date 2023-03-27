@@ -1,6 +1,7 @@
-[![Build Status](https://app.bitrise.io/app/bc464ad88d40bb68/status.svg?token=tnpzqFp_7vrcsQYqWSIVBQ&branch=dev)](https://app.bitrise.io/app/bc464ad88d40bb68)  
-# atomicDEX v0.6.1
-Komodo Platform's hybrid multicoin DEX-wallet. 
+
+# atomicDEX v0.6.2
+
+Built by Komodo, AtomicDEX Mobile is a non-custodial wallet and decentralized exchange rolled into one app. Hold and trade hundreds of cryptocurrencies on your mobile phone or tablet.
 
 ## Getting Started
 
