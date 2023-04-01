@@ -42,6 +42,17 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
   bool autovalidate = false;
   bool isEnterPressed = false;
 
+  bool get canInputUsd =>
+      widget.coinBalance.coin.priceUsd != null &&
+      widget.coinBalance.coin.priceUsd > 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _coinAmountController.addListener(_onCoinAmountUpdated);
+    _usdAmountController.addListener(_onUsdAmountUpdated);
+  }
+
   @override
   void dispose() {
     _coinAmountController.dispose();
@@ -66,9 +77,10 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
               controller: _coinAmountController,
             ),
             const SizedBox(height: 16),
-            // TODO(vanchel): выставлять enabled в false, "if that coin has a price within the wallet"
             AmountField(
               trailingText: widget.coinBalance.coin.abbr,
+              // TODO(vanchel): выставлять enabled в false, "if that coin has a price within the wallet"
+              enabled: canInputUsd,
               controller: _usdAmountController,
             ),
             const SizedBox(height: 16),
@@ -124,10 +136,37 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
     );
   }
 
-  // TODO(vanchel): реализовать использование этого метода
-  onChanged(String a) {
+  void _onCoinAmountUpdated() {
+    onChanged(_coinAmountController.text);
+    final coinAmount = double.tryParse(
+      _coinAmountController.text.replaceAll(',', '.'),
+    );
+    if (coinAmount == null || !canInputUsd) return;
+
+    final usd = widget.coinBalance.coin.priceUsd * coinAmount;
+    _usdAmountController
+      ..removeListener(_onUsdAmountUpdated)
+      ..text = usd.toStringAsFixed(2)
+      ..addListener(_onUsdAmountUpdated);
+  }
+
+  void _onUsdAmountUpdated() {
+    onChanged(_usdAmountController.text);
+    final usdAmount = double.tryParse(
+      _usdAmountController.text.replaceAll(',', '.'),
+    );
+    if (usdAmount == null) return;
+
+    final coin = usdAmount / widget.coinBalance.coin.priceUsd;
+    _coinAmountController..removeListener(_onCoinAmountUpdated)
+      // TODO(vanchel): проверить, что decimals - это то, что надо
+      ..text = coin.toStringAsFixed(widget.coinBalance.coin.decimals)
+      ..addListener(_onCoinAmountUpdated);
+  }
+
+  onChanged(String value) {
     setState(() {
-      if (isEnterPressed && a.isEmpty) {
+      if (isEnterPressed && value.isEmpty) {
         autovalidate = false;
         formKey.currentState.validate();
       } else if (isEnterPressed) {
