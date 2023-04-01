@@ -43,11 +43,14 @@ class AmountField extends StatelessWidget {
         labelText: AppLocalizations.of(context).amount,
         suffixIcon: Padding(
           padding: EdgeInsets.only(right: 8.0),
-          child: Center(
-            child: Text(
-              trailingText.toUpperCase(),
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                trailingText.toUpperCase(),
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ],
           ),
         ),
       ),

@@ -12,22 +12,16 @@ typedef EnterCallback = void Function(double coinAmount);
 class ReceivingAmountStep extends StatefulWidget {
   const ReceivingAmountStep({
     Key key,
-    this.focusNode,
-    this.autoFocus = false,
     this.onEnterPressed,
     this.onCancel,
     this.onQrCodeTap,
     this.coinBalance,
-    this.scrollController,
   }) : super(key: key);
 
-  final FocusNode focusNode;
-  final bool autoFocus;
   final EnterCallback onEnterPressed;
   final VoidCallback onCancel;
   final VoidCallback onQrCodeTap;
   final CoinBalance coinBalance;
-  final ScrollController scrollController;
 
   @override
   _ReceivingAmountStepState createState() => _ReceivingAmountStepState();
@@ -78,13 +72,13 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
             ),
             const SizedBox(height: 16),
             AmountField(
-              trailingText: widget.coinBalance.coin.abbr,
+              trailingText: '\$',
               // TODO(vanchel): выставлять enabled в false, "if that coin has a price within the wallet"
               enabled: canInputUsd,
               controller: _usdAmountController,
             ),
             const SizedBox(height: 16),
-            GestureDetector(
+            InkWell(
               onTap: widget.onQrCodeTap,
               child: Container(
                 color: Colors.white,
