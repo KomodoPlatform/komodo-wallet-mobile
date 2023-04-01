@@ -394,6 +394,7 @@ class AppLocalizations {
       Intl.message('My $coinName address: \n$address',
           args: <Object>[coinName, address], name: 'shareAddress');
   String get withdraw => Intl.message('Withdraw', name: 'withdraw');
+  String get enter => Intl.message('Enter', name: 'enter');
   String get errorValueEmpty =>
       Intl.message('Value is too high or low', name: 'errorValueEmpty');
   String get amount => Intl.message('Amount', name: 'amount');
