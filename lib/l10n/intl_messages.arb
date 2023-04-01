@@ -802,6 +802,11 @@
 		"type": "text",
 		"placeholders_order": []
 	},
+    "enter": "Enter",
+    "@enter": {
+      "type": "text",
+      "placeholders_order": []
+    },
 	"errorValueEmpty": "Value is too high or low",
 	"@errorValueEmpty": {
 		"type": "text",

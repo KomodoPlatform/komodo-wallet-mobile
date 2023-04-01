@@ -859,6 +859,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+    "enter": "Onayla",
+    "@enter": {
+      "type": "text",
+      "placeholders_order": [],
+      "placeholders": {}
+    },
 	"errorValueEmpty": "Değer çok yüksek ya da çok düşük",
 	"@errorValueEmpty": {
 		"type": "text",

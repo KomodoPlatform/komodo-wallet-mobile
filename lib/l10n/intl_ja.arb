@@ -875,6 +875,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+    "enter": "確定",
+    "@enter": {
+      "type": "text",
+      "placeholders_order": [],
+      "placeholders": {}
+    },
 	"errorValueEmpty": "値が高すぎるか低すぎる",
 	"@errorValueEmpty": {
 		"type": "text",

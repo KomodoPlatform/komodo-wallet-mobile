@@ -875,6 +875,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+    "enter": "Aceptar",
+    "@enter": {
+      "type": "text",
+      "placeholders_order": [],
+      "placeholders": {}
+    },
 	"errorValueEmpty": "El valor es demasiado alto o bajo",
 	"@errorValueEmpty": {
 		"type": "text",

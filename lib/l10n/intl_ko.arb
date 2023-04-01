@@ -875,6 +875,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+    "enter": "확인",
+    "@enter": {
+      "type": "text",
+      "placeholders_order": [],
+      "placeholders": {}
+    },
 	"errorValueEmpty": "값이 너무 높거나 낮습니다",
 	"@errorValueEmpty": {
 		"type": "text",
