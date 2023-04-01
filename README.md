@@ -1,6 +1,37 @@
-[![Build Status](https://app.bitrise.io/app/bc464ad88d40bb68/status.svg?token=tnpzqFp_7vrcsQYqWSIVBQ&branch=dev)](https://app.bitrise.io/app/bc464ad88d40bb68)  
-# atomicDEX v0.6.1
-Komodo Platform's hybrid multicoin DEX-wallet. 
+# AtomicDEX Mobile Wallet - Open Source GitHub Repository 🚀
+
+Welcome to the AtomicDEX Mobile Wallet open source repository! This cutting-edge project is brought to you by Komodo, providing a powerful non-custodial wallet and decentralized exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with AtomicDEX!
+
+## Unleashing the Power of AtomicDEX API 💡
+We've made this repository public to showcase the incredible potential of the AtomicDEX API and to spark interest among companies looking to integrate this game-changing technology into their own applications. Our goal is to drive innovation and expand the reach of decentralized exchange technology worldwide.
+
+## Exciting Features 🌟
+- **Non-custodial wallet:** You're in control - only you have access to your private keys.
+- **Decentralized exchange:** Trade cryptocurrencies effortlessly across blockchain networks with atomic swap technology, bypassing the need for a middleman.
+- **500+ Listed Cryptocurrencies:** A vast and ever-growing list of supported cryptocurrencies.
+- **Unlimited markets:** Over 300,000 completed atomic swaps and a staggering 10,000+ trading pairs.
+- **User support:** Engage with our active Discord support channel, where official team members are ready to help. We'd also love to hear your feedback.
+- **Most supported protocols:** AtomicDEX outshines the competition by supporting the most blockchain protocols of any decentralized exchange on the market.
+- **Established team:** Our pioneering Komodo developers have been at the forefront of DEX technology since 2014.
+- **Frequent updates:** Our dedicated developers are constantly working to enhance the app's user experience, security, and feature set.
+
+## Download AtomicDEX Mobile Wallet 📲
+Embrace financial freedom at your fingertips by downloading the AtomicDEX Mobile Wallet:
+
+- [iOS](https://testflight.apple.com/join/c2mOLEoC)
+- [Android](https://play.google.com/store/apps/details?id=com.komodoplatform.atomicdex)
+
+## Get Involved 🤝
+We welcome contributions from developers, designers, and testers in our open-source project. If you'd like to contribute, please review the [contribution guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
+
+For any questions about the AtomicDEX Mobile Wallet or the exchange, join our lively [Discord Support channel](https://komodoplatform.com/discord). Official team members are identifiable by the "Komodo Team" role.
+
+## License 📄
+This project is released under the [MIT License](LICENSE).
+
+[![Build Status](https://app.bitrise.io/app/bc464ad88d40bb68/status.svg?token=tnpzqFp_7vrcsQYqWSIVBQ&branch=dev)](https://app.bitrise.io/app/bc464ad88d40bb68) 
+Version: v0.6.1
+
 
 ## Getting Started
 
