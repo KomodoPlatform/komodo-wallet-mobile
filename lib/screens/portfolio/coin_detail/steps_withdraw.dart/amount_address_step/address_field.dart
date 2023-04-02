@@ -18,6 +18,8 @@ class AddressField extends StatefulWidget {
     this.addressFormat,
     this.coin,
     this.onChanged,
+    this.showScanner = true,
+    this.isOptional = false,
   }) : super(key: key);
 
   final Function onScan;
@@ -25,6 +27,8 @@ class AddressField extends StatefulWidget {
   final Map<String, dynamic> addressFormat;
   final Coin coin;
   final Function(String) onChanged;
+  final bool showScanner;
+  final bool isOptional;
 
   @override
   _AddressFieldState createState() => _AddressFieldState();
@@ -82,17 +86,19 @@ class _AddressFieldState extends State<AddressField> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              SizedBox(
-                height: 60,
-                child: IconButton(
-                  splashRadius: 24,
-                  padding: EdgeInsets.all(0),
-                  visualDensity: VisualDensity.compact,
-                  onPressed: widget.onScan,
-                  icon: Icon(Icons.add_a_photo),
-                ),
-              ),
-              const SizedBox(width: 8),
+               if (widget.showScanner) ...[
+                 SizedBox(
+                   height: 60,
+                   child: IconButton(
+                     splashRadius: 24,
+                     padding: EdgeInsets.all(0),
+                     visualDensity: VisualDensity.compact,
+                     onPressed: widget.onScan,
+                     icon: Icon(Icons.add_a_photo),
+                   ),
+                 ),
+                 const SizedBox(width: 8),
+               ],
               Expanded(
                 child: TextFormField(
                   key: const Key('send-address-field'),
@@ -129,6 +135,9 @@ class _AddressFieldState extends State<AddressField> {
                   // The validator receives the text the user has typed in
                   validator: (String value) {
                     if (value.isEmpty && coinsDetailBloc.isCancel) {
+                      return null;
+                    }
+                    if (value.isEmpty && widget.isOptional) {
                       return null;
                     }
                     if (value.isEmpty) {
