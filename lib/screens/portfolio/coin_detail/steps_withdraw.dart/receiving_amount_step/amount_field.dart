@@ -19,7 +19,7 @@ class AmountField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    Widget widget = TextFormField(
       inputFormatters: <TextInputFormatter>[
         DecimalTextInputFormatter(
           decimalRange: appConfig.tradeFormPrecision,
@@ -65,5 +65,24 @@ class AmountField extends StatelessWidget {
         return null;
       },
     );
+
+    if (!enabled) {
+      widget = Stack(
+        children: [
+          widget,
+          Positioned.fill(
+            child: ClipRRect(
+              clipBehavior: Clip.hardEdge,
+              borderRadius: BorderRadius.circular(2),
+              child: ColoredBox(
+                color: Colors.grey.withOpacity(0.6),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    return widget;
   }
 }
