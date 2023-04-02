@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../localizations.dart';
 import '../../../../../model/coin_balance.dart';
@@ -34,10 +36,11 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool isEnterPressed = false;
+  CexProvider cex;
 
-  bool get canInputUsd =>
-      widget.coinBalance.coin.priceUsd != null &&
-      widget.coinBalance.coin.priceUsd > 0;
+  double get usdPrice => cex.getUsdPrice(widget.coinBalance.coin.abbr);
+
+  bool get canInputUsd => usdPrice != null && usdPrice > 0;
 
   @override
   void initState() {
@@ -56,6 +59,8 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
 
   @override
   Widget build(BuildContext context) {
+    cex = Provider.of<CexProvider>(context);
+
     return Container(
       padding: const EdgeInsets.all(16),
       child: Form(
@@ -134,7 +139,7 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
     );
     if (coinAmount == null || !canInputUsd) return;
 
-    final usd = widget.coinBalance.coin.priceUsd * coinAmount;
+    final usd = usdPrice * coinAmount;
     _usdAmountController
       ..removeListener(_onUsdAmountUpdated)
       ..text = usd.toStringAsFixed(2)
@@ -148,11 +153,10 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
     );
     if (usdAmount == null) return;
 
-    final coin = usdAmount / widget.coinBalance.coin.priceUsd;
+    final coin = usdAmount / usdPrice;
     _coinAmountController
       ..removeListener(_onCoinAmountUpdated)
-      // TODO(vanchel): проверить, что decimals - это то, что надо
-      ..text = coin.toStringAsFixed(widget.coinBalance.coin.decimals)
+      ..text = coin.toStringAsFixed(8)
       ..addListener(_onCoinAmountUpdated);
   }
 
