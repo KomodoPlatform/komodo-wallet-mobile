@@ -75,7 +75,7 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
             const SizedBox(height: 16),
             AmountField(
               trailingText: '\$',
-              // TODO(vanchel): выставлять enabled в false, "if that coin has a price within the wallet"
+              // TODO: check this - set enabled to false, "if that coin has a price within the wallet"
               enabled: canInputUsd,
               controller: _usdAmountController,
             ),

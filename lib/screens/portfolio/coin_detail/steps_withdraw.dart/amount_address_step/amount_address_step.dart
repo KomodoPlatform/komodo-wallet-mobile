@@ -1,6 +1,5 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../app_config/app_config.dart';
@@ -187,7 +186,6 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   void handleQrAdress(String address, double amount) {
     widget.addressController.text = address;
     if (amount != null) {
-      // TODO(vanchel): вероятно, возможно непредвиденное поведение при переключенной валюте в текстовом поле при ненулевом балансе
       widget.amountController.text = '$amount';
     }
   }
