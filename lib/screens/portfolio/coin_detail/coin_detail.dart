@@ -872,11 +872,13 @@ class _CoinDetailState extends State<CoinDetail> {
                 _waitForInit();
               });
             },
-            onEnterPressed: (coinAmount) {
+            onEnterPressed: (coinAmount, address) {
               showReceivingCopyDialog(
                 context,
                 currentCoinBalance.coin,
-                currentCoinBalance.balance.address,
+                address != null && address.trim().isNotEmpty
+                    ? address
+                    : currentCoinBalance.balance.address,
                 coinAmount,
                 cexProvider,
               );

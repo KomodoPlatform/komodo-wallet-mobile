@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../localizations.dart';
@@ -9,7 +10,7 @@ import '../../../../../widgets/primary_button.dart';
 import '../../../../../widgets/secondary_button.dart';
 import 'amount_field.dart';
 
-typedef EnterCallback = void Function(double coinAmount);
+typedef EnterCallback = void Function(double coinAmount, String address);
 
 class ReceivingAmountStep extends StatefulWidget {
   const ReceivingAmountStep({
@@ -32,6 +33,7 @@ class ReceivingAmountStep extends StatefulWidget {
 class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
   final _coinAmountController = TextEditingController();
   final _usdAmountController = TextEditingController();
+  final _addressController = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -53,6 +55,7 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
   void dispose() {
     _coinAmountController.dispose();
     _usdAmountController.dispose();
+    _addressController.dispose();
 
     super.dispose();
   }
@@ -77,6 +80,16 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
               trailingText: '\$',
               enabled: canInputUsd,
               controller: _usdAmountController,
+            ),
+            const SizedBox(height: 16),
+            AddressField(
+              addressFormat: widget.coinBalance.coin.addressFormat,
+              controller: _addressController,
+              coin: widget.coinBalance.coin,
+              onChanged: null,
+              onScan: null,
+              showScanner: false,
+              isOptional: true,
             ),
             const SizedBox(height: 16),
             InkWell(
@@ -118,6 +131,7 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
                           _coinAmountController.text.isNotEmpty) {
                         widget.onEnterPressed(
                           double.tryParse(_coinAmountController.text) ?? 0.0,
+                          _addressController.text,
                         );
                       }
                     },
