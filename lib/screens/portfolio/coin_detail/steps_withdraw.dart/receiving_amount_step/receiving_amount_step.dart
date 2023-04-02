@@ -33,7 +33,6 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  bool autovalidate = false;
   bool isEnterPressed = false;
 
   bool get canInputUsd =>
@@ -61,8 +60,6 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
       padding: const EdgeInsets.all(16),
       child: Form(
         key: formKey,
-        autovalidateMode:
-            autovalidate ? AutovalidateMode.always : AutovalidateMode.disabled,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -152,7 +149,8 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
     if (usdAmount == null) return;
 
     final coin = usdAmount / widget.coinBalance.coin.priceUsd;
-    _coinAmountController..removeListener(_onCoinAmountUpdated)
+    _coinAmountController
+      ..removeListener(_onCoinAmountUpdated)
       // TODO(vanchel): проверить, что decimals - это то, что надо
       ..text = coin.toStringAsFixed(widget.coinBalance.coin.decimals)
       ..addListener(_onCoinAmountUpdated);
@@ -161,10 +159,7 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
   onChanged(String value) {
     setState(() {
       if (isEnterPressed && value.isEmpty) {
-        autovalidate = false;
         formKey.currentState.validate();
-      } else if (isEnterPressed) {
-        autovalidate = true;
       }
     });
   }
