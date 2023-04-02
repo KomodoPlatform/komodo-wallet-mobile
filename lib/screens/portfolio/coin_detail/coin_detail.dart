@@ -879,6 +879,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 currentCoinBalance.coin,
                 currentCoinBalance.balance.address,
                 coinAmount,
+                cexProvider,
               );
               setState(() {
                 showReceivingBlock = false;
