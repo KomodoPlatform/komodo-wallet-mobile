@@ -783,7 +783,6 @@ class _CoinDetailState extends State<CoinDetail> {
           : () {
               switch (statusButton) {
                 case StatusButton.RECEIVE:
-                  // TODO(vanchel) 10 раз перепроверить эту логику, возможно тут тоже должна быть проверка на index == 3 или что-то такое
                   setState(() {
                     elevationHeader == 8.0
                         ? elevationHeader = 8.0
