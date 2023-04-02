@@ -399,6 +399,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enablingTooManyAssetsTitle" : MessageLookupByLibrary.simpleMessage("あまりにも多くのアセットを有効にしようとしています"),
     "encryptingWallet" : MessageLookupByLibrary.simpleMessage("暗号化ウォレット"),
     "englishLanguage" : MessageLookupByLibrary.simpleMessage("英語"),
+    "enter" : MessageLookupByLibrary.simpleMessage("確定"),
     "enterNewPinCode" : MessageLookupByLibrary.simpleMessage("新しい PIN を入力してください"),
     "enterOldPinCode" : MessageLookupByLibrary.simpleMessage("古い PIN を入力してください"),
     "enterPinCode" : MessageLookupByLibrary.simpleMessage("PINコードを入力してください"),

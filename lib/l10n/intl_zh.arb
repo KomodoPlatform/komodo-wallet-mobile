@@ -875,6 +875,12 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "enter": "确认",
+    "@enter": {
+      "type": "text",
+      "placeholders_order": [],
+      "placeholders": {}
+    },
     "errorValueEmpty": "价值太高或太低",
     "@errorValueEmpty": {
         "type": "text",

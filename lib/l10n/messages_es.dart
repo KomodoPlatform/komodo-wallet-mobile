@@ -399,6 +399,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enablingTooManyAssetsTitle" : MessageLookupByLibrary.simpleMessage("Intentando habilitar demasiados activos"),
     "encryptingWallet" : MessageLookupByLibrary.simpleMessage("Billetera cifrada"),
     "englishLanguage" : MessageLookupByLibrary.simpleMessage("Inglés"),
+    "enter" : MessageLookupByLibrary.simpleMessage("Aceptar"),
     "enterNewPinCode" : MessageLookupByLibrary.simpleMessage("Ingrese su nuevo PIN"),
     "enterOldPinCode" : MessageLookupByLibrary.simpleMessage("Ingrese su antiguo PIN"),
     "enterPinCode" : MessageLookupByLibrary.simpleMessage("Ingresa tu numero PIN"),

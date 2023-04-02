@@ -875,6 +875,12 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "enter": "Ввести",
+    "@enter": {
+      "type": "text",
+      "placeholders_order": [],
+      "placeholders": {}
+    },
     "errorValueEmpty": "Значение слишком высокое или маленькое",
     "@errorValueEmpty": {
         "type": "text",

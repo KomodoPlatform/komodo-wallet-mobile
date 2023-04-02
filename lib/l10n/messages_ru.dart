@@ -399,6 +399,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enablingTooManyAssetsTitle" : MessageLookupByLibrary.simpleMessage("Попытка подключения других активов"),
     "encryptingWallet" : MessageLookupByLibrary.simpleMessage("Шифрую кошелек"),
     "englishLanguage" : MessageLookupByLibrary.simpleMessage("Английский"),
+    "enter" : MessageLookupByLibrary.simpleMessage("Ввести"),
     "enterNewPinCode" : MessageLookupByLibrary.simpleMessage("Введите новый PIN"),
     "enterOldPinCode" : MessageLookupByLibrary.simpleMessage("Введите свой старый PIN"),
     "enterPinCode" : MessageLookupByLibrary.simpleMessage("Введите свой PIN-код"),

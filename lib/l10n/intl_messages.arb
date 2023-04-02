@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2023-04-01T21:01:32.147421",
+  "@@last_modified": "2023-04-02T14:23:33.784554",
   "mobileDataWarning": "Please note that now you're using cellular data and participation in {appName} P2P network consume internet traffic. It's better to use a WiFi network if your cellular data plan is costly.",
   "@mobileDataWarning": {
     "type": "text",
@@ -872,6 +872,12 @@
   },
   "withdraw": "Withdraw",
   "@withdraw": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "enter": "Enter",
+  "@enter": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}

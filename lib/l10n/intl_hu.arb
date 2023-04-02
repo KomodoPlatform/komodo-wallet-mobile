@@ -859,6 +859,12 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "enter": "Mentés",
+    "@enter": {
+      "type": "text",
+      "placeholders_order": [],
+      "placeholders": {}
+    },
     "errorValueEmpty": "Az érték túl magas vagy alacsony",
     "@errorValueEmpty": {
         "type": "text",
