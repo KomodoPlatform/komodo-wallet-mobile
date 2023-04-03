@@ -35,7 +35,7 @@ flutter run --dart-define=screenshot=true
 
 2.1.10108
 adde21b26
-http://195.201.0.6/dev/
+https://github.com/KomodoPlatform/atomicDEX-API/releases
 
 ## Flutter version
 
