@@ -399,6 +399,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enablingTooManyAssetsTitle" : MessageLookupByLibrary.simpleMessage("너무 많은 자산을 활성화 할려고 하고 있습니다"),
     "encryptingWallet" : MessageLookupByLibrary.simpleMessage("지갑 암호화 하는 중"),
     "englishLanguage" : MessageLookupByLibrary.simpleMessage("영어"),
+    "enter" : MessageLookupByLibrary.simpleMessage("확인"),
     "enterNewPinCode" : MessageLookupByLibrary.simpleMessage("새로운 핀을 입력하세요"),
     "enterOldPinCode" : MessageLookupByLibrary.simpleMessage("옛날 핀을 입력하세요"),
     "enterPinCode" : MessageLookupByLibrary.simpleMessage("핀 코드를 입력하세요"),

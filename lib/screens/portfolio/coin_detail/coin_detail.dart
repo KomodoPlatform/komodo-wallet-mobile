@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/receiving_amount_step/receiving_amount_step.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -65,6 +66,7 @@ class _CoinDetailState extends State<CoinDetail> {
   BuildContext mainContext;
   String fromId;
   bool isExpanded = false;
+  bool showReceivingBlock = false;
   Timer closeTimer;
   bool isLoading = false;
   bool loadingWithdrawDialog = true;
@@ -247,6 +249,8 @@ class _CoinDetailState extends State<CoinDetail> {
             controller: scrollController,
             children: <Widget>[
               if (!currentCoinBalance.coin.suspended) _buildForm(),
+              if (!currentCoinBalance.coin.suspended)
+                _buildReceivingForm(context),
               _buildHeaderCoinDetail(context),
               if (_shouldRefresh && !currentCoinBalance.coin.suspended)
                 _buildNewTransactionsButton(),
@@ -721,7 +725,9 @@ class _CoinDetailState extends State<CoinDetail> {
     String text = '';
     switch (statusButton) {
       case StatusButton.RECEIVE:
-        text = AppLocalizations.of(context).receive;
+        text = showReceivingBlock
+            ? AppLocalizations.of(context).close.toUpperCase()
+            : AppLocalizations.of(context).receive.toUpperCase();
         break;
       case StatusButton.SEND:
         text = isExpanded
@@ -777,8 +783,13 @@ class _CoinDetailState extends State<CoinDetail> {
           : () {
               switch (statusButton) {
                 case StatusButton.RECEIVE:
-                  showCopyDialog(mContext, currentCoinBalance.balance.address,
-                      currentCoinBalance.coin);
+                  setState(() {
+                    elevationHeader == 8.0
+                        ? elevationHeader = 8.0
+                        : elevationHeader = 0.0;
+                    isExpanded = false;
+                    showReceivingBlock = !showReceivingBlock;
+                  });
                   break;
                 case StatusButton.FAUCET:
                   showFaucetDialog(
@@ -789,6 +800,9 @@ class _CoinDetailState extends State<CoinDetail> {
                 case StatusButton.SEND:
                   if (double.parse(currentCoinBalance.balance.getBalance()) ==
                       0) {
+                    setState(() {
+                      showReceivingBlock = false;
+                    });
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content:
                           Text(AppLocalizations.of(context).noFundsDetected),
@@ -798,11 +812,13 @@ class _CoinDetailState extends State<CoinDetail> {
                   if (currentIndex == 3) {
                     setState(() {
                       isExpanded = false;
+                      showReceivingBlock = false;
                       closeTimer?.cancel();
                       _waitForInit();
                     });
                   } else {
                     setState(() {
+                      showReceivingBlock = false;
                       elevationHeader == 8.0
                           ? elevationHeader = 8.0
                           : elevationHeader = 0.0;
@@ -824,6 +840,56 @@ class _CoinDetailState extends State<CoinDetail> {
     final pb = await MM.getPublicKey();
     final String key = pb.result.publicKey;
     return key;
+  }
+
+  Widget _buildReceivingForm(BuildContext context) {
+    return AnimatedCrossFade(
+      crossFadeState: showReceivingBlock
+          ? CrossFadeState.showSecond
+          : CrossFadeState.showFirst,
+      duration: const Duration(milliseconds: 200),
+      firstChild: SizedBox(),
+      firstCurve: Curves.easeIn,
+      secondCurve: Curves.easeIn,
+      alignment: Alignment.topRight,
+      secondChild: GestureDetector(
+        onTap: () {
+          unfocusEverything();
+        },
+        child: Card(
+          margin: const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
+          elevation: 8.0,
+          child: ReceivingAmountStep(
+            coinBalance: currentCoinBalance,
+            onQrCodeTap: () => showCopyDialog(
+              context,
+              currentCoinBalance.balance.address,
+              currentCoinBalance.coin,
+            ),
+            onCancel: () {
+              setState(() {
+                showReceivingBlock = false;
+                _waitForInit();
+              });
+            },
+            onEnterPressed: (coinAmount, address) {
+              showReceivingCopyDialog(
+                context,
+                currentCoinBalance.coin,
+                address != null && address.trim().isNotEmpty
+                    ? address
+                    : currentCoinBalance.balance.address,
+                coinAmount,
+                cexProvider,
+              );
+              setState(() {
+                showReceivingBlock = false;
+              });
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildForm() {

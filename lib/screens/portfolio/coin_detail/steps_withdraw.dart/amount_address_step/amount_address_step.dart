@@ -183,8 +183,11 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     }
   }
 
-  void handleQrAdress(String address) {
+  void handleQrAdress(String address, double amount) {
     widget.addressController.text = address;
+    if (amount != null) {
+      widget.amountController.text = '$amount';
+    }
   }
 
   void showWrongCoinDialog(PaymentUriInfo uriInfo) {
@@ -300,15 +303,18 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
         barcode = 'Error';
       });
     } else {
-      final address = result;
-      final uri = Uri.tryParse(address.trim());
+      final data = result;
+      final uri = Uri.tryParse(data.trim());
 
       setState(() {
         final PaymentUriInfo uriInfo = PaymentUriInfo.fromUri(uri);
         if (uriInfo != null) {
           handlePaymentData(uriInfo);
         } else {
-          handleQrAdress(address);
+          final parts = data.split('?');
+          final address = parts[0];
+          final amount = parts.length > 1 ? double.tryParse(parts[1]) : null;
+          handleQrAdress(address, amount);
         }
       });
     }
