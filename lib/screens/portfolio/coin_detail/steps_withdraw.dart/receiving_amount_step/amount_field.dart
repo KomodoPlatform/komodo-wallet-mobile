@@ -10,16 +10,14 @@ class AmountField extends StatelessWidget {
     Key key,
     this.trailingText,
     this.controller,
-    this.enabled = true,
   }) : super(key: key);
 
   final String trailingText;
   final TextEditingController controller;
-  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = TextFormField(
+    return TextFormField(
       inputFormatters: <TextInputFormatter>[
         DecimalTextInputFormatter(
           decimalRange: appConfig.tradeFormPrecision,
@@ -28,7 +26,7 @@ class AmountField extends StatelessWidget {
           RegExp('^\$|^(0|([1-9][0-9]{0,12}))([.,]{1}[0-9]{0,8})?\$'),
         )
       ],
-      controller: enabled ? controller : null,
+      controller: controller,
       autovalidateMode: controller.text.isNotEmpty
           ? AutovalidateMode.always
           : AutovalidateMode.disabled,
@@ -38,7 +36,6 @@ class AmountField extends StatelessWidget {
       ),
       style: Theme.of(context).textTheme.bodyText2,
       textAlign: TextAlign.end,
-      enabled: enabled,
       decoration: InputDecoration(
         labelText: AppLocalizations.of(context).amount,
         suffixIcon: Padding(
@@ -55,8 +52,6 @@ class AmountField extends StatelessWidget {
         ),
       ),
       validator: (String value) {
-        if (!enabled) return null;
-
         value = value.replaceAll(',', '.');
         if (value.isEmpty || double.parse(value) <= 0) {
           return AppLocalizations.of(context).errorValueNotEmpty;
@@ -65,24 +60,5 @@ class AmountField extends StatelessWidget {
         return null;
       },
     );
-
-    if (!enabled) {
-      widget = Stack(
-        children: [
-          widget,
-          Positioned.fill(
-            child: ClipRRect(
-              clipBehavior: Clip.hardEdge,
-              borderRadius: BorderRadius.circular(2),
-              child: ColoredBox(
-                color: Colors.grey.withOpacity(0.6),
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-
-    return widget;
   }
 }

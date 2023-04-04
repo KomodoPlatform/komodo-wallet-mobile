@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/receiving_amount_step/fiat_amount_field.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../localizations.dart';
@@ -32,7 +33,7 @@ class ReceivingAmountStep extends StatefulWidget {
 
 class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
   final _coinAmountController = TextEditingController();
-  final _usdAmountController = TextEditingController();
+  final _fiatAmountController = TextEditingController();
   final _addressController = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -42,19 +43,19 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
 
   double get usdPrice => cex.getUsdPrice(widget.coinBalance.coin.abbr);
 
-  bool get canInputUsd => usdPrice != null && usdPrice > 0;
+  bool get canInputFiat => usdPrice != null && usdPrice > 0;
 
   @override
   void initState() {
     super.initState();
     _coinAmountController.addListener(_onCoinAmountUpdated);
-    _usdAmountController.addListener(_onUsdAmountUpdated);
+    _fiatAmountController.addListener(_onFiatAmountUpdated);
   }
 
   @override
   void dispose() {
     _coinAmountController.dispose();
-    _usdAmountController.dispose();
+    _fiatAmountController.dispose();
     _addressController.dispose();
 
     super.dispose();
@@ -76,10 +77,10 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
               controller: _coinAmountController,
             ),
             const SizedBox(height: 16),
-            AmountField(
-              trailingText: '\$',
-              enabled: canInputUsd,
-              controller: _usdAmountController,
+            FiatAmountField(
+              controller: _fiatAmountController,
+              enabled: canInputFiat,
+              onFiatChanged: _onCoinAmountUpdated,
             ),
             const SizedBox(height: 16),
             AddressField(
@@ -111,7 +112,7 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
                     text: AppLocalizations.of(context).cancel,
                     onPressed: () {
                       _coinAmountController.clear();
-                      _usdAmountController.clear();
+                      _fiatAmountController.clear();
                       formKey.currentState.validate();
                       widget.onCancel();
                     },
@@ -150,23 +151,25 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
     final coinAmount = double.tryParse(
       _coinAmountController.text.replaceAll(',', '.'),
     );
-    if (coinAmount == null || !canInputUsd) return;
+    if (coinAmount == null || !canInputFiat) return;
 
-    final usd = usdPrice * coinAmount;
-    _usdAmountController
-      ..removeListener(_onUsdAmountUpdated)
-      ..text = usd.toStringAsFixed(2)
-      ..addListener(_onUsdAmountUpdated);
+    final fiatUsdPrice = cex.getUsdPrice(cex.selectedFiat);
+    final fiat = usdPrice * coinAmount / fiatUsdPrice;
+    _fiatAmountController
+      ..removeListener(_onFiatAmountUpdated)
+      ..text = fiat.toStringAsFixed(2)
+      ..addListener(_onFiatAmountUpdated);
   }
 
-  void _onUsdAmountUpdated() {
-    onChanged(_usdAmountController.text);
-    final usdAmount = double.tryParse(
-      _usdAmountController.text.replaceAll(',', '.'),
+  void _onFiatAmountUpdated() {
+    onChanged(_fiatAmountController.text);
+    final fiatAmount = double.tryParse(
+      _fiatAmountController.text.replaceAll(',', '.'),
     );
-    if (usdAmount == null) return;
+    if (fiatAmount == null) return;
 
-    final coin = usdAmount / usdPrice;
+    final fiatUsdPrice = cex.getUsdPrice(cex.selectedFiat);
+    final coin = fiatAmount / usdPrice * fiatUsdPrice;
     _coinAmountController
       ..removeListener(_onCoinAmountUpdated)
       ..text = coin.toStringAsFixed(8)
