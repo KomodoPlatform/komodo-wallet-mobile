@@ -63,7 +63,7 @@ class _FiatAmountFieldState extends State<FiatAmountField> {
           child: DropdownButton<String>(
             underline: SizedBox(),
             alignment: Alignment.centerRight,
-            value: cexProvider.selectedFiat,
+            value: cexProvider.selectedFiat ?? cexProvider.fiatList.first,
             dropdownColor: Theme.of(context).primaryColor,
             items: cexProvider.fiatList.map((String value) {
               return DropdownMenuItem<String>(

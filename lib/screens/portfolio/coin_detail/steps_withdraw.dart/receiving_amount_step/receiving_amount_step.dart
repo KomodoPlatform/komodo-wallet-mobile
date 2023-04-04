@@ -80,7 +80,7 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
             FiatAmountField(
               controller: _fiatAmountController,
               enabled: canInputFiat,
-              onFiatChanged: _onFiatAmountUpdated,
+              onFiatChanged: _onCoinAmountUpdated,
             ),
             const SizedBox(height: 16),
             AddressField(
@@ -154,8 +154,7 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
     if (coinAmount == null || !canInputFiat) return;
 
     final fiatUsdPrice = cex.getUsdPrice(cex.selectedFiat);
-    // TODO(vanchel): проверить
-    final fiat = fiatUsdPrice * usdPrice * coinAmount;
+    final fiat = usdPrice * coinAmount / fiatUsdPrice;
     _fiatAmountController
       ..removeListener(_onFiatAmountUpdated)
       ..text = fiat.toStringAsFixed(2)
@@ -169,9 +168,8 @@ class _ReceivingAmountStepState extends State<ReceivingAmountStep> {
     );
     if (fiatAmount == null) return;
 
-    // TODO: проверить
     final fiatUsdPrice = cex.getUsdPrice(cex.selectedFiat);
-    final coin = fiatAmount / usdPrice / fiatUsdPrice;
+    final coin = fiatAmount / usdPrice * fiatUsdPrice;
     _coinAmountController
       ..removeListener(_onCoinAmountUpdated)
       ..text = coin.toStringAsFixed(8)

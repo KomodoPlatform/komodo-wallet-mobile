@@ -798,17 +798,17 @@ class _CoinDetailState extends State<CoinDetail> {
                       address: currentCoinBalance.balance.address);
                   break;
                 case StatusButton.SEND:
-                  // if (double.parse(currentCoinBalance.balance.getBalance()) ==
-                  //     0) {
-                  //   setState(() {
-                  //     showReceivingBlock = false;
-                  //   });
-                  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  //     content:
-                  //         Text(AppLocalizations.of(context).noFundsDetected),
-                  //   ));
-                  //   return;
-                  // }
+                  if (double.parse(currentCoinBalance.balance.getBalance()) ==
+                      0) {
+                    setState(() {
+                      showReceivingBlock = false;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content:
+                          Text(AppLocalizations.of(context).noFundsDetected),
+                    ));
+                    return;
+                  }
                   if (currentIndex == 3) {
                     setState(() {
                       isExpanded = false;

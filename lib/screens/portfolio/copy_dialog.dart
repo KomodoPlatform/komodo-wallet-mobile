@@ -91,7 +91,8 @@ void showReceivingCopyDialog(
   final themeData = Theme.of(mContext);
 
   final usdPrice = cexProvider.getUsdPrice(coin.abbr) ?? 0.0;
-  final usdAmount = usdPrice * amount;
+  final fiatPrice = cexProvider.getUsdPrice(cexProvider.selectedFiat) ?? 0.0;
+  final fiatAmount = usdPrice * amount / fiatPrice;
 
   dialogBloc.dialog = showDialog<dynamic>(
     context: mContext,
@@ -108,10 +109,10 @@ void showReceivingCopyDialog(
                   '$amount ${coin.abbr}',
                   style: themeData.textTheme.headline5,
                 ),
-                if (usdAmount > 0.0) ...[
+                if (fiatAmount > 0.0) ...[
                   const SizedBox(height: 8),
                   Text(
-                    '${usdAmount.toStringAsFixed(2)} \$',
+                    '${fiatAmount.toStringAsFixed(2)} ${cexProvider.selectedFiatSymbol}',
                     style: themeData.textTheme.subtitle2,
                   ),
                 ],
