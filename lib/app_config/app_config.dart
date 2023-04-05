@@ -5,6 +5,8 @@ import '../screens/help-feedback/support_channel_item.dart';
 
 AppConfig appConfig = AppConfig();
 
+// Test commit change
+
 class AppConfig {
   int get maxCoinsEnabledAndroid => 50;
   int get maxCoinEnabledIOS => 20;
