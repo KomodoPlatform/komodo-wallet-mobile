@@ -3,8 +3,8 @@
 
 Built by Komodo, AtomicDEX Mobile is a non-custodial wallet and decentralized exchange rolled into one app. Hold and trade hundreds of cryptocurrencies on your mobile phone or tablet.
 
-# NB (Forkers):
-This repo is currently in the process of a major null safety and Flutter version upgrade. Expect major merge conflicts in the near future for any files updated from this repository.
+# NB (Forkers/contributors):
+This repository is currently in the procesundergoing safety and Flutter version upgrade. Expect major merge conflicts in the near future for any files updated from this repository.
 
 ## Getting Started
 
