@@ -15,7 +15,7 @@ part 'login_state.dart';
 const throttleDuration = Duration(milliseconds: 5000);
 final loginLockoutTimer = Stopwatch();
 
-class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
+class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
     this.prefs,
     this.authenticationRepository,

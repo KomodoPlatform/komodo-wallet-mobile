@@ -3,28 +3,28 @@ part of 'bloc_manager_widget.dart';
 class BlocManager {
   static final BlocManager _blocManager = BlocManager._internal();
 
-  factory BlocManager() {
-    return _blocManager;
-  }
+  static BlocManager get instance => (!_blocManager._isInitialized)
+      ? throw Exception('BlocManager is not initialized. Call init() first.')
+      : _blocManager;
 
   // Singleton initialization
   BlocManager._internal();
 
-  Future<void> init() async {
-    if (_isInitialized) throw Exception('BlocManager is already initialized');
+  static Future<void> init() async {
+    if (_blocManager._isInitialized)
+      throw Exception('BlocManager is already initialized');
 
     // Initialize persistance
-    await _initPersistance();
+    await _blocManager._initPersistance();
 
-    await _initRepositories();
+    await _blocManager._initRepositories();
 
     // Set initialized
-    _isInitialized = true;
+    _blocManager._isInitialized = true;
   }
 
   //===========================  Repositories  ===========================
-  // TODO: Add 'late' and 'final' after null safety
-  SharedPreferences? _prefs;
+  late final SharedPreferences _prefs;
 
   late final AuthenticationRepository? _authenticationRepository;
 
@@ -42,9 +42,13 @@ class BlocManager {
     HydratedBloc.storage = storage;
   }
 
+  // TODO: After bloc migration is stable, experiement with which init methods
+  // are safe to be run in parallel in order to speed up app startup time.
   Future<void> _initRepositories() async {
     try {
       // Initialize sync constructor repositories
+      await Db.init();
+      final sqlDB = Db.sqlDbInstance;
 
       // Initialize async repositories which cannot be initialized in parallel
       _prefs = await SharedPreferences.getInstance();
@@ -52,7 +56,13 @@ class BlocManager {
       // Initialize async repositories which can be initialized in parallel
       final futures = <Future<void>>[
         Future(() async {
-          _authenticationRepository = AuthenticationRepository();
+          _authenticationRepository = AuthenticationRepository(
+            prefs: _prefs,
+            sqlDB: sqlDB,
+            marketMakerService: MarketMakerService.instance,
+          );
+
+          CexPrices();
 
           await _authenticationRepository!.init();
         }),

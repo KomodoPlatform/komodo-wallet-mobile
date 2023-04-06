@@ -29,10 +29,19 @@ import '../utils/utils.dart';
 /// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
 
+/// Type alias for `MMService()`, Market Maker API to be in line with current
+/// naming conventions where abbreviations should be avoided. There are a few
+/// exceptions where this is acceptable (e.g. Auth, DB), but should be avoided
+/// unless the abbreviation is well known to Flutter devs unfamiliar with the
+/// project (and crypto in general)
+typedef MarketMakerService = MMService;
+
 /// Interface to Market Maker, https://developers.atomicdex.io/
 class MMService {
   factory MMService() => mmSe;
   MMService._internal();
+
+  static MMService get instance => mmSe;
 
   List<dynamic> balances = <dynamic>[];
   Process? mm2Process;

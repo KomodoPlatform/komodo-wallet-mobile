@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:komodo_dex/login/exceptions/auth_exceptions.dart';
 import 'package:komodo_dex/login/models/pin_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../../generic_blocs/authenticate_bloc.dart';
 import '../../generic_blocs/camo_bloc.dart';
@@ -29,16 +30,16 @@ enum AuthState { uninitialized, authenticated, authenticating, unauthenticated }
 class AuthenticationRepository {
   AuthenticationRepository({
     required this.prefs,
-    required Db db,
+    required Database sqlDB,
     required MMService marketMakerService,
-  })  : _db = db,
+  })  : _sqlDB = sqlDB,
         _marketMakerService = marketMakerService;
 
   bool _isInitialized = false;
 
   final SharedPreferences prefs;
 
-  final Db _db;
+  final Database _sqlDB;
 
   final MMService _marketMakerService;
 
@@ -102,13 +103,14 @@ class AuthenticationRepository {
   }
 
   Future<void> loginWithPassword(String password) async {
-    // Add logic here to verify the password if needed
+    await _verifyPassword(password);
     _performLogin(null);
   }
 
+  bool get _isAuthenticated => _lastAuthState == AuthState.authenticated;
+
   Future<void> _performLogin(PinTypeName? pinType) async {
-    //TODO (@ologunB): Please implement any logic here needed for specific
-    // login types. Ignore and remove this comment If no changes are needed.
+    //TODO: Throw exception if current state is not authenticated
 
     bool loadSnapshot = true;
     if (pinType == PinTypeName.camo || camoBloc.isCamoActive) {
@@ -152,24 +154,40 @@ class AuthenticationRepository {
   }
 
   /// Either set or reset a given pin type. If the pin type is already set, the
-  /// current pin must be provided. If the pin type is not set, the current pin
-  /// must be null.
+  /// current pin or password myst be provided. If a pin does not exist for the
+  /// type then the password must be provided.
   Future<void> setPin({
     required String newPin,
     required PinTypeName type,
     String? currentPin,
+    String? password,
   }) async {
-    // Verify the current pin if it's provided
+    // Assert that either currentPin or password is provided, but not both
+    assert(
+      (currentPin != null) != (password != null),
+      'Either currentPin or password must be provided, but not both.',
+    );
 
     // Check if the pin is already set for the provided type
+    bool pinExists;
+    try {
+      await verifyPin('', type);
+      pinExists = true;
+    } on PinNotFoundException {
+      pinExists = false;
+    }
 
     if (currentPin != null) {
-      await verifyPin(currentPin, type);
+      if (pinExists) {
+        await verifyPin(currentPin, type);
+      } else {
+        throw PinNotFoundException(types: [type]);
+      }
     } else {
-      try {
-        await verifyPin('', type);
-      } on PinNotFoundException {
-        // The pin is not set for the provided type, continue with setting the pin
+      if (!pinExists) {
+        await _verifyPassword(password!);
+      } else {
+        throw PinAlreadySetException(type: type);
       }
     }
 
@@ -184,9 +202,12 @@ class AuthenticationRepository {
       }
     }
 
-    final password = await EncryptionTool().read('passphrase');
+// If the currentPin is null, the password has already been verified
+    if (currentPin != null) {
+      await _verifyPassword(password!);
+    }
 
-    // Update the pin for the specified type
+// Update the pin for the specified type
     await _writePin(newPin, type: type, password: password!);
   }
 
@@ -222,7 +243,7 @@ class AuthenticationRepository {
     throw UnimplementedError();
   }
 
-  Future<void> verifyPassword(String password) async {
+  Future<void> _verifyPassword(String password) async {
     final String? correctPassword = await EncryptionTool().read('passphrase');
 
     if (correctPassword == null) {
@@ -236,7 +257,17 @@ class AuthenticationRepository {
     return;
   }
 
-  /// Verifies the pin code. Throws an exception if the pin is incorrect.
+  // Internal method to ensure the user is signed in. If not, an exception is
+  // thrown.
+  void _ensureSignedIn() async {
+    if (!_isAuthenticated) {
+      throw NotAuthenticatedException('User is not signed in.');
+    }
+  }
+
+  /// Verifies the pin code. Throws exceptions: [PinNotFoundException] if the
+  /// pin is not set for the provided type, [IncorrectPinException] if the pin
+  /// is incorrect.
   Future<void> verifyPin(String pin, PinTypeName type) async {
     String? correctPin;
 
@@ -255,7 +286,7 @@ class AuthenticationRepository {
     }
 
     if (correctPin == null) {
-      throw PinNotFoundException();
+      throw PinNotFoundException(types: [type]);
     }
 
     if (pin != correctPin) {
