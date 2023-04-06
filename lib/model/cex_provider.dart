@@ -380,6 +380,11 @@ class CexPrices {
     _selectedFiat = prefs!.getString('selectedFiat') ?? 'USD';
     currencies = [_selectedFiat, ...appConfig.coinsFiat];
 
+    await Future.wait([
+      updatePrices(),
+      updateRates(),
+    ]);
+
     Timer.periodic(const Duration(seconds: 60), (_) {
       if (!mmSe.running) return;
 
@@ -472,12 +477,7 @@ class CexPrices {
       return 1 / _getFiatRate(abbr)!;
     }
 
-    double? price = 0.0;
-    try {
-      price = _prices[abbr]!['usd'];
-    } catch (_) {}
-
-    return price;
+    return _prices[abbr]?['usd'];
   }
 
   double? getCexRate([CoinsPair? pair]) {
@@ -511,8 +511,11 @@ class CexPrices {
     } else {
       double? convertionPrice;
       try {
-        convertionPrice = _prices[from]![to.toLowerCase()];
-      } catch (_) {}
+        convertionPrice = _prices[from]?[to.toLowerCase()];
+        return '';
+      } catch (_) {
+        rethrow;
+      }
       final double? toUsdPrice = getUsdPrice(to);
       if (toUsdPrice != null && toUsdPrice != 0.00) {
         convertionPrice ??= fromUsdPrice! / toUsdPrice;
