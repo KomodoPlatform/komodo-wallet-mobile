@@ -24,6 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginPinSubmitted>(_onPinLoginSubmitted);
     on<LoginPinSuccess>(_onPinLoginSuccess);
     on<_LoginPinFailure>(_onPinLoginFailure);
+    on<LoginClear>(_clear);
   }
 
   final SharedPreferences? prefs;

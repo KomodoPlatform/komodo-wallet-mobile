@@ -12,15 +12,7 @@ import '../../localizations.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({
     Key? key,
-    // this.pinStatus,
-    // this.password,
-    // this.onSuccess,
-    // this.code,
   }) : super(key: key);
-
-  // final String? code;
-  // final String? password;
-  // final VoidCallback? onSuccess;
 
   static const String routeName = '/login';
 
@@ -53,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
   // Clear bloc persistence when navigating away from this page.
   @override
   void dispose() {
-    _loginBloc.clear();
+    _loginBloc.add(LoginClear());
     super.dispose();
   }
 
