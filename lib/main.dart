@@ -41,7 +41,7 @@ Future<void> main() async {
   try {
     mmSe.metrics();
     startup.start();
-    await BlocManager().init();
+    await BlocManager.init();
     return runApp(
       AppProviderManager(
         child: BlocManagerWidget(child: const MyApp()),
