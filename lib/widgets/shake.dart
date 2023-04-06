@@ -12,7 +12,12 @@ class ShakeWidget extends StatefulWidget {
 
   final Widget child;
 
-  /// Trigger widget shake to start or end by changing this value
+  /// Controls if the widget should shake or not. When set to true, the widget
+  /// will shake until the duration is reached. When set to false, the widget
+  /// will stop shaking if it was currently shaking.
+  ///
+  /// When the widget is rebuilt, it will only shake if the current value of
+  /// [shake] is true and the previous value was false.
   final bool shake;
 
   final Duration duration;
@@ -63,7 +68,7 @@ class _ShakeWidgetState extends State<ShakeWidget>
   @override
   void didUpdateWidget(covariant ShakeWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.shake) {
+    if (widget.shake && !oldWidget.shake) {
       // Future(() async {
       // await _controller.animateTo(-1);
 
