@@ -5,17 +5,17 @@ import 'package:komodo_dex/login/models/pin_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../generic_blocs/authenticate_bloc.dart';
-import '../../generic_blocs/camo_bloc.dart';
-import '../../generic_blocs/coins_bloc.dart';
-import '../../localizations.dart';
-import '../../model/wallet.dart';
-import '../../model/wallet_security_settings_provider.dart';
-import '../../services/db/database.dart';
-import '../../services/mm_service.dart';
-import '../../utils/encryption_tool.dart';
-import '../../utils/log.dart';
-import '../../utils/utils.dart';
+import '../../../generic_blocs/authenticate_bloc.dart';
+import '../../../generic_blocs/camo_bloc.dart';
+import '../../../generic_blocs/coins_bloc.dart';
+import '../../../localizations.dart';
+import '../../../model/wallet.dart';
+import '../../../model/wallet_security_settings_provider.dart';
+import '../../../services/db/database.dart';
+import '../../../services/mm_service.dart';
+import '../../../utils/encryption_tool.dart';
+import '../../../utils/log.dart';
+import '../../../utils/utils.dart';
 
 enum AuthState { uninitialized, authenticated, authenticating, unauthenticated }
 
@@ -86,6 +86,23 @@ class AuthenticationRepository {
     _authStateController.sink.add(state);
   }
 
+  Future<void> verifyHashedPassword(String hashedPassword) async {
+    final String? correctPassword = await EncryptionTool().read('passphrase');
+
+    if (correctPassword == null) {
+      throw PasswordNotSetException('Password not set.');
+    }
+
+    final hashedCorrectPassword =
+        EncryptionTool().hashPassword(correctPassword);
+
+    if (hashedPassword != hashedCorrectPassword) {
+      throw IncorrectPasswordException('The password provided is incorrect.');
+    }
+
+    return;
+  }
+
   // The previous method [onPinLoginSuccess] was refactored because
   // this method would log in without any authentication. Although we did first
   // check in the legacy bloc if the pin was set, this was not a good solution
@@ -103,14 +120,18 @@ class AuthenticationRepository {
   }
 
   Future<void> loginWithPassword(String password) async {
-    await _verifyPassword(password);
+    // Add logic here to verify the password if needed
+    await verifyPassword(password);
     _performLogin(null);
   }
 
   bool get _isAuthenticated => _lastAuthState == AuthState.authenticated;
 
   Future<void> _performLogin(PinTypeName? pinType) async {
-    //TODO: Throw exception if current state is not authenticated
+    //TODO (@ologunB): Please implement any logic here needed for specific
+    // login types. Ignore and remove this comment If no changes are needed.
+
+    camoBloc.isCamoActive = (pinType == PinTypeName.camo);
 
     bool loadSnapshot = true;
     if (pinType == PinTypeName.camo || camoBloc.isCamoActive) {
@@ -120,8 +141,8 @@ class AuthenticationRepository {
 
     authBloc.showLock = false;
     if (!_marketMakerService.running) {
-      await authBloc.login(await EncryptionTool().read('passphrase'), null,
-          loadSnapshot: loadSnapshot);
+      String? storedPassword = await EncryptionTool().read('passphrase');
+      await authBloc.login(storedPassword, null, loadSnapshot: loadSnapshot);
 
       // Wait for mmService to be ready
       await pauseUntil(() => _marketMakerService.running, maxMs: 10000);
@@ -185,7 +206,7 @@ class AuthenticationRepository {
       }
     } else {
       if (!pinExists) {
-        await _verifyPassword(password!);
+        await verifyPassword(password!);
       } else {
         throw PinAlreadySetException(type: type);
       }
@@ -204,7 +225,7 @@ class AuthenticationRepository {
 
 // If the currentPin is null, the password has already been verified
     if (currentPin != null) {
-      await _verifyPassword(password!);
+      await verifyPassword(password!);
     }
 
 // Update the pin for the specified type
@@ -243,7 +264,8 @@ class AuthenticationRepository {
     throw UnimplementedError();
   }
 
-  Future<void> _verifyPassword(String password) async {
+  // TODO: implement password verification throttling.
+  Future<void> verifyPassword(String password) async {
     final String? correctPassword = await EncryptionTool().read('passphrase');
 
     if (correctPassword == null) {
@@ -337,6 +359,15 @@ class AuthenticationRepository {
       throw PinNotFoundException(types: notFoundTypes);
     }
   }
+
+  // Future<bool> isPinSet(PinTypeName type) async {
+  //   try {
+  //     await verifyPin('', type);
+  //     return true;
+  //   } on PinNotFoundException {
+  //     return false;
+  //   }
+  // }
 
   void dispose() {
     _authStateController.close();

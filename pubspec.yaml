@@ -201,6 +201,7 @@ dependencies:
   # TODO: Security audit and switch to github repo source for current version 
   provider: ^6.0.5
   google_fonts: ^4.0.3
+  equatable: ^2.0.5
 
 dev_dependencies:
   integration_test:
@@ -209,7 +210,10 @@ dev_dependencies:
   # recommended linter rules
   flutter_lints: ^2.0.1 # flutter.dev (Note: Supports null safety)
   
-
+# dependency_overrides:
+#   flutter_glide_recorder:
+#     path: /Users/charl/Documents/Glide/flutter_glide_recorder
+    
 flutter_icons:
   android: true
   ios: true

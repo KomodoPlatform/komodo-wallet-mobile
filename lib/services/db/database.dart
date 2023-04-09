@@ -30,6 +30,11 @@ class Db {
 
   static Future<void> init() async {
     if (_isInitialized) throw Exception('SQL database is already initialized');
+    assert(!_isBusy,
+        'SQL database initialisation is busy. Wait for it to be ready.');
+    assert(!_initInvoked,
+        'SQL database initialisation is already invoked. Wait for it to be ready.');
+    assert(!_isInitialized, 'SQL database is already initialized');
 
     if (_isBusy) {
       await pauseUntil(() => !_isBusy, maxMs: 3000);
@@ -424,13 +429,13 @@ class Db {
       'ListOfCoinsActivated',
       columns: ['coins'],
       where: 'wallet_id = ?',
-      whereArgs: [wallet?.id],
+      whereArgs: [wallet!.id!],
     );
     if (r.isNotEmpty) {
       final row = r.first;
       final String? coins = row['coins'].toString();
       if (coins != null && coins != '') {
-        final List<String>? listOfCoins = coins.split(',');
+        final List<String> listOfCoins = coins.split(',');
         if (listOfCoins != null && listOfCoins.isNotEmpty) {
           return listOfCoins.map((c) => c.trim()).toList();
         }

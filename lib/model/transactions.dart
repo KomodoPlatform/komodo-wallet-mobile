@@ -18,7 +18,7 @@ class Transactions {
   });
 
   factory Transactions.fromJson(Map<String, dynamic> json) => Transactions(
-        result: Result.fromJson(json['result']),
+        result: Result.fromJson(json['result'] ?? {}),
       );
 
   Result? result;

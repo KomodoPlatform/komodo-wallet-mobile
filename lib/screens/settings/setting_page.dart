@@ -5,6 +5,11 @@ import 'dart:typed_data';
 import 'package:archive/archive.dart' as arch;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/login/models/pin_type.dart';
+import 'package:komodo_dex/main.dart';
+import 'package:komodo_dex/packages/pin_reset/bloc/pin_reset_bloc.dart';
+import 'package:komodo_dex/packages/pin_reset/events/index.dart';
+import 'package:komodo_dex/packages/pin_reset/pages/pin_reset_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -266,7 +271,7 @@ class _SettingPageState extends State<SettingPage> {
             MaterialPageRoute<dynamic>(
               builder: (BuildContext context) => UnlockWalletPage(
                   textButton: AppLocalizations.of(context)!.unlock,
-                  wallet: walletBloc.currentWallet,
+                  wallet: walletBloc.currentWallet!,
                   isSignWithSeedIsEnabled: false,
                   onSuccess: (_, __) {
                     Navigator.pop(context);
@@ -323,103 +328,104 @@ class _SettingPageState extends State<SettingPage> {
         builder: (context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.data == true) return SizedBox();
 
-          return _chevronListTileHelper(
-            title: Text(AppLocalizations.of(context)!.camoPinLink),
-            onTap: () {
-              Navigator.push<dynamic>(
-                  context,
-                  MaterialPageRoute<dynamic>(
-                      settings: const RouteSettings(name: '/camoSetup'),
-                      builder: (BuildContext context) => CamoPinSetupPage()));
-            },
-          );
+          return ChevronListTileHelper(
+              context: context,
+              title: Text(AppLocalizations.of(context)!.camoPinLink),
+              onTap: () {
+                Navigator.push<dynamic>(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                        settings: const RouteSettings(name: '/camoSetup'),
+                        builder: (BuildContext context) => CamoPinSetupPage()));
+              });
         });
   }
 
   Widget _buildChangePIN() {
-    return _chevronListTileHelper(
+    return ChevronListTileHelper(
+      context: context,
       title: Text(AppLocalizations.of(context)!.changePin),
-      onTap: () => Navigator.push<dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => UnlockWalletPage(
-                    textButton: AppLocalizations.of(context)!.unlock,
-                    wallet: walletBloc.currentWallet,
-                    isSignWithSeedIsEnabled: false,
-                    onSuccess: (_, String password) {
-                      Navigator.push<dynamic>(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                              builder: (BuildContext context) => PinPage(
-                                  title:
-                                      AppLocalizations.of(context)!.createPin,
-                                  subTitle: AppLocalizations.of(context)!
-                                      .enterNewPinCode,
-                                  // TODO(@CharlVS): Implement pin change
-                                  // pinStatus: PinStatus.CHANGE_PIN,
-                                  password: password)));
-                    },
-                  ))),
+      onTap: () => _onTapChangePin(PinTypeName.normal),
     );
+  }
+
+  void _onTapChangePin(PinTypeName type) async {
+    context.read<PinResetBloc>().add(
+          PinResetStarted(type),
+        );
+
+    final successMessage = await Navigator.push<String?>(
+      context,
+      PinResetPage.route,
+    );
+
+    if (successMessage != null) {
+      MyApp.rootScaffoldMessengerKey.currentState!.showSnackBar(
+        SnackBar(
+          content: Text(successMessage),
+        ),
+      );
+    }
   }
 
   Widget _buildSendFeedback() {
-    return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context)!.feedback),
-      onTap: () => _shareFileDialog(),
-    );
+    return ChevronListTileHelper(
+        context: context,
+        title: Text(AppLocalizations.of(context)!.feedback),
+        onTap: () => _shareFileDialog());
   }
 
   Widget _buildViewSeed() {
-    return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context)!.viewSeedAndKeys),
-      onTap: () {
-        Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => ViewSeedUnlockPage()));
-      },
-    );
+    return ChevronListTileHelper(
+        context: context,
+        title: Text(AppLocalizations.of(context)!.viewSeedAndKeys),
+        onTap: () {
+          Navigator.push<dynamic>(
+              context,
+              MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => ViewSeedUnlockPage()));
+        });
   }
 
   Widget _buildExport() {
-    return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context)!.exportLink),
-      onTap: () {
-        Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => ExportPage()));
-      },
-    );
+    return ChevronListTileHelper(
+        context: context,
+        title: Text(AppLocalizations.of(context)!.exportLink),
+        onTap: () {
+          Navigator.push<dynamic>(
+              context,
+              MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => ExportPage()));
+        });
   }
 
   Widget _buildImport() {
-    return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context)!.importLink),
-      onTap: () {
-        Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => ImportPage()));
-      },
-    );
+    return ChevronListTileHelper(
+        context: context,
+        title: Text(AppLocalizations.of(context)!.importLink),
+        onTap: () {
+          Navigator.push<dynamic>(
+              context,
+              MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => ImportPage()));
+        });
   }
 
   Widget _buildImportSwap() {
-    return _chevronListTileHelper(
-      title: Text(AppLocalizations.of(context)!.importSingleSwapLink),
-      onTap: () {
-        Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => ImportSwapPage()));
-      },
-    );
+    return ChevronListTileHelper(
+        context: context,
+        title: Text(AppLocalizations.of(context)!.importSingleSwapLink),
+        onTap: () {
+          Navigator.push<dynamic>(
+              context,
+              MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => ImportSwapPage()));
+        });
   }
 
   Widget _buildDisclaimerToS() {
-    return _chevronListTileHelper(
+    return ChevronListTileHelper(
+        context: context,
         title: Text(AppLocalizations.of(context)!.disclaimerAndTos),
         onTap: () {
           showDialog(
@@ -452,26 +458,26 @@ class _SettingPageState extends State<SettingPage> {
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
 
-    return _chevronListTileHelper(
-      title: Stack(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          Text(AppLocalizations.of(context)!.checkForUpdates),
-          if (updatesProvider.status != UpdateStatus.upToDate)
-            buildRedDot(context, right: -12),
-        ],
-      ),
-      onTap: () {
-        Navigator.push<dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => UpdatesPage(
-                    refresh: true,
-                    onSkip: () => Navigator.pop(context),
-                  )),
-        );
-      },
-    );
+    return ChevronListTileHelper(
+        context: context,
+        title: Stack(
+          clipBehavior: Clip.none,
+          children: <Widget>[
+            Text(AppLocalizations.of(context)!.checkForUpdates),
+            if (updatesProvider.status != UpdateStatus.upToDate)
+              buildRedDot(context, right: -12),
+          ],
+        ),
+        onTap: () {
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => UpdatesPage(
+                      refresh: true,
+                      onSkip: () => Navigator.pop(context),
+                    )),
+          );
+        });
   }
 
   Widget _buildLogOutOnExit() {
@@ -509,18 +515,6 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  ListTile _chevronListTileHelper({
-    required Widget title,
-    GestureTapCallback? onTap,
-  }) {
-    return ListTile(
-      onTap: onTap,
-      trailing: Icon(Icons.chevron_right),
-      title: title,
-      tileColor: Theme.of(context).primaryColor,
-    );
-  }
-
   Widget _buildEnableTestCoins() {
     return StreamBuilder(
       key: const Key('show-test-coins'),
@@ -545,7 +539,7 @@ class _SettingPageState extends State<SettingPage> {
       MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => UnlockWalletPage(
                 textButton: AppLocalizations.of(context)!.unlock,
-                wallet: walletBloc.currentWallet,
+                wallet: walletBloc.currentWallet!,
                 isSignWithSeedIsEnabled: false,
                 onSuccess: (_, String password) {
                   Navigator.of(context).pop();
@@ -653,6 +647,29 @@ class _SettingPageState extends State<SettingPage> {
         }).then((dynamic _) {
       dialogBloc.dialog = null;
     });
+  }
+}
+
+class ChevronListTileHelper extends StatelessWidget {
+  const ChevronListTileHelper({
+    Key? key,
+    required this.context,
+    required this.title,
+    required this.onTap,
+  }) : super(key: key);
+
+  final BuildContext context;
+  final Widget title;
+  final GestureTapCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: onTap,
+      trailing: Icon(Icons.chevron_right),
+      title: title,
+      tileColor: Theme.of(context).primaryColor,
+    );
   }
 }
 

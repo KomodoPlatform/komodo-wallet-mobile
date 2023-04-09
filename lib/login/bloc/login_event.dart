@@ -12,26 +12,15 @@ class LoginPinInputChanged extends LoginEvent {
 
 class LoginPinSubmitted extends LoginEvent {
   const LoginPinSubmitted(this.code);
-  final String? code;
+  final String code;
 }
 
 class LoginPinReset extends LoginEvent {
   const LoginPinReset();
 }
 
-class LoginPinSuccess extends LoginEvent {
-  const LoginPinSuccess(
-      // this.password,
-      // this.code,
-      // this.isFromChangingPin,
-      // this.onSuccess,
-      // this.pinStatus,
-      );
-  // final PinStatus? pinStatus;
-  // final String? code;
-  // final bool isFromChangingPin;
-  // final String? password;
-  // final VoidCallback? onSuccess;
+class _LoginPinSuccess extends LoginEvent {
+  const _LoginPinSuccess(PinTypeName type);
 }
 
 class _LoginPinFailure extends LoginEvent {
@@ -40,9 +29,6 @@ class _LoginPinFailure extends LoginEvent {
   final String error;
 }
 
-// /// Event for setting the user's login pin.
-// class LoginSetPin extends LoginEvent {
-//   const LoginSetPin(this.newPin);
-
-//   final String newPin;
-// }
+class LoginClear extends LoginEvent {
+  const LoginClear();
+}

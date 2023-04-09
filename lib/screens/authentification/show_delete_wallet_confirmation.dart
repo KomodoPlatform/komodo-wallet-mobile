@@ -8,7 +8,7 @@ import '../../widgets/custom_simple_dialog.dart';
 
 Future<void> showDeleteWalletConfirmation(BuildContext context,
     {Wallet? wallet, String? password}) async {
-  wallet ??= walletBloc.currentWallet;
+  wallet ??= walletBloc.currentWallet!;
 
   dialogBloc.dialog = showDialog<dynamic>(
       context: context,
@@ -120,8 +120,9 @@ Future<void> showDeleteWalletConfirmation(BuildContext context,
                         ? null
                         : () async {
                             setState(() => loading = true);
-                            await walletBloc.deleteSeedPhrase(password, wallet);
-                            await walletBloc.deleteWallet(wallet!);
+                            await walletBloc.deleteSeedPhrase(
+                                password, wallet!);
+                            await walletBloc.deleteWallet(wallet);
                             await walletBloc.getWalletsSaved();
 
                             Navigator.of(context).pop();

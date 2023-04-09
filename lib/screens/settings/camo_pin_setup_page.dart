@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/login/models/pin_type.dart';
+import 'package:komodo_dex/packages/pin_reset/bloc/pin_reset_bloc.dart';
+import 'package:komodo_dex/packages/pin_reset/pages/pin_reset_page.dart';
 import '../../generic_blocs/authenticate_bloc.dart';
 import '../../generic_blocs/camo_bloc.dart';
 import '../../generic_blocs/wallet_bloc.dart';
@@ -27,7 +30,6 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
 
     _matchingPinErrorMessage =
         AppLocalizations.of(context)!.matchingCamoPinError;
-    _showMatchingPinPopupIfNeeded();
 
     if (walletSecuritySettingsProvider.activateBioProtection &&
         camoBloc.isCamoEnabled) {
@@ -213,7 +215,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                         opacity: isEnabled ? 1 : 0.5,
                         child: Card(
                           child: InkWell(
-                            onTap: isEnabled ? () => _startPinSetup() : null,
+                            onTap:
+                                isEnabled ? () => _startCamoPinSetup() : null,
                             child: Padding(
                               padding: const EdgeInsets.all(12),
                               child: Row(
@@ -311,34 +314,19 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         });
   }
 
-  void _startPinSetup() {
+  void _startCamoPinReset() {}
+
+  void _startCamoPinSetup() {
+    // TODO: Would work similar to camo pin reset, except use password instead
     Navigator.push<dynamic>(
         context,
         MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => UnlockWalletPage(
                   textButton: AppLocalizations.of(context)!.unlock,
-                  wallet: walletBloc.currentWallet,
+                  wallet: walletBloc.currentWallet!,
                   isSignWithSeedIsEnabled: false,
                   onSuccess: (_, String password) {
-                    Navigator.push<dynamic>(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) => PinPage(
-                          title: AppLocalizations.of(context)!.camoSetupTitle,
-                          subTitle:
-                              AppLocalizations.of(context)!.camoSetupSubtitle,
-                          //TODO(@CharlVS): Create camo pin page
-                          // pinStatus: PinStatus.CREATE_CAMO_PIN,
-                          password: password,
-                          onSuccess: () {
-                            camoBloc.isCamoEnabled = true;
-                            if (camoBloc.shouldWarnBadCamoPin) {
-                              _showMatchingPinPopupIfNeeded();
-                            }
-                          },
-                        ),
-                      ),
-                    );
+                    // final successMessage = await Navigator.push<String?>(context, PinResetPage.route);
                   },
                 ))).then((value) => camoBloc.getCamoPinValue());
   }
@@ -380,35 +368,38 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         });
   }
 
-  Future<void> _switchEnabled(bool val) async {
-    final String? savedPin = await EncryptionTool().read('camoPin');
+  Future<void> _switchEnabled(bool shouldEnable) async {
+    final bool isCamoPinSet =
+        await context.read<PinResetBloc>().checkIfPinTypeSet(PinTypeName.camo);
 
-    if (savedPin != null) camoBloc.isCamoEnabled = val;
-    if (val && savedPin == null) _startPinSetup();
+    if (shouldEnable && !isCamoPinSet) {
+      _startCamoPinSetup();
+      return;
+    }
   }
 
-  Future<void> _showMatchingPinPopupIfNeeded() async {
-    if (!camoBloc.shouldWarnBadCamoPin) return;
+  // Future<void> _showMatchingPinPopupIfNeeded() async {
+  //   if (!camoBloc.shouldWarnBadCamoPin) return;
 
-    final String? normalPin = await EncryptionTool().read('pin');
-    final String? camoPin = await EncryptionTool().read('camoPin');
+  //   final String? normalPin = await EncryptionTool().read('pin');
+  //   final String? camoPin = await EncryptionTool().read('camoPin');
 
-    if (normalPin == null || camoPin == null) return;
-    if (normalPin.isEmpty || camoPin.isEmpty) return;
-    if (normalPin != camoPin) return;
+  //   if (normalPin == null || camoPin == null) return;
+  //   if (normalPin.isEmpty || camoPin.isEmpty) return;
+  //   if (normalPin != camoPin) return;
 
-    showConfirmationDialog(
-        context: context,
-        title: AppLocalizations.of(context)!.matchingCamoTitle,
-        message: _matchingPinErrorMessage,
-        iconColor: Theme.of(context).errorColor,
-        confirmButtonText: AppLocalizations.of(context)!.matchingCamoChange,
-        onConfirm: () {
-          _startPinSetup();
-        });
+  //   showConfirmationDialog(
+  //       context: context,
+  //       title: AppLocalizations.of(context)!.matchingCamoTitle,
+  //       message: _matchingPinErrorMessage,
+  //       iconColor: Theme.of(context).errorColor,
+  //       confirmButtonText: AppLocalizations.of(context)!.matchingCamoChange,
+  //       onConfirm: () {
+  //         _startPinSetup();
+  //       });
 
-    setState(() {
-      camoBloc.shouldWarnBadCamoPin = false;
-    });
-  }
+  //   setState(() {
+  //     camoBloc.shouldWarnBadCamoPin = false;
+  //   });
+  // }
 }

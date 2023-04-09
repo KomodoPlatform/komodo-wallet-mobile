@@ -42,13 +42,13 @@ class WalletBloc implements GenericBlocBase {
   }
 
   Future<String> loginWithPassword(
-      BuildContext context, String password, Wallet? wallet) async {
+      BuildContext context, String password, Wallet wallet) async {
     final EncryptionTool entryptionTool = EncryptionTool();
     final String? seedPhrase =
         await entryptionTool.readData(KeyEncryption.SEED, wallet, password);
 
     if (seedPhrase != null) {
-      final securitySettings = await Db.getWalletSecuritySettings(wallet!);
+      final securitySettings = await Db.getWalletSecuritySettings(wallet);
       await Db.saveCurrentWallet(wallet, securitySettings);
       return seedPhrase;
     } else {
@@ -71,7 +71,7 @@ class WalletBloc implements GenericBlocBase {
     authBloc.logout();
   }
 
-  Future<void> deleteSeedPhrase(String? password, Wallet? wallet) async {
+  Future<void> deleteSeedPhrase(String? password, Wallet wallet) async {
     final EncryptionTool entryptionTool = EncryptionTool();
     await entryptionTool.deleteData(KeyEncryption.SEED, wallet, password);
     await entryptionTool.deleteData(KeyEncryption.PIN, wallet, password);

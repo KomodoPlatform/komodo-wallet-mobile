@@ -5,7 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:komodo_dex/login/bloc/login_bloc.dart';
+import 'package:komodo_dex/login/models/pin_type.dart';
 import 'package:komodo_dex/login/screens/login_page.dart';
+import 'package:komodo_dex/main.dart';
+import 'package:komodo_dex/packages/pin_reset/bloc/pin_reset_bloc.dart';
+import 'package:komodo_dex/packages/pin_reset/events/index.dart';
+import 'package:komodo_dex/packages/pin_reset/events/pin_setup_started.dart';
+import 'package:komodo_dex/packages/pin_reset/pages/pin_reset_page.dart';
 import '../../generic_blocs/authenticate_bloc.dart';
 import '../../generic_blocs/camo_bloc.dart';
 import '../../generic_blocs/coins_bloc.dart';
@@ -323,13 +329,33 @@ class _LockScreenState extends State<LockScreen> {
                 return const AuthenticatePage();
               }
             } else {
-              return PinPage(
-                title: AppLocalizations.of(context)!.createPin,
-                subTitle: AppLocalizations.of(context)!.enterNewPinCode,
-                // pinStatus: PinStatus.CREATE_PIN,
-                password: password,
-                // isFromChangingPin: false,
-              );
+              context.read<PinResetBloc>().add(
+                    PinSetupStarted(
+                      pinType: PinTypeName.normal,
+                      password: password!,
+                    ),
+                  );
+              WidgetsBinding.instance.addPostFrameCallback((_) async {
+                final successMessage = await Navigator.push<String?>(
+                  context,
+                  PinResetPage.route,
+                );
+                if (successMessage != null) {
+                  MyApp.rootScaffoldMessengerKey.currentState!.showSnackBar(
+                    SnackBar(
+                      content: Text(successMessage),
+                    ),
+                  );
+                }
+              });
+              return Container(color: Colors.green);
+              // return PinPage(
+              //   title: AppLocalizations.of(context)!.createPin,
+              //   subTitle: AppLocalizations.of(context)!.enterNewPinCode,
+              //   // pinStatus: PinStatus.CREATE_PIN,
+              //   password: password,
+              //   // isFromChangingPin: false,
+              // );
             }
           },
         );

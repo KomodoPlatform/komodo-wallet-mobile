@@ -20,7 +20,7 @@ class UnlockWalletPage extends StatefulWidget {
     this.isCreatedPin = false,
   }) : super(key: key);
 
-  final Wallet? wallet;
+  final Wallet wallet;
   final Function(String seed, String password)? onSuccess;
   final bool isSignWithSeedIsEnabled;
   final String textButton;

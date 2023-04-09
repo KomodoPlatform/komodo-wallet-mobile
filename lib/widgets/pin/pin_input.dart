@@ -19,6 +19,7 @@ class PinInput extends StatelessWidget {
   final void Function(String)? onPinComplete;
 
   const PinInput({
+    Key? key,
     required this.value,
     this.errorMessage,
     this.errorState = false,
@@ -27,11 +28,13 @@ class PinInput extends StatelessWidget {
     this.length = 4,
     this.onChanged,
     this.onPinComplete,
-  });
+  }) : super(key: key);
 
   Color _circleColor(int index) {
     if (errorState) {
-      return Colors.red;
+      return !_isCharacterFilled(0) || _isCharacterFilled(index)
+          ? Colors.red
+          : Colors.red.shade200;
     }
 
     if (_isCharacterFilled(index)) {
@@ -59,9 +62,6 @@ class PinInput extends StatelessWidget {
             ),
           ),
           ShakeWidget(
-            key: Key('pin-login-input-shake'),
-            // active: errorState,
-            // cycles: 4,
             shake: errorState,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

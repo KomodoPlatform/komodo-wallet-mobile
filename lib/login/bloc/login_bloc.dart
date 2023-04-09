@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:komodo_dex/login/exceptions/auth_exceptions.dart';
+import 'package:komodo_dex/login/models/pin_type.dart';
 import 'package:komodo_dex/utils/iterable_utils.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/pin.dart';
-import '../../packages/authentication_repository/authentication_repository.dart';
+import '../../packages/authentication/repository/authentication_repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -18,17 +20,17 @@ final loginLockoutTimer = Stopwatch();
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
     this.prefs,
-    this.authenticationRepository,
+    required this.authenticationRepository,
   }) : super(LoginStateInitial()) {
     on<LoginPinInputChanged>(_onPinInputChanged);
     on<LoginPinSubmitted>(_onPinLoginSubmitted);
-    on<LoginPinSuccess>(_onPinLoginSuccess);
+    on<_LoginPinSuccess>(_onPinLoginSuccess);
     on<_LoginPinFailure>(_onPinLoginFailure);
     on<LoginClear>(_clear);
   }
 
   final SharedPreferences? prefs;
-  final AuthenticationRepository? authenticationRepository;
+  final AuthenticationRepository authenticationRepository;
 
   void _onPinInputChanged(
     LoginPinInputChanged event,
@@ -44,14 +46,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   void _onPinLoginSuccess(
-    LoginPinSuccess event,
+    _LoginPinSuccess event,
     Emitter<LoginState> emit,
   ) async {
     loginLockoutTimer
       ..reset()
       ..stop();
 
-    await loginRepository!.onPinLoginSuccess();
+    // TODO: Any other actions to take on successful login not already handled
+    // by the authentication repository?
   }
 
   void _onPinLoginFailure(
@@ -91,14 +94,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginPinSubmitted event,
     Emitter<LoginState> emit,
   ) async {
-    emit(LoginStatePinSubmitted(pin: state.pin));
+    emit(LoginStatePinSubmitted(pin: Pin.dirty(event.code)));
 
     try {
       await awaitLoginLockout();
 
-      await loginRepository!.verifyPin(state.pin.value);
+      final successPinType =
+          await authenticationRepository.loginWithPinAnyType(event.code);
 
-      add(LoginPinSuccess());
+      add(_LoginPinSuccess(successPinType));
     } on IncorrectPinException catch (_) {
       add(_LoginPinFailure('Incorrect PIN. Please try again.'));
     } catch (e) {
@@ -109,7 +113,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   // toJson and fromJson methods are critical to restore state after
   // the app restarts as it's used by the HydratedBloc library.
-  @override
   JsonMap toJson(LoginState state) {
     return {
       'status': state.submissionStatus.toString(),
@@ -117,7 +120,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     };
   }
 
-  @override
   LoginState fromJson(JsonMap json) {
     return LoginState(
       submissionStatus: FormzSubmissionStatus.values
@@ -125,5 +127,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           as FormzSubmissionStatus,
       pin: Pin.fromJson(json['pin'] as JsonMap),
     );
+  }
+
+  void _clear(LoginClear event, Emitter<LoginState> emit) {
+    emit(LoginStateInitial());
   }
 }

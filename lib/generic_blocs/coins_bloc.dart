@@ -553,6 +553,7 @@ class CoinsBloc implements GenericBlocBase {
 
   void currentCoinActivate(CoinToActivate? coinToActivate) {
     currentActiveCoin = coinToActivate;
+    if (currentActiveCoin == null) return;
     _inCurrentActiveCoin.add(currentActiveCoin!);
   }
 

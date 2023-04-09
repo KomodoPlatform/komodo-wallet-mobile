@@ -24,26 +24,55 @@ class EncryptionTool {
   // https://libsodium.gitbook.io/doc/password_hashing/default_phf#notes
 
   Future<bool> isPasswordValid(
-      KeyEncryption key, Wallet? wallet, String? password) async {
-    if (password == null) return false;
+      KeyEncryption key, Wallet wallet, String? password) async {
+    if (password == null) throw PasswordNotSetException('Password not set');
 
     if (key == KeyEncryption.SEED) {
       bool isValid = false;
       try {
+        final String? seed = await storage.read(key: keyPassword(key, wallet));
+
+        if (seed == null) {
+          throw SeedNotSetException('Seed not set');
+        }
+
         isValid = await argon2.verifyHashString(
           password,
-          await (storage.read(key: keyPassword(key, wallet!))
-              as FutureOr<String>),
+          seed,
           type: Argon2Type.id,
         );
       } catch (e) {
         print('Error while verifying password: ${e.toString()}');
+        if (e is! PasswordException) {
+          throw PasswordException(e.toString());
+        }
+        rethrow;
+      }
+
+      if (!isValid) {
+        throw PasswordException('Password is not valid');
       }
 
       return isValid;
     } else {
       return true;
     }
+  }
+
+  // Future<bool> validatePassword(String password) async {
+  //   final String? correctPassword = await read('passphrase');
+
+  //   if (correctPassword == null) {
+  //     throw PasswordNotSetException('Password not set.');
+  //   }
+
+  //   return password == correctPassword;
+  // }
+
+  String hashPassword(String password) {
+    var bytes = utf8.encode(password);
+    var digest = sha256.convert(bytes);
+    return digest.toString();
   }
 
   Future<String> _computeHash(String data) async {
@@ -120,23 +149,26 @@ class EncryptionTool {
       });
 
   Future<String?> readData(
-          KeyEncryption key, Wallet? wallet, String password) async =>
+          KeyEncryption key, Wallet wallet, String password) async =>
       await isPasswordValid(key, wallet, password)
           .catchError((dynamic e) => throw e)
-          .then((bool onValue) async =>
-              await storage.read(key: keyData(key, wallet!, password)));
+          .then(
+            (bool onValue) async => await storage.read(
+              key: keyData(key, wallet, password),
+            ),
+          );
 
   // TODO: Refactor according to style guidelines. This code seems to be
   // following a similar pattern to Javascript's promises. Prefer async
   // blocks and await instead.
   Future<void> deleteData(
-          KeyEncryption key, Wallet? wallet, String? password) async =>
+          KeyEncryption key, Wallet wallet, String? password) async =>
       await isPasswordValid(key, wallet, password)
           .catchError((dynamic e) => throw e)
           .then((bool res) async {
-        await storage.delete(key: keyPassword(key, wallet!));
+        await storage.delete(key: keyPassword(key, wallet));
       }).then(((_) async =>
-              await storage.delete(key: keyData(key, wallet!, password))));
+              await storage.delete(key: keyData(key, wallet, password))));
 
   Future<void> write(String key, String? data) async =>
       await storage.write(key: key, value: data);
@@ -147,3 +179,27 @@ class EncryptionTool {
 }
 
 enum KeyEncryption { SEED, PIN, CAMOPIN }
+
+class PasswordException implements Exception {
+  final String message;
+
+  PasswordException(this.message);
+}
+
+class IncorrectPasswordException implements PasswordException {
+  final String message;
+
+  IncorrectPasswordException(this.message);
+}
+
+class PasswordNotSetException implements PasswordException {
+  final String message;
+
+  PasswordNotSetException(this.message);
+}
+
+class SeedNotSetException implements PasswordException {
+  final String message;
+
+  SeedNotSetException(this.message);
+}

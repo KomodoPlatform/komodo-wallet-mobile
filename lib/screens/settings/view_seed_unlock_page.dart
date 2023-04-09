@@ -48,7 +48,7 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                   ],
                 )
               : UnlockPassword(
-                  currentWallet: walletBloc.currentWallet,
+                  currentWallet: walletBloc.currentWallet!,
                   icon: SvgPicture.asset(
                       Theme.of(context).brightness == Brightness.light
                           ? 'assets/svg_light/seed_logo.svg'
@@ -75,12 +75,12 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
 
 class UnlockPassword extends StatefulWidget {
   const UnlockPassword(
-      {this.onSuccess, this.onError, this.icon, this.currentWallet});
+      {this.onSuccess, this.onError, this.icon, required this.currentWallet});
 
   final Function(String)? onSuccess;
   final Function(String)? onError;
   final SvgPicture? icon;
-  final Wallet? currentWallet;
+  final Wallet currentWallet;
 
   @override
   _UnlockPasswordState createState() => _UnlockPasswordState();

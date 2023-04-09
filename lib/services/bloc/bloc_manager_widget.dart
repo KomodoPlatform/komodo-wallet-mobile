@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:komodo_dex/packages/authentication_repository/authentication_repository.dart';
+import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
 import 'package:komodo_dex/login/bloc/login_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/packages/pin_reset/bloc/pin_reset_bloc.dart';
@@ -31,7 +31,7 @@ class BlocManagerWidget extends StatelessWidget {
           create: (BuildContext context) => LoginBloc(
             prefs: BlocManager.instance._prefs,
             authenticationRepository:
-                BlocManager.instance._authenticationRepository,
+                BlocManager.instance._authenticationRepository!,
           ),
         ),
         BlocProvider<PinResetBloc>(
