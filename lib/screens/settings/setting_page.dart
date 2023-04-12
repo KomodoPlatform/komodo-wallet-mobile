@@ -134,12 +134,12 @@ class _SettingPageState extends State<SettingPage> {
 
   Future<String> _getVersionApplication() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String version =
-        AppLocalizations.of(context).version + ' : ' + packageInfo.version;
+    final versionString = '${AppLocalizations.of(context).version}'
+        ' : ${packageInfo.version ?? 'Undefined package version'}'
+        ' (${packageInfo.buildNumber ?? 'Undefined build number'})'
+        ' - ${mmSe.mmVersion ?? 'Undefined API version'}';
 
-    version += ' - ${mmSe.mmVersion}';
-
-    return version;
+    return versionString;
   }
 
   Widget _buildTitle(String title) {
