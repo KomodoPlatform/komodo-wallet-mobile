@@ -1,10 +1,24 @@
 
 # atomicDEX v0.6.2
 
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/komodoplatform/atomicdex-mobile/build.yml)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/komodoplatform/atomicdex-mobile)
+![GitHub contributors](https://img.shields.io/github/contributors-anon/komodoplatform/atomicdex-mobile)
+![GitHub last commit](https://img.shields.io/github/last-commit/komodoplatform/atomicdex-mobile)
+![GitHub top language](https://img.shields.io/github/languages/top/komodoplatform/atomicdex-mobile)
+![Discord](https://img.shields.io/discord/412898016371015680)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/komodoplatform/atomicdex-mobile)
+![GitHub repo size](https://img.shields.io/github/repo-size/komodoplatform/atomicdex-mobile)
+![Twitter Follow](https://img.shields.io/twitter/follow/komodoplatform?style=social)
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/10762374/231314925-93ec93d2-63f7-4361-8d25-71c0e1bb3e38.png" alt="adex swap screenshot" />
+</p>
+
 Built by Komodo, AtomicDEX Mobile is a non-custodial wallet and decentralized exchange rolled into one app. Hold and trade hundreds of cryptocurrencies on your mobile phone or tablet.
 
 # NB (Forkers/contributors):
-This repository is currently in the procesundergoing safety and Flutter version upgrade. Expect major merge conflicts in the near future for any files updated from this repository.
+This repository is currently in the procesundergoing safety and Flutter version upgrade. Expect major merge conflicts in the near future for any files updated from this repository. Please note that this software is under active development and is provided "as is" without any warranties or guarantees. Use at your own risk, as the authors and maintainers shall not be held liable for any issues, damages, or losses resulting from its use.
 
 ## Getting Started
 
@@ -129,3 +143,6 @@ Copy the generated `coins_config.json` file in Utils folder and paste inside ass
  ### 3. Unit/Widget testing
  Not supported
 
+## License
+
+This Software is released under the MIT License.
