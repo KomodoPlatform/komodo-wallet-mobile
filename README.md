@@ -1,5 +1,5 @@
 
-# atomicDEX v0.6.2
+# AtomicDEX Mobile
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/komodoplatform/atomicdex-mobile/build.yml)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/komodoplatform/atomicdex-mobile)
