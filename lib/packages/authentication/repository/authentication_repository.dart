@@ -89,7 +89,7 @@ class AuthenticationRepository {
   }
 
   Future<void> verifyHashedPassword(String hashedPassword) async {
-    final String? correctPassword = await EncryptionTool().read('passphrase');
+    final String? correctPassword = await EncryptionTool().read('password');
 
     if (correctPassword == null) {
       return Future.error(
@@ -147,8 +147,8 @@ class AuthenticationRepository {
 
     authBloc.showLock = false;
     if (!_marketMakerService.running) {
-      String? storedPassword = await EncryptionTool().read('passphrase');
-      await authBloc.login(storedPassword, null, loadSnapshot: loadSnapshot);
+      String? storedPassphrase = await EncryptionTool().read('passphrase');
+      await authBloc.login(storedPassphrase, null, loadSnapshot: loadSnapshot);
 
       // Wait for mmService to be ready
       await pauseUntil(() => _marketMakerService.running, maxMs: 10000);
@@ -280,7 +280,7 @@ class AuthenticationRepository {
 
   // TODO: implement password verification throttling.
   Future<void> verifyPassword(String password) async {
-    final String? correctPassword = await EncryptionTool().read('passphrase');
+    final String? correctPassword = await EncryptionTool().read('password');
 
     if (correctPassword == null) {
       return Future.error(
