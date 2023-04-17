@@ -84,6 +84,13 @@ class MyApp extends StatefulWidget {
 
   final String? password;
 
+  /// The [GlobalKey] for the [ScaffoldMessenger] widget so that we can show
+  /// snackbars from anywhere in the app.
+  ///
+  /// NB! Don't use this in a bloc. This should only be used in the UI only.
+  static final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
+
   @override
   _MyAppState createState() => _MyAppState();
 }
