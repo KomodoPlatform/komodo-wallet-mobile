@@ -68,7 +68,9 @@ class AuthenticationRepository {
   /// Method for initializing the authentication repository. This method
   Future<void> init() async {
     if (_isInitialized)
-      throw Exception('AuthenticationRepository is already initialized');
+      return Future.error(
+        Exception('AuthenticationRepository is already initialized'),
+      );
 
     // Add any initialization logic migrated from the legacy blocs here
 
@@ -90,14 +92,18 @@ class AuthenticationRepository {
     final String? correctPassword = await EncryptionTool().read('passphrase');
 
     if (correctPassword == null) {
-      throw PasswordNotSetException('Password not set.');
+      return Future.error(
+        PasswordNotSetException('Password not set.'),
+      );
     }
 
     final hashedCorrectPassword =
         EncryptionTool().hashPassword(correctPassword);
 
     if (hashedPassword != hashedCorrectPassword) {
-      throw IncorrectPasswordException('The password provided is incorrect.');
+      return Future.error(
+        IncorrectPasswordException('The password provided is incorrect.'),
+      );
     }
 
     return;
@@ -170,7 +176,9 @@ class AuthenticationRepository {
     } else if (type == PinTypeName.camo) {
       await EncryptionTool().write('camoPin', pin);
     } else {
-      throw UnimplementedError('Pin type not supported.');
+      return Future.error(
+        UnimplementedError('Pin type not supported.'),
+      );
     }
   }
 
@@ -202,13 +210,17 @@ class AuthenticationRepository {
       if (pinExists) {
         await verifyPin(currentPin, type);
       } else {
-        throw PinNotFoundException(types: [type]);
+        return Future.error(
+          PinNotFoundException(types: [type]),
+        );
       }
     } else {
       if (!pinExists) {
         await verifyPassword(password!);
       } else {
-        throw PinAlreadySetException(type: type);
+        return Future.error(
+          PinAlreadySetException(type: type),
+        );
       }
     }
 
@@ -219,7 +231,9 @@ class AuthenticationRepository {
       // The new pin is not set for other types, continue with setting the pin
     } on IncorrectPinException catch (e) {
       if (e.types.any((PinTypeName t) => t != type)) {
-        throw PinAlreadySetForAnotherTypeException(e.types.single);
+        return Future.error(
+          PinAlreadySetForAnotherTypeException(e.types.single),
+        );
       }
     }
 
@@ -269,11 +283,15 @@ class AuthenticationRepository {
     final String? correctPassword = await EncryptionTool().read('passphrase');
 
     if (correctPassword == null) {
-      throw PasswordNotSetException('Password not set.');
+      return Future.error(
+        PasswordNotSetException('Password not set.'),
+      );
     }
 
     if (password != correctPassword) {
-      throw IncorrectPasswordException('The password provided is incorrect.');
+      return Future.error(
+        IncorrectPasswordException('The password provided is incorrect.'),
+      );
     }
 
     return;
@@ -283,7 +301,9 @@ class AuthenticationRepository {
   // thrown.
   void _ensureSignedIn() async {
     if (!_isAuthenticated) {
-      throw NotAuthenticatedException('User is not signed in.');
+      return Future.error(
+        NotAuthenticatedException('User is not signed in.'),
+      );
     }
   }
 
@@ -308,11 +328,15 @@ class AuthenticationRepository {
     }
 
     if (correctPin == null) {
-      throw PinNotFoundException(types: [type]);
+      return Future.error(
+        PinNotFoundException(types: [type]),
+      );
     }
 
     if (pin != correctPin) {
-      throw IncorrectPinException(types: [type]);
+      return Future.error(
+        IncorrectPinException(types: [type]),
+      );
     }
 
     return;
@@ -353,10 +377,14 @@ class AuthenticationRepository {
       return verifiedPinTypes.single;
     } else if (incorrectTypes.length == PinTypeName.values.length) {
       // If all pin types are incorrect, throw IncorrectPinException
-      throw IncorrectPinException(types: incorrectTypes);
+      return Future.error(
+        IncorrectPinException(types: incorrectTypes),
+      );
     } else {
       // If none of the pins are set, throw PinNotFoundException
-      throw PinNotFoundException(types: notFoundTypes);
+      return Future.error(
+        PinNotFoundException(types: notFoundTypes),
+      );
     }
   }
 
