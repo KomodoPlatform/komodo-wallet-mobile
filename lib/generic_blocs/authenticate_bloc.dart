@@ -76,6 +76,12 @@ class AuthenticateBloc extends GenericBlocBase {
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await _checkPINStatus(password);
+    // TODO: Refactor authentication. Storing the passphrase unencrypted defeats
+    // the purpose having an encryption tool to use the password to decrypt
+    // data. Flutter secure storage would be equally or more secure since
+    // the data is encrypted by the OS and only accessible by this Flutter app.
+    // However, we face the same issue where a fork dev can just read the data
+    // from the OS.
     await EncryptionTool().write('passphrase', passphrase);
     prefs.setBool('isPassphraseIsSaved', true);
 
