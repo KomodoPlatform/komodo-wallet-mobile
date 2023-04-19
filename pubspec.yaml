@@ -202,6 +202,7 @@ dependencies:
   provider: ^6.0.5
   google_fonts: ^4.0.3
   equatable: ^2.0.5
+  beamer: ^1.5.3
 
 dev_dependencies:
   integration_test:
