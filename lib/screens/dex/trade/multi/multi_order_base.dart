@@ -164,7 +164,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  baseCoin ?? AppLocalizations.of(context)!.multiBasePlaceholder,
+                  baseCoin ??
+                      AppLocalizations.of(context)!.multiBasePlaceholder,
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),

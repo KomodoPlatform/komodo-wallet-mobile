@@ -351,7 +351,8 @@ class _ContactEditState extends State<ContactEdit> {
                         horizontal: 16.0, vertical: 8.0),
                     child: Theme(
                       data: Theme.of(context).copyWith(
-                        inputDecorationTheme: defaultUnderlineInputTheme,
+                        inputDecorationTheme: defaultUnderlineInputTheme(
+                            Theme.of(context).colorScheme),
                       ),
                       child: TextField(
                         controller: searchTextController,

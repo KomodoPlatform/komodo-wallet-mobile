@@ -58,14 +58,15 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
           _buildError(),
         ],
       ),
-      value:
-          _multiOrderProvider!.isRelCoinSelected(widget.item!.coin!.abbr) ?? false,
+      value: _multiOrderProvider!.isRelCoinSelected(widget.item!.coin!.abbr) ??
+          false,
       onChanged: widget.onSelectChange,
     );
   }
 
   Widget _buildError() {
-    final String? error = _multiOrderProvider!.getError(widget.item!.coin!.abbr);
+    final String? error =
+        _multiOrderProvider!.getError(widget.item!.coin!.abbr);
 
     return error == null
         ? SizedBox()

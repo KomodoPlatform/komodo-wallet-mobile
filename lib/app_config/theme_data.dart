@@ -232,30 +232,16 @@ ButtonStyle elevatedButtonSmallButtonStyle({EdgeInsets? padding}) =>
 
 // Some variables to simplify the non-Outlined TextFields
 
-InputDecorationTheme get defaultUnderlineInputTheme {
-  return settingsBloc.isLightTheme
-      ? InputDecorationTheme(
-          enabledBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: _colorSchemeLight.secondary.withOpacity(0.3)),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: _colorSchemeLight.secondary),
-          ),
-          errorBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: _colorSchemeLight.error),
-          ),
-        )
-      : InputDecorationTheme(
-          enabledBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: _colorScheme.secondary.withOpacity(0.3)),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: _colorScheme.secondary),
-          ),
-          errorBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: _colorScheme.error),
-          ),
-        );
+InputDecorationTheme defaultUnderlineInputTheme(ColorScheme colorScheme) {
+  return InputDecorationTheme(
+    enabledBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: colorScheme.secondary.withOpacity(0.3)),
+    ),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: colorScheme.secondary),
+    ),
+    errorBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: colorScheme.error),
+    ),
+  );
 }

@@ -85,7 +85,8 @@ class _SwapDetailNoteState extends State<SwapDetailNote> {
                                 ? Theme(
                                     data: Theme.of(context).copyWith(
                                       inputDecorationTheme:
-                                          defaultUnderlineInputTheme,
+                                          defaultUnderlineInputTheme(
+                                              Theme.of(context).colorScheme),
                                     ),
                                     child: TextField(
                                       decoration:
