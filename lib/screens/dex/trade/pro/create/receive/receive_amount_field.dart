@@ -37,7 +37,7 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context)
-          .copyWith(inputDecorationTheme: gefaultUnderlineInputTheme),
+          .copyWith(inputDecorationTheme: defaultUnderlineInputTheme),
       child: TextFormField(
         key: Key('input-text-buy'),
         scrollPadding: const EdgeInsets.only(left: 35),

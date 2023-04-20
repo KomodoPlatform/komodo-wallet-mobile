@@ -162,7 +162,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                     AppLocalizations.of(context)!.iUnderstand)),
                 Theme(
                   data: Theme.of(context).copyWith(
-                      inputDecorationTheme: gefaultUnderlineInputTheme),
+                      inputDecorationTheme: defaultUnderlineInputTheme),
                   child: TextField(
                     autofocus: true,
                     onChanged: (String text) {

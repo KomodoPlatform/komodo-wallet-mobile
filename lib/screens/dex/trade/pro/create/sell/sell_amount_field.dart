@@ -37,7 +37,7 @@ class _SellAmountFieldState extends State<SellAmountField> {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context)
-          .copyWith(inputDecorationTheme: gefaultUnderlineInputTheme),
+          .copyWith(inputDecorationTheme: defaultUnderlineInputTheme),
       child: TextFormField(
         key: Key('input-text-sell'),
         scrollPadding: const EdgeInsets.only(left: 35),

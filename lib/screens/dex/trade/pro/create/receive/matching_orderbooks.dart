@@ -49,7 +49,7 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Theme(
               data: Theme.of(context)
-                  .copyWith(inputDecorationTheme: gefaultUnderlineInputTheme),
+                  .copyWith(inputDecorationTheme: defaultUnderlineInputTheme),
               child: TextField(
                 controller: searchTextController,
                 onChanged: (_) => setState(() {}),

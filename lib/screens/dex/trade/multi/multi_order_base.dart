@@ -304,7 +304,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                     padding: const EdgeInsets.only(top: 4),
                     child: Theme(
                       data: Theme.of(context).copyWith(
-                        inputDecorationTheme: gefaultUnderlineInputTheme,
+                        inputDecorationTheme: defaultUnderlineInputTheme,
                       ),
                       child: TextFormField(
                         key: const Key('input-text-sell'),

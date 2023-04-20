@@ -62,7 +62,7 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
                   child: isEdit
                       ? Theme(
                           data: Theme.of(context).copyWith(
-                            inputDecorationTheme: gefaultUnderlineInputTheme,
+                            inputDecorationTheme: defaultUnderlineInputTheme,
                           ),
                           child: TextField(
                             controller: noteTextController,

@@ -232,7 +232,7 @@ ButtonStyle elevatedButtonSmallButtonStyle({EdgeInsets? padding}) =>
 
 // Some variables to simplify the non-Outlined TextFields
 
-InputDecorationTheme get gefaultUnderlineInputTheme {
+InputDecorationTheme get defaultUnderlineInputTheme {
   return settingsBloc.isLightTheme
       ? InputDecorationTheme(
           enabledBorder: UnderlineInputBorder(
