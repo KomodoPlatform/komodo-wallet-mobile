@@ -254,7 +254,8 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
             padding: const EdgeInsets.only(top: 0),
             child: Theme(
               data: Theme.of(context).copyWith(
-                inputDecorationTheme: defaultUnderlineInputTheme,
+                inputDecorationTheme:
+                    defaultUnderlineInputTheme(Theme.of(context).colorScheme),
               ),
               child: TextField(
                 key: Key(
