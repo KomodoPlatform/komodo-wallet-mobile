@@ -435,49 +435,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         ),
                 ),
               ),
-            BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              onTap: onTabTapped,
-              currentIndex: indexTab!,
-              elevation: 0,
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                    icon: const Icon(
-                      Icons.account_balance_wallet,
-                      key: Key('main-nav-portfolio'),
-                    ),
-                    label: AppLocalizations.of(context)!.portfolio),
-                BottomNavigationBarItem(
-                    icon: const Icon(Icons.swap_vert, key: Key('main-nav-dex')),
-                    label: AppLocalizations.of(context)!.dex),
-                BottomNavigationBarItem(
-                  icon: const Icon(
-                    Icons.show_chart,
-                    key: Key('main-nav-markets'),
-                  ),
-                  label: AppLocalizations.of(context)!.marketsTab,
-                ),
-                if (appConfig.isFeedEnabled)
-                  BottomNavigationBarItem(
-                      icon: Stack(
-                        children: <Widget>[
-                          const Icon(Icons.library_books,
-                              key: Key('main-nav-feed')),
-                          if (feedProvider!.hasNewItems) buildRedDot(context),
-                        ],
-                      ),
-                      label: AppLocalizations.of(context)!.feedTab),
-                BottomNavigationBarItem(
-                    icon: Stack(
-                      children: <Widget>[
-                        const Icon(Icons.dehaze, key: Key('main-nav-more')),
-                        if (updatesProvider.status != UpdateStatus.upToDate)
-                          buildRedDot(context),
-                      ],
-                    ),
-                    label: AppLocalizations.of(context)!.moreTab),
-              ],
-            )
+            AppBottomNavigationBar(),
           ],
         );
       },
