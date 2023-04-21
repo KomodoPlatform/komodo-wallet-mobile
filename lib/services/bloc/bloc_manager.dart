@@ -35,7 +35,7 @@ class BlocManager {
 
   // Initialize HydratedBloc
   Future<void> _initPersistance() async {
-    final baseStorageDirectory = await getApplicationDocumentsDirectory();
+    final baseStorageDirectory = await getCachedAppDocumentsDirectory();
 
     // Initialize HydratedBloc with its own directory.
     final hydratedBlocDirectory =

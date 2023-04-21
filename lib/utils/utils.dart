@@ -472,7 +472,7 @@ Future<Directory> get applicationDocumentsDirectory async {
   return _applicationDocumentsDirectory!;
 }
 
-FutureOr<Directory> getApplicationDocumentsDirectory() {
+FutureOr<Directory> getCachedAppDocumentsDirectory() {
   if (_applicationDocumentsDirectory != null) {
     return _applicationDocumentsDirectory!;
   }
