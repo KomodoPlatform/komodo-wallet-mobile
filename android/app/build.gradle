@@ -97,6 +97,12 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // Resolved an issue where both the java and kotlin versions of the same library were being included.
+    // https://stackoverflow.com/a/74408737
+    // Watch for future issues where this version may become out of date.
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+
 }
 
 // Setting the “vscode-java-pack” classpath

@@ -4,14 +4,14 @@
         NB: “local_auth” wants an “AppCompat” theme:
         “You need to use a Theme.AppCompat theme (or descendant) with this activity”
      -->
-    <style name="LaunchTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="LaunchTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Show a splash screen on the activity. Automatically removed when
-             Flutter draws its first frame -->
+         Flutter draws its first frame -->
         <item name="android:windowBackground">@drawable/launch_background</item>
-        <!-- With the fullscreen mode turned on app can not detect 
-        on-screen keyboard, and if opened, keyboard overlaps part of the screen,
-        with no scrolling available
-        https://bit.ly/333l9RZ https://github.com/flutter/flutter/issues/51165 -->
-        <!-- <item name= "android:windowFullscreen">true</item> -->
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 </resources>

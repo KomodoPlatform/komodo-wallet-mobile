@@ -2,12 +2,11 @@ PODS:
   - Argon2Swift (1.0.2)
   - audioplayers (0.0.1):
     - Flutter
+  - biometric_storage (0.0.1):
+    - Flutter
   - connectivity_plus (0.0.1):
     - Flutter
     - ReachabilitySwift
-  - dargon2_flutter_mobile (1.2.0):
-    - Argon2Swift
-    - Flutter
   - DKImagePickerController/Core (4.3.4):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -43,6 +42,10 @@ PODS:
     - DKImagePickerController/PhotoGallery
     - Flutter
   - Flutter (1.0.0)
+  - flutter_background_service_ios (0.0.3):
+    - Flutter
+  - flutter_local_notifications (0.0.1):
+    - Flutter
   - flutter_secure_storage (3.3.1):
     - Flutter
   - FMDB (2.7.5):
@@ -80,7 +83,7 @@ PODS:
   - GTMSessionFetcher/Core (1.7.2)
   - integration_test (0.0.1):
     - Flutter
-  - local_auth (0.0.1):
+  - local_auth_ios (0.0.1):
     - Flutter
   - MLImage (1.0.0-beta2)
   - MLKitBarcodeScanning (1.7.0):
@@ -112,8 +115,9 @@ PODS:
   - nanopb/encode (2.30909.0)
   - package_info_plus (0.4.5):
     - Flutter
-  - path_provider_ios (0.0.1):
+  - path_provider_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - PromisesObjC (2.1.1)
   - Protobuf (3.21.7)
   - ReachabilitySwift (5.0.0)
@@ -122,8 +126,9 @@ PODS:
   - SDWebImage/Core (5.13.4)
   - share (0.0.1):
     - Flutter
-  - shared_preferences_ios (0.0.1):
+  - shared_preferences_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
@@ -134,23 +139,25 @@ PODS:
 DEPENDENCIES:
   - Argon2Swift
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
+  - biometric_storage (from `.symlinks/plugins/biometric_storage/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
-  - dargon2_flutter_mobile (from `.symlinks/plugins/dargon2_flutter_mobile/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
+  - flutter_background_service_ios (from `.symlinks/plugins/flutter_background_service_ios/ios`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
-  - local_auth (from `.symlinks/plugins/local_auth/ios`)
+  - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
   - mobile_scanner (from `.symlinks/plugins/mobile_scanner/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - share (from `.symlinks/plugins/share/ios`)
-  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs:
+  https://github.com/CocoaPods/Specs.git:
     - DKImagePickerController
     - DKPhotoGallery
     - FMDB
@@ -176,30 +183,34 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   audioplayers:
     :path: ".symlinks/plugins/audioplayers/ios"
+  biometric_storage:
+    :path: ".symlinks/plugins/biometric_storage/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
-  dargon2_flutter_mobile:
-    :path: ".symlinks/plugins/dargon2_flutter_mobile/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   Flutter:
     :path: Flutter
+  flutter_background_service_ios:
+    :path: ".symlinks/plugins/flutter_background_service_ios/ios"
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
-  local_auth:
-    :path: ".symlinks/plugins/local_auth/ios"
+  local_auth_ios:
+    :path: ".symlinks/plugins/local_auth_ios/ios"
   mobile_scanner:
     :path: ".symlinks/plugins/mobile_scanner/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
-  path_provider_ios:
-    :path: ".symlinks/plugins/path_provider_ios/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
-  shared_preferences_ios:
-    :path: ".symlinks/plugins/shared_preferences_ios/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher_ios:
@@ -208,12 +219,14 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Argon2Swift: ef91fb441bdd0e3f65395d5658a6ae8fd4dce9f7
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
+  biometric_storage: 1400f1382af3a4cc2bf05340e13c3d8de873ceb9
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
-  dargon2_flutter_mobile: 5e4b8f7f39e1640d98f17c0215c284eebd4ec2d7
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  file_picker: ce3938a0df3cc1ef404671531facef740d03f920
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_background_service_ios: e30e0d3ee69e4cee66272d0c78eacd48c2e94aac
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
@@ -223,7 +236,7 @@ SPEC CHECKSUMS:
   GoogleUtilitiesComponents: 679b2c881db3b615a2777504623df6122dd20afe
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
-  local_auth: 1740f55d7af0a2e2a8684ce225fe79d8931e808c
+  local_auth_ios: c6cf091ded637a88f24f86a8875d8b0f526e2605
   MLImage: a454f9f8ecfd537783a12f9488f5be1a68820829
   MLKitBarcodeScanning: b8257854f6afc1c8443d61ec6b98c28b35625df6
   MLKitCommon: 3bc17c6f7d25ce3660f030350b46ae7ec9ebca6e
@@ -231,17 +244,17 @@ SPEC CHECKSUMS:
   mobile_scanner: 073e39c0c96360297389f4db68e4297a1fa58349
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
-  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   Protobuf: f4128517d7a42302e106cc3afe614ee3a7513e94
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: e5cc87bf736e60f49592f307bdf9e157189298a3
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
-  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+  shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
-  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
+  url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
 
-PODFILE CHECKSUM: a42efe144b04b066b1a2cc66631f6dbf342cbc7f
+PODFILE CHECKSUM: f4d3a00c0dc23fa70e2e46658c98da61b5dc0a23
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0
