@@ -472,6 +472,14 @@ Future<Directory> get applicationDocumentsDirectory async {
   return _applicationDocumentsDirectory!;
 }
 
+FutureOr<Directory> getApplicationDocumentsDirectory() {
+  if (_applicationDocumentsDirectory != null) {
+    return _applicationDocumentsDirectory!;
+  }
+
+  return applicationDocumentsDirectory;
+}
+
 /// Cached synchronous access to the application directory.
 /// Returns `null` if the application directory is not known yet.
 Directory? get applicationDocumentsDirectorySync =>

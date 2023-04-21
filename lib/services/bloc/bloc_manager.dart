@@ -35,9 +35,17 @@ class BlocManager {
 
   // Initialize HydratedBloc
   Future<void> _initPersistance() async {
-    final storage = await HydratedStorage.build(
-      storageDirectory: await applicationDocumentsDirectory,
-    );
+    final baseStorageDirectory = await getApplicationDocumentsDirectory();
+
+    // Initialize HydratedBloc with its own directory.
+    final hydratedBlocDirectory =
+        Directory('${baseStorageDirectory.path}/hydrated_bloc_data');
+    final storage =
+        await HydratedStorage.build(storageDirectory: hydratedBlocDirectory);
+
+    // Initialize Hive with its own directory.
+    final hivePath = '${baseStorageDirectory.path}/hive_data';
+    Hive.init(hivePath);
 
     HydratedBloc.storage = storage;
   }
