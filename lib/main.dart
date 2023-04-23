@@ -4,6 +4,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:komodo_dex/common_widgets/bottom_navigation_bar.dart';
+import 'package:komodo_dex/packages/app/widgets/main_app.dart';
 import 'package:komodo_dex/services/bloc/app_providers.dart';
 import 'package:komodo_dex/services/bloc/bloc_manager_widget.dart';
 import 'package:komodo_dex/utils/iterable_utils.dart';
@@ -39,13 +41,11 @@ import 'model/startup_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    mmSe.metrics();
-    startup.start();
+    // mmSe.metrics();
+    // await startup.start();
     await BlocManager.init();
     return runApp(
-      AppProviderManager(
-        child: BlocManagerWidget(child: const MyApp()),
-      ),
+      BlocManagerWidget(child: const MainApp()),
     );
   } catch (e) {
     Log('main:46', 'startApp] $e');
@@ -440,17 +440,5 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         );
       },
     );
-  }
-
-  void onTabTapped(int index) {
-    /// [unfocusTextField] doesn't work here,
-    /// probably because drawer has different context
-    FocusScope.of(context).requestFocus(FocusNode());
-
-    if (index < _children.length) {
-      mainBloc.setCurrentIndexTab(index);
-    } else {
-      _scaffoldKey.currentState!.openEndDrawer();
-    }
   }
 }

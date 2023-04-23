@@ -28,6 +28,8 @@ class BlocManager {
 
   late final AuthenticationRepository? _authenticationRepository;
 
+  late final WalletRepository _walletRepository;
+
   //=====================================================================
 
   // Is initialized
@@ -55,8 +57,8 @@ class BlocManager {
   Future<void> _initRepositories() async {
     try {
       // Initialize sync constructor repositories
-      await Db.init();
-      final sqlDB = Db.sqlDbInstance;
+      // await Db.init();
+      final sqlDB = await Db.db;
 
       // Initialize async repositories which cannot be initialized in parallel
       _prefs = await SharedPreferences.getInstance();
@@ -64,16 +66,15 @@ class BlocManager {
       // Initialize async repositories which can be initialized in parallel
       final futures = <Future<void>>[
         Future(() async {
-          _authenticationRepository = AuthenticationRepository(
-            prefs: _prefs,
+          _authenticationRepository =
+              await AuthenticationRepository.instantiate(
             sqlDB: sqlDB,
             marketMakerService: MarketMakerService.instance,
           );
 
           CexPrices();
-
-          await _authenticationRepository!.init();
         }),
+        Future(() async => _walletRepository = await WalletRepository.create()),
       ];
 
       await Future.wait(futures);
