@@ -84,12 +84,8 @@ class AuthenticationBloc
 
   @override
   AuthenticationState fromJson(Map<String, dynamic> json) =>
-      AuthenticationState._(
-        status: AuthenticationStatus.values[json['status']],
-        user: User.fromJson(json['user']),
-      );
+      AuthenticationState.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(AuthenticationState state) =>
-      {'status': state.status.index, 'user': state.user.toJson()};
+  Map<String, dynamic> toJson(AuthenticationState state) => state.toJson();
 }
