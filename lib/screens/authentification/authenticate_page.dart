@@ -49,48 +49,26 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
 class BoxButton extends StatelessWidget {
   const BoxButton({
     Key? key,
-    this.text,
+    required this.text,
     this.assetPath,
-    required this.onPressed,
+    this.onPressed,
   }) : super(key: key);
 
-  final String? text;
+  final Widget text;
   final String? assetPath;
-  final Function onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    const BorderRadius borderRadius = BorderRadius.all(Radius.circular(8));
-
-    return InkWell(
-      borderRadius: borderRadius,
-      onTap: onPressed as void Function()?,
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
-            ),
-            borderRadius: borderRadius,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SvgPicture.asset(assetPath!, height: 40),
-                const SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  text!.toUpperCase(),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText2,
-                )
-              ],
-            ),
-          ),
-        ),
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: SvgPicture.asset(assetPath!, height: 40),
+      ),
+      label: DefaultTextStyle(
+        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(),
+        child: text,
       ),
     );
   }
@@ -302,7 +280,7 @@ class CreateWalletButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BoxButton(
       key: const Key('createWalletButton'),
-      text: AppLocalizations.of(context)!.createAWallet,
+      text: Text(AppLocalizations.of(context)!.createAWallet),
       assetPath: Theme.of(context).brightness == Brightness.light
           ? 'assets/svg_light/create_wallet.svg'
           : 'assets/svg/create_wallet.svg',
@@ -322,7 +300,7 @@ class RestoreButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BoxButton(
       key: const Key('restoreWallet'),
-      text: AppLocalizations.of(context)!.restoreWallet,
+      text: Text(AppLocalizations.of(context)!.restoreWallet),
       assetPath: Theme.of(context).brightness == Brightness.light
           ? 'assets/svg_light/lock_off.svg'
           : 'assets/svg/lock_off.svg',
