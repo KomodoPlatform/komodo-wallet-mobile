@@ -270,6 +270,12 @@ Future<bool> authenticateBiometrics(BuildContext context, PinStatus? pinStatus,
       }
       authBloc.showLock = false;
       if (pinStatus == PinStatus.NORMAL_PIN && !mmSe.running) {
+        // This line makes the [EncryptionTool] redundant. The storage package
+        // we are using stores the data as encrypted files on the device and
+        // only this Flutter app can access them. The (would-be) advantage of
+        // using the [EncryptionTool] is that we would require the user's input
+        // to decrypt the data. Whilst this does add an extra layer of security
+        // for the inactive wallets, it has no effect on the active wallet.
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
     }
