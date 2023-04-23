@@ -51,18 +51,17 @@ class WalletProfileHiveApi implements WalletProfileApi {
 
   static Future<WalletProfileHiveApi> create() async {
     Hive.registerAdapter(WalletProfileAdapter());
-    final box = await Hive.openBox<WalletProfile>('wallet_profiles');
+    final box = await Hive.openBox<WalletProfile>(_walletProfilesBoxName);
     return WalletProfileHiveApi._(box: box);
   }
 
   final Box<WalletProfile> _box;
 
-  final String _walletProfilesBoxName = 'wallet_profiles';
+  static const String _walletProfilesBoxName = 'wallet_profiles';
 
   @override
   Future<void> storeWalletProfile(WalletProfile profile) async {
-    final box = await Hive.openBox<WalletProfile>(_walletProfilesBoxName);
-    await box.put(profile.id, profile);
+    await _box.put(profile.id, profile);
   }
 
   @override

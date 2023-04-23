@@ -1,3 +1,4 @@
+import 'package:biometric_storage/biometric_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:komodo_dex/packages/wallet_profiles/api/biometric_storage_api.dart';
 import 'package:komodo_dex/packages/wallet_profiles/api/wallet_profile_adapter.dart';
@@ -21,11 +22,12 @@ class WalletRepository {
   final WalletProfileHiveApi _walletProfileHiveApi;
 
   WalletRepository({
-    // required BiometricStorageApi biometricStorageApi,
+    required BiometricStorageApi biometricStorageApi,
     required WalletProfileHiveApi walletProfileHiveApi,
-  }) :
-        //  _biometricStorageApi = biometricStorageApi,
+  })  : _biometricStorageApi = biometricStorageApi,
         _walletProfileHiveApi = walletProfileHiveApi;
+
+  final BiometricStorageApi _biometricStorageApi;
 
   /// Creates a WalletRepository instance.
   ///
@@ -36,6 +38,10 @@ class WalletRepository {
   /// instances of the dependencies.
   static Future<WalletRepository> create() async {
     // Initialize BiometricStorageApi
+    final biometricStorage = BiometricStorageApi(
+      baseStorageKey: 'wallet_passphrase',
+      biometricStorage: BiometricStorage(),
+    );
 
     // Initialize WalletProfileHiveApi
     final walletProfileHiveApi = await WalletProfileHiveApi.create();
@@ -43,11 +49,25 @@ class WalletRepository {
     // Initialize WalletRepository
     return WalletRepository(
       walletProfileHiveApi: walletProfileHiveApi,
+      biometricStorageApi: biometricStorage,
     );
   }
 
-  Future<void> storeWalletProfile(WalletProfile profile) async {
-    await _walletProfileHiveApi.storeWalletProfile(profile);
+  Future<void> createWalletProfile({
+    required WalletProfile profile,
+    required String passphrase,
+  }) async {
+    try {
+      await _walletProfileHiveApi.storeWalletProfile(profile);
+
+      // Store the passphrase in biometric storage
+      await _biometricStorageApi.create(id: profile.id, data: passphrase);
+    } catch (e) {
+      //Delete the profile if creation fails. Await future but ignore result
+      _walletProfileHiveApi.removeWalletProfile(profile.id).ignore();
+
+      return Future.error(e);
+    }
   }
 
   Future<WalletProfile?> getWalletProfile(String walletId) async {
@@ -63,6 +83,7 @@ class WalletRepository {
   /// NB: This method does not remove the wallet passphrase from biometric
   /// storage or delete the wallet from the blockchain.
   Future<void> removeWalletProfile(String walletId) async {
+    // TODO: Add on calls to remove passphrase from biometric storage
     await _walletProfileHiveApi.removeWalletProfile(walletId);
   }
 }
