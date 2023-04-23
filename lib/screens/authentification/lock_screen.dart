@@ -329,13 +329,12 @@ class _LockScreenState extends State<LockScreen> {
                 return const AuthenticatePage();
               }
             } else {
-              context.read<PinResetBloc>().add(
-                    PinSetupStarted(
-                      pinType: PinTypeName.normal,
-                      password: password!,
-                    ),
-                  );
               WidgetsBinding.instance.addPostFrameCallback((_) async {
+                context.read<PinResetBloc>().add(
+                      PinSetupStarted(
+                        pinType: PinTypeName.normal,
+                      ),
+                    );
                 final successMessage = await Navigator.push<String?>(
                   context,
                   PinResetPage.route,

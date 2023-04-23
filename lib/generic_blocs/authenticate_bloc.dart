@@ -15,6 +15,7 @@ import '../utils/encryption_tool.dart';
 import '../widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@Deprecated('Pre-refactor bloc. Use new AuthenticationBloc instead')
 class AuthenticateBloc extends GenericBlocBase {
   AuthenticateBloc() {
     init();
