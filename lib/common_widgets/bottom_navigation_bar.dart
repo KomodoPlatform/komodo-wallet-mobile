@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:provider/provider.dart';
 
+// Copied from main.dart. See main.dart for commit history.
 class AppBottomNavigationBar extends StatelessWidget {
   const AppBottomNavigationBar({Key? key}) : super(key: key);
 
