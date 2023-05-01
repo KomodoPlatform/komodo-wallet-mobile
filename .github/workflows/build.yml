@@ -36,7 +36,7 @@ jobs:
         run: flutter pub get --suppress-analytics
       # extra Gradle caching
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v2.4.2
       # mm2 lib download
       - run: mkdir -p android/app/src/main/cpp/libs/{armeabi-v7a,arm64-v8a}
       - run: curl -l --header ${{ secrets.MM2_DOWNLOAD_HEADER }} "https://gitlab.com/api/v4/projects/11069706/jobs/artifacts/mm2.1-cross/raw/target/armv7-linux-androideabi/release/libmm2.a?job=android-armv7" --output "android/app/src/main/cpp/libs/armeabi-v7a/libmm2.a"
