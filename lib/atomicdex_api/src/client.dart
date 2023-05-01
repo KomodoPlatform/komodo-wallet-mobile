@@ -2,23 +2,27 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/foundation.dart';
+import 'package:komodo_dex/atomicdex_api/src/config/atomicdex_api_config.dart';
+import 'package:komodo_dex/atomicdex_api/src/requests/node.dart';
 
+@immutable
 class AtomicDexApiClient {
-  AtomicDexApiClient({
-    required this.baseUrl,
-  });
+  AtomicDexApiClient({required this.baseUrl});
 
-  final String baseUrl;
+  final Uri baseUrl;
   final http.Client _httpClient = http.Client();
 
   Future<AtomicDexResponse> call({
     required AtomicDexRequest request,
   }) async {
-    final url = Uri.parse(baseUrl);
     final body = jsonEncode(request.body);
     final headers = {'Content-Type': 'application/json'};
 
-    final response = await _httpClient.post(url, body: body, headers: headers);
+    final response = await _httpClient.post(
+      baseUrl,
+      body: body,
+      headers: headers,
+    );
 
     if (!response.statusCode.toString().startsWith('2')) {
       throw Exception('Failed to call API with status ${response.statusCode}');
@@ -34,24 +38,28 @@ class AtomicDexApiClient {
 /// Override this class when defining a new request class if you want a custom
 /// response data class.
 class AtomicDexResponse {
-  AtomicDexResponse._({required this.data});
+  AtomicDexResponse({
+    required this.data,
+    required this.code,
+    required this.id,
+  });
 
   static AtomicDexResponse fromJson(Map<String, dynamic> json) =>
-      AtomicDexResponse._(data: ApiResponseData.parse(json));
+      AtomicDexResponse(
+        data: json,
+        code: json['code'] as int,
+        id: json['id'] as int?,
+      );
 
-  final ApiResponseData data;
+  final Map<String, dynamic> data;
+
+  final int? id;
+
+  final int code;
+
+  bool get isSuccess => code.toString().startsWith('2');
 
   // TODO: Other fields
-}
-
-class ApiResponseData {
-  final Map<String, dynamic> raw;
-
-  ApiResponseData._({required this.raw});
-
-  static ApiResponseData parse(Map<String, dynamic> json) {
-    return ApiResponseData._(raw: json);
-  }
 }
 
 @immutable
@@ -63,6 +71,20 @@ class AtomicDexRequest {
     required this.methodParams,
     required this.id,
   });
+
+  factory AtomicDexRequest.withConfig(
+    RequestConfig config, {
+    required AtomicDexEndpoint endpoint,
+    required Map<String, dynamic>? methodParams,
+    int? id,
+  }) =>
+      AtomicDexRequest(
+        rpcPassword: config.rpcPassword,
+        rpcMethod: endpoint.method,
+        version: endpoint.version,
+        methodParams: methodParams,
+        id: id,
+      );
 
   final int? id;
 
@@ -122,3 +144,53 @@ class AtomicDexRequest {
 }
 
 enum AtomicDexApiVersion { legacy, v2 }
+
+extension FutureApiResponseDataConverter on Future<AtomicDexResponse> {
+  Future<T> convert<T>(T Function(Map<String, dynamic>) converter) async {
+    final response = await this;
+    return converter(response.data);
+  }
+}
+
+extension ApiResponseDataConverter on AtomicDexResponse {
+  T convert<T>(T Function(Map<String, dynamic>) converter) {
+    return converter(data);
+  }
+}
+
+@immutable
+class RequestConfig {
+  RequestConfig({
+    required this.rpcPassword,
+  });
+
+  final String rpcPassword;
+
+  // Add more configurations if needed
+}
+
+@immutable
+class AtomicDexEndpoint {
+  const AtomicDexEndpoint({
+    required this.version,
+    required this.method,
+  });
+
+  final String method;
+
+  final AtomicDexApiVersion version;
+}
+
+// enum AtomicDexApiMethod {
+//   guiStorage_getAccounts,
+//   guiStorage_activateAccount,
+// }
+
+// extension ApiMethodToEndpoint on AtomicDexApiMethod {
+//   AtomicDexEndpoint endpoint(AtomicDexApiVersion version) {
+//     return AtomicDexEndpoint._(
+//       version: version,
+//       method: this,
+//     );
+//   }
+// }
