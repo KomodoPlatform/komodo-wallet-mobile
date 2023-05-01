@@ -1,12 +1,14 @@
-abstract class AccountID {
-  final String type;
+import 'package:uuid/uuid.dart';
 
-  AccountID({required this.type});
+abstract class AccountId {
+  AccountId({required this.type});
 
   Map<String, dynamic> toJson();
 
+  final String type;
+
   // Factory constructor to create an AccountID from JSON
-  factory AccountID.fromJson(Map<String, dynamic> json) {
+  factory AccountId.fromJson(Map<String, dynamic> json) {
     switch (json['type']) {
       case 'iguana':
         return IguanaAccountID();
@@ -19,6 +21,9 @@ abstract class AccountID {
     }
   }
 
+  //TODO:
+  // String get uuid;
+
   @override
   bool operator ==(Object other);
 
@@ -26,7 +31,7 @@ abstract class AccountID {
   int get hashCode;
 }
 
-class IguanaAccountID extends AccountID {
+class IguanaAccountID extends AccountId {
   IguanaAccountID() : super(type: 'iguana');
 
   @override
@@ -35,6 +40,15 @@ class IguanaAccountID extends AccountID {
       'type': type,
     };
   }
+
+  //TODO:
+  // @override
+  // String get uuid {
+  //   final uuid = Uuid();
+  //   final namespace =
+  //       Uuid.NAMESPACE_OID; // Use a fixed namespace for deterministic UUIDs
+  //   return uuid.v4(UuidUtil .cryptoRNG)
+  // }
 
   @override
   bool operator ==(Object other) {
@@ -46,7 +60,7 @@ class IguanaAccountID extends AccountID {
   int get hashCode => type.hashCode;
 }
 
-class HDAccountID extends AccountID {
+class HDAccountID extends AccountId {
   final int accountIdx;
 
   HDAccountID({required this.accountIdx}) : super(type: 'hd');
@@ -71,7 +85,7 @@ class HDAccountID extends AccountID {
   int get hashCode => type.hashCode ^ accountIdx.hashCode;
 }
 
-class HWAccountID extends AccountID {
+class HWAccountID extends AccountId {
   final String devicePubkey;
 
   HWAccountID({required this.devicePubkey}) : super(type: 'hw');
