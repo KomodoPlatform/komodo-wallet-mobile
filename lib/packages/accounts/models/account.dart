@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
@@ -18,7 +20,7 @@ class Account extends HiveObject {
   Account({
     required this.accountId,
     required this.name,
-    this.description,
+    required this.description,
   });
 
   @HiveField(0)
@@ -28,7 +30,7 @@ class Account extends HiveObject {
   final String name;
 
   @HiveField(2)
-  final String? description;
+  final String description;
 
   /// Creates an Account instance from a JSON map.
   ///
@@ -49,4 +51,32 @@ class Account extends HiveObject {
         'name': name,
         'description': description,
       };
+}
+
+class AccountAdapter extends TypeAdapter<Account> {
+  @override
+  final int typeId = 200;
+
+  @override
+  Account read(BinaryReader reader) {
+    final accountIdJson = jsonDecode(reader.readString());
+    final accountId = AccountId.fromJson(accountIdJson);
+
+    final name = reader.readString();
+
+    final description = reader.readString();
+
+    return Account(
+      accountId: accountId,
+      name: name,
+      description: description,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Account obj) {
+    writer.writeString(jsonEncode(obj.accountId.toJson()));
+    writer.writeString(obj.name);
+    writer.writeString(obj.description);
+  }
 }
