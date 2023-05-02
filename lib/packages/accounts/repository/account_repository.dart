@@ -4,6 +4,10 @@ import 'package:komodo_dex/packages/accounts/models/account.dart';
 import 'dart:async';
 
 class AccountRepository {
+  AccountRepository() {
+    // Register Hive adapters.
+    Hive.registerAdapter(AccountAdapter());
+  }
   static const String _accountBoxName = 'accounts';
 
   Box<Account>? _accountBox;
