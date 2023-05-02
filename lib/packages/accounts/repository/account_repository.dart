@@ -17,6 +17,23 @@ class AccountRepository {
     }
   }
 
+  Stream<BoxEvent> _accountUpdatesStream() async* {
+    final accountBox = await _openAccountBox();
+    yield* accountBox.watch();
+  }
+
+  Stream<BoxEvent> accountUpdatesStreamByWalletId(String walletId) {
+    return _accountUpdatesStream().transform(
+      StreamTransformer.fromHandlers(
+        handleData: (BoxEvent event, EventSink<BoxEvent> sink) {
+          if (event.key.startsWith(walletId)) {
+            sink.add(event);
+          }
+        },
+      ),
+    );
+  }
+
   Future<void> storeAccount({
     required String walletId,
     required Account account,
