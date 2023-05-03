@@ -11,9 +11,9 @@ abstract class AccountId {
   factory AccountId.fromJson(Map<String, dynamic> json) {
     switch (json['type']) {
       case 'iguana':
-        return IguanaAccountID();
+        return IguanaAccountId();
       case 'hd':
-        return HDAccountID(accountIdx: json['account_idx']);
+        return HDAccountID(hdId: json['account_id']);
       case 'hw':
         return HWAccountID(devicePubkey: json['device_pubkey']);
       default:
@@ -31,8 +31,8 @@ abstract class AccountId {
   int get hashCode;
 }
 
-class IguanaAccountID extends AccountId {
-  IguanaAccountID() : super(type: 'iguana');
+class IguanaAccountId extends AccountId {
+  IguanaAccountId() : super(type: 'iguana');
 
   @override
   Map<String, dynamic> toJson() {
@@ -53,7 +53,7 @@ class IguanaAccountID extends AccountId {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other is IguanaAccountID && runtimeType == other.runtimeType);
+        (other is IguanaAccountId && runtimeType == other.runtimeType);
   }
 
   @override
@@ -61,15 +61,15 @@ class IguanaAccountID extends AccountId {
 }
 
 class HDAccountID extends AccountId {
-  final int accountIdx;
+  final int hdId;
 
-  HDAccountID({required this.accountIdx}) : super(type: 'hd');
+  HDAccountID({required this.hdId}) : super(type: 'hd');
 
   @override
   Map<String, dynamic> toJson() {
     return {
       'type': type,
-      'account_idx': accountIdx,
+      'account_id': hdId,
     };
   }
 
@@ -78,11 +78,11 @@ class HDAccountID extends AccountId {
     return identical(this, other) ||
         (other is HDAccountID &&
             runtimeType == other.runtimeType &&
-            accountIdx == other.accountIdx);
+            hdId == other.hdId);
   }
 
   @override
-  int get hashCode => type.hashCode ^ accountIdx.hashCode;
+  int get hashCode => type.hashCode ^ hdId.hashCode;
 }
 
 class HWAccountID extends AccountId {

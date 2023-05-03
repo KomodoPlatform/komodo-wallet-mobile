@@ -1,14 +1,14 @@
 import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
 
 abstract class Account {
-  final AccountID accountId;
+  final AccountId accountId;
 
   Account({required this.accountId});
 
   // Factory constructor to create an Account from JSON
   factory Account.fromJson(Map<String, dynamic> json) {
     final accountIdJson = json['account_id'] as Map<String, dynamic>;
-    final accountId = AccountID.fromJson(accountIdJson);
+    final accountId = AccountId.fromJson(accountIdJson);
 
     switch (accountId.type) {
       case 'iguana':
@@ -24,12 +24,12 @@ abstract class Account {
 }
 
 class IguanaAccount extends Account {
-  IguanaAccount({required IguanaAccountID accountId})
+  IguanaAccount({required IguanaAccountId accountId})
       : super(accountId: accountId);
 
   factory IguanaAccount.fromJson(Map<String, dynamic> json) {
-    final accountId = AccountID.fromJson(json['account_id']);
-    return IguanaAccount(accountId: accountId as IguanaAccountID);
+    final accountId = AccountId.fromJson(json['account_id']);
+    return IguanaAccount(accountId: accountId as IguanaAccountId);
   }
 }
 
@@ -40,7 +40,7 @@ class HDAccount extends Account {
   HDAccount({required HDAccountID accountId}) : super(accountId: accountId);
 
   factory HDAccount.fromJson(Map<String, dynamic> json) {
-    final accountId = AccountID.fromJson(json['account_id']);
+    final accountId = AccountId.fromJson(json['account_id']);
     return HDAccount(accountId: accountId as HDAccountID);
   }
 }
@@ -50,7 +50,7 @@ class HardwareAccount extends Account {
       : super(accountId: accountId);
 
   factory HardwareAccount.fromJson(Map<String, dynamic> json) {
-    final accountId = AccountID.fromJson(json['account_id']);
+    final accountId = AccountId.fromJson(json['account_id']);
     return HardwareAccount(accountId: accountId as HWAccountID);
   }
 }
