@@ -3,28 +3,29 @@
 
 import 'dart:async';
 
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:user_repository/user_repository.dart';
+// import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
+import 'package:komodo_dex/packages/authentication/bloc/authentication_state.dart';
+import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:komodo_dex/packages/wallets/models/wallet.dart';
+import 'package:komodo_dex/packages/wallets/repository/wallets_repository.dart';
 
 part 'authentication_event.dart';
-part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends HydratedBloc<AuthenticationEvent, AuthenticationState> {
   final AuthenticationRepository _authenticationRepository;
-  final UserRepository _userRepository;
+  final WalletsRepository _walletRepository;
 
-  late StreamSubscription<AuthenticationStatus>
-      _authenticationStatusSubscription;
+  StreamSubscription<AuthenticationStatus>? _authenticationStatusSubscription;
 
   AuthenticationBloc({
-    required authenticationRepository,
-    required userRepository,
-  })  : assert(authenticationRepository != null),
-        _authenticationRepository = authenticationRepository,
-        _userRepository = userRepository,
+    required AuthenticationRepository authenticationRepository,
+    required WalletsRepository walletRepository,
+  })  : _authenticationRepository = authenticationRepository,
+        _walletRepository = walletRepository,
         super(
           const AuthenticationState.unknown(),
         ) {
@@ -39,17 +40,45 @@ class AuthenticationBloc
         (event, emit) => emit(_mapAuthenticationUserChangedToState(event)));
     on<AuthenticationLogoutRequested>(
         (event, emit) => _authenticationRepository.logOut());
+    on<AuthenticationBiometricLoginRequested>(
+        _handleAuthenticationBiometricLoginRequested);
   }
-
-  bool isAuthenticated() => state.status == AuthenticationStatus.authenticated;
 
   void logout() => add(AuthenticationLogoutRequested());
 
   @override
   Future<void> close() {
-    _authenticationStatusSubscription.cancel();
+    _authenticationStatusSubscription?.cancel();
     _authenticationRepository.dispose();
     return super.close();
+  }
+
+  void _handleAuthenticationBiometricLoginRequested(
+      AuthenticationBiometricLoginRequested event,
+      Emitter<AuthenticationState> state) async {
+    Wallet? wallet;
+    try {
+      final biometricsAvailable =
+          await _authenticationRepository.canBiometricsAuthenticate();
+      debugPrint('BIOMETRICS AVAILABLE: $biometricsAvailable');
+
+      // TODO: Consider if/how it should be handled where we have the wallet
+      // passphrase stored in biometric storage but the profile is not found.
+      wallet = await _walletRepository.getWallet(event.walletId);
+
+      //TODO: Remove after dev debugging
+      final passphrase =
+          await _authenticationRepository.getWalletPassphrase(event.walletId);
+
+      debugPrint('GOT STORED PASSPHRASE: $passphrase');
+
+      await _authenticationRepository.logInWithBiometrics(
+        walletId: event.walletId,
+      );
+    } catch (e) {
+      debugPrint('Exception type = ${e.runtimeType}');
+      debugPrint('ERROR: $e');
+    }
   }
 
   Future<AuthenticationState> _mapAuthenticationStatusChangedtoState(
@@ -59,9 +88,9 @@ class AuthenticationBloc
       case AuthenticationStatus.unauthenticated:
         return const AuthenticationState.unauthenticated();
       case AuthenticationStatus.authenticated:
-        final user = await _tryGetUser();
-        return user != null
-            ? AuthenticationState.authenticated(user)
+        final wallet = await _authenticationRepository.tryGetWallet();
+        return wallet != null
+            ? AuthenticationState.authenticated(wallet)
             : const AuthenticationState.unauthenticated();
       default:
         return const AuthenticationState.unknown();
@@ -70,17 +99,9 @@ class AuthenticationBloc
 
   AuthenticationState _mapAuthenticationUserChangedToState(
           AuthenticationUserChanged event) =>
-      event.user != User.empty
-          ? AuthenticationState.authenticated(event.user)
+      event.wallet != null
+          ? AuthenticationState.authenticated(event.wallet)
           : const AuthenticationState.unauthenticated();
-
-  Future<User?> _tryGetUser() async {
-    try {
-      return await _userRepository.getUser();
-    } on Exception {
-      return null;
-    }
-  }
 
   @override
   AuthenticationState fromJson(Map<String, dynamic> json) =>

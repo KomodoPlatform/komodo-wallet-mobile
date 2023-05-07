@@ -20,12 +20,31 @@ class AuthenticationStatusChanged extends AuthenticationEvent {
 }
 
 class AuthenticationUserChanged extends AuthenticationEvent {
-  final User user;
+  final Wallet wallet;
 
-  const AuthenticationUserChanged(this.user);
+  const AuthenticationUserChanged(this.wallet);
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [wallet];
 }
 
 class AuthenticationLogoutRequested extends AuthenticationEvent {}
+
+/// This event is used to request a login for a saved wallet profile.
+///
+/// This event will attempt to authenticate with the user's biometrics.
+///
+/// Will throw an exception if the user's biometrics are not available or
+/// if the specified wallet profile does not exist. In that case, the user
+/// will need to restore a wallet from the seed phrase.
+class AuthenticationBiometricLoginRequested extends AuthenticationEvent {
+  final String walletId;
+
+  const AuthenticationBiometricLoginRequested(this.walletId);
+
+  @override
+  List<Object> get props => [walletId];
+}
+
+//TODO!.C: Wallet profile creation event? Should be in wallet profiles bloc?
+//! Add wallet profile repository to authentication bloc? 

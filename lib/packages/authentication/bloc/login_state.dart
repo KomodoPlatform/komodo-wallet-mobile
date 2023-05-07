@@ -1,8 +1,10 @@
-part of 'authentication_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
+import 'package:komodo_dex/packages/authentication/login/models.dart';
 
 class LoginState extends Equatable {
   const LoginState({
-    this.status = FormzSubmissionStatus.pure,
+    this.status = FormzSubmissionStatus.initial,
     this.username = const Username.pure(),
     this.password = const Password.pure(),
   });

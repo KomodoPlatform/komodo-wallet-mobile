@@ -28,7 +28,9 @@ class BlocManager {
 
   late final AuthenticationRepository? _authenticationRepository;
 
-  late final WalletRepository _walletRepository;
+  late final WalletsRepository _walletRepository;
+
+  late final AccountRepository _accountRepository;
 
   //=====================================================================
 
@@ -62,6 +64,15 @@ class BlocManager {
 
       // Initialize async repositories which cannot be initialized in parallel
       _prefs = await SharedPreferences.getInstance();
+
+      final walletStorageApi = await WalletStorageApi.create();
+
+      _authenticationRepository = await AuthenticationRepository.instantiate(
+        sqlDB: sqlDB,
+        marketMakerService: MarketMakerService.instance,
+        walletStorageApi: walletStorageApi,
+        atomicDexApi: _atomicDexApi,
+      );
 
       // Initialize async repositories which can be initialized in parallel
       final futures = <Future<void>>[

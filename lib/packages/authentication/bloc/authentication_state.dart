@@ -1,22 +1,25 @@
 import 'package:equatable/equatable.dart';
 import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
-import 'package:komodo_dex/packages/wallet_profiles/models/wallet_profile.dart';
+import 'package:komodo_dex/packages/accounts/models/account.dart';
+import 'package:komodo_dex/packages/wallets/models/wallet.dart';
 
 class AuthenticationState extends Equatable {
   final AuthenticationStatus status;
-  final WalletProfile? walletProfile;
+  final Wallet? wallet;
+
+  bool get isAuthenticated => status == AuthenticationStatus.authenticated;
 
   const AuthenticationState._({
     this.status = AuthenticationStatus.unknown,
-    this.walletProfile,
+    this.wallet,
   });
 
   const AuthenticationState.unknown() : this._();
 
-  const AuthenticationState.authenticated(WalletProfile walletProfile)
+  const AuthenticationState.authenticated(Wallet wallet)
       : this._(
           status: AuthenticationStatus.authenticated,
-          walletProfile: walletProfile,
+          wallet: wallet,
         );
 
   const AuthenticationState.unauthenticated()
@@ -24,21 +27,20 @@ class AuthenticationState extends Equatable {
 
   Map<String, dynamic> toJson() => {
         'status': status.toString(),
-        'walletProfile': walletProfile?.toJson(),
+        'wallet': wallet?.toJson(),
       };
 
   static AuthenticationState fromJson(Map<String, dynamic> json) {
     final status = json['status'] as String;
-    final walletProfile = json['walletProfile'] as Map<String, dynamic>?;
+    final wallet = json['wallet'] as Map<String, dynamic>?;
     return AuthenticationState._(
       status: AuthenticationStatus.values.firstWhere(
         (e) => e.toString() == status,
       ),
-      walletProfile:
-          walletProfile != null ? WalletProfile.fromJson(walletProfile) : null,
+      wallet: wallet != null ? Wallet.fromJson(wallet) : null,
     );
   }
 
   @override
-  List<Object?> get props => [status, walletProfile];
+  List<Object?> get props => [status, wallet];
 }

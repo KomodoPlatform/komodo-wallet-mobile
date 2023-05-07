@@ -1,17 +1,20 @@
 import 'package:beamer/beamer.dart';
 import 'package:komodo_dex/navigation/app_routes.dart';
+import 'package:komodo_dex/packages/authentication/bloc/authentication_bloc.dart';
+import 'package:provider/provider.dart';
 
-abstract class AuthenticationGuard {
+class AuthenticationGuard {
   static BeamGuard unauthenticated() {
     return BeamGuard(
       pathPatterns: ['*'],
       check: (context, location) {
-        // TODO! Implement authentication check after auth bloc
-        final isAuthenticated = true;
+        final isAuthenticated =
+            context.read<AuthenticationBloc>().state.isAuthenticated;
+        final canAccess = !isAuthenticated;
 
-        return !isAuthenticated;
+        return canAccess;
       },
-      beamToNamed: (origin, target) => AppRoutes.portfolio.home(),
+      beamToNamed: (origin, target) => AppRoutes.accounts.accounts(),
     );
   }
 
@@ -22,10 +25,11 @@ abstract class AuthenticationGuard {
     return BeamGuard(
       pathPatterns: ['*'],
       check: (context, location) {
-        // TODO! Implement authentication check after auth bloc
-        final isAuthenticated = false;
+        final isAuthenticated =
+            context.read<AuthenticationBloc>().state.isAuthenticated;
+        final canAccess = isAuthenticated;
 
-        return isAuthenticated;
+        return canAccess;
       },
       beamToNamed: (origin, target) => AppRoutes.wallet.login(),
       onCheckFailed: (context, location) {
