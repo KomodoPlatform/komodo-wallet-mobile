@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart'
     show EventChannel, MethodChannel, rootBundle, SystemChannels;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -36,7 +37,7 @@ MMService mmSe = MMService._internal();
 /// project (and crypto in general)
 typedef MarketMakerService = MMService;
 
-/// Interface to Market Maker, https://developers.atomicdex.io/
+/// Legacy Interface to Market Maker, https://developers.atomicdex.io/
 class MMService {
   factory MMService() => mmSe;
   MMService._internal();
@@ -151,9 +152,20 @@ class MMService {
     });
   }
 
-  Future<void> init(String? passphrase) async {
-    final String rpcPass = _createRpcPass();
-    await mmSe.runBin(rpcPass);
+  Future<void> init({
+    required String passphrase,
+    required String rpcPassword,
+    // Null for default (Iguana) account
+    required int? hdAccountId,
+  }) async {
+    await _cleanupLegacyData();
+
+    // final String rpcPass = _createRpcPass();
+    await mmSe._runBin(
+      rpcPassword: rpcPassword,
+      passphrase: passphrase,
+      hdAccountId: hdAccountId,
+    );
     metrics();
 
     jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
@@ -169,6 +181,54 @@ class MMService {
     });
   }
 
+  // Temporary solution to provide backwards compatibility with the old
+  // authentication method where these values were stored in storage.
+  Future<void> _initLegacyCredentialStorage({
+    required String rpcPassword,
+    required String passphrase,
+  }) {
+    final storage = FlutterSecureStorage();
+    return Future.wait([
+      storage.write(key: 'rpcPassword', value: rpcPassword),
+      storage.write(key: 'userpass', value: rpcPassword),
+      storage.write(key: 'passphrase', value: passphrase),
+
+      // TODO: Store current seed?
+      // EncryptionTool()
+      //     .writeData(KeyEncryption.SEED, currentW
+    ]);
+  }
+
+  Future<void> _cleanupLegacyData() {
+    // Used to clean up the old data that was stored in storage. Storing
+    // these values after app shutdown is no longer necessary because
+    // of the new persistent storage solution.
+    final storage = FlutterSecureStorage();
+    return Future.wait([
+      storage.delete(key: 'rpcPassword'),
+      storage.delete(key: 'userpass'),
+      storage.delete(key: 'passphrase'),
+
+      // TODO: Any other data no longer needed because of the new storage
+      // solution should be deleted here.
+    ]);
+  }
+
+  //TODO: Change to static and call in compute to avoid blocking the UI thread.
+  String generateRpcPassword() {
+    final timer = Stopwatch()..start();
+
+    final pass = _createRpcPass();
+
+    timer.stop();
+
+    Log('mm_service:178',
+        'generateRpcPassword took ${timer.elapsedMilliseconds} ms');
+
+    return pass;
+  }
+
+  //TODO: Change to static and call in compute to avoid blocking the UI thread.
   String _createRpcPass() {
     // MRC: Instead of the previous algortihm (uuid -> base64 -> substring, etc.)
     // It was decided to use just a password generator.
@@ -177,6 +237,9 @@ class MMService {
 
     String pass = '';
     for (var i = 0; i < numAttempts; i++) {
+      // This line of code makes me uncomfortable. Avoid unnamed boolean params.
+      // Use unnamed params only when they are obvious, like in the case of
+      // an ID.
       pass = generatePassword(true, true, true, true, 32);
 
       if (_validateRpcPassword(pass)) {
@@ -205,6 +268,7 @@ class MMService {
   // the old criteria.
   //
   // Current criteria explained in comments.
+  //TODO: Change to static and call in compute to avoid blocking the UI thread.
   bool _validateRpcPassword(String src) {
     if (src == null || src.isEmpty) return false;
 
@@ -339,8 +403,11 @@ class MMService {
     return totalSize / 1000000;
   }
 
-  Future<void> runBin(String rpcPass) async {
-    final String? passphrase = await EncryptionTool().read('passphrase');
+  Future<void> _runBin({
+    required String rpcPassword,
+    required String passphrase,
+    required int? hdAccountId,
+  }) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
     gui = 'atomicDEX ${packageInfo.version} $os';
@@ -360,11 +427,12 @@ class MMService {
       client: 1,
       userhome: filesPath,
       passphrase: passphrase,
-      rpcPassword: rpcPass,
-      coins: await readJsonCoinInit(),
+      rpcPassword: rpcPassword,
+      coins: readCoins,
       dbdir: filesPath,
       allowWeakPassword: false,
       rpcPort: appConfig.rpcPort,
+      hdAccountId: hdAccountId,
     ));
 
     logC
@@ -379,7 +447,11 @@ class MMService {
         if (error == Mm2Error.already_runs) {
           Log('mm_service', '$error, restarting mm2');
           await stopmm2();
-          await runBin(rpcPass);
+          await _runBin(
+            rpcPassword: rpcPassword,
+            passphrase: passphrase,
+            hdAccountId: hdAccountId,
+          );
         } else {
           throw Exception('Error on start mm2: $error');
         }
@@ -398,7 +470,7 @@ class MMService {
           final status = mm2StatusFrom(onValue);
           Log('mm_service:313', 'mm2_main_status: $status');
           if (status == Mm2Status.ready) {
-            userpass = rpcPass;
+            userpass = rpcPassword;
             _running = true;
             timer.cancel();
             initCoinsAndLoad();
@@ -527,6 +599,7 @@ class MMService {
   }
 
   Future<void> stopmm2() async {
+    await _cleanupLegacyData();
     if (await _mm2status() == Mm2Status.not_running) {
       _running = false;
       Log('mm_service', 'mm2 is not running, return');

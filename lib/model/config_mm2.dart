@@ -20,6 +20,7 @@ class ConfigMm2 {
     this.dbdir,
     this.allowWeakPassword = false,
     this.rpcPort,
+    this.hdAccountId,
   });
 
   factory ConfigMm2.fromJson(Map<String, dynamic> json) => ConfigMm2(
@@ -33,6 +34,7 @@ class ConfigMm2 {
         dbdir: json['dbdir'],
         allowWeakPassword: json['allow_weak_password'] ?? false,
         rpcPort: json['rpcport'],
+        hdAccountId: json['hd_account_id'],
       );
 
   String? gui;
@@ -45,6 +47,7 @@ class ConfigMm2 {
   String? dbdir;
   bool allowWeakPassword;
   int? rpcPort;
+  int? hdAccountId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'gui': gui,
@@ -57,5 +60,6 @@ class ConfigMm2 {
         'dbdir': dbdir,
         'allow_weak_password': allowWeakPassword,
         if (rpcPort != null) 'rpcport': rpcPort,
+        if (hdAccountId != null) 'hd_account_id': hdAccountId,
       };
 }

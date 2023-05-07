@@ -88,7 +88,11 @@ class AuthenticateBloc extends GenericBlocBase {
 
     if (loadSnapshot) await coinsBloc.loadWalletSnapshot();
 
-    await mmSe.init(passphrase);
+    await mmSe.init(
+      passphrase: passphrase!,
+      rpcPassword: password!,
+      hdAccountId: null,
+    );
 
     await notifService.init();
 
@@ -125,7 +129,8 @@ class AuthenticateBloc extends GenericBlocBase {
     }
   }
 
-  Future<void> loginUI(bool isLogin, String? passphrase, String? password) async {
+  Future<void> loginUI(
+      bool isLogin, String? passphrase, String? password) async {
     await _checkPINStatus(password);
     await EncryptionTool().write('passphrase', passphrase);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
