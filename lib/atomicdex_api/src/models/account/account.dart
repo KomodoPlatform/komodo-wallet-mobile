@@ -37,11 +37,11 @@ class IguanaAccount extends Account {
 ///
 /// See: https://gemini.com/cryptopedia/hd-crypto-wallets-hierachichal-deterministic
 class HDAccount extends Account {
-  HDAccount({required HDAccountID accountId}) : super(accountId: accountId);
+  HDAccount({required HDAccountId accountId}) : super(accountId: accountId);
 
   factory HDAccount.fromJson(Map<String, dynamic> json) {
     final accountId = AccountId.fromJson(json['account_id']);
-    return HDAccount(accountId: accountId as HDAccountID);
+    return HDAccount(accountId: accountId as HDAccountId);
   }
 }
 

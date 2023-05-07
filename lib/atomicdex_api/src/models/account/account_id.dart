@@ -13,7 +13,7 @@ abstract class AccountId {
       case 'iguana':
         return IguanaAccountId();
       case 'hd':
-        return HDAccountID(hdId: json['account_id']);
+        return HDAccountId(hdId: json['account_id']);
       case 'hw':
         return HWAccountID(devicePubkey: json['device_pubkey']);
       default:
@@ -60,10 +60,10 @@ class IguanaAccountId extends AccountId {
   int get hashCode => type.hashCode;
 }
 
-class HDAccountID extends AccountId {
+class HDAccountId extends AccountId {
   final int hdId;
 
-  HDAccountID({required this.hdId}) : super(type: 'hd');
+  HDAccountId({required this.hdId}) : super(type: 'hd');
 
   @override
   Map<String, dynamic> toJson() {
@@ -76,7 +76,7 @@ class HDAccountID extends AccountId {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other is HDAccountID &&
+        (other is HDAccountId &&
             runtimeType == other.runtimeType &&
             hdId == other.hdId);
   }
