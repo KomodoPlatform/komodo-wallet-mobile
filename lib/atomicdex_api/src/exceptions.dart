@@ -12,7 +12,8 @@ class NoSuchAccountException extends AtomicDexApiException {
 }
 
 class AccountExistsAlreadyException extends AtomicDexApiException {
-  AccountExistsAlreadyException(message) : super(message);
+  AccountExistsAlreadyException([String? message])
+      : super(message ?? 'Account exists already.');
 }
 
 class NameTooLongException extends AtomicDexApiException {

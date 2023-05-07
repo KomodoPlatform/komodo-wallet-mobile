@@ -11,6 +11,7 @@ abstract class IValue {
   });
 
   final double amount;
+
   final Symbol symbol;
 
   String format();
@@ -68,7 +69,6 @@ class CryptoAsset extends IValue {
 
 class NFT extends IValue {
   const NFT({
-    // required int amount,
     required NFTSymbol symbol,
     required this.tokenId,
     required this.metadata,
