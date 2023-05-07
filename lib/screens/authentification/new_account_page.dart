@@ -13,7 +13,7 @@ class NewAccountPage extends StatefulWidget {
 }
 
 String getSeed() {
-  return bip39.generateMnemonic();
+  return bip39.generateMnemonic(strength: 256);
 }
 
 class _NewAccountPageState extends State<NewAccountPage> {
