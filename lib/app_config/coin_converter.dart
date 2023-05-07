@@ -1,13 +1,27 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/utils/log.dart';
 
 import '../model/coin_type.dart';
 import '../utils/utils.dart';
 
-Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
-  final String coins =
+// In the main isolate
+Future<List<dynamic>> runAppConfigConversion() async {
+  final String coinsConfigData =
       await rootBundle.loadString('assets/coins_config.json', cache: false);
+  final List<dynamic> appConfigCoins = await compute<String, List<dynamic>>(
+      convertCoinsConfigToAppConfig, coinsConfigData);
+
+  return appConfigCoins;
+}
+
+// Refactored function to accept JSON data as a parameter
+Future<List<dynamic>> convertCoinsConfigToAppConfig(String coins) async {
+  // Start a timer to log parse time
+  final timer = Stopwatch()..start();
+
   // 561 coins
   Map coinsResponse = jsonDecode(coins);
   List allCoinsList = [];
@@ -43,6 +57,13 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       if (coinData['bchd_urls'] != null) 'bchd_urls': coinData['bchd_urls'],
     });
   });
+
+  // Log parse time
+  timer.stop();
+  debugPrint(
+      'mm_service: convertCoinsConfigToAppConfig took ${timer.elapsedMilliseconds} ms');
+  Log('mm_service',
+      'convertCoinsConfigToAppConfig] ${timer.elapsedMilliseconds} ms');
 
   return allCoinsList;
 }

@@ -346,8 +346,13 @@ class MMService {
     gui = 'atomicDEX ${packageInfo.version} $os';
     if (Platform.isAndroid) {
       final buildTime = await (nativeC.invokeMethod<int>('BUILD_TIME'));
-      gui = (gui ?? '') + '; BT=${buildTime! ~/ 1000}';
+      gui = '${gui ?? ''}; BT=${buildTime! ~/ 1000}';
     }
+
+    // Load data from assets and call compute() with the parseJsonCoins function
+    final assetData = await rootBundle.loadString('assets/coins.json');
+    final readCoins =
+        await compute<String, List<dynamic>>(parseJsonCoins, assetData);
 
     final String startParam = configMm2ToJson(ConfigMm2(
       gui: gui,
@@ -457,18 +462,25 @@ class MMService {
     Log('mm_service:415', error);
   }
 
-  Future<List<dynamic>?> readJsonCoinInit() async {
+// New function to parse JSON data received from the main isolate
+  static List<dynamic> parseJsonCoins(String data) {
+    final timer = Stopwatch()..start();
     try {
-      return jsonDecode(await rootBundle.loadString('assets/coins.json'));
+      return jsonDecode(data);
     } catch (e) {
       if (kDebugMode) {
-        Log('mm_service', 'readJsonCoinInit] $e');
+        Log('mm_service', 'parseJsonCoins] $e');
         printError('$e');
         printError('Try to run `\$sh fetch_coins.sh`.'
             ' See README.md for details.');
         SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
       }
       return [];
+    } finally {
+      timer.stop();
+      debugPrint(
+          'mm_service: parseJsonCoins took ${timer.elapsedMilliseconds} ms');
+      Log('mm_service', 'parseJsonCoins] ${timer.elapsedMilliseconds} ms');
     }
   }
 
