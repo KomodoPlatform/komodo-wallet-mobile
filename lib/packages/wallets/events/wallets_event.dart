@@ -1,8 +1,8 @@
 // Follows naming conventions as described here:
 // https://bloclibrary.dev/#/blocnamingconventions
 
-abstract class WalletProfilesEvent {
-  const WalletProfilesEvent();
+abstract class WalletsEvent {
+  const WalletsEvent();
 
   List<Object?> get props;
 }

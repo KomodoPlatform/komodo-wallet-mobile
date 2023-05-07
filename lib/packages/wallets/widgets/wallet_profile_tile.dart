@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:komodo_dex/packages/authentication/bloc/authentication_bloc.dart';
-import 'package:komodo_dex/packages/wallet_profiles/bloc/wallet_profiles_bloc.dart';
-import 'package:komodo_dex/packages/wallet_profiles/state/wallet_profiles_state.dart';
+import 'package:komodo_dex/packages/wallets/bloc/wallets_bloc.dart';
+import 'package:komodo_dex/packages/wallets/models/wallet.dart';
+import 'package:komodo_dex/packages/wallets/state/wallets_state.dart';
 
 class WalletProfileTile extends StatelessWidget {
-  final WalletProfile walletProfile;
+  final Wallet walletProfile;
 
   const WalletProfileTile({
     Key? key,
@@ -30,7 +31,7 @@ class WalletProfileTile extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         onTap: () {
           context.read<AuthenticationBloc>().add(
-                AuthenticationBiometricLoginRequested(walletProfile.id),
+                AuthenticationBiometricLoginRequested(walletProfile.walletId),
               );
         },
         leading: CircleAvatar(

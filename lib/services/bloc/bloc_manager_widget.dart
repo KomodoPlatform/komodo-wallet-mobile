@@ -51,8 +51,9 @@ class BlocManagerWidget extends StatelessWidget {
                 BlocManager.instance._authenticationRepository!,
           ),
         ),
-        BlocProvider<WalletProfilesBloc>(
-          create: (BuildContext context) => WalletProfilesBloc(
+
+        BlocProvider<WalletsBloc>(
+          create: (BuildContext context) => WalletsBloc(
             walletRepository: BlocManager.instance._walletRepository,
           ),
         ),

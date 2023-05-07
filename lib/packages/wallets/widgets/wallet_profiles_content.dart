@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:komodo_dex/common_widgets/app_logo.dart';
-import 'package:komodo_dex/packages/wallet_profiles/bloc/wallet_profiles_bloc.dart';
-import 'package:komodo_dex/packages/wallet_profiles/state/wallet_profiles_state.dart';
-import 'package:komodo_dex/packages/wallet_profiles/widgets/wallet_profile_tile.dart';
+import 'package:komodo_dex/packages/wallets/bloc/wallets_bloc.dart';
+import 'package:komodo_dex/packages/wallets/state/wallets_state.dart';
+import 'package:komodo_dex/packages/wallets/widgets/wallet_profile_tile.dart';
 import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
 import 'package:komodo_dex/widgets/select_language_button.dart';
 
@@ -13,12 +13,12 @@ class WalletProfilesContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<WalletProfilesBloc>(
+    final bloc = BlocProvider.of<WalletsBloc>(
       context,
       listen: true,
     );
 
-    final state = bloc.state as WalletProfilesLoadSuccess;
+    final state = bloc.state as WalletsLoadSuccess;
     return Column(
       // padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
       children: [
@@ -44,12 +44,13 @@ class WalletProfilesContent extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 16),
               addRepaintBoundaries: false,
               itemCount: state.wallets.length,
               itemBuilder: (context, index) {
                 final walletProfile = state.wallets[index];
                 return WalletProfileTile(
-                  key: Key('wallet-profile-tile-${walletProfile.id}'),
+                  key: Key('wallet-profile-tile-${walletProfile.walletId}'),
                   walletProfile: walletProfile,
                 );
               },
