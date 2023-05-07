@@ -58,7 +58,7 @@ class PinAlreadySetForAnotherTypeException extends AuthenticationException {
 /// Used for exceptions when the trying to perform an action that requires
 /// authentication, but the user is not authenticated.
 class NotAuthenticatedException extends AuthenticationException {
-  NotAuthenticatedException(String? message)
+  NotAuthenticatedException([String? message])
       : super(message ?? 'Not authenticated.');
 }
 
