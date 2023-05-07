@@ -1,81 +1,102 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart' hide Account;
+import 'package:komodo_dex/atomicdex_api/src/exceptions.dart';
+import 'package:komodo_dex/login/exceptions/auth_exceptions.dart';
+import 'package:komodo_dex/packages/accounts/api/account_api.dart';
 import 'package:komodo_dex/packages/accounts/models/account.dart';
 import 'dart:async';
 
+import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
+
 class AccountRepository {
-  AccountRepository() {
-    // Register Hive adapters.
-    Hive.registerAdapter(AccountAdapter());
-  }
-  static const String _accountBoxName = 'accounts';
+  final AccountApi _accountApi;
+  final AuthenticationRepository _authenticationRepository;
 
-  Box<Account>? _accountBox;
+  AccountRepository({
+    // required AccountApi accountApi,
+    required AuthenticationRepository authenticationRepository,
+  })  : _accountApi = AccountApi(),
+        _authenticationRepository = authenticationRepository;
 
-  FutureOr<Box<Account>> _openAccountBox() async {
-    if (_accountBox != null && _accountBox!.isOpen) {
-      return _accountBox!;
-    } else {
-      _accountBox = await Hive.openBox<Account>(_accountBoxName);
-      return _accountBox!;
+  /// Returns a stream of accounts for the currently authenticated user.
+  Stream<List<Account>> accountsStream() async* {
+    final wallet = await _authenticationRepository.tryGetWallet();
+
+    if (wallet != null) {
+      final walletId = wallet.walletId;
+      yield await _accountApi.getAccountsByWalletId(walletId);
+    }
+
+    // Listen to changes in auth user to either close the stream or
+    // update the walletId.
+    await for (AuthenticationStatus status
+        in _authenticationRepository.status) {
+      if (status == AuthenticationStatus.authenticated) {
+        final walletId = await _getAuthenticatedWalletId();
+        yield* _accountApi.accountsStream(walletId);
+      } else {
+        // // Close the stream when unauthenticated or status is unknown.
+        // // You can modify this behavior as needed.
+        // break;
+        yield [];
+        break;
+      }
     }
   }
 
-  Stream<BoxEvent> _accountUpdatesStream() async* {
-    final accountBox = await _openAccountBox();
-    yield* accountBox.watch();
-  }
+  Future<Account> createAccount<T extends AccountId>({
+    required String name,
+    String? description,
+    Color? themeColor,
+    Uint8List? avatar,
+  }) async {
+    final walletId = await _getAuthenticatedWalletId();
 
-  Stream<BoxEvent> accountUpdatesStreamByWalletId(String walletId) {
-    return _accountUpdatesStream().transform(
-      StreamTransformer.fromHandlers(
-        handleData: (BoxEvent event, EventSink<BoxEvent> sink) {
-          if (event.key.startsWith(walletId)) {
-            sink.add(event);
-          }
-        },
-      ),
+    return _accountApi.createAccount<HDAccountId>(
+      walletId: walletId,
+      name: name,
+      description: description,
+      themeColor: themeColor,
+      avatar: avatar,
     );
   }
 
-  Future<void> storeAccount({
-    required String walletId,
-    required Account account,
-  }) async {
-    final accountBox = await _openAccountBox();
-    await accountBox.put('${walletId}_${account.accountId}', account);
+  Future<void> _storeAccount({required Account account}) async {
+    final walletId = await _getAuthenticatedWalletId();
+
+    await _accountApi.storeAccount(walletId: walletId, account: account);
   }
 
-  Future<Account?> getAccount({
-    required String walletId,
-    required AccountId accountId,
-  }) async {
-    final accountBox = await _openAccountBox();
-    final account = accountBox.get('${walletId}_$accountId');
-    return account;
+  Future<Account?> getAccount({required AccountId accountId}) async {
+    final walletId = await _getAuthenticatedWalletId();
+
+    return await _accountApi.getAccount(
+        walletId: walletId, accountId: accountId);
   }
 
-  // TODO: Look into using Hive's relations functionality to handle the
-  // relationship between accounts and wallets instead of searching through
-  // all accounts.
-  Future<List<Account>> getAccountsByWalletId(String walletId) async {
-    final accountBox = await _openAccountBox();
-    final accounts = accountBox.values
-        .where((account) => accountBox
-            .keyAt(accountBox.values.toList().indexOf(account))
-            .startsWith(walletId))
-        .toList();
-    return accounts;
+  Future<List<Account>> getAuthUserAccounts() async {
+    final walletId = await _getAuthenticatedWalletId();
+
+    return await _accountApi.getAccountsByWalletId(walletId);
   }
 
-  Future<void> deleteAccount(String walletId, AccountId accountId) async {
-    final accountBox = await _openAccountBox();
-    await accountBox.delete('${walletId}_$accountId');
+  Future<void> deleteAccount(AccountId accountId) async {
+    final walletId = await _getAuthenticatedWalletId();
+
+    await _accountApi.deleteAccount(walletId, accountId);
   }
 
   Future<void> dispose() async {
-    if (_accountBox != null && _accountBox!.isOpen) {
-      await _accountBox!.close();
+    await _accountApi.dispose();
+  }
+
+  Future<String> _getAuthenticatedWalletId() async {
+    final wallet = await _authenticationRepository.tryGetWallet();
+    if (wallet == null) {
+      throw Exception('Failed to get authenticated wallet.');
     }
+    return wallet.walletId;
   }
 }

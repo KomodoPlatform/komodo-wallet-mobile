@@ -32,6 +32,12 @@ class BlocManager {
 
   late final AccountRepository _accountRepository;
 
+  late final ActiveAccountRepository _activeAccountRepository;
+
+  final AtomicDexApi _atomicDexApi = AtomicDexApi(
+    config: AtomicDexApiConfig(port: appConfig.rpcPort),
+  );
+
   //=====================================================================
 
   // Is initialized
@@ -82,9 +88,20 @@ class BlocManager {
           );
         }),
         CexPrices.init(),
+        Future(
+          () async => _walletRepository = await WalletsRepository.create(
+            walletStorageApi: walletStorageApi,
+          ),
+        ),
       ];
 
       await Future.wait(futures);
+
+      _activeAccountRepository = ActiveAccountRepository(
+        accountRepository: _accountRepository,
+        authenticationRepository: _authenticationRepository!,
+        atomicDexApi: _atomicDexApi,
+      );
 
       // Initialize repositories which depend on other repositories
     } catch (e) {
@@ -92,28 +109,5 @@ class BlocManager {
       print(e);
       rethrow;
     }
-  }
-
-  final _blocMap = <String, Bloc>{};
-
-  void registerBloc(String key, Bloc bloc) {
-    _blocMap[key] = bloc;
-  }
-
-  void disposeBloc(String key) {
-    _blocMap[key]?.close();
-    _blocMap.remove(key);
-  }
-
-  void disposeAll() {
-    _blocMap.forEach((key, bloc) {
-      // Dispose bloc
-      bloc.close();
-
-      // Remove bloc from map
-      _blocMap.remove(key);
-    });
-
-    _blocMap.clear();
   }
 }

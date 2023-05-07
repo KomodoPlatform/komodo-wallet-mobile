@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
+import 'package:komodo_dex/atomicdex_api/src/models/value/asset.dart';
 
 /// A class representing an account in a wallet.
 ///
@@ -20,8 +22,12 @@ class Account extends HiveObject {
   Account({
     required this.accountId,
     required this.name,
-    required this.description,
-  });
+    this.description,
+    this.avatar,
+    Color? themeColor,
+  }) : _themeColor = _serializeColor(themeColor) {
+    _checkImageSize(avatar, 300);
+  }
 
   @HiveField(0)
   final AccountId accountId;
@@ -30,7 +36,19 @@ class Account extends HiveObject {
   final String name;
 
   @HiveField(2)
-  final String description;
+  final String? description;
+
+  @HiveField(3)
+  final String? _themeColor;
+
+  @HiveField(4)
+  final List<int>? avatar;
+
+  // TODO: Replace with actual serializable balance.
+  FiatAsset get balance => FiatAsset.currency(FiatCurrency.USD, 69.42);
+
+  Color? get themeColor =>
+      _themeColor != null ? Color(int.parse(_themeColor!, radix: 16)) : null;
 
   /// Creates an Account instance from a JSON map.
   ///
@@ -39,18 +57,32 @@ class Account extends HiveObject {
     return Account(
       accountId: AccountId.fromJson(json['accountId']),
       name: json['name'],
-      description: json['description'],
+      description: json['description'] as String?,
+      themeColor: _parseColor(json['themeColor'] as String?),
+      avatar: json['avatar'] == null
+          ? null
+          : (json['avatar'] as List<dynamic>).map((e) => e as int).toList(),
     );
   }
 
   /// Creates a JSON map from an Account instance.
   ///
   /// Returns a map containing the account data.
+
   Map<String, dynamic> toJson() => {
         'accountId': accountId.toJson(),
         'name': name,
         'description': description,
+        'themeColor': themeColor,
+        'avatar': avatar,
       };
+
+  static void _checkImageSize(List<int>? imageBytes, int maxSizeInKB) {
+    if (imageBytes != null && imageBytes.length > maxSizeInKB * 1024) {
+      throw Exception(
+          'Image size exceeds the maximum limit of $maxSizeInKB KB.');
+    }
+  }
 }
 
 class AccountAdapter extends TypeAdapter<Account> {
@@ -64,19 +96,77 @@ class AccountAdapter extends TypeAdapter<Account> {
 
     final name = reader.readString();
 
-    final description = reader.readString();
+    final description = _readNullable<String>(reader.read());
+
+    final colorString = _readNullable<String>(reader.read());
+    final themeColor = _parseColor(colorString);
+
+    final avatar = _readNullable<List<int>>(reader.read());
 
     return Account(
       accountId: accountId,
       name: name,
       description: description,
+      themeColor: themeColor,
+      avatar: avatar,
     );
   }
 
   @override
   void write(BinaryWriter writer, Account obj) {
     writer.writeString(jsonEncode(obj.accountId.toJson()));
+
     writer.writeString(obj.name);
-    writer.writeString(obj.description);
+
+    // writer.write(_serializeNullable<String>(obj.description));
+    writer.write(null);
+
+    // writer.write(_serializeNullable<String>(_serializeColor(obj.themeColor)));
+    writer.write(null);
+
+    // writer.write(_serializeNullable<List<int>>(obj.avatar));
+    writer.write(null);
   }
+
+  /// Reads a nullable value from the reader. We can't directly store null
+  /// values in Hive, so we use a special value to represent null. If the value
+  /// is the special value, we return null. Otherwise, we return the value.
+  T? _readNullable<T>(dynamic readValue) {
+    if (T is bool) {
+      return readValue == -1 ? null : readValue as T;
+    } else {
+      return (readValue == false) ? null : readValue as T?;
+    }
+  }
+
+  /// Serializes a nullable value. We can't directly store null values in Hive,
+  /// so we use a special value to represent null. If the value is null, we
+  /// return the special value. Otherwise, we return the value. If the value is
+  /// the special value, we store it as the second special value.
+  dynamic _serializeNullable<T>(T? value) {
+    if (T is bool) {
+      return (value == null) ? -1 : value;
+    } else {
+      return value ?? false;
+    }
+  }
+
+// static const _nullValuePrimary = -1;
+// static const _nullValueSecondary = -2;
+}
+
+Color? _parseColor(String? colorString) {
+  if (colorString == null) {
+    return null;
+  }
+
+  return Color(int.parse(colorString, radix: 16));
+}
+
+String? _serializeColor(Color? color) {
+  if (color == null) {
+    return null;
+  }
+
+  return color.value.toRadixString(16);
 }
