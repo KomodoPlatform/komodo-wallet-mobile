@@ -66,15 +66,11 @@ class BlocManager {
       // Initialize async repositories which can be initialized in parallel
       final futures = <Future<void>>[
         Future(() async {
-          _authenticationRepository =
-              await AuthenticationRepository.instantiate(
-            sqlDB: sqlDB,
-            marketMakerService: MarketMakerService.instance,
+          _accountRepository = AccountRepository(
+            authenticationRepository: _authenticationRepository!,
           );
-
-          CexPrices();
         }),
-        Future(() async => _walletRepository = await WalletRepository.create()),
+        CexPrices.init(),
       ];
 
       await Future.wait(futures);

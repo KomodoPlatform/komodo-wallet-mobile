@@ -18,8 +18,12 @@ import '../utils/utils.dart';
 
 class CexProvider extends ChangeNotifier {
   CexProvider() {
-    _updateTickersList();
-    _updateRates();
+    initLegacyCex().ignore();
+  }
+
+  Future<void> initLegacyCex() async {
+    await _updateTickersList();
+    await _updateRates();
 
     cexPrices.linkProvider(this);
   }
@@ -94,7 +98,7 @@ class CexProvider extends ChangeNotifier {
   bool _updatingChart = false;
   List<String>? _tickers;
 
-  void _updateRates() => cexPrices.updateRates();
+  FutureOr<void> _updateRates() => cexPrices.updateRates();
 
   List<String>? _getTickers() {
     if (_tickers != null) return _tickers;
@@ -373,6 +377,8 @@ class CexPrices {
   CexPrices() {
     _init();
   }
+
+  static Future<void> init() => cexPrices._init();
 
   Future<void> _init() async {
     prefs = await SharedPreferences.getInstance();
