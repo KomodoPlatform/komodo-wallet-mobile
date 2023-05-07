@@ -13,13 +13,10 @@ import 'package:komodo_dex/packages/pin_reset/events/index.dart';
 class PinSetupStarted extends PinResetEvent {
   const PinSetupStarted({
     required this.pinType,
-    required this.password,
   });
 
   final PinTypeName pinType;
 
-  final String password;
-
   @override
-  List<Object?> get props => [pinType, password];
+  List<Object?> get props => [pinType];
 }

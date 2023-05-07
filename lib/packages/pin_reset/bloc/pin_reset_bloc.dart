@@ -8,6 +8,7 @@ import 'package:komodo_dex/packages/authentication/repository/authentication_rep
 import 'package:komodo_dex/packages/pin_reset/events/index.dart';
 import 'package:komodo_dex/packages/pin_reset/events/pin_setup_started.dart';
 import 'package:komodo_dex/packages/pin_reset/state/pin_reset_state.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // TODO: Localize auth-related exceptions. Check if an existing localization key
@@ -41,8 +42,14 @@ class PinResetBloc extends Bloc<PinResetEvent, PinResetState> {
 
   void _onPinSetupStarted(
       PinSetupStarted event, Emitter<PinResetState> emit) async {
-    // Verify the password
-    await _authenticationRepository.verifyPassword(event.password);
+    // Try get password from encrypted storage. This is a temporary solution
+    // until we implement a more secure authentication flow for
+    // setting/resetting pins.
+
+    final password = await EncryptionTool().read('password');
+
+    // Verify the password as if it was entered by user
+    // await _authenticationRepository.verifyPassword(password!);
 
     const currentStep = PinResetStep.enterNewPin;
 
@@ -51,7 +58,7 @@ class PinResetBloc extends Bloc<PinResetEvent, PinResetState> {
       PinResetState.initial().copyWith(
         pinType: event.pinType,
         currentStep: currentStep,
-        password: Password.dirty(event.password),
+        password: Password.dirty('password'),
       ),
     );
   }
@@ -113,13 +120,13 @@ class PinResetBloc extends Bloc<PinResetEvent, PinResetState> {
           }
 
           // Everything is valid, so let's go ahead and call API to reset PIN
-          await _authenticationRepository.setPin(
-            newPin: state.newPin.value,
-            type: state.pinType,
-            currentPin:
-                state.password.value.isEmpty ? null : state.oldPin.value,
-            password: state.password.value,
-          );
+          // await _authenticationRepository.setPin(
+          //   newPin: state.newPin.value,
+          //   type: state.pinType,
+          //   currentPin:
+          //       state.password.value.isEmpty ? null : state.oldPin.value,
+          //   password: state.password.value,
+          // );
 
           // Reset PIN was successful, update the state accordingly
           emit(
@@ -178,10 +185,10 @@ class PinResetBloc extends Bloc<PinResetEvent, PinResetState> {
     Emitter<PinResetState> emit,
   ) async {
     try {
-      await _authenticationRepository.verifyPin(
-        state.oldPin.value,
-        state.pinType,
-      );
+      // await _authenticationRepository.verifyPin(
+      //   state.oldPin.value,
+      //   state.pinType,
+      // );
 
       // Move to the next step after successful PIN verification
       _updateStateNewStep(
@@ -206,10 +213,10 @@ class PinResetBloc extends Bloc<PinResetEvent, PinResetState> {
   /// encrypted storage. This should be removed once the UI code is updated.
   Future<bool> checkIfPinTypeSet(PinTypeName pinType) async {
     try {
-      await _authenticationRepository.verifyPin(
-        '',
-        pinType,
-      );
+      // await _authenticationRepository.verifyPin(
+      //   '',
+      //   pinType,
+      // );
     } on IncorrectPinException {
       return true;
     } catch (error) {

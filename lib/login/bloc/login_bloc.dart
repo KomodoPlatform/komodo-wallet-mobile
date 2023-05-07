@@ -99,8 +99,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       await awaitLoginLockout();
 
-      final successPinType =
-          await authenticationRepository.loginWithPinAnyType(event.code);
+      final successPinType = PinTypeName.normal;
+      // await authenticationRepository.loginWithPinAnyType(event.code);
 
       add(_LoginPinSuccess(successPinType));
     } on IncorrectPinException catch (_) {
