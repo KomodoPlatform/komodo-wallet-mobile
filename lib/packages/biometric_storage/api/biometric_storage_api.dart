@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:biometric_storage/biometric_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 /// A class responsible for handling biometric storage operations.
 ///
@@ -50,53 +51,70 @@ class BiometricStorageApi {
   }
 
   Future<String?> read(String id) async {
-    final storageFile = await _getStorageFile(id);
-    return await storageFile.read();
+    try {
+      final storageFile = await _getStorageFile(id);
+      return await storageFile.read();
+    } on PlatformException catch (e) {
+      _rethrowKnownPlatformException(e);
+    }
+    return null;
   }
 
   Future<void> create({
     required String id,
     required String data,
   }) async {
-    _validateData(data);
+    try {
+      _validateData(data);
 
-    final storageFile = await _getStorageFile(id);
+      final storageFile = await _getStorageFile(id);
 
-    final maybeContent = await storageFile.read();
+      final maybeContent = await storageFile.read();
 
-    if (maybeContent != null) {
-      throw FileAlreadyExistsException(
-        'Biometric file already exists for id: $id'
-        ' of key: ${_storageKeyPattern(id)}',
-      );
+      if (maybeContent != null) {
+        throw FileAlreadyExistsException(
+          'Biometric file already exists for id: $id'
+          ' of key: ${_storageKeyPattern(id)}',
+        );
+      }
+
+      await storageFile.write(data);
+    } on PlatformException catch (e) {
+      _rethrowKnownPlatformException(e);
     }
-
-    await storageFile.write(data);
   }
 
   Future<void> update({
     required String id,
     required String data,
   }) async {
-    _validateData(data);
+    try {
+      _validateData(data);
 
-    final storageFile = await _getStorageFile(id);
+      final storageFile = await _getStorageFile(id);
 
-    final maybeContent = await storageFile.read();
+      final maybeContent = await storageFile.read();
 
-    if (maybeContent == null) {
-      throw FileAlreadyExistsException(
-        'Biometric file does not exist for id: $id'
-        ' of key: ${_storageKeyPattern(id)}',
-      );
+      if (maybeContent == null) {
+        throw FileAlreadyExistsException(
+          'Biometric file does not exist for id: $id'
+          ' of key: ${_storageKeyPattern(id)}',
+        );
+      }
+
+      await storageFile.write(data);
+    } on PlatformException catch (e) {
+      _rethrowKnownPlatformException(e);
     }
-
-    await storageFile.write(data);
   }
 
   Future<void> delete(String id) async {
-    final storageFile = await _getStorageFile(id);
-    await storageFile.delete();
+    try {
+      final storageFile = await _getStorageFile(id);
+      await storageFile.delete();
+    } on PlatformException catch (e) {
+      _rethrowKnownPlatformException(e);
+    }
   }
 
   void _validateData(String data) {
@@ -127,6 +145,14 @@ class BiometricStorageApi {
 
     return response == CanAuthenticateResponse.success;
   }
+
+  static void _rethrowKnownPlatformException(PlatformException e) {
+    if (e.message?.contains('Secure lock screen must be enabled') ?? false) {
+      throw NoSecureAuthenticationException();
+    } else {
+      throw e; // Re-throw the exception if it's not the one we're handling
+    }
+  }
 }
 
 class FileAlreadyExistsException implements IOException {
@@ -137,4 +163,17 @@ class FileAlreadyExistsException implements IOException {
 
   @override
   String toString() => "FileAlreadyExistsException: $message";
+}
+
+class NoSecureAuthenticationException implements Exception {
+  final String message;
+
+  NoSecureAuthenticationException(
+      [this.message =
+          'No secure method of authentication found. Please enroll in biometrics or set a screen lock PIN/password.']);
+
+  @override
+  String toString() {
+    return "NoSecureAuthenticationException: $message";
+  }
 }
