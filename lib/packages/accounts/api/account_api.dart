@@ -25,6 +25,10 @@ class AccountApi {
     }
   }
 
+  static String _generateBoxKey(String walletId, AccountId accountId) {
+    return '${walletId}_${accountId.toJson().toString()}';
+  }
+
   Stream<List<Account>> accountsStream(String walletId) async* {
     final accountBox = await _openAccountBox();
 
@@ -66,7 +70,7 @@ class AccountApi {
     required Account account,
   }) async {
     final accountBox = await _openAccountBox();
-    await accountBox.put('${walletId}_${account.accountId}', account);
+    await accountBox.put(_generateBoxKey(walletId, account.accountId), account);
   }
 
   // TODO: Move to A-Dex API pakcage
@@ -107,7 +111,7 @@ class AccountApi {
     required AccountId accountId,
   }) async {
     final accountBox = await _openAccountBox();
-    final account = accountBox.get('${walletId}_$accountId');
+    final account = accountBox.get(_generateBoxKey(walletId, accountId));
     return account;
   }
 
@@ -123,7 +127,7 @@ class AccountApi {
 
   Future<void> deleteAccount(String walletId, AccountId accountId) async {
     final accountBox = await _openAccountBox();
-    await accountBox.delete('${walletId}_$accountId');
+    await accountBox.delete(_generateBoxKey(walletId, accountId));
   }
 
   Future<void> dispose() async {
