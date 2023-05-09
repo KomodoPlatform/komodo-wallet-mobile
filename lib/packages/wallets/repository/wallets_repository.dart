@@ -64,16 +64,18 @@ class WalletsRepository {
     required String passphrase,
   }) async {
     try {
+      // Store the passphrase in biometric storage
+      await _biometricStorageApi.create(id: wallet.walletId, data: passphrase);
+
       await _walletStorageApi.createWallet(
         wallet: wallet,
         passphrase: passphrase,
       );
-
-      // Store the passphrase in biometric storage
-      await _biometricStorageApi.create(id: wallet.walletId, data: passphrase);
     } catch (e) {
       //Delete the profile if creation fails. Await future but ignore result
       _walletStorageApi.removeWallet(wallet.walletId).ignore();
+
+      _biometricStorageApi.delete(wallet.walletId).ignore();
 
       return Future.error(e);
     }
