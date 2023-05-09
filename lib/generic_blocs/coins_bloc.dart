@@ -670,29 +670,29 @@ class CoinsBloc implements GenericBlocBase {
   }
 
   Future<CoinBalance> _getBalanceForCoin(Coin coin) async {
-    Balance? balance;
+    late Balance balance;
     try {
       balance = await MM
           .getBalance(GetBalance(coin: coin.abbr))
           .timeout(const Duration(seconds: 15));
     } catch (e) {
       Log('coins_bloc:458', e);
-      balance = null;
+      balance = Balance(address: '', balance: deci('0'), coin: coin.abbr);
     }
 
     final double? price = cexPrices.getUsdPrice(coin.abbr);
 
-    dynamic coinBalance;
+    CoinBalance coinBalance;
     if (balance != null && coin.abbr == balance.coin) {
       coinBalance = CoinBalance(coin, balance);
-      coinBalance.priceForOne = price.toString();
-      coinBalance.balanceUSD = (Decimal.parse(coinBalance.priceForOne) *
-              Decimal.parse(coinBalance.balance.getBalance()))
+      coinBalance.priceForOne = price?.toString() ?? '0.0';
+      coinBalance.balanceUSD = (Decimal.parse(coinBalance.priceForOne ?? '0') *
+              Decimal.parse(coinBalance.balance?.getBalance() ?? '0'))
           .toDouble();
     } else {
       coinBalance = CoinBalance(
           coin, Balance(address: '', balance: deci('0'), coin: coin.abbr));
-      coinBalance.priceForOne = price.toString();
+      coinBalance.priceForOne = price?.toString() ?? '0.0';
       coinBalance.balanceUSD = 0.0;
     }
 
