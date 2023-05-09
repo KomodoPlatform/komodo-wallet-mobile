@@ -1,12 +1,13 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
+
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
 import 'package:komodo_dex/packages/accounts/events/active_account_event.dart';
-import 'package:komodo_dex/packages/accounts/models/account.dart';
 import 'package:komodo_dex/packages/accounts/repository/account_repository.dart';
 import 'package:komodo_dex/packages/accounts/repository/active_account_repository.dart';
 import 'package:komodo_dex/packages/accounts/state/active_account_state.dart';
+
+export 'package:komodo_dex/packages/accounts/events/active_account_event.dart';
+export 'package:komodo_dex/packages/accounts/state/active_account_state.dart';
 
 /// [ActiveAccountBloc] is responsible for managing the active account state in the application.
 ///
@@ -54,8 +55,9 @@ class ActiveAccountBloc
       if (newAccount != null) {
         emit(ActiveAccountSuccess(account: newAccount));
       } else {
-        emit(ActiveAccountFailure(
-            error: 'Failed to switch the active account.'));
+        emit(
+          ActiveAccountFailure(error: 'Failed to switch the active account.'),
+        );
       }
     } catch (e) {
       emit(ActiveAccountFailure(error: e.toString()));

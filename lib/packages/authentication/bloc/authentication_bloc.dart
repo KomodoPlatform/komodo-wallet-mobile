@@ -3,14 +3,18 @@
 
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 // import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
 import 'package:komodo_dex/packages/authentication/bloc/authentication_state.dart';
 import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
-import 'package:equatable/equatable.dart';
 import 'package:komodo_dex/packages/wallets/models/wallet.dart';
 import 'package:komodo_dex/packages/wallets/repository/wallets_repository.dart';
+
+export 'package:komodo_dex/packages/authentication/bloc/authentication_state.dart';
+
+// export 'package:komodo_dex/packages/authentication/bloc/authentication_event.dart';
 
 part 'authentication_event.dart';
 

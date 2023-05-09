@@ -1,13 +1,10 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart' hide Account;
-import 'package:komodo_dex/atomicdex_api/src/exceptions.dart';
-import 'package:komodo_dex/login/exceptions/auth_exceptions.dart';
-import 'package:komodo_dex/packages/accounts/api/account_api.dart';
-import 'package:komodo_dex/packages/accounts/models/account.dart';
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart' hide Account;
+import 'package:komodo_dex/packages/accounts/api/account_api.dart';
+import 'package:komodo_dex/packages/accounts/models/account.dart';
 import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
 
 class AccountRepository {

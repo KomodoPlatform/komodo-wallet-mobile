@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:komodo_dex/atomicdex_api/src/models/value/asset.dart';
-import 'package:komodo_dex/packages/accounts/models/account.dart';
 import 'package:komodo_dex/model/wallet.dart' as legacy;
 
 /// A class representing a wallet containing accounts.

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:komodo_dex/common_widgets/app_logo.dart';
 import 'package:komodo_dex/packages/wallets/bloc/wallets_bloc.dart';
 import 'package:komodo_dex/packages/wallets/state/wallets_state.dart';
 import 'package:komodo_dex/packages/wallets/widgets/wallet_profile_tile.dart';
 import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
-import 'package:komodo_dex/widgets/select_language_button.dart';
 
 class WalletProfilesContent extends StatelessWidget {
   const WalletProfilesContent({Key? key}) : super(key: key);

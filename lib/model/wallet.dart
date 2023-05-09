@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 List<Wallet> walletFromJson(String str) =>
     List<Wallet>.from(json.decode(str).map((dynamic x) => Wallet.fromJson(x)));
 

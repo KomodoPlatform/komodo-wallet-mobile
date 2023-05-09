@@ -1,16 +1,16 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/app_config/theme_data.dart';
 import 'package:komodo_dex/generic_blocs/main_bloc.dart';
-import 'package:komodo_dex/generic_blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/navigation/app_locations.dart';
 import 'package:komodo_dex/navigation/app_routes.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:beamer/beamer.dart';
+import 'package:komodo_dex/widgets/auth_active_account_listener.dart';
 
 class MainApp extends StatefulWidget {
   const MainApp({Key? key}) : super(key: key);

@@ -9,7 +9,6 @@ import 'package:komodo_dex/packages/authentication/repository/exceptions.dart';
 import 'package:komodo_dex/packages/biometric_storage/api/biometric_storage_api.dart';
 import 'package:komodo_dex/packages/wallets/api/wallet_storage_api.dart';
 import 'package:komodo_dex/packages/wallets/models/wallet.dart';
-import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';

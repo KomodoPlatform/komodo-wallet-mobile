@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:komodo_dex/common_widgets/app_logo.dart';
 import 'package:komodo_dex/login/bloc/login_bloc.dart';
 import 'package:komodo_dex/login/models/pin_type.dart';
 import 'package:komodo_dex/login/screens/login_page.dart';
 import 'package:komodo_dex/main.dart';
+import 'package:komodo_dex/packages/authentication/bloc/authentication_bloc.dart';
 import 'package:komodo_dex/packages/pin_reset/bloc/pin_reset_bloc.dart';
 import 'package:komodo_dex/packages/pin_reset/events/index.dart';
 import 'package:komodo_dex/packages/pin_reset/events/pin_setup_started.dart';

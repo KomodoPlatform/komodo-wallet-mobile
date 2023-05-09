@@ -2,15 +2,14 @@ import 'package:komodo_dex/atomicdex_api/src/config/atomicdex_api_config.dart';
 import 'package:komodo_dex/atomicdex_api/src/exceptions.dart';
 import 'package:komodo_dex/atomicdex_api/src/requests/gui_storage/gui_storage.dart';
 import 'package:komodo_dex/atomicdex_api/src/requests/node.dart';
-
-import 'src/models/account/account.dart';
-import 'src/models/account/account_id.dart';
-import 'src/client.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 
+import 'src/client.dart';
+import 'src/models/account/account_id.dart';
+
+export 'src/client.dart';
 export 'src/models/account/account.dart';
 export 'src/models/account/account_id.dart';
-export 'src/client.dart';
 
 /// The AtomicDex API
 ///

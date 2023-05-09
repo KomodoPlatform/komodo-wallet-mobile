@@ -1,5 +1,4 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/packages/accounts/events/accounts_list_event.dart';
 import 'package:komodo_dex/packages/accounts/models/account.dart';

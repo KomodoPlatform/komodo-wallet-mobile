@@ -1,6 +1,3 @@
-// TODO: Refactor into smaller classes following this project's architecture.
-// This code is originally from a different project.
-
 part of 'authentication_bloc.dart';
 
 abstract class AuthenticationEvent extends Equatable {

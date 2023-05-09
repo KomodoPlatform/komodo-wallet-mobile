@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:komodo_dex/packages/authentication/bloc/authentication_bloc.dart';
-import 'package:komodo_dex/packages/wallets/bloc/wallets_bloc.dart';
 import 'package:komodo_dex/packages/wallets/models/wallet.dart';
-import 'package:komodo_dex/packages/wallets/state/wallets_state.dart';
 
 class WalletProfileTile extends StatelessWidget {
   final Wallet walletProfile;

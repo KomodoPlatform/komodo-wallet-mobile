@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import 'package:flutter/foundation.dart';
-import 'package:komodo_dex/atomicdex_api/src/config/atomicdex_api_config.dart';
-import 'package:komodo_dex/atomicdex_api/src/requests/node.dart';
+import 'package:http/http.dart' as http;
 
 @immutable
 class AtomicDexApiClient {

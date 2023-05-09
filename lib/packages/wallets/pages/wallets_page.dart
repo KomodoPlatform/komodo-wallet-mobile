@@ -1,27 +1,16 @@
-import 'dart:math';
-
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:komodo_dex/atomicdex_api/src/models/value/asset.dart';
-import 'package:komodo_dex/atomicdex_api/src/models/value/symbol.dart';
 import 'package:komodo_dex/common_widgets/app_logo.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/navigation/app_routes.dart';
-import 'package:komodo_dex/packages/accounts/navigation/account_routes.dart';
 import 'package:komodo_dex/packages/authentication/bloc/authentication_bloc.dart';
-import 'package:komodo_dex/packages/authentication/bloc/authentication_state.dart';
-import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
 import 'package:komodo_dex/packages/wallets/bloc/wallets_bloc.dart';
 import 'package:komodo_dex/packages/wallets/events/wallets_load_requested.dart';
 import 'package:komodo_dex/packages/wallets/models/wallet.dart';
 import 'package:komodo_dex/packages/wallets/state/wallets_state.dart';
-import 'package:komodo_dex/packages/wallets/widgets/wallet_profile_tile.dart';
 import 'package:komodo_dex/packages/wallets/widgets/wallet_profiles_content.dart';
 import 'package:uuid/uuid.dart';
-// import '../authentification/new_account_page.dart';
-// import '../settings/restore_seed_page.dart';
 
 class WalletsPage extends StatefulWidget {
   const WalletsPage();
@@ -122,7 +111,7 @@ class _WalletsPageState extends State<WalletsPage> {
     debugPrint('WalletsPage._onAuthenticationStateChanged');
     if (state.isAuthenticated) {
       Beamer.of(context).beamToNamed(
-        AppRoutes.accounts.accounts(),
+        AppRoutes.accounts.list(),
         replaceRouteInformation: true,
       );
     }

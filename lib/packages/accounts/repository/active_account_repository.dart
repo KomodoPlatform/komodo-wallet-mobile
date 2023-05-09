@@ -1,12 +1,10 @@
 import 'dart:async';
+
 import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart'
     hide Account; // TODO: Figure out how to structure so not needed
-import 'package:komodo_dex/atomicdex_api/src/models/account/account_id.dart';
 import 'package:komodo_dex/packages/accounts/models/account.dart';
 import 'package:komodo_dex/packages/accounts/repository/account_repository.dart';
 import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
-import 'package:komodo_dex/packages/wallets/api/wallet_storage_api.dart';
-import 'package:komodo_dex/services/mm_service.dart';
 
 class ActiveAccountRepository {
   ActiveAccountRepository({

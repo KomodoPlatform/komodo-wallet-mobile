@@ -1,12 +1,10 @@
-import 'package:beamer/beamer.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:formz/formz.dart';
-import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/packages/accounts/bloc/account_form_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
+import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/packages/accounts/bloc/account_form_bloc.dart';
 import 'package:komodo_dex/packages/accounts/events/account_form_event.dart';
 import 'package:komodo_dex/packages/accounts/state/account_form_state.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';

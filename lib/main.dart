@@ -31,7 +31,6 @@ import '../screens/portfolio/coins_page.dart';
 import '../services/lock_service.dart';
 import '../services/mm_service.dart';
 import '../utils/log.dart';
-import '../widgets/build_red_dot.dart';
 import 'app_config/theme_data.dart';
 import 'generic_blocs/coins_bloc.dart';
 import 'generic_blocs/main_bloc.dart';
@@ -45,7 +44,11 @@ Future<void> main() async {
     // await startup.start();
     await BlocManager.init();
     return runApp(
-      BlocManagerWidget(child: const MainApp()),
+      BlocManagerWidget(
+        child: AppProviderManager(
+          child: MainApp(),
+        ),
+      ),
     );
   } catch (e) {
     Log('main:46', 'startApp] $e');
