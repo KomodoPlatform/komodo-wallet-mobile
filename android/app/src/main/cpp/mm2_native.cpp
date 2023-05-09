@@ -74,6 +74,42 @@ public:
     // Do not release m_jvm and m_log_callback.
   }
 
+  // Credit to @MateusRodCosta for the following code from the atomicdex-web repo.
+  void replaceInvalidUtf8Bytes(const char *src, char *dst) {
+    unsigned int len = strlen(src);
+    unsigned int j = 0;
+
+    for (unsigned int i = 0; i < len;) {
+      unsigned char byte = static_cast<unsigned char>(src[i]);
+
+      if (byte <= 0x7F) {
+        dst[j++] = byte;
+        i += 1;
+      } else if ((byte & 0xE0) == 0xC0 && i + 1 < len && (src[i + 1] & 0xC0) == 0x80) {
+        dst[j++] = byte;
+        dst[j++] = src[i + 1];
+        i += 2;
+      } else if ((byte & 0xF0) == 0xE0 && i + 2 < len && (src[i + 1] & 0xC0) == 0x80 && (src[i + 2] & 0xC0) == 0x80) {
+        dst[j++] = byte;
+        dst[j++] = src[i + 1];
+        dst[j++] = src[i + 2];
+        i += 3;
+      } else if ((byte & 0xF8) == 0xF0 && i + 3 < len && (src[i + 1] & 0xC0) == 0x80 && (src[i + 2] & 0xC0) == 0x80 && (src[i + 3] & 0xC0) == 0x80) {
+        dst[j++] = byte;
+        dst[j++] = src[i + 1];
+        dst[j++] = src[i + 2];
+        dst[j++] = src[i + 3];
+        i += 4;
+      } else {
+        // Replace invalid byte sequence with '?' (0x3F)
+        dst[j++] = '?';
+        i += 1;
+      }
+    }
+
+    dst[j] = '\0';
+  }
+
   void process_log_line(const char *line) {
     JNIEnv *env = nullptr;
     int env_stat = m_jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
@@ -94,7 +130,11 @@ public:
       return;
     }
 
-    jstring jline = env->NewStringUTF(line);
+    char rplc_line[strlen(line) * 3 + 1]; // Space for the worst case scenario (all bytes replaced by the 3-byte replacement character sequence)
+    // Credit to @MateusRodCosta for the following line from the atomicdex-web repo.
+    replaceInvalidUtf8Bytes(line, rplc_line);
+
+    jstring jline = env->NewStringUTF(rplc_line);
     // Call a Java callback.
     env->CallVoidMethod(m_listener, m_log_callback, jline);
     // CallVoidMethod could threw an exception.
