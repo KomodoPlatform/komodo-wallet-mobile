@@ -30,17 +30,25 @@ class AtomicDexApi {
   : _client = AtomicDexApiClient(baseUrl: config.baseUrl),
         _rpcPassword = MarketMakerService.instance.generateRpcPassword();
 
+  String _rpcPassword;
+
+  final AtomicDexApiClient _client;
+
   /// Start up and log in to the AtomicDex API.
   ///
   /// Must be called before using the API.
-  Future<void> login({
+  Future<void> startSession({
     required String passphrase,
     required AccountId accountId,
   }) async {
     // TODO: Replace marketmaker service with atomicdex api methods to handle
     // initialising and managing the marketmaker (Atomicdex API) process.
-    final apiInstance = MarketMakerService.instance;
-    _rpcPassword = apiInstance.generateRpcPassword();
+    final serverInstance = MarketMakerService.instance;
+    _rpcPassword = serverInstance.generateRpcPassword();
+
+    if (serverInstance.running) {
+      await serverInstance.stopmm2();
+    }
 
     await MarketMakerService.instance.init(
       passphrase: passphrase,
@@ -49,9 +57,15 @@ class AtomicDexApi {
     );
   }
 
-  String _rpcPassword;
+  Future<void> endSession() async {
+    // TODO: Protection against logging out while sensitive operations are
+    // running.
+    final serverInstance = MarketMakerService.instance;
 
-  final AtomicDexApiClient _client;
+    if (serverInstance.running) {
+      await serverInstance.stopmm2();
+    }
+  }
 
   // TODO: Check that user has been initialised before calling API
   AtomicDexApiClient get client => _client;

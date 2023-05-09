@@ -53,7 +53,8 @@ class ActiveAccountRepository {
         throw Exception('Failed to get wallet passphrase.');
       }
 
-      await _atomicDexApi.login(passphrase: passphrase, accountId: accountId);
+      await _atomicDexApi.startSession(
+          passphrase: passphrase, accountId: accountId);
 
       // TODO! Figure out which part of the pre-refactored code need to be
       // called to initialise them.
@@ -77,6 +78,10 @@ class ActiveAccountRepository {
 
   Future<void> clearActiveAccount() async {
     _activeAccountId = null;
+
+    await _atomicDexApi.endSession();
+
+    // TODO: Handle any other cleanup that needs to happen for legacy code.
   }
 
   Future<bool> canChangeActiveAccount() async {
