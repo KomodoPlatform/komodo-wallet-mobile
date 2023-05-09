@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
 import 'package:komodo_dex/atomicdex_api/src/models/value/asset.dart';
@@ -43,6 +44,9 @@ class Account extends HiveObject {
 
   @HiveField(4)
   final List<int>? avatar;
+
+  ImageProvider? get avatarImageProvider =>
+      avatar != null ? MemoryImage(Uint8List.fromList(avatar!)) : null;
 
   // TODO: Replace with actual serializable balance.
   FiatAsset get balance => FiatAsset.currency(FiatCurrency.USD, 69.42);
