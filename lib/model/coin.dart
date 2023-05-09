@@ -113,7 +113,7 @@ class Coin {
     }
     explorerTxUrl = config['explorer_tx_url'] ?? '';
     explorerAddressUrl = config['explorer_address_url'] ?? '';
-    decimals = init['decimals'];
+    decimals = init['decimals'] ?? appConfig.toDecimalStringPrecision;
   }
 
   // Coin suspended if was activated by user earlier,

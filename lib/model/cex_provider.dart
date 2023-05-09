@@ -580,6 +580,12 @@ class CexPrices {
   }
 
   Future<void> updatePrices([List<Coin?>? coinsList]) async {
+    final fetchedCoins = await coins;
+    if (fetchedCoins == null) {
+      Log('cex_provider', 'Failed to fetch coins');
+      return;
+    }
+
     // All available coins, inculding not active.
     final List<Coin> allCoins = (await coins)!.values.toList();
     final List<String?> ids =

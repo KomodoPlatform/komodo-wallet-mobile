@@ -109,7 +109,7 @@ String? getCoinTicker(String? abbr) {
 
 Rational? deci2rat(Decimal? decimal) {
   try {
-    return Rational.parse(decimal.toString());
+    return Rational.tryParse(decimal.toString());
   } catch (_) {
     return null;
   }
