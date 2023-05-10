@@ -69,7 +69,8 @@ class _LockScreenState extends State<LockScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool isPinCreationInProgress =
         prefs.containsKey('is_pin_creation_in_progress');
-    final Wallet? currentWallet = await Db.getCurrentWallet();
+    final Wallet? currentWallet =
+        context.read<AuthenticationBloc>().state.wallet?.toLegacy();
 
     if (password == null && isPinCreationInProgress && currentWallet != null) {
       Navigator.push<dynamic>(
@@ -91,7 +92,7 @@ class _LockScreenState extends State<LockScreen> {
   }
 
   final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     Log('lock_screen connectivity: ]', result.toString());
@@ -111,6 +112,7 @@ class _LockScreenState extends State<LockScreen> {
 
   Future<void> initConnectivity() async {
     try {
+      await _connectivitySubscription?.cancel();
       _connectivitySubscription =
           _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     } on PlatformException catch (e) {
@@ -146,7 +148,7 @@ class _LockScreenState extends State<LockScreen> {
 
   @override
   void dispose() {
-    _connectivitySubscription.cancel();
+    _connectivitySubscription?.cancel();
     super.dispose();
   }
 
