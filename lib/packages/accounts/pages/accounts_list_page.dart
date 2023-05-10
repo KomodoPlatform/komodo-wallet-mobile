@@ -13,6 +13,7 @@ import 'package:komodo_dex/packages/accounts/models/account.dart';
 import 'package:komodo_dex/packages/accounts/state/accounts_list_state.dart';
 import 'package:komodo_dex/packages/accounts/state/active_account_state.dart';
 import 'package:komodo_dex/packages/app/widgets/main_app.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class AccountsListPage extends StatefulWidget {
   @override
@@ -136,7 +137,5 @@ class _AccountsListPageState extends State<AccountsListPage> {
     );
   }
 
-  String _accountNameAbbreviation(String name) {
-    return name.substring(0, min(2, name.length)).toUpperCase();
-  }
+  String _accountNameAbbreviation(String name) => name.initials(2);
 }

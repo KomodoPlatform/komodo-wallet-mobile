@@ -1,5 +1,6 @@
 export 'num_utils.dart';
 import 'num_utils.dart';
+export 'string_utils.dart';
 
 import 'dart:async';
 import 'dart:io';
