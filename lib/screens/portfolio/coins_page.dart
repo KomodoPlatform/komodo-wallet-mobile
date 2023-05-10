@@ -4,8 +4,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/common_widgets/bottom_navigation_bar.dart';
 import 'package:komodo_dex/common_widgets/circular_avatar_button.dart';
 import 'package:komodo_dex/packages/accounts/bloc/active_account_bloc.dart';
+import 'package:komodo_dex/packages/accounts/models/account.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../localizations.dart';
@@ -33,6 +36,8 @@ class _CoinsPageState extends State<CoinsPage> {
   late double _heightSliver;
   late double _widthScreen;
 
+  Account? _lastActiveAccount;
+
   void _scrollListener() {
     setState(() {
       _heightFactor = (exp(-_scrollController!.offset / 60) * 1.3) + 1;
@@ -58,7 +63,13 @@ class _CoinsPageState extends State<CoinsPage> {
     final bool isCollapsed = _scrollController!.hasClients &&
         _scrollController!.offset > _heightSliver;
 
+    final activeAccount =
+        context.watch<ActiveAccountBloc>().state.maybeCurrentAccount;
+
+    _lastActiveAccount = activeAccount ?? _lastActiveAccount;
+
     return Scaffold(
+        bottomNavigationBar: AppBottomNavigationBar(),
         body: NestedScrollView(
             controller: _scrollController,
             headerSliverBuilder:
@@ -68,6 +79,24 @@ class _CoinsPageState extends State<CoinsPage> {
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   expandedHeight: 130,
                   pinned: true,
+                  // Switch accounts button
+                  leading: SizedBox.square(
+                    child: Hero(
+                      tag: _lastActiveAccount?.accountId ??
+                          'switch-accounts-button',
+                      child: CircularAvatarButton(
+                        key: Key('switch-accounts-button'),
+                        child: Text(
+                          _lastActiveAccount?.name.initials(2) ?? '',
+                        ),
+                        onPressed: () {
+                          context.read<ActiveAccountBloc>().add(
+                                ActiveAccountClearRequested(),
+                              );
+                        },
+                      ),
+                    ),
+                  ),
                   actions: [
                     AnimatedOpacity(
                       opacity: isCollapsed ? 1 : 0,
