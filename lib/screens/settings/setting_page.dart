@@ -6,7 +6,7 @@ import 'package:archive/archive.dart' as arch;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/login/models/pin_type.dart';
-import 'package:komodo_dex/main.dart';
+import 'package:komodo_dex/packages/app/widgets/main_app.dart';
 import 'package:komodo_dex/packages/pin_reset/bloc/pin_reset_bloc.dart';
 import 'package:komodo_dex/packages/pin_reset/events/index.dart';
 import 'package:komodo_dex/packages/pin_reset/pages/pin_reset_page.dart';
@@ -37,7 +37,6 @@ import '../../widgets/primary_button.dart';
 import '../../widgets/scrollable_dialog.dart';
 import '../../widgets/tac_contents.dart';
 import '../authentification/lock_screen.dart';
-import '../authentification/pin_page.dart';
 import '../authentification/show_delete_wallet_confirmation.dart';
 import '../authentification/unlock_wallet_page.dart';
 import '../import-export/export_page.dart';
@@ -360,7 +359,7 @@ class _SettingPageState extends State<SettingPage> {
     );
 
     if (successMessage != null) {
-      MyApp.rootScaffoldMessengerKey.currentState!.showSnackBar(
+      MainApp.rootScaffoldMessengerKey.currentState!.showSnackBar(
         SnackBar(
           content: Text(successMessage),
         ),
