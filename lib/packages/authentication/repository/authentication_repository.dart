@@ -34,13 +34,13 @@ class AuthenticationRepository {
   })  : _sqlDB = sqlDB,
         // _biometricStorageApi = biometricStorageApi,
         _atomicDexApi = atomicDexApi,
-        _marketMakerService = marketMakerService,
+        _apiService = marketMakerService,
         _walletStorageApi = walletStorageApi;
 
   // final BiometricStorageApi _biometricStorageApi;
   final SharedPreferences prefs;
   final Database _sqlDB;
-  final MMService _marketMakerService;
+  final MMService _apiService;
 
   final WalletStorageApi _walletStorageApi;
   final AtomicDexApi _atomicDexApi;
@@ -149,15 +149,14 @@ class AuthenticationRepository {
       throw WalletNotFoundException('Passphrase not found for wallet.');
     }
 
-    // // 3. Start the API service
-    // await _atomicDexApi.login(
-    //   passphrase: passphrase,
-    //   accountId: accountId,
-    // );
-
-    // 3. If so, set the wallet as the active wallet
-    // 4. Start the market maker service
-    // 5. Set the authentication status to authenticated
+    // Start the API service with the default account.
+    // TODO: Implement in ActiveAccount Bloc/Repository the functionality to
+    // resume the session with the last used account. After that is implemented,
+    // the code below should be removed.
+    await _atomicDexApi.startSession(
+      passphrase: storedPassphrase,
+      accountId: IguanaAccountId(),
+    );
 
     await _setInternalState(
       status: AuthenticationStatus.authenticated,
@@ -220,10 +219,10 @@ class AuthenticationRepository {
 
   //TODO.C: Auth bloc->repo try restore auth state on startup
 
-  void logOut() {
+  Future<void> logOut() async {
+    await _atomicDexApi.endSession();
     _controller.add(AuthenticationStatus.unauthenticated);
     _setInternalState(status: AuthenticationStatus.unauthenticated);
-// TODO: Call API to log out and do any other necessary cleanup.
   }
 
   void dispose() {
