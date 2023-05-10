@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
+import 'package:komodo_dex/packages/wallets/repository/wallets_repository.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -13,6 +16,43 @@ import '../../model/wallet_security_settings.dart';
 import '../../utils/iterable_utils.dart';
 import '../../utils/log.dart';
 import '../../utils/utils.dart';
+
+class LegacyDatabaseAdapter {
+  LegacyDatabaseAdapter._({
+    required WalletsRepository walletsRepository,
+    required AuthenticationRepository authenticationRepository,
+  })  : _walletsRepository = walletsRepository,
+        _authenticationRepository = authenticationRepository;
+
+  static Future<void> init({
+    required WalletsRepository walletsRepository,
+    required AuthenticationRepository authenticationRepository,
+  }) async {
+    // if (_instance != null) return _instance!;
+
+    _instance = LegacyDatabaseAdapter._(
+      walletsRepository: walletsRepository,
+      authenticationRepository: authenticationRepository,
+    );
+
+    // // final db = await Db.db;
+    // return _instance!;
+  }
+
+  static LegacyDatabaseAdapter? _instance;
+
+  final AuthenticationRepository _authenticationRepository;
+  final WalletsRepository _walletsRepository;
+
+  static LegacyDatabaseAdapter? get maybeInstance => _instance;
+
+  Future<Wallet?> tryGetAuthenticatedWallet() async {
+    // Gets the wallet in the new format
+    final wallet = await _authenticationRepository.tryGetWallet();
+
+    return wallet?.toLegacy();
+  }
+}
 
 class Db {
   static Database? _db;
@@ -69,6 +109,10 @@ class Db {
   // will return immediately.
   static FutureOr<Database> get db async {
     if (_db != null) return _db!;
+    debugPrint(
+      'Legacy database adapter is not initialized.'
+      'DB will not be aware of current wallet.',
+    );
 
     if (!_isInitialized) {
       //   throw Exception('SQL database is not initialized. Call init() first.');
@@ -393,6 +437,8 @@ class Db {
   }
 
   static Future<Wallet?> getCurrentWallet() async {
+    return await LegacyDatabaseAdapter.maybeInstance
+        ?.tryGetAuthenticatedWallet();
     final Database db = await Db.db;
 
     final List<Map<String, dynamic>> maps = await db.query('CurrentWallet');

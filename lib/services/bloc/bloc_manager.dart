@@ -104,6 +104,10 @@ class BlocManager {
       );
 
       // Initialize repositories which depend on other repositories
+      await LegacyDatabaseAdapter.init(
+        walletsRepository: _walletRepository,
+        authenticationRepository: _authenticationRepository!,
+      );
     } catch (e) {
       print('Fatal error: Error initializing repositories. App should exit.');
       print(e);
