@@ -47,6 +47,9 @@ For any questions about the AtomicDEX Mobile Wallet or the exchange, join our li
 ## License 📄
 This project is released under the [MIT License](LICENSE).
 
+# NB (Forkers/contributors):
+This repository is currently in the procesundergoing safety and Flutter version upgrade. Expect major merge conflicts in the near future for any files updated from this repository. Please note that this software is under active development and is provided "as is" without any warranties or guarantees. Use at your own risk, as the authors and maintainers shall not be held liable for any issues, damages, or losses resulting from its use.
+
 ## Getting Started
 
 Build requires up-to-date version of coins file from https://github.com/KomodoPlatform/coins
