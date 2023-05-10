@@ -67,8 +67,8 @@ class AddCoinButton extends StatelessWidget {
                       child: OutlinedButton(
                         style: Theme.of(context)
                             .outlinedButtonTheme
-                            .style!
-                            .copyWith(
+                            .style
+                            ?.copyWith(
                               shape: MaterialStateProperty.all(
                                 const CircleBorder(),
                               ),
