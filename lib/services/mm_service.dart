@@ -158,27 +158,47 @@ class MMService {
     // Null for default (Iguana) account
     required int? hdAccountId,
   }) async {
-    await _cleanupLegacyData();
+    try {
+      if (mmSe.running) throw Exception('MM is already running');
 
-    // final String rpcPass = _createRpcPass();
-    await mmSe._runBin(
-      rpcPassword: rpcPassword,
-      passphrase: passphrase,
-      hdAccountId: hdAccountId,
-    );
-    metrics();
+      userpass = rpcPassword;
+      await _cleanupLegacyData();
 
-    jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
-      if (!mmSe.running) return;
-      await updateOrdersAndSwaps();
-    });
+      await _initLegacyCredentialStorage(
+        rpcPassword: rpcPassword,
+        passphrase: passphrase,
+      );
 
-    jobService.install('updateMm2VersionInfo', 3.14, (j) async {
-      if (!mmSe.running) return;
-      if (mmVersion == null && mmDate == null) {
-        await initializeMmVersion();
-      }
-    });
+      // final String rpcPass = _createRpcPass();
+      await mmSe._runBin(
+        rpcPassword: rpcPassword,
+        passphrase: passphrase,
+        hdAccountId: hdAccountId,
+      );
+      metrics();
+
+      jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
+        if (!mmSe.running) return;
+        await updateOrdersAndSwaps();
+      });
+
+      jobService.install('updateMm2VersionInfo', 3.14, (j) async {
+        if (!mmSe.running) return;
+        if (mmVersion == null && mmDate == null) {
+          await initializeMmVersion();
+        }
+      });
+    } catch (e) {
+      await mmSe.stopmm2().catchError((e) {});
+
+      jobService.suspend('updateOrdersAndSwaps');
+      jobService.suspend('updateMm2VersionInfo');
+
+      await _cleanupLegacyData();
+
+      userpass = '';
+      rethrow;
+    }
   }
 
   // Temporary solution to provide backwards compatibility with the old
@@ -191,11 +211,7 @@ class MMService {
     return Future.wait([
       storage.write(key: 'rpcPassword', value: rpcPassword),
       storage.write(key: 'userpass', value: rpcPassword),
-      storage.write(key: 'passphrase', value: passphrase),
-
-      // TODO: Store current seed?
-      // EncryptionTool()
-      //     .writeData(KeyEncryption.SEED, currentW
+      // storage.write(key: 'passphrase', value: passphrase),
     ]);
   }
 
@@ -203,6 +219,7 @@ class MMService {
     // Used to clean up the old data that was stored in storage. Storing
     // these values after app shutdown is no longer necessary because
     // of the new persistent storage solution.
+
     final storage = FlutterSecureStorage();
     return Future.wait([
       storage.delete(key: 'rpcPassword'),
@@ -447,7 +464,7 @@ class MMService {
         if (error == Mm2Error.already_runs) {
           Log('mm_service', '$error, restarting mm2');
           await stopmm2();
-          await _runBin(
+          return await _runBin(
             rpcPassword: rpcPassword,
             passphrase: passphrase,
             hdAccountId: hdAccountId,
