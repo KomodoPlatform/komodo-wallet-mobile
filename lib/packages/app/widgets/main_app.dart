@@ -114,45 +114,48 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
         ? getThemeDark()
         : getThemeLight();
 
-    // //Forward pointer events to LockService.
-
-    final GlobalKey<BeamerState> _beamerKey = GlobalKey<BeamerState>();
-
-    BeamerParser _routeInformationParser = BeamerParser(onParse: (info) {
-      return info;
-    });
-
-    return MaterialApp.router(
-        key: _beamerKey,
-        scaffoldMessengerKey: MainApp.rootScaffoldMessengerKey,
-        title: appConfig.appName,
-        localizationsDelegates: localizationsDelegates,
-        theme: appTheme,
-        themeMode: ThemeMode.dark,
-        routerDelegate: BeamerDelegate(
-          initialPath: AppRoutes.wallet.login(),
-          // initialPath: '/login',
-
-          locationBuilder: BeamerLocationBuilder(
-            beamLocations: appLocations,
-          ),
-
-          notFoundPage: BeamPage(
-            key: const ValueKey('not_found'),
-            child: Scaffold(
-              body: Center(
-                child: Text('Not Found.'),
-              ),
+    return BeamerProvider(
+      routerDelegate: routerDelegate,
+      key: _beamerKey,
+      child: AuthActiveAccountListener(
+        key: Key('main_app_auth_active_account_listener'),
+        child: MaterialApp.router(
+            key: Key('main_app_material_app'),
+            scaffoldMessengerKey: MainApp.rootScaffoldMessengerKey,
+            title: appConfig.appName,
+            localizationsDelegates: localizationsDelegates,
+            theme: appTheme,
+            // themeMode: ThemeMode.dark,
+            routerDelegate: routerDelegate,
+            routeInformationParser: _routeInformationParser
+            // TODO: Transition legacy routes/pages to new navigation system which
+            // takes advantage of Navigator 2.0 .
+            // Even though we don't use URL based navigation on mobile, it's still
+            // a good way to keep things organized and it allows us to do some cool
+            // things like deep linking.
             ),
-          ),
-          // clearBeamingHistoryOn: {'/login', '/portfolio'},
-        ),
-        routeInformationParser: _routeInformationParser
-        // TODO: Transition legacy routes/pages to new navigation system which
-        // takes advantage of Navigator 2.0 .
-        // Even though we don't use URL based navigation on mobile, it's still
-        // a good way to keep things organized and it allows us to do some cool
-        // things like deep linking.
-        );
+      ),
+    );
   }
+
+  final GlobalKey<BeamerState> _beamerKey = GlobalKey<BeamerState>();
+
+  final BeamerParser _routeInformationParser = BeamerParser(onParse: (info) {
+    return info;
+  });
+
+  final routerDelegate = BeamerDelegate(
+    initialPath: AppRoutes.wallet.login(),
+    locationBuilder: BeamerLocationBuilder(
+      beamLocations: appLocations,
+    ),
+    notFoundPage: BeamPage(
+      key: const ValueKey('not_found'),
+      child: Scaffold(
+        body: Center(
+          child: Text('Not Found.'),
+        ),
+      ),
+    ),
+  );
 }
