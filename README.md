@@ -1,4 +1,13 @@
 # AtomicDEX Mobile Wallet - Open Source GitHub Repository 🚀
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/komodoplatform/atomicdex-mobile/build.yml)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/komodoplatform/atomicdex-mobile)
+![GitHub contributors](https://img.shields.io/github/contributors-anon/komodoplatform/atomicdex-mobile)
+![GitHub last commit](https://img.shields.io/github/last-commit/komodoplatform/atomicdex-mobile)
+![GitHub top language](https://img.shields.io/github/languages/top/komodoplatform/atomicdex-mobile)
+![Discord](https://img.shields.io/discord/412898016371015680)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/komodoplatform/atomicdex-mobile)
+![GitHub repo size](https://img.shields.io/github/repo-size/komodoplatform/atomicdex-mobile)
+![Twitter Follow](https://img.shields.io/twitter/follow/komodoplatform?style=social)
 
 Welcome to the AtomicDEX Mobile Wallet open source repository! This cutting-edge project is brought to you by Komodo, providing a powerful non-custodial wallet and decentralized exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with AtomicDEX!
 
@@ -37,10 +46,6 @@ For any questions about the AtomicDEX Mobile Wallet or the exchange, join our li
 
 ## License 📄
 This project is released under the [MIT License](LICENSE).
-
-[![Build Status](https://app.bitrise.io/app/bc464ad88d40bb68/status.svg?token=tnpzqFp_7vrcsQYqWSIVBQ&branch=dev)](https://app.bitrise.io/app/bc464ad88d40bb68) 
-Version: v0.6.1
-
 
 ## Getting Started
 
