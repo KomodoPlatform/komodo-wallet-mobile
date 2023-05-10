@@ -1,5 +1,5 @@
 class AccountRoutes {
-  String accounts() => accountsPattern;
+  String list() => accountsPattern;
 
   String createAccount() => createAccountPattern;
 

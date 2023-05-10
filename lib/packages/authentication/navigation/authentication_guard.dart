@@ -14,7 +14,7 @@ class AuthenticationGuard {
 
         return canAccess;
       },
-      beamToNamed: (origin, target) => AppRoutes.accounts.accounts(),
+      beamToNamed: (origin, target) => AppRoutes.accounts.list(),
     );
   }
 
