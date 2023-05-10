@@ -1,4 +1,13 @@
 # AtomicDEX Mobile Wallet - Open Source GitHub Repository 🚀
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/komodoplatform/atomicdex-mobile/build.yml)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/komodoplatform/atomicdex-mobile)
+![GitHub contributors](https://img.shields.io/github/contributors-anon/komodoplatform/atomicdex-mobile)
+![GitHub last commit](https://img.shields.io/github/last-commit/komodoplatform/atomicdex-mobile)
+![GitHub top language](https://img.shields.io/github/languages/top/komodoplatform/atomicdex-mobile)
+![Discord](https://img.shields.io/discord/412898016371015680)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/komodoplatform/atomicdex-mobile)
+![GitHub repo size](https://img.shields.io/github/repo-size/komodoplatform/atomicdex-mobile)
+![Twitter Follow](https://img.shields.io/twitter/follow/komodoplatform?style=social)
 
 Welcome to the AtomicDEX Mobile Wallet open source repository! This cutting-edge project is brought to you by Komodo, providing a powerful non-custodial wallet and decentralized exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with AtomicDEX!
 
@@ -35,16 +44,8 @@ We welcome contributions from developers, designers, and testers in our open-sou
 
 For any questions about the AtomicDEX Mobile Wallet or the exchange, join our lively [Discord Support channel](https://komodoplatform.com/discord). Official team members are identifiable by the "Komodo Team" role.
 
-## License 📄
-This project is released under the [MIT License](LICENSE).
-
-# atomicDEX v0.6.2
-
-Built by Komodo, AtomicDEX Mobile is a non-custodial wallet and decentralized exchange rolled into one app. Hold and trade hundreds of cryptocurrencies on your mobile phone or tablet.
-
 # NB (Forkers/contributors):
 This repository is currently in the procesundergoing safety and Flutter version upgrade. Expect major merge conflicts in the near future for any files updated from this repository. Please note that this software is under active development and is provided "as is" without any warranties or guarantees. Use at your own risk, as the authors and maintainers shall not be held liable for any issues, damages, or losses resulting from its use.
-
 ## Getting Started
 
 Build requires up-to-date version of coins file from https://github.com/KomodoPlatform/coins
@@ -168,6 +169,6 @@ Copy the generated `coins_config.json` file in Utils folder and paste inside ass
  ### 3. Unit/Widget testing
  Not supported
 
-## License
+## License 📄
 
-This Software is released under the MIT License.
+This project is released under the [MIT License](LICENSE).
