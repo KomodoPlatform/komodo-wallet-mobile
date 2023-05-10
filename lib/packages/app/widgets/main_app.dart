@@ -62,25 +62,25 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
     // TODO: Use below to handle app lifecycle changes in a auth/lock bloc
     switch (state) {
       case AppLifecycleState.inactive:
-        // mainBloc.isInBackground = true;
+        mainBloc.isInBackground = true;
         Log('main', 'lifecycle: inactive');
         // lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:
         Log('main', 'lifecycle: paused');
-        // mainBloc.isInBackground = true;
+        mainBloc.isInBackground = true;
         // lockService.lockSignal(context);
         break;
       case AppLifecycleState.detached:
         Log('main', 'lifecycle: detached');
-        // mainBloc.isInBackground = true;
+        mainBloc.isInBackground = true;
         break;
       case AppLifecycleState.resumed:
         Log('main', 'lifecycle: resumed');
-        // mainBloc.isInBackground = false;
+        mainBloc.isInBackground = false;
         // lockService.lockSignal(context);
         // TODO: Replace with new mmservice manager
-        // await mmSe.handleWakeUp();
+        await mmSe.handleWakeUp();
         break;
     }
   }
