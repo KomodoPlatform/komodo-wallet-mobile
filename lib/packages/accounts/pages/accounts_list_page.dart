@@ -28,6 +28,10 @@ class _AccountsListPageState extends State<AccountsListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isActiveAccountLoading = context.select(
+        (ActiveAccountBloc bloc) =>
+            bloc.state is ActiveAccountInProgress ||
+            bloc.state is ActiveAccountSwitchInProgress);
     return MultiBlocListener(
       listeners: [
         BlocListener<AccountsListBloc, AccountsListState>(
@@ -50,14 +54,22 @@ class _AccountsListPageState extends State<AccountsListPage> {
                   final account = state.accounts[index];
                   return Card(
                     child: ListTile(
+                      enabled: !isActiveAccountLoading,
                       leading: CircleAvatar(
                         backgroundColor: account.themeColor,
+                        foregroundImage: account.avatarImageProvider,
                         child: Text(_accountNameAbbreviation(account.name)),
                       ),
                       title: Text(account.name),
-                      subtitle: account.description == null
-                          ? null
-                          : Text(account.description!),
+                      isThreeLine: account.description != null,
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(account.balance.format()), // Display the balance
+                          if (account.description != null)
+                            Text(account.description!),
+                        ],
+                      ),
                       trailing: IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () => _onProfileEdit(account),

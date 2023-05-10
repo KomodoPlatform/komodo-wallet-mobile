@@ -49,7 +49,7 @@ class Account extends HiveObject {
       avatar != null ? MemoryImage(Uint8List.fromList(avatar!)) : null;
 
   // TODO: Replace with actual serializable balance.
-  FiatAsset get balance => FiatAsset.currency(FiatCurrency.USD, 69.42);
+  FiatAsset get balance => FiatAsset.currency(FiatCurrency.USD, 0);
 
   Color? get themeColor =>
       _themeColor != null ? Color(int.parse(_themeColor!, radix: 16)) : null;
