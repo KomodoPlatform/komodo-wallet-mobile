@@ -11,7 +11,7 @@
 
 Welcome to the AtomicDEX Mobile Wallet open source repository! This cutting-edge project is brought to you by Komodo, providing a powerful non-custodial wallet and decentralized exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with AtomicDEX!
 
-<p float="left">
+<p float="center">
   <img src="https://user-images.githubusercontent.com/77973576/229565868-b121e9b6-2d2b-4390-a81f-a7878d0bfea8.png" width="200" />
   <img src="https://user-images.githubusercontent.com/77973576/229565938-81a51d44-5a73-4acd-8885-454e6fa6443d.png" width="200" /> 
   <img src="https://user-images.githubusercontent.com/77973576/229565995-252df819-1ea9-4cc8-a9bc-4ab3e1c80caf.png" width="200" />
