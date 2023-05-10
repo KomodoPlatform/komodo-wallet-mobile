@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/packages/accounts/bloc/active_account_bloc.dart';
+import 'package:komodo_dex/packages/accounts/models/account.dart';
+import 'package:komodo_dex/packages/authentication/bloc/authentication_bloc.dart';
 import '../generic_blocs/settings_bloc.dart';
 import '../localizations.dart';
 import '../model/cex_provider.dart';
@@ -34,6 +37,12 @@ class _AppDrawerState extends State<AppDrawer> {
     double drawerWidth = MediaQuery.of(context).size.width * 0.7;
     if (drawerWidth < 200) drawerWidth = 200;
     final double headerHeight = MediaQuery.of(context).size.height * 0.25;
+
+    final Wallet? currentWallet =
+        context.watch<AuthenticationBloc>().state.wallet?.toLegacy();
+
+    final Account? activeAccount =
+        context.watch<ActiveAccountBloc>().state.maybeCurrentAccount;
 
     return SizedBox(
       width: drawerWidth,
@@ -84,18 +93,12 @@ class _AppDrawerState extends State<AppDrawer> {
                             height: 18,
                           ),
                           const SizedBox(width: 4),
-                          FutureBuilder<Wallet?>(
-                              future: Db.getCurrentWallet(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<Wallet?> snapshot) {
-                                if (!snapshot.hasData) return SizedBox();
-                                return Text(
-                                  snapshot.data!.name!,
-                                  style: const TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                  overflow: TextOverflow.ellipsis,
-                                );
-                              })
+                          Text(
+                            activeAccount?.name ?? currentWallet?.name ?? '',
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.white),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ],
                       ),
                     ),
@@ -108,7 +111,8 @@ class _AppDrawerState extends State<AppDrawer> {
                 padding: EdgeInsets.all(0),
                 children: <Widget>[
                   _buildDrawerItem(
-                    title: Text(AppLocalizations.of(context)!.soundSettingsLink),
+                    title:
+                        Text(AppLocalizations.of(context)!.soundSettingsLink),
                     onTap: () {
                       Navigator.of(context).pop();
                       Navigator.push<dynamic>(
