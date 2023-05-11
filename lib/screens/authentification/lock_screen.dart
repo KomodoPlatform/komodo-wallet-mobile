@@ -409,10 +409,13 @@ class _BiometricPageState extends State<BiometricPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarStatus(
-        context: context,
-        pinStatus: PinStatus.NORMAL_PIN,
-        title: AppLocalizations.of(context)!.fingerprint,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: AppBarStatus(
+          context: context,
+          pinStatus: PinStatus.NORMAL_PIN,
+          title: AppLocalizations.of(context)!.fingerprint,
+        ),
       ),
       body: Center(
         child: Column(

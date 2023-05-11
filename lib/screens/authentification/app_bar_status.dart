@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../generic_blocs/authenticate_bloc.dart';
 import '../authentification/logout_confirmation.dart';
 
-class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
+class AppBarStatus extends StatelessWidget {
   AppBarStatus({
     Key? key,
     required this.pinStatus,
@@ -46,7 +46,4 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
         );
     }
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

@@ -60,11 +60,14 @@ class _PinPageState extends State<PinPage> {
 
     return Scaffold(
       appBar: !isBlocLoading
-          ? AppBarStatus(
-              // pinStatus: widget.pinStatus,
-              pinStatus: null,
-              title: widget.title,
-              context: context,
+          ? PreferredSize(
+              preferredSize: const Size.fromHeight(kToolbarHeight),
+              child: AppBarStatus(
+                // pinStatus: widget.pinStatus,
+                pinStatus: null,
+                title: widget.title,
+                context: context,
+              ),
             )
           : null,
       resizeToAvoidBottomInset: false,
