@@ -1,4 +1,6 @@
 export 'num_utils.dart';
+import 'package:komodo_dex/packages/app/widgets/main_app.dart';
+
 import 'num_utils.dart';
 export 'string_utils.dart';
 
@@ -49,17 +51,30 @@ Future<void> awaitDurationDifference(Duration start, Duration end) async {
 }
 
 void copyToClipBoard(BuildContext context, String? str) {
-  ScaffoldMessengerState? scaffoldMessenger;
-  try {
-    scaffoldMessenger = ScaffoldMessenger.of(context);
-  } catch (_) {}
+  assert(str != null);
 
-  if (scaffoldMessenger != null) {
-    scaffoldMessenger.showSnackBar(SnackBar(
-      duration: const Duration(seconds: 2),
-      content: Text(AppLocalizations.of(context)!.clipboard),
-    ));
-  }
+  ScaffoldMessengerState? scaffoldMessenger;
+  scaffoldMessenger = ScaffoldMessenger.maybeOf(context);
+
+  scaffoldMessenger ??= MainApp.rootScaffoldMessengerKey.currentState;
+
+  if (scaffoldMessenger == null)
+    throw Exception('No ScaffoldMessenger to copy data');
+
+  final _l8n = AppLocalizations.of(context)!;
+
+  final message = str == null ? _l8n.nothingToCopy : _l8n.clipboard;
+
+  scaffoldMessenger
+    ..clearSnackBars()
+    ..showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+
+  if (str == null) return;
+
   Clipboard.setData(ClipboardData(text: str));
 }
 
