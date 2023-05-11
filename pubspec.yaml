@@ -207,6 +207,7 @@ dependencies:
   beamer: ^1.5.3
   json_annotation: ^4.8.0
   image_picker: ^0.8.7+4
+  archive: ^3.3.7
 
 dev_dependencies:
   integration_test:
