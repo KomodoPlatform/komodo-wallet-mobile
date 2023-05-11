@@ -100,5 +100,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>FLTEnableImpeller</key>
+	<true/>
+	<key>FLTEnableWideGamut</key>
+	<true/>
 </dict>
 </plist>
