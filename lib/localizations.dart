@@ -585,6 +585,8 @@ class AppLocalizations {
 
   String get clipboard =>
       Intl.message('Copied to the clipboard', name: 'clipboard');
+  String get nothingToCopy =>
+      Intl.message('Nothing to copy', name: 'nothingToCopy');
   String get from => Intl.message('From', name: 'from');
   String get to => Intl.message('To', name: 'to');
   String get txConfirmed => Intl.message('CONFIRMED', name: 'txConfirmed');
