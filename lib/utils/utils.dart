@@ -511,11 +511,12 @@ Future<void> sleepMs(int ms) async {
   await Future<void>.delayed(Duration(milliseconds: ms));
 }
 
-Future<void> pauseUntil(Function cond, {int? maxMs}) async {
+typedef FutureBoolFunction = FutureOr<bool> Function();
+Future<void> pauseUntil(FutureBoolFunction cond, {int? maxMs}) async {
   maxMs ??= 10000;
   final int start = DateTime.now().millisecondsSinceEpoch;
 
-  while ((!await cond()) &&
+  while (!(await cond()) &&
       DateTime.now().millisecondsSinceEpoch - start < maxMs) {
     await Future<dynamic>.delayed(Duration(milliseconds: 100));
   }
