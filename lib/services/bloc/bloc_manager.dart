@@ -104,7 +104,12 @@ class BlocManager {
       );
 
       // Initialize repositories which depend on other repositories
+
+      // Acts as a bridge between the legact code and new storage. Legacy code
+      // does not need to be concerned with the multi-wallet support because
+      // we will handle it as if the accounts are separate wallets.
       await LegacyDatabaseAdapter.init(
+        activeAccountRepository: _activeAccountRepository,
         walletsRepository: _walletRepository,
         authenticationRepository: _authenticationRepository!,
       );

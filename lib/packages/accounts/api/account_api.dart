@@ -53,6 +53,7 @@ class AccountApi {
     final newAccountId = await getNewAccountId<T>(walletId);
 
     final account = Account(
+      walletId: walletId,
       accountId: newAccountId,
       name: name,
       description: description,

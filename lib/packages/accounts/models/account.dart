@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
 import 'package:komodo_dex/atomicdex_api/src/models/value/asset.dart';
+import 'package:komodo_dex/model/wallet.dart' as legacy;
 
 /// A class representing an account in a wallet.
 ///
@@ -23,6 +24,7 @@ class Account extends HiveObject {
   Account({
     required this.accountId,
     required this.name,
+    required this.walletId,
     this.description,
     this.avatar,
     Color? themeColor,
@@ -45,6 +47,9 @@ class Account extends HiveObject {
   @HiveField(4)
   final List<int>? avatar;
 
+  @HiveField(5)
+  final String walletId;
+
   ImageProvider? get avatarImageProvider =>
       avatar != null ? MemoryImage(Uint8List.fromList(avatar!)) : null;
 
@@ -54,11 +59,22 @@ class Account extends HiveObject {
   Color? get themeColor =>
       _themeColor != null ? Color(int.parse(_themeColor!, radix: 16)) : null;
 
+  /// Provides a unique identifier for the account to identify it across wallets.
+  ///
+  /// This can be used in the single-account legacy code as the wallet ID.
+  String get legacyId => '$walletId:${accountId.toJson().toString()}';
+
+  legacy.Wallet asLegacyWallet() => legacy.Wallet(
+        name: name,
+        id: legacyId,
+      );
+
   /// Creates an Account instance from a JSON map.
   ///
   /// [json] is the map containing the account data.
   static Account fromJson(Map<String, dynamic> json) {
     return Account(
+      walletId: json['walletId'] as String,
       accountId: AccountId.fromJson(json['accountId']),
       name: json['name'],
       description: json['description'] as String?,
@@ -100,14 +116,20 @@ class AccountAdapter extends TypeAdapter<Account> {
 
     final name = reader.readString();
 
-    final description = _readNullable<String>(reader.read());
+    // final description = _readNullable<String>(reader.read());
+    final description = reader.read() as String?;
 
-    final colorString = _readNullable<String>(reader.read());
+    // final colorString = _readNullable<String>(reader.read());
+    final colorString = reader.read() as String?;
     final themeColor = _parseColor(colorString);
 
-    final avatar = _readNullable<List<int>>(reader.read());
+    // final avatar = _readNullable<List<int>>(reader.read());
+    final avatar = reader.read() as List<int>?;
+
+    final walletId = reader.readString();
 
     return Account(
+      walletId: walletId,
       accountId: accountId,
       name: name,
       description: description,
@@ -122,14 +144,16 @@ class AccountAdapter extends TypeAdapter<Account> {
 
     writer.writeString(obj.name);
 
-    // writer.write(_serializeNullable<String>(obj.description));
-    writer.write(null);
+    writer.write<String?>(obj.description);
+    // writer.write(null);
 
-    // writer.write(_serializeNullable<String>(_serializeColor(obj.themeColor)));
-    writer.write(null);
+    writer.write<String?>(_serializeColor(obj.themeColor));
+    // writer.write(null);
 
-    // writer.write(_serializeNullable<List<int>>(obj.avatar));
-    writer.write(null);
+    writer.write<List<int>?>(obj.avatar);
+    // writer.write(null);
+
+    writer.writeString(obj.walletId);
   }
 
   /// Reads a nullable value from the reader. We can't directly store null
