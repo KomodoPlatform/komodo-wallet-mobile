@@ -83,8 +83,15 @@ http://195.201.0.6/dev/
 
 ## Flutter version
 
-Currently using flutter 2.8.1
+Ensure you are running Flutter version 2.8.1.
 
+Please see Flutter's official [setup guide](https://docs.flutter.dev/get-started/install). 
+
+If you've installed Flutter using Git, change your version using checkout the branch tag `v2.8.1`.
+
+The recommended approach is setting up Flutter Version Manager, a CLI tool for installing project-specific Flutter SDKs. [Sidekick](https://github.com/fluttertools/sidekick) is a useful GUI tool built on top of it.
+
+From the next major release of AtomicDEX Mobile, the project will follow the latest stable Flutter release.
 
 ### Kotlin vs Flutter
 
