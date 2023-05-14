@@ -85,31 +85,6 @@ http://195.201.0.6/dev/
 
 Currently using flutter 2.8.1
 
-### Upgrading from 1.22.4
-
-In your flutter directory:
-
-```
-git checkout 2.8.1
-flutter doctor
-```
-
-In the project directory:
-
-```
-flutter clean
-flutter pub get
-```
-
-### beta Flutter
-
-`flutter version` is inconsistent regarding the access to beta versions.
-Git tags can be used instead (that is, when we want to experiment with beta versions of Flutter):
-
-    FD=`which flutter`; FD=`dirname $FD`; FD=`dirname $FD`; echo $FD; cd $FD
-    git pull
-    git reset --hard
-    git checkout -f v1.14.3
 
 ### Kotlin vs Flutter
 
