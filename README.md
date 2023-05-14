@@ -75,23 +75,25 @@ flutter run --dart-define=screenshot=true
 ```
 
 
-## AtomicDEX API library (libmm2.a) version:
+## AtomicDEX API Library Setup:
 
-2.1.10108
-adde21b26
-http://195.201.0.6/dev/
+AtomicDEX Mobile runs the AtomicDEX API locally on the user's device. The API binary is platform-specific and has to be manually set up by the developer as opposed to a typical Flutter dependency.
 
-## Flutter version
+Ensure you run the most recent AtomicDEX API [stable release](https://github.com/KomodoPlatform/atomicDEX-API/releases). Download the API binary for each platform and extract its `libmm2.a` file into the applicable platform's API folder.
 
-Ensure you are running Flutter version 2.8.1.
 
-Please see Flutter's official [setup guide](https://docs.flutter.dev/get-started/install). 
 
-If you've installed Flutter using Git, change your version using checkout the branch tag `v2.8.1`.
+### [Stable API releases](https://github.com/KomodoPlatform/atomicDEX-API/releases)
+ 
+| API Build | API Path* |
+|--|--|
+| android-aarch64 | `android/app/src/main/cpp/libs/arm64-v8a/libmm2.a` |
+| android-armv7 | `android/app/src/main/cpp/libs/armeabi-v7a/libmm2.a` |
+| iOS | `ios/libmm2.a` |
 
-The recommended approach is setting up Flutter Version Manager, a CLI tool for installing project-specific Flutter SDKs. [Sidekick](https://github.com/fluttertools/sidekick) is a useful GUI tool built on top of it.
+**Relative to the Flutter project's root folder. E.g. if your name was Bob and you cloned the flutter project into your macOS home directory, the full path for the iOS API would be `/Users/Bob/atomicdex_mobile/ios/libmm2.a`*
 
-From the next major release of AtomicDEX Mobile, the project will follow the latest stable Flutter release.
+See [our wiki](https://github.com/KomodoPlatform/atomicdex-mobile/wiki/Project-Setup#android-builds-from-scratch) here for more thorough project setup steps. Besides installing the API binary, AtomicDEX Mobile is set up similarly to any other cloned Flutter project.
 
 ### Kotlin vs Flutter
 
