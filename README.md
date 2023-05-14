@@ -9,7 +9,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/komodoplatform/atomicdex-mobile)
 ![Twitter Follow](https://img.shields.io/twitter/follow/komodoplatform?style=social)
 
-Welcome to the AtomicDEX Mobile Wallet open source repository! This cutting-edge project is brought to you by Komodo, providing a powerful non-custodial wallet and decentralized exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with AtomicDEX!
+Welcome to the AtomicDEX Mobile Wallet open-source repository! This cutting-edge project is brought to you by Komodo, providing a mighty non-custodial wallet and decentralised exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with AtomicDEX!
 
 <p float="center">
   <img src="https://user-images.githubusercontent.com/77973576/229565868-b121e9b6-2d2b-4390-a81f-a7878d0bfea8.png" width="200" />
@@ -21,10 +21,10 @@ Welcome to the AtomicDEX Mobile Wallet open source repository! This cutting-edge
 </p>
 
 ## Unleashing the Power of AtomicDEX API 💡
-We've made this repository public to showcase the incredible potential of the AtomicDEX API and to spark interest among companies looking to integrate this game-changing technology into their own applications. Our goal is to drive innovation and expand the reach of decentralized exchange technology worldwide.
+We've made this repository public to showcase the incredible potential of the AtomicDEX API and to spark interest among companies looking to integrate this game-changing technology into their own applications. Our goal is to drive innovation and expand the reach of decentralised exchange technology worldwide.
 
 ## Exciting Features 🌟
-- **Non-custodial wallet:** You're in control - only you have access to your private keys.
+- **Non-custodial wallet:** You're in control - only you can access your private keys.
 - **Decentralized exchange:** Trade cryptocurrencies effortlessly across blockchain networks with atomic swap technology, bypassing the need for a middleman.
 - **500+ Listed Cryptocurrencies:** A vast and ever-growing list of supported cryptocurrencies.
 - **Unlimited markets:** Over 300,000 completed atomic swaps and a staggering 10,000+ trading pairs.
@@ -40,19 +40,21 @@ Embrace financial freedom at your fingertips by downloading the AtomicDEX Mobile
 - [Android](https://play.google.com/store/apps/details?id=com.komodoplatform.atomicdex)
 
 ## Get Involved 🤝
-We welcome contributions from developers, designers, and testers in our open-source project. If you'd like to contribute, please review the [contribution guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
+We welcome developers, designers, and testers' contributions to our open-source project. If you'd like to contribute, please review the [contribution guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
 
 For any questions about the AtomicDEX Mobile Wallet or the exchange, join our lively [Discord Support channel](https://komodoplatform.com/discord). Official team members are identifiable by the "Komodo Team" role.
 
 # NB (Forkers/contributors):
-This repository is currently in the procesundergoing safety and Flutter version upgrade. Expect major merge conflicts in the near future for any files updated from this repository. Please note that this software is under active development and is provided "as is" without any warranties or guarantees. Use at your own risk, as the authors and maintainers shall not be held liable for any issues, damages, or losses resulting from its use.
+
+This repository is currently in the process of undergoing safety and Flutter version upgrades. Expect major merge conflicts in the near future for any files updated from this repository. Please note that this software is under active development and provided "as is" without warranties or guarantees. Use at your own risk, as the authors and maintainers shall not be held liable for any issues, damages, or losses resulting from its use.
+
 ## Getting Started
 
 Build requires up-to-date version of coins file from https://github.com/KomodoPlatform/coins
 
 Commit hash and sah256sum of coins file is specified in `coins_ci.json`.
-You may download one manually or use `fetch_coins.sh` script on linux and macOS,
- `fetch_coins.ps1` powershell script on Windows.
+You may download one manually or use `fetch_coins.sh` script on Linux and macOS,
+ `fetch_coins.ps1` PowerShell script on Windows.
 
 `fetch_coins` script depends on sha256sum and jq utils:
 
@@ -77,7 +79,7 @@ flutter run --dart-define=screenshot=true
 
 ## AtomicDEX API Library Setup:
 
-AtomicDEX Mobile runs the AtomicDEX API locally on the user's device. The API binary is platform-specific and has to be manually set up by the developer as opposed to a typical Flutter dependency.
+AtomicDEX Mobile runs the AtomicDEX API locally on the user's device. The API binary is platform-specific and must be manually set up by the developer instead of a typical Flutter dependency.
 
 Ensure you run the most recent AtomicDEX API [stable release](https://github.com/KomodoPlatform/atomicDEX-API/releases). Download the API binary for each platform and extract its `libmm2.a` file into the applicable platform's API folder.
 
@@ -97,8 +99,7 @@ See [our wiki](https://github.com/KomodoPlatform/atomicdex-mobile/wiki/Project-S
 
 ### Kotlin vs Flutter
 
-In Android Studio (3.6.2) the latest Kotlin plugin (1.3.71) doesn't work with Flutter “1.12.13+hotfix.7”. To fix it - [uninstall the latest Kotlin](https://github.com/flutter/flutter/issues/52077#issuecomment-600459786) - then the Kotlin version 1.3.61, bundled with the Android Studio, will reappear.
-
+In Android Studio (3.6.2), the latest Kotlin plugin (1.3.71) doesn't work with Flutter “1.12.13+hotfix.7”. To fix it - [uninstall the latest Kotlin](https://github.com/flutter/flutter/issues/52077#issuecomment-600459786) - then the Kotlin version 1.3.61, bundled with the Android Studio will reappear.
 ## Accessing the database
 
     adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
@@ -106,7 +107,7 @@ In Android Studio (3.6.2) the latest Kotlin plugin (1.3.71) doesn't work with Fl
 
 ## Localization
 
-1. Extract messages to .arb file:
+1. Extract messages to the .arb file:
 ```bash
 flutter pub run intl_generator:extract_to_arb --output-dir=lib/l10n lib/localizations.dart
 ```
@@ -127,13 +128,13 @@ Clone the latest version of [coins](https://github.com/KomodoPlatform/coins)
 
 Download and install the latest version of [python3](https://www.python.org/downloads/)
 
-Open the clonned repository and run the script below in the terminal in the repo folder
+Open the cloned repository and run the script below in the terminal in the repo folder.
 
 ```bash
 python3 utils/generate_app_configs.py
 ```
 
-Copy the generated `coins_config.json` file in Utils folder and paste inside assets/ folder in AtomicDEX-mobile project
+Copy the generated `coins_config.json` file from the Utils folder and paste it inside the `assets/` folder in the AtomicDEX Mobile project.
 
 ## Audio samples sources
 
