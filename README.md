@@ -12,12 +12,12 @@
 Welcome to the AtomicDEX Mobile Wallet open-source repository! This cutting-edge project is brought to you by Komodo, providing a mighty non-custodial wallet and decentralised exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with AtomicDEX!
 
 <p float="center">
-  <img src="https://user-images.githubusercontent.com/77973576/229565868-b121e9b6-2d2b-4390-a81f-a7878d0bfea8.png" width="200" />
-  <img src="https://user-images.githubusercontent.com/77973576/229565938-81a51d44-5a73-4acd-8885-454e6fa6443d.png" width="200" /> 
-  <img src="https://user-images.githubusercontent.com/77973576/229565995-252df819-1ea9-4cc8-a9bc-4ab3e1c80caf.png" width="200" />
-  <img src="https://user-images.githubusercontent.com/77973576/229566018-285b6b6d-677e-464e-aafb-e55fecb2df82.png" width="200" />
-  <img src="https://user-images.githubusercontent.com/77973576/229566049-2f25b16b-da76-4295-b4e6-ba567ac582f7.png" width="200" />
-  <img src="https://user-images.githubusercontent.com/77973576/229566075-aa00a5a9-55ae-4acd-ad7b-d67ed3a65db6.png" width="200" />
+  <img src="https://user-images.githubusercontent.com/77973576/229565868-b121e9b6-2d2b-4390-a81f-a7878d0bfea8.png" width="33%" />
+  <img src="https://user-images.githubusercontent.com/77973576/229565938-81a51d44-5a73-4acd-8885-454e6fa6443d.png" width="33%" /> 
+  <img src="https://user-images.githubusercontent.com/77973576/229565995-252df819-1ea9-4cc8-a9bc-4ab3e1c80caf.png" width="33%" />
+  <img src="https://user-images.githubusercontent.com/77973576/229566018-285b6b6d-677e-464e-aafb-e55fecb2df82.png" width="33%" />
+  <img src="https://user-images.githubusercontent.com/77973576/229566049-2f25b16b-da76-4295-b4e6-ba567ac582f7.png" width="33%" />
+  <img src="https://user-images.githubusercontent.com/77973576/229566075-aa00a5a9-55ae-4acd-ad7b-d67ed3a65db6.png" width="33%" />
 </p>
 
 ## Unleashing the Power of AtomicDEX API 💡
