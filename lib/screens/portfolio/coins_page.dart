@@ -64,7 +64,7 @@ class _CoinsPageState extends State<CoinsPage> {
         _scrollController!.offset > _heightSliver;
 
     final activeAccount =
-        context.watch<ActiveAccountBloc>().state.maybeCurrentAccount;
+        context.watch<ActiveAccountBloc>().state.activeOrPendingAccount;
 
     _lastActiveAccount = activeAccount ?? _lastActiveAccount;
 
@@ -86,14 +86,16 @@ class _CoinsPageState extends State<CoinsPage> {
                           'switch-accounts-button',
                       child: CircularAvatarButton(
                         key: Key('switch-accounts-button'),
-                        child: Text(
-                          _lastActiveAccount?.name.initials(2) ?? '',
-                        ),
+                        color: _lastActiveAccount?.themeColor ??
+                            Theme.of(context).primaryColor,
                         onPressed: () {
                           context.read<ActiveAccountBloc>().add(
                                 ActiveAccountClearRequested(),
                               );
                         },
+                        child: Text(
+                          _lastActiveAccount?.name.initials(2) ?? '',
+                        ),
                       ),
                     ),
                   ),
@@ -256,9 +258,7 @@ class _CoinsPageState extends State<CoinsPage> {
                 ),
               ];
             },
-            body: Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: const ListCoins())));
+            body: const ListCoins(),),);
   }
 
   Widget _buildProgressIndicator() {

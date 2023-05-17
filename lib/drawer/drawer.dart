@@ -42,7 +42,7 @@ class _AppDrawerState extends State<AppDrawer> {
         context.watch<AuthenticationBloc>().state.wallet?.toLegacy();
 
     final Account? activeAccount =
-        context.watch<ActiveAccountBloc>().state.maybeCurrentAccount;
+        context.watch<ActiveAccountBloc>().state.activeOrPendingAccount;
 
     return SizedBox(
       width: drawerWidth,

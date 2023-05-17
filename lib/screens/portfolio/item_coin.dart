@@ -74,7 +74,7 @@ class _ItemCoinState extends State<ItemCoin>
     }
     actions.add(SlidableAction(
       label: AppLocalizations.of(context)!.receive,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       icon: Icons.arrow_downward,
       onPressed: (mContext) {
         showCopyDialog(context, balance.address, coin);
@@ -83,7 +83,7 @@ class _ItemCoinState extends State<ItemCoin>
     if (!coin.walletOnly && double.parse(balance.getBalance()) > 0) {
       actions.add(SlidableAction(
         label: AppLocalizations.of(context)!.swap.toUpperCase(),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        // backgroundColor: Theme.of(context).colorScheme.secondary,
         icon: Icons.swap_vert,
         onPressed: (context) {
           mainBloc.setCurrentIndexTab(1);
@@ -149,7 +149,7 @@ class _ItemCoinState extends State<ItemCoin>
               cexProvider.withdrawCurrency = null;
             },
             child: Container(
-              color: Theme.of(context).colorScheme.surface,
+              // color: Theme.of(context).colorScheme.surface,
               child: Row(
                 children: <Widget>[
                   Container(
@@ -352,8 +352,8 @@ class _ItemCoinState extends State<ItemCoin>
     if (!widget.coinBalance!.coin!.walletOnly) return SizedBox();
 
     return Padding(
-      padding: EdgeInsets.only(top: 8, left: 4),
-      child: InkWell(
+        padding: EdgeInsets.only(top: 8, left: 4),
+        child: InkWell(
           onTap: () {
             ScaffoldMessengerState? scaffoldMessenger;
             try {
@@ -367,20 +367,13 @@ class _ItemCoinState extends State<ItemCoin>
               ));
             }
           },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(16)),
-              color: Theme.of(context).scaffoldBackgroundColor,
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            child: Text(
-              AppLocalizations.of(context)!.walletOnly.toUpperCase(),
-              style: Theme.of(context)
-                  .textTheme
-                  .caption!
-                  .copyWith(fontFamily: 'RobotoCondensed'),
-            ),
-          )),
-    );
+          child: Chip(
+              label: Text(
+                AppLocalizations.of(context)!.walletOnly,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              )),
+        ));
   }
 }
