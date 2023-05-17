@@ -146,7 +146,7 @@ Copy the generated `coins_config.json` file from the Utils folder and paste it i
 
  ### 1. Manual testing
  Manual testing plan:
- https://docs.google.com/spreadsheets/d/15LAphQydTn5ljS64twfbqIMcDOUMFV_kEmMkNiHbSGc
+[https://docs.google.com/spreadsheets/d/1jeIkGe2CmJ7YmuoVi6Rlc9KRr3wiBPf44Qy0Nd8qtOY/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1jeIkGe2CmJ7YmuoVi6Rlc9KRr3wiBPf44Qy0Nd8qtOY/edit?usp=sharing)
 
  ### 2. Integration testing
  [Guide and coverage](integration_test/README.md)
