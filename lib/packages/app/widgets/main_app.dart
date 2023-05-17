@@ -8,9 +8,11 @@ import 'package:komodo_dex/generic_blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/navigation/app_locations.dart';
 import 'package:komodo_dex/navigation/app_routes.dart';
+import 'package:komodo_dex/packages/accounts/bloc/active_account_bloc.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/auth_active_account_listener.dart';
+import 'package:provider/provider.dart';
 
 class MainApp extends StatefulWidget {
   const MainApp({Key? key}) : super(key: key);
@@ -110,9 +112,12 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
       statusBarColor: Colors.transparent,
     ));
 
+    final maybeUserThemeColor = context.select<ActiveAccountBloc, Color?>(
+        (bloc) => bloc.state.activeAccount?.themeColor);
+
     final appTheme = systemUIBrightness == Brightness.dark
-        ? getThemeDark()
-        : getThemeLight();
+        ? getThemeDark(seed: maybeUserThemeColor)
+        : getThemeLight(seed: maybeUserThemeColor);
 
     return BeamerProvider(
       routerDelegate: routerDelegate,

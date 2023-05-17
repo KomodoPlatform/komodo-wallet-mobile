@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:komodo_dex/packages/accounts/events/account_form_event.dart';
+import 'package:komodo_dex/packages/accounts/models/account.dart';
 import 'package:komodo_dex/packages/accounts/models/account_description.dart';
 import 'package:komodo_dex/packages/accounts/models/account_name.dart';
 import 'package:komodo_dex/packages/accounts/repository/account_repository.dart';
@@ -17,6 +20,8 @@ class AccountFormBloc extends Bloc<AccountFormEvent, AccountFormState> {
     on<AccountFormStartedEvent>(_onAccountFormStartedEvent);
     on<AccountFormNameChanged>(_onAccountFormNameChanged);
     on<AccountFormDescriptionChanged>(_onAccountFormDescriptionChanged);
+    on<AccountFormThemeColorChanged>(_onAccountFormThemeColorChanged);
+    on<AccountFormAvatarChanged>(_onAccountFormAvatarChanged);
     on<AccountFormSubmitted>(_onAccountFormSubmitted);
   }
 
@@ -47,6 +52,17 @@ class AccountFormBloc extends Bloc<AccountFormEvent, AccountFormState> {
     );
   }
 
+  void _onAccountFormThemeColorChanged(
+      AccountFormThemeColorChanged event, Emitter<AccountFormState> emit) {
+    emit(state.copyWith(themeColor: event.themeColor));
+  }
+
+  void _onAccountFormAvatarChanged(
+      AccountFormAvatarChanged event, Emitter<AccountFormState> emit) {
+    // TODO: Functionality to clear avatar
+    emit(state.copyWith(avatar: Uint8List.fromList(event.avatar)));
+  }
+
   void _onAccountFormNameChanged(
       AccountFormNameChanged event, Emitter<AccountFormState> emit) {
     final name = AccountName.dirty(event.name);
@@ -64,12 +80,22 @@ class AccountFormBloc extends Bloc<AccountFormEvent, AccountFormState> {
     if (state.isValid) {
       emit(state.copyWith(submissionStatus: FormzSubmissionStatus.inProgress));
       try {
-        await _accountRepository.createAccount(
-          name: state.name.value,
-          description: state.description.value,
-          avatar: state.avatar,
-          themeColor: state.themeColor,
-        );
+        final isNewAccount = state.accountId == null;
+
+        await (isNewAccount
+            ? _accountRepository.createAccount(
+                name: state.name.value,
+                description: state.description.value,
+                avatar: state.avatar,
+                themeColor: state.themeColor,
+              )
+            : _accountRepository.updateAccount(
+                accountId: state.accountId!,
+                name: state.name.value,
+                description: state.description.value,
+                avatar: state.avatar,
+                themeColor: state.themeColor,
+              ));
 
         emit(state.copyWith(submissionStatus: FormzSubmissionStatus.success));
       } catch (e) {

@@ -7,11 +7,15 @@ import 'package:komodo_dex/packages/accounts/models/account.dart';
 abstract class ActiveAccountState extends Equatable {
   const ActiveAccountState();
 
-  Account? get maybeCurrentAccount => this is ActiveAccountSuccess
+  Account? get activeOrPendingAccount => this is ActiveAccountSuccess
       ? (this as ActiveAccountSuccess).account
       : this is ActiveAccountSwitchInProgress
           ? (this as ActiveAccountSwitchInProgress).account
           : null;
+
+  Account? get activeAccount => this is ActiveAccountSuccess
+      ? (this as ActiveAccountSuccess).account
+      : null;
 
   @override
   List<Object?> get props => [];

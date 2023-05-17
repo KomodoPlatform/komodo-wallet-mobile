@@ -78,7 +78,7 @@ class Account extends HiveObject {
       accountId: AccountId.fromJson(json['accountId']),
       name: json['name'],
       description: json['description'] as String?,
-      themeColor: _parseColor(json['themeColor'] as String?),
+      themeColor: _parseColor(json['_themeColor'] as String?),
       avatar: json['avatar'] == null
           ? null
           : (json['avatar'] as List<dynamic>).map((e) => e as int).toList(),
@@ -90,10 +90,11 @@ class Account extends HiveObject {
   /// Returns a map containing the account data.
 
   Map<String, dynamic> toJson() => {
+        'walletId': walletId,
         'accountId': accountId.toJson(),
         'name': name,
         'description': description,
-        'themeColor': themeColor,
+        'themeColor': _themeColor,
         'avatar': avatar,
       };
 

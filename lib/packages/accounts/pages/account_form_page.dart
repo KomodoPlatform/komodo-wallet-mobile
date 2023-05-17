@@ -7,6 +7,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/packages/accounts/bloc/account_form_bloc.dart';
 import 'package:komodo_dex/packages/accounts/events/account_form_event.dart';
 import 'package:komodo_dex/packages/accounts/state/account_form_state.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class AccountFormPage extends StatefulWidget {
@@ -31,6 +32,11 @@ class _AccountFormPageState extends State<AccountFormPage> {
   //   super.initState();
   //   context.read<AccountFormBloc>().add(AccountFormStartedEvent (accountId: widget.accountId));
   // }
+
+  List<Color> get _colors => [
+        ...Colors.primaries,
+        context.read<AccountFormBloc>().state.themeColor,
+      ].whereNotNull().toSet().toList();
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +69,10 @@ class _AccountFormPageState extends State<AccountFormPage> {
                               await _imageFile!.readAsBytes(),
                               key: ValueKey(_imageFile!.path),
                             );
+                            context.read<AccountFormBloc>().add(
+                                  AccountFormAvatarChanged(
+                                      await _imageFile!.readAsBytes()),
+                                );
                           }
                           setState(() {});
                         },
@@ -117,15 +127,18 @@ class _AccountFormPageState extends State<AccountFormPage> {
                 SizedBox(height: 16),
                 Text('Theme Color'),
                 DropdownButton<Color>(
-                  value: _selectedColor,
+                  value: state.themeColor,
                   onChanged: isReadOnly
                       ? null
                       : (Color? newValue) {
+                          context.read<AccountFormBloc>().add(
+                                AccountFormThemeColorChanged(newValue!),
+                              );
                           setState(() {
-                            _selectedColor = newValue!;
+                            _selectedColor = newValue;
                           });
                         },
-                  items: Colors.primaries.map((Color color) {
+                  items: _colors.map((Color color) {
                     // TODO: Replace with a color picker
                     return DropdownMenuItem<Color>(
                       value: color,

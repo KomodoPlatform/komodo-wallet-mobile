@@ -60,10 +60,26 @@ class AccountRepository {
     );
   }
 
-  Future<void> _storeAccount({required Account account}) async {
+  Future<Account> updateAccount({
+    required AccountId accountId,
+    required String name,
+    String? description,
+    Color? themeColor,
+    Uint8List? avatar,
+  }) async {
     final walletId = await _getAuthenticatedWalletId();
 
-    await _accountApi.storeAccount(walletId: walletId, account: account);
+    return _accountApi.updateAccount(
+      currentWalletId: walletId,
+      account: Account(
+        walletId: walletId,
+        accountId: accountId,
+        name: name,
+        description: description,
+        themeColor: themeColor,
+        avatar: avatar,
+      ),
+    );
   }
 
   Future<Account?> getAccount({required AccountId accountId}) async {

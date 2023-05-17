@@ -13,7 +13,7 @@ class AccountsManagementLocation extends BeamLocation<BeamState> {
   List<String> get pathPatterns => [
         accountRoutes.accountsPattern,
         accountRoutes.createAccountPattern,
-        // accountRoutes.editAccountPattern,
+        accountRoutes.editAccountPattern,
       ];
 
   @override

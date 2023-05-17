@@ -149,6 +149,8 @@ class BiometricStorageApi {
   static void _rethrowKnownPlatformException(PlatformException e) {
     if (e.message?.contains('Secure lock screen must be enabled') ?? false) {
       throw NoSecureAuthenticationException();
+    } else if (e.code.contains('Canceled')) {
+      throw BiometricRequestCancelledException();
     } else {
       throw e; // Re-throw the exception if it's not the one we're handling
     }
@@ -158,11 +160,19 @@ class BiometricStorageApi {
 class FileAlreadyExistsException implements IOException {
   FileAlreadyExistsException(this.message);
 
-  @override
   final String message;
 
   @override
-  String toString() => "FileAlreadyExistsException: $message";
+  String toString() => 'FileAlreadyExistsException: $message';
+}
+
+class BiometricRequestCancelledException implements Exception {
+  BiometricRequestCancelledException([this.message = '']);
+
+  final String message;
+
+  @override
+  String toString() => 'BiometricRequestCancelledException: $message';
 }
 
 class NoSecureAuthenticationException implements Exception {
@@ -174,6 +184,6 @@ class NoSecureAuthenticationException implements Exception {
 
   @override
   String toString() {
-    return "NoSecureAuthenticationException: $message";
+    return 'NoSecureAuthenticationException: $message';
   }
 }

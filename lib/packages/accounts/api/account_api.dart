@@ -52,6 +52,18 @@ class AccountApi {
   }) async {
     final newAccountId = await getNewAccountId<T>(walletId);
 
+    final accountExist = await _accountExists(
+      walletId: walletId,
+      accountId: newAccountId,
+    );
+
+    if (accountExist) {
+      // TODO: Future plan is to refactor API into separate Dart package.
+      // Consider best practices with regards to avoiding our app's exceptions
+      // and data models being too tightly coupled with the API's classes.
+      throw AccountExistsAlreadyException();
+    }
+
     final account = Account(
       walletId: walletId,
       accountId: newAccountId,
@@ -61,17 +73,60 @@ class AccountApi {
       avatar: avatar,
     );
 
-    await storeAccount(walletId: walletId, account: account);
+    await _storeAccount(account: account);
 
     return account;
   }
 
-  Future<void> storeAccount({
-    required String walletId,
+  Future<Account> updateAccount({
+    required String currentWalletId,
     required Account account,
   }) async {
     final accountBox = await _openAccountBox();
-    await accountBox.put(_generateBoxKey(walletId, account.accountId), account);
+
+    final accountExist = await _accountExists(
+      walletId: currentWalletId,
+      accountId: account.accountId,
+    );
+
+    if (!accountExist) {
+      throw NoSuchAccountException();
+    }
+
+    // NB: Use wih caution. Currently no provision for changing walletId in
+    // other parts of the app's storage. This may behave unexpectedly. This
+    // will likely need additional code in the repository level to handle
+    // relationships between accounts and other entities. This class is only
+    // responsible for storing and retrieving accounts.
+    final isWalletIdChanged = currentWalletId != account.walletId;
+
+    await _storeAccount(account: account);
+
+    if (isWalletIdChanged) {
+      final oldAccountKey = _generateBoxKey(currentWalletId, account.accountId);
+      await accountBox.delete(oldAccountKey);
+    }
+
+    return account;
+  }
+
+  Future<bool> _accountExists({
+    required String walletId,
+    required AccountId accountId,
+  }) async {
+    final accountBox = await _openAccountBox();
+
+    return accountBox.containsKey(_generateBoxKey(walletId, accountId));
+  }
+
+  Future<void> _storeAccount({
+    required Account account,
+  }) async {
+    final accountBox = await _openAccountBox();
+    await accountBox.put(
+      _generateBoxKey(account.walletId, account.accountId),
+      account,
+    );
   }
 
   // TODO: Move to A-Dex API pakcage

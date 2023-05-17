@@ -492,7 +492,12 @@ class Db {
 
   static Future<List<String>> getCoinsFromDb() async {
     final Database db = await Db.db;
-    final wallet = await getCurrentWallet();
+    Wallet? wallet = await getCurrentWallet();
+
+    await pauseUntil(() async {
+      wallet ??= await getCurrentWallet();
+      return wallet != null;
+    });
 
     final r = await db.query(
       'ListOfCoinsActivated',

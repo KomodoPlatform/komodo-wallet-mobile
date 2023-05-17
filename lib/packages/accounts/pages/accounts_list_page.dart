@@ -5,8 +5,10 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:komodo_dex/navigation/app_routes.dart';
+import 'package:komodo_dex/packages/accounts/bloc/account_form_bloc.dart';
 import 'package:komodo_dex/packages/accounts/bloc/accounts_list_bloc.dart';
 import 'package:komodo_dex/packages/accounts/bloc/active_account_bloc.dart';
+import 'package:komodo_dex/packages/accounts/events/account_form_event.dart';
 import 'package:komodo_dex/packages/accounts/events/accounts_list_event.dart';
 import 'package:komodo_dex/packages/accounts/events/active_account_event.dart';
 import 'package:komodo_dex/packages/accounts/models/account.dart';
@@ -94,6 +96,9 @@ class _AccountsListPageState extends State<AccountsListPage> {
               ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
+                  context.read<AccountFormBloc>().add(
+                        AccountFormStartedEvent(account: null),
+                      );
                   Beamer.of(context)
                       .beamToNamed(AppRoutes.accounts.createAccount());
                 },
@@ -146,6 +151,9 @@ class _AccountsListPageState extends State<AccountsListPage> {
   }
 
   void _onProfileEdit(Account account) {
+    context.read<AccountFormBloc>().add(
+          AccountFormStartedEvent(account: account),
+        );
     Beamer.of(context).beamToNamed(
       AppRoutes.accounts.editAccount(
         jsonEncode(account.accountId.toJson()),
