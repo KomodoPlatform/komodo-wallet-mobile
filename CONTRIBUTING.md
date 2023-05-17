@@ -1,10 +1,10 @@
 
 
-# Contributing Guide (Placeholder)
+# Contributing Guide
 
 Thank you for your interest in contributing to our Flutter project! We truly appreciate your help in making our app better. Currently, our primary focus is on improving the code quality and addressing technical debt in our 4+ year old codebase, specifically the BLoC architecture. We want to ensure that our app's code is of the highest standard, both for refactored code and new features.
 
-**Please note that this is a placeholder guide. A comprehensive contributing guide with detailed conventions and architecture will be provided soon.**
+**Please note that this is a high-level guide. A comprehensive contributing guide with detailed conventions and architecture will be created.**
 
 ## Key Principles
 
