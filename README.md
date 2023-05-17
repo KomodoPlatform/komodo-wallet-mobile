@@ -52,11 +52,10 @@ This repository is currently in the process of undergoing safety and Flutter ver
 
 Build requires up-to-date version of coins file from https://github.com/KomodoPlatform/coins
 
-Commit hash and sah256sum of coins file is specified in `coins_ci.json`.
-You may download one manually or use `fetch_coins.sh` script on Linux and macOS,
- `fetch_coins.ps1` PowerShell script on Windows.
+Commit hash and sha256sum of coins file is specified in `coins_ci.json`.
+You may download one manually or use `fetch_coins.sh` script on Linux and macOS or `fetch_coins.ps1` PowerShell script on Windows.
 
-`fetch_coins` script depends on sha256sum and jq utils:
+The `fetch_coins` script depends on sha256sum and jq utils:
 
 Ubuntu: `sudo apt-get update && sudo apt-get install -y coreutils jq`
 
@@ -99,7 +98,8 @@ See [our wiki](https://github.com/KomodoPlatform/atomicdex-mobile/wiki/Project-S
 
 ### Kotlin vs Flutter
 
-In Android Studio (3.6.2), the latest Kotlin plugin (1.3.71) doesn't work with Flutter “1.12.13+hotfix.7”. To fix it - [uninstall the latest Kotlin](https://github.com/flutter/flutter/issues/52077#issuecomment-600459786) - then the Kotlin version 1.3.61, bundled with the Android Studio will reappear.
+In Android Studio (3.6.2), the latest Kotlin plugin (1.3.71) doesn't work with Flutter “1.12.13+hot
+.7”. To fix it - [uninstall the latest Kotlin](https://github.com/flutter/flutter/issues/52077#issuecomment-600459786) - then the Kotlin version 1.3.61, bundled with the Android Studio will reappear.
 ## Accessing the database
 
     adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
