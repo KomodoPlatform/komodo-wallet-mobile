@@ -96,10 +96,6 @@ Ensure you run the most recent AtomicDEX API [stable release](https://github.com
 
 See [our wiki](https://github.com/KomodoPlatform/atomicdex-mobile/wiki/Project-Setup#android-builds-from-scratch) here for more thorough project setup steps. Besides installing the API binary, AtomicDEX Mobile is set up similarly to any other cloned Flutter project.
 
-### Kotlin vs Flutter
-
-In Android Studio (3.6.2), the latest Kotlin plugin (1.3.71) doesn't work with Flutter “1.12.13+hot
-.7”. To fix it - [uninstall the latest Kotlin](https://github.com/flutter/flutter/issues/52077#issuecomment-600459786) - then the Kotlin version 1.3.61, bundled with the Android Studio will reappear.
 ## Accessing the database
 
     adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
