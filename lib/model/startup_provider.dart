@@ -46,7 +46,7 @@ class Startup {
   Future<void> start() async {
     if (_started) return;
     _started = true;
-    await _start(); // Will run in background
+    await _start();
   }
 
   Future<void> _start() async {
@@ -56,15 +56,7 @@ class Startup {
     // delete old logs
     await Log.maintain();
 
-    // We'd *like* to jump-start MM as part of the initial startup sequence
-    // but this is unlikely to happen because the passphrase needs to be unlocked first.
-    // So invoking this method here might be seen as a wishful thinking.
-    await startMmIfUnlocked();
-
     await walletSecuritySettingsProvider.migrateSecuritySettings();
-
-    // restore saved camouflage session if any
-    await camoBloc.init();
 
     _live = true;
     _notifyListeners();
