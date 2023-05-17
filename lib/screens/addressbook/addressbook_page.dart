@@ -216,6 +216,13 @@ class _AddressBookState extends State<AddressBookPage> {
       case CoinType.utxo:
         if (coin!.abbr == 'QTUM') title = 'QTUM & QRC tokens';
         break;
+      // Dart 3 is clever so we have to have this default statement or it
+      // won't compile.
+      // This is old code which has been working for a long time, so:
+      // TODO: investigate if this function ever encounters the coin types
+      // which are not handled here.
+      default:
+        throw Exception('Unknown coin type');
     }
 
     return Padding(

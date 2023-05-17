@@ -12,7 +12,7 @@ version: 0.6.2
 publish_to: none
 
 environment:
-  sdk: '>=2.16.0 <3.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 # We're using specific (pinned) plugin versions in order to help us review the dependency upgrades.
 # KomodoPlatform plugin upgrades should be created as new branches, with PR into master;
