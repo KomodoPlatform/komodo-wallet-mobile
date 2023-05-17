@@ -621,6 +621,8 @@ class CoinsBloc implements GenericBlocBase {
     jobService.suspend('checkBalance');
   }
 
+  static const int _concurrency = 8;
+
   Future<void> updateCoinBalances() async {
     if (!mmSe.running || mainBloc.networkStatus != NetworkStatus.Online) return;
 
@@ -635,18 +637,32 @@ class CoinsBloc implements GenericBlocBase {
 
     await cexPrices.updatePrices(coins);
 
-    // NB: Loading balances sequentially in order to better reuse HTTP file descriptors
-    for (Coin coin in coins) {
-      try {
-        final CoinBalance balance = await _getBalanceForCoin(coin);
-        if (balance.balance?.address != null &&
-            balance.balance!.address!.isNotEmpty) {
-          updateOneCoin(balance);
+    // Timer setup
+    final Stopwatch stopwatch = Stopwatch()..start();
+
+    // Update coin balances concurrently in batches of batchSize
+    for (var i = 0; i < coins.length; i += _concurrency) {
+      var end =
+          (i + _concurrency < coins.length) ? i + _concurrency : coins.length;
+      var batch = coins.sublist(i, end);
+
+      await Future.wait(batch.map((coin) async {
+        try {
+          final CoinBalance balance = await _getBalanceForCoin(coin);
+          if (balance.balance?.address != null &&
+              balance.balance!.address!.isNotEmpty) {
+            updateOneCoin(balance);
+          }
+        } catch (ex) {
+          Log('coins_bloc:434', 'Error updating ${coin.abbr} balance: $ex');
         }
-      } catch (ex) {
-        Log('coins_bloc:434', 'Error updating ${coin.abbr} balance: $ex');
-      }
+      }));
     }
+
+    // Timer stop and log
+    stopwatch.stop();
+    Log('coins_bloc',
+        'Updated all balances in ${stopwatch.elapsedMilliseconds} ms for ${coins.length} coins.');
 
     _coinsLock = false;
   }
