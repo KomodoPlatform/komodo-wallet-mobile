@@ -25,6 +25,19 @@ extension IterableUtils<T> on Iterable<T> {
     }
     return null;
   }
+
+  /// Returns the i'th element in the list or the last element if the index is
+  /// out of bounds.
+  T elementAtOrLast(int index) {
+    if (index >= 0) {
+      int i = 0;
+      for (final T element in this) {
+        if (i == index) return element;
+        i++;
+      }
+    }
+    return last;
+  }
 }
 
 /// Utilties for working with iterables where the elements can be null.
