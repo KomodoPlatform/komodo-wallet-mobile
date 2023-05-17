@@ -19,7 +19,8 @@ class WalletsBloc extends HydratedBloc<WalletsEvent, WalletsState> {
 
   Future<void> testingAddWallet(Wallet wallet) async {
     if (!kDebugMode) {
-      throw Exception('This method is only available in debug mode.');
+      throw Exception(
+          'This method is only available in debug mode for testing.');
     }
 
     final testPassphrase = bip39.generateMnemonic();

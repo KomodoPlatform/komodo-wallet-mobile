@@ -8,7 +8,8 @@ class AtomicDexApiException implements Exception {
 }
 
 class NoSuchAccountException extends AtomicDexApiException {
-  NoSuchAccountException(message) : super(message);
+  NoSuchAccountException([String? message])
+      : super(message ?? 'No such account.');
 }
 
 class AccountExistsAlreadyException extends AtomicDexApiException {

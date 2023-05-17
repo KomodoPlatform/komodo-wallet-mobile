@@ -9,6 +9,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 // import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
 import 'package:komodo_dex/packages/authentication/bloc/authentication_state.dart';
 import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
+import 'package:komodo_dex/packages/authentication/repository/exceptions.dart';
 import 'package:komodo_dex/packages/wallets/models/wallet.dart';
 import 'package:komodo_dex/packages/wallets/repository/wallets_repository.dart';
 
@@ -58,9 +59,11 @@ class AuthenticationBloc
   }
 
   void _handleAuthenticationBiometricLoginRequested(
-      AuthenticationBiometricLoginRequested event,
-      Emitter<AuthenticationState> state) async {
+    AuthenticationBiometricLoginRequested event,
+    Emitter<AuthenticationState> emit,
+  ) async {
     Wallet? wallet;
+    emit(AuthenticationState.unauthenticated());
     try {
       final biometricsAvailable =
           await _authenticationRepository.canBiometricsAuthenticate();
@@ -79,6 +82,20 @@ class AuthenticationBloc
       await _authenticationRepository.logInWithBiometrics(
         walletId: event.walletId,
       );
+    } on WalletNotFoundException catch (_) {
+      // This may be caused if the user has changed their bio-metrics since
+      // storing the passphrase as all biometric data is invalidated when
+      // a new fingerprint/pin is added or removed.
+      emit(
+        AuthenticationState.unauthenticated().withError(
+          'Seed not found in device\'s secure storage. '
+          'Try logging in with your seed.',
+        ),
+      );
+      // TODO: Implement functionality to try sign in with seed if account
+      // exists but passphrase is not found in biometric storage. We should
+      // store some data in the wallet storage to validate that the passphrase
+      // is associated with the wallet. Perhaps a hash checksum?
     } catch (e) {
       debugPrint('Exception type = ${e.runtimeType}');
       debugPrint('ERROR: $e');

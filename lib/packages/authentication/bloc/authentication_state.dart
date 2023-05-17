@@ -6,13 +6,25 @@ import 'package:komodo_dex/packages/wallets/models/wallet.dart';
 class AuthenticationState extends Equatable {
   final AuthenticationStatus status;
   final Wallet? wallet;
+  final String? error;
+
+  bool get hasError => error != null;
+
+  bool get isUnknown => status == AuthenticationStatus.unknown;
 
   bool get isAuthenticated => status == AuthenticationStatus.authenticated;
 
   const AuthenticationState._({
     this.status = AuthenticationStatus.unknown,
     this.wallet,
+    this.error,
   });
+
+  AuthenticationState withError(String error) => AuthenticationState._(
+        status: status,
+        wallet: wallet,
+        error: error,
+      );
 
   const AuthenticationState.unknown() : this._();
 
@@ -42,5 +54,5 @@ class AuthenticationState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [status, wallet];
+  List<Object?> get props => [status, wallet, error];
 }

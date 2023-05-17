@@ -52,10 +52,17 @@ class _WalletsPageState extends State<WalletsPage> {
 
     final _state = _walletProfilesBloc.state;
 
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
-      listenWhen: (previous, current) =>
-          previous.isAuthenticated != current.isAuthenticated,
-      listener: _onAuthenticationStateChanged,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthenticationBloc, AuthenticationState>(
+          listenWhen: _listenWhenAuthStateChanged,
+          listener: _onAuthStateChanged,
+        ),
+        BlocListener<AuthenticationBloc, AuthenticationState>(
+          listenWhen: _listenWhenNewAuthError,
+          listener: _onNewAuthError,
+        ),
+      ],
       child: Scaffold(
         // FAB Used for mockup testing to create new wallet. Remove later.
         floatingActionButton: _state is! WalletsLoadSuccess
@@ -106,8 +113,12 @@ class _WalletsPageState extends State<WalletsPage> {
     );
   }
 
-  void _onAuthenticationStateChanged(
-      BuildContext context, AuthenticationState state) {
+  bool _listenWhenAuthStateChanged(
+      AuthenticationState previous, AuthenticationState current) {
+    return previous.isAuthenticated != current.isAuthenticated;
+  }
+
+  void _onAuthStateChanged(BuildContext context, AuthenticationState state) {
     debugPrint('WalletsPage._onAuthenticationStateChanged');
     if (state.isAuthenticated) {
       Beamer.of(context).beamToNamed(
@@ -115,6 +126,23 @@ class _WalletsPageState extends State<WalletsPage> {
         replaceRouteInformation: true,
       );
     }
+  }
+
+  bool _listenWhenNewAuthError(
+      AuthenticationState previous, AuthenticationState current) {
+    return current.hasError && previous.error != current.error;
+  }
+
+  void _onNewAuthError(BuildContext context, AuthenticationState state) {
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(
+        SnackBar(
+          content:
+              Text(state.error ?? AppLocalizations.of(context)!.errorTryAgain),
+          duration: const Duration(seconds: 3),
+        ),
+      );
   }
 
   // TODO: Handle button to create new wallet. Navigate to the page for creating
