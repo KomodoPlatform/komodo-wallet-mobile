@@ -136,7 +136,7 @@ Copy the generated `coins_config.json` file from the Utils folder and paste it i
 
  - [ticking sound](https://freesound.org/people/FoolBoyMedia/sounds/264498/)
  - [silence](https://freesound.org/people/Mullabfuhr/sounds/540483/)
- - [start (iOs)](https://freesound.org/people/pizzaiolo/sounds/320664/)
+ - [start (iOS)](https://freesound.org/people/pizzaiolo/sounds/320664/)
 
  ## Testing
 
