@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 import '../services/mm_service.dart';
 import '../utils/utils.dart';
 
@@ -34,6 +36,8 @@ class Log {
     if (pass(key, message)) {
       // Flutter debugging console
       // and also iOS system log.
+
+      if (kDebugMode) print(messageToPrint);
       //  print(messageToPrint);
     }
 
