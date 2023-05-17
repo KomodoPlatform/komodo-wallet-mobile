@@ -1,4 +1,5 @@
 export 'num_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/packages/app/widgets/main_app.dart';
 
 import 'num_utils.dart';
@@ -512,14 +513,45 @@ Future<void> sleepMs(int ms) async {
 }
 
 typedef FutureBoolFunction = FutureOr<bool> Function();
-Future<void> pauseUntil(FutureBoolFunction cond, {int? maxMs}) async {
-  maxMs ??= 10000;
-  final int start = DateTime.now().millisecondsSinceEpoch;
+typedef BackoffFunction = Duration Function(int tries);
 
-  while (!(await cond()) &&
-      DateTime.now().millisecondsSinceEpoch - start < maxMs) {
-    await Future<dynamic>.delayed(Duration(milliseconds: 100));
+/// Pause until [cond] is true or [maxMs] is reached.
+///
+/// Reconsider the approach you are taking if this function is needed since
+/// it is prone to race conditions.
+///
+/// Currently used when interfacing between legacy code and new bloc
+/// architecture since it is widely used in the legacy code.
+Future<void> pauseUntil(
+  FutureBoolFunction cond, {
+  int maxMs = 10000,
+  BackoffFunction? backoff,
+}) async {
+  Stopwatch? stopwatch = Stopwatch()..start();
+
+  if (await cond()) return;
+
+  final maxTime = Duration(milliseconds: maxMs);
+
+  backoff ??= (int tries) {
+    final defaultBackoffStepsMs = [10, 50, 100];
+
+    return Duration(milliseconds: defaultBackoffStepsMs.elementAtOrLast(tries));
+  };
+
+  // Initialised as 1 since we already tried once
+  int tries = 1;
+  while (!(await cond()) && stopwatch.elapsed < maxTime) {
+    await Future.delayed(backoff(tries));
+    tries += 1;
   }
+
+  stopwatch.stop();
+  stopwatch = null;
+
+  // assert(await cond(), 'pauseUntil: maxTime reached ($maxTime))');
+
+  return;
 }
 
 /// Decode a lowercase hex into an integer.
@@ -545,11 +577,8 @@ int hex2int(String sv) {
   return iv;
 }
 
-bool get isInDebugMode {
-  bool inDebugMode = false;
-  assert(inDebugMode = true);
-  return inDebugMode;
-}
+@Deprecated("Use flutter's kDebugMode")
+bool get isInDebugMode => kDebugMode;
 
 bool isErcType(Coin? coin) {
   final String? protocolType = coin?.protocol?.type;
