@@ -18,7 +18,7 @@ abstract class ActiveAccountState extends Equatable {
       : null;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props;
 
   Map<String, dynamic> toJson() => throw UnimplementedError();
 
@@ -59,6 +59,9 @@ class ActiveAccountInitial extends ActiveAccountState {
   @override
   Map<String, dynamic> toJson() =>
       {'stateName': ActiveAccountState.typeName(runtimeType)};
+
+  @override
+  List<Object?> get props => [];
 }
 
 /// [ActiveAccountInProgress] represents the state when the ActiveAccount bloc is in progress
@@ -71,6 +74,9 @@ class ActiveAccountInProgress extends ActiveAccountState {
   Map<String, dynamic> toJson() => {
         'stateName': ActiveAccountState.typeName(runtimeType),
       };
+
+  @override
+  List<Object?> get props => [];
 }
 
 /// [ActiveAccountSuccess] represents the state when the ActiveAccount bloc has successfully
