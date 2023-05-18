@@ -132,14 +132,13 @@ class _RewardsPageState extends State<RewardsPage> {
           Expanded(
               child: Opacity(
             opacity: total <= 0 || rewardsProvider.claimInProgress ? 0.6 : 1,
-            child: PrimaryButton(
+            child: PrimaryButton.alternative(
               onPressed: total <= 0 || rewardsProvider.claimInProgress
                   ? null
                   : () {
                       rewardsProvider.receive();
                     },
               text: AppLocalizations.of(context)!.rewardsReceive,
-              backgroundColor: const Color.fromARGB(255, 1, 102, 129),
             ),
           )),
         ],
