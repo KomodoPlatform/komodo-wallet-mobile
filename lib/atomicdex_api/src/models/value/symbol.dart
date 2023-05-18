@@ -11,11 +11,6 @@ abstract class Symbol {
         NFTSymbol: 'NFTSymbol',
       };
 
-  @override
-  String toString() {
-    return text;
-  }
-
   static Symbol fromJson(Map<String, dynamic> json) {
     final type = json['type'] as String;
     switch (type) {
@@ -30,45 +25,35 @@ abstract class Symbol {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'type': typeName(runtimeType),
-      'text': text,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        'type': typeName(runtimeType),
+        'text': text,
+      };
+
+  @override
+  String toString() => '$runtimeType($text)';
+
+  String get longFormat => text;
+
+  String get shortFormat => throw UnimplementedError();
 }
 
 class FiatCurrencySymbol extends Symbol {
   const FiatCurrencySymbol(String currency) : super(text: currency);
 
-  @override
-  static String get type => 'FiatCurrencySymbol';
-
-  static FiatCurrencySymbol fromJson(Map<String, dynamic> json) {
-    final currency = json['text'] as String;
-    return FiatCurrencySymbol(currency);
-  }
+  factory FiatCurrencySymbol.fromJson(Map<String, dynamic> json) =>
+      FiatCurrencySymbol(json['text'] as String);
 }
 
 class CryptoCurrencySymbol extends Symbol {
   const CryptoCurrencySymbol(String ticker) : super(text: ticker);
 
-  @override
-  static String get type => 'CryptoCurrencySymbol';
-
-  static CryptoCurrencySymbol fromJson(Map<String, dynamic> json) {
-    final ticker = json['text'] as String;
-    return CryptoCurrencySymbol(ticker);
-  }
+  factory CryptoCurrencySymbol.fromJson(Map<String, dynamic> json) =>
+      CryptoCurrencySymbol(json['text'] as String);
 }
 
 class NFTSymbol extends Symbol {
   const NFTSymbol() : super(text: 'NFT');
 
-  @override
-  static String get type => 'NFTSymbol';
-
-  static NFTSymbol fromJson(Map<String, dynamic> json) {
-    return NFTSymbol();
-  }
+  factory NFTSymbol.fromJson(Map<String, dynamic> json) => NFTSymbol();
 }

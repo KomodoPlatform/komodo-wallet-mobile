@@ -31,15 +31,12 @@ class FiatAsset extends IValue {
       : super(amount: amount, symbol: FiatCurrencySymbol(currency));
 
   @override
-  String format() {
-    // Implement the logic to format the fiat currency amount as a string
-    return '$symbol ${amount.toStringAsFixed(2)}';
-  }
+  String format() => formatWithPrecision(2);
 
   @override
   String formatWithPrecision(int precision) {
     // Implement the logic to format the fiat currency amount with the specified precision
-    return '$symbol ${amount.toStringAsFixed(precision)}';
+    return '${symbol.longFormat} ${amount.toStringAsFixed(precision)}';
   }
 }
 
