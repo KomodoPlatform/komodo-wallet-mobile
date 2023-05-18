@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/startup_provider.dart';
 import 'package:komodo_dex/packages/app/widgets/main_app.dart';
 import 'package:komodo_dex/services/bloc/app_providers.dart';
 import 'package:komodo_dex/services/bloc/bloc_manager_widget.dart';
@@ -11,7 +12,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     // mmSe.metrics();
-    // await startup.start();
+    await startup.start();
     await BlocManager.init();
     return runApp(
       BlocManagerWidget(

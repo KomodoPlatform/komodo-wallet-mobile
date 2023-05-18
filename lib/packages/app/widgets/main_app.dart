@@ -116,8 +116,9 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
         (bloc) => bloc.state.activeAccount?.themeColor);
 
     final appTheme = systemUIBrightness == Brightness.dark
-        ? getThemeDark(seed: maybeUserThemeColor)
-        : getThemeLight(seed: maybeUserThemeColor);
+        // To be implemented soon. See branch: feature/m3-dynamic-theme
+        ? getThemeDark(/*seed: maybeUserThemeColor*/)
+        : getThemeLight(/*seed: maybeUserThemeColor*/);
 
     return BeamerProvider(
       routerDelegate: routerDelegate,
