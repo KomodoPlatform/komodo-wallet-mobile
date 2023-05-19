@@ -22,6 +22,7 @@ import 'package:komodo_dex/packages/wallets/api/wallet_storage_api.dart';
 import 'package:komodo_dex/packages/wallets/bloc/wallets_bloc.dart';
 import 'package:komodo_dex/packages/wallets/repository/wallets_repository.dart';
 import 'package:komodo_dex/services/db/database.dart';
+import 'package:komodo_dex/services/db/legacy_db_adapter.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';

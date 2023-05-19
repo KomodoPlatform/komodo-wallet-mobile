@@ -3,13 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:komodo_dex/packages/accounts/models/account.dart';
-import 'package:komodo_dex/packages/accounts/repository/active_account_repository.dart';
-import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
-import 'package:komodo_dex/packages/wallets/repository/wallets_repository.dart';
+import 'package:komodo_dex/services/db/legacy_db_adapter.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:komodo_dex/model/wallet.dart' as legacy;
 
 import '../../generic_blocs/wallet_bloc.dart';
 import '../../model/article.dart';
@@ -19,63 +15,6 @@ import '../../model/wallet_security_settings.dart';
 import '../../utils/iterable_utils.dart';
 import '../../utils/log.dart';
 import '../../utils/utils.dart';
-
-class LegacyDatabaseAdapter {
-  LegacyDatabaseAdapter._({
-    required WalletsRepository walletsRepository,
-    required AuthenticationRepository authenticationRepository,
-    required ActiveAccountRepository activeAccountRepository,
-  })  : _walletsRepository = walletsRepository,
-        _authenticationRepository = authenticationRepository,
-        _activeAccountRepository = activeAccountRepository;
-
-  static Future<void> init({
-    required WalletsRepository walletsRepository,
-    required AuthenticationRepository authenticationRepository,
-    required ActiveAccountRepository activeAccountRepository,
-  }) async {
-    // if (_instance != null) return _instance!;
-
-    _instance = LegacyDatabaseAdapter._(
-      walletsRepository: walletsRepository,
-      authenticationRepository: authenticationRepository,
-      activeAccountRepository: activeAccountRepository,
-    );
-
-    // // final db = await Db.db;
-    // return _instance!;
-  }
-
-  static LegacyDatabaseAdapter? _instance;
-
-  final AuthenticationRepository _authenticationRepository;
-  final ActiveAccountRepository _activeAccountRepository;
-  final WalletsRepository _walletsRepository;
-
-  static LegacyDatabaseAdapter? get maybeInstance => _instance;
-
-  Future<Wallet?> tryGetAuthenticatedWallet() async {
-    Wallet? wallet;
-    Account? account;
-
-    final futures = <Future<void>>[
-      Future(() async {
-        // Gets the wallet in the new format
-        wallet = (await _authenticationRepository.tryGetWallet())?.toLegacy();
-      }),
-      Future(() async {
-        // Gets the account in the new format
-        account = await _activeAccountRepository.tryGetActiveAccount();
-      }),
-    ];
-
-    await Future.wait<void>(futures);
-
-    if (wallet == null) return null;
-
-    return account?.asLegacyWallet();
-  }
-}
 
 class Db {
   static Database? _db;
