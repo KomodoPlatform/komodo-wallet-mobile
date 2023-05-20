@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:komodo_dex/packages/biometric_storage/api/biometric_storage_api.dart';
+import 'package:komodo_dex/packages/authentication/repository/exceptions.dart';
+import 'package:komodo_dex/packages/biometrics/api/biometric_storage_api.dart';
 import 'package:komodo_dex/packages/wallets/api/wallets_api_interface.dart';
 import 'package:komodo_dex/packages/accounts/models/account.dart';
 import 'package:komodo_dex/packages/wallets/models/wallet.dart';

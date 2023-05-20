@@ -1,4 +1,4 @@
-import 'package:komodo_dex/packages/biometric_storage/api/biometric_storage_api.dart';
+import 'package:komodo_dex/packages/biometrics/api/biometric_storage_api.dart';
 import 'package:komodo_dex/packages/wallets/api/wallet_storage_api.dart';
 import 'package:komodo_dex/packages/wallets/models/wallet.dart';
 
@@ -76,6 +76,28 @@ class WalletsRepository {
       _walletStorageApi.removeWallet(wallet.walletId).ignore();
 
       _biometricStorageApi.delete(wallet.walletId).ignore();
+
+      return Future.error(e);
+    }
+  }
+
+  /// Used when creating a new wallet for which the biometrics passphrase
+  /// storage is not known or set at the time of creation.
+  ///
+  /// E.g. When migrating a wallet from legacy storage to the new storage
+  /// we don't know the passphrase at the time of creation. The user will
+  /// be prompted to enter the passphrase or legacy password when they first try
+  /// to access the wallet.
+  ///
+  /// NB: This method does not store the passphrase in biometric storage.
+  Future<void> createWalletWithoutPassphrase({
+    required Wallet wallet,
+  }) async {
+    try {
+      await _walletStorageApi.createWalletWithoutPassphrase(wallet: wallet);
+    } catch (e) {
+      //Delete the profile if creation fails. Await future but ignore result
+      _walletStorageApi.removeWallet(wallet.walletId).ignore();
 
       return Future.error(e);
     }

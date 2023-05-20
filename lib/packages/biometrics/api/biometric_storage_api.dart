@@ -19,21 +19,30 @@ import 'package:flutter/services.dart';
 class BiometricStorageApi {
   BiometricStorageApi({
     required String baseStorageKey,
+    int validityDurationSeconds = -1,
   })  : _biometricStorage = BiometricStorage(),
+        _validityDurationSeconds = validityDurationSeconds,
         _baseStorageKey = baseStorageKey;
 
   final BiometricStorage _biometricStorage;
 
   final String _baseStorageKey;
 
+  /// The duration in seconds for which the biometric authentication is valid
+  /// and the user does not need to authenticate again to access the data.
+  ///
+  /// WARNING: This is the time counted from the last successful authentication
+  /// for any biometric-storage file.
+  final int _validityDurationSeconds;
+
   String _storageKeyPattern(String id) => !_baseStorageKey.contains('.')
       ? '$_baseStorageKey.$id'
       : throw Exception('baseStorageKey should not contain a period.');
 
   StorageFileInitOptions _storageFileInitOptions() => StorageFileInitOptions(
-        authenticationValidityDurationSeconds: 60,
+        authenticationValidityDurationSeconds: _validityDurationSeconds,
         authenticationRequired: true,
-        androidBiometricOnly: false,
+        androidBiometricOnly: _validityDurationSeconds == -1,
       );
 
   /// If [forceInit] is true, throws an exception if the storage file was

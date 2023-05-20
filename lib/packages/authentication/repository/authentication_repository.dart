@@ -6,7 +6,7 @@ import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart' hide Account;
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/login/exceptions/auth_exceptions.dart';
 import 'package:komodo_dex/packages/authentication/repository/exceptions.dart';
-import 'package:komodo_dex/packages/biometric_storage/api/biometric_storage_api.dart';
+import 'package:komodo_dex/packages/biometrics/api/biometric_storage_api.dart';
 import 'package:komodo_dex/packages/wallets/api/wallet_storage_api.dart';
 import 'package:komodo_dex/packages/wallets/models/wallet.dart';
 import 'package:komodo_dex/services/mm_service.dart';
