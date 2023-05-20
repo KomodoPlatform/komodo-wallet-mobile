@@ -9,6 +9,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/navigation/app_locations.dart';
 import 'package:komodo_dex/navigation/app_routes.dart';
 import 'package:komodo_dex/packages/accounts/bloc/active_account_bloc.dart';
+import 'package:komodo_dex/packages/app/widgets/middleware_widgets.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/auth_active_account_listener.dart';
@@ -131,6 +132,10 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
             title: appConfig.appName,
             localizationsDelegates: localizationsDelegates,
             theme: appTheme,
+            builder: (context, child) => MiddlewareWidgets(
+                  child:
+                      child ?? Container(key: Key('empty-app-router-builder')),
+                ),
             // themeMode: ThemeMode.dark,
             routerDelegate: routerDelegate,
             routeInformationParser: _routeInformationParser
