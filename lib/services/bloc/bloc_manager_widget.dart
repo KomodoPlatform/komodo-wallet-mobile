@@ -15,6 +15,7 @@ import 'package:komodo_dex/packages/accounts/bloc/accounts_list_bloc.dart';
 import 'package:komodo_dex/packages/accounts/bloc/active_account_bloc.dart';
 import 'package:komodo_dex/packages/accounts/repository/account_repository.dart';
 import 'package:komodo_dex/packages/accounts/repository/active_account_repository.dart';
+import 'package:komodo_dex/packages/app/widgets/placeholder_bloc.dart';
 import 'package:komodo_dex/packages/authentication/bloc/authentication_bloc.dart';
 import 'package:komodo_dex/packages/authentication/repository/authentication_repository.dart';
 import 'package:komodo_dex/packages/pin_reset/bloc/pin_reset_bloc.dart';
@@ -93,7 +94,11 @@ class BlocManagerWidget extends StatelessWidget {
                 BlocManager.instance._activeAccountRepository,
             accountRepository: BlocManager.instance._accountRepository,
           ),
-        )
+        ),
+
+        BlocProvider<PlaceholderBloc>(
+          create: (BuildContext context) => PlaceholderBloc(),
+        ),
       ],
       child: child,
     );
