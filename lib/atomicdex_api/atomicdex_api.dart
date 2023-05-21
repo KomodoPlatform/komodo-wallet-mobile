@@ -8,7 +8,6 @@ import 'src/client.dart';
 import 'src/models/account/account_id.dart';
 
 export 'src/client.dart';
-export 'src/models/account/account.dart';
 export 'src/models/account/account_id.dart';
 
 /// The AtomicDex API

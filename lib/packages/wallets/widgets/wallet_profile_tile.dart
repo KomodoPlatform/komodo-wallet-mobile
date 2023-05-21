@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:komodo_dex/packages/authentication/bloc/authentication_bloc.dart';
 import 'package:komodo_dex/packages/wallets/models/wallet.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class WalletProfileTile extends StatelessWidget {
   final Wallet walletProfile;
@@ -37,7 +38,7 @@ class WalletProfileTile extends StatelessWidget {
           backgroundColor: walletProfile.color,
           child: Center(
             child: Text(
-              walletProfile.name.characters.first,
+              walletProfile.name.initials(2),
               style: Theme.of(context)
                   .textTheme
                   .titleLarge

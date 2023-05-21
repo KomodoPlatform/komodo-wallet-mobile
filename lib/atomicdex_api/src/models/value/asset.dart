@@ -30,6 +30,21 @@ class FiatAsset extends IValue {
   FiatAsset.parsedCurrency(String currency, double amount)
       : super(amount: amount, symbol: FiatCurrencySymbol(currency));
 
+  FiatAsset.noValueUSD()
+      : super(amount: 0, symbol: FiatCurrencySymbol(FiatCurrency.USD.name));
+
+  static FiatAsset fromJson(Map<String, dynamic> json) {
+    return FiatAsset(
+      amount: json['amount'],
+      symbol: FiatCurrencySymbol.fromJson(json['symbol']),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'amount': amount,
+        'symbol': symbol.text,
+      };
+
   @override
   String format() => formatWithPrecision(2);
 

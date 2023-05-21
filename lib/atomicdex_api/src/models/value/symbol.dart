@@ -25,10 +25,7 @@ abstract class Symbol {
     }
   }
 
-  Map<String, dynamic> toJson() => {
-        'type': typeName(runtimeType),
-        'text': text,
-      };
+  Map<String, dynamic> toJson() => throw UnimplementedError();
 
   @override
   String toString() => '$runtimeType($text)';
@@ -43,6 +40,12 @@ class FiatCurrencySymbol extends Symbol {
 
   factory FiatCurrencySymbol.fromJson(Map<String, dynamic> json) =>
       FiatCurrencySymbol(json['text'] as String);
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'type': Symbol.typeName(runtimeType),
+        'text': text,
+      };
 }
 
 class CryptoCurrencySymbol extends Symbol {

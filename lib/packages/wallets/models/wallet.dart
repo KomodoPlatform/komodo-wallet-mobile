@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:komodo_dex/atomicdex_api/src/models/value/asset.dart';
@@ -17,16 +18,18 @@ class Wallet extends HiveObject {
   final String walletId;
 
   @HiveField(2)
-  final String description;
+  final String? description;
 
-  // @HiveField(3)
-  // final FiatAsset? balance;
+  @HiveField(3)
+  final FiatAsset? balance;
 
-  FiatAsset get balance => FiatAsset.currency(FiatCurrency.USD, 69.42);
+  // RESERVED FOR FUTURE USE
+  @HiveField(4)
+  final Color? color;
 
-  // Material colour based on the wallet ID.
-  Color get color =>
-      Colors.primaries[walletId.hashCode % Colors.primaries.length];
+  // RESERVED FOR FUTURE USE
+  @HiveField(5)
+  final Uint8List? profileImage;
 
   /// Creates a new Wallet instance.
   ///
@@ -37,21 +40,24 @@ class Wallet extends HiveObject {
   Wallet({
     required this.name,
     required this.walletId,
-    required this.description,
-    // this.balance,
+    this.description,
+    this.balance,
+    this.color,
+    this.profileImage,
   });
 
   legacy.Wallet toLegacy() => legacy.Wallet(
         name: name,
         id: walletId,
-        // balance: balance,
       );
 
   List<Object?> get props => [
         name,
         walletId,
         description,
-        // balance,
+        balance,
+        color,
+        profileImage,
       ];
 
   /// Creates a Wallet instance from a JSON map.
@@ -61,10 +67,9 @@ class Wallet extends HiveObject {
         name: json['name'],
         walletId: json['walletId'],
         description: json['description'],
-        //TODO: Implement properly
-        // balance: json['balance'] != null
-        //     ? FiatAsset()
-        //     : null,
+        balance: json['balance'] != null
+            ? FiatAsset.fromJson(json['balance'])
+            : null,
       );
 
   /// Creates a JSON map from a Wallet instance.
@@ -74,7 +79,7 @@ class Wallet extends HiveObject {
         'name': name,
         'walletId': walletId,
         'description': description,
-        // 'balance': balance?.toJson(),
+        'balance': balance?.toJson(),
       };
 }
 
@@ -86,16 +91,21 @@ class WalletAdapter extends TypeAdapter<Wallet> {
   Wallet read(BinaryReader reader) {
     final name = reader.readString();
     final walletId = reader.readString();
-    final description = reader.readString();
-    // final balanceJson = reader.read();
-    // final balance = balanceJson != null
-    //     ? FiatAsset.fromJson(jsonDecode(balanceJson) as Map<String, dynamic>)
-    //     : null;
+    final description = reader.read() as String?;
+
+    final balanceJson = reader.read() as Map<String, dynamic>?;
+    final balance =
+        balanceJson != null ? FiatAsset.fromJson(balanceJson) : null;
+
+    // FIELDS RESERVED FOR FUTURE USE
+    reader.read() as Color?;
+    reader.read() as List<int>?;
+
     return Wallet(
       name: name,
       walletId: walletId,
       description: description,
-      // balance: balance,
+      balance: balance,
     );
   }
 
@@ -103,9 +113,15 @@ class WalletAdapter extends TypeAdapter<Wallet> {
   void write(BinaryWriter writer, Wallet obj) {
     writer.writeString(obj.name);
     writer.writeString(obj.walletId);
-    writer.writeString(obj.description);
-    // final balanceJson =
-    //     obj.balance != null ? jsonEncode(obj.balance!.toJson()) : null;
-    // writer.write(balanceJson);
+    writer.write(obj.description);
+    writer.write(obj.balance?.toJson());
+
+    // FIELD RESERVED FOR FUTURE USE
+    const Color? color = null;
+    writer.write(color);
+
+    // FIELD RESERVED FOR FUTURE USE
+    const Uint8List? profileImage = null;
+    writer.write(profileImage);
   }
 }

@@ -19,15 +19,9 @@ class WalletProfilesContent extends StatelessWidget {
 
     final state = bloc.state as WalletsLoadSuccess;
     return Column(
-      // padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
       children: [
         SizedBox(height: 16),
-
         SizedBox(height: 160, child: AppLogo.full()),
-        // Let system handle the language selection
-        // Align(
-        //     alignment: Alignment.centerRight,
-        //     child: const SelectLanguageButton()),
         SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
