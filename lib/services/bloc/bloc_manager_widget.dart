@@ -9,6 +9,8 @@ import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
 import 'package:komodo_dex/atomicdex_api/src/config/atomicdex_api_config.dart';
 import 'package:komodo_dex/login/bloc/login_bloc.dart';
+import 'package:komodo_dex/migration_manager/migration_manager.dart';
+import 'package:komodo_dex/migration_manager/migrations/multi_account_migration.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/packages/accounts/bloc/account_form_bloc.dart';
 import 'package:komodo_dex/packages/accounts/bloc/accounts_list_bloc.dart';
@@ -40,7 +42,6 @@ class BlocManagerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO.C: AppProviderManager taken from main.dart
     return MultiBlocProvider(
       providers: [
         // Instantiate all BLoCs here

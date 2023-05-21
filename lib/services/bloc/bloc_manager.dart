@@ -19,6 +19,16 @@ class BlocManager {
 
     await _blocManager._initRepositories();
 
+    final blocMigrations = MigrationManager([
+      MultiAccountMigration(),
+    ]);
+
+    final migratedSucecssfully = await blocMigrations.runAll();
+
+    if (!migratedSucecssfully) {
+      throw Exception('Failed to run bloc migrations.');
+    }
+
     // Set initialized
     _blocManager._isInitialized = true;
   }

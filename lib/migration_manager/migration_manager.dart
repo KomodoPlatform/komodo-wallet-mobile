@@ -75,7 +75,7 @@ final class MigrationManager {
       }
 
       if (await migration.shouldMigrate()) {
-        print('Migration ${migration.key} should be run.');
+        completedMigrations.add(migration.key);
       }
     }
   }
