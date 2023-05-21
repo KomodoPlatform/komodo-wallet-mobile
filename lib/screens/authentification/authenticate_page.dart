@@ -46,34 +46,6 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
   }
 }
 
-class BoxButton extends StatelessWidget {
-  const BoxButton({
-    Key? key,
-    required this.text,
-    this.assetPath,
-    this.onPressed,
-  }) : super(key: key);
-
-  final Widget text;
-  final String? assetPath;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: SvgPicture.asset(assetPath!, height: 40),
-      ),
-      label: DefaultTextStyle(
-        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(),
-        child: text,
-      ),
-    );
-  }
-}
-
 class BuildScreenAuthMultiWallets extends StatelessWidget {
   const BuildScreenAuthMultiWallets({Key? key, this.wallets}) : super(key: key);
 
@@ -269,51 +241,6 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class CreateWalletButton extends StatelessWidget {
-  const CreateWalletButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BoxButton(
-      key: const Key('createWalletButton'),
-      text: Text(AppLocalizations.of(context)!.createAWallet),
-      assetPath: Theme.of(context).brightness == Brightness.light
-          ? 'assets/svg_light/create_wallet.svg'
-          : 'assets/svg/create_wallet.svg',
-      onPressed: () => Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => const WelcomePage()),
-      ),
-    );
-  }
-}
-
-class RestoreButton extends StatelessWidget {
-  const RestoreButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BoxButton(
-      key: const Key('restoreWallet'),
-      text: Text(AppLocalizations.of(context)!.restoreWallet),
-      assetPath: Theme.of(context).brightness == Brightness.light
-          ? 'assets/svg_light/lock_off.svg'
-          : 'assets/svg/lock_off.svg',
-      onPressed: () {
-        Navigator.push<dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => const WelcomePage(
-              isFromRestore: true,
-            ),
-          ),
-        );
-      },
     );
   }
 }
