@@ -9,6 +9,7 @@ import 'package:komodo_dex/packages/wallets/bloc/wallets_bloc.dart';
 import 'package:komodo_dex/packages/wallets/events/wallets_load_requested.dart';
 import 'package:komodo_dex/packages/wallets/models/wallet.dart';
 import 'package:komodo_dex/packages/wallets/state/wallets_state.dart';
+import 'package:komodo_dex/packages/wallets/widgets/quick_create_wallet_button.dart';
 import 'package:komodo_dex/packages/wallets/widgets/wallet_profiles_content.dart';
 import 'package:uuid/uuid.dart';
 
@@ -65,25 +66,8 @@ class _WalletsPageState extends State<WalletsPage> {
       ],
       child: Scaffold(
         // FAB Used for mockup testing to create new wallet. Remove later.
-        floatingActionButton: _state is! WalletsLoadSuccess
-            ? null
-            : FloatingActionButton(
-                onPressed: () {
-                  // _walletProfilesBloc.state as WalletProfilesLoadSuccess;
-
-                  _walletProfilesBloc.testingAddWallet(
-                    Wallet(
-                      walletId: Uuid().v4(),
-                      name: 'Wallet ${_state.wallets.length + 1}',
-                      description: 'Lorem ipsum ${_state.wallets.length + 1}',
-                      // balance: FiatAsset(
-                      //   amount: Random().nextDouble() * 1000,
-                      //   symbol: FiatCurrencySymbol('USD'),
-                      // ),
-                    ),
-                  );
-                },
-              ),
+        floatingActionButton:
+            _state is! WalletsLoadSuccess ? null : QuickCreateWalletButton(),
         body: BlocBuilder<WalletsBloc, WalletsState>(
           builder: (context, state) {
             final bool showLoading =

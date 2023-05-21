@@ -14,7 +14,12 @@ class BiometricsNotEnrolledException implements Exception {
 
 class WalletNotFoundException implements Exception {
   final String message;
-  WalletNotFoundException(this.message);
+  WalletNotFoundException([this.message = 'Wallet not found']);
+}
+
+class WalletAlreadyExistsException implements Exception {
+  final String message;
+  WalletAlreadyExistsException([this.message = 'Wallet already exists']);
 }
 
 class InvalidPassphraseException implements Exception {

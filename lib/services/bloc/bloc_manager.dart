@@ -112,6 +112,7 @@ class BlocManager {
         activeAccountRepository: _activeAccountRepository,
         walletsRepository: _walletRepository,
         authenticationRepository: _authenticationRepository!,
+        accountRepository: _accountRepository,
       );
     } catch (e) {
       print('Fatal error: Error initializing repositories. App should exit.');

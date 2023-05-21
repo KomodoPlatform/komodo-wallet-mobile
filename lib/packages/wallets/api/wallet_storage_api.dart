@@ -34,7 +34,7 @@ class WalletStorageApi implements WalletStorageApiInterface {
 
   final Box<Wallet> _box;
   final BiometricStorageApi _biometricStorageApi;
-  static const String _walletProfilesBoxName = 'wallet_profiles';
+  static const String _walletProfilesBoxName = 'wallets_';
 
   @override
   Future<void> createWallet({
@@ -42,6 +42,8 @@ class WalletStorageApi implements WalletStorageApiInterface {
     required String passphrase,
   }) async {
     try {
+      _ensureWalletDoesNotExist(wallet.walletId);
+
       await _box.put(wallet.walletId, wallet);
 
       // TODO! Integrate biometric storage as separate bloc
@@ -59,6 +61,7 @@ class WalletStorageApi implements WalletStorageApiInterface {
   // TODO: Move to authentication bloc
   // @override
   Future<String?> getWalletPassphrase(String walletId) {
+    _ensureWalletExists(walletId);
     try {
       return _biometricStorageApi.read(walletId);
     } catch (e) {
@@ -88,5 +91,17 @@ class WalletStorageApi implements WalletStorageApiInterface {
 
   Future<bool> canBiometricAuthenticate() async {
     return _biometricStorageApi.canAuthenticate();
+  }
+
+  void _ensureWalletExists(String walletId) {
+    if (!_box.containsKey(walletId)) {
+      throw WalletNotFoundException();
+    }
+  }
+
+  void _ensureWalletDoesNotExist(String walletId) {
+    if (_box.containsKey(walletId)) {
+      throw WalletAlreadyExistsException();
+    }
   }
 }

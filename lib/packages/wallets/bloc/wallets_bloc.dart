@@ -2,10 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:komodo_dex/packages/wallets/events/wallets_event.dart';
 import 'package:komodo_dex/packages/wallets/events/wallets_load_requested.dart';
+import 'package:komodo_dex/packages/wallets/events/wallets_quick_create_submitted.dart';
 import 'package:komodo_dex/packages/wallets/models/wallet.dart';
 import 'package:komodo_dex/packages/wallets/repository/wallets_repository.dart';
 import 'package:komodo_dex/packages/wallets/state/wallets_state.dart';
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:uuid/uuid.dart';
 
 // TODO: Listen to realtime changes from the repository.
 class WalletsBloc extends HydratedBloc<WalletsEvent, WalletsState> {
@@ -15,18 +17,20 @@ class WalletsBloc extends HydratedBloc<WalletsEvent, WalletsState> {
       : _walletRepository = walletRepository,
         super(WalletsInitial()) {
     on<WalletsLoadRequested>(_onWalletsLoadRequested);
+    on<WalletsQuickCreateSubmitted>(_onWalletsQuickCreateSubmitted);
   }
 
-  Future<void> testingAddWallet(Wallet wallet) async {
-    if (!kDebugMode) {
-      throw Exception(
-          'This method is only available in debug mode for testing.');
-    }
+  void _onWalletsQuickCreateSubmitted(
+      WalletsQuickCreateSubmitted event, Emitter<WalletsState> emit) async {
+    final newWallet = Wallet(
+      walletId: Uuid().v4(),
+      name: event.name,
+      description: event.description,
+    );
 
     final testPassphrase = bip39.generateMnemonic();
-    debugPrint('Test passphrase generated: $testPassphrase');
     await _walletRepository.createWallet(
-      wallet: wallet,
+      wallet: newWallet,
       passphrase: testPassphrase,
     );
     add(WalletsLoadRequested());
@@ -45,6 +49,7 @@ class WalletsBloc extends HydratedBloc<WalletsEvent, WalletsState> {
     add(WalletsLoadRequested());
   }
 
+  // TODO: Change to a realtime subscription.
   Future<void> _onWalletsLoadRequested(
       WalletsLoadRequested event, Emitter<WalletsState> emit) async {
     // We are only emitting the loading state if the current state does not
