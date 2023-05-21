@@ -347,18 +347,7 @@ class Db {
   }
 
   static Future<List<Wallet>> getAllWallet() async {
-    final Database db = await Db.db;
-
-    // Query the table for All The Article.
-    final List<Map<String, dynamic>> maps = await db.query('Wallet');
-    Log('database:157', maps.length);
-    // Convert the List<Map<String, dynamic> into a List<Dog>.
-    return List<Wallet>.generate(maps.length, (int i) {
-      return Wallet(
-        id: maps[i]['id'],
-        name: maps[i]['name'],
-      );
-    });
+    return await LegacyDatabaseAdapter.maybeInstance!.listWallets();
   }
 
   Future<void> deleteAllWallets() async {

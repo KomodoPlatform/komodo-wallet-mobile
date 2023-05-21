@@ -67,6 +67,11 @@ class LegacyDatabaseAdapter {
     return await _activeAccountRepository.tryGetActiveAccount();
   }
 
+  Future<List<legacy.Wallet>> listWallets() async {
+    final wallets = await _walletsRepository.listWallets();
+
+    return wallets.map((w) => w.toLegacy()).toList();
+  }
 
   /// Migrate legacy wallets to the new storage format for multi-account
   /// support.
