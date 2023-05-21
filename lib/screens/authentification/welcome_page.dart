@@ -8,6 +8,7 @@ import '../settings/restore_seed_page.dart';
 import '../../utils/utils.dart';
 import '../../widgets/primary_button.dart';
 
+@Deprecated('Delete after extracting message localizations into new UI code')
 class WelcomePage extends StatefulWidget {
   const WelcomePage({this.isFromRestore = false});
 
@@ -128,7 +129,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   void _newPage() {
     if (isButtonLoginEnabled) {
-      walletBloc.initCurrentWallet(controller.text);
+      // walletBloc.initCurrentWallet(controller.text);
       if (widget.isFromRestore) {
         Navigator.push<dynamic>(
           context,

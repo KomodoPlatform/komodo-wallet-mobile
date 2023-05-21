@@ -37,8 +37,6 @@ import '../../widgets/primary_button.dart';
 import '../../widgets/scrollable_dialog.dart';
 import '../../widgets/tac_contents.dart';
 import '../authentification/lock_screen.dart';
-import '../authentification/show_delete_wallet_confirmation.dart';
-import '../authentification/unlock_wallet_page.dart';
 import '../import-export/export_page.dart';
 import '../import-export/import_page.dart';
 import '../import-export/import_swap_page.dart';
@@ -264,22 +262,6 @@ class _SettingPageState extends State<SettingPage> {
       tileColor: Theme.of(context).primaryColor,
       value: walletSecuritySettingsProvider.disallowScreenshot,
       onChanged: (bool switchValue) async {
-        if (!switchValue) {
-          Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => UnlockWalletPage(
-                  textButton: AppLocalizations.of(context)!.unlock,
-                  wallet: walletBloc.currentWallet!,
-                  isSignWithSeedIsEnabled: false,
-                  onSuccess: (_, __) {
-                    Navigator.pop(context);
-                    switchScreenshot(switchValue);
-                  }),
-            ),
-          );
-          return;
-        }
         switchScreenshot(switchValue);
       },
     );
@@ -536,18 +518,9 @@ class _SettingPageState extends State<SettingPage> {
     Navigator.push<dynamic>(
       context,
       MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => UnlockWalletPage(
-                textButton: AppLocalizations.of(context)!.unlock,
-                wallet: walletBloc.currentWallet!,
-                isSignWithSeedIsEnabled: false,
-                onSuccess: (_, String password) {
-                  Navigator.of(context).pop();
-                  showDeleteWalletConfirmation(
-                    context,
-                    password: password,
-                  );
-                },
-              )),
+        builder: (BuildContext context) =>
+            throw UnimplementedError('TODO: Wallet deletion.'),
+      ),
     );
   }
 

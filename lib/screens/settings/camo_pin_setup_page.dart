@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/login/models/pin_type.dart';
 import 'package:komodo_dex/packages/pin_reset/bloc/pin_reset_bloc.dart';
-import 'package:komodo_dex/packages/pin_reset/pages/pin_reset_page.dart';
-import '../../generic_blocs/authenticate_bloc.dart';
 import '../../generic_blocs/camo_bloc.dart';
 import '../../generic_blocs/wallet_bloc.dart';
 import '../../localizations.dart';
 import '../../model/wallet_security_settings_provider.dart';
 import '../authentification/lock_screen.dart';
-import '../authentification/pin_page.dart';
-import '../authentification/unlock_wallet_page.dart';
 import '../../utils/encryption_tool.dart';
-import '../../widgets/confirmation_dialog.dart';
 import 'package:provider/provider.dart';
 
 class CamoPinSetupPage extends StatefulWidget {
@@ -314,21 +309,21 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         });
   }
 
-  void _startCamoPinReset() {}
-
   void _startCamoPinSetup() {
-    // TODO: Would work similar to camo pin reset, except use password instead
-    Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => UnlockWalletPage(
-                  textButton: AppLocalizations.of(context)!.unlock,
-                  wallet: walletBloc.currentWallet!,
-                  isSignWithSeedIsEnabled: false,
-                  onSuccess: (_, String password) {
-                    // final successMessage = await Navigator.push<String?>(context, PinResetPage.route);
-                  },
-                ))).then((value) => camoBloc.getCamoPinValue());
+    // TODO: Delete file when confirming removal of camo pin feature. If not,
+    // implement this feature in bloc.
+
+    // Navigator.push<dynamic>(
+    //     context,
+    //     MaterialPageRoute<dynamic>(
+    //         builder: (BuildContext context) => UnlockWalletPage(
+    //               textButton: AppLocalizations.of(context)!.unlock,
+    //               wallet: walletBloc.currentWallet!,
+    //               isSignWithSeedIsEnabled: false,
+    //               onSuccess: (_, String password) {
+    //                 // final successMessage = await Navigator.push<String?>(context, PinResetPage.route);
+    //               },
+    //             ))).then((value) => camoBloc.getCamoPinValue());
   }
 
   Widget _buildDescription() {
