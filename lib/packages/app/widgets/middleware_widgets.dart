@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:komodo_dex/packages/app/widgets/placeholder_bloc.dart';
+import 'package:komodo_dex/packages/biometrics/widgets/biometrics_status_overlay.dart';
 
 /// Widget that sits between the MaterialApp and the route builder of the
 /// MaterialApp. This is created because we do not have access to the
@@ -24,12 +25,17 @@ class MiddlewareWidgets extends StatelessWidget {
       key: Key('app-middleware-BlocListener'),
       listeners: _blocListeners,
       child: Stack(
+        key: Key('app-middleware-stack'),
         children: [
           Positioned.fill(
             key: Key('app-middleware-child'),
             child: child,
           ),
+
           // Overlay widgets go here
+          BiometricsStatusOverlay(
+            key: Key('app-middleware-BiometricsStatusOverlay'),
+          ),
         ],
       ),
     );

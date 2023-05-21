@@ -132,10 +132,8 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
             title: appConfig.appName,
             localizationsDelegates: localizationsDelegates,
             theme: appTheme,
-            builder: (context, child) => MiddlewareWidgets(
-                  child:
-                      child ?? Container(key: Key('empty-app-router-builder')),
-                ),
+            builder: (context, child) =>
+                MiddlewareWidgets(child: child ?? Container()),
             // themeMode: ThemeMode.dark,
             routerDelegate: routerDelegate,
             routeInformationParser: _routeInformationParser
