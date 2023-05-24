@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../localizations.dart';
-import '../feed/news/news_tab.dart';
-import '../../utils/custom_tab_indicator.dart';
-import '../../../utils/log.dart';
+import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/feed/news/news_tab.dart';
+import 'package:komodo_dex/utils/custom_tab_indicator.dart';
+import 'package:komodo_dex/utils/log.dart';
 
 class FeedPage extends StatefulWidget {
   @override
-  _FeedPageState createState() => _FeedPageState();
+  State<FeedPage> createState() => _FeedPageState();
 }
 
 class _FeedPageState extends State<FeedPage>
@@ -39,15 +39,18 @@ class _FeedPageState extends State<FeedPage>
         child: Container(
           height: 40,
           decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: const BorderRadius.all(Radius.circular(32)),
-              border: Border.all(color: Colors.grey, width: 1)),
+            shape: BoxShape.rectangle,
+            borderRadius: const BorderRadius.all(Radius.circular(32)),
+            border: Border.all(color: Colors.grey, width: 1),
+          ),
           child: TabBar(
             labelPadding: const EdgeInsets.symmetric(horizontal: 16),
             indicator: CustomTabIndicator(context: context),
             controller: _controllerTabs,
             tabs: <Widget>[
-              Tab(text: AppLocalizations.of(context)!.feedNewsTab.toUpperCase()),
+              Tab(
+                text: AppLocalizations.of(context)!.feedNewsTab.toUpperCase(),
+              ),
             ],
           ),
         ),
@@ -58,18 +61,20 @@ class _FeedPageState extends State<FeedPage>
               preferredSize: const Size.fromHeight(80),
               child: AppBar(
                 flexibleSpace: SafeArea(
-                    child: Column(
-                  children: <Widget>[
-                    const SizedBox(height: 20),
-                    _tabsPanel,
-                  ],
-                )),
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(height: 20),
+                      _tabsPanel,
+                    ],
+                  ),
+                ),
                 automaticallyImplyLeading: false,
               ),
             )
           : AppBar(
-              title: Text(AppLocalizations.of(context)!.feedTitle.toUpperCase()),
-              automaticallyImplyLeading: false,
+              title:
+                  Text(AppLocalizations.of(context)!.feedTitle.toUpperCase()),
+              automaticallyImplyLeading: true,
             );
     }
 
