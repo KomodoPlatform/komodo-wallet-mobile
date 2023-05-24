@@ -16,7 +16,7 @@ import 'package:komodo_dex/widgets/auth_active_account_listener.dart';
 import 'package:provider/provider.dart';
 
 class MainApp extends StatefulWidget {
-  const MainApp({Key? key}) : super(key: key);
+  const MainApp({super.key});
 
   /// The [GlobalKey] for the [ScaffoldMessenger] widget so that we can show
   /// snackbars from anywhere in the app.
@@ -26,7 +26,7 @@ class MainApp extends StatefulWidget {
       GlobalKey<ScaffoldMessengerState>();
 
   @override
-  _MainAppState createState() => _MainAppState();
+  State<MainApp> createState() => _MainAppState();
 }
 
 class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
@@ -57,7 +57,6 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
 
   // TODO: Move locale handling to a new bloc?
 
-  /// The locale used by the app. If
   Locale? _appLocale;
 
   @override
@@ -67,24 +66,20 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
       case AppLifecycleState.inactive:
         mainBloc.isInBackground = true;
         Log('main', 'lifecycle: inactive');
-        // lockService.lockSignal(context);
-        break;
+      // lockService.lockSignal(context);
       case AppLifecycleState.paused:
         Log('main', 'lifecycle: paused');
         mainBloc.isInBackground = true;
-        // lockService.lockSignal(context);
-        break;
+      // lockService.lockSignal(context);
       case AppLifecycleState.detached:
         Log('main', 'lifecycle: detached');
         mainBloc.isInBackground = true;
-        break;
       case AppLifecycleState.resumed:
         Log('main', 'lifecycle: resumed');
         mainBloc.isInBackground = false;
         // lockService.lockSignal(context);
         // TODO: Replace with new mmservice manager
         await mmSe.handleWakeUp();
-        break;
     }
   }
 
@@ -97,24 +92,30 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: [
-      SystemUiOverlay.bottom,
-      SystemUiOverlay.top,
-    ]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.immersive,
+      overlays: [
+        SystemUiOverlay.bottom,
+        SystemUiOverlay.top,
+      ],
+    );
 
     final systemUIBrightness = Theme.of(context).brightness == Brightness.dark
         ? Brightness.light
         : Brightness.dark;
 
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarIconBrightness: systemUIBrightness,
-      statusBarBrightness: systemUIBrightness,
-      systemNavigationBarColor: Colors.transparent,
-      statusBarColor: Colors.transparent,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarIconBrightness: systemUIBrightness,
+        statusBarBrightness: systemUIBrightness,
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent,
+      ),
+    );
 
     final maybeUserThemeColor = context.select<ActiveAccountBloc, Color?>(
-        (bloc) => bloc.state.activeAccount?.themeColor);
+      (bloc) => bloc.state.activeAccount?.themeColor,
+    );
 
     final appTheme = systemUIBrightness == Brightness.dark
         // To be implemented soon. See branch: feature/m3-dynamic-theme
@@ -127,33 +128,31 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
       child: AuthActiveAccountListener(
         key: Key('main_app_auth_active_account_listener'),
         child: MaterialApp.router(
-            key: Key('main_app_material_app'),
-            scaffoldMessengerKey: MainApp.rootScaffoldMessengerKey,
-            title: appConfig.appName,
-            localizationsDelegates: localizationsDelegates,
-            theme: appTheme,
-            builder: (context, child) =>
-                MiddlewareWidgets(child: child ?? Container()),
-            // themeMode: ThemeMode.dark,
-            routerDelegate: routerDelegate,
-            routeInformationParser: _routeInformationParser
-            // TODO: Transition legacy routes/pages to new navigation system which
-            // takes advantage of Navigator 2.0 .
-            // Even though we don't use URL based navigation on mobile, it's still
-            // a good way to keep things organized and it allows us to do some cool
-            // things like deep linking.
-            ),
+          key: Key('main_app_material_app'),
+          scaffoldMessengerKey: MainApp.rootScaffoldMessengerKey,
+          title: appConfig.appName,
+          debugShowCheckedModeBanner: _shouldShowDebugBanner,
+          localizationsDelegates: localizationsDelegates,
+          theme: appTheme,
+          builder: (context, child) =>
+              MiddlewareWidgets(child: child ?? Container()),
+          // themeMode: ThemeMode.dark,
+          routerDelegate: routerDelegate,
+          routeInformationParser: _routeInformationParser,
           backButtonDispatcher:
               BeamerBackButtonDispatcher(delegate: routerDelegate),
+        ),
       ),
     );
   }
 
-  final GlobalKey<BeamerState> _beamerKey = GlobalKey<BeamerState>();
+  static final GlobalKey<BeamerState> _beamerKey = GlobalKey<BeamerState>();
 
-  final BeamerParser _routeInformationParser = BeamerParser(onParse: (info) {
-    return info;
-  });
+  final BeamerParser _routeInformationParser = BeamerParser(
+    onParse: (info) {
+      return info;
+    },
+  );
 
   final routerDelegate = BeamerDelegate(
     initialPath: AppRoutes.wallet.login(),

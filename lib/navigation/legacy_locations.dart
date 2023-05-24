@@ -11,6 +11,15 @@ import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
 
+// TODO: Transition legacy pages' Nav 1.0 `push`/`pop`s to Nav 2.0 based Beamer
+// nested locations.
+// This file only adds them as top-level routes to the widget for each page.
+// Once on the page, the page is responsible for it’s own sub-routes with
+// Nav 1.0 pop and pushing. In the long-term, we should have all nested routes
+// as a location in the new nav system so that we can easily navigate between
+// parts of the app and create deep-links. This also allows us to restore the
+// app's entire state using only the URL.
+
 class LegacyAppBarLocations extends BeamLocation<BeamState> {
   @override
   List<String> get pathPatterns => [
