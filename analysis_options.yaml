@@ -9,8 +9,24 @@
 # Core Team. It extends the recommended set of rules from the Dart team.
 # It's known for being strict but, but it enforces a very deterministic
 # style and format of code.
-# Expect many
 include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  language:
+    # NB! This is a high priority to remove this. It is a workaround for legacy
+    # code which uses `dynamic` in a way that is not supported by the analyzer.
+    # Removing this adds 800+ errors to the project.
+    # See here for more details:
+    # https://dart.dev/guides/language/analysis-options#enabling-additional-type-checks
+    strict-casts: false
+
+  errors:
+    todo: ignore
+
+  exclude:
+    - "lib/l10n/**"
+    - test/.test_coverage.dart
+    - lib/generated_plugin_registrant.dart
 
 linter:
   # The lint rules applied to this project can be customized in the
@@ -25,8 +41,16 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
 
+
   # MRC: Rules below are in alphabetical order for easier maintenance
   rules:
+    avoid_redundant_argument_values: false
+
+    flutter_style_todos: false
+
+    # always_use_package_imports: false
+
+    omit_local_variable_types: false
 
     # If you are coming here to disable this rule because you are getting
     # many warnings for the `[StatefulWidget.createState]`, please don't.  
