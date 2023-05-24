@@ -8,6 +8,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/atomicdex_api/atomicdex_api.dart';
 import 'package:komodo_dex/atomicdex_api/src/config/atomicdex_api_config.dart';
+import 'package:komodo_dex/drawer/drawer_bloc.dart';
 import 'package:komodo_dex/login/bloc/login_bloc.dart';
 import 'package:komodo_dex/migration_manager/migration_manager.dart';
 import 'package:komodo_dex/migration_manager/migrations/multi_account_migration.dart';
@@ -96,6 +97,8 @@ class BlocManagerWidget extends StatelessWidget {
             accountRepository: BlocManager.instance._accountRepository,
           ),
         ),
+
+        BlocProvider<DrawerBloc>.value(value: DrawerBloc()),
 
         BlocProvider<PlaceholderBloc>(
           create: (BuildContext context) => PlaceholderBloc(),
