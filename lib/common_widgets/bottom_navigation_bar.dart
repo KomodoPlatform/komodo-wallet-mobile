@@ -1,15 +1,30 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
+import 'package:komodo_dex/drawer/drawer_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
+import 'package:komodo_dex/navigation/app_routes.dart';
 import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:provider/provider.dart';
 
 // Copied from main.dart. See main.dart for commit history.
-class AppBottomNavigationBar extends StatelessWidget {
+class AppBottomNavigationBar extends StatefulWidget {
   const AppBottomNavigationBar({Key? key}) : super(key: key);
 
+  @override
+  State<AppBottomNavigationBar> createState() => _AppBottomNavigationBarState();
+
+  static Set<String> tabPaths = {
+    AppRoutes.legacy.portfolio(),
+    AppRoutes.legacy.dex(),
+    AppRoutes.legacy.markets(),
+    if (appConfig.isFeedEnabled) AppRoutes.legacy.feed(),
+  };
+}
+
+class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     // TODO: Refactor from legacy bloc
@@ -19,13 +34,11 @@ class AppBottomNavigationBar extends StatelessWidget {
         Provider.of<UpdatesProvider>(context);
 
     return BottomNavigationBar(
-      // TODO: Refactor to integrate with beamer router
+      key: const Key('main-nav'),
       type: BottomNavigationBarType.fixed,
-      // TODO: Refactor to integrate with beamer router
-      // onTap: onTabTapped,
-      onTap: (_) => throw UnimplementedError(),
-      // TODO: Refactor to integrate with beamer router
-      // currentIndex: indexTab!,
+      onTap: (int index) => onTabTapped(index, context: context),
+      currentIndex: tabIndexOf(
+          context.currentBeamLocation.state.routeInformation.location ?? ''),
       elevation: 0,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -54,15 +67,41 @@ class AppBottomNavigationBar extends StatelessWidget {
               ),
               label: AppLocalizations.of(context)!.feedTab),
         BottomNavigationBarItem(
-            icon: Stack(
-              children: <Widget>[
-                const Icon(Icons.dehaze, key: Key('main-nav-more')),
-                if (updatesProvider.status != UpdateStatus.upToDate)
-                  buildRedDot(context),
-              ],
-            ),
-            label: AppLocalizations.of(context)!.moreTab),
+          icon: Stack(
+            children: <Widget>[
+              const Icon(Icons.dehaze, key: Key('main-nav-more')),
+              if (updatesProvider.status != UpdateStatus.upToDate)
+                buildRedDot(context),
+            ],
+          ),
+          label: AppLocalizations.of(context)!.moreTab,
+        ),
       ],
     );
+  }
+
+  void onTabTapped(int index, {required BuildContext context}) {
+    final currentPath =
+        context.currentBeamLocation.state.routeInformation.location;
+
+    final didTapCurrentTab =
+        currentPath == null ? false : tabIndexOf(currentPath) == index;
+
+    if (didTapCurrentTab) {
+      return;
+    }
+
+    final didTapDrawerTab = index == AppBottomNavigationBar.tabPaths.length;
+
+    if (didTapDrawerTab) {
+      context.read<DrawerBloc>().add(DrawerToggleRequested());
+
+      return;
+    }
+    context.beamToNamed(AppBottomNavigationBar.tabPaths.elementAt(index));
+  }
+
+  int tabIndexOf(String path) {
+    return AppBottomNavigationBar.tabPaths.toList().indexOf(path);
   }
 }

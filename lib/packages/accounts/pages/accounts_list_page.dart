@@ -136,7 +136,7 @@ class _AccountsListPageState extends State<AccountsListPage> {
   void _onActiveAccountStateChange(
       BuildContext context, ActiveAccountState state) {
     if (state is ActiveAccountSuccess) {
-      Beamer.of(context).beamToNamed(AppRoutes.portfolio.home());
+      Beamer.of(context).beamToNamed(AppRoutes.legacy.portfolio());
     } else if (state is ActiveAccountFailure) {
       MainApp.rootScaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(content: Text(state.error)),
