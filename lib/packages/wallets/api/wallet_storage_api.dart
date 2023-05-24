@@ -69,6 +69,18 @@ class WalletStorageApi implements WalletStorageApiInterface {
     }
   }
 
+  Future<Wallet> createWalletWithoutPassphrase({
+    required Wallet wallet,
+  }) async {
+    try {
+      _ensureWalletDoesNotExist(wallet.walletId);
+      await _box.put(wallet.walletId, wallet);
+      return wallet;
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
   @override
   Future<Wallet?> getWallet(String walletId) async {
     return _box.values.firstWhereOrNull((w) => w.walletId == walletId);
