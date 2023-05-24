@@ -5,9 +5,12 @@
 # IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
 # invoked from the command line by running `flutter analyze`.
 
-# The following line activates a set of recommended lints for Flutter apps,
-# packages, and plugins designed to encourage good coding practices.
-include: package:flutter_lints/flutter.yaml
+# Very Good Analysis is a set of Dart analysis rules used by the Very Good
+# Core Team. It extends the recommended set of rules from the Dart team.
+# It's known for being strict but, but it enforces a very deterministic
+# style and format of code.
+# Expect many
+include: package:very_good_analysis/analysis_options.yaml
 
 linter:
   # The lint rules applied to this project can be customized in the
@@ -24,6 +27,13 @@ linter:
 
   # MRC: Rules below are in alphabetical order for easier maintenance
   rules:
+
+    # If you are coming here to disable this rule because you are getting
+    # many warnings for the `[StatefulWidget.createState]`, please don't.  
+    # Instead, change the type of the `createState` method as follows:
+    # Old: `_MyStatefulWidgetState createState() => _MyStatefulWidgetState();`
+    # New: `State<MyStatefulWidget> createState() => _MyStatefulWidgetState();`
+    #! library_private_types_in_public_api: false
 
     # TODO: Disable this and make changes. This is a bad practice and should be avoided.
     # MRC: Most of our uses of print are non-vital
@@ -66,6 +76,10 @@ linter:
     # and may have performance/stability implications.
     # MRC: Too many occurrences to fix at once, disabling it for now
     use_key_in_widget_constructors: false
+
+    # Ideally, all public members should have documentation strings but
+    # it's not necessary since this isn't a public package.
+    public_member_api_docs: false
 
 
 # Additional information about this file can be found at

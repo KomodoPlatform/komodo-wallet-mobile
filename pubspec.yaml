@@ -215,6 +215,8 @@ dev_dependencies:
 
   # recommended linter rules
   flutter_lints: ^2.0.1 # flutter.dev (Note: Supports null safety)
+  very_good_analysis: ^5.0.0+1
+  
   build_runner: ^2.3.3
   json_serializable: ^6.6.1
   
