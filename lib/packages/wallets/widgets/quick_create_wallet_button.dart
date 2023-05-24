@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:komodo_dex/packages/wallets/bloc/wallets_bloc.dart';
 import 'package:komodo_dex/packages/wallets/events/wallets_quick_create_submitted.dart';
-import 'package:komodo_dex/packages/wallets/models/wallet.dart';
-import 'package:uuid/uuid.dart';
 
 @immutable
 // TODO: Migrate logic and state in this widget into a new bloc
@@ -29,7 +27,7 @@ class _QuickCreateWalletButtonState extends State<QuickCreateWalletButton> {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        showDialog(
+        showDialog<void>(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
@@ -74,7 +72,7 @@ class _QuickCreateWalletButtonState extends State<QuickCreateWalletButton> {
     _descriptionController.clear();
     _isLoading = false;
 
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
