@@ -143,6 +143,8 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
             // a good way to keep things organized and it allows us to do some cool
             // things like deep linking.
             ),
+          backButtonDispatcher:
+              BeamerBackButtonDispatcher(delegate: routerDelegate),
       ),
     );
   }
@@ -167,4 +169,6 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
       ),
     ),
   );
+
+  bool get _shouldShowDebugBanner => false;
 }
