@@ -38,6 +38,15 @@ extension IterableUtils<T> on Iterable<T> {
     }
     return last;
   }
+
+  int? indexOfOrNull(T element) {
+    int i = 0;
+    for (final T e in this) {
+      if (e == element) return i;
+      i++;
+    }
+    return null;
+  }
 }
 
 /// Utilties for working with iterables where the elements can be null.

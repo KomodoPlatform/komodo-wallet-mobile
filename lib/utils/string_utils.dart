@@ -40,3 +40,21 @@ extension StringInitials on String {
     return result.toUpperCase();
   }
 }
+
+extension StringCaseExtension on String {
+  /// Converts a string to start case.
+  ///
+  /// E.g. "heLLO world" becomes "Hello World".
+  String toStartCase() {
+    return split(' ')
+        .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
+        .join(' ');
+  }
+
+  /// Converts a string to sentence case.
+  ///
+  /// E.g. "hello woRLd" becomes "Hello world".
+  String toSentenceCase() {
+    return this[0].toUpperCase() + substring(1).toLowerCase();
+  }
+}
