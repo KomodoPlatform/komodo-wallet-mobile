@@ -31,61 +31,6 @@ class _FeedPageState extends State<FeedPage>
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildAppBar() {
-      final bool _isSmallScreen = MediaQuery.of(context).size.height < 680;
-
-      final Widget _tabsPanel = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Container(
-          height: 40,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: const BorderRadius.all(Radius.circular(32)),
-            border: Border.all(color: Colors.grey, width: 1),
-          ),
-          child: TabBar(
-            labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-            indicator: CustomTabIndicator(context: context),
-            controller: _controllerTabs,
-            tabs: <Widget>[
-              Tab(
-                text: AppLocalizations.of(context)!.feedNewsTab.toUpperCase(),
-              ),
-            ],
-          ),
-        ),
-      );
-
-      return _isSmallScreen && _controllerTabs!.length > 1
-          ? PreferredSize(
-              preferredSize: const Size.fromHeight(80),
-              child: AppBar(
-                flexibleSpace: SafeArea(
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(height: 20),
-                      _tabsPanel,
-                    ],
-                  ),
-                ),
-                automaticallyImplyLeading: false,
-              ),
-            )
-          : AppBar(
-              title:
-                  Text(AppLocalizations.of(context)!.feedTitle.toUpperCase()),
-              automaticallyImplyLeading: true,
-            );
-    }
-
-    return Scaffold(
-      appBar: _buildAppBar() as PreferredSizeWidget?,
-      body: TabBarView(
-        controller: _controllerTabs,
-        children: <Widget>[
-          NewsTab(),
-        ],
-      ),
-    );
+    return NewsTab();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+@Deprecated("Use Flutter's [Badge] widget instead")
 Widget buildRedDot(
   BuildContext context, {
   double? right = 0,

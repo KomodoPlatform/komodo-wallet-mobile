@@ -20,8 +20,14 @@ class FeedProvider extends ChangeNotifier {
   Timer? _ticker;
   List<NewsItem>? _news;
   bool _isNewsFetching = false;
+
+  // TODO: Refactor [_hasNewItems] to be a simple getter of [_unreadCount].
   bool _hasNewItems = false;
   AppLocalizations localizations = AppLocalizations();
+
+  int _unreadCount = 0;
+
+  int get unreadCount => _unreadCount;
 
   @override
   void dispose() {
@@ -37,6 +43,7 @@ class FeedProvider extends ChangeNotifier {
   }
 
   List<NewsItem>? getNews() => _news;
+
   Future<String> updateNews() => _updateNews();
 
   /// If news was successfully fetched and proceed,
@@ -77,13 +84,16 @@ class FeedProvider extends ChangeNotifier {
 
     prefs.setString('cachedNews', response!.body);
     _hasNewItems = true;
+    _unreadCount = news.length;
     _news = news;
 
-    notifService.show(NotifObj(
-      title: localizations.feedNotifTitle(appConfig.appCompanyShort),
-      text: _news![0].content,
-      uid: 'feed_${_news![0].date}',
-    ));
+    notifService.show(
+      NotifObj(
+        title: localizations.feedNotifTitle(appConfig.appCompanyShort),
+        text: _news![0].content,
+        uid: 'feed_${_news![0].date}',
+      ),
+    );
 
     notifyListeners();
     return 'ok';
@@ -103,6 +113,7 @@ class FeedProvider extends ChangeNotifier {
       notifyListeners();
     } else if (_news == null) {
       _news = []; // hide progress indicator and show empty feed message
+      _unreadCount = 0;
       notifyListeners();
     }
   }
@@ -114,10 +125,12 @@ class FeedProvider extends ChangeNotifier {
       final String? content = item['content'];
       if (content == null || content.isEmpty) continue;
       news ??= [];
-      news.add(NewsItem(
-        date: item['date'],
-        content: content,
-      ));
+      news.add(
+        NewsItem(
+          date: item['date'],
+          content: content,
+        ),
+      );
     }
     return news;
   }

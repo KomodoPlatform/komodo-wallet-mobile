@@ -59,13 +59,16 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
         ),
         if (appConfig.isFeedEnabled)
           BottomNavigationBarItem(
-              icon: Stack(
-                children: <Widget>[
-                  const Icon(Icons.library_books, key: Key('main-nav-feed')),
-                  if (feedProvider!.hasNewItems) buildRedDot(context),
-                ],
+            label: AppLocalizations.of(context)!.feedTab,
+            icon: Badge.count(
+              isLabelVisible: feedProvider?.hasNewItems ?? false,
+              count: feedProvider?.unreadCount ?? 0,
+              child: const Icon(
+                Icons.library_books,
+                key: Key('main-nav-feed'),
               ),
-              label: AppLocalizations.of(context)!.feedTab),
+            ),
+          ),
         BottomNavigationBarItem(
           icon: Stack(
             children: <Widget>[
