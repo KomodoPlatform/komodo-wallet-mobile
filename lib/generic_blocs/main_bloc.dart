@@ -1,68 +1,79 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
+
 import '../widgets/bloc_provider.dart';
 import '../utils/log.dart';
 
 MainBloc mainBloc = MainBloc();
 
-class MainBloc implements GenericBlocBase {
-  int currentIndexTab = 0;
-  int _tradeMode = 0; // 0: simple, 1: advanced, 2: multi
+enum TradeMode { Simple, Advanced, Multi }
 
-  final StreamController<int> _tradeModeController =
-      StreamController<int>.broadcast();
-  Sink<int> get _inTradeMode => _tradeModeController.sink;
-  Stream<int> get outTradeMode => _tradeModeController.stream;
+class MainBloc with ChangeNotifier implements GenericBlocBase {
+  int _currentIndexTab = 0;
+  int get currentIndexTab => _currentIndexTab;
+  set currentIndexTab(int index) {
+    _currentIndexTab = index;
+    notifyListeners();
+  }
 
-  final StreamController<int> _currentIndexTabController =
-      StreamController<int>.broadcast();
-  Sink<int> get _inCurrentIndex => _currentIndexTabController.sink;
-  Stream<int> get outCurrentIndex => _currentIndexTabController.stream;
+  NetworkStatus _networkStatus = NetworkStatus.Online;
+  NetworkStatus get networkStatus => _networkStatus;
+  set networkStatus(NetworkStatus status) {
+    _networkStatus = status;
+    notifyListeners();
+  }
 
-  NetworkStatus networkStatus = NetworkStatus.Online;
+  Locale? _currentLocale;
+  Locale? get currentLocale => _currentLocale;
+  set currentLocale(Locale? locale) {
+    _currentLocale = locale;
+    notifyListeners();
+  }
 
-  final StreamController<NetworkStatus> _networkStatus =
-      StreamController<NetworkStatus>.broadcast();
-  Sink<NetworkStatus> get _inNetworkStatus => _networkStatus.sink;
-  Stream<NetworkStatus> get outNetworkStatus => _networkStatus.stream;
+  TradeMode _tradeMode = TradeMode.Simple;
+  // Ideally the getter would be the same type as the field, but this is done
+  // for backwards compatibility.
+  int get tradeMode => _tradeMode.index;
 
-  bool isUrlLaucherIsOpen = false;
+  TradeMode get tradeModeEnum => _tradeMode;
 
-  Locale? currentLocale;
+  void setTradeMode(TradeMode value) {
+    _tradeMode = value;
+    notifyListeners();
+  }
 
-  final StreamController<Locale?> _currentLocaleController =
-      StreamController<Locale?>.broadcast();
-  Sink<Locale?> get _inCurrentLocale => _currentLocaleController.sink;
-  Stream<Locale?> get outcurrentLocale => _currentLocaleController.stream;
+  bool _isUrlLaucherIsOpen = false;
+  bool get isUrlLaucherIsOpen => _isUrlLaucherIsOpen;
+  set isUrlLaucherIsOpen(bool value) {
+    _isUrlLaucherIsOpen = value;
+    notifyListeners();
+  }
 
   bool _isInBackground = false;
-  final StreamController<bool> _isInBackgroundController =
-      StreamController<bool>.broadcast();
-  Sink<bool> get _inIsInBackground => _isInBackgroundController.sink;
-  Stream<bool> get outIsInBackground => _isInBackgroundController.stream;
+  bool get isInBackground => _isInBackground;
+  set isInBackground(bool value) {
+    _isInBackground = value;
+    notifyListeners();
+  }
 
   @override
   void dispose() {
-    _currentIndexTabController.close();
-    _networkStatus.close();
-    _currentLocaleController.close();
+    // dispose of resources if necessary
   }
 
   void setNetworkStatus(NetworkStatus status) {
     networkStatus = status;
-    _inNetworkStatus.add(status);
   }
 
   void setCurrentIndexTab(int index) {
     currentIndexTab = index;
-    _inCurrentIndex.add(currentIndexTab);
   }
 
   void setNewLanguage(Locale locale) {
-    Log.println('main_bloc:51', 'Set Language to: ' + locale.toString());
+    Log('MainBloc.setNewLanguage','Set Language to: $locale');
     currentLocale = locale;
-    _inCurrentLocale.add(currentLocale);
   }
 
   List<Locale> get supportedLocales => const <Locale>[
@@ -78,20 +89,6 @@ class MainBloc implements GenericBlocBase {
         Locale('ko'),
         Locale('uk')
       ];
-
-  bool get isInBackground => _isInBackground;
-  set isInBackground(bool val) {
-    if (val == _isInBackground) return;
-
-    _isInBackground = val;
-    _inIsInBackground.add(_isInBackground);
-  }
-
-  int get tradeMode => _tradeMode;
-  set tradeMode(int value) {
-    _tradeMode = value;
-    _inTradeMode.add(value);
-  }
 }
 
 enum NetworkStatus { Offline, Checking, Restored, Online }
