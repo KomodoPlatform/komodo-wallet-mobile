@@ -6,19 +6,22 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/navigation/app_routes.dart';
+import 'package:komodo_dex/utils/iterable_utils.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/build_red_dot.dart';
 import 'package:provider/provider.dart';
 
 // Copied from main.dart. See main.dart for commit history.
 class AppBottomNavigationBar extends StatefulWidget {
-  const AppBottomNavigationBar({Key? key}) : super(key: key);
+  const AppBottomNavigationBar({super.key});
 
   @override
   State<AppBottomNavigationBar> createState() => _AppBottomNavigationBarState();
 
   static Set<String> tabPaths = {
     AppRoutes.legacy.portfolio(),
-    AppRoutes.legacy.dex(),
+    // AppRoutes.legacy.dex(),
+    AppRoutes.legacy.orders(),
     AppRoutes.legacy.markets(),
     if (appConfig.isFeedEnabled) AppRoutes.legacy.feed(),
   };
@@ -37,19 +40,20 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       key: const Key('main-nav'),
       type: BottomNavigationBarType.fixed,
       onTap: (int index) => onTabTapped(index, context: context),
-      currentIndex: tabIndexOf(
-          context.currentBeamLocation.state.routeInformation.location ?? ''),
-      elevation: 0,
+      currentIndex: _currentTabIndex(),
+      elevation: 1,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.account_balance_wallet,
-              key: Key('main-nav-portfolio'),
-            ),
-            label: AppLocalizations.of(context)!.portfolio),
+          icon: const Icon(
+            Icons.account_balance_wallet,
+            key: Key('main-nav-portfolio'),
+          ),
+          label: AppLocalizations.of(context)!.portfolio,
+        ),
         BottomNavigationBarItem(
-            icon: const Icon(Icons.swap_vert, key: Key('main-nav-dex')),
-            label: AppLocalizations.of(context)!.dex),
+          icon: const Icon(Icons.swap_vert, key: Key('main-nav-orders')),
+          label: AppLocalizations.of(context)!.orders.toSentenceCase(),
+        ),
         BottomNavigationBarItem(
           icon: const Icon(
             Icons.show_chart,
@@ -83,6 +87,13 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
     );
   }
 
+  int _currentTabIndex() {
+    return tabIndexOf(
+          context.currentBeamLocation.state.routeInformation.location ?? '',
+        ) ??
+        0;
+  }
+
   void onTabTapped(int index, {required BuildContext context}) {
     final currentPath =
         context.currentBeamLocation.state.routeInformation.location;
@@ -104,7 +115,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
     context.beamToNamed(AppBottomNavigationBar.tabPaths.elementAt(index));
   }
 
-  int tabIndexOf(String path) {
-    return AppBottomNavigationBar.tabPaths.toList().indexOf(path);
+  int? tabIndexOf(String path) {
+    return AppBottomNavigationBar.tabPaths.toList().indexOfOrNull(path);
   }
 }

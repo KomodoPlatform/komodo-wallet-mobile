@@ -1,95 +1,117 @@
 import 'package:flutter/material.dart';
-import '../../generic_blocs/orders_bloc.dart';
-import '../../generic_blocs/swap_bloc.dart';
-import '../../localizations.dart';
-import '../dex/orders/orders_page.dart';
-import '../dex/trade/trade_modes_page.dart';
-import '../../utils/custom_tab_indicator.dart';
-import '../../utils/utils.dart';
+import 'package:komodo_dex/generic_blocs/main_bloc.dart';
+import 'package:komodo_dex/generic_blocs/orders_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/dex/trade/multi/multi_order_page.dart';
+import 'package:komodo_dex/screens/dex/trade/pro/create/trade_page.dart';
+import 'package:komodo_dex/screens/dex/trade/simple/trade_page_simple.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_modes_page.dart';
+import 'package:komodo_dex/utils/utils.dart';
+import 'package:provider/provider.dart';
+
+Map<TradeMode, int> _tradeModeTabs = {
+  TradeMode.Simple: 0,
+  TradeMode.Advanced: 1,
+  TradeMode.Multi: 2,
+};
 
 class DexPage extends StatefulWidget {
   @override
-  _DexPageState createState() => _DexPageState();
+  State<DexPage> createState() => _DexPageState();
 }
 
-class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
-  TabController? tabController;
-
+class _DexPageState extends State<DexPage> {
   @override
   void initState() {
     super.initState();
 
-    tabController = TabController(length: 2, vsync: this);
-
     ordersBloc.updateOrdersSwaps();
-
-    swapBloc.outIndexTab.listen((int onData) {
-      if (mounted) setState(() => tabController!.index = onData);
-    });
-  }
-
-  @override
-  void dispose() {
-    tabController!.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildAppBar() {
-      final Widget _tabsPanel = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Container(
-          height: 40,
-          decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: const BorderRadius.all(Radius.circular(32)),
-              border: Border.all(color: Colors.grey, width: 1)),
-          child: TabBar(
-            labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-            indicator: CustomTabIndicator(context: context),
-            controller: tabController,
-            tabs: <Widget>[
-              Tab(
-                text: AppLocalizations.of(context)!.swap.toUpperCase(),
-                key: const Key('swap-tab'),
-              ),
-              Tab(
-                text: AppLocalizations.of(context)!.orders.toUpperCase(),
-                key: const Key('orders-tab'),
-              ),
-            ],
-          ),
-        ),
-      );
+    assert(
+      TradeMode.values.length == _tradeModeTabs.length,
+      'Ensure there is a tab for each trade mode',
+    );
 
-      return AppBar(
+    return Scaffold(
+      key: ValueKey('dex_page_scaffold'),
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        key: ValueKey('dex_page_appbar'),
         elevation: 4,
-        title: _tabsPanel,
-        automaticallyImplyLeading: false,
-      );
-    }
-
-    return GestureDetector(
-      onTap: () {
-        unfocusEverything();
-      },
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: _buildAppBar() as PreferredSizeWidget?,
-          body: Builder(builder: (BuildContext context) {
-            return TabBarView(
-              controller: tabController,
-              children: <Widget>[
-                TradeModesPage(),
-                OrdersPage(),
+        title: Text(AppLocalizations.of(context)!.swap.toSentenceCase()),
+        automaticallyImplyLeading: true,
+        // actions: [TradeModeSelector()],
+      ),
+      body: true
+          ? IndexedStack(
+              sizing: StackFit.passthrough,
+              index: _tradeModeTabs[mainBloc.tradeModeEnum],
+              children: [
+                TradePageSimple(),
+                TradePage(),
+                MultiOrderPage(),
               ],
-            );
-          }),
-        ),
+            )
+          : Column(
+              children: [
+                TradeModeSelector(),
+                IndexedStack(
+                  sizing: StackFit.passthrough,
+                  index: _tradeModeTabs[mainBloc.tradeModeEnum],
+                  children: [
+                    TradePageSimple(),
+                    TradePage(),
+                    MultiOrderPage(),
+                  ],
+                ),
+              ],
+            ),
+    );
+  }
+}
+
+class TradeModeSelector extends StatelessWidget {
+  const TradeModeSelector({super.key});
+
+  void _setSelectedIndex(int index) {
+    mainBloc.setTradeMode(TradeMode.values[index]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final tradeModeEnum = context.select<MainBloc, TradeMode>(
+      (mainBloc) => mainBloc.tradeModeEnum,
+    );
+
+    final activeIndex = _tradeModeTabs[tradeModeEnum] ?? 0;
+
+    final selectedStates = List<bool>.generate(
+      _tradeModeTabs.length,
+      (index) => index == activeIndex,
+    );
+
+    return Card(
+      // color: Theme.of(context).colorScheme.secondaryContainer,
+      // padding: const EdgeInsets.symmetric(horizontal: 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: ToggleButtons(
+        borderRadius: BorderRadius.circular(16),
+        isSelected: selectedStates,
+        onPressed: _setSelectedIndex,
+        children: [
+          Text('Simple'),
+          Text('Advanced'),
+          Text(AppLocalizations.of(context)!.multiTab),
+        ],
       ),
     );
   }
+
+  // List
 }
