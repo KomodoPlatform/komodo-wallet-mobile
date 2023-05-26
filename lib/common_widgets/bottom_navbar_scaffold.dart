@@ -6,11 +6,19 @@ import 'package:komodo_dex/drawer/drawer_bloc.dart';
 
 class BottomNavbarScaffold extends StatelessWidget {
   const BottomNavbarScaffold({
-    Key? key,
     required this.body,
-  }) : super(key: key);
+    this.appBar,
+    this.title,
+    super.key,
+  }) : assert(
+          !(title != null && appBar != null),
+          'You cannot provide both a title and an appBar'
+          ' to BottomNavbarScaffold.',
+        );
 
   final Widget body;
+  final AppBar? appBar;
+  final Text? title;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +37,7 @@ class BottomNavbarScaffold extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           key: scaffoldKey,
+          appBar: appBar ?? (title != null ? AppBar(title: title) : null),
           body: body,
           endDrawer: AppDrawer(),
           bottomNavigationBar: AppBottomNavigationBar(
