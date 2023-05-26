@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/app_config/app_config.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 // This is a quick hotfix. The designs and UX for this screen are not final.
@@ -34,6 +33,7 @@ class _WarningTransactionListItemState
       elevation: 0,
       child: Column(
         children: [
+          SizedBox(height: 4),
           ListTile(
             leading: Icon(
               Icons.warning,
@@ -64,10 +64,12 @@ class _WarningTransactionListItemState
                         });
                       },
               ),
+              const SizedBox(width: 8),
               TextButton(
                 child: Text('More Info'),
                 onPressed: _launchURL,
               ),
+              const SizedBox(width: 8),
             ],
           ),
         ],
