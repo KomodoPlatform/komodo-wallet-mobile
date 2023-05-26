@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/warning_transaction_list_item.dart';
 import '../../../../blocs/settings_bloc.dart';
 import '../../../../model/cex_provider.dart';
 import '../../../../model/coin_balance.dart';
@@ -11,7 +12,9 @@ import 'package:provider/provider.dart';
 import '../transaction_detail.dart';
 
 class TransactionListItem extends StatefulWidget {
-  const TransactionListItem({this.transaction, this.currentCoinBalance});
+  const TransactionListItem(
+      {this.transaction, this.currentCoinBalance, Key key})
+      : super(key: key);
 
   final Transaction transaction;
   final CoinBalance currentCoinBalance;
@@ -24,6 +27,11 @@ class _TransactionListItemState extends State<TransactionListItem> {
   CexProvider cexProvider;
   bool isNoteExpanded = false;
 
+  double get transactionValue =>
+      double.parse(widget.transaction.myBalanceChange);
+
+  bool get isWarningTransaction => transactionValue == 0;
+
   @override
   Widget build(BuildContext context) {
     cexProvider ??= Provider.of<CexProvider>(context);
@@ -32,6 +40,12 @@ class _TransactionListItemState extends State<TransactionListItem> {
         .textTheme
         .subtitle1
         .copyWith(fontWeight: FontWeight.bold);
+
+    if (isWarningTransaction) {
+      return WarningTransactionListItem(
+        address: widget.transaction.from.join(', '),
+      );
+    }
 
     return Card(
         child: InkWell(

@@ -9,6 +9,9 @@ class AppConfig {
   int get maxCoinsEnabledAndroid => 50;
   int get maxCoinEnabledIOS => 20;
 
+  String get transactionWarningInfoUrl =>
+      "https://cryptonews.net/news/security/20792248/";
+
   // number of decimal places for trade amount input fields
   int get tradeFormPrecision => 8;
 
@@ -203,4 +206,3 @@ class AppConfig {
   /// in order to allow multiple wallets to run simultaneously.
   int get rpcPort => 7783;
 }
-
