@@ -10,7 +10,7 @@ class AppConfig {
   int get maxCoinEnabledIOS => 20;
 
   String get transactionWarningInfoUrl =>
-      "https://cryptonews.net/news/security/20792248/";
+      'https://atomicdex.io/en/blog/preventing-address-poisoning';
 
   // number of decimal places for trade amount input fields
   int get tradeFormPrecision => 8;
