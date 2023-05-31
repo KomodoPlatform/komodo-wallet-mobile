@@ -30,7 +30,8 @@ class _TransactionListItemState extends State<TransactionListItem> {
   double get transactionValue =>
       double.parse(widget.transaction.myBalanceChange);
 
-  bool get isWarningTransaction => transactionValue == 0;
+  bool get isWarningTransaction =>
+      transactionValue == 0 && isErcType(widget.currentCoinBalance.coin);
 
   @override
   Widget build(BuildContext context) {
