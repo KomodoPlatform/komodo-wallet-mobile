@@ -1,3 +1,0 @@
-class ApiRequestsIndex {
-  ApiRequestsIndex._();
-}

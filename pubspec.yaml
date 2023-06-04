@@ -29,6 +29,15 @@ dependencies:
   #-----Flutter first party packages-----
   # collection: ^1.15.0-nullsafety.4 # Auto import by Dart null safety migration tool. Replaced with own util.
 
+  #----- Komodo Platform packages -----
+  komodo_wallet_sdk:
+    # 1- Git version:
+    git:
+      url: https://github.com/KomodoPlatform/komodo_wallet_sdk_flutter.git
+      # TODO! ref: 
+    # 2- Or, if you want to use your own local copy:
+    # path: /Users/{YOUR_USER}/komodo_wallet_sdk_flutter
+
 
   #-----flutter.dev, dart.dev--------
 
@@ -220,10 +229,6 @@ dev_dependencies:
   build_runner: ^2.3.3
   json_serializable: ^6.6.1
   
-# dependency_overrides:
-#   flutter_glide_recorder:
-#     path: /Users/charl/Documents/Glide/flutter_glide_recorder
-    
 flutter_icons:
   android: true
   ios: true

@@ -746,6 +746,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.7.0"
+  komodo_wallet_sdk:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: ce0d0bb01955cdcb108a6f8b185ee009e1a822ce
+      url: "https://github.com/KomodoPlatform/komodo_wallet_sdk_flutter.git"
+    source: git
+    version: "0.0.1"
   lints:
     dependency: transitive
     description:
