@@ -93,8 +93,6 @@ class _SettingPageState extends State<SettingPage> {
             _buildTitle(AppLocalizations.of(context)!.security),
             _buildActivatePIN(),
             const SizedBox(height: 1),
-            _buildActivateBiometric(),
-            const SizedBox(height: 1),
             _buildActivateScreenshot(),
             const SizedBox(height: 1),
             _buildCamouflagePin(),
@@ -195,60 +193,6 @@ class _SettingPageState extends State<SettingPage> {
             ),
           ).then((dynamic _) => setState(() {}));
         }
-      },
-    );
-  }
-
-  Widget _buildActivateBiometric() {
-    return FutureBuilder<bool?>(
-      initialData: false,
-      future: canCheckBiometrics,
-      builder: (
-        BuildContext context,
-        AsyncSnapshot<bool?> snapshot,
-      ) {
-        if (snapshot.hasData && snapshot.data!) {
-          return SwitchListTile(
-            title: Text(AppLocalizations.of(
-              context,
-            )!
-                .activateAccessBiometric),
-            tileColor: Theme.of(context).primaryColor,
-            value:
-                walletSecuritySettingsProvider.activateBioProtection ?? false,
-            onChanged: camoBloc.isCamoActive
-                ? null
-                : (
-                    bool switchValue,
-                  ) {
-                    if (camoBloc.isCamoEnabled) {
-                      _showCamoPinBioProtectionConflictDialog();
-                      return;
-                    }
-                    if (walletSecuritySettingsProvider.activateBioProtection) {
-                      walletSecuritySettingsProvider.activateBioProtection =
-                          false;
-                    } else {
-                      authenticateBiometrics(
-                        context,
-                        PinStatus.DISABLED_PIN_BIOMETRIC,
-                        authorize: true,
-                      ).then((
-                        bool passedBioCheck,
-                      ) {
-                        if (passedBioCheck) {
-                          walletSecuritySettingsProvider.activateBioProtection =
-                              true;
-                          walletSecuritySettingsProvider.activatePinProtection =
-                              true;
-                          //
-                        }
-                      });
-                    }
-                  },
-          );
-        }
-        return SizedBox();
       },
     );
   }
