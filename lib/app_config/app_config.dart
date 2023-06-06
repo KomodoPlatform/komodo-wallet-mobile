@@ -21,7 +21,7 @@ class AppConfig {
   String get appCompanyLong => 'Komodo Platform';
   String get appCompanyShort => 'Komodo';
 
-  List<String> get defaultCoins => ['KMD', 'BTC', 'VOTE2023'];
+  List<String> get defaultCoins => ['KMD', 'BTC'];
   List<String> get coinsFiat => ['BTC', 'KMD'];
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
@@ -57,7 +57,6 @@ class AppConfig {
         'UST-PLG20',
         'XPM',
         'XVC-OLD',
-        'VOTE2023'
       ];
 
   List<String> get protocolSuffixes => [
@@ -203,4 +202,3 @@ class AppConfig {
   /// in order to allow multiple wallets to run simultaneously.
   int get rpcPort => 7783;
 }
-
