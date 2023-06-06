@@ -1,6 +1,4 @@
-
-# AtomicDEX Mobile
-
+# AtomicDEX Mobile Wallet - Open Source GitHub Repository 🚀
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/komodoplatform/atomicdex-mobile/build.yml)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/komodoplatform/atomicdex-mobile)
 ![GitHub contributors](https://img.shields.io/github/contributors-anon/komodoplatform/atomicdex-mobile)
@@ -11,24 +9,53 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/komodoplatform/atomicdex-mobile)
 ![Twitter Follow](https://img.shields.io/twitter/follow/komodoplatform?style=social)
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/10762374/231314925-93ec93d2-63f7-4361-8d25-71c0e1bb3e38.png" alt="adex swap screenshot" />
+Welcome to the AtomicDEX Mobile Wallet open-source repository! This cutting-edge project is brought to you by Komodo, providing a mighty non-custodial wallet and decentralised exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with AtomicDEX!
+
+<p float="center">
+  <img src="https://user-images.githubusercontent.com/77973576/229565868-b121e9b6-2d2b-4390-a81f-a7878d0bfea8.png" width="33%" />
+  <img src="https://user-images.githubusercontent.com/77973576/229565938-81a51d44-5a73-4acd-8885-454e6fa6443d.png" width="33%" /> 
+  <img src="https://user-images.githubusercontent.com/77973576/229565995-252df819-1ea9-4cc8-a9bc-4ab3e1c80caf.png" width="33%" />
+  <img src="https://user-images.githubusercontent.com/77973576/229566018-285b6b6d-677e-464e-aafb-e55fecb2df82.png" width="33%" />
+  <img src="https://user-images.githubusercontent.com/77973576/229566049-2f25b16b-da76-4295-b4e6-ba567ac582f7.png" width="33%" />
+  <img src="https://user-images.githubusercontent.com/77973576/229566075-aa00a5a9-55ae-4acd-ad7b-d67ed3a65db6.png" width="33%" />
 </p>
 
-Built by Komodo, AtomicDEX Mobile is a non-custodial wallet and decentralized exchange rolled into one app. Hold and trade hundreds of cryptocurrencies on your mobile phone or tablet.
+## Unleashing the Power of AtomicDEX API 💡
+We've made this repository public to showcase the incredible potential of the AtomicDEX API and to spark interest among companies looking to integrate this game-changing technology into their own applications. Our goal is to drive innovation and expand the reach of decentralised exchange technology worldwide.
+
+## Exciting Features 🌟
+- **Non-custodial wallet:** You're in control - only you can access your private keys.
+- **Decentralized exchange:** Trade cryptocurrencies effortlessly across blockchain networks with atomic swap technology, bypassing the need for a middleman.
+- **500+ Listed Cryptocurrencies:** A vast and ever-growing list of supported cryptocurrencies.
+- **Unlimited markets:** Over 300,000 completed atomic swaps and a staggering 10,000+ trading pairs.
+- **User support:** Engage with our active Discord support channel, where official team members are ready to help. We'd also love to hear your feedback.
+- **Most supported protocols:** AtomicDEX outshines the competition by supporting the most blockchain protocols of any decentralized exchange on the market.
+- **Established team:** Our pioneering Komodo developers have been at the forefront of DEX technology since 2014.
+- **Frequent updates:** Our dedicated developers are constantly working to enhance the app's user experience, security, and feature set.
+
+## Download AtomicDEX Mobile Wallet 📲
+Embrace financial freedom at your fingertips by downloading the AtomicDEX Mobile Wallet:
+
+- [iOS](https://testflight.apple.com/join/c2mOLEoC)
+- [Android](https://play.google.com/store/apps/details?id=com.komodoplatform.atomicdex)
+
+## Get Involved 🤝
+We welcome developers, designers, and testers' contributions to our open-source project. If you'd like to contribute, please review the [contribution guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
+
+For any questions about the AtomicDEX Mobile Wallet or the exchange, join our lively [Discord Support channel](https://komodoplatform.com/discord). Official team members are identifiable by the "Komodo Team" role.
 
 # NB (Forkers/contributors):
-This repository is currently in the procesundergoing safety and Flutter version upgrade. Expect major merge conflicts in the near future for any files updated from this repository. Please note that this software is under active development and is provided "as is" without any warranties or guarantees. Use at your own risk, as the authors and maintainers shall not be held liable for any issues, damages, or losses resulting from its use.
+
+This repository is currently in the process of undergoing safety and Flutter version upgrades. Expect major merge conflicts in the near future for any files updated from this repository. Please note that this software is under active development and provided "as is" without warranties or guarantees. Use at your own risk, as the authors and maintainers shall not be held liable for any issues, damages, or losses resulting from its use.
 
 ## Getting Started
 
 Build requires up-to-date version of coins file from https://github.com/KomodoPlatform/coins
 
-Commit hash and sah256sum of coins file is specified in `coins_ci.json`.
-You may download one manually or use `fetch_coins.sh` script on linux and macOS,
- `fetch_coins.ps1` powershell script on Windows.
+Commit hash and sha256sum of coins file is specified in `coins_ci.json`.
+You may download one manually or use `fetch_coins.sh` script on Linux and macOS or `fetch_coins.ps1` PowerShell script on Windows.
 
-`fetch_coins` script depends on sha256sum and jq utils:
+The `fetch_coins` script depends on sha256sum and jq utils:
 
 Ubuntu: `sudo apt-get update && sudo apt-get install -y coreutils jq`
 
@@ -49,45 +76,25 @@ flutter run --dart-define=screenshot=true
 ```
 
 
-## AtomicDEX API library (libmm2.a) version:
+## AtomicDEX API Library Setup:
 
-2.1.10108
-adde21b26
-http://195.201.0.6/dev/
+AtomicDEX Mobile runs the AtomicDEX API locally on the user's device. The API binary is platform-specific and must be manually set up by the developer instead of a typical Flutter dependency.
 
-## Flutter version
+Ensure you run the most recent AtomicDEX API [stable release](https://github.com/KomodoPlatform/atomicDEX-API/releases). Download the API binary for each platform and extract its `libmm2.a` file into the applicable platform's API folder.
 
-Currently using flutter 2.8.1
 
-### Upgrading from 1.22.4
 
-In your flutter directory:
+### [Stable API releases](https://github.com/KomodoPlatform/atomicDEX-API/releases)
+ 
+| API Build | API Path* |
+|--|--|
+| android-aarch64 | `android/app/src/main/cpp/libs/arm64-v8a/libmm2.a` |
+| android-armv7 | `android/app/src/main/cpp/libs/armeabi-v7a/libmm2.a` |
+| iOS | `ios/libmm2.a` |
 
-```
-git checkout 2.8.1
-flutter doctor
-```
+**Relative to the Flutter project's root folder. E.g. if your name was Bob and you cloned the flutter project into your macOS home directory, the full path for the iOS API would be `/Users/Bob/atomicdex_mobile/ios/libmm2.a`*
 
-In the project directory:
-
-```
-flutter clean
-flutter pub get
-```
-
-### beta Flutter
-
-`flutter version` is inconsistent regarding the access to beta versions.
-Git tags can be used instead (that is, when we want to experiment with beta versions of Flutter):
-
-    FD=`which flutter`; FD=`dirname $FD`; FD=`dirname $FD`; echo $FD; cd $FD
-    git pull
-    git reset --hard
-    git checkout -f v1.14.3
-
-### Kotlin vs Flutter
-
-In Android Studio (3.6.2) the latest Kotlin plugin (1.3.71) doesn't work with Flutter “1.12.13+hotfix.7”. To fix it - [uninstall the latest Kotlin](https://github.com/flutter/flutter/issues/52077#issuecomment-600459786) - then the Kotlin version 1.3.61, bundled with the Android Studio, will reappear.
+See [our wiki](https://github.com/KomodoPlatform/atomicdex-mobile/wiki/Project-Setup#android-builds-from-scratch) here for more thorough project setup steps. Besides installing the API binary, AtomicDEX Mobile is set up similarly to any other cloned Flutter project.
 
 ## Accessing the database
 
@@ -96,7 +103,7 @@ In Android Studio (3.6.2) the latest Kotlin plugin (1.3.71) doesn't work with Fl
 
 ## Localization
 
-1. Extract messages to .arb file:
+1. Extract messages to the .arb file:
 ```bash
 flutter pub run intl_generator:extract_to_arb --output-dir=lib/l10n lib/localizations.dart
 ```
@@ -117,25 +124,25 @@ Clone the latest version of [coins](https://github.com/KomodoPlatform/coins)
 
 Download and install the latest version of [python3](https://www.python.org/downloads/)
 
-Open the clonned repository and run the script below in the terminal in the repo folder
+Open the cloned repository and run the script below in the terminal in the repo folder.
 
 ```bash
 python3 utils/generate_app_configs.py
 ```
 
-Copy the generated `coins_config.json` file in Utils folder and paste inside assets/ folder in AtomicDEX-mobile project
+Copy the generated `coins_config.json` file from the Utils folder and paste it inside the `assets/` folder in the AtomicDEX Mobile project.
 
 ## Audio samples sources
 
  - [ticking sound](https://freesound.org/people/FoolBoyMedia/sounds/264498/)
  - [silence](https://freesound.org/people/Mullabfuhr/sounds/540483/)
- - [start (iOs)](https://freesound.org/people/pizzaiolo/sounds/320664/)
+ - [start (iOS)](https://freesound.org/people/pizzaiolo/sounds/320664/)
 
  ## Testing
 
  ### 1. Manual testing
  Manual testing plan:
- https://docs.google.com/spreadsheets/d/15LAphQydTn5ljS64twfbqIMcDOUMFV_kEmMkNiHbSGc
+[https://docs.google.com/spreadsheets/d/1jeIkGe2CmJ7YmuoVi6Rlc9KRr3wiBPf44Qy0Nd8qtOY/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1jeIkGe2CmJ7YmuoVi6Rlc9KRr3wiBPf44Qy0Nd8qtOY/edit?usp=sharing)
 
  ### 2. Integration testing
  [Guide and coverage](integration_test/README.md)
@@ -143,6 +150,6 @@ Copy the generated `coins_config.json` file in Utils folder and paste inside ass
  ### 3. Unit/Widget testing
  Not supported
 
-## License
+## License 📄
 
-This Software is released under the MIT License.
+This project is released under the [MIT License](LICENSE).

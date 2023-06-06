@@ -9,6 +9,9 @@ class AppConfig {
   int get maxCoinsEnabledAndroid => 50;
   int get maxCoinEnabledIOS => 20;
 
+  String get transactionWarningInfoUrl =>
+      'https://atomicdex.io/en/blog/preventing-address-poisoning';
+
   // number of decimal places for trade amount input fields
   int get tradeFormPrecision => 8;
 
