@@ -87,7 +87,7 @@ String getCoinIconPath(String abbr) {
 
 String getCoinTicker(String abbr) {
   for (String suffix in appConfig.protocolSuffixes) {
-    abbr = abbr.replaceAll('-$suffix', '');
+    abbr = abbr.replaceAll('-$suffix', '').replaceAll('_$suffix', '');
   }
   return abbr;
 }

@@ -36,11 +36,24 @@ jobs:
         run: flutter pub get --suppress-analytics
       # extra Gradle caching
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v2.4.2
       # mm2 lib download
       - run: mkdir -p android/app/src/main/cpp/libs/{armeabi-v7a,arm64-v8a}
       - run: curl -l --header ${{ secrets.MM2_DOWNLOAD_HEADER }} "https://gitlab.com/api/v4/projects/11069706/jobs/artifacts/mm2.1-cross/raw/target/armv7-linux-androideabi/release/libmm2.a?job=android-armv7" --output "android/app/src/main/cpp/libs/armeabi-v7a/libmm2.a"
       - run: curl -l --header ${{ secrets.MM2_DOWNLOAD_HEADER }} "https://gitlab.com/api/v4/projects/11069706/jobs/artifacts/mm2.1-cross/raw/target/aarch64-linux-android/release/libmm2.a?job=android-aarch64" --output "android/app/src/main/cpp/libs/arm64-v8a/libmm2.a"
+      # Save API binaries
+      - name: Create API binaries directory
+        run: mkdir -p build/api-binaries/
+      - name: Copy API binaries
+        run: |
+          cp android/app/src/main/cpp/libs/armeabi-v7a/libmm2.a build/api-binaries/libmm2-armeabi-v7a.a
+          cp android/app/src/main/cpp/libs/arm64-v8a/libmm2.a build/api-binaries/libmm2-arm64-v8a.a
+      # Upload API binaries
+      - name: Upload API binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: api-binaries
+          path: build/api-binaries/
       # APK build
       - name: Build release APK
         run: flutter build apk --release --obfuscate --split-debug-info=build/debug-info/

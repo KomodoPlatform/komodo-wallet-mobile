@@ -530,6 +530,7 @@ class _CoinDetailState extends State<CoinDetail> {
     fromId = transaction.internalId;
 
     return TransactionListItem(
+      key: ValueKey('transaction-list-item-$fromId'),
       transaction: transaction,
       currentCoinBalance: currentCoinBalance,
     );
