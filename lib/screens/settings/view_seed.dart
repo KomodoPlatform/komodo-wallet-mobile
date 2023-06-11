@@ -48,9 +48,9 @@ class ViewSeed extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: SecondaryButton(
-                        text: AppLocalizations.of(context).clipboardCopy,
+                        text: AppLocalizations.of(context).exportButton,
                         onPressed: () {
-                          copyToClipBoard(context, seed);
+                          shareText(seed);
                         },
                       ),
                     ),

@@ -173,7 +173,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                       SizedBox(height: 20),
                       InkWell(
                         onTap: () {
-                          copyToClipBoard(mContext, getPrivKey());
+                          shareText(getPrivKey());
                           Future.delayed(Duration(seconds: 2), () {
                             ScaffoldMessenger.of(mContext)
                                 .hideCurrentSnackBar();

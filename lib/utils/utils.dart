@@ -11,6 +11,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../app_config/app_config.dart';
@@ -35,7 +36,11 @@ import '../widgets/qr_view.dart';
 void copyToClipBoard(BuildContext context, String str) {
   ScaffoldMessengerState scaffoldMessenger;
   try {
-    scaffoldMessenger = ScaffoldMessenger.of(context);
+    scaffoldMessenger = ScaffoldMessenger.maybeOf(context);
+    assert(
+      scaffoldMessenger != null,
+      'No ScaffoldMessenger found when copying to clipboard',
+    );
   } catch (_) {}
 
   if (scaffoldMessenger != null) {
@@ -45,6 +50,10 @@ void copyToClipBoard(BuildContext context, String str) {
     ));
   }
   Clipboard.setData(ClipboardData(text: str));
+}
+
+Future<void> shareText(String text) async {
+  await Share.share(text);
 }
 
 /// Convers a null, a string or a double into a Decimal.
