@@ -12,11 +12,19 @@ class GetPrivKey {
     this.coin,
   });
 
-  factory GetPrivKey.fromJson(Map<String, dynamic> json) => GetPrivKey(
-        userpass: json['userpass'] ?? '',
-        method: json['method'] ?? '',
-        coin: json['coin'] ?? '',
-      );
+  factory GetPrivKey.fromJson(Map<String, dynamic> json) {
+    json = {
+      'userpass':
+          (json['userpass'] as String ?? json['userpass'] as dynamic) ?? '',
+      'method': (json['method'] as String ?? json['method'] as dynamic) ?? '',
+      'coin': (json['coin'] as String ?? json['coin'] as dynamic) ?? '',
+    };
+    return GetPrivKey(
+      userpass: json['userpass'] as String,
+      method: json['method'] as String,
+      coin: json['coin'] as String,
+    );
+  }
 
   String userpass;
   String method;
