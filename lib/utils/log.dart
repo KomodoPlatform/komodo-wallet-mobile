@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/mm_service.dart';
 import '../utils/utils.dart';
@@ -9,6 +12,7 @@ class Log {
   /// (updated automatically with https://github.com/ArtemGr/log-loc-rs).
   factory Log(String key, dynamic message) {
     Log.println(key, message);
+    _getCachedPrefs() /*.ignore()*/;
     return null;
   }
 
@@ -17,6 +21,12 @@ class Log {
     //return message.toString().startsWith('pickMode]') || message.toString().startsWith('play]');
     //return key.startsWith('swap_provider:');
     return true;
+  }
+
+  static SharedPreferences _prefs;
+
+  static Future<SharedPreferences> _getCachedPrefs() async {
+    return _prefs ??= await SharedPreferences.getInstance();
   }
 
   static String twoDigits(int n) => n >= 10 ? '$n' : '0$n';
@@ -53,25 +63,74 @@ class Log {
 
   static double limitMB = 500;
 
+  // Retrieve the last cleared date from shared preferences,
+  // or use the current time if it doesn't exist yet.
+  static Future<DateTime> getLastClearedDate() async {
+    return DateTime.tryParse(
+      (await _getCachedPrefs()).getString('lastClearedDate') ??
+          DateTime.now().toString(),
+    );
+  }
+
   /// Loop through saved log files from latest to older, and delete
   /// all files above overall [limitMB] size, except the today's one
   static Future<void> maintain() async {
-    Directory directory = await applicationDocumentsDirectory;
-    final List<File> logs = directory
-        .listSync()
+    final prefs = await _getCachedPrefs();
+    final directory = await applicationDocumentsDirectory;
+
+    DateTime lastClearedDate = await getLastClearedDate();
+
+    final List<File> logs = (await directory.list().toList())
         .whereType<File>()
         .where((f) => f.path.endsWith('.log'))
-        .toList();
+        .toList()
 
-    logs.sort((a, b) => b.path.compareTo(a.path));
+      // Sorted
+      ..sort((File a, File b) => b.path.compareTo(a.path));
 
-    double totalSize = mmSe.dirStatSync(directory.path);
-    while (totalSize > limitMB) {
-      try {
-        if (logs.first.existsSync()) logs.first.deleteSync();
-      } catch (e) {
-        print(e);
-      }
+    final now = DateTime.now();
+    final difference = now.difference(lastClearedDate).inDays;
+
+    // TODO: Use async compute method that runs in isolate to avoid blocking
+    // the main UI thread.
+    final double totalSize = MMService.dirStatSync(directory.path);
+
+    // Use compute function to run maintainInSeparateIsolate in a separate isolate.
+    Map<String, dynamic> params = {
+      'logs': logs,
+      'limitMB': limitMB,
+      'totalSize': totalSize,
+      'difference': difference,
+      'directoryPath': directory.path,
+    };
+
+    await compute(maintainInSeparateIsolate, params);
+
+    // Save the new last cleared date to shared preferences.
+    lastClearedDate = DateTime.now();
+    await prefs.setString('lastClearedDate', lastClearedDate.toString());
+  }
+}
+
+Future<void> maintainInSeparateIsolate(Map<String, dynamic> params) async {
+  List<File> logs = params['logs'] as List<File>;
+  double limitMB = params['limitMB'] as double;
+  double totalSize = params['totalSize'] as double;
+  final directoryPath = params['directoryPath'] as String;
+
+  // check if 30 days have passed since last clear
+  if ((params['difference'] as int) >= 30) {
+    final futures = logs.map((f) => f.delete());
+
+    return Future.wait(futures);
+  }
+
+  while (totalSize > limitMB) {
+    try {
+      if (logs.first.existsSync()) logs.first.deleteSync();
+      totalSize = MMService.dirStatSync(directoryPath);
+    } catch (e) {
+      print(e);
     }
   }
 }

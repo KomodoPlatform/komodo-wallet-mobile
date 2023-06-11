@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart'
@@ -308,8 +309,36 @@ class MMService {
     return ret;
   }
 
+  static Future<double> _getDirectorySizeIsolate(String dirPath) async {
+    final dir = Directory(dirPath);
+
+    if (!dir.existsSync()) return 0;
+
+    final fileEntities =
+        await dir.listSync(recursive: true, followLinks: false).toList();
+
+    final files = fileEntities.whereType<File>().toList();
+
+    final sizes = await Future.wait(files.map((f) => f.length()));
+
+    final dirSizeBytes = sizes.fold<double>(0, (prev, size) => prev + size);
+
+    final dirSizeMB = dirSizeBytes / pow(1024, 2);
+
+    return dirSizeMB;
+  }
+
+  Future<double> getDirectorySize(
+    String dirPath, {
+    String endsWith = 'log',
+  }) async {
+    final dirSizeMB = await compute(_getDirectorySizeIsolate, dirPath);
+
+    return dirSizeMB;
+  }
+
   /// returns directory size in MB
-  double dirStatSync(String dirPath, {String endsWith = 'log'}) {
+  static double dirStatSync(String dirPath, {String endsWith = 'log'}) {
     int totalSize = 0;
     var dir = Directory(dirPath);
     try {
@@ -328,6 +357,10 @@ class MMService {
     }
     return totalSize / 1000000;
   }
+
+  // static Future<double> dirStatAsync(Map<String,dynamic> params){
+  //  TODO: Asnc method that runs in isolate
+  // }
 
   Future<void> runBin(String rpcPass) async {
     final String passphrase = await EncryptionTool().read('passphrase');

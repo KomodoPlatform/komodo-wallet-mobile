@@ -733,7 +733,7 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
   Future<void> _updateLogsSize() async {
     final dirPath = applicationDocumentsDirectorySync.path;
     setState(() {
-      _sizeMb = mmSe.dirStatSync(dirPath);
+      _sizeMb = MMService.dirStatSync(dirPath);
     });
   }
 }
