@@ -137,7 +137,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
             if (!snapshot.hasData)
               return Center(child: CircularProgressIndicator());
 
-            final String privKey = snapshot.data.result.privKey;
+            String getPrivKey() => snapshot.data.result.privKey;
 
             return Column(
               children: <Widget>[
@@ -168,18 +168,18 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                       QrImage(
                         foregroundColor: Colors.black,
                         backgroundColor: Colors.white,
-                        data: privKey,
+                        data: getPrivKey(),
                       ),
                       SizedBox(height: 20),
                       InkWell(
                         onTap: () {
-                          copyToClipBoard(mContext, privKey);
+                          copyToClipBoard(mContext, getPrivKey());
                           Future.delayed(Duration(seconds: 2), () {
                             ScaffoldMessenger.of(mContext)
                                 .hideCurrentSnackBar();
                           });
                         },
-                        child: Text(privKey,
+                        child: Text(getPrivKey(),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1

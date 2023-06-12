@@ -515,8 +515,8 @@ class ApiProvider {
       final userBody = await _assertUserpass(client, gpk);
       final r = await userBody.client
           .post(Uri.parse(url), body: getPrivKeyToJson(userBody.body));
-      _assert200(r);
-      _logRes('getPrivKey', r);
+      _assertSuccess(error: jsonDecode(r.body)['error'], code: r.statusCode);
+      _logMmResReceived('getPrivKey');
 
       // Parse JSON once, then check if the JSON is an error.
       final dynamic jbody = json.decode(r.body);
@@ -967,6 +967,18 @@ class ApiProvider {
     }
   }
 
+  void _assertSuccess({@required String error, @required int code}) {
+    final isErrorCode = code != null || !code.toString().startsWith('2');
+
+    final isErrorMessage = error != null && error.isNotEmpty;
+
+    if (isErrorCode || isErrorMessage) {
+      throw ErrorString(
+        'MM Response Error: HTTP $code: ${error ?? 'No error message'}',
+      );
+    }
+  }
+
   void _assert200(Response r) {
     if (r.body.isEmpty) throw ErrorString('HTTP ${r.statusCode} empty');
     if (r.statusCode != 200) {
@@ -997,9 +1009,15 @@ class ApiProvider {
     return ErrorString(message);
   }
 
+  void _logMmResReceived(String method) {
+    Log.println(
+        'mm:_logRes', '[$method] MM Method called and response received');
+  }
+
   Response _logRes(String method, Response res) {
-    final String loggedBody = res.body.toString();
-    String loggedLine = '$method $loggedBody';
+    final isResEmpty = res.body.isEmpty;
+    String loggedLine = '[$method] MM Response logged. '
+        'Body: ${isResEmpty ? 'None provided' : res.body.toString()}';
 
     // getMyOrders and getRecentSwaps are invoked every two seconds during an active order or swap
     // and fully logging their response bodies every two seconds is an overkill,
@@ -1010,7 +1028,7 @@ class ApiProvider {
       loggedLine = loggedLine.substring(0, 75) + '..';
     }
 
-    Log.println('mm:74', loggedLine);
+    Log.println('mm:_logRes', loggedLine);
     this.res = res;
     return res;
   }

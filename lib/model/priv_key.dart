@@ -16,6 +16,11 @@ class PrivKey {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'result': result.toJson(),
       };
+
+  @override
+  String toString() {
+    return 'PrivKey{result: ${'*' * result.privKey.length}}';
+  }
 }
 
 class Result {
