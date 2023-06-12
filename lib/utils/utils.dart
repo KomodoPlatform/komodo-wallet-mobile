@@ -53,7 +53,11 @@ void copyToClipBoard(BuildContext context, String str) {
 }
 
 Future<void> shareText(String text) async {
-  await Share.share(text);
+  try {
+    await Share.share(text);
+  } catch (_) {
+    Log('utils:shareText', '[ERROR] Error sharing text.');
+  }
 }
 
 /// Convers a null, a string or a double into a Decimal.
