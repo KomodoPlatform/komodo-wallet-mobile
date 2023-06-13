@@ -76,10 +76,12 @@ dependencies:
       url: https://github.com/KomodoPlatform/flutter_file_picker.git
       ref: f72d4b70c4c63ade584e64b7706774555fbc1c8e #4.2.5
 
-  provider: # last reviewed 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
-    git:
-      url: https://github.com/KomodoPlatform/provider.git
-      ref: 960e422105e2b7a6a9e46b2517daead8754c6b25 #6.0.2
+  # provider: # last reviewed 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
+  #   git:
+  #     url: https://github.com/KomodoPlatform/provider.git
+  #     ref: 960e422105e2b7a6a9e46b2517daead8754c6b25 #6.0.2
+  provider: ^6.0.5
+
 
   encrypt: # last reviewed b17327a
     git:
@@ -156,6 +158,7 @@ dependencies:
     git:
       url: https://github.com/KomodoPlatform/dart-uuid.git
       ref: c9a37bc675fd3fa715db2d929dc66d15ec09ad27 #3.0.5
+  flutter_bloc: ^8.1.3
 
 
 dev_dependencies:

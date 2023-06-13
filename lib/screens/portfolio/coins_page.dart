@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/zcash_bloc.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../blocs/coins_bloc.dart';
@@ -44,6 +47,18 @@ class _CoinsPageState extends State<CoinsPage> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     if (mmSe.running) coinsBloc.updateCoinBalances();
+
+    // Check every 5 seconds if mmSe is running. When it is running, emit the
+    // event [ZCoinActivationStatusRequested] and kill the timer.
+    Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (mmSe.running) {
+        context.read<ZCoinActivationBloc>().add(
+              ZCoinActivationStatusRequested(),
+            );
+        timer.cancel();
+      }
+    });
+
     super.initState();
   }
 
@@ -410,7 +425,6 @@ class ListCoinsState extends State<ListCoins> {
                     child: ListView(
                   padding: EdgeInsets.zero,
                   children: [
-                    _buildZCashProgressIndicator(),
                     ListView.separated(
                       padding: const EdgeInsets.all(0),
                       key: const Key('list-view-coins'),
@@ -454,21 +468,5 @@ class ListCoinsState extends State<ListCoins> {
             }));
       },
     );
-  }
-
-  Widget _buildZCashProgressIndicator() {
-    return StreamBuilder<Map<int, ZTask>>(
-        initialData: zcashBloc.tasksToCheck,
-        stream: zcashBloc.outZcashProgress,
-        builder:
-            (BuildContext context, AsyncSnapshot<Map<int, ZTask>> snapshot) {
-          Map<int, ZTask> data = snapshot.data;
-          return ListView(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: ClampingScrollPhysics(),
-            children: data.values.map((e) => ItemZCoin(task: e)).toList(),
-          );
-        });
   }
 }

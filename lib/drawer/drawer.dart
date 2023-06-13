@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import '../blocs/settings_bloc.dart';
 import '../localizations.dart';
 import '../model/cex_provider.dart';
@@ -197,6 +198,10 @@ class _AppDrawerState extends State<AppDrawer> {
                       );
                     },
                   ),
+
+                  //
+                  ZCoinStatusListTile(),
+                  SizedBox(height: 2),
                   Divider(
                     indent: 20,
                     endIndent: 20,

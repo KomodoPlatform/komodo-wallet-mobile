@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/coin_type.dart';
 import '../../../blocs/coins_bloc.dart';
 import '../../../blocs/dialog_bloc.dart';
 import '../../../blocs/settings_bloc.dart';
@@ -360,6 +361,11 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         },
       ).then((dynamic _) => dialogBloc.dialog = null);
     } else {
+      // Show the Z-Coin confirmation dialog if the user has selected any Z-Coins.
+      final zCoinsToActivate = coinsBloc.coinBeforeActivation
+          .where((c) => c.isActive && c.coin.type == CoinType.zhtlc)
+          .toList();
+
       setState(() => _isDone = true);
       coinsBloc.activateCoinsSelected();
     }

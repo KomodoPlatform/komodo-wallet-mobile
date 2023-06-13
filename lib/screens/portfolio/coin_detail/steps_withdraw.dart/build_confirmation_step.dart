@@ -45,6 +45,10 @@ class BuildConfirmationStep extends StatefulWidget {
 
 class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   bool _showDetailedError = false;
+
+  // Prefer defining variables with a specific type. At the moment, we're doing
+  // a bit of a hack where we're setting it as dynamic and then using it to
+  // store the error string or the response.
   dynamic _withdrawResponse;
   bool _closeStep = false;
 
@@ -72,7 +76,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
       }
 
       ApiProvider()
-          .postWithdraw(
+          .withdrawTaskStream(
               mmSe.client,
               GetWithdraw(
                 userpass: mmSe.userpass,
@@ -84,24 +88,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                 max: double.parse(widget.coinBalance.balance.getBalance()) ==
                     double.parse(widget.amountToPay),
               ))
-          .then((dynamic res) {
-        if (res.taskId != null) {
-          // start checking status
-          zcashBloc.startWithdrawStatusCheck(
-            res.taskId,
-            widget.coinBalance.coin.abbr,
-          );
-          statusStream =
-              zcashBloc.outZcashProgress.listen((Map<int, ZTask> event) {
-            event.forEach((key, task) {
-              if (task.id == res.taskId && task.result != null) {
-                setState(() => _withdrawResponse = task.result);
-              }
-            });
-          });
-          return;
-        }
-
+          .last
+          .then((res) {
         setState(() => _withdrawResponse = res);
       }).catchError((dynamic onError) {
         setState(() => _withdrawResponse = onError);

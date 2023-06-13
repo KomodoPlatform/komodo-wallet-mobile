@@ -882,7 +882,7 @@ class ApiProvider {
                 _catchErrorString('postSetPrice', e, 'Error on set price'),
           );
 
-  Future<dynamic> postWithdraw(
+  Future<WithdrawResponse> postWithdraw(
     http.Client client,
     GetWithdraw body,
   ) async {
@@ -899,6 +899,60 @@ class ApiProvider {
     if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
     return withdrawResponseFromJson(res.body);
+  }
+
+  /// For non-legacy withaw methods which have the withdraw as a 2-step process
+  /// of initiating the withdraw and then tracking its status.
+  Stream<WithdrawResponse> withdrawTaskStream(
+    http.Client client,
+    GetWithdraw body,
+  ) async* {
+    final initialResponse = await postWithdraw(client, body);
+
+    yield withdrawResponseFromJson(res.body);
+
+    if (initialResponse.taskId == null) {
+      return;
+    }
+
+    while (true) {
+      // TODO: Handle "In progress" status. Currently we are only emitting
+      // the initial and completed status.
+
+      client ??= mmSe.client;
+
+      final userBody = await _assertUserpass(
+          client,
+          GetWithdrawTaskStatus(
+            userpass: body.userpass,
+            taskId: initialResponse.taskId,
+          ));
+
+      final r =
+          await client.post(Uri.parse(url), body: json.encode(userBody.body));
+      _assert200(r);
+      _logRes('getWithdrawStatus', r);
+
+      final Map<String, dynamic> jbody = json.decode(r.body);
+
+      final result = jbody['result'] as Map<String, dynamic>;
+
+      final status = result['status'] as String;
+      final details = result['details'] as Map<String, dynamic>;
+
+      if (status == 'Ok') {
+        yield WithdrawResponse.fromJson(details);
+        return;
+      }
+
+      if (status == 'InProgress') {
+        // No-op, continue the loop.
+      } else {
+        throw ErrorString('Withdraw failed with unknown status: $status');
+      }
+
+      await Future.delayed(const Duration(seconds: 3));
+    }
   }
 
   Future<dynamic> recoverFundsOfSwap(

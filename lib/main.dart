@@ -3,6 +3,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' as real_bloc;
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import '../app_config/app_config.dart';
 import '../blocs/authenticate_bloc.dart';
 import '../blocs/coins_bloc.dart';
@@ -52,7 +55,13 @@ Future<void> startApp() async {
   try {
     mmSe.metrics();
     startup.start();
-    return runApp(_myAppWithProviders);
+
+    return runApp(
+      real_bloc.BlocProvider(
+        create: (context) => ZCoinActivationBloc(),
+        child: _myAppWithProviders,
+      ),
+    );
   } catch (e) {
     Log('main:46', 'startApp] $e');
     rethrow;
@@ -509,7 +518,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     icon: Stack(
                       children: <Widget>[
                         const Icon(Icons.dehaze, key: Key('main-nav-more')),
-                        if (updatesProvider.status != UpdateStatus.upToDate)
+                        if (updatesProvider.status != UpdateStatus.upToDate ||
+                            context.select<ZCoinActivationBloc, bool>((value) =>
+                                value.state is ZCoinActivationInProgess))
                           buildRedDot(context),
                       ],
                     ),

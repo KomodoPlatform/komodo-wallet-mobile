@@ -315,7 +315,7 @@ class MMService {
     if (!dir.existsSync()) return 0;
 
     final fileEntities =
-        await dir.listSync(recursive: true, followLinks: false).toList();
+        dir.listSync(recursive: true, followLinks: false).toList();
 
     final files = fileEntities.whereType<File>().toList();
 
@@ -500,8 +500,6 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
       await coinsBloc.enableCoins(active);
-      // continue activating z coins if exists
-      await zcashBloc.downloadZParams();
 
       for (int i = 0; i < 2; i++) {
         await coinsBloc.retryActivatingSuspendedCoins();

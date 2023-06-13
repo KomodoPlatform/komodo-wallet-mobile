@@ -2,13 +2,15 @@
 //
 //     final getWithdraw = getWithdrawFromJson(jsonString);
 
+import 'package:flutter/foundation.dart';
+
 import '../blocs/coins_bloc.dart';
 import 'coin.dart';
 import 'coin_type.dart';
 
 class GetWithdraw {
   GetWithdraw({
-    this.method = 'withdraw',
+    // this.method = 'withdraw',
     this.amount,
     this.to,
     this.coin,
@@ -18,7 +20,7 @@ class GetWithdraw {
     this.memo,
   });
 
-  String method;
+  // String method;
   String amount;
   String memo;
   String coin;
@@ -41,7 +43,7 @@ class GetWithdraw {
             }
           }
         : <String, dynamic>{
-            'method': method ?? '',
+            'method': 'withdraw',
             if (amount != null) 'amount': amount,
             if (memo != null) 'memo': memo,
             'to': to ?? '',
@@ -51,6 +53,26 @@ class GetWithdraw {
             if (fee != null) 'fee': fee.toJson(),
           };
   }
+}
+
+class GetWithdrawTaskStatus {
+  GetWithdrawTaskStatus({
+    this.method = 'task::withdraw::status',
+    @required this.taskId,
+    @required this.userpass,
+  });
+
+  String method;
+  int taskId;
+  String userpass;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'method': method,
+        'userpass': userpass,
+        'params': {
+          'task_id': taskId,
+        }
+      };
 }
 
 class Fee {

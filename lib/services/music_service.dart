@@ -82,7 +82,7 @@ class MusicService {
   /// Pick the current music mode based on the list of all the orders and SWAPs.
   MusicMode pickMode(List<Order> orders) {
     MusicMode prevMode = musicMode;
-    if (zcashBloc.tasksToCheck.isNotEmpty) return MusicMode.ACTIVE;
+    // if (zcashBloc.tasksToCheck.isNotEmpty) return MusicMode.ACTIVE;
     if (prevMode == MusicMode.ACTIVE && _anyNewSuccessfulSwaps()) {
       Log('music_service]', 'pickMode: MusicMode.APPLAUSE');
       return MusicMode.APPLAUSE;
