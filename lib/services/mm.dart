@@ -650,8 +650,7 @@ class ApiProvider {
 
       return privKey;
     } catch (e) {
-      throw _catchErrorString(
-          'getPrivKey', e, 'Error getting ${gpk.coin} private key');
+      throw Exception('Error on get priv key');
     }
   }
 
