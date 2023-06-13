@@ -8,7 +8,6 @@ import 'package:decimal/decimal.dart';
 import '../app_config/app_config.dart';
 import '../blocs/main_bloc.dart';
 import '../blocs/settings_bloc.dart';
-import '../blocs/zcash_bloc.dart';
 import '../model/active_coin.dart';
 import '../model/balance.dart';
 import '../model/base_service.dart';
@@ -472,8 +471,8 @@ class CoinsBloc implements BlocBase {
     }
     preEnabledCoins = preEnabledCoins.toSet().toList();
 
-    // remove zcash-coins from the coin list
-    coins = zcashBloc.removeZcashCoins(coins);
+    // // remove zcash-coins from the coin list
+    // coins = zcashBloc.removeZcashCoins(coins);
 
     // remove needed-parent-coins from the main coin list
     coins.removeWhere((coin) => preEnabledCoins.contains(coin));
@@ -610,9 +609,9 @@ class CoinsBloc implements BlocBase {
     }
 
     // remove z-coin that are currently enabling from activation list
-    for (var zCoin in zcashBloc.coinsToActivate) {
-      notActive.removeWhere((e) => e.abbr == zCoin);
-    }
+    // for (var zCoin in zcashBloc.coinsToActivate) {
+    //   notActive.removeWhere((e) => e.abbr == zCoin);
+    // }
 
     notActive.sort((Coin a, Coin b) =>
         a.swapContractAddress.compareTo(b.swapContractAddress));
