@@ -104,7 +104,8 @@ class Log {
       'directoryPath': directory.path,
     };
 
-    await compute(maintainInSeparateIsolate, params);
+    // await compute(maintainInSeparateIsolate, params);
+    await maintainInSeparateIsolate(params);
 
     // Save the new last cleared date to shared preferences.
     lastClearedDate = DateTime.now();
