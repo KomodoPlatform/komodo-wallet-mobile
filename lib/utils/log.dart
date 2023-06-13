@@ -88,7 +88,8 @@ class Log {
       ..sort((File a, File b) => b.path.compareTo(a.path));
 
     final now = DateTime.now();
-    final difference = now.difference(lastClearedDate).inDays;
+    final difference =
+        lastClearedDate == null ? null : now.difference(lastClearedDate).inDays;
 
     // TODO: Use async compute method that runs in isolate to avoid blocking
     // the main UI thread.
