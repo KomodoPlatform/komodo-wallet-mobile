@@ -63,12 +63,11 @@ class Log {
 
   static double limitMB = 500;
 
-  // Retrieve the last cleared date from shared preferences,
-  // or use the current time if it doesn't exist yet.
+  // Retrieve the last cleared date from shared preferences, return null if
+  // never cleared before.
   static Future<DateTime> getLastClearedDate() async {
     return DateTime.tryParse(
-      (await _getCachedPrefs()).getString('lastClearedDate') ??
-          DateTime.now().toString(),
+      (await _getCachedPrefs()).getString('lastClearedDate'),
     );
   }
 
