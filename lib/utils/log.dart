@@ -67,14 +67,19 @@ class Log {
   // never cleared before.
   static Future<DateTime> getLastClearedDate() async {
     return DateTime.tryParse(
-      (await _getCachedPrefs()).getString('lastClearedDate'),
+      (await _getCachedPrefs()).getString('lastClearedDate') ?? '',
     );
+  }
+
+  static Future<void> _updateLastClearedDate() async {
+    final prefs = await _getCachedPrefs();
+    final lastClearedDate = DateTime.now();
+    await prefs.setString('lastClearedDate', lastClearedDate.toString());
   }
 
   /// Loop through saved log files from latest to older, and delete
   /// all files above overall [limitMB] size, except the today's one
   static Future<void> maintain() async {
-    final prefs = await _getCachedPrefs();
     final directory = await applicationDocumentsDirectory;
 
     DateTime lastClearedDate = await getLastClearedDate();
@@ -107,9 +112,7 @@ class Log {
     // await compute(maintainInSeparateIsolate, params);
     await maintainInSeparateIsolate(params);
 
-    // Save the new last cleared date to shared preferences.
-    lastClearedDate = DateTime.now();
-    await prefs.setString('lastClearedDate', lastClearedDate.toString());
+    await _updateLastClearedDate();
   }
 }
 
@@ -120,18 +123,23 @@ Future<void> maintainInSeparateIsolate(Map<String, dynamic> params) async {
   final directoryPath = params['directoryPath'] as String;
 
   // Clear logs if never cleared before
-  if (params['difference'] == null) {
-    final futures = logs.map((f) => f.delete());
+  final shouldClearAllLogFiles = params['difference'] == null;
 
-    return Future.wait(futures);
+  if (shouldClearAllLogFiles) {
+    final List<Future<void>> futures = logs.map((f) => f.delete()).toList();
+
+    return Future.wait(futures).catchError((e) {
+      print('Error clearing all log files: $e');
+    });
   }
 
   while (totalSize > limitMB) {
     try {
       if (logs.first.existsSync()) logs.first.deleteSync();
       totalSize = mmSe.dirStatSync(directoryPath);
+      logs.removeAt(0);
     } catch (e) {
-      print(e);
+      print('Error deleting log files: $e');
     }
   }
 }
