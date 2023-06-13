@@ -104,7 +104,8 @@ class Log {
       'directoryPath': directory.path,
     };
 
-    await compute(maintainInSeparateIsolate, params);
+    // await compute(maintainInSeparateIsolate, params);
+    await maintainInSeparateIsolate(params);
 
     // Save the new last cleared date to shared preferences.
     lastClearedDate = DateTime.now();
@@ -118,8 +119,8 @@ Future<void> maintainInSeparateIsolate(Map<String, dynamic> params) async {
   double totalSize = params['totalSize'] as double;
   final directoryPath = params['directoryPath'] as String;
 
-  // check if 30 days have passed since last clear
-  if ((params['difference'] as int) >= 30) {
+  // Clear logs if never cleared before
+  if (params['difference'] == null) {
     final futures = logs.map((f) => f.delete());
 
     return Future.wait(futures);
