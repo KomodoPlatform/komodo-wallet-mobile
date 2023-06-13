@@ -122,6 +122,8 @@ Future<void> maintainInSeparateIsolate(Map<String, dynamic> params) async {
   double totalSize = params['totalSize'] as double;
   final directoryPath = params['directoryPath'] as String;
 
+  print('Log size: ${totalSize.toStringAsFixed(2)}MB for ${logs.length} files');
+
   // Clear logs if never cleared before
   final shouldClearAllLogFiles = params['difference'] == null;
 
