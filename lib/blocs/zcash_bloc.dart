@@ -301,7 +301,8 @@ class ZCashBloc implements BlocBase {
     if (coinsToActivate.isEmpty) return;
     final dir = await getApplicationDocumentsDirectory();
     Directory zDir = Directory(dir.path + folder);
-    if (zDir.existsSync() && mmSe.dirStatSync(zDir.path, endsWith: '') > 50) {
+    if (zDir.existsSync() &&
+        MMService.dirStatSync(zDir.path, endsWith: '') > 50) {
       _autoEnableZcashCoins();
       return;
     } else if (!zDir.existsSync()) {
