@@ -67,6 +67,8 @@ class LogStorage {
     final compressedSizes = <int>[];
 
     Archive archive = Archive();
+    const compressionLevel = Deflate.DEFAULT_COMPRESSION;
+    const maxSizeBytes = 24 * 1000 * 1000; // 24MB. Discord limit is 25MB.
 
     for (var logFile in logFiles) {
       List<int> fileBytes = logFile.readAsBytesSync();
@@ -76,17 +78,18 @@ class LogStorage {
 
       archive.addFile(logArchive);
 
-      final compressedBytes = GZipEncoder().encode(fileBytes);
+      final compressedBytes =
+          GZipEncoder().encode(fileBytes, level: compressionLevel);
 
-      if (compressedBytes.length > 24 * 1024 * 1024) {
+      if (compressedBytes.length > maxSizeBytes) {
         throw Exception('Log file ${logFile.path} is larger than 24MB');
       }
 
       // If archive size of the current + next file is > 24MB, export the
-      // current archive.
-      final wouldBeOverLimit =
-          compressedSizes.fold(0, (a, b) => a + b) + compressedBytes.length >
-              24 * 1024 * 1024;
+      // current archive and start a new one.
+      final wouldBeOverLimit = compressedSizes.fold<int>(0, (a, b) => a + b) +
+              compressedBytes.length >
+          maxSizeBytes;
 
       compressedSizes.add(compressedBytes.length);
 
@@ -97,8 +100,10 @@ class LogStorage {
           '${logFolderPath()}/komodo_wallet_logs_archive_${compressedFiles.length}.g.zip',
         );
 
-        final archiveBytes = ZipEncoder().encode(archive);
-        final gzipBytes = GZipEncoder().encode(archiveBytes, level: 9);
+        final archiveBytes =
+            ZipEncoder().encode(archive, level: compressionLevel);
+        final gzipBytes =
+            GZipEncoder().encode(archiveBytes, level: compressionLevel);
 
         final savedFile =
             await archiveFile.writeAsBytes(gzipBytes, flush: true);
