@@ -527,10 +527,7 @@ class ApiProvider {
 
       return privKey;
     } catch (e) {
-      throw Log(
-        'getPrivKey',
-        'Error getting ${gpk.coin} private key',
-      );
+      print('$e');
     }
   }
 
@@ -598,6 +595,7 @@ class ApiProvider {
       }
     } catch (e) {
       print('$e');
+      throw Exception('Error on get priv key');
     }
 
     return list;

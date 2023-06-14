@@ -63,19 +63,23 @@ class Log {
 
   static double limitMB = 500;
 
-  // Retrieve the last cleared date from shared preferences,
-  // or use the current time if it doesn't exist yet.
+  // Retrieve the last cleared date from shared preferences, return null if
+  // never cleared before.
   static Future<DateTime> getLastClearedDate() async {
     return DateTime.tryParse(
-      (await _getCachedPrefs()).getString('lastClearedDate') ??
-          DateTime.now().toString(),
+      (await _getCachedPrefs()).getString('lastClearedDate') ?? '',
     );
+  }
+
+  static Future<void> _updateLastClearedDate() async {
+    final prefs = await _getCachedPrefs();
+    final lastClearedDate = DateTime.now();
+    await prefs.setString('lastClearedDate', lastClearedDate.toString());
   }
 
   /// Loop through saved log files from latest to older, and delete
   /// all files above overall [limitMB] size, except the today's one
   static Future<void> maintain() async {
-    final prefs = await _getCachedPrefs();
     final directory = await applicationDocumentsDirectory;
 
     DateTime lastClearedDate = await getLastClearedDate();
@@ -89,7 +93,8 @@ class Log {
       ..sort((File a, File b) => b.path.compareTo(a.path));
 
     final now = DateTime.now();
-    final difference = now.difference(lastClearedDate).inDays;
+    final difference =
+        lastClearedDate == null ? null : now.difference(lastClearedDate).inDays;
 
     // TODO: Use async compute method that runs in isolate to avoid blocking
     // the main UI thread.
@@ -107,9 +112,7 @@ class Log {
     // await compute(maintainInSeparateIsolate, params);
     await maintainInSeparateIsolate(params);
 
-    // Save the new last cleared date to shared preferences.
-    lastClearedDate = DateTime.now();
-    await prefs.setString('lastClearedDate', lastClearedDate.toString());
+    await _updateLastClearedDate();
   }
 }
 
@@ -119,19 +122,26 @@ Future<void> maintainInSeparateIsolate(Map<String, dynamic> params) async {
   double totalSize = params['totalSize'] as double;
   final directoryPath = params['directoryPath'] as String;
 
-  // Clear logs if never cleared before
-  if (params['difference'] == null) {
-    final futures = logs.map((f) => f.delete());
+  print('Log size: ${totalSize.toStringAsFixed(2)}MB for ${logs.length} files');
 
-    return Future.wait(futures);
+  // Clear logs if never cleared before
+  final shouldClearAllLogFiles = params['difference'] == null;
+
+  if (shouldClearAllLogFiles) {
+    final List<Future<void>> futures = logs.map((f) => f.delete()).toList();
+
+    return Future.wait(futures).catchError((e) {
+      print('Error clearing all log files: $e');
+    });
   }
 
   while (totalSize > limitMB) {
     try {
       if (logs.first.existsSync()) logs.first.deleteSync();
       totalSize = MMService.dirStatSync(directoryPath);
+      logs.removeAt(0);
     } catch (e) {
-      print(e);
+      print('Error deleting log files: $e');
     }
   }
 }
