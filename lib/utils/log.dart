@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:komodo_dex/utils/log_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 import '../services/mm_service.dart';
 import '../utils/utils.dart';
@@ -15,11 +17,13 @@ class Log {
     _getCachedPrefs() /*.ignore()*/;
     return null;
   }
+  static final LogStorage _logStorage = LogStorage();
 
   /// This function can be used in a hot-reload debugging session to focus on certain sections of the log.
   static bool pass(String key, dynamic message) {
     //return message.toString().startsWith('pickMode]') || message.toString().startsWith('play]');
     //return key.startsWith('swap_provider:');
+    return kDebugMode;
     return true;
   }
 
@@ -36,29 +40,25 @@ class Log {
   /// (updated automatically with https://github.com/ArtemGr/log-loc-rs).
 
   static void println(String key, dynamic message) {
-    String messageToPrint = key + message.toString() + '\n';
+    String messageToPrint = "";
     if (key.isNotEmpty) {
-      messageToPrint = key + '] ' + message.toString() + '\n';
+      messageToPrint = '$key] $message';
+    } else {
+      messageToPrint = message.toString();
     }
 
     if (pass(key, message)) {
-      // Flutter debugging console
-      // and also iOS system log.
-      // print(messageToPrint);
+      print(messageToPrint);
     }
 
-    //via os_log://MMService.nativeC.invokeMethod<String>('log', messageToPrint);
-
-    // We make the log lines a bit shorter by only mentioning the time
-    // and not the date, as the latter is already present in the log file name.
     final now = DateTime.now();
-    mmSe.log2file(
-        '${twoDigits(now.hour)}'
-        ':${twoDigits(now.minute)}'
-        ':${twoDigits(now.second)}'
-        '.${now.millisecond}'
-        ' $messageToPrint',
-        now: now);
+    final dateString = DateFormat('HH:mm:ss.SSS').format(DateTime.now());
+    _logStorage.appendLog(now, '$dateString $messageToPrint');
+  }
+
+  static Future<void> appendRawLog(String message) async {
+    final now = DateTime.now();
+    _logStorage.appendLog(now, message);
   }
 
   static double limitMB = 500;
@@ -98,7 +98,8 @@ class Log {
 
     // TODO: Use async compute method that runs in isolate to avoid blocking
     // the main UI thread.
-    final double totalSize = MMService.dirStatSync(directory.path);
+    final double totalSize =
+        await MMService.getDirectorySize(directory.path, endsWith: 'log');
 
     // Use compute function to run maintainInSeparateIsolate in a separate isolate.
     Map<String, dynamic> params = {
@@ -138,7 +139,8 @@ Future<void> maintainInSeparateIsolate(Map<String, dynamic> params) async {
   while (totalSize > limitMB) {
     try {
       if (logs.first.existsSync()) logs.first.deleteSync();
-      totalSize = MMService.dirStatSync(directoryPath);
+      totalSize =
+          await MMService.getDirectorySize(directoryPath, endsWith: 'log');
       logs.removeAt(0);
     } catch (e) {
       print('Error deleting log files: $e');
