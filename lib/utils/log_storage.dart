@@ -16,6 +16,11 @@ class LogStorage {
         'Application documents directory is null. '
         'It must be initialized before calling logFolderPath()',
       );
+
+    // Ideally we would put the logs in their own folder, but this is left as
+    // is for now for backwards compatibility. There likely won't be any
+    // backwards compatibility issues, but there may be if there are any parts
+    // of the app that rely on the logs being in original location.
     return applicationDocumentsDirectorySync.path;
   }
 
