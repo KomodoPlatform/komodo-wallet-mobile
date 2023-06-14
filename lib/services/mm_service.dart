@@ -8,7 +8,6 @@ import 'package:flutter/services.dart'
     show EventChannel, MethodChannel, rootBundle, SystemChannels;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:komodo_dex/blocs/zcash_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as path;
 

@@ -5,7 +5,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/blocs/zcash_bloc.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +18,6 @@ import '../../../../services/mm_service.dart';
 import '../portfolio/loading_coin.dart';
 import 'add_coin_button.dart';
 import 'item_coin.dart';
-import 'item_zcoin.dart';
 
 class CoinsPage extends StatefulWidget {
   @override

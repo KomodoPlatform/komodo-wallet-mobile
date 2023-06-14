@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_api.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_repository.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_status.dart';
-import 'package:komodo_dex/services/db/database.dart';
 
 // TODO: Localize messages
 class ZCoinActivationBloc

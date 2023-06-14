@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../../../../blocs/coin_detail_bloc.dart';
 import '../../../../blocs/coins_bloc.dart';
 import '../../../../blocs/main_bloc.dart';
-import '../../../../blocs/zcash_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../model/coin_balance.dart';
 import '../../../../model/error_string.dart';

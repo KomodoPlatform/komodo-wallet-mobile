@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:komodo_dex/blocs/zcash_bloc.dart';
 import '../model/order.dart';
 import '../model/swap.dart';
 import '../model/swap_provider.dart';
