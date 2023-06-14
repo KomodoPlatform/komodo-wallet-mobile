@@ -290,7 +290,13 @@ class ApiProvider {
       if (coin.bchdUrls != null) 'bchd_urls': coin.bchdUrls
     };
     final js = json.encode(electrum);
-    Log('mm:251', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
+
+    if (electrum.containsKey('userpass')) {
+      electrum['userpass'] = '********';
+    }
+
+    Log('mm:251', json.encode(electrum).replaceAll(RegExp(r'"\w{64}"'), '"-"'));
+
     return js;
   }
 
