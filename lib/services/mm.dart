@@ -529,6 +529,7 @@ class ApiProvider {
     } catch (e) {
       print('$e');
     }
+    throw Exception('Error on get priv key');
   }
 
   Future<PublicKey> getPublicKey([http.Client client]) async {

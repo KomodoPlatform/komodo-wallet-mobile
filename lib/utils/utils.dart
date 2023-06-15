@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:math';
 
 import 'package:bip39/bip39.dart' as bip39;
@@ -821,6 +822,24 @@ String getRandomWord() {
   final String mnemonic = bip39.generateMnemonic();
   final List<String> words = mnemonic.split(' ');
   return words[Random().nextInt(words.length)];
+}
+
+void mustRunInMainThread({String message}) {
+  final isMainThread = Isolate.current.debugName == 'main';
+  if (!isMainThread) {
+    throw Exception(
+      message ?? 'Method must be called on the main thread',
+    );
+  }
+}
+
+void mustRunInIsolate([String message]) {
+  final isMainThread = Isolate.current.debugName == 'main';
+  if (isMainThread) {
+    throw Exception(
+      message ?? 'Method must be called in an isolate',
+    );
+  }
 }
 
 List<Coin> filterCoinsByQuery(List<Coin> coins, String query,

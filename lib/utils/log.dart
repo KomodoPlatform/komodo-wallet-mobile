@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:komodo_dex/utils/log_storage.dart';
@@ -82,10 +83,7 @@ class Log {
 
     DateTime lastClearedDate = await getLastClearedDate();
 
-    final List<File> logs = (await directory.list().toList())
-        .whereType<File>()
-        .where((f) => f.path.endsWith('.log'))
-        .toList()
+    final List<File> logs = (await _logStorage.getLogFiles()).values.toList()
 
       // Sorted
       ..sort((File a, File b) => b.path.compareTo(a.path));
@@ -94,32 +92,31 @@ class Log {
     final difference =
         lastClearedDate == null ? null : now.difference(lastClearedDate).inDays;
 
-    // TODO: Use async compute method that runs in isolate to avoid blocking
-    // the main UI thread.
-    final double totalSize =
-        await MMService.getDirectorySize(directory.path, endsWith: 'log');
-
     // Use compute function to run maintainInSeparateIsolate in a separate isolate.
     Map<String, dynamic> params = {
       'logs': logs,
       'limitMB': limitMB,
-      'totalSize': totalSize,
       'difference': difference,
       'directoryPath': directory.path,
     };
 
-    // await compute(maintainInSeparateIsolate, params);
-    await maintainInSeparateIsolate(params);
+    await _doMaintainInSeparateIsolate(params);
 
     await _updateLastClearedDate();
   }
 }
 
-Future<void> maintainInSeparateIsolate(Map<String, dynamic> params) async {
+Future<void> _doMaintainInSeparateIsolate(Map<String, dynamic> params) async {
+  mustRunInIsolate();
+
   List<File> logs = params['logs'] as List<File>;
   double limitMB = params['limitMB'] as double;
-  double totalSize = params['totalSize'] as double;
   final directoryPath = params['directoryPath'] as String;
+
+  double totalSize = logs.fold(
+    0,
+    (sum, f) => sum + f.lengthSync() / pow(1000, 3),
+  );
 
   print('Log size: ${totalSize.toStringAsFixed(2)}MB for ${logs.length} files');
 

@@ -1,6 +1,9 @@
+import 'dart:collection';
 import 'dart:io';
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:archive/archive.dart';
 import 'package:path/path.dart' as p;
@@ -10,7 +13,7 @@ class LogStorage {
   IOSink _logFileSink;
   File _currentFile;
 
-  String logFolderPath() {
+  static String logFolderPath() {
     if (applicationDocumentsDirectorySync == null)
       throw Exception(
         'Application documents directory is null. '
@@ -24,7 +27,52 @@ class LogStorage {
     return applicationDocumentsDirectorySync.path;
   }
 
-// Function to get log file path
+  /// Returns a map of log files, keyed by the date.
+  Future<LinkedHashMap<DateTime, File>> getLogFiles() async {
+    return await compute(_getLogsInIsolate, null);
+  }
+
+  static Future<LinkedHashMap<DateTime, File>> _getLogsInIsolate(
+    dynamic _,
+  ) async {
+    mustRunInIsolate();
+
+    final logDirectory = Directory(logFolderPath());
+
+    final logFilesMap = <DateTime, File>{} as LinkedHashMap<DateTime, File>;
+
+    if (!logDirectory.existsSync()) {
+      return logFilesMap;
+    }
+
+    final logFiles = logDirectory
+        .listSync(followLinks: false, recursive: true)
+        .whereType<File>()
+        .where((f) => f.path.endsWith('.log'))
+        .toList();
+
+    for (final logFile in logFiles) {
+      final date = DateTime.tryParse(
+        p.basenameWithoutExtension(logFile.path),
+      );
+
+      if (date != null) {
+        logFilesMap.addAll({date: logFile});
+      } else {
+        final errorString = 'Error parsing log file date: ${logFile.path}';
+        try {
+          Log('LogStorage: getLogFiles', errorString);
+        } catch (_) {
+          print(errorString);
+        }
+      }
+    }
+
+    return logFilesMap;
+  }
+
+  /// Returns the path to the log file for the given date. Does not create the
+  /// file or guarantee that it exists.
   String getLogFilePath(DateTime date) {
     var filename = dateFormat.format(date) + '.log';
     return '${logFolderPath()}/$filename';
