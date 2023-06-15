@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:komodo_dex/utils/log_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +15,6 @@ class Log {
   /// (updated automatically with https://github.com/ArtemGr/log-loc-rs).
   factory Log(String key, dynamic message) {
     Log.println(key, message);
-    _getCachedPrefs() /*.ignore()*/;
     return null;
   }
   static final LogStorage _logStorage = LogStorage();
@@ -27,11 +27,7 @@ class Log {
     return true;
   }
 
-  static SharedPreferences _prefs;
-
-  static Future<SharedPreferences> _getCachedPrefs() async {
-    return _prefs ??= await SharedPreferences.getInstance();
-  }
+  static FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   static String twoDigits(int n) => n >= 10 ? '$n' : '0$n';
 
@@ -40,7 +36,7 @@ class Log {
   /// (updated automatically with https://github.com/ArtemGr/log-loc-rs).
 
   static void println(String key, dynamic message) {
-    String messageToPrint = "";
+    String messageToPrint = '';
     if (key.isNotEmpty) {
       messageToPrint = '$key] $message';
     } else {
@@ -67,14 +63,16 @@ class Log {
   // never cleared before.
   static Future<DateTime> getLastClearedDate() async {
     return DateTime.tryParse(
-      (await _getCachedPrefs()).getString('lastClearedDate') ?? '',
+      await _secureStorage.read(key: 'lastClearedDate') ?? '',
     );
   }
 
   static Future<void> _updateLastClearedDate() async {
-    final prefs = await _getCachedPrefs();
     final lastClearedDate = DateTime.now();
-    await prefs.setString('lastClearedDate', lastClearedDate.toString());
+    await _secureStorage.write(
+      key: 'lastClearedDate',
+      value: lastClearedDate.toIso8601String(),
+    );
   }
 
   /// Loop through saved log files from latest to older, and delete
