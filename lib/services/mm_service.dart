@@ -258,12 +258,12 @@ class MMService {
 
     final dirStats = dir.statSync();
 
-    final files =
-        dir.listSync(recursive: true, followLinks: false).whereType<File>();
-
-    if (hasFileNameFilter) {
-      files.where((file) => file.path.endsWith(endsWith));
-    }
+    final files = dir
+        .listSync(recursive: true, followLinks: false)
+        .whereType<File>()
+        .where(
+            (file) => hasFileNameFilter ? file.path.endsWith(endsWith) : true)
+        .toList();
 
     final sizeBytes =
         files.fold<int>(0, (prev, file) => prev + file.lengthSync());
