@@ -21,7 +21,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -52,7 +52,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -86,7 +86,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -133,7 +133,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -181,7 +181,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -272,7 +272,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -306,7 +306,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -340,7 +340,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -371,7 +371,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -419,7 +419,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -488,7 +488,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -573,7 +573,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -645,7 +645,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -692,7 +692,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -740,7 +740,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -809,7 +809,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -841,7 +841,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -906,7 +906,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -941,7 +941,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -1005,7 +1005,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -1039,7 +1039,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -1087,7 +1087,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -1151,7 +1151,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -1186,7 +1186,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -1250,7 +1250,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -1297,7 +1297,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -1328,7 +1328,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -1362,7 +1362,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -1410,7 +1410,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -1518,7 +1518,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -1565,7 +1565,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -1612,7 +1612,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -1685,7 +1685,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -1754,7 +1754,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -1789,7 +1789,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -1873,7 +1873,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -1908,7 +1908,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -2070,7 +2070,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -2118,7 +2118,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -2247,7 +2247,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -2294,7 +2294,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -2342,7 +2342,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -2438,7 +2438,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -2472,7 +2472,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -2519,7 +2519,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -2567,7 +2567,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -2631,7 +2631,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -2662,7 +2662,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -2696,7 +2696,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -2728,7 +2728,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -2796,7 +2796,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -2870,7 +2870,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -3104,7 +3104,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -3234,7 +3234,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -3291,7 +3291,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -3355,7 +3355,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -3525,7 +3525,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -3683,7 +3683,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -3805,7 +3805,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -3857,7 +3857,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -3977,7 +3977,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -4025,7 +4025,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -4094,7 +4094,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -4224,7 +4224,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -4273,7 +4273,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -4338,7 +4338,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -4373,7 +4373,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -4680,7 +4680,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -4767,7 +4767,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -4953,7 +4953,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -5000,7 +5000,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -5048,7 +5048,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -5117,7 +5117,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -5151,7 +5151,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -5198,7 +5198,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -5229,7 +5229,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -5291,7 +5291,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -5360,7 +5360,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -5407,7 +5407,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -5442,7 +5442,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -5507,7 +5507,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -5540,7 +5540,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -5575,7 +5575,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -5622,7 +5622,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -5902,7 +5902,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -5966,7 +5966,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -6001,7 +6001,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -6070,7 +6070,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -6118,7 +6118,7 @@
         "fallback_swap_contract":"0x9130b257d37a52e52f21054c4da3450c72f595ce",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/arbitrum",
+                "url":"https://node.komodo.earth:8080/arbitrum",
                 "gui_auth":true
             },
             {
@@ -6295,7 +6295,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -6363,7 +6363,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -6398,7 +6398,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -6489,7 +6489,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -6558,7 +6558,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -6589,7 +6589,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -6637,7 +6637,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -6733,7 +6733,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -6768,7 +6768,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -6859,7 +6859,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -6894,7 +6894,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -6958,7 +6958,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -6989,7 +6989,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -7047,7 +7047,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -7177,7 +7177,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -7225,7 +7225,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -7289,7 +7289,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -7321,7 +7321,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -7390,7 +7390,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -7437,7 +7437,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -7525,7 +7525,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -7658,7 +7658,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -7723,7 +7723,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -8121,7 +8121,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -8185,7 +8185,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -8286,7 +8286,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -8429,7 +8429,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -8477,7 +8477,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -8667,7 +8667,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -8714,7 +8714,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -8761,7 +8761,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -8808,7 +8808,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -9120,7 +9120,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -9168,7 +9168,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -9232,7 +9232,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -9280,7 +9280,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -9444,7 +9444,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -9540,7 +9540,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -9574,7 +9574,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -9653,7 +9653,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -9699,7 +9699,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -9763,7 +9763,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -9793,7 +9793,7 @@
         "fallback_swap_contract":"0x9130b257d37a52e52f21054c4da3450c72f595ce",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/arbitrum",
+                "url":"https://node.komodo.earth:8080/arbitrum",
                 "gui_auth":true
             },
             {
@@ -9823,7 +9823,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -9870,7 +9870,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -9955,7 +9955,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -9990,7 +9990,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -10056,7 +10056,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -10126,7 +10126,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -10162,7 +10162,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -10227,7 +10227,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -10291,7 +10291,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -10338,7 +10338,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -10372,7 +10372,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -10420,7 +10420,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -10564,7 +10564,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -10739,7 +10739,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -10786,7 +10786,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -10833,7 +10833,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -10881,7 +10881,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -10945,7 +10945,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -11215,7 +11215,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -11250,7 +11250,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -11298,7 +11298,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -11367,7 +11367,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -11415,7 +11415,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -11479,7 +11479,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -11513,7 +11513,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -11574,7 +11574,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -11606,7 +11606,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -11670,7 +11670,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -11717,7 +11717,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -11864,7 +11864,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -11928,7 +11928,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -11962,7 +11962,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -12009,7 +12009,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -12056,7 +12056,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -12088,7 +12088,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -12156,7 +12156,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -12346,7 +12346,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -12378,7 +12378,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -12474,7 +12474,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -12508,7 +12508,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -12556,7 +12556,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -12621,7 +12621,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -12686,7 +12686,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -12755,7 +12755,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -12886,7 +12886,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -12950,7 +12950,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -13014,7 +13014,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -13083,7 +13083,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -13201,7 +13201,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -13349,7 +13349,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -13396,7 +13396,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -13430,7 +13430,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -13465,7 +13465,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -13529,7 +13529,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -13577,7 +13577,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -13641,7 +13641,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -13689,7 +13689,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -13753,7 +13753,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -13800,7 +13800,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -13847,7 +13847,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -13881,7 +13881,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -13928,7 +13928,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -13963,7 +13963,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -14011,7 +14011,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14046,7 +14046,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14081,7 +14081,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -14112,7 +14112,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -14160,7 +14160,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -14225,7 +14225,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14260,7 +14260,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14295,7 +14295,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -14326,7 +14326,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -14374,7 +14374,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -14439,7 +14439,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14474,7 +14474,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -14522,7 +14522,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -14587,7 +14587,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14622,7 +14622,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14657,7 +14657,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14692,7 +14692,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14727,7 +14727,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14762,7 +14762,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14797,7 +14797,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14832,7 +14832,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14867,7 +14867,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -14899,7 +14899,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -14935,7 +14935,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -14999,7 +14999,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -15033,7 +15033,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -15068,7 +15068,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -15103,7 +15103,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -15138,7 +15138,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -15173,7 +15173,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -15542,7 +15542,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -15589,7 +15589,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -15637,7 +15637,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -15706,7 +15706,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -15740,7 +15740,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -15867,7 +15867,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -16165,7 +16165,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -16229,7 +16229,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -16264,7 +16264,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -16332,7 +16332,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -16367,7 +16367,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -16431,7 +16431,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -16462,7 +16462,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -16509,7 +16509,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -16594,7 +16594,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -16628,7 +16628,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -16676,7 +16676,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -16745,7 +16745,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -16792,7 +16792,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -16896,7 +16896,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -16961,7 +16961,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -17030,7 +17030,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -17324,7 +17324,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -17393,7 +17393,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -17467,7 +17467,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -17501,7 +17501,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -17549,7 +17549,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -17613,7 +17613,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -17675,7 +17675,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -17713,7 +17713,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -17761,7 +17761,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -17884,7 +17884,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -17948,7 +17948,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -18284,7 +18284,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -18353,7 +18353,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -18417,7 +18417,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -18464,7 +18464,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -18495,7 +18495,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -18543,7 +18543,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -18640,7 +18640,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -18708,7 +18708,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -18739,7 +18739,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -18816,7 +18816,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -19213,7 +19213,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -19260,7 +19260,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -19362,7 +19362,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -19457,7 +19457,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -19721,7 +19721,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -19865,7 +19865,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -19930,7 +19930,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -20001,7 +20001,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -20049,7 +20049,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -20118,7 +20118,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -20153,7 +20153,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -20222,7 +20222,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -20254,7 +20254,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/harmony",
+                "url":"https://node.komodo.earth:8080/harmony",
                 "gui_auth":true
             },
             {
@@ -20288,7 +20288,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -20432,7 +20432,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -20501,7 +20501,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -20575,7 +20575,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -20609,7 +20609,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -20657,7 +20657,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -20726,7 +20726,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -20814,7 +20814,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -20878,7 +20878,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -20913,7 +20913,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -20981,7 +20981,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -21054,7 +21054,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -21118,7 +21118,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -21152,7 +21152,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -21200,7 +21200,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -21264,7 +21264,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -21356,7 +21356,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -21404,7 +21404,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -21787,7 +21787,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -21835,7 +21835,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -21904,7 +21904,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -22297,7 +22297,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -22555,7 +22555,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -22652,7 +22652,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -22913,7 +22913,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -22981,7 +22981,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -23016,7 +23016,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -23080,7 +23080,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -23115,7 +23115,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -23180,7 +23180,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -23279,7 +23279,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -23426,7 +23426,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -23490,7 +23490,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -23537,7 +23537,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -23571,7 +23571,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -23618,7 +23618,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -23649,7 +23649,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -23697,7 +23697,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -23766,7 +23766,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -23824,7 +23824,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -23858,7 +23858,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -23905,7 +23905,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -23940,7 +23940,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -24197,7 +24197,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -24261,7 +24261,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -24391,7 +24391,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -24422,7 +24422,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -24470,7 +24470,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -24539,7 +24539,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -24627,7 +24627,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -24661,7 +24661,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -24708,7 +24708,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -24756,7 +24756,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -25055,7 +25055,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -25315,7 +25315,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -25406,7 +25406,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -25440,7 +25440,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -25527,7 +25527,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -25647,7 +25647,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -25711,7 +25711,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -25795,7 +25795,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -25842,7 +25842,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -25889,7 +25889,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -25921,7 +25921,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -25969,7 +25969,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -26005,7 +26005,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -26070,7 +26070,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -26118,7 +26118,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -26241,7 +26241,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -26275,7 +26275,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -26323,7 +26323,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -26391,7 +26391,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -26456,7 +26456,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -26488,7 +26488,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -26552,7 +26552,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -26586,7 +26586,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -26618,7 +26618,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -26686,7 +26686,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -26787,7 +26787,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -26860,7 +26860,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -26891,7 +26891,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -26923,7 +26923,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -26992,7 +26992,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -27039,7 +27039,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -27154,7 +27154,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -27188,7 +27188,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -27236,7 +27236,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -27330,7 +27330,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -27415,7 +27415,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -27450,7 +27450,7 @@
         "fallback_swap_contract":"0x9130b257d37a52e52f21054c4da3450c72f595ce",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/arbitrum",
+                "url":"https://node.komodo.earth:8080/arbitrum",
                 "gui_auth":true
             },
             {
@@ -27480,7 +27480,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -27511,7 +27511,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -27542,7 +27542,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -27590,7 +27590,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -27659,7 +27659,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -27800,7 +27800,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -27848,7 +27848,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -27913,7 +27913,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -27977,7 +27977,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -28011,7 +28011,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -28333,7 +28333,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -28381,7 +28381,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -28450,7 +28450,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -28485,7 +28485,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -28549,7 +28549,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -28580,7 +28580,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -28627,7 +28627,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -28658,7 +28658,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -28789,7 +28789,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -28853,7 +28853,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -28900,7 +28900,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -28948,7 +28948,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -29013,7 +29013,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -29047,7 +29047,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -29237,7 +29237,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -29285,7 +29285,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -29350,7 +29350,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -29420,7 +29420,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -29453,7 +29453,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -29488,7 +29488,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -29587,7 +29587,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -29730,7 +29730,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -29777,7 +29777,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -29808,7 +29808,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -29856,7 +29856,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -29925,7 +29925,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/fantom",
+                "url":"https://node.komodo.earth:8080/fantom",
                 "gui_auth":true
             },
             {
@@ -29983,7 +29983,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -30017,7 +30017,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -30065,7 +30065,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -30326,7 +30326,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -30399,7 +30399,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -30542,7 +30542,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/avalanche",
+                "url":"https://node.komodo.earth:8080/avalanche",
                 "gui_auth":true
             },
             {
@@ -30574,7 +30574,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -30643,7 +30643,7 @@
         "swap_contract_address":"0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/polygon",
+                "url":"https://node.komodo.earth:8080/polygon",
                 "gui_auth":true
             },
             {
@@ -30806,7 +30806,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -30870,7 +30870,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -31686,7 +31686,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -31756,7 +31756,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -31825,7 +31825,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -31895,7 +31895,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -31965,7 +31965,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32030,7 +32030,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32095,7 +32095,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32164,7 +32164,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32229,7 +32229,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32299,7 +32299,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32397,7 +32397,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32467,7 +32467,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32532,7 +32532,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32601,7 +32601,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32671,7 +32671,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32736,7 +32736,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32801,7 +32801,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32870,7 +32870,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32935,7 +32935,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -32999,7 +32999,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -33047,7 +33047,7 @@
         "fallback_swap_contract":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/ethereum",
+                "url":"https://node.komodo.earth:8080/ethereum",
                 "gui_auth":true
             },
             {
@@ -33111,7 +33111,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -33503,7 +33503,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -33624,7 +33624,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -33788,7 +33788,7 @@
         "swap_contract_address":"0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes":[
             {
-                "url":"https://node.komodo.live:8080/binance",
+                "url":"https://node.komodo.earth:8080/binance",
                 "gui_auth":true
             },
             {
@@ -33859,7 +33859,7 @@
         "wallet_only":false,
         "rpc_urls":[
             {
-                "url":"https://iris.komodo.live/"
+                "url":"https://iris.komodo.earth/"
             },
             {
                 "url":"https://rpc.irishub-1.irisnet.org"
@@ -33910,7 +33910,7 @@
         "parent_coin":"IRIS",
         "rpc_urls":[
             {
-                "url":"https://iris.komodo.live/"
+                "url":"https://iris.komodo.earth/"
             },
             {
                 "url":"https://rpc.irishub-1.irisnet.org"
