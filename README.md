@@ -9,7 +9,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/komodoplatform/atomicdex-mobile)
 ![Twitter Follow](https://img.shields.io/twitter/follow/komodoplatform?style=social)
 
-Welcome to the Komodo Wallet open-source repository! This cutting-edge project is brought to you by Komodo, providing a mighty non-custodial wallet and decentralised exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with AtomicDEX!
+Welcome to the Komodo Wallet open-source repository! This cutting-edge project is brought to you by Komodo, providing a mighty non-custodial wallet and decentralised exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with Komodo Wallet!
 
 <p float="center">
   <img src="https://user-images.githubusercontent.com/77973576/229565868-b121e9b6-2d2b-4390-a81f-a7878d0bfea8.png" width="33%" />
@@ -29,7 +29,7 @@ We've made this repository public to showcase the incredible potential of the Ko
 - **500+ Listed Cryptocurrencies:** A vast and ever-growing list of supported cryptocurrencies.
 - **Unlimited markets:** Over 300,000 completed atomic swaps and a staggering 10,000+ trading pairs.
 - **User support:** Engage with our active Discord support channel, where official team members are ready to help. We'd also love to hear your feedback.
-- **Most supported protocols:** AtomicDEX outshines the competition by supporting the most blockchain protocols of any decentralized exchange on the market.
+- **Most supported protocols:** Komodo Wallet outshines the competition by supporting the most blockchain protocols of any decentralized exchange on the market.
 - **Established team:** Our pioneering Komodo developers have been at the forefront of DEX technology since 2014.
 - **Frequent updates:** Our dedicated developers are constantly working to enhance the app's user experience, security, and feature set.
 

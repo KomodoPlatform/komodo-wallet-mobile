@@ -609,7 +609,7 @@ class _SettingPageState extends State<SettingPage> {
     mainBloc.isUrlLaucherIsOpen = true;
     await Share.shareFiles([af.path],
         mimeTypes: ['application/octet-stream'],
-        subject: 'atomicDEX logs at ${DateTime.now().toIso8601String()}');
+        subject: 'Komodo Wallet logs at ${DateTime.now().toIso8601String()}');
   }
 
   Future<void> _shareFileDialog() async {
