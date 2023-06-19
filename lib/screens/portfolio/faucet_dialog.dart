@@ -145,7 +145,7 @@ Future<Map<String, dynamic>> callFaucet(String coin, String address) async {
   http.Response response;
   try {
     response = await http
-        .get(Uri.parse('https://faucet.komodo.live/faucet/$coin/$address'))
+        .get(Uri.parse('https://faucet.komodo.earth/faucet/$coin/$address'))
         .timeout(const Duration(seconds: 30), onTimeout: () {
       throw AppLocalizations().faucetTimedOut;
     });
