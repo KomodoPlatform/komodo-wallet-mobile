@@ -37,7 +37,7 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
-	"welcomeInfo": "AtomicDEX mobile est un portefeuille multi crypto-monnaies de nouvelle génération doté de la fonctionnalité DEX native de troisième génération et encore bien plus.",
+	"welcomeInfo": "Komodo Wallet est un portefeuille multi crypto-monnaies de nouvelle génération doté de la fonctionnalité DEX native de troisième génération et encore bien plus.",
 	"@welcomeInfo": {
 		"type": "text",
 		"placeholders_order": [

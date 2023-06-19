@@ -262,7 +262,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Activation ${coinAbbr} échoué.\nVeuillez redémarrer l\'application et réessayer.";
 
   static m96(appName) =>
-      "AtomicDEX mobile est un portefeuille multi crypto-monnaies de nouvelle génération doté de la fonctionnalité DEX native de troisième génération et encore bien plus.";
+      "Komodo Wallet est un portefeuille multi crypto-monnaies de nouvelle génération doté de la fonctionnalité DEX native de troisième génération et encore bien plus.";
 
   static m97(appName) =>
       "Vous avez précédemment refusé à ${appName} l\'accès à la caméra.\nVeuillez modifier manuellement l\'autorisation de l\'appareil photo dans les paramètres de votre téléphone pour procéder à l\'analyse du code QR.";
