@@ -27,16 +27,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "${abbr} etkinleştirilmediği için ${abbr} adresine para gönderemezsiniz. Lütfen portföye gidiniz.";
 
   static m3(appName) =>
-      "Hayır ! AtomicDEX, gözetimsiz bir cüzdandır. Özel kelimeleriniz, gizli kelimeleriniz ve PIN kodunuz dahil hiçbir hassas bilgiyi kaydetmiyoruz. Bu bilgiler sadece kullanıcının cihazında tutulmaktadır ve başka bir yere gitmez. Bu sayede koin ve tokenlerinizin tüm kontrolü sizdedir.";
+      "Hayır ! Komodo Wallet, gözetimsiz bir cüzdandır. Özel kelimeleriniz, gizli kelimeleriniz ve PIN kodunuz dahil hiçbir hassas bilgiyi kaydetmiyoruz. Bu bilgiler sadece kullanıcının cihazında tutulmaktadır ve başka bir yere gitmez. Bu sayede koin ve tokenlerinizin tüm kontrolü sizdedir.";
 
   static m4(appName) =>
-      "AtomicDEX, mobil tarafında Android ve iPhone\'da, masaüstünde ise Windows, Mac, Linux işletim sistemlerinde kullanılabilir.";
+      "Komodo Wallet, mobil tarafında Android ve iPhone\'da, masaüstünde ise Windows, Mac, Linux işletim sistemlerinde kullanılabilir.";
 
   static m5(appName) =>
       "Diğer DEX cüzdanlar genellikle aynı miktar koin ile tek bir alım satım emri vermeye izin verir, ara token kullanır, en önemlisi de tek bir blokzincirin koinlerinin alım satımına olanak sağlar.\n\n${appName} ise birbirinden farklı iki blokzincir ağı arasında ara token kullanmadan doğrudan takas yapmaya imkân sağlar. ${appName} \'te aynı miktar koin ile birden fazla alım satım emri verebilirsiniz. Mesela 0.1 BTC ile KMD, QTUM ve VRSC için ayrı ayrı alım emirleri verebilirsiniz ve bunlardan birinin tamamlanması halinde diğerleri kendiliğinden iptal olmuş olurlar.";
 
   static m6(appName) =>
-      "Her bir takasın tamamlanma sürecini etkileyen birkaç etken vardır. Takas edilen koinlerin bağlı olduğu blokzincirlerin blok çıkarım zamanları (Bitcoin en yavaşıdır) bunda etkilidir. Bunun yanında kullanıcılar, takas öncesinde güvenlik seçeneklerini özelleştirebilir. Mesela bir KMD takasına başlamadan evvel AtomicDEX\'te işlem için 3 onayın yeterli olduğu seçeneği işaretlediğinizde takas süresi <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">noterizasyon</a> eklenmeyeceğinden kısalacaktır.";
+      "Her bir takasın tamamlanma sürecini etkileyen birkaç etken vardır. Takas edilen koinlerin bağlı olduğu blokzincirlerin blok çıkarım zamanları (Bitcoin en yavaşıdır) bunda etkilidir. Bunun yanında kullanıcılar, takas öncesinde güvenlik seçeneklerini özelleştirebilir. Mesela bir KMD takasına başlamadan evvel Komodo Wallet\'ta işlem için 3 onayın yeterli olduğu seçeneği işaretlediğinizde takas süresi <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">noterizasyon</a> eklenmeyeceğinden kısalacaktır.";
 
   static m7(appName) =>
       "${appName}\'te alım satım yaparken bilinmesi gereken iki tür işlem ücreti vardır.\n\n1. ${appName}, alıcı emirlerinden işlem başına yaklaşık olarak %0.13 (takriben 777\'nin 1\'i kadar, fakat bu da 0.0001\'den az olmamak kaydıyla) işlem ücreti alırken, yapıcı emirlerinden herhangi bir ücret alınmamaktadır.\n\n2. Hem yapıcı hem de alıcı emir sahiplerinin ödemesi gerekli olan ve takasın gerçekleştiği blokzincirlerin standart ağ işlem ücretleri.\n\nAğ işlem ücretleri, takas yapmak istediğiniz paritelerin kendi işleyişlerine göre değişiklik göstermektedir.";
@@ -190,7 +190,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static m66(abbr) =>
       "${abbr} aktif değil. Lütfen aktifleştirip öyle deneyiniz.";
 
-  static m67(appName) => "AtomicDEX\'i hangi cihazlarda kullanabilirim ?";
+  static m67(appName) => "Komodo Wallet\'ı hangi cihazlarda kullanabilirim ?";
 
   static m68(appName) =>
       "${appName}\'te alım satım yapmanın diğer DEX\'lerdekinden ne gibi farkları vardır ?";
@@ -198,7 +198,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static m69(appName) =>
       "${appName}\'te işlem ücretleri nasıl hesaplanmaktadır ?";
 
-  static m70(appName) => "AtomicDEX\'in arkasında kimler var ?";
+  static m70(appName) => "Komodo Wallet\'ın arkasında kimler var ?";
 
   static m71(appName) =>
       "${appName} üzerinde kendi beyaz etiketli değişimimi geliştirmem mümkün mü?";
@@ -252,7 +252,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static m92(version) =>
       "Güncel ${version} sürümü mevcut. Lütfen güncelleyiniz.";
 
-  static m93(appName) => "AtomicDEX güncellemeleri";
+  static m93(appName) => "Komodo Wallet güncellemeleri";
 
   static m94(coinAbbr) => "${coinAbbr} koinini etkinleştiremedik.";
 
@@ -260,7 +260,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "${coinAbbr} koinini etkinleştiremedik.\nLütfen uygulamayı yeniden başlatıp tekrar deneyiniz.";
 
   static m96(appName) =>
-      "AtomicDEX mobil yerleşik üçüncü nesil DEX işlevselliği ve daha fazla özellikleri ile yeni nesil bir çoklu koin cüzdanıdır.";
+      "Komodo Wallet mobil yerleşik üçüncü nesil DEX işlevselliği ve daha fazla özellikleri ile yeni nesil bir çoklu koin cüzdanıdır.";
 
   static m97(appName) =>
       "${appName}\'in kameraya erişimi engellenmiş.\nQR kod taramasını yapabilmek için lütfen telefon ayarlarınızdan kamera erişimine izin veriniz.";
@@ -318,7 +318,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "answer_2": m5,
         "answer_3": m6,
         "answer_4": MessageLookupByLibrary.simpleMessage(
-            "Evet, takas boyunca uygulamanız açık ve internetinizin de (anlık kesintilerde bir sıkıntı yoktur) bağlı olması gerekmektedir. Aksi halde; eğer yapıcı emri (maker) veren siz iseniz takasın iptal olma durumu, alıcı emri (taker) veren iseniz de koinlerinizi kaybetme riski ortaya çıkar. AtomicDEX protokolünde takası yapan her iki tarafın da işlem boyunca çevrimiçi olması ve takasın başarılı olması için gereklidir."),
+            "Evet, takas boyunca uygulamanız açık ve internetinizin de (anlık kesintilerde bir sıkıntı yoktur) bağlı olması gerekmektedir. Aksi halde; eğer yapıcı emri (maker) veren siz iseniz takasın iptal olma durumu, alıcı emri (taker) veren iseniz de koinlerinizi kaybetme riski ortaya çıkar. Komodo Wallet protokolünde takası yapan her iki tarafın da işlem boyunca çevrimiçi olması ve takasın başarılı olması için gereklidir."),
         "answer_5": m7,
         "answer_6": m8,
         "answer_7": m9,
