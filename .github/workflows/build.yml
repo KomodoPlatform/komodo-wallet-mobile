@@ -1,4 +1,4 @@
-name: Build atomicDEX
+name: Build Komodo Wallet
 on:
   pull_request:
     types: [ opened, synchronize, reopened ]
