@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -16,8 +17,16 @@ class Log {
   /// (updated automatically with https://github.com/ArtemGr/log-loc-rs).
   factory Log(String key, dynamic message) {
     Log.println(key, message);
+    return _instance;
     return null;
   }
+  Log._();
+  static final _instance = Log._();
+
+  static Future<void> init() async {
+    await LogStorage.init();
+  }
+
   static final LogStorage _logStorage = LogStorage();
 
   /// This function can be used in a hot-reload debugging session to focus on certain sections of the log.
@@ -60,12 +69,12 @@ class Log {
 
   static double limitMB = 500;
 
-  // Retrieve the last cleared date from shared preferences, return null if
+  // Retrieve the last cleared date from secure storage, return null if
   // never cleared before.
   static Future<DateTime> getLastClearedDate() async {
-    return DateTime.tryParse(
-      await _secureStorage.read(key: 'lastClearedDate') ?? '',
-    );
+    final storedVal = await _secureStorage.read(key: 'lastClearedDate');
+    if (storedVal?.isEmpty ?? true) return null;
+    return DateTime.tryParse(storedVal);
   }
 
   static Future<void> _updateLastClearedDate() async {
@@ -100,7 +109,7 @@ class Log {
       'directoryPath': directory.path,
     };
 
-    await _doMaintainInSeparateIsolate(params);
+    await compute(_doMaintainInSeparateIsolate, params);
 
     await _updateLastClearedDate();
   }
@@ -115,7 +124,7 @@ Future<void> _doMaintainInSeparateIsolate(Map<String, dynamic> params) async {
 
   double totalSize = logs.fold(
     0,
-    (sum, f) => sum + f.lengthSync() / pow(1000, 3),
+    (sum, f) => sum + f.lengthSync() / pow(1000, 2),
   );
 
   print('Log size: ${totalSize.toStringAsFixed(2)}MB for ${logs.length} files');
