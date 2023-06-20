@@ -79,7 +79,7 @@ class AppConfig {
         'segwit',
         'ZHTLC',
       ];
-  List<String> get defaultTestCoins => ['RICK', 'MORTY'];
+  List<String> get defaultTestCoins => ['RICK', 'MORTY', 'DOC', 'MARTY'];
   Map<String, String> get allProtocolNames => {
         'utxo': 'UTXO',
         'smartChain': 'Smart Chain',

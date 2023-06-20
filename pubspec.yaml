@@ -158,7 +158,16 @@ dependencies:
     git:
       url: https://github.com/KomodoPlatform/dart-uuid.git
       ref: c9a37bc675fd3fa715db2d929dc66d15ec09ad27 #3.0.5
-  flutter_bloc: ^8.1.3
+
+  flutter_bloc: # Last reviewed 32d5002fb8b8a1e548fe8021d8468327680875ff
+      git:
+        url: https://github.com/KomodoPlatform/bloc.git
+        path: packages/flutter_bloc/
+        ref: 32d5002fb8b8a1e548fe8021d8468327680875ff # 8.1.1
+
+  # "Flutter Favorite" plugin (https://docs.flutter.dev/packages-and-plugins/favorites)
+  flutter_local_notifications: ^12.0.4 # TODO: Secure code review of this plugin.
+  
 
 
 dev_dependencies:

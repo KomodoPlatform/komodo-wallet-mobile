@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
@@ -46,13 +47,13 @@ class _CoinsPageState extends State<CoinsPage> {
     _scrollController.addListener(_scrollListener);
     if (mmSe.running) coinsBloc.updateCoinBalances();
 
+    final bloc = BlocProvider.of<ZCoinActivationBloc>(context);
+
     // Check every 5 seconds if mmSe is running. When it is running, emit the
     // event [ZCoinActivationStatusRequested] and kill the timer.
     Timer.periodic(const Duration(seconds: 5), (timer) {
       if (mmSe.running) {
-        context.read<ZCoinActivationBloc>().add(
-              ZCoinActivationStatusRequested(),
-            );
+        bloc.add(ZCoinActivationStatusRequested());
         timer.cancel();
       }
     });

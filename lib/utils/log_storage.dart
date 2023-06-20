@@ -1,43 +1,80 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
-import 'dart:async';
+
+import 'package:archive/archive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:archive/archive.dart';
 import 'package:path/path.dart' as p;
 
 class LogStorage {
+  LogStorage._();
+
+  factory LogStorage() => _instance;
+
   final dateFormat = DateFormat('yyyy-MM-dd');
   IOSink _logFileSink;
   File _currentFile;
 
+  static final _instance = LogStorage._();
+
+  static Future<void> init() async {
+    if (_logFolderPath?.isEmpty ?? true) {
+      await applicationDocumentsDirectory;
+
+      _logFolderPath = logFolderPath();
+    }
+  }
+
+  static String _logFolderPath;
+
   static String logFolderPath() {
-    if (applicationDocumentsDirectorySync == null)
+    if (_logFolderPath != null) return _logFolderPath;
+
+    if (applicationDocumentsDirectorySync == null) {
       throw Exception(
         'Application documents directory is null. '
         'It must be initialized before calling logFolderPath()',
       );
+    }
 
-    // Ideally we would put the logs in their own folder, but this is left as
-    // is for now for backwards compatibility. There likely won't be any
+    _logFolderPath = applicationDocumentsDirectorySync.path + '/logs';
+
+    // Ideally we would put the logs in their own `/logs` folder, but this is
+    // left as is for now for backwards compatibility. There likely won't be any
     // backwards compatibility issues, but there may be if there are any parts
     // of the app that rely on the logs being in original location.
-    return applicationDocumentsDirectorySync.path;
+    //
+    // NB: If/when we move the log folder, bear in mind the edge-case where a
+    // user has an old version of the app (pre 0.6.4 vuln fix) and updates to a
+    // new version with a new log folder. We need to make sure that the old logs
+    // are also cleared when [_doMaintainInSeparateIsolate] is called with
+    // shouldClearAllLogFiles == true.
+    return _logFolderPath;
   }
 
   /// Returns a map of log files, keyed by the date.
   Future<LinkedHashMap<DateTime, File>> getLogFiles() async {
-    return await compute(_getLogsInIsolate, null);
+    try {
+      return await compute(_getLogsInIsolate, {
+        'logFolderPath': logFolderPath(),
+      });
+    } catch (e) {
+      Log('LogStorage: getLogFiles', 'Failed to get log files: $e');
+      rethrow;
+    }
   }
 
   static Future<LinkedHashMap<DateTime, File>> _getLogsInIsolate(
-    dynamic _,
+    Map<String, dynamic> params,
   ) async {
     mustRunInIsolate();
 
-    final logDirectory = Directory(logFolderPath());
+    final logPath = params['logFolderPath'] as String;
+
+    final logDirectory = Directory(logPath);
 
     final logFilesMap = <DateTime, File>{} as LinkedHashMap<DateTime, File>;
 
@@ -60,11 +97,7 @@ class LogStorage {
         logFilesMap.addAll({date: logFile});
       } else {
         final errorString = 'Error parsing log file date: ${logFile.path}';
-        try {
-          Log('LogStorage: getLogFiles', errorString);
-        } catch (_) {
-          print(errorString);
-        }
+        throw Exception(errorString);
       }
     }
 
@@ -91,19 +124,31 @@ class LogStorage {
     final file = await getLogFile(date);
 
     if (_currentFile?.path != file.path) {
-      await closeLogFile();
+      if (_logFileSink != null) {
+        await closeLogFile();
+      }
+
+      _currentFile =
+          !file.existsSync() ? await file.create(recursive: true) : file;
+
       _logFileSink = file.openWrite(mode: FileMode.append);
-      _currentFile = file;
     }
 
     _logFileSink.write(text);
   }
 
   Future<void> closeLogFile() async {
+    if (_logFileSink == null || !(_currentFile?.existsSync() ?? false)) return;
+
     await _logFileSink?.flush();
     await _logFileSink?.close();
     _logFileSink = null;
     _currentFile = null;
+  }
+
+  /// Return a list of log files that are in any previously used log folders
+  Future<List<File>> orphanedLogFiles() async {
+    throw UnimplementedError();
   }
 
   // Export all logs to a g.zip file, split up into 24MB files.
@@ -181,3 +226,5 @@ class LogStorage {
     }
   }
 }
+
+typedef LoggerFunction = void Function(String key, String message);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import '../blocs/settings_bloc.dart';
 import '../localizations.dart';
@@ -35,6 +37,9 @@ class _AppDrawerState extends State<AppDrawer> {
     double drawerWidth = MediaQuery.of(context).size.width * 0.7;
     if (drawerWidth < 200) drawerWidth = 200;
     final double headerHeight = MediaQuery.of(context).size.height * 0.25;
+
+    final showZCoinStatus = context.select<ZCoinActivationBloc, bool>(
+        (ZCoinActivationBloc bloc) => bloc is ZCoinActivationSuccess);
 
     return SizedBox(
       width: drawerWidth,
@@ -198,10 +203,10 @@ class _AppDrawerState extends State<AppDrawer> {
                       );
                     },
                   ),
-
-                  //
-                  ZCoinStatusListTile(),
-                  SizedBox(height: 2),
+                  if (showZCoinStatus) ...[
+                    ZCoinStatusWidget(),
+                    SizedBox(height: 2),
+                  ],
                   Divider(
                     indent: 20,
                     endIndent: 20,

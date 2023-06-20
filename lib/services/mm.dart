@@ -81,6 +81,20 @@ class ApiProvider {
   /// Reduce log noise
   int _lastMetricsLog = 0;
 
+  Map<String, dynamic> _parseResponse(Response r) {
+    if (r == null) throw Exception('Response is null for ${r.request.url}');
+
+    final parsedBody = json.decode(r.body) as Map<String, dynamic>;
+    final error = ErrorString.fromJson(parsedBody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    if (parsedBody.containsKey('result') && parsedBody['result'] == null) {
+      throw Exception('Response body result is null for ${r.request.url}');
+    }
+
+    return parsedBody;
+  }
+
   /// https://github.com/KomodoPlatform/developer-docs/pull/171/files
   /// https://github.com/KomodoPlatform/atomicDEX-API/commit/a00c2863210ce9a262bb579a74249dbb04a94efc
   Future<List<dynamic>> batch(List<Map<String, dynamic>> batch,
@@ -146,12 +160,9 @@ class ApiProvider {
         await client.post(Uri.parse(url), body: jsonEncode(userBody.body));
     if (r.statusCode != 200) return null;
 
-    // Parse JSON once, then check if the JSON is an error.
-    final dynamic jbody = json.decode(r.body);
-    final error = ErrorString.fromJson(jbody);
-    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+    final parsedBody = _parseResponse(r);
 
-    return jbody['result']['address'];
+    return parsedBody['result']['address'];
   }
 
   Future<DisableCoin> disableCoin(GetDisableCoin req,
@@ -163,12 +174,9 @@ class ApiProvider {
     _assert200(r);
     _logRes('disableCoin', r);
 
-    // Parse JSON once, then check if the JSON is an error.
-    final dynamic jbody = json.decode(r.body);
-    final error = ErrorString.fromJson(jbody);
-    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+    final parsedBody = _parseResponse(r);
 
-    return DisableCoin.fromJson(jbody);
+    return DisableCoin.fromJson(parsedBody);
   }
 
   String enableCoinImpl(Coin coin) {
@@ -248,12 +256,9 @@ class ApiProvider {
           .post(Uri.parse(url), body: getBalanceToJson(userBody.body));
       _assert200(r);
 
-      // Parse JSON once, then check if the JSON is an error.
-      final dynamic jbody = json.decode(r.body);
-      final error = ErrorString.fromJson(jbody);
-      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+      final parsedBody = _parseResponse(r);
 
-      final Balance balance = Balance.fromJson(jbody);
+      final Balance balance = Balance.fromJson(parsedBody);
       balance.camouflageIfNeeded();
 
       return balance;
@@ -279,13 +284,10 @@ class ApiProvider {
       _assert200(response);
       _logRes('getBestOrders', response);
 
-      // Parse JSON once, then check if the JSON is an error.
-      final dynamic jbody = jsonDecode(response.body);
-      final error = ErrorString.fromJson(jbody);
-      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+      final parsedBody = _parseResponse(response);
 
-      jbody['request'] = request;
-      return BestOrders.fromJson(jbody);
+      parsedBody['request'] = request;
+      return BestOrders.fromJson(parsedBody);
     } catch (e) {
       return BestOrders(
         error: _catchErrorString('getOrderbookDepth', e, 'mm best_orders] $e'),
@@ -326,12 +328,9 @@ class ApiProvider {
     _assert200(r);
     _logRes('getEnabledCoins', r);
 
-    // Parse JSON once, then check if the JSON is an error.
-    final dynamic jbody = json.decode(r.body);
-    final error = ErrorString.fromJson(jbody);
-    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+    final parsedBody = _parseResponse(r);
 
-    return jbody['result'].toList();
+    return parsedBody['result'].toList();
   }
 
   Future<dynamic> getImportSwaps(
@@ -347,12 +346,9 @@ class ApiProvider {
       _assert200(response);
       _logRes('getImportSwaps', response);
 
-      // Parse JSON once, then check if the JSON is an error.
-      final dynamic jbody = jsonDecode(response.body);
-      final error = ErrorString.fromJson(jbody);
-      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+      final parsedBody = _parseResponse(response);
 
-      final importSwaps = ImportSwaps.fromJson(jbody);
+      final importSwaps = ImportSwaps.fromJson(parsedBody);
 
       return importSwaps;
     } catch (e) {
@@ -373,12 +369,9 @@ class ApiProvider {
       _assert200(response);
       _logRes('getMaxTakerVolume', response);
 
-      // Parse JSON once, then check if the JSON is an error.
-      final dynamic jbody = jsonDecode(response.body);
-      final error = ErrorString.fromJson(jbody);
-      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+      final parsedBody = _parseResponse(response);
 
-      return fract2rat(jbody['result']);
+      return fract2rat(parsedBody['result']);
     } catch (e) {
       throw _catchErrorString('getMaxTakerVolume', e, 'max_taker_vol] $e');
     }
@@ -399,11 +392,9 @@ class ApiProvider {
       _logRes('getMetricsMM2', r);
     }
 
-    final dynamic jbody = json.decode(r.body);
-    final error = ErrorString.fromJson(jbody);
-    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+    final parsedBody = _parseResponse(r);
 
-    return jbody;
+    return parsedBody;
   }
 
   Future<double> getMinTradingVolume(
@@ -419,12 +410,9 @@ class ApiProvider {
       _assert200(response);
       _logRes('getMinTradingVolume', response);
 
-      // Parse JSON once, then check if the JSON is an error.
-      final dynamic jbody = jsonDecode(response.body);
-      final error = ErrorString.fromJson(jbody);
-      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+      final parsedBody = _parseResponse(response);
 
-      return double.tryParse(jbody['result']['min_trading_vol'] ?? '');
+      return double.tryParse(parsedBody['result']['min_trading_vol'] ?? '');
     } catch (e) {
       throw _catchErrorString(
         'getMinTradingVolume',
@@ -452,10 +440,11 @@ class ApiProvider {
             ),
       );
 
-  Future<dynamic> getOrderbook(
+  Future<Orderbook> getOrderbook(
     http.Client client,
     GetOrderbook body,
-  ) async =>
+  ) async {
+    try {
       await _assertUserpass(client, body).then<dynamic>(
         (UserpassBody userBody) => userBody.client
             .post(Uri.parse(url), body: getOrderbookToJson(userBody.body))
@@ -465,14 +454,14 @@ class ApiProvider {
             .then<dynamic>((Response res) {
           _assert200(res);
           return orderbookFromJson(res.body);
-        }).catchError(
-          (dynamic e) => _catchErrorString(
-            'getOrderbook_api_providers:111',
-            e,
-            'Error on get orderbook',
-          ),
-        ),
+        }),
       );
+    } catch (e) {
+      Log('ApiProvider.getOrderbook', 'Error on get orderbook: $e');
+    }
+
+    return null;
+  }
 
   Future<dynamic> getOrderbookDepth(
     GetOrderbookDepth request, {
@@ -487,15 +476,12 @@ class ApiProvider {
       _assert200(response);
       _logRes('getOrderbookDepth', response);
 
-      // Parse JSON once, then check if the JSON is an error.
-      final dynamic jbody = jsonDecode(response.body);
-      final error = ErrorString.fromJson(jbody);
-      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+      final parsedBody = _parseResponse(response);
 
-      if (jbody['result'] == null) return null;
+      if (parsedBody['result'] == null) return null;
 
       final List<OrderbookDepth> list = [];
-      for (dynamic item in jbody['result']) {
+      for (dynamic item in parsedBody['result']) {
         list.add(OrderbookDepth.fromJson(item));
       }
 
@@ -519,11 +505,11 @@ class ApiProvider {
       _logMmResReceived('getPrivKey');
 
       // Parse JSON once, then check if the JSON is an error.
-      final dynamic jbody = json.decode(r.body);
-      final error = ErrorString.fromJson(jbody);
+      final dynamic parsedBody = json.decode(r.body);
+      final error = ErrorString.fromJson(parsedBody);
       if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
-      final PrivKey privKey = PrivKey.fromJson(jbody);
+      final PrivKey privKey = PrivKey.fromJson(parsedBody);
 
       return privKey;
     } catch (e) {
@@ -541,12 +527,9 @@ class ApiProvider {
       _assert200(r);
       _logRes('getPublicKey', r);
 
-      // Parse JSON once, then check if the JSON is an error.
-      final dynamic jbody = json.decode(r.body);
-      final error = ErrorString.fromJson(jbody);
-      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+      final parsedBody = _parseResponse(r);
 
-      final PublicKey publicKey = PublicKey.fromJson(jbody);
+      final PublicKey publicKey = PublicKey.fromJson(parsedBody);
 
       return publicKey;
     } catch (e) {
@@ -563,12 +546,9 @@ class ApiProvider {
     _assert200(r);
     _logRes('getRecentSwaps', r);
 
-    // Parse JSON once, then check if the JSON is an error.
-    final dynamic jbody = json.decode(r.body);
-    final error = ErrorString.fromJson(jbody);
-    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+    final parsedBody = _parseResponse(r);
 
-    return RecentSwaps.fromJson(jbody);
+    return RecentSwaps.fromJson(parsedBody);
   }
 
   Future<List<RewardsItem>> getRewardsInfo({http.Client client}) async {
@@ -583,14 +563,11 @@ class ApiProvider {
     _assert200(r);
     _logRes('getRewardsInfo', r);
 
-    // Parse JSON once, then check if the JSON is an error.
-    final dynamic jbody = json.decode(r.body);
-    final error = ErrorString.fromJson(jbody);
-    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+    final parsedBody = _parseResponse(r);
 
     List<RewardsItem> list;
     try {
-      for (dynamic item in jbody['result']) {
+      for (dynamic item in parsedBody['result']) {
         list ??= [];
         list.add(RewardsItem.fromJson(item));
       }
@@ -652,12 +629,9 @@ class ApiProvider {
       _assert200(response);
       _logRes('getTradePreimage', response);
 
-      // Parse JSON once, then check if the JSON is an error.
-      final dynamic jbody = jsonDecode(response.body);
-      final error = ErrorString.fromJson(jbody);
-      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+      final parsedBody = _parseResponse(response);
 
-      final preimage = TradePreimage.fromJson(jbody);
+      final preimage = TradePreimage.fromJson(parsedBody);
       preimage.request = request;
       return preimage;
     } catch (e) {
@@ -688,9 +662,9 @@ class ApiProvider {
       );
     }
 
-    dynamic jbody;
+    dynamic parsedBody;
     try {
-      jbody = jsonDecode(response.body);
+      parsedBody = jsonDecode(response.body);
     } catch (e) {
       return TradePreimage(
         request: request,
@@ -701,16 +675,16 @@ class ApiProvider {
       );
     }
 
-    if (jbody['error'] != null) {
+    if (parsedBody['error'] != null) {
       return TradePreimage(
         request: request,
-        error: RpcError.fromJson(jbody),
+        error: RpcError.fromJson(parsedBody),
       );
     }
 
     TradePreimage preimage;
     try {
-      preimage = TradePreimage.fromJson(jbody);
+      preimage = TradePreimage.fromJson(parsedBody);
     } catch (_) {}
 
     if (preimage == null) {
@@ -756,9 +730,9 @@ class ApiProvider {
       _assert200(r);
       _logRes('getVersionMM2', r);
 
-      final dynamic jbody = json.decode(r.body);
+      final parsedBody = json.decode(r.body);
 
-      final v = VersionMm2.fromJson(jbody);
+      final v = VersionMm2.fromJson(parsedBody);
       return v;
     } catch (e) {
       throw _catchErrorString('getVersionMM2', e, 'Error on get version MM2');
@@ -892,10 +866,7 @@ class ApiProvider {
     _assert200(r);
     _logRes('postWithdraw', r);
 
-    // Parse JSON once, then check if the JSON is an error.
-    final dynamic jbody = json.decode(r.body);
-    final error = ErrorString.fromJson(jbody);
-    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+    final parsedBody = _parseResponse(r);
 
     return withdrawResponseFromJson(res.body);
   }
@@ -932,9 +903,9 @@ class ApiProvider {
       _assert200(r);
       _logRes('getWithdrawStatus', r);
 
-      final Map<String, dynamic> jbody = json.decode(r.body);
+      final Map<String, dynamic> parsedBody = json.decode(r.body);
 
-      final result = jbody['result'] as Map<String, dynamic>;
+      final result = parsedBody['result'] as Map<String, dynamic>;
 
       final status = result['status'] as String;
       final details = result['details'] as Map<String, dynamic>;
@@ -1008,15 +979,12 @@ class ApiProvider {
     _assert200(r);
     _logRes('validateAddress', r);
 
-    // Parse JSON once, then check if the JSON is an error.
-    final dynamic jbody = json.decode(r.body);
-    final error = ErrorString.fromJson(jbody);
-    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+    final parsedBody = _parseResponse(r);
 
-    if (jbody['result']['is_valid']) {
+    if (parsedBody['result']['is_valid']) {
       return null;
     } else {
-      return jbody['result']['reason'];
+      return parsedBody['result']['reason'];
     }
   }
 

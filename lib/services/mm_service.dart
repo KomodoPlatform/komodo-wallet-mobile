@@ -241,8 +241,7 @@ class MMService {
       'params must contain keys: dirPath, endsWith',
     );
 
-    final isMainThread = Isolate.current.debugName == 'main';
-    assert(!isMainThread, 'Must not be run in main thread');
+    mustRunInIsolate();
 
     final dirPath = params['dirPath'] as String;
     final endsWith = params['endsWith'] as String;
@@ -456,6 +455,7 @@ class MMService {
     try {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
+
       await coinsBloc.enableCoins(active);
 
       for (int i = 0; i < 2; i++) {
