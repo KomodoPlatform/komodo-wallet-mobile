@@ -2643,6 +2643,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"searchFilterSubtitleZHTLC": "Tüm ZHTLC koinlerini seç",
+	"@searchFilterSubtitleZHTLC": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"tagHRC20": "HRC20",
 	"@tagHRC20": {
 		"type": "text",

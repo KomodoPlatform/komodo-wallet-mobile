@@ -2329,6 +2329,11 @@
 		"type": "text",
 		"placeholders_order": []
 	},
+	"searchFilterSubtitleZHTLC": "Select all ZHTLC coins",
+	"@searchFilterSubtitleZHTLC": {
+		"type": "text",
+		"placeholders_order": []
+	},
 	"tagHRC20": "HRC20",
 	"@tagHRC20": {
 		"type": "text",

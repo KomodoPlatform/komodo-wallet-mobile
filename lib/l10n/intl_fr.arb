@@ -2659,6 +2659,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"searchFilterSubtitleZHTLC": "Sélectionner tous les tokens ZHTLC",
+	"@searchFilterSubtitleZHTLC": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"tagHRC20": "HRC20",
 	"@tagHRC20": {
 		"type": "text",

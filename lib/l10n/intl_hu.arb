@@ -2631,6 +2631,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"searchFilterSubtitleZHTLC": "Az összes ZHTLC kiválasztása",
+	"@searchFilterSubtitleZHTLC": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"tagHRC20": "HRC20",
 	"@tagHRC20": {
 		"type": "text",

@@ -2659,6 +2659,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"searchFilterSubtitleZHTLC": "すべてのZHTLCコインを選択",
+	"@searchFilterSubtitleZHTLC": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"tagHRC20": "HRC20",
 	"@tagHRC20": {
 		"type": "text",
