@@ -423,6 +423,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("从投资组合中删除？所有不匹配的订单将被取消。"),
         "deleteWallet": MessageLookupByLibrary.simpleMessage("删除钱包"),
         "deletingWallet": MessageLookupByLibrary.simpleMessage("删除钱包中"),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage("滚动到底部继续..."),
         "details": MessageLookupByLibrary.simpleMessage("详细信息"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("德语"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("开发者"),

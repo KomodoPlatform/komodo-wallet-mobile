@@ -3815,6 +3815,12 @@
 		"type": "text",
 		"placeholders_order": []
 	},
+	"scrollToContinue": "Scroll to the bottom to continue...",
+	"@scrollToContinue": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"oldLogsUsed": "Space used",
 	"@oldLogsUsed": {
 		"type": "text",

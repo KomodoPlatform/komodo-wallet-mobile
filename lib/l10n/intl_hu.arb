@@ -4339,6 +4339,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"scrollToContinue": "A folytatáshoz görgessen az aljára...",
+	"@scrollToContinue": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"oldLogsUsed": "Használt hely",
 	"@oldLogsUsed": {
 		"type": "text",

@@ -4367,6 +4367,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"scrollToContinue": "滚动到底部继续...",
+	"@scrollToContinue": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"oldLogsUsed": "占用的空间",
 	"@oldLogsUsed": {
 		"type": "text",

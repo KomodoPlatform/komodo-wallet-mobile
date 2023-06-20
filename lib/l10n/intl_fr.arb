@@ -4367,6 +4367,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"scrollToContinue": "Faites défiler vers le bas pour continuer...",
+	"@scrollToContinue": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"oldLogsUsed": "Espace utilisé",
 	"@oldLogsUsed": {
 		"type": "text",

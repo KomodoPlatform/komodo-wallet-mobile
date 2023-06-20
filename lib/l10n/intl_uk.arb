@@ -4339,6 +4339,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"scrollToContinue": "Прокрутіть униз, щоб продовжити...",
+	"@scrollToContinue": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"oldLogsUsed": "Використаний простір",
 	"@oldLogsUsed": {
 		"type": "text",

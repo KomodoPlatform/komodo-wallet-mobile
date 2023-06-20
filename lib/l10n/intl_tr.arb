@@ -4351,6 +4351,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"scrollToContinue": "Devam etmek için aşağı kaydırın...",
+	"@scrollToContinue": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"oldLogsUsed": "Boşluk kullanıldı",
 	"@oldLogsUsed": {
 		"type": "text",

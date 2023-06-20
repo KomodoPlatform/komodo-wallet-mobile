@@ -4367,6 +4367,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"scrollToContinue": "続行するには一番下までスクロールします...",
+	"@scrollToContinue": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"oldLogsUsed": "使用スペース",
 	"@oldLogsUsed": {
 		"type": "text",

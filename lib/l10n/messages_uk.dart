@@ -504,6 +504,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Видалити гаманець"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("Видалення гаманця..."),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage(
+            "Прокрутіть униз, щоб продовжити..."),
         "details": MessageLookupByLibrary.simpleMessage("деталі"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Німецька"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("Розробник"),

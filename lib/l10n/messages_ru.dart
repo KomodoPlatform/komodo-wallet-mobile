@@ -498,6 +498,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteWallet": MessageLookupByLibrary.simpleMessage("Удалить кошелек"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("Удаляю кошелек"),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage(
+            "Прокрутите вниз, чтобы продолжить..."),
         "details": MessageLookupByLibrary.simpleMessage("детали"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Немецкий"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("Разработчик"),

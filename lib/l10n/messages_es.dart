@@ -499,6 +499,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Eliminar Billetera"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("Eliminando billetera..."),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage(
+            "Desplácese hasta la parte inferior para continuar..."),
         "details": MessageLookupByLibrary.simpleMessage("detalles"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Alemán"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("Desarrollador"),

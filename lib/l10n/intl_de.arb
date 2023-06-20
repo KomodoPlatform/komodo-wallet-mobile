@@ -4367,6 +4367,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"scrollToContinue": "Scrollen Sie nach unten, um fortzufahren...",
+	"@scrollToContinue": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"oldLogsUsed": "Genutzter Speicher",
 	"@oldLogsUsed": {
 		"type": "text",

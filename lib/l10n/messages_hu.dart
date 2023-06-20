@@ -501,6 +501,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Pénztárca törlése"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("Pénztárca törlése..."),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage(
+            "A folytatáshoz görgessen az aljára..."),
         "details": MessageLookupByLibrary.simpleMessage("részletek"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Német"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("Fejlesztő"),

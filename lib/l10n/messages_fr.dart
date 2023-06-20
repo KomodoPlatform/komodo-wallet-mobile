@@ -503,6 +503,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Supprimer le portefeuille"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("Supression portefeuille…"),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage(
+            "Faites défiler vers le bas pour continuer..."),
         "details": MessageLookupByLibrary.simpleMessage("détails"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Allemand"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("Développeur"),

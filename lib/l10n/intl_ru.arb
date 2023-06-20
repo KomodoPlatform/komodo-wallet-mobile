@@ -4367,6 +4367,12 @@
 		"placeholders_order": [],
 		"placeholders": {}
 	},
+	"scrollToContinue": "Прокрутите вниз, чтобы продолжить...",
+	"@scrollToContinue": {
+		"type": "text",
+		"placeholders_order": [],
+		"placeholders": {}
+	},
 	"oldLogsUsed": "Использовано места",
 	"@oldLogsUsed": {
 		"type": "text",
