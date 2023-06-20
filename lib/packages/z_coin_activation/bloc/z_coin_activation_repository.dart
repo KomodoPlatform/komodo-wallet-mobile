@@ -1,13 +1,16 @@
 import 'dart:async';
 
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_api.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_requested_activation_storage.dart';
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_status.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:komodo_dex/utils/log.dart';
 
-class ZCoinActivationRepository {
+class ZCoinActivationRepository with RequestedZCoinsStorage {
   ZCoinActivationRepository(this.api);
 
   final ZCoinActivationApi api;
@@ -15,143 +18,114 @@ class ZCoinActivationRepository {
   static Future<String> get taskIdKey async =>
       'activationTaskId_${(await Db.getCurrentWallet()).id}';
 
-  static Future<String> _getRequestedActivationKey() async {
-    final walletId = (await Db.getCurrentWallet()).id;
+  Stream<ZCoinStatus> _activateZCoins(List<String> zCoins) async* {
+    try {
+      if (zCoins.isEmpty) return;
 
-    return 'z-coin-activation-requested-$walletId';
-  }
+      while (zCoins.isNotEmpty) {
+        final currentCoinTicker = zCoins.first;
 
-  /// Returns the list of ZCoins the user wants activated, regardless of whether
-  /// they are already activated or not.
-  Future<List<String>> requestedActivatedCoins() async {
-    final prefs = await SharedPreferences.getInstance();
+        await for (final update in api.activateCoin(currentCoinTicker)) {
+          Log(
+            'ZCoinActivationRepository:activateZCoins',
+            'Update received: ${update.toJson()}',
+          );
+          if (update.isActivated) {
+            final coin = (await coins)[currentCoinTicker];
+            final isRegistered = coin?.isActive ?? false;
 
-    final key = await _getRequestedActivationKey();
+            if (!isRegistered) {
+              await coinsBloc.setupCoinAfterActivation(coin);
+            }
 
-    final isRequested = prefs.getBool(key);
+            await removeRequestedActivatedCoins([currentCoinTicker]);
+          }
 
-    if (isRequested == null || !isRequested) return [];
-
-    final zCoinsToActivate = await getKnownZCoins();
-
-    return zCoinsToActivate.map((c) => c.abbr).toList();
-  }
-
-  Future<bool> hasOutstandingActivationRequest() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    final key = await _getRequestedActivationKey();
-
-    final isRequested = prefs.getBool(key);
-
-    return isRequested != null && isRequested;
-  }
-
-  Stream<ZCoinStatus> activateAllZCoins() async* {
-    final zCoinsToActivate = await getNonEnabledZCoins();
-
-    if (zCoinsToActivate.isEmpty) return;
-
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setBool(await _getRequestedActivationKey(), true);
-
-    final hasAnyZCoinActivated = await isAnyZCoinActivated();
-
-    while (zCoinsToActivate.isNotEmpty) {
-      await for (final update in api.activateCoin(zCoinsToActivate.first)) {
-        yield update;
+          yield update;
+        }
+        if (zCoins.isNotEmpty) {
+          zCoins.removeAt(0);
+        }
       }
-      zCoinsToActivate.removeAt(0);
+    } catch (e) {
+      rethrow;
+    } finally {
+      await coinsBloc.syncCoinsStateWithApi();
     }
-
-    await coinsBloc.syncCoinsStateWithApi(false);
   }
 
-  Future<void> initiateOrResumeActivation(String abbr) async {
-    final hasTaskInProgress = await hasOngoingActivation(abbr);
+  // Stream<ZCoinStatus> activateAllZCoins() async* {
+  //   final zCoinsToActivate = await outstandingZCoinActivations();
+  //   yield* _activateZCoins(zCoinsToActivate);
+  // }
 
-    if (hasTaskInProgress) {
-      return;
-    }
-
-    return await api.initiateActivation(abbr);
+  Stream<ZCoinStatus> activateRequestedZCoins() async* {
+    final zCoinsToActivate = await getRequestedActivatedCoins();
+    yield* _activateZCoins(zCoinsToActivate);
   }
 
-  Future<bool> hasOngoingActivation(String abbr) async {
-    final taskId = await api.getTaskId(abbr);
-
-    if (taskId == null) return false;
-
-    final status = await api.activationTaskStatus(taskId, ticker: abbr);
-
-    return status.isInProgress;
-  }
-
-  Future<bool> isAllZCoinsEnabled() async {
-    final zCoinsToActivate = await getNonEnabledZCoins();
-
-    return zCoinsToActivate.isEmpty;
-  }
-
-  Future<bool> isAnyZCoinActivated() async {
-    final zCoinsToActivate = await getNonEnabledZCoins();
-
-    return zCoinsToActivate.isNotEmpty;
-  }
-
+  @override
   Future<List<String>> getEnabledZCoins() async {
-    return await api.activatedZCoins();
+    final enabledCoins = await api.activatedZCoins();
+
+    final requestedCoins = await getRequestedActivatedCoins();
+
+    // Remove the requested coins that are now active
+
+    return enabledCoins;
   }
 
-  Future<List<String>> getNonEnabledZCoins() async {
-    final activatedZCoins = await getEnabledZCoins();
+  @override
+  Future<List<String>> outstandingZCoinActivations() async {
     final knownZCoins = await getKnownZCoins();
 
-    return knownZCoins
-        .where((c) => !activatedZCoins.contains(c.abbr))
-        .map((c) => c.abbr)
-        .toList();
+    final activatedZCoins = (await getEnabledZCoins()).toSet();
+    final requestedCoins = (await getRequestedActivatedCoins()).toSet();
+
+    final coinsAlreadyActivated = activatedZCoins.intersection(requestedCoins);
+
+    if (coinsAlreadyActivated.isNotEmpty) {
+      await removeRequestedActivatedCoins(
+        requestedCoins.intersection(activatedZCoins).toList(),
+      );
+    }
+
+    return requestedCoins.difference(activatedZCoins).toList();
   }
 
   Future<List<Coin>> getKnownZCoins() async {
-    return await api.getKnownZCoins();
+    final coins = await api.getKnownZCoins();
+
+    final hasTestCoinsEnabled = SettingsBloc().enableTestCoins;
+
+    // Put ZOMBIE first
+    final maybeZombieIndex = coins.indexWhere((c) => c.abbr == 'ZOMBIE');
+    if (maybeZombieIndex != -1) {
+      final zombie = coins.removeAt(maybeZombieIndex);
+      coins.insert(0, zombie);
+    }
+
+    return coins.where((c) {
+      final isTestCoin =
+          c.testCoin || appConfig.defaultTestCoins.contains(c.abbr);
+      return hasTestCoinsEnabled || !isTestCoin;
+    }).toList();
   }
 
   Stream<ZCoinStatus> activationStatusStream() async* {
-    final zCoinsToActivate = await getNonEnabledZCoins();
+    final zCoinsToActivate = await outstandingZCoinActivations();
 
     // If there are no coins to activate, immediately return.
     if (zCoinsToActivate.isEmpty) return;
 
     while (zCoinsToActivate.isNotEmpty) {
-      List<Future<ActivationTaskStatus>> futures =
-          zCoinsToActivate.map((coin) async {
-        final taskId = await api.getTaskId(coin);
+      for (String coin in zCoinsToActivate) {
+        var status = await _getCoinActivationTaskStatus(coin);
 
-        if (taskId == null) {
-          return ActivationTaskStatus.notFound;
-        }
-
-        final status = await api.activationTaskStatus(taskId, ticker: coin);
-
-        final isActivated =
-            status != null && status.status == ActivationTaskStatus.active;
-
-        // If the coin is activated, remove it from the list of coins to activate.
-        if (isActivated) {
+        if (status.status == ActivationTaskStatus.active) {
           zCoinsToActivate.remove(coin);
         }
-
-        return status;
-      }).toList();
-
-      // Wait for all status checks to complete.
-      final statuses = await Future.wait(futures);
-
-      // Yield each status to the stream.
-      for (final status in statuses) {
-        yield ZCoinStatus.fromTaskStatus(zCoinsToActivate.first, status);
+        yield status;
       }
 
       // If all coins are activated, break the loop to end the stream.
@@ -161,21 +135,27 @@ class ZCoinActivationRepository {
       await Future.delayed(Duration(seconds: 5));
     }
 
-    await coinsBloc.syncCoinsStateWithApi(false);
+    await coinsBloc.syncCoinsStateWithApi();
   }
 
   Future<List<ZCoinStatus>> getActivationStatusOfAllCoins() async {
-    final zCoinsToActivate = await getNonEnabledZCoins();
-    final statuses = await Future.wait(zCoinsToActivate.map((coin) async {
-      final taskId = await api.getTaskId(coin);
-      if (taskId == null) {
-        return ZCoinStatus.fromTaskStatus(coin, ActivationTaskStatus.notFound);
-      }
+    final zCoinsToActivate = await outstandingZCoinActivations();
+    final List<Future<ZCoinStatus>> tasks = [];
 
-      final status = await api.activationTaskStatus(taskId, ticker: coin);
-      return status;
-    }));
+    for (String coin in zCoinsToActivate) {
+      tasks.add(_getCoinActivationTaskStatus(coin));
+    }
 
-    return statuses;
+    return await Future.wait(tasks);
+  }
+
+  Future<ZCoinStatus> _getCoinActivationTaskStatus(String coin) async {
+    final taskId = await api.getTaskId(coin);
+    if (taskId == null) {
+      return ZCoinStatus.fromTaskStatus(coin, ActivationTaskStatus.notFound);
+    }
+    final status = await api.activationTaskStatus(taskId, ticker: coin);
+
+    return status;
   }
 }

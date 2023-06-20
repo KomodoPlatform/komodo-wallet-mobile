@@ -2,16 +2,18 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_type.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_status.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ZCoinActivationApi {
   ZCoinActivationApi();
@@ -48,8 +50,8 @@ class ZCoinActivationApi {
                 'light_wallet_d_servers': coin.lightWalletDServers
               }
             },
-            'scan_blocks_per_iteration': 200,
-            'scan_interval_ms': 100,
+            'scan_blocks_per_iteration': 150,
+            'scan_interval_ms': 150,
             'zcash_params_path': dir.path + folder
           },
         },
@@ -61,39 +63,54 @@ class ZCoinActivationApi {
           (jsonDecode(response.body)['result'] as Map<String, dynamic>);
       final taskId = result['task_id'];
 
-      // store the task ID
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('task_id_$ticker', taskId);
+      await setTaskId(ticker, taskId);
 
       return taskId;
     } else {
-      _removeTaskId(ticker).ignore();
+      await _removeCoinTaskId(ticker).onError((error, stackTrace) {});
       throw Exception('Failed to initiate activation: ${response.toString()}');
     }
   }
 
   Future<int> getTaskId(String abbr) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('task_id_$abbr');
+    final storage = FlutterSecureStorage();
+    return int.tryParse(await storage.read(key: await taskIdKey(abbr)) ?? '');
+  }
+
+  Future<void> setTaskId(String abbr, int taskId) async {
+    final storage = FlutterSecureStorage();
+    await storage.write(key: await taskIdKey(abbr), value: taskId.toString());
   }
 
   Stream<ZCoinStatus> activateCoin(String ticker) async* {
-    // final coin = coinsBloc.getKnownCoinByAbbr(ticker);
-
     int coinTaskId = await getTaskId(ticker);
 
-    ZCoinStatus lastEmittedStatus;
-
     final isAlreadyActivated = (await activatedZCoins()).contains(ticker);
+
     ZCoinStatus taskStatus = coinTaskId == null
-        ? ZCoinStatus.fromTaskStatus(ticker, ActivationTaskStatus.notFound)
+        ? ZCoinStatus.fromTaskStatus(
+            ticker,
+            isAlreadyActivated
+                ? ActivationTaskStatus.active
+                : ActivationTaskStatus.notFound)
         : await activationTaskStatus(coinTaskId, ticker: ticker);
 
-    if (isAlreadyActivated || taskStatus.isActivated) {
-      lastEmittedStatus = ZCoinStatus.completed(ticker);
+    final isActivatedOnBackend = (isAlreadyActivated || taskStatus.isActivated);
+
+    final isRegistered = coinsBloc.getBalanceByAbbr(ticker) != null;
+
+    if (isActivatedOnBackend) {
       yield taskStatus;
+
+      if (!isRegistered) {
+        final coin = (await coins)[ticker];
+        await coinsBloc.setupCoinAfterActivation(coin);
+      }
+
       return;
     }
+
+    ZCoinStatus lastEmittedStatus;
 
     coinTaskId = await initiateActivation(ticker);
 
@@ -107,15 +124,21 @@ class ZCoinActivationApi {
 
       final shouldEmitStatus = lastEmittedStatus == null ||
           lastEmittedStatus.status != taskStatus.status ||
-          lastEmittedStatus.progress != taskStatus.progress;
+          lastEmittedStatus.progress <= taskStatus.progress;
 
       if (shouldEmitStatus) {
         lastEmittedStatus = taskStatus;
+        // yield taskStatus;
         yield taskStatus;
       }
 
+      final isTaskActive = taskStatus.status == ActivationTaskStatus.active;
+      final isTaskNotFound = taskStatus.status == ActivationTaskStatus.notFound;
+
       if (taskStatus.status == ActivationTaskStatus.active ||
           taskStatus.status == ActivationTaskStatus.notFound) {
+        ZCoinProgressNotifications.clear();
+
         return;
       }
 
@@ -123,8 +146,10 @@ class ZCoinActivationApi {
     }
   }
 
-  Future<ZCoinStatus> activationTaskStatus(int taskId,
-      {@required String ticker}) async {
+  Future<ZCoinStatus> activationTaskStatus(
+    int taskId, {
+    @required String ticker,
+  }) async {
     final response = await http.post(
       Uri.parse(_baseUrl),
       body: json.encode({
@@ -138,6 +163,8 @@ class ZCoinActivationApi {
       }),
     );
     final body = jsonDecode(response.body);
+
+    Log('activationTaskStatus', 'Z Coin activation status response: $body');
 
     final errorType = body['error_type'];
     final statusCode = response.statusCode;
@@ -163,20 +190,23 @@ class ZCoinActivationApi {
     final status =
         await _parseZCoinProgress(responseBody: body, ticker: ticker);
 
-    Log.println('activationTaskStatus',
+    if (status?.isActivated ?? false) {
+      await _removeCoinTaskId(ticker);
+    }
+
+    Log('activationTaskStatus',
         'Z Coin activation status (Progress=${status.progress}) ($apiStatus) response: ${result.toString()}');
 
     if (status != null) {
       return status;
     }
 
-    _removeTaskId(ticker).ignore();
     return ZCoinStatus.fromTaskStatus(ticker, ActivationTaskStatus.notFound);
   }
 
-  Future<void> _removeTaskId(String ticker) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('task_id_$ticker');
+  Future<void> _removeCoinTaskId(String ticker) async {
+    final storage = FlutterSecureStorage();
+    await storage.delete(key: await taskIdKey(ticker));
   }
 
   double calculateProgressPercentage(Map<String, dynamic> details) {
@@ -246,7 +276,7 @@ class ZCoinActivationApi {
     final doesZcashDirectoryExist = await zDir.exists();
 
     final isZcashDirBigEnough =
-        (await mmSe.getDirectorySize(zDir.path, endsWith: '')) > 1;
+        (await MMService.getDirectorySize(zDir.path, endsWith: '')) > 1;
 
     if (!doesZcashDirectoryExist) {
       await zDir.create();
@@ -263,7 +293,9 @@ class ZCoinActivationApi {
     ];
 
     final futures = paramUrls.map((param) async {
-      final client = HttpClient();
+      final client = HttpClient()
+        ..badCertificateCallback =
+            ((X509Certificate cert, String host, int port) => true);
       final request = await client.getUrl(Uri.parse(param));
       final response = await request.close();
 
@@ -297,8 +329,6 @@ class ZCoinActivationApi {
     if (coin.type == CoinType.zhtlc) {
       blockOffset = coin.protocol.protocolData.checkPointBlock?.height ?? 0;
     }
-
-    // final coinsToActivate = await _getZcoinsToActivate();
 
     // use range from checkpoint block to present
     if (status == 'Ok') {
@@ -347,16 +377,27 @@ class ZCoinActivationApi {
         progress: double.parse((_progress / 100).toStringAsPrecision(4)),
         message: _messageDetails,
       );
+    } else if (status == 'Error') {
+      return ZCoinStatus(
+        coin: ticker,
+        status: ActivationTaskStatus.failed,
+        message: details['error'] as String,
+      );
     } else {
       Log('zcash_bloc:_parseZCoinProgress', 'Unknown status: $status');
       return null;
     }
+  }
 
-    // return ZCoinStatus(
-    //   coin: ticker,
-    //   status: ActivationTaskStatus.inProgress,
-    //   progress: double.parse((_progress / 100).toStringAsPrecision(4)),
-    //   message: _messageDetails,
-    // );
+  Future<void> removeTaskId(String ticker) async {
+    final storage = FlutterSecureStorage();
+    await storage.delete(key: await taskIdKey(ticker));
+  }
+
+  Future<String> taskIdKey(String ticker) async {
+    final currentWallet = await Db.getCurrentWallet();
+    if (currentWallet == null) return null;
+
+    return '${currentWallet.id}_task_id_$ticker';
   }
 }

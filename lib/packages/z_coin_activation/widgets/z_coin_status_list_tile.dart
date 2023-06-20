@@ -1,28 +1,57 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
+import 'package:komodo_dex/packages/z_coin_activation/widgets/rotating_progress_indicator.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 
-class ZCoinStatusListTile extends StatelessWidget {
-  const ZCoinStatusListTile({Key key}) : super(key: key);
+class ZCoinStatusWidget extends StatefulWidget {
+  const ZCoinStatusWidget({Key key}) : super(key: key);
 
+  static BlocListenerCondition<ZCoinActivationState> get listenWhen =>
+      (previous, current) =>
+          previous.runtimeType != current.runtimeType &&
+          current is! ZCoinActivationInitial;
+
+  static BlocWidgetListener get listener =>
+      (context, state) => _ZCoinStatusWidgetState.listener(context, state);
+
+  static Future<bool> Function(BuildContext) get showConfirmationDialog =>
+      _showConfirmationDialog;
+
+  @override
+  State<ZCoinStatusWidget> createState() => _ZCoinStatusWidgetState();
+}
+
+class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
+  @override
+  initState() {
+    super.initState();
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (apiReady != mmSe.running) {
+        setState(() => apiReady = mmSe.running);
+      }
+
+      if (apiReady) {
+        return timer.cancel();
+      }
+    });
+  }
+
+  bool apiReady = mmSe.running;
 // class _SetupZcoinButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ZCoinActivationBloc, ZCoinActivationState>(
-      listener: (context, state) {
-        if (state is ZCoinActivationFailure) {
-          ScaffoldMessenger.of(context)
-            ..clearSnackBars()
-            ..showSnackBar(
-              SnackBar(content: Text('Activation Failed: ${state.message}')),
-            );
-        }
-      },
+    return BlocBuilder<ZCoinActivationBloc, ZCoinActivationState>(
+      // listenWhen: (previous, current) =>
+      //     previous.runtimeType != current.runtimeType,
+      // listener: listener,
       builder: (context, state) {
-        bool coinActivated = state is ZCoinActivationSuccess;
+        // bool coinActivated = state is ZCoinActivationSuccess;
         bool isActivationInProgress = state is ZCoinActivationInProgess;
 
         if (isActivationInProgress) {
@@ -31,11 +60,7 @@ class ZCoinStatusListTile extends StatelessWidget {
             onTap: () => _showInProgressDialog(context),
             title: Text('ZHTLC Activating'),
             subtitle: Text(
-              progressState.message != null && progressState.message.isNotEmpty
-                  ? '${progressState.message}. Do not close the app.'
-                  : 'This will take a while and the app must be kept in the '
-                      'foreground. Terminating the app while activation is in '
-                      'progress could lead to issues.',
+              'Do not close the app. Tap for more info...',
             ),
             leading: Icon(
               Icons.warning,
@@ -43,89 +68,202 @@ class ZCoinStatusListTile extends StatelessWidget {
             ),
             tileColor: Theme.of(context).primaryColor,
             trailing: SizedBox(
-                child: CircularProgressIndicator(
-              value:
-                  progressState.progress < 0.1 ? null : progressState.progress,
-            )),
+              child: RotatingCircularProgressIndicator(
+                key: ValueKey('z_coin_status_rotating_progress_indicator'),
+                value: progressState.progress,
+              ),
+            ),
           );
         }
 
         final bool isStatusLoading = state is ZCoinActivationStatusLoading;
 
-        return SwitchListTile(
-          title: Text('Enable ZCoin (ZHTLC)'),
+        final bool knownActivationStatus =
+            (state is ZCoinActivationStatusChecked ? state.isActivated : false);
+
+        return ListTile(
+          title: Text('ZCoin (ZHTLC) Activation'),
           tileColor: Theme.of(context).primaryColor,
-          value: coinActivated,
-          selected: false,
-          onChanged: isStatusLoading || coinActivated
+          leading: isStatusLoading
+              ? CircularProgressIndicator()
+              : knownActivationStatus
+                  ? Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                    )
+                  : null,
+          subtitle: isStatusLoading
               ? null
-              : (bool switchValue) async {
-                  if (switchValue) {
-                    showDialog<void>(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text('Activate ZHTLC coins?'),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(
-                              color: Theme.of(context).colorScheme.error,
-                            ),
-                          ),
-                          content: Text(
-                              'This will take a while and the app must be kept in the foreground. '
-                              'Terminating the app while activation is in progress could lead to issues.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                context
-                                    .read<ZCoinActivationBloc>()
-                                    .add(ZCoinActivationRequested());
-                                Navigator.pop(context);
-                              },
-                              child: Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else {
-                    //TODO: Handle case where user wants to deactivate ZCoin
-                  }
-                },
+              : Text(
+                  knownActivationStatus
+                      ? 'ZHTLC coins are activated'
+                      : 'ZHTLC coins are not activated',
+                ),
+          selected: false,
+          trailing: IconButton(
+            icon: Icon(
+              Icons.refresh,
+              color: Colors.white,
+            ),
+            onPressed: () => context
+                .read<ZCoinActivationBloc>()
+                .add(ZCoinActivationStatusRequested()),
+          ),
         );
       },
     );
   }
 
-  void _showInProgressDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Warning: ZHLTC Activation in Progress'),
-          content: Text(
-            'This will take a while and the app must be kept in the foreground.'
-            'Closing the app while activation is in progress could lead to issues.',
+  static void listener(BuildContext context, ZCoinActivationState state) {
+    final scaffold = ScaffoldMessenger.maybeOf(context);
+    if (scaffold == null) return;
+
+    final l10n = AppLocalizations.of(context);
+
+    scaffold
+      ..clearSnackBars()
+      ..clearMaterialBanners();
+
+    final theme = Theme.of(context);
+
+    ScaffoldFeatureController updateNotice;
+
+    if (state is ZCoinActivationFailure) {
+      updateNotice = scaffold.showMaterialBanner(
+        MaterialBanner(
+          elevation: 1,
+          content: Text(state.message),
+          leading: Icon(
+            Icons.error,
+            color: Colors.red,
           ),
+          backgroundColor: theme.colorScheme.error,
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(AppLocalizations.of(context).close),
+              onPressed: () => scaffold.hideCurrentMaterialBanner(),
+              child: Text(
+                l10n.okButton,
+                style: TextStyle().copyWith(color: theme.colorScheme.onError),
+              ),
             ),
           ],
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: BorderSide(
-              color: Theme.of(context).colorScheme.error,
-            ),
+        ),
+      );
+    } else if (state is ZCoinActivationSuccess) {
+      updateNotice = scaffold.showMaterialBanner(
+        MaterialBanner(
+          elevation: 1,
+
+          leading: Icon(
+            Icons.check_circle,
+            color: theme.colorScheme.secondary,
           ),
-        );
+          content: Text('ZHTLC coins activated successfully'),
+          // backgroundColor: Colors.green,
+          actions: [
+            TextButton(
+              onPressed: () => scaffold.hideCurrentMaterialBanner(),
+              child: Text(l10n.okButton),
+            ),
+          ],
+        ),
+      );
+    }
+
+    Timer(
+      const Duration(seconds: 5),
+      () {
+        if (updateNotice != null) {
+          updateNotice.close();
+        }
       },
     );
   }
+}
+
+Future<bool> _showConfirmationDialog(BuildContext context) {
+  final appL10n = AppLocalizations.of(context);
+
+  return showDialog<bool>(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Activate ZHTLC coins?'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+          ),
+        ),
+        content: Text(
+            'This will take a while and the app must be kept in the foreground. '
+            'Terminating the app while activation is in progress could lead to issues.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop<bool>(context, false),
+            child: Text(appL10n.cancelButton),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop<bool>(context, true),
+            child: Text(appL10n.confirm),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showInProgressDialog(BuildContext context) {
+  showDialog<void>(
+    context: context,
+    builder: (context) {
+      final state =
+          context.watch<ZCoinActivationBloc>().state.asProgressOrNull();
+
+      if (state == null) return Container();
+
+      final appL10n = AppLocalizations.of(context);
+
+      final etaString = state?.eta?.inMinutes == null
+          ? appL10n.loading
+          : '${state.eta.inMinutes}${appL10n.minutes}';
+      return AlertDialog(
+        title: Text('${appL10n.warning}: ZHLTC Activation in Progress'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'This will take a while and the app must be kept in the foreground.'
+              'Closing the app while activation is in progress could lead to issues.',
+            ),
+            SizedBox(height: 16),
+            Text(
+              '${appL10n.rewardsTableTime}: $etaString',
+            ),
+            SizedBox(height: 16),
+            Text(
+              '${appL10n.swapProgress}: ${(state.progress * 100).round()}%',
+            ),
+            SizedBox(height: 4),
+            LinearProgressIndicator(
+              value: state.progress,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(appL10n.close),
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+          ),
+        ),
+      );
+    },
+  );
 }

@@ -36,4 +36,13 @@ class ZCoinStatus {
   bool get isInProgress => status == ActivationTaskStatus.inProgress;
 
   bool get isCompleted => isActivated || isFailed;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'coin': coin,
+      'status': status.toString(),
+      'message': message,
+      'progress': progress,
+    };
+  }
 }

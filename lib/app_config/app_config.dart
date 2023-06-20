@@ -78,7 +78,7 @@ class AppConfig {
         'IBC_IRIS',
         'segwit',
       ];
-  List<String> get defaultTestCoins => ['RICK', 'MORTY'];
+  List<String> get defaultTestCoins => ['RICK', 'MORTY', 'DOC', 'MARTY'];
   Map<String, String> get allProtocolNames => {
         'utxo': 'UTXO',
         'smartChain': 'Smart Chain',

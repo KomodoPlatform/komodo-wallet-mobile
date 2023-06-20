@@ -440,10 +440,11 @@ class ApiProvider {
             ),
       );
 
-  Future<dynamic> getOrderbook(
+  Future<Orderbook> getOrderbook(
     http.Client client,
     GetOrderbook body,
-  ) async =>
+  ) async {
+    try {
       await _assertUserpass(client, body).then<dynamic>(
         (UserpassBody userBody) => userBody.client
             .post(Uri.parse(url), body: getOrderbookToJson(userBody.body))
@@ -453,14 +454,14 @@ class ApiProvider {
             .then<dynamic>((Response res) {
           _assert200(res);
           return orderbookFromJson(res.body);
-        }).catchError(
-          (dynamic e) => _catchErrorString(
-            'getOrderbook_api_providers:111',
-            e,
-            'Error on get orderbook',
-          ),
-        ),
+        }),
       );
+    } catch (e) {
+      Log('ApiProvider.getOrderbook', 'Error on get orderbook: $e');
+    }
+
+    return null;
+  }
 
   Future<dynamic> getOrderbookDepth(
     GetOrderbookDepth request, {

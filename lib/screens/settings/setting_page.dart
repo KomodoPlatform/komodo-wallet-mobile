@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:archive/archive.dart' as arch;
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
+import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import 'package:komodo_dex/utils/log_storage.dart';
 
 import '../../app_config/app_config.dart';
@@ -56,6 +57,7 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   void initState() {
+    context.read<ZCoinActivationBloc>().add(ZCoinActivationStatusRequested());
     _getVersionApplication().then((String onValue) {
       setState(() {
         version = onValue;
@@ -121,6 +123,12 @@ class _SettingPageState extends State<SettingPage> {
             _buildDisclaimerToS(),
             _buildTitle(AppLocalizations.of(context).developerTitle),
             _buildEnableTestCoins(),
+            SizedBox(height: 2),
+
+            //
+            ZCoinStatusWidget(),
+            SizedBox(height: 2),
+
             _buildTitle(version),
             if (appConfig.isUpdateCheckerEnabled) _buildUpdate(),
             const SizedBox(
