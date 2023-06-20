@@ -1019,6 +1019,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("すべての Ubiq コインを選択"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("すべてのUTXOコインを選択"),
+        "searchFilterSubtitleZHTLC":
+            MessageLookupByLibrary.simpleMessage("すべてのZHTLCコインを選択"),
         "searchForTicker": MessageLookupByLibrary.simpleMessage("ティッカーを検索"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),
         "security": MessageLookupByLibrary.simpleMessage("安全"),

@@ -1157,6 +1157,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Sélectionner tous les tokens Ubiq"),
         "searchFilterSubtitleutxo": MessageLookupByLibrary.simpleMessage(
             "Sélectionner tous les tokens UTXO"),
+        "searchFilterSubtitleZHTLC": MessageLookupByLibrary.simpleMessage(
+            "Sélectionner tous les tokens ZHTLC"),
         "searchForTicker":
             MessageLookupByLibrary.simpleMessage("Rechercher un téléscripteur"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),

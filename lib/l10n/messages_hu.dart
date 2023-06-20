@@ -1159,6 +1159,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Az összes Ubiq kiválasztása"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("Az összes UTXO kiválasztása"),
+        "searchFilterSubtitleZHTLC": MessageLookupByLibrary.simpleMessage(
+            "Az összes ZHTLC kiválasztása"),
         "searchForTicker":
             MessageLookupByLibrary.simpleMessage("Keresse meg a Tickert"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),

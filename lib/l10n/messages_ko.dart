@@ -1001,6 +1001,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ubiq 코인 모두 선택"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("UTXO 코인 모두 선택"),
+        "searchFilterSubtitleZHTLC":
+            MessageLookupByLibrary.simpleMessage("ZHTLC 코인 모두 선택"),
         "searchForTicker": MessageLookupByLibrary.simpleMessage("Ticker 찾기"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),
         "security": MessageLookupByLibrary.simpleMessage("보안"),

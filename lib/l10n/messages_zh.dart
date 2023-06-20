@@ -929,6 +929,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("选择所有Ubiq货币"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("选择所有UTXO货币"),
+        "searchFilterSubtitleZHTLC":
+            MessageLookupByLibrary.simpleMessage("选择所有ZHTLC货币"),
         "searchForTicker": MessageLookupByLibrary.simpleMessage("搜索货币代码"),
         "seconds": MessageLookupByLibrary.simpleMessage("秒"),
         "security": MessageLookupByLibrary.simpleMessage("证券"),

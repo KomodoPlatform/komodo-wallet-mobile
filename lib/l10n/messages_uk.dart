@@ -1163,6 +1163,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Виберіть усі монети Ubiq"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("Виберіть усі монети UTXO"),
+        "searchFilterSubtitleZHTLC":
+            MessageLookupByLibrary.simpleMessage("Виберіть усі монети ZHTLC"),
         "searchForTicker":
             MessageLookupByLibrary.simpleMessage("Шукати по тікету"),
         "seconds": MessageLookupByLibrary.simpleMessage("с"),

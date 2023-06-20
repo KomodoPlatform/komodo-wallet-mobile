@@ -1114,6 +1114,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Select all Ubiq coins"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("Select all UTXO coins"),
+        "searchFilterSubtitleZHTLC":
+            MessageLookupByLibrary.simpleMessage("Select all ZHTLC coins"),
         "searchForTicker":
             MessageLookupByLibrary.simpleMessage("Search for Ticker"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),
