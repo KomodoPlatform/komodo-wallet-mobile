@@ -382,11 +382,11 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
         return;
       }
+      final hasZCoins = coinsBloc.coinBeforeActivation
+          .any((c) => c.coin.type == CoinType.zhtlc);
 
       setState(() => _isDone = true);
       await coinsBloc.activateCoinsSelected();
-      final hasZCoins = coinsBloc.coinBeforeActivation
-          .any((c) => c.coin.type == CoinType.zhtlc);
       if (hasZCoins) {
         context.read<ZCoinActivationBloc>().add(ZCoinActivationRequested());
       }
@@ -407,9 +407,27 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         newCoins.any((c) => c.coin.type == CoinType.zhtlc);
 
     if (hasAnyZCoinActivations) {
+      final isDeviceSupported = await _devicePermitsIntensiveWork(context);
+      if (!isDeviceSupported) return false;
+
       final didAccept = await ZCoinStatusWidget.showConfirmationDialog(context);
       if (!didAccept) return false;
     }
+
+    return true;
+  }
+
+  /// *NOT IMPLEMENTED*
+  ///
+  /// Checks if the device is capable of performing intensive work required
+  /// for certain coin activations. Shows a dialog if the device is not
+  /// capable.
+  ///
+  /// Returns true if the device is capable of performing intensive work.
+  /// Returns false after showing a dialog if the device is not capable.
+  Future<bool> _devicePermitsIntensiveWork(BuildContext context) async {
+    // TODO: Ensure user has sufficient battery life, storage space, and
+    // has battery saver disabled.
 
     return true;
   }
