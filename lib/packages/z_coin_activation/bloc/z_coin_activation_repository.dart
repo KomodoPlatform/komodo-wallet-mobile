@@ -54,11 +54,6 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     }
   }
 
-  // Stream<ZCoinStatus> activateAllZCoins() async* {
-  //   final zCoinsToActivate = await outstandingZCoinActivations();
-  //   yield* _activateZCoins(zCoinsToActivate);
-  // }
-
   Stream<ZCoinStatus> activateRequestedZCoins() async* {
     final zCoinsToActivate = await getRequestedActivatedCoins();
     yield* _activateZCoins(zCoinsToActivate);
@@ -85,9 +80,7 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     final coinsAlreadyActivated = activatedZCoins.intersection(requestedCoins);
 
     if (coinsAlreadyActivated.isNotEmpty) {
-      await removeRequestedActivatedCoins(
-        requestedCoins.intersection(activatedZCoins).toList(),
-      );
+      await removeRequestedActivatedCoins(coinsAlreadyActivated.toList());
     }
 
     return requestedCoins.difference(activatedZCoins).toList();

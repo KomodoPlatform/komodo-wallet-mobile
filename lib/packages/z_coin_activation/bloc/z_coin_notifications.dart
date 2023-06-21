@@ -13,7 +13,7 @@ class ZCoinProgressNotifications {
 
   bool _isSetupSuccessful = false;
 
-  bool get canNotify => _isSetupSuccessful;
+  static bool get canNotify => _instance._isSetupSuccessful;
 
   static Future<void> initNotifications() async {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -72,14 +72,14 @@ class ZCoinProgressNotifications {
   String _lastTicker = '';
   double _lastProgress = 0;
 
-  static bool _shouldShowNotification(String ticker, double progress) {
+  static bool _shouldShowNewNotification(String ticker, double progress) {
     if (ticker != _instance._lastTicker) {
       _instance._lastTicker = ticker;
       _instance._lastProgress = progress;
       return true;
     }
 
-    if ((progress - _instance._lastProgress).abs() > 0.05) {
+    if ((progress - _instance._lastProgress).abs() > 0.001) {
       _instance._lastProgress = progress;
       return true;
     }
@@ -87,21 +87,27 @@ class ZCoinProgressNotifications {
     return false;
   }
 
-  static Future<void> showNotification({
+  static Future<bool> showNotification({
     @required String ticker,
     @required double progress,
     Duration eta,
   }) async {
-    if (!_instance._isSetupSuccessful) {
-      Log(
-        'ZCoinProgressNotifications: showNotification',
-        'Notification setup not successful.',
-      );
-      return;
+    // Check if notification permissions have been granted. If not, request
+    // permissions.
+    if (!canNotify) {
+      await initNotifications();
     }
 
-    if (!_shouldShowNotification(ticker, progress)) {
-      return;
+    if (!canNotify) {
+      Log(
+        'ZCoinProgressNotifications: showNotification',
+        'Notification setup not successful and/or cannot notify.',
+      );
+      return false;
+    }
+
+    if (!_shouldShowNewNotification(ticker, progress)) {
+      return true;
     }
 
     final progressInt = (progress * 100).toInt();
@@ -133,12 +139,14 @@ class ZCoinProgressNotifications {
       iOS: iOSPlatformChannelSpecifics,
     );
 
-    return flutterLocalNotificationsPlugin.show(
+    await flutterLocalNotificationsPlugin.show(
       0,
       'ZHTLC Activation in Progress ($progressInt%)',
       'Activating $ticker. Please do not close the app. $etaString',
       platformChannelSpecifics,
     );
+
+    return true;
   }
 
   static Future<void> clear() async {

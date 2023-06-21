@@ -40,7 +40,7 @@ class LogStorage {
       );
     }
 
-    _logFolderPath = applicationDocumentsDirectorySync.path + '/logs';
+    _logFolderPath = applicationDocumentsDirectorySync.path;
 
     // Ideally we would put the logs in their own `/logs` folder, but this is
     // left as is for now for backwards compatibility. There likely won't be any

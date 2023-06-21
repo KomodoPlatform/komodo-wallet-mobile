@@ -28,11 +28,11 @@ mixin RequestedZCoinsStorage {
   Future<void> removeRequestedActivatedCoins(List<String> coins) async {
     final currentRequestedCoins = (await getRequestedActivatedCoins()).toSet();
 
-    final newCoins = coins.toSet().intersection(currentRequestedCoins);
-    if (newCoins.isEmpty) return;
+    final coinsToRemove = coins.toSet().intersection(currentRequestedCoins);
+    if (coinsToRemove.isEmpty) return;
 
     await setRequestedActivatedCoins(
-      currentRequestedCoins.difference(newCoins).toList(),
+      currentRequestedCoins.difference(coinsToRemove).toList(),
     );
   }
 
@@ -46,7 +46,7 @@ mixin RequestedZCoinsStorage {
   }
 
   Future<bool> isAllRequestedZCoinsEnabled() async {
-    return (await getRequestedActivatedCoins()).isEmpty;
+    return (await outstandingZCoinActivations()).isEmpty;
   }
 
   Future<List<String>> outstandingZCoinActivations();

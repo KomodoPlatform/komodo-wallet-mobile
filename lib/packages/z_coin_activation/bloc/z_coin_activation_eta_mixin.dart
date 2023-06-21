@@ -1,3 +1,4 @@
+import 'package:komodo_dex/utils/log.dart';
 import 'package:meta/meta.dart';
 
 // Define the mixin class for ETA calculation
@@ -27,29 +28,30 @@ mixin ActivationEta {
       return null;
     }
 
-    final sumDeltaProgress = _activationEntries
-        .sublist(0, _activationEntries.length - 1)
-        .map((entry) => (entry.progress -
-                _activationEntries[_activationEntries.indexOf(entry) + 1]
-                    .progress)
-            .abs())
-        .reduce((a, b) => a + b);
+    double averageChangePerSecond = 0;
 
-    final sumDeltaSeconds = _activationEntries
-        .sublist(0, _activationEntries.length - 1)
-        .map((entry) => entry.timeStamp
-            .difference(
-                _activationEntries[_activationEntries.indexOf(entry) + 1]
-                    .timeStamp)
-            .inSeconds
-            .abs())
-        .reduce((a, b) => a + b);
+    if (_activationEntries.length > 1) {
+      try {
+        final sumDeltaProgress = _activationEntries
+            .sublist(0, _activationEntries.length - 1)
+            .map((entry) => (entry.progress -
+                    _activationEntries[_activationEntries.indexOf(entry) + 1]
+                        .progress)
+                .abs())
+            .reduce((a, b) => a + b);
 
-    final averageChangePerSecond = sumDeltaProgress /
-        _activationEntries.first.timeStamp
-            .difference(_activationEntries.last.timeStamp)
-            .inSeconds
-            .abs();
+        averageChangePerSecond = sumDeltaProgress /
+            _activationEntries.first.timeStamp
+                .difference(_activationEntries.last.timeStamp)
+                .inSeconds
+                .abs();
+      } catch (e) {
+        Log(
+          'ZCoinActivationBloc: calculateETA',
+          'Error calculating ETA: $e',
+        );
+      }
+    }
 
     if (averageChangePerSecond == 0 ||
         averageChangePerSecond == double.infinity) {

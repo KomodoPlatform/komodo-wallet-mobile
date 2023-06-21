@@ -244,8 +244,9 @@ class ZCoinActivationApi {
 
       final knownZCoins = await getKnownZCoins();
 
-      final activatedZCoins = enabledCoins
-          .where((c) => knownZCoins.any((k) => k.abbr == c))
+      final activatedZCoins = knownZCoins
+          .where((c) => enabledCoins.contains(c.abbr) || c.isActive)
+          .map((c) => c.abbr)
           .toList();
 
       return activatedZCoins;

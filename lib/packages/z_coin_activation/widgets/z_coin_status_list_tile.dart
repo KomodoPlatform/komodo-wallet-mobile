@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/rotating_progress_indicator.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 
@@ -28,6 +30,8 @@ class ZCoinStatusWidget extends StatefulWidget {
 }
 
 class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
+  static bool get canNotify => ZCoinProgressNotifications.canNotify;
+
   @override
   initState() {
     super.initState();
@@ -120,15 +124,13 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
 
     final l10n = AppLocalizations.of(context);
 
-    scaffold
-      ..clearSnackBars()
-      ..clearMaterialBanners();
-
     final theme = Theme.of(context);
 
     ScaffoldFeatureController updateNotice;
 
     if (state is ZCoinActivationFailure) {
+      scaffold.clearMaterialBanners();
+
       updateNotice = scaffold.showMaterialBanner(
         MaterialBanner(
           elevation: 1,
@@ -150,6 +152,8 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
         ),
       );
     } else if (state is ZCoinActivationSuccess) {
+      scaffold.clearMaterialBanners();
+
       updateNotice = scaffold.showMaterialBanner(
         MaterialBanner(
           elevation: 1,
@@ -168,6 +172,45 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
           ],
         ),
       );
+    } else if (state is ZCoinActivationInProgess) {
+      // Prefer showing the notification if possible
+      if (!canNotify) {
+        scaffold
+          ..removeCurrentMaterialBanner()
+          ..showMaterialBanner(
+            MaterialBanner(
+              elevation: 1,
+              content: Row(
+                children: [
+                  Text('ZHTLC Activation in Progress'),
+                  SizedBox(width: 8),
+                  SizedBox.square(
+                    dimension: 24,
+                    child: RotatingCircularProgressIndicator(
+                      value: state.progress,
+                    ),
+                  ),
+                  if (state.progress != null && state.progress > 0) ...[
+                    SizedBox(width: 8),
+                    Text(
+                      '${(state.progress * 100).round()}%',
+                    ),
+                  ]
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => scaffold.hideCurrentMaterialBanner(),
+                  child: Text(l10n.okButton),
+                ),
+                TextButton(
+                  onPressed: () => _showInProgressDialog(context),
+                  child: Text('More Info'),
+                ),
+              ],
+            ),
+          );
+      }
     }
 
     Timer(
@@ -196,9 +239,28 @@ Future<bool> _showConfirmationDialog(BuildContext context) {
             color: Theme.of(context).colorScheme.error,
           ),
         ),
-        content: Text(
-            'This will take a while and the app must be kept in the foreground. '
-            'Terminating the app while activation is in progress could lead to issues.'),
+        content: Column(
+          children: [
+            Text(
+              'This will take a while and the app must be kept in the foreground. '
+              '\nTerminating the app while activation is in progress could lead to issues.',
+            ),
+            if (Platform.isIOS) ...[
+              SizedBox(height: 16),
+              ListTile(
+                leading: Icon(
+                  Icons.warning,
+                  color: Colors.amber,
+                ),
+                dense: true,
+                title: Text(
+                  'Warning: Minimizing the app on iOS will terminate the activation process.',
+                  style: TextStyle(color: Colors.amber),
+                ),
+              )
+            ],
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop<bool>(context, false),
@@ -233,6 +295,13 @@ void _showInProgressDialog(BuildContext context) {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (!ZCoinProgressNotifications.canNotify) ...[
+              Text(
+                'Please enable notifications to get updates on the activation progress.',
+                style: TextStyle(color: Colors.amber),
+              ),
+              SizedBox(height: 16),
+            ],
             Text(
               'This will take a while and the app must be kept in the foreground.'
               'Closing the app while activation is in progress could lead to issues.',
