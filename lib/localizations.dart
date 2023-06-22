@@ -1736,6 +1736,7 @@ class AppLocalizations {
   String get contract => Intl.message('Contract', name: 'contract');
   String get startSwap => Intl.message('Start Swap', name: 'startSwap');
   String get none => Intl.message('None', name: 'none');
+  String get cexRate => Intl.message('CEX Rate', name: 'cexRate');
 
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',
