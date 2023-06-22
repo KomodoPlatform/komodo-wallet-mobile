@@ -1684,6 +1684,40 @@ class AppLocalizations {
           name: 'importSomeItemsSkippedWarning');
   String get importSwapFailed =>
       Intl.message('Failed to import swap', name: 'importSwapFailed');
+
+  String activating(String coinName) => Intl.message('Activating $coinName',
+      name: 'activating', args: [coinName]);
+  String get doNotCloseTheAppTapForMoreInfo =>
+      Intl.message('Do not close the app. Tap for more info...',
+          name: 'doNotCloseTheAppTapForMoreInfo');
+  String activation(String coinName) => Intl.message('$coinName Activation',
+      name: 'activation', args: [coinName]);
+  String coinsAreActivated(String protocolName) =>
+      Intl.message('$protocolName coins are activated',
+          name: 'coinsAreActivated', args: [protocolName]);
+  String coinsAreNotActivated(String protocolName) =>
+      Intl.message('$protocolName coins are not activated',
+          name: 'coinsAreNotActivated', args: [protocolName]);
+  String coinsAreActivatedSuccessfully(String protocolName) =>
+      Intl.message('$protocolName coins activated successfully',
+          name: 'coinsAreActivatedSuccessfully', args: [protocolName]);
+  String activationInProgress(String protocolName) =>
+      Intl.message('$protocolName Activation in Progress',
+          name: 'activationInProgress', args: [protocolName]);
+  String activateCoins(String protocolName) =>
+      Intl.message('Activate $protocolName coins?',
+          name: 'activateCoins', args: [protocolName]);
+  String get moreInfo => Intl.message('More Info', name: 'moreInfo');
+  String get willTakeTime => Intl.message(
+      'This will take a while and the app must be kept in the foreground.\nTerminating the app while activation is in progress could lead to issues.',
+      name: 'willTakeTime');
+  String get minimizingWillTerminate => Intl.message(
+      'Warning: Minimizing the app on iOS will terminate the activation process.',
+      name: 'minimizingWillTerminate');
+  String get enableNotificationsForActivationProgress => Intl.message(
+      'Please enable notifications to get updates on the activation progress.',
+      name: 'enableNotificationsForActivationProgress');
+
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',
       name: 'importInvalidSwapData');

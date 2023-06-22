@@ -62,10 +62,9 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
           final progressState = state as ZCoinActivationInProgess;
           return ListTile(
             onTap: () => _showInProgressDialog(context),
-            title: Text('ZHTLC Activating'),
+            title: Text(AppLocalizations.of(context).activating('ZHTLC')),
             subtitle: Text(
-              'Do not close the app. Tap for more info...',
-            ),
+                AppLocalizations.of(context).doNotCloseTheAppTapForMoreInfo),
             leading: Icon(
               Icons.warning,
               color: Colors.red,
@@ -86,7 +85,7 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
             (state is ZCoinActivationStatusChecked ? state.isActivated : false);
 
         return ListTile(
-          title: Text('ZCoin (ZHTLC) Activation'),
+          title: Text(AppLocalizations.of(context).activation('ZCoin (ZHTLC)')),
           tileColor: Theme.of(context).primaryColor,
           leading: isStatusLoading
               ? CircularProgressIndicator()
@@ -100,8 +99,9 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
               ? null
               : Text(
                   knownActivationStatus
-                      ? 'ZHTLC coins are activated'
-                      : 'ZHTLC coins are not activated',
+                      ? AppLocalizations.of(context).coinsAreActivated('ZHTLC')
+                      : AppLocalizations.of(context)
+                          .coinsAreNotActivated('ZHTLC'),
                 ),
           selected: false,
           trailing: IconButton(
@@ -162,7 +162,8 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
             Icons.check_circle,
             color: theme.colorScheme.secondary,
           ),
-          content: Text('ZHTLC coins activated successfully'),
+          content: Text(AppLocalizations.of(context)
+              .coinsAreActivatedSuccessfully('ZHTLC')),
           // backgroundColor: Colors.green,
           actions: [
             TextButton(
@@ -182,7 +183,8 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
               elevation: 1,
               content: Row(
                 children: [
-                  Text('ZHTLC Activation in Progress'),
+                  Text(AppLocalizations.of(context)
+                      .activationInProgress('ZHTLC')),
                   SizedBox(width: 8),
                   SizedBox.square(
                     dimension: 24,
@@ -205,7 +207,7 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
                 ),
                 TextButton(
                   onPressed: () => _showInProgressDialog(context),
-                  child: Text('More Info'),
+                  child: Text(AppLocalizations.of(context).moreInfo),
                 ),
               ],
             ),
@@ -232,7 +234,7 @@ Future<bool> _showConfirmationDialog(BuildContext context) {
     barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        title: Text('Activate ZHTLC coins?'),
+        title: Text(AppLocalizations.of(context).activateCoins('ZHTLC')),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
@@ -241,10 +243,7 @@ Future<bool> _showConfirmationDialog(BuildContext context) {
         ),
         content: Column(
           children: [
-            Text(
-              'This will take a while and the app must be kept in the foreground. '
-              '\nTerminating the app while activation is in progress could lead to issues.',
-            ),
+            Text(AppLocalizations.of(context).willTakeTime),
             if (Platform.isIOS) ...[
               SizedBox(height: 16),
               ListTile(
@@ -254,7 +253,7 @@ Future<bool> _showConfirmationDialog(BuildContext context) {
                 ),
                 dense: true,
                 title: Text(
-                  'Warning: Minimizing the app on iOS will terminate the activation process.',
+                  AppLocalizations.of(context).minimizingWillTerminate,
                   style: TextStyle(color: Colors.amber),
                 ),
               )
@@ -291,21 +290,20 @@ void _showInProgressDialog(BuildContext context) {
           ? appL10n.loading
           : '${state.eta.inMinutes}${appL10n.minutes}';
       return AlertDialog(
-        title: Text('${appL10n.warning}: ZHLTC Activation in Progress'),
+        title: Text(
+            '${appL10n.warning}: ${AppLocalizations.of(context).activationInProgress('ZHTLC')}'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (!ZCoinProgressNotifications.canNotify) ...[
               Text(
-                'Please enable notifications to get updates on the activation progress.',
+                AppLocalizations.of(context)
+                    .enableNotificationsForActivationProgress,
                 style: TextStyle(color: Colors.amber),
               ),
               SizedBox(height: 16),
             ],
-            Text(
-              'This will take a while and the app must be kept in the foreground.'
-              'Closing the app while activation is in progress could lead to issues.',
-            ),
+            Text(AppLocalizations.of(context).willTakeTime),
             SizedBox(height: 16),
             Text(
               '${appL10n.rewardsTableTime}: $etaString',
