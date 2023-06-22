@@ -671,7 +671,7 @@ class _CoinDetailState extends State<CoinDetail> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(width: 12),
-            Text('Contract:'),
+            Text('${AppLocalizations.of(context).contract}:'),
             SizedBox(width: 8),
             Flexible(
               child: Card(

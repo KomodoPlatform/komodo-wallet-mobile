@@ -1733,6 +1733,7 @@ class AppLocalizations {
   String get qrCodeScanner =>
       Intl.message('QR Code Scanner', name: 'qrCodeScanner');
   String get foundQrCode => Intl.message('Found QR Code', name: 'foundQrCode');
+  String get contract => Intl.message('Contract', name: 'contract');
 
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',
