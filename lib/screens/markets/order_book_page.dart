@@ -319,7 +319,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            'Showing $listLimit of ${max(listLength, listLimit)} orders. ',
+            AppLocalizations.of(context)
+                .showingOrders(listLimit, max(listLength, listLimit)),
             style: Theme.of(context).textTheme.bodyText1,
           ),
           if (listLimit > listLimitMin)
@@ -332,7 +333,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 child: Container(
                   padding: EdgeInsets.all(6),
                   child: Text(
-                    'Less',
+                    AppLocalizations.of(context).orderBookLess,
                     style: TextStyle(
                       fontSize: 14,
                       color: Theme.of(context).colorScheme.secondary,
@@ -349,7 +350,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 child: Container(
                   padding: EdgeInsets.all(6),
                   child: Text(
-                    'More',
+                    AppLocalizations.of(context).orderBookMore,
                     style: TextStyle(
                       fontSize: 14,
                       color: Theme.of(context).colorScheme.secondary,

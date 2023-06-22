@@ -1743,6 +1743,8 @@ class AppLocalizations {
   String showingOrders(int count, int maxCount) =>
       Intl.message('Showing $count of $maxCount orders. ',
           name: 'showingOrders', args: [count, maxCount]);
+  String get orderBookLess => Intl.message('Less', name: 'orderBookLess');
+  String get orderBookMore => Intl.message('More', name: 'orderBookMore');
 
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',
