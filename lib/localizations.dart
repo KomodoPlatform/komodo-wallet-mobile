@@ -1750,6 +1750,18 @@ class AppLocalizations {
       Intl.message('based on $coinName1/$coinName2',
           name: 'basedOnCoinRatio', args: [coinName1, coinName2]);
 
+  String get detailedFeesSendTradingFeeTransactionFee =>
+      Intl.message('send trading fee transaction fee',
+          name: 'detailedFeesSendTradingFeeTransactionFee');
+  String get detailedFeesTradingFee =>
+      Intl.message('trading fee', name: 'detailedFeesTradingFee');
+  String detailedFeesSendCoinTransactionFee(String coinName) =>
+      Intl.message('send $coinName transaction fee',
+          name: 'detailedFeesSendCoinTransactionFee', args: [coinName]);
+  String detailedFeesReceiveCoinTransactionFee(String coinName) =>
+      Intl.message('receive $coinName transaction fee',
+          name: 'detailedFeesReceiveCoinTransactionFee', args: [coinName]);
+
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',
       name: 'importInvalidSwapData');

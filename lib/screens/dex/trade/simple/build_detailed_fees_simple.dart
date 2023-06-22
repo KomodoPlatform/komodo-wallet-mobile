@@ -237,7 +237,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
               '• ${cutTrailingZeros(formatPrice(_sellTxFee.amount))} '
               '${_sellTxFee.coin} '
               '(${_cexProvider.convert(double.tryParse(_sellTxFee.amount), from: _sellTxFee.coin)}): '
-              'send $_sellCoin tx fee',
+              '${AppLocalizations.of(context).detailedFeesSendCoinTransactionFee(_sellCoin)}',
               style: Theme.of(context).textTheme.caption,
             ),
           ),
@@ -248,7 +248,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
               '• ${cutTrailingZeros(formatPrice(_receiveTxFee.amount))} '
               '${_receiveTxFee.coin} '
               '(${_cexProvider.convert(double.tryParse(_receiveTxFee.amount), from: _receiveTxFee.coin)}): '
-              'receive $_receiveCoin tx fee',
+              '${AppLocalizations.of(context).detailedFeesReceiveCoinTransactionFee(_receiveCoin)}',
               style: Theme.of(context).textTheme.caption,
             ),
           ),
@@ -259,7 +259,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
               '• ${cutTrailingZeros(formatPrice(_dexFee.amount))} '
               '${_dexFee.coin} '
               '(${_cexProvider.convert(double.tryParse(_dexFee.amount), from: _dexFee.coin)}): '
-              'trading fee',
+              '${AppLocalizations.of(context).detailedFeesTradingFee}',
               style: Theme.of(context).textTheme.caption,
             ),
           ),
@@ -270,7 +270,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
               '• ${cutTrailingZeros(formatPrice(_feeToSendDexFee.amount))} '
               '${_feeToSendDexFee.coin} '
               '(${_cexProvider.convert(double.tryParse(_feeToSendDexFee.amount), from: _feeToSendDexFee.coin)}): '
-              'send trading fee tx fee',
+              '${AppLocalizations.of(context).detailedFeesSendTradingFeeTransactionFee}',
               style: Theme.of(context).textTheme.caption,
             ),
           ),
@@ -288,7 +288,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
           '• ${cutTrailingZeros(formatPrice(_sellTxFee.amount))} '
           '${_sellTxFee.coin} '
           '(${_cexProvider.convert(double.tryParse(_sellTxFee.amount), from: _sellTxFee.coin)}): '
-          'send $_sellCoin tx fee',
+          '${AppLocalizations.of(context).detailedFeesSendCoinTransactionFee(_sellCoin)}',
           style: Theme.of(context).textTheme.caption,
         ),
       ));
@@ -300,7 +300,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
           '• ${cutTrailingZeros(formatPrice(_receiveTxFee.amount))} '
           '${_receiveTxFee.coin} '
           '(${_cexProvider.convert(double.tryParse(_receiveTxFee.amount), from: _receiveTxFee.coin)}): '
-          'receive $_receiveCoin tx fee',
+          '${AppLocalizations.of(context).detailedFeesReceiveCoinTransactionFee(_receiveCoin)}',
           style: Theme.of(context).textTheme.caption,
         ),
       ));
@@ -312,7 +312,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
           '• ${cutTrailingZeros(formatPrice(_dexFee.amount))} '
           '${_dexFee.coin} '
           '(${_cexProvider.convert(double.tryParse(_dexFee.amount), from: _dexFee.coin)}): '
-          'trading fee',
+          '${AppLocalizations.of(context).detailedFeesTradingFee}',
           style: Theme.of(context).textTheme.caption,
         ),
       ));
@@ -324,7 +324,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
           '• ${cutTrailingZeros(formatPrice(_feeToSendDexFee.amount))} '
           '${_feeToSendDexFee.coin} '
           '(${_cexProvider.convert(double.tryParse(_feeToSendDexFee.amount), from: _feeToSendDexFee.coin)}): '
-          'send trading fee tx fee',
+          '${AppLocalizations.of(context).detailedFeesSendTradingFeeTransactionFee}',
           style: Theme.of(context).textTheme.caption,
         ),
       ));
@@ -333,7 +333,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFeesSimple> {
       items.add(Container(
         padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
         child: Text(
-          '• None',
+          '• ${AppLocalizations.of(context).none}',
           style: Theme.of(context).textTheme.caption,
         ),
       ));
