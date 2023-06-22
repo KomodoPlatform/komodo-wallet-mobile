@@ -1730,6 +1730,10 @@ class AppLocalizations {
       'Please enable notifications to get updates on the activation progress.',
       name: 'enableNotificationsForActivationProgress');
 
+  String get qrCodeScanner =>
+      Intl.message('QR Code Scanner', name: 'qrCodeScanner');
+  String get foundQrCode => Intl.message('Found QR Code', name: 'foundQrCode');
+
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',
       name: 'importInvalidSwapData');
