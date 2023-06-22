@@ -1684,6 +1684,9 @@ class AppLocalizations {
           name: 'importSomeItemsSkippedWarning');
   String get importSwapFailed =>
       Intl.message('Failed to import swap', name: 'importSwapFailed');
+  String get importInvalidSwapData => Intl.message(
+      'Invalid swap data. Please provide a valid swap status JSON file.',
+      name: 'importInvalidSwapData');
 
   String activating(String coinName) => Intl.message('Activating $coinName',
       name: 'activating', args: [coinName]);
@@ -1761,10 +1764,6 @@ class AppLocalizations {
   String detailedFeesReceiveCoinTransactionFee(String coinName) =>
       Intl.message('receive $coinName transaction fee',
           name: 'detailedFeesReceiveCoinTransactionFee', args: [coinName]);
-
-  String get importInvalidSwapData => Intl.message(
-      'Invalid swap data. Please provide a valid swap status JSON file.',
-      name: 'importInvalidSwapData');
 
   // --- Filters
   String get filtersButton => Intl.message('Filter', name: 'filtersButton');
