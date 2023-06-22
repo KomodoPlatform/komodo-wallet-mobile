@@ -1746,6 +1746,10 @@ class AppLocalizations {
   String get orderBookLess => Intl.message('Less', name: 'orderBookLess');
   String get orderBookMore => Intl.message('More', name: 'orderBookMore');
 
+  String basedOnCoinRatio(String coinName1, String coinName2) =>
+      Intl.message('based on $coinName1/$coinName2',
+          name: 'basedOnCoinRatio', args: [coinName1, coinName2]);
+
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',
       name: 'importInvalidSwapData');
