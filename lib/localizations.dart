@@ -499,7 +499,7 @@ class AppLocalizations {
       Intl.message('Not enough balance', name: 'errorAmountBalance');
   String gweiError(int value) => Intl.message(
         'Gwei must be up to $value',
-        name: 'gweiErrorMessage',
+        name: 'gweiError',
         args: <Object>[value],
       );
   String feesError(double value) => Intl.message(
@@ -509,7 +509,7 @@ class AppLocalizations {
       );
   String limitError(int value) => Intl.message(
         'Limit must be up to $value',
-        name: 'limitErrorMessage',
+        name: 'limitError',
         args: <Object>[value],
       );
   String get errorNotAValidAddress =>
@@ -559,7 +559,7 @@ class AppLocalizations {
   String get gettingTxWait =>
       Intl.message('Getting transaction, please wait', name: 'gettingTxWait');
   String get finishingUp =>
-      Intl.message('Finishing up, please wait', name: 'gettingTxWait');
+      Intl.message('Finishing up, please wait', name: 'finishingUp');
   String get feedback => Intl.message('Share Log File', name: 'feedback');
   String get loadingOrderbook =>
       Intl.message('Loading orderbook...', name: 'loadingOrderbook');
