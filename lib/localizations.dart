@@ -1740,6 +1740,9 @@ class AppLocalizations {
   String incomingTransactionsProtectionSettings(String coinName) =>
       Intl.message('Incoming  $coinName txs protection settings',
           name: 'incomingTransactionsProtectionSettings', args: [coinName]);
+  String showingOrders(int count, int maxCount) =>
+      Intl.message('Showing $count of $maxCount orders. ',
+          name: 'showingOrders', args: [count, maxCount]);
 
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',
