@@ -1737,6 +1737,9 @@ class AppLocalizations {
   String get startSwap => Intl.message('Start Swap', name: 'startSwap');
   String get none => Intl.message('None', name: 'none');
   String get cexRate => Intl.message('CEX Rate', name: 'cexRate');
+  String incomingTransactionsProtectionSettings(String coinName) =>
+      Intl.message('Incoming  $coinName txs protection settings',
+          name: 'incomingTransactionsProtectionSettings', args: [coinName]);
 
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',

@@ -58,7 +58,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Text(
-            'Incoming  ${widget.coin.abbr} txs protection settings:',
+            '${AppLocalizations.of(context).incomingTransactionsProtectionSettings(widget.coin.abbr)}:',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyText1,
           ),
