@@ -1708,6 +1708,18 @@ class AppLocalizations {
       Intl.message('Activate $protocolName coins?',
           name: 'activateCoins', args: [protocolName]);
   String get moreInfo => Intl.message('More Info', name: 'moreInfo');
+
+  String get showAddress => Intl.message('Show Address', name: 'showAddress');
+  String get transactionHiddenPhishing => Intl.message(
+      'This transaction was hidden due to a possible phishing attempt.',
+      name: 'transactionHiddenPhishing');
+  String get transactionAddress =>
+      Intl.message('Transaction Address', name: 'transactionAddress');
+  String get transactionHidden =>
+      Intl.message('Transaction Hidden', name: 'transactionHidden');
+  String get couldNotLaunchUrl =>
+      Intl.message('Could not launch URL', name: 'couldNotLaunchUrl');
+
   String get willTakeTime => Intl.message(
       'This will take a while and the app must be kept in the foreground.\nTerminating the app while activation is in progress could lead to issues.',
       name: 'willTakeTime');
