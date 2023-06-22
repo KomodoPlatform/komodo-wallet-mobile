@@ -518,7 +518,7 @@ class _SwapConfirmationPageSimpleState
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
-                    child: Text('Start Swap !'.toUpperCase()),
+                    child: Text(AppLocalizations.of(context).startSwap),
                   ),
           ),
         ],
