@@ -10,7 +10,6 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_sta
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_status.dart';
 
-// TODO: Localize messages
 class ZCoinActivationBloc
     extends Bloc<ZCoinActivationEvent, ZCoinActivationState>
     with ActivationEta {
@@ -38,7 +37,7 @@ class ZCoinActivationBloc
 
       emit(ZCoinActivationInProgess(
         progress: 0,
-        message: 'Starting activation',
+        step: ZCoinActivationProgressStep.StartingActivation,
         eta: null,
         startTime: DateTime.now(),
       ));
@@ -81,13 +80,14 @@ class ZCoinActivationBloc
 
         return ZCoinActivationInProgess(
           progress: shouldShowNewProgress ? overallProgress : lastProgress,
-          message: 'Activating ${coinStatus.coin}',
+          step: ZCoinActivationProgressStep.Activating,
           eta: eta,
           startTime: previousInProgressState.startTime,
         );
       }, onError: (e, s) {
         debugPrint('Failed to activate coins: $e');
-        return ZCoinActivationFailure('Failed to activate coins');
+        return ZCoinActivationFailure(
+            ZCoinActivationFailureReason.FailedToActivateCoins);
       });
 
       final isAllActivated = await _repository.isAllRequestedZCoinsEnabled();
@@ -95,13 +95,15 @@ class ZCoinActivationBloc
       if (isAllActivated) {
         emit(ZCoinActivationSuccess());
       } else {
-        emit(ZCoinActivationFailure('Failed to activate coins'));
+        emit(ZCoinActivationFailure(
+            ZCoinActivationFailureReason.FailedToActivateCoins));
         // add(ZCoinActivationSetRequestedCoins(coins));
       }
     } catch (e) {
       debugPrint('Failed to start activation: $e');
       emit(
-        ZCoinActivationFailure('Failed to start activation'),
+        ZCoinActivationFailure(
+            ZCoinActivationFailureReason.FailedToStartActivation),
       );
     } finally {
       await _clearNotification();
@@ -116,7 +118,8 @@ class ZCoinActivationBloc
     } catch (e) {
       debugPrint('Failed to set requested coins: $e');
       emit(
-        ZCoinActivationFailure('Failed to set requested coins'),
+        ZCoinActivationFailure(
+            ZCoinActivationFailureReason.FailedToSetRequestedCoins),
       );
     }
   }
@@ -154,7 +157,8 @@ class ZCoinActivationBloc
     } catch (e) {
       debugPrint('Failed to get activation status: $e');
       emit(
-        ZCoinActivationFailure('Failed to get activation status'),
+        ZCoinActivationFailure(
+            ZCoinActivationFailureReason.FailedToGetActivationStatus),
       );
     }
   }

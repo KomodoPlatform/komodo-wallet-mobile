@@ -1,5 +1,17 @@
 import 'package:flutter/foundation.dart';
 
+enum ZCoinActivationProgressStep {
+  StartingActivation,
+  Activating,
+}
+
+enum ZCoinActivationFailureReason {
+  FailedToActivateCoins,
+  FailedToStartActivation,
+  FailedToSetRequestedCoins,
+  FailedToGetActivationStatus,
+}
+
 abstract class ZCoinActivationState {
   const ZCoinActivationState();
 
@@ -22,13 +34,13 @@ class ZCoinActivationKnownState extends ZCoinActivationState {
 class ZCoinActivationInProgess extends ZCoinActivationState {
   const ZCoinActivationInProgess({
     @required this.progress,
-    @required this.message,
+    @required this.step,
     this.eta,
     this.startTime,
   });
 
   final double progress;
-  final String message;
+  final ZCoinActivationProgressStep step;
   final Duration eta; // nullable
   final DateTime startTime; // nullable
 }
@@ -36,9 +48,9 @@ class ZCoinActivationInProgess extends ZCoinActivationState {
 class ZCoinActivationSuccess extends ZCoinActivationState {}
 
 class ZCoinActivationFailure extends ZCoinActivationState {
-  const ZCoinActivationFailure(this.message);
+  const ZCoinActivationFailure(this.reason);
 
-  final String message;
+  final ZCoinActivationFailureReason reason;
 }
 
 class ZCoinActivationStatusLoading extends ZCoinActivationState {}

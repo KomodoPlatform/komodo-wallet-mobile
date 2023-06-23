@@ -1765,6 +1765,20 @@ class AppLocalizations {
       Intl.message('receive $coinName transaction fee',
           name: 'detailedFeesReceiveCoinTransactionFee', args: [coinName]);
 
+  String get failedToActivateCoins =>
+      Intl.message('Failed to activate coins', name: 'failedToActivateCoins');
+  String get failedToStartActivation =>
+      Intl.message('Failed to start activation',
+          name: 'failedToStartActivation');
+  String get failedToSetRequestedCoins =>
+      Intl.message('Failed to set requested coins',
+          name: 'failedToSetRequestedCoins');
+  String get failedToGetActivationStatus =>
+      Intl.message('Failed to get activation status',
+          name: 'failedToGetActivationStatus');
+  String get startingActivation =>
+      Intl.message('Starting activation', name: 'startingActivation');
+
   // --- Filters
   String get filtersButton => Intl.message('Filter', name: 'filtersButton');
   String get filtersStatus => Intl.message('Status', name: 'filtersStatus');

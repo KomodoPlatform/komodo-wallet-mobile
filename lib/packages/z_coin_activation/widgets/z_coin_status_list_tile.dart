@@ -131,10 +131,26 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
     if (state is ZCoinActivationFailure) {
       scaffold.clearMaterialBanners();
 
+      String message;
+      switch (state.reason) {
+        case ZCoinActivationFailureReason.FailedToActivateCoins:
+          message = AppLocalizations.of(context).failedToActivateCoins;
+          break;
+        case ZCoinActivationFailureReason.FailedToStartActivation:
+          message = AppLocalizations.of(context).failedToStartActivation;
+          break;
+        case ZCoinActivationFailureReason.FailedToSetRequestedCoins:
+          message = AppLocalizations.of(context).failedToSetRequestedCoins;
+          break;
+        case ZCoinActivationFailureReason.FailedToGetActivationStatus:
+          message = AppLocalizations.of(context).failedToGetActivationStatus;
+          break;
+      }
+
       updateNotice = scaffold.showMaterialBanner(
         MaterialBanner(
           elevation: 1,
-          content: Text(state.message),
+          content: Text(message),
           leading: Icon(
             Icons.error,
             color: Colors.red,
