@@ -1,0 +1,56 @@
+name: Validate Coins
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [master, dev]
+
+jobs:
+  validate-coins:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install JSON tools
+        run: |
+          sudo npm install -g json-diff
+          sudo apt-get install jq -y
+
+      - name: Get coins repo commit
+        id: coins
+        run: |
+          echo "::set-output name=hash::$(jq -r .coins_repo_commit coins_ci.json)"
+        shell: bash
+
+      - name: Get coins.json and coins_config.json from KomodoPlatform/coins repo
+        run: |
+          curl -O https://raw.githubusercontent.com/KomodoPlatform/coins/${{ steps.coins.outputs.hash }}/coins
+          curl -O https://raw.githubusercontent.com/KomodoPlatform/coins/${{ steps.coins.outputs.hash }}/utils/coins_config.json
+
+      - name: Compare coins.json
+        run: json-diff assets/coins.json coins
+          
+      - name: Compare coins_config.json
+        run: json-diff assets/coins_config.json coins_config.json
+
+      - name: Check wallet-only coins
+        run: |
+          jq -r '.[] | select(.wallet_only == true) | .ticker' assets/coins_config.json > coins_config_wallet_only.txt
+          grep -Fof coins_config_wallet_only.txt lib/app_config/app_config.dart
+
+      - name: Check URLs in app_config.dart
+        run: |
+          urls=$(grep -Eo '(http|https)://[^ ]+' lib/app_config/app_config.dart)
+          for url in $urls; do
+            status=$(curl --write-out "%{http_code}" --silent --output /dev/null "$url")
+            if [[ "$status" -ge 400 ]]; then
+              echo "$url is unreachable (HTTP $status)"
+              exit 1
+            fi
+          done
