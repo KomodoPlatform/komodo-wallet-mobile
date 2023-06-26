@@ -458,9 +458,8 @@ class ApiProvider {
       );
     } catch (e) {
       Log('ApiProvider.getOrderbook', 'Error on get orderbook: $e');
+      rethrow;
     }
-
-    return null;
   }
 
   Future<dynamic> getOrderbookDepth(
