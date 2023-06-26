@@ -47,34 +47,35 @@ jobs:
 
       - name: Check wallet-only coins
         run: |
-          python3 -c """
-import json, re
-with open('assets/coins_config.json', 'r') as f:
-  coins_json = json.load(f)
-wallet_only_coins = [coin['coin'] for coin in coins_json.values() if coin['wallet_only']]
-with open('lib/app_config/app_config.dart', 'r') as f:
-  dart_file = f.read()
-coins_dart = re.findall(r'walletOnlyCoins => \[\s*([^]]+?)\s*\]', dart_file)
-coins_dart = [coin.strip().strip('\'') for coin in coins_dart[0].split(',') if coin]
-missing_coins = set(wallet_only_coins) - set(coins_dart)
-assert len(missing_coins) == 0, f'Missing coins: {missing_coins}'
-"""
+          python3 -c "
+          import json, re
+          with open('assets/coins_config.json', 'r') as f:
+            coins_json = json.load(f)
+          wallet_only_coins = [coin['coin'] for coin in coins_json.values() if coin['wallet_only']]
+          with open('lib/app_config/app_config.dart', 'r') as f:
+            dart_file = f.read()
+          coins_dart = re.findall(r'walletOnlyCoins => \[\s*([^]]+?)\s*\]', dart_file)
+          coins_dart = [coin.strip().strip('\'') for coin in coins_dart[0].split(',') if coin]
+          missing_coins = set(wallet_only_coins) - set(coins_dart)
+          assert len(missing_coins) == 0, f'Missing coins: {missing_coins}'
+          "
 
       - name: Check URLs in app_config.dart
         run: |
-          python3 -c """
-import re, requests
-with open('lib/app_config/app_config.dart', 'r') as f:
-  dart_file = f.read()
-urls = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|/|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', dart_file)
-for url in urls:
-  try:
-    if 'discord' in url or 'github.com' in url or url.endswith('?') or '/api/' in url:
-      continue
-    cleaned_url = url.rstrip('.,;\'"')
-    response = requests.head(cleaned_url, allow_redirects = True)
-    if response.status_code >= 400 and response.status_code != 405:
-      raise AssertionError(f'{cleaned_url} is unreachable (HTTP {response.status_code})')
-  except requests.ConnectionError:
-    raise AssertionError(f'{cleaned_url} is unreachable (Connection Error)')
-"""
+          python3 -c "
+          import re, requests
+          with open('lib/app_config/app_config.dart', 'r') as f:
+            dart_file = f.read()
+          urls = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|/|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', dart_file)
+          for url in urls:
+            try:
+              if 'discord' in url or 'github.com' in url or url.endswith('?') or '/api/' in url:
+                continue
+              cleaned_url = url.rstrip('.,;\'"')
+              response = requests.head(cleaned_url, allow_redirects = True)
+              if response.status_code >= 400 and response.status_code != 405:
+                raise AssertionError(f'{cleaned_url} is unreachable (HTTP {response.status_code})')
+            except requests.ConnectionError:
+              raise AssertionError(f'{cleaned_url} is unreachable (Connection Error)')
+          "
+
