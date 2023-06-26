@@ -31,13 +31,13 @@ jobs:
       - name: Get coins repo commit
         id: coins
         run: |
-          echo "::set-output name=hash::$(jq -r .coins_repo_commit coins_ci.json)"
+          echo "hash=$(jq -r .coins_repo_commit coins_ci.json)" >> $GITHUB_ENV
         shell: bash
 
       - name: Get coins.json and coins_config.json from KomodoPlatform/coins repo
         run: |
-          curl -O https://raw.githubusercontent.com/KomodoPlatform/coins/${{ steps.coins.outputs.hash }}/coins
-          curl -O https://raw.githubusercontent.com/KomodoPlatform/coins/${{ steps.coins.outputs.hash }}/utils/coins_config.json
+          curl -O https://raw.githubusercontent.com/KomodoPlatform/coins/${hash}/coins
+          curl -O https://raw.githubusercontent.com/KomodoPlatform/coins/${hash}/utils/coins_config.json
 
       - name: Compare coins.json
         run: json-diff assets/coins.json coins
