@@ -47,7 +47,7 @@ jobs:
 
       - name: Check wallet-only coins
         run: |
-          python3 -c "
+          python3 -c """
 import json, re
 with open('assets/coins_config.json', 'r') as f:
   coins_json = json.load(f)
@@ -58,11 +58,11 @@ coins_dart = re.findall(r'walletOnlyCoins => \[\s*([^]]+?)\s*\]', dart_file)
 coins_dart = [coin.strip().strip('\'') for coin in coins_dart[0].split(',') if coin]
 missing_coins = set(wallet_only_coins) - set(coins_dart)
 assert len(missing_coins) == 0, f'Missing coins: {missing_coins}'
-"
+"""
 
       - name: Check URLs in app_config.dart
         run: |
-          python3 -c "
+          python3 -c """
 import re, requests
 with open('lib/app_config/app_config.dart', 'r') as f:
   dart_file = f.read()
@@ -77,4 +77,4 @@ for url in urls:
       raise AssertionError(f'{cleaned_url} is unreachable (HTTP {response.status_code})')
   except requests.ConnectionError:
     raise AssertionError(f'{cleaned_url} is unreachable (Connection Error)')
-"
+"""
