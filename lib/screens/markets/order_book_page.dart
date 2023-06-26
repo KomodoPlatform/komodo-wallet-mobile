@@ -283,7 +283,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
           padding: const EdgeInsets.all(16.0),
           child: Text(
               'The order book is currently unavailable for the selected pair.',
-              style: TextStyle(fontSize: 20)),
+              style: Theme.of(context).textTheme.headline6),
         );
       }
     }
