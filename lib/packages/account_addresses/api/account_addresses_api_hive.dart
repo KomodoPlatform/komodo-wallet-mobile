@@ -42,6 +42,20 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   @override
+  Future<void> updateOrCreate(String walletId, String address, String ticker,
+      double availableBalance, String accountId) async {
+    final key = _getKey(walletId, address);
+    if (_box.containsKey(key)) {
+      await update(walletId, address,
+          ticker: ticker,
+          availableBalance: availableBalance,
+          accountId: accountId);
+    } else {
+      await create(walletId, address, ticker, availableBalance, accountId);
+    }
+  }
+
+  @override
   Future<void> update(String walletId, String address,
       {String ticker, double availableBalance, String accountId}) async {
     _validateFields(walletId, address, availableBalance);
