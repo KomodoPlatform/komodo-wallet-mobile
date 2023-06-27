@@ -11,6 +11,10 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
     _initializeBox();
   }
 
+  String _getKey(String walletId, String address) {
+    return '${walletId}_$address';
+  }
+
   Future<void> _initializeBox() async {
     try {
       _box = await Hive.openBox<WalletAddress>('account_addresses');
@@ -20,11 +24,18 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   @override
-  Future<void> create(WalletAddress walletAddress) async {
-    _validateWalletAddress(walletAddress);
+  Future<void> create(String walletId, String address, String ticker,
+      double availableBalance, String accountId) async {
+    _validateFields(walletId, address, availableBalance);
     try {
       await _box.put(
-          '${walletAddress.walletId}_${walletAddress.address}', walletAddress);
+          _getKey(walletId, address),
+          WalletAddress(
+              walletId: walletId,
+              address: address,
+              ticker: ticker,
+              availableBalance: availableBalance,
+              accountId: accountId));
     } catch (e) {
       throw 'Failed to create WalletAddress: $e';
     }
@@ -32,38 +43,35 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
 
   @override
   Future<void> update(String walletId, String address,
-      {WalletAddress updateFields}) async {
-    final key = '${walletId}_$address';
+      {String ticker, double availableBalance, String accountId}) async {
+    _validateFields(walletId, address, availableBalance);
+    final key = _getKey(walletId, address);
     final existingWalletAddress = _box.get(key);
 
     if (existingWalletAddress == null) {
       throw Exception('WalletAddress not found');
     }
 
-    if (updateFields != null) {
-      _validateWalletAddress(updateFields);
+    final updatedWalletAddress = WalletAddress(
+      walletId: walletId,
+      address: address,
+      ticker: ticker ?? existingWalletAddress.ticker,
+      availableBalance:
+          availableBalance ?? existingWalletAddress.availableBalance,
+      accountId: accountId ?? existingWalletAddress.accountId,
+    );
 
-      final updatedWalletAddress = WalletAddress(
-        walletId: walletId,
-        address: address,
-        ticker: updateFields.ticker ?? existingWalletAddress.ticker,
-        availableBalance: updateFields.availableBalance ??
-            existingWalletAddress.availableBalance,
-        accountId: updateFields.accountId ?? existingWalletAddress.accountId,
-      );
-
-      try {
-        await _box.put(key, updatedWalletAddress);
-      } catch (e) {
-        throw 'Failed to update WalletAddress: $e';
-      }
+    try {
+      await _box.put(key, updatedWalletAddress);
+    } catch (e) {
+      throw 'Failed to update WalletAddress: $e';
     }
   }
 
   @override
   Future<void> deleteOne(String walletId, String address) async {
     try {
-      await _box.delete('${walletId}_$address');
+      await _box.delete(_getKey(walletId, address));
     } catch (e) {
       throw 'Failed to delete WalletAddress: $e';
     }
@@ -82,7 +90,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   @override
   Future<WalletAddress> readOne(String walletId, String address) async {
     try {
-      return _box.get('${walletId}_$address');
+      return _box.get(_getKey(walletId, address));
     } catch (e) {
       throw 'Failed to read WalletAddress: $e';
     }
@@ -115,15 +123,15 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
     }
   }
 
-  void _validateWalletAddress(WalletAddress walletAddress) {
-    if (walletAddress.walletId == null || walletAddress.walletId.isEmpty) {
+  void _validateFields(
+      String walletId, String address, double availableBalance) {
+    if (walletId == null || walletId.isEmpty) {
       throw ArgumentError('Wallet ID must not be empty');
     }
-    if (walletAddress.address == null || walletAddress.address.isEmpty) {
+    if (address == null || address.isEmpty) {
       throw ArgumentError('Address must not be empty');
     }
-    if (walletAddress.availableBalance == null ||
-        walletAddress.availableBalance < 0) {
+    if (availableBalance == null || availableBalance < 0) {
       throw ArgumentError('Available balance must be non-negative');
     }
   }
