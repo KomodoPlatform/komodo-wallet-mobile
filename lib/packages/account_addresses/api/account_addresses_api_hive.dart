@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:komodo_dex/packages/account_addresses/api/account_addresses_api_interface.dart';
@@ -17,13 +18,13 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
 
   AccountAddressesApiHive._(this._box);
 
-  static Future<AccountAddressesApiHive> initialize() async {
+  static FutureOr<AccountAddressesApiHive> initialize() async {
     Hive.registerAdapter(WalletAddressAdapter());
     Box<WalletAddress> box;
     try {
       box = await Hive.openBox<WalletAddress>('account_addresses');
     } catch (e) {
-      throw FormatException('Failed to open Hive box: $e');
+      throw HiveException('Failed to open Hive box: $e');
     }
     return AccountAddressesApiHive._(box);
   }
