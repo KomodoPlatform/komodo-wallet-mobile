@@ -4,23 +4,23 @@ import 'package:komodo_dex/packages/account_addresses/api/account_addresses_api_
 import 'package:komodo_dex/packages/account_addresses/models/wallet_address.dart';
 
 class AccountAddressesApiHive implements AccountAddressesApiInterface {
-  Box<WalletAddress> _box;
+  final Box<WalletAddress> _box;
 
-  AccountAddressesApiHive() {
+  AccountAddressesApiHive._(this._box);
+
+  static Future<AccountAddressesApiHive> initialize() async {
     Hive.registerAdapter(WalletAddressAdapter());
-    _initializeBox();
+    Box<WalletAddress> box;
+    try {
+      box = await Hive.openBox<WalletAddress>('account_addresses');
+    } catch (e) {
+      throw FormatException('Failed to open Hive box: $e');
+    }
+    return AccountAddressesApiHive._(box);
   }
 
   String _getKey(String walletId, String address) {
     return '${walletId}_$address';
-  }
-
-  Future<void> _initializeBox() async {
-    try {
-      _box = await Hive.openBox<WalletAddress>('account_addresses');
-    } catch (e) {
-      throw 'Failed to open Hive box: $e';
-    }
   }
 
   @override
@@ -125,8 +125,9 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   Stream<WalletAddress> watchAll(String walletId) {
     return _box
         .watch()
-        .where((event) => event.key.startsWith(walletId))
-        .map((event) => event.value);
+        .where((event) =>
+            event.key.startsWith(walletId) && event.value is WalletAddress)
+        .map((event) => event.value as WalletAddress);
   }
 
   Future<void> close() async {
