@@ -8,19 +8,26 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
 
   AccountAddressesApiHive() {
     Hive.registerAdapter(WalletAddressAdapter());
-    Hive.openBox<WalletAddress>('account_addresses')
-        .then((box) => _box = box)
-        .onError((error, stackTrace) {
-      throw Exception('Error when opening the box: $error');
-    });
+    _initializeBox();
+  }
+
+  Future<void> _initializeBox() async {
+    try {
+      _box = await Hive.openBox<WalletAddress>('account_addresses');
+    } catch (e) {
+      throw 'Failed to open Hive box: $e';
+    }
   }
 
   @override
   Future<void> create(WalletAddress walletAddress) async {
     _validateWalletAddress(walletAddress);
-
-    await _box.put(
-        '${walletAddress.walletId}_${walletAddress.address}', walletAddress);
+    try {
+      await _box.put(
+          '${walletAddress.walletId}_${walletAddress.address}', walletAddress);
+    } catch (e) {
+      throw 'Failed to create WalletAddress: $e';
+    }
   }
 
   @override
@@ -45,31 +52,51 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
         accountId: updateFields.accountId ?? existingWalletAddress.accountId,
       );
 
-      await _box.put(key, updatedWalletAddress);
+      try {
+        await _box.put(key, updatedWalletAddress);
+      } catch (e) {
+        throw 'Failed to update WalletAddress: $e';
+      }
     }
   }
 
   @override
   Future<void> deleteOne(String walletId, String address) async {
-    await _box.delete('${walletId}_$address');
+    try {
+      await _box.delete('${walletId}_$address');
+    } catch (e) {
+      throw 'Failed to delete WalletAddress: $e';
+    }
   }
 
   @override
   Future<void> deleteAll(String walletId) async {
     final keys = _box.keys.where((key) => key.startsWith(walletId));
-    await _box.deleteAll(keys);
+    try {
+      await _box.deleteAll(keys);
+    } catch (e) {
+      throw 'Failed to delete WalletAddresses: $e';
+    }
   }
 
   @override
   Future<WalletAddress> readOne(String walletId, String address) async {
-    return _box.get('${walletId}_$address');
+    try {
+      return _box.get('${walletId}_$address');
+    } catch (e) {
+      throw 'Failed to read WalletAddress: $e';
+    }
   }
 
   @override
   Future<List<WalletAddress>> readAll(String walletId) async {
-    return _box.values
-        .where((walletAddress) => walletAddress.walletId == walletId)
-        .toList();
+    try {
+      return _box.values
+          .where((walletAddress) => walletAddress.walletId == walletId)
+          .toList();
+    } catch (e) {
+      throw 'Failed to read WalletAddresses: $e';
+    }
   }
 
   @override
@@ -81,7 +108,11 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   Future<void> close() async {
-    await _box.close();
+    try {
+      await _box.close();
+    } catch (e) {
+      throw 'Failed to close Hive box: $e';
+    }
   }
 
   void _validateWalletAddress(WalletAddress walletAddress) {
