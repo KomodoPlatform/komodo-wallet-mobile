@@ -41,40 +41,60 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   @override
-  Future<void> create(String walletId, String address, String ticker,
-      double availableBalance, String accountId) async {
+  Future<void> create(
+    String walletId,
+    String address,
+    String ticker,
+    double availableBalance,
+    String accountId,
+  ) async {
     _validateFields(walletId, address, availableBalance);
     try {
       await _box.put(
-          _getKey(walletId, address),
-          WalletAddress(
-              walletId: walletId,
-              address: address,
-              ticker: ticker,
-              availableBalance: availableBalance,
-              accountId: accountId));
+        _getKey(walletId, address),
+        WalletAddress(
+          walletId: walletId,
+          address: address,
+          ticker: ticker,
+          availableBalance: availableBalance,
+          accountId: accountId,
+        ),
+      );
     } catch (e) {
       throw HiveException('Failed to create WalletAddress: $e', e);
     }
   }
 
   @override
-  Future<void> updateOrCreate(String walletId, String address, String ticker,
-      double availableBalance, String accountId) async {
+  Future<void> updateOrCreate(
+    String walletId,
+    String address,
+    String ticker,
+    double availableBalance,
+    String accountId,
+  ) async {
     final key = _getKey(walletId, address);
     if (_box.containsKey(key)) {
-      await update(walletId, address,
-          ticker: ticker,
-          availableBalance: availableBalance,
-          accountId: accountId);
+      await update(
+        walletId,
+        address,
+        ticker: ticker,
+        availableBalance: availableBalance,
+        accountId: accountId,
+      );
     } else {
       await create(walletId, address, ticker, availableBalance, accountId);
     }
   }
 
   @override
-  Future<void> update(String walletId, String address,
-      {String ticker, double availableBalance, String accountId}) async {
+  Future<void> update(
+    String walletId,
+    String address, {
+    String ticker,
+    double availableBalance,
+    String accountId,
+  }) async {
     _validateFields(walletId, address, availableBalance);
     final key = _getKey(walletId, address);
     final existingWalletAddress = _box.get(key);
@@ -142,8 +162,10 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   Stream<WalletAddress> watchAll(String walletId) {
     return _box
         .watch()
-        .where((event) =>
-            event.key.startsWith(walletId) && event.value is WalletAddress)
+        .where(
+          (event) =>
+              event.key.startsWith(walletId) && event.value is WalletAddress,
+        )
         .map((event) => event.value as WalletAddress);
   }
 
@@ -156,7 +178,10 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   void _validateFields(
-      String walletId, String address, double availableBalance) {
+    String walletId,
+    String address,
+    double availableBalance,
+  ) {
     if (walletId == null || walletId.isEmpty) {
       throw ArgumentError('Wallet ID must not be empty');
     }
