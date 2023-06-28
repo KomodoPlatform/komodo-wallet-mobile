@@ -17,10 +17,16 @@ class HiveException implements Exception {
 class AccountAddressesApiHive implements AccountAddressesApiInterface {
   final Box<WalletAddress> _box;
 
+  static bool _isAdapterRegistered = false;
+
   AccountAddressesApiHive._(this._box);
 
   static FutureOr<AccountAddressesApiHive> initialize() async {
-    Hive.registerAdapter(WalletAddressAdapter());
+    if (!_isAdapterRegistered) {
+      Hive.registerAdapter(WalletAddressAdapter());
+      _isAdapterRegistered = true;
+    }
+
     Box<WalletAddress> box;
     try {
       box = await Hive.openBox<WalletAddress>('account_addresses');
