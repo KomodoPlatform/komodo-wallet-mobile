@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:komodo_dex/packages/account_addresses/api/account_addresses_api_interface.dart';
 import 'package:komodo_dex/packages/account_addresses/models/wallet_address.dart';
+import 'package:meta/meta.dart';
 
 class HiveException implements Exception {
   final String message;
@@ -41,13 +42,13 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   @override
-  Future<void> create(
-    String walletId,
-    String address,
-    String ticker,
-    double availableBalance,
-    String accountId,
-  ) async {
+  Future<void> create({
+    @required String walletId,
+    @required String address,
+    @required String ticker,
+    @required double availableBalance,
+    @required String accountId,
+  }) async {
     _validateFields(walletId, address, availableBalance);
     try {
       await _box.put(
@@ -66,31 +67,37 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   @override
-  Future<void> updateOrCreate(
-    String walletId,
-    String address,
-    String ticker,
-    double availableBalance,
-    String accountId,
-  ) async {
+  Future<void> updateOrCreate({
+    @required String walletId,
+    @required String address,
+    @required String ticker,
+    @required double availableBalance,
+    @required String accountId,
+  }) async {
     final key = _getKey(walletId, address);
     if (_box.containsKey(key)) {
       await update(
-        walletId,
-        address,
+        walletId: walletId,
+        address: address,
         ticker: ticker,
         availableBalance: availableBalance,
         accountId: accountId,
       );
     } else {
-      await create(walletId, address, ticker, availableBalance, accountId);
+      await create(
+        walletId: walletId,
+        address: address,
+        ticker: ticker,
+        availableBalance: availableBalance,
+        accountId: accountId,
+      );
     }
   }
 
   @override
-  Future<void> update(
-    String walletId,
-    String address, {
+  Future<void> update({
+    @required String walletId,
+    @required String address,
     String ticker,
     double availableBalance,
     String accountId,
@@ -120,7 +127,10 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   @override
-  Future<void> deleteOne(String walletId, String address) async {
+  Future<void> deleteOne({
+    @required String walletId,
+    @required String address,
+  }) async {
     try {
       await _box.delete(_getKey(walletId, address));
     } catch (e) {
@@ -129,7 +139,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   @override
-  Future<void> deleteAll(String walletId) async {
+  Future<void> deleteAll({@required String walletId}) async {
     final keys = _box.keys.where((key) => key.startsWith(walletId));
     try {
       await _box.deleteAll(keys);
@@ -139,7 +149,10 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   @override
-  Future<WalletAddress> readOne(String walletId, String address) async {
+  Future<WalletAddress> readOne({
+    @required String walletId,
+    @required String address,
+  }) async {
     try {
       return _box.get(_getKey(walletId, address));
     } catch (e) {
@@ -148,7 +161,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   @override
-  Future<List<WalletAddress>> readAll(String walletId) async {
+  Future<List<WalletAddress>> readAll({@required String walletId}) async {
     try {
       return _box.values
           .where((walletAddress) => walletAddress.walletId == walletId)
@@ -159,7 +172,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
   }
 
   @override
-  Stream<WalletAddress> watchAll(String walletId) {
+  Stream<WalletAddress> watchAll({@required String walletId}) {
     return _box
         .watch()
         .where(
