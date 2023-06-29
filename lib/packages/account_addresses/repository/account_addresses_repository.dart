@@ -26,6 +26,8 @@ class AccountAddressesRepository {
           if (currentWallet != null && currentWallet.id != currentWalletId) {
             currentWalletId = currentWallet.id;
 
+            await subscription?.cancel();
+
             // Emit the switched wallet information
             final String jsonStr = await Db.getWalletSnapshot();
             if (jsonStr != null) {
@@ -63,7 +65,6 @@ class AccountAddressesRepository {
             }
 
             // Listen and emit newer changes that will occur
-            await subscription?.cancel();
             subscription = _accountAddressesApi
                 .watchAll(walletId: currentWalletId)
                 .listen((updatedAddress) {
