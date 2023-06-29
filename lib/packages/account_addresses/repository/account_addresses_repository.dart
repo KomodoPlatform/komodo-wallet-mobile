@@ -8,79 +8,77 @@ import 'package:meta/meta.dart';
 
 class AccountAddressesRepository {
   final AccountAddressesApiInterface _accountAddressesApi;
-  String _currentWalletId;
-  StreamController<WalletAddress> _controller;
-  StreamSubscription<WalletAddress> _watchSubscription;
-  bool _isDisposed = false;
 
   AccountAddressesRepository({
     @required AccountAddressesApiInterface accountAddressesApi,
-  }) : _accountAddressesApi = accountAddressesApi {
-    _controller = StreamController<WalletAddress>();
-    _startPolling();
-  }
-
-  Future<void> _startPolling() async {
-    while (!_isDisposed) {
-      try {
-        final currentWallet = await Db.getCurrentWallet();
-        if (currentWallet != null && currentWallet.id != _currentWalletId) {
-          _currentWalletId = currentWallet.id;
-
-          _watchSubscription?.cancel();
-          _watchSubscription = _accountAddressesApi
-              .watchAll(walletId: _currentWalletId)
-              .listen((WalletAddress walletAddress) async {
-            _controller.add(walletAddress);
-          });
-
-          final String jsonStr = await Db.getWalletSnapshot();
-          if (jsonStr != null) {
-            List<dynamic> items;
-            try {
-              items = json.decode(jsonStr);
-            } catch (e) {
-              throw Exception('Failed to decode getWalletSnapshot JSON: $e');
-            }
-
-            if (items != null) {
-              for (final item in items) {
-                final coinBalance = CoinBalance.fromJson(item);
-
-                final walletAddress = WalletAddress(
-                  walletId: _currentWalletId,
-                  address: coinBalance.balance.address,
-                  ticker: coinBalance.coin.abbr,
-                  availableBalance: coinBalance.balance.balance.toDouble(),
-                  accountId: 'iguana',
-                );
-
-                await _accountAddressesApi.updateOrCreate(
-                  walletId: walletAddress.walletId,
-                  address: walletAddress.address,
-                  ticker: walletAddress.ticker,
-                  availableBalance: walletAddress.availableBalance,
-                  accountId: walletAddress.accountId,
-                );
-              }
-            }
-          }
-        }
-      } catch (e) {
-        _controller.addError(e);
-      }
-
-      await Future.delayed(Duration(seconds: 5));
-    }
-  }
+  }) : _accountAddressesApi = accountAddressesApi;
 
   Stream<WalletAddress> watchCurrentWalletAddresses() async* {
-    yield* _controller.stream;
-  }
+    StreamController<WalletAddress> controller;
+    StreamSubscription<WalletAddress> subscription;
 
-  void dispose() {
-    _isDisposed = true;
-    _watchSubscription?.cancel();
-    _controller.close();
+    controller = StreamController<WalletAddress>(
+      onListen: () async {
+        String currentWalletId;
+
+        while (controller.hasListener) {
+          final currentWallet = await Db.getCurrentWallet();
+          if (currentWallet != null && currentWallet.id != currentWalletId) {
+            currentWalletId = currentWallet.id;
+
+            // Emit the switched wallet information
+            final String jsonStr = await Db.getWalletSnapshot();
+            if (jsonStr != null) {
+              List<dynamic> items;
+              try {
+                items = json.decode(jsonStr);
+              } catch (e) {
+                controller
+                    .addError('Failed to decode getWalletSnapshot JSON: $e');
+              }
+
+              if (items != null) {
+                for (final item in items) {
+                  final coinBalance = CoinBalance.fromJson(item);
+
+                  final walletAddress = WalletAddress(
+                    walletId: currentWalletId,
+                    address: coinBalance.balance.address,
+                    ticker: coinBalance.coin.abbr,
+                    availableBalance: coinBalance.balance.balance.toDouble(),
+                    accountId: 'iguana',
+                  );
+
+                  await _accountAddressesApi.updateOrCreate(
+                    walletId: walletAddress.walletId,
+                    address: walletAddress.address,
+                    ticker: walletAddress.ticker,
+                    availableBalance: walletAddress.availableBalance,
+                    accountId: walletAddress.accountId,
+                  );
+
+                  controller.add(walletAddress);
+                }
+              }
+            }
+
+            // Listen and emit newer changes that will occur
+            await subscription?.cancel();
+            subscription = _accountAddressesApi
+                .watchAll(walletId: currentWalletId)
+                .listen((updatedAddress) {
+              controller.add(updatedAddress);
+            });
+          }
+
+          await Future.delayed(Duration(seconds: 5));
+        }
+      },
+      onCancel: () async {
+        await subscription?.cancel();
+      },
+    );
+
+    yield* controller.stream;
   }
 }
