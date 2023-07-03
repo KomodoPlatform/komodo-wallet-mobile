@@ -5,16 +5,6 @@ import 'package:komodo_dex/packages/account_addresses/api/account_addresses_api_
 import 'package:komodo_dex/packages/account_addresses/models/wallet_address.dart';
 import 'package:meta/meta.dart';
 
-class HiveException implements Exception {
-  final String message;
-  final Exception originalException;
-
-  HiveException(this.message, [this.originalException]);
-
-  @override
-  String toString() => 'HiveException: $message';
-}
-
 class AccountAddressesApiHive implements AccountAddressesApiInterface {
   final Box<WalletAddress> _box;
 
@@ -32,7 +22,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
     try {
       box = await Hive.openBox<WalletAddress>('account_addresses');
     } catch (e) {
-      throw HiveException('Failed to open Hive box: $e', e);
+      throw Exception('Failed to open Hive box: $e');
     }
     return AccountAddressesApiHive._(box);
   }
@@ -62,7 +52,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
         ),
       );
     } catch (e) {
-      throw HiveException('Failed to create WalletAddress: $e', e);
+      throw Exception('Failed to create WalletAddress: $e');
     }
   }
 
@@ -122,7 +112,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
     try {
       await _box.put(key, updatedWalletAddress);
     } catch (e) {
-      throw HiveException('Failed to update WalletAddress: $e', e);
+      throw Exception('Failed to update WalletAddress: $e');
     }
   }
 
@@ -134,7 +124,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
     try {
       await _box.delete(_getKey(walletId, address));
     } catch (e) {
-      throw HiveException('Failed to delete WalletAddress: $e', e);
+      throw Exception('Failed to delete WalletAddress: $e');
     }
   }
 
@@ -144,7 +134,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
     try {
       await _box.deleteAll(keys);
     } catch (e) {
-      throw HiveException('Failed to delete WalletAddresses: $e', e);
+      throw Exception('Failed to delete WalletAddresses: $e');
     }
   }
 
@@ -156,7 +146,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
     try {
       return _box.get(_getKey(walletId, address));
     } catch (e) {
-      throw HiveException('Failed to read WalletAddress: $e', e);
+      throw Exception('Failed to read WalletAddress: $e');
     }
   }
 
@@ -167,7 +157,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
           .where((walletAddress) => walletAddress.walletId == walletId)
           .toList();
     } catch (e) {
-      throw HiveException('Failed to read WalletAddresses: $e', e);
+      throw Exception('Failed to read WalletAddresses: $e');
     }
   }
 
@@ -186,7 +176,7 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
     try {
       await _box.close();
     } catch (e) {
-      throw HiveException('Failed to close Hive box: $e', e);
+      throw Exception('Failed to close Hive box: $e');
     }
   }
 
