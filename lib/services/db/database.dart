@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:async/async.dart';
+
 import '../../blocs/wallet_bloc.dart';
 import '../../model/article.dart';
 import '../../model/coin.dart';
@@ -656,6 +658,32 @@ class Db {
       whereArgs: allWallets ? null : [currentWallet.id],
     );
 
-    batch.commit();
+    await batch.commit();
+
+    if (_activeWalletController.hasListener) {
+      _activeWalletController.add(currentWallet);
+    }
+  }
+
+  // ===== Wallet watcher logic methods
+  static StreamController<Wallet> _activeWalletController =
+      StreamController<Wallet>.broadcast();
+
+  static Stream<Wallet> watchCurrentWallet() async* {
+    final Database db = await Db.db;
+
+    Wallet _lastStreamWallet = await getCurrentWallet();
+    yield _lastStreamWallet;
+
+    await for (final walletUpdate in _activeWalletController.stream)
+      if (!Wallet.areWalletsEqual(_lastStreamWallet, walletUpdate)) {
+        _lastStreamWallet = walletUpdate;
+
+        Log(
+          'database:watchCurrentWallet',
+          'Wallet updated, yielding new wallet of ID = ${walletUpdate.id}',
+        );
+        yield walletUpdate;
+      }
   }
 }
