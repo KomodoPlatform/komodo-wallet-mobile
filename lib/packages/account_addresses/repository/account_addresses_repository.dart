@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/packages/account_addresses/api/account_addresses_api_interface.dart';
 import 'package:komodo_dex/packages/account_addresses/models/wallet_address.dart';
@@ -13,73 +12,73 @@ class AccountAddressesRepository {
     @required AccountAddressesApiInterface accountAddressesApi,
   }) : _accountAddressesApi = accountAddressesApi;
 
+  Future<void> clearAll(String walletId) async {
+    await _accountAddressesApi.deleteAll(walletId: walletId);
+  }
+
+  Future<void> storeSnapshot({
+    @required List<Map<String, dynamic>> snapshotListJson,
+    @required String walletId,
+  }) async {
+    if (snapshotListJson == null) return;
+
+    for (final item in snapshotListJson ?? []) {
+      final coinBalance = CoinBalance.fromJson(item);
+
+      final walletAddress = WalletAddress(
+        walletId: walletId,
+        address: coinBalance.balance.address,
+        ticker: coinBalance.coin.abbr,
+        availableBalance: coinBalance.balance.balance.toDouble(),
+        accountId: 'iguana',
+      );
+
+      await _accountAddressesApi.updateOrCreate(
+        walletId: walletAddress.walletId,
+        address: walletAddress.address,
+        ticker: walletAddress.ticker,
+        availableBalance: walletAddress.availableBalance,
+        accountId: walletAddress.accountId,
+      );
+    }
+  }
+
+  /// Returns a stream of all addresses for the current wallet.
+  ///
+  /// The stream emits all initial addresses for the current wallet, and then
+  /// watches for updated/created addresses for the current wallet.
+  ///
+  /// The stream will switch to a new stream when the current wallet changes.
+  ///
   Stream<WalletAddress> watchCurrentWalletAddresses() async* {
-    StreamController<WalletAddress> controller;
-    StreamSubscription<WalletAddress> subscription;
+    String lastStreamWalletId;
 
-    controller = StreamController<WalletAddress>(
-      onListen: () async {
-        String currentWalletId;
+    final didWalletChange = (wallet) =>
+        wallet != null &&
+        (wallet.id != lastStreamWalletId || lastStreamWalletId == null);
 
-        while (controller.hasListener) {
-          final currentWallet = await Db.getCurrentWallet();
-          if (currentWallet != null && currentWallet.id != currentWalletId) {
-            currentWalletId = currentWallet.id;
+    await for (final wallet in Db.watchCurrentWallet().where(didWalletChange)) {
+      lastStreamWalletId = wallet.id;
 
-            await subscription?.cancel();
+      for (final address in await _accountAddressesApi.readAll(
+        walletId: lastStreamWalletId,
+      )) {
+        yield address;
+      }
 
-            // Emit the switched wallet information
-            final String jsonStr = await Db.getWalletSnapshot();
-            if (jsonStr != null) {
-              List<dynamic> items;
-              try {
-                items = json.decode(jsonStr);
-              } catch (e) {
-                controller
-                    .addError('Failed to decode getWalletSnapshot JSON: $e');
-              }
+      final addressesStream = _accountAddressesApi
+          .watchAll(
+            walletId: lastStreamWalletId,
+          )
+          .takeWhile((address) => address.walletId == lastStreamWalletId);
 
-              if (items != null) {
-                for (final item in items) {
-                  final coinBalance = CoinBalance.fromJson(item);
+      await for (final address in addressesStream) {
+        yield address;
 
-                  final walletAddress = WalletAddress(
-                    walletId: currentWalletId,
-                    address: coinBalance.balance.address,
-                    ticker: coinBalance.coin.abbr,
-                    availableBalance: coinBalance.balance.balance.toDouble(),
-                    accountId: 'iguana',
-                  );
-
-                  await _accountAddressesApi.updateOrCreate(
-                    walletId: walletAddress.walletId,
-                    address: walletAddress.address,
-                    ticker: walletAddress.ticker,
-                    availableBalance: walletAddress.availableBalance,
-                    accountId: walletAddress.accountId,
-                  );
-
-                  controller.add(walletAddress);
-                }
-              }
-            }
-
-            // Listen and emit newer changes that will occur
-            subscription = _accountAddressesApi
-                .watchAll(walletId: currentWalletId)
-                .listen((updatedAddress) {
-              controller.add(updatedAddress);
-            });
-          }
-
-          await Future.delayed(Duration(seconds: 5));
+        if (address.walletId != (await Db.getCurrentWallet())?.id) {
+          break;
         }
-      },
-      onCancel: () async {
-        await subscription?.cancel();
-      },
-    );
-
-    yield* controller.stream;
+      }
+    }
   }
 }

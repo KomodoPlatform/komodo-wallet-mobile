@@ -8,6 +8,7 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_blo
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
+import 'package:komodo_dex/services/db/persistence_manager.dart';
 import '../app_config/app_config.dart';
 import '../blocs/authenticate_bloc.dart';
 import '../blocs/coins_bloc.dart';
@@ -71,6 +72,9 @@ Future<void> startApp() async {
   await ZCoinProgressNotifications.initNotifications();
   try {
     mmSe.metrics();
+
+    await PersistenceManager.init();
+
     startup.start();
 
     return runApp(

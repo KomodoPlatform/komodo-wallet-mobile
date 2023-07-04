@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:async/async.dart';
+import 'package:flutter/foundation.dart';
+import 'package:komodo_dex/packages/account_addresses/api/account_addresses_api_hive.dart';
+import 'package:komodo_dex/packages/account_addresses/repository/account_addresses_repository.dart';
 
 import '../../blocs/wallet_bloc.dart';
 import '../../model/article.dart';
@@ -18,19 +21,32 @@ class Db {
   static Database _db;
   static bool _initInvoked = false;
 
+  static AccountAddressesRepository _accountAddressesRepository;
+
   static Future<Database> get db async {
+    assert(_initInvoked, 'Db.init must be invoked before accessing the db');
     // Protect the database from being opened and initialized multiple times.
     if (_initInvoked) {
       await pauseUntil(() => _db != null);
       return _db;
     }
 
-    _initInvoked = true;
     _db = await _initDB();
     return _db;
   }
 
+  static Future<void> init({
+    @required AccountAddressesRepository accountAddressesRepository,
+  }) async {
+    _initInvoked = true;
+
+    _accountAddressesRepository = accountAddressesRepository;
+    _db = await _initDB();
+  }
+
   static Future<Database> _initDB() async {
+    if (_db != null) return _db;
+
     final Directory documentsDirectory = await applicationDocumentsDirectory;
     final String path = join(documentsDirectory.path, 'AtomicDEX.db');
     String _articleTable = '''
@@ -546,9 +562,19 @@ class Db {
           <String, dynamic>{'wallet_id': wallet.id, 'snapshot': jsonStr},
           conflictAlgorithm: ConflictAlgorithm.replace);
 
+      final decodedSnapshot = JsonDecoder().convert(jsonStr);
+
+      // convert List<dynamic> to List<Map<String, dynamic>>
+      final snapshotListJson = List<Map<String, dynamic>>.from(decodedSnapshot);
+
+      await _accountAddressesRepository.storeSnapshot(
+        snapshotListJson: snapshotListJson,
+        walletId: wallet.id,
+      );
+
       if (_walletSnapshotController.hasListener) {
         _walletSnapshotController.add(
-          {'wallet_id': wallet.id, 'snapshot': jsonDecode(jsonStr)},
+          {'wallet_id': wallet.id, 'snapshot': decodedSnapshot},
         );
       }
     } catch (e) {
@@ -704,7 +730,8 @@ class Db {
     Wallet _lastStreamWallet = await getCurrentWallet();
     yield _lastStreamWallet;
 
-    await for (final walletUpdate in _activeWalletController.stream)
+    await for (final walletUpdate in _activeWalletController.stream
+        .where((wallet) => wallet?.id != _lastStreamWallet?.id))
       if (!Wallet.areWalletsEqual(_lastStreamWallet, walletUpdate)) {
         _lastStreamWallet = walletUpdate;
 
