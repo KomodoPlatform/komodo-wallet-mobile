@@ -166,6 +166,9 @@ class CexProvider extends ChangeNotifier {
     if (chain.length > 1 && json1 == null) return;
 
     final Map<String, List<CandleData>> data = {};
+
+    json0.remove(
+        'last_updated'); // This field is not a list, so it makes forEach fail
     json0.forEach((String duration, dynamic list) {
       final List<CandleData> _durationData = [];
 
