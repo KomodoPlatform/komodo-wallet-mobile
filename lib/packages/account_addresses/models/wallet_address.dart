@@ -27,4 +27,17 @@ class WalletAddress {
     @required this.availableBalance,
     @required this.accountId,
   });
+
+  Map<String, dynamic> toJson() => {
+        'walletId': walletId,
+        'address': address,
+        'ticker': ticker,
+        'availableBalance': availableBalance,
+        'accountId': accountId,
+      };
+
+  @override
+  String toString() {
+    return 'WalletAddress{walletId: $walletId, address: $address, ticker: $ticker, availableBalance: $availableBalance, accountId: $accountId}';
+  }
 }
