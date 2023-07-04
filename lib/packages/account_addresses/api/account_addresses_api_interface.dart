@@ -47,4 +47,8 @@ abstract class AccountAddressesApiInterface {
   Stream<WalletAddress> watchAll({
     @required String walletId,
   });
+
+  Stream<List<WalletAddress>> watchAllList({
+    @required String walletId,
+  });
 }

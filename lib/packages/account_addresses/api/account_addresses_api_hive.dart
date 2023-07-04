@@ -172,6 +172,22 @@ class AccountAddressesApiHive implements AccountAddressesApiInterface {
         .map((event) => event.value as WalletAddress);
   }
 
+  @override
+  Stream<List<WalletAddress>> watchAllList({@required String walletId}) async* {
+    List<WalletAddress> addresses = await readAll(walletId: walletId);
+    yield addresses;
+
+    yield* watchAll(walletId: walletId).map<List<WalletAddress>>(
+      (walletAddress) => addresses = addresses
+          .map(
+            (address) => address.address == walletAddress.address
+                ? walletAddress
+                : address,
+          )
+          .toList(),
+    );
+  }
+
   Future<void> close() async {
     try {
       await _box.close();
