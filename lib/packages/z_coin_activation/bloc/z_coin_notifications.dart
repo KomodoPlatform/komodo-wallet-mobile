@@ -118,13 +118,9 @@ class ZCoinProgressNotifications {
       'zhtlc_activation_status',
       'ZHTLC Activation Status',
       channelDescription: 'Shows the status of ZCoin activation',
-      importance: Importance.max,
-      priority: Priority.high,
-      ongoing: true,
       showProgress: true,
       maxProgress: 100,
       onlyAlertOnce: true,
-      autoCancel: false,
       progress: progressInt,
     );
 
