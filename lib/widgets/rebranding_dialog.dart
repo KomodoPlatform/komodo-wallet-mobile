@@ -39,7 +39,7 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
           borderRadius: BorderRadius.circular(20),
         ),
         elevation: 0,
-        backgroundColor: Colors.grey.shade200,
+        backgroundColor: Color(0xFFDADFE4),
         child: dialogContent(context),
       ),
     );
