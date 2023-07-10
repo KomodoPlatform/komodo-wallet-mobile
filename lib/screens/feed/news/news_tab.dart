@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/widgets/rebranding_dialog.dart';
+import 'package:komodo_dex/packages/rebranding/rebranding_dialog.dart';
 import '../../../localizations.dart';
 import '../../../model/feed_provider.dart';
 import '../../feed/news/build_news_item.dart';
