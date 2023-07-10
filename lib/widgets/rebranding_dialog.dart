@@ -95,7 +95,8 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
                 alignment: Alignment.bottomCenter,
                 child: TextButton(
                   onPressed: () async {
-                    const url = 'https://google.com/';
+                    const url =
+                        'https://komodoplatform.com/en/blog/brand-unification';
                     await canLaunchUrlString(url)
                         ? await launchUrlString(url)
                         : throw Exception(
