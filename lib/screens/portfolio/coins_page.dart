@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:komodo_dex/model/rebranding_provider.dart';
 import 'add_coin_button.dart';
 import 'package:komodo_dex/widgets/rebranding_dialog.dart';
 import '../../../../blocs/coins_bloc.dart';
@@ -40,7 +41,9 @@ class _CoinsPageState extends State<CoinsPage> {
       barrierDismissible: true, // allow dismiss when clicking outside
       builder: (BuildContext context) => RebrandingDialog(),
     ).then((_) {
-      // do not save "has been accepted" state here
+      // This is called when the dialog is dismissed
+      Provider.of<RebrandingProvider>(context, listen: false)
+          .closeThisSession();
     });
   }
 
@@ -57,8 +60,17 @@ class _CoinsPageState extends State<CoinsPage> {
     if (mmSe.running) coinsBloc.updateCoinBalances();
 
     // Schedule the dialog to show after the current frame
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      showRebrandingDialog(context);
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      final rebrandingNotifier =
+          Provider.of<RebrandingProvider>(context, listen: false);
+
+      // Wait for the prefs to load
+      await rebrandingNotifier.prefsLoaded;
+
+      if (!rebrandingNotifier.closedPermanently &&
+          !rebrandingNotifier.closedThisSession) {
+        showRebrandingDialog(context);
+      }
     });
 
     super.initState();

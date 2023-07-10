@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/rebranding_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class RebrandingDialog extends StatefulWidget {
@@ -124,6 +126,8 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
                 ),
                 onPressed: _canClose
                     ? () {
+                        Provider.of<RebrandingProvider>(context, listen: false)
+                            .closePermanently();
                         Navigator.of(context).pop();
                       }
                     : null,
