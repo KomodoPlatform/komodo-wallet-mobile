@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'add_coin_button.dart';
+import 'package:komodo_dex/widgets/rebranding_dialog.dart';
 import '../../../../blocs/coins_bloc.dart';
 import '../../../../blocs/settings_bloc.dart';
 import '../../../../localizations.dart';
@@ -31,6 +33,17 @@ class _CoinsPageState extends State<CoinsPage> {
   double _heightSliver;
   double _widthScreen;
 
+  // Rebranding
+  Future<void> showRebrandingDialog(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: true, // allow dismiss when clicking outside
+      builder: (BuildContext context) => RebrandingDialog(),
+    ).then((_) {
+      // do not save "has been accepted" state here
+    });
+  }
+
   void _scrollListener() {
     setState(() {
       _heightFactor = (exp(-_scrollController.offset / 60) * 1.3) + 1;
@@ -42,6 +55,12 @@ class _CoinsPageState extends State<CoinsPage> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     if (mmSe.running) coinsBloc.updateCoinBalances();
+
+    // Schedule the dialog to show after the current frame
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      showRebrandingDialog(context);
+    });
+
     super.initState();
   }
 
