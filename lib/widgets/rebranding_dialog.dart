@@ -2,20 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class RebrandingDialog extends StatelessWidget {
+class RebrandingDialog extends StatefulWidget {
   final bool showCloseButton;
 
   const RebrandingDialog({this.showCloseButton = true});
 
   @override
+  _RebrandingDialogState createState() => _RebrandingDialogState();
+}
+
+class _RebrandingDialogState extends State<RebrandingDialog> {
+  bool _canClose = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 5), () {
+      if (mounted) {
+        setState(() {
+          _canClose = true;
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+    return WillPopScope(
+      onWillPop: () async {
+        return _canClose;
+      },
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.grey.shade200,
+        child: dialogContent(context),
       ),
-      elevation: 0,
-      backgroundColor: Colors.grey.shade200,
-      child: dialogContent(context),
     );
   }
 
@@ -79,7 +103,7 @@ class RebrandingDialog extends StatelessWidget {
             ],
           ),
         ),
-        if (showCloseButton)
+        if (widget.showCloseButton && _canClose)
           Positioned(
             top: 0,
             right: 0,
@@ -87,9 +111,11 @@ class RebrandingDialog extends StatelessWidget {
               padding: const EdgeInsets.all(0.0),
               child: IconButton(
                 icon: Icon(Icons.close),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                onPressed: _canClose
+                    ? () {
+                        Navigator.of(context).pop();
+                      }
+                    : null,
               ),
             ),
           ),
