@@ -39,6 +39,9 @@ class OrderBookProvider extends ChangeNotifier {
   Orderbook getOrderBook([CoinsPair coinsPair]) =>
       syncOrderbook.getOrderBook(coinsPair);
 
+  String getOrderbookError([CoinsPair coinsPair]) =>
+      syncOrderbook.getOrderbookError(coinsPair);
+
   OrderbookDepth getDepth([CoinsPair coinsPair]) =>
       syncOrderbook.getDepth(coinsPair);
 
@@ -124,6 +127,7 @@ class SyncOrderbook {
   final Set<OrderBookProvider> _providers = {};
 
   Map<String, Orderbook> _orderBooks = {}; // {'BTC/KMD': Orderbook(),}
+  Map<String, String> _orderBookErrors = {}; // {'BTC/KMD': 'error1',}
   Map<String, OrderbookDepth> _orderbooksDepth = {};
   CoinsPair _activePair;
   bool _updatingDepth = false;
@@ -161,6 +165,16 @@ class SyncOrderbook {
       _tickers.add(_tickerStr(coinsPair));
 
     return _orderBooks[_tickerStr(coinsPair)];
+  }
+
+  String getOrderbookError([CoinsPair coinsPair]) {
+    coinsPair ??= activePair;
+    if (coinsPair.buy == null || coinsPair.sell == null) return null;
+
+    if (!_tickers.contains(_tickerStr(coinsPair)))
+      _tickers.add(_tickerStr(coinsPair));
+
+    return _orderBookErrors[_tickerStr(coinsPair)];
   }
 
   OrderbookDepth getDepth([CoinsPair coinsPair]) {
@@ -256,24 +270,28 @@ class SyncOrderbook {
 
   Future<void> _updateOrderBooks() async {
     final Map<String, Orderbook> orderBooks = {};
+    final Map<String, String> orderBookErrors = {};
     for (String pair in _tickers) {
-      final List<String> abbr = pair.split('/');
-      final dynamic orderbook = await MM.getOrderbook(
-          mmSe.client,
-          GetOrderbook(
-            base: abbr[0],
-            rel: abbr[1],
-          ));
+      try {
+        final List<String> abbr = pair.split('/');
+        final dynamic orderbook = await MM.getOrderbook(
+            mmSe.client,
+            GetOrderbook(
+              base: abbr[0],
+              rel: abbr[1],
+            ));
 
-      if (orderbook is Orderbook) {
-        orderBooks[pair] = orderbook;
-      } else if (orderbook is ErrorString) {
-        Log('order_book_provider] _updateOrderBooks',
-            '$pair: ${orderbook.error}');
+        if (orderbook is Orderbook) {
+          orderBooks[pair] = orderbook;
+        }
+      } catch (e) {
+        orderBookErrors[pair] = e.error;
+        Log('order_book_provider] _updateOrderBooks', '$pair: ${e.error}');
       }
     }
 
     _orderBooks = orderBooks;
+    _orderBookErrors = orderBookErrors;
     _notifyListeners();
   }
 
