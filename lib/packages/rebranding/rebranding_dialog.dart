@@ -102,6 +102,9 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
                               : throw Exception(
                                   'Could not launch "Official press release" URL');
                           if (widget.isModal) {
+                            Provider.of<RebrandingProvider>(context,
+                                    listen: false)
+                                .closePermanently();
                             Navigator.pop(context);
                           }
                         },
