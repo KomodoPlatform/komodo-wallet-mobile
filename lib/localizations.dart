@@ -1801,6 +1801,14 @@ class AppLocalizations {
       Intl.message('Show more', name: 'simpleTradeShowMore');
 
   String get noCoinFound => Intl.message('No coin found', name: 'noCoinFound');
+
+  // Rebranding
+  String get rebrandingAnnouncement => Intl.message(
+      "It's a new era! We have officially changed our name from 'AtomicDEX' to 'Komodo Wallet'",
+      name: 'rebrandingAnnouncement');
+
+  String get officialPressRelease =>
+      Intl.message('Official press release', name: 'officialPressRelease');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

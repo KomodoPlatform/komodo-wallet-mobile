@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class RebrandingDialog extends StatefulWidget {
@@ -84,7 +85,7 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
               ),
               SizedBox(height: 16.0),
               Text(
-                "It's a new era! We have officially changed our name from 'AtomicDEX' to 'Komodo Wallet'",
+                AppLocalizations.of(context).rebrandingAnnouncement,
                 style: TextStyle(color: Colors.black),
               ),
               SizedBox(height: 24.0),
@@ -102,7 +103,7 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
                     }
                   },
                   child: Text(
-                    'Official press release',
+                    AppLocalizations.of(context).officialPressRelease,
                     style: TextStyle(color: Colors.blue),
                   ),
                 ),
