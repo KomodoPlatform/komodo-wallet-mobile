@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "当然。更多信息，您可以查阅我们的<a href=\"https://developers.atomicdex.io/\">开发者文档</a> ，或与我们联系询问合作细节。有具体的技术问题吗？｛appName｝开发者社区随时乐意提供帮助！",
+    "answer_9": "绝对地！您可以阅读我们的<a href=\"https://developers.komodoplatform.com/\">开发者文档</a>了解更多详细信息，或者联系我们咨询您的合作伙伴关系。有具体的技术问题吗？ {appName} 开发者社区随时准备提供帮助！",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [
@@ -635,7 +635,7 @@
             "appName": {}
         }
     },
-    "answer_10": "{appName}有适用于Android和iPhone系统的手机程序，以及适用于Windows、Mac和Linux操作系统的桌面程序。",
+    "answer_10": "{appName} 适用于 Android 和 iPhone 上的移动设备，以及 <a href=\"https://komodoplatform.com/\">Windows、Mac 和 Linux 操作系统</a> 上的桌面设备。",
     "@answer_10": {
         "type": "text",
         "placeholders_order": [

@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "絶対！詳細については、<a href=\"https://developers.atomicdex.io/\">開発者向けドキュメント</a>を参照するか、パートナーシップについてお問い合わせください。特定の技術的な質問がありますか? {appName} 開発者コミュニティはいつでもお手伝いします!",
+    "answer_9": "絶対！詳細については、<a href=\"https://developers.komodoplatform.com/\">開発者向けドキュメント</a>をご覧いただくか、パートナーシップに関するお問い合わせでご連絡ください。特定の技術的な質問がありますか? {appName} 開発者コミュニティはいつでもお手伝いいたします。",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [
@@ -635,7 +635,7 @@
             "appName": {}
         }
     },
-    "answer_10": "{appName} は、モバイルでは Android と iPhone の両方で利用でき、デスクトップでは Windows、Mac、および Linux オペレーティング システムで利用できます。",
+    "answer_10": "{appName} は、モバイルでは Android と iPhone の両方で利用でき、デスクトップでは <a href=\"https://komodoplatform.com/\">Windows、Mac、Linux オペレーティング システム</a> で利用できます。",
     "@answer_10": {
         "type": "text",
         "placeholders_order": [

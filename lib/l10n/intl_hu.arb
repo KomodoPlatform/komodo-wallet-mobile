@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "Abszolút! További részletekért olvassa el <a href=\"https://developers.atomicdex.io/\">fejlesztői dokumentációnkat</a>, vagy vegye fel velünk a kapcsolatot partnerségi kérdéseivel. Konkrét technikai kérdése van? Az {appName} fejlesztői közösség mindig készen áll a segítségre!",
+    "answer_9": "Teljesen! További részletekért olvassa el <a href=\"https://developers.komodoplatform.com/\">fejlesztői dokumentációnkat</a>, vagy forduljon hozzánk partnerségi kérdéseivel. Konkrét technikai kérdése van? A {appName} fejlesztői közössége mindig készen áll a segítségére!",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [
@@ -635,7 +635,7 @@
             "appName": {}
         }
     },
-    "answer_10": "Az {appName} elérhető mobilra Android és iPhone operációs rendszereken, valamint asztali számítógépre Windows, Mac és Linux operációs rendszereken.",
+    "answer_10": "Az {appName} mobilra Androidon és iPhone-on, asztali számítógépen pedig <a href=\"https://komodoplatform.com/\">Windows, Mac és Linux operációs rendszeren</a> érhető el.",
     "@answer_10": {
         "type": "text",
         "placeholders_order": [
