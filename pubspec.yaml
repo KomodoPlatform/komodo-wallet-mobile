@@ -191,6 +191,8 @@ flutter:
   - assets/svg_light/
   - assets/swap_share/
   - assets/coins.json
+  - assets/coins_config.json
+  - assets/rebranding/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
