@@ -3,9 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class RebrandingDialog extends StatefulWidget {
-  final bool showCloseButton;
+  final bool isModal;
 
-  const RebrandingDialog({this.showCloseButton = true});
+  const RebrandingDialog({this.isModal = true});
 
   @override
   _RebrandingDialogState createState() => _RebrandingDialogState();
@@ -17,13 +17,15 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 5), () {
-      if (mounted) {
-        setState(() {
-          _canClose = true;
-        });
-      }
-    });
+    if (widget.isModal) {
+      Future.delayed(Duration(seconds: 5), () {
+        if (mounted) {
+          setState(() {
+            _canClose = true;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -47,7 +49,8 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
     return Stack(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(left: 16, right: 16, top: 36, bottom: 8),
+          padding: EdgeInsets.only(
+              left: 16, right: 16, top: widget.isModal ? 36 : 24, bottom: 8),
           decoration: BoxDecoration(
               color: Colors.grey.shade200,
               shape: BoxShape.rectangle,
@@ -81,7 +84,9 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
               ),
               SizedBox(height: 16.0),
               Text(
-                  "It's a new era! We have officially changed our name from 'AtomicDEX' to 'Komodo Wallet'"),
+                "It's a new era! We have officially changed our name from 'AtomicDEX' to 'Komodo Wallet'",
+                style: TextStyle(color: Colors.black),
+              ),
               SizedBox(height: 24.0),
               Align(
                 alignment: Alignment.bottomCenter,
@@ -92,7 +97,9 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
                         ? await launchUrlString(url)
                         : throw Exception(
                             'Could not launch "Official press release" URL');
-                    Navigator.pop(context);
+                    if (widget.isModal) {
+                      Navigator.pop(context);
+                    }
                   },
                   child: Text(
                     'Official press release',
@@ -103,14 +110,17 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
             ],
           ),
         ),
-        if (widget.showCloseButton && _canClose)
+        if (widget.isModal && _canClose)
           Positioned(
             top: 0,
             right: 0,
             child: Padding(
               padding: const EdgeInsets.all(0.0),
               child: IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(
+                  Icons.close,
+                  color: Colors.black,
+                ),
                 onPressed: _canClose
                     ? () {
                         Navigator.of(context).pop();
