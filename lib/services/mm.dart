@@ -445,7 +445,7 @@ class ApiProvider {
     GetOrderbook body,
   ) async {
     try {
-      await _assertUserpass(client, body).then<dynamic>(
+      return await _assertUserpass(client, body).then<dynamic>(
         (UserpassBody userBody) => userBody.client
             .post(Uri.parse(url), body: getOrderbookToJson(userBody.body))
             .then(
@@ -458,9 +458,8 @@ class ApiProvider {
       );
     } catch (e) {
       Log('ApiProvider.getOrderbook', 'Error on get orderbook: $e');
+      rethrow;
     }
-
-    return null;
   }
 
   Future<dynamic> getOrderbookDepth(

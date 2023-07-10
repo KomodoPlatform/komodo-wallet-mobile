@@ -274,7 +274,18 @@ class _OrderBookPageState extends State<OrderBookPage> {
     } catch (_) {}
 
     if (_pairOrderBook == null) {
-      return const Center(heightFactor: 10, child: CircularProgressIndicator());
+      String orderbookError = _orderBookProvider.getOrderbookError();
+      if (orderbookError == null) {
+        return const Center(
+            heightFactor: 10, child: CircularProgressIndicator());
+      } else {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+              'The order book is currently unavailable for the selected pair.',
+              style: Theme.of(context).textTheme.headline6),
+        );
+      }
     }
 
     final List<Ask> _sortedAsks =
