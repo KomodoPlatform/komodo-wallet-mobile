@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "¡Absolutamente! Puede leer nuestra <a href=\"https://developers.atomicdex.io/\">documentación para desarrolladores</a> para obtener más detalles o comunicarse con nosotros si tiene alguna consulta sobre su asociación. ¿Tiene una pregunta técnica específica? ¡La comunidad de desarrolladores de {appName} siempre está lista para ayudar!",
+    "answer_9": "¡Absolutamente! Puede leer nuestra <a href=\"https://developers.komodoplatform.com/\">documentación para desarrolladores</a> para obtener más detalles o contactarnos con sus consultas sobre asociaciones. ¿Tiene una pregunta técnica específica? ¡La comunidad de desarrolladores de {appName} siempre está lista para ayudar!",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [
@@ -635,7 +635,7 @@
             "appName": {}
         }
     },
-    "answer_10": "{appName} está disponible para dispositivos móviles en Android y iPhone, y para computadoras de escritorio en los sistemas operativos Windows, Mac y Linux.",
+    "answer_10": "{appName} está disponible para dispositivos móviles en Android y iPhone, y para computadoras de escritorio en <a href=\"https://komodoplatform.com/\">sistemas operativos Windows, Mac y Linux</a>.",
     "@answer_10": {
         "type": "text",
         "placeholders_order": [

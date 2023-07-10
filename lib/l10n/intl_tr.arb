@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "Tabii ki ! Daha fazla bilgi için <a href=\"https://developers.atomicdex.io/\">developer documentation</a> dökümanımızı okuyabilir ya da iş birliği teklifleriniz için bizimle iletişime geçebilirsiniz. Özel bir teknik sorunuz mu var ? {appName}  geliştirici topluluğu yardımcı olmak için her daim hazırdır.",
+    "answer_9": "Kesinlikle! Daha fazla ayrıntı için <a href=\"https://developers.komodoplatform.com/\">geliştirici belgelerimizi</a> okuyabilir veya ortaklık sorularınız için bizimle iletişime geçebilirsiniz. Belirli bir teknik sorunuz mu var? {appName} geliştirici topluluğu her zaman yardıma hazır!",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [
@@ -635,7 +635,7 @@
             "appName": {}
         }
     },
-    "answer_10": "Komodo Wallet, mobil tarafında Android ve iPhone'da, masaüstünde ise Windows, Mac, Linux işletim sistemlerinde kullanılabilir.",
+    "answer_10": "{appName}, hem Android hem de iPhone'da mobil cihazlar için ve <a href=\"https://komodoplatform.com/\">Windows, Mac ve Linux işletim sistemlerinde</a> masaüstü için kullanılabilir.",
     "@answer_10": {
         "type": "text",
         "placeholders_order": [
