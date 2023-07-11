@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/packages/coin_trading/widgets/coin_select/wallet_address_tile.dart';
+import 'package:komodo_dex/packages/trading/widgets/coin_select/wallet_address_tile.dart';
 
 class TickerAccountAddress {
   TickerAccountAddress({
