@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/packages/trading/widgets/coin_select/wallet_address_tile.dart';
 
 class TickerAccountAddress {
   TickerAccountAddress({
@@ -28,13 +27,3 @@ class TickerAccountAddress {
     ).format(balance);
   }
 }
-
-List<TickerAccountAddress> get tickerAccountSampleData =>
-    publicKeyBalances.entries
-        .map((e) => TickerAccountAddress(
-              address: e.key,
-              balance: e.value,
-              ticker: 'KMD',
-              account: 'Main Account',
-            ))
-        .toList();
