@@ -547,19 +547,19 @@ class Db {
     if (wallet == null) return null;
 
     final Database db = await Db.db;
+
     List<Map<String, dynamic>> maps;
     try {
-      maps = await db.query('WalletSnapshot');
+      maps = await db.query(
+        'WalletSnapshot',
+        where: 'wallet_id = ?',
+        whereArgs: [wallet.id],
+      );
     } catch (_) {}
-    if (maps == null) return null;
 
-    final Map<String, dynamic> entry = maps.firstWhere(
-      (item) => item['wallet_id'] == wallet.id,
-      orElse: () => null,
-    );
+    if (maps == null || maps.isEmpty) return null;
 
-    if (entry == null) return null;
-    return entry['snapshot'];
+    return maps.first['snapshot'];
   }
 
   static Future<WalletSecuritySettings>
