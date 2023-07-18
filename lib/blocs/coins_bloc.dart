@@ -794,10 +794,10 @@ class CoinsBloc implements BlocBase {
 
     if (items == null || items.isEmpty) return;
 
+    final currentCoins = await Db.activeCoins;
     final List<CoinBalance> list = [];
     for (dynamic item in items) {
       final tmp = CoinBalance.fromJson(item);
-      final currentCoins = await Db.activeCoins;
       final abbr = tmp.coin.abbr;
       if (!currentCoins.contains(abbr)) {
         Log('coins_bloc',
