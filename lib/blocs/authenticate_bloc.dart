@@ -70,10 +70,11 @@ class AuthenticateBloc extends BlocBase {
 
   Future<void> login(String passphrase, String password,
       {bool loadSnapshot = true}) async {
-    mainBloc.setCurrentIndexTab(0);
     final currentWallet = await Db.getCurrentWallet();
     walletBloc.setCurrentWallet(currentWallet);
     if (loadSnapshot) await coinsBloc.loadWalletSnapshot(wallet: currentWallet);
+
+    mainBloc.setCurrentIndexTab(0);
 
     await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
 
