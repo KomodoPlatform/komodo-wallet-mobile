@@ -73,14 +73,14 @@ class AuthenticateBloc extends BlocBase {
     mainBloc.setCurrentIndexTab(0);
     final currentWallet = await Db.getCurrentWallet();
     walletBloc.setCurrentWallet(currentWallet);
+    if (loadSnapshot) await coinsBloc.loadWalletSnapshot(wallet: currentWallet);
+
     await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await _checkPINStatus(password);
     await EncryptionTool().write('passphrase', passphrase);
     prefs.setBool('isPassphraseIsSaved', true);
-
-    if (loadSnapshot) await coinsBloc.loadWalletSnapshot(wallet: currentWallet);
 
     await mmSe.init(passphrase);
 
