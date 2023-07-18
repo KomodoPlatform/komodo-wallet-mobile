@@ -541,8 +541,9 @@ class Db {
     } catch (_) {}
   }
 
-  static Future<String> getWalletSnapshot() async {
-    final Wallet wallet = await getCurrentWallet();
+  static Future<String> getWalletSnapshot({Wallet wallet}) async {
+    wallet ??= await getCurrentWallet();
+
     if (wallet == null) return null;
 
     final Database db = await Db.db;

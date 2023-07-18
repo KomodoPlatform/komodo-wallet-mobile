@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:decimal/decimal.dart';
+import 'package:komodo_dex/model/wallet.dart';
 
 import '../app_config/app_config.dart';
 import '../blocs/main_bloc.dart';
@@ -781,8 +782,8 @@ class CoinsBloc implements BlocBase {
     _walletSnapshotInProgress = false;
   }
 
-  Future<void> loadWalletSnapshot() async {
-    final String jsonStr = await Db.getWalletSnapshot();
+  Future<void> loadWalletSnapshot({Wallet wallet}) async {
+    final String jsonStr = await Db.getWalletSnapshot(wallet: wallet);
     if (jsonStr == null) return;
 
     List<dynamic> items;

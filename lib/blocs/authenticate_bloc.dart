@@ -71,7 +71,8 @@ class AuthenticateBloc extends BlocBase {
   Future<void> login(String passphrase, String password,
       {bool loadSnapshot = true}) async {
     mainBloc.setCurrentIndexTab(0);
-    walletBloc.setCurrentWallet(await Db.getCurrentWallet());
+    final currentWallet = await Db.getCurrentWallet();
+    walletBloc.setCurrentWallet(currentWallet);
     await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -79,7 +80,7 @@ class AuthenticateBloc extends BlocBase {
     await EncryptionTool().write('passphrase', passphrase);
     prefs.setBool('isPassphraseIsSaved', true);
 
-    if (loadSnapshot) await coinsBloc.loadWalletSnapshot();
+    if (loadSnapshot) await coinsBloc.loadWalletSnapshot(wallet: currentWallet);
 
     await mmSe.init(passphrase);
 
