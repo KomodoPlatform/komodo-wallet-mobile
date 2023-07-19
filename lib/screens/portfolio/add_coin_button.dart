@@ -14,9 +14,16 @@ import '../../../../widgets/custom_simple_dialog.dart';
 import '../../widgets/primary_button.dart';
 
 class AddCoinButton extends StatelessWidget {
-  const AddCoinButton({Key key, this.isCollapsed = false}) : super(key: key);
+  const AddCoinButton(
+      {Key key,
+      this.isCollapsed = false,
+      this.hideAddCoinLoading = false,
+      this.onShowAddCoinLoading})
+      : super(key: key);
 
   final bool isCollapsed;
+  final bool hideAddCoinLoading;
+  final VoidCallback onShowAddCoinLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +32,7 @@ class AddCoinButton extends StatelessWidget {
         stream: coinsBloc.outcurrentActiveCoin,
         builder:
             (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-          if (snapshot.data != null) {
+          if (snapshot.data != null && !hideAddCoinLoading) {
             return isCollapsed
                 ? Container(
                     alignment: Alignment.center,
@@ -93,6 +100,11 @@ class AddCoinButton extends StatelessWidget {
   }
 
   void _showAddCoinPage(BuildContext context) {
+    if (hideAddCoinLoading && onShowAddCoinLoading != null) {
+      onShowAddCoinLoading();
+      return;
+    }
+
     if (mainBloc.networkStatus != NetworkStatus.Online) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),

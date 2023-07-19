@@ -30,6 +30,13 @@ class _CoinsPageState extends State<CoinsPage> {
   double _heightScreen;
   double _heightSliver;
   double _widthScreen;
+  bool hideAddCoinLoading = true;
+
+  void _showAddCoinLoading() {
+    setState(() {
+      hideAddCoinLoading = false;
+    });
+  }
 
   void _scrollListener() {
     setState(() {
@@ -74,9 +81,10 @@ class _CoinsPageState extends State<CoinsPage> {
                       child: IgnorePointer(
                         ignoring: !isCollapsed,
                         child: AddCoinButton(
-                          key: Key('add-coin-button-collapsed'),
-                          isCollapsed: true,
-                        ),
+                            key: Key('add-coin-button-collapsed'),
+                            isCollapsed: true,
+                            hideAddCoinLoading: hideAddCoinLoading,
+                            onShowAddCoinLoading: _showAddCoinLoading),
                       ),
                     ),
                     SizedBox(width: 8),
@@ -217,7 +225,10 @@ class _CoinsPageState extends State<CoinsPage> {
                       // ignores the infinite width and takes up min width.
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: AddCoinButton(key: Key('add-coin-button')),
+                        child: AddCoinButton(
+                            key: Key('add-coin-button'),
+                            hideAddCoinLoading: hideAddCoinLoading,
+                            onShowAddCoinLoading: _showAddCoinLoading),
                       ),
                     ),
                   ),
@@ -236,7 +247,7 @@ class _CoinsPageState extends State<CoinsPage> {
         stream: coinsBloc.outcurrentActiveCoin,
         builder:
             (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-          return snapshot.data != null
+          return snapshot.data != null && !hideAddCoinLoading
               ? const SizedBox(
                   height: 2,
                   child: LinearProgressIndicator(),
