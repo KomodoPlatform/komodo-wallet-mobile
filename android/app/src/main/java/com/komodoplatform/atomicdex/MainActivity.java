@@ -111,7 +111,7 @@ public class MainActivity extends FlutterFragmentActivity {
     NotificationCompat.Builder builder = new NotificationCompat
     .Builder(activity,
         "com.komodoplatform.atomicdex/notification")
-        .setSmallIcon(R.mipmap.launcher_icon)
+        .setSmallIcon(R.mipmap.ic_launcher_round)
         .setContentTitle(title)
         .setContentText(text)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
