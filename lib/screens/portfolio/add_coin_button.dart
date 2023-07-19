@@ -32,7 +32,8 @@ class AddCoinButton extends StatelessWidget {
         stream: coinsBloc.outcurrentActiveCoin,
         builder:
             (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-          if (snapshot.data != null && !hideAddCoinLoading) {
+          bool isLoading = snapshot.data != null;
+          if (isLoading && !hideAddCoinLoading) {
             return isCollapsed
                 ? Container(
                     alignment: Alignment.center,
@@ -79,7 +80,7 @@ class AddCoinButton extends StatelessWidget {
                               ),
                             ),
                         key: const Key('add-coins-button-collapse'),
-                        onPressed: () => _showAddCoinPage(context),
+                        onPressed: () => _showAddCoinPage(context, isLoading),
                         child: Icon(Icons.add),
                       ),
                     );
@@ -88,7 +89,7 @@ class AddCoinButton extends StatelessWidget {
                     key: const Key('add-coins-button'),
                     icon: Icon(Icons.add),
                     text: AppLocalizations.of(context).addCoin,
-                    onPressed: () => _showAddCoinPage(context),
+                    onPressed: () => _showAddCoinPage(context, isLoading),
                   );
                 } else {
                   return SizedBox();
@@ -99,8 +100,8 @@ class AddCoinButton extends StatelessWidget {
         });
   }
 
-  void _showAddCoinPage(BuildContext context) {
-    if (hideAddCoinLoading && onShowAddCoinLoading != null) {
+  void _showAddCoinPage(BuildContext context, bool isLoading) {
+    if (isLoading && hideAddCoinLoading && onShowAddCoinLoading != null) {
       onShowAddCoinLoading();
       return;
     }
