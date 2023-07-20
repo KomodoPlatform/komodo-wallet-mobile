@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import '../blocs/coins_bloc.dart';
 import '../model/coin.dart';
 import '../model/coin_balance.dart';
@@ -26,6 +28,8 @@ class OrderBookProvider extends ChangeNotifier {
       if (!mmSe.running) return;
       await syncOrderbook._updateOrderBooks();
       await syncOrderbook._updateOrderbookDepth();
+
+      await syncOrderbook._saveOrderbookSnapshot();
     });
   }
   @override
@@ -325,5 +329,45 @@ class SyncOrderbook {
 
   void _notifyListeners() {
     for (OrderBookProvider provider in _providers) provider.notify();
+  }
+
+  bool _orderbookSnapshotInProgress = false;
+  Future<void> _saveOrderbookSnapshot() async {
+    if (_orderbookSnapshotInProgress) return;
+    if ((_orderBooks == null || _orderBooks.isEmpty) &&
+        (_orderbooksDepth == null || _orderbooksDepth.isEmpty)) return;
+
+    _orderbookSnapshotInProgress = true;
+
+    final Map<String, dynamic> snapshot = {
+      'orderBooks': _orderBooks,
+      'orderbooksDepth': _orderbooksDepth,
+    };
+
+    final String jsonStr = json.encode(snapshot);
+    await Db.saveOrderbookSnapshot(jsonStr);
+    Log('order_book_provider]', 'Orderbook snapshot created');
+
+    _orderbookSnapshotInProgress = false;
+  }
+
+  Future<void> loadOrderbookSnapshot() async {
+    final String snapshotJsonStr = await Db.getOrderbookSnapshot();
+
+    if (snapshotJsonStr == null) return;
+
+    final Map<String, dynamic> snapshotMap = json.decode(snapshotJsonStr);
+
+    _orderBooks = (snapshotMap['orderBooks'] as Map<String, dynamic>).map(
+      (key, value) => MapEntry(key, Orderbook.fromJson(value)),
+    );
+
+    _orderbooksDepth =
+        (snapshotMap['orderbooksDepth'] as Map<String, dynamic>).map(
+      (key, value) => MapEntry(key, OrderbookDepth.fromJson(value)),
+    );
+
+
+    _notifyListeners();
   }
 }
