@@ -333,6 +333,7 @@ class SyncOrderbook {
 
   bool _orderbookSnapshotInProgress = false;
   Future<void> _saveOrderbookSnapshot() async {
+    print('MYLOG ${DateTime.now()}: _saveOrderbookSnapshot start');
     if (_orderbookSnapshotInProgress) return;
     if ((_orderBooks == null || _orderBooks.isEmpty) &&
         (_orderbooksDepth == null || _orderbooksDepth.isEmpty)) return;
@@ -344,29 +345,46 @@ class SyncOrderbook {
       'orderbooksDepth': _orderbooksDepth,
     };
 
+    print('MYLOG ${DateTime.now()}: JSON encode start');
     final String jsonStr = json.encode(snapshot);
+    print('MYLOG ${DateTime.now()}: JSON encode end');
+    print('MYLOG ${DateTime.now()}: Db.saveOrderbookSnapshot start');
     await Db.saveOrderbookSnapshot(jsonStr);
+    print('MYLOG ${DateTime.now()}: Db.saveOrderbookSnapshot end');
     Log('order_book_provider]', 'Orderbook snapshot created');
 
     _orderbookSnapshotInProgress = false;
+    print('MYLOG ${DateTime.now()}: _saveOrderbookSnapshot end');
   }
 
   Future<void> loadOrderbookSnapshot() async {
+    print('MYLOG ${DateTime.now()}: loadOrderbookSnapshot start');
+    print('MYLOG ${DateTime.now()}: getOrderbookSnapshot start');
     final String snapshotJsonStr = await Db.getOrderbookSnapshot();
+    print('MYLOG ${DateTime.now()}: getOrderbookSnapshot end');
 
     if (snapshotJsonStr == null) return;
 
+    print('MYLOG ${DateTime.now()}: JSON start');
+    print('MYLOG ${DateTime.now()}: JSON decode start');
     final Map<String, dynamic> snapshotMap = json.decode(snapshotJsonStr);
+    print('MYLOG ${DateTime.now()}: JSON decode end');
 
+    print('MYLOG ${DateTime.now()}: Orderbook.fromJson start');
     _orderBooks = (snapshotMap['orderBooks'] as Map<String, dynamic>).map(
       (key, value) => MapEntry(key, Orderbook.fromJson(value)),
     );
+    print('MYLOG ${DateTime.now()}: Orderbook.fromJson end');
 
+    print('MYLOG ${DateTime.now()}: OrderbookDepth.fromJson start');
     _orderbooksDepth =
         (snapshotMap['orderbooksDepth'] as Map<String, dynamic>).map(
       (key, value) => MapEntry(key, OrderbookDepth.fromJson(value)),
     );
+    print('MYLOG ${DateTime.now()}: OrderbookDepth.fromJson end');
+    print('MYLOG ${DateTime.now()}: JSON end');
 
+    print('MYLOG ${DateTime.now()}: loadOrderbookSnapshot end');
 
     _notifyListeners();
   }
