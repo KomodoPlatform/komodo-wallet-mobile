@@ -336,13 +336,16 @@ class SyncOrderbook {
     print('MYLOG ${DateTime.now()}: _saveOrderbookSnapshot start');
     if (_orderbookSnapshotInProgress) return;
     if ((_orderBooks == null || _orderBooks.isEmpty) &&
-        (_orderbooksDepth == null || _orderbooksDepth.isEmpty)) return;
+        (_orderbooksDepth == null || _orderbooksDepth.isEmpty) &&
+        (_tickers.isEmpty && _depthTickers.isEmpty)) return;
 
     _orderbookSnapshotInProgress = true;
 
     final Map<String, dynamic> snapshot = {
       'orderBooks': _orderBooks,
       'orderbooksDepth': _orderbooksDepth,
+      'tickers': _tickers,
+      'depthTickers': _depthTickers,
     };
 
     print('MYLOG ${DateTime.now()}: JSON encode start');
@@ -382,6 +385,23 @@ class SyncOrderbook {
       (key, value) => MapEntry(key, OrderbookDepth.fromJson(value)),
     );
     print('MYLOG ${DateTime.now()}: OrderbookDepth.fromJson end');
+
+    List<String> snapshotTickers =
+        List<String>.from(snapshotMap['tickers'] ?? []);
+    for (String ticker in snapshotTickers) {
+      if (!_tickers.contains(ticker)) {
+        _tickers.add(ticker);
+      }
+    }
+
+    List<String> snapshotDepthTickers =
+        List<String>.from(snapshotMap['depthTickers'] ?? []);
+    for (String depthTicker in snapshotDepthTickers) {
+      if (!_depthTickers.contains(depthTicker)) {
+        _depthTickers.add(depthTicker);
+      }
+    }
+
     print('MYLOG ${DateTime.now()}: JSON end');
 
     print('MYLOG ${DateTime.now()}: loadOrderbookSnapshot end');

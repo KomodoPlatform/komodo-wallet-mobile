@@ -78,8 +78,6 @@ class AuthenticateBloc extends BlocBase {
     walletBloc.setCurrentWallet(currentWallet);
     if (loadSnapshot) {
       await coinsBloc.loadWalletSnapshot(wallet: currentWallet);
-
-      syncOrderbook.loadOrderbookSnapshot();
     }
 
     await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
@@ -92,6 +90,10 @@ class AuthenticateBloc extends BlocBase {
     await mmSe.init(passphrase);
 
     await notifService.init();
+
+    if (loadSnapshot) {
+      await syncOrderbook.loadOrderbookSnapshot();
+    }
 
     isLogin = true;
     _inIsLogin.add(true);
