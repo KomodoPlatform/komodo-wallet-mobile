@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:komodo_dex/model/order_book_provider.dart';
+
 import '../blocs/coins_bloc.dart';
 import '../blocs/main_bloc.dart';
 import '../blocs/media_bloc.dart';
@@ -74,7 +76,11 @@ class AuthenticateBloc extends BlocBase {
 
     final currentWallet = await Db.getCurrentWallet();
     walletBloc.setCurrentWallet(currentWallet);
-    if (loadSnapshot) await coinsBloc.loadWalletSnapshot(wallet: currentWallet);
+    if (loadSnapshot) {
+      await coinsBloc.loadWalletSnapshot(wallet: currentWallet);
+
+      syncOrderbook.loadOrderbookSnapshot();
+    }
 
     await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
 
