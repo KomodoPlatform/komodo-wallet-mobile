@@ -361,14 +361,22 @@ class SyncOrderbook {
 
     final Map<String, dynamic> snapshotMap = json.decode(snapshotJsonStr);
 
-    _orderBooks = (snapshotMap['orderBooks'] as Map<String, dynamic>).map(
-      (key, value) => MapEntry(key, Orderbook.fromJson(value)),
-    );
+    Map<String, dynamic> snapshotOrderBooks =
+        snapshotMap['orderBooks'] as Map<String, dynamic>;
+    for (String key in snapshotOrderBooks.keys) {
+      if (!_orderBooks.containsKey(key)) {
+        _orderBooks[key] = Orderbook.fromJson(snapshotOrderBooks[key]);
+      }
+    }
 
-    _orderbooksDepth =
-        (snapshotMap['orderbooksDepth'] as Map<String, dynamic>).map(
-      (key, value) => MapEntry(key, OrderbookDepth.fromJson(value)),
-    );
+    Map<String, dynamic> snapshotOrderbooksDepth =
+        snapshotMap['orderbooksDepth'] as Map<String, dynamic>;
+    for (String key in snapshotOrderbooksDepth.keys) {
+      if (!_orderbooksDepth.containsKey(key)) {
+        _orderbooksDepth[key] =
+            OrderbookDepth.fromJson(snapshotOrderbooksDepth[key]);
+      }
+    }
 
     List<String> snapshotTickers =
         List<String>.from(snapshotMap['tickers'] ?? []);
