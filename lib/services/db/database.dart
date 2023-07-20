@@ -200,6 +200,13 @@ class Db {
       )
     ''');
 
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS OrderbookSnapshot (
+        id INTEGER PRIMARY KEY,
+        snapshot TEXT
+      )
+    ''');
+
     return db;
   }
 
@@ -556,6 +563,36 @@ class Db {
         whereArgs: [wallet.id],
       );
     } catch (_) {}
+
+    if (maps == null || maps.isEmpty) return null;
+
+    return maps.first['snapshot'];
+  }
+
+  static Future<void> saveOrderbookSnapshot(String jsonStr) async {
+    final Database db = await Db.db;
+    try {
+      await db.insert(
+          'OrderbookSnapshot', <String, dynamic>{'id': 1, 'snapshot': jsonStr},
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    } catch (e) {
+      print('Error saving orderbook snapshot: $e');
+    }
+  }
+
+  static Future<String> getOrderbookSnapshot() async {
+    final Database db = await Db.db;
+
+    List<Map<String, dynamic>> maps;
+    try {
+      maps = await db.query(
+        'OrderbookSnapshot',
+        where: 'id = ?',
+        whereArgs: [1],
+      );
+    } catch (e) {
+      print('Error getting orderbook snapshot: $e');
+    }
 
     if (maps == null || maps.isEmpty) return null;
 
