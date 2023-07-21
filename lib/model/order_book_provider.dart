@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import '../blocs/coins_bloc.dart';
@@ -24,12 +25,10 @@ import 'get_orderbook.dart';
 class OrderBookProvider extends ChangeNotifier {
   OrderBookProvider() {
     syncOrderbook.linkProvider(this);
-    jobService.install('syncOrderbook', 5, (j) async {
+    jobService.install('syncOrderbook', 60, (j) async {
       if (!mmSe.running) return;
-      await syncOrderbook._updateOrderBooks();
-      await syncOrderbook._updateOrderbookDepth();
 
-      await syncOrderbook._saveOrderbookSnapshot();
+      await syncOrderbook.fullOrderbookUpdate();
     });
   }
   @override
@@ -133,8 +132,8 @@ class SyncOrderbook {
   bool _updatingDepth = false;
 
   /// Maps short order IDs to latest liveliness markers.
-  final List<String> _tickers = [];
-  final List<String> _depthTickers = [];
+  List<String> _tickers = [];
+  List<String> _depthTickers = [];
 
   CoinsPair get activePair => _activePair;
 
@@ -395,5 +394,39 @@ class SyncOrderbook {
     }
 
     _notifyListeners();
+  }
+
+  Future<List<String>> getOrderbookPairsWithBalance() async {
+    final coins = coinsBloc.coinBalance;
+
+    final List<String> pairs = [];
+    for (var i = 0; i < coins.length; i++) {
+      for (var j = i + 1; j < coins.length; j++) {
+        if ((!coins[i].coin.walletOnly && !coins[j].coin.walletOnly) &&
+            (coins[i].balance.balance > Decimal.zero ||
+                coins[j].balance.balance > Decimal.zero)) {
+          String pair1 = '${coins[i].coin.abbr}/${coins[j].coin.abbr}';
+          String pair2 = '${coins[j].coin.abbr}/${coins[i].coin.abbr}';
+
+          if (!pairs.contains(pair1) && !pairs.contains(pair2)) {
+            pairs.add(pair1);
+          }
+        }
+      }
+    }
+
+    return pairs;
+  }
+
+  Future<void> fullOrderbookUpdate() async {
+    final pairs = await getOrderbookPairsWithBalance();
+
+    _tickers = pairs;
+    _depthTickers = pairs;
+
+    await syncOrderbook._updateOrderBooks();
+    await syncOrderbook._updateOrderbookDepth();
+
+    // await syncOrderbook._saveOrderbookSnapshot();
   }
 }

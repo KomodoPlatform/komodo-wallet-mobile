@@ -91,10 +91,6 @@ class AuthenticateBloc extends BlocBase {
 
     await notifService.init();
 
-    if (loadSnapshot) {
-      await syncOrderbook.loadOrderbookSnapshot();
-    }
-
     isLogin = true;
     _inIsLogin.add(true);
   }
