@@ -420,6 +420,9 @@ class SyncOrderbook {
   }
 
   Future<Map<String, Orderbook>> _getOrderbooksAsync(List<String> pairs) async {
+    Log('order_book_provider] _getOrderbooksAsync',
+        '${DateTime.now()}: Start _getOrderbooksAsync');
+
     final Map<String, Orderbook> orderbooks = {};
 
     List<Future> futures = pairs.map((pair) async {
@@ -440,6 +443,9 @@ class SyncOrderbook {
     }).toList();
 
     await Future.wait(futures);
+
+    Log('order_book_provider] _getOrderbooksAsync',
+        '${DateTime.now()}: End _getOrderbooksAsync');
 
     return orderbooks;
   }
@@ -466,6 +472,9 @@ class SyncOrderbook {
   }
 
   Future<void> fullOrderbookUpdate() async {
+    Log('order_book_provider] fullOrderbookUpdate',
+        '${DateTime.now()}: Start full sync time');
+
     final pairs = await getOrderbookPairsWithBalance();
 
     // Add existing pairs from _tickers
@@ -482,6 +491,10 @@ class SyncOrderbook {
     _depthTickers = pairs;
     _orderBooks = orderbooks;
     _orderbooksDepth = orderbookDepths;
+
+    Log('order_book_provider] fullOrderbookUpdate',
+        '${DateTime.now()}: End full sync time');
+
     _notifyListeners();
 
     // await syncOrderbook._saveOrderbookSnapshot();
