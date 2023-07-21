@@ -418,13 +418,41 @@ class SyncOrderbook {
     return pairs;
   }
 
+  Future<Map<String, Orderbook>> _getOrderbooksAsync(List<String> pairs) async {
+    final Map<String, Orderbook> orderbooks = {};
+
+    List<Future> futures = pairs.map((pair) async {
+      final List<String> abbr = pair.split('/');
+      final dynamic orderbook = await MM.getOrderbook(
+          mmSe.client,
+          GetOrderbook(
+            base: abbr[0],
+            rel: abbr[1],
+          ));
+
+      if (orderbook is Orderbook) {
+        orderbooks[pair] = orderbook;
+      } else if (orderbook is ErrorString) {
+        Log('order_book_provider] _updateOrderBooksAsync',
+            '$pair: ${orderbook.error}');
+      }
+    }).toList();
+
+    await Future.wait(futures);
+
+    return orderbooks;
+  }
+
   Future<void> fullOrderbookUpdate() async {
     final pairs = await getOrderbookPairsWithBalance();
 
+    final orderbooks = await syncOrderbook._getOrderbooksAsync(pairs);
+
     _tickers = pairs;
     _depthTickers = pairs;
+    _orderBooks = orderbooks;
+    _notifyListeners();
 
-    await syncOrderbook._updateOrderBooks();
     await syncOrderbook._updateOrderbookDepth();
 
     // await syncOrderbook._saveOrderbookSnapshot();
