@@ -90,6 +90,9 @@ class AuthenticateBloc extends BlocBase {
     await mmSe.init(passphrase);
 
     await notifService.init();
+    if (loadSnapshot) {
+      await syncOrderbook.fullOrderbookUpdate();
+    }
 
     isLogin = true;
     _inIsLogin.add(true);
