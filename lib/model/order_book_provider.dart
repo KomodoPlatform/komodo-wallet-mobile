@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/pair.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import '../blocs/coins_bloc.dart';
 import '../model/coin.dart';
@@ -443,17 +444,45 @@ class SyncOrderbook {
     return orderbooks;
   }
 
+  Future<Map<String, OrderbookDepth>> _getOrderbookDepths(
+      Map<String, Orderbook> orderbooks) async {
+    final Map<String, OrderbookDepth> orderbookDepths = {};
+
+    List<Future> futures = orderbooks.entries.map((entry) async {
+      String pair = entry.key;
+      Orderbook orderbook = entry.value;
+
+      List<String> abbr = pair.split('/');
+      Pair pairObj = Pair(base: abbr[0], rel: abbr[1]);
+      Depth depth =
+          Depth(asks: orderbook.asks.length, bids: orderbook.bids.length);
+
+      orderbookDepths[pair] = OrderbookDepth(pair: pairObj, depth: depth);
+    }).toList();
+
+    await Future.wait(futures);
+
+    return orderbookDepths;
+  }
+
   Future<void> fullOrderbookUpdate() async {
     final pairs = await getOrderbookPairsWithBalance();
 
+    // Add existing pairs from _tickers
+    for (String ticker in _tickers) {
+      if (!pairs.contains(ticker)) {
+        pairs.add(ticker);
+      }
+    }
+
     final orderbooks = await syncOrderbook._getOrderbooksAsync(pairs);
+    final orderbookDepths = await syncOrderbook._getOrderbookDepths(orderbooks);
 
     _tickers = pairs;
     _depthTickers = pairs;
     _orderBooks = orderbooks;
+    _orderbooksDepth = orderbookDepths;
     _notifyListeners();
-
-    await syncOrderbook._updateOrderbookDepth();
 
     // await syncOrderbook._saveOrderbookSnapshot();
   }
