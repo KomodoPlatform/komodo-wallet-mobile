@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/packages/rebranding/rebranding_provider.dart';
 import 'add_coin_button.dart';
 import 'package:komodo_dex/packages/rebranding/rebranding_dialog.dart';
@@ -59,17 +60,19 @@ class _CoinsPageState extends State<CoinsPage> {
     _scrollController.addListener(_scrollListener);
     if (mmSe.running) coinsBloc.updateCoinBalances();
 
-    // Schedule the dialog to show after the current frame
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      final rebrandingNotifier =
-          Provider.of<RebrandingProvider>(context, listen: false);
+    // Subscribe to the outIsLogin stream
+    authBloc.outIsLogin.listen((isLogin) async {
+      if (isLogin) {
+        final rebrandingNotifier =
+            Provider.of<RebrandingProvider>(context, listen: false);
 
-      // Wait for the prefs to load
-      await rebrandingNotifier.prefsLoaded;
+        // Wait for the prefs to load
+        await rebrandingNotifier.prefsLoaded;
 
-      if (!rebrandingNotifier.closedPermanently &&
-          !rebrandingNotifier.closedThisSession) {
-        showRebrandingDialog(context);
+        if (!rebrandingNotifier.closedPermanently &&
+            !rebrandingNotifier.closedThisSession) {
+          showRebrandingDialog(context);
+        }
       }
     });
 
