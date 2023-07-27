@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -34,6 +35,7 @@ class _CoinsPageState extends State<CoinsPage> {
   double _heightScreen;
   double _heightSliver;
   double _widthScreen;
+  StreamSubscription<bool> _loginSubscription;
 
   // Rebranding
   Future<void> showRebrandingDialog(BuildContext context) async {
@@ -61,7 +63,7 @@ class _CoinsPageState extends State<CoinsPage> {
     if (mmSe.running) coinsBloc.updateCoinBalances();
 
     // Subscribe to the outIsLogin stream
-    authBloc.outIsLogin.listen((isLogin) async {
+    _loginSubscription = authBloc.outIsLogin.listen((isLogin) async {
       if (isLogin) {
         final rebrandingNotifier =
             Provider.of<RebrandingProvider>(context, listen: false);
@@ -77,6 +79,12 @@ class _CoinsPageState extends State<CoinsPage> {
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _loginSubscription.cancel();
+    super.dispose();
   }
 
   @override
