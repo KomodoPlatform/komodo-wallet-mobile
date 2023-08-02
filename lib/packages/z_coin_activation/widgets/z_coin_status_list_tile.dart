@@ -11,8 +11,6 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.
 import 'package:komodo_dex/packages/z_coin_activation/widgets/rotating_progress_indicator.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 
-enum SyncType { newTransactions, fullSync, specifiedDate }
-
 class ZCoinStatusWidget extends StatefulWidget {
   const ZCoinStatusWidget({Key key}) : super(key: key);
 
@@ -388,7 +386,10 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
               TextButton(
                 onPressed: () => Navigator.pop<Map<String, dynamic>>(
                   context,
-                  {'syncType': _syncType, 'selectedDate': _selectedDate},
+                  {
+                    'zhtlcSyncType': _syncType,
+                    'zhtlcSyncStartDate': _selectedDate
+                  },
                 ),
                 child: Text(appL10n.confirm),
               ),
@@ -459,4 +460,15 @@ void _showInProgressDialog(BuildContext context) {
       );
     },
   );
+}
+
+enum SyncType { newTransactions, fullSync, specifiedDate }
+
+String syncTypeToString(SyncType someEnum) {
+  return someEnum.toString().split('.').last;
+}
+
+SyncType stringToSyncType(String name) {
+  return SyncType.values
+      .firstWhere((e) => e.toString().split('.').last == name);
 }
