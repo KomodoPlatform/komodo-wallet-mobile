@@ -161,7 +161,7 @@ class AppConfig {
   // endpoint source code:
   // https://github.com/KomodoPlatform/mobile_endpoints_proxy/blob/main/main.py#L95
   String get cryptoPricesEndpoint =>
-      'https://prices.komodo.earth:1313/api/v2/tickers?expire_at=600';
+      'https://prices.komodo.earth/api/v2/tickers?expire_at=600';
   String get cryptoPricesFallback =>
       'https://api.coingecko.com/api/v3/simple/price?ids=';
 
