@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
+import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import '../../../blocs/coins_bloc.dart';
 import '../../../blocs/dialog_bloc.dart';
@@ -23,7 +24,6 @@ import '../../../widgets/primary_button.dart';
 import 'build_selected_coins.dart';
 
 import 'build_filter_coin.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectCoinsPage extends StatefulWidget {
   const SelectCoinsPage({this.coinsToActivate});
@@ -436,30 +436,5 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     // has battery saver disabled.
 
     return true;
-  }
-
-  Future<void> saveZhtlcActivationPrefs(
-    Map<String, dynamic> zhtlcActivationPrefs,
-  ) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    prefs.setString(
-      'zhtlcSyncType',
-      syncTypeToString(zhtlcActivationPrefs['zhtlcSyncType']),
-    );
-    prefs.setString(
-      'zhtlcSyncStartDate',
-      zhtlcActivationPrefs['zhtlcSyncStartDate'].toIso8601String(),
-    );
-  }
-
-  Future<Map<String, dynamic>> loadZhtlcActivationPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    return {
-      'zhtlcSyncType': stringToSyncType(prefs.getString('zhtlcSyncType')),
-      'zhtlcSyncStartDate':
-          DateTime.parse(prefs.getString('zhtlcSyncStartDate'))
-    };
   }
 }

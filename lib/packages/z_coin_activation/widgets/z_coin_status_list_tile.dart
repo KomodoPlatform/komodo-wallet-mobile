@@ -8,6 +8,7 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_blo
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
+import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/rotating_progress_indicator.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 
@@ -460,15 +461,4 @@ void _showInProgressDialog(BuildContext context) {
       );
     },
   );
-}
-
-enum SyncType { newTransactions, fullSync, specifiedDate }
-
-String syncTypeToString(SyncType someEnum) {
-  return someEnum.toString().split('.').last;
-}
-
-SyncType stringToSyncType(String name) {
-  return SyncType.values
-      .firstWhere((e) => e.toString().split('.').last == name);
 }
