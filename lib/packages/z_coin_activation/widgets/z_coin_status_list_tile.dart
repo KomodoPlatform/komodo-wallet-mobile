@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -10,6 +10,8 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_sta
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/rotating_progress_indicator.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+
+enum SyncType { newTransactions, fullSync, specifiedDate }
 
 class ZCoinStatusWidget extends StatefulWidget {
   const ZCoinStatusWidget({Key key}) : super(key: key);
@@ -22,8 +24,8 @@ class ZCoinStatusWidget extends StatefulWidget {
   static BlocWidgetListener get listener =>
       (context, state) => _ZCoinStatusWidgetState.listener(context, state);
 
-  static Future<bool> Function(BuildContext) get showConfirmationDialog =>
-      _showConfirmationDialog;
+  static Future<Map<String, dynamic>> Function(BuildContext)
+      get showConfirmationDialog => _showConfirmationDialog;
 
   @override
   State<ZCoinStatusWidget> createState() => _ZCoinStatusWidgetState();
@@ -224,53 +226,173 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
   }
 }
 
-Future<bool> _showConfirmationDialog(BuildContext context) {
+Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
   final appL10n = AppLocalizations.of(context);
 
-  return showDialog<bool>(
+  SyncType _syncType = SyncType.newTransactions;
+  DateTime _lastDate = DateTime.now().subtract(Duration(days: 1));
+  DateTime _selectedDate = _lastDate;
+
+  return showDialog<Map<String, dynamic>>(
     context: context,
     barrierDismissible: false,
     builder: (context) {
-      return AlertDialog(
-        title: Text('Activate ZHTLC coins?'),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-            color: Theme.of(context).colorScheme.error,
-          ),
-        ),
-        content: Column(
-          children: [
-            Text(
-              'This will take a while and the app must be kept in the foreground. '
-              '\nTerminating the app while activation is in progress could lead to issues.',
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Text('Scan for past Z-Coin (ZHTLC) transactions?'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.error,
+              ),
             ),
-            if (Platform.isIOS) ...[
-              SizedBox(height: 16),
-              ListTile(
-                leading: Icon(
-                  Icons.warning,
-                  color: Colors.amber,
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  Text(
+                    'You have selected to activate a ZHTLC asset. Which transactions would you like to sync?',
+                  ),
+                  // Radio list tiles
+                  RadioListTile<SyncType>(
+                    title: const Text('Sync new transactions'),
+                    value: SyncType.newTransactions,
+                    groupValue: _syncType,
+                    onChanged: (SyncType value) {
+                      setState(() {
+                        _syncType = value;
+                      });
+                    },
+                  ),
+                  RadioListTile<SyncType>(
+                    title: const Text('Full sync'),
+                    value: SyncType.fullSync,
+                    groupValue: _syncType,
+                    onChanged: (SyncType value) {
+                      setState(() {
+                        _syncType = value;
+                      });
+                    },
+                  ),
+                  RadioListTile<SyncType>(
+                    title: const Text('Sync from specified date'),
+                    value: SyncType.specifiedDate,
+                    groupValue: _syncType,
+                    onChanged: (SyncType value) {
+                      setState(() {
+                        _syncType = value;
+                      });
+                    },
+                  ),
+                  // Date Picker
+                  _syncType == SyncType.specifiedDate
+                      ? Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                final DateTime pickedDate =
+                                    await showDatePicker(
+                                  context: context,
+                                  initialDate: _selectedDate,
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime.now(),
+                                );
+                                if (pickedDate != null &&
+                                    pickedDate != _selectedDate)
+                                  setState(() {
+                                    _selectedDate = pickedDate;
+                                  });
+                              },
+                              child: Text('Select Date'),
+                            ),
+                            // Display the selected date
+                            Text(
+                              "Start Date: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}",
+                            ),
+                          ],
+                        )
+                      : SizedBox.shrink(),
+
+                  SizedBox(height: 16),
+                  // Sync Type Description
+                  if (_syncType == SyncType.newTransactions)
+                    Text(
+                      'Your wallet will show future transactions made after activation associated with your public key.',
+                    ),
+                  if (_syncType == SyncType.fullSync)
+                    Text(
+                      'Your wallet will show all past transactions associated with your public key. This will take significant storage and time as all blocks will be downloaded and scanned.',
+                    ),
+                  if (_syncType == SyncType.specifiedDate)
+                    Text(
+                      'Your wallet will show all past transactions associated with your public key made after the specified date.',
+                    ),
+
+                  if (Platform.isIOS) ...[
+                    SizedBox(height: 16),
+                    ListTile(
+                      leading: Icon(
+                        Icons.warning,
+                        color: Colors.amber,
+                      ),
+                      dense: true,
+                      title: Text(
+                        'Warning: Minimizing the app on iOS will terminate the activation process.',
+                        style: TextStyle(color: Colors.amber),
+                      ),
+                    )
+                  ],
+                  Column(
+                    children: [
+                      SizedBox(height: 16),
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.amber,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Row(
+                            children: const <Widget>[
+                              Icon(
+                                Icons.warning,
+                                color: Colors.amber,
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  'This will take a while and the app must be kept in the foreground. Terminating the app while activation is in progress could lead to issues.',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () =>
+                    Navigator.pop<Map<String, dynamic>>(context, null),
+                child: Text(appL10n.cancelButton),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop<Map<String, dynamic>>(
+                  context,
+                  {'syncType': _syncType, 'selectedDate': _selectedDate},
                 ),
-                dense: true,
-                title: Text(
-                  'Warning: Minimizing the app on iOS will terminate the activation process.',
-                  style: TextStyle(color: Colors.amber),
-                ),
-              )
+                child: Text(appL10n.confirm),
+              ),
             ],
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop<bool>(context, false),
-            child: Text(appL10n.cancelButton),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop<bool>(context, true),
-            child: Text(appL10n.confirm),
-          ),
-        ],
+          );
+        },
       );
     },
   );
