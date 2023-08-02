@@ -410,8 +410,11 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       final isDeviceSupported = await _devicePermitsIntensiveWork(context);
       if (!isDeviceSupported) return false;
 
-      final didAccept = await ZCoinStatusWidget.showConfirmationDialog(context);
-      if (!didAccept) return false;
+      final zcoinActivationPrefs =
+          await ZCoinStatusWidget.showConfirmationDialog(context);
+      if (zcoinActivationPrefs == null) return false;
+      // TODO: Use zcoinActivationPrefs as {'syncType': SyncType, 'selectedDate': DateTime}
+      // enum SyncType { newTransactions, fullSync, specifiedDate } is in z_coin_status_list_tile.dart
     }
 
     return true;
