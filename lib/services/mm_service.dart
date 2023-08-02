@@ -312,6 +312,19 @@ class MMService {
     _directorySizeCache['$dirPath**$endsWith'] = size;
   }
 
+  List<dynamic> removeZhtlcCheckPointBlock(List<dynamic> coinsJson) {
+    return coinsJson.map((dynamic coinDynamic) {
+      Map<String, dynamic> coin = coinDynamic as Map<String, dynamic>;
+      if (coin.containsKey('protocol') &&
+          coin['protocol'].containsKey('type') &&
+          coin['protocol']['type'] == 'ZHTLC' &&
+          coin['protocol']['protocol_data'].containsKey('check_point_block')) {
+        coin['protocol']['protocol_data'].remove('check_point_block');
+      }
+      return coin;
+    }).toList();
+  }
+
   /// returns directory size in MB
   static double dirStatSync(String dirPath, {String endsWith = 'log'}) {
     int totalSize = 0;
@@ -354,7 +367,7 @@ class MMService {
       userhome: filesPath,
       passphrase: passphrase,
       rpcPassword: rpcPass,
-      coins: await readJsonCoinInit(),
+      coins: removeZhtlcCheckPointBlock(await readJsonCoinInit()),
       dbdir: filesPath,
       allowWeakPassword: false,
       rpcPort: appConfig.rpcPort,
