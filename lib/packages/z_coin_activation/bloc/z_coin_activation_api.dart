@@ -35,6 +35,32 @@ class ZCoinActivationApi {
     Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
 
     final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
+    SyncType zhtlcSyncType = zhtlcActivationPrefs['zhtlcSyncType'];
+    DateTime savedZhtlcSyncStartDate =
+        zhtlcActivationPrefs['zhtlcSyncStartDate'];
+
+    Map<String, dynamic> activationParams = {
+      'activation_params': {
+        'mode': {
+          'rpc': 'Light',
+          'rpc_data': {
+            'electrum_servers': Coin.getServerList(coin.serverList),
+            'light_wallet_d_servers': coin.lightWalletDServers
+          }
+        },
+        'scan_blocks_per_iteration': 150,
+        'scan_interval_ms': 150,
+        'zcash_params_path': dir.path + folder
+      }
+    };
+
+    if (zhtlcSyncType == SyncType.specifiedDate) {
+      activationParams['sync_starting_date'] =
+          savedZhtlcSyncStartDate.millisecondsSinceEpoch;
+    } else if (zhtlcSyncType == SyncType.fullSync) {
+      activationParams['sync_starting_date'] =
+          DateTime.utc(2000, 1, 1).millisecondsSinceEpoch;
+    }
 
     final response = await http.post(
       Uri.parse(_baseUrl),
@@ -45,21 +71,7 @@ class ZCoinActivationApi {
         'mmrpc': '2.0',
         'params': {
           'ticker': ticker,
-          'activation_params': {
-            'sync_starting_date':
-                (zhtlcActivationPrefs['zhtlcSyncStartDate'] as DateTime)
-                    .millisecondsSinceEpoch,
-            'mode': {
-              'rpc': 'Light',
-              'rpc_data': {
-                'electrum_servers': Coin.getServerList(coin.serverList),
-                'light_wallet_d_servers': coin.lightWalletDServers
-              }
-            },
-            'scan_blocks_per_iteration': 150,
-            'scan_interval_ms': 150,
-            'zcash_params_path': dir.path + folder
-          },
+          'activation_params': activationParams,
         },
       }),
     );
