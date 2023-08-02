@@ -8,6 +8,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
+import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_status.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -33,6 +34,8 @@ class ZCoinActivationApi {
     final dir = await applicationDocumentsDirectory;
     Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
 
+    final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
+
     final response = await http.post(
       Uri.parse(_baseUrl),
       headers: {'Content-Type': 'application/json'},
@@ -43,6 +46,9 @@ class ZCoinActivationApi {
         'params': {
           'ticker': ticker,
           'activation_params': {
+            'sync_starting_date':
+                (zhtlcActivationPrefs['zhtlcSyncStartDate'] as DateTime)
+                    .millisecondsSinceEpoch,
             'mode': {
               'rpc': 'Light',
               'rpc_data': {
