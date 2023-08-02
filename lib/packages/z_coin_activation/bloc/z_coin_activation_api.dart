@@ -227,22 +227,6 @@ class ZCoinActivationApi {
     await storage.delete(key: await taskIdKey(ticker));
   }
 
-  double calculateProgressPercentage(Map<String, dynamic> details) {
-    if (details != null && details.containsKey('BuildingWalletDb')) {
-      final buildingDbDetails =
-          details['BuildingWalletDb'] as Map<String, dynamic>;
-      if (buildingDbDetails != null &&
-          buildingDbDetails.containsKey('current_scanned_block') &&
-          buildingDbDetails.containsKey('latest_block')) {
-        final currentBlock = buildingDbDetails['current_scanned_block'] as int;
-        final latestBlock = buildingDbDetails['latest_block'] as int;
-
-        return currentBlock / latestBlock;
-      }
-    }
-    return null;
-  }
-
   Future<List<String>> activatedZCoins() async {
     final response = await http.post(
       Uri.parse(_baseUrl),
