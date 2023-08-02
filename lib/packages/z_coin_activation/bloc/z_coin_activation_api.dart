@@ -26,6 +26,8 @@ class ZCoinActivationApi {
 
   bool _paramsDownloaded = false;
 
+  Map<String, int> firstScannedBlocks = {};
+
   /// Creates a new activation task for the given coin.
   Future<int> initiateActivation(String ticker) async {
     await musicService.play(MusicMode.ACTIVE);
@@ -326,12 +328,13 @@ class ZCoinActivationApi {
         : jsonDecode(responseBody['result']) as Map<String, dynamic>;
     String status = result['status'];
     dynamic details = result['details'];
-    Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
 
-    int blockOffset = 0;
-    if (coin.type == CoinType.zhtlc) {
-      blockOffset = coin.protocol.protocolData.checkPointBlock?.height ?? 0;
-    }
+    // checkPointBlock will be removed
+    //Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
+    // int blockOffset = 0;
+    // if (coin.type == CoinType.zhtlc) {
+    //   blockOffset = coin.protocol.protocolData.checkPointBlock?.height ?? 0;
+    // }
 
     // use range from checkpoint block to present
     if (status == 'Ok') {
@@ -357,18 +360,40 @@ class ZCoinActivationApi {
       } else if (details == 'GeneratingTransaction') {
         _progress = 80;
         _messageDetails = 'Generating $ticker Transaction';
-      } else if (details.containsKey('UpdatingBlocksCache')) {
-        int n = details['UpdatingBlocksCache']['current_scanned_block'] -
-            blockOffset;
-        int d = details['UpdatingBlocksCache']['latest_block'] - blockOffset;
-        _progress = 5 + (n / d * 15).toInt();
-        _messageDetails = 'Updating $ticker blocks cache';
-      } else if (details.containsKey('BuildingWalletDb')) {
-        int n =
-            details['BuildingWalletDb']['current_scanned_block'] - blockOffset;
-        int d = details['BuildingWalletDb']['latest_block'] - blockOffset;
-        _progress = 20 + (n / d * 80).toInt();
-        _messageDetails = 'Building $ticker wallet database';
+      } else if (details.containsKey('UpdatingBlocksCache') ||
+          details.containsKey('BuildingWalletDb')) {
+        // Determine whether we are in the building phase
+        bool isBuildingPhase = details.containsKey('BuildingWalletDb');
+
+        // Select appropriate details based on the phase
+        dynamic currentDetails = details[
+            isBuildingPhase ? 'BuildingWalletDb' : 'UpdatingBlocksCache'];
+
+        // Fetch block details
+        int latestBlock = currentDetails['latest_block'];
+        int currentScannedBlock = currentDetails['current_scanned_block'];
+
+        // If it's the first scan for this ticker, store the current block as the first scanned block
+        if (!firstScannedBlocks.containsKey(ticker)) {
+          firstScannedBlocks[ticker] = currentScannedBlock;
+        }
+
+        // Retrieve the first scanned block for this ticker
+        int firstScannedBlock = firstScannedBlocks[ticker];
+
+        // Compute number of blocks scanned so far and total blocks
+        int numBlocksScanned = currentScannedBlock - firstScannedBlock;
+        int totalBlocks = latestBlock - firstScannedBlock;
+
+        if (totalBlocks == 0) totalBlocks = numBlocksScanned;
+
+        _progress = isBuildingPhase
+            ? (20 + ((numBlocksScanned / totalBlocks) * 80).toInt())
+            : (5 + ((numBlocksScanned / totalBlocks) * 15).toInt());
+
+        _messageDetails = isBuildingPhase
+            ? 'Building $ticker wallet database'
+            : 'Updating $ticker blocks cache';
       } else {
         _progress = 5;
         _messageDetails = 'Activating $ticker';
