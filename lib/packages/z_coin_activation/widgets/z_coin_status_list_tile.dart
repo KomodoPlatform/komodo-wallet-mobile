@@ -342,38 +342,40 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                       ),
                     )
                   ],
-                  Column(
-                    children: [
-                      SizedBox(height: 16),
-                      Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.amber,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
+                  if (_syncType == SyncType.fullSync ||
+                      _syncType == SyncType.specifiedDate)
+                    Column(
+                      children: [
+                        SizedBox(height: 16),
+                        Container(
                           padding: EdgeInsets.all(8),
-                          child: Row(
-                            children: const <Widget>[
-                              Icon(
-                                Icons.warning,
-                                color: Colors.amber,
-                              ),
-                              SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  'This will take a while and the app must be kept in the foreground. Terminating the app while activation is in progress could lead to issues.',
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.amber,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Row(
+                              children: const <Widget>[
+                                Icon(
+                                  Icons.warning,
+                                  color: Colors.amber,
                                 ),
-                              ),
-                            ],
+                                SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'This will take a while and the app must be kept in the foreground. Terminating the app while activation is in progress could lead to issues.',
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
+                      ],
+                    )
                 ],
               ),
             ),
