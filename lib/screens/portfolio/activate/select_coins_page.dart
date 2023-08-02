@@ -23,6 +23,7 @@ import '../../../widgets/primary_button.dart';
 import 'build_selected_coins.dart';
 
 import 'build_filter_coin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectCoinsPage extends StatefulWidget {
   const SelectCoinsPage({this.coinsToActivate});
@@ -410,11 +411,13 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       final isDeviceSupported = await _devicePermitsIntensiveWork(context);
       if (!isDeviceSupported) return false;
 
-      final zcoinActivationPrefs =
+      final zhtlcActivationPrefs =
           await ZCoinStatusWidget.showConfirmationDialog(context);
-      if (zcoinActivationPrefs == null) return false;
-      // TODO: Use zcoinActivationPrefs as {'syncType': SyncType, 'selectedDate': DateTime}
+      if (zhtlcActivationPrefs == null) return false;
+
       // enum SyncType { newTransactions, fullSync, specifiedDate } is in z_coin_status_list_tile.dart
+      // Use zhtlcActivationPrefs as { 'zhtlcSyncType': SyncType, 'zhtlcSyncStartDate': DateTime }
+      await saveZhtlcActivationPrefs(zhtlcActivationPrefs);
     }
 
     return true;
@@ -433,5 +436,30 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     // has battery saver disabled.
 
     return true;
+  }
+
+  Future<void> saveZhtlcActivationPrefs(
+    Map<String, dynamic> zhtlcActivationPrefs,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    prefs.setString(
+      'zhtlcSyncType',
+      syncTypeToString(zhtlcActivationPrefs['zhtlcSyncType']),
+    );
+    prefs.setString(
+      'zhtlcSyncStartDate',
+      zhtlcActivationPrefs['zhtlcSyncStartDate'].toIso8601String(),
+    );
+  }
+
+  Future<Map<String, dynamic>> loadZhtlcActivationPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    return {
+      'zhtlcSyncType': stringToSyncType(prefs.getString('zhtlcSyncType')),
+      'zhtlcSyncStartDate':
+          DateTime.parse(prefs.getString('zhtlcSyncStartDate'))
+    };
   }
 }
