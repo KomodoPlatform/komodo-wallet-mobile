@@ -8,6 +8,7 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_eve
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_repository.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
+import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_status.dart';
 
 // TODO: Localize messages
@@ -35,6 +36,9 @@ class ZCoinActivationBloc
         add(ZCoinActivationStatusRequested());
         return;
       }
+
+      final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
+      SyncType zhtlcSyncType = zhtlcActivationPrefs['zhtlcSyncType'];
 
       emit(ZCoinActivationInProgess(
         progress: 0,
@@ -71,13 +75,14 @@ class ZCoinActivationBloc
 
         final eta = calculateETA(overallProgress);
 
-        // if (shouldShowNewProgress) {
-        _updateNotification(
-          coinStatus,
-          overallProgress: overallProgress,
-          eta: eta,
-        );
-        // }
+        if (zhtlcSyncType !=
+            SyncType.newTransactions /* && shouldShowNewProgress */) {
+          _updateNotification(
+            coinStatus,
+            overallProgress: overallProgress,
+            eta: eta,
+          );
+        }
 
         return ZCoinActivationInProgess(
           progress: shouldShowNewProgress ? overallProgress : lastProgress,
