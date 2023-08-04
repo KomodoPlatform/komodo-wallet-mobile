@@ -42,18 +42,16 @@ class ZCoinActivationApi {
         zhtlcActivationPrefs['zhtlcSyncStartDate'];
 
     Map<String, dynamic> activationParams = {
-      'activation_params': {
-        'mode': {
-          'rpc': 'Light',
-          'rpc_data': {
-            'electrum_servers': Coin.getServerList(coin.serverList),
-            'light_wallet_d_servers': coin.lightWalletDServers
-          }
-        },
-        'scan_blocks_per_iteration': 150,
-        'scan_interval_ms': 150,
-        'zcash_params_path': dir.path + folder
-      }
+      'mode': {
+        'rpc': 'Light',
+        'rpc_data': {
+          'electrum_servers': Coin.getServerList(coin.serverList),
+          'light_wallet_d_servers': coin.lightWalletDServers
+        }
+      },
+      'scan_blocks_per_iteration': 150,
+      'scan_interval_ms': 150,
+      'zcash_params_path': dir.path + folder
     };
 
     if (zhtlcSyncType == SyncType.specifiedDate) {
