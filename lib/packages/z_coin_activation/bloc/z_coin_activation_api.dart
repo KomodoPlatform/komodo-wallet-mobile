@@ -56,10 +56,10 @@ class ZCoinActivationApi {
 
     if (zhtlcSyncType == SyncType.specifiedDate) {
       activationParams['sync_starting_date'] =
-          savedZhtlcSyncStartDate.millisecondsSinceEpoch;
+          savedZhtlcSyncStartDate.millisecondsSinceEpoch / 1000;
     } else if (zhtlcSyncType == SyncType.fullSync) {
       activationParams['sync_starting_date'] =
-          DateTime.utc(2000, 1, 1).millisecondsSinceEpoch;
+          DateTime.utc(2000, 1, 1).millisecondsSinceEpoch / 1000;
     }
 
     final response = await http.post(
