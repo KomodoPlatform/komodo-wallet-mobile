@@ -91,7 +91,7 @@ public class MainActivity extends FlutterFragmentActivity {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationChannel channel = new NotificationChannel("com.komodoplatform.atomicdex/notification",
           "General notifications", NotificationManager.IMPORTANCE_HIGH);
-      channel.setDescription("AtomicDEX general notifications");
+      channel.setDescription("Komodo Wallet general notifications");
       channel.enableLights(true);
       channel.setLightColor(0xFF64ffbf);
       channel.enableVibration(true);
@@ -111,7 +111,7 @@ public class MainActivity extends FlutterFragmentActivity {
     NotificationCompat.Builder builder = new NotificationCompat
     .Builder(activity,
         "com.komodoplatform.atomicdex/notification")
-        .setSmallIcon(R.mipmap.launcher_icon)
+        .setSmallIcon(R.mipmap.ic_launcher_round)
         .setContentTitle(title)
         .setContentText(text)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)

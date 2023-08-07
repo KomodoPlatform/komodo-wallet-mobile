@@ -1566,7 +1566,6 @@ class AppLocalizations {
       Intl.message('Close preview', name: 'closePreview');
   String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
 
-  // TODO: localize this message for all languages
   String get scrollToContinue =>
       Intl.message('Scroll to bottom to continue...', name: 'scrollToContinue');
 
@@ -1801,6 +1800,14 @@ class AppLocalizations {
       Intl.message('Show more', name: 'simpleTradeShowMore');
 
   String get noCoinFound => Intl.message('No coin found', name: 'noCoinFound');
+
+  // Rebranding
+  String get rebrandingAnnouncement => Intl.message(
+      "It's a new era! We have officially changed our name from 'AtomicDEX' to 'Komodo Wallet'",
+      name: 'rebrandingAnnouncement');
+
+  String get officialPressRelease =>
+      Intl.message('Official press release', name: 'officialPressRelease');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

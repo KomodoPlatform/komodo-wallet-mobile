@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/packages/rebranding/rebranding_dialog.dart';
 import '../../../localizations.dart';
 import '../../../model/feed_provider.dart';
 import '../../feed/news/build_news_item.dart';
@@ -47,6 +48,7 @@ class _NewsTabState extends State<NewsTab> {
 
     return Column(
       children: <Widget>[
+        RebrandingDialog(isModal: false),
         _buildUpdateIndicator(),
         Expanded(
           child: RefreshIndicator(

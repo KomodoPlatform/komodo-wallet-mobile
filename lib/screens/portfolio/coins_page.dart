@@ -1,10 +1,15 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/packages/rebranding/rebranding_provider.dart';
 import 'add_coin_button.dart';
+import 'package:komodo_dex/packages/rebranding/rebranding_dialog.dart';
 import '../../../../blocs/coins_bloc.dart';
 import '../../../../blocs/settings_bloc.dart';
 import '../../../../localizations.dart';
@@ -30,6 +35,20 @@ class _CoinsPageState extends State<CoinsPage> {
   double _heightScreen;
   double _heightSliver;
   double _widthScreen;
+  StreamSubscription<bool> _loginSubscription;
+
+  // Rebranding
+  Future<void> showRebrandingDialog(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: true, // allow dismiss when clicking outside
+      builder: (BuildContext context) => RebrandingDialog(),
+    ).then((_) {
+      // This is called when the dialog is dismissed
+      Provider.of<RebrandingProvider>(context, listen: false)
+          .closeThisSession();
+    });
+  }
 
   void _scrollListener() {
     setState(() {
@@ -42,7 +61,30 @@ class _CoinsPageState extends State<CoinsPage> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     if (mmSe.running) coinsBloc.updateCoinBalances();
+
+    // Subscribe to the outIsLogin stream
+    _loginSubscription = authBloc.outIsLogin.listen((isLogin) async {
+      if (isLogin) {
+        final rebrandingNotifier =
+            Provider.of<RebrandingProvider>(context, listen: false);
+
+        // Wait for the prefs to load
+        await rebrandingNotifier.prefsLoaded;
+
+        if (!rebrandingNotifier.closedPermanently &&
+            !rebrandingNotifier.closedThisSession) {
+          showRebrandingDialog(context);
+        }
+      }
+    });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _loginSubscription.cancel();
+    super.dispose();
   }
 
   @override

@@ -236,7 +236,7 @@ class SwapShareCard extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             const Text(
-                              'Download AtomicDEX on atomicdex.io',
+                              'Download Komodo Wallet on atomicdex.io',
                               style: TextStyle(fontSize: 6),
                             ),
                           ],
