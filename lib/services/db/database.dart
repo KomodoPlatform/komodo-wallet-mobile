@@ -200,6 +200,13 @@ class Db {
       )
     ''');
 
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS OrderbookSnapshot (
+        id INTEGER PRIMARY KEY,
+        snapshot TEXT
+      )
+    ''');
+
     return db;
   }
 
@@ -541,24 +548,55 @@ class Db {
     } catch (_) {}
   }
 
-  static Future<String> getWalletSnapshot() async {
-    final Wallet wallet = await getCurrentWallet();
+  static Future<String> getWalletSnapshot({Wallet wallet}) async {
+    wallet ??= await getCurrentWallet();
+
     if (wallet == null) return null;
 
     final Database db = await Db.db;
+
     List<Map<String, dynamic>> maps;
     try {
-      maps = await db.query('WalletSnapshot');
+      maps = await db.query(
+        'WalletSnapshot',
+        where: 'wallet_id = ?',
+        whereArgs: [wallet.id],
+      );
     } catch (_) {}
-    if (maps == null) return null;
 
-    final Map<String, dynamic> entry = maps.firstWhere(
-      (item) => item['wallet_id'] == wallet.id,
-      orElse: () => null,
-    );
+    if (maps == null || maps.isEmpty) return null;
 
-    if (entry == null) return null;
-    return entry['snapshot'];
+    return maps.first['snapshot'];
+  }
+
+  static Future<void> saveOrderbookSnapshot(String jsonStr) async {
+    final Database db = await Db.db;
+    try {
+      await db.insert(
+          'OrderbookSnapshot', <String, dynamic>{'id': 1, 'snapshot': jsonStr},
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    } catch (e) {
+      print('Error saving orderbook snapshot: $e');
+    }
+  }
+
+  static Future<String> getOrderbookSnapshot() async {
+    final Database db = await Db.db;
+
+    List<Map<String, dynamic>> maps;
+    try {
+      maps = await db.query(
+        'OrderbookSnapshot',
+        where: 'id = ?',
+        whereArgs: [1],
+      );
+    } catch (e) {
+      print('Error getting orderbook snapshot: $e');
+    }
+
+    if (maps == null || maps.isEmpty) return null;
+
+    return maps.first['snapshot'];
   }
 
   static Future<WalletSecuritySettings>
