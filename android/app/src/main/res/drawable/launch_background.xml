@@ -3,10 +3,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/background_color" />
 
-    <!-- You can insert your own image assets here -->
     <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@mipmap/launcher_icon" />
+        <bitmap android:gravity="center" android:src="@mipmap/launcher_icon_foreground" />
     </item>
 </layer-list>

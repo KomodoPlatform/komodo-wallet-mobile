@@ -574,7 +574,7 @@ class _SettingPageState extends State<SettingPage> {
       }
       log.sink.write('\n\n--- / my recent swaps ---\n\n');
       // TBD: Replace these with a pretty-printed metrics JSON
-      log.sink.write('atomicDEX mobile ${packageInfo.version} $os\n');
+      log.sink.write('Komodo Wallet ${packageInfo.version} $os\n');
       log.sink.write('mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
       log.sink.write('netid ${mmSe.netid}\n');
       await log.sink.flush();
@@ -609,7 +609,7 @@ class _SettingPageState extends State<SettingPage> {
     mainBloc.isUrlLaucherIsOpen = true;
     await Share.shareFiles([af.path],
         mimeTypes: ['application/octet-stream'],
-        subject: 'atomicDEX logs at ${DateTime.now().toIso8601String()}');
+        subject: 'Komodo Wallet logs at ${DateTime.now().toIso8601String()}');
   }
 
   Future<void> _shareFileDialog() async {
