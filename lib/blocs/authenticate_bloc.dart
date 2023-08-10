@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:komodo_dex/model/order_book_provider.dart';
+
 import '../blocs/coins_bloc.dart';
 import '../blocs/main_bloc.dart';
 import '../blocs/media_bloc.dart';
@@ -71,7 +73,13 @@ class AuthenticateBloc extends BlocBase {
   Future<void> login(String passphrase, String password,
       {bool loadSnapshot = true}) async {
     mainBloc.setCurrentIndexTab(0);
-    walletBloc.setCurrentWallet(await Db.getCurrentWallet());
+
+    final currentWallet = await Db.getCurrentWallet();
+    walletBloc.setCurrentWallet(currentWallet);
+    if (loadSnapshot) {
+      await coinsBloc.loadWalletSnapshot(wallet: currentWallet);
+    }
+
     await walletSecuritySettingsProvider.getCurrentSettingsFromDb();
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -79,11 +87,12 @@ class AuthenticateBloc extends BlocBase {
     await EncryptionTool().write('passphrase', passphrase);
     prefs.setBool('isPassphraseIsSaved', true);
 
-    if (loadSnapshot) await coinsBloc.loadWalletSnapshot();
-
     await mmSe.init(passphrase);
 
     await notifService.init();
+    if (loadSnapshot) {
+      await syncOrderbook.fullOrderbookUpdate();
+    }
 
     isLogin = true;
     _inIsLogin.add(true);
