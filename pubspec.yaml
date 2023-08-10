@@ -181,8 +181,11 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path_ios: "assets/branding/logo_app.png"
-  image_path_android: "assets/branding/logo_app.png"
+  remove_alpha_ios: true
+  image_path: "assets/branding/logo_app.png"
+  image_path_ios: "assets/branding/ios_app_icon.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/branding/ic_launcher.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -204,6 +207,7 @@ flutter:
   - assets/swap_share/
   - assets/coins.json
   - assets/coins_config.json
+  - assets/rebranding/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

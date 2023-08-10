@@ -43,6 +43,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_config/theme_data.dart';
 import 'model/multi_order_provider.dart';
+import 'packages/rebranding/rebranding_provider.dart';
 import 'model/startup_provider.dart';
 import 'utils/utils.dart';
 import 'widgets/shared_preferences_builder.dart';
@@ -126,7 +127,10 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ),
             ChangeNotifierProvider(
               create: (context) => walletSecuritySettingsProvider,
-            )
+            ),
+            ChangeNotifierProvider(
+              create: (context) => RebrandingProvider(),
+            ),
           ],
           child: const MyApp(),
         ));

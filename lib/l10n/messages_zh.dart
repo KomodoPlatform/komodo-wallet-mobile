@@ -49,7 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "${appName} 由${appCompanyShort}团队开发。${appCompanyShort}是最成熟的区块链项目之一，致力于开发创新解决方案，如原子交换、延迟工作量证明和可互操作的多链架构。";
 
   static m11(appName) =>
-      "当然。更多信息，您可以查阅我们的<a href=\"https://developers.atomicdex.io/\">开发者文档</a> ，或与我们联系询问合作细节。有具体的技术问题吗？｛appName｝开发者社区随时乐意提供帮助！";
+      "当然。更多信息，您可以查阅我们的<a href=\"https://developers.komodoplatform.com/\">开发者文档</a> ，或与我们联系询问合作细节。有具体的技术问题吗？｛appName｝开发者社区随时乐意提供帮助！";
 
   static m12(batteryLevelCritical) =>
       "您的电池电量过低 (${batteryLevelCritical}%) ，无法安全地进行交换。请先充电，然后重试。";
@@ -69,182 +69,188 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m19(abbr) => "输入${abbr}地址";
 
-  static m20(gas) => "燃料不足-至少使用｛gas｝Gwei";
+  static m20(selected, remains) => "您仍然可以启用${remains}，已选择：${selected}";
 
-  static m21(appName, appCompanyLong) =>
+  static m21(gas) => "燃料不足-至少使用｛gas｝Gwei";
+
+  static m22(appName, appCompanyLong) =>
       "This End-User License Agreement (\'EULA\') is a legal agreement between you and ${appCompanyLong}.\n\nThis EULA agreement governs your acquisition and use of our ${appName} mobile software (\'Software\', \'Mobile Application\', \'Application\' or \'App\') directly from ${appCompanyLong} or indirectly through a ${appCompanyLong} authorized entity, reseller or distributor (a \'Distributor\').\nPlease read this EULA agreement carefully before completing the installation process and using the ${appName} mobile software. It provides a license to use the ${appName} mobile software and contains warranty information and liability disclaimers.\nIf you register for the beta program of the ${appName} mobile software, this EULA agreement will also govern that trial. By clicking \'accept\' or installing and/or using the ${appName} mobile software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.\nIf you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.\nThis EULA agreement shall apply only to the Software supplied by ${appCompanyLong} herewith regardless of whether other software is referred to or described herein. The terms also apply to any ${appCompanyLong} updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.\n\nLICENSE GRANT\n\n${appCompanyLong} hereby grants you a personal, non-transferable, non-exclusive license to use the ${appName} mobile software on your devices in accordance with the terms of this EULA agreement.\n\nYou are permitted to load the ${appName} mobile software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the ${appName} mobile software.\n\nYou are not permitted to:\n(a) edit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things;\n(b) reproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose;\n(c) use the Software in any way which breaches any applicable local, national or international law;\n(d) use the Software for any purpose that ${appCompanyLong} considers is a breach of this EULA agreement.\n\nINTELLECTUAL PROPERTY AND OWNERSHIP\n\n${appCompanyLong} shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of ${appCompanyLong}.\n\n${appCompanyLong} reserves the right to grant licenses to use the Software to third parties.\n\nTERMINATION\n\nThis EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to ${appCompanyLong}.\nIt will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.\n\nGOVERNING LAW\n\nThis EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.\n\nThis document was last updated on January 31st, 2020";
 
-  static m22(appCompanyLong) =>
+  static m23(appCompanyLong) =>
       "${appCompanyLong} is the owner and/or authorised user of all trademarks, service marks, design marks, patents, copyrights, database rights and all other intellectual property appearing on or contained within the application, unless otherwise indicated. All information, text, material, graphics, software and advertisements on the application interface are copyright of ${appCompanyLong}, its suppliers and licensors, unless otherwise expressly indicated by ${appCompanyLong}. \nExcept as provided in the Terms, use of the application does not grant You any right, title, interest or license to any such intellectual property You may have access to on the application. \nWe own the rights, or have permission to use, the trademarks listed in our application. You are not authorised to use any of those trademarks without our written authorization – doing so would constitute a breach of our or another party’s intellectual property rights. \nAlternatively, we might authorise You to use the content in our application if You previously contact us and we agree in writing.";
 
-  static m23(appCompanyShort, appCompanyLong) =>
+  static m24(appCompanyShort, appCompanyLong) =>
       "${appCompanyLong} cannot guarantee the safety or security of your computer systems. We do not accept liability for any loss or corruption of electronically stored data or any damage to any computer system occurred in connection with the use of the application or of the user content.\n${appCompanyLong} makes no representation or warranty of any kind, express or implied, as to the operation of the application or the user content. You expressly agree that your use of the application is entirely at your sole risk.\nYou agree that the content provided in the application and the user content do not constitute financial product, legal or taxation advice, and You agree on not representing the user content or the application as such.\nTo the extent permitted by current legislation, the application is provided on an “as is, as available” basis.\n\n${appCompanyLong} expressly disclaims all responsibility for any loss, injury, claim, liability, or damage, or any indirect, incidental, special or consequential damages or loss of profits whatsoever resulting from, arising out of or in any way related to:\n(a) any errors in or omissions of the application and/or the user content, including but not limited to technical inaccuracies and typographical errors;\n(b) any third party website, application or content directly or indirectly accessed through links in the application, including but not limited to any errors or omissions;\n(c) the unavailability of the application or any portion of it;\n(d) your use of the application;\n(e) your use of any equipment or software in connection with the application.\n\nAny Services offered in connection with the Platform are provided on an \'as is\' basis, without any representation or warranty, whether express, implied or statutory. To the maximum extent permitted by applicable law, we specifically disclaim any implied warranties of title, merchantability, suitability for a particular purpose and/or non-infringement. We do not make any representations or warranties that use of the Platform will be continuous, uninterrupted, timely, or error-free.\nWe make no warranty that any Platform will be free from viruses, malware, or other related harmful material and that your ability to access any Platform will be uninterrupted. Any defects or malfunction in the product should be directed to the third party offering the Platform, not to ${appCompanyShort}.\nWe will not be responsible or liable to You for any loss of any kind, from action taken, or taken in reliance on the material or information contained in or through the Platform.\nThis is experimental and unfinished software. Use at your own risk. No warranty for any kind of damage. By using this application you agree to this terms and conditions.";
 
-  static m24(appCompanyLong) =>
+  static m25(appCompanyLong) =>
       "You agree and understand that there are risks associated with utilizing Services involving Virtual Currencies including, but not limited to, the risk of failure of hardware, software and internet connections, the risk of malicious software introduction, and the risk that third parties may obtain unauthorized access to information stored within your Wallet, including but not limited to your public and private keys. You agree and understand that ${appCompanyLong} will not be responsible for any communication failures, disruptions, errors, distortions or delays You may experience when using the Services, however caused.\nYou accept and acknowledge that there are risks associated with utilizing any virtual currency network, including, but not limited to, the risk of unknown vulnerabilities in or unanticipated changes to the network protocol. You acknowledge and accept that ${appCompanyLong} has no control over any cryptocurrency network and will not be responsible for any harm occurring as a result of such risks, including, but not limited to, the inability to reverse a transaction, and any losses in connection therewith due to erroneous or fraudulent actions.\nThe risk of loss in using Services involving Virtual Currencies may be substantial and losses may occur over a short period of time. In addition, price and liquidity are subject to significant fluctuations that may be unpredictable.\nVirtual Currencies are not legal tender and are not backed by any sovereign government. In addition, the legislative and regulatory landscape around Virtual Currencies is constantly changing and may affect your ability to use, transfer, or exchange Virtual Currencies.\nCFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 80.6% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether You understand how CFDs work and whether You can afford to take the high risk of losing your money.";
 
-  static m25(appCompanyLong) =>
+  static m26(appCompanyLong) =>
       "You agree to indemnify, defend and hold harmless ${appCompanyLong}, its officers, directors, employees, agents, licensors, suppliers and any third party information providers to the application from and against all losses, expenses, damages and costs, including reasonable lawyer fees, resulting from any violation of the Terms by You.\nYou also agree to indemnify ${appCompanyLong} against any claims that information or material which You have submitted to ${appCompanyLong} is in violation of any law or in breach of any third party rights (including, but not limited to, claims in respect of defamation, invasion of privacy, breach of confidence, infringement of copyright or infringement of any other intellectual property right).";
 
-  static m26(appCompanyLong) =>
+  static m27(appCompanyLong) =>
       "In order to be completed, any Virtual Currency transaction created with the ${appCompanyLong} must be confirmed and recorded in the Virtual Currency ledger associated with the relevant Virtual Currency network. Such networks are decentralized, peer-to-peer networks supported by independent third parties, which are not owned, controlled or operated by ${appCompanyLong}.\n${appCompanyLong} has no control over any Virtual Currency network and therefore cannot and does not ensure that any transaction details You submit via our Services will be confirmed on the relevant Virtual Currency network. You agree and understand that the transaction details You submit via our Services may not be completed, or may be substantially delayed, by the Virtual Currency network used to process the transaction. We do not guarantee that the Wallet can transfer title or right in any Virtual Currency or make any warranties whatsoever with regard to title.\nOnce transaction details have been submitted to a Virtual Currency network, we cannot assist You to cancel or otherwise modify your transaction or transaction details. ${appCompanyLong} has no control over any Virtual Currency network and does not have the ability to facilitate any cancellation or modification requests.\nIn the event of a Fork, ${appCompanyLong} may not be able to support activity related to your Virtual Currency. You agree and understand that, in the event of a Fork, the transactions may not be completed, completed partially, incorrectly completed, or substantially delayed. ${appCompanyLong} is not responsible for any loss incurred by You caused in whole or in part, directly or indirectly, by a Fork.\nIn no event shall ${appCompanyLong}, its affiliates and service providers, or any of their respective officers, directors, agents, employees or representatives, be liable for any lost profits or any special, incidental, indirect, intangible, or consequential damages, whether based on contract, tort, negligence, strict liability, or otherwise, arising out of or in connection with authorized or unauthorized use of the services, or this agreement, even if an authorized representative of ${appCompanyLong} has been advised of, has known of, or should have known of the possibility of such damages. \nFor example (and without limiting the scope of the preceding sentence), You may not recover for lost profits, lost business opportunities, or other types of special, incidental, indirect, intangible, or consequential damages. Some jurisdictions do not allow the exclusion or limitation of incidental or consequential damages, so the above limitation may not apply to You. \nWe will not be responsible or liable to You for any loss and take no responsibility for damages or claims arising in whole or in part, directly or indirectly from: \n(a) user error such as forgotten passwords, incorrectly constructed transactions, or mistyped Virtual Currency addresses; \n(b) server failure or data loss; \n(c) corrupted or otherwise non-performing Wallets or Wallet files; \n(d) unauthorized access to applications; \n(e) any unauthorized activities, including without limitation the use of hacking, viruses, phishing, brute forcing or other means of attack against the Services.";
 
-  static m27(appCompanyShort, appCompanyLong) =>
+  static m28(appCompanyShort, appCompanyLong) =>
       "For the avoidance of doubt, ${appCompanyLong} does not provide investment, tax or legal advice, nor does ${appCompanyLong} broker trades on your behalf. All ${appCompanyLong} trades are executed automatically, based on the parameters of your order instructions and in accordance with posted Trade execution procedures, and You are solely responsible for determining whether any investment, investment strategy or related transaction is appropriate for You based on your personal investment objectives, financial circumstances and risk tolerance. You should consult your legal or tax professional regarding your specific situation. Neither ${appCompanyShort} nor its owners, members, officers, directors, partners, consultants, nor anyone involved in the publication of this application, is a registered investment adviser or broker-dealer or associated person with a registered investment adviser or broker-dealer and none of the foregoing make any recommendation that the purchase or sale of crypto-assets or securities of any company profiled in the mobile Application is suitable or advisable for any person or that an investment or transaction in such crypto-assets or securities will be profitable. The information contained in the mobile Application is not intended to be, and shall not constitute, an offer to sell or the solicitation of any offer to buy any crypto-asset or security. The information presented in the mobile Application is provided for informational purposes only and is not to be treated as advice or a recommendation to make any specific investment or transaction. Please, consult with a qualified professional before making any decisions. The opinions and analysis included in this applications are based on information from sources deemed to be reliable and are provided “as is” in good faith. ${appCompanyShort} makes no representation or warranty, expressed, implied, or statutory, as to the accuracy or completeness of such information, which may be subject to change without notice. ${appCompanyShort} shall not be liable for any errors or any actions taken in relation to the above. Statements of opinion and belief are those of the authors and/or editors who contribute to this application, and are based solely upon the information possessed by such authors and/or editors. No inference should be drawn that ${appCompanyShort} or such authors or editors have any special or greater knowledge about the crypto-assets or companies profiled or any particular expertise in the industries or markets in which the profiled crypto-assets and companies operate and compete. Information on this application is obtained from sources deemed to be reliable; however, ${appCompanyShort} takes no responsibility for verifying the accuracy of such information and makes no representation that such information is accurate or complete. Certain statements included in this application may be forward-looking statements based on current expectations. ${appCompanyShort} makes no representation and provides no assurance or guarantee that such forward-looking statements will prove to be accurate. Persons using the ${appCompanyShort} application are urged to consult with a qualified professional with respect to an investment or transaction in any crypto-asset or company profiled herein. Additionally, persons using this application expressly represent that the content in this application is not and will not be a consideration in such persons’ investment or transaction decisions. Traders should verify independently information provided in the ${appCompanyShort} application by completing their own due diligence on any crypto-asset or company in which they are contemplating an investment or transaction of any kind and review a complete information package on that crypto-asset or company, which should include, but not be limited to, related blog updates and press releases. Past performance of profiled crypto-assets and securities is not indicative of future results. Crypto-assets and companies profiled on this site may lack an active trading market and invest in a crypto-asset or security that lacks an active trading market or trade on certain media, platforms and markets are deemed highly speculative and carry a high degree of risk. Anyone holding such crypto-assets and securities should be financially able and prepared to bear the risk of loss and the actual loss of his or her entire trade. The information in this application is not designed to be used as a basis for an investment decision. Persons using the ${appCompanyShort} application should confirm to their own satisfaction the veracity of any information prior to entering into any investment or making any transaction. The decision to buy or sell any crypto-asset or security that may be featured by ${appCompanyShort} is done purely and entirely at the reader’s own risk. As a reader and user of this application, You agree that under no circumstances will You seek to hold liable owners, members, officers, directors, partners, consultants or other persons involved in the publication of this application for any losses incurred by the use of information contained in this application ${appCompanyShort} and its contractors and affiliates may profit in the event the crypto-assets and securities increase or decrease in value. Such crypto-assets and securities may be bought or sold from time to time, even after ${appCompanyShort} has distributed positive information regarding the crypto-assets and companies. ${appCompanyShort} has no obligation to inform readers of its trading activities or the trading activities of any of its owners, members, officers, directors, contractors and affiliates and/or any companies affiliated with BC Relations’ owners, members, officers, directors, contractors and affiliates. ${appCompanyShort} and its affiliates may from time to time enter into agreements to purchase crypto-assets or securities to provide a method to reach their goals.";
 
-  static m28(appCompanyLong) =>
+  static m29(appCompanyLong) =>
       "The Terms are effective until terminated by ${appCompanyLong}. \nIn the event of termination, You are no longer authorized to access the Application, but all restrictions imposed on You and the disclaimers and limitations of liability set out in the Terms will survive termination. \nSuch termination shall not affect any legal right that may have accrued to ${appCompanyLong} against You up to the date of termination. \n${appCompanyLong} may also remove the Application as a whole or any sections or features of the Application at any time. ";
 
-  static m29(appCompanyLong) =>
+  static m30(appCompanyLong) =>
       "The provisions of previous paragraphs are for the benefit of ${appCompanyLong} and its officers, directors, employees, agents, licensors, suppliers, and any third party information providers to the Application. Each of these individuals or entities shall have the right to assert and enforce those provisions directly against You on its own behalf.";
 
-  static m30(appName, appCompanyLong) =>
+  static m31(appName, appCompanyLong) =>
       "${appName} mobile is a non-custodial, decentralized and blockchain based application and as such does ${appCompanyLong} never store any user-data (accounts and authentication data). \nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on January 31st, 2020";
 
-  static m31(appName, appCompanyLong) =>
+  static m32(appName, appCompanyLong) =>
       "This disclaimer applies to the contents and services of the app ${appName} and is valid for all users of the “Application” (\'Software\', “Mobile Application”, “Application” or “App”).\n\nThe Application is owned by ${appCompanyLong}.\n\nWe reserve the right to amend the following Terms and Conditions (governing the use of the application “${appName} mobile”) at any time without prior notice and at our sole discretion. It is your responsibility to periodically check this Terms and Conditions for any updates to these Terms, which shall come into force once published.\nYour continued use of the application shall be deemed as acceptance of the following Terms.\nWe are a company incorporated in Vietnam and these Terms and Conditions are governed by and subject to the laws of Vietnam.\nIf You do not agree with these Terms and Conditions, You must not use or access this software.";
 
-  static m32(appName) =>
+  static m33(appName) =>
       "You are not allowed to decompile, decode, disassemble, rent, lease, loan, sell, sublicense, or create derivative works from the ${appName} mobile application or the user content. Nor are You allowed to use any network monitoring or detection software to determine the software architecture, or extract information about usage or individuals’ or users’ identities. \nYou are not allowed to copy, modify, reproduce, republish, distribute, display, or transmit for commercial, non-profit or public purposes all or any portion of the application or the user content without our prior written authorization.";
 
-  static m33(appName, appCompanyLong) =>
+  static m34(appName, appCompanyLong) =>
       "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions. \n\n${appName} mobile is a non-custodial wallet implementation and thus ${appCompanyLong} can not access nor restore your account in case of (data) loss.";
 
-  static m34(appName) =>
+  static m35(appName) =>
       "End-User License Agreement (EULA) of ${appName} mobile:";
 
-  static m35(coin) => "正在向 ${coin} 水龙头发送请求";
+  static m36(coin) => "正在向 ${coin} 水龙头发送请求";
 
-  static m36(appCompanyShort) => "${appCompanyShort} 新闻";
+  static m37(appCompanyShort) => "${appCompanyShort} 新闻";
 
-  static m37(coin) => "${coin} 费用";
+  static m38(value) => "费用必须高达 ${value}";
 
-  static m38(coin) => "请激活${coin}.";
+  static m39(coin) => "${coin} 费用";
 
-  static m39(abbr) => "${abbr}余额不足以支付交易费";
+  static m40(coin) => "请激活${coin}.";
 
-  static m40(coinAbbr) => "${coinAbbr} 不可用:(";
+  static m41(abbr) => "${abbr}余额不足以支付交易费";
 
-  static m41(coinName, number) => "最低售出量为${number} ${coinName}";
+  static m42(coinAbbr) => "${coinAbbr} 不可用:(";
 
-  static m42(coinName, number) => "最低买入量为${number} ${coinName}";
+  static m43(coinName) => "❗注意！ ${coinName} 市场的 24 小时交易量不到 1 万美元！";
 
-  static m43(buyCoin, buyAmount, sellCoin, sellAmount) =>
+  static m44(coinName, number) => "最低售出量为${number} ${coinName}";
+
+  static m45(coinName, number) => "最低买入量为${number} ${coinName}";
+
+  static m46(buyCoin, buyAmount, sellCoin, sellAmount) =>
       "最小交易量为 ${buyAmount} ${buyCoin}\n(${sellAmount} ${sellCoin})";
 
-  static m44(coinName, number) => "最低售出量为 ${number} ${coinName}";
+  static m47(coinName, number) => "最低售出量为 ${number} ${coinName}";
 
-  static m45(minValue, coin) => "必须大于${minValue} ${coin}";
+  static m48(minValue, coin) => "必须大于${minValue} ${coin}";
 
-  static m46(appName) =>
+  static m49(appName) =>
       "请注意，您现在正在使用流量，使用${appName} P2P网络会消耗互联网流量。如果您的手机流量很贵，最好连接WIFI。";
 
-  static m47(coin) => "先激活${coin}并充值余额";
+  static m50(coin) => "先激活${coin}并充值余额";
 
-  static m48(number) => "创建${number}订单：";
+  static m51(number) => "创建${number}订单：";
 
-  static m49(coin) => "${coin}余额过低";
+  static m52(coin) => "${coin}余额过低";
 
-  static m50(coin, fee) => "${coin}不足支付。最低余额为 ${fee} ${coin}";
+  static m53(coin, fee) => "${coin}不足支付。最低余额为 ${fee} ${coin}";
 
-  static m51(coinName) => "请输入 ${coinName} 量";
+  static m54(coinName) => "请输入 ${coinName} 量";
 
-  static m52(coin) => "没有足够的${coin} 用于交易！";
+  static m55(coin) => "没有足够的${coin} 用于交易！";
 
-  static m53(sell, buy) => "${sell}/${buy} 已成功完成交换";
+  static m56(sell, buy) => "${sell}/${buy} 已成功完成交换";
 
-  static m54(sell, buy) => "${sell}/${buy}交换失败";
+  static m57(sell, buy) => "${sell}/${buy}交换失败";
 
-  static m55(sell, buy) => "${sell}/${buy}交换开始";
+  static m58(sell, buy) => "${sell}/${buy}交换开始";
 
-  static m56(sell, buy) => "${sell}/${buy}交换超时";
+  static m59(sell, buy) => "${sell}/${buy}交换超时";
 
-  static m57(coin) => "您已收到｛coin｝交易！";
+  static m60(coin) => "您已收到｛coin｝交易！";
 
-  static m58(assets) => "${assets} 资产";
+  static m61(assets) => "${assets} 资产";
 
-  static m59(coin) => "所有${coin}订单将被取消。";
+  static m62(coin) => "所有${coin}订单将被取消。";
 
-  static m60(delta) => "划算的: CEX +${delta}%";
+  static m63(delta) => "划算的: CEX +${delta}%";
 
-  static m61(delta) => "昂贵的: CEX ${delta}%";
+  static m64(delta) => "昂贵的: CEX ${delta}%";
 
-  static m62(fill) => "${fill}%已填充";
+  static m65(fill) => "${fill}%已填充";
 
-  static m63(coin) => "数量(${coin})";
+  static m66(coin) => "数量(${coin})";
 
-  static m64(coin) => "价格 (${coin})";
+  static m67(coin) => "价格 (${coin})";
 
-  static m65(coin) => "总计 (${coin})";
+  static m68(coin) => "总计 (${coin})";
 
-  static m66(abbr) => "${abbr} 未激活。请激活后重试。";
+  static m69(abbr) => "${abbr} 未激活。请激活后重试。";
 
-  static m67(appName) => "我可以在哪些设备上使用${appName} ？";
+  static m70(appName) => "我可以在哪些设备上使用${appName} ？";
 
-  static m68(appName) => "在${appName} 上交易与在其他DEX上交易有何不同？";
+  static m71(appName) => "在${appName} 上交易与在其他DEX上交易有何不同？";
 
-  static m69(appName) => "${appName} 的费用如何计算？";
+  static m72(appName) => "${appName} 的费用如何计算？";
 
-  static m70(appName) => "${appName} 的背后是谁？";
+  static m73(appName) => "${appName} 的背后是谁？";
 
-  static m71(appName) => "是否可以在${appName} 上开发我个人的白标交换？";
+  static m74(appName) => "是否可以在${appName} 上开发我个人的白标交换？";
 
-  static m72(amount) => "成功！收到 ${amount}KMD";
+  static m75(amount) => "成功！收到 ${amount}KMD";
 
-  static m73(dd) => "${dd} 天";
+  static m76(dd) => "${dd} 天";
 
-  static m74(hh, minutes) => "${hh}小时 ${minutes}分钟";
+  static m77(hh, minutes) => "${hh}小时 ${minutes}分钟";
 
-  static m75(mm) => "${mm}分钟";
+  static m78(mm) => "${mm}分钟";
 
-  static m76(amount) => "点击查看${amount} 交易";
+  static m79(amount) => "点击查看${amount} 交易";
 
-  static m77(coinName, address) => "我的${coinName} 地址:\n${address}";
+  static m80(coinName, address) => "我的${coinName} 地址:\n${address}";
 
-  static m78(coin) => "请输入要买入的 ${coin} 数量";
+  static m81(coin) => "请输入要买入的 ${coin} 数量";
 
-  static m79(maxCoins) => "货币最大活跃量为${maxCoins}。请停用一些。";
+  static m82(maxCoins) => "货币最大活跃量为${maxCoins}。请停用一些。";
 
-  static m80(coin) => "${coin}未激活！";
+  static m83(coin) => "${coin}未激活！";
 
-  static m81(coin) => "请输入要卖出的${coin}数量";
+  static m84(coin) => "请输入要卖出的${coin}数量";
 
-  static m82(coin) => "无法激活${coin}";
+  static m85(coin) => "无法激活${coin}";
 
-  static m83(description) => "请选择mp3或wav文件。我们将在${description}时播放它。";
+  static m86(description) => "请选择mp3或wav文件。我们将在${description}时播放它。";
 
-  static m84(description) => "当${description}播放";
+  static m87(description) => "当${description}播放";
 
-  static m85(appName) =>
+  static m88(appName) =>
       "如果您有任何问题，或者认为您发现${appName} 应用程序存在技术问题，请联系我们获取我们团队的支持。";
 
-  static m86(coin) => "请先激活 ${coin} 并充值余额";
+  static m89(coin) => "请先激活 ${coin} 并充值余额";
 
-  static m87(coin) => "${coin} 余额不足以支付交易费用。";
+  static m90(coin) => "${coin} 余额不足以支付交易费用。";
 
-  static m88(coin, amount) => "${coin} 余额不足以支付交易费用。需要 ${coin} ${amount}";
+  static m91(coin, amount) => "${coin} 余额不足以支付交易费用。需要 ${coin} ${amount}";
 
-  static m89(left) => "剩余交易: ${left}";
+  static m92(left) => "剩余交易: ${left}";
 
-  static m90(amnt, hash) => "成功解锁 ${amnt} 基金 - 交易: ${hash}";
+  static m93(amnt, hash) => "成功解锁 ${amnt} 基金 - 交易: ${hash}";
 
-  static m91(version) => "您正在使用版本${version}";
+  static m94(version) => "您正在使用版本${version}";
 
-  static m92(version) => "版本${version}可用。请更新。";
+  static m95(version) => "版本${version}可用。请更新。";
 
-  static m93(appName) => "更新${appName}";
+  static m96(appName) => "更新${appName}";
 
-  static m94(coinAbbr) => "我们无法激活 ${coinAbbr}";
+  static m97(coinAbbr) => "我们无法激活 ${coinAbbr}";
 
-  static m95(coinAbbr) => "我们无法激活${coinAbbr}.\n请重启应用程序后重试";
+  static m98(coinAbbr) => "我们无法激活${coinAbbr}.\n请重启应用程序后重试";
 
-  static m96(appName) => "${appName} 应用程序是新一代多币钱包，具有原生第三代DEX功能和更多功能。";
+  static m99(appName) => "${appName} 应用程序是新一代多币钱包，具有原生第三代DEX功能和更多功能。";
 
-  static m97(appName) => "您之前禁止${appName} 使用相机。请手动更改手机设置中的相机权限，以便继续二维码扫描";
+  static m100(appName) => "您之前禁止${appName} 使用相机。请手动更改手机设置中的相机权限，以便继续二维码扫描";
 
-  static m98(amount, coinName) => "提取 ${amount} ${coinName}";
+  static m101(amount, coinName) => "提取 ${amount} ${coinName}";
 
-  static m99(amount, coin) => "您将获得 ${amount} ${coin}";
+  static m102(amount, coin) => "您将获得 ${amount} ${coin}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -253,6 +259,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Can\'t play that": MessageLookupByLibrary.simpleMessage("不能播放"),
         "Failed": MessageLookupByLibrary.simpleMessage("失败"),
         "Maker": MessageLookupByLibrary.simpleMessage("挂单"),
+        "Optional": MessageLookupByLibrary.simpleMessage("选修的"),
         "Play at full volume": MessageLookupByLibrary.simpleMessage("音量开到最大"),
         "Sound": MessageLookupByLibrary.simpleMessage("声音"),
         "Taker": MessageLookupByLibrary.simpleMessage("吃单"),
@@ -371,10 +378,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "coinSelectClear": MessageLookupByLibrary.simpleMessage("清除"),
         "coinSelectNotFound": MessageLookupByLibrary.simpleMessage("没有活跃币"),
         "coinSelectTitle": MessageLookupByLibrary.simpleMessage("选择货币"),
+        "coinsActivatedLimitReached":
+            MessageLookupByLibrary.simpleMessage("您已选择最大资产数量"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("即将上线，敬请期待。。。"),
         "commingsoon": MessageLookupByLibrary.simpleMessage("交易明细加载中！"),
         "commingsoonGeneral": MessageLookupByLibrary.simpleMessage("详情载入中！"),
         "commissionFee": MessageLookupByLibrary.simpleMessage("手续费"),
+        "comparedTo24hrCex":
+            MessageLookupByLibrary.simpleMessage("与平均值相比24小时CEX价格"),
         "comparedToCex": MessageLookupByLibrary.simpleMessage("与CEX比较"),
         "configureWallet":
             MessageLookupByLibrary.simpleMessage("正在配置您的钱包，请稍候。。。"),
@@ -421,6 +432,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteSpan1": MessageLookupByLibrary.simpleMessage("是否要"),
         "deleteSpan2":
             MessageLookupByLibrary.simpleMessage("从投资组合中删除？所有不匹配的订单将被取消。"),
+        "deleteSpan3": MessageLookupByLibrary.simpleMessage(" 也将被停用"),
         "deleteWallet": MessageLookupByLibrary.simpleMessage("删除钱包"),
         "deletingWallet": MessageLookupByLibrary.simpleMessage("删除钱包中"),
         "details": MessageLookupByLibrary.simpleMessage("详细信息"),
@@ -428,6 +440,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "developerTitle": MessageLookupByLibrary.simpleMessage("开发者"),
         "dex": MessageLookupByLibrary.simpleMessage("DEX"),
         "dexIsNotAvailable": MessageLookupByLibrary.simpleMessage("DEX不适合该货币"),
+        "disableScreenshots": MessageLookupByLibrary.simpleMessage("禁用屏幕截图/预览"),
         "disclaimerAndTos": MessageLookupByLibrary.simpleMessage("免责声明 & 使用条款"),
         "done": MessageLookupByLibrary.simpleMessage("完成"),
         "dontAskAgain": MessageLookupByLibrary.simpleMessage("不再询问"),
@@ -439,6 +452,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "emptyImportPass": MessageLookupByLibrary.simpleMessage("密码不能为空"),
         "emptyName": MessageLookupByLibrary.simpleMessage("联系人名称不能为空"),
         "emptyWallet": MessageLookupByLibrary.simpleMessage("钱包名称不能为空"),
+        "enable": m20,
         "enableTestCoins": MessageLookupByLibrary.simpleMessage("启用测试币"),
         "enablingTooManyAssetsSpan1":
             MessageLookupByLibrary.simpleMessage("您已启用"),
@@ -462,38 +476,38 @@ class MessageLookup extends MessageLookupByLibrary {
         "errorNotAValidAddress": MessageLookupByLibrary.simpleMessage("钱包地址错误"),
         "errorNotAValidAddressSegWit":
             MessageLookupByLibrary.simpleMessage("尚不支持Segwit地址"),
-        "errorNotEnoughGas": m20,
+        "errorNotEnoughGas": m21,
         "errorTryAgain": MessageLookupByLibrary.simpleMessage("出现错误, 請重试"),
         "errorTryLater": MessageLookupByLibrary.simpleMessage("出现错误，請稍後重试"),
         "errorValueEmpty": MessageLookupByLibrary.simpleMessage("价值太高或太低"),
         "errorValueNotEmpty": MessageLookupByLibrary.simpleMessage("请输入数据"),
         "estimateValue": MessageLookupByLibrary.simpleMessage("预估总价"),
-        "eulaParagraphe1": m21,
-        "eulaParagraphe10": m22,
-        "eulaParagraphe11": m23,
+        "eulaParagraphe1": m22,
+        "eulaParagraphe10": m23,
+        "eulaParagraphe11": m24,
         "eulaParagraphe12": MessageLookupByLibrary.simpleMessage(
             "When accessing or using the Services, You agree that You are solely responsible for your conduct while accessing and using our Services. Without limiting the generality of the foregoing, You agree that You will not:\n(a) use the Services in any manner that could interfere with, disrupt, negatively affect or inhibit other users from fully enjoying the Services, or that could damage, disable, overburden or impair the functioning of our Services in any manner;\n(b) use the Services to pay for, support or otherwise engage in any illegal activities, including, but not limited to illegal gambling, fraud, money laundering, or terrorist activities;\n(c) use any robot, spider, crawler, scraper or other automated means or interface not provided by us to access our Services or to extract data;\n(d) use or attempt to use another user’s Wallet or credentials without authorization;\n(e) attempt to circumvent any content filtering techniques we employ, or attempt to access any service or area of our Services that You are not authorized to access;\n(f) introduce to the Services any virus, Trojan, worms, logic bombs or other harmful material;\n(g) develop any third-party applications that interact with our Services without our prior written consent;\n(h) provide false, inaccurate, or misleading information; \n(i) encourage or induce any other person to engage in any of the activities prohibited under this Section."),
-        "eulaParagraphe13": m24,
-        "eulaParagraphe14": m25,
-        "eulaParagraphe15": m26,
-        "eulaParagraphe16": m27,
-        "eulaParagraphe17": m28,
-        "eulaParagraphe18": m29,
-        "eulaParagraphe19": m30,
-        "eulaParagraphe2": m31,
+        "eulaParagraphe13": m25,
+        "eulaParagraphe14": m26,
+        "eulaParagraphe15": m27,
+        "eulaParagraphe16": m28,
+        "eulaParagraphe17": m29,
+        "eulaParagraphe18": m30,
+        "eulaParagraphe19": m31,
+        "eulaParagraphe2": m32,
         "eulaParagraphe3": MessageLookupByLibrary.simpleMessage(
             "By entering into this User (each subject accessing or using the site) Agreement (this writing) You declare that You are an individual over the age of majority (at least 18 or older) and have the capacity to enter into this User Agreement and accept to be legally bound by the terms and conditions of this User Agreement, as incorporated herein and amended from time to time."),
         "eulaParagraphe4": MessageLookupByLibrary.simpleMessage(
             "We may change the terms of this User Agreement at any time. Any such changes will take effect when published in the application, or when You use the Services.\n\nRead the User Agreement carefully every time You use our Services. Your continued use of the Services shall signify your acceptance to be bound by the current User Agreement. Our failure or delay in enforcing or partially enforcing any provision of this User Agreement shall not be construed as a waiver of any."),
-        "eulaParagraphe5": m32,
-        "eulaParagraphe6": m33,
+        "eulaParagraphe5": m33,
+        "eulaParagraphe6": m34,
         "eulaParagraphe7": MessageLookupByLibrary.simpleMessage(
             "We are not responsible for seed-phrases residing in the Mobile Application. In no event shall we be held liable for any loss of any kind. It is your sole responsibility to maintain appropriate backups of your accounts and their seedprases."),
         "eulaParagraphe8": MessageLookupByLibrary.simpleMessage(
             "You should not act, or refrain from acting solely on the basis of the content of this application. \nYour access to this application does not itself create an adviser-client relationship between You and us. \nThe content of this application does not constitute a solicitation or inducement to invest in any financial products or services offered by us. \nAny advice included in this application has been prepared without taking into account your objectives, financial situation or needs. You should consider our Risk Disclosure Notice before making any decision on whether to acquire the product described in that document."),
         "eulaParagraphe9": MessageLookupByLibrary.simpleMessage(
             "We do not guarantee your continuous access to the application or that your access or use will be error-free. \nWe will not be liable in the event that the application is unavailable to You for any reason (for example, due to computer downtime ascribable to malfunctions, upgrades, server problems, precautionary or corrective maintenance activities or interruption in telecommunication supplies). "),
-        "eulaTitle1": m34,
+        "eulaTitle1": m35,
         "eulaTitle10":
             MessageLookupByLibrary.simpleMessage("ACCESS AND SECURITY"),
         "eulaTitle11": MessageLookupByLibrary.simpleMessage(
@@ -543,13 +557,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "fakeBalanceAmt": MessageLookupByLibrary.simpleMessage("虚假余额"),
         "faqTitle": MessageLookupByLibrary.simpleMessage("常见问题"),
         "faucetError": MessageLookupByLibrary.simpleMessage("错误"),
-        "faucetInProgress": m35,
+        "faucetInProgress": m36,
         "faucetName": MessageLookupByLibrary.simpleMessage("水龙头"),
         "faucetSuccess": MessageLookupByLibrary.simpleMessage("成功"),
         "faucetTimedOut": MessageLookupByLibrary.simpleMessage("请求超时"),
         "feedNewsTab": MessageLookupByLibrary.simpleMessage("新闻"),
         "feedNotFound": MessageLookupByLibrary.simpleMessage("无内容"),
-        "feedNotifTitle": m36,
+        "feedNotifTitle": m37,
         "feedReadMore": MessageLookupByLibrary.simpleMessage("阅读更多"),
         "feedTab": MessageLookupByLibrary.simpleMessage("Feed"),
         "feedTitle": MessageLookupByLibrary.simpleMessage("Feed新闻"),
@@ -558,6 +572,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "feedUpToDate": MessageLookupByLibrary.simpleMessage("已更新"),
         "feedUpdated": MessageLookupByLibrary.simpleMessage("Feed新闻已更新"),
         "feedback": MessageLookupByLibrary.simpleMessage("共享日志文件"),
+        "feesError": m38,
         "filtersAll": MessageLookupByLibrary.simpleMessage("全部"),
         "filtersButton": MessageLookupByLibrary.simpleMessage("过滤器"),
         "filtersClearAll": MessageLookupByLibrary.simpleMessage("清除所有过滤器"),
@@ -574,9 +589,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "fingerprint": MessageLookupByLibrary.simpleMessage("指纹"),
         "frenchLanguage": MessageLookupByLibrary.simpleMessage("法语"),
         "from": MessageLookupByLibrary.simpleMessage("起始日期"),
-        "gasFee": m37,
+        "gasFee": m39,
         "gasLimit": MessageLookupByLibrary.simpleMessage("燃料上限"),
-        "gasNotActive": m38,
+        "gasNotActive": m40,
         "gasPrice": MessageLookupByLibrary.simpleMessage("燃料价格"),
         "generalPinNotActive": MessageLookupByLibrary.simpleMessage(
             "常规PIN保护未激活。\n伪装模式将失效\n请激活PIN保护"),
@@ -627,20 +642,21 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("交换最长需要60分钟。不要关闭此应用程序！"),
         "infoWalletPassword":
             MessageLookupByLibrary.simpleMessage("安全起见，您必须为加密钱包设置密码。"),
-        "insufficientBalanceToPay": m39,
+        "insufficientBalanceToPay": m41,
         "insufficientText": MessageLookupByLibrary.simpleMessage("此订单最小交易量为"),
         "insufficientTitle": MessageLookupByLibrary.simpleMessage("交易量不足"),
         "internetRefreshButton": MessageLookupByLibrary.simpleMessage("刷新"),
         "internetRestored": MessageLookupByLibrary.simpleMessage("已重新连接互联网"),
         "invalidSwap": MessageLookupByLibrary.simpleMessage("无法继续交换"),
         "invalidSwapDetailsLink": MessageLookupByLibrary.simpleMessage("详细信息"),
-        "isUnavailable": m40,
+        "isUnavailable": m42,
         "japaneseLanguage": MessageLookupByLibrary.simpleMessage("日文"),
         "koreanLanguage": MessageLookupByLibrary.simpleMessage("韩国人"),
         "language": MessageLookupByLibrary.simpleMessage("语言"),
         "latestTxs": MessageLookupByLibrary.simpleMessage("最新交易"),
         "legalTitle": MessageLookupByLibrary.simpleMessage("合法的"),
         "less": MessageLookupByLibrary.simpleMessage("较少"),
+        "lessThanCaution": m43,
         "loading": MessageLookupByLibrary.simpleMessage("載入中"),
         "loadingOrderbook": MessageLookupByLibrary.simpleMessage("正在加载订单记录"),
         "lockScreen": MessageLookupByLibrary.simpleMessage("屏幕已锁定"),
@@ -687,29 +703,30 @@ class MessageLookup extends MessageLookupByLibrary {
         "mediaNotSavedDescription":
             MessageLookupByLibrary.simpleMessage("您没有收藏的文章"),
         "mediaSaved": MessageLookupByLibrary.simpleMessage("已收藏"),
+        "memo": MessageLookupByLibrary.simpleMessage("备忘录"),
         "merge": MessageLookupByLibrary.simpleMessage("合并"),
         "mergedValue": MessageLookupByLibrary.simpleMessage("合并值"),
         "milliseconds": MessageLookupByLibrary.simpleMessage("毫秒"),
         "min": MessageLookupByLibrary.simpleMessage("最小"),
         "minOrder": MessageLookupByLibrary.simpleMessage("最小交易量"),
-        "minValue": m41,
-        "minValueBuy": m42,
-        "minValueOrder": m43,
-        "minValueSell": m44,
-        "minVolumeInput": m45,
+        "minValue": m44,
+        "minValueBuy": m45,
+        "minValueOrder": m46,
+        "minValueSell": m47,
+        "minVolumeInput": m48,
         "minVolumeIsTDH": MessageLookupByLibrary.simpleMessage("必须低于售出量"),
         "minVolumeTitle": MessageLookupByLibrary.simpleMessage("所需最小量"),
         "minVolumeToggle": MessageLookupByLibrary.simpleMessage("使用自定义最小量"),
         "minutes": MessageLookupByLibrary.simpleMessage("分钟"),
-        "mobileDataWarning": m46,
+        "mobileDataWarning": m49,
         "moreTab": MessageLookupByLibrary.simpleMessage("更多"),
-        "multiActivateGas": m47,
+        "multiActivateGas": m50,
         "multiBaseAmtPlaceholder": MessageLookupByLibrary.simpleMessage("数量"),
         "multiBasePlaceholder": MessageLookupByLibrary.simpleMessage("货币"),
         "multiBaseSelectTitle": MessageLookupByLibrary.simpleMessage("卖出"),
         "multiConfirmCancel": MessageLookupByLibrary.simpleMessage("取消"),
         "multiConfirmConfirm": MessageLookupByLibrary.simpleMessage("确认"),
-        "multiConfirmTitle": m48,
+        "multiConfirmTitle": m51,
         "multiCreate": MessageLookupByLibrary.simpleMessage("创建"),
         "multiCreateOrder": MessageLookupByLibrary.simpleMessage("订单"),
         "multiCreateOrders": MessageLookupByLibrary.simpleMessage("订单"),
@@ -720,8 +737,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "multiFixErrors": MessageLookupByLibrary.simpleMessage("请在继续之前修复所有错误"),
         "multiInvalidAmt": MessageLookupByLibrary.simpleMessage("数量无效"),
         "multiInvalidSellAmt": MessageLookupByLibrary.simpleMessage("售出量无效"),
-        "multiLowGas": m49,
-        "multiLowerThanFee": m50,
+        "multiLowGas": m52,
+        "multiLowerThanFee": m53,
         "multiMaxSellAmt": MessageLookupByLibrary.simpleMessage("最大售出量为"),
         "multiMinReceiveAmt": MessageLookupByLibrary.simpleMessage("最小接收量为"),
         "multiMinSellAmt": MessageLookupByLibrary.simpleMessage("最小售出量为"),
@@ -745,7 +762,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noItemsToExport": MessageLookupByLibrary.simpleMessage("未选择项目"),
         "noItemsToImport": MessageLookupByLibrary.simpleMessage("未选择项目"),
         "noMatchingOrders": MessageLookupByLibrary.simpleMessage("无匹配订单"),
-        "noOrder": m51,
+        "noOrder": m54,
         "noOrderAvailable": MessageLookupByLibrary.simpleMessage("点击创建订单"),
         "noOrders": MessageLookupByLibrary.simpleMessage("没有订单，请先交易"),
         "noRewardYet": MessageLookupByLibrary.simpleMessage("没有奖励可领取-请一小时后重试"),
@@ -754,38 +771,39 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSwaps": MessageLookupByLibrary.simpleMessage("没有历史记录"),
         "noTxs": MessageLookupByLibrary.simpleMessage("没有交易"),
         "nonNumericInput": MessageLookupByLibrary.simpleMessage("该值必须是数字"),
-        "notEnoughGas": m52,
+        "notEnoughGas": m55,
         "notEnoughtBalanceForFee":
             MessageLookupByLibrary.simpleMessage("手续费余额不足-减少交易量"),
         "noteOnOrder": MessageLookupByLibrary.simpleMessage("备注：不能取消已匹配的订单"),
         "notePlaceholder": MessageLookupByLibrary.simpleMessage("添加备注"),
         "noteTitle": MessageLookupByLibrary.simpleMessage("备注"),
         "nothingFound": MessageLookupByLibrary.simpleMessage("无内容"),
-        "notifSwapCompletedText": m53,
+        "notifSwapCompletedText": m56,
         "notifSwapCompletedTitle":
             MessageLookupByLibrary.simpleMessage("交换已完成"),
-        "notifSwapFailedText": m54,
+        "notifSwapFailedText": m57,
         "notifSwapFailedTitle": MessageLookupByLibrary.simpleMessage("交换失败"),
-        "notifSwapStartedText": m55,
+        "notifSwapStartedText": m58,
         "notifSwapStartedTitle": MessageLookupByLibrary.simpleMessage("已开始新交换"),
         "notifSwapStatusTitle": MessageLookupByLibrary.simpleMessage("交换状态已更改"),
-        "notifSwapTimeoutText": m56,
+        "notifSwapTimeoutText": m59,
         "notifSwapTimeoutTitle": MessageLookupByLibrary.simpleMessage("交换超时"),
-        "notifTxText": m57,
+        "notifTxText": m60,
         "notifTxTitle": MessageLookupByLibrary.simpleMessage("应记交易"),
-        "numberAssets": m58,
+        "numberAssets": m61,
+        "officialPressRelease": MessageLookupByLibrary.simpleMessage("官方新闻稿"),
         "okButton": MessageLookupByLibrary.simpleMessage("好的"),
         "oldLogsDelete": MessageLookupByLibrary.simpleMessage("删除"),
         "oldLogsTitle": MessageLookupByLibrary.simpleMessage("历史记录"),
         "oldLogsUsed": MessageLookupByLibrary.simpleMessage("占用的空间"),
         "openMessage": MessageLookupByLibrary.simpleMessage("打开错误消息"),
-        "orderCancel": m59,
+        "orderCancel": m62,
         "orderCreated": MessageLookupByLibrary.simpleMessage("订单已创建"),
         "orderCreatedInfo": MessageLookupByLibrary.simpleMessage("订单已成功创建"),
         "orderDetailsAddress": MessageLookupByLibrary.simpleMessage("地址"),
         "orderDetailsCancel": MessageLookupByLibrary.simpleMessage("取消"),
-        "orderDetailsExpedient": m60,
-        "orderDetailsExpensive": m61,
+        "orderDetailsExpedient": m63,
+        "orderDetailsExpensive": m64,
         "orderDetailsFor": MessageLookupByLibrary.simpleMessage("与"),
         "orderDetailsIdentical": MessageLookupByLibrary.simpleMessage("CEX相同"),
         "orderDetailsMin": MessageLookupByLibrary.simpleMessage("最小量"),
@@ -797,7 +815,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("单击打开详细信息，然后长按选择订购"),
         "orderDetailsSpend": MessageLookupByLibrary.simpleMessage("花费"),
         "orderDetailsTitle": MessageLookupByLibrary.simpleMessage("详细信息"),
-        "orderFilled": m62,
+        "orderFilled": m65,
         "orderMatched": MessageLookupByLibrary.simpleMessage("已匹配订单"),
         "orderMatching": MessageLookupByLibrary.simpleMessage("订单匹配中"),
         "orderTypePartial": MessageLookupByLibrary.simpleMessage("订单"),
@@ -805,9 +823,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders": MessageLookupByLibrary.simpleMessage("订单"),
         "ordersActive": MessageLookupByLibrary.simpleMessage("活跃"),
         "ordersHistory": MessageLookupByLibrary.simpleMessage("历史记录"),
-        "ordersTableAmount": m63,
-        "ordersTablePrice": m64,
-        "ordersTableTotal": m65,
+        "ordersTableAmount": m66,
+        "ordersTablePrice": m67,
+        "ordersTableTotal": m68,
         "overwrite": MessageLookupByLibrary.simpleMessage("覆盖"),
         "ownOrder": MessageLookupByLibrary.simpleMessage("这是您个人的订单"),
         "paidFromBalance": MessageLookupByLibrary.simpleMessage("用余额支付："),
@@ -827,7 +845,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentUriDetailsDeny": MessageLookupByLibrary.simpleMessage("取消"),
         "paymentUriDetailsTitle":
             MessageLookupByLibrary.simpleMessage("已请求的付款"),
-        "paymentUriInactiveCoin": m66,
+        "paymentUriInactiveCoin": m69,
         "placeOrder": MessageLookupByLibrary.simpleMessage("下单"),
         "pleaseAddCoin": MessageLookupByLibrary.simpleMessage("请添加货币"),
         "pleaseRestart":
@@ -847,15 +865,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("警告，此原子交换不受dPoW保护。"),
         "pubkey": MessageLookupByLibrary.simpleMessage("公钥"),
         "question_1": MessageLookupByLibrary.simpleMessage("你们会保存我的私钥吗？"),
-        "question_10": m67,
-        "question_2": m68,
+        "question_10": m70,
+        "question_2": m71,
         "question_3": MessageLookupByLibrary.simpleMessage("每次原子交换需要多长时间？"),
         "question_4": MessageLookupByLibrary.simpleMessage("在交换期间我要保持在线吗"),
-        "question_5": m69,
+        "question_5": m72,
         "question_6": MessageLookupByLibrary.simpleMessage("你们会提供用户支持吗？"),
         "question_7": MessageLookupByLibrary.simpleMessage("你们有地区限制吗？"),
-        "question_8": m70,
-        "question_9": m71,
+        "question_8": m73,
+        "question_9": m74,
+        "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
+            "这是一个新时代！我们已正式将名称从“AtomicDEX”更改为“Komodo Wallet”"),
         "receive": MessageLookupByLibrary.simpleMessage("接收"),
         "receiveLower": MessageLookupByLibrary.simpleMessage("接收"),
         "recommendSeedMessage":
@@ -882,7 +902,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsReadMore":
             MessageLookupByLibrary.simpleMessage("阅读有关KMD活跃用户奖励的更多信息"),
         "rewardsReceive": MessageLookupByLibrary.simpleMessage("接收"),
-        "rewardsSuccess": m72,
+        "rewardsSuccess": m75,
         "rewardsTableFiat": MessageLookupByLibrary.simpleMessage("法币"),
         "rewardsTableRewards": MessageLookupByLibrary.simpleMessage("奖励，KMD"),
         "rewardsTableStatus": MessageLookupByLibrary.simpleMessage("状态"),
@@ -890,17 +910,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsTableTitle": MessageLookupByLibrary.simpleMessage("奖励信息"),
         "rewardsTableUXTO":
             MessageLookupByLibrary.simpleMessage("UTXO 数量\nKMD"),
-        "rewardsTimeDays": m73,
-        "rewardsTimeHours": m74,
-        "rewardsTimeMin": m75,
+        "rewardsTimeDays": m76,
+        "rewardsTimeHours": m77,
+        "rewardsTimeMin": m78,
         "rewardsTitle": MessageLookupByLibrary.simpleMessage("奖励信息"),
         "russianLanguage": MessageLookupByLibrary.simpleMessage("俄语"),
         "saveMerged": MessageLookupByLibrary.simpleMessage("保存合并"),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage("滚动到底部继续..."),
         "searchFilterCoin": MessageLookupByLibrary.simpleMessage("搜索货币"),
         "searchFilterSubtitleAVX":
             MessageLookupByLibrary.simpleMessage("选择所有Avax代币"),
         "searchFilterSubtitleBEP":
             MessageLookupByLibrary.simpleMessage("选择所有BEP代币"),
+        "searchFilterSubtitleCosmos":
+            MessageLookupByLibrary.simpleMessage("选择所有 Cosmos 网络"),
         "searchFilterSubtitleERC":
             MessageLookupByLibrary.simpleMessage("选择所有ERC代币"),
         "searchFilterSubtitleETC":
@@ -911,6 +934,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("选择所有HecoChain代币"),
         "searchFilterSubtitleHRC":
             MessageLookupByLibrary.simpleMessage("选择所有Harmony代币"),
+        "searchFilterSubtitleIris":
+            MessageLookupByLibrary.simpleMessage("选择所有虹膜网络"),
         "searchFilterSubtitleKRC":
             MessageLookupByLibrary.simpleMessage("选择所有Kucoin代币"),
         "searchFilterSubtitleMVR":
@@ -921,6 +946,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("选择所有QRC代币"),
         "searchFilterSubtitleSBCH":
             MessageLookupByLibrary.simpleMessage("选择所有SmartBCH代币"),
+        "searchFilterSubtitleSLP":
+            MessageLookupByLibrary.simpleMessage("选择所有 SLP 代币"),
         "searchFilterSubtitleSmartChain":
             MessageLookupByLibrary.simpleMessage("选择所有智能链"),
         "searchFilterSubtitleTestCoins":
@@ -932,7 +959,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchForTicker": MessageLookupByLibrary.simpleMessage("搜索货币代码"),
         "seconds": MessageLookupByLibrary.simpleMessage("秒"),
         "security": MessageLookupByLibrary.simpleMessage("证券"),
-        "seeOrders": m76,
+        "seeOrders": m79,
         "seeTxHistory": MessageLookupByLibrary.simpleMessage("查看交易记录"),
         "seedPhrase": MessageLookupByLibrary.simpleMessage("助记词"),
         "seedPhraseTitle": MessageLookupByLibrary.simpleMessage("您的新助記詞"),
@@ -960,7 +987,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingLanguageTitle": MessageLookupByLibrary.simpleMessage("语言"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "share": MessageLookupByLibrary.simpleMessage("分享"),
-        "shareAddress": m77,
+        "shareAddress": m80,
         "showDetails": MessageLookupByLibrary.simpleMessage("显示详细信息"),
         "showMyOrders": MessageLookupByLibrary.simpleMessage("显示我的订单"),
         "signInWithPassword": MessageLookupByLibrary.simpleMessage("使用密码登录"),
@@ -968,22 +995,22 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("忘记密码？用助记词恢复钱包"),
         "simple": MessageLookupByLibrary.simpleMessage("简单"),
         "simpleTradeActivate": MessageLookupByLibrary.simpleMessage("激活"),
-        "simpleTradeBuyHint": m78,
+        "simpleTradeBuyHint": m81,
         "simpleTradeBuyTitle": MessageLookupByLibrary.simpleMessage("买入"),
         "simpleTradeClose": MessageLookupByLibrary.simpleMessage("关闭"),
-        "simpleTradeMaxActiveCoins": m79,
-        "simpleTradeNotActive": m80,
+        "simpleTradeMaxActiveCoins": m82,
+        "simpleTradeNotActive": m83,
         "simpleTradeRecieve": MessageLookupByLibrary.simpleMessage("接收"),
-        "simpleTradeSellHint": m81,
+        "simpleTradeSellHint": m84,
         "simpleTradeSellTitle": MessageLookupByLibrary.simpleMessage("卖出"),
         "simpleTradeSend": MessageLookupByLibrary.simpleMessage("发送"),
         "simpleTradeShowLess": MessageLookupByLibrary.simpleMessage("收起"),
         "simpleTradeShowMore": MessageLookupByLibrary.simpleMessage("显示更多"),
-        "simpleTradeUnableActivate": m82,
+        "simpleTradeUnableActivate": m85,
         "skip": MessageLookupByLibrary.simpleMessage("跳过"),
         "snackbarDismiss": MessageLookupByLibrary.simpleMessage("不予考虑"),
-        "soundCantPlayThatMsg": m83,
-        "soundPlayedWhen": m84,
+        "soundCantPlayThatMsg": m86,
+        "soundPlayedWhen": m87,
         "soundSettingsLink": MessageLookupByLibrary.simpleMessage("声音"),
         "soundSettingsTitle": MessageLookupByLibrary.simpleMessage("声音设置"),
         "soundsDialogTitle": MessageLookupByLibrary.simpleMessage("声音"),
@@ -997,15 +1024,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "step": MessageLookupByLibrary.simpleMessage("步骤"),
         "success": MessageLookupByLibrary.simpleMessage("成功"),
         "support": MessageLookupByLibrary.simpleMessage("支持"),
-        "supportLinksDesc": m85,
+        "supportLinksDesc": m88,
         "swap": MessageLookupByLibrary.simpleMessage("交换"),
         "swapCurrent": MessageLookupByLibrary.simpleMessage("现状"),
         "swapDetailTitle": MessageLookupByLibrary.simpleMessage("确认兑换细节"),
         "swapEstimated": MessageLookupByLibrary.simpleMessage("预估"),
         "swapFailed": MessageLookupByLibrary.simpleMessage("交换失败"),
-        "swapGasActivate": m86,
-        "swapGasAmount": m87,
-        "swapGasAmountRequired": m88,
+        "swapGasActivate": m89,
+        "swapGasAmount": m90,
+        "swapGasAmountRequired": m91,
         "swapOngoing": MessageLookupByLibrary.simpleMessage("正在交换"),
         "swapProgress": MessageLookupByLibrary.simpleMessage("进度详情"),
         "swapStarted": MessageLookupByLibrary.simpleMessage("已开始"),
@@ -1059,21 +1086,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "txLimitExceeded":
             MessageLookupByLibrary.simpleMessage("请求过多。超出交易历史请求限制。请稍后重试"),
         "txNotConfirmed": MessageLookupByLibrary.simpleMessage("未确认"),
-        "txleft": m89,
+        "txleft": m92,
         "ukrainianLanguage": MessageLookupByLibrary.simpleMessage("乌克兰"),
         "unlock": MessageLookupByLibrary.simpleMessage("解锁"),
         "unlockFunds": MessageLookupByLibrary.simpleMessage("解锁基金"),
-        "unlockSuccess": m90,
+        "unlockSuccess": m93,
         "unspendable": MessageLookupByLibrary.simpleMessage("不可交易"),
         "updatesAvailable": MessageLookupByLibrary.simpleMessage("已有新版本"),
         "updatesChecking": MessageLookupByLibrary.simpleMessage("正在检查更新"),
-        "updatesCurrentVersion": m91,
+        "updatesCurrentVersion": m94,
         "updatesNotifAvailable":
             MessageLookupByLibrary.simpleMessage("已有新版本。请更新。"),
-        "updatesNotifAvailableVersion": m92,
+        "updatesNotifAvailableVersion": m95,
         "updatesNotifTitle": MessageLookupByLibrary.simpleMessage("可更新"),
         "updatesSkip": MessageLookupByLibrary.simpleMessage("暂时跳过"),
-        "updatesTitle": m93,
+        "updatesTitle": m96,
         "updatesUpToDate": MessageLookupByLibrary.simpleMessage("准备更新"),
         "updatesUpdate": MessageLookupByLibrary.simpleMessage("已更新"),
         "uriInsufficientBalanceSpan1":
@@ -1094,22 +1121,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "warningOkBtn": MessageLookupByLibrary.simpleMessage("好的"),
         "warningShareLogs": MessageLookupByLibrary.simpleMessage(
             "警告-在特殊情况下，此登录数据包含敏感信息，可用于消费交换失败的货币！"),
-        "weFailedTo": m94,
-        "weFailedToActivate": m95,
-        "welcomeInfo": m96,
+        "weFailedTo": m97,
+        "weFailedToActivate": m98,
+        "welcomeInfo": m99,
         "welcomeLetSetUp": MessageLookupByLibrary.simpleMessage("让我们开始吧"),
         "welcomeTitle": MessageLookupByLibrary.simpleMessage("欢迎"),
         "welcomeWallet": MessageLookupByLibrary.simpleMessage("钱包"),
         "willBeRedirected":
             MessageLookupByLibrary.simpleMessage("完成后，您将跳转至投资组合页面"),
         "withdraw": MessageLookupByLibrary.simpleMessage("提取"),
-        "withdrawCameraAccessText": m97,
+        "withdrawCameraAccessText": m100,
         "withdrawCameraAccessTitle":
             MessageLookupByLibrary.simpleMessage("被拒绝使用"),
         "withdrawConfirm": MessageLookupByLibrary.simpleMessage("确认提取"),
         "withdrawConfirmError":
             MessageLookupByLibrary.simpleMessage("出现错误。请稍后重试。"),
-        "withdrawValue": m98,
+        "withdrawValue": m101,
         "wrongCoinSpan1": MessageLookupByLibrary.simpleMessage("您正在尝试扫描付款二维码"),
         "wrongCoinSpan2": MessageLookupByLibrary.simpleMessage("但您在"),
         "wrongCoinSpan3": MessageLookupByLibrary.simpleMessage("提取页面"),
@@ -1123,7 +1150,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "you have an order that new orders can match with":
             MessageLookupByLibrary.simpleMessage("你有一个新订单可以匹配的订单"),
         "youAreSending": MessageLookupByLibrary.simpleMessage("您正在发送："),
-        "youWillReceiveClaim": m99,
+        "youWillReceiveClaim": m102,
         "youWillReceived": MessageLookupByLibrary.simpleMessage("您将收到："),
         "yourWallet": MessageLookupByLibrary.simpleMessage("您的钱包")
       };

@@ -583,7 +583,7 @@ class _SettingPageState extends State<SettingPage> {
       }
       await Log.appendRawLog('\n\n--- / my recent swaps ---\n\n');
       // TBD: Replace these with a pretty-printed metrics JSON
-      await Log.appendRawLog('atomicDEX mobile ${packageInfo.version} $os\n');
+      await Log.appendRawLog('Komodo Wallet ${packageInfo.version} $os\n');
       await Log.appendRawLog(
           'mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
       await Log.appendRawLog('netid ${mmSe.netid}\n');
@@ -602,7 +602,7 @@ class _SettingPageState extends State<SettingPage> {
     await Share.shareFiles(
       paths,
       // mimeTypes: ['application/octet-stream'],
-      subject: 'atomicDEX logs at ${DateTime.now().toIso8601String()}',
+      subject: 'Komodo Wallet at ${DateTime.now().toIso8601String()}',
     );
   }
 
