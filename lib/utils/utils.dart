@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:math';
 
 import 'package:bip39/bip39.dart' as bip39;
@@ -11,6 +12,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:rational/rational.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../app_config/app_config.dart';
@@ -35,7 +37,11 @@ import '../widgets/qr_view.dart';
 void copyToClipBoard(BuildContext context, String str) {
   ScaffoldMessengerState scaffoldMessenger;
   try {
-    scaffoldMessenger = ScaffoldMessenger.of(context);
+    scaffoldMessenger = ScaffoldMessenger.maybeOf(context);
+    assert(
+      scaffoldMessenger != null,
+      'No ScaffoldMessenger found when copying to clipboard',
+    );
   } catch (_) {}
 
   if (scaffoldMessenger != null) {
@@ -45,6 +51,14 @@ void copyToClipBoard(BuildContext context, String str) {
     ));
   }
   Clipboard.setData(ClipboardData(text: str));
+}
+
+Future<void> shareText(String text) async {
+  try {
+    await Share.share(text);
+  } catch (_) {
+    Log('utils:shareText', '[ERROR] Error sharing text.');
+  }
 }
 
 /// Convers a null, a string or a double into a Decimal.
@@ -808,6 +822,24 @@ String getRandomWord() {
   final String mnemonic = bip39.generateMnemonic();
   final List<String> words = mnemonic.split(' ');
   return words[Random().nextInt(words.length)];
+}
+
+void mustRunInMainThread({String message}) {
+  final isMainThread = Isolate.current.debugName == 'main';
+  if (!isMainThread) {
+    throw Exception(
+      message ?? 'Method must be called on the main thread',
+    );
+  }
+}
+
+void mustRunInIsolate([String message]) {
+  final isMainThread = Isolate.current.debugName == 'main';
+  if (isMainThread) {
+    throw Exception(
+      message ?? 'Method must be called in an isolate',
+    );
+  }
 }
 
 List<Coin> filterCoinsByQuery(List<Coin> coins, String query,

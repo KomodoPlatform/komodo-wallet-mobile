@@ -7,7 +7,10 @@ import 'dart:convert';
 import 'package:komodo_dex/model/coin_type.dart';
 
 import '../blocs/coins_bloc.dart';
+import '../model/coin_type.dart';
+import '../services/mm_service.dart';
 import '../utils/utils.dart';
+
 import 'coin.dart';
 
 String getTxHistoryToJson(GetTxHistory data) => json.encode(data.toJson());
@@ -43,13 +46,23 @@ class GetTxHistory {
               'coin': coin ?? '',
             }
           }
-        : <String, dynamic>{
-            'userpass': userpass ?? '',
-            'method': method ?? '',
-            'coin': coin ?? '',
-            'limit': limit ?? 0,
-            'from_id': fromId,
-            'decimals': coinToEnable.decimals
-          };
+        : coinToEnable.type == CoinType.zhtlc
+            ? <String, dynamic>{
+                'userpass': mmSe.userpass ?? '',
+                'method': 'z_coin_tx_history',
+                'mmrpc': '2.0',
+                'params': {
+                  'coin': coin ?? '',
+                  'limit': limit ?? 0,
+                },
+              }
+            : <String, dynamic>{
+                'userpass': userpass ?? '',
+                'method': method ?? '',
+                'coin': coin ?? '',
+                'limit': limit ?? 0,
+                'from_id': fromId,
+                'decimals': coinToEnable.decimals
+    };
   }
 }

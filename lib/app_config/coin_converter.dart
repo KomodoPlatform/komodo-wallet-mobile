@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:flutter/services.dart';
+
 import '../model/coin_type.dart';
 import '../utils/utils.dart';
 
@@ -39,6 +41,10 @@ Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
       if (coinData['fallback_swap_contract'] != null)
         'fallback_swap_contract': coinData['fallback_swap_contract'],
       if (coinData['bchd_urls'] != null) 'bchd_urls': coinData['bchd_urls'],
+      if (coinData['light_wallet_d_servers'] != null)
+        'light_wallet_d_servers': coinData['light_wallet_d_servers'],
+      if (coinData['avg_block_time'] != null)
+        'avg_block_time': coinData['avg_block_time'],
     });
   });
 
@@ -49,7 +55,7 @@ List<String> get _excludedCoins => [];
 
 String _getType(String coin, String abbr) {
   // absent protocols
-  // [RSK Smart Bitcoin, Arbitrum, Moonbeam, ZHTLC]
+  // [RSK Smart Bitcoin, Arbitrum, Moonbeam]
   if (abbr == 'IRIS') return 'iris';
   CoinType type;
   switch (coin) {
@@ -101,6 +107,9 @@ String _getType(String coin, String abbr) {
     case 'AVX-20':
       type = CoinType.avx;
       break;
+    case 'ZHTLC':
+      type = CoinType.zhtlc;
+      break;
     case 'TENDERMINT':
       type = CoinType.cosmos;
       break;
@@ -109,7 +118,7 @@ String _getType(String coin, String abbr) {
       break;
     default:
       return null; // for other protocols not yet added on the mobile
-    // they default to null and are not added as a coin , e.g optimism, zhtlc
+    // they default to null and are not added as a coin , e.g optimism, moonbeam
   }
   return type.name;
 }

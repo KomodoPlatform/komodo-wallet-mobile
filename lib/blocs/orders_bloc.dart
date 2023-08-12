@@ -107,7 +107,8 @@ class OrdersBloc implements BlocBase {
 
     final List<Order> orders = this.orders;
 
-    await musicService.play(orders);
+    final MusicMode newMode = musicService.pickMode(orders);
+    await musicService.play(newMode);
 
     final List<dynamic> ordersSwaps = <dynamic>[];
     ordersSwaps.addAll(orders);

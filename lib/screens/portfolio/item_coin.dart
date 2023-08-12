@@ -69,6 +69,7 @@ class _ItemCoinState extends State<ItemCoin>
                     )),
           );
           cexProvider.withdrawCurrency = null;
+          setState(() {});
         },
       ));
     }
@@ -311,7 +312,8 @@ class _ItemCoinState extends State<ItemCoin>
   }
 
   Widget _buildFaucetButton() {
-    return appConfig.defaultTestCoins.contains(widget.coinBalance.coin.abbr)
+    return appConfig.defaultTestCoins.contains(widget.coinBalance.coin.abbr) ||
+            widget.coinBalance.coin.abbr == 'ZOMBIE'
         ? Padding(
             padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
             child: OutlinedButton(

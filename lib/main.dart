@@ -3,6 +3,11 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' as real_bloc;
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
+import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import '../app_config/app_config.dart';
 import '../blocs/authenticate_bloc.dart';
 import '../blocs/coins_bloc.dart';
@@ -43,17 +48,38 @@ import 'model/startup_provider.dart';
 import 'utils/utils.dart';
 import 'widgets/shared_preferences_builder.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  applicationDocumentsDirectory; // Start getting the application directory.
-  startApp();
+
+  await applicationDocumentsDirectory;
+  await Log.init();
+
+  await Log.appendRawLog('=-' * 20);
+  final startupTime = DateTime.now();
+
+  Log('App start time:', startupTime.toIso8601String());
+
+  await startApp();
+
+  // Log('App end time:', DateTime.now().toIso8601String());
+  // Log('App closed after:', DateTime.now().difference(startupTime));
+  await Log.appendRawLog('=-' * 20);
 }
 
 Future<void> startApp() async {
+  // TODO: Request permissions right before it's needed when user is
+  // activating Z-Coin. Bigger chance that user will accept it.
+  await ZCoinProgressNotifications.initNotifications();
   try {
     mmSe.metrics();
     startup.start();
-    return runApp(_myAppWithProviders);
+
+    return runApp(
+      real_bloc.BlocProvider(
+        create: (context) => ZCoinActivationBloc(),
+        child: _myAppWithProviders,
+      ),
+    );
   } catch (e) {
     Log('main:46', 'startApp] $e');
     rethrow;
@@ -315,11 +341,20 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           body: _children[snapshot.data],
           bottomNavigationBar: Material(
             elevation: 8.0,
-            child: Container(
-              color: Theme.of(context).colorScheme.surface,
-              child: SafeArea(
-                child: networkStatusStreamBuilder(
-                  snapshot.data,
+            child: real_bloc.MultiBlocListener(
+              listeners: [
+                real_bloc.BlocListener<ZCoinActivationBloc,
+                    ZCoinActivationState>(
+                  listenWhen: ZCoinStatusWidget.listenWhen,
+                  listener: ZCoinStatusWidget.listener,
+                ),
+              ],
+              child: Container(
+                color: Theme.of(context).colorScheme.surface,
+                child: SafeArea(
+                  child: networkStatusStreamBuilder(
+                    snapshot.data,
+                  ),
                 ),
               ),
             ),
@@ -513,7 +548,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     icon: Stack(
                       children: <Widget>[
                         const Icon(Icons.dehaze, key: Key('main-nav-more')),
-                        if (updatesProvider.status != UpdateStatus.upToDate)
+                        if (updatesProvider.status != UpdateStatus.upToDate ||
+                            context.select<ZCoinActivationBloc, bool>((value) =>
+                                value.state is ZCoinActivationInProgess))
                           buildRedDot(context),
                       ],
                     ),

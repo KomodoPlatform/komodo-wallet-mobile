@@ -17,6 +17,7 @@ enum CoinType {
   sbch,
   ubiq,
   avx,
+  zhtlc,
   iris,
   cosmos,
 }

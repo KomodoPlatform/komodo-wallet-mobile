@@ -27,6 +27,7 @@ class WithdrawResponse {
     this.totalAmount,
     this.txHash,
     this.txHex,
+    this.taskId,
   });
 
   factory WithdrawResponse.fromJson(Map<String, dynamic> json) {
@@ -48,6 +49,7 @@ class WithdrawResponse {
       totalAmount: json['total_amount'] ?? '',
       txHash: json['tx_hash'] ?? '',
       txHex: json['tx_hex'] ?? '',
+      taskId: json['result'] == null ? null : json['result']['task_id'],
     );
   }
 
@@ -62,6 +64,7 @@ class WithdrawResponse {
   String totalAmount;
   String txHash;
   String txHex;
+  int taskId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'block_height': blockHeight ?? 0,
