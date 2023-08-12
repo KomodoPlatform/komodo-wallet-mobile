@@ -2,6 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:async/async.dart';
+import 'package:flutter/foundation.dart';
+import 'package:komodo_dex/packages/account_addresses/api/account_addresses_api_hive.dart';
+import 'package:komodo_dex/packages/account_addresses/repository/account_addresses_repository.dart';
+
 import '../../blocs/wallet_bloc.dart';
 import '../../model/article.dart';
 import '../../model/coin.dart';
@@ -16,19 +21,32 @@ class Db {
   static Database _db;
   static bool _initInvoked = false;
 
+  static AccountAddressesRepository _accountAddressesRepository;
+
   static Future<Database> get db async {
+    assert(_initInvoked, 'Db.init must be invoked before accessing the db');
     // Protect the database from being opened and initialized multiple times.
     if (_initInvoked) {
       await pauseUntil(() => _db != null);
       return _db;
     }
 
-    _initInvoked = true;
     _db = await _initDB();
     return _db;
   }
 
+  static Future<void> init({
+    @required AccountAddressesRepository accountAddressesRepository,
+  }) async {
+    _initInvoked = true;
+
+    _accountAddressesRepository = accountAddressesRepository;
+    _db = await _initDB();
+  }
+
   static Future<Database> _initDB() async {
+    if (_db != null) return _db;
+
     final Directory documentsDirectory = await applicationDocumentsDirectory;
     final String path = join(documentsDirectory.path, 'AtomicDEX.db');
     String _articleTable = '''
@@ -169,7 +187,12 @@ class Db {
           // even though they aren't in the db due to the ListOfCoinsActivated migration
           batch.execute('DELETE FROM WalletSnapshot');
 
-          batch.commit();
+          await batch.commit();
+
+          if (_walletSnapshotController.hasListener) {
+            // Wallet snapshots have been cleared
+            _walletSnapshotController.add(null);
+          }
           Log('database',
               'initDB, onUpgrade, upgraded database to version $newVersion successfully');
         } catch (e) {
@@ -545,7 +568,28 @@ class Db {
       await db.insert('WalletSnapshot',
           <String, dynamic>{'wallet_id': wallet.id, 'snapshot': jsonStr},
           conflictAlgorithm: ConflictAlgorithm.replace);
-    } catch (_) {}
+
+      final decodedSnapshot = JsonDecoder().convert(jsonStr);
+
+      // convert List<dynamic> to List<Map<String, dynamic>>
+      final snapshotListJson = List<Map<String, dynamic>>.from(decodedSnapshot);
+
+      await _accountAddressesRepository.storeSnapshot(
+        snapshotListJson: snapshotListJson,
+        walletId: wallet.id,
+      );
+
+      if (_walletSnapshotController.hasListener) {
+        _walletSnapshotController.add(
+          {'wallet_id': wallet.id, 'snapshot': decodedSnapshot},
+        );
+      }
+    } catch (e) {
+      Log(
+        'database:saveWalletSnapshot',
+        'Failed to save wallet snapshot: $e. $jsonStr',
+      );
+    }
   }
 
   static Future<String> getWalletSnapshot({Wallet wallet}) async {
@@ -694,6 +738,46 @@ class Db {
       whereArgs: allWallets ? null : [currentWallet.id],
     );
 
-    batch.commit();
+    await batch.commit();
+
+    if (_activeWalletController.hasListener) {
+      _activeWalletController.add(currentWallet);
+    }
+  }
+
+  // ===== Wallet watcher logic methods
+  static final StreamController<Wallet> _activeWalletController =
+      StreamController<Wallet>.broadcast();
+
+  static final StreamController<Map<String, dynamic>>
+      _walletSnapshotController =
+      StreamController<Map<String, dynamic>>.broadcast();
+
+  /// This is a stream that updates when the wallet snapshot table is saved.
+  ///
+  /// It is not guaranteed to be the same as the current wallet, and the data
+  /// may be repeated.
+  ///
+  /// The stream does not emit initial data.
+  static Stream<Map<String, dynamic>> watchChangesWalletSnapshot() =>
+      _walletSnapshotController.stream;
+
+  static Stream<Wallet> watchCurrentWallet() async* {
+    final Database db = await Db.db;
+
+    Wallet _lastStreamWallet = await getCurrentWallet();
+    yield _lastStreamWallet;
+
+    await for (final walletUpdate in _activeWalletController.stream
+        .where((wallet) => wallet?.id != _lastStreamWallet?.id))
+      if (!Wallet.areWalletsEqual(_lastStreamWallet, walletUpdate)) {
+        _lastStreamWallet = walletUpdate;
+
+        Log(
+          'database:watchCurrentWallet',
+          'Wallet updated, yielding new wallet of ID = ${walletUpdate.id}',
+        );
+        yield walletUpdate;
+      }
   }
 }

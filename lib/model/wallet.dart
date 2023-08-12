@@ -27,4 +27,10 @@ class Wallet {
         'id': id ?? '',
         'name': name ?? '',
       };
+
+  static bool areWalletsEqual(Wallet wallet1, Wallet wallet2) {
+    assert(wallet1 != null && wallet2 != null, "Can't compare null wallets");
+
+    return wallet1.id == wallet2.id && wallet1.name == wallet2.name;
+  }
 }
