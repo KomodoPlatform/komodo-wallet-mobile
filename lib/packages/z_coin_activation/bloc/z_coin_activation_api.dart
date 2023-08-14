@@ -372,7 +372,8 @@ class ZCoinActivationApi {
         int currentScannedBlock = currentDetails['current_scanned_block'];
 
         // If it's the first scan for this ticker, store the current block as the first scanned block
-        if (!firstScannedBlocks.containsKey(ticker)) {
+        if (!firstScannedBlocks.containsKey(ticker) ||
+            currentScannedBlock < firstScannedBlocks[ticker]) {
           firstScannedBlocks[ticker] = currentScannedBlock;
         }
 
