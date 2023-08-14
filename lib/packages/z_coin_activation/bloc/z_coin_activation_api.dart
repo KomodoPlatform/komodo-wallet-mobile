@@ -41,26 +41,27 @@ class ZCoinActivationApi {
     DateTime savedZhtlcSyncStartDate =
         zhtlcActivationPrefs['zhtlcSyncStartDate'];
 
+    int syncStartDateAsMsSinceEpoch = (zhtlcSyncType == SyncType.specifiedDate
+                ? savedZhtlcSyncStartDate
+                : zhtlcSyncType == SyncType.newTransactions
+                    ? DateTime.now().subtract(Duration(minutes: 30))
+                    : DateTime.utc(2000, 1, 1)) // TODO: Full-sync, invalid atm
+            .millisecondsSinceEpoch ~/
+        1000;
+
     Map<String, dynamic> activationParams = {
       'mode': {
         'rpc': 'Light',
         'rpc_data': {
           'electrum_servers': Coin.getServerList(coin.serverList),
-          'light_wallet_d_servers': coin.lightWalletDServers
+          'light_wallet_d_servers': coin.lightWalletDServers,
+          'sync_params': {'date': syncStartDateAsMsSinceEpoch}
         }
       },
       'scan_blocks_per_iteration': 150,
       'scan_interval_ms': 150,
       'zcash_params_path': dir.path + folder
     };
-
-    if (zhtlcSyncType == SyncType.specifiedDate) {
-      activationParams['sync_starting_date'] =
-          savedZhtlcSyncStartDate.millisecondsSinceEpoch ~/ 1000;
-    } else if (zhtlcSyncType == SyncType.fullSync) {
-      activationParams['sync_starting_date'] =
-          DateTime.utc(2000, 1, 1).millisecondsSinceEpoch ~/ 1000;
-    }
 
     final response = await http.post(
       Uri.parse(_baseUrl),
