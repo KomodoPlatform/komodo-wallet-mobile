@@ -83,15 +83,12 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
 
         final bool isStatusLoading = state is ZCoinActivationStatusLoading;
 
-        final bool knownActivationStatus =
-            (state is ZCoinActivationStatusChecked ? state.isActivated : false);
-
         return ListTile(
           title: Text('ZCoin (ZHTLC) Activation'),
           tileColor: Theme.of(context).primaryColor,
           leading: isStatusLoading
               ? CircularProgressIndicator()
-              : knownActivationStatus
+              : state is ZCoinActivationStatusChecked && state.isActivated
                   ? Icon(
                       Icons.check_circle,
                       color: Colors.green,
@@ -99,11 +96,13 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
                   : null,
           subtitle: isStatusLoading
               ? null
-              : Text(
-                  knownActivationStatus
-                      ? 'ZHTLC coins are activated'
-                      : 'ZHTLC coins are not activated',
-                ),
+              : state is ZCoinActivationStatusChecked
+                  ? Text(
+                      state.isActivated
+                          ? 'ZHTLC coins are activated'
+                          : 'ZHTLC coins are not activated',
+                    )
+                  : null,
           selected: false,
           trailing: IconButton(
             icon: Icon(
