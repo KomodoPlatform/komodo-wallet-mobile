@@ -264,8 +264,8 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                     },
                   ),
                   RadioListTile<SyncType>(
-                    title: const Text('Full sync'),
-                    value: SyncType.fullSync,
+                    title: const Text('Sync from specified date'),
+                    value: SyncType.specifiedDate,
                     groupValue: _syncType,
                     onChanged: (SyncType value) {
                       setState(() {
@@ -274,8 +274,8 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                     },
                   ),
                   RadioListTile<SyncType>(
-                    title: const Text('Sync from specified date'),
-                    value: SyncType.specifiedDate,
+                    title: const Text('Sync from sapling activation'),
+                    value: SyncType.fullSync,
                     groupValue: _syncType,
                     onChanged: (SyncType value) {
                       setState(() {
