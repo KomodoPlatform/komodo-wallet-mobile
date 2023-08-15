@@ -44,7 +44,9 @@ class ZCoinActivationApi {
     // No SyncType.fullSync option for now
     int syncStartDateAsMsSinceEpoch = (zhtlcSyncType == SyncType.specifiedDate
                 ? savedZhtlcSyncStartDate
-                : DateTime.now().subtract(Duration(days: 2)))
+                : zhtlcSyncType == SyncType.fullSync
+                    ? DateTime.utc(2000, 1, 1)
+                    : DateTime.now().subtract(Duration(days: 2)))
             .millisecondsSinceEpoch ~/
         1000;
 
