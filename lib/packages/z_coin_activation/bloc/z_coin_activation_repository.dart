@@ -39,6 +39,10 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
             }
 
             await removeRequestedActivatedCoins([currentCoinTicker]);
+          } else if (update.status == ActivationTaskStatus.failed) {
+            await removeRequestedActivatedCoins([currentCoinTicker]);
+            await api.removeTaskId(currentCoinTicker);
+            await coinsBloc.syncCoinsStateWithApi();
           }
 
           yield update;
