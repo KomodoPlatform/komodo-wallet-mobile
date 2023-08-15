@@ -8,6 +8,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
+import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import 'package:provider/provider.dart';
 
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
@@ -291,6 +293,27 @@ class _CoinsPageState extends State<CoinsPage> {
                     ),
                   ),
                   pinned: false,
+                ),
+                BlocBuilder<ZCoinActivationBloc, ZCoinActivationState>(
+                  builder: (context, state) {
+                    final isActivationInProgress =
+                        state is ZCoinActivationInProgess;
+
+                    return SliverVisibility(
+                      visible: isActivationInProgress,
+                      sliver: isActivationInProgress
+                          ? SliverAppBar(
+                              automaticallyImplyLeading: false,
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              flexibleSpace: Center(
+                                child: ZCoinStatusWidget(),
+                              ),
+                              pinned: false,
+                            )
+                          : SliverToBoxAdapter(child: SizedBox.shrink()),
+                    );
+                  },
                 ),
               ];
             },
