@@ -409,7 +409,10 @@ void _showInProgressDialog(BuildContext context) {
       final state =
           context.watch<ZCoinActivationBloc>().state.asProgressOrNull();
 
-      if (state == null) return Container();
+      if (state == null) {
+        Navigator.pop(context);
+        return Container();
+      }
 
       final appL10n = AppLocalizations.of(context);
 
