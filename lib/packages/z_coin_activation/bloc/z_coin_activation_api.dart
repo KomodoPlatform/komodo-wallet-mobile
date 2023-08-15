@@ -384,7 +384,8 @@ class ZCoinActivationApi {
         int numBlocksScanned = currentScannedBlock - firstScannedBlock;
         int totalBlocks = latestBlock - firstScannedBlock;
 
-        if (totalBlocks == 0) totalBlocks = numBlocksScanned;
+        if (totalBlocks <= 0) totalBlocks = numBlocksScanned;
+        if (totalBlocks <= 0) totalBlocks = 1;
 
         _progress = isBuildingPhase
             ? (20 + ((numBlocksScanned / totalBlocks) * 80).toInt())
