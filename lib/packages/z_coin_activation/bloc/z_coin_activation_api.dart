@@ -41,13 +41,12 @@ class ZCoinActivationApi {
     DateTime savedZhtlcSyncStartDate =
         zhtlcActivationPrefs['zhtlcSyncStartDate'];
 
-    int syncStartDateAsMsSinceEpoch = zhtlcSyncType == SyncType.fullSync
-        ? 0
-        : ((zhtlcSyncType == SyncType.specifiedDate
-                    ? savedZhtlcSyncStartDate
-                    : DateTime.now().subtract(Duration(minutes: 30)))
-                .millisecondsSinceEpoch ~/
-            1000);
+    // No SyncType.fullSync option for now
+    int syncStartDateAsMsSinceEpoch = (zhtlcSyncType == SyncType.specifiedDate
+                ? savedZhtlcSyncStartDate
+                : DateTime.now().subtract(Duration(days: 2)))
+            .millisecondsSinceEpoch ~/
+        1000;
 
     Map<String, dynamic> activationParams = {
       'mode': {

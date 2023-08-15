@@ -262,6 +262,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                       });
                     },
                   ),
+                  /* // No SyncType.fullSync option for now
                   RadioListTile<SyncType>(
                     title: const Text('Full sync'),
                     value: SyncType.fullSync,
@@ -272,6 +273,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                       });
                     },
                   ),
+                  */
                   RadioListTile<SyncType>(
                     title: const Text('Sync from specified date'),
                     value: SyncType.specifiedDate,
