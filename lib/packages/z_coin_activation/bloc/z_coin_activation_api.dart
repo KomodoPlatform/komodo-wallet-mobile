@@ -91,6 +91,74 @@ class ZCoinActivationApi {
     }
   }
 
+  Future<void> cancelActivation(int taskId) async {
+    final response = await http.post(
+      Uri.parse(_baseUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'userpass': _userpass,
+        'method': 'task::enable_z_coin::cancel',
+        'mmrpc': '2.0',
+        'params': {
+          'task_id': taskId,
+        },
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      if (responseBody.containsKey('error')) {
+        throw Exception(
+            'Failed to cancel activation: ${responseBody['error']}');
+      }
+    } else {
+      throw Exception('Failed to cancel activation: ${response.toString()}');
+    }
+  }
+
+  Future<List<String>> cancelAllActivation() async {
+    List<Coin> knownZCoins = await getKnownZCoins();
+    List<String> activatedCoins = await activatedZCoins();
+    List<String> cancelledCoins = [];
+
+    for (Coin coin in knownZCoins) {
+      String ticker = coin.abbr;
+      int coinTaskId = await getTaskId(ticker);
+
+      // Check if taskId exists
+      if (coinTaskId == null) {
+        continue;
+      }
+
+      // Check if coin is already activated
+      if (activatedCoins.contains(ticker)) {
+        continue;
+      }
+
+      ZCoinStatus taskStatus =
+          await activationTaskStatus(coinTaskId, ticker: ticker);
+
+      // Check if task status is active
+      if (taskStatus.status == ActivationTaskStatus.active) {
+        continue;
+      }
+
+      // Attempt to cancel the activation
+      try {
+        await cancelActivation(coinTaskId);
+        await _removeCoinTaskId(ticker);
+
+        firstScannedBlocks.remove(ticker);
+        cancelledCoins.add(ticker);
+      } catch (e) {
+        Log('z_coin_activation_api:cancelAllActivation',
+            'Failed to cancel activation for $ticker: $e');
+      }
+    }
+
+    return cancelledCoins;
+  }
+
   Future<int> getTaskId(String abbr) async {
     final storage = FlutterSecureStorage();
     return int.tryParse(await storage.read(key: await taskIdKey(abbr)) ?? '');

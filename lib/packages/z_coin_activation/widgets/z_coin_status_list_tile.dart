@@ -11,6 +11,7 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/rotating_progress_indicator.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/widgets/confirmation_dialog.dart';
 
 class ZCoinStatusWidget extends StatefulWidget {
   const ZCoinStatusWidget({Key key}) : super(key: key);
@@ -162,7 +163,7 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
             Icons.check_circle,
             color: theme.colorScheme.secondary,
           ),
-          content: Text('ZHTLC coins activated successfully'),
+          content: Text('ZHTLC coins activation process ended'),
           // backgroundColor: Colors.green,
           actions: [
             TextButton(
@@ -446,6 +447,23 @@ void _showInProgressDialog(BuildContext context) {
           ],
         ),
         actions: [
+          TextButton(
+            onPressed: () {
+              showConfirmationDialog(
+                context: context,
+                title: 'Stop Activation',
+                message:
+                    'Are you sure you want to stop the activation process?',
+                onConfirm: () {
+                  context
+                      .read<ZCoinActivationBloc>()
+                      .add(ZCoinActivationCancelRequested());
+                },
+                confirmButtonText: 'Stop',
+              );
+            },
+            child: Text('Stop'),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(appL10n.close),

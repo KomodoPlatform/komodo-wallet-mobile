@@ -19,6 +19,7 @@ class ZCoinActivationBloc
     on<ZCoinActivationRequested>(_handleActivationRequested);
     on<ZCoinActivationSetRequestedCoins>(_handleSetRequestedCoins);
     on<ZCoinActivationStatusRequested>(_handleActivationStatusRequested);
+    on<ZCoinActivationCancelRequested>(_handleActivationCancelRequested);
   }
 
   final ZCoinActivationRepository _repository = ZCoinActivationRepository(
@@ -162,6 +163,12 @@ class ZCoinActivationBloc
         ZCoinActivationFailure('Failed to get activation status'),
       );
     }
+  }
+
+  Future<void> _handleActivationCancelRequested(
+      ZCoinActivationCancelRequested event,
+      Emitter<ZCoinActivationState> emit) async {
+    await _repository.cancelAllZCoinActivations();
   }
 
   Future<void> _updateNotification(
