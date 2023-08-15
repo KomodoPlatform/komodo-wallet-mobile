@@ -41,7 +41,6 @@ class ZCoinActivationApi {
     DateTime savedZhtlcSyncStartDate =
         zhtlcActivationPrefs['zhtlcSyncStartDate'];
 
-    // No SyncType.fullSync option for now
     int syncStartDateAsMsSinceEpoch = (zhtlcSyncType == SyncType.specifiedDate
                 ? savedZhtlcSyncStartDate
                 : zhtlcSyncType == SyncType.fullSync
