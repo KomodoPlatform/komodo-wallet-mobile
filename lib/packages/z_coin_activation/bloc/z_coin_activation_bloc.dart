@@ -50,7 +50,8 @@ class ZCoinActivationBloc
       await emit.forEach<ZCoinStatus>(_repository.activateRequestedZCoins(),
           onData: (coinStatus) {
         if (coinStatus.isFailed) {
-          return state;
+          return ZCoinActivationFailure(
+              'Failed to activate ZHTLC coins, please try again later');
         }
 
         if (coinStatus.isActivated) {
@@ -84,7 +85,9 @@ class ZCoinActivationBloc
             eta: eta,
           );
         }
-
+        if (coinStatus.isActivated) {
+          return ZCoinActivationSuccess('Completed ZHTLC activation');
+        }
         return ZCoinActivationInProgess(
           progress: shouldShowNewProgress ? overallProgress : lastProgress,
           message: 'Activating ${coinStatus.coin}',
@@ -99,7 +102,9 @@ class ZCoinActivationBloc
       final isAllActivated = await _repository.isAllRequestedZCoinsEnabled();
 
       if (isAllActivated) {
-        emit(ZCoinActivationSuccess());
+        // This is not always success, it just means the list is empty
+        // And this emit might remove another important notification
+        // emit(ZCoinActivationSuccess('ZHTLC coins activation process ended'));
       } else {
         emit(ZCoinActivationFailure('Failed to activate coins'));
         // add(ZCoinActivationSetRequestedCoins(coins));
@@ -144,7 +149,7 @@ class ZCoinActivationBloc
       ZCoinActivationState newState;
       if (isAllCoinsEnabled) {
         newState = isActivationInProgress
-            ? ZCoinActivationSuccess()
+            ? ZCoinActivationSuccess('Activation in progress...')
             : ZCoinActivationKnownState(isAllCoinsEnabled);
       } else if (isActivationInProgress) {
         newState = state as ZCoinActivationInProgess;
@@ -168,7 +173,15 @@ class ZCoinActivationBloc
   Future<void> _handleActivationCancelRequested(
       ZCoinActivationCancelRequested event,
       Emitter<ZCoinActivationState> emit) async {
-    await _repository.cancelAllZCoinActivations();
+    try {
+      await _repository.cancelAllZCoinActivations();
+      emit(ZCoinActivationFailure('Cancelling ZHTLC activation...'));
+    } catch (e) {
+      debugPrint('Failed to cancel ZHTLC activation: $e');
+      emit(
+        ZCoinActivationFailure('Failed to cancel ZHTLC activation'),
+      );
+    }
   }
 
   Future<void> _updateNotification(

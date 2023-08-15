@@ -163,7 +163,7 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
             Icons.check_circle,
             color: theme.colorScheme.secondary,
           ),
-          content: Text('ZHTLC coins activation process ended'),
+          content: Text(state.message),
           // backgroundColor: Colors.green,
           actions: [
             TextButton(
