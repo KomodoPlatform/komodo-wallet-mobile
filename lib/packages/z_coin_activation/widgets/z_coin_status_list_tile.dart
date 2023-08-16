@@ -410,7 +410,9 @@ void _showInProgressDialog(BuildContext context) {
           context.watch<ZCoinActivationBloc>().state.asProgressOrNull();
 
       if (state == null) {
-        Navigator.pop(context);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pop(context);
+        });
         return Container();
       }
 
