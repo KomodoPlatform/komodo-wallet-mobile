@@ -107,10 +107,16 @@ class ZCoinActivationApi {
 
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
-      if (responseBody.containsKey('error')) {
-        throw Exception(
-            'Failed to cancel activation: ${responseBody['error']}');
-      }
+
+      Log('z_coin_activation_api:cancelActivation',
+          'ZCoin Activation Cancel Response: ${responseBody.toString()}');
+
+      // Success can give error as well, like:
+      // "error": "Task is finished already",
+      // if (responseBody.containsKey('error')) {
+      // Log('z_coin_activation_api:cancelActivation',
+      //     'ZCoin Activation Cancel Error: ${responseBody['error']}');
+      // }
     } else {
       throw Exception('Failed to cancel activation: ${response.toString()}');
     }
