@@ -110,8 +110,10 @@ class ZCoinActivationApi {
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
 
-      Log('z_coin_activation_api:cancelActivation',
-          'ZCoin Activation Cancel Response: ${responseBody.toString()}');
+      Log(
+        'z_coin_activation_api:cancelActivation',
+        'ZCoin Activation Cancel Response: ${responseBody.toString()}',
+      );
 
       // Success can give error as well, like:
       // "error": "Task is finished already",
@@ -159,8 +161,10 @@ class ZCoinActivationApi {
         firstScannedBlocks.remove(ticker);
         cancelledCoins.add(ticker);
       } catch (e) {
-        Log('z_coin_activation_api:cancelAllActivation',
-            'Failed to cancel activation for $ticker: $e');
+        Log(
+          'z_coin_activation_api:cancelAllActivation',
+          'Failed to cancel activation for $ticker: $e',
+        );
       }
     }
 
@@ -187,7 +191,8 @@ class ZCoinActivationApi {
             ticker,
             isAlreadyActivated
                 ? ActivationTaskStatus.active
-                : ActivationTaskStatus.notFound)
+                : ActivationTaskStatus.notFound,
+          )
         : await activationTaskStatus(coinTaskId, ticker: ticker);
 
     final isActivatedOnBackend = (isAlreadyActivated || taskStatus.isActivated);
@@ -289,8 +294,10 @@ class ZCoinActivationApi {
       await _removeCoinTaskId(ticker);
     }
 
-    Log('activationTaskStatus',
-        'Z Coin activation status (Progress=${status.progress}) ($apiStatus) response: ${result.toString()}');
+    Log(
+      'activationTaskStatus',
+      'Z Coin activation status (Progress=${status.progress}) ($apiStatus) response: ${result.toString()}',
+    );
 
     if (status != null) {
       return status;

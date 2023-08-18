@@ -23,7 +23,6 @@ import '../../../../model/cex_provider.dart';
 import '../../../../model/coin_balance.dart';
 import '../../../../services/mm_service.dart';
 import '../portfolio/loading_coin.dart';
-import 'add_coin_button.dart';
 import 'item_coin.dart';
 
 class CoinsPage extends StatefulWidget {
@@ -124,217 +123,222 @@ class _CoinsPageState extends State<CoinsPage> {
         _scrollController.offset > _heightSliver;
 
     return Scaffold(
-        body: NestedScrollView(
-            controller: _scrollController,
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  expandedHeight: 130,
-                  pinned: true,
-                  actions: [
-                    AnimatedOpacity(
-                      opacity: isCollapsed ? 1 : 0,
-                      duration: Duration(milliseconds: 600),
-                      curve: Curves.easeInOutExpo,
-                      child: IgnorePointer(
-                        ignoring: !isCollapsed,
-                        child: AddCoinButton(
-                            key: Key('add-coin-button-collapsed'),
-                            isCollapsed: true,
-                            hideAddCoinLoading: hideAddCoinLoading,
-                            onShowAddCoinLoading: _showAddCoinLoading),
-                      ),
+      body: NestedScrollView(
+        controller: _scrollController,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              expandedHeight: 130,
+              pinned: true,
+              actions: [
+                AnimatedOpacity(
+                  opacity: isCollapsed ? 1 : 0,
+                  duration: Duration(milliseconds: 600),
+                  curve: Curves.easeInOutExpo,
+                  child: IgnorePointer(
+                    ignoring: !isCollapsed,
+                    child: AddCoinButton(
+                      key: Key('add-coin-button-collapsed'),
+                      isCollapsed: true,
+                      hideAddCoinLoading: hideAddCoinLoading,
+                      onShowAddCoinLoading: _showAddCoinLoading,
                     ),
-                    SizedBox(width: 8),
-                  ],
-                  flexibleSpace: Builder(
-                    builder: (BuildContext context) {
-                      return Stack(
-                        children: <Widget>[
-                          FlexibleSpaceBar(
-                              collapseMode: CollapseMode.pin,
-                              centerTitle: true,
-                              titlePadding:
-                                  EdgeInsetsDirectional.only(bottom: 10),
-                              title: SizedBox(
-                                width: _widthScreen * 0.5,
-                                child: Center(
-                                  heightFactor: _heightFactor,
-                                  child: StreamBuilder<List<CoinBalance>>(
-                                      initialData: coinsBloc.coinBalance,
-                                      stream: coinsBloc.outCoins,
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<List<CoinBalance>>
-                                              snapshot) {
-                                        if (snapshot.data != null) {
-                                          double totalBalanceUSD = 0;
+                  ),
+                ),
+                SizedBox(width: 8),
+              ],
+              flexibleSpace: Builder(
+                builder: (BuildContext context) {
+                  return Stack(
+                    children: <Widget>[
+                      FlexibleSpaceBar(
+                        collapseMode: CollapseMode.pin,
+                        centerTitle: true,
+                        titlePadding: EdgeInsetsDirectional.only(bottom: 10),
+                        title: SizedBox(
+                          width: _widthScreen * 0.5,
+                          child: Center(
+                            heightFactor: _heightFactor,
+                            child: StreamBuilder<List<CoinBalance>>(
+                              initialData: coinsBloc.coinBalance,
+                              stream: coinsBloc.outCoins,
+                              builder: (
+                                BuildContext context,
+                                AsyncSnapshot<List<CoinBalance>> snapshot,
+                              ) {
+                                if (snapshot.data != null) {
+                                  double totalBalanceUSD = 0;
 
-                                          for (CoinBalance coinBalance
-                                              in snapshot.data) {
-                                            totalBalanceUSD +=
-                                                coinBalance.balanceUSD;
-                                          }
-                                          return StreamBuilder<bool>(
-                                            initialData:
-                                                settingsBloc.showBalance,
-                                            stream: settingsBloc.outShowBalance,
-                                            builder: (BuildContext context,
-                                                AsyncSnapshot<bool> snapshot) {
-                                              bool hidden = false;
-                                              if (snapshot.hasData &&
-                                                  !snapshot.data) {
-                                                hidden = true;
-                                              }
-                                              final String amountText =
-                                                  _cexProvider.convert(
-                                                totalBalanceUSD,
-                                                hidden: hidden,
-                                              );
-                                              return TextButton(
-                                                onPressed: () => _cexProvider
-                                                    .switchCurrency(),
-                                                style: TextButton.styleFrom(
-                                                  primary: isCollapsed
-                                                      ? Theme.of(context)
-                                                                  .brightness ==
-                                                              Brightness.light
-                                                          ? Colors.black
-                                                              .withOpacity(0.8)
-                                                          : Colors.white
-                                                      : Colors.white
-                                                          .withOpacity(0.8),
-                                                  textStyle: Theme.of(context)
-                                                      .textTheme
-                                                      .headline6,
-                                                ),
-                                                child: AutoSizeText(
-                                                  amountText,
-                                                  maxFontSize: 18,
-                                                  minFontSize: 12,
-                                                  maxLines: 1,
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        } else {
-                                          return Center(
-                                              child:
-                                                  const CircularProgressIndicator());
-                                        }
-                                      }),
-                                ),
-                              ),
-                              background: Container(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 16),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      const LoadAsset(),
-                                      const SizedBox(
-                                        height: 14.0,
-                                      ),
-                                      StreamBuilder<bool>(
-                                          initialData: settingsBloc.showBalance,
-                                          stream: settingsBloc.outShowBalance,
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<bool> snapshot) {
-                                            return snapshot.hasData &&
-                                                    snapshot.data
-                                                ? BarGraph()
-                                                : SizedBox();
-                                          })
-                                    ],
-                                  ),
-                                ),
-                                height: _heightScreen * 0.35,
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  stops: const <double>[0.01, 1],
-                                  colors: const <Color>[
-                                    Color.fromRGBO(98, 90, 229, 1),
-                                    Color.fromRGBO(45, 184, 240, 1),
-                                  ],
-                                )),
-                              )),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            child: _buildProgressIndicator(),
+                                  for (CoinBalance coinBalance
+                                      in snapshot.data) {
+                                    totalBalanceUSD += coinBalance.balanceUSD;
+                                  }
+                                  return StreamBuilder<bool>(
+                                    initialData: settingsBloc.showBalance,
+                                    stream: settingsBloc.outShowBalance,
+                                    builder: (
+                                      BuildContext context,
+                                      AsyncSnapshot<bool> snapshot,
+                                    ) {
+                                      bool hidden = false;
+                                      if (snapshot.hasData && !snapshot.data) {
+                                        hidden = true;
+                                      }
+                                      final String amountText =
+                                          _cexProvider.convert(
+                                        totalBalanceUSD,
+                                        hidden: hidden,
+                                      );
+                                      return TextButton(
+                                        onPressed: () =>
+                                            _cexProvider.switchCurrency(),
+                                        style: TextButton.styleFrom(
+                                          primary: isCollapsed
+                                              ? Theme.of(context).brightness ==
+                                                      Brightness.light
+                                                  ? Colors.black
+                                                      .withOpacity(0.8)
+                                                  : Colors.white
+                                              : Colors.white.withOpacity(0.8),
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        ),
+                                        child: AutoSizeText(
+                                          amountText,
+                                          maxFontSize: 18,
+                                          minFontSize: 12,
+                                          maxLines: 1,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  return Center(
+                                    child: const CircularProgressIndicator(),
+                                  );
+                                }
+                              },
+                            ),
                           ),
-                        ],
-                      );
-                    },
-                  ),
-                  automaticallyImplyLeading: false,
-                ),
-                SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  toolbarHeight: 48,
-                  flexibleSpace: Center(
-                    child: IntrinsicWidth(
-                      // Child has infite width. We want to change so that it
-                      // ignores the infinite width and takes up min width.
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: AddCoinButton(
-                            key: Key('add-coin-button'),
-                            hideAddCoinLoading: hideAddCoinLoading,
-                            onShowAddCoinLoading: _showAddCoinLoading),
+                        ),
+                        background: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                const LoadAsset(),
+                                const SizedBox(
+                                  height: 14.0,
+                                ),
+                                StreamBuilder<bool>(
+                                  initialData: settingsBloc.showBalance,
+                                  stream: settingsBloc.outShowBalance,
+                                  builder: (
+                                    BuildContext context,
+                                    AsyncSnapshot<bool> snapshot,
+                                  ) {
+                                    return snapshot.hasData && snapshot.data
+                                        ? BarGraph()
+                                        : SizedBox();
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                          height: _heightScreen * 0.35,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomLeft,
+                              end: Alignment.topRight,
+                              stops: const <double>[0.01, 1],
+                              colors: const <Color>[
+                                Color.fromRGBO(98, 90, 229, 1),
+                                Color.fromRGBO(45, 184, 240, 1),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: _buildProgressIndicator(),
+                      ),
+                    ],
+                  );
+                },
+              ),
+              automaticallyImplyLeading: false,
+            ),
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              toolbarHeight: 48,
+              flexibleSpace: Center(
+                child: IntrinsicWidth(
+                  // Child has infite width. We want to change so that it
+                  // ignores the infinite width and takes up min width.
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: AddCoinButton(
+                      key: Key('add-coin-button'),
+                      hideAddCoinLoading: hideAddCoinLoading,
+                      onShowAddCoinLoading: _showAddCoinLoading,
                     ),
                   ),
-                  pinned: false,
                 ),
-                BlocBuilder<ZCoinActivationBloc, ZCoinActivationState>(
-                  builder: (context, state) {
-                    final isActivationInProgress =
-                        state is ZCoinActivationInProgess;
+              ),
+              pinned: false,
+            ),
+            BlocBuilder<ZCoinActivationBloc, ZCoinActivationState>(
+              builder: (context, state) {
+                final isActivationInProgress =
+                    state is ZCoinActivationInProgess;
 
-                    return SliverVisibility(
-                      visible: isActivationInProgress,
-                      sliver: isActivationInProgress
-                          ? SliverAppBar(
-                              automaticallyImplyLeading: false,
-                              backgroundColor:
-                                  Theme.of(context).scaffoldBackgroundColor,
-                              flexibleSpace: Center(
-                                child: ZCoinStatusWidget(),
-                              ),
-                              pinned: false,
-                            )
-                          : SliverToBoxAdapter(child: SizedBox.shrink()),
-                    );
-                  },
-                ),
-              ];
-            },
-            body: Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: const ListCoins())));
+                return SliverVisibility(
+                  visible: isActivationInProgress,
+                  sliver: isActivationInProgress
+                      ? SliverAppBar(
+                          automaticallyImplyLeading: false,
+                          backgroundColor:
+                              Theme.of(context).scaffoldBackgroundColor,
+                          flexibleSpace: Center(
+                            child: ZCoinStatusWidget(),
+                          ),
+                          pinned: false,
+                        )
+                      : SliverToBoxAdapter(child: SizedBox.shrink()),
+                );
+              },
+            ),
+          ];
+        },
+        body: Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: const ListCoins(),
+        ),
+      ),
+    );
   }
 
   Widget _buildProgressIndicator() {
     return StreamBuilder<CoinToActivate>(
-        initialData: coinsBloc.currentActiveCoin,
-        stream: coinsBloc.outcurrentActiveCoin,
-        builder:
-            (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-          return snapshot.data != null && !hideAddCoinLoading
-              ? const SizedBox(
-                  height: 2,
-                  child: LinearProgressIndicator(),
-                )
-              : SizedBox();
-        });
+      initialData: coinsBloc.currentActiveCoin,
+      stream: coinsBloc.outcurrentActiveCoin,
+      builder: (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+        return snapshot.data != null && !hideAddCoinLoading
+            ? const SizedBox(
+                height: 2,
+                child: LinearProgressIndicator(),
+              )
+            : SizedBox();
+      },
+    );
   }
 }
 
@@ -368,11 +372,14 @@ class BarGraphState extends State<BarGraph> {
 
           for (CoinBalance coinBalance in snapshot.data) {
             if (coinBalance.balanceUSD > 0) {
-              barItem.add(Container(
-                color: Color(int.parse(coinBalance.coin.colorCoin)),
-                width: _widthBar *
-                    (((coinBalance.balanceUSD * 100) / sumOfAllBalances) / 100),
-              ));
+              barItem.add(
+                Container(
+                  color: Color(int.parse(coinBalance.coin.colorCoin)),
+                  width: _widthBar *
+                      (((coinBalance.balanceUSD * 100) / sumOfAllBalances) /
+                          100),
+                ),
+              );
             }
           }
         }
@@ -425,27 +432,34 @@ class LoadAssetState extends State<LoadAsset> {
             }
           }
 
-          listRet.add(Icon(
-            Icons.show_chart,
-            color: color.withOpacity(0.8),
-          ));
+          listRet.add(
+            Icon(
+              Icons.show_chart,
+              color: color.withOpacity(0.8),
+            ),
+          );
           listRet.add(
             Text(
               AppLocalizations.of(context).numberAssets(assetNumber.toString()),
               style: Theme.of(context).textTheme.caption.copyWith(color: color),
             ),
           );
-          listRet.add(Icon(
-            Icons.chevron_right,
-            color: color.withOpacity(0.8),
-          ));
+          listRet.add(
+            Icon(
+              Icons.chevron_right,
+              color: color.withOpacity(0.8),
+            ),
+          );
         } else {
-          listRet.add(SizedBox(
+          listRet.add(
+            SizedBox(
               height: 10,
               width: 10,
               child: const CircularProgressIndicator(
                 strokeWidth: 1.0,
-              )));
+              ),
+            ),
+          );
         }
         return SizedBox(
           height: 30,
@@ -487,39 +501,43 @@ class ListCoinsState extends State<ListCoins> {
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         return RefreshIndicator(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            color: Theme.of(context).colorScheme.secondary,
-            key: _refreshIndicatorKey,
-            onRefresh: () => coinsBloc.updateCoinBalances(),
-            child: Builder(builder: (BuildContext context) {
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          color: Theme.of(context).colorScheme.secondary,
+          key: _refreshIndicatorKey,
+          onRefresh: () => coinsBloc.updateCoinBalances(),
+          child: Builder(
+            builder: (BuildContext context) {
               if (snapshot.data != null && snapshot.data.isNotEmpty) {
                 final List<CoinBalance> _coinsSorted =
                     coinsBloc.sortCoins(snapshot.data);
 
                 return SlidableAutoCloseBehavior(
-                    child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    ListView.separated(
-                      padding: const EdgeInsets.all(0),
-                      key: const Key('list-view-coins'),
-                      itemCount: _coinsSorted.length,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return ItemCoin(
-                          key:
-                              Key('coin-list-${_coinsSorted[index].coin.abbr}'),
-                          mContext: context,
-                          coinBalance: _coinsSorted[index],
-                        );
-                        // }
-                      },
-                      separatorBuilder: (context, _) =>
-                          Divider(color: Theme.of(context).colorScheme.surface),
-                    ),
-                  ],
-                ));
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      ListView.separated(
+                        padding: const EdgeInsets.all(0),
+                        key: const Key('list-view-coins'),
+                        itemCount: _coinsSorted.length,
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return ItemCoin(
+                            key: Key(
+                              'coin-list-${_coinsSorted[index].coin.abbr}',
+                            ),
+                            mContext: context,
+                            coinBalance: _coinsSorted[index],
+                          );
+                          // }
+                        },
+                        separatorBuilder: (context, _) => Divider(
+                          color: Theme.of(context).colorScheme.surface,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();
               } else if (snapshot.data.isEmpty) {
@@ -540,7 +558,9 @@ class ListCoinsState extends State<ListCoins> {
               } else {
                 return SizedBox();
               }
-            }));
+            },
+          ),
+        );
       },
     );
   }

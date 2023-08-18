@@ -82,8 +82,10 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
       }
       await coinsBloc.syncCoinsStateWithApi();
     } catch (e) {
-      Log('z_coin_activation_repository:cancelAllZCoinActivations',
-          'Failed to cancel ZCoin activations: $e');
+      Log(
+        'z_coin_activation_repository:cancelAllZCoinActivations',
+        'Failed to cancel ZCoin activations: $e',
+      );
     }
   }
 
