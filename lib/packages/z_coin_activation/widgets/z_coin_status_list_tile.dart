@@ -49,15 +49,11 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
   }
 
   bool apiReady = mmSe.running;
-// class _SetupZcoinButton extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ZCoinActivationBloc, ZCoinActivationState>(
-      // listenWhen: (previous, current) =>
-      //     previous.runtimeType != current.runtimeType,
-      // listener: listener,
       builder: (context, state) {
-        // bool coinActivated = state is ZCoinActivationSuccess;
         bool isActivationInProgress = state is ZCoinActivationInProgess;
 
         if (isActivationInProgress) {
