@@ -28,6 +28,21 @@ class ZCoinActivationApi {
 
   Map<String, int> firstScannedBlocks = {};
 
+  Future<int> userSelectedZhtlcSyncStartTimestamp() async {
+    final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
+    SyncType zhtlcSyncType = zhtlcActivationPrefs['zhtlcSyncType'];
+    DateTime savedZhtlcSyncStartDate =
+        zhtlcActivationPrefs['zhtlcSyncStartDate'];
+
+    return (zhtlcSyncType == SyncType.specifiedDate
+                ? savedZhtlcSyncStartDate
+                : zhtlcSyncType == SyncType.fullSync
+                    ? DateTime.utc(2000, 1, 1)
+                    : DateTime.now().subtract(Duration(days: 2)))
+            .millisecondsSinceEpoch ~/
+        1000;
+  }
+
   /// Creates a new activation task for the given coin.
   Future<int> initiateActivation(String ticker) async {
     await musicService.play(MusicMode.ACTIVE);
@@ -36,26 +51,13 @@ class ZCoinActivationApi {
     final dir = await applicationDocumentsDirectory;
     Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
 
-    final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
-    SyncType zhtlcSyncType = zhtlcActivationPrefs['zhtlcSyncType'];
-    DateTime savedZhtlcSyncStartDate =
-        zhtlcActivationPrefs['zhtlcSyncStartDate'];
-
-    int syncStartDateAsMsSinceEpoch = (zhtlcSyncType == SyncType.specifiedDate
-                ? savedZhtlcSyncStartDate
-                : zhtlcSyncType == SyncType.fullSync
-                    ? DateTime.utc(2000, 1, 1)
-                    : DateTime.now().subtract(Duration(days: 2)))
-            .millisecondsSinceEpoch ~/
-        1000;
-
     Map<String, dynamic> activationParams = {
       'mode': {
         'rpc': 'Light',
         'rpc_data': {
           'electrum_servers': Coin.getServerList(coin.serverList),
           'light_wallet_d_servers': coin.lightWalletDServers,
-          'sync_params': {'date': syncStartDateAsMsSinceEpoch}
+          'sync_params': {'date': (await userSelectedZhtlcSyncStartTimestamp())}
         }
       },
       'scan_blocks_per_iteration': 150,
