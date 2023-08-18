@@ -77,8 +77,7 @@ class ZCoinActivationBloc
 
         final eta = calculateETA(overallProgress);
 
-        if (zhtlcSyncType !=
-            SyncType.newTransactions /* && shouldShowNewProgress */) {
+        if (zhtlcSyncType != SyncType.newTransactions) {
           _updateNotification(
             coinStatus,
             overallProgress: overallProgress,
@@ -107,7 +106,6 @@ class ZCoinActivationBloc
         // emit(ZCoinActivationSuccess('ZHTLC coins activation process ended'));
       } else {
         emit(ZCoinActivationFailure('Failed to activate coins'));
-        // add(ZCoinActivationSetRequestedCoins(coins));
       }
     } catch (e) {
       debugPrint('Failed to start activation: $e');
