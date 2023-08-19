@@ -11,6 +11,7 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/rotating_progress_indicator.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/widgets/confirmation_dialog.dart';
 
 class ZCoinStatusWidget extends StatefulWidget {
   const ZCoinStatusWidget({Key key}) : super(key: key);
@@ -48,15 +49,11 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
   }
 
   bool apiReady = mmSe.running;
-// class _SetupZcoinButton extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ZCoinActivationBloc, ZCoinActivationState>(
-      // listenWhen: (previous, current) =>
-      //     previous.runtimeType != current.runtimeType,
-      // listener: listener,
       builder: (context, state) {
-        // bool coinActivated = state is ZCoinActivationSuccess;
         bool isActivationInProgress = state is ZCoinActivationInProgess;
 
         if (isActivationInProgress) {
@@ -83,15 +80,12 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
 
         final bool isStatusLoading = state is ZCoinActivationStatusLoading;
 
-        final bool knownActivationStatus =
-            (state is ZCoinActivationStatusChecked ? state.isActivated : false);
-
         return ListTile(
           title: Text('ZCoin (ZHTLC) Activation'),
           tileColor: Theme.of(context).primaryColor,
           leading: isStatusLoading
               ? CircularProgressIndicator()
-              : knownActivationStatus
+              : state is ZCoinActivationStatusChecked && state.isActivated
                   ? Icon(
                       Icons.check_circle,
                       color: Colors.green,
@@ -99,11 +93,13 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
                   : null,
           subtitle: isStatusLoading
               ? null
-              : Text(
-                  knownActivationStatus
-                      ? 'ZHTLC coins are activated'
-                      : 'ZHTLC coins are not activated',
-                ),
+              : state is ZCoinActivationStatusChecked
+                  ? Text(
+                      state.isActivated
+                          ? 'ZHTLC coins are activated'
+                          : 'ZHTLC coins are not activated',
+                    )
+                  : null,
           selected: false,
           trailing: IconButton(
             icon: Icon(
@@ -163,7 +159,7 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
             Icons.check_circle,
             color: theme.colorScheme.secondary,
           ),
-          content: Text('ZHTLC coins activated successfully'),
+          content: Text(state.message),
           // backgroundColor: Colors.green,
           actions: [
             TextButton(
@@ -264,8 +260,8 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                     },
                   ),
                   RadioListTile<SyncType>(
-                    title: const Text('Full sync'),
-                    value: SyncType.fullSync,
+                    title: const Text('Sync from specified date'),
+                    value: SyncType.specifiedDate,
                     groupValue: _syncType,
                     onChanged: (SyncType value) {
                       setState(() {
@@ -274,8 +270,8 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                     },
                   ),
                   RadioListTile<SyncType>(
-                    title: const Text('Sync from specified date'),
-                    value: SyncType.specifiedDate,
+                    title: const Text('Sync from sapling activation'),
+                    value: SyncType.fullSync,
                     groupValue: _syncType,
                     onChanged: (SyncType value) {
                       setState(() {
@@ -409,7 +405,12 @@ void _showInProgressDialog(BuildContext context) {
       final state =
           context.watch<ZCoinActivationBloc>().state.asProgressOrNull();
 
-      if (state == null) return Container();
+      if (state == null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pop(context);
+        });
+        return Container();
+      }
 
       final appL10n = AppLocalizations.of(context);
 
@@ -447,6 +448,23 @@ void _showInProgressDialog(BuildContext context) {
           ],
         ),
         actions: [
+          TextButton(
+            onPressed: () {
+              showConfirmationDialog(
+                context: context,
+                title: 'Stop Activation',
+                message:
+                    'Are you sure you want to stop the activation process?',
+                onConfirm: () {
+                  context
+                      .read<ZCoinActivationBloc>()
+                      .add(ZCoinActivationCancelRequested());
+                },
+                confirmButtonText: 'Stop',
+              );
+            },
+            child: Text('Stop'),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(appL10n.close),

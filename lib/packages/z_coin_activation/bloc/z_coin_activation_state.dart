@@ -33,7 +33,11 @@ class ZCoinActivationInProgess extends ZCoinActivationState {
   final DateTime startTime; // nullable
 }
 
-class ZCoinActivationSuccess extends ZCoinActivationState {}
+class ZCoinActivationSuccess extends ZCoinActivationState {
+  ZCoinActivationSuccess(this.message);
+
+  final String message;
+}
 
 class ZCoinActivationFailure extends ZCoinActivationState {
   const ZCoinActivationFailure(this.message);

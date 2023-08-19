@@ -19,14 +19,17 @@ class ZCoinActivationBloc
     on<ZCoinActivationRequested>(_handleActivationRequested);
     on<ZCoinActivationSetRequestedCoins>(_handleSetRequestedCoins);
     on<ZCoinActivationStatusRequested>(_handleActivationStatusRequested);
+    on<ZCoinActivationCancelRequested>(_handleActivationCancelRequested);
   }
 
   final ZCoinActivationRepository _repository = ZCoinActivationRepository(
     ZCoinActivationApi(),
   );
 
-  Future<void> _handleActivationRequested(ZCoinActivationRequested event,
-      Emitter<ZCoinActivationState> emit) async {
+  Future<void> _handleActivationRequested(
+    ZCoinActivationRequested event,
+    Emitter<ZCoinActivationState> emit,
+  ) async {
     final toActivate = await _repository.outstandingZCoinActivations();
     final toActivateInitalCount = toActivate.length;
 
@@ -40,68 +43,77 @@ class ZCoinActivationBloc
       final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
       SyncType zhtlcSyncType = zhtlcActivationPrefs['zhtlcSyncType'];
 
-      emit(ZCoinActivationInProgess(
-        progress: 0,
-        message: 'Starting activation',
-        eta: null,
-        startTime: DateTime.now(),
-      ));
-      await emit.forEach<ZCoinStatus>(_repository.activateRequestedZCoins(),
-          onData: (coinStatus) {
-        if (coinStatus.isFailed) {
-          return state;
-        }
+      emit(
+        ZCoinActivationInProgess(
+          progress: 0,
+          message: 'Starting activation',
+          eta: null,
+          startTime: DateTime.now(),
+        ),
+      );
+      await emit.forEach<ZCoinStatus>(
+        _repository.activateRequestedZCoins(),
+        onData: (coinStatus) {
+          if (coinStatus.isFailed) {
+            return ZCoinActivationFailure(
+              'Failed to activate ZHTLC coins, please try again later',
+            );
+          }
 
-        if (coinStatus.isActivated) {
-          toActivate.remove(coinStatus.coin);
-        }
-        final coinsRemainingCount = toActivate.length;
+          if (coinStatus.isActivated) {
+            toActivate.remove(coinStatus.coin);
+          }
+          final coinsRemainingCount = toActivate.length;
 
-        // Progress of the coin currently being activated
-        final coinProgress = coinStatus.progress;
+          // Progress of the coin currently being activated
+          final coinProgress = coinStatus.progress;
 
-        final overallProgress = (1 -
-                (coinsRemainingCount / toActivateInitalCount) +
-                (coinProgress / toActivateInitalCount))
-            .clamp(0.0, 1.0);
+          final overallProgress = (1 -
+                  (coinsRemainingCount / toActivateInitalCount) +
+                  (coinProgress / toActivateInitalCount))
+              .clamp(0.0, 1.0);
 
-        final previousInProgressState = state is ZCoinActivationInProgess
-            ? (state as ZCoinActivationInProgess)
-            : null;
+          final previousInProgressState = state is ZCoinActivationInProgess
+              ? (state as ZCoinActivationInProgess)
+              : null;
 
-        final lastProgress = previousInProgressState?.progress ?? 0;
+          final lastProgress = previousInProgressState?.progress ?? 0;
 
-        final shouldShowNewProgress = overallProgress > lastProgress;
+          final shouldShowNewProgress = overallProgress > lastProgress;
 
-        final eta = calculateETA(overallProgress);
+          final eta = calculateETA(overallProgress);
 
-        if (zhtlcSyncType !=
-            SyncType.newTransactions /* && shouldShowNewProgress */) {
-          _updateNotification(
-            coinStatus,
-            overallProgress: overallProgress,
+          if (zhtlcSyncType != SyncType.newTransactions) {
+            _updateNotification(
+              coinStatus,
+              overallProgress: overallProgress,
+              eta: eta,
+            );
+          }
+          if (coinStatus.isActivated) {
+            return ZCoinActivationSuccess('Completed ZHTLC activation');
+          }
+          return ZCoinActivationInProgess(
+            progress: shouldShowNewProgress ? overallProgress : lastProgress,
+            message: 'Activating ${coinStatus.coin}',
             eta: eta,
+            startTime: previousInProgressState.startTime,
           );
-        }
-
-        return ZCoinActivationInProgess(
-          progress: shouldShowNewProgress ? overallProgress : lastProgress,
-          message: 'Activating ${coinStatus.coin}',
-          eta: eta,
-          startTime: previousInProgressState.startTime,
-        );
-      }, onError: (e, s) {
-        debugPrint('Failed to activate coins: $e');
-        return ZCoinActivationFailure('Failed to activate coins');
-      });
+        },
+        onError: (e, s) {
+          debugPrint('Failed to activate coins: $e');
+          return ZCoinActivationFailure('Failed to activate coins');
+        },
+      );
 
       final isAllActivated = await _repository.isAllRequestedZCoinsEnabled();
 
       if (isAllActivated) {
-        emit(ZCoinActivationSuccess());
+        // This is not always success, it just means the list is empty
+        // And this emit might remove another important notification
+        // emit(ZCoinActivationSuccess('ZHTLC coins activation process ended'));
       } else {
         emit(ZCoinActivationFailure('Failed to activate coins'));
-        // add(ZCoinActivationSetRequestedCoins(coins));
       }
     } catch (e) {
       debugPrint('Failed to start activation: $e');
@@ -113,8 +125,10 @@ class ZCoinActivationBloc
     }
   }
 
-  Future<void> _handleSetRequestedCoins(ZCoinActivationSetRequestedCoins event,
-      Emitter<ZCoinActivationState> emit) async {
+  Future<void> _handleSetRequestedCoins(
+    ZCoinActivationSetRequestedCoins event,
+    Emitter<ZCoinActivationState> emit,
+  ) async {
     try {
       await _repository.setRequestedActivatedCoins(event.coins);
       emit(ZCoinActivationInitial());
@@ -127,8 +141,9 @@ class ZCoinActivationBloc
   }
 
   Future<void> _handleActivationStatusRequested(
-      ZCoinActivationStatusRequested event,
-      Emitter<ZCoinActivationState> emit) async {
+    ZCoinActivationStatusRequested event,
+    Emitter<ZCoinActivationState> emit,
+  ) async {
     try {
       final isAllCoinsEnabled = await _repository.isAllRequestedZCoinsEnabled();
 
@@ -143,7 +158,7 @@ class ZCoinActivationBloc
       ZCoinActivationState newState;
       if (isAllCoinsEnabled) {
         newState = isActivationInProgress
-            ? ZCoinActivationSuccess()
+            ? ZCoinActivationSuccess('Activation in progress...')
             : ZCoinActivationKnownState(isAllCoinsEnabled);
       } else if (isActivationInProgress) {
         newState = state as ZCoinActivationInProgess;
@@ -160,6 +175,21 @@ class ZCoinActivationBloc
       debugPrint('Failed to get activation status: $e');
       emit(
         ZCoinActivationFailure('Failed to get activation status'),
+      );
+    }
+  }
+
+  Future<void> _handleActivationCancelRequested(
+    ZCoinActivationCancelRequested event,
+    Emitter<ZCoinActivationState> emit,
+  ) async {
+    try {
+      await _repository.cancelAllZCoinActivations();
+      emit(ZCoinActivationFailure('Cancelling ZHTLC activation...'));
+    } catch (e) {
+      debugPrint('Failed to cancel ZHTLC activation: $e');
+      emit(
+        ZCoinActivationFailure('Failed to cancel ZHTLC activation'),
       );
     }
   }

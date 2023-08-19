@@ -575,7 +575,7 @@ class CoinsBloc implements BlocBase {
     // await syncCoinsStateWithApi(!isZCash);
     await syncCoinsStateWithApi();
 
-    if (currentActiveCoin.coin.abbr == coin.abbr) {
+    if (currentActiveCoin?.coin?.abbr == coin.abbr) {
       currentCoinActivate(null);
     }
   }

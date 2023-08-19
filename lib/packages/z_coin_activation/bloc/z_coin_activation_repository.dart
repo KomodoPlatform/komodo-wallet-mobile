@@ -39,6 +39,10 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
             }
 
             await removeRequestedActivatedCoins([currentCoinTicker]);
+          } else if (update.status == ActivationTaskStatus.failed) {
+            await removeRequestedActivatedCoins([currentCoinTicker]);
+            await api.removeTaskId(currentCoinTicker);
+            await coinsBloc.syncCoinsStateWithApi();
           }
 
           yield update;
@@ -68,6 +72,21 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     // Remove the requested coins that are now active
 
     return enabledCoins;
+  }
+
+  Future<void> cancelAllZCoinActivations() async {
+    try {
+      final cancelledCoins = await api.cancelAllActivation();
+      if (cancelledCoins.isNotEmpty) {
+        await removeRequestedActivatedCoins(cancelledCoins);
+      }
+      await coinsBloc.syncCoinsStateWithApi();
+    } catch (e) {
+      Log(
+        'z_coin_activation_repository:cancelAllZCoinActivations',
+        'Failed to cancel ZCoin activations: $e',
+      );
+    }
   }
 
   @override

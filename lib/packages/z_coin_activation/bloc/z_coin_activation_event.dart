@@ -15,3 +15,4 @@ class ZCoinActivationSetRequestedCoins extends ZCoinActivationEvent {
 
 class ZCoinActivationStatusRequested extends ZCoinActivationEvent {}
 
+class ZCoinActivationCancelRequested extends ZCoinActivationEvent {}

@@ -28,6 +28,21 @@ class ZCoinActivationApi {
 
   Map<String, int> firstScannedBlocks = {};
 
+  Future<int> userSelectedZhtlcSyncStartTimestamp() async {
+    final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
+    SyncType zhtlcSyncType = zhtlcActivationPrefs['zhtlcSyncType'];
+    DateTime savedZhtlcSyncStartDate =
+        zhtlcActivationPrefs['zhtlcSyncStartDate'];
+
+    return (zhtlcSyncType == SyncType.specifiedDate
+                ? savedZhtlcSyncStartDate
+                : zhtlcSyncType == SyncType.fullSync
+                    ? DateTime.utc(2000, 1, 1)
+                    : DateTime.now().subtract(Duration(days: 2)))
+            .millisecondsSinceEpoch ~/
+        1000;
+  }
+
   /// Creates a new activation task for the given coin.
   Future<int> initiateActivation(String ticker) async {
     await musicService.play(MusicMode.ACTIVE);
@@ -36,31 +51,19 @@ class ZCoinActivationApi {
     final dir = await applicationDocumentsDirectory;
     Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
 
-    final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
-    SyncType zhtlcSyncType = zhtlcActivationPrefs['zhtlcSyncType'];
-    DateTime savedZhtlcSyncStartDate =
-        zhtlcActivationPrefs['zhtlcSyncStartDate'];
-
     Map<String, dynamic> activationParams = {
       'mode': {
         'rpc': 'Light',
         'rpc_data': {
           'electrum_servers': Coin.getServerList(coin.serverList),
-          'light_wallet_d_servers': coin.lightWalletDServers
+          'light_wallet_d_servers': coin.lightWalletDServers,
+          'sync_params': {'date': (await userSelectedZhtlcSyncStartTimestamp())}
         }
       },
       'scan_blocks_per_iteration': 150,
       'scan_interval_ms': 150,
       'zcash_params_path': dir.path + folder
     };
-
-    if (zhtlcSyncType == SyncType.specifiedDate) {
-      activationParams['sync_starting_date'] =
-          savedZhtlcSyncStartDate.millisecondsSinceEpoch ~/ 1000;
-    } else if (zhtlcSyncType == SyncType.fullSync) {
-      activationParams['sync_starting_date'] =
-          DateTime.utc(2000, 1, 1).millisecondsSinceEpoch ~/ 1000;
-    }
 
     final response = await http.post(
       Uri.parse(_baseUrl),
@@ -90,6 +93,84 @@ class ZCoinActivationApi {
     }
   }
 
+  Future<void> cancelActivation(int taskId) async {
+    final response = await http.post(
+      Uri.parse(_baseUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'userpass': _userpass,
+        'method': 'task::enable_z_coin::cancel',
+        'mmrpc': '2.0',
+        'params': {
+          'task_id': taskId,
+        },
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+
+      Log(
+        'z_coin_activation_api:cancelActivation',
+        'ZCoin Activation Cancel Response: ${responseBody.toString()}',
+      );
+
+      // Success can give error as well, like:
+      // "error": "Task is finished already",
+      // if (responseBody.containsKey('error')) {
+      // Log('z_coin_activation_api:cancelActivation',
+      //     'ZCoin Activation Cancel Error: ${responseBody['error']}');
+      // }
+    } else {
+      throw Exception('Failed to cancel activation: ${response.toString()}');
+    }
+  }
+
+  Future<List<String>> cancelAllActivation() async {
+    List<Coin> knownZCoins = await getKnownZCoins();
+    List<String> activatedCoins = await activatedZCoins();
+    List<String> cancelledCoins = [];
+
+    for (Coin coin in knownZCoins) {
+      String ticker = coin.abbr;
+      int coinTaskId = await getTaskId(ticker);
+
+      // Check if taskId exists
+      if (coinTaskId == null) {
+        continue;
+      }
+
+      // Check if coin is already activated
+      if (activatedCoins.contains(ticker)) {
+        continue;
+      }
+
+      ZCoinStatus taskStatus =
+          await activationTaskStatus(coinTaskId, ticker: ticker);
+
+      // Check if task status is active
+      if (taskStatus.status == ActivationTaskStatus.active) {
+        continue;
+      }
+
+      // Attempt to cancel the activation
+      try {
+        await cancelActivation(coinTaskId);
+        await _removeCoinTaskId(ticker);
+
+        firstScannedBlocks.remove(ticker);
+        cancelledCoins.add(ticker);
+      } catch (e) {
+        Log(
+          'z_coin_activation_api:cancelAllActivation',
+          'Failed to cancel activation for $ticker: $e',
+        );
+      }
+    }
+
+    return cancelledCoins;
+  }
+
   Future<int> getTaskId(String abbr) async {
     final storage = FlutterSecureStorage();
     return int.tryParse(await storage.read(key: await taskIdKey(abbr)) ?? '');
@@ -110,7 +191,8 @@ class ZCoinActivationApi {
             ticker,
             isAlreadyActivated
                 ? ActivationTaskStatus.active
-                : ActivationTaskStatus.notFound)
+                : ActivationTaskStatus.notFound,
+          )
         : await activationTaskStatus(coinTaskId, ticker: ticker);
 
     final isActivatedOnBackend = (isAlreadyActivated || taskStatus.isActivated);
@@ -212,8 +294,10 @@ class ZCoinActivationApi {
       await _removeCoinTaskId(ticker);
     }
 
-    Log('activationTaskStatus',
-        'Z Coin activation status (Progress=${status.progress}) ($apiStatus) response: ${result.toString()}');
+    Log(
+      'activationTaskStatus',
+      'Z Coin activation status (Progress=${status.progress}) ($apiStatus) response: ${result.toString()}',
+    );
 
     if (status != null) {
       return status;
@@ -372,7 +456,8 @@ class ZCoinActivationApi {
         int currentScannedBlock = currentDetails['current_scanned_block'];
 
         // If it's the first scan for this ticker, store the current block as the first scanned block
-        if (!firstScannedBlocks.containsKey(ticker)) {
+        if (!firstScannedBlocks.containsKey(ticker) ||
+            currentScannedBlock < firstScannedBlocks[ticker]) {
           firstScannedBlocks[ticker] = currentScannedBlock;
         }
 
@@ -383,7 +468,8 @@ class ZCoinActivationApi {
         int numBlocksScanned = currentScannedBlock - firstScannedBlock;
         int totalBlocks = latestBlock - firstScannedBlock;
 
-        if (totalBlocks == 0) totalBlocks = numBlocksScanned;
+        if (totalBlocks <= 0) totalBlocks = numBlocksScanned;
+        if (totalBlocks <= 0) totalBlocks = 1;
 
         _progress = isBuildingPhase
             ? (20 + ((numBlocksScanned / totalBlocks) * 80).toInt())
