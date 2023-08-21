@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import '../../../../blocs/coin_detail_bloc.dart';
@@ -42,9 +44,14 @@ class BuildConfirmationStep extends StatefulWidget {
 
 class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   bool _showDetailedError = false;
+
+  // Prefer defining variables with a specific type. At the moment, we're doing
+  // a bit of a hack where we're setting it as dynamic and then using it to
+  // store the error string or the response.
   dynamic _withdrawResponse;
   bool _closeStep = false;
 
+  StreamSubscription statusStream;
   @override
   void initState() {
     super.initState();
@@ -68,7 +75,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
       }
 
       ApiProvider()
-          .postWithdraw(
+          .withdrawTaskStream(
               mmSe.client,
               GetWithdraw(
                 userpass: mmSe.userpass,
@@ -80,12 +87,19 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                 max: double.parse(widget.coinBalance.balance.getBalance()) ==
                     double.parse(widget.amountToPay),
               ))
-          .then((dynamic res) {
+          .last
+          .then((res) {
         setState(() => _withdrawResponse = res);
       }).catchError((dynamic onError) {
         setState(() => _withdrawResponse = onError);
       });
     });
+  }
+
+  @override
+  void dispose() {
+    statusStream?.cancel();
+    super.dispose();
   }
 
   @override
@@ -310,7 +324,29 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
       return Center(
         child: Container(
           padding: EdgeInsets.all(48),
-          child: CircularProgressIndicator(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 100,
+                width: double.infinity,
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                AppLocalizations.of(context).gettingTxWait,
+                style: Theme.of(context)
+                    .textTheme
+                    .button
+                    .copyWith(color: Theme.of(context).colorScheme.onSecondary),
+              ),
+            ],
+          ),
         ),
       );
     } else {
@@ -379,7 +415,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
     try {
       amount = double.parse(res.feeDetails.amount);
     } catch (_) {
-      amount = double.parse(res.feeDetails.totalFee);
+      amount = double.parse(res?.feeDetails?.totalFee ?? '0');
     }
 
     if (amount == null) return null;

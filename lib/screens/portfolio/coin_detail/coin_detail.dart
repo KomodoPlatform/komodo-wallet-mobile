@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
+import '../../../../app_config/app_config.dart';
 import '../../../../blocs/coin_detail_bloc.dart';
 import '../../../../blocs/coins_bloc.dart';
 import '../../../../blocs/main_bloc.dart';
@@ -612,8 +613,9 @@ class _CoinDetailState extends State<CoinDetail> {
                 padding: const EdgeInsets.only(right: 8),
                 child: _buildButtonLight(StatusButton.CLAIM, mContext),
               )),
-            if (currentCoinBalance.coin.abbr == 'RICK' ||
-                currentCoinBalance.coin.abbr == 'MORTY')
+            if (appConfig.defaultTestCoins
+                    .contains(currentCoinBalance.coin.abbr) ||
+                currentCoinBalance.coin.abbr == 'ZOMBIE')
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.only(right: 8),
@@ -994,14 +996,29 @@ class _CoinDetailState extends State<CoinDetail> {
                 curve: Curves.easeOut,
                 duration: const Duration(milliseconds: 300),
               );
-              listSteps.add(SizedBox(
-                  height: 100,
-                  width: double.infinity,
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
+
+              listSteps.add(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 100,
+                      width: double.infinity,
+                      child: const Center(
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
                     ),
-                  )));
+                    SizedBox(height: 10),
+                    Text(
+                      AppLocalizations.of(context).finishingUp,
+                      style: Theme.of(context).textTheme.button.copyWith(
+                          color: Theme.of(context).colorScheme.onSecondary),
+                    ),
+                    SizedBox(height: 30),
+                  ],
+                ),
+              );
 
               setState(() {
                 currentIndex = 2;

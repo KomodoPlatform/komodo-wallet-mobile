@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:archive/archive.dart' as arch;
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
+import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
+import 'package:komodo_dex/utils/log_storage.dart';
 
 import '../../app_config/app_config.dart';
 import '../../blocs/camo_bloc.dart';
@@ -55,6 +57,7 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   void initState() {
+    context.read<ZCoinActivationBloc>().add(ZCoinActivationStatusRequested());
     _getVersionApplication().then((String onValue) {
       setState(() {
         version = onValue;
@@ -120,6 +123,12 @@ class _SettingPageState extends State<SettingPage> {
             _buildDisclaimerToS(),
             _buildTitle(AppLocalizations.of(context).developerTitle),
             _buildEnableTestCoins(),
+            SizedBox(height: 2),
+
+            //
+            ZCoinStatusWidget(),
+            SizedBox(height: 2),
+
             _buildTitle(version),
             if (appConfig.isUpdateCheckerEnabled) _buildUpdate(),
             const SizedBox(
@@ -560,56 +569,41 @@ class _SettingPageState extends State<SettingPage> {
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
 
     final now = DateTime.now();
-    final log = mmSe.currentLog(now: now);
+    // final log =  FileAndSink(_logStorage.getLogFilePath(now));
     if (swapMonitor.swaps.isEmpty) await swapMonitor.update();
     try {
-      log.sink.write('\n\n--- my recent swaps ---\n\n');
+      await Log.appendRawLog('\n\n--- my recent swaps ---\n\n');
       for (Swap swap in swapMonitor.swaps) {
         final started = swap.started;
         if (started == null) continue;
         final tim = DateTime.fromMillisecondsSinceEpoch(started.timestamp);
         final delta = now.difference(tim);
         if (delta.inDays > 7) continue; // Skip old swaps.
-        log.sink.write(json.encode(swap.toJson) + '\n\n');
+        await Log.appendRawLog(json.encode(swap.toJson) + '\n\n');
       }
-      log.sink.write('\n\n--- / my recent swaps ---\n\n');
+      await Log.appendRawLog('\n\n--- / my recent swaps ---\n\n');
       // TBD: Replace these with a pretty-printed metrics JSON
-      log.sink.write('Komodo Wallet ${packageInfo.version} $os\n');
-      log.sink.write('mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
-      log.sink.write('netid ${mmSe.netid}\n');
-      await log.sink.flush();
+      await Log.appendRawLog('Komodo Wallet ${packageInfo.version} $os\n');
+      await Log.appendRawLog(
+          'mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
+      await Log.appendRawLog('netid ${mmSe.netid}\n');
     } catch (ex) {
       Log('setting_page:723', ex);
-      log.sink.write('Error saving swaps: $ex');
+      await Log.appendRawLog('Error saving swaps for log export: $ex');
     }
 
-    // Discord attachment size limit is about 8 MiB
-    // so we're trying to send but a portion of the latest log.
-    // bzip2 encoder is too slow for some older phones.
-    // gzip gives us a compression ratio of about 20%, allowing to send about 40 MiB of log.
-    int start = 0;
-    final raf = log.file.openSync();
-    final end = raf.lengthSync();
-    if (end > 33 * 1024 * 1024) start = end - 33 * 1024 * 1024;
-    final buf = Uint8List(end - start);
-    raf.setPositionSync(start);
-    final got = await raf.readInto(buf);
-    if (got != end - start) {
-      throw Exception(
-          'Error reading from log: start $start, end $end, got $got');
-    }
-    final af = File('${mmSe.filesPath}dex.log.gz');
-    if (af.existsSync()) af.deleteSync();
-    final enc = arch.GZipEncoder();
-    Log('setting_page:745', 'Creating dex.log.gz out of $got log bytes…');
-    af.writeAsBytesSync(enc.encode(buf));
-    final len = af.lengthSync();
-    Log('setting_page:748', 'Compression produced $len bytes.');
+    // Discord attachment size limit is about 25 MiB
+    final exportedLogFiles = await LogStorage().exportLogs();
+
+    final paths = exportedLogFiles.map((f) => f.path).toList();
 
     mainBloc.isUrlLaucherIsOpen = true;
-    await Share.shareFiles([af.path],
-        mimeTypes: ['application/octet-stream'],
-        subject: 'Komodo Wallet logs at ${DateTime.now().toIso8601String()}');
+
+    await Share.shareFiles(
+      paths,
+      // mimeTypes: ['application/octet-stream'],
+      subject: 'Komodo Wallet at ${DateTime.now().toIso8601String()}',
+    );
   }
 
   Future<void> _shareFileDialog() async {
@@ -733,7 +727,7 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
   Future<void> _updateLogsSize() async {
     final dirPath = applicationDocumentsDirectorySync.path;
     setState(() {
-      _sizeMb = mmSe.dirStatSync(dirPath);
+      _sizeMb = MMService.dirStatSync(dirPath);
     });
   }
 }

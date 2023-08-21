@@ -1,6 +1,16 @@
+// To parse this JSON data, do
+//
+//     final getWithdraw = getWithdrawFromJson(jsonString);
+
+import 'package:flutter/foundation.dart';
+
+import '../blocs/coins_bloc.dart';
+import 'coin.dart';
+import 'coin_type.dart';
+
 class GetWithdraw {
   GetWithdraw({
-    this.method = 'withdraw',
+    // this.method = 'withdraw',
     this.amount,
     this.to,
     this.coin,
@@ -10,7 +20,7 @@ class GetWithdraw {
     this.memo,
   });
 
-  String method;
+  // String method;
   String amount;
   String memo;
   String coin;
@@ -19,15 +29,49 @@ class GetWithdraw {
   String userpass;
   Fee fee;
 
+  Map<String, dynamic> toJson() {
+    Coin coinToEnable = coinsBloc.getKnownCoinByAbbr(coin);
+    return coinToEnable.type == CoinType.zhtlc
+        ? <String, dynamic>{
+            'userpass': userpass ?? '',
+            'method': 'task::withdraw::init',
+            'mmrpc': '2.0',
+            'params': {
+              'coin': coin ?? '',
+              'to': to ?? '',
+              if (amount != null) 'amount': amount,
+            }
+          }
+        : <String, dynamic>{
+            'method': 'withdraw',
+            if (amount != null) 'amount': amount,
+            if (memo != null) 'memo': memo,
+            'to': to ?? '',
+            'max': max ?? false,
+            'coin': coin ?? '',
+            'userpass': userpass ?? '',
+            if (fee != null) 'fee': fee.toJson(),
+          };
+  }
+}
+
+class GetWithdrawTaskStatus {
+  GetWithdrawTaskStatus({
+    this.method = 'task::withdraw::status',
+    @required this.taskId,
+    @required this.userpass,
+  });
+
+  String method;
+  int taskId;
+  String userpass;
+
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'method': method ?? '',
-        if (amount != null) 'amount': amount,
-        if (memo != null) 'memo': memo,
-        'to': to ?? '',
-        'max': max ?? false,
-        'coin': coin ?? '',
-        'userpass': userpass ?? '',
-        if (fee != null) 'fee': fee.toJson(),
+        'method': method,
+        'userpass': userpass,
+        'params': {
+          'task_id': taskId,
+        }
       };
 }
 
@@ -38,12 +82,7 @@ class Fee {
     this.gasPrice,
     this.gas,
   });
-  factory Fee.fromJson(Map<String, dynamic> json) => Fee(
-        type: json['type'],
-        amount: json['amount'],
-        gasPrice: json['gas_price'],
-        gas: json['gas'],
-      );
+
   String
       type; // type of transaction fee, possible values: UtxoFixed, UtxoPerKbyte, EthGas
   String

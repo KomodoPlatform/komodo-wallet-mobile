@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
 
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/pair.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import '../blocs/coins_bloc.dart';
 import '../model/coin.dart';
 import '../model/coin_balance.dart';
@@ -22,10 +26,10 @@ import 'get_orderbook.dart';
 class OrderBookProvider extends ChangeNotifier {
   OrderBookProvider() {
     syncOrderbook.linkProvider(this);
-    jobService.install('syncOrderbook', 5, (j) async {
+    jobService.install('syncOrderbook', 60, (j) async {
       if (!mmSe.running) return;
-      await syncOrderbook._updateOrderBooks();
-      await syncOrderbook._updateOrderbookDepth();
+
+      await syncOrderbook.fullOrderbookUpdate();
     });
   }
   @override
@@ -38,6 +42,9 @@ class OrderBookProvider extends ChangeNotifier {
 
   Orderbook getOrderBook([CoinsPair coinsPair]) =>
       syncOrderbook.getOrderBook(coinsPair);
+
+  String getOrderbookError([CoinsPair coinsPair]) =>
+      syncOrderbook.getOrderbookError(coinsPair);
 
   OrderbookDepth getDepth([CoinsPair coinsPair]) =>
       syncOrderbook.getDepth(coinsPair);
@@ -124,13 +131,14 @@ class SyncOrderbook {
   final Set<OrderBookProvider> _providers = {};
 
   Map<String, Orderbook> _orderBooks = {}; // {'BTC/KMD': Orderbook(),}
+  Map<String, String> _orderBookErrors = {}; // {'BTC/KMD': 'error1',}
   Map<String, OrderbookDepth> _orderbooksDepth = {};
   CoinsPair _activePair;
   bool _updatingDepth = false;
 
   /// Maps short order IDs to latest liveliness markers.
-  final List<String> _tickers = [];
-  final List<String> _depthTickers = [];
+  List<String> _tickers = [];
+  List<String> _depthTickers = [];
 
   CoinsPair get activePair => _activePair;
 
@@ -161,6 +169,16 @@ class SyncOrderbook {
       _tickers.add(_tickerStr(coinsPair));
 
     return _orderBooks[_tickerStr(coinsPair)];
+  }
+
+  String getOrderbookError([CoinsPair coinsPair]) {
+    coinsPair ??= activePair;
+    if (coinsPair.buy == null || coinsPair.sell == null) return null;
+
+    if (!_tickers.contains(_tickerStr(coinsPair)))
+      _tickers.add(_tickerStr(coinsPair));
+
+    return _orderBookErrors[_tickerStr(coinsPair)];
   }
 
   OrderbookDepth getDepth([CoinsPair coinsPair]) {
@@ -256,24 +274,28 @@ class SyncOrderbook {
 
   Future<void> _updateOrderBooks() async {
     final Map<String, Orderbook> orderBooks = {};
+    final Map<String, String> orderBookErrors = {};
     for (String pair in _tickers) {
-      final List<String> abbr = pair.split('/');
-      final dynamic orderbook = await MM.getOrderbook(
-          mmSe.client,
-          GetOrderbook(
-            base: abbr[0],
-            rel: abbr[1],
-          ));
+      try {
+        final List<String> abbr = pair.split('/');
+        final dynamic orderbook = await MM.getOrderbook(
+            mmSe.client,
+            GetOrderbook(
+              base: abbr[0],
+              rel: abbr[1],
+            ));
 
-      if (orderbook is Orderbook) {
-        orderBooks[pair] = orderbook;
-      } else if (orderbook is ErrorString) {
-        Log('order_book_provider] _updateOrderBooks',
-            '$pair: ${orderbook.error}');
+        if (orderbook is Orderbook) {
+          orderBooks[pair] = orderbook;
+        }
+      } catch (e) {
+        orderBookErrors[pair] = e.error;
+        Log('order_book_provider] _updateOrderBooks', '$pair: ${e.error}');
       }
     }
 
     _orderBooks = orderBooks;
+    _orderBookErrors = orderBookErrors;
     _notifyListeners();
   }
 
@@ -325,5 +347,174 @@ class SyncOrderbook {
 
   void _notifyListeners() {
     for (OrderBookProvider provider in _providers) provider.notify();
+  }
+
+  bool _orderbookSnapshotInProgress = false;
+  Future<void> _saveOrderbookSnapshot() async {
+    if (_orderbookSnapshotInProgress) return;
+    if ((_orderBooks == null || _orderBooks.isEmpty) &&
+        (_orderbooksDepth == null || _orderbooksDepth.isEmpty) &&
+        (_tickers.isEmpty && _depthTickers.isEmpty)) return;
+
+    _orderbookSnapshotInProgress = true;
+
+    final Map<String, dynamic> snapshot = {
+      'orderBooks': _orderBooks,
+      'orderbooksDepth': _orderbooksDepth,
+      'tickers': _tickers,
+      'depthTickers': _depthTickers,
+    };
+
+    final String jsonStr = json.encode(snapshot);
+    await Db.saveOrderbookSnapshot(jsonStr);
+    Log('order_book_provider]', 'Orderbook snapshot created');
+
+    _orderbookSnapshotInProgress = false;
+  }
+
+  Future<void> loadOrderbookSnapshot() async {
+    final String snapshotJsonStr = await Db.getOrderbookSnapshot();
+
+    if (snapshotJsonStr == null) return;
+
+    final Map<String, dynamic> snapshotMap = json.decode(snapshotJsonStr);
+
+    Map<String, dynamic> snapshotOrderBooks =
+        snapshotMap['orderBooks'] as Map<String, dynamic>;
+    for (String key in snapshotOrderBooks.keys) {
+      if (!_orderBooks.containsKey(key)) {
+        _orderBooks[key] = Orderbook.fromJson(snapshotOrderBooks[key]);
+      }
+    }
+
+    Map<String, dynamic> snapshotOrderbooksDepth =
+        snapshotMap['orderbooksDepth'] as Map<String, dynamic>;
+    for (String key in snapshotOrderbooksDepth.keys) {
+      if (!_orderbooksDepth.containsKey(key)) {
+        _orderbooksDepth[key] =
+            OrderbookDepth.fromJson(snapshotOrderbooksDepth[key]);
+      }
+    }
+
+    List<String> snapshotTickers =
+        List<String>.from(snapshotMap['tickers'] ?? []);
+    for (String ticker in snapshotTickers) {
+      if (!_tickers.contains(ticker)) {
+        _tickers.add(ticker);
+      }
+    }
+
+    List<String> snapshotDepthTickers =
+        List<String>.from(snapshotMap['depthTickers'] ?? []);
+    for (String depthTicker in snapshotDepthTickers) {
+      if (!_depthTickers.contains(depthTicker)) {
+        _depthTickers.add(depthTicker);
+      }
+    }
+
+    _notifyListeners();
+  }
+
+  Future<List<String>> getOrderbookPairsWithBalance() async {
+    final coins = coinsBloc.coinBalance;
+
+    final List<String> pairs = [];
+    for (var i = 0; i < coins.length; i++) {
+      for (var j = i + 1; j < coins.length; j++) {
+        if ((!coins[i].coin.walletOnly && !coins[j].coin.walletOnly) &&
+            (coins[i].balance.balance > Decimal.zero ||
+                coins[j].balance.balance > Decimal.zero)) {
+          String pair1 = '${coins[i].coin.abbr}/${coins[j].coin.abbr}';
+          String pair2 = '${coins[j].coin.abbr}/${coins[i].coin.abbr}';
+
+          if (!pairs.contains(pair1) && !pairs.contains(pair2)) {
+            pairs.add(pair1);
+          }
+        }
+      }
+    }
+
+    return pairs;
+  }
+
+  Future<Map<String, Orderbook>> _getOrderbooksAsync(List<String> pairs) async {
+    Log('order_book_provider] _getOrderbooksAsync',
+        '${DateTime.now()}: Start _getOrderbooksAsync');
+
+    final Map<String, Orderbook> orderbooks = {};
+
+    List<Future> futures = pairs.map((pair) async {
+      final List<String> abbr = pair.split('/');
+      final dynamic orderbook = await MM.getOrderbook(
+          mmSe.client,
+          GetOrderbook(
+            base: abbr[0],
+            rel: abbr[1],
+          ));
+
+      if (orderbook is Orderbook) {
+        orderbooks[pair] = orderbook;
+      } else if (orderbook is ErrorString) {
+        Log('order_book_provider] _updateOrderBooksAsync',
+            '$pair: ${orderbook.error}');
+      }
+    }).toList();
+
+    await Future.wait(futures);
+
+    Log('order_book_provider] _getOrderbooksAsync',
+        '${DateTime.now()}: End _getOrderbooksAsync');
+
+    return orderbooks;
+  }
+
+  Future<Map<String, OrderbookDepth>> _getOrderbookDepths(
+      Map<String, Orderbook> orderbooks) async {
+    final Map<String, OrderbookDepth> orderbookDepths = {};
+
+    List<Future> futures = orderbooks.entries.map((entry) async {
+      String pair = entry.key;
+      Orderbook orderbook = entry.value;
+
+      List<String> abbr = pair.split('/');
+      Pair pairObj = Pair(base: abbr[0], rel: abbr[1]);
+      Depth depth =
+          Depth(asks: orderbook.asks.length, bids: orderbook.bids.length);
+
+      orderbookDepths[pair] = OrderbookDepth(pair: pairObj, depth: depth);
+    }).toList();
+
+    await Future.wait(futures);
+
+    return orderbookDepths;
+  }
+
+  Future<void> fullOrderbookUpdate() async {
+    Log('order_book_provider] fullOrderbookUpdate',
+        '${DateTime.now()}: Start full sync time');
+
+    final pairs = await getOrderbookPairsWithBalance();
+
+    // Add existing pairs from _tickers
+    for (String ticker in _tickers) {
+      if (!pairs.contains(ticker)) {
+        pairs.add(ticker);
+      }
+    }
+
+    final orderbooks = await syncOrderbook._getOrderbooksAsync(pairs);
+    final orderbookDepths = await syncOrderbook._getOrderbookDepths(orderbooks);
+
+    _tickers = pairs;
+    _depthTickers = pairs;
+    _orderBooks = orderbooks;
+    _orderbooksDepth = orderbookDepths;
+
+    Log('order_book_provider] fullOrderbookUpdate',
+        '${DateTime.now()}: End full sync time');
+
+    _notifyListeners();
+
+    // await syncOrderbook._saveOrderbookSnapshot();
   }
 }

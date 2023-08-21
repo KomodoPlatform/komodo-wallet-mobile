@@ -78,7 +78,7 @@ class AppConfig {
         'IBC_IRIS',
         'segwit',
       ];
-  List<String> get defaultTestCoins => ['RICK', 'MORTY'];
+  List<String> get defaultTestCoins => ['RICK', 'MORTY', 'DOC', 'MARTY'];
   Map<String, String> get allProtocolNames => {
         'utxo': 'UTXO',
         'smartChain': 'Smart Chain',
@@ -96,6 +96,7 @@ class AppConfig {
         'etc': 'Ethereum Classic (ETC)',
         'sbch': 'SmartBCH (SBCH)',
         'slp': 'SLP Tokens',
+        'zhtlc': 'ZHTLC',
         'iris': 'Iris Network',
         'cosmos': 'Cosmos Network',
       };
@@ -161,7 +162,7 @@ class AppConfig {
   // endpoint source code:
   // https://github.com/KomodoPlatform/mobile_endpoints_proxy/blob/main/main.py#L95
   String get cryptoPricesEndpoint =>
-      'https://prices.komodo.earth:1313/api/v2/tickers?expire_at=600';
+      'https://prices.komodo.earth/api/v2/tickers?expire_at=600';
   String get cryptoPricesFallback =>
       'https://api.coingecko.com/api/v3/simple/price?ids=';
 

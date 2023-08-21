@@ -18,6 +18,7 @@ class Transaction {
     this.totalAmount,
     this.txHash,
     this.txHex,
+    this.transactionFee,
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
@@ -31,7 +32,8 @@ class Transaction {
           : FeeDetails.fromJson(json['fee_details']),
       from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
           <String>[],
-      internalId: json['internal_id'] ?? '',
+      internalId: json['internal_id']?.toString() ?? '',
+      transactionFee: json['transaction_fee']?.toString() ?? '',
       myBalanceChange: json['my_balance_change']?.toString() ?? 0.0,
       receivedByMe: json['received_by_me']?.toString() ?? 0.0,
       spentByMe: json['spent_by_me']?.toString() ?? 0.0,
@@ -58,6 +60,7 @@ class Transaction {
   String memo;
   List<String> to;
   String totalAmount;
+  String transactionFee;
   String txHash;
   String txHex;
 
@@ -69,6 +72,7 @@ class Transaction {
         'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
             <String>[],
         'internal_id': internalId ?? '',
+        'transaction_fee': transactionFee ?? '',
         'my_balance_change': myBalanceChange ?? 0.0,
         'received_by_me': receivedByMe ?? 0.0,
         'spent_by_me': spentByMe ?? 0.0,

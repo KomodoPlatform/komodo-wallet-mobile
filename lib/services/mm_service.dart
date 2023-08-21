@@ -1,15 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import '../app_config/app_config.dart';
-import '../model/version_mm2.dart';
-import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart'
     show EventChannel, MethodChannel, rootBundle, SystemChannels;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart' as path;
+
+import '../app_config/app_config.dart';
 import '../blocs/coins_bloc.dart';
 import '../blocs/orders_bloc.dart';
 import '../model/balance.dart';
@@ -18,12 +21,12 @@ import '../model/coin.dart';
 import '../model/config_mm2.dart';
 import '../model/get_balance.dart';
 import '../model/swap_provider.dart';
-import '../services/mm.dart';
+import '../model/version_mm2.dart';
 import '../services/job_service.dart';
+import '../services/mm.dart';
 import '../utils/encryption_tool.dart';
 import '../utils/log.dart';
 import '../utils/utils.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 /// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
@@ -80,11 +83,6 @@ class MMService {
   /// MM log is coming that way on iOS.
   static const EventChannel logC = EventChannel('AtomicDEX/logC');
   Client client = http.Client();
-
-  /// Maps a $year-$month-$day date to the corresponding log file.
-  /// The current date time can fluctuate (due to time correction services, for instance)
-  /// so the map helps us with always picking the file that corresponds to the actual date.
-  final Map<String, FileAndSink> _logs = {};
 
   Future<void> _trafficMetrics() async {
     dynamic metrics = await MM.getMetricsMM2(BaseService(method: 'metrics'));
@@ -232,89 +230,110 @@ class MMService {
       ? null
       : applicationDocumentsDirectorySync.path + '/';
 
-  /// Returns a log file matching the present [now] time.
-  FileAndSink currentLog({DateTime now}) {
-    // Time can fluctuate back and forth due to time syncronization and such.
-    // Hence we're using a map that allows us to direct the log entries
-    // to a log file precisely matching the `now` time,
-    // even if it happens to jump a bit into the past.
-    // This in turn allows us to make the log lines shorter
-    // by only mentioning the current time (and not date) in a line.
+  /// Checks the size of a directory. Intended to be run in an isolate to avoid
+  /// blocking the UI thread.
+  ///
+  /// NB! Don't use in main thread, it will lock the UI.
+  static Future<double> _getDirectorySizeIsolate(
+      Map<String, String> params) async {
+    assert(
+      ['dirPath', 'endsWith'].every((key) => params.containsKey(key)),
+      'params must contain keys: dirPath, endsWith',
+    );
 
-    final files = Directory(filesPath);
-    // removes the last file until the total space is less than 500mb
-    while (dirStatSync(filesPath) > Log.limitMB) {
-      // get only log files in case we have other files(not-log) in the folder
-      List<FileSystemEntity> _files = files
-          .listSync()
-          .where((element) => element.path.endsWith('.log'))
-          .toList();
-      _files.sort((b, a) => a.path.compareTo(b.path));
-      try {
-        if (_files.first.existsSync()) _files.first.deleteSync();
-      } catch (e) {
-        print(e);
+    mustRunInIsolate();
+
+    final dirPath = params['dirPath'] as String;
+    final endsWith = params['endsWith'] as String;
+
+    final dir = Directory(dirPath);
+
+    double convertBytesToOutputUnitsMB(int bytes) => bytes / pow(1024, 2);
+
+    if (!dir.existsSync()) return 0;
+
+    // NB: Doesn't ignore file links
+    final hasFileNameFilter = endsWith != null && endsWith.isNotEmpty;
+
+    final dirStats = dir.statSync();
+
+    final files = dir
+        .listSync(recursive: true, followLinks: false)
+        .whereType<File>()
+        .where(
+            (file) => hasFileNameFilter ? file.path.endsWith(endsWith) : true)
+        .toList();
+
+    final sizeBytes =
+        files.fold<int>(0, (prev, file) => prev + file.lengthSync());
+
+    return convertBytesToOutputUnitsMB(sizeBytes);
+  }
+
+  /// Gets the size of a directory or file. If the directory is a folder, the
+  /// size of all files in the folder (fully recursive) will be added together.
+  /// If the directory is a file, the size of the file will be returned.
+  ///
+  /// Specify [endsWith] to only include files ending with this string in the
+  /// size calculation. Otherwise all files will be included.
+  ///
+  /// Similar to [dirStatSync], but runs in an isolate to avoid blocking the
+  /// UI thread.
+  static Future<double> getDirectorySize(
+    String dirPath, {
+
+    /// If not null and not empty, only files ending with this string will be
+    /// included in the size calculation.
+    ///
+    /// Otherwise all files will be included.
+    String endsWith,
+    bool allowCache = true,
+  }) async {
+    final dirSizeMB = await compute(_getDirectorySizeIsolate, <String, String>{
+      'dirPath': dirPath,
+      'endsWith': endsWith,
+    });
+
+    return dirSizeMB;
+  }
+
+  // TODO: Cache the directory size lookups to avoid unnecessary file system
+  // lookups. Check if the cached value is still valid by checking the recursive
+  // directory size and/or the last modified date of the directory.
+  static Map<String, double> _directorySizeCache = <String, double>{};
+
+  static _getCachedDirectorySize(String dirPath, {String endsWith}) {
+    final isCached = _directorySizeCache.containsKey('$dirPath**$endsWith');
+    if (isCached) return _directorySizeCache['$dirPath**$endsWith'];
+  }
+
+  static _storeCachedDirectorySize(String dirPath,
+      {String endsWith, @required double size}) {
+    _directorySizeCache['$dirPath**$endsWith'] = size;
+  }
+
+  List<dynamic> removeZhtlcCheckPointBlock(List<dynamic> coinsJson) {
+    return coinsJson.map((dynamic coinDynamic) {
+      Map<String, dynamic> coin = coinDynamic as Map<String, dynamic>;
+      if (coin.containsKey('protocol') &&
+          coin['protocol'].containsKey('type') &&
+          coin['protocol']['type'] == 'ZHTLC' &&
+          coin['protocol']['protocol_data'].containsKey('check_point_block')) {
+        coin['protocol']['protocol_data'].remove('check_point_block');
       }
-    }
-    now ??= DateTime.now();
-    final ymd = '${now.year}'
-        '-${Log.twoDigits(now.month)}'
-        '-${Log.twoDigits(now.day)}';
-    final log = _logs[ymd];
-    if (log != null && (log.file?.existsSync() ?? false)) return log;
-
-    if (_logs.length > 2) _logs.clear(); // Close day-before-yesterday logs.
-
-    // Remove old logs.
-    final unusedLog = File('${filesPath}log.txt');
-    if (unusedLog.existsSync()) unusedLog.deleteSync();
-
-    final unusedLogDate = File('${filesPath}logDate.txt');
-    if (unusedLogDate.existsSync()) unusedLogDate.deleteSync();
-
-    final gz = File('${filesPath}dex.log.gz'); // _shareFile
-    if (gz.existsSync()) gz.deleteSync();
-
-    final logName = RegExp(r'^(\d{4})-(\d{2})-(\d{2})\.log$');
-    final List<File> unlink = [];
-    for (FileSystemEntity en in files.listSync()) {
-      final name = path.basename(en.path);
-      final mat = logName.firstMatch(name);
-      if (mat == null) continue;
-      if (en.statSync().type != FileSystemEntityType.file) continue;
-      final int year = int.parse(mat[1]);
-      final int month = int.parse(mat[2]);
-      final int day = int.parse(mat[3]);
-      final enDate = DateTime(year, month, day);
-      if (enDate.isAfter(now)) continue;
-      final int delta = now.difference(enDate).inDays;
-      if (delta > 3) unlink.add(en);
-    }
-    for (File en in unlink) en.deleteSync();
-
-    // Create and open the log.
-
-    final file = File('$filesPath$ymd.log');
-    if (!file.existsSync()) {
-      file.createSync();
-      file.writeAsStringSync('${DateTime.now()}');
-    }
-
-    final sink = file.openWrite(mode: FileMode.append);
-    final ret = FileAndSink(file, sink);
-    _logs[ymd] = ret;
-    return ret;
+      return coin;
+    }).toList();
   }
 
   /// returns directory size in MB
-  double dirStatSync(String dirPath) {
+  static double dirStatSync(String dirPath, {String endsWith = 'log'}) {
     int totalSize = 0;
     var dir = Directory(dirPath);
     try {
       if (dir.existsSync()) {
         dir
             .listSync(recursive: true, followLinks: false)
-            .where((element) => element.path.endsWith('log'))
+            .where((element) => element.path.endsWith(endsWith))
             .forEach((FileSystemEntity entity) {
           if (entity is File) {
             totalSize += entity.lengthSync();
@@ -326,6 +345,10 @@ class MMService {
     }
     return totalSize / 1000000;
   }
+
+  // static Future<double> dirStatAsync(Map<String,dynamic> params){
+  //  TODO: Asnc method that runs in isolate
+  // }
 
   Future<void> runBin(String rpcPass) async {
     final String passphrase = await EncryptionTool().read('passphrase');
@@ -344,7 +367,7 @@ class MMService {
       userhome: filesPath,
       passphrase: passphrase,
       rpcPassword: rpcPass,
-      coins: await readJsonCoinInit(),
+      coins: removeZhtlcCheckPointBlock(await readJsonCoinInit()),
       dbdir: filesPath,
       allowWeakPassword: false,
       rpcPort: appConfig.rpcPort,
@@ -407,25 +430,6 @@ class MMService {
     }
   }
 
-  void log2file(String chunk, {DateTime now}) {
-    if (chunk == null) return;
-    if (!chunk.endsWith('\n')) chunk += '\n';
-
-    now ??= DateTime.now();
-    final log = currentLog(now: now);
-
-    // There's a chance that during life cycle transitions log file descriptor will be closed on iOS.
-    // The try-catch will hopefully help us detect this and reopen the file.
-    IOSink s = log.sink;
-    try {
-      s.write(chunk);
-    } catch (ex) {
-      print(ex);
-      log.sink = s = log.file.openWrite(mode: FileMode.append);
-      s.write(chunk);
-    }
-  }
-
   /// Load fresh lists of orders and swaps from MM.
   Future<void> updateOrdersAndSwaps() async {
     await swapMonitor.update();
@@ -464,6 +468,7 @@ class MMService {
     try {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
+
       await coinsBloc.enableCoins(active);
 
       for (int i = 0; i < 2; i++) {

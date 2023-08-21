@@ -1,7 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:komodo_dex/utils/log_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 import '../services/mm_service.dart';
 import '../utils/utils.dart';
@@ -12,22 +17,27 @@ class Log {
   /// (updated automatically with https://github.com/ArtemGr/log-loc-rs).
   factory Log(String key, dynamic message) {
     Log.println(key, message);
-    _getCachedPrefs() /*.ignore()*/;
+    return _instance;
     return null;
   }
+  Log._();
+  static final _instance = Log._();
+
+  static Future<void> init() async {
+    await LogStorage.init();
+  }
+
+  static final LogStorage _logStorage = LogStorage();
 
   /// This function can be used in a hot-reload debugging session to focus on certain sections of the log.
   static bool pass(String key, dynamic message) {
     //return message.toString().startsWith('pickMode]') || message.toString().startsWith('play]');
     //return key.startsWith('swap_provider:');
+    return kDebugMode;
     return true;
   }
 
-  static SharedPreferences _prefs;
-
-  static Future<SharedPreferences> _getCachedPrefs() async {
-    return _prefs ??= await SharedPreferences.getInstance();
-  }
+  static FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   static String twoDigits(int n) => n >= 10 ? '$n' : '0$n';
 
@@ -36,45 +46,43 @@ class Log {
   /// (updated automatically with https://github.com/ArtemGr/log-loc-rs).
 
   static void println(String key, dynamic message) {
-    String messageToPrint = key + message.toString() + '\n';
+    String messageToPrint = '';
     if (key.isNotEmpty) {
-      messageToPrint = key + '] ' + message.toString() + '\n';
+      messageToPrint = '$key] $message';
+    } else {
+      messageToPrint = message.toString();
     }
 
     if (pass(key, message)) {
-      // Flutter debugging console
-      // and also iOS system log.
       print(messageToPrint);
     }
 
-    //via os_log://MMService.nativeC.invokeMethod<String>('log', messageToPrint);
-
-    // We make the log lines a bit shorter by only mentioning the time
-    // and not the date, as the latter is already present in the log file name.
     final now = DateTime.now();
-    mmSe.log2file(
-        '${twoDigits(now.hour)}'
-        ':${twoDigits(now.minute)}'
-        ':${twoDigits(now.second)}'
-        '.${now.millisecond}'
-        ' $messageToPrint',
-        now: now);
+    final dateString = DateFormat('HH:mm:ss.SSS').format(DateTime.now());
+    _logStorage.appendLog(now, '$dateString $messageToPrint');
+  }
+
+  static Future<void> appendRawLog(String message) async {
+    final now = DateTime.now();
+    _logStorage.appendLog(now, message);
   }
 
   static double limitMB = 500;
 
-  // Retrieve the last cleared date from shared preferences, return null if
+  // Retrieve the last cleared date from secure storage, return null if
   // never cleared before.
   static Future<DateTime> getLastClearedDate() async {
-    return DateTime.tryParse(
-      (await _getCachedPrefs()).getString('lastClearedDate') ?? '',
-    );
+    final storedVal = await _secureStorage.read(key: 'lastClearedDate');
+    if (storedVal?.isEmpty ?? true) return null;
+    return DateTime.tryParse(storedVal);
   }
 
   static Future<void> _updateLastClearedDate() async {
-    final prefs = await _getCachedPrefs();
     final lastClearedDate = DateTime.now();
-    await prefs.setString('lastClearedDate', lastClearedDate.toString());
+    await _secureStorage.write(
+      key: 'lastClearedDate',
+      value: lastClearedDate.toIso8601String(),
+    );
   }
 
   /// Loop through saved log files from latest to older, and delete
@@ -84,10 +92,7 @@ class Log {
 
     DateTime lastClearedDate = await getLastClearedDate();
 
-    final List<File> logs = (await directory.list().toList())
-        .whereType<File>()
-        .where((f) => f.path.endsWith('.log'))
-        .toList()
+    final List<File> logs = (await _logStorage.getLogFiles()).values.toList()
 
       // Sorted
       ..sort((File a, File b) => b.path.compareTo(a.path));
@@ -96,31 +101,31 @@ class Log {
     final difference =
         lastClearedDate == null ? null : now.difference(lastClearedDate).inDays;
 
-    // TODO: Use async compute method that runs in isolate to avoid blocking
-    // the main UI thread.
-    final double totalSize = mmSe.dirStatSync(directory.path);
-
     // Use compute function to run maintainInSeparateIsolate in a separate isolate.
     Map<String, dynamic> params = {
       'logs': logs,
       'limitMB': limitMB,
-      'totalSize': totalSize,
       'difference': difference,
       'directoryPath': directory.path,
     };
 
-    // await compute(maintainInSeparateIsolate, params);
-    await maintainInSeparateIsolate(params);
+    await compute(_doMaintainInSeparateIsolate, params);
 
     await _updateLastClearedDate();
   }
 }
 
-Future<void> maintainInSeparateIsolate(Map<String, dynamic> params) async {
+Future<void> _doMaintainInSeparateIsolate(Map<String, dynamic> params) async {
+  mustRunInIsolate();
+
   List<File> logs = params['logs'] as List<File>;
   double limitMB = params['limitMB'] as double;
-  double totalSize = params['totalSize'] as double;
   final directoryPath = params['directoryPath'] as String;
+
+  double totalSize = logs.fold(
+    0,
+    (sum, f) => sum + f.lengthSync() / pow(1000, 2),
+  );
 
   print('Log size: ${totalSize.toStringAsFixed(2)}MB for ${logs.length} files');
 
@@ -138,7 +143,8 @@ Future<void> maintainInSeparateIsolate(Map<String, dynamic> params) async {
   while (totalSize > limitMB) {
     try {
       if (logs.first.existsSync()) logs.first.deleteSync();
-      totalSize = mmSe.dirStatSync(directoryPath);
+      totalSize =
+          await MMService.getDirectorySize(directoryPath, endsWith: 'log');
       logs.removeAt(0);
     } catch (e) {
       print('Error deleting log files: $e');

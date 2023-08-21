@@ -1,7 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/coin_type.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
+import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
+import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import '../../../blocs/coins_bloc.dart';
 import '../../../blocs/dialog_bloc.dart';
 import '../../../blocs/settings_bloc.dart';
@@ -322,7 +328,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     );
   }
 
-  void _pressDoneButton() {
+  void _pressDoneButton() async {
     final numCoinsEnabled = coinsBloc.coinBalance.length;
     final numCoinsTryingEnable =
         coinsBloc.coinBeforeActivation.where((c) => c.isActive).toList().length;
@@ -359,9 +365,76 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
           );
         },
       ).then((dynamic _) => dialogBloc.dialog = null);
+      return;
     } else {
+      final allAccepted = await _confirmSpecialActivations();
+
+      if (!allAccepted) {
+        ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+          SnackBar(
+            content: Text(
+              // AppLocalizations.of(context).zCoinActivationNotAcceptedTitle,
+              'Coin Activation Cancelled\n'
+              'Please accept all activation requests to continue or deselect coins to activate.',
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+
+        return;
+      }
+      final hasZCoins = coinsBloc.coinBeforeActivation
+          .any((c) => c.coin.type == CoinType.zhtlc);
+
       setState(() => _isDone = true);
-      coinsBloc.activateCoinsSelected();
+      await coinsBloc.activateCoinsSelected();
+      if (hasZCoins) {
+        context.read<ZCoinActivationBloc>().add(ZCoinActivationRequested());
+      }
     }
+  }
+
+  /// Shows a confirmation dialog for each coin which requires special
+  /// activation.
+  ///
+  /// Currently this is only for ZHTLC coins because their activation can take
+  /// a long time and the user must keep the app open.
+  Future<bool> _confirmSpecialActivations() async {
+    final newCoins = coinsBloc.coinBeforeActivation
+        .where((c) => c.isActive && !c.coin.isActive)
+        .toList();
+
+    final hasAnyZCoinActivations =
+        newCoins.any((c) => c.coin.type == CoinType.zhtlc);
+
+    if (hasAnyZCoinActivations) {
+      final isDeviceSupported = await _devicePermitsIntensiveWork(context);
+      if (!isDeviceSupported) return false;
+
+      final zhtlcActivationPrefs =
+          await ZCoinStatusWidget.showConfirmationDialog(context);
+      if (zhtlcActivationPrefs == null) return false;
+
+      // enum SyncType { newTransactions, fullSync, specifiedDate } is in z_coin_status_list_tile.dart
+      // Use zhtlcActivationPrefs as { 'zhtlcSyncType': SyncType, 'zhtlcSyncStartDate': DateTime }
+      await saveZhtlcActivationPrefs(zhtlcActivationPrefs);
+    }
+
+    return true;
+  }
+
+  /// *NOT IMPLEMENTED*
+  ///
+  /// Checks if the device is capable of performing intensive work required
+  /// for certain coin activations. Shows a dialog if the device is not
+  /// capable.
+  ///
+  /// Returns true if the device is capable of performing intensive work.
+  /// Returns false after showing a dialog if the device is not capable.
+  Future<bool> _devicePermitsIntensiveWork(BuildContext context) async {
+    // TODO: Ensure user has sufficient battery life, storage space, and
+    // has battery saver disabled.
+
+    return true;
   }
 }

@@ -18,7 +18,7 @@ enum MusicMode {
   /// Having orders.
   MAKER,
 
-  /// There are active swaps.
+  /// There are active swaps or zcash is installing.
   ACTIVE,
 
   /// There was a failed swap recently.
@@ -79,7 +79,9 @@ class MusicService {
   }
 
   /// Pick the current music mode based on the list of all the orders and SWAPs.
-  MusicMode _pickMode(List<Order> orders, MusicMode prevMode) {
+  MusicMode pickMode(List<Order> orders) {
+    MusicMode prevMode = musicMode;
+    // if (zcashBloc.tasksToCheck.isNotEmpty) return MusicMode.ACTIVE;
     if (prevMode == MusicMode.ACTIVE && _anyNewSuccessfulSwaps()) {
       Log('music_service]', 'pickMode: MusicMode.APPLAUSE');
       return MusicMode.APPLAUSE;
@@ -189,10 +191,9 @@ class MusicService {
     _reload = true;
   }
 
-  Future<void> play(List<Order> orders) async {
+  Future<void> play(MusicMode newMode) async {
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
     //   but for reliability we should also add a periodic update independent from MM logs.
-    final MusicMode newMode = _pickMode(orders, musicMode);
 
     bool changes = false;
 

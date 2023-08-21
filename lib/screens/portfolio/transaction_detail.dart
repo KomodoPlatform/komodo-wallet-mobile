@@ -227,14 +227,18 @@ class _TransactionDetailState extends State<TransactionDetail> {
         ItemTransationDetail(
             title: AppLocalizations.of(context).txFee, data: _getFee()),
         double.parse(widget.transaction.myBalanceChange) > 0
-            ? ItemTransationDetail(
-                title: AppLocalizations.of(context).from,
-                data: widget.transaction.from[0])
-            : ItemTransationDetail(
-                title: AppLocalizations.of(context).to,
-                data: widget.transaction.getToAddress().isNotEmpty
-                    ? widget.transaction.getToAddress()[0]
-                    : ''),
+            ? widget.transaction.from.isEmpty
+                ? SizedBox()
+                : ItemTransationDetail(
+                    title: AppLocalizations.of(context).from,
+                    data: widget.transaction.from[0])
+            : widget.transaction.to.isEmpty
+                ? SizedBox()
+                : ItemTransationDetail(
+                    title: AppLocalizations.of(context).to,
+                    data: widget.transaction.getToAddress().isNotEmpty
+                        ? widget.transaction.getToAddress()[0]
+                        : ''),
         ItemTransationDetail(
             title: AppLocalizations.of(context).txHash,
             data: widget.transaction.txHash),
@@ -252,9 +256,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
   String _getFee() {
     String fee = '';
 
-    if (widget.transaction.feeDetails.amount == null ||
-        widget.transaction.feeDetails.amount.isEmpty) {
-      fee = widget.transaction.feeDetails?.totalFee.toString();
+    if (widget.transaction.feeDetails?.amount == null ||
+        (widget.transaction.feeDetails?.amount?.isEmpty ?? true)) {
+      fee = widget.transaction.feeDetails?.totalFee?.toString() ??
+          widget.transaction.transactionFee;
     } else {
       fee = widget.transaction.feeDetails?.amount.toString();
     }
@@ -267,7 +272,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
 
     fee = cutTrailingZeros(formatPrice(fee, 8));
 
-    String feeCoin = widget.transaction.feeDetails.coin;
+    String feeCoin =
+        widget.transaction?.feeDetails?.coin ?? widget.transaction.coin;
     if (feeCoin == null || feeCoin.isEmpty) feeCoin = widget.transaction.coin;
 
     return '$fee $feeCoin';
