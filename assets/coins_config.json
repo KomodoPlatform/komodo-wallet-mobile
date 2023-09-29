@@ -1915,7 +1915,15 @@
         "currently_enabled": false,
         "wallet_only": false,
         "light_wallet_d_servers": [
-            "http://node1.chainkeeper.pro:443"
+            "https://pirate.spyglass.quest:9447",
+            "https://lightd1.pirate.black:443",
+            "https://piratelightd1.cryptoforge.cc:443",
+            "https://piratelightd2.cryptoforge.cc:443",
+            "https://piratelightd3.cryptoforge.cc:443",
+            "https://piratelightd4.cryptoforge.cc:443",
+            "https://electrum1.cipig.net:9447",
+            "https://electrum2.cipig.net:9447",
+            "https://electrum3.cipig.net:9447"
         ],
         "asset": "PIRATE",
         "fname": "Pirate",
@@ -1953,27 +1961,82 @@
                 }
             }
         },
-        "required_confirmations": 3,
+        "required_confirmations": 2,
+        "requires_notarization": true,
+        "checkpoint_height": 1900000,
+        "checkpoint_blocktime": 1652512363,
         "electrum": [
             {
-                "url": "node1.chainkeeper.pro:10032",
-                "protocol": "TCP"
+                "url": "electrum1.cipig.net:10008",
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ]
             },
             {
-                "url": "node1.chainkeeper.pro:10132",
-                "protocol": "TCP"
+                "url": "electrum2.cipig.net:10008",
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ]
             },
             {
-                "url": "node1.chainkeeper.pro:20032",
+                "url": "electrum3.cipig.net:10008",
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ]
+            },
+            {
+                "url": "electrum1.cipig.net:20008",
                 "protocol": "SSL",
-                "disable_cert_verification": true,
-                "ws_url": "node1.chainkeeper.pro:30058"
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ],
+                "ws_url": "electrum1.cipig.net:30008"
             },
             {
-                "url": "node1.chainkeeper.pro:20132",
+                "url": "electrum2.cipig.net:20008",
                 "protocol": "SSL",
-                "disable_cert_verification": false,
-                "ws_url": "node1.chainkeeper.pro:30059"
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ],
+                "ws_url": "electrum2.cipig.net:30008"
+            },
+            {
+                "url": "electrum3.cipig.net:20008",
+                "protocol": "SSL",
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ],
+                "ws_url": "electrum3.cipig.net:30008"
             }
         ],
         "explorer_block_url": "block/"
@@ -2016,15 +2079,6 @@
             {
                 "url": "https://node.komodo.earth:8080/binance",
                 "gui_auth": true
-            },
-            {
-                "url": "http://bsc1.cipig.net:8655"
-            },
-            {
-                "url": "http://bsc2.cipig.net:8655"
-            },
-            {
-                "url": "http://bsc3.cipig.net:8655"
             },
             {
                 "url": "https://bsc1.cipig.net:18655"
@@ -16064,7 +16118,8 @@
         "pubtype": 36,
         "p2shtype": 5,
         "wiftype": 128,
-        "txfee": 0,
+        "txfee": 10000,
+        "dust": 10000,
         "segwit": true,
         "bech32_hrp": "grs",
         "mm2": 1,
@@ -16538,7 +16593,8 @@
         "pubtype": 36,
         "p2shtype": 5,
         "wiftype": 128,
-        "txfee": 0,
+        "txfee": 10000,
+        "dust": 10000,
         "segwit": true,
         "bech32_hrp": "grs",
         "address_format": {
