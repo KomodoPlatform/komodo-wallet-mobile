@@ -1442,6 +1442,66 @@
     "derivation_path": "m/44'/145'"
   },
   {
+    "coin": "BBK",
+    "name": "bitblocks",
+    "fname": "BitBlocks",
+    "rpcport": 59768,
+    "pubtype": 25,
+    "p2shtype": 85,
+    "wiftype": 107,
+    "txfee": 10000,
+    "mm2": 1,
+    "wallet_only": true,
+    "sign_message_prefix": "DarkNet Signed Message:\n",
+    "required_confirmations": 5,
+    "avg_blocktime": 60,
+    "protocol": {
+      "type": "UTXO"
+    },
+    "links": {
+      "github": "https://github.com/BitBlocksProject/BitBlocks",
+      "homepage": "https://bitblocksproject.com"
+    }
+  },
+  {
+    "coin": "BBK-BEP20",
+    "name": "bbk_bep20",
+    "fname": "BitBlocks",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 56,
+    "decimals": 18,
+    "avg_blocktime": 3,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "BNB",
+        "contract_address": "0x9045B0eda6B6A556cf9B3d81C2db47411714f847"
+      }
+    },
+    "derivation_path": "m/44'/714'"
+  },
+  {
+    "coin": "BBK-PLG20",
+    "name": "bbk_plg20",
+    "fname": "BitBlocks",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 137,
+    "decimals": 18,
+    "avg_blocktime": 1.8,
+    "required_confirmations": 20,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "MATIC",
+        "contract_address": "0x2C8a46eF99Cb64928eB3Dd50A925327e02296F63"
+      }
+    },
+    "derivation_path": "m/44'/966'"
+  },
+  {
     "coin": "BCH-ERC20",
     "name": "bch_erc20",
     "fname": "Bitcoin Cash",
@@ -1497,24 +1557,6 @@
       }
     },
     "derivation_path": "m/44'/1023'"
-  },
-  {
-    "coin": "BET",
-    "asset": "BET",
-    "fname": "BET",
-    "rpcport": 14250,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "required_confirmations": 2,
-    "requires_notarization": true,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
   },
   {
     "coin": "BIDR-BEP20",
@@ -1770,24 +1812,6 @@
     "derivation_path": "m/44'/966'"
   },
   {
-    "coin": "BOTS",
-    "asset": "BOTS",
-    "fname": "BOTS",
-    "rpcport": 11964,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "required_confirmations": 2,
-    "requires_notarization": true,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
-  },
-  {
     "coin": "BRZ-BEP20",
     "name": "brz_bep20",
     "fname": "Brazilian Digital Token",
@@ -1807,9 +1831,9 @@
     "derivation_path": "m/44'/714'"
   },
   {
-    "coin": "BRZ-ERC20",
-    "name": "brz_erc20",
-    "fname": "Brazilian Digital Token",
+    "coin": "BRZ-ERC20_OLD",
+    "name": "brz_erc20_old",
+    "fname": "Brazilian Digital Token (OLD)",
     "rpcport": 80,
     "mm2": 1,
     "chain_id": 1,
@@ -1826,9 +1850,28 @@
     "derivation_path": "m/44'/60'"
   },
   {
-    "coin": "BRZ-PLG20",
-    "name": "brz_plg20",
+    "coin": "BRZ-ERC20",
+    "name": "brz_erc20",
     "fname": "Brazilian Digital Token",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 1,
+    "decimals": 18,
+    "avg_blocktime": 15,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "ETH",
+        "contract_address": "0x01d33FD36ec67c6Ada32cf36b31e88EE190B1839"
+      }
+    },
+    "derivation_path": "m/44'/60'"
+  },
+  {
+    "coin": "BRZ-PLG20_OLD",
+    "name": "brz_plg20_old",
+    "fname": "Brazilian Digital Token (OLD)",
     "rpcport": 80,
     "mm2": 1,
     "chain_id": 137,
@@ -1840,6 +1883,25 @@
       "protocol_data": {
         "platform": "MATIC",
         "contract_address": "0x491a4eB4f1FC3BfF8E1d2FC856a6A46663aD556f"
+      }
+    },
+    "derivation_path": "m/44'/966'"
+  },
+  {
+    "coin": "BRZ-PLG20",
+    "name": "brz_plg20",
+    "fname": "Brazilian Digital Token",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 137,
+    "decimals": 18,
+    "avg_blocktime": 1.8,
+    "required_confirmations": 20,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "MATIC",
+        "contract_address": "0x4eD141110F6EeeAbA9A1df36d8c26f684d2475Dc"
       }
     },
     "derivation_path": "m/44'/966'"
@@ -3291,24 +3353,6 @@
     }
   },
   {
-    "coin": "DEX",
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "asset": "DEX",
-    "fname": "DEX",
-    "rpcport": 11890,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "required_confirmations": 2,
-    "requires_notarization": true,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
-  },
-  {
     "coin": "DFX-ERC20",
     "name": "dfx_erc20",
     "fname": "DFX Finance",
@@ -3615,6 +3659,29 @@
       }
     },
     "derivation_path": "m/44'/714'"
+  },
+  {
+    "coin": "DOGEC",
+    "name": "dogecash",
+    "fname": "DogeCash",
+    "rpcport": 56750,
+    "pubtype": 30,
+    "p2shtype": 19,
+    "wiftype": 122,
+    "txfee": 10000,
+    "dust": 5460,
+    "mm2": 1,
+    "sign_message_prefix": "DarkNet Signed Message:\n",
+    "required_confirmations": 5,
+    "avg_blocktime": 60,
+    "protocol": {
+      "type": "UTXO"
+    },
+    "derivation_path": "m/44'/385'",
+    "links": {
+      "github": "https://github.com/dogecash/dogecash",
+      "homepage": "https://dogecash.net"
+    }
   },
   {
     "coin": "DOGEDASH-BEP20",
@@ -5135,7 +5202,8 @@
     "pubtype": 36,
     "p2shtype": 5,
     "wiftype": 128,
-    "txfee": 0,
+    "txfee": 10000,
+    "dust": 10000,
     "segwit": true,
     "bech32_hrp": "grs",
     "mm2": 1,
@@ -5160,7 +5228,8 @@
     "pubtype": 36,
     "p2shtype": 5,
     "wiftype": 128,
-    "txfee": 0,
+    "txfee": 10000,
+    "dust": 10000,
     "segwit": true,
     "bech32_hrp": "grs",
     "address_format": {
@@ -5360,24 +5429,6 @@
       }
     },
     "derivation_path": "m/44'/966'"
-  },
-  {
-    "coin": "HODL",
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "asset": "HODL",
-    "fname": "HODL",
-    "rpcport": 14431,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "required_confirmations": 2,
-    "requires_notarization": true,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
   },
   {
     "coin": "HOT-ERC20",
@@ -6420,24 +6471,6 @@
       }
     },
     "derivation_path": "m/44'/714'"
-  },
-  {
-    "coin": "JUMBLR",
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "asset": "JUMBLR",
-    "fname": "JUMBLR",
-    "rpcport": 15106,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "required_confirmations": 2,
-    "requires_notarization": true,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
   },
   {
     "coin": "KCS",
@@ -7588,42 +7621,6 @@
     "trezor_coin": "Komodo"
   },
   {
-    "coin": "MESH",
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "asset": "MESH",
-    "fname": "SuperMESH",
-    "rpcport": 9455,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "required_confirmations": 4,
-    "requires_notarization": false,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
-  },
-  {
-    "coin": "MGW",
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "asset": "MGW",
-    "fname": "MultiGateway",
-    "rpcport": 12386,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "required_confirmations": 2,
-    "requires_notarization": true,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
-  },
-  {
     "coin": "MINDS-ERC20",
     "name": "minds_erc20",
     "fname": "Minds",
@@ -7938,25 +7935,6 @@
     }
   },
   {
-    "coin": "MORTY",
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "asset": "MORTY",
-    "fname": "Morty",
-    "is_testnet": true,
-    "rpcport": 16348,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "required_confirmations": 1,
-    "requires_notarization": false,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
-  },
-  {
     "coin": "MOVR",
     "name": "moonriver",
     "fname": "Moonriver",
@@ -7991,24 +7969,6 @@
     "links": {
       "homepage": "https://moonbeam.network/networks/moonbeam/"
     }
-  },
-  {
-    "coin": "MSHARK",
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "asset": "MSHARK",
-    "fname": "MiliShark",
-    "rpcport": 8846,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "required_confirmations": 2,
-    "requires_notarization": true,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
   },
   {
     "coin": "NAV",
@@ -8473,24 +8433,6 @@
     "derivation_path": "m/44'/714'"
   },
   {
-    "coin": "PANGEA",
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "asset": "PANGEA",
-    "fname": "Pangea Poker",
-    "rpcport": 14068,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "required_confirmations": 2,
-    "requires_notarization": true,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
-  },
-  {
     "coin": "PAX-ERC20",
     "name": "pax_erc20",
     "fname": "Paxos Standard",
@@ -8669,6 +8611,30 @@
     "avg_blocktime": 600,
     "protocol": {
       "type": "UTXO"
+    }
+  },
+  {
+    "coin": "PINK",
+    "name": "pink",
+    "fname": "Pinkcoin",
+    "rpcport": 9135,
+    "isPoS": 1,
+    "pubtype": 3,
+    "p2shtype": 28,
+    "wiftype": 131,
+    "txfee": 10000,
+    "mm2": 1,
+    "wallet_only": true,
+    "sign_message_prefix": "Pinkcoin Signed Message:\n",
+    "required_confirmations": 5,
+    "avg_blocktime": 60,
+    "protocol": {
+      "type": "UTXO"
+    },
+    "derivation_path": "m/44'/117'",
+    "links": {
+      "github": "https://github.com/Pink2Dev/Pink2",
+      "homepage": "https://getstarted.with.pink"
     }
   },
   {
@@ -9463,24 +9429,6 @@
     "derivation_path": "m/44'/966'"
   },
   {
-    "coin": "REVS",
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "asset": "REVS",
-    "fname": "REVS",
-    "rpcport": 10196,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "required_confirmations": 2,
-    "requires_notarization": true,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
-  },
-  {
     "coin": "RIC",
     "name": "riecoin",
     "fname": "Riecoin",
@@ -9532,25 +9480,6 @@
     "mm2": 1,
     "sign_message_prefix": "Komodo Signed Message:\n",
     "required_confirmations": 4,
-    "requires_notarization": false,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
-  },
-  {
-    "coin": "RICK",
-    "asset": "RICK",
-    "fname": "Rick",
-    "rpcport": 25435,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "is_testnet": true,
-    "required_confirmations": 1,
     "requires_notarization": false,
     "avg_blocktime": 60,
     "protocol": {
@@ -9768,6 +9697,7 @@
     "wiftype": 128,
     "segwit": true,
     "txfee": 1000000,
+    "dust": 1000000,
     "mm2": 1,
     "required_confirmations": 3,
     "avg_blocktime": 60,
@@ -11863,7 +11793,8 @@
     "pubtype": 71,
     "p2shtype": 5,
     "wiftype": 128,
-    "txfee": 0,
+    "txfee": 100000,
+    "dust": 100000,
     "segwit": true,
     "bech32_hrp": "vtc",
     "mm2": 1,
@@ -11888,7 +11819,8 @@
     "pubtype": 71,
     "p2shtype": 5,
     "wiftype": 128,
-    "txfee": 0,
+    "txfee": 100000,
+    "dust": 100000,
     "segwit": true,
     "bech32_hrp": "vtc",
     "address_format": {
@@ -12263,6 +12195,29 @@
       "type": "UTXO"
     },
     "derivation_path": "m/44'/90'"
+  },
+  {
+    "coin": "XNA",
+    "name": "neurai",
+    "fname": "Neurai",
+    "sign_message_prefix": "Neurai Signed Message:\n",
+    "rpcport": 19001,
+    "pubtype": 53,
+    "p2shtype": 117,
+    "wiftype": 128,
+    "segwit": true,
+    "txfee": 1000000,
+    "mm2": 1,
+    "required_confirmations": 5,
+    "avg_blocktime": 60,
+    "protocol": {
+      "type": "UTXO"
+    },
+    "derivation_path": "m/44'/0'",
+    "links": {
+      "github": "https://github.com/NeuraiProject/Neurai",
+      "homepage": "https://neurai.org"
+    }
   },
   {
     "coin": "XPM",
@@ -12778,22 +12733,6 @@
       }
     },
     "derivation_path": "m/44'/714'"
-  },
-  {
-    "coin": "ZILLA",
-    "sign_message_prefix": "Komodo Signed Message:\n",
-    "asset": "ZILLA",
-    "fname": "ChainZilla",
-    "rpcport": 10041,
-    "mm2": 1,
-    "required_confirmations": 4,
-    "requires_notarization": false,
-    "avg_blocktime": 60,
-    "protocol": {
-      "type": "UTXO"
-    },
-    "derivation_path": "m/44'/141'",
-    "trezor_coin": "Komodo"
   },
   {
     "coin": "ZRX-AVX20",
@@ -14112,7 +14051,7 @@
     "force_min_relay_fee": true,
     "dust": 1000000,
     "mm2": 1,
-    "required_confirmations": 14,
+    "required_confirmations": 10,
     "avg_blocktime": 60,
     "protocol": {
       "type": "UTXO"
