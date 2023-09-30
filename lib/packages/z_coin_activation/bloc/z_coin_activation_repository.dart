@@ -67,10 +67,6 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
   Future<List<String>> getEnabledZCoins() async {
     final enabledCoins = await api.activatedZCoins();
 
-    final requestedCoins = await getRequestedActivatedCoins();
-
-    // Remove the requested coins that are now active
-
     return enabledCoins;
   }
 

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:isolate';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/services.dart'
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path/path.dart' as path;
 
 import '../app_config/app_config.dart';
 import '../blocs/coins_bloc.dart';

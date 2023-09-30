@@ -95,9 +95,10 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
               : state is ZCoinActivationStatusChecked
                   ? Text(
                       state.isActivated
-                          ? AppLocalizations.of(context).coinsAreActivated('ZHTLC')
+                          ? AppLocalizations.of(context)
+                              .coinsAreActivated('ZHTLC')
                           : AppLocalizations.of(context)
-                          .coinsAreNotActivated('ZHTLC'),
+                              .coinsAreNotActivated('ZHTLC'),
                     )
                   : null,
           selected: false,
@@ -154,14 +155,12 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
       updateNotice = scaffold.showMaterialBanner(
         MaterialBanner(
           elevation: 1,
-
           leading: Icon(
             Icons.check_circle,
             color: theme.colorScheme.secondary,
           ),
           content: Text(AppLocalizations.of(context)
               .coinsAreActivatedSuccessfully('ZHTLC')),
-          // backgroundColor: Colors.green,
           actions: [
             TextButton(
               onPressed: () => scaffold.hideCurrentMaterialBanner(),
@@ -334,7 +333,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                       ),
                       dense: true,
                       title: Text(
-                        'Warning: Minimizing the app on iOS will terminate the activation process.',
+                        AppLocalizations.of(context).minimizingWillTerminate,
                         style: TextStyle(color: Colors.amber),
                       ),
                     )
@@ -356,7 +355,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                           child: Padding(
                             padding: EdgeInsets.all(8),
                             child: Row(
-                              children: const <Widget>[
+                              children: [
                                 Icon(
                                   Icons.warning,
                                   color: Colors.amber,
@@ -364,7 +363,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                                 SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
-                                    'This will take a while and the app must be kept in the foreground. Terminating the app while activation is in progress could lead to issues.',
+                                    AppLocalizations.of(context).willTakeTime,
                                   ),
                                 ),
                               ],
@@ -395,43 +394,6 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
             ],
           );
         },
-      return AlertDialog(
-        title: Text(AppLocalizations.of(context).activateCoins('ZHTLC')),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-            color: Theme.of(context).colorScheme.error,
-          ),
-        ),
-        content: Column(
-          children: [
-            Text(AppLocalizations.of(context).willTakeTime),
-            if (Platform.isIOS) ...[
-              SizedBox(height: 16),
-              ListTile(
-                leading: Icon(
-                  Icons.warning,
-                  color: Colors.amber,
-                ),
-                dense: true,
-                title: Text(
-                  AppLocalizations.of(context).minimizingWillTerminate,
-                  style: TextStyle(color: Colors.amber),
-                ),
-              )
-            ],
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop<bool>(context, false),
-            child: Text(appL10n.cancelButton),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop<bool>(context, true),
-            child: Text(appL10n.confirm),
-          ),
-        ],
       );
     },
   );
