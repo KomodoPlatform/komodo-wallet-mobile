@@ -302,7 +302,7 @@ class AppLocalizations {
       args: [appName]);
   String answer_9(String appName) => Intl.message(
       'Absolutely! You can read our'
-      ' <a href="https://developers.atomicdex.io/">'
+      ' <a href="https://developers.komodoplatform.com/">'
       'developer documentation</a> for more'
       ' details or contact us with your partnership inquiries. Have a specific'
       ' technical question? The $appName developer community'
@@ -314,7 +314,7 @@ class AppLocalizations {
           name: 'question_10', args: [appName]);
   String answer_10(String appName) => Intl.message(
       '$appName is available for mobile on both Android and iPhone,'
-      ' and for desktop on <a href="https://atomicdex.io/">'
+      ' and for desktop on <a href="https://komodoplatform.com/">'
       'Windows, Mac, and Linux operating systems</a>.',
       name: 'answer_10',
       args: [appName]);

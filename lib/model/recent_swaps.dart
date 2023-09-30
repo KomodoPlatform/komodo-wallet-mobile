@@ -61,7 +61,7 @@ class Result {
 }
 
 /// MM swap data,
-/// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#my-swap-status
+/// https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#my-swap-status
 class MmSwap {
   MmSwap(
       {this.errorEvents,
@@ -233,7 +233,7 @@ class SwapEEL {
 }
 
 /// Fields of a swap event,
-/// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#my-swap-status
+/// https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#my-swap-status
 class SwapEF {
   SwapEF(
       {this.lockDuration,

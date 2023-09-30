@@ -31,7 +31,7 @@ import '../utils/utils.dart';
 /// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
 
-/// Interface to Market Maker, https://developers.atomicdex.io/
+/// Interface to Market Maker, https://developers.komodoplatform.com/
 class MMService {
   factory MMService() => mmSe;
   MMService._internal();

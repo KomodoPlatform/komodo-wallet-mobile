@@ -8,9 +8,9 @@ GetBuySell getBuyFromJson(String str) => GetBuySell.fromJson(json.decode(str));
 
 String getBuyToJson(GetBuySell data) => json.encode(data.toJson());
 
-/// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#buy
+/// https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#buy
 class GetBuySell {
-  /// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#buy
+  /// https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#buy
   GetBuySell({
     this.userpass,
     this.method = 'buy',
