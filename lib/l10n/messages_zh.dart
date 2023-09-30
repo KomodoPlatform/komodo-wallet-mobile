@@ -435,6 +435,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteSpan3": MessageLookupByLibrary.simpleMessage(" 也将被停用"),
         "deleteWallet": MessageLookupByLibrary.simpleMessage("删除钱包"),
         "deletingWallet": MessageLookupByLibrary.simpleMessage("删除钱包中"),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage("滚动到底部继续..."),
         "details": MessageLookupByLibrary.simpleMessage("详细信息"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("德语"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("开发者"),
@@ -956,6 +957,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("选择所有Ubiq货币"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("选择所有UTXO货币"),
+        "searchFilterSubtitleZHTLC":
+            MessageLookupByLibrary.simpleMessage("选择所有ZHTLC货币"),
         "searchForTicker": MessageLookupByLibrary.simpleMessage("搜索货币代码"),
         "seconds": MessageLookupByLibrary.simpleMessage("秒"),
         "security": MessageLookupByLibrary.simpleMessage("证券"),

@@ -147,7 +147,7 @@ class _EvaluationState extends State<Evaluation> {
         CexMarker(context, size: Size.fromRadius(6)),
         SizedBox(width: 2),
         Text(
-          'CEX Rate: 1 $_sellAbbr = '
+          '${AppLocalizations.of(context).cexRate}: 1 $_sellAbbr = '
           '${cutTrailingZeros(formatPrice(_cexRate))} $_buyAbbr',
           style: TextStyle(
             fontSize: 12,

@@ -510,6 +510,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteWallet": MessageLookupByLibrary.simpleMessage("Удалить кошелек"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("Удаляю кошелек"),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage(
+            "Прокрутите вниз, чтобы продолжить..."),
         "details": MessageLookupByLibrary.simpleMessage("детали"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Немецкий"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("Разработчик"),
@@ -1181,6 +1183,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Выбрать все Ubiq монеты"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("Выбрать все UTXO монеты"),
+        "searchFilterSubtitleZHTLC":
+            MessageLookupByLibrary.simpleMessage("Выбрать все ZHTLC монеты"),
         "searchForTicker": MessageLookupByLibrary.simpleMessage("Найти Тикер"),
         "seconds": MessageLookupByLibrary.simpleMessage("сек"),
         "security": MessageLookupByLibrary.simpleMessage("Безопасность"),

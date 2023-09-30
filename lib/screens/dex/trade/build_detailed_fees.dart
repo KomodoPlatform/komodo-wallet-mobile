@@ -318,7 +318,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
       items.add(Container(
         padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
         child: Text(
-          '• None',
+          '• ${AppLocalizations.of(context).none}',
           style: Theme.of(context).textTheme.caption,
         ),
       ));

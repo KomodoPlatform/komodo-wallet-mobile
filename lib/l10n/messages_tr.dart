@@ -507,6 +507,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteWallet": MessageLookupByLibrary.simpleMessage("Cüzdanı Sil"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("Cüzdan siliniyor.."),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage(
+            "Devam etmek için aşağı kaydırın..."),
         "details": MessageLookupByLibrary.simpleMessage("detaylar"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Almanca"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("Geliştirici"),
@@ -1162,6 +1164,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Tüm Ubiq koinlerini seç"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("Tüm UTXO koinlerini seç"),
+        "searchFilterSubtitleZHTLC":
+            MessageLookupByLibrary.simpleMessage("Tüm ZHTLC koinlerini seç"),
         "searchForTicker":
             MessageLookupByLibrary.simpleMessage("Kayan Yazı Ara"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),

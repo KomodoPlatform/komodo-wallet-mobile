@@ -518,6 +518,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Supprimer le portefeuille"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("Supression portefeuille…"),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage(
+            "Faites défiler vers le bas pour continuer..."),
         "details": MessageLookupByLibrary.simpleMessage("détails"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Allemand"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("Développeur"),
@@ -1190,6 +1192,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Sélectionner tous les tokens Ubiq"),
         "searchFilterSubtitleutxo": MessageLookupByLibrary.simpleMessage(
             "Sélectionner tous les tokens UTXO"),
+        "searchFilterSubtitleZHTLC": MessageLookupByLibrary.simpleMessage(
+            "Sélectionner tous les tokens ZHTLC"),
         "searchForTicker":
             MessageLookupByLibrary.simpleMessage("Rechercher un téléscripteur"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),

@@ -77,6 +77,7 @@ class AppConfig {
         'OLD',
         'IBC_IRIS',
         'segwit',
+        'ZHTLC',
       ];
   List<String> get defaultTestCoins => [
         'DOC',
@@ -111,6 +112,7 @@ class AppConfig {
   Map<String, List<double>> standardFees = {
     'utxo': [0],
     'smartChain': [0],
+    'zhtlc': [0],
     'erc': [0, 0],
     'bep': [0, 0],
     'qrc': [0, 0],

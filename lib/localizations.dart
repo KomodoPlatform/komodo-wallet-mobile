@@ -499,7 +499,7 @@ class AppLocalizations {
       Intl.message('Not enough balance', name: 'errorAmountBalance');
   String gweiError(int value) => Intl.message(
         'Gwei must be up to $value',
-        name: 'gweiErrorMessage',
+        name: 'gweiError',
         args: <Object>[value],
       );
   String feesError(double value) => Intl.message(
@@ -509,7 +509,7 @@ class AppLocalizations {
       );
   String limitError(int value) => Intl.message(
         'Limit must be up to $value',
-        name: 'limitErrorMessage',
+        name: 'limitError',
         args: <Object>[value],
       );
   String get errorNotAValidAddress =>
@@ -559,7 +559,7 @@ class AppLocalizations {
   String get gettingTxWait =>
       Intl.message('Getting transaction, please wait', name: 'gettingTxWait');
   String get finishingUp =>
-      Intl.message('Finishing up, please wait', name: 'gettingTxWait');
+      Intl.message('Finishing up, please wait', name: 'finishingUp');
   String get feedback => Intl.message('Share Log File', name: 'feedback');
   String get loadingOrderbook =>
       Intl.message('Loading orderbook...', name: 'loadingOrderbook');
@@ -1573,7 +1573,8 @@ class AppLocalizations {
   String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
 
   String get scrollToContinue =>
-      Intl.message('Scroll to bottom to continue...', name: 'scrollToContinue');
+      Intl.message('Scroll to the bottom to continue...',
+          name: 'scrollToContinue');
 
   String get developerTitle =>
       Intl.message('Developer', name: 'developerTitle');
@@ -1686,6 +1687,83 @@ class AppLocalizations {
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',
       name: 'importInvalidSwapData');
+
+  String activating(String coinName) => Intl.message('Activating $coinName',
+      name: 'activating', args: [coinName]);
+  String get doNotCloseTheAppTapForMoreInfo =>
+      Intl.message('Do not close the app. Tap for more info...',
+          name: 'doNotCloseTheAppTapForMoreInfo');
+  String activation(String coinName) => Intl.message('$coinName Activation',
+      name: 'activation', args: [coinName]);
+  String coinsAreActivated(String protocolName) =>
+      Intl.message('$protocolName coins are activated',
+          name: 'coinsAreActivated', args: [protocolName]);
+  String coinsAreNotActivated(String protocolName) =>
+      Intl.message('$protocolName coins are not activated',
+          name: 'coinsAreNotActivated', args: [protocolName]);
+  String coinsAreActivatedSuccessfully(String protocolName) =>
+      Intl.message('$protocolName coins activated successfully',
+          name: 'coinsAreActivatedSuccessfully', args: [protocolName]);
+  String activationInProgress(String protocolName) =>
+      Intl.message('$protocolName Activation in Progress',
+          name: 'activationInProgress', args: [protocolName]);
+  String activateCoins(String protocolName) =>
+      Intl.message('Activate $protocolName coins?',
+          name: 'activateCoins', args: [protocolName]);
+  String get moreInfo => Intl.message('More Info', name: 'moreInfo');
+
+  String get showAddress => Intl.message('Show Address', name: 'showAddress');
+  String get transactionHiddenPhishing => Intl.message(
+      'This transaction was hidden due to a possible phishing attempt.',
+      name: 'transactionHiddenPhishing');
+  String get transactionAddress =>
+      Intl.message('Transaction Address', name: 'transactionAddress');
+  String get transactionHidden =>
+      Intl.message('Transaction Hidden', name: 'transactionHidden');
+  String get couldNotLaunchUrl =>
+      Intl.message('Could not launch URL', name: 'couldNotLaunchUrl');
+
+  String get willTakeTime => Intl.message(
+      'This will take a while and the app must be kept in the foreground.\nTerminating the app while activation is in progress could lead to issues.',
+      name: 'willTakeTime');
+  String get minimizingWillTerminate => Intl.message(
+      'Warning: Minimizing the app on iOS will terminate the activation process.',
+      name: 'minimizingWillTerminate');
+  String get enableNotificationsForActivationProgress => Intl.message(
+      'Please enable notifications to get updates on the activation progress.',
+      name: 'enableNotificationsForActivationProgress');
+
+  String get qrCodeScanner =>
+      Intl.message('QR Code Scanner', name: 'qrCodeScanner');
+  String get foundQrCode => Intl.message('Found QR Code', name: 'foundQrCode');
+  String get contract => Intl.message('Contract', name: 'contract');
+  String get startSwap => Intl.message('Start Swap', name: 'startSwap');
+  String get none => Intl.message('None', name: 'none');
+  String get cexRate => Intl.message('CEX Rate', name: 'cexRate');
+  String incomingTransactionsProtectionSettings(String coinName) =>
+      Intl.message('Incoming  $coinName txs protection settings',
+          name: 'incomingTransactionsProtectionSettings', args: [coinName]);
+  String showingOrders(int count, int maxCount) =>
+      Intl.message('Showing $count of $maxCount orders. ',
+          name: 'showingOrders', args: [count, maxCount]);
+  String get orderBookLess => Intl.message('Less', name: 'orderBookLess');
+  String get orderBookMore => Intl.message('More', name: 'orderBookMore');
+
+  String basedOnCoinRatio(String coinName1, String coinName2) =>
+      Intl.message('based on $coinName1/$coinName2',
+          name: 'basedOnCoinRatio', args: [coinName1, coinName2]);
+
+  String get detailedFeesSendTradingFeeTransactionFee =>
+      Intl.message('send trading fee transaction fee',
+          name: 'detailedFeesSendTradingFeeTransactionFee');
+  String get detailedFeesTradingFee =>
+      Intl.message('trading fee', name: 'detailedFeesTradingFee');
+  String detailedFeesSendCoinTransactionFee(String coinName) =>
+      Intl.message('send $coinName transaction fee',
+          name: 'detailedFeesSendCoinTransactionFee', args: [coinName]);
+  String detailedFeesReceiveCoinTransactionFee(String coinName) =>
+      Intl.message('receive $coinName transaction fee',
+          name: 'detailedFeesReceiveCoinTransactionFee', args: [coinName]);
 
   // --- Filters
   String get filtersButton => Intl.message('Filter', name: 'filtersButton');

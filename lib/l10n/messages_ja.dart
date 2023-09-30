@@ -462,6 +462,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteWallet": MessageLookupByLibrary.simpleMessage("ウォレットの削除"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("ウォレットを削除しています..."),
+        "scrollToContinue":
+            MessageLookupByLibrary.simpleMessage("続行するには一番下までスクロールします..."),
         "details": MessageLookupByLibrary.simpleMessage("詳細"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("ドイツ語"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("デベロッパー"),
@@ -1050,6 +1052,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("すべての Ubiq コインを選択"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("すべてのUTXOコインを選択"),
+        "searchFilterSubtitleZHTLC":
+            MessageLookupByLibrary.simpleMessage("すべてのZHTLCコインを選択"),
         "searchForTicker": MessageLookupByLibrary.simpleMessage("ティッカーを検索"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),
         "security": MessageLookupByLibrary.simpleMessage("安全"),

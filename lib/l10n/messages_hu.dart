@@ -518,6 +518,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Pénztárca törlése"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("Pénztárca törlése..."),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage(
+            "A folytatáshoz görgessen az aljára..."),
         "details": MessageLookupByLibrary.simpleMessage("részletek"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Német"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("Fejlesztő"),
@@ -1194,6 +1196,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Az összes Ubiq kiválasztása"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("Az összes UTXO kiválasztása"),
+        "searchFilterSubtitleZHTLC": MessageLookupByLibrary.simpleMessage(
+            "Az összes ZHTLC kiválasztása"),
         "searchForTicker":
             MessageLookupByLibrary.simpleMessage("Keresse meg a Tickert"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),

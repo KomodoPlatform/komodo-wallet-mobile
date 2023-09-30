@@ -458,6 +458,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteSpan3": MessageLookupByLibrary.simpleMessage(" 비활성화도 됩니다"),
         "deleteWallet": MessageLookupByLibrary.simpleMessage("지갑 삭제"),
         "deletingWallet": MessageLookupByLibrary.simpleMessage("지갑 삭제 중..."),
+        "scrollToContinue":
+            MessageLookupByLibrary.simpleMessage("계속하려면 아래로 스크롤하세요..."),
         "details": MessageLookupByLibrary.simpleMessage("상세"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("독일어"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("개발자"),
@@ -1032,6 +1034,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ubiq 코인 모두 선택"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("UTXO 코인 모두 선택"),
+        "searchFilterSubtitleZHTLC":
+            MessageLookupByLibrary.simpleMessage("ZHTLC 코인 모두 선택"),
         "searchForTicker": MessageLookupByLibrary.simpleMessage("Ticker 찾기"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),
         "security": MessageLookupByLibrary.simpleMessage("보안"),

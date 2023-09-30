@@ -521,6 +521,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteWallet": MessageLookupByLibrary.simpleMessage("Wallet löschen"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("Wallet wird gelöscht..."),
+        "scrollToContinue": MessageLookupByLibrary.simpleMessage(
+            "Scrollen Sie nach unten, um fortzufahren..."),
         "details": MessageLookupByLibrary.simpleMessage("Details"),
         "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Deutsch"),
         "developerTitle": MessageLookupByLibrary.simpleMessage("Entwickler/in"),
@@ -1209,6 +1211,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Alle Ubiq coins auswählen"),
         "searchFilterSubtitleutxo":
             MessageLookupByLibrary.simpleMessage("Alle UTXO coins auswählen"),
+        "searchFilterSubtitleZHTLC":
+            MessageLookupByLibrary.simpleMessage("Alle ZHTLC coins auswählen"),
         "searchForTicker":
             MessageLookupByLibrary.simpleMessage("Ticker suchen"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),

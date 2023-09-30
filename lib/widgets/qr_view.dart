@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScan extends StatefulWidget {
@@ -16,7 +17,7 @@ class _QRScanState extends State<QRScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('QR Code Scanner')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context).qrCodeScanner)),
       body: MobileScanner(
           allowDuplicates: false,
           controller: MobileScannerController(formats: [BarcodeFormat.qrCode]),
@@ -30,7 +31,8 @@ class _QRScanState extends State<QRScan> {
               if (code != null) {
                 debugPrint('Barcode found! $code');
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Found Qr Code')),
+                  SnackBar(
+                      content: Text(AppLocalizations.of(context).foundQrCode)),
                 );
                 await Future.delayed(Duration(seconds: 1));
 

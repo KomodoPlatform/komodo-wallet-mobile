@@ -152,7 +152,8 @@ class _MatchingBidsPageState extends State<MatchingBidsPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            'Showing $_listLimit of ${max(_listLength, _listLimit)} orders. ',
+            AppLocalizations.of(context)
+                .showingOrders(_listLimit, max(_listLength, _listLimit)),
             style: Theme.of(context).textTheme.bodyText1,
           ),
           if (_listLimit > _listLimitMin)
