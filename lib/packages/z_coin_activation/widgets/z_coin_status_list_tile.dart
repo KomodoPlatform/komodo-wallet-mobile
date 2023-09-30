@@ -418,7 +418,7 @@ void _showInProgressDialog(BuildContext context) {
           ? appL10n.loading
           : '${state.eta.inMinutes}${appL10n.minutes}';
       return AlertDialog(
-        title: Text('${appL10n.warning}: ZHLTC Activation in Progress'),
+        title: Text('${appL10n.warning}: ZHTLC Activation in Progress'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
