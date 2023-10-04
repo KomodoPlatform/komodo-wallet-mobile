@@ -18,6 +18,8 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
   static Future<String> get taskIdKey async =>
       'activationTaskId_${(await Db.getCurrentWallet()).id}';
 
+  bool _firstLaunch = true;
+
   Stream<ZCoinStatus> _activateZCoins(List<String> zCoins) async* {
     try {
       if (zCoins.isEmpty) return;
@@ -87,10 +89,11 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
 
   @override
   Future<List<String>> outstandingZCoinActivations() async {
-    final knownZCoins = await getKnownZCoins();
+    final requestedCoins = (await getRequestedActivatedCoins()).toSet();
+
+    if (_firstLaunch) return requestedCoins.toList();
 
     final activatedZCoins = (await getEnabledZCoins()).toSet();
-    final requestedCoins = (await getRequestedActivatedCoins()).toSet();
 
     final coinsAlreadyActivated = activatedZCoins.intersection(requestedCoins);
 
