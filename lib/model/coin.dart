@@ -87,6 +87,10 @@ class Coin {
     colorCoin = config['colorCoin'] ?? '';
     isDefault = appConfig.defaultCoins.contains(abbr);
     walletOnly = appConfig.walletOnlyCoins.contains(abbr);
+
+    // Disable Orderbooks for ZHTLC coins for now
+    if (type == CoinType.zhtlc) walletOnly = true;
+
     if (config['serverList'] != null) {
       serverList = <Server>[];
       config['serverList'].forEach((v) {
