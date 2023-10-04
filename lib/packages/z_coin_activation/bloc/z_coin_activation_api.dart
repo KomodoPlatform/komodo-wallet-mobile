@@ -186,38 +186,42 @@ class ZCoinActivationApi {
     await storage.write(key: await taskIdKey(abbr), value: taskId.toString());
   }
 
-  Stream<ZCoinStatus> activateCoin(String ticker) async* {
+  Stream<ZCoinStatus> activateCoin(String ticker,
+      {bool firstLaunch = false}) async* {
     int coinTaskId = await getTaskId(ticker);
+    ZCoinStatus taskStatus;
+    if (!firstLaunch) {
+      final isAlreadyActivated = (await activatedZCoins()).contains(ticker);
 
-    final isAlreadyActivated = (await activatedZCoins()).contains(ticker);
+      taskStatus = coinTaskId == null
+          ? ZCoinStatus.fromTaskStatus(
+              ticker,
+              isAlreadyActivated
+                  ? ActivationTaskStatus.active
+                  : ActivationTaskStatus.notFound,
+            )
+          : await activationTaskStatus(coinTaskId, ticker: ticker);
 
-    ZCoinStatus taskStatus = coinTaskId == null
-        ? ZCoinStatus.fromTaskStatus(
-            ticker,
-            isAlreadyActivated
-                ? ActivationTaskStatus.active
-                : ActivationTaskStatus.notFound,
-          )
-        : await activationTaskStatus(coinTaskId, ticker: ticker);
+      final isActivatedOnBackend =
+          (isAlreadyActivated || taskStatus.isActivated);
 
-    final isActivatedOnBackend = (isAlreadyActivated || taskStatus.isActivated);
+      final isRegistered = coinsBloc.getBalanceByAbbr(ticker) != null;
 
-    final isRegistered = coinsBloc.getBalanceByAbbr(ticker) != null;
+      if (isActivatedOnBackend) {
+        yield taskStatus;
 
-    if (isActivatedOnBackend) {
-      yield taskStatus;
+        if (!isRegistered) {
+          final coin = (await coins)[ticker];
+          await coinsBloc.setupCoinAfterActivation(coin);
+        }
 
-      if (!isRegistered) {
-        final coin = (await coins)[ticker];
-        await coinsBloc.setupCoinAfterActivation(coin);
+        return;
       }
-
-      return;
     }
 
     ZCoinStatus lastEmittedStatus;
 
-    coinTaskId = await initiateActivation(ticker);
+    coinTaskId = await initiateActivation(ticker, noSyncParams: firstLaunch);
 
     lastEmittedStatus = await activationTaskStatus(coinTaskId, ticker: ticker);
 
