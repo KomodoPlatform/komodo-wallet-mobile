@@ -907,7 +907,7 @@ class ApiProvider {
       final result = parsedBody['result'] as Map<String, dynamic>;
 
       final status = result['status'] as String;
-      final details = result['details'] as Map<String, dynamic>;
+      dynamic details = result['details']; // String or Map<String, dynamic>
 
       if (status == 'Ok') {
         yield WithdrawResponse.fromJson(details);
