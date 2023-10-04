@@ -170,6 +170,8 @@ class ZCoinActivationBloc
 
       if (!isAllCoinsEnabled && !isActivationInProgress) {
         add(ZCoinActivationRequested());
+      } else {
+        _repository.willInitialize = false;
       }
     } catch (e) {
       debugPrint('Failed to get activation status: $e');
