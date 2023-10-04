@@ -24,10 +24,13 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     try {
       if (zCoins.isEmpty) return;
 
+      bool firstLaunch = _firstLaunch;
+      _firstLaunch = false;
+
       while (zCoins.isNotEmpty) {
         final currentCoinTicker = zCoins.first;
-
-        await for (final update in api.activateCoin(currentCoinTicker)) {
+        await for (final update
+            in api.activateCoin(currentCoinTicker, firstLaunch: firstLaunch)) {
           Log(
             'ZCoinActivationRepository:activateZCoins',
             'Update received: ${update.toJson()}',
