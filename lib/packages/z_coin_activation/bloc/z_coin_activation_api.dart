@@ -44,22 +44,27 @@ class ZCoinActivationApi {
   }
 
   /// Creates a new activation task for the given coin.
-  Future<int> initiateActivation(String ticker) async {
+  Future<int> initiateActivation(String ticker,
+      {bool noSyncParams = false}) async {
     await musicService.play(MusicMode.ACTIVE);
     await downloadZParams();
 
     final dir = await applicationDocumentsDirectory;
     Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
 
+    Map<String, dynamic> rpcData = {
+      'electrum_servers': Coin.getServerList(coin.serverList),
+      'light_wallet_d_servers': coin.lightWalletDServers
+    };
+
+    if (!noSyncParams) {
+      rpcData['sync_params'] = {
+        'date': (await userSelectedZhtlcSyncStartTimestamp())
+      };
+    }
+
     Map<String, dynamic> activationParams = {
-      'mode': {
-        'rpc': 'Light',
-        'rpc_data': {
-          'electrum_servers': Coin.getServerList(coin.serverList),
-          'light_wallet_d_servers': coin.lightWalletDServers,
-          'sync_params': {'date': (await userSelectedZhtlcSyncStartTimestamp())}
-        }
-      },
+      'mode': {'rpc': 'Light', 'rpc_data': rpcData},
       'scan_blocks_per_iteration': 150,
       'scan_interval_ms': 150,
       'zcash_params_path': dir.path + folder
