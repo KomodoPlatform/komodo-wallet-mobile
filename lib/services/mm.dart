@@ -453,7 +453,9 @@ class ApiProvider {
             )
             .then<dynamic>((Response res) {
           _assert200(res);
-          return orderbookFromJson(res.body);
+          return orderbookFromJson(
+            json.encode(json.decode(res.body)['result']),
+          );
         }),
       );
     } catch (e) {
