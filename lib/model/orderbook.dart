@@ -98,17 +98,17 @@ class Ask {
 
   factory Ask.fromJson(Map<String, dynamic> json, [String coin]) {
     if (isInfinite(json['price']['decimal'])) return null;
-    if (isInfinite(json['maxvolume'])) return null;
+    if (isInfinite(json['base_min_volume']['decimal'])) return null;
 
     return Ask(
       coin: coin ?? json['coin'] ?? '',
       address: json['address'] ?? '',
       price: json['price']['decimal'] ?? 0.0,
       priceFract: json['price']['fraction'],
-      maxvolume: deci(json['maxvolume']),
-      maxvolumeFract: json['max_volume_fraction'],
-      minVolume: fract2rat(json['min_volume_fraction']) ??
-          Rational.parse(json['min_volume']),
+      maxvolume: deci(json['base_max_volume']['decimal']),
+      maxvolumeFract: json['base_max_volume']['fraction'],
+      minVolume: fract2rat(json['base_min_volume']['fraction']) ??
+          Rational.parse(json['base_min_volume']['decimal']),
       pubkey: json['pubkey'] ?? '',
       age: json['age'] ?? 0,
       zcredits: json['zcredits'] ?? 0,
@@ -134,9 +134,13 @@ class Ask {
         'coin': coin ?? '',
         'address': address ?? '',
         'price': {'decimal': price ?? 0.0, 'fraction': priceFract},
-        'maxvolume': maxvolume.toString(),
-        'max_volume_fraction': maxvolumeFract,
-        'min_volume_fraction': rat2fract(minVolume),
+        'base_max_volume': {
+          'decimal': maxvolume.toString(),
+          'fraction': maxvolumeFract,
+        },
+        'base_min_volume': {
+          'fraction': rat2fract(minVolume),
+        },
         'pubkey': pubkey ?? '',
         'age': age ?? 0,
         'zcredits': zcredits ?? 0,
