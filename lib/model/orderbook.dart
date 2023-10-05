@@ -102,7 +102,7 @@ class Ask {
 
     return Ask(
       coin: coin ?? json['coin'] ?? '',
-      address: json['address'] ?? '',
+      address: json['address']['address_data'] ?? 'Shielded',
       price: json['price']['decimal'] ?? 0.0,
       priceFract: json['price']['fraction'],
       maxvolume: deci(json['base_max_volume']['decimal']),
@@ -132,7 +132,9 @@ class Ask {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'coin': coin ?? '',
-        'address': address ?? '',
+        'address': address == 'Shielded'
+            ? {'address_type': 'Shielded'}
+            : {'address_data': address},
         'price': {'decimal': price ?? 0.0, 'fraction': priceFract},
         'base_max_volume': {
           'decimal': maxvolume.toString(),
