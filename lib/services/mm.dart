@@ -865,8 +865,6 @@ class ApiProvider {
     _assert200(r);
     _logRes('postWithdraw', r);
 
-    final parsedBody = _parseResponse(r);
-
     return withdrawResponseFromJson(res.body);
   }
 
@@ -885,9 +883,6 @@ class ApiProvider {
     }
 
     while (true) {
-      // TODO: Handle "In progress" status. Currently we are only emitting
-      // the initial and completed status.
-
       client ??= mmSe.client;
 
       final userBody = await _assertUserpass(
@@ -909,18 +904,20 @@ class ApiProvider {
       final status = result['status'] as String;
       dynamic details = result['details']; // String or Map<String, dynamic>
 
-      if (status == 'Ok') {
+      if (status == 'InProgress') {
+        // Would be a real shame if we DDOSed ourselves.
+        await Future.delayed(const Duration(seconds: 3));
+
+        continue; // No-op, continue the loop.
+      }
+
+      if (status == 'Ok' && details is Map<String, dynamic>) {
         yield WithdrawResponse.fromJson(details);
         return;
       }
 
-      if (status == 'InProgress') {
-        // No-op, continue the loop.
-      } else {
-        throw ErrorString('Withdraw failed with unknown status: $status');
-      }
-
-      await Future.delayed(const Duration(seconds: 3));
+      Log('mm:withdrawTaskStream', 'status: $status, details: $details');
+      throw ErrorString('Withdraw failed with unknown status: $status');
     }
   }
 
