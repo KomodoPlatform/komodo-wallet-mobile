@@ -23,6 +23,7 @@ import '../../../../model/cex_provider.dart';
 import '../../../../model/coin_balance.dart';
 import '../../../../services/mm_service.dart';
 import '../portfolio/loading_coin.dart';
+import 'add_coin_fab.dart';
 import 'item_coin.dart';
 
 class CoinsPage extends StatefulWidget {
