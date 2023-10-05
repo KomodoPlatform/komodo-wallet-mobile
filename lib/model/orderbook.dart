@@ -97,14 +97,14 @@ class Ask {
   });
 
   factory Ask.fromJson(Map<String, dynamic> json, [String coin]) {
-    if (isInfinite(json['price'])) return null;
+    if (isInfinite(json['price']['decimal'])) return null;
     if (isInfinite(json['maxvolume'])) return null;
 
     return Ask(
       coin: coin ?? json['coin'] ?? '',
       address: json['address'] ?? '',
-      price: json['price'] ?? 0.0,
-      priceFract: json['price_fraction'],
+      price: json['price']['decimal'] ?? 0.0,
+      priceFract: json['price']['fraction'],
       maxvolume: deci(json['maxvolume']),
       maxvolumeFract: json['max_volume_fraction'],
       minVolume: fract2rat(json['min_volume_fraction']) ??
@@ -133,8 +133,7 @@ class Ask {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'coin': coin ?? '',
         'address': address ?? '',
-        'price': price ?? 0.0,
-        'price_fraction': priceFract,
+        'price': {'decimal': price ?? 0.0, 'fraction': priceFract},
         'maxvolume': maxvolume.toString(),
         'max_volume_fraction': maxvolumeFract,
         'min_volume_fraction': rat2fract(minVolume),
