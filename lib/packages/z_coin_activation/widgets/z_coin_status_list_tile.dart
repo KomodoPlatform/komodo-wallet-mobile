@@ -192,9 +192,7 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
                   ),
                   if (state.progress != null && state.progress > 0) ...[
                     SizedBox(width: 8),
-                    Text(
-                      '${(state.progress * 100).round()}%',
-                    ),
+                    Text('${(state.progress * 100).round()}%'),
                   ]
                 ],
               ),
@@ -303,7 +301,8 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                             ),
                             // Display the selected date
                             Text(
-                              "${localisations.startDate}: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}",
+                              '${localisations.startDate}: '
+                              "${DateFormat('yyyy-MM-dd').format(_selectedDate)}",
                             ),
                           ],
                         )
@@ -312,17 +311,13 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                   SizedBox(height: 16),
                   // Sync Type Description
                   if (_syncType == SyncType.newTransactions)
-                    Text(
-                      localisations.futureTransactions,
-                    ),
+                    Text(localisations.futureTransactions),
+
                   if (_syncType == SyncType.fullSync)
-                    Text(
-                      localisations.allPastTransactions,
-                    ),
+                    Text(localisations.allPastTransactions),
+
                   if (_syncType == SyncType.specifiedDate)
-                    Text(
-                      localisations.pastTransactionsFromDate,
-                    ),
+                    Text(localisations.pastTransactionsFromDate),
 
                   if (Platform.isIOS) ...[
                     SizedBox(height: 16),
@@ -334,7 +329,9 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                       dense: true,
                       title: Text(
                         localisations.minimizingWillTerminate,
-                        style: TextStyle(color: Colors.amber),
+                        style: DefaultTextStyle.of(context)
+                            .style
+                            .apply(color: Colors.amber),
                       ),
                     )
                   ],
@@ -418,7 +415,8 @@ void _showInProgressDialog(BuildContext context) {
           : '${state.eta.inMinutes}${localisations.minutes}';
       return AlertDialog(
         title: Text(
-          '${localisations.warning}: ${localisations.activationInProgress(localisations.tagZHTLC)}',
+          '${localisations.warning}: '
+          '${localisations.activationInProgress(localisations.tagZHTLC)}',
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -432,17 +430,13 @@ void _showInProgressDialog(BuildContext context) {
             ],
             Text(localisations.willTakeTime),
             SizedBox(height: 16),
-            Text(
-              '${localisations.rewardsTableTime}: $etaString',
-            ),
+            Text('${localisations.rewardsTableTime}: $etaString'),
             SizedBox(height: 16),
             Text(
               '${localisations.swapProgress}: ${(state.progress * 100).round()}%',
             ),
             SizedBox(height: 4),
-            LinearProgressIndicator(
-              value: state.progress,
-            ),
+            LinearProgressIndicator(value: state.progress),
           ],
         ),
         actions: [
