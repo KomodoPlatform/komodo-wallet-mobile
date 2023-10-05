@@ -44,22 +44,29 @@ class ZCoinActivationApi {
   }
 
   /// Creates a new activation task for the given coin.
-  Future<int> initiateActivation(String ticker) async {
+  Future<int> initiateActivation(
+    String ticker, {
+    bool noSyncParams = false,
+  }) async {
     await musicService.play(MusicMode.ACTIVE);
     await downloadZParams();
 
     final dir = await applicationDocumentsDirectory;
     Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
 
+    Map<String, dynamic> rpcData = {
+      'electrum_servers': Coin.getServerList(coin.serverList),
+      'light_wallet_d_servers': coin.lightWalletDServers
+    };
+
+    if (!noSyncParams) {
+      rpcData['sync_params'] = {
+        'date': (await userSelectedZhtlcSyncStartTimestamp())
+      };
+    }
+
     Map<String, dynamic> activationParams = {
-      'mode': {
-        'rpc': 'Light',
-        'rpc_data': {
-          'electrum_servers': Coin.getServerList(coin.serverList),
-          'light_wallet_d_servers': coin.lightWalletDServers,
-          'sync_params': {'date': (await userSelectedZhtlcSyncStartTimestamp())}
-        }
-      },
+      'mode': {'rpc': 'Light', 'rpc_data': rpcData},
       'scan_blocks_per_iteration': 150,
       'scan_interval_ms': 150,
       'zcash_params_path': dir.path + folder
@@ -181,38 +188,44 @@ class ZCoinActivationApi {
     await storage.write(key: await taskIdKey(abbr), value: taskId.toString());
   }
 
-  Stream<ZCoinStatus> activateCoin(String ticker) async* {
+  Stream<ZCoinStatus> activateCoin(
+    String ticker, {
+    bool firstLaunch = false,
+  }) async* {
     int coinTaskId = await getTaskId(ticker);
+    ZCoinStatus taskStatus;
+    if (!firstLaunch) {
+      final isAlreadyActivated = (await activatedZCoins()).contains(ticker);
 
-    final isAlreadyActivated = (await activatedZCoins()).contains(ticker);
+      taskStatus = coinTaskId == null
+          ? ZCoinStatus.fromTaskStatus(
+              ticker,
+              isAlreadyActivated
+                  ? ActivationTaskStatus.active
+                  : ActivationTaskStatus.notFound,
+            )
+          : await activationTaskStatus(coinTaskId, ticker: ticker);
 
-    ZCoinStatus taskStatus = coinTaskId == null
-        ? ZCoinStatus.fromTaskStatus(
-            ticker,
-            isAlreadyActivated
-                ? ActivationTaskStatus.active
-                : ActivationTaskStatus.notFound,
-          )
-        : await activationTaskStatus(coinTaskId, ticker: ticker);
+      final isActivatedOnBackend =
+          (isAlreadyActivated || taskStatus.isActivated);
 
-    final isActivatedOnBackend = (isAlreadyActivated || taskStatus.isActivated);
+      final isRegistered = coinsBloc.getBalanceByAbbr(ticker) != null;
 
-    final isRegistered = coinsBloc.getBalanceByAbbr(ticker) != null;
+      if (isActivatedOnBackend) {
+        yield taskStatus;
 
-    if (isActivatedOnBackend) {
-      yield taskStatus;
+        if (!isRegistered) {
+          final coin = (await coins)[ticker];
+          await coinsBloc.setupCoinAfterActivation(coin);
+        }
 
-      if (!isRegistered) {
-        final coin = (await coins)[ticker];
-        await coinsBloc.setupCoinAfterActivation(coin);
+        return;
       }
-
-      return;
     }
 
     ZCoinStatus lastEmittedStatus;
 
-    coinTaskId = await initiateActivation(ticker);
+    coinTaskId = await initiateActivation(ticker, noSyncParams: firstLaunch);
 
     lastEmittedStatus = await activationTaskStatus(coinTaskId, ticker: ticker);
 
@@ -231,9 +244,6 @@ class ZCoinActivationApi {
         // yield taskStatus;
         yield taskStatus;
       }
-
-      final isTaskActive = taskStatus.status == ActivationTaskStatus.active;
-      final isTaskNotFound = taskStatus.status == ActivationTaskStatus.notFound;
 
       if (taskStatus.status == ActivationTaskStatus.active ||
           taskStatus.status == ActivationTaskStatus.notFound) {
