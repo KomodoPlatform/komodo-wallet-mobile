@@ -40,19 +40,19 @@ class Orderbook {
                     .map((dynamic x) => Ask.fromJson(x, json['rel'])))
                 .where((Ask bid) => bid != null)
                 .toList(),
-        numbids: json['numbids'] ?? 0,
+        numbids: json['num_bids'] ?? 0,
         asks: json['asks'] == null
             ? null
             : List<Ask>.from(json['asks']
                     .map((dynamic x) => Ask.fromJson(x, json['base'])))
                 .where((Ask ask) => ask != null)
                 .toList(),
-        numasks: json['numasks'] ?? 0,
+        numasks: json['num_asks'] ?? 0,
         askdepth: json['askdepth'] ?? 0,
         base: json['base'] ?? '',
         rel: json['rel'] ?? '',
         timestamp: json['timestamp'] ?? DateTime.now().millisecond,
-        netid: json['netid'] ?? 0,
+        netid: json['net_id'] ?? 0,
       );
 
   List<Ask> bids;
@@ -69,16 +69,16 @@ class Orderbook {
         'bids': bids == null
             ? null
             : List<dynamic>.from(bids.map<dynamic>((Ask x) => x.toJson())),
-        'numbids': numbids ?? 0,
+        'num_bids': numbids ?? 0,
         'asks': asks == null
             ? null
             : List<dynamic>.from(asks.map<dynamic>((Ask x) => x.toJson())),
-        'numasks': numasks ?? 0,
+        'num_asks': numasks ?? 0,
         'askdepth': askdepth ?? 0,
         'base': base ?? '',
         'rel': rel ?? '',
         'timestamp': timestamp ?? DateTime.now().millisecond,
-        'netid': netid ?? 0,
+        'net_id': netid ?? 0,
       };
 }
 
