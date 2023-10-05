@@ -34,6 +34,8 @@ class ZCoinStatusWidget extends StatefulWidget {
 class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
   static bool get canNotify => ZCoinProgressNotifications.canNotify;
 
+  AppLocalizations get localisations => AppLocalizations.of(context);
+
   @override
   initState() {
     super.initState();
@@ -52,6 +54,8 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final protocolTag = localisations.tagZHTLC;
+
     return BlocBuilder<ZCoinActivationBloc, ZCoinActivationState>(
       builder: (context, state) {
         bool isActivationInProgress = state is ZCoinActivationInProgess;
@@ -60,9 +64,8 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
           final progressState = state as ZCoinActivationInProgess;
           return ListTile(
             onTap: () => _showInProgressDialog(context),
-            title: Text(AppLocalizations.of(context).activating('ZHTLC')),
-            subtitle: Text(
-                AppLocalizations.of(context).doNotCloseTheAppTapForMoreInfo),
+            title: Text(localisations.activating(protocolTag)),
+            subtitle: Text(localisations.doNotCloseTheAppTapForMoreInfo),
             leading: Icon(
               Icons.warning,
               color: Colors.red,
@@ -80,7 +83,7 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
         final bool isStatusLoading = state is ZCoinActivationStatusLoading;
 
         return ListTile(
-          title: Text(AppLocalizations.of(context).activation('ZCoin (ZHTLC)')),
+          title: Text(localisations.activation('PIRATE ($protocolTag)')),
           tileColor: Theme.of(context).primaryColor,
           leading: isStatusLoading
               ? CircularProgressIndicator()
@@ -95,10 +98,8 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
               : state is ZCoinActivationStatusChecked
                   ? Text(
                       state.isActivated
-                          ? AppLocalizations.of(context)
-                              .coinsAreActivated('ZHTLC')
-                          : AppLocalizations.of(context)
-                              .coinsAreNotActivated('ZHTLC'),
+                          ? localisations.coinsAreActivated(protocolTag)
+                          : localisations.coinsAreNotActivated(protocolTag),
                     )
                   : null,
           selected: false,
@@ -120,7 +121,9 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
     final scaffold = ScaffoldMessenger.maybeOf(context);
     if (scaffold == null) return;
 
-    final l10n = AppLocalizations.of(context);
+    final localisations = AppLocalizations.of(context);
+
+    final protocolTag = localisations.tagZHTLC;
 
     final theme = Theme.of(context);
 
@@ -142,7 +145,7 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
             TextButton(
               onPressed: () => scaffold.hideCurrentMaterialBanner(),
               child: Text(
-                l10n.okButton,
+                localisations.okButton,
                 style: TextStyle().copyWith(color: theme.colorScheme.onError),
               ),
             ),
@@ -159,12 +162,12 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
             Icons.check_circle,
             color: theme.colorScheme.secondary,
           ),
-          content: Text(AppLocalizations.of(context)
-              .coinsAreActivatedSuccessfully('ZHTLC')),
+          content:
+              Text(localisations.coinsAreActivatedSuccessfully(protocolTag)),
           actions: [
             TextButton(
               onPressed: () => scaffold.hideCurrentMaterialBanner(),
-              child: Text(l10n.okButton),
+              child: Text(localisations.okButton),
             ),
           ],
         ),
@@ -179,8 +182,7 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
               elevation: 1,
               content: Row(
                 children: [
-                  Text(AppLocalizations.of(context)
-                      .activationInProgress('ZHTLC')),
+                  Text(localisations.activationInProgress(protocolTag)),
                   SizedBox(width: 8),
                   SizedBox.square(
                     dimension: 24,
@@ -199,11 +201,11 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
               actions: [
                 TextButton(
                   onPressed: () => scaffold.hideCurrentMaterialBanner(),
-                  child: Text(l10n.okButton),
+                  child: Text(localisations.okButton),
                 ),
                 TextButton(
                   onPressed: () => _showInProgressDialog(context),
-                  child: Text(AppLocalizations.of(context).moreInfo),
+                  child: Text(localisations.moreInfo),
                 ),
               ],
             ),
@@ -223,11 +225,11 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
 }
 
 Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
-  final appL10n = AppLocalizations.of(context);
-
   SyncType _syncType = SyncType.newTransactions;
   DateTime _lastDate = DateTime.now().subtract(Duration(days: 1));
   DateTime _selectedDate = _lastDate;
+
+  final localisations = AppLocalizations.of(context);
 
   return showDialog<Map<String, dynamic>>(
     context: context,
@@ -236,7 +238,9 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
-            title: Text('Scan for past Z-Coin (ZHTLC) transactions?'),
+            title: Text(
+              localisations.syncTransactionsQuestion(localisations.tagZHTLC),
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
               side: BorderSide(
@@ -246,12 +250,8 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
             content: SingleChildScrollView(
               child: ListBody(
                 children: [
-                  Text(
-                    'You have selected to activate a ZHTLC asset. Which transactions would you like to sync?',
-                  ),
-                  // Radio list tiles
                   RadioListTile<SyncType>(
-                    title: const Text('Sync new transactions'),
+                    title: Text(localisations.syncNewTransactions),
                     value: SyncType.newTransactions,
                     groupValue: _syncType,
                     onChanged: (SyncType value) {
@@ -261,7 +261,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                     },
                   ),
                   RadioListTile<SyncType>(
-                    title: const Text('Sync from specified date'),
+                    title: Text(localisations.syncFromDate),
                     value: SyncType.specifiedDate,
                     groupValue: _syncType,
                     onChanged: (SyncType value) {
@@ -271,7 +271,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                     },
                   ),
                   RadioListTile<SyncType>(
-                    title: const Text('Sync from sapling activation'),
+                    title: Text(localisations.syncFromSaplingActivation),
                     value: SyncType.fullSync,
                     groupValue: _syncType,
                     onChanged: (SyncType value) {
@@ -299,11 +299,11 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                                     _selectedDate = pickedDate;
                                   });
                               },
-                              child: Text('Select Date'),
+                              child: Text(localisations.selectDate),
                             ),
                             // Display the selected date
                             Text(
-                              "Start Date: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}",
+                              "${localisations.startDate}: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}",
                             ),
                           ],
                         )
@@ -313,15 +313,15 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                   // Sync Type Description
                   if (_syncType == SyncType.newTransactions)
                     Text(
-                      'Your wallet will show future transactions made after activation associated with your public key.',
+                      localisations.futureTransactions,
                     ),
                   if (_syncType == SyncType.fullSync)
                     Text(
-                      'Your wallet will show all past transactions associated with your public key. This will take significant storage and time as all blocks will be downloaded and scanned.',
+                      localisations.allPastTransactions,
                     ),
                   if (_syncType == SyncType.specifiedDate)
                     Text(
-                      'Your wallet will show all past transactions associated with your public key made after the specified date.',
+                      localisations.pastTransactionsFromDate,
                     ),
 
                   if (Platform.isIOS) ...[
@@ -333,7 +333,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                       ),
                       dense: true,
                       title: Text(
-                        AppLocalizations.of(context).minimizingWillTerminate,
+                        localisations.minimizingWillTerminate,
                         style: TextStyle(color: Colors.amber),
                       ),
                     )
@@ -362,9 +362,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                                 ),
                                 SizedBox(width: 8),
                                 Expanded(
-                                  child: Text(
-                                    AppLocalizations.of(context).willTakeTime,
-                                  ),
+                                  child: Text(localisations.willTakeTime),
                                 ),
                               ],
                             ),
@@ -379,7 +377,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
               TextButton(
                 onPressed: () =>
                     Navigator.pop<Map<String, dynamic>>(context, null),
-                child: Text(appL10n.cancelButton),
+                child: Text(localisations.cancelButton),
               ),
               TextButton(
                 onPressed: () => Navigator.pop<Map<String, dynamic>>(
@@ -389,7 +387,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                     'zhtlcSyncStartDate': _selectedDate
                   },
                 ),
-                child: Text(appL10n.confirm),
+                child: Text(localisations.confirm),
               ),
             ],
           );
@@ -413,33 +411,33 @@ void _showInProgressDialog(BuildContext context) {
         return Container();
       }
 
-      final appL10n = AppLocalizations.of(context);
+      final localisations = AppLocalizations.of(context);
 
       final etaString = state?.eta?.inMinutes == null
-          ? appL10n.loading
-          : '${state.eta.inMinutes}${appL10n.minutes}';
+          ? localisations.loading
+          : '${state.eta.inMinutes}${localisations.minutes}';
       return AlertDialog(
         title: Text(
-            '${appL10n.warning}: ${AppLocalizations.of(context).activationInProgress('ZHTLC')}'),
+          '${localisations.warning}: ${localisations.activationInProgress(localisations.tagZHTLC)}',
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (!ZCoinProgressNotifications.canNotify) ...[
               Text(
-                AppLocalizations.of(context)
-                    .enableNotificationsForActivationProgress,
+                localisations.enableNotificationsForActivationProgress,
                 style: TextStyle(color: Colors.amber),
               ),
               SizedBox(height: 16),
             ],
-            Text(AppLocalizations.of(context).willTakeTime),
+            Text(localisations.willTakeTime),
             SizedBox(height: 16),
             Text(
-              '${appL10n.rewardsTableTime}: $etaString',
+              '${localisations.rewardsTableTime}: $etaString',
             ),
             SizedBox(height: 16),
             Text(
-              '${appL10n.swapProgress}: ${(state.progress * 100).round()}%',
+              '${localisations.swapProgress}: ${(state.progress * 100).round()}%',
             ),
             SizedBox(height: 4),
             LinearProgressIndicator(
@@ -452,22 +450,21 @@ void _showInProgressDialog(BuildContext context) {
             onPressed: () {
               showConfirmationDialog(
                 context: context,
-                title: 'Stop Activation',
-                message:
-                    'Are you sure you want to stop the activation process?',
+                title: localisations.cancelActivationQuestion,
+                message: localisations.cofirmCancelActivation,
                 onConfirm: () {
                   context
                       .read<ZCoinActivationBloc>()
                       .add(ZCoinActivationCancelRequested());
                 },
-                confirmButtonText: 'Stop',
+                confirmButtonText: localisations.cancelActivation,
               );
             },
-            child: Text('Stop'),
+            child: Text(localisations.cancelActivation),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(appL10n.close),
+            child: Text(localisations.close),
           ),
         ],
         shape: RoundedRectangleBorder(
