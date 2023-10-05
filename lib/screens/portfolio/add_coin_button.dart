@@ -2,116 +2,106 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
+import '../../../../app_config/app_config.dart';
 import '../../../../blocs/coins_bloc.dart';
 import '../../../../blocs/dialog_bloc.dart';
 import '../../../../blocs/main_bloc.dart';
 import '../../../../localizations.dart';
-import '../../../../app_config/app_config.dart';
 import '../../../../model/coin.dart';
-import '../portfolio/activate/select_coins_page.dart';
 import '../../../../services/db/database.dart';
 import '../../../../widgets/custom_simple_dialog.dart';
-import '../../widgets/primary_button.dart';
+import '../portfolio/activate/select_coins_page.dart';
 
-class AddCoinButton extends StatelessWidget {
-  const AddCoinButton(
-      {Key key,
-      this.isCollapsed = false,
-      this.hideAddCoinLoading = false,
-      this.onShowAddCoinLoading})
-      : super(key: key);
+class AddCoinFab extends StatefulWidget {
+  const AddCoinFab({Key key}) : super(key: key);
 
-  final bool isCollapsed;
-  final bool hideAddCoinLoading;
-  final VoidCallback onShowAddCoinLoading;
+  @override
+  _AddCoinFabState createState() => _AddCoinFabState();
+}
+
+class _AddCoinFabState extends State<AddCoinFab> {
+  bool _areCoinsLoading = true;
+  bool _hasCoinsToAdd;
+
+  /// We show the add button state eagerly while the coins are still loading.
+  /// If the user taps the button while the coins are still loading, we need
+  /// to show a progress indicator instead of the add button and then call the
+  /// "tap" event handler once the coins are loaded.
+  bool tappedWhileLoading = false;
+
+  StreamSubscription<CoinToActivate> _coinSubscription;
+
+  bool get _isShowLoading => _isLoading && tappedWhileLoading;
+
+  bool get _isLoading => _hasCoinsToAdd == null || _areCoinsLoading;
+
+  @override
+  void initState() {
+    super.initState();
+    _coinSubscription = coinsBloc.outcurrentActiveCoin.listen((coinData) {
+      setState(() {
+        _areCoinsLoading = coinData != null;
+      });
+
+      _showAddCoinPageIfNeeded();
+    });
+
+    _shouldShowAddCoinButton().then((value) {
+      setState(() => _hasCoinsToAdd = value);
+    }).whenComplete(() => _showAddCoinPageIfNeeded());
+  }
+
+  void _showAddCoinPageIfNeeded() {
+    if (!mounted || _isLoading) return;
+
+    if (tappedWhileLoading && _hasCoinsToAdd == true) {
+      _showAddCoinPage(context, _areCoinsLoading);
+    }
+    setState(() {
+      tappedWhileLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<CoinToActivate>(
-        initialData: coinsBloc.currentActiveCoin,
-        stream: coinsBloc.outcurrentActiveCoin,
-        builder:
-            (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-          bool isLoading = snapshot.data != null;
-          if (isLoading && !hideAddCoinLoading) {
-            return isCollapsed
-                ? Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(12),
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      const CircularProgressIndicator(),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Text(snapshot.data.currentStatus ??
-                          AppLocalizations.of(context).connecting),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                    ],
-                  );
-          } else {
-            return FutureBuilder<bool>(
-              future: _buildAddCoinButton(),
-              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                final hasCoinsToAdd = snapshot.data;
+    if (_isShowLoading) {
+      return FloatingActionButton(
+        key: const Key('add-coins-button'),
+        onPressed: null,
+        child: CircularProgressIndicator(
+          valueColor:
+              AlwaysStoppedAnimation<Color>(Theme.of(context).disabledColor),
+        ),
+      );
+    }
 
-                if (hasCoinsToAdd ?? false) {
-                  if (isCollapsed)
-                    return Center(
-                      child: OutlinedButton(
-                        style: Theme.of(context)
-                            .outlinedButtonTheme
-                            .style
-                            .copyWith(
-                              shape: MaterialStateProperty.all(
-                                const CircleBorder(),
-                              ),
-                            ),
-                        key: const Key('add-coins-button-collapse'),
-                        onPressed: () => _showAddCoinPage(context, isLoading),
-                        child: Icon(Icons.add),
-                      ),
-                    );
+    return FloatingActionButton(
+      onPressed: (_hasCoinsToAdd == true) ? () => _onPressed(context) : null,
+      child: Icon(_hasCoinsToAdd == false ? Icons.do_not_disturb : Icons.add),
+      key: const Key('add-coins-button'),
+    );
+  }
 
-                  return PrimaryButton(
-                    key: const Key('add-coins-button'),
-                    icon: Icon(Icons.add),
-                    text: AppLocalizations.of(context).addCoin,
-                    onPressed: () => _showAddCoinPage(context, isLoading),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              },
-            );
-          }
-        });
+  void _onPressed(BuildContext context) {
+    if (_isLoading) {
+      setState(() {
+        tappedWhileLoading = true;
+      });
+    } else {
+      _showAddCoinPage(context, _areCoinsLoading);
+    }
   }
 
   void _showAddCoinPage(BuildContext context, bool isLoading) {
-    if (isLoading && hideAddCoinLoading && onShowAddCoinLoading != null) {
-      onShowAddCoinLoading();
-      return;
-    }
-
     if (mainBloc.networkStatus != NetworkStatus.Online) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        backgroundColor: Theme.of(context).errorColor,
-        content: Text(AppLocalizations.of(context).noInternet),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          backgroundColor: Theme.of(context).errorColor,
+          content: Text(AppLocalizations.of(context).noInternet),
+        ),
+      );
     } else {
       final numCoinsEnabled = coinsBloc.coinBalance.length;
       final maxCoinPerPlatform = Platform.isAndroid
@@ -126,11 +116,13 @@ class AddCoinButton extends StatelessWidget {
               title:
                   Text(AppLocalizations.of(context).tooManyAssetsEnabledTitle),
               children: [
-                Text(AppLocalizations.of(context).tooManyAssetsEnabledSpan1 +
-                    numCoinsEnabled.toString() +
-                    AppLocalizations.of(context).tooManyAssetsEnabledSpan2 +
-                    maxCoinPerPlatform.toString() +
-                    AppLocalizations.of(context).tooManyAssetsEnabledSpan3),
+                Text(
+                  AppLocalizations.of(context).tooManyAssetsEnabledSpan1 +
+                      numCoinsEnabled.toString() +
+                      AppLocalizations.of(context).tooManyAssetsEnabledSpan2 +
+                      maxCoinPerPlatform.toString() +
+                      AppLocalizations.of(context).tooManyAssetsEnabledSpan3,
+                ),
                 SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -149,16 +141,22 @@ class AddCoinButton extends StatelessWidget {
         Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => const SelectCoinsPage()),
+            builder: (BuildContext context) => const SelectCoinsPage(),
+          ),
         );
       }
     }
   }
 
-  /// Returns `true` if there are coins we can still activate, `false` if all of them activated.
-  Future<bool> _buildAddCoinButton() async {
+  Future<bool> _shouldShowAddCoinButton() async {
     final active = await Db.activeCoins;
     final known = await coins;
     return active.length < known.length;
+  }
+
+  @override
+  void dispose() {
+    _coinSubscription?.cancel();
+    super.dispose();
   }
 }
