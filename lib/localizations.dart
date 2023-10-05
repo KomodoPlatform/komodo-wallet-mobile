@@ -1323,6 +1323,7 @@ class AppLocalizations {
   String invalidCoinAddress(String coin) => Intl.message(
         'Invalid $coin address',
         args: [coin],
+        name: 'invalidCoinAddress',
       );
   String multiActivateGas(String coin) =>
       Intl.message('Activate $coin and top-up balance first',
@@ -1931,15 +1932,15 @@ class AppLocalizations {
   String get selectDate => Intl.message('Select a Date', name: 'selectDate');
   String get startDate => Intl.message('Start Date', name: 'startDate');
   String get futureTransactions => Intl.message(
-        'We will sync future transactions made after activation associated with your public key.',
+        'We will sync future transactions made after activation associated with your public key. This is the quickest option and takes up the least amount of storage.',
         name: 'futureTransactions',
       );
   String get allPastTransactions => Intl.message(
-        'Your wallet will show all past transactions associated with your public key. This will take significant storage and time as all blocks will be downloaded and scanned.',
+        'Your wallet will show any past transactions. This will take significant storage and time as all blocks will be downloaded and scanned.',
         name: 'allPastTransactions',
       );
   String get pastTransactionsFromDate => Intl.message(
-        'Your wallet will show all past transactions associated with your public key made after the specified date.',
+        'Your wallet will show your past transactions made after the specified date.',
         name: 'pastTransactionsFromDate',
       );
   // ---
