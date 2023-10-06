@@ -157,145 +157,151 @@ class MessageLookup extends MessageLookupByLibrary {
   static m53(abbr) =>
       "${abbr} балансу недостатньо для оплати комісії за торгівлю";
 
-  static m54(coinAbbr) => "${coinAbbr} недоступен :(";
+  static m54(coin) => "Недійсна адреса ${coin}";
 
-  static m55(coinName) =>
+  static m55(coinAbbr) => "${coinAbbr} недоступен :(";
+
+  static m56(coinName) =>
       "❗Обережно! Ринок для ${coinName} має менше 10 тисяч доларів США за 24 години!";
 
-  static m56(value) => "Обмеження має бути до ${value}";
-
-  static m57(coinName, number) =>
-      "Мінімальна сума для продажу становить ${number} ${coinName}";
+  static m57(value) => "Обмеження має бути до ${value}";
 
   static m58(coinName, number) =>
+      "Мінімальна сума для продажу становить ${number} ${coinName}";
+
+  static m59(coinName, number) =>
       "Мінімальна сума для купівлі становить ${number}${coinName}";
 
-  static m59(buyCoin, buyAmount, sellCoin, sellAmount) =>
+  static m60(buyCoin, buyAmount, sellCoin, sellAmount) =>
       "Мінімальна сума замовлення становить ${buyAmount}${buyCoin}\n(${sellAmount}${sellCoin})";
 
-  static m60(coinName, number) =>
+  static m61(coinName, number) =>
       "Мінімальна сума для продажу становить ${number}${coinName}";
 
-  static m61(minValue, coin) => "Має бути більше ніж ${minValue} ${coin}";
+  static m62(minValue, coin) => "Має бути більше ніж ${minValue} ${coin}";
 
-  static m62(appName) =>
+  static m63(appName) =>
       "Зауважте, що зараз ви використовуєте мобільні дані та участь у мережі ${appName} P2P споживає інтернет-трафік. Краще використовувати мережу WiFi, якщо ваш тарифний план стільникового зв’язку є дорогим.";
 
-  static m63(coin) => "Спочатку активуйте ${coin} і поповніть баланс";
+  static m64(coin) => "Спочатку активуйте ${coin} і поповніть баланс";
 
-  static m64(number) => "Створіть замовлення (${number}):";
+  static m65(number) => "Створіть замовлення (${number}):";
 
-  static m65(coin) => "Баланс ${coin} замалий";
+  static m66(coin) => "Баланс ${coin} замалий";
 
-  static m66(coin, fee) =>
+  static m67(coin, fee) =>
       "Недостатньо ${coin} для оплати комісії. MIN баланс становить ${fee} ${coin}";
 
-  static m67(coinName) => "Введіть суму ${coinName}.";
+  static m68(coinName) => "Введіть суму ${coinName}.";
 
-  static m68(coin) => "Недостатньо ${coin} для транзакції!";
+  static m69(coin) => "Недостатньо ${coin} для транзакції!";
 
-  static m69(sell, buy) => "Обмін ${sell}/${buy} успішно завершено";
+  static m70(sell, buy) => "Обмін ${sell}/${buy} успішно завершено";
 
-  static m70(sell, buy) => "Не вдалося обміняти ${sell}/${buy}";
+  static m71(sell, buy) => "Не вдалося обміняти ${sell}/${buy}";
 
-  static m71(sell, buy) => "Розпочато обмін ${sell}/${buy}";
+  static m72(sell, buy) => "Розпочато обмін ${sell}/${buy}";
 
-  static m72(sell, buy) => "Час очікування обміну ${sell}/${buy} минув";
+  static m73(sell, buy) => "Час очікування обміну ${sell}/${buy} минув";
 
-  static m73(coin) => "Ви отримали ${coin} трансакцію!";
+  static m74(coin) => "Ви отримали ${coin} трансакцію!";
 
-  static m74(assets) => "${assets} активів";
+  static m75(assets) => "${assets} активів";
 
-  static m75(coin) => "Усі замовлення ${coin} буде скасовано.";
+  static m76(coin) => "Усі замовлення ${coin} буде скасовано.";
 
-  static m76(delta) => "Доцільно: CEX +${delta}%";
+  static m77(delta) => "Доцільно: CEX +${delta}%";
 
-  static m77(delta) => "Дорого: CEX ${delta}%";
+  static m78(delta) => "Дорого: CEX ${delta}%";
 
-  static m78(fill) => "${fill}% заповнено";
+  static m79(fill) => "${fill}% заповнено";
 
-  static m79(coin) => "Сума (${coin})";
+  static m80(coin) => "Сума (${coin})";
 
-  static m80(coin) => "Ціна (${coin})";
+  static m81(coin) => "Ціна (${coin})";
 
-  static m81(coin) => "Усього (${coin})";
+  static m82(coin) => "Усього (${coin})";
 
-  static m82(abbr) =>
+  static m83(abbr) =>
       "${abbr} не активний. Будь ласка, активуйте і спробуйте ще раз.";
 
-  static m83(appName) => "На яких пристроях я можу використовувати ${appName}?";
+  static m84(appName) => "На яких пристроях я можу використовувати ${appName}?";
 
-  static m84(appName) =>
+  static m85(appName) =>
       "Чим торгівля в ${appName} відрізняється від торгівлі в інших DEX?";
 
-  static m85(appName) => "Як розраховуються комісії за ${appName}?";
+  static m86(appName) => "Як розраховуються комісії за ${appName}?";
 
-  static m86(appName) => "Хто стоїть за ${appName}?";
+  static m87(appName) => "Хто стоїть за ${appName}?";
 
-  static m87(appName) =>
+  static m88(appName) =>
       "Чи можна розробити власну біржу white-label у ${appName}?";
 
-  static m88(amount) => "Успіх! Отримано ${amount} KMD.";
+  static m89(amount) => "Успіх! Отримано ${amount} KMD.";
 
-  static m89(dd) => "${dd} дн.";
+  static m90(dd) => "${dd} дн.";
 
-  static m92(amount) => "Натистіть щоб побачити ${amount} угоди";
+  static m93(amount) => "Натистіть щоб побачити ${amount} угоди";
 
-  static m93(coinName, address) => "Моя адреса ${coinName}:\n${address}";
+  static m94(coinName, address) => "Моя адреса ${coinName}:\n${address}";
 
-  static m94(count, maxCount) => "Показано ${count} із ${maxCount} замовлень.";
+  static m95(coin) => "Сканувати минулі транзакції ${coin}?";
 
-  static m95(coin) => "Будь ласка, введіть ${coin} суму для купівлі";
+  static m96(count, maxCount) => "Показано ${count} із ${maxCount} замовлень.";
 
-  static m96(maxCoins) =>
+  static m97(coin) => "Будь ласка, введіть ${coin} суму для купівлі";
+
+  static m98(maxCoins) =>
       "Максимальна кількість активних монет становить ${maxCoins}. Будь ласка, деактивуйте кілька монет.";
 
-  static m97(coin) => "${coin} не активований!";
+  static m99(coin) => "${coin} не активований!";
 
-  static m98(coin) => "Будь ласка, введіть ${coin} суму для продажу";
+  static m100(coin) => "Будь ласка, введіть ${coin} суму для продажу";
 
-  static m99(coin) => "Неможливо активувати ${coin}";
+  static m101(coin) => "Неможливо активувати ${coin}";
 
-  static m100(description) =>
+  static m102(description) =>
       "Будь ласка, виберіть файл mp3 або wav. Ми почнемо це, коли ${description}.";
 
-  static m101(description) => "Грає, коли ${description}";
+  static m103(description) => "Грає, коли ${description}";
 
-  static m102(appName) =>
+  static m104(appName) =>
       "Якщо у вас виникли запитання або ви вважаєте, що виявили технічну проблему з додатком ${appName}, ви можете повідомити про це та отримати підтримку від нашої команди.";
 
-  static m103(coin) => "Спочатку активуйте ${coin} і поповніть баланс";
+  static m105(coin) => "Спочатку активуйте ${coin} і поповніть баланс";
 
-  static m104(coin) =>
+  static m106(coin) =>
       "На балансі ${coin} недостатньо для оплати комісії за трансакцію.";
 
-  static m105(coin, amount) =>
+  static m107(coin, amount) =>
       "На балансі ${coin} недостатньо для оплати комісії за трансакцію. Потрібно ${coin} ${amount}.";
 
-  static m106(left) => "Транзакцій залишилось: ${left}";
+  static m108(name) => "Які транзакції ${name} ви хочете синхронізувати?";
 
-  static m107(amnt, hash) => "Успішно розблоковано ${amnt} - TX: ${hash}";
+  static m109(left) => "Транзакцій залишилось: ${left}";
 
-  static m108(version) => "Ви використовуєте версію ${version}";
+  static m110(amnt, hash) => "Успішно розблоковано ${amnt} - TX: ${hash}";
 
-  static m109(version) => "Доступна версія ${version}. Будь ласка, оновіть.";
+  static m111(version) => "Ви використовуєте версію ${version}";
 
-  static m110(appName) => "Оновлення ${appName}";
+  static m112(version) => "Доступна версія ${version}. Будь ласка, оновіть.";
 
-  static m111(coinAbbr) => "Не вдалося активувати ${coinAbbr}";
+  static m113(appName) => "Оновлення ${appName}";
 
-  static m112(coinAbbr) =>
+  static m114(coinAbbr) => "Не вдалося активувати ${coinAbbr}";
+
+  static m115(coinAbbr) =>
       "Не вдалося активувати ${coinAbbr}. Будь-ласка спробуйте ще";
 
-  static m113(appName) =>
+  static m116(appName) =>
       "${appName} mobile — це мультимонетний гаманець нового покоління з вбудованою функцією DEX третього покоління та більше.";
 
-  static m114(appName) =>
+  static m117(appName) =>
       "Ви раніше забороняли ${appName} доступ до камери. Будь ласка, вручну змініть дозвіл камери в налаштуваннях телефону, щоб продовжити сканування QR-коду";
 
-  static m115(amount, coinName) => "ВІДПРАВИТИ ${amount} ${coinName}";
+  static m118(amount, coinName) => "ВІДПРАВИТИ ${amount} ${coinName}";
 
-  static m116(amount, coin) => "Ви отримаєте ${amount} ${coin}";
+  static m119(amount, coin) => "Ви отримаєте ${amount} ${coin}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -343,6 +349,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Адреса отримувача"),
         "advanced": MessageLookupByLibrary.simpleMessage("Розвинутий"),
         "all": MessageLookupByLibrary.simpleMessage("Усі"),
+        "allPastTransactions": MessageLookupByLibrary.simpleMessage(
+            "У вашому гаманці відображатимуться всі минулі транзакції. Це займе багато пам’яті та часу, оскільки всі блоки будуть завантажені та відскановані."),
         "allowCustomSeed":
             MessageLookupByLibrary.simpleMessage("Дозволити довільне насіння"),
         "alreadyExists": MessageLookupByLibrary.simpleMessage("вже існує"),
@@ -418,6 +426,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "camouflageSetup": MessageLookupByLibrary.simpleMessage(
             "Налаштування камуфляжного PIN-коду"),
         "cancel": MessageLookupByLibrary.simpleMessage("Скасувати"),
+        "cancelActivation":
+            MessageLookupByLibrary.simpleMessage("Скасувати активацію"),
+        "cancelActivationQuestion": MessageLookupByLibrary.simpleMessage(
+            "Ви впевнені, що бажаєте скасувати активацію?"),
         "cancelButton": MessageLookupByLibrary.simpleMessage("Скасувати"),
         "cancelOrder":
             MessageLookupByLibrary.simpleMessage("Відмінити замовлення"),
@@ -467,6 +479,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "closePreview":
             MessageLookupByLibrary.simpleMessage("Закрити попередній перегляд"),
         "code": MessageLookupByLibrary.simpleMessage("Код:"),
+        "cofirmCancelActivation": MessageLookupByLibrary.simpleMessage(
+            "Ви впевнені, що бажаєте скасувати активацію?"),
         "coinSelectClear": MessageLookupByLibrary.simpleMessage("Стерти"),
         "coinSelectNotFound":
             MessageLookupByLibrary.simpleMessage("Немає активних монет"),
@@ -764,6 +778,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "foundQrCode": MessageLookupByLibrary.simpleMessage("Знайдено QR-код"),
         "frenchLanguage": MessageLookupByLibrary.simpleMessage("Французька"),
         "from": MessageLookupByLibrary.simpleMessage("Від"),
+        "futureTransactions": MessageLookupByLibrary.simpleMessage(
+            "Ми будемо синхронізувати майбутні транзакції, здійснені після активації, пов’язаної з вашим відкритим ключем. Це найшвидший варіант, який займає найменшу кількість пам’яті."),
         "gasFee": m49,
         "gasLimit": MessageLookupByLibrary.simpleMessage("Ліміт комісії"),
         "gasNotActive": m50,
@@ -848,19 +864,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Оновити"),
         "internetRestored": MessageLookupByLibrary.simpleMessage(
             "Підключення до Інтернету відновлено"),
+        "invalidCoinAddress": m54,
         "invalidSwap":
             MessageLookupByLibrary.simpleMessage("Неможливо продовжити обмін"),
         "invalidSwapDetailsLink":
             MessageLookupByLibrary.simpleMessage("Подробиці"),
-        "isUnavailable": m54,
+        "isUnavailable": m55,
         "japaneseLanguage": MessageLookupByLibrary.simpleMessage("Японська"),
         "koreanLanguage": MessageLookupByLibrary.simpleMessage("Корейська"),
         "language": MessageLookupByLibrary.simpleMessage("Мова"),
         "latestTxs": MessageLookupByLibrary.simpleMessage("Останні транзакції"),
         "legalTitle": MessageLookupByLibrary.simpleMessage("Юридичний"),
         "less": MessageLookupByLibrary.simpleMessage("Менше"),
-        "lessThanCaution": m55,
-        "limitError": m56,
+        "lessThanCaution": m56,
+        "limitError": m57,
         "loading": MessageLookupByLibrary.simpleMessage("Завантаження..."),
         "loadingOrderbook": MessageLookupByLibrary.simpleMessage(
             "Завантаження книги замовлень..."),
@@ -935,11 +952,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "min": MessageLookupByLibrary.simpleMessage("ХВ"),
         "minOrder": MessageLookupByLibrary.simpleMessage(
             "Мінімальна кількість замовлень:"),
-        "minValue": m57,
-        "minValueBuy": m58,
-        "minValueOrder": m59,
-        "minValueSell": m60,
-        "minVolumeInput": m61,
+        "minValue": m58,
+        "minValueBuy": m59,
+        "minValueOrder": m60,
+        "minValueSell": m61,
+        "minVolumeInput": m62,
         "minVolumeIsTDH": MessageLookupByLibrary.simpleMessage(
             "Має бути нижчою за суму продажу"),
         "minVolumeTitle": MessageLookupByLibrary.simpleMessage(
@@ -949,10 +966,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimizingWillTerminate": MessageLookupByLibrary.simpleMessage(
             "Попередження: згортання програми на iOS припинить процес активації."),
         "minutes": MessageLookupByLibrary.simpleMessage("хв"),
-        "mobileDataWarning": m62,
+        "mobileDataWarning": m63,
         "moreInfo": MessageLookupByLibrary.simpleMessage("Більше інформації"),
         "moreTab": MessageLookupByLibrary.simpleMessage("Більше"),
-        "multiActivateGas": m63,
+        "multiActivateGas": m64,
         "multiBaseAmtPlaceholder": MessageLookupByLibrary.simpleMessage("Сума"),
         "multiBasePlaceholder": MessageLookupByLibrary.simpleMessage("Монета"),
         "multiBaseSelectTitle":
@@ -960,7 +977,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "multiConfirmCancel": MessageLookupByLibrary.simpleMessage("Скасувати"),
         "multiConfirmConfirm":
             MessageLookupByLibrary.simpleMessage("Підтвердити"),
-        "multiConfirmTitle": m64,
+        "multiConfirmTitle": m65,
         "multiCreate": MessageLookupByLibrary.simpleMessage("Створити"),
         "multiCreateOrder": MessageLookupByLibrary.simpleMessage("Замовлення"),
         "multiCreateOrders": MessageLookupByLibrary.simpleMessage("Замовлення"),
@@ -975,8 +992,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Недійсна сума"),
         "multiInvalidSellAmt":
             MessageLookupByLibrary.simpleMessage("Недійсна сума продажу"),
-        "multiLowGas": m65,
-        "multiLowerThanFee": m66,
+        "multiLowGas": m66,
+        "multiLowerThanFee": m67,
         "multiMaxSellAmt": MessageLookupByLibrary.simpleMessage(
             "Максимальна сума продажу становить"),
         "multiMinReceiveAmt": MessageLookupByLibrary.simpleMessage(
@@ -1010,7 +1027,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Елементи не вибрано"),
         "noMatchingOrders": MessageLookupByLibrary.simpleMessage(
             "Відповідних замовлень не знайдено"),
-        "noOrder": m67,
+        "noOrder": m68,
         "noOrderAvailable": MessageLookupByLibrary.simpleMessage(
             "Натисніть, щоб створити замовлення"),
         "noOrders": MessageLookupByLibrary.simpleMessage(
@@ -1025,7 +1042,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nonNumericInput":
             MessageLookupByLibrary.simpleMessage("Значення має бути числовим"),
         "none": MessageLookupByLibrary.simpleMessage("Жодного"),
-        "notEnoughGas": m68,
+        "notEnoughGas": m69,
         "notEnoughtBalanceForFee": MessageLookupByLibrary.simpleMessage(
             "Недостатньо балансу для комісій - торгуйте на меншу суму"),
         "noteOnOrder": MessageLookupByLibrary.simpleMessage(
@@ -1035,24 +1052,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "noteTitle": MessageLookupByLibrary.simpleMessage("Примітка"),
         "nothingFound":
             MessageLookupByLibrary.simpleMessage("Нічого не знайдено"),
-        "notifSwapCompletedText": m69,
+        "notifSwapCompletedText": m70,
         "notifSwapCompletedTitle":
             MessageLookupByLibrary.simpleMessage("Обмін завершено"),
-        "notifSwapFailedText": m70,
+        "notifSwapFailedText": m71,
         "notifSwapFailedTitle":
             MessageLookupByLibrary.simpleMessage("Помилка обміну"),
-        "notifSwapStartedText": m71,
+        "notifSwapStartedText": m72,
         "notifSwapStartedTitle":
             MessageLookupByLibrary.simpleMessage("Розпочато новий обмін"),
         "notifSwapStatusTitle":
             MessageLookupByLibrary.simpleMessage("Статус обміну змінено"),
-        "notifSwapTimeoutText": m72,
+        "notifSwapTimeoutText": m73,
         "notifSwapTimeoutTitle":
             MessageLookupByLibrary.simpleMessage("Час очікування обміну минув"),
-        "notifTxText": m73,
+        "notifTxText": m74,
         "notifTxTitle":
             MessageLookupByLibrary.simpleMessage("Вхідна транзакція"),
-        "numberAssets": m74,
+        "numberAssets": m75,
         "officialPressRelease":
             MessageLookupByLibrary.simpleMessage("Офіційний прес-реліз"),
         "okButton": MessageLookupByLibrary.simpleMessage("Ок"),
@@ -1064,15 +1081,15 @@ class MessageLookup extends MessageLookupByLibrary {
             "Відкрийте повідомлення про помилку"),
         "orderBookLess": MessageLookupByLibrary.simpleMessage("менше"),
         "orderBookMore": MessageLookupByLibrary.simpleMessage("більше"),
-        "orderCancel": m75,
+        "orderCancel": m76,
         "orderCreated":
             MessageLookupByLibrary.simpleMessage("Замовлення створено"),
         "orderCreatedInfo":
             MessageLookupByLibrary.simpleMessage("Замовлення успішно створено"),
         "orderDetailsAddress": MessageLookupByLibrary.simpleMessage("Адреса"),
         "orderDetailsCancel": MessageLookupByLibrary.simpleMessage("Скасувати"),
-        "orderDetailsExpedient": m76,
-        "orderDetailsExpensive": m77,
+        "orderDetailsExpedient": m77,
+        "orderDetailsExpensive": m78,
         "orderDetailsFor": MessageLookupByLibrary.simpleMessage("для"),
         "orderDetailsIdentical":
             MessageLookupByLibrary.simpleMessage("Ідентичний CEX"),
@@ -1085,7 +1102,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Відкрийте «Деталі» одним дотиком і виберіть «Замовити довгим дотиком»."),
         "orderDetailsSpend": MessageLookupByLibrary.simpleMessage("Витратити"),
         "orderDetailsTitle": MessageLookupByLibrary.simpleMessage("Подробиці"),
-        "orderFilled": m78,
+        "orderFilled": m79,
         "orderMatched":
             MessageLookupByLibrary.simpleMessage("Замовлення поєднане"),
         "orderMatching":
@@ -1096,9 +1113,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders": MessageLookupByLibrary.simpleMessage("Замовлення"),
         "ordersActive": MessageLookupByLibrary.simpleMessage("Активні"),
         "ordersHistory": MessageLookupByLibrary.simpleMessage("Історія"),
-        "ordersTableAmount": m79,
-        "ordersTablePrice": m80,
-        "ordersTableTotal": m81,
+        "ordersTableAmount": m80,
+        "ordersTablePrice": m81,
+        "ordersTableTotal": m82,
         "overwrite": MessageLookupByLibrary.simpleMessage("Перезаписати"),
         "ownOrder": MessageLookupByLibrary.simpleMessage("Це ваше замовлення!"),
         "paidFromBalance":
@@ -1108,6 +1125,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidWith": MessageLookupByLibrary.simpleMessage("Сплачено з"),
         "passwordRequirement": MessageLookupByLibrary.simpleMessage(
             "Пароль має містити щонайменше 12 символів, з літерою нижнього та верхнього регістру та одного спеціального символу."),
+        "pastTransactionsFromDate": MessageLookupByLibrary.simpleMessage(
+            "Ваш гаманець відображатиме ваші минулі транзакції, здійснені після вказаної дати."),
         "paymentUriDetailsAccept":
             MessageLookupByLibrary.simpleMessage("Оплатити"),
         "paymentUriDetailsAcceptQuestion":
@@ -1122,7 +1141,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Скасувати"),
         "paymentUriDetailsTitle":
             MessageLookupByLibrary.simpleMessage("Запит на оплату"),
-        "paymentUriInactiveCoin": m82,
+        "paymentUriInactiveCoin": m83,
         "placeOrder":
             MessageLookupByLibrary.simpleMessage("Розмістіть своє замовлення"),
         "pleaseAddCoin":
@@ -1147,19 +1166,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "qrCodeScanner": MessageLookupByLibrary.simpleMessage("Сканер QR-коду"),
         "question_1": MessageLookupByLibrary.simpleMessage(
             "Ви зберігаєте мої особисті ключі?"),
-        "question_10": m83,
-        "question_2": m84,
+        "question_10": m84,
+        "question_2": m85,
         "question_3": MessageLookupByLibrary.simpleMessage(
             "Скільки часу займає кожна атомарна заміна?"),
         "question_4": MessageLookupByLibrary.simpleMessage(
             "Чи потрібно мені бути онлайн під час обміну?"),
-        "question_5": m85,
+        "question_5": m86,
         "question_6": MessageLookupByLibrary.simpleMessage(
             "Чи забезпечуєте ви підтримку користувачів?"),
         "question_7": MessageLookupByLibrary.simpleMessage(
             "Чи є у вас обмеження по країні?"),
-        "question_8": m86,
-        "question_9": m87,
+        "question_8": m87,
+        "question_9": m88,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
             "Це нова ера! Ми офіційно змінили назву з \"AtomicDEX\" на \"Komodo Wallet\""),
         "receive": MessageLookupByLibrary.simpleMessage("ОТРИМАТИ"),
@@ -1199,7 +1218,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsReadMore": MessageLookupByLibrary.simpleMessage(
             "Докладніше про нагороди KMD для активних користувачів"),
         "rewardsReceive": MessageLookupByLibrary.simpleMessage("Отримати"),
-        "rewardsSuccess": m88,
+        "rewardsSuccess": m89,
         "rewardsTableFiat": MessageLookupByLibrary.simpleMessage("Фіат"),
         "rewardsTableRewards":
             MessageLookupByLibrary.simpleMessage("Нагороди,\nKMD"),
@@ -1209,7 +1228,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Інформація про нагороди:"),
         "rewardsTableUXTO":
             MessageLookupByLibrary.simpleMessage("UTXO кіл,\nKMD"),
-        "rewardsTimeDays": m89,
+        "rewardsTimeDays": m90,
         "rewardsTitle":
             MessageLookupByLibrary.simpleMessage("Інформація про нагороди"),
         "russianLanguage": MessageLookupByLibrary.simpleMessage("Російська"),
@@ -1263,7 +1282,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Шукати по тікету"),
         "seconds": MessageLookupByLibrary.simpleMessage("с"),
         "security": MessageLookupByLibrary.simpleMessage("Безпека"),
-        "seeOrders": m92,
+        "seeOrders": m93,
         "seeTxHistory":
             MessageLookupByLibrary.simpleMessage("Побачити історію транзакції"),
         "seedPhrase": MessageLookupByLibrary.simpleMessage("Фраза насіння"),
@@ -1278,6 +1297,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Виберіть монету, яку хочете КУПИТИ"),
         "selectCoinToSell": MessageLookupByLibrary.simpleMessage(
             "Виберіть монету, яку хочете ПРОДАТИ"),
+        "selectDate": MessageLookupByLibrary.simpleMessage("Виберіть дату"),
         "selectFileImport":
             MessageLookupByLibrary.simpleMessage("Виберіть файл"),
         "selectLanguage": MessageLookupByLibrary.simpleMessage("Виберіть мову"),
@@ -1303,12 +1323,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingLanguageTitle": MessageLookupByLibrary.simpleMessage("Мови"),
         "settings": MessageLookupByLibrary.simpleMessage("Налаштування"),
         "share": MessageLookupByLibrary.simpleMessage("Поділитись"),
-        "shareAddress": m93,
+        "shareAddress": m94,
+        "shouldScanPastTransaction": m95,
         "showAddress": MessageLookupByLibrary.simpleMessage("Показати адресу"),
         "showDetails": MessageLookupByLibrary.simpleMessage("Показати деталі"),
         "showMyOrders":
             MessageLookupByLibrary.simpleMessage("Показати мої угоди"),
-        "showingOrders": m94,
+        "showingOrders": m96,
         "signInWithPassword": MessageLookupByLibrary.simpleMessage(
             "Увійдіть за допомогою пароля"),
         "signInWithSeedPhrase": MessageLookupByLibrary.simpleMessage(
@@ -1316,24 +1337,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "simple": MessageLookupByLibrary.simpleMessage("Простий"),
         "simpleTradeActivate":
             MessageLookupByLibrary.simpleMessage("Активувати"),
-        "simpleTradeBuyHint": m95,
+        "simpleTradeBuyHint": m97,
         "simpleTradeBuyTitle": MessageLookupByLibrary.simpleMessage("Купити"),
         "simpleTradeClose": MessageLookupByLibrary.simpleMessage("Закрити"),
-        "simpleTradeMaxActiveCoins": m96,
-        "simpleTradeNotActive": m97,
+        "simpleTradeMaxActiveCoins": m98,
+        "simpleTradeNotActive": m99,
         "simpleTradeRecieve": MessageLookupByLibrary.simpleMessage("Отримати"),
-        "simpleTradeSellHint": m98,
+        "simpleTradeSellHint": m100,
         "simpleTradeSellTitle": MessageLookupByLibrary.simpleMessage("Продати"),
         "simpleTradeSend": MessageLookupByLibrary.simpleMessage("Надіслати"),
         "simpleTradeShowLess":
             MessageLookupByLibrary.simpleMessage("Показати менше"),
         "simpleTradeShowMore":
             MessageLookupByLibrary.simpleMessage("Показати більше"),
-        "simpleTradeUnableActivate": m99,
+        "simpleTradeUnableActivate": m101,
         "skip": MessageLookupByLibrary.simpleMessage("Пропустити"),
         "snackbarDismiss": MessageLookupByLibrary.simpleMessage("Відхилити"),
-        "soundCantPlayThatMsg": m100,
-        "soundPlayedWhen": m101,
+        "soundCantPlayThatMsg": m102,
+        "soundPlayedWhen": m103,
         "soundSettingsLink": MessageLookupByLibrary.simpleMessage("Звук"),
         "soundSettingsTitle":
             MessageLookupByLibrary.simpleMessage("Налаштування звуку"),
@@ -1345,20 +1366,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "soundsNote": MessageLookupByLibrary.simpleMessage(
             "Зверніть увагу, що ви можете встановити власні звуки в налаштуваннях програми."),
         "spanishLanguage": MessageLookupByLibrary.simpleMessage("Іспанська"),
+        "startDate": MessageLookupByLibrary.simpleMessage("Дата початку"),
         "startSwap": MessageLookupByLibrary.simpleMessage("Почати обмін"),
         "step": MessageLookupByLibrary.simpleMessage("Крок"),
         "success": MessageLookupByLibrary.simpleMessage("Успішно!"),
         "support": MessageLookupByLibrary.simpleMessage("Підтримка"),
-        "supportLinksDesc": m102,
+        "supportLinksDesc": m104,
         "swap": MessageLookupByLibrary.simpleMessage("своп"),
         "swapCurrent": MessageLookupByLibrary.simpleMessage("Поточний"),
         "swapDetailTitle":
             MessageLookupByLibrary.simpleMessage("ПІДТВЕРДИТИ ДЕТАЛІ ОБМІНУ"),
         "swapEstimated": MessageLookupByLibrary.simpleMessage("Оцінка"),
         "swapFailed": MessageLookupByLibrary.simpleMessage("Помилка обміну"),
-        "swapGasActivate": m103,
-        "swapGasAmount": m104,
-        "swapGasAmountRequired": m105,
+        "swapGasActivate": m105,
+        "swapGasAmount": m106,
+        "swapGasAmountRequired": m107,
         "swapOngoing": MessageLookupByLibrary.simpleMessage("Обмін триває"),
         "swapProgress": MessageLookupByLibrary.simpleMessage("Деталі прогресу"),
         "swapStarted": MessageLookupByLibrary.simpleMessage("Розпочато"),
@@ -1366,6 +1388,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "swapTotal": MessageLookupByLibrary.simpleMessage("Всього"),
         "swapUUID": MessageLookupByLibrary.simpleMessage("Swap UUID"),
         "switchTheme": MessageLookupByLibrary.simpleMessage("Змінити тему"),
+        "syncFromDate": MessageLookupByLibrary.simpleMessage(
+            "Синхронізувати з указаної дати"),
+        "syncFromSaplingActivation": MessageLookupByLibrary.simpleMessage(
+            "Синхронізація з активації саджанця"),
+        "syncNewTransactions": MessageLookupByLibrary.simpleMessage(
+            "Синхронізувати нові транзакції"),
+        "syncTransactionsQuestion": m108,
         "tagAVX20": MessageLookupByLibrary.simpleMessage("AVX20"),
         "tagBEP20": MessageLookupByLibrary.simpleMessage("BEP20"),
         "tagERC20": MessageLookupByLibrary.simpleMessage("ERC20"),
@@ -1380,7 +1409,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tagQRC20": MessageLookupByLibrary.simpleMessage("QRC20"),
         "tagSBCH": MessageLookupByLibrary.simpleMessage("SBCH"),
         "tagUBQ": MessageLookupByLibrary.simpleMessage("UBQ"),
-        "tagZHTLC": MessageLookupByLibrary.simpleMessage("ЖТЛЦ"),
+        "tagZHTLC": MessageLookupByLibrary.simpleMessage("ZHTLC"),
         "takerOrder":
             MessageLookupByLibrary.simpleMessage("Замовлення покупця"),
         "timeOut": MessageLookupByLibrary.simpleMessage("Час вийшов"),
@@ -1429,26 +1458,26 @@ class MessageLookup extends MessageLookupByLibrary {
             "Забагато запитів.\nПеревищено ліміт запитів історії транзакцій.\nБудь-ласка спробуйте пізніше."),
         "txNotConfirmed":
             MessageLookupByLibrary.simpleMessage("НЕПІДТВЕРДЖЕНО"),
-        "txleft": m106,
+        "txleft": m109,
         "ukrainianLanguage":
             MessageLookupByLibrary.simpleMessage("Український"),
         "unlock": MessageLookupByLibrary.simpleMessage("розблокувати"),
         "unlockFunds": MessageLookupByLibrary.simpleMessage("Розблокувати"),
-        "unlockSuccess": m107,
+        "unlockSuccess": m110,
         "unspendable": MessageLookupByLibrary.simpleMessage("невитрачений"),
         "updatesAvailable":
             MessageLookupByLibrary.simpleMessage("Доступна нова версія"),
         "updatesChecking":
             MessageLookupByLibrary.simpleMessage("Перевірка оновлень..."),
-        "updatesCurrentVersion": m108,
+        "updatesCurrentVersion": m111,
         "updatesNotifAvailable": MessageLookupByLibrary.simpleMessage(
             "Доступна нова версія. Будь ласка, оновіть."),
-        "updatesNotifAvailableVersion": m109,
+        "updatesNotifAvailableVersion": m112,
         "updatesNotifTitle":
             MessageLookupByLibrary.simpleMessage("Доступне оновлення"),
         "updatesSkip":
             MessageLookupByLibrary.simpleMessage("Пропустити поки що"),
-        "updatesTitle": m110,
+        "updatesTitle": m113,
         "updatesUpToDate":
             MessageLookupByLibrary.simpleMessage("Вже актуально"),
         "updatesUpdate": MessageLookupByLibrary.simpleMessage("Оновлення"),
@@ -1474,9 +1503,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "warningOkBtn": MessageLookupByLibrary.simpleMessage("Ок"),
         "warningShareLogs": MessageLookupByLibrary.simpleMessage(
             "Увага! В особливих випадках дані журналу містять конфіденційну інформацію, яка може бути використана для витрачання монет із невдалих обмінів!"),
-        "weFailedTo": m111,
-        "weFailedToActivate": m112,
-        "welcomeInfo": m113,
+        "weFailedTo": m114,
+        "weFailedToActivate": m115,
+        "welcomeInfo": m116,
         "welcomeLetSetUp":
             MessageLookupByLibrary.simpleMessage("ДАВАЙТЕ НАЛАШТОВУВАТИ!"),
         "welcomeTitle": MessageLookupByLibrary.simpleMessage("ЛАСКАВО ПРОСИМО"),
@@ -1486,14 +1515,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "willTakeTime": MessageLookupByLibrary.simpleMessage(
             "Це займе деякий час, і програма має залишатися в активному режимі.\nЗакриття програми під час активації може призвести до проблем."),
         "withdraw": MessageLookupByLibrary.simpleMessage("Відправити"),
-        "withdrawCameraAccessText": m114,
+        "withdrawCameraAccessText": m117,
         "withdrawCameraAccessTitle":
             MessageLookupByLibrary.simpleMessage("Доступ заборонено"),
         "withdrawConfirm":
             MessageLookupByLibrary.simpleMessage("Підтвердити зняття"),
         "withdrawConfirmError": MessageLookupByLibrary.simpleMessage(
             "Щось пішло не так. Спробуйте ще раз пізніше."),
-        "withdrawValue": m115,
+        "withdrawValue": m118,
         "wrongCoinSpan1": MessageLookupByLibrary.simpleMessage(
             "Ви намагаєтеся відсканувати платіжний QR-код для"),
         "wrongCoinSpan2":
@@ -1513,7 +1542,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "у вас є замовлення, з яким можуть відповідати нові замовлення"),
         "youAreSending": MessageLookupByLibrary.simpleMessage("Ви надсилаєте:"),
-        "youWillReceiveClaim": m116,
+        "youWillReceiveClaim": m119,
         "youWillReceived":
             MessageLookupByLibrary.simpleMessage("Ви отримаєте:"),
         "yourWallet": MessageLookupByLibrary.simpleMessage("твій гаманець")

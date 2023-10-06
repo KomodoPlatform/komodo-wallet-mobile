@@ -157,154 +157,161 @@ class MessageLookup extends MessageLookupByLibrary {
   static m53(abbr) =>
       "${abbr} bakiyesi, alım satım işlem ücretlerini karşılamaya yetmiyor.";
 
-  static m54(coinAbbr) => "${coinAbbr} mevcut değil :(";
+  static m54(coin) => "Geçersiz ${coin} adresi";
 
-  static m55(coinName) =>
+  static m55(coinAbbr) => "${coinAbbr} mevcut değil :(";
+
+  static m56(coinName) =>
       "❗Dikkat! ${coinName} piyasasının 24 saatlik işlem hacmi 10 bin dolardan az!";
 
-  static m56(value) => "Sınır en fazla ${value} olmalıdır";
-
-  static m57(coinName, number) =>
-      "${coinName} için yapılabilecek en düşük satış hacmi: ${number}";
+  static m57(value) => "Sınır en fazla ${value} olmalıdır";
 
   static m58(coinName, number) =>
+      "${coinName} için yapılabilecek en düşük satış hacmi: ${number}";
+
+  static m59(coinName, number) =>
       "${coinName} için yapılabilecek en düşük alım hacmi: ${number}";
 
-  static m59(buyCoin, buyAmount, sellCoin, sellAmount) =>
+  static m60(buyCoin, buyAmount, sellCoin, sellAmount) =>
       "En düşük emir için: ${buyCoin} ${buyAmount}\n(${sellCoin} ${sellAmount})";
 
-  static m60(coinName, number) =>
+  static m61(coinName, number) =>
       "${coinName} için en düşük satım miktarı: ${number}";
 
-  static m61(minValue, coin) => "${minValue} ${coin}\'den büyük olmalı";
+  static m62(minValue, coin) => "${minValue} ${coin}\'den büyük olmalı";
 
-  static m62(appName) =>
+  static m63(appName) =>
       "Lütfen artık hücresel veri kullandığınızı ve ${appName} P2P ağına katılımınızın internet trafiğini tükettiğini unutmayın. Hücresel veri planınız maliyetliyse bir WiFi ağı kullanmak daha iyidir.";
 
-  static m63(coin) => "Önce ${coin}\'i etkinleştirin ve bakiyeyi tamamlayın";
+  static m64(coin) => "Önce ${coin}\'i etkinleştirin ve bakiyeyi tamamlayın";
 
-  static m64(number) => "${number} Sipariş oluştur:";
+  static m65(number) => "${number} Sipariş oluştur:";
 
-  static m65(coin) => "${coin} bakiyesi yetersiz";
+  static m66(coin) => "${coin} bakiyesi yetersiz";
 
-  static m66(coin, fee) =>
+  static m67(coin, fee) =>
       "İşlem masrafını ödemeye yetecek ${coin} yok. En az ${fee} ${coin} olmalı.";
 
-  static m67(coinName) =>
+  static m68(coinName) =>
       "Uygun bir ${coinName} emri bulunmuyor - bir emir girmeyi deneyin veya daha sonra yeniden kontrol edin.";
 
-  static m68(coin) => "İşlem için yeteri kadar ${coin} yok !";
+  static m69(coin) => "İşlem için yeteri kadar ${coin} yok !";
 
-  static m69(sell, buy) => "${sell}/${buy} takası başarıyla tamamlandı";
+  static m70(sell, buy) => "${sell}/${buy} takası başarıyla tamamlandı";
 
-  static m70(sell, buy) => "${sell}/${buy} takası başarısız oldu";
+  static m71(sell, buy) => "${sell}/${buy} takası başarısız oldu";
 
-  static m71(sell, buy) => "${sell}/${buy} takası başladı";
+  static m72(sell, buy) => "${sell}/${buy} takası başladı";
 
-  static m72(sell, buy) => "${sell}/${buy} takas zaman aşımına uğradı";
+  static m73(sell, buy) => "${sell}/${buy} takas zaman aşımına uğradı";
 
-  static m73(coin) => "${coin} işlemi aldınız!";
+  static m74(coin) => "${coin} işlemi aldınız!";
 
-  static m74(assets) => "${assets} Varlıklar";
+  static m75(assets) => "${assets} Varlıklar";
 
-  static m75(coin) => "Tüm ${coin} emirleri iptal edilecek";
+  static m76(coin) => "Tüm ${coin} emirleri iptal edilecek";
 
-  static m76(delta) => "Ucuz: CEX + %${delta}";
+  static m77(delta) => "Ucuz: CEX + %${delta}";
 
-  static m77(delta) => "Pahalı: CEX + %${delta}";
+  static m78(delta) => "Pahalı: CEX + %${delta}";
 
-  static m78(fill) => "${fill}% tamamlandı";
+  static m79(fill) => "${fill}% tamamlandı";
 
-  static m79(coin) => "(${coin}) miktarı";
+  static m80(coin) => "(${coin}) miktarı";
 
-  static m80(coin) => "(${coin}) fiyatı";
+  static m81(coin) => "(${coin}) fiyatı";
 
-  static m81(coin) => "Toplam (${coin})";
+  static m82(coin) => "Toplam (${coin})";
 
-  static m82(abbr) =>
+  static m83(abbr) =>
       "${abbr} aktif değil. Lütfen aktifleştirip öyle deneyiniz.";
 
-  static m83(appName) => "Komodo Wallet\'ı hangi cihazlarda kullanabilirim ?";
-
-  static m84(appName) =>
-      "${appName}\'te alım satım yapmanın diğer DEX\'lerdekinden ne gibi farkları vardır ?";
+  static m84(appName) => "Komodo Wallet\'ı hangi cihazlarda kullanabilirim ?";
 
   static m85(appName) =>
+      "${appName}\'te alım satım yapmanın diğer DEX\'lerdekinden ne gibi farkları vardır ?";
+
+  static m86(appName) =>
       "${appName}\'te işlem ücretleri nasıl hesaplanmaktadır ?";
 
-  static m86(appName) => "Komodo Wallet\'ın arkasında kimler var ?";
+  static m87(appName) => "Komodo Wallet\'ın arkasında kimler var ?";
 
-  static m87(appName) =>
+  static m88(appName) =>
       "${appName} üzerinde kendi beyaz etiketli değişimimi geliştirmem mümkün mü?";
 
-  static m88(amount) => "Başarılı ! ${amount} KMD geldi.";
+  static m89(amount) => "Başarılı ! ${amount} KMD geldi.";
 
-  static m89(dd) => "${dd} gün";
+  static m90(dd) => "${dd} gün";
 
-  static m90(hh, minutes) => "${hh}sa ${minutes}dk";
+  static m91(hh, minutes) => "${hh}sa ${minutes}dk";
 
-  static m91(mm) => "${mm}dk";
+  static m92(mm) => "${mm}dk";
 
-  static m92(amount) => "${amount} adet emri görmek için tıklayın";
+  static m93(amount) => "${amount} adet emri görmek için tıklayın";
 
-  static m93(coinName, address) => "${coinName} adresim:\n${address}";
+  static m94(coinName, address) => "${coinName} adresim:\n${address}";
 
-  static m94(count, maxCount) =>
+  static m95(coin) => "Geçmişteki ${coin} işlemleri taransın mı?";
+
+  static m96(count, maxCount) =>
       "${maxCount} siparişten ${count} tanesi gösteriliyor.";
 
-  static m95(coin) => "Lütfen alınacak ${coin} adetini girin";
+  static m97(coin) => "Lütfen alınacak ${coin} adetini girin";
 
-  static m96(maxCoins) =>
+  static m98(maxCoins) =>
       "Maksimum aktif jeton sayısı ${maxCoins}\'dir. Lütfen bazılarını devre dışı bırakın.";
 
-  static m97(coin) => "${coin} koini aktif değil !";
+  static m99(coin) => "${coin} koini aktif değil !";
 
-  static m98(coin) => "Lütfen satmak için ${coin} miktarı girin";
+  static m100(coin) => "Lütfen satmak için ${coin} miktarı girin";
 
-  static m99(coin) => "${coin} aktifleştirilemedi";
+  static m101(coin) => "${coin} aktifleştirilemedi";
 
-  static m100(description) =>
+  static m102(description) =>
       "Lütfen bir mp3 ya da waw dosyası seçin. ${description}\'de ses dosyalarını oynatacağız.";
 
-  static m101(description) => "${description}\'de oynatıldı.";
+  static m103(description) => "${description}\'de oynatıldı.";
 
-  static m102(appName) =>
+  static m104(appName) =>
       "Herhangi bir sorunuz varsa veyahut ${appName} uygulamasıyla ile ilgili teknik bir hata bulduğunuzu düşünüyorsanız bunu ekibimize bildirebilir ve destek alabilirsiniz.";
 
-  static m103(coin) => "Lütfen önce ${coin} ve kontör bakiyesini etkinleştirin";
+  static m105(coin) => "Lütfen önce ${coin} ve kontör bakiyesini etkinleştirin";
 
-  static m104(coin) =>
+  static m106(coin) =>
       "${coin} bakiyesi, işlem ücretlerini karşılayamayacak kadar düşük.";
 
-  static m105(coin, amount) =>
+  static m107(coin, amount) =>
       "${coin} bakiyesi, işlem ücretlerini karşılayamayacak kadar düşük. ${amount} ${coin} gerekli.";
 
-  static m106(left) => "Kalan işlem: ${left}";
+  static m108(name) =>
+      "Hangi ${name} işlemlerini senkronize etmek istiyorsunuz?";
 
-  static m107(amnt, hash) =>
+  static m109(left) => "Kalan işlem: ${left}";
+
+  static m110(amnt, hash) =>
       "${amnt} fonun kilidi başarıyla kaldırıldı - TX: ${hash}";
 
-  static m108(version) => "${version} sürümünü kullanmaktasınız.";
+  static m111(version) => "${version} sürümünü kullanmaktasınız.";
 
-  static m109(version) =>
+  static m112(version) =>
       "Güncel ${version} sürümü mevcut. Lütfen güncelleyiniz.";
 
-  static m110(appName) => "Komodo Wallet güncellemeleri";
+  static m113(appName) => "Komodo Wallet güncellemeleri";
 
-  static m111(coinAbbr) => "${coinAbbr} koinini etkinleştiremedik.";
+  static m114(coinAbbr) => "${coinAbbr} koinini etkinleştiremedik.";
 
-  static m112(coinAbbr) =>
+  static m115(coinAbbr) =>
       "${coinAbbr} koinini etkinleştiremedik.\nLütfen uygulamayı yeniden başlatıp tekrar deneyiniz.";
 
-  static m113(appName) =>
+  static m116(appName) =>
       "Komodo Wallet mobil yerleşik üçüncü nesil DEX işlevselliği ve daha fazla özellikleri ile yeni nesil bir çoklu koin cüzdanıdır.";
 
-  static m114(appName) =>
+  static m117(appName) =>
       "${appName}\'in kameraya erişimi engellenmiş.\nQR kod taramasını yapabilmek için lütfen telefon ayarlarınızdan kamera erişimine izin veriniz.";
 
-  static m115(amount, coinName) => "${amount} adet ${coinName} ÇEK";
+  static m118(amount, coinName) => "${amount} adet ${coinName} ÇEK";
 
-  static m116(amount, coin) => "${amount} adet ${coin} alacaksınız";
+  static m119(amount, coin) => "${amount} adet ${coin} alacaksınız";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -350,6 +357,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressSend": MessageLookupByLibrary.simpleMessage("Alıcı adresi"),
         "advanced": MessageLookupByLibrary.simpleMessage("Gelişmiş"),
         "all": MessageLookupByLibrary.simpleMessage("Hepsi"),
+        "allPastTransactions": MessageLookupByLibrary.simpleMessage(
+            "Cüzdanınız geçmiş işlemleri gösterecektir. Tüm bloklar indirilip taranacağından bu, önemli miktarda depolama alanı ve zaman alacaktır."),
         "allowCustomSeed":
             MessageLookupByLibrary.simpleMessage("Kişisel kelimeleri kullan"),
         "alreadyExists": MessageLookupByLibrary.simpleMessage("Zaten mevcut"),
@@ -421,6 +430,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "camouflageSetup":
             MessageLookupByLibrary.simpleMessage("Kamuflajlı PIN Kurulumu"),
         "cancel": MessageLookupByLibrary.simpleMessage("İptal"),
+        "cancelActivation":
+            MessageLookupByLibrary.simpleMessage("Etkinleştirmeyi İptal Et"),
+        "cancelActivationQuestion": MessageLookupByLibrary.simpleMessage(
+            "Etkinleştirmeyi iptal etmek istediğinizden emin misiniz?"),
         "cancelButton": MessageLookupByLibrary.simpleMessage("İptal"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("Emri İptal Et"),
         "candleChartError": MessageLookupByLibrary.simpleMessage(
@@ -467,6 +480,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "closePreview":
             MessageLookupByLibrary.simpleMessage("Ön izlemeyi kapat"),
         "code": MessageLookupByLibrary.simpleMessage("Kod:"),
+        "cofirmCancelActivation": MessageLookupByLibrary.simpleMessage(
+            "Etkinleştirmeyi iptal etmek istediğinizden emin misiniz?"),
         "coinSelectClear": MessageLookupByLibrary.simpleMessage("Temizle"),
         "coinSelectNotFound":
             MessageLookupByLibrary.simpleMessage("Aktif koin yok"),
@@ -752,6 +767,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "foundQrCode": MessageLookupByLibrary.simpleMessage("QR Kodu Bulundu"),
         "frenchLanguage": MessageLookupByLibrary.simpleMessage("Fransızca"),
         "from": MessageLookupByLibrary.simpleMessage("Gönderici"),
+        "futureTransactions": MessageLookupByLibrary.simpleMessage(
+            "Genel anahtarınızla ilişkili etkinleştirme sonrasında gelecekte yapılacak işlemleri senkronize edeceğiz. Bu en hızlı seçenektir ve en az depolama alanını kaplar."),
         "gasFee": m49,
         "gasLimit": MessageLookupByLibrary.simpleMessage("Gaz ücreti limiti"),
         "gasNotActive": m50,
@@ -832,19 +849,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "internetRefreshButton": MessageLookupByLibrary.simpleMessage("Yenile"),
         "internetRestored": MessageLookupByLibrary.simpleMessage(
             "İnternet Bağlantısı Yeniden Sağlandı"),
+        "invalidCoinAddress": m54,
         "invalidSwap":
             MessageLookupByLibrary.simpleMessage("Takasa devam edilemiyor"),
         "invalidSwapDetailsLink":
             MessageLookupByLibrary.simpleMessage("Detaylar"),
-        "isUnavailable": m54,
+        "isUnavailable": m55,
         "japaneseLanguage": MessageLookupByLibrary.simpleMessage("Japonca"),
         "koreanLanguage": MessageLookupByLibrary.simpleMessage("Koreli"),
         "language": MessageLookupByLibrary.simpleMessage("Diller"),
         "latestTxs": MessageLookupByLibrary.simpleMessage("Son İşlemler"),
         "legalTitle": MessageLookupByLibrary.simpleMessage("Yasal"),
         "less": MessageLookupByLibrary.simpleMessage("Daha az"),
-        "lessThanCaution": m55,
-        "limitError": m56,
+        "lessThanCaution": m56,
+        "limitError": m57,
         "loading": MessageLookupByLibrary.simpleMessage("Yükleniyor.."),
         "loadingOrderbook":
             MessageLookupByLibrary.simpleMessage("Emir defteri yükleniyor..."),
@@ -916,11 +934,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "milliseconds": MessageLookupByLibrary.simpleMessage("ms"),
         "min": MessageLookupByLibrary.simpleMessage("DK"),
         "minOrder": MessageLookupByLibrary.simpleMessage("En düşük emir hacmi"),
-        "minValue": m57,
-        "minValueBuy": m58,
-        "minValueOrder": m59,
-        "minValueSell": m60,
-        "minVolumeInput": m61,
+        "minValue": m58,
+        "minValueBuy": m59,
+        "minValueOrder": m60,
+        "minValueSell": m61,
+        "minVolumeInput": m62,
         "minVolumeIsTDH": MessageLookupByLibrary.simpleMessage(
             "Satış miktarından düşük olmalı"),
         "minVolumeTitle":
@@ -929,17 +947,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimizingWillTerminate": MessageLookupByLibrary.simpleMessage(
             "Uyarı: iOS\'ta uygulamanın simge durumuna küçültülmesi etkinleştirme sürecini sonlandıracaktır."),
         "minutes": MessageLookupByLibrary.simpleMessage("dk"),
-        "mobileDataWarning": m62,
+        "mobileDataWarning": m63,
         "moreInfo": MessageLookupByLibrary.simpleMessage("Daha fazla bilgi"),
         "moreTab": MessageLookupByLibrary.simpleMessage("Daha Fazla"),
-        "multiActivateGas": m63,
+        "multiActivateGas": m64,
         "multiBaseAmtPlaceholder":
             MessageLookupByLibrary.simpleMessage("Miktar"),
         "multiBasePlaceholder": MessageLookupByLibrary.simpleMessage("Koin"),
         "multiBaseSelectTitle": MessageLookupByLibrary.simpleMessage("Sat"),
         "multiConfirmCancel": MessageLookupByLibrary.simpleMessage("İptal"),
         "multiConfirmConfirm": MessageLookupByLibrary.simpleMessage("Onayla"),
-        "multiConfirmTitle": m64,
+        "multiConfirmTitle": m65,
         "multiCreate": MessageLookupByLibrary.simpleMessage("Oluştur"),
         "multiCreateOrder": MessageLookupByLibrary.simpleMessage("Emir"),
         "multiCreateOrders": MessageLookupByLibrary.simpleMessage("Emirler"),
@@ -955,8 +973,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Geçersiz miktar"),
         "multiInvalidSellAmt":
             MessageLookupByLibrary.simpleMessage("Geçersiz satış miktarı"),
-        "multiLowGas": m65,
-        "multiLowerThanFee": m66,
+        "multiLowGas": m66,
+        "multiLowerThanFee": m67,
         "multiMaxSellAmt":
             MessageLookupByLibrary.simpleMessage("En fazla satış miktarı:"),
         "multiMinReceiveAmt":
@@ -990,7 +1008,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bir öğe seçilmedi"),
         "noMatchingOrders":
             MessageLookupByLibrary.simpleMessage("Eşleşen sipariş bulunamadı"),
-        "noOrder": m67,
+        "noOrder": m68,
         "noOrderAvailable": MessageLookupByLibrary.simpleMessage(
             "Emir oluşturmak için tıklayın"),
         "noOrders": MessageLookupByLibrary.simpleMessage(
@@ -1006,7 +1024,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nonNumericInput":
             MessageLookupByLibrary.simpleMessage("Girilen değer rakam olmalı"),
         "none": MessageLookupByLibrary.simpleMessage("Hiçbiri"),
-        "notEnoughGas": m68,
+        "notEnoughGas": m69,
         "notEnoughtBalanceForFee": MessageLookupByLibrary.simpleMessage(
             "Takas masrafını karşılayacak bakiye bulunmuyor - daha küçük tutar deneyin"),
         "noteOnOrder": MessageLookupByLibrary.simpleMessage(
@@ -1015,23 +1033,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "noteTitle": MessageLookupByLibrary.simpleMessage("Not"),
         "nothingFound":
             MessageLookupByLibrary.simpleMessage("Bir şey bulunamadı"),
-        "notifSwapCompletedText": m69,
+        "notifSwapCompletedText": m70,
         "notifSwapCompletedTitle":
             MessageLookupByLibrary.simpleMessage("Takas tamamlandı"),
-        "notifSwapFailedText": m70,
+        "notifSwapFailedText": m71,
         "notifSwapFailedTitle":
             MessageLookupByLibrary.simpleMessage("Takas başarısız"),
-        "notifSwapStartedText": m71,
+        "notifSwapStartedText": m72,
         "notifSwapStartedTitle":
             MessageLookupByLibrary.simpleMessage("Yeni takas başladı"),
         "notifSwapStatusTitle":
             MessageLookupByLibrary.simpleMessage("Takas durumu değişti"),
-        "notifSwapTimeoutText": m72,
+        "notifSwapTimeoutText": m73,
         "notifSwapTimeoutTitle":
             MessageLookupByLibrary.simpleMessage("Takas zaman aşımına uğradı"),
-        "notifTxText": m73,
+        "notifTxText": m74,
         "notifTxTitle": MessageLookupByLibrary.simpleMessage("Gelen işlem"),
-        "numberAssets": m74,
+        "numberAssets": m75,
         "officialPressRelease":
             MessageLookupByLibrary.simpleMessage("Resmi basın açıklaması"),
         "okButton": MessageLookupByLibrary.simpleMessage("Tamam"),
@@ -1042,15 +1060,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMessage": MessageLookupByLibrary.simpleMessage("Hata Mesajını Aç"),
         "orderBookLess": MessageLookupByLibrary.simpleMessage("Az"),
         "orderBookMore": MessageLookupByLibrary.simpleMessage("Daha"),
-        "orderCancel": m75,
+        "orderCancel": m76,
         "orderCreated":
             MessageLookupByLibrary.simpleMessage("Emir oluşturuldu"),
         "orderCreatedInfo":
             MessageLookupByLibrary.simpleMessage("Emir başarıyla oluşturuldu"),
         "orderDetailsAddress": MessageLookupByLibrary.simpleMessage("Adres"),
         "orderDetailsCancel": MessageLookupByLibrary.simpleMessage("İptal"),
-        "orderDetailsExpedient": m76,
-        "orderDetailsExpensive": m77,
+        "orderDetailsExpedient": m77,
+        "orderDetailsExpensive": m78,
         "orderDetailsFor": MessageLookupByLibrary.simpleMessage("için"),
         "orderDetailsIdentical":
             MessageLookupByLibrary.simpleMessage("CEX\'de"),
@@ -1063,7 +1081,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Ayrıntıları tek dokunuşla açın ve Uzun dokunuşla sipariş et\'i seçin"),
         "orderDetailsSpend": MessageLookupByLibrary.simpleMessage("Harca"),
         "orderDetailsTitle": MessageLookupByLibrary.simpleMessage("Detaylar"),
-        "orderFilled": m78,
+        "orderFilled": m79,
         "orderMatched": MessageLookupByLibrary.simpleMessage("Emir eşleşti"),
         "orderMatching": MessageLookupByLibrary.simpleMessage("Emir eşleşiyor"),
         "orderTypePartial": MessageLookupByLibrary.simpleMessage("Emir"),
@@ -1072,9 +1090,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders": MessageLookupByLibrary.simpleMessage("emirler"),
         "ordersActive": MessageLookupByLibrary.simpleMessage("Açık"),
         "ordersHistory": MessageLookupByLibrary.simpleMessage("Geçmiş"),
-        "ordersTableAmount": m79,
-        "ordersTablePrice": m80,
-        "ordersTableTotal": m81,
+        "ordersTableAmount": m80,
+        "ordersTablePrice": m81,
+        "ordersTableTotal": m82,
         "overwrite": MessageLookupByLibrary.simpleMessage("Üstüne yaz"),
         "ownOrder":
             MessageLookupByLibrary.simpleMessage("Bu sizin kendi emriniz !"),
@@ -1085,6 +1103,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidWith": MessageLookupByLibrary.simpleMessage("Ödendi"),
         "passwordRequirement": MessageLookupByLibrary.simpleMessage(
             "Parolanız en az 12 karakterden oluşurken en az; bir büyük harf, bir küçük harf ve bir sembol içermelidir."),
+        "pastTransactionsFromDate": MessageLookupByLibrary.simpleMessage(
+            "Cüzdanınız, belirtilen tarihten sonra yaptığınız geçmiş işlemleri gösterecektir."),
         "paymentUriDetailsAccept": MessageLookupByLibrary.simpleMessage("Öde"),
         "paymentUriDetailsAcceptQuestion": MessageLookupByLibrary.simpleMessage(
             "Bu işlemi kabul ediyor musunuz ?"),
@@ -1097,7 +1117,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentUriDetailsDeny": MessageLookupByLibrary.simpleMessage("İptal"),
         "paymentUriDetailsTitle":
             MessageLookupByLibrary.simpleMessage("Ödeme Talep Edildi"),
-        "paymentUriInactiveCoin": m82,
+        "paymentUriInactiveCoin": m83,
         "placeOrder": MessageLookupByLibrary.simpleMessage("Emrinizi girin"),
         "pleaseAddCoin":
             MessageLookupByLibrary.simpleMessage("Lütfen bir Koin Ekleyiniz"),
@@ -1122,19 +1142,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("QR Kod Tarayıcı"),
         "question_1": MessageLookupByLibrary.simpleMessage(
             "Gizli kelimelerimi kaydediyor musunuz ?"),
-        "question_10": m83,
-        "question_2": m84,
+        "question_10": m84,
+        "question_2": m85,
         "question_3": MessageLookupByLibrary.simpleMessage(
             "Takas işlemleri ne kadar sürmektedir ?"),
         "question_4": MessageLookupByLibrary.simpleMessage(
             "Takas işlemi boyunca çevrimiçi olmam mı gerekir ?"),
-        "question_5": m85,
+        "question_5": m86,
         "question_6": MessageLookupByLibrary.simpleMessage(
             "Kullanıcılara destek sunuyor musunuz ?"),
         "question_7": MessageLookupByLibrary.simpleMessage(
             "Uygulamanın kullanılamadığı ülkeler var mı ?"),
-        "question_8": m86,
-        "question_9": m87,
+        "question_8": m87,
+        "question_9": m88,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
             "Bu yeni bir dönem! \'AtomicDEX\' olan ismimizi resmi olarak \'Komodo Wallet\' olarak değiştirdik."),
         "receive": MessageLookupByLibrary.simpleMessage("AL"),
@@ -1173,7 +1193,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsReadMore": MessageLookupByLibrary.simpleMessage(
             "KMD aktif kullanıcı ödülleri hakkında daha fazla bilgi edinin"),
         "rewardsReceive": MessageLookupByLibrary.simpleMessage("Al"),
-        "rewardsSuccess": m88,
+        "rewardsSuccess": m89,
         "rewardsTableFiat":
             MessageLookupByLibrary.simpleMessage("İtibari para"),
         "rewardsTableRewards":
@@ -1184,9 +1204,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ödül bilgisi:"),
         "rewardsTableUXTO":
             MessageLookupByLibrary.simpleMessage("UTXO amt,\nKMD"),
-        "rewardsTimeDays": m89,
-        "rewardsTimeHours": m90,
-        "rewardsTimeMin": m91,
+        "rewardsTimeDays": m90,
+        "rewardsTimeHours": m91,
+        "rewardsTimeMin": m92,
         "rewardsTitle": MessageLookupByLibrary.simpleMessage("Ödül bilgisi"),
         "russianLanguage": MessageLookupByLibrary.simpleMessage("Rusça"),
         "saveMerged":
@@ -1239,7 +1259,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Kayan Yazı Ara"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),
         "security": MessageLookupByLibrary.simpleMessage("Güvenlik"),
-        "seeOrders": m92,
+        "seeOrders": m93,
         "seeTxHistory":
             MessageLookupByLibrary.simpleMessage("İşlem Geçmişini Görüntüle"),
         "seedPhrase": MessageLookupByLibrary.simpleMessage("Gizli Kelimeler"),
@@ -1254,6 +1274,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "ALMAK istediğiniz koini seçin"),
         "selectCoinToSell": MessageLookupByLibrary.simpleMessage(
             "SATMAK istediğiniz koini seçin"),
+        "selectDate": MessageLookupByLibrary.simpleMessage("Bir Tarih Seçin"),
         "selectFileImport": MessageLookupByLibrary.simpleMessage("Dosya seç"),
         "selectLanguage": MessageLookupByLibrary.simpleMessage("Dili Seç"),
         "selectPaymentMethod":
@@ -1276,12 +1297,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingLanguageTitle": MessageLookupByLibrary.simpleMessage("Diller"),
         "settings": MessageLookupByLibrary.simpleMessage("Ayarlar"),
         "share": MessageLookupByLibrary.simpleMessage("Paylaş"),
-        "shareAddress": m93,
+        "shareAddress": m94,
+        "shouldScanPastTransaction": m95,
         "showAddress": MessageLookupByLibrary.simpleMessage("Adresi Göster"),
         "showDetails": MessageLookupByLibrary.simpleMessage("Detayları Göster"),
         "showMyOrders":
             MessageLookupByLibrary.simpleMessage("EMİRLERİMİ GÖSTER"),
-        "showingOrders": m94,
+        "showingOrders": m96,
         "signInWithPassword":
             MessageLookupByLibrary.simpleMessage("Parola ile giriş yap"),
         "signInWithSeedPhrase": MessageLookupByLibrary.simpleMessage(
@@ -1289,24 +1311,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "simple": MessageLookupByLibrary.simpleMessage("Basit"),
         "simpleTradeActivate":
             MessageLookupByLibrary.simpleMessage("Aktifleştir"),
-        "simpleTradeBuyHint": m95,
+        "simpleTradeBuyHint": m97,
         "simpleTradeBuyTitle": MessageLookupByLibrary.simpleMessage("Satın al"),
         "simpleTradeClose": MessageLookupByLibrary.simpleMessage("Kapat"),
-        "simpleTradeMaxActiveCoins": m96,
-        "simpleTradeNotActive": m97,
+        "simpleTradeMaxActiveCoins": m98,
+        "simpleTradeNotActive": m99,
         "simpleTradeRecieve": MessageLookupByLibrary.simpleMessage("Al"),
-        "simpleTradeSellHint": m98,
+        "simpleTradeSellHint": m100,
         "simpleTradeSellTitle": MessageLookupByLibrary.simpleMessage("Sat"),
         "simpleTradeSend": MessageLookupByLibrary.simpleMessage("Gönder"),
         "simpleTradeShowLess":
             MessageLookupByLibrary.simpleMessage("Daha az göster"),
         "simpleTradeShowMore":
             MessageLookupByLibrary.simpleMessage("Daha fazla göster"),
-        "simpleTradeUnableActivate": m99,
+        "simpleTradeUnableActivate": m101,
         "skip": MessageLookupByLibrary.simpleMessage("Geç"),
         "snackbarDismiss": MessageLookupByLibrary.simpleMessage("Kapat"),
-        "soundCantPlayThatMsg": m100,
-        "soundPlayedWhen": m101,
+        "soundCantPlayThatMsg": m102,
+        "soundPlayedWhen": m103,
         "soundSettingsLink": MessageLookupByLibrary.simpleMessage("Ses"),
         "soundSettingsTitle":
             MessageLookupByLibrary.simpleMessage("Ses seçenekleri"),
@@ -1318,20 +1340,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "soundsNote": MessageLookupByLibrary.simpleMessage(
             "Kendi özelleştirilmiş sesli bildirimlerinizi uygulamanın ayarlar bölümünden etkinleştirebileceğinizi unutmayın."),
         "spanishLanguage": MessageLookupByLibrary.simpleMessage("İspanyolca"),
+        "startDate": MessageLookupByLibrary.simpleMessage("Başlangıç tarihi"),
         "startSwap": MessageLookupByLibrary.simpleMessage("Takası Başlat"),
         "step": MessageLookupByLibrary.simpleMessage("Adım"),
         "success": MessageLookupByLibrary.simpleMessage("Başarılı !"),
         "support": MessageLookupByLibrary.simpleMessage("Destek"),
-        "supportLinksDesc": m102,
+        "supportLinksDesc": m104,
         "swap": MessageLookupByLibrary.simpleMessage("takas"),
         "swapCurrent": MessageLookupByLibrary.simpleMessage("Mevcut"),
         "swapDetailTitle":
             MessageLookupByLibrary.simpleMessage("TAKAS DETAYLARINI ONAYLA"),
         "swapEstimated": MessageLookupByLibrary.simpleMessage("Yaklaşık"),
         "swapFailed": MessageLookupByLibrary.simpleMessage("Takas başarısız"),
-        "swapGasActivate": m103,
-        "swapGasAmount": m104,
-        "swapGasAmountRequired": m105,
+        "swapGasActivate": m105,
+        "swapGasAmount": m106,
+        "swapGasAmountRequired": m107,
         "swapOngoing":
             MessageLookupByLibrary.simpleMessage("Takas devam ediyor"),
         "swapProgress": MessageLookupByLibrary.simpleMessage("İşlem detayları"),
@@ -1340,6 +1363,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "swapTotal": MessageLookupByLibrary.simpleMessage("Toplam"),
         "swapUUID": MessageLookupByLibrary.simpleMessage("Takas UUID"),
         "switchTheme": MessageLookupByLibrary.simpleMessage("Temayı Değiştir"),
+        "syncFromDate": MessageLookupByLibrary.simpleMessage(
+            "Belirtilen tarihten itibaren senkronizasyon"),
+        "syncFromSaplingActivation": MessageLookupByLibrary.simpleMessage(
+            "Fidan aktivasyonundan senkronizasyon"),
+        "syncNewTransactions": MessageLookupByLibrary.simpleMessage(
+            "Yeni işlemleri senkronize et"),
+        "syncTransactionsQuestion": m108,
         "tagAVX20": MessageLookupByLibrary.simpleMessage("AVX20"),
         "tagBEP20": MessageLookupByLibrary.simpleMessage("BEP20"),
         "tagERC20": MessageLookupByLibrary.simpleMessage("ERC20"),
@@ -1399,25 +1429,25 @@ class MessageLookup extends MessageLookupByLibrary {
         "txLimitExceeded": MessageLookupByLibrary.simpleMessage(
             "Çok fazla istek.\nİşlem geçmişi istekleri sınırı aşıldı.\nLütfen daha sonra tekrar deneyiniz."),
         "txNotConfirmed": MessageLookupByLibrary.simpleMessage("onaylanmamış"),
-        "txleft": m106,
+        "txleft": m109,
         "ukrainianLanguage": MessageLookupByLibrary.simpleMessage("Ukrayna"),
         "unlock": MessageLookupByLibrary.simpleMessage("kilidi aç"),
         "unlockFunds":
             MessageLookupByLibrary.simpleMessage("Fonların Kilidini Açın"),
-        "unlockSuccess": m107,
+        "unlockSuccess": m110,
         "unspendable": MessageLookupByLibrary.simpleMessage("harcanamaz"),
         "updatesAvailable":
             MessageLookupByLibrary.simpleMessage("Yeni sürüm mevcut"),
         "updatesChecking": MessageLookupByLibrary.simpleMessage(
             "Güncellemeler kontrol ediliyor.."),
-        "updatesCurrentVersion": m108,
+        "updatesCurrentVersion": m111,
         "updatesNotifAvailable": MessageLookupByLibrary.simpleMessage(
             "Yeni sürüm mevcut. Lütfen güncelleyiniz."),
-        "updatesNotifAvailableVersion": m109,
+        "updatesNotifAvailableVersion": m112,
         "updatesNotifTitle":
             MessageLookupByLibrary.simpleMessage("Güncelleme mevcut"),
         "updatesSkip": MessageLookupByLibrary.simpleMessage("Şimdilik atla"),
-        "updatesTitle": m110,
+        "updatesTitle": m113,
         "updatesUpToDate":
             MessageLookupByLibrary.simpleMessage("Son sürüm yüklü"),
         "updatesUpdate": MessageLookupByLibrary.simpleMessage("Güncelle"),
@@ -1443,9 +1473,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "warningOkBtn": MessageLookupByLibrary.simpleMessage("Tamam"),
         "warningShareLogs": MessageLookupByLibrary.simpleMessage(
             "Dikkat ! Bu kayıt defteri özel durumlarda, başarısız takaslardan kalan koinlerin harcanmasına sebep olabilecek hassas bilgiler içerebilir."),
-        "weFailedTo": m111,
-        "weFailedToActivate": m112,
-        "welcomeInfo": m113,
+        "weFailedTo": m114,
+        "weFailedToActivate": m115,
+        "welcomeInfo": m116,
         "welcomeLetSetUp":
             MessageLookupByLibrary.simpleMessage("HADİ AYARLAYALIM !"),
         "welcomeTitle": MessageLookupByLibrary.simpleMessage("HOŞ GELDİNİZ"),
@@ -1455,14 +1485,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "willTakeTime": MessageLookupByLibrary.simpleMessage(
             "Bu biraz zaman alacak ve uygulamanın ön planda tutulması gerekiyor.\nEtkinleştirme devam ederken uygulamayı sonlandırmak sorunlara yol açabilir."),
         "withdraw": MessageLookupByLibrary.simpleMessage("Çek"),
-        "withdrawCameraAccessText": m114,
+        "withdrawCameraAccessText": m117,
         "withdrawCameraAccessTitle":
             MessageLookupByLibrary.simpleMessage("Erişim Engellendi"),
         "withdrawConfirm":
             MessageLookupByLibrary.simpleMessage("Çekimi Onayla"),
         "withdrawConfirmError": MessageLookupByLibrary.simpleMessage(
             "Bir hata oluştu. Lütfen daha sonra tekrar deneyiniz."),
-        "withdrawValue": m115,
+        "withdrawValue": m118,
         "wrongCoinSpan1":
             MessageLookupByLibrary.simpleMessage("QR kodlu bir ödemeyi"),
         "wrongCoinSpan2":
@@ -1484,7 +1514,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "yeni siparişlerin eşleşebileceği bir siparişiniz var"),
         "youAreSending":
             MessageLookupByLibrary.simpleMessage("Gönderiyorsunuz:"),
-        "youWillReceiveClaim": m116,
+        "youWillReceiveClaim": m119,
         "youWillReceived": MessageLookupByLibrary.simpleMessage("Alacağınız:"),
         "yourWallet": MessageLookupByLibrary.simpleMessage("Cüzdanınız")
       };

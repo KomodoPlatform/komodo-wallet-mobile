@@ -155,151 +155,157 @@ class MessageLookup extends MessageLookupByLibrary {
   static m53(abbr) =>
       "${abbr} недостаточно баланса чтобы оплатить торговую комиссию";
 
-  static m54(coinAbbr) => "${coinAbbr} недоступен :(";
+  static m54(coin) => "Неверный адрес ${coin}";
 
-  static m55(coinName) =>
+  static m55(coinAbbr) => "${coinAbbr} недоступен :(";
+
+  static m56(coinName) =>
       "❗Осторожно! Объем торгов на рынке ${coinName} за 24 часа составляет менее 10 000 долларов!";
 
-  static m56(value) => "Лимит должен быть до ${value}";
-
-  static m57(coinName, number) =>
-      "Минимальная сумма продажи составляет ${number} ${coinName}.";
+  static m57(value) => "Лимит должен быть до ${value}";
 
   static m58(coinName, number) =>
+      "Минимальная сумма продажи составляет ${number} ${coinName}.";
+
+  static m59(coinName, number) =>
       "Минимальная сумма покупки: ${number} ${coinName}";
 
-  static m59(buyCoin, buyAmount, sellCoin, sellAmount) =>
+  static m60(buyCoin, buyAmount, sellCoin, sellAmount) =>
       "Минимальная сумма ордера ${buyAmount} ${buyCoin}\n(${sellAmount} ${sellCoin})";
 
-  static m60(coinName, number) =>
+  static m61(coinName, number) =>
       "Минимальная сумма на продажу ${number} ${coinName}";
 
-  static m61(minValue, coin) => "Должно быть больше чем ${minValue} ${coin}";
+  static m62(minValue, coin) => "Должно быть больше чем ${minValue} ${coin}";
 
-  static m62(appName) =>
+  static m63(appName) =>
       "Обратите внимание, что теперь вы используете сотовые данные, а участие в P2P-сети ${appName} потребляет интернет-трафик. Лучше использовать сеть Wi-Fi, если ваш тарифный план сотовой связи является дорогостоящим.";
 
-  static m63(coin) => "Активируйте ${coin} и пополните баланс";
+  static m64(coin) => "Активируйте ${coin} и пополните баланс";
 
-  static m64(number) => "Создать ${number} ордер(ов):";
+  static m65(number) => "Создать ${number} ордер(ов):";
 
-  static m65(coin) => "${coin} баланс очень низкий";
+  static m66(coin) => "${coin} баланс очень низкий";
 
-  static m66(coin, fee) =>
+  static m67(coin, fee) =>
       "Недостаточно ${coin} чтобы оплатить налог. МИН баланс ${fee} ${coin}";
 
-  static m67(coinName) => "Пожалуйста, введите сумму ${coinName}.";
+  static m68(coinName) => "Пожалуйста, введите сумму ${coinName}.";
 
-  static m68(coin) => "Не достаточно ${coin} для транзакции!";
+  static m69(coin) => "Не достаточно ${coin} для транзакции!";
 
-  static m69(sell, buy) => "Своп ${sell}/${buy} успешно завершен";
+  static m70(sell, buy) => "Своп ${sell}/${buy} успешно завершен";
 
-  static m70(sell, buy) => "Своп ${sell}/${buy} не прошел";
+  static m71(sell, buy) => "Своп ${sell}/${buy} не прошел";
 
-  static m71(sell, buy) => "Своп ${sell}/${buy} начат";
+  static m72(sell, buy) => "Своп ${sell}/${buy} начат";
 
-  static m72(sell, buy) => "Превышен тайм-аут свопа ${sell}/${buy}";
+  static m73(sell, buy) => "Превышен тайм-аут свопа ${sell}/${buy}";
 
-  static m73(coin) => "Вы получили ${coin} транзакцию";
+  static m74(coin) => "Вы получили ${coin} транзакцию";
 
-  static m74(assets) => "${assets} Активов";
+  static m75(assets) => "${assets} Активов";
 
-  static m75(coin) => "Все ${coin} ордеры будут отменены.";
+  static m76(coin) => "Все ${coin} ордеры будут отменены.";
 
-  static m76(delta) => "На -${delta}% ниже цен CEX";
+  static m77(delta) => "На -${delta}% ниже цен CEX";
 
-  static m77(delta) => "На +${delta}% выше цен CEX";
+  static m78(delta) => "На +${delta}% выше цен CEX";
 
-  static m78(fill) => "${fill}% заполнено";
+  static m79(fill) => "${fill}% заполнено";
 
-  static m79(coin) => "Сумма (${coin})";
+  static m80(coin) => "Сумма (${coin})";
 
-  static m80(coin) => "Цена (${coin})";
+  static m81(coin) => "Цена (${coin})";
 
-  static m81(coin) => "Всего (${coin})";
+  static m82(coin) => "Всего (${coin})";
 
-  static m82(abbr) =>
+  static m83(abbr) =>
       "${abbr} не активен. Пожалуйста активируйте и попробуйте снова.";
 
-  static m83(appName) => "На каких устройствах я могу использовать ${appName}?";
+  static m84(appName) => "На каких устройствах я могу использовать ${appName}?";
 
-  static m84(appName) =>
+  static m85(appName) =>
       "Чем торговля на ${appName} отличается от торговли на других DEX?";
 
-  static m85(appName) => "Как рассчитываются комиссии на ${appName}?";
+  static m86(appName) => "Как рассчитываются комиссии на ${appName}?";
 
-  static m86(appName) => "Кто стоит за ${appName}?";
+  static m87(appName) => "Кто стоит за ${appName}?";
 
-  static m87(appName) =>
+  static m88(appName) =>
       "Можно ли разработать собственную white-label биржу на технологии ${appName}?";
 
-  static m88(amount) => "Получено ${amount} KMD.";
+  static m89(amount) => "Получено ${amount} KMD.";
 
-  static m89(dd) => "${dd} дней}";
+  static m90(dd) => "${dd} дней}";
 
-  static m90(hh, minutes) => "${hh}ч ${minutes}мин";
+  static m91(hh, minutes) => "${hh}ч ${minutes}мин";
 
-  static m91(mm) => "мин ${mm}";
+  static m92(mm) => "мин ${mm}";
 
-  static m92(amount) => "Нажмите, чтобы увидеть ${amount} ордеров";
+  static m93(amount) => "Нажмите, чтобы увидеть ${amount} ордеров";
 
-  static m93(coinName, address) => "Мой ${coinName} адрес:\n${address}";
+  static m94(coinName, address) => "Мой ${coinName} адрес:\n${address}";
 
-  static m94(count, maxCount) => "Показано ${count} из ${maxCount} заказов.";
+  static m95(coin) => "Сканировать прошлые транзакции с ${coin}?";
 
-  static m95(coin) => "Пожалуйста введите сумму ${coin} для покупки";
+  static m96(count, maxCount) => "Показано ${count} из ${maxCount} заказов.";
 
-  static m96(maxCoins) =>
+  static m97(coin) => "Пожалуйста введите сумму ${coin} для покупки";
+
+  static m98(maxCoins) =>
       "Максимальное количество активных монет: ${maxCoins}. Пожалуйста деактивируйте некоторые из них.";
 
-  static m97(coin) => "${coin} не активна";
+  static m99(coin) => "${coin} не активна";
 
-  static m98(coin) => "Пожалуйста введите сумму ${coin} для продажи";
+  static m100(coin) => "Пожалуйста введите сумму ${coin} для продажи";
 
-  static m99(coin) => "Не удалось активировать ${coin}";
+  static m101(coin) => "Не удалось активировать ${coin}";
 
-  static m100(description) =>
+  static m102(description) =>
       "Выберите файл в формате mp3 или wav. Воспроизводится, когда ${description}.";
 
-  static m101(description) => "Воспроизводится, когда ${description}";
+  static m103(description) => "Воспроизводится, когда ${description}";
 
-  static m102(appName) =>
+  static m104(appName) =>
       "Если у вас есть какие-либо вопросы или вы считаете, что обнаружили техническую проблему с приложением ${appName}, вы можете сообщить об этом и получить поддержку от нашей команды.";
 
-  static m103(coin) =>
+  static m105(coin) =>
       "Пожалуйста сначала активируйте ${coin} и пополните баланс";
 
-  static m104(coin) =>
+  static m106(coin) =>
       "Баланс ${coin} недостаточен для оплаты комиссии за транзакцию.";
 
-  static m105(coin, amount) =>
+  static m107(coin, amount) =>
       "Баланс ${coin} недостаточен для оплаты комиссии за транзакцию. ${coin} ${amount} требуется.";
 
-  static m106(left) => "Осталось транзакций: ${left}";
+  static m108(name) => "Какие транзакции ${name} вы хотите синхронизировать?";
 
-  static m107(amnt, hash) =>
+  static m109(left) => "Осталось транзакций: ${left}";
+
+  static m110(amnt, hash) =>
       "Успешно разблокировано ${amnt} средств - TX: ${hash}";
 
-  static m108(version) => "Установлена версия ${version}";
+  static m111(version) => "Установлена версия ${version}";
 
-  static m109(version) => "Доступна версия ${version}. Пожалуйста, обновитесь.";
+  static m112(version) => "Доступна версия ${version}. Пожалуйста, обновитесь.";
 
-  static m110(appName) => "Обновление ${appName}";
+  static m113(appName) => "Обновление ${appName}";
 
-  static m111(coinAbbr) => "Ошибка активации ${coinAbbr}";
+  static m114(coinAbbr) => "Ошибка активации ${coinAbbr}";
 
-  static m112(coinAbbr) =>
+  static m115(coinAbbr) =>
       "Ошибка активации ${coinAbbr}\nПожалуйста перезапустите приложение и попробуйте снова";
 
-  static m113(appName) =>
+  static m116(appName) =>
       "${appName} mobile - это мульти-монетный кошелек с функциональностью DEX третьего поколения и многим другим.";
 
-  static m114(appName) =>
+  static m117(appName) =>
       "Ранее вы запретили ${appName} доступ к камере.\nВручную измените разрешения для камеры в настройках телефона, чтобы продолжить сканирование QR-кода.";
 
-  static m115(amount, coinName) => "ВЫВЕСТИ ${amount} ${coinName}";
+  static m118(amount, coinName) => "ВЫВЕСТИ ${amount} ${coinName}";
 
-  static m116(amount, coin) => "Вы получите ${amount} ${coin}";
+  static m119(amount, coin) => "Вы получите ${amount} ${coin}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -345,6 +351,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressSend": MessageLookupByLibrary.simpleMessage("Адрес получателя"),
         "advanced": MessageLookupByLibrary.simpleMessage("Расширенные"),
         "all": MessageLookupByLibrary.simpleMessage("Все"),
+        "allPastTransactions": MessageLookupByLibrary.simpleMessage(
+            "Ваш кошелек покажет все прошлые транзакции. Это потребует значительного объема памяти и времени, поскольку все блоки будут загружены и отсканированы."),
         "allowCustomSeed": MessageLookupByLibrary.simpleMessage(
             "Разрешить произвольный seed-ключ"),
         "alreadyExists": MessageLookupByLibrary.simpleMessage("Уже существует"),
@@ -418,6 +426,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "camouflageSetup": MessageLookupByLibrary.simpleMessage(
             "Установить маскировочный PIN"),
         "cancel": MessageLookupByLibrary.simpleMessage("отменить"),
+        "cancelActivation":
+            MessageLookupByLibrary.simpleMessage("Отменить активацию"),
+        "cancelActivationQuestion": MessageLookupByLibrary.simpleMessage(
+            "Вы уверены, что хотите отменить активацию?"),
         "cancelButton": MessageLookupByLibrary.simpleMessage("отменить"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("Отменить Ордер"),
         "candleChartError": MessageLookupByLibrary.simpleMessage(
@@ -463,6 +475,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "closePreview":
             MessageLookupByLibrary.simpleMessage("Закрыть предпросмотр"),
         "code": MessageLookupByLibrary.simpleMessage("Код:"),
+        "cofirmCancelActivation": MessageLookupByLibrary.simpleMessage(
+            "Вы уверены, что хотите отменить активацию?"),
         "coinSelectClear": MessageLookupByLibrary.simpleMessage("Очистить"),
         "coinSelectNotFound":
             MessageLookupByLibrary.simpleMessage("Нет активных монет"),
@@ -759,6 +773,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "foundQrCode": MessageLookupByLibrary.simpleMessage("Найден QR-код"),
         "frenchLanguage": MessageLookupByLibrary.simpleMessage("Французский"),
         "from": MessageLookupByLibrary.simpleMessage("Из"),
+        "futureTransactions": MessageLookupByLibrary.simpleMessage(
+            "Мы будем синхронизировать будущие транзакции, совершенные после активации, связанные с вашим открытым ключом. Это самый быстрый вариант и занимает меньше всего места."),
         "gasFee": m49,
         "gasLimit": MessageLookupByLibrary.simpleMessage("Лимит газа"),
         "gasNotActive": m50,
@@ -841,11 +857,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Обновить"),
         "internetRestored": MessageLookupByLibrary.simpleMessage(
             "Соединение с интернетом восстановлено"),
+        "invalidCoinAddress": m54,
         "invalidSwap":
             MessageLookupByLibrary.simpleMessage("Невозможно продолжить своп"),
         "invalidSwapDetailsLink":
             MessageLookupByLibrary.simpleMessage("Подробнее"),
-        "isUnavailable": m54,
+        "isUnavailable": m55,
         "japaneseLanguage": MessageLookupByLibrary.simpleMessage("Японский"),
         "koreanLanguage": MessageLookupByLibrary.simpleMessage("Корейский"),
         "language": MessageLookupByLibrary.simpleMessage("Язык"),
@@ -853,8 +870,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Последние Транзакции"),
         "legalTitle": MessageLookupByLibrary.simpleMessage("Легальные аспекты"),
         "less": MessageLookupByLibrary.simpleMessage("Меньше"),
-        "lessThanCaution": m55,
-        "limitError": m56,
+        "lessThanCaution": m56,
+        "limitError": m57,
         "loading": MessageLookupByLibrary.simpleMessage("Загрузка..."),
         "loadingOrderbook":
             MessageLookupByLibrary.simpleMessage("Загрузка книги ордеров..."),
@@ -926,11 +943,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "min": MessageLookupByLibrary.simpleMessage("МИН"),
         "minOrder":
             MessageLookupByLibrary.simpleMessage("Минимальные объем ордера"),
-        "minValue": m57,
-        "minValueBuy": m58,
-        "minValueOrder": m59,
-        "minValueSell": m60,
-        "minVolumeInput": m61,
+        "minValue": m58,
+        "minValueBuy": m59,
+        "minValueOrder": m60,
+        "minValueSell": m61,
+        "minVolumeInput": m62,
         "minVolumeIsTDH": MessageLookupByLibrary.simpleMessage(
             "Должно быть меньше чем сумма продажи"),
         "minVolumeTitle": MessageLookupByLibrary.simpleMessage(
@@ -940,10 +957,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimizingWillTerminate": MessageLookupByLibrary.simpleMessage(
             "Предупреждение: сворачивание приложения на iOS приведет к прекращению процесса активации."),
         "minutes": MessageLookupByLibrary.simpleMessage("мин"),
-        "mobileDataWarning": m62,
+        "mobileDataWarning": m63,
         "moreInfo": MessageLookupByLibrary.simpleMessage("Больше информации"),
         "moreTab": MessageLookupByLibrary.simpleMessage("Ещё"),
-        "multiActivateGas": m63,
+        "multiActivateGas": m64,
         "multiBaseAmtPlaceholder":
             MessageLookupByLibrary.simpleMessage("Сумма"),
         "multiBasePlaceholder": MessageLookupByLibrary.simpleMessage("Монета"),
@@ -951,7 +968,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "multiConfirmCancel": MessageLookupByLibrary.simpleMessage("Отменить"),
         "multiConfirmConfirm":
             MessageLookupByLibrary.simpleMessage("Подтвердить"),
-        "multiConfirmTitle": m64,
+        "multiConfirmTitle": m65,
         "multiCreate": MessageLookupByLibrary.simpleMessage("Создать"),
         "multiCreateOrder": MessageLookupByLibrary.simpleMessage("Ордер"),
         "multiCreateOrders": MessageLookupByLibrary.simpleMessage("Ордеры"),
@@ -966,8 +983,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Некорректная сумма"),
         "multiInvalidSellAmt":
             MessageLookupByLibrary.simpleMessage("Неверная сумма продажи"),
-        "multiLowGas": m65,
-        "multiLowerThanFee": m66,
+        "multiLowGas": m66,
+        "multiLowerThanFee": m67,
         "multiMaxSellAmt":
             MessageLookupByLibrary.simpleMessage("Макс сумма к продаже"),
         "multiMinReceiveAmt":
@@ -1002,7 +1019,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ничего не выбрано"),
         "noMatchingOrders": MessageLookupByLibrary.simpleMessage(
             "Совпадающих ордеров не найдено"),
-        "noOrder": m67,
+        "noOrder": m68,
         "noOrderAvailable": MessageLookupByLibrary.simpleMessage(
             "Нажмите, чтобы создать ордер"),
         "noOrders": MessageLookupByLibrary.simpleMessage(
@@ -1017,7 +1034,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nonNumericInput": MessageLookupByLibrary.simpleMessage(
             "Значение должно быть указано в цифрах"),
         "none": MessageLookupByLibrary.simpleMessage("Никто"),
-        "notEnoughGas": m68,
+        "notEnoughGas": m69,
         "notEnoughtBalanceForFee": MessageLookupByLibrary.simpleMessage(
             "Недостаточно баланса для комиссий - выполните сделку на меньшую сумму"),
         "noteOnOrder": MessageLookupByLibrary.simpleMessage(
@@ -1027,24 +1044,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "noteTitle": MessageLookupByLibrary.simpleMessage("Заметка"),
         "nothingFound":
             MessageLookupByLibrary.simpleMessage("Ничего не найдено"),
-        "notifSwapCompletedText": m69,
+        "notifSwapCompletedText": m70,
         "notifSwapCompletedTitle":
             MessageLookupByLibrary.simpleMessage("Своп завершен"),
-        "notifSwapFailedText": m70,
+        "notifSwapFailedText": m71,
         "notifSwapFailedTitle":
             MessageLookupByLibrary.simpleMessage("Своп не был завершен"),
-        "notifSwapStartedText": m71,
+        "notifSwapStartedText": m72,
         "notifSwapStartedTitle":
             MessageLookupByLibrary.simpleMessage("Новый своп начался"),
         "notifSwapStatusTitle":
             MessageLookupByLibrary.simpleMessage("Статус свопа изменен"),
-        "notifSwapTimeoutText": m72,
+        "notifSwapTimeoutText": m73,
         "notifSwapTimeoutTitle":
             MessageLookupByLibrary.simpleMessage("Превышен тайм-аут свопа"),
-        "notifTxText": m73,
+        "notifTxText": m74,
         "notifTxTitle":
             MessageLookupByLibrary.simpleMessage("Входящая транзакция"),
-        "numberAssets": m74,
+        "numberAssets": m75,
         "officialPressRelease":
             MessageLookupByLibrary.simpleMessage("Официальный пресс-релиз"),
         "okButton": MessageLookupByLibrary.simpleMessage("Ок"),
@@ -1056,14 +1073,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Открыть сообщение об ошибке"),
         "orderBookLess": MessageLookupByLibrary.simpleMessage("Меньше"),
         "orderBookMore": MessageLookupByLibrary.simpleMessage("Более"),
-        "orderCancel": m75,
+        "orderCancel": m76,
         "orderCreated": MessageLookupByLibrary.simpleMessage("Ордер создан"),
         "orderCreatedInfo":
             MessageLookupByLibrary.simpleMessage("Ордер успешно создан"),
         "orderDetailsAddress": MessageLookupByLibrary.simpleMessage("Адрес"),
         "orderDetailsCancel": MessageLookupByLibrary.simpleMessage("Отменить"),
-        "orderDetailsExpedient": m76,
-        "orderDetailsExpensive": m77,
+        "orderDetailsExpedient": m77,
+        "orderDetailsExpensive": m78,
         "orderDetailsFor": MessageLookupByLibrary.simpleMessage("на"),
         "orderDetailsIdentical":
             MessageLookupByLibrary.simpleMessage("Совпадает с СЕХ"),
@@ -1078,7 +1095,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "orderDetailsSpend": MessageLookupByLibrary.simpleMessage("Отправьте"),
         "orderDetailsTitle":
             MessageLookupByLibrary.simpleMessage("Подробности"),
-        "orderFilled": m78,
+        "orderFilled": m79,
         "orderMatched": MessageLookupByLibrary.simpleMessage("Сделка найдена"),
         "orderMatching":
             MessageLookupByLibrary.simpleMessage("Поиск сделки в процессе"),
@@ -1088,9 +1105,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders": MessageLookupByLibrary.simpleMessage("ордера"),
         "ordersActive": MessageLookupByLibrary.simpleMessage("Активные"),
         "ordersHistory": MessageLookupByLibrary.simpleMessage("История"),
-        "ordersTableAmount": m79,
-        "ordersTablePrice": m80,
-        "ordersTableTotal": m81,
+        "ordersTableAmount": m80,
+        "ordersTablePrice": m81,
+        "ordersTableTotal": m82,
         "overwrite": MessageLookupByLibrary.simpleMessage("Перезаписать"),
         "ownOrder": MessageLookupByLibrary.simpleMessage("Это ваш ордер!"),
         "paidFromBalance":
@@ -1100,6 +1117,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidWith": MessageLookupByLibrary.simpleMessage("Оплачено c"),
         "passwordRequirement": MessageLookupByLibrary.simpleMessage(
             "Пароль должен содержать не менее 12 символов, включая один строчный, один заглавный и один специальный символ."),
+        "pastTransactionsFromDate": MessageLookupByLibrary.simpleMessage(
+            "Ваш кошелек покажет ваши прошлые транзакции, совершенные после указанной даты."),
         "paymentUriDetailsAccept":
             MessageLookupByLibrary.simpleMessage("Оплата"),
         "paymentUriDetailsAcceptQuestion": MessageLookupByLibrary.simpleMessage(
@@ -1114,7 +1133,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Отмена:"),
         "paymentUriDetailsTitle":
             MessageLookupByLibrary.simpleMessage("Оплата запрошена"),
-        "paymentUriInactiveCoin": m82,
+        "paymentUriInactiveCoin": m83,
         "placeOrder": MessageLookupByLibrary.simpleMessage("Разместить ордер"),
         "pleaseAddCoin":
             MessageLookupByLibrary.simpleMessage("Пожалуйста добавьте монету"),
@@ -1138,19 +1157,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "qrCodeScanner": MessageLookupByLibrary.simpleMessage("Сканер QR-кода"),
         "question_1": MessageLookupByLibrary.simpleMessage(
             "Вы храните мои приватные ключи?"),
-        "question_10": m83,
-        "question_2": m84,
+        "question_10": m84,
+        "question_2": m85,
         "question_3": MessageLookupByLibrary.simpleMessage(
             "Сколько времени занимает каждый атомарный своп?"),
         "question_4": MessageLookupByLibrary.simpleMessage(
             "Необходимо ли мне быть в сети во время свопа?"),
-        "question_5": m85,
+        "question_5": m86,
         "question_6": MessageLookupByLibrary.simpleMessage(
             "Предоставляете ли вы поддержку пользователей?"),
         "question_7": MessageLookupByLibrary.simpleMessage(
             "Есть ли у вас какие-либо географические ограничения?"),
-        "question_8": m86,
-        "question_9": m87,
+        "question_8": m87,
+        "question_9": m88,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
             "Это новая эра! Мы официально изменили наше название с «AtomicDEX» на «Komodo Wallet»."),
         "receive": MessageLookupByLibrary.simpleMessage("ПОЛУЧИТЬ"),
@@ -1190,7 +1209,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsReadMore": MessageLookupByLibrary.simpleMessage(
             "Узнать больше о KMD вознаграждениях"),
         "rewardsReceive": MessageLookupByLibrary.simpleMessage("Получить"),
-        "rewardsSuccess": m88,
+        "rewardsSuccess": m89,
         "rewardsTableFiat": MessageLookupByLibrary.simpleMessage("Фиат"),
         "rewardsTableRewards":
             MessageLookupByLibrary.simpleMessage("Вознаграждений\nKMD"),
@@ -1199,9 +1218,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsTableTitle":
             MessageLookupByLibrary.simpleMessage("Инфо о вознаграждениях:"),
         "rewardsTableUXTO": MessageLookupByLibrary.simpleMessage("UTXO,\nKMD"),
-        "rewardsTimeDays": m89,
-        "rewardsTimeHours": m90,
-        "rewardsTimeMin": m91,
+        "rewardsTimeDays": m90,
+        "rewardsTimeHours": m91,
+        "rewardsTimeMin": m92,
         "rewardsTitle":
             MessageLookupByLibrary.simpleMessage("Инфо о вознаграждениях:"),
         "russianLanguage": MessageLookupByLibrary.simpleMessage("Русский"),
@@ -1254,7 +1273,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchForTicker": MessageLookupByLibrary.simpleMessage("Найти Тикер"),
         "seconds": MessageLookupByLibrary.simpleMessage("сек"),
         "security": MessageLookupByLibrary.simpleMessage("Безопасность"),
-        "seeOrders": m92,
+        "seeOrders": m93,
         "seeTxHistory":
             MessageLookupByLibrary.simpleMessage("Показать историю транзакций"),
         "seedPhrase": MessageLookupByLibrary.simpleMessage("Seed Фраза"),
@@ -1269,6 +1288,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Выберите монету, которую хотите купить"),
         "selectCoinToSell": MessageLookupByLibrary.simpleMessage(
             "Выберите монету, которую хотите продать"),
+        "selectDate": MessageLookupByLibrary.simpleMessage("Выберите дату"),
         "selectFileImport":
             MessageLookupByLibrary.simpleMessage("Выбрать файл"),
         "selectLanguage": MessageLookupByLibrary.simpleMessage("Выбрать Язык"),
@@ -1294,12 +1314,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingLanguageTitle": MessageLookupByLibrary.simpleMessage("Языки"),
         "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
         "share": MessageLookupByLibrary.simpleMessage("ПОДЕЛИТЬСЯ"),
-        "shareAddress": m93,
+        "shareAddress": m94,
+        "shouldScanPastTransaction": m95,
         "showAddress": MessageLookupByLibrary.simpleMessage("Показать адрес"),
         "showDetails": MessageLookupByLibrary.simpleMessage("Показать детали"),
         "showMyOrders":
             MessageLookupByLibrary.simpleMessage("ПОКАЗАТЬ МОИ ОРДЕРЫ"),
-        "showingOrders": m94,
+        "showingOrders": m96,
         "signInWithPassword":
             MessageLookupByLibrary.simpleMessage("Войти с паролем"),
         "signInWithSeedPhrase":
@@ -1307,23 +1328,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "simple": MessageLookupByLibrary.simpleMessage("Просто"),
         "simpleTradeActivate":
             MessageLookupByLibrary.simpleMessage("Активировать"),
-        "simpleTradeBuyHint": m95,
+        "simpleTradeBuyHint": m97,
         "simpleTradeBuyTitle": MessageLookupByLibrary.simpleMessage("Купить"),
         "simpleTradeClose": MessageLookupByLibrary.simpleMessage("Закрыть"),
-        "simpleTradeMaxActiveCoins": m96,
-        "simpleTradeNotActive": m97,
+        "simpleTradeMaxActiveCoins": m98,
+        "simpleTradeNotActive": m99,
         "simpleTradeRecieve": MessageLookupByLibrary.simpleMessage("Получить"),
-        "simpleTradeSellHint": m98,
+        "simpleTradeSellHint": m100,
         "simpleTradeSellTitle": MessageLookupByLibrary.simpleMessage("Продать"),
         "simpleTradeSend": MessageLookupByLibrary.simpleMessage("Отправить"),
         "simpleTradeShowLess": MessageLookupByLibrary.simpleMessage("Скрыть"),
         "simpleTradeShowMore":
             MessageLookupByLibrary.simpleMessage("Показать больше"),
-        "simpleTradeUnableActivate": m99,
+        "simpleTradeUnableActivate": m101,
         "skip": MessageLookupByLibrary.simpleMessage("Пропустить"),
         "snackbarDismiss": MessageLookupByLibrary.simpleMessage("Убрать"),
-        "soundCantPlayThatMsg": m100,
-        "soundPlayedWhen": m101,
+        "soundCantPlayThatMsg": m102,
+        "soundPlayedWhen": m103,
         "soundSettingsLink": MessageLookupByLibrary.simpleMessage("Звук"),
         "soundSettingsTitle":
             MessageLookupByLibrary.simpleMessage("Настройки звука"),
@@ -1335,20 +1356,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "soundsNote": MessageLookupByLibrary.simpleMessage(
             "Обратите внимание что вы можете установить свои собственные звуки в настройках приложения."),
         "spanishLanguage": MessageLookupByLibrary.simpleMessage("Испанский"),
+        "startDate": MessageLookupByLibrary.simpleMessage("Дата начала"),
         "startSwap": MessageLookupByLibrary.simpleMessage("Начать обмен"),
         "step": MessageLookupByLibrary.simpleMessage("Шаг"),
         "success": MessageLookupByLibrary.simpleMessage("Успех!"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
-        "supportLinksDesc": m102,
+        "supportLinksDesc": m104,
         "swap": MessageLookupByLibrary.simpleMessage("обмен"),
         "swapCurrent": MessageLookupByLibrary.simpleMessage("Текущий"),
         "swapDetailTitle":
             MessageLookupByLibrary.simpleMessage("ПОДТВЕРДИТЕ ДЕТАЛИ ОБМЕНА"),
         "swapEstimated": MessageLookupByLibrary.simpleMessage("прибл"),
         "swapFailed": MessageLookupByLibrary.simpleMessage("Обмен не удался"),
-        "swapGasActivate": m103,
-        "swapGasAmount": m104,
-        "swapGasAmountRequired": m105,
+        "swapGasActivate": m105,
+        "swapGasAmount": m106,
+        "swapGasAmountRequired": m107,
         "swapOngoing": MessageLookupByLibrary.simpleMessage("Обмен в процессе"),
         "swapProgress":
             MessageLookupByLibrary.simpleMessage("Детали прогресса"),
@@ -1357,6 +1379,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "swapTotal": MessageLookupByLibrary.simpleMessage("Всего"),
         "swapUUID": MessageLookupByLibrary.simpleMessage("UUID обмена"),
         "switchTheme": MessageLookupByLibrary.simpleMessage("Переключить тему"),
+        "syncFromDate": MessageLookupByLibrary.simpleMessage(
+            "Синхронизировать с указанной даты"),
+        "syncFromSaplingActivation": MessageLookupByLibrary.simpleMessage(
+            "Синхронизация с активацией саженца"),
+        "syncNewTransactions": MessageLookupByLibrary.simpleMessage(
+            "Синхронизировать новые транзакции"),
+        "syncTransactionsQuestion": m108,
         "tagAVX20": MessageLookupByLibrary.simpleMessage("AVX20"),
         "tagBEP20": MessageLookupByLibrary.simpleMessage("BEP20"),
         "tagERC20": MessageLookupByLibrary.simpleMessage("ERC20"),
@@ -1371,7 +1400,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tagQRC20": MessageLookupByLibrary.simpleMessage("QRC20"),
         "tagSBCH": MessageLookupByLibrary.simpleMessage("SBCH"),
         "tagUBQ": MessageLookupByLibrary.simpleMessage("UBQ"),
-        "tagZHTLC": MessageLookupByLibrary.simpleMessage("ЖТЛК"),
+        "tagZHTLC": MessageLookupByLibrary.simpleMessage("ZHTLC"),
         "takerOrder": MessageLookupByLibrary.simpleMessage("Ордер Тейкера"),
         "timeOut": MessageLookupByLibrary.simpleMessage("Таймаут"),
         "titleCreatePassword":
@@ -1417,26 +1446,26 @@ class MessageLookup extends MessageLookupByLibrary {
             "Слишком много запросов.\nПревышен лимит запросов истории транзакций.\nПовторите попытку позже."),
         "txNotConfirmed":
             MessageLookupByLibrary.simpleMessage("НЕПОДТВЕРЖДЕНА"),
-        "txleft": m106,
+        "txleft": m109,
         "ukrainianLanguage": MessageLookupByLibrary.simpleMessage("Украинский"),
         "unlock": MessageLookupByLibrary.simpleMessage("разблокировать"),
         "unlockFunds":
             MessageLookupByLibrary.simpleMessage("Разблокировать средства"),
-        "unlockSuccess": m107,
+        "unlockSuccess": m110,
         "unspendable":
             MessageLookupByLibrary.simpleMessage("неизрасходованный"),
         "updatesAvailable":
             MessageLookupByLibrary.simpleMessage("Доступна новая версия"),
         "updatesChecking":
             MessageLookupByLibrary.simpleMessage("Проверка обновлений..."),
-        "updatesCurrentVersion": m108,
+        "updatesCurrentVersion": m111,
         "updatesNotifAvailable": MessageLookupByLibrary.simpleMessage(
             "Доступна новая версия. Пожалуйста, обновитесь."),
-        "updatesNotifAvailableVersion": m109,
+        "updatesNotifAvailableVersion": m112,
         "updatesNotifTitle":
             MessageLookupByLibrary.simpleMessage("Доступно обновление"),
         "updatesSkip": MessageLookupByLibrary.simpleMessage("Пропустить"),
-        "updatesTitle": m110,
+        "updatesTitle": m113,
         "updatesUpToDate": MessageLookupByLibrary.simpleMessage(
             "Установлена последняя версия"),
         "updatesUpdate": MessageLookupByLibrary.simpleMessage("Обновление"),
@@ -1462,9 +1491,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "warningOkBtn": MessageLookupByLibrary.simpleMessage("OK"),
         "warningShareLogs": MessageLookupByLibrary.simpleMessage(
             "Предупреждение - в особых случаях логи могут содержать конфиденциальную информацию, которую можно использовать для доступа к монетам из незавершенных свопов!"),
-        "weFailedTo": m111,
-        "weFailedToActivate": m112,
-        "welcomeInfo": m113,
+        "weFailedTo": m114,
+        "weFailedToActivate": m115,
+        "welcomeInfo": m116,
         "welcomeLetSetUp":
             MessageLookupByLibrary.simpleMessage("ДАВАЙТЕ ВСЕ НАСТРОИМ!"),
         "welcomeTitle":
@@ -1475,14 +1504,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "willTakeTime": MessageLookupByLibrary.simpleMessage(
             "Это займет некоторое время, и приложение должно оставаться на переднем плане.\nЗакрытие приложения во время активации может привести к проблемам."),
         "withdraw": MessageLookupByLibrary.simpleMessage("Вывести"),
-        "withdrawCameraAccessText": m114,
+        "withdrawCameraAccessText": m117,
         "withdrawCameraAccessTitle":
             MessageLookupByLibrary.simpleMessage("Доступ запрещен"),
         "withdrawConfirm":
             MessageLookupByLibrary.simpleMessage("Подтвердите вывод"),
         "withdrawConfirmError": MessageLookupByLibrary.simpleMessage(
             "Что-то пошло не так. Попробуйте позже."),
-        "withdrawValue": m115,
+        "withdrawValue": m118,
         "wrongCoinSpan1": MessageLookupByLibrary.simpleMessage(
             "Вы пытаетесь сканировать QR code для оплаты"),
         "wrongCoinSpan2":
@@ -1505,7 +1534,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "у вас есть ордер, которому могут соответствовать новые ордеры"),
         "youAreSending":
             MessageLookupByLibrary.simpleMessage("Вы отправляете:"),
-        "youWillReceiveClaim": m116,
+        "youWillReceiveClaim": m119,
         "youWillReceived": MessageLookupByLibrary.simpleMessage("Вы получите:"),
         "yourWallet": MessageLookupByLibrary.simpleMessage("ваш кошелек")
       };

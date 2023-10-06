@@ -154,139 +154,145 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m53(abbr) => "${abbr} 取引手数料を支払うのに十分な残高がありません";
 
-  static m54(coinAbbr) => "${coinAbbr} は利用できません:(";
+  static m54(coin) => "無効な ${coin} アドレスです";
 
-  static m55(coinName) => "❗注意！ ${coinName} の市場の 24 時間の取引高は 10,000 ドル未満です。";
+  static m55(coinAbbr) => "${coinAbbr} は利用できません:(";
 
-  static m56(value) => "制限は最大 ${value} である必要があります";
+  static m56(coinName) => "❗注意！ ${coinName} の市場の 24 時間の取引高は 10,000 ドル未満です。";
 
-  static m57(coinName, number) => "最低販売額は ${number} ${coinName} です";
+  static m57(value) => "制限は最大 ${value} である必要があります";
 
-  static m58(coinName, number) => "最低購入金額は ${number} ${coinName} です";
+  static m58(coinName, number) => "最低販売額は ${number} ${coinName} です";
 
-  static m59(buyCoin, buyAmount, sellCoin, sellAmount) =>
+  static m59(coinName, number) => "最低購入金額は ${number} ${coinName} です";
+
+  static m60(buyCoin, buyAmount, sellCoin, sellAmount) =>
       "注文の最小額は ${buyAmount} ${buyCoin} (${sellAmount} ${sellCoin}) です";
 
-  static m60(coinName, number) => "最低販売額は ${number} ${coinName} です";
+  static m61(coinName, number) => "最低販売額は ${number} ${coinName} です";
 
-  static m61(minValue, coin) => "${minValue} ${coin} より大きくなければなりません";
+  static m62(minValue, coin) => "${minValue} ${coin} より大きくなければなりません";
 
-  static m62(appName) =>
+  static m63(appName) =>
       "現在、携帯データ ネットワークを使用しており、${appName} P2P ネットワークに参加すると、インターネット トラフィックが消費されることに注意してください。携帯電話のデータ プランが高額な場合は、WiFi ネットワークを使用することをお勧めします。";
 
-  static m63(coin) => "最初に ${coin} を有効にして、残高をチャージしてください";
+  static m64(coin) => "最初に ${coin} を有効にして、残高をチャージしてください";
 
-  static m64(number) => "${number} オーダーを作成:";
+  static m65(number) => "${number} オーダーを作成:";
 
-  static m65(coin) => "${coin} の残高が少なすぎます";
+  static m66(coin) => "${coin} の残高が少なすぎます";
 
-  static m66(coin, fee) =>
+  static m67(coin, fee) =>
       "料金を支払うのに十分な ${coin} がありません。 MIN 残高は ${fee} ${coin} です";
 
-  static m67(coinName) => "${coinName} の金額を入力してください。";
+  static m68(coinName) => "${coinName} の金額を入力してください。";
 
-  static m68(coin) => "取引に十分な ${coin} がありません!";
+  static m69(coin) => "取引に十分な ${coin} がありません!";
 
-  static m69(sell, buy) => "${sell}/${buy} スワップが正常に完了しました";
+  static m70(sell, buy) => "${sell}/${buy} スワップが正常に完了しました";
 
-  static m70(sell, buy) => "${sell}/${buy} スワップに失敗しました";
+  static m71(sell, buy) => "${sell}/${buy} スワップに失敗しました";
 
-  static m71(sell, buy) => "${sell}/${buy} スワップ開始";
+  static m72(sell, buy) => "${sell}/${buy} スワップ開始";
 
-  static m72(sell, buy) => "${sell}/${buy} スワップがタイムアウトしました";
+  static m73(sell, buy) => "${sell}/${buy} スワップがタイムアウトしました";
 
-  static m73(coin) => "${coin} のトランザクションを受け取りました!";
+  static m74(coin) => "${coin} のトランザクションを受け取りました!";
 
-  static m74(assets) => "${assets} アセット";
+  static m75(assets) => "${assets} アセット";
 
-  static m75(coin) => "${coin} の注文はすべてキャンセルされます。";
+  static m76(coin) => "${coin} の注文はすべてキャンセルされます。";
 
-  static m76(delta) => "便宜: CEX +${delta}%";
+  static m77(delta) => "便宜: CEX +${delta}%";
 
-  static m77(delta) => "高価: CEX ${delta}%";
+  static m78(delta) => "高価: CEX ${delta}%";
 
-  static m78(fill) => "${fill}% 埋められました";
+  static m79(fill) => "${fill}% 埋められました";
 
-  static m79(coin) => "金額 (${coin})";
+  static m80(coin) => "金額 (${coin})";
 
-  static m80(coin) => "価格 (${coin})";
+  static m81(coin) => "価格 (${coin})";
 
-  static m81(coin) => "合計 (${coin})";
+  static m82(coin) => "合計 (${coin})";
 
-  static m82(abbr) => "${abbr} はアクティブではありません。有効にしてからもう一度お試しください。";
+  static m83(abbr) => "${abbr} はアクティブではありません。有効にしてからもう一度お試しください。";
 
-  static m83(appName) => "${appName} を使用できるデバイスはどれですか?";
+  static m84(appName) => "${appName} を使用できるデバイスはどれですか?";
 
-  static m84(appName) => "${appName} での取引は、他の DEX での取引とどう違うのですか?";
+  static m85(appName) => "${appName} での取引は、他の DEX での取引とどう違うのですか?";
 
-  static m85(appName) => "${appName} の料金はどのように計算されますか?";
+  static m86(appName) => "${appName} の料金はどのように計算されますか?";
 
-  static m86(appName) => "${appName} の背後にいるのは誰ですか?";
+  static m87(appName) => "${appName} の背後にいるのは誰ですか?";
 
-  static m87(appName) => "${appName} で独自のホワイトラベル取引所を開発することは可能ですか?";
+  static m88(appName) => "${appName} で独自のホワイトラベル取引所を開発することは可能ですか?";
 
-  static m88(amount) => "成功！ ${amount} KMD を受け取りました。";
+  static m89(amount) => "成功！ ${amount} KMD を受け取りました。";
 
-  static m89(dd) => "${dd} 日";
+  static m90(dd) => "${dd} 日";
 
-  static m90(hh, minutes) => "${hh}時 ${minutes}分";
+  static m91(hh, minutes) => "${hh}時 ${minutes}分";
 
-  static m91(mm) => "${mm}分";
+  static m92(mm) => "${mm}分";
 
-  static m92(amount) => "クリックして ${amount} 件の注文を表示";
+  static m93(amount) => "クリックして ${amount} 件の注文を表示";
 
-  static m93(coinName, address) => "私の ${coinName} アドレス: \n${address}";
+  static m94(coinName, address) => "私の ${coinName} アドレス: \n${address}";
 
-  static m94(count, maxCount) => "${maxCount} 件中 ${count} 件の注文を表示しています。";
+  static m95(coin) => "過去の ${coin} 取引をスキャンしますか?";
 
-  static m95(coin) => "購入する${coin}の金額を入力してください";
+  static m96(count, maxCount) => "${maxCount} 件中 ${count} 件の注文を表示しています。";
 
-  static m96(maxCoins) => "アクティブなコインの最大数は ${maxCoins} です。いくつか無効にしてください。";
+  static m97(coin) => "購入する${coin}の金額を入力してください";
 
-  static m97(coin) => "${coin} はアクティブではありません!";
+  static m98(maxCoins) => "アクティブなコインの最大数は ${maxCoins} です。いくつか無効にしてください。";
 
-  static m98(coin) => "売却する${coin}の金額を入力してください";
+  static m99(coin) => "${coin} はアクティブではありません!";
 
-  static m99(coin) => "${coin} をアクティベートできません";
+  static m100(coin) => "売却する${coin}の金額を入力してください";
 
-  static m100(description) =>
+  static m101(coin) => "${coin} をアクティベートできません";
+
+  static m102(description) =>
       "mp3またはwavファイルを選択してください。 ${description} になったら再生します。";
 
-  static m101(description) => "${description} の場合にプレイ";
+  static m103(description) => "${description} の場合にプレイ";
 
-  static m102(appName) =>
+  static m104(appName) =>
       "ご不明な点がある場合、または ${appName} アプリで技術的な問題を発見したと思われる場合は、報告してチームからサポートを受けることができます。";
 
-  static m103(coin) => "最初に ${coin} を有効にして残高をチャージしてください";
+  static m105(coin) => "最初に ${coin} を有効にして残高をチャージしてください";
 
-  static m104(coin) => "${coin} の残高は、取引手数料を支払うのに十分ではありません。";
+  static m106(coin) => "${coin} の残高は、取引手数料を支払うのに十分ではありません。";
 
-  static m105(coin, amount) =>
+  static m107(coin, amount) =>
       "${coin} の残高は、取引手数料を支払うのに十分ではありません。${coin} ${amount} が必要です。";
 
-  static m106(left) => "残りのトランザクション: ${left}";
+  static m108(name) => "どの ${name} トランザクションを同期しますか?";
 
-  static m107(amnt, hash) => "${amnt} 資金のロックを解除しました - TX: ${hash}";
+  static m109(left) => "残りのトランザクション: ${left}";
 
-  static m108(version) => "バージョン ${version} を使用しています";
+  static m110(amnt, hash) => "${amnt} 資金のロックを解除しました - TX: ${hash}";
 
-  static m109(version) => "バージョン ${version} が利用可能です。更新してください。";
+  static m111(version) => "バージョン ${version} を使用しています";
 
-  static m110(appName) => "${appName} の更新";
+  static m112(version) => "バージョン ${version} が利用可能です。更新してください。";
 
-  static m111(coinAbbr) => "${coinAbbr} をアクティベートできませんでした";
+  static m113(appName) => "${appName} の更新";
 
-  static m112(coinAbbr) => "${coinAbbr} をアクティベートできませんでした。アプリを再起動してもう一度お試しください。";
+  static m114(coinAbbr) => "${coinAbbr} をアクティベートできませんでした";
 
-  static m113(appName) =>
+  static m115(coinAbbr) => "${coinAbbr} をアクティベートできませんでした。アプリを再起動してもう一度お試しください。";
+
+  static m116(appName) =>
       "${appName} モバイルは、ネイティブの第 3 世代 DEX 機能などを備えた次世代のマルチコイン ウォレットです。";
 
-  static m114(appName) =>
+  static m117(appName) =>
       "以前にカメラへの ${appName} アクセスを拒否しました。 QR コードのスキャンを続行するには、電話の設定でカメラの許可を手動で変更してください。";
 
-  static m115(amount, coinName) => "WITHDRAW ${amount} ${coinName}";
+  static m118(amount, coinName) => "WITHDRAW ${amount} ${coinName}";
 
-  static m116(amount, coin) => "${amount} ${coin} を受け取ります";
+  static m119(amount, coin) => "${amount} ${coin} を受け取ります";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -326,6 +332,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressSend": MessageLookupByLibrary.simpleMessage("受取人住所"),
         "advanced": MessageLookupByLibrary.simpleMessage("高度"),
         "all": MessageLookupByLibrary.simpleMessage("全て"),
+        "allPastTransactions": MessageLookupByLibrary.simpleMessage(
+            "ウォレットには過去の取引が表示されます。すべてのブロックがダウンロードされてスキャンされるため、これにはかなりのストレージと時間がかかります。"),
         "allowCustomSeed":
             MessageLookupByLibrary.simpleMessage("カスタム シードを許可する"),
         "alreadyExists": MessageLookupByLibrary.simpleMessage("もう存在している"),
@@ -392,6 +400,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "camouflageSetup":
             MessageLookupByLibrary.simpleMessage("カモフラージュ PIN の設定"),
         "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
+        "cancelActivation":
+            MessageLookupByLibrary.simpleMessage("アクティベーションのキャンセル"),
+        "cancelActivationQuestion":
+            MessageLookupByLibrary.simpleMessage("アクティベーションをキャンセルしてもよろしいですか?"),
         "cancelButton": MessageLookupByLibrary.simpleMessage("キャンセル"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("注文をキャンセルする"),
         "candleChartError": MessageLookupByLibrary.simpleMessage(
@@ -431,6 +443,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "closeMessage": MessageLookupByLibrary.simpleMessage("エラーメッセージを閉じる"),
         "closePreview": MessageLookupByLibrary.simpleMessage("プレビューを閉じる"),
         "code": MessageLookupByLibrary.simpleMessage("コード："),
+        "cofirmCancelActivation":
+            MessageLookupByLibrary.simpleMessage("アクティベーションをキャンセルしてもよろしいですか?"),
         "coinSelectClear": MessageLookupByLibrary.simpleMessage("クリア"),
         "coinSelectNotFound":
             MessageLookupByLibrary.simpleMessage("アクティブなコインはありません"),
@@ -688,6 +702,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "foundQrCode": MessageLookupByLibrary.simpleMessage("QRコードが見つかりました"),
         "frenchLanguage": MessageLookupByLibrary.simpleMessage("フランス語"),
         "from": MessageLookupByLibrary.simpleMessage("から"),
+        "futureTransactions": MessageLookupByLibrary.simpleMessage(
+            "公開キーに関連付けられたアクティベーション後に行われる今後のトランザクションは同期されます。これは最も迅速なオプションであり、必要なストレージの量も最小限です。"),
         "gasFee": m49,
         "gasLimit": MessageLookupByLibrary.simpleMessage("ガスリミット"),
         "gasNotActive": m50,
@@ -763,17 +779,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "internetRefreshButton": MessageLookupByLibrary.simpleMessage("リフレッシュ"),
         "internetRestored":
             MessageLookupByLibrary.simpleMessage("インターネット接続が回復しました"),
+        "invalidCoinAddress": m54,
         "invalidSwap": MessageLookupByLibrary.simpleMessage("スワップを続行できません"),
         "invalidSwapDetailsLink": MessageLookupByLibrary.simpleMessage("詳細"),
-        "isUnavailable": m54,
+        "isUnavailable": m55,
         "japaneseLanguage": MessageLookupByLibrary.simpleMessage("日本"),
         "koreanLanguage": MessageLookupByLibrary.simpleMessage("韓国語"),
         "language": MessageLookupByLibrary.simpleMessage("言語"),
         "latestTxs": MessageLookupByLibrary.simpleMessage("最新の取引"),
         "legalTitle": MessageLookupByLibrary.simpleMessage("法的"),
         "less": MessageLookupByLibrary.simpleMessage("以下"),
-        "lessThanCaution": m55,
-        "limitError": m56,
+        "lessThanCaution": m56,
+        "limitError": m57,
         "loading": MessageLookupByLibrary.simpleMessage("読み込んでいます..."),
         "loadingOrderbook":
             MessageLookupByLibrary.simpleMessage("オーダーブックを読み込んでいます..."),
@@ -833,11 +850,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "milliseconds": MessageLookupByLibrary.simpleMessage("MS"),
         "min": MessageLookupByLibrary.simpleMessage("最小"),
         "minOrder": MessageLookupByLibrary.simpleMessage("最小注文量:"),
-        "minValue": m57,
-        "minValueBuy": m58,
-        "minValueOrder": m59,
-        "minValueSell": m60,
-        "minVolumeInput": m61,
+        "minValue": m58,
+        "minValueBuy": m59,
+        "minValueOrder": m60,
+        "minValueSell": m61,
+        "minVolumeInput": m62,
         "minVolumeIsTDH":
             MessageLookupByLibrary.simpleMessage("販売額より低くなければなりません"),
         "minVolumeTitle": MessageLookupByLibrary.simpleMessage("必要な最小ボリューム"),
@@ -846,16 +863,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimizingWillTerminate": MessageLookupByLibrary.simpleMessage(
             "警告: iOS でアプリを最小化すると、アクティベーション プロセスが終了します。"),
         "minutes": MessageLookupByLibrary.simpleMessage("メートル"),
-        "mobileDataWarning": m62,
+        "mobileDataWarning": m63,
         "moreInfo": MessageLookupByLibrary.simpleMessage("より詳しい情報"),
         "moreTab": MessageLookupByLibrary.simpleMessage("もっと"),
-        "multiActivateGas": m63,
+        "multiActivateGas": m64,
         "multiBaseAmtPlaceholder": MessageLookupByLibrary.simpleMessage("額"),
         "multiBasePlaceholder": MessageLookupByLibrary.simpleMessage("コイン"),
         "multiBaseSelectTitle": MessageLookupByLibrary.simpleMessage("売る"),
         "multiConfirmCancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
         "multiConfirmConfirm": MessageLookupByLibrary.simpleMessage("確認"),
-        "multiConfirmTitle": m64,
+        "multiConfirmTitle": m65,
         "multiCreate": MessageLookupByLibrary.simpleMessage("作成"),
         "multiCreateOrder": MessageLookupByLibrary.simpleMessage("注文"),
         "multiCreateOrders": MessageLookupByLibrary.simpleMessage("注文"),
@@ -869,8 +886,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "multiInvalidAmt": MessageLookupByLibrary.simpleMessage("金額が無効です"),
         "multiInvalidSellAmt":
             MessageLookupByLibrary.simpleMessage("販売金額が無効です"),
-        "multiLowGas": m65,
-        "multiLowerThanFee": m66,
+        "multiLowGas": m66,
+        "multiLowerThanFee": m67,
         "multiMaxSellAmt": MessageLookupByLibrary.simpleMessage("最大販売額は"),
         "multiMinReceiveAmt": MessageLookupByLibrary.simpleMessage("最小受け取り金額は"),
         "multiMinSellAmt": MessageLookupByLibrary.simpleMessage("最小販売額は"),
@@ -897,7 +914,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noItemsToImport": MessageLookupByLibrary.simpleMessage("項目が選択されていません"),
         "noMatchingOrders":
             MessageLookupByLibrary.simpleMessage("一致する注文が見つかりません"),
-        "noOrder": m67,
+        "noOrder": m68,
         "noOrderAvailable": MessageLookupByLibrary.simpleMessage("クリックして注文を作成"),
         "noOrders":
             MessageLookupByLibrary.simpleMessage("注文はありません。取引に行ってください。"),
@@ -910,7 +927,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nonNumericInput":
             MessageLookupByLibrary.simpleMessage("値は数値でなければなりません"),
         "none": MessageLookupByLibrary.simpleMessage("なし"),
-        "notEnoughGas": m68,
+        "notEnoughGas": m69,
         "notEnoughtBalanceForFee": MessageLookupByLibrary.simpleMessage(
             "手数料に十分な残高がありません - 少額で取引してください"),
         "noteOnOrder":
@@ -918,23 +935,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "notePlaceholder": MessageLookupByLibrary.simpleMessage("メモを追加"),
         "noteTitle": MessageLookupByLibrary.simpleMessage("ノート"),
         "nothingFound": MessageLookupByLibrary.simpleMessage("何も見つかりません"),
-        "notifSwapCompletedText": m69,
+        "notifSwapCompletedText": m70,
         "notifSwapCompletedTitle":
             MessageLookupByLibrary.simpleMessage("スワップ完了"),
-        "notifSwapFailedText": m70,
+        "notifSwapFailedText": m71,
         "notifSwapFailedTitle":
             MessageLookupByLibrary.simpleMessage("スワップに失敗しました"),
-        "notifSwapStartedText": m71,
+        "notifSwapStartedText": m72,
         "notifSwapStartedTitle":
             MessageLookupByLibrary.simpleMessage("新しいスワップが開始されました"),
         "notifSwapStatusTitle":
             MessageLookupByLibrary.simpleMessage("スワップ ステータスが変更されました"),
-        "notifSwapTimeoutText": m72,
+        "notifSwapTimeoutText": m73,
         "notifSwapTimeoutTitle":
             MessageLookupByLibrary.simpleMessage("スワップ タイムアウト"),
-        "notifTxText": m73,
+        "notifTxText": m74,
         "notifTxTitle": MessageLookupByLibrary.simpleMessage("着信トランザクション"),
-        "numberAssets": m74,
+        "numberAssets": m75,
         "officialPressRelease":
             MessageLookupByLibrary.simpleMessage("公式プレスリリース"),
         "okButton": MessageLookupByLibrary.simpleMessage("Ok"),
@@ -944,14 +961,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMessage": MessageLookupByLibrary.simpleMessage("エラーメッセージを開く"),
         "orderBookLess": MessageLookupByLibrary.simpleMessage("少ない"),
         "orderBookMore": MessageLookupByLibrary.simpleMessage("もっと"),
-        "orderCancel": m75,
+        "orderCancel": m76,
         "orderCreated": MessageLookupByLibrary.simpleMessage("オーダーが作成されました"),
         "orderCreatedInfo":
             MessageLookupByLibrary.simpleMessage("注文が正常に作成されました"),
         "orderDetailsAddress": MessageLookupByLibrary.simpleMessage("住所"),
         "orderDetailsCancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
-        "orderDetailsExpedient": m76,
-        "orderDetailsExpensive": m77,
+        "orderDetailsExpedient": m77,
+        "orderDetailsExpensive": m78,
         "orderDetailsFor": MessageLookupByLibrary.simpleMessage("為に"),
         "orderDetailsIdentical": MessageLookupByLibrary.simpleMessage("CEXと同じ"),
         "orderDetailsMin": MessageLookupByLibrary.simpleMessage("分。"),
@@ -963,7 +980,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "シングルタップで詳細を開き、ロングタップで注文を選択します"),
         "orderDetailsSpend": MessageLookupByLibrary.simpleMessage("費やす"),
         "orderDetailsTitle": MessageLookupByLibrary.simpleMessage("詳細"),
-        "orderFilled": m78,
+        "orderFilled": m79,
         "orderMatched": MessageLookupByLibrary.simpleMessage("一致した注文"),
         "orderMatching": MessageLookupByLibrary.simpleMessage("オーダーマッチング"),
         "orderTypePartial": MessageLookupByLibrary.simpleMessage("注文"),
@@ -971,9 +988,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders": MessageLookupByLibrary.simpleMessage("注文"),
         "ordersActive": MessageLookupByLibrary.simpleMessage("アクティブ"),
         "ordersHistory": MessageLookupByLibrary.simpleMessage("歴史"),
-        "ordersTableAmount": m79,
-        "ordersTablePrice": m80,
-        "ordersTableTotal": m81,
+        "ordersTableAmount": m80,
+        "ordersTablePrice": m81,
+        "ordersTableTotal": m82,
         "overwrite": MessageLookupByLibrary.simpleMessage("上書き"),
         "ownOrder": MessageLookupByLibrary.simpleMessage("これはあなた自身の注文です！"),
         "paidFromBalance": MessageLookupByLibrary.simpleMessage("残高から支払われる:"),
@@ -982,6 +999,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidWith": MessageLookupByLibrary.simpleMessage("で支払った"),
         "passwordRequirement": MessageLookupByLibrary.simpleMessage(
             "パスワードには、小文字 1 つ、大文字 1 つ、特殊記号 1 つを含む 12 文字以上を含める必要があります。"),
+        "pastTransactionsFromDate": MessageLookupByLibrary.simpleMessage(
+            "ウォレットには、指定した日付以降に行われた過去の取引が表示されます。"),
         "paymentUriDetailsAccept": MessageLookupByLibrary.simpleMessage("支払い"),
         "paymentUriDetailsAcceptQuestion":
             MessageLookupByLibrary.simpleMessage("この取引を受け入れますか？"),
@@ -994,7 +1013,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentUriDetailsDeny": MessageLookupByLibrary.simpleMessage("キャンセル"),
         "paymentUriDetailsTitle":
             MessageLookupByLibrary.simpleMessage("支払いが要求されました"),
-        "paymentUriInactiveCoin": m82,
+        "paymentUriInactiveCoin": m83,
         "placeOrder": MessageLookupByLibrary.simpleMessage("ご注文"),
         "pleaseAddCoin": MessageLookupByLibrary.simpleMessage("コインを追加してください"),
         "pleaseRestart": MessageLookupByLibrary.simpleMessage(
@@ -1015,18 +1034,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "pubkey": MessageLookupByLibrary.simpleMessage("公開鍵"),
         "qrCodeScanner": MessageLookupByLibrary.simpleMessage("QRコードスキャナー"),
         "question_1": MessageLookupByLibrary.simpleMessage("私の秘密鍵を保管しますか?"),
-        "question_10": m83,
-        "question_2": m84,
+        "question_10": m84,
+        "question_2": m85,
         "question_3": MessageLookupByLibrary.simpleMessage(
             "各アトミック スワップにはどのくらいの時間がかかりますか?"),
         "question_4":
             MessageLookupByLibrary.simpleMessage("スワップ中はオンラインである必要がありますか?"),
-        "question_5": m85,
+        "question_5": m86,
         "question_6":
             MessageLookupByLibrary.simpleMessage("ユーザーサポートは提供していますか？"),
         "question_7": MessageLookupByLibrary.simpleMessage("国の制限はありますか？"),
-        "question_8": m86,
-        "question_9": m87,
+        "question_8": m87,
+        "question_9": m88,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
             "新しい時代です！ 「AtomicDEX」から「Komodo Wallet」に正式に名前を変更しました"),
         "receive": MessageLookupByLibrary.simpleMessage("受け取る"),
@@ -1060,16 +1079,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsReadMore":
             MessageLookupByLibrary.simpleMessage("KMDアクティブユーザー特典について詳しく見る"),
         "rewardsReceive": MessageLookupByLibrary.simpleMessage("受け取る"),
-        "rewardsSuccess": m88,
+        "rewardsSuccess": m89,
         "rewardsTableFiat": MessageLookupByLibrary.simpleMessage("フィアット"),
         "rewardsTableRewards": MessageLookupByLibrary.simpleMessage("リワード、KMD"),
         "rewardsTableStatus": MessageLookupByLibrary.simpleMessage("状態"),
         "rewardsTableTime": MessageLookupByLibrary.simpleMessage("残り時間"),
         "rewardsTableTitle": MessageLookupByLibrary.simpleMessage("特典情報:"),
         "rewardsTableUXTO": MessageLookupByLibrary.simpleMessage("UTXO金額、KMD"),
-        "rewardsTimeDays": m89,
-        "rewardsTimeHours": m90,
-        "rewardsTimeMin": m91,
+        "rewardsTimeDays": m90,
+        "rewardsTimeHours": m91,
+        "rewardsTimeMin": m92,
         "rewardsTitle": MessageLookupByLibrary.simpleMessage("特典情報"),
         "russianLanguage": MessageLookupByLibrary.simpleMessage("ロシア"),
         "saveMerged": MessageLookupByLibrary.simpleMessage("結合して保存"),
@@ -1119,7 +1138,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchForTicker": MessageLookupByLibrary.simpleMessage("ティッカーを検索"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),
         "security": MessageLookupByLibrary.simpleMessage("安全"),
-        "seeOrders": m92,
+        "seeOrders": m93,
         "seeTxHistory": MessageLookupByLibrary.simpleMessage("取引履歴を見る"),
         "seedPhrase": MessageLookupByLibrary.simpleMessage("シードフレーズ"),
         "seedPhraseTitle":
@@ -1130,6 +1149,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectCoinTitle": MessageLookupByLibrary.simpleMessage("コインを有効にする:"),
         "selectCoinToBuy": MessageLookupByLibrary.simpleMessage("購入したいコインを選択"),
         "selectCoinToSell": MessageLookupByLibrary.simpleMessage("売りたいコインを選択"),
+        "selectDate": MessageLookupByLibrary.simpleMessage("日付を選択してください"),
         "selectFileImport": MessageLookupByLibrary.simpleMessage("ファイルを選ぶ"),
         "selectLanguage": MessageLookupByLibrary.simpleMessage("言語を選択する"),
         "selectPaymentMethod":
@@ -1152,33 +1172,34 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingLanguageTitle": MessageLookupByLibrary.simpleMessage("言語"),
         "settings": MessageLookupByLibrary.simpleMessage("設定"),
         "share": MessageLookupByLibrary.simpleMessage("シェア"),
-        "shareAddress": m93,
+        "shareAddress": m94,
+        "shouldScanPastTransaction": m95,
         "showAddress": MessageLookupByLibrary.simpleMessage("住所を表示"),
         "showDetails": MessageLookupByLibrary.simpleMessage("詳細を表示"),
         "showMyOrders": MessageLookupByLibrary.simpleMessage("私の注文を表示"),
-        "showingOrders": m94,
+        "showingOrders": m96,
         "signInWithPassword":
             MessageLookupByLibrary.simpleMessage("パスワードでサインイン"),
         "signInWithSeedPhrase": MessageLookupByLibrary.simpleMessage(
             "パスワードをお忘れですか？シードからウォレットを復元する"),
         "simple": MessageLookupByLibrary.simpleMessage("単純"),
         "simpleTradeActivate": MessageLookupByLibrary.simpleMessage("活性化"),
-        "simpleTradeBuyHint": m95,
+        "simpleTradeBuyHint": m97,
         "simpleTradeBuyTitle": MessageLookupByLibrary.simpleMessage("買う"),
         "simpleTradeClose": MessageLookupByLibrary.simpleMessage("近い"),
-        "simpleTradeMaxActiveCoins": m96,
-        "simpleTradeNotActive": m97,
+        "simpleTradeMaxActiveCoins": m98,
+        "simpleTradeNotActive": m99,
         "simpleTradeRecieve": MessageLookupByLibrary.simpleMessage("受け取る"),
-        "simpleTradeSellHint": m98,
+        "simpleTradeSellHint": m100,
         "simpleTradeSellTitle": MessageLookupByLibrary.simpleMessage("売る"),
         "simpleTradeSend": MessageLookupByLibrary.simpleMessage("送信"),
         "simpleTradeShowLess": MessageLookupByLibrary.simpleMessage("表示を減らす"),
         "simpleTradeShowMore": MessageLookupByLibrary.simpleMessage("もっと見せる"),
-        "simpleTradeUnableActivate": m99,
+        "simpleTradeUnableActivate": m101,
         "skip": MessageLookupByLibrary.simpleMessage("スキップ"),
         "snackbarDismiss": MessageLookupByLibrary.simpleMessage("解散"),
-        "soundCantPlayThatMsg": m100,
-        "soundPlayedWhen": m101,
+        "soundCantPlayThatMsg": m102,
+        "soundPlayedWhen": m103,
         "soundSettingsLink": MessageLookupByLibrary.simpleMessage("音"),
         "soundSettingsTitle": MessageLookupByLibrary.simpleMessage("サウンド設定"),
         "soundsDialogTitle": MessageLookupByLibrary.simpleMessage("サウンド"),
@@ -1189,19 +1210,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "soundsNote": MessageLookupByLibrary.simpleMessage(
             "アプリケーション設定でカスタムサウンドを設定できることに注意してください。"),
         "spanishLanguage": MessageLookupByLibrary.simpleMessage("スペイン語"),
+        "startDate": MessageLookupByLibrary.simpleMessage("開始日"),
         "startSwap": MessageLookupByLibrary.simpleMessage("スワップの開始"),
         "step": MessageLookupByLibrary.simpleMessage("ステップ"),
         "success": MessageLookupByLibrary.simpleMessage("成功！"),
         "support": MessageLookupByLibrary.simpleMessage("サポート"),
-        "supportLinksDesc": m102,
+        "supportLinksDesc": m104,
         "swap": MessageLookupByLibrary.simpleMessage("スワップ"),
         "swapCurrent": MessageLookupByLibrary.simpleMessage("現時点の"),
         "swapDetailTitle": MessageLookupByLibrary.simpleMessage("交換の詳細を確認する"),
         "swapEstimated": MessageLookupByLibrary.simpleMessage("見積もり"),
         "swapFailed": MessageLookupByLibrary.simpleMessage("スワップに失敗しました"),
-        "swapGasActivate": m103,
-        "swapGasAmount": m104,
-        "swapGasAmountRequired": m105,
+        "swapGasActivate": m105,
+        "swapGasAmount": m106,
+        "swapGasAmountRequired": m107,
         "swapOngoing": MessageLookupByLibrary.simpleMessage("スワップ進行中"),
         "swapProgress": MessageLookupByLibrary.simpleMessage("進捗詳細"),
         "swapStarted": MessageLookupByLibrary.simpleMessage("開始"),
@@ -1209,6 +1231,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "swapTotal": MessageLookupByLibrary.simpleMessage("合計"),
         "swapUUID": MessageLookupByLibrary.simpleMessage("UUIDを入れ替える"),
         "switchTheme": MessageLookupByLibrary.simpleMessage("テーマを切り替える"),
+        "syncFromDate": MessageLookupByLibrary.simpleMessage("指定した日付から同期"),
+        "syncFromSaplingActivation":
+            MessageLookupByLibrary.simpleMessage("苗木アクティベーションからの同期"),
+        "syncNewTransactions":
+            MessageLookupByLibrary.simpleMessage("新しいトランザクションを同期する"),
+        "syncTransactionsQuestion": m108,
         "tagAVX20": MessageLookupByLibrary.simpleMessage("AVX20"),
         "tagBEP20": MessageLookupByLibrary.simpleMessage("BEP20"),
         "tagERC20": MessageLookupByLibrary.simpleMessage("ERC20"),
@@ -1263,23 +1291,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "txLimitExceeded": MessageLookupByLibrary.simpleMessage(
             "リクエストが多すぎます。トランザクション履歴リクエストの制限を超えました。後でもう一度やり直してください。"),
         "txNotConfirmed": MessageLookupByLibrary.simpleMessage("未確認"),
-        "txleft": m106,
+        "txleft": m109,
         "ukrainianLanguage": MessageLookupByLibrary.simpleMessage("ウクライナ語"),
         "unlock": MessageLookupByLibrary.simpleMessage("ロックを解除"),
         "unlockFunds": MessageLookupByLibrary.simpleMessage("資金のロックを解除"),
-        "unlockSuccess": m107,
+        "unlockSuccess": m110,
         "unspendable": MessageLookupByLibrary.simpleMessage("使えない"),
         "updatesAvailable":
             MessageLookupByLibrary.simpleMessage("新しいバージョンが利用可能"),
         "updatesChecking": MessageLookupByLibrary.simpleMessage("アップデートの確認..."),
-        "updatesCurrentVersion": m108,
+        "updatesCurrentVersion": m111,
         "updatesNotifAvailable":
             MessageLookupByLibrary.simpleMessage("新しいバージョンが利用可能です。更新してください。"),
-        "updatesNotifAvailableVersion": m109,
+        "updatesNotifAvailableVersion": m112,
         "updatesNotifTitle":
             MessageLookupByLibrary.simpleMessage("利用可能なアップデート"),
         "updatesSkip": MessageLookupByLibrary.simpleMessage("今のところスキップ"),
-        "updatesTitle": m110,
+        "updatesTitle": m113,
         "updatesUpToDate": MessageLookupByLibrary.simpleMessage("すでに最新"),
         "updatesUpdate": MessageLookupByLibrary.simpleMessage("アップデート"),
         "uriInsufficientBalanceSpan1":
@@ -1302,9 +1330,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "warningOkBtn": MessageLookupByLibrary.simpleMessage("Ok"),
         "warningShareLogs": MessageLookupByLibrary.simpleMessage(
             "警告 - 特殊なケースでは、このログ データには機密情報が含まれており、失敗したスワップからのコインの使用に使用できる可能性があります。"),
-        "weFailedTo": m111,
-        "weFailedToActivate": m112,
-        "welcomeInfo": m113,
+        "weFailedTo": m114,
+        "weFailedToActivate": m115,
+        "welcomeInfo": m116,
         "welcomeLetSetUp": MessageLookupByLibrary.simpleMessage("セットアップしましょう！"),
         "welcomeTitle": MessageLookupByLibrary.simpleMessage("ようこそ"),
         "welcomeWallet": MessageLookupByLibrary.simpleMessage("財布"),
@@ -1313,13 +1341,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "willTakeTime": MessageLookupByLibrary.simpleMessage(
             "これには時間がかかるため、アプリをフォアグラウンドに維持する必要があります。\nアクティベーションの進行中にアプリを終了すると、問題が発生する可能性があります。"),
         "withdraw": MessageLookupByLibrary.simpleMessage("撤退"),
-        "withdrawCameraAccessText": m114,
+        "withdrawCameraAccessText": m117,
         "withdrawCameraAccessTitle":
             MessageLookupByLibrary.simpleMessage("アクセスが拒否されました"),
         "withdrawConfirm": MessageLookupByLibrary.simpleMessage("出金確認"),
         "withdrawConfirmError": MessageLookupByLibrary.simpleMessage(
             "エラーが発生しました。あとでもう一度試してみてください。"),
-        "withdrawValue": m115,
+        "withdrawValue": m118,
         "wrongCoinSpan1":
             MessageLookupByLibrary.simpleMessage("の支払い QR コードをスキャンしようとしています"),
         "wrongCoinSpan2": MessageLookupByLibrary.simpleMessage("しかし、あなたは上にいます"),
@@ -1335,7 +1363,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "you have an order that new orders can match with":
             MessageLookupByLibrary.simpleMessage("新しい注文と一致する注文があります"),
         "youAreSending": MessageLookupByLibrary.simpleMessage("あなたが送っているもの:"),
-        "youWillReceiveClaim": m116,
+        "youWillReceiveClaim": m119,
         "youWillReceived": MessageLookupByLibrary.simpleMessage("受け取るもの:"),
         "yourWallet": MessageLookupByLibrary.simpleMessage("あなたの財布")
       };

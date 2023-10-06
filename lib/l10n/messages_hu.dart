@@ -160,152 +160,158 @@ class MessageLookup extends MessageLookupByLibrary {
   static m53(abbr) =>
       "${abbr} az egyenleg nem elegendő a kereskedési díj kifizetéséhez";
 
-  static m54(coinAbbr) => "${coinAbbr} nem elérhető :(";
+  static m54(coin) => "Érvénytelen ${coin} cím";
 
-  static m55(coinName) =>
+  static m55(coinAbbr) => "${coinAbbr} nem elérhető :(";
+
+  static m56(coinName) =>
       "❗Vigyázat! A(z) ${coinName} piacán kevesebb, mint 10 000 USD 24 órás kereskedési volumen van!";
 
-  static m56(value) => "A korlát legfeljebb ${value} lehet";
-
-  static m57(coinName, number) =>
-      "A minimális eladási összeg ${number} ${coinName}";
+  static m57(value) => "A korlát legfeljebb ${value} lehet";
 
   static m58(coinName, number) =>
+      "A minimális eladási összeg ${number} ${coinName}";
+
+  static m59(coinName, number) =>
       "A minimális vásárlási összeg: ${number}${coinName}";
 
-  static m59(buyCoin, buyAmount, sellCoin, sellAmount) =>
+  static m60(buyCoin, buyAmount, sellCoin, sellAmount) =>
       "A megbízás minimális összege ${buyAmount} ${buyCoin} (${sellAmount} ${sellCoin})";
 
-  static m60(coinName, number) =>
+  static m61(coinName, number) =>
       "Az eladandó minimális összeg ${number} ${coinName}";
 
-  static m61(minValue, coin) =>
+  static m62(minValue, coin) =>
       "Nagyobbnak kell lennie, mint ${minValue} ${coin}";
 
-  static m62(appName) =>
+  static m63(appName) =>
       "Kérjük, vegye figyelembe, hogy most mobiladatokat használ, és az ${appName} P2P-hálózatban való részvétel internetforgalmat fogyaszt. Jobb, ha WiFi hálózatot használsz, ha a mobiladat-előfizetésed drága.";
 
-  static m63(coin) => "Aktiválja a ${coin} és töltse fel először az egyenlegét";
+  static m64(coin) => "Aktiválja a ${coin} és töltse fel először az egyenlegét";
 
-  static m64(number) => "Create ${number} Order(s):";
+  static m65(number) => "Create ${number} Order(s):";
 
-  static m65(coin) => "${coin} egyenleg túl alacsony";
+  static m66(coin) => "${coin} egyenleg túl alacsony";
 
-  static m66(coin, fee) =>
+  static m67(coin, fee) =>
       "Nincs elég ${coin} a díjak kifizetéséhez. MIN egyenleg ${fee} ${coin}";
 
-  static m67(coinName) =>
+  static m68(coinName) =>
       "Nem érhető el ${coinName} rendelés - próbálja újra később, vagy készítsen egy rendelést.";
 
-  static m68(coin) => "Nincs elég ${coin} a tranzakcióhoz!";
+  static m69(coin) => "Nincs elég ${coin} a tranzakcióhoz!";
 
-  static m69(sell, buy) => "Az ${sell}/${buy} swap sikeresen befejeződött.";
+  static m70(sell, buy) => "Az ${sell}/${buy} swap sikeresen befejeződött.";
 
-  static m70(sell, buy) => "${sell}/${buy} csere sikertelen volt";
+  static m71(sell, buy) => "${sell}/${buy} csere sikertelen volt";
 
-  static m71(sell, buy) => "${sell}/${buy} swap elindult";
+  static m72(sell, buy) => "${sell}/${buy} swap elindult";
 
-  static m72(sell, buy) => "${sell}/${buy} swap időzítve volt";
+  static m73(sell, buy) => "${sell}/${buy} swap időzítve volt";
 
-  static m73(coin) => "Ön ${coin} tranzakciót kapott!";
+  static m74(coin) => "Ön ${coin} tranzakciót kapott!";
 
-  static m74(assets) => "${assets} Aktív";
+  static m75(assets) => "${assets} Aktív";
 
-  static m75(coin) => "Minden ${coin} megrendelés törlésre kerül.";
+  static m76(coin) => "Minden ${coin} megrendelés törlésre kerül.";
 
-  static m76(delta) => "Célszerű: CEX +${delta}%";
+  static m77(delta) => "Célszerű: CEX +${delta}%";
 
-  static m77(delta) => "Drága: CEX ${delta}%";
+  static m78(delta) => "Drága: CEX ${delta}%";
 
-  static m78(fill) => "${fill}% betelt";
+  static m79(fill) => "${fill}% betelt";
 
-  static m79(coin) => "Mennyiség. (${coin})";
+  static m80(coin) => "Mennyiség. (${coin})";
 
-  static m80(coin) => "Ár (${coin})";
+  static m81(coin) => "Ár (${coin})";
 
-  static m81(coin) => "Összesen (${coin})";
+  static m82(coin) => "Összesen (${coin})";
 
-  static m82(abbr) => "${abbr} nem aktív. Kérjük, aktiválja és próbálja újra.";
+  static m83(abbr) => "${abbr} nem aktív. Kérjük, aktiválja és próbálja újra.";
 
-  static m83(appName) => "Mely eszközökön használhatom az ${appName}-t?";
+  static m84(appName) => "Mely eszközökön használhatom az ${appName}-t?";
 
-  static m84(appName) =>
+  static m85(appName) =>
       "Miben különbözik a kereskedés az ${appName}-en a más DEX-eken folytatott kereskedéstől?";
 
-  static m85(appName) => "Hogyan számítják ki a díjakat az ${appName}-nél?";
+  static m86(appName) => "Hogyan számítják ki a díjakat az ${appName}-nél?";
 
-  static m86(appName) => "Ki áll az ${appName} mögött?";
+  static m87(appName) => "Ki áll az ${appName} mögött?";
 
-  static m87(appName) =>
+  static m88(appName) =>
       "Lehetséges saját white-label csereprogramot kialakítani az ${appName} oldalon?";
 
-  static m88(amount) => "Siker! ${amount} KMD kapott.";
+  static m89(amount) => "Siker! ${amount} KMD kapott.";
 
-  static m89(dd) => "${dd} napok";
+  static m90(dd) => "${dd} napok";
 
-  static m90(hh, minutes) => "${hh}h ${minutes}m";
+  static m91(hh, minutes) => "${hh}h ${minutes}m";
 
-  static m91(mm) => "${mm}min";
+  static m92(mm) => "${mm}min";
 
-  static m92(amount) => "Kattintson a megtekintéshez ${amount} rendelések";
+  static m93(amount) => "Kattintson a megtekintéshez ${amount} rendelések";
 
-  static m93(coinName, address) => "Az én ${coinName} címem:\n${address}";
+  static m94(coinName, address) => "Az én ${coinName} címem:\n${address}";
 
-  static m94(count, maxCount) => "${count}/${maxCount} rendelés megjelenítése.";
+  static m95(coin) => "Keresi a múltbeli ${coin} tranzakciókat?";
 
-  static m95(coin) => "Kérjük, adja meg a ${coin} összeget a vásárláshoz";
+  static m96(count, maxCount) => "${count}/${maxCount} rendelés megjelenítése.";
 
-  static m96(maxCoins) =>
+  static m97(coin) => "Kérjük, adja meg a ${coin} összeget a vásárláshoz";
+
+  static m98(maxCoins) =>
       "A maximális aktív érmék száma ${maxCoins}. Kérjük, néhányat deaktiváljon.";
 
-  static m97(coin) => "${coin} nem aktív!";
+  static m99(coin) => "${coin} nem aktív!";
 
-  static m98(coin) => "Kérjük, adja meg az eladni kívánt ${coin} összeget";
+  static m100(coin) => "Kérjük, adja meg az eladni kívánt ${coin} összeget";
 
-  static m99(coin) => "Nem sikerült aktiválni ${coin}";
+  static m101(coin) => "Nem sikerült aktiválni ${coin}";
 
-  static m100(description) =>
+  static m102(description) =>
       "Válasszon egy mp3 vagy wav fájlt, kérem. Akkor fogjuk lejátszani, amikor ${description}.";
 
-  static m101(description) => "Lejátsszuk, amikor ${description}";
+  static m103(description) => "Lejátsszuk, amikor ${description}";
 
-  static m102(appName) =>
+  static m104(appName) =>
       "Ha bármilyen kérdésed van, vagy úgy gondolod, hogy technikai problémát találtál az ${appName} alkalmazással kapcsolatban, akkor jelentheted, és támogatást kaphatsz csapatunktól.";
 
-  static m103(coin) =>
+  static m105(coin) =>
       "Kérjük, először aktiválja ${coin} és töltse fel egyenlegét";
 
-  static m104(coin) =>
+  static m106(coin) =>
       "Az ${coin} egyenleg nem elegendő a tranzakciós díjak kifizetéséhez.";
 
-  static m105(coin, amount) =>
+  static m107(coin, amount) =>
       "${coin} egyenleg nem elegendő a tranzakciós díjak kifizetéséhez. ${coin} ${amount} szükséges.";
 
-  static m106(left) => "Tranzakciók Balra: ${left}";
+  static m108(name) => "Mely ${name} tranzakciókat szeretné szinkronizálni?";
 
-  static m107(amnt, hash) =>
+  static m109(left) => "Tranzakciók Balra: ${left}";
+
+  static m110(amnt, hash) =>
       "Sikeresen feloldotta a ${amnt} pénzeszközöket - TX: ${hash}";
 
-  static m108(version) => "Ön a ${version} verziót használja.";
+  static m111(version) => "Ön a ${version} verziót használja.";
 
-  static m109(version) => "A ${version} verzió elérhető. Kérjük, frissítse.";
+  static m112(version) => "A ${version} verzió elérhető. Kérjük, frissítse.";
 
-  static m110(appName) => "${appName} frissítés";
+  static m113(appName) => "${appName} frissítés";
 
-  static m111(coinAbbr) => "Nem sikerült aktiválni a ${coinAbbr}";
+  static m114(coinAbbr) => "Nem sikerült aktiválni a ${coinAbbr}";
 
-  static m112(coinAbbr) =>
+  static m115(coinAbbr) =>
       "Nem sikerült aktiválni a ${coinAbbr}.\nKérjük, indítsa újra az alkalmazást, hogy újra megpróbálhassa.";
 
-  static m113(appName) =>
+  static m116(appName) =>
       "${appName} mobil egy következő generációs többérmés pénztárca natív harmadik generációs DEX funkcióval és még sokkal több";
 
-  static m114(appName) =>
+  static m117(appName) =>
       "Ön korábban megtagadta a ${appName} hozzáférést a kamerához.\n Kérjük, a QR-kód beolvasásának folytatásához manuálisan módosítsa a kameraengedélyt a telefon beállításaiban.";
 
-  static m115(amount, coinName) => "KIFIZETÉS ${amount} ${coinName}";
+  static m118(amount, coinName) => "KIFIZETÉS ${amount} ${coinName}";
 
-  static m116(amount, coin) => "Kapni fog ${amount} ${coin}";
+  static m119(amount, coin) => "Kapni fog ${amount} ${coin}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -352,6 +358,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressSend": MessageLookupByLibrary.simpleMessage("Címzett címe"),
         "advanced": MessageLookupByLibrary.simpleMessage("Haladó"),
         "all": MessageLookupByLibrary.simpleMessage("Minden"),
+        "allPastTransactions": MessageLookupByLibrary.simpleMessage(
+            "A pénztárcája minden korábbi tranzakciót mutat. Ez jelentős tárhelyet és időt vesz igénybe, mivel az összes blokkot letölti és átvizsgálja."),
         "allowCustomSeed":
             MessageLookupByLibrary.simpleMessage("Egyedi SEED engedélyezése"),
         "alreadyExists": MessageLookupByLibrary.simpleMessage("Már létezik"),
@@ -422,6 +430,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "camouflageSetup":
             MessageLookupByLibrary.simpleMessage("Álcázási PIN beállítása"),
         "cancel": MessageLookupByLibrary.simpleMessage("visszamond"),
+        "cancelActivation":
+            MessageLookupByLibrary.simpleMessage("Aktiválás megszakítása"),
+        "cancelActivationQuestion": MessageLookupByLibrary.simpleMessage(
+            "Biztosan megszakítja az aktiválást?"),
         "cancelButton": MessageLookupByLibrary.simpleMessage("Visszavonás"),
         "cancelOrder":
             MessageLookupByLibrary.simpleMessage("Megrendelés visszavonása"),
@@ -469,6 +481,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "closePreview":
             MessageLookupByLibrary.simpleMessage("Előnézet bezárása"),
         "code": MessageLookupByLibrary.simpleMessage("Kód:"),
+        "cofirmCancelActivation": MessageLookupByLibrary.simpleMessage(
+            "Biztosan megszakítja az aktiválást?"),
         "coinSelectClear": MessageLookupByLibrary.simpleMessage("Tiszta"),
         "coinSelectNotFound":
             MessageLookupByLibrary.simpleMessage("Nincsenek aktív érmék"),
@@ -766,6 +780,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "foundQrCode": MessageLookupByLibrary.simpleMessage("Talált QR kódot"),
         "frenchLanguage": MessageLookupByLibrary.simpleMessage("Francia"),
         "from": MessageLookupByLibrary.simpleMessage("Honnan"),
+        "futureTransactions": MessageLookupByLibrary.simpleMessage(
+            "A jövőbeni tranzakciókat szinkronizálni fogjuk a nyilvános kulcsához társított aktiválás után. Ez a leggyorsabb lehetőség, és a legkevesebb tárhelyet foglalja el."),
         "gasFee": m49,
         "gasLimit": MessageLookupByLibrary.simpleMessage("Benzin limit"),
         "gasNotActive": m50,
@@ -850,11 +866,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Frissítés"),
         "internetRestored": MessageLookupByLibrary.simpleMessage(
             "Internet kapcsolat helyreállt"),
+        "invalidCoinAddress": m54,
         "invalidSwap": MessageLookupByLibrary.simpleMessage(
             "Nem lehet folytatni a swapot"),
         "invalidSwapDetailsLink":
             MessageLookupByLibrary.simpleMessage("Részletek"),
-        "isUnavailable": m54,
+        "isUnavailable": m55,
         "japaneseLanguage": MessageLookupByLibrary.simpleMessage("Japán"),
         "koreanLanguage": MessageLookupByLibrary.simpleMessage("Koreai"),
         "language": MessageLookupByLibrary.simpleMessage("Nyelv"),
@@ -862,8 +879,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Legutóbbi tranzakciók"),
         "legalTitle": MessageLookupByLibrary.simpleMessage("Jogi"),
         "less": MessageLookupByLibrary.simpleMessage("Kevesebb"),
-        "lessThanCaution": m55,
-        "limitError": m56,
+        "lessThanCaution": m56,
+        "limitError": m57,
         "loading": MessageLookupByLibrary.simpleMessage("Betöltés..."),
         "loadingOrderbook": MessageLookupByLibrary.simpleMessage(
             "Rendelési könyv betöltése..."),
@@ -938,11 +955,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "min": MessageLookupByLibrary.simpleMessage("MIN"),
         "minOrder": MessageLookupByLibrary.simpleMessage(
             "Minimális rendelési mennyiség:"),
-        "minValue": m57,
-        "minValueBuy": m58,
-        "minValueOrder": m59,
-        "minValueSell": m60,
-        "minVolumeInput": m61,
+        "minValue": m58,
+        "minValueBuy": m59,
+        "minValueOrder": m60,
+        "minValueSell": m61,
+        "minVolumeInput": m62,
         "minVolumeIsTDH": MessageLookupByLibrary.simpleMessage(
             "Alacsonyabbnak kell lennie, mint az eladási összeg"),
         "minVolumeTitle": MessageLookupByLibrary.simpleMessage(
@@ -952,10 +969,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimizingWillTerminate": MessageLookupByLibrary.simpleMessage(
             "Figyelmeztetés: Az alkalmazás iOS rendszeren való minimalizálása leállítja az aktiválási folyamatot."),
         "minutes": MessageLookupByLibrary.simpleMessage("m"),
-        "mobileDataWarning": m62,
+        "mobileDataWarning": m63,
         "moreInfo": MessageLookupByLibrary.simpleMessage("Több információ"),
         "moreTab": MessageLookupByLibrary.simpleMessage("További"),
-        "multiActivateGas": m63,
+        "multiActivateGas": m64,
         "multiBaseAmtPlaceholder":
             MessageLookupByLibrary.simpleMessage("Összeg"),
         "multiBasePlaceholder": MessageLookupByLibrary.simpleMessage("Érme"),
@@ -963,7 +980,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "multiConfirmCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "multiConfirmConfirm":
             MessageLookupByLibrary.simpleMessage("Megerősítés"),
-        "multiConfirmTitle": m64,
+        "multiConfirmTitle": m65,
         "multiCreate": MessageLookupByLibrary.simpleMessage("Létrehozása"),
         "multiCreateOrder": MessageLookupByLibrary.simpleMessage("Megrendelés"),
         "multiCreateOrders":
@@ -979,8 +996,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Érvénytelen összeg"),
         "multiInvalidSellAmt":
             MessageLookupByLibrary.simpleMessage("Érvénytelen eladási összeg"),
-        "multiLowGas": m65,
-        "multiLowerThanFee": m66,
+        "multiLowGas": m66,
+        "multiLowerThanFee": m67,
         "multiMaxSellAmt":
             MessageLookupByLibrary.simpleMessage("Max eladási összeg"),
         "multiMinReceiveAmt":
@@ -1014,7 +1031,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nincs kiválasztott tétel"),
         "noMatchingOrders": MessageLookupByLibrary.simpleMessage(
             "Nem találtak megfelelő rendelést"),
-        "noOrder": m67,
+        "noOrder": m68,
         "noOrderAvailable": MessageLookupByLibrary.simpleMessage(
             "Kattintson a megrendelés létrehozásához"),
         "noOrders": MessageLookupByLibrary.simpleMessage(
@@ -1029,7 +1046,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nonNumericInput": MessageLookupByLibrary.simpleMessage(
             "Az értéknek numerikusnak kell lennie"),
         "none": MessageLookupByLibrary.simpleMessage("Egyik sem"),
-        "notEnoughGas": m68,
+        "notEnoughGas": m69,
         "notEnoughtBalanceForFee": MessageLookupByLibrary.simpleMessage(
             "Nincs elég egyenlege a jutalékhoz - kereskedjen kisebb mennyiséggel"),
         "noteOnOrder": MessageLookupByLibrary.simpleMessage(
@@ -1039,24 +1056,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "noteTitle": MessageLookupByLibrary.simpleMessage("Megjegyzés"),
         "nothingFound":
             MessageLookupByLibrary.simpleMessage("Semmi sem található"),
-        "notifSwapCompletedText": m69,
+        "notifSwapCompletedText": m70,
         "notifSwapCompletedTitle":
             MessageLookupByLibrary.simpleMessage("A csere befejeződött"),
-        "notifSwapFailedText": m70,
+        "notifSwapFailedText": m71,
         "notifSwapFailedTitle":
             MessageLookupByLibrary.simpleMessage("A swap sikertelen"),
-        "notifSwapStartedText": m71,
+        "notifSwapStartedText": m72,
         "notifSwapStartedTitle":
             MessageLookupByLibrary.simpleMessage("Új swap indult"),
         "notifSwapStatusTitle":
             MessageLookupByLibrary.simpleMessage("Swap státusz megváltozott"),
-        "notifSwapTimeoutText": m72,
+        "notifSwapTimeoutText": m73,
         "notifSwapTimeoutTitle":
             MessageLookupByLibrary.simpleMessage("Swap lejárt"),
-        "notifTxText": m73,
+        "notifTxText": m74,
         "notifTxTitle":
             MessageLookupByLibrary.simpleMessage("Bejövő tranzakció"),
-        "numberAssets": m74,
+        "numberAssets": m75,
         "officialPressRelease":
             MessageLookupByLibrary.simpleMessage("Hivatalos sajtóközlemény"),
         "okButton": MessageLookupByLibrary.simpleMessage("Oké"),
@@ -1067,15 +1084,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Hibaüzenet megnyitása"),
         "orderBookLess": MessageLookupByLibrary.simpleMessage("Kevésbé"),
         "orderBookMore": MessageLookupByLibrary.simpleMessage("Több"),
-        "orderCancel": m75,
+        "orderCancel": m76,
         "orderCreated":
             MessageLookupByLibrary.simpleMessage("Megrendelés létrehozva"),
         "orderCreatedInfo": MessageLookupByLibrary.simpleMessage(
             "Megrendelés sikeresen létrehozva"),
         "orderDetailsAddress": MessageLookupByLibrary.simpleMessage("Cím:"),
         "orderDetailsCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
-        "orderDetailsExpedient": m76,
-        "orderDetailsExpensive": m77,
+        "orderDetailsExpedient": m77,
+        "orderDetailsExpensive": m78,
         "orderDetailsFor": MessageLookupByLibrary.simpleMessage("a esetében"),
         "orderDetailsIdentical":
             MessageLookupByLibrary.simpleMessage("Azonos a CEX-szel"),
@@ -1090,7 +1107,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "orderDetailsSpend":
             MessageLookupByLibrary.simpleMessage("Töltse el a"),
         "orderDetailsTitle": MessageLookupByLibrary.simpleMessage("Részletek"),
-        "orderFilled": m78,
+        "orderFilled": m79,
         "orderMatched":
             MessageLookupByLibrary.simpleMessage("Rendelés megegyezett"),
         "orderMatching":
@@ -1101,9 +1118,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders": MessageLookupByLibrary.simpleMessage("rendelések"),
         "ordersActive": MessageLookupByLibrary.simpleMessage("Aktív"),
         "ordersHistory": MessageLookupByLibrary.simpleMessage("Történelem"),
-        "ordersTableAmount": m79,
-        "ordersTablePrice": m80,
-        "ordersTableTotal": m81,
+        "ordersTableAmount": m80,
+        "ordersTablePrice": m81,
+        "ordersTableTotal": m82,
         "overwrite": MessageLookupByLibrary.simpleMessage("Felülírás"),
         "ownOrder":
             MessageLookupByLibrary.simpleMessage("Ez a saját megrendelésed!"),
@@ -1114,6 +1131,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidWith": MessageLookupByLibrary.simpleMessage("Fizetetve"),
         "passwordRequirement": MessageLookupByLibrary.simpleMessage(
             "A jelszónak legalább 12 karaktert kell tartalmaznia, egy kisbetűt, egy nagybetűt és egy speciális szimbólumot."),
+        "pastTransactionsFromDate": MessageLookupByLibrary.simpleMessage(
+            "A pénztárcája megmutatja a megadott dátum után végrehajtott korábbi tranzakcióit."),
         "paymentUriDetailsAccept":
             MessageLookupByLibrary.simpleMessage("Fizetés"),
         "paymentUriDetailsAcceptQuestion": MessageLookupByLibrary.simpleMessage(
@@ -1127,7 +1146,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentUriDetailsDeny": MessageLookupByLibrary.simpleMessage("Cancel"),
         "paymentUriDetailsTitle":
             MessageLookupByLibrary.simpleMessage("Kért fizetés"),
-        "paymentUriInactiveCoin": m82,
+        "paymentUriInactiveCoin": m83,
         "placeOrder": MessageLookupByLibrary.simpleMessage("Rendelés leadása"),
         "pleaseAddCoin": MessageLookupByLibrary.simpleMessage(
             "Kérjük, adjon hozzá egy érmét"),
@@ -1152,19 +1171,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("QR Code Scanner"),
         "question_1": MessageLookupByLibrary.simpleMessage(
             "Tárolja a privát kulcsaimat?"),
-        "question_10": m83,
-        "question_2": m84,
+        "question_10": m84,
+        "question_2": m85,
         "question_3": MessageLookupByLibrary.simpleMessage(
             "Mennyi ideig tart egy-egy atomi swap?"),
         "question_4": MessageLookupByLibrary.simpleMessage(
             "A csere időtartama alatt online kell lennem?"),
-        "question_5": m85,
+        "question_5": m86,
         "question_6": MessageLookupByLibrary.simpleMessage(
             "Biztosítanak felhasználói támogatást?"),
         "question_7": MessageLookupByLibrary.simpleMessage(
             "Vannak országos korlátozások?"),
-        "question_8": m86,
-        "question_9": m87,
+        "question_8": m87,
+        "question_9": m88,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
             "Ez egy új korszak! Hivatalosan megváltoztattuk a nevünket „AtomicDEX”-ről „Komodo Wallet”-ra"),
         "receive": MessageLookupByLibrary.simpleMessage("FOGAD"),
@@ -1204,7 +1223,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "További információ a KMD aktív felhasználó jutalmakról"),
         "rewardsReceive":
             MessageLookupByLibrary.simpleMessage("Kapja meg a címet."),
-        "rewardsSuccess": m88,
+        "rewardsSuccess": m89,
         "rewardsTableFiat": MessageLookupByLibrary.simpleMessage("Utalás"),
         "rewardsTableRewards":
             MessageLookupByLibrary.simpleMessage("Jutalmak,\nKMD"),
@@ -1214,9 +1233,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Jutalom információ:"),
         "rewardsTableUXTO":
             MessageLookupByLibrary.simpleMessage("UTXO amt,\nKMD"),
-        "rewardsTimeDays": m89,
-        "rewardsTimeHours": m90,
-        "rewardsTimeMin": m91,
+        "rewardsTimeDays": m90,
+        "rewardsTimeHours": m91,
+        "rewardsTimeMin": m92,
         "rewardsTitle":
             MessageLookupByLibrary.simpleMessage("Jutalom információk"),
         "russianLanguage": MessageLookupByLibrary.simpleMessage("Orosz"),
@@ -1269,7 +1288,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Keresse meg a Tickert"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),
         "security": MessageLookupByLibrary.simpleMessage("Biztonság"),
-        "seeOrders": m92,
+        "seeOrders": m93,
         "seeTxHistory": MessageLookupByLibrary.simpleMessage(
             "Tranzakciós előzmények megtekintése"),
         "seedPhrase": MessageLookupByLibrary.simpleMessage("SEED kifejezés"),
@@ -1283,6 +1302,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Válassza ki az érmét amit VÁSÁROLNI szeretne"),
         "selectCoinToSell": MessageLookupByLibrary.simpleMessage(
             "Válassza ki az érmét amit ELADNI szeretne"),
+        "selectDate":
+            MessageLookupByLibrary.simpleMessage("Válasszon egy dátumot"),
         "selectFileImport":
             MessageLookupByLibrary.simpleMessage("Fájl kiválasztása"),
         "selectLanguage":
@@ -1310,14 +1331,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingLanguageTitle": MessageLookupByLibrary.simpleMessage("Nyelvek"),
         "settings": MessageLookupByLibrary.simpleMessage("Beállítások"),
         "share": MessageLookupByLibrary.simpleMessage("Megosztás"),
-        "shareAddress": m93,
+        "shareAddress": m94,
+        "shouldScanPastTransaction": m95,
         "showAddress":
             MessageLookupByLibrary.simpleMessage("Cím megjelenítése"),
         "showDetails":
             MessageLookupByLibrary.simpleMessage("Részletek megjelenítése"),
         "showMyOrders":
             MessageLookupByLibrary.simpleMessage("Mutasd a rendeléseimet"),
-        "showingOrders": m94,
+        "showingOrders": m96,
         "signInWithPassword":
             MessageLookupByLibrary.simpleMessage("Jelentkezzen be jelszóval"),
         "signInWithSeedPhrase":
@@ -1325,24 +1347,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "simple": MessageLookupByLibrary.simpleMessage("Egyszerű"),
         "simpleTradeActivate":
             MessageLookupByLibrary.simpleMessage("Aktiválja a címet."),
-        "simpleTradeBuyHint": m95,
+        "simpleTradeBuyHint": m97,
         "simpleTradeBuyTitle": MessageLookupByLibrary.simpleMessage("Vásárlás"),
         "simpleTradeClose": MessageLookupByLibrary.simpleMessage("Bezárás"),
-        "simpleTradeMaxActiveCoins": m96,
-        "simpleTradeNotActive": m97,
+        "simpleTradeMaxActiveCoins": m98,
+        "simpleTradeNotActive": m99,
         "simpleTradeRecieve": MessageLookupByLibrary.simpleMessage("Fogadja"),
-        "simpleTradeSellHint": m98,
+        "simpleTradeSellHint": m100,
         "simpleTradeSellTitle": MessageLookupByLibrary.simpleMessage("Eladni"),
         "simpleTradeSend": MessageLookupByLibrary.simpleMessage("Küldje el a"),
         "simpleTradeShowLess":
             MessageLookupByLibrary.simpleMessage("Kevesebb mutatása"),
         "simpleTradeShowMore":
             MessageLookupByLibrary.simpleMessage("Többet mutasd meg"),
-        "simpleTradeUnableActivate": m99,
+        "simpleTradeUnableActivate": m101,
         "skip": MessageLookupByLibrary.simpleMessage("Kihagyás"),
         "snackbarDismiss": MessageLookupByLibrary.simpleMessage("Dissississ"),
-        "soundCantPlayThatMsg": m100,
-        "soundPlayedWhen": m101,
+        "soundCantPlayThatMsg": m102,
+        "soundPlayedWhen": m103,
         "soundSettingsLink": MessageLookupByLibrary.simpleMessage("Hang"),
         "soundSettingsTitle":
             MessageLookupByLibrary.simpleMessage("Hangbeállítások"),
@@ -1354,21 +1376,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "soundsNote": MessageLookupByLibrary.simpleMessage(
             "Ne feledje, hogy az alkalmazás beállításaiban beállíthatja az egyéni hangokat."),
         "spanishLanguage": MessageLookupByLibrary.simpleMessage("Spanyol"),
+        "startDate": MessageLookupByLibrary.simpleMessage("Kezdő dátum"),
         "startSwap":
             MessageLookupByLibrary.simpleMessage("Indítsa el a Swapot"),
         "step": MessageLookupByLibrary.simpleMessage("Lépés"),
         "success": MessageLookupByLibrary.simpleMessage("Siker!"),
         "support": MessageLookupByLibrary.simpleMessage("Támogatás"),
-        "supportLinksDesc": m102,
+        "supportLinksDesc": m104,
         "swap": MessageLookupByLibrary.simpleMessage("csere"),
         "swapCurrent": MessageLookupByLibrary.simpleMessage("Aktuális"),
         "swapDetailTitle": MessageLookupByLibrary.simpleMessage(
             "Erősitse meg a csere részleteit"),
         "swapEstimated": MessageLookupByLibrary.simpleMessage("Becslés"),
         "swapFailed": MessageLookupByLibrary.simpleMessage("Csere sikertelen"),
-        "swapGasActivate": m103,
-        "swapGasAmount": m104,
-        "swapGasAmountRequired": m105,
+        "swapGasActivate": m105,
+        "swapGasAmount": m106,
+        "swapGasAmountRequired": m107,
         "swapOngoing":
             MessageLookupByLibrary.simpleMessage("Csere folyamatban"),
         "swapProgress":
@@ -1378,6 +1401,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "swapTotal": MessageLookupByLibrary.simpleMessage("Összesen"),
         "swapUUID": MessageLookupByLibrary.simpleMessage("Swap UUID"),
         "switchTheme": MessageLookupByLibrary.simpleMessage("Switch téma"),
+        "syncFromDate": MessageLookupByLibrary.simpleMessage(
+            "Szinkronizálás a megadott dátumtól"),
+        "syncFromSaplingActivation": MessageLookupByLibrary.simpleMessage(
+            "Szinkronizálás a csemete aktiválásából"),
+        "syncNewTransactions": MessageLookupByLibrary.simpleMessage(
+            "Új tranzakciók szinkronizálása"),
+        "syncTransactionsQuestion": m108,
         "tagAVX20": MessageLookupByLibrary.simpleMessage("AVX20"),
         "tagBEP20": MessageLookupByLibrary.simpleMessage("BEP20"),
         "tagERC20": MessageLookupByLibrary.simpleMessage("ERC20"),
@@ -1440,25 +1470,25 @@ class MessageLookup extends MessageLookupByLibrary {
             "Túl sok a kérés.\n Tranzakciótörténeti kérések száma túllépte a limitet.\n Kérjük, próbálja meg később újra."),
         "txNotConfirmed":
             MessageLookupByLibrary.simpleMessage("NEM MEGERŐSÍTETT"),
-        "txleft": m106,
+        "txleft": m109,
         "ukrainianLanguage": MessageLookupByLibrary.simpleMessage("Ukrán"),
         "unlock": MessageLookupByLibrary.simpleMessage("kinyit"),
         "unlockFunds": MessageLookupByLibrary.simpleMessage("Alapok feloldása"),
-        "unlockSuccess": m107,
+        "unlockSuccess": m110,
         "unspendable": MessageLookupByLibrary.simpleMessage("elkölthetetlen"),
         "updatesAvailable":
             MessageLookupByLibrary.simpleMessage("Új verzió elérhető"),
         "updatesChecking":
             MessageLookupByLibrary.simpleMessage("Frissítések keresése..."),
-        "updatesCurrentVersion": m108,
+        "updatesCurrentVersion": m111,
         "updatesNotifAvailable": MessageLookupByLibrary.simpleMessage(
             "Új verzió elérhető. Kérjük, frissítse."),
-        "updatesNotifAvailableVersion": m109,
+        "updatesNotifAvailableVersion": m112,
         "updatesNotifTitle":
             MessageLookupByLibrary.simpleMessage("Frissítés elérhető"),
         "updatesSkip":
             MessageLookupByLibrary.simpleMessage("Egyelőre kihagyás"),
-        "updatesTitle": m110,
+        "updatesTitle": m113,
         "updatesUpToDate":
             MessageLookupByLibrary.simpleMessage("Már naprakész"),
         "updatesUpdate": MessageLookupByLibrary.simpleMessage("Frissítés"),
@@ -1484,9 +1514,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "warningOkBtn": MessageLookupByLibrary.simpleMessage("Ok"),
         "warningShareLogs": MessageLookupByLibrary.simpleMessage(
             "Figyelmeztetés - különleges esetekben ez a naplóadat érzékeny információkat tartalmaz, amelyek felhasználhatók a sikertelen cserékből származó érmék elköltésére!"),
-        "weFailedTo": m111,
-        "weFailedToActivate": m112,
-        "welcomeInfo": m113,
+        "weFailedTo": m114,
+        "weFailedToActivate": m115,
+        "welcomeInfo": m116,
         "welcomeLetSetUp":
             MessageLookupByLibrary.simpleMessage("KÉSZÍTSÜK FEL!"),
         "welcomeTitle": MessageLookupByLibrary.simpleMessage("Üdvözöljük"),
@@ -1496,14 +1526,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "willTakeTime": MessageLookupByLibrary.simpleMessage(
             "Ez eltart egy ideig, és az alkalmazást az előtérben kell tartani.\nAz alkalmazás aktiválás közbeni leállítása problémákhoz vezethet."),
         "withdraw": MessageLookupByLibrary.simpleMessage("Kifizetés"),
-        "withdrawCameraAccessText": m114,
+        "withdrawCameraAccessText": m117,
         "withdrawCameraAccessTitle":
             MessageLookupByLibrary.simpleMessage("Hozzáférés megtagadva"),
         "withdrawConfirm":
             MessageLookupByLibrary.simpleMessage("Kiutalás megerősítése"),
         "withdrawConfirmError": MessageLookupByLibrary.simpleMessage(
             "Valami rosszul sült el. Próbálja meg később újra."),
-        "withdrawValue": m115,
+        "withdrawValue": m118,
         "wrongCoinSpan1": MessageLookupByLibrary.simpleMessage(
             "Ön megpróbál beolvasni egy fizetési QR-kódot a következőhöz"),
         "wrongCoinSpan2": MessageLookupByLibrary.simpleMessage("de a"),
@@ -1522,7 +1552,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "van egy megbízása, amellyel az új megbízások összeilleszthetők."),
         "youAreSending": MessageLookupByLibrary.simpleMessage("Ön küld:"),
-        "youWillReceiveClaim": m116,
+        "youWillReceiveClaim": m119,
         "youWillReceived": MessageLookupByLibrary.simpleMessage("Fog kapni:"),
         "yourWallet": MessageLookupByLibrary.simpleMessage("a pénztárcája")
       };
