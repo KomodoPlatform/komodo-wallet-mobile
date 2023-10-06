@@ -151,134 +151,140 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m53(abbr) => "${abbr}余额不足以支付交易费";
 
-  static m54(coinAbbr) => "${coinAbbr} 不可用:(";
+  static m54(coin) => "${coin} 地址无效";
 
-  static m55(coinName) => "❗注意！ ${coinName} 市场的 24 小时交易量不到 1 万美元！";
+  static m55(coinAbbr) => "${coinAbbr} 不可用:(";
 
-  static m56(value) => "限制必须达到 ${value}";
+  static m56(coinName) => "❗注意！ ${coinName} 市场的 24 小时交易量不到 1 万美元！";
 
-  static m57(coinName, number) => "最低售出量为${number} ${coinName}";
+  static m57(value) => "限制必须达到 ${value}";
 
-  static m58(coinName, number) => "最低买入量为${number} ${coinName}";
+  static m58(coinName, number) => "最低售出量为${number} ${coinName}";
 
-  static m59(buyCoin, buyAmount, sellCoin, sellAmount) =>
+  static m59(coinName, number) => "最低买入量为${number} ${coinName}";
+
+  static m60(buyCoin, buyAmount, sellCoin, sellAmount) =>
       "最小交易量为 ${buyAmount} ${buyCoin}\n(${sellAmount} ${sellCoin})";
 
-  static m60(coinName, number) => "最低售出量为 ${number} ${coinName}";
+  static m61(coinName, number) => "最低售出量为 ${number} ${coinName}";
 
-  static m61(minValue, coin) => "必须大于${minValue} ${coin}";
+  static m62(minValue, coin) => "必须大于${minValue} ${coin}";
 
-  static m62(appName) =>
+  static m63(appName) =>
       "请注意，您现在正在使用流量，使用${appName} P2P网络会消耗互联网流量。如果您的手机流量很贵，最好连接WIFI。";
 
-  static m63(coin) => "先激活${coin}并充值余额";
+  static m64(coin) => "先激活${coin}并充值余额";
 
-  static m64(number) => "创建${number}订单：";
+  static m65(number) => "创建${number}订单：";
 
-  static m65(coin) => "${coin}余额过低";
+  static m66(coin) => "${coin}余额过低";
 
-  static m66(coin, fee) => "${coin}不足支付。最低余额为 ${fee} ${coin}";
+  static m67(coin, fee) => "${coin}不足支付。最低余额为 ${fee} ${coin}";
 
-  static m67(coinName) => "请输入 ${coinName} 量";
+  static m68(coinName) => "请输入 ${coinName} 量";
 
-  static m68(coin) => "没有足够的${coin} 用于交易！";
+  static m69(coin) => "没有足够的${coin} 用于交易！";
 
-  static m69(sell, buy) => "${sell}/${buy} 已成功完成交换";
+  static m70(sell, buy) => "${sell}/${buy} 已成功完成交换";
 
-  static m70(sell, buy) => "${sell}/${buy}交换失败";
+  static m71(sell, buy) => "${sell}/${buy}交换失败";
 
-  static m71(sell, buy) => "${sell}/${buy}交换开始";
+  static m72(sell, buy) => "${sell}/${buy}交换开始";
 
-  static m72(sell, buy) => "${sell}/${buy}交换超时";
+  static m73(sell, buy) => "${sell}/${buy}交换超时";
 
-  static m73(coin) => "您已收到｛coin｝交易！";
+  static m74(coin) => "您已收到｛coin｝交易！";
 
-  static m74(assets) => "${assets} 资产";
+  static m75(assets) => "${assets} 资产";
 
-  static m75(coin) => "所有${coin}订单将被取消。";
+  static m76(coin) => "所有${coin}订单将被取消。";
 
-  static m76(delta) => "划算的: CEX +${delta}%";
+  static m77(delta) => "划算的: CEX +${delta}%";
 
-  static m77(delta) => "昂贵的: CEX ${delta}%";
+  static m78(delta) => "昂贵的: CEX ${delta}%";
 
-  static m78(fill) => "${fill}%已填充";
+  static m79(fill) => "${fill}%已填充";
 
-  static m79(coin) => "数量(${coin})";
+  static m80(coin) => "数量(${coin})";
 
-  static m80(coin) => "价格 (${coin})";
+  static m81(coin) => "价格 (${coin})";
 
-  static m81(coin) => "总计 (${coin})";
+  static m82(coin) => "总计 (${coin})";
 
-  static m82(abbr) => "${abbr} 未激活。请激活后重试。";
+  static m83(abbr) => "${abbr} 未激活。请激活后重试。";
 
-  static m83(appName) => "我可以在哪些设备上使用${appName} ？";
+  static m84(appName) => "我可以在哪些设备上使用${appName} ？";
 
-  static m84(appName) => "在${appName} 上交易与在其他DEX上交易有何不同？";
+  static m85(appName) => "在${appName} 上交易与在其他DEX上交易有何不同？";
 
-  static m85(appName) => "${appName} 的费用如何计算？";
+  static m86(appName) => "${appName} 的费用如何计算？";
 
-  static m86(appName) => "${appName} 的背后是谁？";
+  static m87(appName) => "${appName} 的背后是谁？";
 
-  static m87(appName) => "是否可以在${appName} 上开发我个人的白标交换？";
+  static m88(appName) => "是否可以在${appName} 上开发我个人的白标交换？";
 
-  static m88(amount) => "成功！收到 ${amount}KMD";
+  static m89(amount) => "成功！收到 ${amount}KMD";
 
-  static m89(dd) => "${dd} 天";
+  static m90(dd) => "${dd} 天";
 
-  static m90(hh, minutes) => "${hh}小时 ${minutes}分钟";
+  static m91(hh, minutes) => "${hh}小时 ${minutes}分钟";
 
-  static m91(mm) => "${mm}分钟";
+  static m92(mm) => "${mm}分钟";
 
-  static m92(amount) => "点击查看${amount} 交易";
+  static m93(amount) => "点击查看${amount} 交易";
 
-  static m93(coinName, address) => "我的${coinName} 地址:\n${address}";
+  static m94(coinName, address) => "我的${coinName} 地址:\n${address}";
 
-  static m94(count, maxCount) => "显示 ${count} 个订单（共 ${maxCount} 个）。";
+  static m95(coin) => "扫描过去的 ${coin} 交易？";
 
-  static m95(coin) => "请输入要买入的 ${coin} 数量";
+  static m96(count, maxCount) => "显示 ${count} 个订单（共 ${maxCount} 个）。";
 
-  static m96(maxCoins) => "货币最大活跃量为${maxCoins}。请停用一些。";
+  static m97(coin) => "请输入要买入的 ${coin} 数量";
 
-  static m97(coin) => "${coin}未激活！";
+  static m98(maxCoins) => "货币最大活跃量为${maxCoins}。请停用一些。";
 
-  static m98(coin) => "请输入要卖出的${coin}数量";
+  static m99(coin) => "${coin}未激活！";
 
-  static m99(coin) => "无法激活${coin}";
+  static m100(coin) => "请输入要卖出的${coin}数量";
 
-  static m100(description) => "请选择mp3或wav文件。我们将在${description}时播放它。";
+  static m101(coin) => "无法激活${coin}";
 
-  static m101(description) => "当${description}播放";
+  static m102(description) => "请选择mp3或wav文件。我们将在${description}时播放它。";
 
-  static m102(appName) =>
+  static m103(description) => "当${description}播放";
+
+  static m104(appName) =>
       "如果您有任何问题，或者认为您发现${appName} 应用程序存在技术问题，请联系我们获取我们团队的支持。";
 
-  static m103(coin) => "请先激活 ${coin} 并充值余额";
+  static m105(coin) => "请先激活 ${coin} 并充值余额";
 
-  static m104(coin) => "${coin} 余额不足以支付交易费用。";
+  static m106(coin) => "${coin} 余额不足以支付交易费用。";
 
-  static m105(coin, amount) => "${coin} 余额不足以支付交易费用。需要 ${coin} ${amount}";
+  static m107(coin, amount) => "${coin} 余额不足以支付交易费用。需要 ${coin} ${amount}";
 
-  static m106(left) => "剩余交易: ${left}";
+  static m108(name) => "您想要同步哪些${name}交易？";
 
-  static m107(amnt, hash) => "成功解锁 ${amnt} 基金 - 交易: ${hash}";
+  static m109(left) => "剩余交易: ${left}";
 
-  static m108(version) => "您正在使用版本${version}";
+  static m110(amnt, hash) => "成功解锁 ${amnt} 基金 - 交易: ${hash}";
 
-  static m109(version) => "版本${version}可用。请更新。";
+  static m111(version) => "您正在使用版本${version}";
 
-  static m110(appName) => "更新${appName}";
+  static m112(version) => "版本${version}可用。请更新。";
 
-  static m111(coinAbbr) => "我们无法激活 ${coinAbbr}";
+  static m113(appName) => "更新${appName}";
 
-  static m112(coinAbbr) => "我们无法激活${coinAbbr}.\n请重启应用程序后重试";
+  static m114(coinAbbr) => "我们无法激活 ${coinAbbr}";
 
-  static m113(appName) => "${appName} 应用程序是新一代多币钱包，具有原生第三代DEX功能和更多功能。";
+  static m115(coinAbbr) => "我们无法激活${coinAbbr}.\n请重启应用程序后重试";
 
-  static m114(appName) => "您之前禁止${appName} 使用相机。请手动更改手机设置中的相机权限，以便继续二维码扫描";
+  static m116(appName) => "${appName} 应用程序是新一代多币钱包，具有原生第三代DEX功能和更多功能。";
 
-  static m115(amount, coinName) => "提取 ${amount} ${coinName}";
+  static m117(appName) => "您之前禁止${appName} 使用相机。请手动更改手机设置中的相机权限，以便继续二维码扫描";
 
-  static m116(amount, coin) => "您将获得 ${amount} ${coin}";
+  static m118(amount, coinName) => "提取 ${amount} ${coinName}";
+
+  static m119(amount, coin) => "您将获得 ${amount} ${coin}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -317,6 +323,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressSend": MessageLookupByLibrary.simpleMessage("收款人钱包地址"),
         "advanced": MessageLookupByLibrary.simpleMessage("高级"),
         "all": MessageLookupByLibrary.simpleMessage("全部"),
+        "allPastTransactions": MessageLookupByLibrary.simpleMessage(
+            "您的钱包将显示任何过去的交易。这将占用大量存储空间和时间，因为所有块都将被下载和扫描。"),
         "allowCustomSeed": MessageLookupByLibrary.simpleMessage("允许自定义助记词"),
         "alreadyExists": MessageLookupByLibrary.simpleMessage("已存在"),
         "amount": MessageLookupByLibrary.simpleMessage("数量"),
@@ -372,6 +380,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "camoSetupTitle": MessageLookupByLibrary.simpleMessage("伪装PIN设置"),
         "camouflageSetup": MessageLookupByLibrary.simpleMessage("伪装PIN设置"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
+        "cancelActivation": MessageLookupByLibrary.simpleMessage("取消激活"),
+        "cancelActivationQuestion":
+            MessageLookupByLibrary.simpleMessage("您确定要取消激活吗？"),
         "cancelButton": MessageLookupByLibrary.simpleMessage("取消"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("取消交易"),
         "candleChartError": MessageLookupByLibrary.simpleMessage("出现错误，稍后重试"),
@@ -409,6 +420,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "closeMessage": MessageLookupByLibrary.simpleMessage("关闭错误信息"),
         "closePreview": MessageLookupByLibrary.simpleMessage("关闭预览"),
         "code": MessageLookupByLibrary.simpleMessage("代码"),
+        "cofirmCancelActivation":
+            MessageLookupByLibrary.simpleMessage("您确定要取消激活吗？"),
         "coinSelectClear": MessageLookupByLibrary.simpleMessage("清除"),
         "coinSelectNotFound": MessageLookupByLibrary.simpleMessage("没有活跃币"),
         "coinSelectTitle": MessageLookupByLibrary.simpleMessage("选择货币"),
@@ -639,6 +652,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "foundQrCode": MessageLookupByLibrary.simpleMessage("找到二维码"),
         "frenchLanguage": MessageLookupByLibrary.simpleMessage("法语"),
         "from": MessageLookupByLibrary.simpleMessage("起始日期"),
+        "futureTransactions": MessageLookupByLibrary.simpleMessage(
+            "我们将同步与您的公钥关联的激活后进行的未来交易。这是最快的选项，占用的存储空间最少。"),
         "gasFee": m49,
         "gasLimit": MessageLookupByLibrary.simpleMessage("燃料上限"),
         "gasNotActive": m50,
@@ -700,17 +715,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "insufficientTitle": MessageLookupByLibrary.simpleMessage("交易量不足"),
         "internetRefreshButton": MessageLookupByLibrary.simpleMessage("刷新"),
         "internetRestored": MessageLookupByLibrary.simpleMessage("已重新连接互联网"),
+        "invalidCoinAddress": m54,
         "invalidSwap": MessageLookupByLibrary.simpleMessage("无法继续交换"),
         "invalidSwapDetailsLink": MessageLookupByLibrary.simpleMessage("详细信息"),
-        "isUnavailable": m54,
+        "isUnavailable": m55,
         "japaneseLanguage": MessageLookupByLibrary.simpleMessage("日文"),
         "koreanLanguage": MessageLookupByLibrary.simpleMessage("韩国人"),
         "language": MessageLookupByLibrary.simpleMessage("语言"),
         "latestTxs": MessageLookupByLibrary.simpleMessage("最新交易"),
         "legalTitle": MessageLookupByLibrary.simpleMessage("合法的"),
         "less": MessageLookupByLibrary.simpleMessage("较少"),
-        "lessThanCaution": m55,
-        "limitError": m56,
+        "lessThanCaution": m56,
+        "limitError": m57,
         "loading": MessageLookupByLibrary.simpleMessage("載入中"),
         "loadingOrderbook": MessageLookupByLibrary.simpleMessage("正在加载订单记录"),
         "lockScreen": MessageLookupByLibrary.simpleMessage("屏幕已锁定"),
@@ -763,27 +779,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "milliseconds": MessageLookupByLibrary.simpleMessage("毫秒"),
         "min": MessageLookupByLibrary.simpleMessage("最小"),
         "minOrder": MessageLookupByLibrary.simpleMessage("最小交易量"),
-        "minValue": m57,
-        "minValueBuy": m58,
-        "minValueOrder": m59,
-        "minValueSell": m60,
-        "minVolumeInput": m61,
+        "minValue": m58,
+        "minValueBuy": m59,
+        "minValueOrder": m60,
+        "minValueSell": m61,
+        "minVolumeInput": m62,
         "minVolumeIsTDH": MessageLookupByLibrary.simpleMessage("必须低于售出量"),
         "minVolumeTitle": MessageLookupByLibrary.simpleMessage("所需最小量"),
         "minVolumeToggle": MessageLookupByLibrary.simpleMessage("使用自定义最小量"),
         "minimizingWillTerminate":
             MessageLookupByLibrary.simpleMessage("警告：最小化 iOS 上的应用程序将终止激活过程。"),
         "minutes": MessageLookupByLibrary.simpleMessage("分钟"),
-        "mobileDataWarning": m62,
+        "mobileDataWarning": m63,
         "moreInfo": MessageLookupByLibrary.simpleMessage("更多信息"),
         "moreTab": MessageLookupByLibrary.simpleMessage("更多"),
-        "multiActivateGas": m63,
+        "multiActivateGas": m64,
         "multiBaseAmtPlaceholder": MessageLookupByLibrary.simpleMessage("数量"),
         "multiBasePlaceholder": MessageLookupByLibrary.simpleMessage("货币"),
         "multiBaseSelectTitle": MessageLookupByLibrary.simpleMessage("卖出"),
         "multiConfirmCancel": MessageLookupByLibrary.simpleMessage("取消"),
         "multiConfirmConfirm": MessageLookupByLibrary.simpleMessage("确认"),
-        "multiConfirmTitle": m64,
+        "multiConfirmTitle": m65,
         "multiCreate": MessageLookupByLibrary.simpleMessage("创建"),
         "multiCreateOrder": MessageLookupByLibrary.simpleMessage("订单"),
         "multiCreateOrders": MessageLookupByLibrary.simpleMessage("订单"),
@@ -794,8 +810,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "multiFixErrors": MessageLookupByLibrary.simpleMessage("请在继续之前修复所有错误"),
         "multiInvalidAmt": MessageLookupByLibrary.simpleMessage("数量无效"),
         "multiInvalidSellAmt": MessageLookupByLibrary.simpleMessage("售出量无效"),
-        "multiLowGas": m65,
-        "multiLowerThanFee": m66,
+        "multiLowGas": m66,
+        "multiLowerThanFee": m67,
         "multiMaxSellAmt": MessageLookupByLibrary.simpleMessage("最大售出量为"),
         "multiMinReceiveAmt": MessageLookupByLibrary.simpleMessage("最小接收量为"),
         "multiMinSellAmt": MessageLookupByLibrary.simpleMessage("最小售出量为"),
@@ -819,7 +835,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noItemsToExport": MessageLookupByLibrary.simpleMessage("未选择项目"),
         "noItemsToImport": MessageLookupByLibrary.simpleMessage("未选择项目"),
         "noMatchingOrders": MessageLookupByLibrary.simpleMessage("无匹配订单"),
-        "noOrder": m67,
+        "noOrder": m68,
         "noOrderAvailable": MessageLookupByLibrary.simpleMessage("点击创建订单"),
         "noOrders": MessageLookupByLibrary.simpleMessage("没有订单，请先交易"),
         "noRewardYet": MessageLookupByLibrary.simpleMessage("没有奖励可领取-请一小时后重试"),
@@ -829,26 +845,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "noTxs": MessageLookupByLibrary.simpleMessage("没有交易"),
         "nonNumericInput": MessageLookupByLibrary.simpleMessage("该值必须是数字"),
         "none": MessageLookupByLibrary.simpleMessage("没有任何"),
-        "notEnoughGas": m68,
+        "notEnoughGas": m69,
         "notEnoughtBalanceForFee":
             MessageLookupByLibrary.simpleMessage("手续费余额不足-减少交易量"),
         "noteOnOrder": MessageLookupByLibrary.simpleMessage("备注：不能取消已匹配的订单"),
         "notePlaceholder": MessageLookupByLibrary.simpleMessage("添加备注"),
         "noteTitle": MessageLookupByLibrary.simpleMessage("备注"),
         "nothingFound": MessageLookupByLibrary.simpleMessage("无内容"),
-        "notifSwapCompletedText": m69,
+        "notifSwapCompletedText": m70,
         "notifSwapCompletedTitle":
             MessageLookupByLibrary.simpleMessage("交换已完成"),
-        "notifSwapFailedText": m70,
+        "notifSwapFailedText": m71,
         "notifSwapFailedTitle": MessageLookupByLibrary.simpleMessage("交换失败"),
-        "notifSwapStartedText": m71,
+        "notifSwapStartedText": m72,
         "notifSwapStartedTitle": MessageLookupByLibrary.simpleMessage("已开始新交换"),
         "notifSwapStatusTitle": MessageLookupByLibrary.simpleMessage("交换状态已更改"),
-        "notifSwapTimeoutText": m72,
+        "notifSwapTimeoutText": m73,
         "notifSwapTimeoutTitle": MessageLookupByLibrary.simpleMessage("交换超时"),
-        "notifTxText": m73,
+        "notifTxText": m74,
         "notifTxTitle": MessageLookupByLibrary.simpleMessage("应记交易"),
-        "numberAssets": m74,
+        "numberAssets": m75,
         "officialPressRelease": MessageLookupByLibrary.simpleMessage("官方新闻稿"),
         "okButton": MessageLookupByLibrary.simpleMessage("好的"),
         "oldLogsDelete": MessageLookupByLibrary.simpleMessage("删除"),
@@ -857,13 +873,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMessage": MessageLookupByLibrary.simpleMessage("打开错误消息"),
         "orderBookLess": MessageLookupByLibrary.simpleMessage("较少的"),
         "orderBookMore": MessageLookupByLibrary.simpleMessage("更多的"),
-        "orderCancel": m75,
+        "orderCancel": m76,
         "orderCreated": MessageLookupByLibrary.simpleMessage("订单已创建"),
         "orderCreatedInfo": MessageLookupByLibrary.simpleMessage("订单已成功创建"),
         "orderDetailsAddress": MessageLookupByLibrary.simpleMessage("地址"),
         "orderDetailsCancel": MessageLookupByLibrary.simpleMessage("取消"),
-        "orderDetailsExpedient": m76,
-        "orderDetailsExpensive": m77,
+        "orderDetailsExpedient": m77,
+        "orderDetailsExpensive": m78,
         "orderDetailsFor": MessageLookupByLibrary.simpleMessage("与"),
         "orderDetailsIdentical": MessageLookupByLibrary.simpleMessage("CEX相同"),
         "orderDetailsMin": MessageLookupByLibrary.simpleMessage("最小量"),
@@ -875,7 +891,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("单击打开详细信息，然后长按选择订购"),
         "orderDetailsSpend": MessageLookupByLibrary.simpleMessage("花费"),
         "orderDetailsTitle": MessageLookupByLibrary.simpleMessage("详细信息"),
-        "orderFilled": m78,
+        "orderFilled": m79,
         "orderMatched": MessageLookupByLibrary.simpleMessage("已匹配订单"),
         "orderMatching": MessageLookupByLibrary.simpleMessage("订单匹配中"),
         "orderTypePartial": MessageLookupByLibrary.simpleMessage("订单"),
@@ -883,9 +899,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders": MessageLookupByLibrary.simpleMessage("订单"),
         "ordersActive": MessageLookupByLibrary.simpleMessage("活跃"),
         "ordersHistory": MessageLookupByLibrary.simpleMessage("历史记录"),
-        "ordersTableAmount": m79,
-        "ordersTablePrice": m80,
-        "ordersTableTotal": m81,
+        "ordersTableAmount": m80,
+        "ordersTablePrice": m81,
+        "ordersTableTotal": m82,
         "overwrite": MessageLookupByLibrary.simpleMessage("覆盖"),
         "ownOrder": MessageLookupByLibrary.simpleMessage("这是您个人的订单"),
         "paidFromBalance": MessageLookupByLibrary.simpleMessage("用余额支付："),
@@ -893,6 +909,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidWith": MessageLookupByLibrary.simpleMessage("支付方式："),
         "passwordRequirement": MessageLookupByLibrary.simpleMessage(
             "密码必须至少包含12个字符，包括一个小写、一个大写和一个特殊符号"),
+        "pastTransactionsFromDate":
+            MessageLookupByLibrary.simpleMessage("您的钱包将显示您过去在指定日期之后进行的交易。"),
         "paymentUriDetailsAccept": MessageLookupByLibrary.simpleMessage("支付"),
         "paymentUriDetailsAcceptQuestion":
             MessageLookupByLibrary.simpleMessage("您接受这笔交易吗？"),
@@ -905,7 +923,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentUriDetailsDeny": MessageLookupByLibrary.simpleMessage("取消"),
         "paymentUriDetailsTitle":
             MessageLookupByLibrary.simpleMessage("已请求的付款"),
-        "paymentUriInactiveCoin": m82,
+        "paymentUriInactiveCoin": m83,
         "placeOrder": MessageLookupByLibrary.simpleMessage("下单"),
         "pleaseAddCoin": MessageLookupByLibrary.simpleMessage("请添加货币"),
         "pleaseRestart":
@@ -926,15 +944,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "pubkey": MessageLookupByLibrary.simpleMessage("公钥"),
         "qrCodeScanner": MessageLookupByLibrary.simpleMessage("二维码扫描仪"),
         "question_1": MessageLookupByLibrary.simpleMessage("你们会保存我的私钥吗？"),
-        "question_10": m83,
-        "question_2": m84,
+        "question_10": m84,
+        "question_2": m85,
         "question_3": MessageLookupByLibrary.simpleMessage("每次原子交换需要多长时间？"),
         "question_4": MessageLookupByLibrary.simpleMessage("在交换期间我要保持在线吗"),
-        "question_5": m85,
+        "question_5": m86,
         "question_6": MessageLookupByLibrary.simpleMessage("你们会提供用户支持吗？"),
         "question_7": MessageLookupByLibrary.simpleMessage("你们有地区限制吗？"),
-        "question_8": m86,
-        "question_9": m87,
+        "question_8": m87,
+        "question_9": m88,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
             "这是一个新时代！我们已正式将名称从“AtomicDEX”更改为“Komodo Wallet”"),
         "receive": MessageLookupByLibrary.simpleMessage("接收"),
@@ -963,7 +981,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsReadMore":
             MessageLookupByLibrary.simpleMessage("阅读有关KMD活跃用户奖励的更多信息"),
         "rewardsReceive": MessageLookupByLibrary.simpleMessage("接收"),
-        "rewardsSuccess": m88,
+        "rewardsSuccess": m89,
         "rewardsTableFiat": MessageLookupByLibrary.simpleMessage("法币"),
         "rewardsTableRewards": MessageLookupByLibrary.simpleMessage("奖励，KMD"),
         "rewardsTableStatus": MessageLookupByLibrary.simpleMessage("状态"),
@@ -971,9 +989,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsTableTitle": MessageLookupByLibrary.simpleMessage("奖励信息"),
         "rewardsTableUXTO":
             MessageLookupByLibrary.simpleMessage("UTXO 数量\nKMD"),
-        "rewardsTimeDays": m89,
-        "rewardsTimeHours": m90,
-        "rewardsTimeMin": m91,
+        "rewardsTimeDays": m90,
+        "rewardsTimeHours": m91,
+        "rewardsTimeMin": m92,
         "rewardsTitle": MessageLookupByLibrary.simpleMessage("奖励信息"),
         "russianLanguage": MessageLookupByLibrary.simpleMessage("俄语"),
         "saveMerged": MessageLookupByLibrary.simpleMessage("保存合并"),
@@ -1022,7 +1040,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchForTicker": MessageLookupByLibrary.simpleMessage("搜索货币代码"),
         "seconds": MessageLookupByLibrary.simpleMessage("秒"),
         "security": MessageLookupByLibrary.simpleMessage("证券"),
-        "seeOrders": m92,
+        "seeOrders": m93,
         "seeTxHistory": MessageLookupByLibrary.simpleMessage("查看交易记录"),
         "seedPhrase": MessageLookupByLibrary.simpleMessage("助记词"),
         "seedPhraseTitle": MessageLookupByLibrary.simpleMessage("您的新助記詞"),
@@ -1032,6 +1050,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectCoinTitle": MessageLookupByLibrary.simpleMessage("激活货币："),
         "selectCoinToBuy": MessageLookupByLibrary.simpleMessage("选择您想买入的货币"),
         "selectCoinToSell": MessageLookupByLibrary.simpleMessage("选择您想卖出的货币"),
+        "selectDate": MessageLookupByLibrary.simpleMessage("选择日期"),
         "selectFileImport": MessageLookupByLibrary.simpleMessage("选择文件"),
         "selectLanguage": MessageLookupByLibrary.simpleMessage("选择语言"),
         "selectPaymentMethod": MessageLookupByLibrary.simpleMessage("选择您的支付方式"),
@@ -1050,32 +1069,33 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingLanguageTitle": MessageLookupByLibrary.simpleMessage("语言"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "share": MessageLookupByLibrary.simpleMessage("分享"),
-        "shareAddress": m93,
+        "shareAddress": m94,
+        "shouldScanPastTransaction": m95,
         "showAddress": MessageLookupByLibrary.simpleMessage("显示地址"),
         "showDetails": MessageLookupByLibrary.simpleMessage("显示详细信息"),
         "showMyOrders": MessageLookupByLibrary.simpleMessage("显示我的订单"),
-        "showingOrders": m94,
+        "showingOrders": m96,
         "signInWithPassword": MessageLookupByLibrary.simpleMessage("使用密码登录"),
         "signInWithSeedPhrase":
             MessageLookupByLibrary.simpleMessage("忘记密码？用助记词恢复钱包"),
         "simple": MessageLookupByLibrary.simpleMessage("简单"),
         "simpleTradeActivate": MessageLookupByLibrary.simpleMessage("激活"),
-        "simpleTradeBuyHint": m95,
+        "simpleTradeBuyHint": m97,
         "simpleTradeBuyTitle": MessageLookupByLibrary.simpleMessage("买入"),
         "simpleTradeClose": MessageLookupByLibrary.simpleMessage("关闭"),
-        "simpleTradeMaxActiveCoins": m96,
-        "simpleTradeNotActive": m97,
+        "simpleTradeMaxActiveCoins": m98,
+        "simpleTradeNotActive": m99,
         "simpleTradeRecieve": MessageLookupByLibrary.simpleMessage("接收"),
-        "simpleTradeSellHint": m98,
+        "simpleTradeSellHint": m100,
         "simpleTradeSellTitle": MessageLookupByLibrary.simpleMessage("卖出"),
         "simpleTradeSend": MessageLookupByLibrary.simpleMessage("发送"),
         "simpleTradeShowLess": MessageLookupByLibrary.simpleMessage("收起"),
         "simpleTradeShowMore": MessageLookupByLibrary.simpleMessage("显示更多"),
-        "simpleTradeUnableActivate": m99,
+        "simpleTradeUnableActivate": m101,
         "skip": MessageLookupByLibrary.simpleMessage("跳过"),
         "snackbarDismiss": MessageLookupByLibrary.simpleMessage("不予考虑"),
-        "soundCantPlayThatMsg": m100,
-        "soundPlayedWhen": m101,
+        "soundCantPlayThatMsg": m102,
+        "soundPlayedWhen": m103,
         "soundSettingsLink": MessageLookupByLibrary.simpleMessage("声音"),
         "soundSettingsTitle": MessageLookupByLibrary.simpleMessage("声音设置"),
         "soundsDialogTitle": MessageLookupByLibrary.simpleMessage("声音"),
@@ -1086,19 +1106,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "soundsNote":
             MessageLookupByLibrary.simpleMessage("请注意，您可以在应用程序设置中设置自定义声音。"),
         "spanishLanguage": MessageLookupByLibrary.simpleMessage("西班牙语"),
+        "startDate": MessageLookupByLibrary.simpleMessage("开始日期"),
         "startSwap": MessageLookupByLibrary.simpleMessage("开始交换"),
         "step": MessageLookupByLibrary.simpleMessage("步骤"),
         "success": MessageLookupByLibrary.simpleMessage("成功"),
         "support": MessageLookupByLibrary.simpleMessage("支持"),
-        "supportLinksDesc": m102,
+        "supportLinksDesc": m104,
         "swap": MessageLookupByLibrary.simpleMessage("交换"),
         "swapCurrent": MessageLookupByLibrary.simpleMessage("现状"),
         "swapDetailTitle": MessageLookupByLibrary.simpleMessage("确认兑换细节"),
         "swapEstimated": MessageLookupByLibrary.simpleMessage("预估"),
         "swapFailed": MessageLookupByLibrary.simpleMessage("交换失败"),
-        "swapGasActivate": m103,
-        "swapGasAmount": m104,
-        "swapGasAmountRequired": m105,
+        "swapGasActivate": m105,
+        "swapGasAmount": m106,
+        "swapGasAmountRequired": m107,
         "swapOngoing": MessageLookupByLibrary.simpleMessage("正在交换"),
         "swapProgress": MessageLookupByLibrary.simpleMessage("进度详情"),
         "swapStarted": MessageLookupByLibrary.simpleMessage("已开始"),
@@ -1106,6 +1127,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "swapTotal": MessageLookupByLibrary.simpleMessage("总共"),
         "swapUUID": MessageLookupByLibrary.simpleMessage("UUID交换"),
         "switchTheme": MessageLookupByLibrary.simpleMessage("切换主题"),
+        "syncFromDate": MessageLookupByLibrary.simpleMessage("从指定日期同步"),
+        "syncFromSaplingActivation":
+            MessageLookupByLibrary.simpleMessage("从树苗激活同步"),
+        "syncNewTransactions": MessageLookupByLibrary.simpleMessage("同步新交易"),
+        "syncTransactionsQuestion": m108,
         "tagAVX20": MessageLookupByLibrary.simpleMessage("AVX20"),
         "tagBEP20": MessageLookupByLibrary.simpleMessage("BEP20"),
         "tagERC20": MessageLookupByLibrary.simpleMessage("ERC20"),
@@ -1120,7 +1146,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tagQRC20": MessageLookupByLibrary.simpleMessage("QRC20"),
         "tagSBCH": MessageLookupByLibrary.simpleMessage("SBCH"),
         "tagUBQ": MessageLookupByLibrary.simpleMessage("UBQ"),
-        "tagZHTLC": MessageLookupByLibrary.simpleMessage("中山HTLC"),
+        "tagZHTLC": MessageLookupByLibrary.simpleMessage("ZHTLC"),
         "takerOrder": MessageLookupByLibrary.simpleMessage("吃单交易"),
         "timeOut": MessageLookupByLibrary.simpleMessage("超时"),
         "titleCreatePassword": MessageLookupByLibrary.simpleMessage("创建密码"),
@@ -1157,21 +1183,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "txLimitExceeded":
             MessageLookupByLibrary.simpleMessage("请求过多。超出交易历史请求限制。请稍后重试"),
         "txNotConfirmed": MessageLookupByLibrary.simpleMessage("未确认"),
-        "txleft": m106,
+        "txleft": m109,
         "ukrainianLanguage": MessageLookupByLibrary.simpleMessage("乌克兰"),
         "unlock": MessageLookupByLibrary.simpleMessage("解锁"),
         "unlockFunds": MessageLookupByLibrary.simpleMessage("解锁基金"),
-        "unlockSuccess": m107,
+        "unlockSuccess": m110,
         "unspendable": MessageLookupByLibrary.simpleMessage("不可交易"),
         "updatesAvailable": MessageLookupByLibrary.simpleMessage("已有新版本"),
         "updatesChecking": MessageLookupByLibrary.simpleMessage("正在检查更新"),
-        "updatesCurrentVersion": m108,
+        "updatesCurrentVersion": m111,
         "updatesNotifAvailable":
             MessageLookupByLibrary.simpleMessage("已有新版本。请更新。"),
-        "updatesNotifAvailableVersion": m109,
+        "updatesNotifAvailableVersion": m112,
         "updatesNotifTitle": MessageLookupByLibrary.simpleMessage("可更新"),
         "updatesSkip": MessageLookupByLibrary.simpleMessage("暂时跳过"),
-        "updatesTitle": m110,
+        "updatesTitle": m113,
         "updatesUpToDate": MessageLookupByLibrary.simpleMessage("准备更新"),
         "updatesUpdate": MessageLookupByLibrary.simpleMessage("已更新"),
         "uriInsufficientBalanceSpan1":
@@ -1192,9 +1218,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "warningOkBtn": MessageLookupByLibrary.simpleMessage("好的"),
         "warningShareLogs": MessageLookupByLibrary.simpleMessage(
             "警告-在特殊情况下，此登录数据包含敏感信息，可用于消费交换失败的货币！"),
-        "weFailedTo": m111,
-        "weFailedToActivate": m112,
-        "welcomeInfo": m113,
+        "weFailedTo": m114,
+        "weFailedToActivate": m115,
+        "welcomeInfo": m116,
         "welcomeLetSetUp": MessageLookupByLibrary.simpleMessage("让我们开始吧"),
         "welcomeTitle": MessageLookupByLibrary.simpleMessage("欢迎"),
         "welcomeWallet": MessageLookupByLibrary.simpleMessage("钱包"),
@@ -1203,13 +1229,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "willTakeTime": MessageLookupByLibrary.simpleMessage(
             "这将需要一段时间，并且应用程序必须保持在前台。\n在激活过程中终止应用程序可能会导致问题。"),
         "withdraw": MessageLookupByLibrary.simpleMessage("提取"),
-        "withdrawCameraAccessText": m114,
+        "withdrawCameraAccessText": m117,
         "withdrawCameraAccessTitle":
             MessageLookupByLibrary.simpleMessage("被拒绝使用"),
         "withdrawConfirm": MessageLookupByLibrary.simpleMessage("确认提取"),
         "withdrawConfirmError":
             MessageLookupByLibrary.simpleMessage("出现错误。请稍后重试。"),
-        "withdrawValue": m115,
+        "withdrawValue": m118,
         "wrongCoinSpan1": MessageLookupByLibrary.simpleMessage("您正在尝试扫描付款二维码"),
         "wrongCoinSpan2": MessageLookupByLibrary.simpleMessage("但您在"),
         "wrongCoinSpan3": MessageLookupByLibrary.simpleMessage("提取页面"),
@@ -1223,7 +1249,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "you have an order that new orders can match with":
             MessageLookupByLibrary.simpleMessage("你有一个新订单可以匹配的订单"),
         "youAreSending": MessageLookupByLibrary.simpleMessage("您正在发送："),
-        "youWillReceiveClaim": m116,
+        "youWillReceiveClaim": m119,
         "youWillReceived": MessageLookupByLibrary.simpleMessage("您将收到："),
         "yourWallet": MessageLookupByLibrary.simpleMessage("您的钱包")
       };

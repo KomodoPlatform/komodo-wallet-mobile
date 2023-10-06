@@ -155,149 +155,155 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m53(abbr) => "${abbr} balance not sufficient to pay trading fee";
 
-  static m54(coinAbbr) => "${coinAbbr} is unavailable :(";
+  static m54(coin) => "Invalid ${coin} address";
 
-  static m55(coinName) =>
+  static m55(coinAbbr) => "${coinAbbr} is unavailable :(";
+
+  static m56(coinName) =>
       "❗Caution! Market for ${coinName} has less than \$10k 24h trading-volume!";
 
-  static m56(value) => "Limit must be up to ${value}";
-
-  static m57(coinName, number) =>
-      "The minimum amount to sell is ${number} ${coinName}";
+  static m57(value) => "Limit must be up to ${value}";
 
   static m58(coinName, number) =>
+      "The minimum amount to sell is ${number} ${coinName}";
+
+  static m59(coinName, number) =>
       "The minimum amount to buy is ${number} ${coinName}";
 
-  static m59(buyCoin, buyAmount, sellCoin, sellAmount) =>
+  static m60(buyCoin, buyAmount, sellCoin, sellAmount) =>
       "Order minimum amount is ${buyAmount} ${buyCoin}\n(${sellAmount} ${sellCoin})";
 
-  static m60(coinName, number) =>
+  static m61(coinName, number) =>
       "The minimum amount to sell is ${number} ${coinName}";
 
-  static m61(minValue, coin) => "Must be greater than ${minValue} ${coin}";
+  static m62(minValue, coin) => "Must be greater than ${minValue} ${coin}";
 
-  static m62(appName) =>
+  static m63(appName) =>
       "Please note that now you\'re using cellular data and participation in ${appName} P2P network consume internet traffic. It\'s better to use a WiFi network if your cellular data plan is costly.";
 
-  static m63(coin) => "Activate ${coin} and top-up balance first";
+  static m64(coin) => "Activate ${coin} and top-up balance first";
 
-  static m64(number) => "Create ${number} Order(s):";
+  static m65(number) => "Create ${number} Order(s):";
 
-  static m65(coin) => "${coin} balance is too low";
+  static m66(coin) => "${coin} balance is too low";
 
-  static m66(coin, fee) =>
+  static m67(coin, fee) =>
       "Not enough ${coin} to pay fees. MIN balance is ${fee} ${coin}";
 
-  static m67(coinName) => "Please enter the ${coinName} amount.";
+  static m68(coinName) => "Please enter the ${coinName} amount.";
 
-  static m68(coin) => "Not enough ${coin} for transaction!";
+  static m69(coin) => "Not enough ${coin} for transaction!";
 
-  static m69(sell, buy) => "${sell}/${buy} swap was completed successfully";
+  static m70(sell, buy) => "${sell}/${buy} swap was completed successfully";
 
-  static m70(sell, buy) => "${sell}/${buy} swap failed";
+  static m71(sell, buy) => "${sell}/${buy} swap failed";
 
-  static m71(sell, buy) => "${sell}/${buy} swap started";
+  static m72(sell, buy) => "${sell}/${buy} swap started";
 
-  static m72(sell, buy) => "${sell}/${buy} swap was timed out";
+  static m73(sell, buy) => "${sell}/${buy} swap was timed out";
 
-  static m73(coin) => "You have received ${coin} transaction!";
+  static m74(coin) => "You have received ${coin} transaction!";
 
-  static m74(assets) => "${assets} Assets";
+  static m75(assets) => "${assets} Assets";
 
-  static m75(coin) => "All ${coin} orders will be canceled.";
+  static m76(coin) => "All ${coin} orders will be canceled.";
 
-  static m76(delta) => "Expedient: CEX +${delta}%";
+  static m77(delta) => "Expedient: CEX +${delta}%";
 
-  static m77(delta) => "Expensive: CEX ${delta}%";
+  static m78(delta) => "Expensive: CEX ${delta}%";
 
-  static m78(fill) => "${fill}% filled";
+  static m79(fill) => "${fill}% filled";
 
-  static m79(coin) => "Amt. (${coin})";
+  static m80(coin) => "Amt. (${coin})";
 
-  static m80(coin) => "Price (${coin})";
+  static m81(coin) => "Price (${coin})";
 
-  static m81(coin) => "Total (${coin})";
+  static m82(coin) => "Total (${coin})";
 
-  static m82(abbr) => "${abbr} is not active. Please activate and try again.";
+  static m83(abbr) => "${abbr} is not active. Please activate and try again.";
 
-  static m83(appName) => "Which devices can I use ${appName} on?";
+  static m84(appName) => "Which devices can I use ${appName} on?";
 
-  static m84(appName) =>
+  static m85(appName) =>
       "How is trading on ${appName} different from trading on other DEXs?";
 
-  static m85(appName) => "How are the fees on ${appName} calculated?";
+  static m86(appName) => "How are the fees on ${appName} calculated?";
 
-  static m86(appName) => "Who is behind ${appName}?";
+  static m87(appName) => "Who is behind ${appName}?";
 
-  static m87(appName) =>
+  static m88(appName) =>
       "Is it possible to develop my own white-label exchange on ${appName}?";
 
-  static m88(amount) => "Success! ${amount} KMD received.";
+  static m89(amount) => "Success! ${amount} KMD received.";
 
-  static m89(dd) => "${dd} day(s)";
+  static m90(dd) => "${dd} day(s)";
 
-  static m90(hh, minutes) => "${hh}h ${minutes}m";
+  static m91(hh, minutes) => "${hh}h ${minutes}m";
 
-  static m91(mm) => "${mm}min";
+  static m92(mm) => "${mm}min";
 
-  static m92(amount) => "Click to see ${amount} orders";
+  static m93(amount) => "Click to see ${amount} orders";
 
-  static m93(coinName, address) => "My ${coinName} address: \n${address}";
+  static m94(coinName, address) => "My ${coinName} address: \n${address}";
 
-  static m94(count, maxCount) => "Showing ${count} of ${maxCount} orders. ";
+  static m95(coin) => "Scan for past ${coin} transactions?";
 
-  static m95(coin) => "Please enter ${coin} amount to buy";
+  static m96(count, maxCount) => "Showing ${count} of ${maxCount} orders. ";
 
-  static m96(maxCoins) =>
+  static m97(coin) => "Please enter ${coin} amount to buy";
+
+  static m98(maxCoins) =>
       "Max active coins number is ${maxCoins}. Please deactivate some.";
 
-  static m97(coin) => "${coin} is not active!";
+  static m99(coin) => "${coin} is not active!";
 
-  static m98(coin) => "Please enter ${coin} amount to sell";
+  static m100(coin) => "Please enter ${coin} amount to sell";
 
-  static m99(coin) => "Unable to activate ${coin}";
+  static m101(coin) => "Unable to activate ${coin}";
 
-  static m100(description) =>
+  static m102(description) =>
       "Pick an mp3 or wav file please. We\'ll play it when ${description}.";
 
-  static m101(description) => "Played when ${description}";
+  static m103(description) => "Played when ${description}";
 
-  static m102(appName) =>
+  static m104(appName) =>
       "If you have any questions, or think you\'ve found a technical problem with the ${appName} app, you can report it and get support from our team.";
 
-  static m103(coin) => "Please activate ${coin} and top-up balance first";
+  static m105(coin) => "Please activate ${coin} and top-up balance first";
 
-  static m104(coin) =>
+  static m106(coin) =>
       "${coin} balance not sufficient to pay transaction fees.";
 
-  static m105(coin, amount) =>
+  static m107(coin, amount) =>
       "${coin} balance not sufficient to pay transaction fees. ${coin} ${amount} required.";
 
-  static m106(left) => "Transactions Left: ${left}";
+  static m108(name) => "Which ${name} transactions would you like to sync?";
 
-  static m107(amnt, hash) =>
+  static m109(left) => "Transactions Left: ${left}";
+
+  static m110(amnt, hash) =>
       "Successfully unlocked ${amnt} funds - TX: ${hash}";
 
-  static m108(version) => "You are using version ${version}";
+  static m111(version) => "You are using version ${version}";
 
-  static m109(version) => "Version ${version} available. Please update.";
+  static m112(version) => "Version ${version} available. Please update.";
 
-  static m110(appName) => "${appName} update";
+  static m113(appName) => "${appName} update";
 
-  static m111(coinAbbr) => "We failed to activate ${coinAbbr}";
+  static m114(coinAbbr) => "We failed to activate ${coinAbbr}";
 
-  static m112(coinAbbr) =>
+  static m115(coinAbbr) =>
       "We failed to activate ${coinAbbr}.\nPlease restart the app to try again.";
 
-  static m113(appName) =>
+  static m116(appName) =>
       "${appName} mobile is a next generation multi-coin wallet with native third generation DEX functionality and more.";
 
-  static m114(appName) =>
+  static m117(appName) =>
       "You have previously denied ${appName} access to the camera.\nPlease manually change camera permission in your phone settings to proceed with the QR code scan.";
 
-  static m115(amount, coinName) => "WITHDRAW ${amount} ${coinName}";
+  static m118(amount, coinName) => "WITHDRAW ${amount} ${coinName}";
 
-  static m116(amount, coin) => "You will receive ${amount} ${coin}";
+  static m119(amount, coin) => "You will receive ${amount} ${coin}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -344,6 +350,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Recipients address"),
         "advanced": MessageLookupByLibrary.simpleMessage("Advanced"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
+        "allPastTransactions": MessageLookupByLibrary.simpleMessage(
+            "Your wallet will show any past transactions. This will take significant storage and time as all blocks will be downloaded and scanned."),
         "allowCustomSeed":
             MessageLookupByLibrary.simpleMessage("Allow custom seed"),
         "alreadyExists": MessageLookupByLibrary.simpleMessage("Already exists"),
@@ -412,6 +420,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "camouflageSetup":
             MessageLookupByLibrary.simpleMessage("Camouflage PIN Setup"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "cancelActivation":
+            MessageLookupByLibrary.simpleMessage("Cancel Activation"),
+        "cancelActivationQuestion": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to cancel activation?"),
         "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("Cancel Order"),
         "candleChartError": MessageLookupByLibrary.simpleMessage(
@@ -457,6 +469,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Close Error Message"),
         "closePreview": MessageLookupByLibrary.simpleMessage("Close preview"),
         "code": MessageLookupByLibrary.simpleMessage("Code: "),
+        "cofirmCancelActivation": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to cancel activation?"),
         "coinSelectClear": MessageLookupByLibrary.simpleMessage("Clear"),
         "coinSelectNotFound":
             MessageLookupByLibrary.simpleMessage("No active coins"),
@@ -744,6 +758,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "foundQrCode": MessageLookupByLibrary.simpleMessage("Found QR Code"),
         "frenchLanguage": MessageLookupByLibrary.simpleMessage("French"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
+        "futureTransactions": MessageLookupByLibrary.simpleMessage(
+            "We will sync future transactions made after activation associated with your public key. This is the quickest option and takes up the least amount of storage."),
         "gasFee": m49,
         "gasLimit": MessageLookupByLibrary.simpleMessage("Gas limit"),
         "gasNotActive": m50,
@@ -825,11 +841,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Refresh"),
         "internetRestored": MessageLookupByLibrary.simpleMessage(
             "Internet Connection Restored"),
+        "invalidCoinAddress": m54,
         "invalidSwap":
             MessageLookupByLibrary.simpleMessage("Unable to proceed swap"),
         "invalidSwapDetailsLink":
             MessageLookupByLibrary.simpleMessage("Details"),
-        "isUnavailable": m54,
+        "isUnavailable": m55,
         "japaneseLanguage": MessageLookupByLibrary.simpleMessage("Japanese"),
         "koreanLanguage": MessageLookupByLibrary.simpleMessage("Korean"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
@@ -837,8 +854,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Latest Transactions"),
         "legalTitle": MessageLookupByLibrary.simpleMessage("Legal"),
         "less": MessageLookupByLibrary.simpleMessage("Less"),
-        "lessThanCaution": m55,
-        "limitError": m56,
+        "lessThanCaution": m56,
+        "limitError": m57,
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
         "loadingOrderbook":
             MessageLookupByLibrary.simpleMessage("Loading orderbook..."),
@@ -904,11 +921,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "milliseconds": MessageLookupByLibrary.simpleMessage("ms"),
         "min": MessageLookupByLibrary.simpleMessage("MIN"),
         "minOrder": MessageLookupByLibrary.simpleMessage("Min order volume:"),
-        "minValue": m57,
-        "minValueBuy": m58,
-        "minValueOrder": m59,
-        "minValueSell": m60,
-        "minVolumeInput": m61,
+        "minValue": m58,
+        "minValueBuy": m59,
+        "minValueOrder": m60,
+        "minValueSell": m61,
+        "minVolumeInput": m62,
         "minVolumeIsTDH": MessageLookupByLibrary.simpleMessage(
             "Must be lower than sell amount"),
         "minVolumeTitle":
@@ -918,17 +935,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimizingWillTerminate": MessageLookupByLibrary.simpleMessage(
             "Warning: Minimizing the app on iOS will terminate the activation process."),
         "minutes": MessageLookupByLibrary.simpleMessage("m"),
-        "mobileDataWarning": m62,
+        "mobileDataWarning": m63,
         "moreInfo": MessageLookupByLibrary.simpleMessage("More Info"),
         "moreTab": MessageLookupByLibrary.simpleMessage("More"),
-        "multiActivateGas": m63,
+        "multiActivateGas": m64,
         "multiBaseAmtPlaceholder":
             MessageLookupByLibrary.simpleMessage("Amount"),
         "multiBasePlaceholder": MessageLookupByLibrary.simpleMessage("Coin"),
         "multiBaseSelectTitle": MessageLookupByLibrary.simpleMessage("Sell"),
         "multiConfirmCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "multiConfirmConfirm": MessageLookupByLibrary.simpleMessage("Confirm"),
-        "multiConfirmTitle": m64,
+        "multiConfirmTitle": m65,
         "multiCreate": MessageLookupByLibrary.simpleMessage("Create"),
         "multiCreateOrder": MessageLookupByLibrary.simpleMessage("Order"),
         "multiCreateOrders": MessageLookupByLibrary.simpleMessage("Orders"),
@@ -943,8 +960,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Invalid amount"),
         "multiInvalidSellAmt":
             MessageLookupByLibrary.simpleMessage("Invalid sell amount"),
-        "multiLowGas": m65,
-        "multiLowerThanFee": m66,
+        "multiLowGas": m66,
+        "multiLowerThanFee": m67,
         "multiMaxSellAmt":
             MessageLookupByLibrary.simpleMessage("Max sell amount is"),
         "multiMinReceiveAmt":
@@ -977,7 +994,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No items selected"),
         "noMatchingOrders":
             MessageLookupByLibrary.simpleMessage("No matching orders found"),
-        "noOrder": m67,
+        "noOrder": m68,
         "noOrderAvailable":
             MessageLookupByLibrary.simpleMessage("Click to create an order"),
         "noOrders": MessageLookupByLibrary.simpleMessage(
@@ -992,7 +1009,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nonNumericInput":
             MessageLookupByLibrary.simpleMessage("The value must be numeric"),
         "none": MessageLookupByLibrary.simpleMessage("None"),
-        "notEnoughGas": m68,
+        "notEnoughGas": m69,
         "notEnoughtBalanceForFee": MessageLookupByLibrary.simpleMessage(
             "Not enough balance for fees - trade a smaller amount"),
         "noteOnOrder": MessageLookupByLibrary.simpleMessage(
@@ -1000,24 +1017,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "notePlaceholder": MessageLookupByLibrary.simpleMessage("Add a Note"),
         "noteTitle": MessageLookupByLibrary.simpleMessage("Note"),
         "nothingFound": MessageLookupByLibrary.simpleMessage("Nothing found"),
-        "notifSwapCompletedText": m69,
+        "notifSwapCompletedText": m70,
         "notifSwapCompletedTitle":
             MessageLookupByLibrary.simpleMessage("Swap completed"),
-        "notifSwapFailedText": m70,
+        "notifSwapFailedText": m71,
         "notifSwapFailedTitle":
             MessageLookupByLibrary.simpleMessage("Swap failed"),
-        "notifSwapStartedText": m71,
+        "notifSwapStartedText": m72,
         "notifSwapStartedTitle":
             MessageLookupByLibrary.simpleMessage("New swap started"),
         "notifSwapStatusTitle":
             MessageLookupByLibrary.simpleMessage("Swap status changed"),
-        "notifSwapTimeoutText": m72,
+        "notifSwapTimeoutText": m73,
         "notifSwapTimeoutTitle":
             MessageLookupByLibrary.simpleMessage("Swap timed out"),
-        "notifTxText": m73,
+        "notifTxText": m74,
         "notifTxTitle":
             MessageLookupByLibrary.simpleMessage("Incoming transaction"),
-        "numberAssets": m74,
+        "numberAssets": m75,
         "officialPressRelease":
             MessageLookupByLibrary.simpleMessage("Official press release"),
         "okButton": MessageLookupByLibrary.simpleMessage("Ok"),
@@ -1028,14 +1045,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Open Error Message"),
         "orderBookLess": MessageLookupByLibrary.simpleMessage("Less"),
         "orderBookMore": MessageLookupByLibrary.simpleMessage("More"),
-        "orderCancel": m75,
+        "orderCancel": m76,
         "orderCreated": MessageLookupByLibrary.simpleMessage("Order created"),
         "orderCreatedInfo":
             MessageLookupByLibrary.simpleMessage("Order successfully created"),
         "orderDetailsAddress": MessageLookupByLibrary.simpleMessage("Address"),
         "orderDetailsCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
-        "orderDetailsExpedient": m76,
-        "orderDetailsExpensive": m77,
+        "orderDetailsExpedient": m77,
+        "orderDetailsExpensive": m78,
         "orderDetailsFor": MessageLookupByLibrary.simpleMessage("for"),
         "orderDetailsIdentical":
             MessageLookupByLibrary.simpleMessage("Identical to CEX"),
@@ -1048,7 +1065,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Open Details on single tap and select Order by long tap"),
         "orderDetailsSpend": MessageLookupByLibrary.simpleMessage("Spend"),
         "orderDetailsTitle": MessageLookupByLibrary.simpleMessage("Details"),
-        "orderFilled": m78,
+        "orderFilled": m79,
         "orderMatched": MessageLookupByLibrary.simpleMessage("Order matched"),
         "orderMatching": MessageLookupByLibrary.simpleMessage("Order matching"),
         "orderTypePartial": MessageLookupByLibrary.simpleMessage(" Order"),
@@ -1057,9 +1074,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders": MessageLookupByLibrary.simpleMessage("orders"),
         "ordersActive": MessageLookupByLibrary.simpleMessage("Active"),
         "ordersHistory": MessageLookupByLibrary.simpleMessage("History"),
-        "ordersTableAmount": m79,
-        "ordersTablePrice": m80,
-        "ordersTableTotal": m81,
+        "ordersTableAmount": m80,
+        "ordersTablePrice": m81,
+        "ordersTableTotal": m82,
         "overwrite": MessageLookupByLibrary.simpleMessage("Overwrite"),
         "ownOrder":
             MessageLookupByLibrary.simpleMessage(" This is your own order!"),
@@ -1070,6 +1087,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidWith": MessageLookupByLibrary.simpleMessage("Paid with "),
         "passwordRequirement": MessageLookupByLibrary.simpleMessage(
             "Password must contain at least 12 characters, with one lower-case, one upper-case and one special symbol."),
+        "pastTransactionsFromDate": MessageLookupByLibrary.simpleMessage(
+            "Your wallet will show your past transactions made after the specified date."),
         "paymentUriDetailsAccept": MessageLookupByLibrary.simpleMessage("Pay"),
         "paymentUriDetailsAcceptQuestion": MessageLookupByLibrary.simpleMessage(
             "Do you accept this transaction?"),
@@ -1082,7 +1101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentUriDetailsDeny": MessageLookupByLibrary.simpleMessage("Cancel"),
         "paymentUriDetailsTitle":
             MessageLookupByLibrary.simpleMessage("Payment Requested"),
-        "paymentUriInactiveCoin": m82,
+        "paymentUriInactiveCoin": m83,
         "placeOrder": MessageLookupByLibrary.simpleMessage("Place your order"),
         "pleaseAddCoin":
             MessageLookupByLibrary.simpleMessage("Please Add A Coin"),
@@ -1107,21 +1126,21 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("QR Code Scanner"),
         "question_1": MessageLookupByLibrary.simpleMessage(
             "Do you store my private keys?"),
-        "question_10": m83,
-        "question_2": m84,
+        "question_10": m84,
+        "question_2": m85,
         "question_3": MessageLookupByLibrary.simpleMessage(
             "How long does each atomic swap take?"),
         "question_4": MessageLookupByLibrary.simpleMessage(
             "Do I need to be online for the duration of the swap?"),
-        "question_5": m85,
+        "question_5": m86,
         "question_6": MessageLookupByLibrary.simpleMessage(
             "Do you provide user support?"),
         "question_7": MessageLookupByLibrary.simpleMessage(
             "Do you have country restrictions?"),
-        "question_8": m86,
-        "question_9": m87,
+        "question_8": m87,
+        "question_9": m88,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
-            "It\'s a new era! We have officially changed our name from \'AtomicDEX\' to \'Komodo Wallet\'"),
+            "It\'s a new era! We have officially rebranded from \'AtomicDEX\' to \'Komodo Wallet\'"),
         "receive": MessageLookupByLibrary.simpleMessage("RECEIVE"),
         "receiveLower": MessageLookupByLibrary.simpleMessage("Receive"),
         "recommendSeedMessage": MessageLookupByLibrary.simpleMessage(
@@ -1158,7 +1177,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsReadMore": MessageLookupByLibrary.simpleMessage(
             "Read more about KMD active user rewards"),
         "rewardsReceive": MessageLookupByLibrary.simpleMessage("Receive"),
-        "rewardsSuccess": m88,
+        "rewardsSuccess": m89,
         "rewardsTableFiat": MessageLookupByLibrary.simpleMessage("Fiat"),
         "rewardsTableRewards":
             MessageLookupByLibrary.simpleMessage("Rewards,\nKMD"),
@@ -1168,9 +1187,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Rewards information:"),
         "rewardsTableUXTO":
             MessageLookupByLibrary.simpleMessage("UTXO amt,\nKMD"),
-        "rewardsTimeDays": m89,
-        "rewardsTimeHours": m90,
-        "rewardsTimeMin": m91,
+        "rewardsTimeDays": m90,
+        "rewardsTimeHours": m91,
+        "rewardsTimeMin": m92,
         "rewardsTitle":
             MessageLookupByLibrary.simpleMessage("Rewards information"),
         "russianLanguage": MessageLookupByLibrary.simpleMessage("Russian"),
@@ -1223,7 +1242,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Search for Ticker"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),
         "security": MessageLookupByLibrary.simpleMessage("Security"),
-        "seeOrders": m92,
+        "seeOrders": m93,
         "seeTxHistory":
             MessageLookupByLibrary.simpleMessage("View Transaction History"),
         "seedPhrase": MessageLookupByLibrary.simpleMessage("Seed Phrase"),
@@ -1238,6 +1257,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Select the coin you want to BUY"),
         "selectCoinToSell": MessageLookupByLibrary.simpleMessage(
             "Select the coin you want to SELL"),
+        "selectDate": MessageLookupByLibrary.simpleMessage("Select a Date"),
         "selectFileImport": MessageLookupByLibrary.simpleMessage("Select file"),
         "selectLanguage":
             MessageLookupByLibrary.simpleMessage("Select Language"),
@@ -1264,35 +1284,36 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Languages"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "share": MessageLookupByLibrary.simpleMessage("Share"),
-        "shareAddress": m93,
+        "shareAddress": m94,
+        "shouldScanPastTransaction": m95,
         "showAddress": MessageLookupByLibrary.simpleMessage("Show Address"),
         "showDetails": MessageLookupByLibrary.simpleMessage("Show Details"),
         "showMyOrders": MessageLookupByLibrary.simpleMessage("Show My Orders"),
-        "showingOrders": m94,
+        "showingOrders": m96,
         "signInWithPassword":
             MessageLookupByLibrary.simpleMessage("Sign in with password"),
         "signInWithSeedPhrase": MessageLookupByLibrary.simpleMessage(
             "Forgot the password? Restore wallet from seed"),
         "simple": MessageLookupByLibrary.simpleMessage("Simple"),
         "simpleTradeActivate": MessageLookupByLibrary.simpleMessage("Activate"),
-        "simpleTradeBuyHint": m95,
+        "simpleTradeBuyHint": m97,
         "simpleTradeBuyTitle": MessageLookupByLibrary.simpleMessage("Buy"),
         "simpleTradeClose": MessageLookupByLibrary.simpleMessage("Close"),
-        "simpleTradeMaxActiveCoins": m96,
-        "simpleTradeNotActive": m97,
+        "simpleTradeMaxActiveCoins": m98,
+        "simpleTradeNotActive": m99,
         "simpleTradeRecieve": MessageLookupByLibrary.simpleMessage("Receive"),
-        "simpleTradeSellHint": m98,
+        "simpleTradeSellHint": m100,
         "simpleTradeSellTitle": MessageLookupByLibrary.simpleMessage("Sell"),
         "simpleTradeSend": MessageLookupByLibrary.simpleMessage("Send"),
         "simpleTradeShowLess":
             MessageLookupByLibrary.simpleMessage("Show less"),
         "simpleTradeShowMore":
             MessageLookupByLibrary.simpleMessage("Show more"),
-        "simpleTradeUnableActivate": m99,
+        "simpleTradeUnableActivate": m101,
         "skip": MessageLookupByLibrary.simpleMessage("Skip"),
         "snackbarDismiss": MessageLookupByLibrary.simpleMessage("Dismiss"),
-        "soundCantPlayThatMsg": m100,
-        "soundPlayedWhen": m101,
+        "soundCantPlayThatMsg": m102,
+        "soundPlayedWhen": m103,
         "soundSettingsLink": MessageLookupByLibrary.simpleMessage("Sound"),
         "soundSettingsTitle":
             MessageLookupByLibrary.simpleMessage("Sound settings"),
@@ -1304,20 +1325,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "soundsNote": MessageLookupByLibrary.simpleMessage(
             "Note that you can set your custom sounds in application settings."),
         "spanishLanguage": MessageLookupByLibrary.simpleMessage("Spanish"),
+        "startDate": MessageLookupByLibrary.simpleMessage("Start Date"),
         "startSwap": MessageLookupByLibrary.simpleMessage("Start Swap"),
         "step": MessageLookupByLibrary.simpleMessage("Step"),
         "success": MessageLookupByLibrary.simpleMessage("Success!"),
         "support": MessageLookupByLibrary.simpleMessage("Support"),
-        "supportLinksDesc": m102,
+        "supportLinksDesc": m104,
         "swap": MessageLookupByLibrary.simpleMessage("swap"),
         "swapCurrent": MessageLookupByLibrary.simpleMessage("Current"),
         "swapDetailTitle":
             MessageLookupByLibrary.simpleMessage("CONFIRM EXCHANGE DETAILS"),
         "swapEstimated": MessageLookupByLibrary.simpleMessage("Estimate"),
         "swapFailed": MessageLookupByLibrary.simpleMessage("Swap failed"),
-        "swapGasActivate": m103,
-        "swapGasAmount": m104,
-        "swapGasAmountRequired": m105,
+        "swapGasActivate": m105,
+        "swapGasAmount": m106,
+        "swapGasAmountRequired": m107,
         "swapOngoing": MessageLookupByLibrary.simpleMessage("Swap ongoing"),
         "swapProgress":
             MessageLookupByLibrary.simpleMessage("Progress details"),
@@ -1326,6 +1348,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "swapTotal": MessageLookupByLibrary.simpleMessage("Total"),
         "swapUUID": MessageLookupByLibrary.simpleMessage("Swap UUID"),
         "switchTheme": MessageLookupByLibrary.simpleMessage("Switch Theme"),
+        "syncFromDate":
+            MessageLookupByLibrary.simpleMessage("Sync from specified date"),
+        "syncFromSaplingActivation": MessageLookupByLibrary.simpleMessage(
+            "Sync from sapling activation"),
+        "syncNewTransactions":
+            MessageLookupByLibrary.simpleMessage("Sync new transactions"),
+        "syncTransactionsQuestion": m108,
         "tagAVX20": MessageLookupByLibrary.simpleMessage("AVX20"),
         "tagBEP20": MessageLookupByLibrary.simpleMessage("BEP20"),
         "tagERC20": MessageLookupByLibrary.simpleMessage("ERC20"),
@@ -1385,24 +1414,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "txLimitExceeded": MessageLookupByLibrary.simpleMessage(
             "Too many requests.\nTransactions history requests limit exceeded.\nPlease try again later."),
         "txNotConfirmed": MessageLookupByLibrary.simpleMessage("UNCONFIRMED"),
-        "txleft": m106,
+        "txleft": m109,
         "ukrainianLanguage": MessageLookupByLibrary.simpleMessage("Ukrainian"),
         "unlock": MessageLookupByLibrary.simpleMessage("unlock"),
         "unlockFunds": MessageLookupByLibrary.simpleMessage("Unlock Funds"),
-        "unlockSuccess": m107,
+        "unlockSuccess": m110,
         "unspendable": MessageLookupByLibrary.simpleMessage("unspendable"),
         "updatesAvailable":
             MessageLookupByLibrary.simpleMessage("New version available"),
         "updatesChecking":
             MessageLookupByLibrary.simpleMessage("Checking for updates..."),
-        "updatesCurrentVersion": m108,
+        "updatesCurrentVersion": m111,
         "updatesNotifAvailable": MessageLookupByLibrary.simpleMessage(
             "New version available. Please update."),
-        "updatesNotifAvailableVersion": m109,
+        "updatesNotifAvailableVersion": m112,
         "updatesNotifTitle":
             MessageLookupByLibrary.simpleMessage("Update available"),
         "updatesSkip": MessageLookupByLibrary.simpleMessage("Skip for now"),
-        "updatesTitle": m110,
+        "updatesTitle": m113,
         "updatesUpToDate":
             MessageLookupByLibrary.simpleMessage("Already up to date"),
         "updatesUpdate": MessageLookupByLibrary.simpleMessage("Update"),
@@ -1428,9 +1457,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "warningOkBtn": MessageLookupByLibrary.simpleMessage("Ok"),
         "warningShareLogs": MessageLookupByLibrary.simpleMessage(
             "Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!"),
-        "weFailedTo": m111,
-        "weFailedToActivate": m112,
-        "welcomeInfo": m113,
+        "weFailedTo": m114,
+        "weFailedToActivate": m115,
+        "welcomeInfo": m116,
         "welcomeLetSetUp":
             MessageLookupByLibrary.simpleMessage("LET\'S GET SET UP!"),
         "welcomeTitle": MessageLookupByLibrary.simpleMessage("WELCOME"),
@@ -1440,14 +1469,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "willTakeTime": MessageLookupByLibrary.simpleMessage(
             "This will take a while and the app must be kept in the foreground.\nTerminating the app while activation is in progress could lead to issues."),
         "withdraw": MessageLookupByLibrary.simpleMessage("Withdraw"),
-        "withdrawCameraAccessText": m114,
+        "withdrawCameraAccessText": m117,
         "withdrawCameraAccessTitle":
             MessageLookupByLibrary.simpleMessage("Access Denied"),
         "withdrawConfirm":
             MessageLookupByLibrary.simpleMessage("Confirm Withdrawal"),
         "withdrawConfirmError": MessageLookupByLibrary.simpleMessage(
             "Something went wrong. Try again later."),
-        "withdrawValue": m115,
+        "withdrawValue": m118,
         "wrongCoinSpan1": MessageLookupByLibrary.simpleMessage(
             "You are trying to scan a payment QR code for "),
         "wrongCoinSpan2":
@@ -1469,7 +1498,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "you have an order that new orders can match with"),
         "youAreSending":
             MessageLookupByLibrary.simpleMessage("You are sending:"),
-        "youWillReceiveClaim": m116,
+        "youWillReceiveClaim": m119,
         "youWillReceived":
             MessageLookupByLibrary.simpleMessage("You will receive: "),
         "yourWallet": MessageLookupByLibrary.simpleMessage("your wallet")

@@ -155,139 +155,145 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m53(abbr) => "${abbr} 잔액은 교환 수수료를 지불할 금액보다 부족합니다";
 
-  static m54(coinAbbr) => "${coinAbbr} 이 사용불가합니다 :(";
+  static m54(coin) => "잘못된 ${coin} 주소";
 
-  static m55(coinName) => "❗주의! ${coinName} 시장의 24시간 거래량이 \$10,000 미만입니다!";
+  static m55(coinAbbr) => "${coinAbbr} 이 사용불가합니다 :(";
 
-  static m56(value) => "한도는 최대 ${value}이어야 합니다.";
+  static m56(coinName) => "❗주의! ${coinName} 시장의 24시간 거래량이 \$10,000 미만입니다!";
 
-  static m57(coinName, number) => "최소 판매 양은 ${number} ${coinName}입니다";
+  static m57(value) => "한도는 최대 ${value}이어야 합니다.";
 
-  static m58(coinName, number) => "최소 구매 양은 ${number} ${coinName}입니다";
+  static m58(coinName, number) => "최소 판매 양은 ${number} ${coinName}입니다";
 
-  static m59(buyCoin, buyAmount, sellCoin, sellAmount) =>
+  static m59(coinName, number) => "최소 구매 양은 ${number} ${coinName}입니다";
+
+  static m60(buyCoin, buyAmount, sellCoin, sellAmount) =>
       "최소 주문 양은 ${buyAmount} ${buyCoin}\n(${sellAmount} ${sellCoin})입니다";
 
-  static m60(coinName, number) => "최소 판매 양은 ${number} ${coinName}입니다";
+  static m61(coinName, number) => "최소 판매 양은 ${number} ${coinName}입니다";
 
-  static m61(minValue, coin) => "값은 ${minValue} ${coin}보다 커야합니다";
+  static m62(minValue, coin) => "값은 ${minValue} ${coin}보다 커야합니다";
 
-  static m62(appName) =>
+  static m63(appName) =>
       "이제 셀룰러 데이터를 사용하고 ${appName} P2P 네트워크에 참여하여 인터넷 트래픽을 소비합니다. 셀룰러 데이터 요금제가 비싸다면 WiFi 네트워크를 사용하는 것이 좋습니다.";
 
-  static m63(coin) => "${coin} 활성화하고 먼저 가장 높은 잔고로";
+  static m64(coin) => "${coin} 활성화하고 먼저 가장 높은 잔고로";
 
-  static m64(number) => "${number} 주문들 생성:";
+  static m65(number) => "${number} 주문들 생성:";
 
-  static m65(coin) => "${coin} 잔고가 너무 낮습니다";
+  static m66(coin) => "${coin} 잔고가 너무 낮습니다";
 
-  static m66(coin, fee) => "수수료를 지불할 ${coin}이 부족합니다. 최소 잔고는 ${fee} ${coin}입니다";
+  static m67(coin, fee) => "수수료를 지불할 ${coin}이 부족합니다. 최소 잔고는 ${fee} ${coin}입니다";
 
-  static m67(coinName) => "${coinName} 양을 입력해 주세요.";
+  static m68(coinName) => "${coinName} 양을 입력해 주세요.";
 
-  static m68(coin) => "거래를 위한 ${coin} 부족합니다!";
+  static m69(coin) => "거래를 위한 ${coin} 부족합니다!";
 
-  static m69(sell, buy) => "${sell}/${buy} 가 성공적으로 바꿔었습니다";
+  static m70(sell, buy) => "${sell}/${buy} 가 성공적으로 바꿔었습니다";
 
-  static m70(sell, buy) => "${sell}/${buy} 를 바꾸기 실패했습니다";
+  static m71(sell, buy) => "${sell}/${buy} 를 바꾸기 실패했습니다";
 
-  static m71(sell, buy) => "${sell}/${buy} 스와프가 시작되었습니다";
+  static m72(sell, buy) => "${sell}/${buy} 스와프가 시작되었습니다";
 
-  static m72(sell, buy) => "${sell}/${buy} 스왑 시간이 초과되었습니다";
+  static m73(sell, buy) => "${sell}/${buy} 스왑 시간이 초과되었습니다";
 
-  static m73(coin) => "당신은 ${coin} 거래를 받았습니다!";
+  static m74(coin) => "당신은 ${coin} 거래를 받았습니다!";
 
-  static m74(assets) => "${assets} 자산";
+  static m75(assets) => "${assets} 자산";
 
-  static m75(coin) => "모든 ${coin} 주문이 취소될것 입니다.";
+  static m76(coin) => "모든 ${coin} 주문이 취소될것 입니다.";
 
-  static m76(delta) => "편함: CEX +${delta}%";
+  static m77(delta) => "편함: CEX +${delta}%";
 
-  static m77(delta) => "편함: CEX ${delta}%";
+  static m78(delta) => "편함: CEX ${delta}%";
 
-  static m78(fill) => "${fill}% 채워짐";
+  static m79(fill) => "${fill}% 채워짐";
 
-  static m79(coin) => "Amt. (${coin})";
+  static m80(coin) => "Amt. (${coin})";
 
-  static m80(coin) => "가격 (${coin})";
+  static m81(coin) => "가격 (${coin})";
 
-  static m81(coin) => "총값 (${coin})";
+  static m82(coin) => "총값 (${coin})";
 
-  static m82(abbr) => "${abbr}가 활성화되어 있지 않습니다. 활성화 후에 다시 시도해주세요.";
+  static m83(abbr) => "${abbr}가 활성화되어 있지 않습니다. 활성화 후에 다시 시도해주세요.";
 
-  static m83(appName) => "어떤 기기에서 ${appName}을 사용할 수 있나요?";
+  static m84(appName) => "어떤 기기에서 ${appName}을 사용할 수 있나요?";
 
-  static m84(appName) => "다른 DEX들에서 거래하는 것 보다 ${appName}에서 하는 것이 무엇이 다른가요?";
+  static m85(appName) => "다른 DEX들에서 거래하는 것 보다 ${appName}에서 하는 것이 무엇이 다른가요?";
 
-  static m85(appName) => "${appName}에서 수수료는 어떻게 계산되나요?";
+  static m86(appName) => "${appName}에서 수수료는 어떻게 계산되나요?";
 
-  static m86(appName) => "${appName} 뒤에는 누가 있나요?";
+  static m87(appName) => "${appName} 뒤에는 누가 있나요?";
 
-  static m87(appName) => "${appName}에서 저의 화이트-레이블 익스체인지를 개발할 수 있나요?";
+  static m88(appName) => "${appName}에서 저의 화이트-레이블 익스체인지를 개발할 수 있나요?";
 
-  static m88(amount) => "성공! ${amount} KMD를 받았습니다.";
+  static m89(amount) => "성공! ${amount} KMD를 받았습니다.";
 
-  static m89(dd) => "${dd} 날(들)";
+  static m90(dd) => "${dd} 날(들)";
 
-  static m90(hh, minutes) => "${hh}h ${minutes}m";
+  static m91(hh, minutes) => "${hh}h ${minutes}m";
 
-  static m91(mm) => "${mm}분";
+  static m92(mm) => "${mm}분";
 
-  static m92(amount) => "${amount} 주문을 보기 위해 클릭하세요";
+  static m93(amount) => "${amount} 주문을 보기 위해 클릭하세요";
 
-  static m93(coinName, address) => "나의 ${coinName} 주소:\n${address}";
+  static m94(coinName, address) => "나의 ${coinName} 주소:\n${address}";
 
-  static m94(count, maxCount) => "${maxCount}개 주문 중 ${count}개를 표시 중입니다.";
+  static m95(coin) => "과거 ${coin} 거래를 검색하시겠습니까?";
 
-  static m95(coin) => "구매할 ${coin} 양을 입력하세요";
+  static m96(count, maxCount) => "${maxCount}개 주문 중 ${count}개를 표시 중입니다.";
 
-  static m96(maxCoins) => "최대 활성화 코인 양은 ${maxCoins}입니다. 조금 비활성화 해주세요.";
+  static m97(coin) => "구매할 ${coin} 양을 입력하세요";
 
-  static m97(coin) => "${coin}이 활성화 되어 있지 않습니다!";
+  static m98(maxCoins) => "최대 활성화 코인 양은 ${maxCoins}입니다. 조금 비활성화 해주세요.";
 
-  static m98(coin) => "판매 할 ${coin} 양을 입력하세요";
+  static m99(coin) => "${coin}이 활성화 되어 있지 않습니다!";
 
-  static m99(coin) => "${coin}을 활성화 할 수 없습니다";
+  static m100(coin) => "판매 할 ${coin} 양을 입력하세요";
 
-  static m100(description) =>
+  static m101(coin) => "${coin}을 활성화 할 수 없습니다";
+
+  static m102(description) =>
       "mp3 또는 wav 파일을 골라주세요. 저희가 ${description}때 들려드리겠습니다.";
 
-  static m101(description) => "${description}일때 들려주기";
+  static m103(description) => "${description}일때 들려주기";
 
-  static m102(appName) =>
+  static m104(appName) =>
       "궁금한 점이 있거나, ${appName} 앱의 기술적인 문제를 발견하셨다고 생각하시면, 보고하고 팀의 지원을 받으실 수 있습니다.";
 
-  static m103(coin) => "${coin} 활성화와 최고 잔고를 먼저 해주세요";
+  static m105(coin) => "${coin} 활성화와 최고 잔고를 먼저 해주세요";
 
-  static m104(coin) => "${coin} 잔고가 거래 수수료를 지불하기 부족합니다.";
+  static m106(coin) => "${coin} 잔고가 거래 수수료를 지불하기 부족합니다.";
 
-  static m105(coin, amount) =>
+  static m107(coin, amount) =>
       "${coin} 잔고가 거래 수수료를 지불하기 부족합니다. ${coin} ${amount}가 필요합니다.";
 
-  static m106(left) => "남은 거래: ${left}";
+  static m108(name) => "어떤 ${name} 거래를 동기화하시겠습니까?";
 
-  static m107(amnt, hash) => "성공적으로 ${amnt} 펀드를 열었습니다 - TX: ${hash}";
+  static m109(left) => "남은 거래: ${left}";
 
-  static m108(version) => "당신은 ${version} 사용 중 입니다";
+  static m110(amnt, hash) => "성공적으로 ${amnt} 펀드를 열었습니다 - TX: ${hash}";
 
-  static m109(version) => "버전 ${version}이 있습니다. 업데이트를 하세요.";
+  static m111(version) => "당신은 ${version} 사용 중 입니다";
 
-  static m110(appName) => "${appName} 업데이트";
+  static m112(version) => "버전 ${version}이 있습니다. 업데이트를 하세요.";
 
-  static m111(coinAbbr) => "저희가 ${coinAbbr}를 활성화 하는 것을 실패했습니다";
+  static m113(appName) => "${appName} 업데이트";
 
-  static m112(coinAbbr) =>
+  static m114(coinAbbr) => "저희가 ${coinAbbr}를 활성화 하는 것을 실패했습니다";
+
+  static m115(coinAbbr) =>
       "저희가 ${coinAbbr}를 활성화 하는 것을 실패했습니다.\n앱을 다시 시작하고 다시 해주세요.";
 
-  static m113(appName) =>
+  static m116(appName) =>
       "${appName} 모바일은 3세대 DEX 기능과 더 많은 기능 등을 탑재한 차세대 멀티코인 지갑입니다.";
 
-  static m114(appName) =>
+  static m117(appName) =>
       "카메라에 대한 ${appName} 액세스를 이전에 거부했습니다.\nQR코드 스캔을 실시하려면 전화기의 설정에서 카메라의 허가를 수동으로 변경해 주세요.";
 
-  static m115(amount, coinName) => "${amount} ${coinName} 인출";
+  static m118(amount, coinName) => "${amount} ${coinName} 인출";
 
-  static m116(amount, coin) => "당신은 ${amount} ${coin}을 받습니다";
+  static m119(amount, coin) => "당신은 ${amount} ${coin}을 받습니다";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -329,6 +335,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressSend": MessageLookupByLibrary.simpleMessage("수신자 선택"),
         "advanced": MessageLookupByLibrary.simpleMessage("고급"),
         "all": MessageLookupByLibrary.simpleMessage("모두"),
+        "allPastTransactions": MessageLookupByLibrary.simpleMessage(
+            "지갑에는 과거 거래가 표시됩니다. 모든 블록이 다운로드되고 스캔되므로 상당한 저장 공간과 시간이 소요됩니다."),
         "allowCustomSeed": MessageLookupByLibrary.simpleMessage("커스텀 시드 허용"),
         "alreadyExists": MessageLookupByLibrary.simpleMessage("벌서 존재합니다"),
         "amount": MessageLookupByLibrary.simpleMessage("양"),
@@ -388,6 +396,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "camoSetupTitle": MessageLookupByLibrary.simpleMessage("위장 비밀번호 셋업"),
         "camouflageSetup": MessageLookupByLibrary.simpleMessage("위장 비밀번호 셋업"),
         "cancel": MessageLookupByLibrary.simpleMessage("취소"),
+        "cancelActivation": MessageLookupByLibrary.simpleMessage("활성화 취소"),
+        "cancelActivationQuestion":
+            MessageLookupByLibrary.simpleMessage("활성화를 취소하시겠습니까?"),
         "cancelButton": MessageLookupByLibrary.simpleMessage("취소"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("주문 취소"),
         "candleChartError":
@@ -426,6 +437,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "closeMessage": MessageLookupByLibrary.simpleMessage("에러 메시지 닫기"),
         "closePreview": MessageLookupByLibrary.simpleMessage("프리뷰 닫기"),
         "code": MessageLookupByLibrary.simpleMessage("코드:"),
+        "cofirmCancelActivation":
+            MessageLookupByLibrary.simpleMessage("활성화를 취소하시겠습니까?"),
         "coinSelectClear": MessageLookupByLibrary.simpleMessage("클리어"),
         "coinSelectNotFound":
             MessageLookupByLibrary.simpleMessage("활성화된 코인 없음"),
@@ -683,6 +696,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "foundQrCode": MessageLookupByLibrary.simpleMessage("QR코드 발견"),
         "frenchLanguage": MessageLookupByLibrary.simpleMessage("프랑스 국민"),
         "from": MessageLookupByLibrary.simpleMessage("에서부터"),
+        "futureTransactions": MessageLookupByLibrary.simpleMessage(
+            "공개 키와 관련된 활성화 후 향후 거래가 동기화됩니다. 이는 가장 빠른 옵션이며 저장 공간을 가장 적게 차지합니다."),
         "gasFee": m49,
         "gasLimit": MessageLookupByLibrary.simpleMessage("가스 제한"),
         "gasNotActive": m50,
@@ -756,17 +771,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "insufficientTitle": MessageLookupByLibrary.simpleMessage("볼륨 부족"),
         "internetRefreshButton": MessageLookupByLibrary.simpleMessage("새로 고침"),
         "internetRestored": MessageLookupByLibrary.simpleMessage("인터넷 연결 복구됨"),
+        "invalidCoinAddress": m54,
         "invalidSwap": MessageLookupByLibrary.simpleMessage("스왑 진행 불가능"),
         "invalidSwapDetailsLink": MessageLookupByLibrary.simpleMessage("상세"),
-        "isUnavailable": m54,
+        "isUnavailable": m55,
         "japaneseLanguage": MessageLookupByLibrary.simpleMessage("일본어"),
         "koreanLanguage": MessageLookupByLibrary.simpleMessage("한국인"),
         "language": MessageLookupByLibrary.simpleMessage("언어"),
         "latestTxs": MessageLookupByLibrary.simpleMessage("마지막 거래"),
         "legalTitle": MessageLookupByLibrary.simpleMessage("법적"),
         "less": MessageLookupByLibrary.simpleMessage("덜"),
-        "lessThanCaution": m55,
-        "limitError": m56,
+        "lessThanCaution": m56,
+        "limitError": m57,
         "loading": MessageLookupByLibrary.simpleMessage("로딩 중..."),
         "loadingOrderbook": MessageLookupByLibrary.simpleMessage("주문책 로딩 중..."),
         "lockScreen": MessageLookupByLibrary.simpleMessage("스크린이 잠겼습니다"),
@@ -823,11 +839,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "milliseconds": MessageLookupByLibrary.simpleMessage("ms"),
         "min": MessageLookupByLibrary.simpleMessage("최소"),
         "minOrder": MessageLookupByLibrary.simpleMessage("최소 주문 볼륨"),
-        "minValue": m57,
-        "minValueBuy": m58,
-        "minValueOrder": m59,
-        "minValueSell": m60,
-        "minVolumeInput": m61,
+        "minValue": m58,
+        "minValueBuy": m59,
+        "minValueOrder": m60,
+        "minValueSell": m61,
+        "minVolumeInput": m62,
         "minVolumeIsTDH":
             MessageLookupByLibrary.simpleMessage("판매 양보다 적어야 합니다"),
         "minVolumeTitle": MessageLookupByLibrary.simpleMessage("필요된 최소 볼륨"),
@@ -835,16 +851,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimizingWillTerminate": MessageLookupByLibrary.simpleMessage(
             "경고: iOS에서 앱을 최소화하면 활성화 프로세스가 종료됩니다."),
         "minutes": MessageLookupByLibrary.simpleMessage("m"),
-        "mobileDataWarning": m62,
+        "mobileDataWarning": m63,
         "moreInfo": MessageLookupByLibrary.simpleMessage("더 많은 정보"),
         "moreTab": MessageLookupByLibrary.simpleMessage("더"),
-        "multiActivateGas": m63,
+        "multiActivateGas": m64,
         "multiBaseAmtPlaceholder": MessageLookupByLibrary.simpleMessage("양"),
         "multiBasePlaceholder": MessageLookupByLibrary.simpleMessage("코인"),
         "multiBaseSelectTitle": MessageLookupByLibrary.simpleMessage("판매"),
         "multiConfirmCancel": MessageLookupByLibrary.simpleMessage("취소"),
         "multiConfirmConfirm": MessageLookupByLibrary.simpleMessage("확인"),
-        "multiConfirmTitle": m64,
+        "multiConfirmTitle": m65,
         "multiCreate": MessageLookupByLibrary.simpleMessage("생성"),
         "multiCreateOrder": MessageLookupByLibrary.simpleMessage("주문"),
         "multiCreateOrders": MessageLookupByLibrary.simpleMessage("주문들"),
@@ -857,8 +873,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("계속하기 전에 모든 에러를 고치세요"),
         "multiInvalidAmt": MessageLookupByLibrary.simpleMessage("잘못된 양"),
         "multiInvalidSellAmt": MessageLookupByLibrary.simpleMessage("잘못된 판매 양"),
-        "multiLowGas": m65,
-        "multiLowerThanFee": m66,
+        "multiLowGas": m66,
+        "multiLowerThanFee": m67,
         "multiMaxSellAmt": MessageLookupByLibrary.simpleMessage("최대 판매 양은"),
         "multiMinReceiveAmt": MessageLookupByLibrary.simpleMessage("최소 받는 양은"),
         "multiMinSellAmt": MessageLookupByLibrary.simpleMessage("최소 판매 양은"),
@@ -884,7 +900,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noItemsToExport": MessageLookupByLibrary.simpleMessage("선택된 아이템 없음"),
         "noItemsToImport": MessageLookupByLibrary.simpleMessage("선택된 아이템 없음"),
         "noMatchingOrders": MessageLookupByLibrary.simpleMessage("알맞는 주문 없음"),
-        "noOrder": m67,
+        "noOrder": m68,
         "noOrderAvailable":
             MessageLookupByLibrary.simpleMessage("주문을 만들기 위해서 눌러주세요"),
         "noOrders": MessageLookupByLibrary.simpleMessage("주문 없음, 가서 거래하세요."),
@@ -896,7 +912,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noTxs": MessageLookupByLibrary.simpleMessage("거래내역 없음"),
         "nonNumericInput": MessageLookupByLibrary.simpleMessage("값은 숫자여야 합니다"),
         "none": MessageLookupByLibrary.simpleMessage("없음"),
-        "notEnoughGas": m68,
+        "notEnoughGas": m69,
         "notEnoughtBalanceForFee": MessageLookupByLibrary.simpleMessage(
             "수수료를 위한 잔고 부족 - 더 작은 양을 거래하세요"),
         "noteOnOrder":
@@ -904,22 +920,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "notePlaceholder": MessageLookupByLibrary.simpleMessage("노트 추가"),
         "noteTitle": MessageLookupByLibrary.simpleMessage("노트"),
         "nothingFound": MessageLookupByLibrary.simpleMessage("찾을 수 없습니다"),
-        "notifSwapCompletedText": m69,
+        "notifSwapCompletedText": m70,
         "notifSwapCompletedTitle":
             MessageLookupByLibrary.simpleMessage("스와프 완료됨"),
-        "notifSwapFailedText": m70,
+        "notifSwapFailedText": m71,
         "notifSwapFailedTitle": MessageLookupByLibrary.simpleMessage("스와프 실패됨"),
-        "notifSwapStartedText": m71,
+        "notifSwapStartedText": m72,
         "notifSwapStartedTitle":
             MessageLookupByLibrary.simpleMessage("새로운 스와프가 시작되었습니다"),
         "notifSwapStatusTitle":
             MessageLookupByLibrary.simpleMessage("스와프 상태가 바꿨습니다"),
-        "notifSwapTimeoutText": m72,
+        "notifSwapTimeoutText": m73,
         "notifSwapTimeoutTitle":
             MessageLookupByLibrary.simpleMessage("스왑 시간 초과됨"),
-        "notifTxText": m73,
+        "notifTxText": m74,
         "notifTxTitle": MessageLookupByLibrary.simpleMessage("들어오는 거래"),
-        "numberAssets": m74,
+        "numberAssets": m75,
         "officialPressRelease":
             MessageLookupByLibrary.simpleMessage("공식 보도 자료"),
         "okButton": MessageLookupByLibrary.simpleMessage("네"),
@@ -929,14 +945,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMessage": MessageLookupByLibrary.simpleMessage("에러 메세지 열기"),
         "orderBookLess": MessageLookupByLibrary.simpleMessage("더 적은"),
         "orderBookMore": MessageLookupByLibrary.simpleMessage("더"),
-        "orderCancel": m75,
+        "orderCancel": m76,
         "orderCreated": MessageLookupByLibrary.simpleMessage("주문 생성됨"),
         "orderCreatedInfo":
             MessageLookupByLibrary.simpleMessage("주문이 성공적으로 생성됬습니다"),
         "orderDetailsAddress": MessageLookupByLibrary.simpleMessage("주소"),
         "orderDetailsCancel": MessageLookupByLibrary.simpleMessage("취소"),
-        "orderDetailsExpedient": m76,
-        "orderDetailsExpensive": m77,
+        "orderDetailsExpedient": m77,
+        "orderDetailsExpensive": m78,
         "orderDetailsFor": MessageLookupByLibrary.simpleMessage("위한"),
         "orderDetailsIdentical":
             MessageLookupByLibrary.simpleMessage("똑같은 CEX"),
@@ -949,7 +965,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "한개 탭에서 상세를 열고 긴 탭에서 주문을 선택하세요"),
         "orderDetailsSpend": MessageLookupByLibrary.simpleMessage("소비"),
         "orderDetailsTitle": MessageLookupByLibrary.simpleMessage("세부 사항"),
-        "orderFilled": m78,
+        "orderFilled": m79,
         "orderMatched": MessageLookupByLibrary.simpleMessage("주문 매칭됨"),
         "orderMatching": MessageLookupByLibrary.simpleMessage("주문 매칭"),
         "orderTypePartial": MessageLookupByLibrary.simpleMessage("주문"),
@@ -957,9 +973,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders": MessageLookupByLibrary.simpleMessage("주문"),
         "ordersActive": MessageLookupByLibrary.simpleMessage("활성화"),
         "ordersHistory": MessageLookupByLibrary.simpleMessage("히스토리"),
-        "ordersTableAmount": m79,
-        "ordersTablePrice": m80,
-        "ordersTableTotal": m81,
+        "ordersTableAmount": m80,
+        "ordersTablePrice": m81,
+        "ordersTableTotal": m82,
         "overwrite": MessageLookupByLibrary.simpleMessage("덮어쓰기"),
         "ownOrder": MessageLookupByLibrary.simpleMessage("이것은 당신만의 주문입니다!"),
         "paidFromBalance": MessageLookupByLibrary.simpleMessage("잔액에서 지불:"),
@@ -967,6 +983,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidWith": MessageLookupByLibrary.simpleMessage("으로 지불"),
         "passwordRequirement": MessageLookupByLibrary.simpleMessage(
             "비밀번호는 최서 12자 이상이어여 하고, 소문자, 대문자 및 특수 기호가 하나씩 있어야합니다."),
+        "pastTransactionsFromDate": MessageLookupByLibrary.simpleMessage(
+            "귀하의 지갑에는 지정된 날짜 이후에 이루어진 과거 거래가 표시됩니다."),
         "paymentUriDetailsAccept": MessageLookupByLibrary.simpleMessage("지불"),
         "paymentUriDetailsAcceptQuestion":
             MessageLookupByLibrary.simpleMessage("거래를 수락하시겠습니까?"),
@@ -978,7 +996,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("코인:"),
         "paymentUriDetailsDeny": MessageLookupByLibrary.simpleMessage("취소"),
         "paymentUriDetailsTitle": MessageLookupByLibrary.simpleMessage("지불 요청"),
-        "paymentUriInactiveCoin": m82,
+        "paymentUriInactiveCoin": m83,
         "placeOrder": MessageLookupByLibrary.simpleMessage("당신의 주문을 넣으세요"),
         "pleaseAddCoin": MessageLookupByLibrary.simpleMessage("코인을 더해 주세요"),
         "pleaseRestart": MessageLookupByLibrary.simpleMessage(
@@ -999,17 +1017,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "pubkey": MessageLookupByLibrary.simpleMessage("펍키"),
         "qrCodeScanner": MessageLookupByLibrary.simpleMessage("QR 코드 스캐너"),
         "question_1": MessageLookupByLibrary.simpleMessage("제 개인 키를 보관하나요?"),
-        "question_10": m83,
-        "question_2": m84,
+        "question_10": m84,
+        "question_2": m85,
         "question_3":
             MessageLookupByLibrary.simpleMessage("각각의 아토믹 스왑을 얼마나 걸리나요?"),
         "question_4":
             MessageLookupByLibrary.simpleMessage("스왑을 하는 동안 온라인에 있어야 하나요?"),
-        "question_5": m85,
+        "question_5": m86,
         "question_6": MessageLookupByLibrary.simpleMessage("유저 지원을 공급하나요?"),
         "question_7": MessageLookupByLibrary.simpleMessage("나라 제한이 있나요?"),
-        "question_8": m86,
-        "question_9": m87,
+        "question_8": m87,
+        "question_9": m88,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
             "새로운 시대입니다! \'AtomicDEX\'에서 \'Komodo Wallet\'으로 공식 명칭을 변경하였습니다."),
         "receive": MessageLookupByLibrary.simpleMessage("받기"),
@@ -1043,7 +1061,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsReadMore":
             MessageLookupByLibrary.simpleMessage("KMD 활성화 유저 보상에 대해서 더 읽어 보기"),
         "rewardsReceive": MessageLookupByLibrary.simpleMessage("받기"),
-        "rewardsSuccess": m88,
+        "rewardsSuccess": m89,
         "rewardsTableFiat": MessageLookupByLibrary.simpleMessage("피아트"),
         "rewardsTableRewards": MessageLookupByLibrary.simpleMessage("보상,\nKMD"),
         "rewardsTableStatus": MessageLookupByLibrary.simpleMessage("상태"),
@@ -1051,9 +1069,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsTableTitle": MessageLookupByLibrary.simpleMessage("보상 정보:"),
         "rewardsTableUXTO":
             MessageLookupByLibrary.simpleMessage("UTXO amt,\nKMD"),
-        "rewardsTimeDays": m89,
-        "rewardsTimeHours": m90,
-        "rewardsTimeMin": m91,
+        "rewardsTimeDays": m90,
+        "rewardsTimeHours": m91,
+        "rewardsTimeMin": m92,
         "rewardsTitle": MessageLookupByLibrary.simpleMessage("보상 정보"),
         "russianLanguage": MessageLookupByLibrary.simpleMessage("러시아인"),
         "saveMerged": MessageLookupByLibrary.simpleMessage("병함 저장"),
@@ -1103,7 +1121,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchForTicker": MessageLookupByLibrary.simpleMessage("Ticker 찾기"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),
         "security": MessageLookupByLibrary.simpleMessage("보안"),
-        "seeOrders": m92,
+        "seeOrders": m93,
         "seeTxHistory": MessageLookupByLibrary.simpleMessage("거래 내역 보기"),
         "seedPhrase": MessageLookupByLibrary.simpleMessage("시드 문구"),
         "seedPhraseTitle":
@@ -1116,6 +1134,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("구매하고 싶은 코인 선택"),
         "selectCoinToSell":
             MessageLookupByLibrary.simpleMessage("판매하고 싶은 코인 선택"),
+        "selectDate": MessageLookupByLibrary.simpleMessage("날짜를 선택하세요"),
         "selectFileImport": MessageLookupByLibrary.simpleMessage("파일 선택"),
         "selectLanguage": MessageLookupByLibrary.simpleMessage("언어 선택"),
         "selectPaymentMethod": MessageLookupByLibrary.simpleMessage("지불 방법 선택"),
@@ -1137,33 +1156,34 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingLanguageTitle": MessageLookupByLibrary.simpleMessage("언어"),
         "settings": MessageLookupByLibrary.simpleMessage("설정"),
         "share": MessageLookupByLibrary.simpleMessage("공유"),
-        "shareAddress": m93,
+        "shareAddress": m94,
+        "shouldScanPastTransaction": m95,
         "showAddress": MessageLookupByLibrary.simpleMessage("주소 표시"),
         "showDetails": MessageLookupByLibrary.simpleMessage("상세 보기"),
         "showMyOrders": MessageLookupByLibrary.simpleMessage("나의 주문 보기"),
-        "showingOrders": m94,
+        "showingOrders": m96,
         "signInWithPassword":
             MessageLookupByLibrary.simpleMessage("비밀번호로 로그인하기"),
         "signInWithSeedPhrase": MessageLookupByLibrary.simpleMessage(
             "비밀번호를 까먹으셨나요? 지갑을 시드로부터 복구하세요"),
         "simple": MessageLookupByLibrary.simpleMessage("심플"),
         "simpleTradeActivate": MessageLookupByLibrary.simpleMessage("활성화"),
-        "simpleTradeBuyHint": m95,
+        "simpleTradeBuyHint": m97,
         "simpleTradeBuyTitle": MessageLookupByLibrary.simpleMessage("구매"),
         "simpleTradeClose": MessageLookupByLibrary.simpleMessage("거이"),
-        "simpleTradeMaxActiveCoins": m96,
-        "simpleTradeNotActive": m97,
+        "simpleTradeMaxActiveCoins": m98,
+        "simpleTradeNotActive": m99,
         "simpleTradeRecieve": MessageLookupByLibrary.simpleMessage("받기"),
-        "simpleTradeSellHint": m98,
+        "simpleTradeSellHint": m100,
         "simpleTradeSellTitle": MessageLookupByLibrary.simpleMessage("판매"),
         "simpleTradeSend": MessageLookupByLibrary.simpleMessage("보내기"),
         "simpleTradeShowLess": MessageLookupByLibrary.simpleMessage("덜 보기"),
         "simpleTradeShowMore": MessageLookupByLibrary.simpleMessage("더 보기"),
-        "simpleTradeUnableActivate": m99,
+        "simpleTradeUnableActivate": m101,
         "skip": MessageLookupByLibrary.simpleMessage("스킵"),
         "snackbarDismiss": MessageLookupByLibrary.simpleMessage("해제"),
-        "soundCantPlayThatMsg": m100,
-        "soundPlayedWhen": m101,
+        "soundCantPlayThatMsg": m102,
+        "soundPlayedWhen": m103,
         "soundSettingsLink": MessageLookupByLibrary.simpleMessage("소리"),
         "soundSettingsTitle": MessageLookupByLibrary.simpleMessage("소리 성정"),
         "soundsDialogTitle": MessageLookupByLibrary.simpleMessage("소리들"),
@@ -1174,19 +1194,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "soundsNote": MessageLookupByLibrary.simpleMessage(
             "앱플리케이션 성정에서 커스텀 소리를 설정 할 수 있다는 것을 알아두세요."),
         "spanishLanguage": MessageLookupByLibrary.simpleMessage("스페인의"),
+        "startDate": MessageLookupByLibrary.simpleMessage("시작일"),
         "startSwap": MessageLookupByLibrary.simpleMessage("스왑 시작"),
         "step": MessageLookupByLibrary.simpleMessage("방법"),
         "success": MessageLookupByLibrary.simpleMessage("성공!"),
         "support": MessageLookupByLibrary.simpleMessage("지원"),
-        "supportLinksDesc": m102,
+        "supportLinksDesc": m104,
         "swap": MessageLookupByLibrary.simpleMessage("스왑"),
         "swapCurrent": MessageLookupByLibrary.simpleMessage("현재"),
         "swapDetailTitle": MessageLookupByLibrary.simpleMessage("변환 상세 확인"),
         "swapEstimated": MessageLookupByLibrary.simpleMessage("견적"),
         "swapFailed": MessageLookupByLibrary.simpleMessage("스왑 실패"),
-        "swapGasActivate": m103,
-        "swapGasAmount": m104,
-        "swapGasAmountRequired": m105,
+        "swapGasActivate": m105,
+        "swapGasAmount": m106,
+        "swapGasAmountRequired": m107,
         "swapOngoing": MessageLookupByLibrary.simpleMessage("스왑이 진행되고 있습니다"),
         "swapProgress": MessageLookupByLibrary.simpleMessage("진행 상세"),
         "swapStarted": MessageLookupByLibrary.simpleMessage("시작됨"),
@@ -1194,6 +1215,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "swapTotal": MessageLookupByLibrary.simpleMessage("전체"),
         "swapUUID": MessageLookupByLibrary.simpleMessage("UUID 스왑"),
         "switchTheme": MessageLookupByLibrary.simpleMessage("테마 전환"),
+        "syncFromDate": MessageLookupByLibrary.simpleMessage("지정된 날짜부터 동기화"),
+        "syncFromSaplingActivation":
+            MessageLookupByLibrary.simpleMessage("묘목 활성화에서 동기화"),
+        "syncNewTransactions": MessageLookupByLibrary.simpleMessage("새 거래 동기화"),
+        "syncTransactionsQuestion": m108,
         "tagAVX20": MessageLookupByLibrary.simpleMessage("AVX20"),
         "tagBEP20": MessageLookupByLibrary.simpleMessage("BEP20"),
         "tagERC20": MessageLookupByLibrary.simpleMessage("ERC20"),
@@ -1247,22 +1273,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "txLimitExceeded": MessageLookupByLibrary.simpleMessage(
             "요청이 너무 많습니다.\n거래 이력 요구 제한을 초과했습니다.\n나중에 다시 시도해주세요."),
         "txNotConfirmed": MessageLookupByLibrary.simpleMessage("미확인"),
-        "txleft": m106,
+        "txleft": m109,
         "ukrainianLanguage": MessageLookupByLibrary.simpleMessage("우크라이나 인"),
         "unlock": MessageLookupByLibrary.simpleMessage("열기"),
         "unlockFunds": MessageLookupByLibrary.simpleMessage("펀드 열기"),
-        "unlockSuccess": m107,
+        "unlockSuccess": m110,
         "unspendable": MessageLookupByLibrary.simpleMessage("사용 불가능"),
         "updatesAvailable":
             MessageLookupByLibrary.simpleMessage("새로운 버전 사용 가능"),
         "updatesChecking": MessageLookupByLibrary.simpleMessage("업데이트 확인중..."),
-        "updatesCurrentVersion": m108,
+        "updatesCurrentVersion": m111,
         "updatesNotifAvailable":
             MessageLookupByLibrary.simpleMessage("새로운 버전이 있습니다. 업데이트를 하세요."),
-        "updatesNotifAvailableVersion": m109,
+        "updatesNotifAvailableVersion": m112,
         "updatesNotifTitle": MessageLookupByLibrary.simpleMessage("업데이트가 있습니다"),
         "updatesSkip": MessageLookupByLibrary.simpleMessage("지금은 스킵"),
-        "updatesTitle": m110,
+        "updatesTitle": m113,
         "updatesUpToDate":
             MessageLookupByLibrary.simpleMessage("벌서 업데이트 되어있습니다"),
         "updatesUpdate": MessageLookupByLibrary.simpleMessage("업데이트"),
@@ -1286,9 +1312,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "warningOkBtn": MessageLookupByLibrary.simpleMessage("네"),
         "warningShareLogs": MessageLookupByLibrary.simpleMessage(
             "경고 - 특별한 경우 이 로그 데이터에는 스왑에 실패한 코인을 사용하는 데 사용할 수 있는 중요한 정보가 포함되어 있습니다!"),
-        "weFailedTo": m111,
-        "weFailedToActivate": m112,
-        "welcomeInfo": m113,
+        "weFailedTo": m114,
+        "weFailedToActivate": m115,
+        "welcomeInfo": m116,
         "welcomeLetSetUp": MessageLookupByLibrary.simpleMessage("이걸 준비해 봅시다!"),
         "welcomeTitle": MessageLookupByLibrary.simpleMessage("환영합니다"),
         "welcomeWallet": MessageLookupByLibrary.simpleMessage("지갑"),
@@ -1297,13 +1323,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "willTakeTime": MessageLookupByLibrary.simpleMessage(
             "이 작업은 시간이 걸리며 앱이 포그라운드에 유지되어야 합니다.\n활성화가 진행되는 동안 앱을 종료하면 문제가 발생할 수 있습니다."),
         "withdraw": MessageLookupByLibrary.simpleMessage("인출"),
-        "withdrawCameraAccessText": m114,
+        "withdrawCameraAccessText": m117,
         "withdrawCameraAccessTitle":
             MessageLookupByLibrary.simpleMessage("액세스 거부"),
         "withdrawConfirm": MessageLookupByLibrary.simpleMessage("인출 확인"),
         "withdrawConfirmError":
             MessageLookupByLibrary.simpleMessage("무언가 잘못 됬습니다. 나중에 다시 시도하세요."),
-        "withdrawValue": m115,
+        "withdrawValue": m118,
         "wrongCoinSpan1":
             MessageLookupByLibrary.simpleMessage("당신은 지불 QR 코드를 스캔 할려고 합니다"),
         "wrongCoinSpan2": MessageLookupByLibrary.simpleMessage("하지만 당신은"),
@@ -1320,7 +1346,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "you have an order that new orders can match with":
             MessageLookupByLibrary.simpleMessage("당신은 새로운 주문을 맞출수 있는 주문이 있습니다"),
         "youAreSending": MessageLookupByLibrary.simpleMessage("당신은 보냅니다:"),
-        "youWillReceiveClaim": m116,
+        "youWillReceiveClaim": m119,
         "youWillReceived": MessageLookupByLibrary.simpleMessage("당신은 받습니다:"),
         "yourWallet": MessageLookupByLibrary.simpleMessage("당신의 지갑")
       };
