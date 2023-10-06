@@ -39,6 +39,7 @@ class GetWithdraw {
             'params': {
               'coin': coin ?? '',
               'to': to ?? '',
+              'max': max ?? false,
               if (amount != null) 'amount': amount,
             }
           }
