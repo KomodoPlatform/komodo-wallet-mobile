@@ -135,7 +135,9 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
       updateNotice = scaffold.showMaterialBanner(
         MaterialBanner(
           elevation: 1,
-          content: Text(state.message),
+          content: Text(
+            localiseFailedReason(localisations, state.reason),
+          ),
           leading: Icon(
             Icons.error,
             color: Colors.red,
@@ -219,6 +221,28 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
         }
       },
     );
+  }
+
+  static String localiseFailedReason(
+    AppLocalizations localisations,
+    ZCoinActivationFailureReason reason,
+  ) {
+    final tag = localisations.tagZHTLC;
+    switch (reason) {
+      case ZCoinActivationFailureReason.startFailed:
+      case ZCoinActivationFailureReason.failedAfterStart:
+      case ZCoinActivationFailureReason.failedOther:
+        return localisations.weFailedTo(tag);
+
+      case ZCoinActivationFailureReason.failedToCancel:
+        return localisations.failedToCancelActivation(tag);
+
+      case ZCoinActivationFailureReason.cancelled:
+        return localisations.coinActivationCancelled(tag);
+
+      default:
+        return localisations.weFailedTo(tag);
+    }
   }
 }
 

@@ -10,8 +10,8 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_sta
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_status.dart';
+import 'package:komodo_dex/utils/log.dart';
 
-// TODO: Localize messages
 class ZCoinActivationBloc
     extends Bloc<ZCoinActivationEvent, ZCoinActivationState>
     with ActivationEta {
@@ -56,7 +56,7 @@ class ZCoinActivationBloc
         onData: (coinStatus) {
           if (coinStatus.isFailed) {
             return ZCoinActivationFailure(
-              'Failed to activate ZHTLC coins, please try again later',
+              ZCoinActivationFailureReason.failedAfterStart,
             );
           }
 
@@ -91,7 +91,7 @@ class ZCoinActivationBloc
             );
           }
           if (coinStatus.isActivated) {
-            return ZCoinActivationSuccess('Completed ZHTLC activation');
+            return ZCoinActivationSuccess();
           }
           return ZCoinActivationInProgess(
             progress: shouldShowNewProgress ? overallProgress : lastProgress,
@@ -101,8 +101,13 @@ class ZCoinActivationBloc
           );
         },
         onError: (e, s) {
-          debugPrint('Failed to activate coins: $e');
-          return ZCoinActivationFailure('Failed to activate coins');
+          Log(
+            'ZCoinActivationBloc:_handleActivationRequested',
+            'Failed to activate coins: $e',
+          );
+          return ZCoinActivationFailure(
+            ZCoinActivationFailureReason.failedAfterStart,
+          );
         },
       );
 
@@ -113,12 +118,14 @@ class ZCoinActivationBloc
         // And this emit might remove another important notification
         // emit(ZCoinActivationSuccess('ZHTLC coins activation process ended'));
       } else {
-        emit(ZCoinActivationFailure('Failed to activate coins'));
+        emit(
+          ZCoinActivationFailure(ZCoinActivationFailureReason.failedAfterStart),
+        );
       }
     } catch (e) {
       debugPrint('Failed to start activation: $e');
       emit(
-        ZCoinActivationFailure('Failed to start activation'),
+        ZCoinActivationFailure(ZCoinActivationFailureReason.startFailed),
       );
     } finally {
       await _clearNotification();
@@ -135,7 +142,7 @@ class ZCoinActivationBloc
     } catch (e) {
       debugPrint('Failed to set requested coins: $e');
       emit(
-        ZCoinActivationFailure('Failed to set requested coins'),
+        ZCoinActivationFailure(ZCoinActivationFailureReason.startFailed),
       );
     }
   }
@@ -158,7 +165,7 @@ class ZCoinActivationBloc
       ZCoinActivationState newState;
       if (isAllCoinsEnabled) {
         newState = isActivationInProgress
-            ? ZCoinActivationSuccess('Activation in progress...')
+            ? ZCoinActivationSuccess()
             : ZCoinActivationKnownState(isAllCoinsEnabled);
       } else if (isActivationInProgress) {
         newState = state as ZCoinActivationInProgess;
@@ -176,7 +183,7 @@ class ZCoinActivationBloc
     } catch (e) {
       debugPrint('Failed to get activation status: $e');
       emit(
-        ZCoinActivationFailure('Failed to get activation status'),
+        ZCoinActivationFailure(ZCoinActivationFailureReason.failedAfterStart),
       );
     }
   }
@@ -187,11 +194,11 @@ class ZCoinActivationBloc
   ) async {
     try {
       await _repository.cancelAllZCoinActivations();
-      emit(ZCoinActivationFailure('Cancelling ZHTLC activation...'));
+      emit(ZCoinActivationFailure(ZCoinActivationFailureReason.cancelled));
     } catch (e) {
       debugPrint('Failed to cancel ZHTLC activation: $e');
       emit(
-        ZCoinActivationFailure('Failed to cancel ZHTLC activation'),
+        ZCoinActivationFailure(ZCoinActivationFailureReason.failedToCancel),
       );
     }
   }
