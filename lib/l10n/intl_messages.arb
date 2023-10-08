@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2023-10-06T11:55:34.625736",
+  "@@last_modified": "2023-10-08T14:29:27.352621",
   "mobileDataWarning": "Please note that now you're using cellular data and participation in {appName} P2P network consume internet traffic. It's better to use a WiFi network if your cellular data plan is costly.",
   "@mobileDataWarning": {
     "type": "text",
@@ -3622,6 +3622,16 @@
       "coinAbbr": {}
     }
   },
+  "failedToCancelActivation": "Failed to cancel activation of {coinAbbr}",
+  "@failedToCancelActivation": {
+    "type": "text",
+    "placeholders_order": [
+      "coinAbbr"
+    ],
+    "placeholders": {
+      "coinAbbr": {}
+    }
+  },
   "isUnavailable": "{coinAbbr} is unavailable :(",
   "@isUnavailable": {
     "type": "text",
@@ -5461,6 +5471,38 @@
     "placeholders": {
       "coin": {}
     }
+  },
+  "activationCancelled": "Coin activation cancelled",
+  "@activationCancelled": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "coinActivationSuccessfull": "Successfully activated {coin}",
+  "@coinActivationSuccessfull": {
+    "type": "text",
+    "placeholders_order": [
+      "coin"
+    ],
+    "placeholders": {
+      "coin": {}
+    }
+  },
+  "coinActivationCancelled": "{coin} activation cancelled",
+  "@coinActivationCancelled": {
+    "type": "text",
+    "placeholders_order": [
+      "coin"
+    ],
+    "placeholders": {
+      "coin": {}
+    }
+  },
+  "pleaseAcceptAllCoinActivationRequests": "Please accept all special coin activation requests or deselect the coins.",
+  "@pleaseAcceptAllCoinActivationRequests": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
   },
   "cancelActivation": "Cancel Activation",
   "@cancelActivation": {
