@@ -3621,6 +3621,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "无法取消激活 {coinAbbr}",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} 不可用:(",
     "@isUnavailable": {
         "type": "text",
@@ -5460,6 +5470,38 @@
         "placeholders": {
             "coin": {}
         }
+    },
+    "activationCancelled": "硬币激活已取消",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "成功激活{coin}",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "{coin}激活已取消",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "请接受所有特殊硬币激活请求或取消选择硬币。",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "cancelActivation": "取消激活",
     "@cancelActivation": {

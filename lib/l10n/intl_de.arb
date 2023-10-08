@@ -3621,6 +3621,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "Aktivierung von {coinAbbr} konnte nicht abgebrochen werden",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} ist nicht verfügbar :(",
     "@isUnavailable": {
         "type": "text",
@@ -5460,6 +5470,38 @@
         "placeholders": {
             "coin": {}
         }
+    },
+    "activationCancelled": "Münzaktivierung abgebrochen",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "{coin} erfolgreich aktiviert",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "Aktivierung von {coin} abgebrochen",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "Bitte akzeptieren Sie alle speziellen Münzaktivierungsanfragen oder heben Sie die Auswahl der Münzen auf.",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "cancelActivation": "Aktivierung abbrechen",
     "@cancelActivation": {

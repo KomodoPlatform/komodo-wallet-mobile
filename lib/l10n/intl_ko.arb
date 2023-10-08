@@ -3621,6 +3621,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "{coinAbbr} 활성화를 취소하지 못했습니다.",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} 이 사용불가합니다 :(",
     "@isUnavailable": {
         "type": "text",
@@ -5460,6 +5470,38 @@
         "placeholders": {
             "coin": {}
         }
+    },
+    "activationCancelled": "코인 활성화가 취소되었습니다.",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "{coin}을(를) 성공적으로 활성화했습니다",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "{coin} 활성화가 취소되었습니다.",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "모든 특별 코인 활성화 요청을 수락하거나 코인 선택을 취소하세요.",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "cancelActivation": "활성화 취소",
     "@cancelActivation": {

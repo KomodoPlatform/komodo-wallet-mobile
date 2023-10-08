@@ -3599,6 +3599,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "Не вдалося скасувати активацію {coinAbbr}",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} недоступен :(",
     "@isUnavailable": {
         "type": "text",
@@ -5438,6 +5448,38 @@
         "placeholders": {
             "coin": {}
         }
+    },
+    "activationCancelled": "Активацію монет скасовано",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "Успішно активовано {coin}",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "Активацію {coin} скасовано",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "Будь ласка, прийміть усі спеціальні запити на активацію монет або скасуйте вибір монет.",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "cancelActivation": "Скасувати активацію",
     "@cancelActivation": {

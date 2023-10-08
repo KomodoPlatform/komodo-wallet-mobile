@@ -3609,6 +3609,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "{coinAbbr} aktivasyonu iptal edilemedi",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} mevcut değil :(",
     "@isUnavailable": {
         "type": "text",
@@ -5448,6 +5458,38 @@
         "placeholders": {
             "coin": {}
         }
+    },
+    "activationCancelled": "Coin aktivasyonu iptal edildi",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "{coin} başarıyla etkinleştirildi",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "{coin} aktivasyonu iptal edildi",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "Lütfen tüm özel jeton aktivasyon isteklerini kabul edin veya jetonların seçimini kaldırın.",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "cancelActivation": "Etkinleştirmeyi İptal Et",
     "@cancelActivation": {

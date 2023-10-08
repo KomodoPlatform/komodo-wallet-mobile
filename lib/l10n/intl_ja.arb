@@ -3621,6 +3621,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "{coinAbbr} のアクティベーションをキャンセルできませんでした",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} は利用できません:(",
     "@isUnavailable": {
         "type": "text",
@@ -5460,6 +5470,38 @@
         "placeholders": {
             "coin": {}
         }
+    },
+    "activationCancelled": "コインのアクティベーションがキャンセルされました",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "{coin} を正常にアクティブ化しました",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "{coin} のアクティベーションがキャンセルされました",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "特別なコインの有効化リクエストをすべて受け入れるか、コインの選択を解除してください。",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "cancelActivation": "アクティベーションのキャンセル",
     "@cancelActivation": {

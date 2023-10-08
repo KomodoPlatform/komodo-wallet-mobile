@@ -3609,6 +3609,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "Не удалось отменить активацию {coinAbbr}.",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} недоступен :(",
     "@isUnavailable": {
         "type": "text",
@@ -5448,6 +5458,38 @@
         "placeholders": {
             "coin": {}
         }
+    },
+    "activationCancelled": "Активация монеты отменена",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "Успешно активирована {coin}",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "Активация {coin} отменена",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "Пожалуйста, примите все специальные запросы на активацию монет или отмените выбор монет.",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "cancelActivation": "Отменить активацию",
     "@cancelActivation": {
