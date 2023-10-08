@@ -434,7 +434,7 @@ class _CoinDetailState extends State<CoinDetail> {
                   padding: const EdgeInsets.all(16.0),
                   child: Center(
                       child: Text(
-                    snapshot.data.error.message,
+                    (snapshot.data as ErrorCode).error.message,
                     style: Theme.of(context).textTheme.bodyText1,
                     textAlign: TextAlign.center,
                   )),

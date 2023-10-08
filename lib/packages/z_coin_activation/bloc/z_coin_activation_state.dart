@@ -34,15 +34,21 @@ class ZCoinActivationInProgess extends ZCoinActivationState {
 }
 
 class ZCoinActivationSuccess extends ZCoinActivationState {
-  ZCoinActivationSuccess(this.message);
-
-  final String message;
+  ZCoinActivationSuccess();
 }
 
 class ZCoinActivationFailure extends ZCoinActivationState {
-  const ZCoinActivationFailure(this.message);
+  const ZCoinActivationFailure(this.reason);
 
-  final String message;
+  final ZCoinActivationFailureReason reason;
+}
+
+enum ZCoinActivationFailureReason {
+  startFailed,
+  cancelled,
+  failedToCancel,
+  failedAfterStart,
+  failedOther,
 }
 
 class ZCoinActivationStatusLoading extends ZCoinActivationState {}

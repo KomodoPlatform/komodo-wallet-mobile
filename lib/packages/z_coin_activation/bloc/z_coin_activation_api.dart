@@ -228,7 +228,6 @@ class ZCoinActivationApi {
 
       if (shouldEmitStatus) {
         lastEmittedStatus = taskStatus;
-        // yield taskStatus;
         yield taskStatus;
       }
 

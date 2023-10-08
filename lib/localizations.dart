@@ -1266,6 +1266,13 @@ class AppLocalizations {
         name: 'weFailedToActivate',
         args: [coinAbbr],
       );
+
+  String failedToCancelActivation(String coinAbbr) => Intl.message(
+        'Failed to cancel activation of $coinAbbr',
+        name: 'failedToCancelActivation',
+        args: [coinAbbr],
+      );
+
   String isUnavailable(String coinAbbr) => Intl.message(
         '$coinAbbr is unavailable :(',
         name: 'isUnavailable',
@@ -1903,6 +1910,26 @@ class AppLocalizations {
         'Scan for past $coin transactions?',
         name: 'shouldScanPastTransaction',
         args: [coin],
+      );
+
+  String get activationCancelled =>
+      Intl.message('Coin activation cancelled', name: 'activationCancelled');
+
+  String coinActivationSuccessfull(String coin) => Intl.message(
+        'Successfully activated $coin',
+        name: 'coinActivationSuccessfull',
+        args: [coin],
+      );
+
+  String coinActivationCancelled(String coin) => Intl.message(
+        '$coin activation cancelled',
+        name: 'coinActivationCancelled',
+        args: [coin],
+      );
+
+  String get pleaseAcceptAllCoinActivationRequests => Intl.message(
+        'Please accept all special coin activation requests or deselect the coins.',
+        name: 'pleaseAcceptAllCoinActivationRequests',
       );
 
   String get cancelActivation =>
