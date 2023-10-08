@@ -3589,6 +3589,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "No se pudo cancelar la activación de {coinAbbr}",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} no está disponible :(",
     "@isUnavailable": {
         "type": "text",
@@ -5405,6 +5415,28 @@
     },
     "officialPressRelease": "comunicado de prensa oficial",
     "@officialPressRelease": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "activationCancelled": "Activación de monedas cancelada",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationCancelled": "activación de {coin} cancelada",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "Acepte todas las solicitudes especiales de activación de monedas o anule la selección de las monedas.",
+    "@pleaseAcceptAllCoinActivationRequests": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}

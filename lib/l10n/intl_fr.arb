@@ -3621,6 +3621,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "Échec de l'annulation de l'activation de {coinAbbr}",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} est indisponible :(",
     "@isUnavailable": {
         "type": "text",
@@ -5460,6 +5470,38 @@
         "placeholders": {
             "coin": {}
         }
+    },
+    "activationCancelled": "Activation des pièces annulée",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "{coin} activé avec succès",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "Activation de {coin} annulée",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "Veuillez accepter toutes les demandes spéciales d’activation de pièces ou désélectionner les pièces.",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
     },
     "cancelActivation": "Annuler l'activation",
     "@cancelActivation": {
