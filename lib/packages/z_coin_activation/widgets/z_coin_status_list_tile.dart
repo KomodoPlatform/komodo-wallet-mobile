@@ -418,7 +418,9 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
   );
 }
 
-void _showInProgressDialog(BuildContext context) {
+Future<void> _showInProgressDialog(BuildContext context) async {
+  final isResyncing = await context.read<ZCoinActivationBloc>().isResyncing();
+
   showDialog<void>(
     context: context,
     builder: (context) {
@@ -464,22 +466,23 @@ void _showInProgressDialog(BuildContext context) {
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () {
-              showConfirmationDialog(
-                context: context,
-                title: localisations.cancelActivationQuestion,
-                message: localisations.cofirmCancelActivation,
-                onConfirm: () {
-                  context
-                      .read<ZCoinActivationBloc>()
-                      .add(ZCoinActivationCancelRequested());
-                },
-                confirmButtonText: localisations.cancelActivation,
-              );
-            },
-            child: Text(localisations.cancelActivation),
-          ),
+          if (!isResyncing)
+            TextButton(
+              onPressed: () {
+                showConfirmationDialog(
+                  context: context,
+                  title: localisations.cancelActivationQuestion,
+                  message: localisations.cofirmCancelActivation,
+                  onConfirm: () {
+                    context
+                        .read<ZCoinActivationBloc>()
+                        .add(ZCoinActivationCancelRequested());
+                  },
+                  confirmButtonText: localisations.cancelActivation,
+                );
+              },
+              child: Text(localisations.cancelActivation),
+            ),
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(localisations.close),
