@@ -39,10 +39,6 @@ class _ItemCoinState extends State<ItemCoin>
     with SingleTickerProviderStateMixin {
   RewardsProvider rewardsProvider;
 
-  // ListTileThemeData get backgroundColor => Theme.of(context).listTileTheme.copyWith(
-  //   color
-  // )
-
   @override
   Widget build(BuildContext context) {
     final CexProvider cexProvider = Provider.of<CexProvider>(context);
@@ -171,22 +167,25 @@ class _ItemCoinState extends State<ItemCoin>
                     ),
                     Expanded(
                       child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 24,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.surface,
-                          foregroundImage: coin.suspended
-                              ? null
-                              : AssetImage(
-                                  getCoinIconPath(balance.coin),
-                                ),
+                        leading: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            shape: BoxShape.circle,
+                          ),
+                          alignment: Alignment.center,
+                          clipBehavior: Clip.none,
                           child: coin.suspended
                               ? Icon(
                                   Icons.warning_rounded,
                                   size: 20,
                                   color: Colors.yellow[600],
                                 )
-                              : null,
+                              : Image.asset(
+                                  getCoinIconPath(balance.coin),
+                                  fit: BoxFit.contain,
+                                ),
                         ),
                         title: Text(
                           coin.name.toUpperCase(),
@@ -195,8 +194,10 @@ class _ItemCoinState extends State<ItemCoin>
                         trailing: StreamBuilder(
                           initialData: settingsBloc.showBalance,
                           stream: settingsBloc.outShowBalance,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<bool> snapshot) {
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<bool> snapshot,
+                          ) {
                             bool hidden = false;
                             if (snapshot.hasData && !snapshot.data)
                               hidden = true;
@@ -205,7 +206,9 @@ class _ItemCoinState extends State<ItemCoin>
                                 widget.coinBalance.balanceUSD,
                                 hidden: hidden,
                               ),
-                              style: DefaultTextStyle.of(context).style.apply(
+                              style: DefaultTextStyle.of(context)
+                                  .style
+                                  .copyWith(
                                     color: hasAssetBalance ? null : Colors.grey,
                                   ),
                             );
@@ -214,8 +217,10 @@ class _ItemCoinState extends State<ItemCoin>
                         subtitle: StreamBuilder<bool>(
                           initialData: settingsBloc.showBalance,
                           stream: settingsBloc.outShowBalance,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<bool> snapshot) {
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<bool> snapshot,
+                          ) {
                             String amount =
                                 f.format(double.parse(balance.getBalance()));
                             if (snapshot.hasData && !snapshot.data)
