@@ -26,6 +26,14 @@ class ZCoinActivationBloc
     ZCoinActivationApi(),
   );
 
+  Future<bool> isResyncing() async {
+    final enabledCoinsCount = (await _repository.getEnabledZCoins()).length;
+    final coinsToActivateCount =
+        (await _repository.getRequestedActivatedCoins()).length;
+
+    return enabledCoinsCount == coinsToActivateCount;
+  }
+
   Future<void> _handleActivationRequested(
     ZCoinActivationRequested event,
     Emitter<ZCoinActivationState> emit,
