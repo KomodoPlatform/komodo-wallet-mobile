@@ -129,8 +129,8 @@ class _CoinsPageState extends State<CoinsPage> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          // Spacer(),
                           StreamBuilder<List<CoinBalance>>(
+                            key: Key('stream-builder-coin-balance'),
                             initialData: coinsBloc.coinBalance,
                             stream: coinsBloc.outCoins,
                             builder: (
@@ -209,7 +209,6 @@ class _CoinsPageState extends State<CoinsPage> {
                               }
                             },
                           ),
-                          // Spacer(),
                           AnimatedCollapse(
                             key: Key('animated-collapse-bar-graph'),
                             fullHeight: 8,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -17,60 +19,71 @@ class AnimatedAssetProportionsBarGraph extends StatefulWidget {
 
 class _AnimatedAssetProportionsBarGraphState
     extends State<AnimatedAssetProportionsBarGraph> {
+  StreamSubscription<List<CoinBalance>> _coinsSubscription;
+
+  List<CoinBalance> data = coinsBloc.coinBalance.toList();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _coinsSubscription = coinsBloc.outCoins.listen((newData) {
+        setState(() => data = newData);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<CoinBalance>>(
-      key: Key('animated_asset_proportions_bar_graph_streamer'),
-      initialData: coinsBloc.coinBalance,
-      stream: coinsBloc.outCoins,
-      builder:
-          (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
-        final bool _isVisible = snapshot.data != null;
+    final bool _isVisible = data != null;
 
-        final balance = snapshot.data
-            .fold(0, (sum, coinBalance) => sum + coinBalance.balanceUSD);
+    final balance =
+        data.fold(0, (sum, coinBalance) => sum + coinBalance.balanceUSD);
 
-        final barProportions =
-            (snapshot.data ?? []).where((c) => c.balanceUSD > 0).map((c) {
-          final widthFraction = ((c.balanceUSD * 100) / balance) / 100;
-          return MapEntry(c.coin, widthFraction);
+    final barProportions = (data ?? []).where((c) => c.balanceUSD > 0).map((c) {
+      final widthFraction = ((c.balanceUSD * 100) / balance) / 100;
+      return MapEntry(c.coin, widthFraction);
+    });
+
+    return LayoutBuilder(
+      key: Key('animated_asset_proportions_bar_graph_layout_builder'),
+      builder: (context, constraints) {
+        final totalWidth = constraints.maxWidth;
+
+        final Iterable<Widget> bars = barProportions.map((e) {
+          return AnimatedContainer(
+            key: Key(e.key.abbr),
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            color: Color(int.parse(e.key.colorCoin)),
+            width: totalWidth * e.value,
+          );
         });
 
-        return LayoutBuilder(
-          key: Key('animated_asset_proportions_bar_graph_layout_builder'),
-          builder: (context, constraints) {
-            final totalWidth = constraints.maxWidth;
-
-            final Iterable<Widget> bars = barProportions.map((e) {
-              return AnimatedContainer(
-                key: Key(e.key.abbr),
-                duration: Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                color: Color(int.parse(e.key.colorCoin)),
-                width: totalWidth * e.value,
-              );
-            });
-
-            return ClipRect(
-              key: Key('animated_asset_proportions_bar_graph_clip_rect'),
-              child: AnimatedOpacity(
-                key: Key(
-                  'animated_asset_proportions_bar_graph_animated_opacity',
-                ),
-                opacity: _isVisible ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 300),
-                child: SizedBox(
-                  width: totalWidth,
-                  height: 16,
-                  child: Row(
-                    children: bars.toList(),
-                  ),
-                ),
+        return ClipRect(
+          key: Key('animated_asset_proportions_bar_graph_clip_rect'),
+          child: AnimatedOpacity(
+            key: Key(
+              'animated_asset_proportions_bar_graph_animated_opacity',
+            ),
+            opacity: _isVisible ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 300),
+            child: SizedBox(
+              width: totalWidth,
+              height: 16,
+              child: Row(
+                children: bars.toList(),
               ),
-            );
-          },
+            ),
+          ),
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _coinsSubscription.cancel();
+    super.dispose();
   }
 }
