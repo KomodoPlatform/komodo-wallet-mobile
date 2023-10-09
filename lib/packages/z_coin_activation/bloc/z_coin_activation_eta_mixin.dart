@@ -6,10 +6,12 @@ mixin ActivationEta {
   final List<_ActivationEntry> _activationEntries = [];
 
   Duration calculateETA(double progress) {
-    _activationEntries.add(_ActivationEntry(
-      progress: progress,
-      timeStamp: DateTime.now(),
-    ));
+    _activationEntries.add(
+      _ActivationEntry(
+        progress: progress,
+        timeStamp: DateTime.now(),
+      ),
+    );
 
     final hasEnoughEntries = _activationEntries.length >= 6 &&
         _activationEntries.first.timeStamp
@@ -34,10 +36,12 @@ mixin ActivationEta {
       try {
         final sumDeltaProgress = _activationEntries
             .sublist(0, _activationEntries.length - 1)
-            .map((entry) => (entry.progress -
-                    _activationEntries[_activationEntries.indexOf(entry) + 1]
-                        .progress)
-                .abs())
+            .map(
+              (entry) => (entry.progress -
+                      _activationEntries[_activationEntries.indexOf(entry) + 1]
+                          .progress)
+                  .abs(),
+            )
             .reduce((a, b) => a + b);
 
         averageChangePerSecond = sumDeltaProgress /
