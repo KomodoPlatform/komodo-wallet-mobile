@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 
-/// Vertical bar-graph widget that shows the proportion of the value of each
+/// Horizontal bar-graph widget that shows the proportion of the value of each
 /// asset in the user's wallet according to the fiat USD value.
 ///
 /// The width of each asset animates when the user's coin balances change or
