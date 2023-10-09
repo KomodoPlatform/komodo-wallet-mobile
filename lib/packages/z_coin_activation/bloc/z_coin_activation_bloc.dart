@@ -27,11 +27,15 @@ class ZCoinActivationBloc
   );
 
   Future<bool> isResyncing() async {
-    final enabledCoinsCount = (await _repository.getEnabledZCoins()).length;
-    final coinsToActivateCount =
-        (await _repository.getRequestedActivatedCoins()).length;
+    final List<String> enabledCoins = (await _repository.getEnabledZCoins())
+        .map((coin) => coin.toLowerCase())
+        .toList();
+    final List<String> coinsToActivate =
+        (await _repository.getRequestedActivatedCoins())
+            .map((coin) => coin.toLowerCase())
+            .toList();
 
-    return enabledCoinsCount == coinsToActivateCount;
+    return coinsToActivate.every((coin) => enabledCoins.contains(coin));
   }
 
   Future<void> _handleActivationRequested(
