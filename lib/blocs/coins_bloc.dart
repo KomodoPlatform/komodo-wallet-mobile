@@ -461,7 +461,7 @@ class CoinsBloc implements BlocBase {
 
   /// Handle the coins user has picked for activation.
   /// Also used for coin activations during the application startup.
-  Future<void> enableCoins(List<Coin> coins) async {
+  Future<void> enableCoins(List<Coin> coins, {initialization = false}) async {
     await pauseUntil(() => !_coinsLock, maxMs: 3000);
     _coinsLock = true;
 
@@ -482,6 +482,9 @@ class CoinsBloc implements BlocBase {
         .where((c) => c.type == CoinType.zhtlc)
         .map((c) => c.abbr)
         .toList();
+
+    // Allow for resyncing of existing coins at app launch or resuming
+    _zCoinRepository.willInitialize = initialization;
 
     await _zCoinRepository.addRequestedActivatedCoins(requestedZCoins);
 

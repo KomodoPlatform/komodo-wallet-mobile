@@ -467,7 +467,7 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
 
-      await coinsBloc.enableCoins(active);
+      await coinsBloc.enableCoins(active, initialization: true);
 
       for (int i = 0; i < 2; i++) {
         await coinsBloc.retryActivatingSuspendedCoins();
