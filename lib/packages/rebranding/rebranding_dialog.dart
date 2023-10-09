@@ -21,7 +21,7 @@ class _RebrandingDialogState extends State<RebrandingDialog> {
   void initState() {
     super.initState();
     if (widget.isModal) {
-      Future.delayed(Duration(seconds: 5), () {
+      Future.delayed(Duration(seconds: 2), () {
         if (mounted) {
           setState(() {
             _canClose = true;
