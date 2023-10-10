@@ -292,6 +292,41 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                       });
                     },
                   ),
+
+                  // Date Picker shown if sync type is specified date
+                  AnimatedContainer(
+                    height: _syncType == SyncType.specifiedDate ? 80 : 0,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    child: ClipRRect(
+                      child: Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              final DateTime pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: _selectedDate,
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime.now(),
+                              );
+                              if (pickedDate != null &&
+                                  pickedDate != _selectedDate)
+                                setState(() {
+                                  _selectedDate = pickedDate;
+                                });
+                            },
+                            child: Text(localisations.selectDate),
+                          ),
+                          // Display the selected date
+                          Text(
+                            '${localisations.startDate}: '
+                            "${DateFormat('yyyy-MM-dd').format(_selectedDate)}",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
                   RadioListTile<SyncType>(
                     title: Text(localisations.syncFromSaplingActivation),
                     value: SyncType.fullSync,
@@ -302,35 +337,6 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                       });
                     },
                   ),
-                  // Date Picker
-                  _syncType == SyncType.specifiedDate
-                      ? Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                final DateTime pickedDate =
-                                    await showDatePicker(
-                                  context: context,
-                                  initialDate: _selectedDate,
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime.now(),
-                                );
-                                if (pickedDate != null &&
-                                    pickedDate != _selectedDate)
-                                  setState(() {
-                                    _selectedDate = pickedDate;
-                                  });
-                              },
-                              child: Text(localisations.selectDate),
-                            ),
-                            // Display the selected date
-                            Text(
-                              '${localisations.startDate}: '
-                              "${DateFormat('yyyy-MM-dd').format(_selectedDate)}",
-                            ),
-                          ],
-                        )
-                      : SizedBox.shrink(),
 
                   SizedBox(height: 16),
                   // Sync Type Description
@@ -345,19 +351,13 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
 
                   if (Platform.isIOS) ...[
                     SizedBox(height: 16),
-                    ListTile(
-                      leading: Icon(
-                        Icons.warning,
-                        color: Colors.amber,
-                      ),
-                      dense: true,
-                      title: Text(
-                        localisations.minimizingWillTerminate,
-                        style: DefaultTextStyle.of(context)
-                            .style
-                            .apply(color: Colors.amber),
-                      ),
-                    )
+                    Text(
+                      localisations.minimizingWillTerminate,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(color: Colors.amber),
+                    ),
                   ],
                   if (_syncType == SyncType.fullSync ||
                       _syncType == SyncType.specifiedDate)
