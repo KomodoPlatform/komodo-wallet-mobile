@@ -523,7 +523,7 @@ class MMService {
     return mm2StatusFrom(await checkStatusMm2());
   }
 
-  Future<dynamic> handleWakeUp() async {
+  Future<void> handleWakeUp() async {
     if (!Platform.isIOS) return;
     if (!running) return;
 
