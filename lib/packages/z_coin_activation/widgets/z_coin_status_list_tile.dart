@@ -64,13 +64,11 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
         if (isActivationInProgress) {
           final progressState = state as ZCoinActivationInProgess;
           return ListTile(
-            onTap: () => _showInProgressDialog(context),
             title: Text(localisations.activating(protocolTag)),
+            dense: true,
+            onTap: () => _showInProgressDialog(context),
             subtitle: Text(localisations.doNotCloseTheAppTapForMoreInfo),
-            leading: Icon(
-              Icons.warning,
-              color: Colors.red,
-            ),
+            leading: Icon(Icons.hourglass_full_rounded),
             tileColor: Theme.of(context).primaryColor,
             trailing: SizedBox(
               child: RotatingCircularProgressIndicator(
@@ -119,7 +117,14 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
   }
 
   static void listener(BuildContext context, ZCoinActivationState state) {
-    final scaffold = ScaffoldMessenger.maybeOf(context);
+    ScaffoldMessengerState scaffold;
+
+    try {
+      ScaffoldMessenger.maybeOf(context);
+    } catch (e) {
+      return;
+    }
+
     if (scaffold == null) return;
 
     final localisations = AppLocalizations.of(context);
