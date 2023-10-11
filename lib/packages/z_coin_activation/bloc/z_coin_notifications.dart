@@ -121,6 +121,7 @@ class ZCoinProgressNotifications {
       showProgress: true,
       maxProgress: 100,
       onlyAlertOnce: true,
+      playSound: false,
       progress: progressInt,
     );
 
