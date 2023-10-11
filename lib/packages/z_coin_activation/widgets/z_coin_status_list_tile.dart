@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
@@ -326,17 +327,17 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
                       ),
                     ),
                   ),
-
-                  RadioListTile<SyncType>(
-                    title: Text(localisations.syncFromSaplingActivation),
-                    value: SyncType.fullSync,
-                    groupValue: _syncType,
-                    onChanged: (SyncType value) {
-                      setState(() {
-                        _syncType = value;
-                      });
-                    },
-                  ),
+                  if (settingsBloc.enableTestCoins)
+                    RadioListTile<SyncType>(
+                      title: Text(localisations.syncFromSaplingActivation),
+                      value: SyncType.fullSync,
+                      groupValue: _syncType,
+                      onChanged: (SyncType value) {
+                        setState(() {
+                          _syncType = value;
+                        });
+                      },
+                    ),
 
                   SizedBox(height: 16),
                   // Sync Type Description
