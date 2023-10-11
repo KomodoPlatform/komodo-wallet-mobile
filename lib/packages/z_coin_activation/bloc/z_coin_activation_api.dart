@@ -190,11 +190,11 @@ class ZCoinActivationApi {
 
   Stream<ZCoinStatus> activateCoin(
     String ticker, {
-    bool firstLaunch = false,
+    bool resync = false,
   }) async* {
     int coinTaskId = await getTaskId(ticker);
     ZCoinStatus taskStatus;
-    if (!firstLaunch) {
+    if (!resync) {
       final isAlreadyActivated = (await activatedZCoins()).contains(ticker);
 
       taskStatus = coinTaskId == null
@@ -225,7 +225,7 @@ class ZCoinActivationApi {
 
     ZCoinStatus lastEmittedStatus;
 
-    coinTaskId = await initiateActivation(ticker, noSyncParams: firstLaunch);
+    coinTaskId = await initiateActivation(ticker, noSyncParams: resync);
 
     lastEmittedStatus = await activationTaskStatus(coinTaskId, ticker: ticker);
 
@@ -410,8 +410,8 @@ class ZCoinActivationApi {
     Map<String, dynamic> responseBody,
     String ticker,
   }) async {
-    int _progress = 100;
-    String _messageDetails = '';
+    int _progress = 5;
+    String _messageDetails = 'Activating $ticker';
     if (!responseBody.containsKey('result')) return null;
 
     final result = responseBody['result'] is Map<String, dynamic>
@@ -419,13 +419,6 @@ class ZCoinActivationApi {
         : jsonDecode(responseBody['result']) as Map<String, dynamic>;
     String status = result['status'];
     dynamic details = result['details'];
-
-    // checkPointBlock will be removed
-    //Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
-    // int blockOffset = 0;
-    // if (coin.type == CoinType.zhtlc) {
-    //   blockOffset = coin.protocol.protocolData.checkPointBlock?.height ?? 0;
-    // }
 
     // use range from checkpoint block to present
     if (status == 'Ok') {
@@ -487,9 +480,6 @@ class ZCoinActivationApi {
         _messageDetails = isBuildingPhase
             ? 'Building $ticker wallet database'
             : 'Updating $ticker blocks cache';
-      } else {
-        _progress = 5;
-        _messageDetails = 'Activating $ticker';
       }
 
       return ZCoinStatus(

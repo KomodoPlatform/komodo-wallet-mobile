@@ -443,7 +443,7 @@ Future<void> _showInProgressDialog(BuildContext context) async {
       final localisations = AppLocalizations.of(context);
 
       final etaString = state?.eta?.inMinutes == null
-          ? localisations.loading
+          ? null
           : '${state.eta.inMinutes}${localisations.minutes}';
       return AlertDialog(
         title: Text(
@@ -462,12 +462,14 @@ Future<void> _showInProgressDialog(BuildContext context) async {
             ],
             Text(localisations.willTakeTime),
             SizedBox(height: 16),
-            Text('${localisations.rewardsTableTime}: $etaString'),
-            SizedBox(height: 16),
+            if (etaString != null) ...[
+              Text('${localisations.rewardsTableTime}: $etaString'),
+              SizedBox(height: 16),
+            ],
             Text(
               '${localisations.swapProgress}: ${(state.progress * 100).round()}%',
             ),
-            SizedBox(height: 4),
+            SizedBox(height: 8),
             LinearProgressIndicator(value: state.progress),
           ],
         ),

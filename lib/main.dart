@@ -5,9 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' as real_bloc;
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
+import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
+import 'package:komodo_dex/services/mm.dart';
 import '../app_config/app_config.dart';
 import '../blocs/authenticate_bloc.dart';
 import '../blocs/coins_bloc.dart';
@@ -178,6 +180,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     _initCheckNetworkStatus();
     WidgetsBinding.instance.addObserver(this);
+
+    MM.untilRpcIsUp().then((_) => _requestResync());
   }
 
   @override
@@ -207,9 +211,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         Log('main', 'lifecycle: resumed');
         mainBloc.isInBackground = false;
         lockService.lockSignal(context);
-        await mmSe.handleWakeUp();
+        await mmSe.handleWakeUp().whenComplete(() {
+          if (mmSe.running) _requestResync();
+        });
+
         break;
     }
+  }
+
+  void _requestResync() {
+    context
+        .read<ZCoinActivationBloc>()
+        .add(ZCoinActivationRequested(resync: true));
   }
 
   @override
