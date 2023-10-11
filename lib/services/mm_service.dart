@@ -38,7 +38,15 @@ class MMService {
   Process mm2Process;
   List<Coin> coins = <Coin>[];
 
-  /// Switched on when we hear from MM.
+  /// Represents wether mm2 has been started or not for this session even if
+  /// it is not currently running.
+  ///
+  /// On iOS, the RPC server is killed when the app goes to background. This
+  /// will remain true when the app is restored.
+  ///
+  /// Use [MM.isRpcUp()] to get the current status of the RPC server.
+  ///
+  /// Use [MM.untilRpcIsUp()] to efficiently await until RPC is up.
   bool get running => _running;
   bool _running = false;
 
@@ -148,7 +156,7 @@ class MMService {
 
     jobService.install('updateMm2VersionInfo', 3.14, (j) async {
       if (!mmSe.running) return;
-      if (mmVersion == null && mmDate == null) {
+      if (mmVersion == null && mmDate == null && await MM.pingMm2()) {
         await initializeMmVersion();
       }
     });
@@ -528,12 +536,12 @@ class MMService {
     if (!running) return;
 
     /// Wait until mm2 is up, in case it was restarted from Swift
-    await pauseUntil(() async => await MM.isRpcUp());
+    await MM.untilRpcIsUp();
 
     /// If [running], but enabled coins list is empty,
     /// it means that mm2 was restarted from Swift, and we
     /// should reenable active coins ones again
-    if ((await MM.getEnabledCoins()).isEmpty) initCoinsAndLoad();
+    if ((await MM.getEnabledCoins()).isEmpty) await initCoinsAndLoad();
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {

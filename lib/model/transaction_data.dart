@@ -126,10 +126,18 @@ class FeeDetails {
     );
 
     try {
-      // QRC20 tokens
-      feeDetails.totalFee = cutTrailingZeros(formatPrice(
-          double.parse(json['miner_fee']) +
-              double.parse(json['total_gas_fee'])));
+      final minerFee =
+          json['miner_fee'] == null ? null : double.tryParse(json['miner_fee']);
+
+      final totalGasFee = json['total_gas_fee'] == null
+          ? null
+          : double.tryParse(json['total_gas_fee']);
+
+      if (minerFee != null || totalGasFee != null) {
+        final total = minerFee ?? 0.0 + totalGasFee ?? 0.0;
+        // QRC20 tokens
+        feeDetails.totalFee = cutTrailingZeros(formatPrice(total));
+      }
     } catch (_) {}
 
     return feeDetails;
