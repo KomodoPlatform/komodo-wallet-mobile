@@ -41,16 +41,22 @@ class ZCoinActivationBloc
     ZCoinActivationRequested event,
     Emitter<ZCoinActivationState> emit,
   ) async {
-    final toActivate = await _repository.outstandingZCoinActivations();
+    final hasRequestedCoins =
+        (await _repository.getRequestedActivatedCoins()).isNotEmpty;
+
+    if (!hasRequestedCoins) {
+      emit(ZCoinActivationInitial());
+      return;
+    }
+
+    final isResync = event.resync;
+
+    final toActivate = isResync
+        ? await _repository.getEnabledZCoins()
+        : await _repository.outstandingZCoinActivations();
     final toActivateInitalCount = toActivate.length;
 
     try {
-      final isAllCoinsEnabled = await _repository.isAllRequestedZCoinsEnabled();
-      if (isAllCoinsEnabled) {
-        add(ZCoinActivationStatusRequested());
-        return;
-      }
-
       final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
       SyncType zhtlcSyncType = zhtlcActivationPrefs['zhtlcSyncType'];
 
@@ -63,7 +69,9 @@ class ZCoinActivationBloc
         ),
       );
       await emit.forEach<ZCoinStatus>(
-        _repository.activateRequestedZCoins(),
+        event.resync
+            ? _repository.resyncEnabledZCoins()
+            : _repository.activateRequestedZCoins(),
         onData: (coinStatus) {
           if (coinStatus.isFailed) {
             return ZCoinActivationFailure(
@@ -108,7 +116,7 @@ class ZCoinActivationBloc
             progress: shouldShowNewProgress ? overallProgress : lastProgress,
             message: 'Activating ${coinStatus.coin}',
             eta: eta,
-            startTime: previousInProgressState.startTime,
+            startTime: previousInProgressState?.startTime ?? DateTime.now(),
           );
         },
         onError: (e, s) {
@@ -165,6 +173,8 @@ class ZCoinActivationBloc
     try {
       final isAllCoinsEnabled = await _repository.isAllRequestedZCoinsEnabled();
 
+      final mustResync = await isResyncing();
+
       // TODO? Consider if better to base the "in progress" state on the
       // API task status instead of the existing bloc state.
       final isActivationInProgress = state is ZCoinActivationInProgess;
@@ -174,10 +184,10 @@ class ZCoinActivationBloc
       }
 
       ZCoinActivationState newState;
-      if (isAllCoinsEnabled) {
+      if (isAllCoinsEnabled && !mustResync) {
         newState = isActivationInProgress
             ? ZCoinActivationSuccess()
-            : ZCoinActivationKnownState(isAllCoinsEnabled);
+            : ZCoinActivationKnownState(false);
       } else if (isActivationInProgress) {
         newState = state as ZCoinActivationInProgess;
       } else {
@@ -185,12 +195,6 @@ class ZCoinActivationBloc
       }
 
       emit(newState);
-
-      if (!isAllCoinsEnabled && !isActivationInProgress) {
-        add(ZCoinActivationRequested());
-      } else {
-        _repository.willInitialize = false;
-      }
     } catch (e) {
       debugPrint('Failed to get activation status: $e');
       emit(
