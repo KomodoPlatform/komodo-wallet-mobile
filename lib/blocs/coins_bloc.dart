@@ -483,9 +483,6 @@ class CoinsBloc implements BlocBase {
         .map((c) => c.abbr)
         .toList();
 
-    // Allow for resyncing of existing coins at app launch or resuming
-    _zCoinRepository.willInitialize = initialization;
-
     await _zCoinRepository.addRequestedActivatedCoins(requestedZCoins);
 
     // await _zCoinRepository.setRequestedActivatedCoins(requestedZCoins);
@@ -827,7 +824,7 @@ class CoinsBloc implements BlocBase {
 
       if (transactions is Transactions) {
         transactions.camouflageIfNeeded();
-        if (transactions.result.transactions.isNotEmpty) {
+        if ((transactions.result?.transactions ?? []).isNotEmpty) {
           return transactions.result.transactions[0];
         }
         return null;

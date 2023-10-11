@@ -112,7 +112,7 @@ class NotifService {
             ));
         if (res is! Transactions) continue;
 
-        for (Transaction tx in res.result.transactions) {
+        for (Transaction tx in res.result?.transactions ?? []) {
           if (tx.to.contains(address)) {
             if (double.parse(tx.myBalanceChange) < 0) continue;
             transactions.add(tx);

@@ -13,6 +13,7 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_eve
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import 'package:komodo_dex/screens/portfolio/animated_asset_proportions_graph.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../blocs/coins_bloc.dart';
@@ -38,6 +39,8 @@ class _CoinsPageState extends State<CoinsPage> {
   double _heightSliver;
 
   StreamSubscription<bool> _loginSubscription;
+
+  Timer _timer;
 
   // Rebranding
   Future<void> showRebrandingDialog(BuildContext context) async {
@@ -65,12 +68,9 @@ class _CoinsPageState extends State<CoinsPage> {
 
     // Check every 5 seconds if mmSe is running. When it is running, emit the
     // event [ZCoinActivationStatusRequested] and kill the timer.
-    Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (mmSe.running) {
-        bloc.add(ZCoinActivationStatusRequested());
-        timer.cancel();
-      }
-    });
+    MM.untilRpcIsUp().then(
+          (_) => bloc.add(ZCoinActivationStatusRequested()),
+        );
 
     // Subscribe to the outIsLogin stream
     _loginSubscription = authBloc.outIsLogin.listen((isLogin) async {
@@ -93,7 +93,8 @@ class _CoinsPageState extends State<CoinsPage> {
 
   @override
   void dispose() {
-    _loginSubscription.cancel();
+    _loginSubscription?.cancel()?.ignore();
+    _timer?.cancel();
     super.dispose();
   }
 
