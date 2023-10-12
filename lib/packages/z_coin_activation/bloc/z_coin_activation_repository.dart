@@ -46,8 +46,6 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
             if (!isRegistered) {
               await coinsBloc.setupCoinAfterActivation(coin);
             }
-
-            await removeRequestedActivatedCoins([currentCoinTicker]);
           } else if (update.status == ActivationTaskStatus.failed) {
             await removeRequestedActivatedCoins([currentCoinTicker]);
             await api.removeTaskId(currentCoinTicker);
@@ -99,12 +97,6 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     final requestedCoins = (await getRequestedActivatedCoins()).toSet();
 
     final activatedZCoins = (await getEnabledZCoins()).toSet();
-
-    final coinsAlreadyActivated = activatedZCoins.intersection(requestedCoins);
-
-    if (coinsAlreadyActivated.isNotEmpty) {
-      await removeRequestedActivatedCoins(coinsAlreadyActivated.toList());
-    }
 
     return requestedCoins.difference(activatedZCoins).toList();
   }

@@ -48,11 +48,7 @@ class ZCoinActivationBloc
       return;
     }
 
-    final isResync = event.resync;
-
-    final toActivate = isResync
-        ? await _repository.getEnabledZCoins()
-        : await _repository.outstandingZCoinActivations();
+    final toActivate = await _repository.getRequestedActivatedCoins();
     final toActivateInitalCount = toActivate.length;
 
     try {
@@ -68,7 +64,7 @@ class ZCoinActivationBloc
         ),
       );
       await emit.forEach<ZCoinStatus>(
-        event.resync
+        event.isResync
             ? _repository.resyncZCoins()
             : _repository.activateRequestedZCoins(),
         onData: (coinStatus) {
