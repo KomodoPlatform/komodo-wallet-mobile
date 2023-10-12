@@ -107,9 +107,6 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
               Icons.refresh,
               color: Colors.white,
             ),
-            onPressed: () => context
-                .read<ZCoinActivationBloc>()
-                .add(ZCoinActivationStatusRequested()),
           ),
         );
       },

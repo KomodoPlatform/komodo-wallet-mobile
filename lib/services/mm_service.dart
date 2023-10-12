@@ -531,9 +531,13 @@ class MMService {
     return mm2StatusFrom(await checkStatusMm2());
   }
 
-  Future<void> handleWakeUp() async {
-    if (!Platform.isIOS) return;
-    if (!running) return;
+  /// Handles the initialisation of MM2 and the app state if the app was
+  /// suspended and then resumed.
+  ///
+  /// Returns a [bool] with the result of whether a wake-up was performed.
+  /// Typically this is only necessary on iOS.
+  FutureOr<bool> wakeUpSuspendedApi() async {
+    if (!Platform.isIOS || !running) return false;
 
     /// Wait until mm2 is up, in case it was restarted from Swift
     await MM.untilRpcIsUp();
@@ -541,8 +545,18 @@ class MMService {
     /// If [running], but enabled coins list is empty,
     /// it means that mm2 was restarted from Swift, and we
     /// should reenable active coins ones again
-    if ((await MM.getEnabledCoins()).isEmpty) await initCoinsAndLoad();
+    if (await hasCoinsLoaded()) return false;
+
+    await initCoinsAndLoad().catchError((e) {
+      Log('MMService:handleWakeUp',
+          'Failed to init coins and load. ${e.toString()}');
+    });
+
+    return true;
   }
+
+  Future<bool> hasCoinsLoaded() async =>
+      (await MM.getEnabledCoins()).isNotEmpty;
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
     Log('mm_service', 'getAllBalances');

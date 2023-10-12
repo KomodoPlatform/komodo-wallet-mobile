@@ -211,9 +211,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         Log('main', 'lifecycle: resumed');
         mainBloc.isInBackground = false;
         lockService.lockSignal(context);
-        await mmSe.handleWakeUp().whenComplete(() {
-          if (mmSe.running) _requestResync();
-        });
+        final didNeedWakeUp = await mmSe.wakeUpSuspendedApi();
+
+        if (didNeedWakeUp) _requestResync();
 
         break;
     }

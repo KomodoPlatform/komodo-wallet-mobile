@@ -9,11 +9,9 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/packages/rebranding/rebranding_dialog.dart';
 import 'package:komodo_dex/packages/rebranding/rebranding_provider.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
-import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import 'package:komodo_dex/screens/portfolio/animated_asset_proportions_graph.dart';
-import 'package:komodo_dex/services/mm.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../blocs/coins_bloc.dart';
@@ -63,14 +61,6 @@ class _CoinsPageState extends State<CoinsPage> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     if (mmSe.running) coinsBloc.updateCoinBalances();
-
-    final bloc = BlocProvider.of<ZCoinActivationBloc>(context);
-
-    // Check every 5 seconds if mmSe is running. When it is running, emit the
-    // event [ZCoinActivationStatusRequested] and kill the timer.
-    MM.untilRpcIsUp().then(
-          (_) => bloc.add(ZCoinActivationStatusRequested()),
-        );
 
     // Subscribe to the outIsLogin stream
     _loginSubscription = authBloc.outIsLogin.listen((isLogin) async {

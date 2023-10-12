@@ -29,8 +29,12 @@ class ZCoinActivationInProgess extends ZCoinActivationState {
 
   final double progress;
   final String message;
-  final Duration eta; // nullable
-  final DateTime startTime; // nullable
+
+  /// Nullable
+  final Duration eta;
+
+  /// Nullable
+  final DateTime startTime;
 }
 
 class ZCoinActivationSuccess extends ZCoinActivationState {

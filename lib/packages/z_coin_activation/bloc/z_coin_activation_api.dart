@@ -22,7 +22,9 @@ class ZCoinActivationApi {
   final String _baseUrl = mmSe.url;
   String get _userpass => mmSe.userpass;
 
-  String get folder => Platform.isIOS ? '/ZcashParams/' : '/.zcash-params/';
+  Directory get zCashParamsDirectory => Directory(
+        (applicationDocumentsDirectorySync.path + '/zcash-params'),
+      );
 
   bool _paramsDownloaded = false;
 
@@ -51,7 +53,6 @@ class ZCoinActivationApi {
     await musicService.play(MusicMode.ACTIVE);
     await downloadZParams();
 
-    final dir = await applicationDocumentsDirectory;
     Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
 
     Map<String, dynamic> rpcData = {
@@ -69,7 +70,7 @@ class ZCoinActivationApi {
       'mode': {'rpc': 'Light', 'rpc_data': rpcData},
       'scan_blocks_per_iteration': 150,
       'scan_interval_ms': 150,
-      'zcash_params_path': dir.path + folder
+      'zcash_params_path': zCashParamsDirectory.path,
     };
 
     final response = await http.post(
@@ -194,9 +195,9 @@ class ZCoinActivationApi {
   }) async* {
     int coinTaskId = await getTaskId(ticker);
     ZCoinStatus taskStatus;
-    if (!resync) {
-      final isAlreadyActivated = (await activatedZCoins()).contains(ticker);
+    final isAlreadyActivated = (await activatedZCoins()).contains(ticker);
 
+    if (!resync) {
       taskStatus = coinTaskId == null
           ? ZCoinStatus.fromTaskStatus(
               ticker,
@@ -205,7 +206,6 @@ class ZCoinActivationApi {
                   : ActivationTaskStatus.notFound,
             )
           : await activationTaskStatus(coinTaskId, ticker: ticker);
-
       final isActivatedOnBackend =
           (isAlreadyActivated || taskStatus.isActivated);
 
@@ -366,16 +366,17 @@ class ZCoinActivationApi {
   Future<void> downloadZParams() async {
     if (_paramsDownloaded) return;
 
-    final dir = await applicationDocumentsDirectory;
-    final zDir = Directory(dir.path + folder);
+    final doesZcashDirectoryExist = await zCashParamsDirectory.exists();
 
-    final doesZcashDirectoryExist = await zDir.exists();
-
-    final isZcashDirBigEnough =
-        (await MMService.getDirectorySize(zDir.path, endsWith: '')) > 1;
+    final isZcashDirBigEnough = (await MMService.getDirectorySize(
+          zCashParamsDirectory.path,
+          endsWith: '',
+          allowCache: false,
+        )) >
+        1;
 
     if (!doesZcashDirectoryExist) {
-      await zDir.create();
+      await zCashParamsDirectory.create(recursive: true);
     }
 
     if (doesZcashDirectoryExist && isZcashDirBigEnough) {
@@ -395,10 +396,21 @@ class ZCoinActivationApi {
       final request = await client.getUrl(Uri.parse(param));
       final response = await request.close();
 
+      final wasSuccessful = response.statusCode.toString().startsWith('2');
+
+      if (!wasSuccessful) {
+        final exceptionMessage = 'Failed to download $param: '
+            '${response.statusCode} ${response.reasonPhrase}';
+
+        Log('ZCoinActivationApi:downloadZParams', exceptionMessage);
+        throw Exception(exceptionMessage);
+      }
+
       final bytes = await consolidateHttpClientResponseBytes(response);
 
-      final file = File('${zDir.path}/${param.split('/').last}');
-      await file.writeAsBytes(bytes);
+      final file =
+          File('${zCashParamsDirectory.path}/${param.split('/').last}');
+      await file.writeAsBytes(bytes, flush: true);
     });
 
     await Future.wait(futures);
