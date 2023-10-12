@@ -71,9 +71,8 @@ class _CoinsPageState extends State<CoinsPage> {
         // Wait for the prefs to load
         await rebrandingNotifier.prefsLoaded;
 
-        if (!rebrandingNotifier.closedPermanently &&
-            !rebrandingNotifier.closedThisSession) {
-          showRebrandingDialog(context);
+        if (rebrandingNotifier.shouldShowRebrandingDialog) {
+          showRebrandingDialog(context).ignore();
         }
       }
     });

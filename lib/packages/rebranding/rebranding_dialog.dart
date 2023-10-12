@@ -5,6 +5,8 @@ import 'package:komodo_dex/packages/rebranding/rebranding_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+// TODO: Remove the code after the rebranding notice has expired. See date
+// specified in [appConfig.isRebrandingExpired?].
 class RebrandingDialog extends StatefulWidget {
   final bool isModal;
 
