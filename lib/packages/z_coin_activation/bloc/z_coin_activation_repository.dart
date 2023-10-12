@@ -92,6 +92,21 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     }
   }
 
+  // This is a workaround for the legacy coins bloc. It's not a good practice.
+  Future<void> legacyCoinsBlocDisableLocallyCallback(
+    String ticker,
+  ) async {
+    try {
+      await api.cancelCoinActivation(ticker);
+      await removeRequestedActivatedCoins([ticker]);
+    } catch (e) {
+      Log(
+        'z_coin_activation_repository:cancelAllZCoinActivations',
+        'Failed to cancel ZCoin activations: $e',
+      );
+    }
+  }
+
   @override
   Future<List<String>> outstandingZCoinActivations() async {
     final requestedCoins = (await getRequestedActivatedCoins()).toSet();
