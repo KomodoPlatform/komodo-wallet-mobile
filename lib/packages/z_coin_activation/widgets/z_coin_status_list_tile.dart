@@ -467,32 +467,51 @@ Future<void> _showInProgressDialog(BuildContext context) async {
         actions: [
           if (!isResyncing)
             TextButton(
-              onPressed: () {
-                showConfirmationDialog(
-                  context: context,
-                  title: localisations.cancelActivationQuestion,
-                  message: localisations.cofirmCancelActivation,
-                  onConfirm: () {
-                    context
-                        .read<ZCoinActivationBloc>()
-                        .add(ZCoinActivationCancelRequested());
-                  },
-                  confirmButtonText: localisations.cancelActivation,
-                );
-              },
-              child: Text(localisations.cancelActivation),
+              onPressed: () =>
+                  _showConfirmCancelActivationDialog(context).ignore(),
+              child: Text(
+                localisations.cancelActivation,
+                style: DefaultTextStyle.of(context)
+                    .style
+                    .copyWith(color: Theme.of(context).errorColor),
+              ),
             ),
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(localisations.close),
           ),
         ],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-            color: Theme.of(context).colorScheme.error,
+      );
+    },
+  );
+}
+
+Future<bool> _showConfirmCancelActivationDialog(BuildContext context) async {
+  final localisations = AppLocalizations.of(context);
+
+  return showDialog<bool>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(localisations.cancelActivation),
+        content: Text(localisations.cancelActivationQuestion),
+        actions: <Widget>[
+          TextButton(
+            child: Text(localisations.close),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
           ),
-        ),
+          ElevatedButton(
+            child: Text(localisations.confirm),
+            onPressed: () {
+              context
+                  .read<ZCoinActivationBloc>()
+                  .add(ZCoinActivationCancelRequested());
+              Navigator.of(context).pop(true);
+            },
+          ),
+        ],
       );
     },
   );

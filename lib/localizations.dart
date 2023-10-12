@@ -1934,13 +1934,10 @@ class AppLocalizations {
 
   String get cancelActivation =>
       Intl.message('Cancel Activation', name: 'cancelActivation');
+
   String get cancelActivationQuestion => Intl.message(
         'Are you sure you want to cancel activation?',
         name: 'cancelActivationQuestion',
-      );
-  String get cofirmCancelActivation => Intl.message(
-        'Are you sure you want to cancel activation?',
-        name: 'cofirmCancelActivation',
       );
 
   String syncTransactionsQuestion(String name) => Intl.message(
