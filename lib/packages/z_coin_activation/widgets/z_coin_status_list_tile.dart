@@ -416,9 +416,7 @@ Future<Map<String, dynamic>> _showConfirmationDialog(BuildContext context) {
 }
 
 Future<void> _showInProgressDialog(BuildContext context) async {
-  final isResyncing = await context.read<ZCoinActivationBloc>().isResyncing();
-
-  showDialog<void>(
+  return showDialog<void>(
     context: context,
     builder: (context) {
       final state =
@@ -465,7 +463,7 @@ Future<void> _showInProgressDialog(BuildContext context) async {
           ],
         ),
         actions: [
-          if (!isResyncing)
+          if (!state.isResync)
             TextButton(
               onPressed: () =>
                   _showConfirmCancelActivationDialog(context).ignore(),

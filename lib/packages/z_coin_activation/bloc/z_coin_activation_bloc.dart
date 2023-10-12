@@ -25,17 +25,6 @@ class ZCoinActivationBloc
     ZCoinActivationApi(),
   );
 
-  Future<bool> isResyncing() async {
-    final enabledCoins = (await _repository.getEnabledZCoins())
-        .map((coin) => coin.toLowerCase())
-        .toList();
-    final coinsToActivate = (await _repository.getRequestedActivatedCoins())
-        .map((coin) => coin.toLowerCase())
-        .toList();
-
-    return coinsToActivate.every((coin) => enabledCoins.contains(coin));
-  }
-
   Future<void> _handleActivationRequested(
     ZCoinActivationRequested event,
     Emitter<ZCoinActivationState> emit,
@@ -59,6 +48,7 @@ class ZCoinActivationBloc
         ZCoinActivationInProgess(
           progress: 0,
           message: 'Starting activation',
+          isResync: event.isResync,
           eta: null,
           startTime: DateTime.now(),
         ),
@@ -110,6 +100,7 @@ class ZCoinActivationBloc
           return ZCoinActivationInProgess(
             progress: shouldShowNewProgress ? overallProgress : lastProgress,
             message: 'Activating ${coinStatus.coin}',
+            isResync: event.isResync,
             eta: eta,
             startTime: previousInProgressState?.startTime ?? DateTime.now(),
           );

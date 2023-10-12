@@ -223,7 +223,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void _requestResync() {
     context
         .read<ZCoinActivationBloc>()
-        .add(ZCoinActivationRequested(resync: true));
+        .add(ZCoinActivationRequested(isResync: true));
   }
 
   @override
