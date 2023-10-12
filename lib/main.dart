@@ -1,15 +1,20 @@
 import 'dart:async';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' as real_bloc;
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import 'package:komodo_dex/services/mm.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../app_config/app_config.dart';
 import '../blocs/authenticate_bloc.dart';
 import '../blocs/coins_bloc.dart';
@@ -39,14 +44,10 @@ import '../services/mm_service.dart';
 import '../utils/log.dart';
 import '../widgets/bloc_provider.dart';
 import '../widgets/build_red_dot.dart';
-import 'package:local_auth/local_auth.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'app_config/theme_data.dart';
 import 'model/multi_order_provider.dart';
-import 'packages/rebranding/rebranding_provider.dart';
 import 'model/startup_provider.dart';
+import 'packages/rebranding/rebranding_provider.dart';
 import 'utils/utils.dart';
 import 'widgets/shared_preferences_builder.dart';
 

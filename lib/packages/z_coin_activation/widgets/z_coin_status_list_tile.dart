@@ -102,12 +102,6 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
                     )
                   : null,
           selected: false,
-          trailing: IconButton(
-            icon: Icon(
-              Icons.refresh,
-              color: Colors.white,
-            ),
-          ),
         );
       },
     );

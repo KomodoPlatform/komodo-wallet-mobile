@@ -570,9 +570,6 @@ class CoinsBloc implements BlocBase {
 
     updateOneCoin(cb);
 
-    final isZCash = coin.type == CoinType.zhtlc;
-
-    // await syncCoinsStateWithApi(!isZCash);
     await syncCoinsStateWithApi();
 
     if (currentActiveCoin?.coin?.abbr == coin.abbr) {
