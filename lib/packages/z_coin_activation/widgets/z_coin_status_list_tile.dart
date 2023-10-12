@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -431,9 +432,11 @@ Future<void> _showInProgressDialog(BuildContext context) async {
 
       final localisations = AppLocalizations.of(context);
 
-      final etaString = state?.eta?.inMinutes == null
-          ? null
-          : '${state.eta.inMinutes}${localisations.minutes}';
+      final etaString = state?.eta?.inMinutes != null
+          ? '${state.eta.inMinutes}${localisations.minutes}'
+          : kDebugMode
+              ? '¯\\_(ツ)_/¯'
+              : null;
       return AlertDialog(
         title: Text(
           '${localisations.warning}: '
