@@ -101,7 +101,7 @@ class ZCoinActivationApi {
     }
   }
 
-  Future<void> cancelActivation(int taskId) async {
+  Future<void> cancelActivationTask(int taskId) async {
     final response = await http.post(
       Uri.parse(_baseUrl),
       headers: {'Content-Type': 'application/json'},
@@ -134,6 +134,16 @@ class ZCoinActivationApi {
     }
   }
 
+  Future<void> cancelCoinActivation(String ticker) async {
+    int taskId = await getTaskId(ticker);
+
+    if (taskId == null) return;
+
+    await cancelActivationTask(taskId);
+    await _removeCoinTaskId(ticker);
+    firstScannedBlocks.remove(ticker);
+  }
+
   Future<List<String>> cancelAllActivation() async {
     List<Coin> knownZCoins = await getKnownZCoins();
     List<String> activatedCoins = await activatedZCoins();
@@ -142,11 +152,6 @@ class ZCoinActivationApi {
     for (Coin coin in knownZCoins) {
       String ticker = coin.abbr;
       int coinTaskId = await getTaskId(ticker);
-
-      // Check if taskId exists
-      if (coinTaskId == null) {
-        continue;
-      }
 
       // Check if coin is already activated
       if (activatedCoins.contains(ticker)) {
@@ -163,10 +168,8 @@ class ZCoinActivationApi {
 
       // Attempt to cancel the activation
       try {
-        await cancelActivation(coinTaskId);
-        await _removeCoinTaskId(ticker);
+        await cancelCoinActivation(ticker);
 
-        firstScannedBlocks.remove(ticker);
         cancelledCoins.add(ticker);
       } catch (e) {
         Log(

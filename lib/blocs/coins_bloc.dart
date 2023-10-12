@@ -314,6 +314,10 @@ class CoinsBloc implements BlocBase {
           .removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
       updateCoins(coinBalance);
       await deactivateCoins(<Coin>[coin]);
+
+      if (coin.type == CoinType.zhtlc) {
+        await _zCoinRepository.legacyCoinsBlocDisableLocallyCallback(coin.abbr);
+      }
     }
   }
 
