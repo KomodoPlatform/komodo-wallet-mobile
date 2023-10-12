@@ -18,8 +18,8 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
   static Future<String> get taskIdKey async =>
       'activationTaskId_${(await Db.getCurrentWallet()).id}';
 
-  Stream<ZCoinStatus> resyncEnabledZCoins() async* {
-    final enabledZCoins = await getEnabledZCoins();
+  Stream<ZCoinStatus> resyncZCoins() async* {
+    final enabledZCoins = await getRequestedActivatedCoins();
 
     yield* _activateZCoins(enabledZCoins, resyncOnly: true);
   }

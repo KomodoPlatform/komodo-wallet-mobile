@@ -57,7 +57,6 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   void initState() {
-    context.read<ZCoinActivationBloc>().add(ZCoinActivationStatusRequested());
     _getVersionApplication().then((String onValue) {
       setState(() {
         version = onValue;

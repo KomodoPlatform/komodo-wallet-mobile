@@ -18,7 +18,6 @@ class ZCoinActivationBloc
   ZCoinActivationBloc() : super(ZCoinActivationInitial()) {
     on<ZCoinActivationRequested>(_handleActivationRequested);
     on<ZCoinActivationSetRequestedCoins>(_handleSetRequestedCoins);
-    on<ZCoinActivationStatusRequested>(_handleActivationStatusRequested);
     on<ZCoinActivationCancelRequested>(_handleActivationCancelRequested);
   }
 
@@ -70,7 +69,7 @@ class ZCoinActivationBloc
       );
       await emit.forEach<ZCoinStatus>(
         event.resync
-            ? _repository.resyncEnabledZCoins()
+            ? _repository.resyncZCoins()
             : _repository.activateRequestedZCoins(),
         onData: (coinStatus) {
           if (coinStatus.isFailed) {
@@ -162,43 +161,6 @@ class ZCoinActivationBloc
       debugPrint('Failed to set requested coins: $e');
       emit(
         ZCoinActivationFailure(ZCoinActivationFailureReason.startFailed),
-      );
-    }
-  }
-
-  Future<void> _handleActivationStatusRequested(
-    ZCoinActivationStatusRequested event,
-    Emitter<ZCoinActivationState> emit,
-  ) async {
-    try {
-      final isAllCoinsEnabled = await _repository.isAllRequestedZCoinsEnabled();
-
-      final mustResync = await isResyncing();
-
-      // TODO? Consider if better to base the "in progress" state on the
-      // API task status instead of the existing bloc state.
-      final isActivationInProgress = state is ZCoinActivationInProgess;
-
-      if (!isActivationInProgress || isAllCoinsEnabled) {
-        await _clearNotification();
-      }
-
-      ZCoinActivationState newState;
-      if (isAllCoinsEnabled && !mustResync) {
-        newState = isActivationInProgress
-            ? ZCoinActivationSuccess()
-            : ZCoinActivationKnownState(false);
-      } else if (isActivationInProgress) {
-        newState = state as ZCoinActivationInProgess;
-      } else {
-        newState = ZCoinActivationKnownState(isAllCoinsEnabled);
-      }
-
-      emit(newState);
-    } catch (e) {
-      debugPrint('Failed to get activation status: $e');
-      emit(
-        ZCoinActivationFailure(ZCoinActivationFailureReason.failedAfterStart),
       );
     }
   }

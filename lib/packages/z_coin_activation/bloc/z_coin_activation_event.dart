@@ -17,6 +17,4 @@ class ZCoinActivationSetRequestedCoins extends ZCoinActivationEvent {
   final List<String> coins;
 }
 
-class ZCoinActivationStatusRequested extends ZCoinActivationEvent {}
-
 class ZCoinActivationCancelRequested extends ZCoinActivationEvent {}
