@@ -23,12 +23,18 @@ class ZCoinActivationInProgess extends ZCoinActivationState {
   const ZCoinActivationInProgess({
     @required this.progress,
     @required this.message,
+    @required this.isResync,
     this.eta,
     this.startTime,
   });
 
   final double progress;
   final String message;
+
+  /// Describes whether the activation is the initial activation after selecting
+  /// coins to activate (false) or a resync  after the initial
+  /// activation (true). e.g. when restarting the app.
+  final bool isResync;
 
   /// Nullable
   final Duration eta;
