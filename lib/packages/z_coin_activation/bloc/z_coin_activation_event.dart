@@ -4,9 +4,9 @@ abstract class ZCoinActivationEvent {
 
 /// Activates any requested ZCoins not already activated
 class ZCoinActivationRequested extends ZCoinActivationEvent {
-  const ZCoinActivationRequested({this.resync = false});
+  const ZCoinActivationRequested({this.isResync = false});
 
-  final bool resync;
+  final bool isResync;
 }
 
 /// Sets the list of requested ZCoins to activate.
