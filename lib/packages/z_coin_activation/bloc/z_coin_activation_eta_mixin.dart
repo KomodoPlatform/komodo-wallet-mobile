@@ -13,22 +13,22 @@ mixin ActivationEta {
       ),
     );
 
-    final hasEnoughEntries = _activationEntries.length >= 6 &&
+    final hasEnoughEntries = _activationEntries.length >= 4 &&
         _activationEntries.first.timeStamp
                 .difference(_activationEntries.last.timeStamp)
                 .inSeconds
                 .abs() >
-            50;
-
-    _activationEntries.retainWhere((entry) {
-      final elapsedSeconds =
-          DateTime.now().difference(entry.timeStamp).inSeconds;
-      return elapsedSeconds <= 60 || !hasEnoughEntries;
-    });
+            30;
 
     if (!hasEnoughEntries) {
       return null;
     }
+
+    _activationEntries.retainWhere((entry) {
+      final elapsedSeconds =
+          DateTime.now().difference(entry.timeStamp).inSeconds.abs();
+      return elapsedSeconds <= 120;
+    });
 
     double averageChangePerSecond = 0;
 
