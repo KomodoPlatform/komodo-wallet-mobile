@@ -31,23 +31,34 @@ class _AddCoinFabState extends State<AddCoinFab> {
   bool tappedWhileLoading = false;
 
   StreamSubscription<CoinToActivate> _coinSubscription;
+  final Completer<bool> _shouldShowAddCoinButtonCompleter = Completer<bool>();
 
   bool get _isShowLoading => _isLoading && tappedWhileLoading;
-
   bool get _isLoading => _hasCoinsToAdd == null || _areCoinsLoading;
 
   @override
   void initState() {
     super.initState();
+
+    if (coinsBloc.currentActiveCoin != null) {
+      _areCoinsLoading = false;
+    }
+
     _coinSubscription = coinsBloc.outcurrentActiveCoin.listen((coinData) {
       setState(() {
         _areCoinsLoading = coinData != null;
       });
 
       _showAddCoinPageIfNeeded();
-    });
+    }, cancelOnError: false);
 
     _shouldShowAddCoinButton().then((value) {
+      if (!_shouldShowAddCoinButtonCompleter.isCompleted) {
+        _shouldShowAddCoinButtonCompleter.complete(value);
+      }
+    });
+
+    _shouldShowAddCoinButtonCompleter.future.then((value) {
       setState(() => _hasCoinsToAdd = value);
     }).whenComplete(() => _showAddCoinPageIfNeeded());
   }
@@ -58,9 +69,11 @@ class _AddCoinFabState extends State<AddCoinFab> {
     if (tappedWhileLoading && _hasCoinsToAdd == true) {
       _showAddCoinPage(context, _areCoinsLoading);
     }
-    setState(() {
-      tappedWhileLoading = false;
-    });
+
+    if (mounted)
+      setState(() {
+        tappedWhileLoading = false;
+      });
   }
 
   @override

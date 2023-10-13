@@ -14,7 +14,7 @@ import 'package:komodo_dex/utils/log.dart';
 
 class ZCoinActivationBloc
     extends Bloc<ZCoinActivationEvent, ZCoinActivationState>
-    with ActivationEta {
+    with ActivationEta, ProgressCalculator {
   ZCoinActivationBloc() : super(ZCoinActivationInitial()) {
     on<ZCoinActivationRequested>(_handleActivationRequested);
     on<ZCoinActivationSetRequestedCoins>(_handleSetRequestedCoins);
@@ -53,6 +53,10 @@ class ZCoinActivationBloc
           startTime: DateTime.now(),
         ),
       );
+
+      final previouslyActivated =
+          await _repository.zCoinsTickersWithPreviousActivation();
+
       await emit.forEach<ZCoinStatus>(
         event.isResync
             ? _repository.resyncZCoins()
@@ -69,13 +73,13 @@ class ZCoinActivationBloc
           }
           final coinsRemainingCount = toActivate.length;
 
-          // Progress of the coin currently being activated
-          final coinProgress = coinStatus.progress;
+          double overallProgress = calculateOverallProgress(
+            coinsRemainingCount,
+            toActivateInitalCount,
+            coinStatus.progress,
+          );
 
-          final overallProgress = (1 -
-                  (coinsRemainingCount / toActivateInitalCount) +
-                  (coinProgress / toActivateInitalCount))
-              .clamp(0.0, 1.0);
+          overallProgress = calculateSmoothProgress(overallProgress);
 
           final previousInProgressState = state is ZCoinActivationInProgess
               ? (state as ZCoinActivationInProgess)
@@ -92,15 +96,13 @@ class ZCoinActivationBloc
               coinStatus,
               overallProgress: overallProgress,
               eta: eta,
-            );
+            ).ignore();
           }
-          if (coinStatus.isActivated) {
-            return ZCoinActivationSuccess();
-          }
+
           return ZCoinActivationInProgess(
             progress: shouldShowNewProgress ? overallProgress : lastProgress,
             message: 'Activating ${coinStatus.coin}',
-            isResync: event.isResync,
+            isResync: previouslyActivated.contains(coinStatus.coin),
             eta: eta,
             startTime: previousInProgressState?.startTime ?? DateTime.now(),
           );
@@ -118,10 +120,9 @@ class ZCoinActivationBloc
 
       final isAllActivated = await _repository.isAllRequestedZCoinsEnabled();
 
-      if (isAllActivated) {
-        // This is not always success, it just means the list is empty
-        // And this emit might remove another important notification
-        // emit(ZCoinActivationSuccess('ZHTLC coins activation process ended'));
+      if (isAllActivated == true &&
+          state.asProgressOrNull()?.isResync == false) {
+        emit(ZCoinActivationSuccess());
       } else {
         emit(
           ZCoinActivationFailure(ZCoinActivationFailureReason.failedAfterStart),
@@ -133,7 +134,12 @@ class ZCoinActivationBloc
         ZCoinActivationFailure(ZCoinActivationFailureReason.startFailed),
       );
     } finally {
+      if (state is ZCoinActivationInProgess) emit(ZCoinActivationInitial());
+
       await _clearNotification();
+
+      resetEta();
+      resetProgress();
     }
   }
 

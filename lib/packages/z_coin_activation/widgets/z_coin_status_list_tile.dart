@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
@@ -13,7 +14,6 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/rotating_progress_indicator.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/widgets/confirmation_dialog.dart';
 
 class ZCoinStatusWidget extends StatefulWidget {
   const ZCoinStatusWidget({Key key}) : super(key: key);
