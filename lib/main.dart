@@ -54,6 +54,12 @@ import 'widgets/shared_preferences_builder.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Ensure the Dart version is >= 2.14.0
+  assert(appConfig.isDartSdkVersionSupported, '''
+    Your Dart SDK version is not supported. 
+    Please update your Dart SDK to >= ${appConfig.minDartVersion}.
+  ''');
+
   await applicationDocumentsDirectory;
   await Log.init();
 
