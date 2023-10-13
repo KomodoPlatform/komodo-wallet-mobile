@@ -181,4 +181,18 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
 
     return status;
   }
+
+  /// Returns a list of activated coins according to our local database.
+  ///
+  /// This is not related to the activation status of the coins on the API. The
+  /// current API activation status could be `true` or `false`.
+  Future<List<String>> zCoinsTickersWithPreviousActivation() async {
+    final knownZCoins = (await getKnownZCoins()).map((c) => c.abbr).toSet();
+
+    final allActivatedCoins = (await Db.getCoinsFromDb()).toSet();
+
+    final previouslyActivated = knownZCoins.intersection(allActivatedCoins);
+
+    return previouslyActivated.toList();
+  }
 }
