@@ -14,6 +14,7 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/rotating_progress_indicator.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/widgets/animated_linear_progress_indicator.dart';
 
 class ZCoinStatusWidget extends StatefulWidget {
   const ZCoinStatusWidget({Key key}) : super(key: key);
@@ -462,7 +463,10 @@ Future<void> _showInProgressDialog(BuildContext context) async {
               '${localisations.swapProgress}: ${(state.progress * 100).round()}%',
             ),
             SizedBox(height: 8),
-            LinearProgressIndicator(value: state.progress),
+            AnimatedLinearProgressIndicator(
+              key: Key('z_coin_status_linear_progress_indicator'),
+              value: state.progress,
+            ),
           ],
         ),
         actions: [
