@@ -37,8 +37,9 @@ class ZCoinActivationBloc
       return;
     }
 
-    final toActivate = await _repository.getRequestedActivatedCoins();
-    final toActivateInitalCount = toActivate.length;
+    final pendingCoinsToActivate =
+        await _repository.getRequestedActivatedCoins();
+    final totalCoinsToActivateCount = pendingCoinsToActivate.length.toInt();
 
     try {
       final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
@@ -68,16 +69,18 @@ class ZCoinActivationBloc
             );
           }
 
-          if (coinStatus.isActivated) {
-            toActivate.remove(coinStatus.coin);
-          }
-          final coinsRemainingCount = toActivate.length;
+          final completedCoinsCount =
+              totalCoinsToActivateCount - pendingCoinsToActivate.length;
 
           double overallProgress = calculateOverallProgress(
-            coinsRemainingCount,
-            toActivateInitalCount,
+            completedCoinsCount,
+            totalCoinsToActivateCount,
             coinStatus.progress,
           );
+
+          if (coinStatus.isActivated) {
+            pendingCoinsToActivate.remove(coinStatus.coin);
+          }
 
           overallProgress = calculateSmoothProgress(overallProgress);
 
