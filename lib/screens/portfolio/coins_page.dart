@@ -154,7 +154,6 @@ class _CoinsPageState extends State<CoinsPage> {
                                         fit: StackFit.passthrough,
                                         children: [
                                           Center(
-                                            // alignment: Alignment.center,
                                             child: AutoSizeText(
                                               amountText,
                                               maxFontSize: 24,
@@ -168,7 +167,6 @@ class _CoinsPageState extends State<CoinsPage> {
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                             ),
-                                            // child: Text('Lorem'),
                                           ),
                                           Align(
                                             alignment: Alignment.centerRight,
@@ -216,23 +214,21 @@ class _CoinsPageState extends State<CoinsPage> {
               automaticallyImplyLeading: false,
             ),
             BlocBuilder<ZCoinActivationBloc, ZCoinActivationState>(
+              key: Key('bloc-builder-zcoin-activation'),
               builder: (context, state) {
                 final isActivationInProgress =
                     state is ZCoinActivationInProgess;
 
-                return SliverVisibility(
-                  visible: isActivationInProgress,
-                  sliver: isActivationInProgress
-                      ? SliverAppBar(
-                          automaticallyImplyLeading: false,
-                          backgroundColor:
-                              Theme.of(context).scaffoldBackgroundColor,
-                          flexibleSpace: Center(
-                            child: ZCoinStatusWidget(),
-                          ),
-                          pinned: false,
-                        )
-                      : SliverToBoxAdapter(child: SizedBox.shrink()),
+                return SliverToBoxAdapter(
+                  child: AnimatedCollapse(
+                    key: Key('animated-collapse-zcoin-status'),
+                    isCollapsed: !isActivationInProgress,
+                    fullHeight: 64,
+                    child: Card(
+                      child: ZCoinStatusWidget(),
+                      margin: EdgeInsets.zero,
+                    ),
+                  ),
                 );
               },
             ),
