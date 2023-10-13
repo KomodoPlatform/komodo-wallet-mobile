@@ -127,10 +127,20 @@ mixin ProgressCalculator {
   }
 
   double calculateOverallProgress(
-      int coinsRemainingCount, int initialCount, double coinProgress) {
-    return (1 -
-            (coinsRemainingCount / initialCount) +
-            (coinProgress / initialCount))
-        .clamp(0.0, 1.0);
+      int completedCoins, int totalCoins, double currentCoinProgress) {
+    // Fraction of the total progress that each coin represents.
+    double coinShare = 1.0 / totalCoins;
+
+    // Progress contributed by the coins that have already been fully activated.
+    double completedCoinsProgress = completedCoins * coinShare;
+
+    // Represents the progress of the coin currently being activated.
+    double inProgressCoinContribution = currentCoinProgress * coinShare;
+
+    // Calculating the overall progress
+    double val =
+        (completedCoinsProgress + inProgressCoinContribution).clamp(0.0, 1.0);
+
+    return val;
   }
 }
