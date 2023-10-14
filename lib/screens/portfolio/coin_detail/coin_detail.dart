@@ -119,14 +119,25 @@ class _CoinDetailState extends State<CoinDetail> {
     super.initState();
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
+      if (isLoading) return;
+
+      if (coinsBloc.transactions is! Transactions) return;
+
+      final blocTransactions = coinsBloc.transactions as Transactions;
+
+      final isScrolledToEnd = _scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent;
+
+      final isAllLoaded = blocTransactions.result.total <=
+          blocTransactions.result.transactions.length;
+
+      if (isScrolledToEnd && !isAllLoaded) {
         setState(() {
           isLoading = true;
         });
         coinsBloc
             .updateTransactions(currentCoinBalance, limit, fromId)
-            .then((_) {
+            .whenComplete(() {
           setState(() {
             isLoading = false;
           });
@@ -247,24 +258,49 @@ class _CoinDetailState extends State<CoinDetail> {
           centerTitle: false,
           backgroundColor: Color(int.parse(currentCoinBalance.coin.colorCoin)),
         ),
-        body: Builder(
-          builder: (BuildContext context) {
-            mainContext = context;
-            return ListView(
-              shrinkWrap: true,
-              controller: scrollController,
-              children: <Widget>[
-                if (!currentCoinBalance.coin.suspended) _buildForm(),
-                _buildHeaderCoinDetail(context),
-                if (_shouldRefresh && !currentCoinBalance.coin.suspended)
-                  _buildNewTransactionsButton(),
-                if (!currentCoinBalance.coin.suspended) _buildSyncChain(),
-                !currentCoinBalance.coin.suspended
-                    ? _buildTransactionsList(context)
-                    : _buildErrorMessage(context)
-              ],
-            );
-          },
+        body: Column(
+          children: [
+            // Don't show the loading bar for the initial load, since there is
+            // already a circular progress indicator in the place of the list.
+            if (isLoading && coinsBloc.transactionsOrNull?.result != null)
+              LinearProgressIndicator(),
+            Expanded(
+              child: Builder(
+                builder: (BuildContext context) {
+                  mainContext = context;
+
+                  return RefreshIndicator(
+                    backgroundColor: Theme.of(context).colorScheme.background,
+                    color: Theme.of(context).colorScheme.secondary,
+                    key: _refreshIndicatorKey,
+                    onRefresh: _refresh,
+                    child: CustomScrollView(
+                      controller: _scrollController,
+                      slivers: [
+                        if (!currentCoinBalance.coin.suspended)
+                          SliverToBoxAdapter(child: _buildForm()),
+                        SliverToBoxAdapter(
+                          child: _buildHeaderCoinDetail(context),
+                        ),
+                        if (_shouldRefresh &&
+                            !currentCoinBalance.coin.suspended)
+                          SliverToBoxAdapter(
+                            child: _buildNewTransactionsButton(),
+                          ),
+                        if (!currentCoinBalance.coin.suspended)
+                          SliverToBoxAdapter(child: _buildSyncChain()),
+                        (currentCoinBalance.coin.suspended)
+                            ? SliverToBoxAdapter(
+                                child: _buildErrorMessage(context),
+                              )
+                            : _buildTransactionsSliverList(context),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -380,7 +416,7 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  Widget _buildTransactionsList(BuildContext context) {
+  Widget _buildTransactionsSliverList(BuildContext context) {
     List<CoinType> coinsWithoutHist = [
       CoinType.hrc,
       CoinType.ubiq,
@@ -390,60 +426,60 @@ class _CoinDetailState extends State<CoinDetail> {
     ];
 
     if (coinsWithoutHist.contains(currentCoinBalance.coin.type)) {
-      return _buildTxExplorerButton(
-        '${currentCoinBalance.coin.explorerUrl}address/${currentCoinBalance.balance.address}',
+      return SliverToBoxAdapter(
+        child: _buildTxExplorerButton(
+          '${currentCoinBalance.coin.explorerUrl}address/${currentCoinBalance.balance.address}',
+        ),
       );
     }
-    return RefreshIndicator(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      color: Theme.of(context).colorScheme.secondary,
-      key: _refreshIndicatorKey,
-      onRefresh: _refresh,
-      child: StreamBuilder<dynamic>(
-        stream: coinsBloc.outTransactions,
-        initialData: coinsBloc.transactions,
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            _isWaiting = true;
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            _isWaiting = false;
-          }
-          if (snapshot.data is Transactions) {
-            final Transactions transactions = snapshot.data;
-            final String syncState =
-                StateOfSync.InProgress.toString().substring(
-              StateOfSync.InProgress.toString().indexOf('.') + 1,
-            );
 
-            if (snapshot.hasData &&
-                transactions.result != null &&
-                transactions.result.transactions != null) {
-              if (transactions.result.transactions.isNotEmpty) {
-                //@Slyris plz clean up
-                return ListView.builder(
-                  itemCount: transactions.result.transactions.length,
-                  physics: ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, i) => _buildTransactionItem(
+    return StreamBuilder<dynamic>(
+      key: const Key('transactions-list'),
+      stream: coinsBloc.outTransactions,
+      initialData: coinsBloc.transactions,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          _isWaiting = true;
+          return SliverFillRemaining(
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        } else {
+          _isWaiting = false;
+        }
+
+        if (snapshot.data is Transactions) {
+          final Transactions transactions = snapshot.data;
+          final String syncState = StateOfSync.InProgress.toString().substring(
+            StateOfSync.InProgress.toString().indexOf('.') + 1,
+          );
+
+          if (snapshot.hasData &&
+              transactions.result != null &&
+              transactions.result.transactions != null) {
+            if (transactions.result.transactions.isNotEmpty) {
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, i) => _buildTransactionItem(
                     transactions.result.transactions[i],
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  controller: _scrollController,
-                );
-              } else if (transactions.result.transactions.isEmpty &&
-                  !(transactions.result.syncStatus.state == syncState)) {
-                return Center(
+                  childCount: transactions.result.transactions.length,
+                ),
+              );
+            } else if (transactions.result.transactions.isEmpty &&
+                !(transactions.result.syncStatus.state == syncState)) {
+              return SliverFillRemaining(
+                child: Center(
                   child: Text(
                     AppLocalizations.of(context).noTxs,
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
-                );
-              }
+                ),
+              );
             }
-          } else if (snapshot.data is ErrorCode &&
-              snapshot.data.error != null) {
-            return Padding(
+          }
+        } else if (snapshot.data is ErrorCode && snapshot.data.error != null) {
+          return SliverFillRemaining(
+            child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Center(
                 child: Text(
@@ -452,11 +488,11 @@ class _CoinDetailState extends State<CoinDetail> {
                   textAlign: TextAlign.center,
                 ),
               ),
-            );
-          }
-          return SizedBox();
-        },
-      ),
+            ),
+          );
+        }
+        return SliverFillRemaining(child: SizedBox());
+      },
     );
   }
 

@@ -72,6 +72,9 @@ class CoinsBloc implements BlocBase {
 
   dynamic transactions;
 
+  Transactions get transactionsOrNull =>
+      transactions is Transactions ? transactions : null;
+
   // Streams to handle the list coin
   final StreamController<dynamic> _transactionsController =
       StreamController<dynamic>.broadcast();
@@ -406,18 +409,16 @@ class CoinsBloc implements BlocBase {
       if (transactions is Transactions) {
         transactions.camouflageIfNeeded();
 
-        if (fromId == null || fromId.isEmpty) {
+        if (fromId?.isEmpty ?? true) {
           this.transactions = transactions;
         } else {
           this.transactions.result.fromId = transactions.result.fromId;
           this.transactions.result.limit = transactions.result.limit;
           this.transactions.result.skipped = transactions.result.skipped;
           this.transactions.result.total = transactions.result.total;
-          this
-              .transactions
-              .result
-              .transactions
-              .addAll(transactions.result.transactions);
+          this.transactions.result.transactions
+            ..addAll(transactions.result.transactions)
+            ..sort((a, b) => b.time.compareTo(a.time));
         }
         _inTransactions.add(this.transactions);
       } else if (transactions is ErrorCode) {
