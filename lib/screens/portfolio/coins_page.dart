@@ -12,6 +12,7 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_blo
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import 'package:komodo_dex/screens/portfolio/animated_asset_proportions_graph.dart';
+import 'package:komodo_dex/widgets/animated_collapse.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../blocs/coins_bloc.dart';
@@ -220,12 +221,14 @@ class _CoinsPageState extends State<CoinsPage> {
                     state is ZCoinActivationInProgess;
 
                 return SliverToBoxAdapter(
+                  key: Key('sliver-to-box-adapter-zcoin-status'),
                   child: AnimatedCollapse(
-                    key: Key('animated-collapse-zcoin-status'),
                     isCollapsed: !isActivationInProgress,
                     fullHeight: 64,
                     child: Card(
-                      child: ZCoinStatusWidget(),
+                      child: ZCoinStatusWidget(
+                        key: Key('zcoin-status-widget'),
+                      ),
                       margin: EdgeInsets.zero,
                     ),
                   ),
@@ -258,31 +261,6 @@ class _CoinsPageState extends State<CoinsPage> {
       end: Alignment.topRight,
       stops: const <double>[0.01, 1],
       colors: colors,
-    );
-  }
-}
-
-class AnimatedCollapse extends StatelessWidget {
-  const AnimatedCollapse({
-    Key key,
-    @required this.fullHeight,
-    @required this.isCollapsed,
-    @required this.child,
-  }) : super(key: key);
-
-  final Widget child;
-
-  final bool isCollapsed;
-
-  final double fullHeight;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOutExpo,
-      height: isCollapsed ? 0 : fullHeight,
-      child: child,
     );
   }
 }
