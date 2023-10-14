@@ -5,7 +5,7 @@ class AnimatedLinearProgressIndicator extends StatefulWidget {
     Key key,
     @required this.value,
     // this.duration = const Duration(milliseconds: 200),
-    this.duration = const Duration(milliseconds: 600),
+    this.duration = const Duration(seconds: 1),
     this.trackColor,
     this.progressColor,
   }) : super(key: key);

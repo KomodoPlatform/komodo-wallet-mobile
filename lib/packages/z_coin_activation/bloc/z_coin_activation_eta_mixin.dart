@@ -17,7 +17,7 @@ mixin ActivationEta {
       ),
     );
 
-    final hasEnoughEntries = _activationEntries.length >= 4 &&
+    final hasEnoughEntries = _activationEntries.length >= 6 &&
         _activationEntries.first.timeStamp
                 .difference(_activationEntries.last.timeStamp)
                 .inSeconds
