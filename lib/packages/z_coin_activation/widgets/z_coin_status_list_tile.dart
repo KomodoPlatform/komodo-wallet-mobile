@@ -13,6 +13,7 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_sta
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_notifications.dart';
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/rotating_progress_indicator.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/animated_linear_progress_indicator.dart';
 
@@ -42,15 +43,12 @@ class _ZCoinStatusWidgetState extends State<ZCoinStatusWidget> {
   @override
   initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      if (apiReady != mmSe.running) {
-        setState(() => apiReady = mmSe.running);
-      }
 
-      if (apiReady) {
-        return timer.cancel();
-      }
-    });
+    if (!apiReady) {
+      MM.untilRpcIsUp().then((_) {
+        if (mounted) setState(() => apiReady = true);
+      });
+    }
   }
 
   bool apiReady = mmSe.running;
@@ -421,71 +419,80 @@ Future<void> _showInProgressDialog(BuildContext context) async {
   return showDialog<void>(
     context: context,
     builder: (context) {
-      final state =
-          context.watch<ZCoinActivationBloc>().state.asProgressOrNull();
+      return BlocConsumer<ZCoinActivationBloc, ZCoinActivationState>(
+        listener: (context, state) {
+          final progressState = state.asProgressOrNull();
 
-      if (state == null) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.pop(context);
-        });
-        return Container();
-      }
+          if (progressState == null || progressState.progress >= 1) {
+            Navigator.of(context, rootNavigator: true).maybePop();
+          }
+        },
+        listenWhen: (previous, current) => previous != current,
+        builder: (context, s) {
+          final state = s.asProgressOrNull();
 
-      final localisations = AppLocalizations.of(context);
+          if (state == null || state.progress >= 1) {
+            Navigator.of(context, rootNavigator: true).maybePop();
+            return Container();
+          }
 
-      final etaString = state?.eta?.inMinutes != null
-          ? '${state.eta.inMinutes}${localisations.minutes}'
-          : kDebugMode
-              ? '¯\\_(ツ)_/¯'
-              : null;
-      return AlertDialog(
-        title: Text(
-          '${localisations.warning}: '
-          '${localisations.activationInProgress(localisations.tagZHTLC)}',
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (!ZCoinProgressNotifications.canNotify) ...[
-              Text(
-                localisations.enableNotificationsForActivationProgress,
-                style: TextStyle(color: Colors.amber),
+          final localisations = AppLocalizations.of(context);
+
+          final etaString = state?.eta?.inMinutes != null
+              ? '${state.eta.inMinutes}${localisations.minutes}'
+              : kDebugMode
+                  ? '¯\\_(ツ)_/¯'
+                  : null;
+          return AlertDialog(
+            title: Text(
+              '${localisations.warning}: '
+              '${localisations.activationInProgress(localisations.tagZHTLC)}',
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (!ZCoinProgressNotifications.canNotify) ...[
+                  Text(
+                    localisations.enableNotificationsForActivationProgress,
+                    style: TextStyle(color: Colors.amber),
+                  ),
+                  SizedBox(height: 16),
+                ],
+                Text(localisations.willTakeTime),
+                SizedBox(height: 16),
+                if (etaString != null) ...[
+                  Text('${localisations.rewardsTableTime}: $etaString'),
+                  SizedBox(height: 16),
+                ],
+                Text(
+                  '${localisations.swapProgress}: ${(state.progress * 100).round()}%',
+                ),
+                SizedBox(height: 8),
+                AnimatedLinearProgressIndicator(
+                  key: Key('z_coin_status_linear_progress_indicator'),
+                  value: state.progress,
+                ),
+              ],
+            ),
+            actions: [
+              if (!state.isResync)
+                TextButton(
+                  onPressed: () =>
+                      _showConfirmCancelActivationDialog(context).ignore(),
+                  child: Text(
+                    localisations.cancelActivation,
+                    style: DefaultTextStyle.of(context)
+                        .style
+                        .copyWith(color: Theme.of(context).errorColor),
+                  ),
+                ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(localisations.close),
               ),
-              SizedBox(height: 16),
             ],
-            Text(localisations.willTakeTime),
-            SizedBox(height: 16),
-            if (etaString != null) ...[
-              Text('${localisations.rewardsTableTime}: $etaString'),
-              SizedBox(height: 16),
-            ],
-            Text(
-              '${localisations.swapProgress}: ${(state.progress * 100).round()}%',
-            ),
-            SizedBox(height: 8),
-            AnimatedLinearProgressIndicator(
-              key: Key('z_coin_status_linear_progress_indicator'),
-              value: state.progress,
-            ),
-          ],
-        ),
-        actions: [
-          if (!state.isResync)
-            TextButton(
-              onPressed: () =>
-                  _showConfirmCancelActivationDialog(context).ignore(),
-              child: Text(
-                localisations.cancelActivation,
-                style: DefaultTextStyle.of(context)
-                    .style
-                    .copyWith(color: Theme.of(context).errorColor),
-              ),
-            ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(localisations.close),
-          ),
-        ],
+          );
+        },
       );
     },
   );
