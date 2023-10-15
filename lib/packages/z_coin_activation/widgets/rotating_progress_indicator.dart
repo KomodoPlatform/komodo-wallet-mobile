@@ -19,6 +19,8 @@ class _RotatingCircularProgressIndicatorState
   Animation<double> progressAnimation;
   Animation<double> rotationAnimation;
 
+  final ValueNotifier<double> _targetValue = ValueNotifier<double>(null);
+
   @override
   void initState() {
     super.initState();
@@ -38,29 +40,31 @@ class _RotatingCircularProgressIndicatorState
       vsync: this,
     );
 
+    _updateProgressAnimation(widget.value);
+    progressController.value = widget.value;
+  }
+
+  void _updateProgressAnimation(double targetValue) {
     progressAnimation = Tween<double>(
-      begin: 0,
-      end: widget.value,
+      begin: progressController.value,
+      end: targetValue,
     ).animate(CurvedAnimation(
       parent: progressController,
       curve: Curves.easeOut,
-    ));
-
-    progressController.value = widget.value;
+    ))
+      ..addListener(() {
+        if (progressAnimation.isCompleted) {
+          progressController.value = progressAnimation.value;
+        }
+      });
+    progressController.forward(from: 0);
   }
 
   @override
   void didUpdateWidget(RotatingCircularProgressIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.value != oldWidget.value) {
-      progressAnimation = Tween<double>(
-        begin: progressController.value,
-        end: widget.value,
-      ).animate(CurvedAnimation(
-        parent: progressController,
-        curve: Curves.easeOut,
-      ));
-      progressController.forward(from: progressController.value);
+      _updateProgressAnimation(widget.value);
     }
   }
 
@@ -68,6 +72,7 @@ class _RotatingCircularProgressIndicatorState
   void dispose() {
     rotationController.dispose();
     progressController.dispose();
+    _targetValue.dispose();
     super.dispose();
   }
 
