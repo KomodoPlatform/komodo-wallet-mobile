@@ -396,35 +396,44 @@ class CoinsBloc implements BlocBase {
       CoinBalance coinBalance, int limit, String fromId) async {
     Coin coin = coinBalance.coin;
     try {
-      dynamic transactions;
+      dynamic transactionData;
 
       if (isErcType(coin)) {
-        transactions = await getErcTransactions.getTransactions(
-            coin: coin, fromId: fromId);
+        transactionData = await getErcTransactions.getTransactions(
+          coin: coin,
+          fromId: fromId,
+        );
       } else {
-        transactions = await MM.getTransactions(mmSe.client,
-            GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+        transactionData = await MM.getTransactions(
+          mmSe.client,
+          GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId),
+        );
       }
 
-      if (transactions is Transactions) {
-        transactions.camouflageIfNeeded();
+      if (transactionData is Transactions) {
+        transactionData.camouflageIfNeeded();
 
-        if (fromId?.isEmpty ?? true) {
-          this.transactions = transactions;
-        } else {
-          this.transactions.result.fromId = transactions.result.fromId;
-          this.transactions.result.limit = transactions.result.limit;
-          this.transactions.result.skipped = transactions.result.skipped;
-          this.transactions.result.total = transactions.result.total;
-          this.transactions.result.transactions
-            ..addAll(transactions.result.transactions)
-            ..sort((a, b) => b.time.compareTo(a.time));
-        }
-        _inTransactions.add(this.transactions);
-      } else if (transactions is ErrorCode) {
-        _inTransactions.add(transactions);
-        return transactions;
+        final thisTransactions = transactions?.result?.transactions;
+
+        final mustMergeCurrentCoin = fromId != null &&
+            (thisTransactions is List<Transaction> &&
+                    (thisTransactions
+                        .any((Transaction tx) => tx.coin == coin.abbr)) ??
+                false);
+
+        transactionData.result.transactions = [
+          if (mustMergeCurrentCoin) ...thisTransactions ?? [],
+          ...transactionData.result?.transactions ?? []
+        ]..sort((a, b) => b.timestamp.compareTo(a.timestamp));
+
+        transactions = transactionData;
+      } else if (transactionData is ErrorCode) {
+        Log(
+          'coins_bloc:updateTransactions',
+          'Failed to get transactions: $coin: ${transactionData.toJson()}',
+        );
       }
+      _inTransactions.add(transactionData);
     } catch (e) {
       Log('coins_bloc:244', e);
       rethrow;
