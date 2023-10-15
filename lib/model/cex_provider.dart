@@ -441,6 +441,9 @@ class CexPrices {
         },
       );
       _body = _res.body;
+
+      if (_body == null)
+        return Log('cex_provider', 'Failed to fetch rates: $_res');
     } catch (e) {
       Log('cex_provider', 'Failed to fetch rates: $e');
     }
@@ -613,6 +616,7 @@ class CexPrices {
           return;
         },
       );
+      if (_body == null) return false;
       _body = _res.body;
     } catch (e) {
       Log('cex_provider', 'Failed to fetch usd prices: $e');
@@ -621,6 +625,7 @@ class CexPrices {
     _fetchingPrices = false;
 
     Map<String, dynamic> json;
+
     try {
       final isJsonString = _body.startsWith('{');
       json = isJsonString ? jsonDecode(_body) : null;
