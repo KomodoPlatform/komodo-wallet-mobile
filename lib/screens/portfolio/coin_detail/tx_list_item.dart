@@ -94,10 +94,10 @@ class _TransactionListItemState extends State<TransactionListItem> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 4),
+            SizedBox(height: 6),
             Text(
               formattedAddress,
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodyText2,
             ),
             if (note != null) ...[
               SizedBox(height: 4),
