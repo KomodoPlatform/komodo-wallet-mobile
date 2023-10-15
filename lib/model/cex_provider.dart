@@ -616,8 +616,11 @@ class CexPrices {
           return;
         },
       );
-      if (_body == null) return false;
-      _body = _res.body;
+      _body = _res?.body;
+      if (_body == null) {
+        _fetchingPrices = false;
+        return false;
+      }
     } catch (e) {
       Log('cex_provider', 'Failed to fetch usd prices: $e');
     }
