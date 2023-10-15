@@ -107,10 +107,14 @@ class _CoinDetailState extends State<CoinDetail> {
       isLoading = true;
     });
     coinsBloc.updateTransactions(currentCoinBalance, limit, null).then((_) {
+      final result = coinsBloc.transactionsOrNull?.result;
+
+      if (result?.transactions?.isNotEmpty ?? false) {
+        fromId = result.transactions.last.internalId;
+      }
+    }).whenComplete(() {
       if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
+        setState(() => isLoading = false);
       }
     });
     coinsBloc.getLatestTransaction(currentCoinBalance).then((Transaction t) {
@@ -119,28 +123,42 @@ class _CoinDetailState extends State<CoinDetail> {
     super.initState();
 
     _scrollController.addListener(() {
-      if (isLoading) return;
-
-      if (coinsBloc.transactions is! Transactions) return;
-
-      final blocTransactions = coinsBloc.transactions as Transactions;
-
       final isScrolledToEnd = _scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent;
 
-      final isAllLoaded = blocTransactions.result.total <=
-          blocTransactions.result.transactions.length;
+      if (!isScrolledToEnd || isLoading) return;
 
-      if (isScrolledToEnd && !isAllLoaded) {
+      final blocTransactions = coinsBloc.transactionsOrNull;
+
+      final hasMoreToLoad = blocTransactions.result == null
+          ? null
+          : blocTransactions.result.total >
+              blocTransactions.result.transactions.length;
+
+      if (hasMoreToLoad ?? true) {
         setState(() {
           isLoading = true;
         });
         coinsBloc
             .updateTransactions(currentCoinBalance, limit, fromId)
-            .whenComplete(() {
-          setState(() {
-            isLoading = false;
-          });
+            .then((_) {
+          final result = coinsBloc.transactionsOrNull?.result;
+
+          if (result?.transactions?.isNotEmpty ?? false) {
+            fromId = result.transactions.last.internalId;
+          }
+
+          // Scroll down slightly so that the user is aware that there
+          // is new data.
+          if (_scrollController.hasClients) {
+            _scrollController.animateTo(
+              _scrollController.position.pixels + 40,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+            );
+          }
+        }).whenComplete(() {
+          if (mounted) setState(() => isLoading = false);
         });
       }
     });
@@ -262,8 +280,7 @@ class _CoinDetailState extends State<CoinDetail> {
           children: [
             // Don't show the loading bar for the initial load, since there is
             // already a circular progress indicator in the place of the list.
-            if (isLoading && coinsBloc.transactionsOrNull?.result != null)
-              LinearProgressIndicator(),
+            if (isLoading && fromId != null) LinearProgressIndicator(),
             Expanded(
               child: Builder(
                 builder: (BuildContext context) {
@@ -579,10 +596,8 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Widget _buildTransactionItem(Transaction transaction) {
-    fromId = transaction.internalId;
-
     return TransactionListItem(
-      key: ValueKey('transaction-list-item-$fromId'),
+      key: ValueKey('transaction-list-item-${transaction.internalId}'),
       transaction: transaction,
       currentCoinBalance: currentCoinBalance,
     );
