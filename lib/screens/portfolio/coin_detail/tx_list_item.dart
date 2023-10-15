@@ -112,6 +112,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
         ),
         leading: Icon(
           isReceived ? Icons.arrow_downward : Icons.arrow_upward,
+          size: 32,
           color: isReceived ? Colors.green : Colors.redAccent,
         ),
         trailing: Row(
