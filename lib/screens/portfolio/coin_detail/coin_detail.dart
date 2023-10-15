@@ -123,10 +123,7 @@ class _CoinDetailState extends State<CoinDetail> {
     super.initState();
 
     _scrollController.addListener(() {
-      final isScrolledToEnd = _scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent;
-
-      if (!isScrolledToEnd || isLoading) return;
+      if (!isTransactionsScrolledToEnd || isLoading) return;
 
       final blocTransactions = coinsBloc.transactionsOrNull;
 
@@ -139,6 +136,10 @@ class _CoinDetailState extends State<CoinDetail> {
         setState(() {
           isLoading = true;
         });
+
+        final maxScrollBeforeLoading =
+            _scrollController.position.maxScrollExtent.toDouble();
+
         coinsBloc
             .updateTransactions(currentCoinBalance, limit, fromId)
             .then((_) {
@@ -148,12 +149,13 @@ class _CoinDetailState extends State<CoinDetail> {
             fromId = result.transactions.last.internalId;
           }
 
-          // Scroll down slightly so that the user is aware that there
-          // is new data.
+          // Scroll down slightly so that the user is aware that there is new
+          // content. If the user has scrolled up while loading, they will
+          // be scrolled back down to the beginning of the new content.
           if (_scrollController.hasClients) {
             _scrollController.animateTo(
-              _scrollController.position.pixels + 40,
-              duration: const Duration(milliseconds: 500),
+              maxScrollBeforeLoading + 40,
+              duration: const Duration(milliseconds: 400),
               curve: Curves.easeInOut,
             );
           }
@@ -163,6 +165,10 @@ class _CoinDetailState extends State<CoinDetail> {
       }
     });
   }
+
+  bool get isTransactionsScrolledToEnd =>
+      _scrollController.position.pixels ==
+      _scrollController.position.maxScrollExtent;
 
   @override
   void dispose() {
@@ -291,27 +297,30 @@ class _CoinDetailState extends State<CoinDetail> {
                     color: Theme.of(context).colorScheme.secondary,
                     key: _refreshIndicatorKey,
                     onRefresh: _refresh,
-                    child: CustomScrollView(
+                    child: Scrollbar(
                       controller: _scrollController,
-                      slivers: [
-                        if (!currentCoinBalance.coin.suspended)
-                          SliverToBoxAdapter(child: _buildForm()),
-                        SliverToBoxAdapter(
-                          child: _buildHeaderCoinDetail(context),
-                        ),
-                        if (_shouldRefresh &&
-                            !currentCoinBalance.coin.suspended)
+                      child: CustomScrollView(
+                        controller: _scrollController,
+                        slivers: [
+                          if (!currentCoinBalance.coin.suspended)
+                            SliverToBoxAdapter(child: _buildForm()),
                           SliverToBoxAdapter(
-                            child: _buildNewTransactionsButton(),
+                            child: _buildHeaderCoinDetail(context),
                           ),
-                        if (!currentCoinBalance.coin.suspended)
-                          SliverToBoxAdapter(child: _buildSyncChain()),
-                        (currentCoinBalance.coin.suspended)
-                            ? SliverToBoxAdapter(
-                                child: _buildErrorMessage(context),
-                              )
-                            : _buildTransactionsSliverList(context),
-                      ],
+                          if (_shouldRefresh &&
+                              !currentCoinBalance.coin.suspended)
+                            SliverToBoxAdapter(
+                              child: _buildNewTransactionsButton(),
+                            ),
+                          if (!currentCoinBalance.coin.suspended)
+                            SliverToBoxAdapter(child: _buildSyncChain()),
+                          (currentCoinBalance.coin.suspended)
+                              ? SliverToBoxAdapter(
+                                  child: _buildErrorMessage(context),
+                                )
+                              : _buildTransactionsSliverList(context),
+                        ],
+                      ),
                     ),
                   );
                 },
