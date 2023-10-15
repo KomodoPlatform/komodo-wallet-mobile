@@ -618,7 +618,7 @@ class _CoinDetailState extends State<CoinDetail> {
         if (currentCoinBalance.coin.protocol?.protocolData != null)
           _buildContractAddress(currentCoinBalance.coin.protocol),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 48),
+          padding: const EdgeInsets.symmetric(vertical: 24),
           child: StreamBuilder<List<CoinBalance>>(
             initialData: coinsBloc.coinBalance,
             stream: coinsBloc.outCoins,
@@ -680,51 +680,36 @@ class _CoinDetailState extends State<CoinDetail> {
             },
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 8),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            children: [
+              Flexible(
                 child: _buildButtonLight(StatusButton.RECEIVE, mContext),
               ),
-            ),
-            if (currentCoinBalance.coin.abbr == 'KMD' &&
-                double.parse(currentCoinBalance.balance.getBalance()) >= 10)
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: _buildButtonLight(StatusButton.CLAIM, mContext),
-                ),
-              ),
-            if (appConfig.defaultTestCoins
-                    .contains(currentCoinBalance.coin.abbr) ||
-                currentCoinBalance.coin.abbr == 'ZOMBIE')
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8),
+              SizedBox(width: 8),
+              if (appConfig.defaultTestCoins
+                      .contains(currentCoinBalance.coin.abbr) ||
+                  currentCoinBalance.coin.abbr == 'ZOMBIE') ...[
+                Flexible(
                   child: _buildButtonLight(StatusButton.FAUCET, mContext),
                 ),
-              ),
-            if (currentCoinBalance.coin.abbr == 'TKL' ||
-                currentCoinBalance.coin.abbr == 'MCL')
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: _buildButtonLight(StatusButton.PUBKEY, mContext),
-                ),
-              ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 16),
+                SizedBox(width: 8),
+              ],
+              Flexible(
                 child: _buildButtonLight(StatusButton.SEND, mContext),
               ),
-            ),
-          ],
+              SizedBox(width: 8),
+              if (currentCoinBalance.coin.abbr == 'KMD' &&
+                  double.parse(currentCoinBalance.balance.getBalance()) >= 10)
+                Flexible(
+                  child: _buildButtonLight(StatusButton.CLAIM, mContext),
+                ),
+            ],
+          ),
         ),
-        const SizedBox(
-          height: 16,
-        )
+        const SizedBox(height: 16)
       ],
     );
   }
@@ -809,6 +794,29 @@ class _CoinDetailState extends State<CoinDetail> {
 
   Widget _buildButtonLight(StatusButton statusButton, BuildContext mContext) {
     String text = '';
+    Widget icon;
+
+    switch (statusButton) {
+      case StatusButton.RECEIVE:
+        icon = Icon(Icons.qr_code_rounded, color: Colors.green);
+        break;
+      case StatusButton.SEND:
+        icon = Icon(
+          Icons.north_east_rounded,
+          color: Colors.red,
+        );
+        break;
+      case StatusButton.PUBKEY:
+        icon = Icon(Icons.copy_rounded);
+        break;
+      case StatusButton.FAUCET:
+        icon = Icon(Icons.local_drink_rounded, color: Colors.blue);
+        break;
+      case StatusButton.CLAIM:
+        icon = Icon(Icons.card_giftcard_rounded);
+        break;
+    }
+
     switch (statusButton) {
       case StatusButton.RECEIVE:
         text = AppLocalizations.of(context).receive;
@@ -830,6 +838,7 @@ class _CoinDetailState extends State<CoinDetail> {
         return Stack(
           children: <Widget>[
             SecondaryButton(
+              icon: icon,
               key: Key('open-' + statusButton.name),
               text: text,
               textColor: Theme.of(context).textTheme.button.color,
@@ -860,6 +869,7 @@ class _CoinDetailState extends State<CoinDetail> {
     return SecondaryButton(
       key: Key('open-' + statusButton.name),
       text: text,
+      icon: icon,
       isDarkMode: Theme.of(context).brightness != Brightness.light,
       textColor: Theme.of(context).colorScheme.secondary,
       borderColor: Theme.of(context).colorScheme.secondary,
