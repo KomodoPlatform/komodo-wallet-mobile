@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/app_config/coins_updater.dart';
 
 import '../model/coin_type.dart';
 import '../utils/utils.dart';
 
 Future<List<dynamic>> convertCoinsConfigToAppConfig() async {
-  final String coins =
-      await rootBundle.loadString('assets/coins_config.json', cache: false);
-  // 561 coins
+  final String coins = await CoinUpdater().getConfig();
   Map coinsResponse = jsonDecode(coins);
   List allCoinsList = [];
 

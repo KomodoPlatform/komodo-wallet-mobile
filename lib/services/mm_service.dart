@@ -8,6 +8,7 @@ import 'package:flutter/services.dart'
     show EventChannel, MethodChannel, rootBundle, SystemChannels;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:komodo_dex/app_config/coins_updater.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../app_config/app_config.dart';
@@ -457,7 +458,7 @@ class MMService {
 
   Future<List<dynamic>> readJsonCoinInit() async {
     try {
-      return jsonDecode(await rootBundle.loadString('assets/coins.json'));
+      return jsonDecode(await CoinUpdater().getCoins());
     } catch (e) {
       if (kDebugMode) {
         Log('mm_service', 'readJsonCoinInit] $e');
