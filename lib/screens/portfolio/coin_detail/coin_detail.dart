@@ -85,7 +85,6 @@ class _CoinDetailState extends State<CoinDetail> {
   Transaction latestTransaction;
 
   bool isRetryingActivation = false;
-  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -1063,7 +1062,7 @@ class _CoinDetailState extends State<CoinDetail> {
       AmountAddressStep(
         coinBalance: currentCoinBalance,
         paymentUriInfo: widget.paymentUriInfo,
-        scrollController: scrollController,
+        scrollController: _scrollController,
         onCancel: () {
           setState(() {
             isExpanded = false;
@@ -1071,8 +1070,8 @@ class _CoinDetailState extends State<CoinDetail> {
           });
         },
         onWithdrawPressed: () async {
-          scrollController.animateTo(
-            scrollController.position.minScrollExtent,
+          _scrollController.animateTo(
+            _scrollController.position.minScrollExtent,
             curve: Curves.easeOut,
             duration: const Duration(milliseconds: 300),
           );
@@ -1107,8 +1106,8 @@ class _CoinDetailState extends State<CoinDetail> {
                   setState(() {
                     isSendIsActive = false;
                   });
-                  scrollController.animateTo(
-                    scrollController.position.minScrollExtent,
+                  _scrollController.animateTo(
+                    _scrollController.position.minScrollExtent,
                     curve: Curves.easeOut,
                     duration: const Duration(milliseconds: 300),
                   );
