@@ -71,16 +71,20 @@ class CoinUpdater {
 
       File cacheFile = await _getLocalFile(cacheName);
 
-      if (await cacheFile.exists()) {
+      final cacheFileExists = await cacheFile.exists();
+
+      if (isUpdateEnabled) {
+        scheduleMicrotask(
+          () => _updateCacheInBackground(remoteUrl, cacheFile),
+        );
+      }
+
+      if (cacheFileExists) {
         cacheProperty = await cacheFile.readAsString();
+
         return cacheProperty;
       } else {
         String localData = await _fetchAsset(localPath);
-        if (isUpdateEnabled) {
-          scheduleMicrotask(
-            () => _updateCacheInBackground(remoteUrl, cacheFile),
-          );
-        }
         cacheProperty = localData;
         return localData;
       }
@@ -97,21 +101,27 @@ class CoinUpdater {
 
   void _updateCacheInBackground(String remoteUrl, File cacheFile) async {
     final ReceivePort receivePort = ReceivePort();
-    await Isolate.spawn(
-      _isolateEntry,
-      [remoteUrl, cacheFile.path],
-      onExit: receivePort.sendPort,
-    );
-    receivePort.listen((data) {
-      // Close the receive port when the isolate is done
-      receivePort.close();
 
-      Log(
-        'CoinUpdater',
-        'Coin updater updated coins to latest commit on branch '
-            '$coinsRepoBranch from $coinsRepoUrl. \n $remoteUrl',
+    try {
+      await Isolate.spawn(
+        _isolateEntry,
+        [remoteUrl, cacheFile.path],
+        onExit: receivePort.sendPort,
+        errorsAreFatal: false,
       );
-    });
+      receivePort.listen((data) {
+        // Close the receive port when the isolate is done
+        receivePort.close();
+
+        Log(
+          'CoinUpdater',
+          'Coin updater updated coins to latest commit on branch '
+              '$coinsRepoBranch from $coinsRepoUrl. \n $remoteUrl',
+        );
+      });
+    } catch (e) {
+      Log('CoinUpdater', 'Error updating coins: $e');
+    }
   }
 
   static void _isolateEntry(List<String> data) async {
