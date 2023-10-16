@@ -120,11 +120,6 @@ class _SettingPageState extends State<SettingPage> {
             _buildTitle(AppLocalizations.of(context).developerTitle),
             _buildEnableTestCoins(),
             SizedBox(height: 2),
-
-            //
-            ZCoinStatusWidget(),
-            SizedBox(height: 2),
-
             _buildTitle(version),
             if (appConfig.isUpdateCheckerEnabled) _buildUpdate(),
             const SizedBox(
