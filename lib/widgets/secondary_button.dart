@@ -34,6 +34,7 @@ class SecondaryButton extends StatelessWidget {
         text.toUpperCase(),
         maxLines: 1,
         overflow: TextOverflow.fade,
+        softWrap: false,
       );
     }
 
