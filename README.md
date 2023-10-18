@@ -152,4 +152,4 @@ Copy the generated `coins_config.json` file from the Utils folder and paste it i
 
 ## License 📄
 
-This project is released under the [MIT License](LICENSE).
+This project is released under the [MIT License](COPYING).
