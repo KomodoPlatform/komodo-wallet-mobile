@@ -5,7 +5,7 @@ class AnimatedLinearProgressIndicator extends StatefulWidget {
     Key key,
     @required this.value,
     // this.duration = const Duration(milliseconds: 200),
-    this.duration = const Duration(seconds: 1),
+    this.duration = const Duration(milliseconds: 800),
     this.trackColor,
     this.progressColor,
   }) : super(key: key);
@@ -25,7 +25,6 @@ class _AnimatedLinearProgressIndicatorState
     extends State<AnimatedLinearProgressIndicator>
     with TickerProviderStateMixin {
   AnimationController _controller;
-  Animation<double> _animation;
 
   @override
   void initState() {
@@ -33,28 +32,24 @@ class _AnimatedLinearProgressIndicatorState
     _controller = AnimationController(
       vsync: this,
       duration: widget.duration,
+      upperBound: 1,
+      lowerBound: 0,
+      value: widget.value,
     );
-    _animation = Tween<double>(
-      begin: widget.value,
-      end: widget.value,
-    ).animate(_controller)
-      ..addListener(() => setState(() {}));
+
+    _controller.addListener(() => setState(() {}));
   }
 
   @override
   void didUpdateWidget(AnimatedLinearProgressIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     if (oldWidget.value != widget.value) {
-      _animation = Tween<double>(
-        begin: _animation.value,
-        end: widget.value,
-      ).animate(
-        CurvedAnimation(
-          parent: _controller,
-          curve: Curves.easeInOut,
-        ),
+      _controller.animateTo(
+        widget.value,
+        duration: widget.duration,
+        curve: Curves.easeInOut,
       );
-      _controller.forward();
     }
   }
 
@@ -77,8 +72,9 @@ class _AnimatedLinearProgressIndicatorState
     final displayedHeight = linearProgressTheme.linearMinHeight ?? 4;
 
     return CustomPaint(
+      key: Key('animated_linear_progress_indicator_custom_paint'),
       painter: _ProgressBarPainter(
-        progress: _animation.value,
+        progress: _controller.value,
         progressColor: displayedProgressColor,
         trackColor: displayedTrackColor,
       ),

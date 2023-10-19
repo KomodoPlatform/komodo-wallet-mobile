@@ -23,6 +23,8 @@ class _AnimatedAssetProportionsBarGraphState
 
   List<CoinBalance> data = coinsBloc.coinBalance.toList();
 
+  static const _animationDuration = Duration(milliseconds: 400);
+
   @override
   void initState() {
     super.initState();
@@ -53,7 +55,7 @@ class _AnimatedAssetProportionsBarGraphState
         final Iterable<Widget> bars = barProportions.map((e) {
           return AnimatedContainer(
             key: Key(e.key.abbr),
-            duration: Duration(milliseconds: 300),
+            duration: _animationDuration,
             curve: Curves.easeInOut,
             color: Color(int.parse(e.key.colorCoin)),
             width: totalWidth * e.value,
@@ -67,7 +69,7 @@ class _AnimatedAssetProportionsBarGraphState
               'animated_asset_proportions_bar_graph_animated_opacity',
             ),
             opacity: _isVisible ? 1.0 : 0.0,
-            duration: const Duration(milliseconds: 300),
+            duration: _animationDuration,
             child: SizedBox(
               width: totalWidth,
               height: 16,
