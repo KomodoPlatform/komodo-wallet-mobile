@@ -410,7 +410,7 @@ class CoinsBloc implements BlocBase {
         );
       }
 
-      if (transactionData is Transactions) {
+      if (transactionData is Transactions && transactionData.result != null) {
         transactionData.camouflageIfNeeded();
 
         final thisTransactions = transactions?.result?.transactions;
@@ -421,9 +421,9 @@ class CoinsBloc implements BlocBase {
                         .any((Transaction tx) => tx.coin == coin.abbr)) ??
                 false);
 
-        transactionData.result.transactions = [
-          if (mustMergeCurrentCoin) ...thisTransactions ?? [],
-          ...transactionData.result?.transactions ?? []
+        transactionData.result?.transactions = [
+          if (mustMergeCurrentCoin) ...(thisTransactions ?? []),
+          ...(transactionData.result?.transactions ?? [])
         ]..sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
         transactions = transactionData;
