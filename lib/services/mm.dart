@@ -1060,7 +1060,7 @@ class ApiProvider {
   }
 
   void _assertSuccess({@required String error, @required int code}) {
-    final isErrorCode = code != null || !code.toString().startsWith('2');
+    final isErrorCode = code != null && !code.toString().startsWith('2');
 
     final isErrorMessage = error != null && error.isNotEmpty;
 

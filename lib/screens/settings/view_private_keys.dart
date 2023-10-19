@@ -129,7 +129,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
 
   Widget _buildDialogContent() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.5,
+      height: MediaQuery.of(context).size.height * 0.65,
       width: MediaQuery.of(context).size.width * 0.9,
       child: FutureBuilder<PrivKey>(
           future: MM.getPrivKey(GetPrivKey(coin: widget.coin)),
