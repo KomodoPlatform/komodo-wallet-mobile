@@ -30,6 +30,8 @@ class ZCoinActivationApi {
 
   Map<String, int> firstScannedBlocks = {};
 
+  void resetFirstScannedBlocks() => firstScannedBlocks = {};
+
   Future<int> userSelectedZhtlcSyncStartTimestamp() async {
     final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
     SyncType zhtlcSyncType = zhtlcActivationPrefs['zhtlcSyncType'];

@@ -61,6 +61,7 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     } catch (e) {
       rethrow;
     } finally {
+      api.resetFirstScannedBlocks();
       await coinsBloc.syncCoinsStateWithApi();
     }
   }
