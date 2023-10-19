@@ -29,16 +29,17 @@ class ZCoinActivationBloc
     ZCoinActivationRequested event,
     Emitter<ZCoinActivationState> emit,
   ) async {
-    final hasRequestedCoins =
-        (await _repository.getRequestedActivatedCoins()).isNotEmpty;
+    final pendingCoinsToActivate = event.isResync
+        ? await _repository.outstandingZCoinActivations()
+        : await _repository.getRequestedActivatedCoins();
 
-    if (!hasRequestedCoins) {
-      emit(ZCoinActivationInitial());
+    final hasCoinsToActivate = pendingCoinsToActivate.isNotEmpty;
+
+    if (!hasCoinsToActivate) {
+      if (state is! ZCoinActivationInitial) emit(ZCoinActivationInitial());
       return;
     }
 
-    final pendingCoinsToActivate =
-        await _repository.getRequestedActivatedCoins();
     final totalCoinsToActivateCount = pendingCoinsToActivate.length.toInt();
 
     try {

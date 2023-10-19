@@ -19,9 +19,9 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
       'activationTaskId_${(await Db.getCurrentWallet()).id}';
 
   Stream<ZCoinStatus> resyncZCoins() async* {
-    final enabledZCoins = await getRequestedActivatedCoins();
+    final outStandingZCoins = await outstandingZCoinActivations();
 
-    yield* _activateZCoins(enabledZCoins, resyncOnly: true);
+    yield* _activateZCoins(outStandingZCoins, resyncOnly: true);
   }
 
   Stream<ZCoinStatus> _activateZCoins(
@@ -70,11 +70,22 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     yield* _activateZCoins(zCoinsToActivate);
   }
 
+  /// Gets coins currently active in API.
+  ///
+  /// Returns null if there is an error.
   @override
-  Future<List<String>> getEnabledZCoins() async {
-    final enabledCoins = await api.activatedZCoins();
+  Future<List<String>> getApiEnabledZCoins() async {
+    try {
+      final enabledCoins = await api.apiActivatedZCoins();
 
-    return enabledCoins;
+      return enabledCoins;
+    } catch (e) {
+      Log(
+        'z_coin_activation_repository:getEnabledZCoins',
+        'Failed to get enabled ZCoins: $e',
+      );
+      return null;
+    }
   }
 
   Future<void> cancelAllZCoinActivations() async {
@@ -109,11 +120,17 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
 
   @override
   Future<List<String>> outstandingZCoinActivations() async {
-    final requestedCoins = (await getRequestedActivatedCoins()).toSet();
+    final Set<String> requestedCoins =
+        (await getRequestedActivatedCoins()).toSet();
 
-    final activatedZCoins = (await getEnabledZCoins()).toSet();
+    final Set<String> locallyActiveCoins = await api.localDbActivatedZCoins();
 
-    return requestedCoins.difference(activatedZCoins).toList();
+    final Set<String> apiActiveZCoins =
+        ((await getApiEnabledZCoins()) ?? []).toSet();
+
+    apiActiveZCoins.removeWhere((coin) => !locallyActiveCoins.contains(coin));
+
+    return requestedCoins.difference(apiActiveZCoins).toList();
   }
 
   Future<List<Coin>> getKnownZCoins() async {

@@ -146,7 +146,7 @@ class ZCoinActivationApi {
 
   Future<List<String>> cancelAllActivation() async {
     List<Coin> knownZCoins = await getKnownZCoins();
-    List<String> activatedCoins = await activatedZCoins();
+    List<String> activatedCoins = await apiActivatedZCoins();
     List<String> cancelledCoins = [];
 
     for (Coin coin in knownZCoins) {
@@ -198,7 +198,7 @@ class ZCoinActivationApi {
   }) async* {
     int coinTaskId = await getTaskId(ticker);
     ZCoinStatus taskStatus;
-    final isAlreadyActivated = (await activatedZCoins()).contains(ticker);
+    final isAlreadyActivated = (await apiActivatedZCoins()).contains(ticker);
 
     if (!resync) {
       taskStatus = coinTaskId == null
@@ -323,7 +323,7 @@ class ZCoinActivationApi {
     await storage.delete(key: await taskIdKey(ticker));
   }
 
-  Future<List<String>> activatedZCoins() async {
+  Future<List<String>> apiActivatedZCoins() async {
     final response = await http.post(
       Uri.parse(_baseUrl),
       headers: {'Content-Type': 'application/json'},
@@ -338,19 +338,21 @@ class ZCoinActivationApi {
       final enabledCoins =
           (jsonDecode(response.body)['result']['coins'] as List)
               .map((e) => e['ticker'] as String)
-              .toList();
+              .toSet();
 
-      final knownZCoins = await getKnownZCoins();
+      final knownZCoins = (await getKnownZCoins()).map((c) => c.abbr).toSet();
 
-      final activatedZCoins = knownZCoins
-          .where((c) => enabledCoins.contains(c.abbr) || c.isActive)
-          .map((c) => c.abbr)
-          .toList();
-
-      return activatedZCoins;
+      return knownZCoins.intersection(enabledCoins).toList();
     } else {
       throw Exception('Failed to get activated zcoins');
     }
+  }
+
+  Future<Set<String>> localDbActivatedZCoins() async {
+    return (await getKnownZCoins())
+        .where((c) => c.isActive)
+        .map((c) => c.abbr)
+        .toSet();
   }
 
   Future<List<Coin>> getKnownZCoins() async {

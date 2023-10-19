@@ -58,5 +58,5 @@ mixin RequestedZCoinsStorage {
 
   Future<List<String>> outstandingZCoinActivations();
 
-  Future<List<String>> getEnabledZCoins();
+  Future<List<String>> getApiEnabledZCoins();
 }
