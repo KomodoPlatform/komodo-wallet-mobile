@@ -38,7 +38,7 @@ class Swap {
   Status status;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
-        'result': result.toJson ?? MmSwap().toJson,
+        'result': result.toJson() ?? MmSwap().toJson,
       };
 
   int compareToSwap(Swap other) {
