@@ -1257,8 +1257,28 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "gweiError": "A Gwei értékének legfeljebb {value} értéknek kell lennie",
+    "@gweiError": {
+        "type": "text",
+        "placeholders_order": [
+            "value"
+        ],
+        "placeholders": {
+            "value": {}
+        }
+    },
     "feesError": "A díjak legfeljebb {value}",
     "@feesError": {
+        "type": "text",
+        "placeholders_order": [
+            "value"
+        ],
+        "placeholders": {
+            "value": {}
+        }
+    },
+    "limitError": "A korlát legfeljebb {value} lehet",
+    "@limitError": {
         "type": "text",
         "placeholders_order": [
             "value"
@@ -1437,6 +1457,18 @@
     },
     "latestTxs": "Legutóbbi tranzakciók",
     "@latestTxs": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "gettingTxWait": "A tranzakció lebonyolítása, kérjük, várjon",
+    "@gettingTxWait": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "finishingUp": "Befejezés, kérem várjon",
+    "@finishingUp": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2679,6 +2711,12 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "searchFilterSubtitleZHTLC": "Válassza ki az összes ZHTLC-érmét",
+    "@searchFilterSubtitleZHTLC": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
     "searchFilterSubtitleFTM": "Válassza ki az összes FTM tokenet",
     "@searchFilterSubtitleFTM": {
         "type": "text",
@@ -2777,6 +2815,12 @@
     },
     "tagFTM20": "FTM20",
     "@tagFTM20": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tagZHTLC": "ZHTLC",
+    "@tagZHTLC": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -3577,6 +3621,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "Nem sikerült megszakítani a(z) {coinAbbr} aktiválását",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} nem elérhető :(",
     "@isUnavailable": {
         "type": "text",
@@ -3740,6 +3794,16 @@
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
+    },
+    "invalidCoinAddress": "Érvénytelen {coin} cím",
+    "@invalidCoinAddress": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
     },
     "multiActivateGas": "Aktiválja a {coin} és töltse fel először az egyenlegét",
     "@multiActivateGas": {
@@ -4799,6 +4863,250 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "activating": "{coinName} aktiválása",
+    "@activating": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "doNotCloseTheAppTapForMoreInfo": "Ne zárja be az alkalmazást. További információért koppintson...",
+    "@doNotCloseTheAppTapForMoreInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "activation": "{coinName} Aktiválás",
+    "@activation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "coinsAreActivated": "{protocolName} érme aktiválva van",
+    "@coinsAreActivated": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "coinsAreNotActivated": "A(z) {protocolName} érmék nincsenek aktiválva",
+    "@coinsAreNotActivated": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "coinsAreActivatedSuccessfully": "{protocolName} érme sikeresen aktiválva",
+    "@coinsAreActivatedSuccessfully": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "activationInProgress": "{protocolName} Aktiválás folyamatban",
+    "@activationInProgress": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "activateCoins": "Aktiválja a {protocolName} érméket?",
+    "@activateCoins": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "moreInfo": "Több információ",
+    "@moreInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "showAddress": "Cím megjelenítése",
+    "@showAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionHiddenPhishing": "Ez a tranzakció egy lehetséges adathalász kísérlet miatt el lett rejtve.",
+    "@transactionHiddenPhishing": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionAddress": "Tranzakció címe",
+    "@transactionAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionHidden": "Tranzakció rejtett",
+    "@transactionHidden": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "couldNotLaunchUrl": "Nem sikerült elindítani az URL-t",
+    "@couldNotLaunchUrl": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "willTakeTime": "Ez eltart egy ideig, és az alkalmazást az előtérben kell tartani.\nAz alkalmazás aktiválás közbeni leállítása problémákhoz vezethet.",
+    "@willTakeTime": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minimizingWillTerminate": "Figyelmeztetés: Az alkalmazás iOS rendszeren való minimalizálása leállítja az aktiválási folyamatot.",
+    "@minimizingWillTerminate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enableNotificationsForActivationProgress": "Kérjük, engedélyezze az értesítéseket, hogy értesüljön az aktiválás folyamatáról.",
+    "@enableNotificationsForActivationProgress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "qrCodeScanner": "QR Code Scanner",
+    "@qrCodeScanner": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "foundQrCode": "Talált QR kódot",
+    "@foundQrCode": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contract": "Szerződés",
+    "@contract": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "startSwap": "Indítsa el a Swapot",
+    "@startSwap": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "none": "Egyik sem",
+    "@none": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cexRate": "CEX árfolyam",
+    "@cexRate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "incomingTransactionsProtectionSettings": "Bejövő {coinName} txs-védelmi beállítások",
+    "@incomingTransactionsProtectionSettings": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "showingOrders": "{count}/{maxCount} rendelés megjelenítése.",
+    "@showingOrders": {
+        "type": "text",
+        "placeholders_order": [
+            "count",
+            "maxCount"
+        ],
+        "placeholders": {
+            "count": {},
+            "maxCount": {}
+        }
+    },
+    "orderBookLess": "Kevésbé",
+    "@orderBookLess": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderBookMore": "Több",
+    "@orderBookMore": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "basedOnCoinRatio": "{coinName1}/{coinName2} alapján",
+    "@basedOnCoinRatio": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName1",
+            "coinName2"
+        ],
+        "placeholders": {
+            "coinName1": {},
+            "coinName2": {}
+        }
+    },
+    "detailedFeesSendTradingFeeTransactionFee": "kereskedési díj tranzakciós díj küldése",
+    "@detailedFeesSendTradingFeeTransactionFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "detailedFeesTradingFee": "kereskedési díj",
+    "@detailedFeesTradingFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "detailedFeesSendCoinTransactionFee": "küldje el a {coinName} tranzakciós díjat",
+    "@detailedFeesSendCoinTransactionFee": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "detailedFeesReceiveCoinTransactionFee": "megkapja a {coinName} tranzakciós díjat",
+    "@detailedFeesReceiveCoinTransactionFee": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
     "filtersButton": "Szűrő",
     "@filtersButton": {
         "type": "text",
@@ -5149,6 +5457,124 @@
     },
     "officialPressRelease": "Hivatalos sajtóközlemény",
     "@officialPressRelease": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "shouldScanPastTransaction": "Keresi a múltbeli {coin} tranzakciókat?",
+    "@shouldScanPastTransaction": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "activationCancelled": "Az érme aktiválása megszakítva",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "{coin} sikeresen aktiválva",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "{coin} aktiválása megszakítva",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "Kérjük, fogadjon el minden különleges érmeaktiválási kérést, vagy törölje az érmék kijelölését.",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancelActivation": "Aktiválás megszakítása",
+    "@cancelActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancelActivationQuestion": "Biztosan megszakítja az aktiválást?",
+    "@cancelActivationQuestion": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cofirmCancelActivation": "Biztosan megszakítja az aktiválást?",
+    "@cofirmCancelActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncTransactionsQuestion": "Mely {name} tranzakciókat szeretné szinkronizálni?",
+    "@syncTransactionsQuestion": {
+        "type": "text",
+        "placeholders_order": [
+            "name"
+        ],
+        "placeholders": {
+            "name": {}
+        }
+    },
+    "syncNewTransactions": "Új tranzakciók szinkronizálása",
+    "@syncNewTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncFromDate": "Szinkronizálás a megadott dátumtól",
+    "@syncFromDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncFromSaplingActivation": "Szinkronizálás a csemete aktiválásából",
+    "@syncFromSaplingActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectDate": "Válasszon egy dátumot",
+    "@selectDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "startDate": "Kezdő dátum",
+    "@startDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "futureTransactions": "A jövőbeni tranzakciókat szinkronizálni fogjuk a nyilvános kulcsához társított aktiválás után. Ez a leggyorsabb lehetőség, és a legkevesebb tárhelyet foglalja el.",
+    "@futureTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "allPastTransactions": "A pénztárcája minden korábbi tranzakciót mutat. Ez jelentős tárhelyet és időt vesz igénybe, mivel az összes blokkot letölti és átvizsgálja.",
+    "@allPastTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "pastTransactionsFromDate": "A pénztárcája megmutatja a megadott dátum után végrehajtott korábbi tranzakcióit.",
+    "@pastTransactionsFromDate": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}

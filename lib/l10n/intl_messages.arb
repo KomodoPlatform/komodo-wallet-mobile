@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2023-07-10T19:54:36.659455",
+  "@@last_modified": "2023-10-08T14:29:27.352621",
   "mobileDataWarning": "Please note that now you're using cellular data and participation in {appName} P2P network consume internet traffic. It's better to use a WiFi network if your cellular data plan is costly.",
   "@mobileDataWarning": {
     "type": "text",
@@ -1258,8 +1258,28 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "gweiError": "Gwei must be up to {value}",
+  "@gweiError": {
+    "type": "text",
+    "placeholders_order": [
+      "value"
+    ],
+    "placeholders": {
+      "value": {}
+    }
+  },
   "feesError": "Fees must be up to {value}",
   "@feesError": {
+    "type": "text",
+    "placeholders_order": [
+      "value"
+    ],
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "limitError": "Limit must be up to {value}",
+  "@limitError": {
     "type": "text",
     "placeholders_order": [
       "value"
@@ -1438,6 +1458,18 @@
   },
   "latestTxs": "Latest Transactions",
   "@latestTxs": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "gettingTxWait": "Getting transaction, please wait",
+  "@gettingTxWait": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "finishingUp": "Finishing up, please wait",
+  "@finishingUp": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -2680,6 +2712,12 @@
     "placeholders_order": [],
     "placeholders": {}
   },
+  "searchFilterSubtitleZHTLC": "Select all ZHTLC coins",
+  "@searchFilterSubtitleZHTLC": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
   "searchFilterSubtitleFTM": "Select all Fantom tokens",
   "@searchFilterSubtitleFTM": {
     "type": "text",
@@ -2778,6 +2816,12 @@
   },
   "tagFTM20": "FTM20",
   "@tagFTM20": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "tagZHTLC": "ZHTLC",
+  "@tagZHTLC": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -3578,6 +3622,16 @@
       "coinAbbr": {}
     }
   },
+  "failedToCancelActivation": "Failed to cancel activation of {coinAbbr}",
+  "@failedToCancelActivation": {
+    "type": "text",
+    "placeholders_order": [
+      "coinAbbr"
+    ],
+    "placeholders": {
+      "coinAbbr": {}
+    }
+  },
   "isUnavailable": "{coinAbbr} is unavailable :(",
   "@isUnavailable": {
     "type": "text",
@@ -3741,6 +3795,16 @@
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
+  },
+  "invalidCoinAddress": "Invalid {coin} address",
+  "@invalidCoinAddress": {
+    "type": "text",
+    "placeholders_order": [
+      "coin"
+    ],
+    "placeholders": {
+      "coin": {}
+    }
   },
   "multiActivateGas": "Activate {coin} and top-up balance first",
   "@multiActivateGas": {
@@ -4478,7 +4542,7 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "scrollToContinue": "Scroll to bottom to continue...",
+  "scrollToContinue": "Scroll to the bottom to continue...",
   "@scrollToContinue": {
     "type": "text",
     "placeholders_order": [],
@@ -4799,6 +4863,250 @@
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
+  },
+  "activating": "Activating {coinName}",
+  "@activating": {
+    "type": "text",
+    "placeholders_order": [
+      "coinName"
+    ],
+    "placeholders": {
+      "coinName": {}
+    }
+  },
+  "doNotCloseTheAppTapForMoreInfo": "Do not close the app. Tap for more info...",
+  "@doNotCloseTheAppTapForMoreInfo": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "activation": "{coinName} Activation",
+  "@activation": {
+    "type": "text",
+    "placeholders_order": [
+      "coinName"
+    ],
+    "placeholders": {
+      "coinName": {}
+    }
+  },
+  "coinsAreActivated": "{protocolName} coins are activated",
+  "@coinsAreActivated": {
+    "type": "text",
+    "placeholders_order": [
+      "protocolName"
+    ],
+    "placeholders": {
+      "protocolName": {}
+    }
+  },
+  "coinsAreNotActivated": "{protocolName} coins are not activated",
+  "@coinsAreNotActivated": {
+    "type": "text",
+    "placeholders_order": [
+      "protocolName"
+    ],
+    "placeholders": {
+      "protocolName": {}
+    }
+  },
+  "coinsAreActivatedSuccessfully": "{protocolName} coins activated successfully",
+  "@coinsAreActivatedSuccessfully": {
+    "type": "text",
+    "placeholders_order": [
+      "protocolName"
+    ],
+    "placeholders": {
+      "protocolName": {}
+    }
+  },
+  "activationInProgress": "{protocolName} Activation in Progress",
+  "@activationInProgress": {
+    "type": "text",
+    "placeholders_order": [
+      "protocolName"
+    ],
+    "placeholders": {
+      "protocolName": {}
+    }
+  },
+  "activateCoins": "Activate {protocolName} coins?",
+  "@activateCoins": {
+    "type": "text",
+    "placeholders_order": [
+      "protocolName"
+    ],
+    "placeholders": {
+      "protocolName": {}
+    }
+  },
+  "moreInfo": "More Info",
+  "@moreInfo": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "showAddress": "Show Address",
+  "@showAddress": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "transactionHiddenPhishing": "This transaction was hidden due to a possible phishing attempt.",
+  "@transactionHiddenPhishing": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "transactionAddress": "Transaction Address",
+  "@transactionAddress": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "transactionHidden": "Transaction Hidden",
+  "@transactionHidden": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "couldNotLaunchUrl": "Could not launch URL",
+  "@couldNotLaunchUrl": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "willTakeTime": "This will take a while and the app must be kept in the foreground.\nTerminating the app while activation is in progress could lead to issues.",
+  "@willTakeTime": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "minimizingWillTerminate": "Warning: Minimizing the app on iOS will terminate the activation process.",
+  "@minimizingWillTerminate": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "enableNotificationsForActivationProgress": "Please enable notifications to get updates on the activation progress.",
+  "@enableNotificationsForActivationProgress": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "qrCodeScanner": "QR Code Scanner",
+  "@qrCodeScanner": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "foundQrCode": "Found QR Code",
+  "@foundQrCode": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "contract": "Contract",
+  "@contract": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "startSwap": "Start Swap",
+  "@startSwap": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "none": "None",
+  "@none": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "cexRate": "CEX Rate",
+  "@cexRate": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "incomingTransactionsProtectionSettings": "Incoming  {coinName} txs protection settings",
+  "@incomingTransactionsProtectionSettings": {
+    "type": "text",
+    "placeholders_order": [
+      "coinName"
+    ],
+    "placeholders": {
+      "coinName": {}
+    }
+  },
+  "showingOrders": "Showing {count} of {maxCount} orders. ",
+  "@showingOrders": {
+    "type": "text",
+    "placeholders_order": [
+      "count",
+      "maxCount"
+    ],
+    "placeholders": {
+      "count": {},
+      "maxCount": {}
+    }
+  },
+  "orderBookLess": "Less",
+  "@orderBookLess": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "orderBookMore": "More",
+  "@orderBookMore": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "basedOnCoinRatio": "based on {coinName1}/{coinName2}",
+  "@basedOnCoinRatio": {
+    "type": "text",
+    "placeholders_order": [
+      "coinName1",
+      "coinName2"
+    ],
+    "placeholders": {
+      "coinName1": {},
+      "coinName2": {}
+    }
+  },
+  "detailedFeesSendTradingFeeTransactionFee": "send trading fee transaction fee",
+  "@detailedFeesSendTradingFeeTransactionFee": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "detailedFeesTradingFee": "trading fee",
+  "@detailedFeesTradingFee": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "detailedFeesSendCoinTransactionFee": "send {coinName} transaction fee",
+  "@detailedFeesSendCoinTransactionFee": {
+    "type": "text",
+    "placeholders_order": [
+      "coinName"
+    ],
+    "placeholders": {
+      "coinName": {}
+    }
+  },
+  "detailedFeesReceiveCoinTransactionFee": "receive {coinName} transaction fee",
+  "@detailedFeesReceiveCoinTransactionFee": {
+    "type": "text",
+    "placeholders_order": [
+      "coinName"
+    ],
+    "placeholders": {
+      "coinName": {}
+    }
   },
   "filtersButton": "Filter",
   "@filtersButton": {
@@ -5142,7 +5450,7 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "rebrandingAnnouncement": "It's a new era! We have officially changed our name from 'AtomicDEX' to 'Komodo Wallet'",
+  "rebrandingAnnouncement": "It's a new era! We have officially rebranded from 'AtomicDEX' to 'Komodo Wallet'",
   "@rebrandingAnnouncement": {
     "type": "text",
     "placeholders_order": [],
@@ -5150,6 +5458,124 @@
   },
   "officialPressRelease": "Official press release",
   "@officialPressRelease": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "shouldScanPastTransaction": "Scan for past {coin} transactions?",
+  "@shouldScanPastTransaction": {
+    "type": "text",
+    "placeholders_order": [
+      "coin"
+    ],
+    "placeholders": {
+      "coin": {}
+    }
+  },
+  "activationCancelled": "Coin activation cancelled",
+  "@activationCancelled": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "coinActivationSuccessfull": "Successfully activated {coin}",
+  "@coinActivationSuccessfull": {
+    "type": "text",
+    "placeholders_order": [
+      "coin"
+    ],
+    "placeholders": {
+      "coin": {}
+    }
+  },
+  "coinActivationCancelled": "{coin} activation cancelled",
+  "@coinActivationCancelled": {
+    "type": "text",
+    "placeholders_order": [
+      "coin"
+    ],
+    "placeholders": {
+      "coin": {}
+    }
+  },
+  "pleaseAcceptAllCoinActivationRequests": "Please accept all special coin activation requests or deselect the coins.",
+  "@pleaseAcceptAllCoinActivationRequests": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "cancelActivation": "Cancel Activation",
+  "@cancelActivation": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "cancelActivationQuestion": "Are you sure you want to cancel activation?",
+  "@cancelActivationQuestion": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "cofirmCancelActivation": "Are you sure you want to cancel activation?",
+  "@cofirmCancelActivation": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "syncTransactionsQuestion": "Which {name} transactions would you like to sync?",
+  "@syncTransactionsQuestion": {
+    "type": "text",
+    "placeholders_order": [
+      "name"
+    ],
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "syncNewTransactions": "Sync new transactions",
+  "@syncNewTransactions": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "syncFromDate": "Sync from specified date",
+  "@syncFromDate": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "syncFromSaplingActivation": "Sync from sapling activation",
+  "@syncFromSaplingActivation": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "selectDate": "Select a Date",
+  "@selectDate": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "startDate": "Start Date",
+  "@startDate": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "futureTransactions": "We will sync future transactions made after activation associated with your public key. This is the quickest option and takes up the least amount of storage.",
+  "@futureTransactions": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "allPastTransactions": "Your wallet will show any past transactions. This will take significant storage and time as all blocks will be downloaded and scanned.",
+  "@allPastTransactions": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "pastTransactionsFromDate": "Your wallet will show your past transactions made after the specified date.",
+  "@pastTransactionsFromDate": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/packages/rebranding/rebranding_dialog.dart';
+import 'package:komodo_dex/packages/rebranding/rebranding_provider.dart';
+import 'package:provider/provider.dart';
+
 import '../../../localizations.dart';
 import '../../../model/feed_provider.dart';
 import '../../feed/news/build_news_item.dart';
-import 'package:provider/provider.dart';
 
 class NewsTab extends StatefulWidget {
   @override
@@ -18,6 +20,8 @@ class _NewsTabState extends State<NewsTab> {
   Widget build(BuildContext context) {
     _feedProvider = Provider.of<FeedProvider>(context);
     _news = _feedProvider.getNews();
+
+    final rebrandingProvider = context.watch<RebrandingProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_feedProvider.hasNewItems) {
@@ -48,7 +52,8 @@ class _NewsTabState extends State<NewsTab> {
 
     return Column(
       children: <Widget>[
-        RebrandingDialog(isModal: false),
+        if (rebrandingProvider.shouldShowRebrandingNews)
+          RebrandingDialog(isModal: false),
         _buildUpdateIndicator(),
         Expanded(
           child: RefreshIndicator(
@@ -81,11 +86,7 @@ class _NewsTabState extends State<NewsTab> {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 itemCount: _news.length,
                 itemBuilder: (BuildContext context, int i) {
-                  return Column(
-                    children: <Widget>[
-                      BuildNewsItem(_news[i]),
-                    ],
-                  );
+                  return BuildNewsItem(_news[i]);
                 }),
           ),
         ),

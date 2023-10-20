@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../model/swap.dart';
 import '../utils/utils.dart';
 import 'package:intl/intl.dart';
@@ -225,21 +226,25 @@ class SwapShareCard extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const Expanded(child: SizedBox()),
-                            Image.asset(
-                              'assets/swap_share/swap_share_qrcode.png',
-                              height: 34,
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              'Download Komodo Wallet on atomicdex.io',
-                              style: TextStyle(fontSize: 6),
-                            ),
-                          ],
+                        child: GestureDetector(
+                          onTap: () =>
+                              launchUrlString('https://komodoplatform.com'),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              const Expanded(child: SizedBox()),
+                              Image.asset(
+                                'assets/swap_share/swap_share_qrcode.png',
+                                height: 34,
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'Download Komodo Wallet on komodoplatform.com',
+                                style: TextStyle(fontSize: 6),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

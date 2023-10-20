@@ -1257,8 +1257,28 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "gweiError": "Gwei має бути до {value}",
+    "@gweiError": {
+        "type": "text",
+        "placeholders_order": [
+            "value"
+        ],
+        "placeholders": {
+            "value": {}
+        }
+    },
     "feesError": "Комісії мають бути до {value}",
     "@feesError": {
+        "type": "text",
+        "placeholders_order": [
+            "value"
+        ],
+        "placeholders": {
+            "value": {}
+        }
+    },
+    "limitError": "Обмеження має бути до {value}",
+    "@limitError": {
         "type": "text",
         "placeholders_order": [
             "value"
@@ -1437,6 +1457,18 @@
     },
     "latestTxs": "Останні транзакції",
     "@latestTxs": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "gettingTxWait": "Отримання трансакції, зачекайте",
+    "@gettingTxWait": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "finishingUp": "Закінчується, будь ласка, зачекайте",
+    "@finishingUp": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2679,6 +2711,12 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "searchFilterSubtitleZHTLC": "Виберіть усі монети ZHTLC",
+    "@searchFilterSubtitleZHTLC": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
     "searchFilterSubtitleFTM": "Виберіть усі токени Fantom",
     "@searchFilterSubtitleFTM": {
         "type": "text",
@@ -2777,6 +2815,12 @@
     },
     "tagFTM20": "FTM20",
     "@tagFTM20": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tagZHTLC": "ZHTLC",
+    "@tagZHTLC": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -3555,6 +3599,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "Не вдалося скасувати активацію {coinAbbr}",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} недоступен :(",
     "@isUnavailable": {
         "type": "text",
@@ -3718,6 +3772,16 @@
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
+    },
+    "invalidCoinAddress": "Недійсна адреса {coin}",
+    "@invalidCoinAddress": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
     },
     "multiActivateGas": "Спочатку активуйте {coin} і поповніть баланс",
     "@multiActivateGas": {
@@ -4777,6 +4841,250 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "activating": "Активація {coinName}",
+    "@activating": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "doNotCloseTheAppTapForMoreInfo": "Не закривайте програму. Торкніться, щоб дізнатися більше...",
+    "@doNotCloseTheAppTapForMoreInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "activation": "Активація {coinName}",
+    "@activation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "coinsAreActivated": "Монети {protocolName} активовані",
+    "@coinsAreActivated": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "coinsAreNotActivated": "Монети {protocolName} не активовані",
+    "@coinsAreNotActivated": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "coinsAreActivatedSuccessfully": "Монети {protocolName} успішно активовані",
+    "@coinsAreActivatedSuccessfully": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "activationInProgress": "Виконується активація {protocolName}",
+    "@activationInProgress": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "activateCoins": "Активувати монети {protocolName}?",
+    "@activateCoins": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "moreInfo": "Більше інформації",
+    "@moreInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "showAddress": "Показати адресу",
+    "@showAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionHiddenPhishing": "Ця трансакція була прихована через можливу спробу фішингу.",
+    "@transactionHiddenPhishing": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionAddress": "Адреса транзакції",
+    "@transactionAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionHidden": "Транзакція прихована",
+    "@transactionHidden": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "couldNotLaunchUrl": "Не вдалося запустити URL",
+    "@couldNotLaunchUrl": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "willTakeTime": "Це займе деякий час, і програма має залишатися в активному режимі.\nЗакриття програми під час активації може призвести до проблем.",
+    "@willTakeTime": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minimizingWillTerminate": "Попередження: згортання програми на iOS припинить процес активації.",
+    "@minimizingWillTerminate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enableNotificationsForActivationProgress": "Увімкніть сповіщення, щоб отримувати оновлення про хід активації.",
+    "@enableNotificationsForActivationProgress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "qrCodeScanner": "Сканер QR-коду",
+    "@qrCodeScanner": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "foundQrCode": "Знайдено QR-код",
+    "@foundQrCode": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contract": "Договір",
+    "@contract": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "startSwap": "Почати обмін",
+    "@startSwap": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "none": "Жодного",
+    "@none": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cexRate": "Курс CEX",
+    "@cexRate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "incomingTransactionsProtectionSettings": "Налаштування захисту вхідних {coinName} txs",
+    "@incomingTransactionsProtectionSettings": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "showingOrders": "Показано {count} із {maxCount} замовлень.",
+    "@showingOrders": {
+        "type": "text",
+        "placeholders_order": [
+            "count",
+            "maxCount"
+        ],
+        "placeholders": {
+            "count": {},
+            "maxCount": {}
+        }
+    },
+    "orderBookLess": "менше",
+    "@orderBookLess": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderBookMore": "більше",
+    "@orderBookMore": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "basedOnCoinRatio": "на основі {coinName1}/{coinName2}",
+    "@basedOnCoinRatio": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName1",
+            "coinName2"
+        ],
+        "placeholders": {
+            "coinName1": {},
+            "coinName2": {}
+        }
+    },
+    "detailedFeesSendTradingFeeTransactionFee": "відправити плату за торгівлю плату за транзакцію",
+    "@detailedFeesSendTradingFeeTransactionFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "detailedFeesTradingFee": "комісія за торгівлю",
+    "@detailedFeesTradingFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "detailedFeesSendCoinTransactionFee": "надіслати комісію за транзакцію {coinName}",
+    "@detailedFeesSendCoinTransactionFee": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "detailedFeesReceiveCoinTransactionFee": "отримати комісію за транзакцію {coinName}",
+    "@detailedFeesReceiveCoinTransactionFee": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
     "filtersButton": "Фільтр",
     "@filtersButton": {
         "type": "text",
@@ -5127,6 +5435,124 @@
     },
     "officialPressRelease": "Офіційний прес-реліз",
     "@officialPressRelease": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "shouldScanPastTransaction": "Сканувати минулі транзакції {coin}?",
+    "@shouldScanPastTransaction": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "activationCancelled": "Активацію монет скасовано",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "Успішно активовано {coin}",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "Активацію {coin} скасовано",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "Будь ласка, прийміть усі спеціальні запити на активацію монет або скасуйте вибір монет.",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancelActivation": "Скасувати активацію",
+    "@cancelActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancelActivationQuestion": "Ви впевнені, що бажаєте скасувати активацію?",
+    "@cancelActivationQuestion": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cofirmCancelActivation": "Ви впевнені, що бажаєте скасувати активацію?",
+    "@cofirmCancelActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncTransactionsQuestion": "Які транзакції {name} ви хочете синхронізувати?",
+    "@syncTransactionsQuestion": {
+        "type": "text",
+        "placeholders_order": [
+            "name"
+        ],
+        "placeholders": {
+            "name": {}
+        }
+    },
+    "syncNewTransactions": "Синхронізувати нові транзакції",
+    "@syncNewTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncFromDate": "Синхронізувати з указаної дати",
+    "@syncFromDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncFromSaplingActivation": "Синхронізація з активації саджанця",
+    "@syncFromSaplingActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectDate": "Виберіть дату",
+    "@selectDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "startDate": "Дата початку",
+    "@startDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "futureTransactions": "Ми будемо синхронізувати майбутні транзакції, здійснені після активації, пов’язаної з вашим відкритим ключем. Це найшвидший варіант, який займає найменшу кількість пам’яті.",
+    "@futureTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "allPastTransactions": "У вашому гаманці відображатимуться всі минулі транзакції. Це займе багато пам’яті та часу, оскільки всі блоки будуть завантажені та відскановані.",
+    "@allPastTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "pastTransactionsFromDate": "Ваш гаманець відображатиме ваші минулі транзакції, здійснені після вказаної дати.",
+    "@pastTransactionsFromDate": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}

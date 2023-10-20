@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../model/feed_provider.dart';
@@ -10,13 +12,35 @@ class AppConfig {
   int get maxCoinEnabledIOS => 20;
 
   String get transactionWarningInfoUrl =>
-      'https://atomicdex.io/en/blog/preventing-address-poisoning';
+      'https://komodoplatform.com/en/blog/preventing-address-poisoning';
 
   // number of decimal places for trade amount input fields
   int get tradeFormPrecision => 8;
 
   int get batteryLevelLow => 30; // show warnign on swap confirmation page
   int get batteryLevelCritical => 20; // swaps disabled
+
+  final String minDartVersion = '2.14.0';
+
+  bool get isDartSdkVersionSupported {
+    final currentVersion = RegExp(r'(\d+\.\d+\.\d+)')
+        .firstMatch(Platform.version)
+        ?.group(1)
+        ?.split('.')
+        ?.map((e) => int.parse(e))
+        ?.toList();
+
+    final minVersion =
+        minDartVersion.split('.').map((e) => int.parse(e)).toList();
+
+    if (currentVersion == null) return false;
+
+    for (var i = 0; i < minVersion.length; i++) {
+      if (currentVersion[i] < minVersion[i]) return false;
+    }
+
+    return true;
+  }
 
   // Brand config below
 
@@ -77,8 +101,14 @@ class AppConfig {
         'OLD',
         'IBC_IRIS',
         'segwit',
+        'ZHTLC',
       ];
-  List<String> get defaultTestCoins => ['RICK', 'MORTY', 'DOC', 'MARTY'];
+  List<String> get defaultTestCoins => [
+        'DOC',
+        'MARTY',
+        'ZOMBIE',
+      ];
+
   Map<String, String> get allProtocolNames => {
         'utxo': 'UTXO',
         'smartChain': 'Smart Chain',
@@ -106,6 +136,7 @@ class AppConfig {
   Map<String, List<double>> standardFees = {
     'utxo': [0],
     'smartChain': [0],
+    'zhtlc': [0],
     'erc': [0, 0],
     'bep': [0, 0],
     'qrc': [0, 0],

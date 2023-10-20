@@ -212,7 +212,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                   return [
                     const SizedBox(width: 4),
                     Text(
-                      '(based on ${widget.coinBalance.coin.abbr}/$mediateBase)',
+                      '(${AppLocalizations.of(context).basedOnCoinRatio(widget.coinBalance.coin.abbr, mediateBase)})',
                       style: TextStyle(
                           fontSize: 12,
                           color:

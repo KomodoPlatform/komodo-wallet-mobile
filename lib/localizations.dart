@@ -302,7 +302,7 @@ class AppLocalizations {
       args: [appName]);
   String answer_9(String appName) => Intl.message(
       'Absolutely! You can read our'
-      ' <a href="https://developers.atomicdex.io/">'
+      ' <a href="https://developers.komodoplatform.com/">'
       'developer documentation</a> for more'
       ' details or contact us with your partnership inquiries. Have a specific'
       ' technical question? The $appName developer community'
@@ -314,7 +314,7 @@ class AppLocalizations {
           name: 'question_10', args: [appName]);
   String answer_10(String appName) => Intl.message(
       '$appName is available for mobile on both Android and iPhone,'
-      ' and for desktop on <a href="https://atomicdex.io/">'
+      ' and for desktop on <a href="https://komodoplatform.com/">'
       'Windows, Mac, and Linux operating systems</a>.',
       name: 'answer_10',
       args: [appName]);
@@ -499,7 +499,7 @@ class AppLocalizations {
       Intl.message('Not enough balance', name: 'errorAmountBalance');
   String gweiError(int value) => Intl.message(
         'Gwei must be up to $value',
-        name: 'gweiErrorMessage',
+        name: 'gweiError',
         args: <Object>[value],
       );
   String feesError(double value) => Intl.message(
@@ -509,7 +509,7 @@ class AppLocalizations {
       );
   String limitError(int value) => Intl.message(
         'Limit must be up to $value',
-        name: 'limitErrorMessage',
+        name: 'limitError',
         args: <Object>[value],
       );
   String get errorNotAValidAddress =>
@@ -559,7 +559,7 @@ class AppLocalizations {
   String get gettingTxWait =>
       Intl.message('Getting transaction, please wait', name: 'gettingTxWait');
   String get finishingUp =>
-      Intl.message('Finishing up, please wait', name: 'gettingTxWait');
+      Intl.message('Finishing up, please wait', name: 'finishingUp');
   String get feedback => Intl.message('Share Log File', name: 'feedback');
   String get loadingOrderbook =>
       Intl.message('Loading orderbook...', name: 'loadingOrderbook');
@@ -1266,6 +1266,13 @@ class AppLocalizations {
         name: 'weFailedToActivate',
         args: [coinAbbr],
       );
+
+  String failedToCancelActivation(String coinAbbr) => Intl.message(
+        'Failed to cancel activation of $coinAbbr',
+        name: 'failedToCancelActivation',
+        args: [coinAbbr],
+      );
+
   String isUnavailable(String coinAbbr) => Intl.message(
         '$coinAbbr is unavailable :(',
         name: 'isUnavailable',
@@ -1320,6 +1327,11 @@ class AppLocalizations {
       Intl.message('Min sell amount is', name: 'multiMinSellAmt');
   String get multiInvalidAmt =>
       Intl.message('Invalid amount', name: 'multiInvalidAmt');
+  String invalidCoinAddress(String coin) => Intl.message(
+        'Invalid $coin address',
+        args: [coin],
+        name: 'invalidCoinAddress',
+      );
   String multiActivateGas(String coin) =>
       Intl.message('Activate $coin and top-up balance first',
           name: 'multiActivateGas', args: <Object>[coin]);
@@ -1573,7 +1585,8 @@ class AppLocalizations {
   String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
 
   String get scrollToContinue =>
-      Intl.message('Scroll to bottom to continue...', name: 'scrollToContinue');
+      Intl.message('Scroll to the bottom to continue...',
+          name: 'scrollToContinue');
 
   String get developerTitle =>
       Intl.message('Developer', name: 'developerTitle');
@@ -1686,6 +1699,83 @@ class AppLocalizations {
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',
       name: 'importInvalidSwapData');
+
+  String activating(String coinName) => Intl.message('Activating $coinName',
+      name: 'activating', args: [coinName]);
+  String get doNotCloseTheAppTapForMoreInfo =>
+      Intl.message('Do not close the app. Tap for more info...',
+          name: 'doNotCloseTheAppTapForMoreInfo');
+  String activation(String coinName) => Intl.message('$coinName Activation',
+      name: 'activation', args: [coinName]);
+  String coinsAreActivated(String protocolName) =>
+      Intl.message('$protocolName coins are activated',
+          name: 'coinsAreActivated', args: [protocolName]);
+  String coinsAreNotActivated(String protocolName) =>
+      Intl.message('$protocolName coins are not activated',
+          name: 'coinsAreNotActivated', args: [protocolName]);
+  String coinsAreActivatedSuccessfully(String protocolName) =>
+      Intl.message('$protocolName coins activated successfully',
+          name: 'coinsAreActivatedSuccessfully', args: [protocolName]);
+  String activationInProgress(String protocolName) =>
+      Intl.message('$protocolName Activation in Progress',
+          name: 'activationInProgress', args: [protocolName]);
+  String activateCoins(String protocolName) =>
+      Intl.message('Activate $protocolName coins?',
+          name: 'activateCoins', args: [protocolName]);
+  String get moreInfo => Intl.message('More Info', name: 'moreInfo');
+
+  String get showAddress => Intl.message('Show Address', name: 'showAddress');
+  String get transactionHiddenPhishing => Intl.message(
+      'This transaction was hidden due to a possible phishing attempt.',
+      name: 'transactionHiddenPhishing');
+  String get transactionAddress =>
+      Intl.message('Transaction Address', name: 'transactionAddress');
+  String get transactionHidden =>
+      Intl.message('Transaction Hidden', name: 'transactionHidden');
+  String get couldNotLaunchUrl =>
+      Intl.message('Could not launch URL', name: 'couldNotLaunchUrl');
+
+  String get willTakeTime => Intl.message(
+      'This will take a while and the app must be kept in the foreground.\nTerminating the app while activation is in progress could lead to issues.',
+      name: 'willTakeTime');
+  String get minimizingWillTerminate => Intl.message(
+      'Warning: Minimizing the app on iOS will terminate the activation process.',
+      name: 'minimizingWillTerminate');
+  String get enableNotificationsForActivationProgress => Intl.message(
+      'Please enable notifications to get updates on the activation progress.',
+      name: 'enableNotificationsForActivationProgress');
+
+  String get qrCodeScanner =>
+      Intl.message('QR Code Scanner', name: 'qrCodeScanner');
+  String get foundQrCode => Intl.message('Found QR Code', name: 'foundQrCode');
+  String get contract => Intl.message('Contract', name: 'contract');
+  String get startSwap => Intl.message('Start Swap', name: 'startSwap');
+  String get none => Intl.message('None', name: 'none');
+  String get cexRate => Intl.message('CEX Rate', name: 'cexRate');
+  String incomingTransactionsProtectionSettings(String coinName) =>
+      Intl.message('Incoming  $coinName txs protection settings',
+          name: 'incomingTransactionsProtectionSettings', args: [coinName]);
+  String showingOrders(int count, int maxCount) =>
+      Intl.message('Showing $count of $maxCount orders. ',
+          name: 'showingOrders', args: [count, maxCount]);
+  String get orderBookLess => Intl.message('Less', name: 'orderBookLess');
+  String get orderBookMore => Intl.message('More', name: 'orderBookMore');
+
+  String basedOnCoinRatio(String coinName1, String coinName2) =>
+      Intl.message('based on $coinName1/$coinName2',
+          name: 'basedOnCoinRatio', args: [coinName1, coinName2]);
+
+  String get detailedFeesSendTradingFeeTransactionFee =>
+      Intl.message('send trading fee transaction fee',
+          name: 'detailedFeesSendTradingFeeTransactionFee');
+  String get detailedFeesTradingFee =>
+      Intl.message('trading fee', name: 'detailedFeesTradingFee');
+  String detailedFeesSendCoinTransactionFee(String coinName) =>
+      Intl.message('send $coinName transaction fee',
+          name: 'detailedFeesSendCoinTransactionFee', args: [coinName]);
+  String detailedFeesReceiveCoinTransactionFee(String coinName) =>
+      Intl.message('receive $coinName transaction fee',
+          name: 'detailedFeesReceiveCoinTransactionFee', args: [coinName]);
 
   // --- Filters
   String get filtersButton => Intl.message('Filter', name: 'filtersButton');
@@ -1809,11 +1899,76 @@ class AppLocalizations {
 
   // Rebranding
   String get rebrandingAnnouncement => Intl.message(
-      "It's a new era! We have officially changed our name from 'AtomicDEX' to 'Komodo Wallet'",
+      "It's a new era! We have officially rebranded from 'AtomicDEX' to 'Komodo Wallet'",
       name: 'rebrandingAnnouncement');
 
   String get officialPressRelease =>
       Intl.message('Official press release', name: 'officialPressRelease');
+
+// --- Asyncronous coin activations (requires syncing)
+  String shouldScanPastTransaction(String coin) => Intl.message(
+        'Scan for past $coin transactions?',
+        name: 'shouldScanPastTransaction',
+        args: [coin],
+      );
+
+  String get activationCancelled =>
+      Intl.message('Coin activation cancelled', name: 'activationCancelled');
+
+  String coinActivationSuccessfull(String coin) => Intl.message(
+        'Successfully activated $coin',
+        name: 'coinActivationSuccessfull',
+        args: [coin],
+      );
+
+  String coinActivationCancelled(String coin) => Intl.message(
+        '$coin activation cancelled',
+        name: 'coinActivationCancelled',
+        args: [coin],
+      );
+
+  String get pleaseAcceptAllCoinActivationRequests => Intl.message(
+        'Please accept all special coin activation requests or deselect the coins.',
+        name: 'pleaseAcceptAllCoinActivationRequests',
+      );
+
+  String get cancelActivation =>
+      Intl.message('Cancel Activation', name: 'cancelActivation');
+
+  String get cancelActivationQuestion => Intl.message(
+        'Are you sure you want to cancel activation?',
+        name: 'cancelActivationQuestion',
+      );
+
+  String syncTransactionsQuestion(String name) => Intl.message(
+        'Which $name transactions would you like to sync?',
+        name: 'syncTransactionsQuestion',
+        args: [name],
+      );
+  String get syncNewTransactions =>
+      Intl.message('Sync new transactions', name: 'syncNewTransactions');
+  String get syncFromDate =>
+      Intl.message('Sync from specified date', name: 'syncFromDate');
+  String get syncFromSaplingActivation => Intl.message(
+        'Sync from sapling activation',
+        name: 'syncFromSaplingActivation',
+      );
+  String get selectDate => Intl.message('Select a Date', name: 'selectDate');
+  String get startDate => Intl.message('Start Date', name: 'startDate');
+  String get futureTransactions => Intl.message(
+        'We will sync future transactions made after activation associated with your public key. This is the quickest option and takes up the least amount of storage.',
+        name: 'futureTransactions',
+      );
+  String get allPastTransactions => Intl.message(
+        'Your wallet will show any past transactions. This will take significant storage and time as all blocks will be downloaded and scanned.',
+        name: 'allPastTransactions',
+      );
+  String get pastTransactionsFromDate => Intl.message(
+        'Your wallet will show your past transactions made after the specified date.',
+        name: 'pastTransactionsFromDate',
+      );
+  // ---
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

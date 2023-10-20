@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/app_config/coins_updater.dart';
 
 import '../app_config/app_config.dart';
 import '../app_config/coin_converter.dart';
@@ -33,8 +34,7 @@ Future<LinkedHashMap<String, Coin>> get coins async {
   _coinsInvoked = true;
 
   Log('coin:29', 'Loading coins.json…');
-  const ci = 'assets/coins.json';
-  final cis = await rootBundle.loadString(ci, cache: false);
+  final String cis = await CoinUpdater().getCoins();
   final List<dynamic> cil = json.decode(cis);
   final Map<String, Map<String, dynamic>> cim = {};
   for (dynamic js in cil) cim[js['coin']] = Map<String, dynamic>.from(js);
@@ -195,8 +195,7 @@ class Coin {
         if (lightWalletDServers != null)
           'light_wallet_d_servers':
               List<dynamic>.from(lightWalletDServers.map<String>((x) => x)),
-
-  };
+      };
 
   String getTxFeeSatoshi() {
     int txFeeRes = 0;

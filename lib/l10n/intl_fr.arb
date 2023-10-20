@@ -1257,8 +1257,28 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "gweiError": "Gwei doit atteindre {value}",
+    "@gweiError": {
+        "type": "text",
+        "placeholders_order": [
+            "value"
+        ],
+        "placeholders": {
+            "value": {}
+        }
+    },
     "feesError": "Les frais doivent être jusqu'à {value}",
     "@feesError": {
+        "type": "text",
+        "placeholders_order": [
+            "value"
+        ],
+        "placeholders": {
+            "value": {}
+        }
+    },
+    "limitError": "La limite doit aller jusqu'à {value}",
+    "@limitError": {
         "type": "text",
         "placeholders_order": [
             "value"
@@ -1437,6 +1457,18 @@
     },
     "latestTxs": "Dernières Transactions",
     "@latestTxs": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "gettingTxWait": "En cours de transaction, veuillez patienter",
+    "@gettingTxWait": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "finishingUp": "Je termine, veuillez patienter",
+    "@finishingUp": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2679,6 +2711,12 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "searchFilterSubtitleZHTLC": "Sélectionnez toutes les pièces ZHTLC",
+    "@searchFilterSubtitleZHTLC": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
     "searchFilterSubtitleFTM": "Sélectionner tous les tokens Fantom",
     "@searchFilterSubtitleFTM": {
         "type": "text",
@@ -2777,6 +2815,12 @@
     },
     "tagFTM20": "FTM20",
     "@tagFTM20": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tagZHTLC": "ZHTLC",
+    "@tagZHTLC": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -3577,6 +3621,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "Échec de l'annulation de l'activation de {coinAbbr}",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} est indisponible :(",
     "@isUnavailable": {
         "type": "text",
@@ -3740,6 +3794,16 @@
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
+    },
+    "invalidCoinAddress": "Adresse {coin} invalide",
+    "@invalidCoinAddress": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
     },
     "multiActivateGas": "Activez {coin} et rechargez d'abord le solde",
     "@multiActivateGas": {
@@ -4799,6 +4863,250 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "activating": "Activation de {coinName}",
+    "@activating": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "doNotCloseTheAppTapForMoreInfo": "Ne fermez pas l'application. Appuyez pour plus d'informations...",
+    "@doNotCloseTheAppTapForMoreInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "activation": "Activation de {coinName}",
+    "@activation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "coinsAreActivated": "Les pièces {protocolName} sont activées",
+    "@coinsAreActivated": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "coinsAreNotActivated": "Les pièces {protocolName} ne sont pas activées",
+    "@coinsAreNotActivated": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "coinsAreActivatedSuccessfully": "{protocolName} pièces activées avec succès",
+    "@coinsAreActivatedSuccessfully": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "activationInProgress": "{protocolName} Activation en cours",
+    "@activationInProgress": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "activateCoins": "Activer les pièces {protocolName} ?",
+    "@activateCoins": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "moreInfo": "Plus d'informations",
+    "@moreInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "showAddress": "Afficher l'adresse",
+    "@showAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionHiddenPhishing": "Cette transaction a été masquée en raison d'une éventuelle tentative de phishing.",
+    "@transactionHiddenPhishing": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionAddress": "Adresse de transaction",
+    "@transactionAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionHidden": "Transaction masquée",
+    "@transactionHidden": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "couldNotLaunchUrl": "Impossible de lancer l'URL",
+    "@couldNotLaunchUrl": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "willTakeTime": "Cela prendra un certain temps et l'application doit rester au premier plan.\nLa fermeture de l'application pendant l'activation est en cours peut entraîner des problèmes.",
+    "@willTakeTime": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minimizingWillTerminate": "Avertissement : la réduction de l'application sur iOS mettra fin au processus d'activation.",
+    "@minimizingWillTerminate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enableNotificationsForActivationProgress": "Veuillez activer les notifications pour obtenir des mises à jour sur la progression de l'activation.",
+    "@enableNotificationsForActivationProgress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "qrCodeScanner": "Scanner de codes QR",
+    "@qrCodeScanner": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "foundQrCode": "Code QR trouvé",
+    "@foundQrCode": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contract": "Contracter",
+    "@contract": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "startSwap": "Commencer l'échange",
+    "@startSwap": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "none": "Aucun",
+    "@none": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cexRate": "Taux CEX",
+    "@cexRate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "incomingTransactionsProtectionSettings": "Paramètres de protection des transmissions entrantes {coinName}",
+    "@incomingTransactionsProtectionSettings": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "showingOrders": "Affichage de {count} commandes sur {maxCount}.",
+    "@showingOrders": {
+        "type": "text",
+        "placeholders_order": [
+            "count",
+            "maxCount"
+        ],
+        "placeholders": {
+            "count": {},
+            "maxCount": {}
+        }
+    },
+    "orderBookLess": "Moins",
+    "@orderBookLess": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderBookMore": "Plus",
+    "@orderBookMore": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "basedOnCoinRatio": "basé sur {coinName1}/{coinName2}",
+    "@basedOnCoinRatio": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName1",
+            "coinName2"
+        ],
+        "placeholders": {
+            "coinName1": {},
+            "coinName2": {}
+        }
+    },
+    "detailedFeesSendTradingFeeTransactionFee": "envoyer des frais de négociation frais de transaction",
+    "@detailedFeesSendTradingFeeTransactionFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "detailedFeesTradingFee": "frais de négociation",
+    "@detailedFeesTradingFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "detailedFeesSendCoinTransactionFee": "envoyer des frais de transaction à {coinName}",
+    "@detailedFeesSendCoinTransactionFee": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "detailedFeesReceiveCoinTransactionFee": "recevez des frais de transaction {coinName}",
+    "@detailedFeesReceiveCoinTransactionFee": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
     "filtersButton": "Filtrer",
     "@filtersButton": {
         "type": "text",
@@ -5149,6 +5457,124 @@
     },
     "officialPressRelease": "Communiqué de presse officiel",
     "@officialPressRelease": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "shouldScanPastTransaction": "Rechercher les transactions {coin} passées ?",
+    "@shouldScanPastTransaction": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "activationCancelled": "Activation des pièces annulée",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "{coin} activé avec succès",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "Activation de {coin} annulée",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "Veuillez accepter toutes les demandes spéciales d’activation de pièces ou désélectionner les pièces.",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancelActivation": "Annuler l'activation",
+    "@cancelActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancelActivationQuestion": "Etes-vous sûr de vouloir annuler l'activation ?",
+    "@cancelActivationQuestion": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cofirmCancelActivation": "Etes-vous sûr de vouloir annuler l'activation ?",
+    "@cofirmCancelActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncTransactionsQuestion": "Quelles transactions {name} souhaitez-vous synchroniser ?",
+    "@syncTransactionsQuestion": {
+        "type": "text",
+        "placeholders_order": [
+            "name"
+        ],
+        "placeholders": {
+            "name": {}
+        }
+    },
+    "syncNewTransactions": "Synchroniser les nouvelles transactions",
+    "@syncNewTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncFromDate": "Synchroniser à partir de la date spécifiée",
+    "@syncFromDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncFromSaplingActivation": "Synchronisation à partir de l'activation des jeunes arbres",
+    "@syncFromSaplingActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectDate": "Sélectionnez une date",
+    "@selectDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "startDate": "Date de début",
+    "@startDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "futureTransactions": "Nous synchroniserons les futures transactions effectuées après l'activation associée à votre clé publique. C’est l’option la plus rapide et celle qui nécessite le moins de stockage.",
+    "@futureTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "allPastTransactions": "Votre portefeuille affichera toutes les transactions passées. Cela prendra beaucoup de temps et de stockage car tous les blocs seront téléchargés et analysés.",
+    "@allPastTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "pastTransactionsFromDate": "Votre portefeuille affichera vos transactions passées effectuées après la date spécifiée.",
+    "@pastTransactionsFromDate": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -220,7 +221,7 @@ class ApiProvider {
         ).toJson(),
       );
 
-    // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
+    // https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#electrum
     final electrum = <String, dynamic>{
       'method': 'electrum',
       'userpass': mmSe.userpass,
@@ -295,7 +296,7 @@ class ApiProvider {
     }
   }
 
-  /// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#coins-needed-for-kick-start
+  /// https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#coins-needed-for-kick-start
   Future<dynamic> getCoinToKickStart(
     http.Client client,
     BaseService body,
@@ -378,7 +379,7 @@ class ApiProvider {
   }
 
   /// Returns a parsed JSON of the MM metrics
-  /// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-tutorials/atomicdex-metrics.html
+  /// https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-tutorials/atomicdex-metrics.html
   Future<dynamic> getMetricsMM2(BaseService body, {http.Client client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(client, body);
@@ -453,7 +454,9 @@ class ApiProvider {
             )
             .then<dynamic>((Response res) {
           _assert200(res);
-          return orderbookFromJson(res.body);
+          return orderbookFromJson(
+            json.encode(json.decode(res.body)['result']),
+          );
         }),
       );
     } catch (e) {
@@ -718,6 +721,26 @@ class ApiProvider {
             ),
       );
 
+  /// Ping mm2 endpoint to check if the host up. Use [isRpcUp] to verify
+  /// that the API is running. [pingMm2] is useful to check if the host is
+  /// running without trying to authenticate since the IP will be banned if
+  /// an invalid RPC password is used multiple times.
+  Future<bool> pingMm2({http.Client client}) async {
+    client ??= mmSe.client;
+    try {
+      final r = await client.post(
+        Uri.parse(url),
+        body: json.encode({'method': 'ping'}),
+      );
+
+      Log('ApiProvider:pingMm2', r.toString());
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<VersionMm2> getVersionMM2(BaseService body,
       {http.Client client}) async {
     client ??= mmSe.client;
@@ -748,15 +771,67 @@ class ApiProvider {
     return value;
   }
 
+  Completer<void> _completerRpcIsUp;
+  Timer _recheckIfRpcIsUpTimer;
+
+  void _completeRpcUpCheck({bool isError = false}) {
+    if (isError) throw UnimplementedError();
+
+    _completerRpcIsUp?.complete();
+    _recheckIfRpcIsUpTimer?.cancel();
+
+    _completerRpcIsUp = null;
+    _recheckIfRpcIsUpTimer = null;
+  }
+
+  Future<void> untilRpcIsUp() async {
+    const MAX_RETRIES = null;
+    const retryWarningInterval = Duration(seconds: 100);
+
+    _completerRpcIsUp ??= Completer<void>();
+
+    if (await isRpcUp()) {
+      return _completerRpcIsUp.future.then((_) => _completeRpcUpCheck());
+    }
+
+    if (!(_recheckIfRpcIsUpTimer?.isActive ?? false)) {
+      int retries = 0;
+
+      _recheckIfRpcIsUpTimer =
+          Timer.periodic(Duration(seconds: 1), (Timer t) async {
+        final isUp = mmSe.running && await pingMm2() && await isRpcUp();
+
+        final exceededMaxRetries =
+            (MAX_RETRIES != null && retries >= MAX_RETRIES);
+
+        if (isUp || exceededMaxRetries) {
+          _completeRpcUpCheck();
+        }
+
+        retries++;
+
+        // Every [retryWarningInterval] seconds, log a warning
+        if (retries % retryWarningInterval.inSeconds == 0) {
+          Log(
+            'ApiProvider:untilRpcIsUp',
+            ': Waiting a long time for RPC to be up',
+          );
+        }
+      });
+    }
+
+    return _completerRpcIsUp.future;
+  }
+
   Future<bool> isRpcUp([http.Client client]) async {
     client ??= mmSe.client;
 
     bool isUp = false;
     try {
-      final VersionMm2 versionmm2 =
+      final VersionMm2 versionMm2 =
           await MM.getVersionMM2(BaseService(method: 'version'));
 
-      isUp = versionmm2 is VersionMm2 && versionmm2 != null;
+      isUp = versionMm2 is VersionMm2 && versionMm2 != null;
     } catch (e) {
       Log('mm', 'isRpcUp: $e');
     }
@@ -865,8 +940,6 @@ class ApiProvider {
     _assert200(r);
     _logRes('postWithdraw', r);
 
-    final parsedBody = _parseResponse(r);
-
     return withdrawResponseFromJson(res.body);
   }
 
@@ -885,9 +958,6 @@ class ApiProvider {
     }
 
     while (true) {
-      // TODO: Handle "In progress" status. Currently we are only emitting
-      // the initial and completed status.
-
       client ??= mmSe.client;
 
       final userBody = await _assertUserpass(
@@ -907,20 +977,22 @@ class ApiProvider {
       final result = parsedBody['result'] as Map<String, dynamic>;
 
       final status = result['status'] as String;
-      final details = result['details'] as Map<String, dynamic>;
+      dynamic details = result['details']; // String or Map<String, dynamic>
 
-      if (status == 'Ok') {
+      if (status == 'InProgress') {
+        // Would be a real shame if we DDOSed ourselves.
+        await Future.delayed(const Duration(seconds: 3));
+
+        continue; // No-op, continue the loop.
+      }
+
+      if (status == 'Ok' && details is Map<String, dynamic>) {
         yield WithdrawResponse.fromJson(details);
         return;
       }
 
-      if (status == 'InProgress') {
-        // No-op, continue the loop.
-      } else {
-        throw ErrorString('Withdraw failed with unknown status: $status');
-      }
-
-      await Future.delayed(const Duration(seconds: 3));
+      Log('mm:withdrawTaskStream', 'status: $status, details: $details');
+      throw ErrorString('Withdraw failed with unknown status: $status');
     }
   }
 
@@ -988,7 +1060,7 @@ class ApiProvider {
   }
 
   void _assertSuccess({@required String error, @required int code}) {
-    final isErrorCode = code != null || !code.toString().startsWith('2');
+    final isErrorCode = code != null && !code.toString().startsWith('2');
 
     final isErrorMessage = error != null && error.isNotEmpty;
 
@@ -1014,7 +1086,7 @@ class ApiProvider {
             .replaceFirstMapped(RegExp('^(.{0,99}).*'), (Match m) => m[1]);
       }
       throw ErrorString(
-        'HTTP ${r.statusCode}: Could not assert 200 in response.',
+        'HTTP ${r.statusCode}: Could not assert 200 in response. $emsg',
       );
     }
   }

@@ -377,7 +377,10 @@ class CexPrices {
     _init();
   }
 
+  bool isInitialized = false;
+
   Future<void> _init() async {
+    if (isInitialized) return;
     prefs = await SharedPreferences.getInstance();
     activeCurrency = prefs.getInt('activeCurrency') ?? 0;
     _selectedFiat = prefs.getString('selectedFiat') ?? 'USD';
@@ -389,6 +392,8 @@ class CexPrices {
       updatePrices();
       updateRates();
     });
+
+    isInitialized = true;
   }
 
   List<String> currencies;
@@ -436,6 +441,9 @@ class CexPrices {
         },
       );
       _body = _res.body;
+
+      if (_body == null)
+        return Log('cex_provider', 'Failed to fetch rates: $_res');
     } catch (e) {
       Log('cex_provider', 'Failed to fetch rates: $e');
     }
@@ -608,7 +616,11 @@ class CexPrices {
           return;
         },
       );
-      _body = _res.body;
+      _body = _res?.body;
+      if (_body == null) {
+        _fetchingPrices = false;
+        return false;
+      }
     } catch (e) {
       Log('cex_provider', 'Failed to fetch usd prices: $e');
     }
@@ -616,8 +628,10 @@ class CexPrices {
     _fetchingPrices = false;
 
     Map<String, dynamic> json;
+
     try {
-      json = jsonDecode(_body);
+      final isJsonString = _body.startsWith('{');
+      json = isJsonString ? jsonDecode(_body) : null;
     } catch (e) {
       Log('cex_provider', 'Failed to parse prices json: $e');
     }
@@ -696,14 +710,16 @@ class CexPrices {
 
     _fetchingPrices = false;
 
+    if (_body == null) return false;
+
     Map<String, dynamic> json;
     try {
       json = jsonDecode(_body);
     } catch (e) {
       Log('cex_provider', 'Failed to parse prices json: $e');
     }
-
     if (json == null) return false;
+
     if (json['error'] != null) {
       Log('cex_provider', 'Prices endpoint error: ${json['error']}');
       return false;

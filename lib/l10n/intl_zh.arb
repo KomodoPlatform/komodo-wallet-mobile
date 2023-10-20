@@ -1257,8 +1257,28 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "gweiError": "Gwei 必须达到 {value}",
+    "@gweiError": {
+        "type": "text",
+        "placeholders_order": [
+            "value"
+        ],
+        "placeholders": {
+            "value": {}
+        }
+    },
     "feesError": "费用必须高达 {value}",
     "@feesError": {
+        "type": "text",
+        "placeholders_order": [
+            "value"
+        ],
+        "placeholders": {
+            "value": {}
+        }
+    },
+    "limitError": "限制必须达到 {value}",
+    "@limitError": {
         "type": "text",
         "placeholders_order": [
             "value"
@@ -1437,6 +1457,18 @@
     },
     "latestTxs": "最新交易",
     "@latestTxs": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "gettingTxWait": "正在获取交易，请稍候",
+    "@gettingTxWait": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "finishingUp": "已完成，请稍候",
+    "@finishingUp": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2679,6 +2711,12 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "searchFilterSubtitleZHTLC": "选择所有ZHTLC币",
+    "@searchFilterSubtitleZHTLC": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
     "searchFilterSubtitleFTM": "选择所有Fantom代币",
     "@searchFilterSubtitleFTM": {
         "type": "text",
@@ -2777,6 +2815,12 @@
     },
     "tagFTM20": "FTM20",
     "@tagFTM20": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tagZHTLC": "ZHTLC",
+    "@tagZHTLC": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -3577,6 +3621,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "无法取消激活 {coinAbbr}",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} 不可用:(",
     "@isUnavailable": {
         "type": "text",
@@ -3740,6 +3794,16 @@
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
+    },
+    "invalidCoinAddress": "{coin} 地址无效",
+    "@invalidCoinAddress": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
     },
     "multiActivateGas": "先激活{coin}并充值余额",
     "@multiActivateGas": {
@@ -4799,6 +4863,250 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "activating": "激活{coinName}",
+    "@activating": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "doNotCloseTheAppTapForMoreInfo": "不要关闭应用程序。点按了解更多信息...",
+    "@doNotCloseTheAppTapForMoreInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "activation": "{coinName} 激活",
+    "@activation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "coinsAreActivated": "{protocolName} 币已激活",
+    "@coinsAreActivated": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "coinsAreNotActivated": "{protocolName} 代币未激活",
+    "@coinsAreNotActivated": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "coinsAreActivatedSuccessfully": "{protocolName}币激活成功",
+    "@coinsAreActivatedSuccessfully": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "activationInProgress": "{protocolName} 激活正在进行中",
+    "@activationInProgress": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "activateCoins": "激活 {protocolName} 币？",
+    "@activateCoins": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "moreInfo": "更多信息",
+    "@moreInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "showAddress": "显示地址",
+    "@showAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionHiddenPhishing": "由于可能存在网络钓鱼尝试，该交易被隐藏。",
+    "@transactionHiddenPhishing": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionAddress": "交易地址",
+    "@transactionAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionHidden": "交易隐藏",
+    "@transactionHidden": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "couldNotLaunchUrl": "无法启动 URL",
+    "@couldNotLaunchUrl": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "willTakeTime": "这将需要一段时间，并且应用程序必须保持在前台。\n在激活过程中终止应用程序可能会导致问题。",
+    "@willTakeTime": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minimizingWillTerminate": "警告：最小化 iOS 上的应用程序将终止激活过程。",
+    "@minimizingWillTerminate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enableNotificationsForActivationProgress": "请启用通知以获取有关激活进度的更新。",
+    "@enableNotificationsForActivationProgress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "qrCodeScanner": "二维码扫描仪",
+    "@qrCodeScanner": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "foundQrCode": "找到二维码",
+    "@foundQrCode": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contract": "合同",
+    "@contract": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "startSwap": "开始交换",
+    "@startSwap": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "none": "没有任何",
+    "@none": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cexRate": "CEX 汇率",
+    "@cexRate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "incomingTransactionsProtectionSettings": "传入 {coinName} 交易保护设置",
+    "@incomingTransactionsProtectionSettings": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "showingOrders": "显示 {count} 个订单（共 {maxCount} 个）。",
+    "@showingOrders": {
+        "type": "text",
+        "placeholders_order": [
+            "count",
+            "maxCount"
+        ],
+        "placeholders": {
+            "count": {},
+            "maxCount": {}
+        }
+    },
+    "orderBookLess": "较少的",
+    "@orderBookLess": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderBookMore": "更多的",
+    "@orderBookMore": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "basedOnCoinRatio": "基于{coinName1}/{coinName2}",
+    "@basedOnCoinRatio": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName1",
+            "coinName2"
+        ],
+        "placeholders": {
+            "coinName1": {},
+            "coinName2": {}
+        }
+    },
+    "detailedFeesSendTradingFeeTransactionFee": "发送交易费 交易费",
+    "@detailedFeesSendTradingFeeTransactionFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "detailedFeesTradingFee": "交易费",
+    "@detailedFeesTradingFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "detailedFeesSendCoinTransactionFee": "发送 {coinName} 交易费",
+    "@detailedFeesSendCoinTransactionFee": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "detailedFeesReceiveCoinTransactionFee": "接收{coinName}交易费",
+    "@detailedFeesReceiveCoinTransactionFee": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
     "filtersButton": "过滤器",
     "@filtersButton": {
         "type": "text",
@@ -5149,6 +5457,124 @@
     },
     "officialPressRelease": "官方新闻稿",
     "@officialPressRelease": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "shouldScanPastTransaction": "扫描过去的 {coin} 交易？",
+    "@shouldScanPastTransaction": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "activationCancelled": "硬币激活已取消",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "成功激活{coin}",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "{coin}激活已取消",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "请接受所有特殊硬币激活请求或取消选择硬币。",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancelActivation": "取消激活",
+    "@cancelActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancelActivationQuestion": "您确定要取消激活吗？",
+    "@cancelActivationQuestion": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cofirmCancelActivation": "您确定要取消激活吗？",
+    "@cofirmCancelActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncTransactionsQuestion": "您想要同步哪些{name}交易？",
+    "@syncTransactionsQuestion": {
+        "type": "text",
+        "placeholders_order": [
+            "name"
+        ],
+        "placeholders": {
+            "name": {}
+        }
+    },
+    "syncNewTransactions": "同步新交易",
+    "@syncNewTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncFromDate": "从指定日期同步",
+    "@syncFromDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncFromSaplingActivation": "从树苗激活同步",
+    "@syncFromSaplingActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectDate": "选择日期",
+    "@selectDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "startDate": "开始日期",
+    "@startDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "futureTransactions": "我们将同步与您的公钥关联的激活后进行的未来交易。这是最快的选项，占用的存储空间最少。",
+    "@futureTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "allPastTransactions": "您的钱包将显示任何过去的交易。这将占用大量存储空间和时间，因为所有块都将被下载和扫描。",
+    "@allPastTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "pastTransactionsFromDate": "您的钱包将显示您过去在指定日期之后进行的交易。",
+    "@pastTransactionsFromDate": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}

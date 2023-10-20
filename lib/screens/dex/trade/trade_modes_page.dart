@@ -71,11 +71,13 @@ class _TradeModesPageState extends State<TradeModesPage>
                 indicatorPadding: EdgeInsets.symmetric(horizontal: 0),
                 tabs: [
                   Tab(
-                    child: Text('Simple', style: style),
+                    child:
+                        Text(AppLocalizations.of(context).simple, style: style),
                     key: const Key('simple-tab'),
                   ),
                   Tab(
-                    child: Text('Advanced', style: style),
+                    child: Text(AppLocalizations.of(context).advanced,
+                        style: style),
                     key: const Key('advanced-tab'),
                   ),
                   Tab(

@@ -61,7 +61,7 @@ class Result {
 }
 
 /// MM swap data,
-/// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#my-swap-status
+/// https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#my-swap-status
 class MmSwap {
   MmSwap(
       {this.errorEvents,
@@ -152,7 +152,9 @@ class MmSwap {
 
   String myOrderUuid;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> toJson() {
+    try {
+      return <String, dynamic>{
         'error_events':
             List<dynamic>.from(errorEvents.map<dynamic>((dynamic x) => x)) ??
                 <String>[],
@@ -174,6 +176,10 @@ class MmSwap {
         'taker_amount': takerAmount,
         'my_order_uuid': myOrderUuid,
       };
+    } catch (e) {
+      return null;
+    }
+  }
 
   Status get status {
     // cf. SwapHistoryBloc::getStatusSwap
@@ -233,7 +239,7 @@ class SwapEEL {
 }
 
 /// Fields of a swap event,
-/// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#my-swap-status
+/// https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#my-swap-status
 class SwapEF {
   SwapEF(
       {this.lockDuration,

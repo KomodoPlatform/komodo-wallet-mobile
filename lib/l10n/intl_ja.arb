@@ -1257,8 +1257,28 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "gweiError": "グウェイは {value} までである必要があります",
+    "@gweiError": {
+        "type": "text",
+        "placeholders_order": [
+            "value"
+        ],
+        "placeholders": {
+            "value": {}
+        }
+    },
     "feesError": "料金は {value} までである必要があります",
     "@feesError": {
+        "type": "text",
+        "placeholders_order": [
+            "value"
+        ],
+        "placeholders": {
+            "value": {}
+        }
+    },
+    "limitError": "制限は最大 {value} である必要があります",
+    "@limitError": {
         "type": "text",
         "placeholders_order": [
             "value"
@@ -1437,6 +1457,18 @@
     },
     "latestTxs": "最新の取引",
     "@latestTxs": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "gettingTxWait": "トランザクションを取得しています。お待ちください",
+    "@gettingTxWait": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "finishingUp": "完了しました、お待ちください",
+    "@finishingUp": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2679,6 +2711,12 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "searchFilterSubtitleZHTLC": "すべての ZHTLC コインを選択します",
+    "@searchFilterSubtitleZHTLC": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
     "searchFilterSubtitleFTM": "すべてのファントムトークンを選択",
     "@searchFilterSubtitleFTM": {
         "type": "text",
@@ -2777,6 +2815,12 @@
     },
     "tagFTM20": "FTM20",
     "@tagFTM20": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "tagZHTLC": "ZHTLC",
+    "@tagZHTLC": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -3577,6 +3621,16 @@
             "coinAbbr": {}
         }
     },
+    "failedToCancelActivation": "{coinAbbr} のアクティベーションをキャンセルできませんでした",
+    "@failedToCancelActivation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinAbbr"
+        ],
+        "placeholders": {
+            "coinAbbr": {}
+        }
+    },
     "isUnavailable": "{coinAbbr} は利用できません:(",
     "@isUnavailable": {
         "type": "text",
@@ -3740,6 +3794,16 @@
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
+    },
+    "invalidCoinAddress": "無効な {coin} アドレスです",
+    "@invalidCoinAddress": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
     },
     "multiActivateGas": "最初に {coin} を有効にして、残高をチャージしてください",
     "@multiActivateGas": {
@@ -4799,6 +4863,250 @@
         "placeholders_order": [],
         "placeholders": {}
     },
+    "activating": "{coinName}をアクティブ化しています",
+    "@activating": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "doNotCloseTheAppTapForMoreInfo": "アプリを閉じないでください。詳細についてはタップしてください...",
+    "@doNotCloseTheAppTapForMoreInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "activation": "{coinName} のアクティベーション",
+    "@activation": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "coinsAreActivated": "{protocolName} コインが有効化されました",
+    "@coinsAreActivated": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "coinsAreNotActivated": "{protocolName} コインは有効化されていません",
+    "@coinsAreNotActivated": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "coinsAreActivatedSuccessfully": "{protocolName} コインが正常に有効化されました",
+    "@coinsAreActivatedSuccessfully": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "activationInProgress": "{protocolName} のアクティベーションが進行中です",
+    "@activationInProgress": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "activateCoins": "{protocolName} コインをアクティブにしますか?",
+    "@activateCoins": {
+        "type": "text",
+        "placeholders_order": [
+            "protocolName"
+        ],
+        "placeholders": {
+            "protocolName": {}
+        }
+    },
+    "moreInfo": "より詳しい情報",
+    "@moreInfo": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "showAddress": "住所を表示",
+    "@showAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionHiddenPhishing": "このトランザクションはフィッシングの可能性があるため非表示になりました。",
+    "@transactionHiddenPhishing": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionAddress": "取引アドレス",
+    "@transactionAddress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "transactionHidden": "非表示のトランザクション",
+    "@transactionHidden": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "couldNotLaunchUrl": "URLを起動できませんでした",
+    "@couldNotLaunchUrl": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "willTakeTime": "これには時間がかかるため、アプリをフォアグラウンドに維持する必要があります。\nアクティベーションの進行中にアプリを終了すると、問題が発生する可能性があります。",
+    "@willTakeTime": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "minimizingWillTerminate": "警告: iOS でアプリを最小化すると、アクティベーション プロセスが終了します。",
+    "@minimizingWillTerminate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "enableNotificationsForActivationProgress": "アクティベーションの進行状況に関する最新情報を取得するには、通知を有効にしてください。",
+    "@enableNotificationsForActivationProgress": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "qrCodeScanner": "QRコードスキャナー",
+    "@qrCodeScanner": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "foundQrCode": "QRコードが見つかりました",
+    "@foundQrCode": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "contract": "契約",
+    "@contract": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "startSwap": "スワップの開始",
+    "@startSwap": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "none": "なし",
+    "@none": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cexRate": "CEXレート",
+    "@cexRate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "incomingTransactionsProtectionSettings": "受信 {coinName} txs 保護設定",
+    "@incomingTransactionsProtectionSettings": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "showingOrders": "{maxCount} 件中 {count} 件の注文を表示しています。",
+    "@showingOrders": {
+        "type": "text",
+        "placeholders_order": [
+            "count",
+            "maxCount"
+        ],
+        "placeholders": {
+            "count": {},
+            "maxCount": {}
+        }
+    },
+    "orderBookLess": "少ない",
+    "@orderBookLess": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "orderBookMore": "もっと",
+    "@orderBookMore": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "basedOnCoinRatio": "{coinName1}/{coinName2} に基づく",
+    "@basedOnCoinRatio": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName1",
+            "coinName2"
+        ],
+        "placeholders": {
+            "coinName1": {},
+            "coinName2": {}
+        }
+    },
+    "detailedFeesSendTradingFeeTransactionFee": "送信取引手数料 取引手数料",
+    "@detailedFeesSendTradingFeeTransactionFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "detailedFeesTradingFee": "取引手数料",
+    "@detailedFeesTradingFee": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "detailedFeesSendCoinTransactionFee": "{coinName} の取引手数料を送信します",
+    "@detailedFeesSendCoinTransactionFee": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
+    "detailedFeesReceiveCoinTransactionFee": "{coinName} の取引手数料を受け取る",
+    "@detailedFeesReceiveCoinTransactionFee": {
+        "type": "text",
+        "placeholders_order": [
+            "coinName"
+        ],
+        "placeholders": {
+            "coinName": {}
+        }
+    },
     "filtersButton": "フィルター",
     "@filtersButton": {
         "type": "text",
@@ -5149,6 +5457,124 @@
     },
     "officialPressRelease": "公式プレスリリース",
     "@officialPressRelease": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "shouldScanPastTransaction": "過去の {coin} 取引をスキャンしますか?",
+    "@shouldScanPastTransaction": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "activationCancelled": "コインのアクティベーションがキャンセルされました",
+    "@activationCancelled": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "coinActivationSuccessfull": "{coin} を正常にアクティブ化しました",
+    "@coinActivationSuccessfull": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "coinActivationCancelled": "{coin} のアクティベーションがキャンセルされました",
+    "@coinActivationCancelled": {
+        "type": "text",
+        "placeholders_order": [
+            "coin"
+        ],
+        "placeholders": {
+            "coin": {}
+        }
+    },
+    "pleaseAcceptAllCoinActivationRequests": "特別なコインの有効化リクエストをすべて受け入れるか、コインの選択を解除してください。",
+    "@pleaseAcceptAllCoinActivationRequests": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancelActivation": "アクティベーションのキャンセル",
+    "@cancelActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cancelActivationQuestion": "アクティベーションをキャンセルしてもよろしいですか?",
+    "@cancelActivationQuestion": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "cofirmCancelActivation": "アクティベーションをキャンセルしてもよろしいですか?",
+    "@cofirmCancelActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncTransactionsQuestion": "どの {name} トランザクションを同期しますか?",
+    "@syncTransactionsQuestion": {
+        "type": "text",
+        "placeholders_order": [
+            "name"
+        ],
+        "placeholders": {
+            "name": {}
+        }
+    },
+    "syncNewTransactions": "新しいトランザクションを同期する",
+    "@syncNewTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncFromDate": "指定した日付から同期",
+    "@syncFromDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "syncFromSaplingActivation": "苗木アクティベーションからの同期",
+    "@syncFromSaplingActivation": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "selectDate": "日付を選択してください",
+    "@selectDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "startDate": "開始日",
+    "@startDate": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "futureTransactions": "公開キーに関連付けられたアクティベーション後に行われる今後のトランザクションは同期されます。これは最も迅速なオプションであり、必要なストレージの量も最小限です。",
+    "@futureTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "allPastTransactions": "ウォレットには過去の取引が表示されます。すべてのブロックがダウンロードされてスキャンされるため、これにはかなりのストレージと時間がかかります。",
+    "@allPastTransactions": {
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "pastTransactionsFromDate": "ウォレットには、指定した日付以降に行われた過去の取引が表示されます。",
+    "@pastTransactionsFromDate": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}

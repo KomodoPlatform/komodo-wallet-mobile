@@ -22,7 +22,7 @@ import 'messages_fr.dart' deferred as messages_fr;
 import 'messages_hu.dart' deferred as messages_hu;
 import 'messages_ja.dart' deferred as messages_ja;
 import 'messages_ko.dart' deferred as messages_ko;
-import 'messages_messages.dart' deferred as messages_messages;
+import 'messages_messages.dart' deferred as messages_en;
 import 'messages_ru.dart' deferred as messages_ru;
 import 'messages_tr.dart' deferred as messages_tr;
 import 'messages_uk.dart' deferred as messages_uk;
@@ -36,7 +36,7 @@ Map<String, LibraryLoader> _deferredLibraries = {
   'hu': messages_hu.loadLibrary,
   'ja': messages_ja.loadLibrary,
   'ko': messages_ko.loadLibrary,
-  'messages': messages_messages.loadLibrary,
+  'en': messages_en.loadLibrary,
   'ru': messages_ru.loadLibrary,
   'tr': messages_tr.loadLibrary,
   'uk': messages_uk.loadLibrary,
@@ -57,8 +57,8 @@ MessageLookupByLibrary _findExact(String localeName) {
       return messages_ja.messages;
     case 'ko':
       return messages_ko.messages;
-    case 'messages':
-      return messages_messages.messages;
+    case 'en':
+      return messages_en.messages;
     case 'ru':
       return messages_ru.messages;
     case 'tr':
@@ -75,8 +75,10 @@ MessageLookupByLibrary _findExact(String localeName) {
 /// User programs should call this before using [localeName] for messages.
 Future<bool> initializeMessages(String localeName) async {
   final availableLocale = Intl.verifiedLocale(
-      localeName, (locale) => _deferredLibraries[locale] != null,
-      onFailure: (_) => null);
+    localeName,
+    (locale) => _deferredLibraries[locale] != null,
+    onFailure: (_) => null,
+  );
   if (availableLocale == null) {
     return Future.value(false);
   }

@@ -26,11 +26,6 @@
 		<string>ko</string>
 		<string>uk</string>
 	</array>
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-		<key>UISceneConfigurations</key>
-		<dict/>
-	</dict>
 	<key>CFBundleName</key>
 	<string>komodo_dex</string>
 	<key>CFBundlePackageType</key>
@@ -78,6 +73,11 @@
 	<string>Location services are not required by this application, please contact the app provider if you see this message.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photo Library general access is required for backup functionality.</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UISceneConfigurations</key>
+		<dict/>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

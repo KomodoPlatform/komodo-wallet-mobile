@@ -76,6 +76,8 @@ class _AddressFieldState extends State<AddressField> {
 
   @override
   Widget build(BuildContext context) {
+    final localisations = AppLocalizations.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
@@ -135,7 +137,7 @@ class _AddressFieldState extends State<AddressField> {
                       return AppLocalizations.of(context).errorValueNotEmpty;
                     }
                     if (!mm2Validated) {
-                      return 'Invalid ${widget.coin.abbr} address';
+                      return localisations.invalidCoinAddress(widget.coin.abbr);
                     }
 
                     return null;

@@ -72,6 +72,9 @@ class CoinsBloc implements BlocBase {
 
   dynamic transactions;
 
+  Transactions get transactionsOrNull =>
+      transactions is Transactions ? transactions : null;
+
   // Streams to handle the list coin
   final StreamController<dynamic> _transactionsController =
       StreamController<dynamic>.broadcast();
@@ -314,6 +317,10 @@ class CoinsBloc implements BlocBase {
           .removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
       updateCoins(coinBalance);
       await deactivateCoins(<Coin>[coin]);
+
+      if (coin.type == CoinType.zhtlc) {
+        await _zCoinRepository.legacyCoinsBlocDisableLocallyCallback(coin.abbr);
+      }
     }
   }
 
@@ -389,37 +396,44 @@ class CoinsBloc implements BlocBase {
       CoinBalance coinBalance, int limit, String fromId) async {
     Coin coin = coinBalance.coin;
     try {
-      dynamic transactions;
+      dynamic transactionData;
 
       if (isErcType(coin)) {
-        transactions = await getErcTransactions.getTransactions(
-            coin: coin, fromId: fromId);
+        transactionData = await getErcTransactions.getTransactions(
+          coin: coin,
+          fromId: fromId,
+        );
       } else {
-        transactions = await MM.getTransactions(mmSe.client,
-            GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+        transactionData = await MM.getTransactions(
+          mmSe.client,
+          GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId),
+        );
       }
 
-      if (transactions is Transactions) {
-        transactions.camouflageIfNeeded();
+      if (transactionData is Transactions && transactionData.result != null) {
+        transactionData.camouflageIfNeeded();
 
-        if (fromId == null || fromId.isEmpty) {
-          this.transactions = transactions;
-        } else {
-          this.transactions.result.fromId = transactions.result.fromId;
-          this.transactions.result.limit = transactions.result.limit;
-          this.transactions.result.skipped = transactions.result.skipped;
-          this.transactions.result.total = transactions.result.total;
-          this
-              .transactions
-              .result
-              .transactions
-              .addAll(transactions.result.transactions);
-        }
-        _inTransactions.add(this.transactions);
-      } else if (transactions is ErrorCode) {
-        _inTransactions.add(transactions);
-        return transactions;
+        final thisTransactions = transactions?.result?.transactions;
+
+        final mustMergeCurrentCoin = fromId != null &&
+            (thisTransactions is List<Transaction> &&
+                    (thisTransactions
+                        .any((Transaction tx) => tx.coin == coin.abbr)) ??
+                false);
+
+        transactionData.result?.transactions = [
+          if (mustMergeCurrentCoin) ...(thisTransactions ?? []),
+          ...(transactionData.result?.transactions ?? [])
+        ]..sort((a, b) => b.timestamp.compareTo(a.timestamp));
+
+        transactions = transactionData;
+      } else if (transactionData is ErrorCode) {
+        Log(
+          'coins_bloc:updateTransactions',
+          'Failed to get transactions: $coin: ${transactionData.toJson()}',
+        );
       }
+      _inTransactions.add(transactionData);
     } catch (e) {
       Log('coins_bloc:244', e);
       rethrow;
@@ -461,7 +475,7 @@ class CoinsBloc implements BlocBase {
 
   /// Handle the coins user has picked for activation.
   /// Also used for coin activations during the application startup.
-  Future<void> enableCoins(List<Coin> coins) async {
+  Future<void> enableCoins(List<Coin> coins, {initialization = false}) async {
     await pauseUntil(() => !_coinsLock, maxMs: 3000);
     _coinsLock = true;
 
@@ -570,9 +584,6 @@ class CoinsBloc implements BlocBase {
 
     updateOneCoin(cb);
 
-    final isZCash = coin.type == CoinType.zhtlc;
-
-    // await syncCoinsStateWithApi(!isZCash);
     await syncCoinsStateWithApi();
 
     if (currentActiveCoin?.coin?.abbr == coin.abbr) {
@@ -824,7 +835,7 @@ class CoinsBloc implements BlocBase {
 
       if (transactions is Transactions) {
         transactions.camouflageIfNeeded();
-        if (transactions.result.transactions.isNotEmpty) {
+        if ((transactions.result?.transactions ?? []).isNotEmpty) {
           return transactions.result.transactions[0];
         }
         return null;

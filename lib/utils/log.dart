@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:isolate';
 import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:komodo_dex/utils/log_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/utils/log_storage.dart';
 
 import '../services/mm_service.dart';
 import '../utils/utils.dart';
@@ -18,7 +17,6 @@ class Log {
   factory Log(String key, dynamic message) {
     Log.println(key, message);
     return _instance;
-    return null;
   }
   Log._();
   static final _instance = Log._();
@@ -34,10 +32,9 @@ class Log {
     //return message.toString().startsWith('pickMode]') || message.toString().startsWith('play]');
     //return key.startsWith('swap_provider:');
     return kDebugMode;
-    return true;
   }
 
-  static FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  static final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   static String twoDigits(int n) => n >= 10 ? '$n' : '0$n';
 

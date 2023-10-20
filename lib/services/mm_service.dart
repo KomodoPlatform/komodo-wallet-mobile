@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:isolate';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -9,8 +8,8 @@ import 'package:flutter/services.dart'
     show EventChannel, MethodChannel, rootBundle, SystemChannels;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:komodo_dex/app_config/coins_updater.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path/path.dart' as path;
 
 import '../app_config/app_config.dart';
 import '../blocs/coins_bloc.dart';
@@ -31,7 +30,7 @@ import '../utils/utils.dart';
 /// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
 
-/// Interface to Market Maker, https://developers.atomicdex.io/
+/// Interface to Market Maker, https://developers.komodoplatform.com/
 class MMService {
   factory MMService() => mmSe;
   MMService._internal();
@@ -40,7 +39,15 @@ class MMService {
   Process mm2Process;
   List<Coin> coins = <Coin>[];
 
-  /// Switched on when we hear from MM.
+  /// Represents wether mm2 has been started or not for this session even if
+  /// it is not currently running.
+  ///
+  /// On iOS, the RPC server is killed when the app goes to background. This
+  /// will remain true when the app is restored.
+  ///
+  /// Use [MM.isRpcUp()] to get the current status of the RPC server.
+  ///
+  /// Use [MM.untilRpcIsUp()] to efficiently await until RPC is up.
   bool get running => _running;
   bool _running = false;
 
@@ -150,7 +157,7 @@ class MMService {
 
     jobService.install('updateMm2VersionInfo', 3.14, (j) async {
       if (!mmSe.running) return;
-      if (mmVersion == null && mmDate == null) {
+      if (mmVersion == null && mmDate == null && await MM.pingMm2()) {
         await initializeMmVersion();
       }
     });
@@ -451,7 +458,7 @@ class MMService {
 
   Future<List<dynamic>> readJsonCoinInit() async {
     try {
-      return jsonDecode(await rootBundle.loadString('assets/coins.json'));
+      return jsonDecode(await CoinUpdater().getCoins());
     } catch (e) {
       if (kDebugMode) {
         Log('mm_service', 'readJsonCoinInit] $e');
@@ -469,7 +476,7 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
 
-      await coinsBloc.enableCoins(active);
+      await coinsBloc.enableCoins(active, initialization: true);
 
       for (int i = 0; i < 2; i++) {
         await coinsBloc.retryActivatingSuspendedCoins();
@@ -525,18 +532,32 @@ class MMService {
     return mm2StatusFrom(await checkStatusMm2());
   }
 
-  Future<dynamic> handleWakeUp() async {
-    if (!Platform.isIOS) return;
-    if (!running) return;
+  /// Handles the initialisation of MM2 and the app state if the app was
+  /// suspended and then resumed.
+  ///
+  /// Returns a [bool] with the result of whether a wake-up was performed.
+  /// Typically this is only necessary on iOS.
+  FutureOr<bool> wakeUpSuspendedApi() async {
+    if (!Platform.isIOS || !running) return false;
 
     /// Wait until mm2 is up, in case it was restarted from Swift
-    await pauseUntil(() async => await MM.isRpcUp());
+    await MM.untilRpcIsUp();
 
     /// If [running], but enabled coins list is empty,
     /// it means that mm2 was restarted from Swift, and we
     /// should reenable active coins ones again
-    if ((await MM.getEnabledCoins()).isEmpty) initCoinsAndLoad();
+    if (await hasCoinsLoaded()) return false;
+
+    await initCoinsAndLoad().catchError((e) {
+      Log('MMService:handleWakeUp',
+          'Failed to init coins and load. ${e.toString()}');
+    });
+
+    return true;
   }
+
+  Future<bool> hasCoinsLoaded() async =>
+      (await MM.getEnabledCoins()).isNotEmpty;
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
     Log('mm_service', 'getAllBalances');

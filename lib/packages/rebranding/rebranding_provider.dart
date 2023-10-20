@@ -2,13 +2,24 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RebrandingProvider extends ChangeNotifier {
+  RebrandingProvider();
+
+  // TODO! Remove code/assets for rebranding after the date below
+  final rebrandingExpirationDate = DateTime(2023, 12, 1);
+  bool get isRebrandingExpired =>
+      DateTime.now().isAfter(rebrandingExpirationDate);
+
   bool _closedPermanently = false;
   bool _closedThisSession = false;
   SharedPreferences _prefs;
 
   Future<void> get prefsLoaded => _loadPrefs();
 
-  RebrandingProvider();
+  bool get shouldShowRebrandingDialog =>
+      !isRebrandingExpired && !closedPermanently && !closedThisSession;
+
+  bool get shouldShowRebrandingNews =>
+      !isRebrandingExpired && !closedPermanently;
 
   Future<void> _loadPrefs() async {
     _prefs = await SharedPreferences.getInstance();

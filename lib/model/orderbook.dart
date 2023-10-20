@@ -40,19 +40,19 @@ class Orderbook {
                     .map((dynamic x) => Ask.fromJson(x, json['rel'])))
                 .where((Ask bid) => bid != null)
                 .toList(),
-        numbids: json['numbids'] ?? 0,
+        numbids: json['num_bids'] ?? 0,
         asks: json['asks'] == null
             ? null
             : List<Ask>.from(json['asks']
                     .map((dynamic x) => Ask.fromJson(x, json['base'])))
                 .where((Ask ask) => ask != null)
                 .toList(),
-        numasks: json['numasks'] ?? 0,
+        numasks: json['num_asks'] ?? 0,
         askdepth: json['askdepth'] ?? 0,
         base: json['base'] ?? '',
         rel: json['rel'] ?? '',
         timestamp: json['timestamp'] ?? DateTime.now().millisecond,
-        netid: json['netid'] ?? 0,
+        netid: json['net_id'] ?? 0,
       );
 
   List<Ask> bids;
@@ -69,16 +69,16 @@ class Orderbook {
         'bids': bids == null
             ? null
             : List<dynamic>.from(bids.map<dynamic>((Ask x) => x.toJson())),
-        'numbids': numbids ?? 0,
+        'num_bids': numbids ?? 0,
         'asks': asks == null
             ? null
             : List<dynamic>.from(asks.map<dynamic>((Ask x) => x.toJson())),
-        'numasks': numasks ?? 0,
+        'num_asks': numasks ?? 0,
         'askdepth': askdepth ?? 0,
         'base': base ?? '',
         'rel': rel ?? '',
         'timestamp': timestamp ?? DateTime.now().millisecond,
-        'netid': netid ?? 0,
+        'net_id': netid ?? 0,
       };
 }
 
@@ -97,18 +97,18 @@ class Ask {
   });
 
   factory Ask.fromJson(Map<String, dynamic> json, [String coin]) {
-    if (isInfinite(json['price'])) return null;
-    if (isInfinite(json['maxvolume'])) return null;
+    if (isInfinite(json['price']['decimal'])) return null;
+    if (isInfinite(json['base_min_volume']['decimal'])) return null;
 
     return Ask(
       coin: coin ?? json['coin'] ?? '',
-      address: json['address'] ?? '',
-      price: json['price'] ?? 0.0,
-      priceFract: json['price_fraction'],
-      maxvolume: deci(json['maxvolume']),
-      maxvolumeFract: json['max_volume_fraction'],
-      minVolume: fract2rat(json['min_volume_fraction']) ??
-          Rational.parse(json['min_volume']),
+      address: json['address']['address_data'] ?? 'Shielded',
+      price: json['price']['decimal'] ?? 0.0,
+      priceFract: json['price']['fraction'],
+      maxvolume: deci(json['base_max_volume']['decimal']),
+      maxvolumeFract: json['base_max_volume']['fraction'],
+      minVolume: fract2rat(json['base_min_volume']['fraction']) ??
+          Rational.parse(json['base_min_volume']['decimal']),
       pubkey: json['pubkey'] ?? '',
       age: json['age'] ?? 0,
       zcredits: json['zcredits'] ?? 0,
@@ -132,12 +132,17 @@ class Ask {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'coin': coin ?? '',
-        'address': address ?? '',
-        'price': price ?? 0.0,
-        'price_fraction': priceFract,
-        'maxvolume': maxvolume.toString(),
-        'max_volume_fraction': maxvolumeFract,
-        'min_volume_fraction': rat2fract(minVolume),
+        'address': address == 'Shielded'
+            ? {'address_type': 'Shielded'}
+            : {'address_data': address},
+        'price': {'decimal': price ?? 0.0, 'fraction': priceFract},
+        'base_max_volume': {
+          'decimal': maxvolume.toString(),
+          'fraction': maxvolumeFract,
+        },
+        'base_min_volume': {
+          'fraction': rat2fract(minVolume),
+        },
         'pubkey': pubkey ?? '',
         'age': age ?? 0,
         'zcredits': zcredits ?? 0,

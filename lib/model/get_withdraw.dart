@@ -39,6 +39,7 @@ class GetWithdraw {
             'params': {
               'coin': coin ?? '',
               'to': to ?? '',
+              'max': max ?? false,
               if (amount != null) 'amount': amount,
             }
           }
@@ -58,16 +59,19 @@ class GetWithdraw {
 class GetWithdrawTaskStatus {
   GetWithdrawTaskStatus({
     this.method = 'task::withdraw::status',
+    this.mmrpc = '2.0',
     @required this.taskId,
     @required this.userpass,
   });
 
   String method;
+  String mmrpc;
   int taskId;
   String userpass;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method,
+        'mmrpc': mmrpc,
         'userpass': userpass,
         'params': {
           'task_id': taskId,

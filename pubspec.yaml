@@ -7,12 +7,12 @@ description: Multicoin Wallet with DEX gateway
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.7.0+0
+version: 0.8.0+0
 
 publish_to: none
 
 environment:
-  sdk: ">=2.3.0 <3.0.0"
+  sdk: ">=2.8.1 <3.0.0"
 
 # We're using specific (pinned) plugin versions in order to help us review the dependency upgrades.
 # KomodoPlatform plugin upgrades should be created as new branches, with PR into master;
