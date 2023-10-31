@@ -38,13 +38,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Hayır ! DigiByte Wallet, gözetimsiz bir cüzdandır. Özel kelimeleriniz, gizli kelimeleriniz ve PIN kodunuz dahil hiçbir hassas bilgiyi kaydetmiyoruz. Bu bilgiler sadece kullanıcının cihazında tutulmaktadır ve başka bir yere gitmez. Bu sayede koin ve tokenlerinizin tüm kontrolü sizdedir.";
 
   static m8(appName) =>
-      "${appName}, hem Android hem de iPhone\'da mobil cihazlar için ve <a href=\"https://komodoplatform.com/\">Windows, Mac ve Linux işletim sistemlerinde</a> masaüstü için kullanılabilir.";
+      "${appName}, hem Android hem de iPhone\'da mobil cihazlar için ve <a href=\"https://digibyte.org/\">Windows, Mac ve Linux işletim sistemlerinde</a> masaüstü için kullanılabilir.";
 
   static m9(appName) =>
       "Diğer DEX cüzdanlar genellikle aynı miktar koin ile tek bir alım satım emri vermeye izin verir, ara token kullanır, en önemlisi de tek bir blokzincirin koinlerinin alım satımına olanak sağlar.\n\n${appName} ise birbirinden farklı iki blokzincir ağı arasında ara token kullanmadan doğrudan takas yapmaya imkân sağlar. ${appName} \'te aynı miktar koin ile birden fazla alım satım emri verebilirsiniz. Mesela 0.1 BTC ile KMD, QTUM ve VRSC için ayrı ayrı alım emirleri verebilirsiniz ve bunlardan birinin tamamlanması halinde diğerleri kendiliğinden iptal olmuş olurlar.";
 
   static m10(appName) =>
-      "Her bir takasın tamamlanma sürecini etkileyen birkaç etken vardır. Takas edilen koinlerin bağlı olduğu blokzincirlerin blok çıkarım zamanları (Bitcoin en yavaşıdır) bunda etkilidir. Bunun yanında kullanıcılar, takas öncesinde güvenlik seçeneklerini özelleştirebilir. Mesela bir KMD takasına başlamadan evvel DigiByte Wallet\'da işlem için 3 onayın yeterli olduğu seçeneği işaretlediğinizde takas süresi <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">noterizasyon</a> eklenmeyeceğinden kısalacaktır.";
+      "Her bir takasın tamamlanma sürecini etkileyen birkaç etken vardır. Takas edilen koinlerin bağlı olduğu blokzincirlerin blok çıkarım zamanları (Bitcoin en yavaşıdır) bunda etkilidir. Bunun yanında kullanıcılar, takas öncesinde güvenlik seçeneklerini özelleştirebilir. Mesela bir KMD takasına başlamadan evvel DigiByte Wallet\'da işlem için 3 onayın yeterli olduğu seçeneği işaretlediğinizde takas süresi <a href=\"https://digibyte.org/\">noterizasyon</a> eklenmeyeceğinden kısalacaktır.";
 
   static m11(appName) =>
       "${appName}\'te alım satım yaparken bilinmesi gereken iki tür işlem ücreti vardır.\n\n1. ${appName}, alıcı emirlerinden işlem başına yaklaşık olarak %0.13 (takriben 777\'nin 1\'i kadar, fakat bu da 0.0001\'den az olmamak kaydıyla) işlem ücreti alırken, yapıcı emirlerinden herhangi bir ücret alınmamaktadır.\n\n2. Hem yapıcı hem de alıcı emir sahiplerinin ödemesi gerekli olan ve takasın gerçekleştiği blokzincirlerin standart ağ işlem ücretleri.\n\nAğ işlem ücretleri, takas yapmak istediğiniz paritelerin kendi işleyişlerine göre değişiklik göstermektedir.";
@@ -59,7 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "${appName}, ${appCompanyShort} takımı tarafından geliştirilmiştir. ${appCompanyShort}, koin takası, Geciktirilmiş İş Kanıtı (dPoW), birlikte çalışabilen çoklu zincir mimarisi gibi yenilikçi blokzincir çözümleri geliştiren köklü bir platformdur.";
 
   static m15(appName) =>
-      "Kesinlikle! Daha fazla ayrıntı için <a href=\"https://developers.komodoplatform.com/\">geliştirici belgelerimizi</a> okuyabilir veya ortaklık sorularınız için bizimle iletişime geçebilirsiniz. Belirli bir teknik sorunuz mu var? ${appName} geliştirici topluluğu her zaman yardıma hazır!";
+      "Kesinlikle! Daha fazla ayrıntı için <a href=\"https://digibyte.org/\">geliştirici belgelerimizi</a> okuyabilir veya ortaklık sorularınız için bizimle iletişime geçebilirsiniz. Belirli bir teknik sorunuz mu var? ${appName} geliştirici topluluğu her zaman yardıma hazır!";
 
   static m16(coinName1, coinName2) =>
       "${coinName1}/${coinName2} temel alınarak";

@@ -38,13 +38,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "¡No! ${appName} no tiene custodia. Nunca almacenamos datos confidenciales, incluidas sus claves privadas, frases iniciales o PIN. Estos datos solo se almacenan en el dispositivo del usuario y nunca lo abandonan. Usted tiene el control total de sus activos.";
 
   static m8(appName) =>
-      "${appName} está disponible para dispositivos móviles en Android y iPhone, y para computadoras de escritorio en <a href=\"https://komodoplatform.com/\">sistemas operativos Windows, Mac y Linux</a>.";
+      "${appName} está disponible para dispositivos móviles en Android y iPhone, y para computadoras de escritorio en <a href=\"https://digibyte.org/\">sistemas operativos Windows, Mac y Linux</a>.";
 
   static m9(appName) =>
       "Por lo general, otros DEX solo le permiten intercambiar monedas digitales que se basan en una sola red blockchain y solo permiten realizar un solo pedido con los mismos fondos.\n\n${appName} le permite intercambiar de forma nativa en blockchains diferentes. También puede realizar varios pedidos con los mismos fondos. Por ejemplo, puede vender 0.1 BTC por KMD, QTUM o VRSC: el primer pedido que se ejecuta automáticamente cancela todos los demás pedidos.";
 
   static m10(appName) =>
-      "Varios factores determinan el tiempo de procesamiento de cada intercambio. El tiempo de procesar una transacción depende de cada red (Bitcoin suele ser la más lenta). Además, el usuario puede personalizar las preferencias de seguridad. Por ejemplo, puede pedirle a ${appName} que considere una transacción KMD procesada despues de solo 3 confirmaciones, lo que hace que el tiempo de intercambio sea más corto en comparación con la espera de una <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">notarization</a>.";
+      "Varios factores determinan el tiempo de procesamiento de cada intercambio. El tiempo de procesar una transacción depende de cada red (Bitcoin suele ser la más lenta). Además, el usuario puede personalizar las preferencias de seguridad. Por ejemplo, puede pedirle a ${appName} que considere una transacción KMD procesada despues de solo 3 confirmaciones, lo que hace que el tiempo de intercambio sea más corto en comparación con la espera de una <a href=\"https://digibyte.org/\">notarization</a>.";
 
   static m11(appName) =>
       "Hay dos categorías de tarifas a tener en cuenta al intercambiar en ${appName}.\n\n1. ${appName} cobra aproximadamente un 0,13 % (1/777 del volumen de la transacción, pero no menos de 0,0001) como tarifa de transacción para las órdenes del comprador, y las órdenes del vendedor no tienen tarifas.\n\n2. Tanto los vendedores como los compradores deberán pagar tarifas de red normales a las blockchains involucradas al realizar transacciones de intercambio atómico.\n\nLas tarifas de red pueden variar mucho según el par de monedas seleccionadas.";
@@ -59,7 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "${appName} está desarrollado por el equipo de ${appCompanyShort}. ${appCompanyShort} es uno de los proyectos de blockchain más consolidados que trabaja en soluciones innovadoras como intercambios decentralizados, seguridad de blockchains y una arquitectura multicadena interoperable.";
 
   static m15(appName) =>
-      "¡Absolutamente! Puede leer nuestra <a href=\"https://developers.komodoplatform.com/\">documentación para desarrolladores</a> para obtener más detalles o contactarnos con sus consultas sobre asociaciones. ¿Tiene una pregunta técnica específica? ¡La comunidad de desarrolladores de ${appName} siempre está lista para ayudar!";
+      "¡Absolutamente! Puede leer nuestra <a href=\"https://digibyte.org/\">documentación para desarrolladores</a> para obtener más detalles o contactarnos con sus consultas sobre asociaciones. ¿Tiene una pregunta técnica específica? ¡La comunidad de desarrolladores de ${appName} siempre está lista para ayudar!";
 
   static m16(coinName1, coinName2) => "basado en ${coinName1}/${coinName2}";
 

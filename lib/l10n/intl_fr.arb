@@ -503,7 +503,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "answer_3": "Plusieurs facteurs déterminent le temps de traitement de chaque échange. Le temps de blocage des actifs échangés dépend de chaque réseau (Bitcoin étant généralement le plus lent). De plus, l'utilisateur peut personnaliser les préférences de sécurité. Par exemple, vous pouvez demander à {appName} de considérer une transaction KMD comme finale après seulement 3 confirmations, ce qui raccourcit le temps d'échange par rapport à l'attente d'une <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">notarisation</a>.",
+    "answer_3": "Plusieurs facteurs déterminent le temps de traitement de chaque échange. Le temps de blocage des actifs échangés dépend de chaque réseau (Bitcoin étant généralement le plus lent). De plus, l'utilisateur peut personnaliser les préférences de sécurité. Par exemple, vous pouvez demander à {appName} de considérer une transaction KMD comme finale après seulement 3 confirmations, ce qui raccourcit le temps d'échange par rapport à l'attente d'une <a href=\"https://digibyte.org/\">notarisation</a>.",
     "@answer_3": {
         "type": "text",
         "placeholders_order": [
@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "Absolument! Vous pouvez lire notre <a href=\"https://developers.komodoplatform.com/\">documentation pour les développeurs</a> pour plus de détails ou nous contacter pour vos demandes de partenariat. Vous avez une question technique spécifique ? La communauté de développeurs {appName} est toujours prête à vous aider !",
+    "answer_9": "Absolument! Vous pouvez lire notre <a href=\"https://digibyte.org/\">documentation pour les développeurs</a> pour plus de détails ou nous contacter pour vos demandes de partenariat. Vous avez une question technique spécifique ? La communauté de développeurs {appName} est toujours prête à vous aider !",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [
@@ -635,7 +635,7 @@
             "appName": {}
         }
     },
-    "answer_10": "{appName} est disponible pour mobile sur Android et iPhone, et pour ordinateur sur <a href=\"https://komodoplatform.com/\">systèmes d'exploitation Windows, Mac et Linux</a>.",
+    "answer_10": "{appName} est disponible pour mobile sur Android et iPhone, et pour ordinateur sur <a href=\"https://digibyte.org/\">systèmes d'exploitation Windows, Mac et Linux</a>.",
     "@answer_10": {
         "type": "text",
         "placeholders_order": [

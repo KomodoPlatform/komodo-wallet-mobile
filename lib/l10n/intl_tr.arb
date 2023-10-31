@@ -503,7 +503,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "answer_3": "Her bir takasın tamamlanma sürecini etkileyen birkaç etken vardır. Takas edilen koinlerin bağlı olduğu blokzincirlerin blok çıkarım zamanları (Bitcoin en yavaşıdır) bunda etkilidir. Bunun yanında kullanıcılar, takas öncesinde güvenlik seçeneklerini özelleştirebilir. Mesela bir KMD takasına başlamadan evvel DigiByte Wallet'da işlem için 3 onayın yeterli olduğu seçeneği işaretlediğinizde takas süresi <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">noterizasyon</a> eklenmeyeceğinden kısalacaktır.",
+    "answer_3": "Her bir takasın tamamlanma sürecini etkileyen birkaç etken vardır. Takas edilen koinlerin bağlı olduğu blokzincirlerin blok çıkarım zamanları (Bitcoin en yavaşıdır) bunda etkilidir. Bunun yanında kullanıcılar, takas öncesinde güvenlik seçeneklerini özelleştirebilir. Mesela bir KMD takasına başlamadan evvel DigiByte Wallet'da işlem için 3 onayın yeterli olduğu seçeneği işaretlediğinizde takas süresi <a href=\"https://digibyte.org/\">noterizasyon</a> eklenmeyeceğinden kısalacaktır.",
     "@answer_3": {
         "type": "text",
         "placeholders_order": [
@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "Kesinlikle! Daha fazla ayrıntı için <a href=\"https://developers.komodoplatform.com/\">geliştirici belgelerimizi</a> okuyabilir veya ortaklık sorularınız için bizimle iletişime geçebilirsiniz. Belirli bir teknik sorunuz mu var? {appName} geliştirici topluluğu her zaman yardıma hazır!",
+    "answer_9": "Kesinlikle! Daha fazla ayrıntı için <a href=\"https://digibyte.org/\">geliştirici belgelerimizi</a> okuyabilir veya ortaklık sorularınız için bizimle iletişime geçebilirsiniz. Belirli bir teknik sorunuz mu var? {appName} geliştirici topluluğu her zaman yardıma hazır!",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [
@@ -635,7 +635,7 @@
             "appName": {}
         }
     },
-    "answer_10": "{appName}, hem Android hem de iPhone'da mobil cihazlar için ve <a href=\"https://komodoplatform.com/\">Windows, Mac ve Linux işletim sistemlerinde</a> masaüstü için kullanılabilir.",
+    "answer_10": "{appName}, hem Android hem de iPhone'da mobil cihazlar için ve <a href=\"https://digibyte.org/\">Windows, Mac ve Linux işletim sistemlerinde</a> masaüstü için kullanılabilir.",
     "@answer_10": {
         "type": "text",
         "placeholders_order": [

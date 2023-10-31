@@ -503,7 +503,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "answer_3": "各スワップの処理時間は、いくつかの要因によって決まります。取引された資産のブロック時間は、各ネットワークによって異なります (通常、ビットコインが最も遅いです)。さらに、ユーザーはセキュリティ設定をカスタマイズできます。たとえば、{appName} に、わずか 3 回の確認後に KMD トランザクションを最終と見なすように依頼できます。これにより、<a href=\"https://komodoplatform.com/security-delayed-proof- of-work-dpow/\">公証</a>。",
+    "answer_3": "各スワップの処理時間は、いくつかの要因によって決まります。取引された資産のブロック時間は、各ネットワークによって異なります (通常、ビットコインが最も遅いです)。さらに、ユーザーはセキュリティ設定をカスタマイズできます。たとえば、{appName} に、わずか 3 回の確認後に KMD トランザクションを最終と見なすように依頼できます。これにより、<a href=\"https://digibyte.org/\">公証</a>。",
     "@answer_3": {
         "type": "text",
         "placeholders_order": [
@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "絶対！詳細については、<a href=\"https://developers.komodoplatform.com/\">開発者向けドキュメント</a>をご覧いただくか、パートナーシップに関するお問い合わせでご連絡ください。特定の技術的な質問がありますか? {appName} 開発者コミュニティはいつでもお手伝いいたします。",
+    "answer_9": "絶対！詳細については、<a href=\"https://digibyte.org/\">開発者向けドキュメント</a>をご覧いただくか、パートナーシップに関するお問い合わせでご連絡ください。特定の技術的な質問がありますか? {appName} 開発者コミュニティはいつでもお手伝いいたします。",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [
@@ -635,7 +635,7 @@
             "appName": {}
         }
     },
-    "answer_10": "{appName} は、モバイルでは Android と iPhone の両方で利用でき、デスクトップでは <a href=\"https://komodoplatform.com/\">Windows、Mac、Linux オペレーティング システム</a> で利用できます。",
+    "answer_10": "{appName} は、モバイルでは Android と iPhone の両方で利用でき、デスクトップでは <a href=\"https://digibyte.org/\">Windows、Mac、Linux オペレーティング システム</a> で利用できます。",
     "@answer_10": {
         "type": "text",
         "placeholders_order": [

@@ -238,9 +238,7 @@ class AppLocalizations {
       ' customize security preferences. For example, you can ask $appName'
       ' to consider a KMD transaction as final after just 3 confirmations'
       ' which makes the swap time shorter compared to waiting'
-      ' for a <a href="'
-      'https://komodoplatform.com/security-delayed-proof-of-work-dpow/'
-      '">notarization</a>.',
+      ' for a notarization.',
       name: 'answer_3',
       args: [appName]);
   String get question_4 =>
@@ -302,8 +300,7 @@ class AppLocalizations {
       args: [appName]);
   String answer_9(String appName) => Intl.message(
       'Absolutely! You can read our'
-      ' <a href="https://developers.komodoplatform.com/">'
-      'developer documentation</a> for more'
+      'developer documentation for more'
       ' details or contact us with your partnership inquiries. Have a specific'
       ' technical question? The $appName developer community'
       ' is always ready to help!',
@@ -314,7 +311,7 @@ class AppLocalizations {
           name: 'question_10', args: [appName]);
   String answer_10(String appName) => Intl.message(
       '$appName is available for mobile on both Android and iPhone,'
-      ' and for desktop on <a href="https://komodoplatform.com/">'
+      ' and for desktop on <a href="https://digibyte.org/">'
       'Windows, Mac, and Linux operating systems</a>.',
       name: 'answer_10',
       args: [appName]);
