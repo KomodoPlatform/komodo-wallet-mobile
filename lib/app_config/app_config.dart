@@ -48,8 +48,8 @@ class AppConfig {
   String get appCompanyLong => 'DigiByte';
   String get appCompanyShort => 'DigiByte';
 
-  List<String> get defaultCoins => ['KMD', 'BTC'];
-  List<String> get coinsFiat => ['BTC', 'KMD'];
+  List<String> get defaultCoins => ['DGB', 'BTC', 'KMD'];
+  List<String> get coinsFiat => ['BTC', 'DGB'];
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
         'ATOM',
