@@ -158,12 +158,12 @@ class AppConfig {
   // support channels (showed on help page)
   List<SupportChannel> supportChannels = [
     SupportChannel(
-      title: 'DISCORD',
-      subtitle: 'Komodo #support',
-      link: 'https://komodoplatform.com/discord',
+      title: 'COMMUNITY',
+      subtitle: 'Community #support',
+      link: 'https://www.digibyte.org/en-us/#community',
       icon: SizedBox(
         width: 60,
-        child: Image.asset('assets/discord_logo.png'),
+        child: Image.asset('assets/branding/logo_app.png'),
       ),
     ),
   ];
@@ -173,7 +173,7 @@ class AppConfig {
   bool get isFeedEnabled => true;
   String get feedProviderSourceUrl => 'https://komodo.earth/messages';
   NewsSource get defaultNewsSource => NewsSource(
-        name: 'Komodo #official-news',
+        name: 'DigiByte #official-news',
         url:
             'https://discord.com/channels/412898016371015680/412915799251222539',
         pic:
