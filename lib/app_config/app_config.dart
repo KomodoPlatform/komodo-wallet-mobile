@@ -44,7 +44,7 @@ class AppConfig {
 
   // Brand config below
 
-  String get appName => 'Komodo Wallet';
+  String get appName => 'DigiByte Wallet';
   String get appCompanyLong => 'DigiByte';
   String get appCompanyShort => 'Komodo';
 
