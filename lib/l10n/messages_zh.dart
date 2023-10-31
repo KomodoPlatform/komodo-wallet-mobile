@@ -360,8 +360,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "batterySavingWarning": MessageLookupByLibrary.simpleMessage(
             "您的手机处于省电模式。请停用此模式或不要将应用程序置于后台，否则，应用程序可能会被系统自动清除，导致交换失败。"),
         "bestAvailableRate": MessageLookupByLibrary.simpleMessage("兑换率"),
-        "builtKomodo": MessageLookupByLibrary.simpleMessage("基于Komodo"),
-        "builtOnKmd": MessageLookupByLibrary.simpleMessage("基于Komodo"),
+        "builtDigiByte": MessageLookupByLibrary.simpleMessage("基于DigiByte"),
+        "builtOnKmd": MessageLookupByLibrary.simpleMessage("基于DigiByte"),
         "buy": MessageLookupByLibrary.simpleMessage("买入"),
         "buyOrderType": MessageLookupByLibrary.simpleMessage("如果不匹配，则转为挂单"),
         "buySuccessWaiting": MessageLookupByLibrary.simpleMessage("交换已发起，请等待!"),
@@ -485,7 +485,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning":
             MessageLookupByLibrary.simpleMessage("选择定制费用前务必明确知晓自己的行为"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW安全"),
+        "dPow": MessageLookupByLibrary.simpleMessage("DigiByte dPoW安全"),
         "date": MessageLookupByLibrary.simpleMessage("日期"),
         "decryptingWallet": MessageLookupByLibrary.simpleMessage("钱包解密中"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
@@ -941,7 +941,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseRestart":
             MessageLookupByLibrary.simpleMessage("请重启应用程序后重试，或按下面的按钮。"),
         "portfolio": MessageLookupByLibrary.simpleMessage("投资组合"),
-        "poweredOnKmd": MessageLookupByLibrary.simpleMessage("由Komodo支持"),
+        "poweredOnKmd": MessageLookupByLibrary.simpleMessage("由DigiByte支持"),
         "price": MessageLookupByLibrary.simpleMessage("价格"),
         "privateKey": MessageLookupByLibrary.simpleMessage("私钥"),
         "privateKeys": MessageLookupByLibrary.simpleMessage("私钥"),

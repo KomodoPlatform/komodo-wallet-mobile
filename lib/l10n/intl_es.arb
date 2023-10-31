@@ -2313,8 +2313,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Construido en Komodo",
-    "@builtKomodo": {
+    "builtDigiByte": "Construido en DigiByte",
+    "@builtDigiByte": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2817,13 +2817,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Construido en Komodo",
+    "builtOnKmd": "Construido en DigiByte",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Desarrollado por Komodo",
+    "poweredOnKmd": "Desarrollado por DigiByte",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4099,7 +4099,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Seguridad de Komodo dPoW",
+    "dPow": "Seguridad de DigiByte dPoW",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

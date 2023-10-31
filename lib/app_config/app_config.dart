@@ -46,7 +46,7 @@ class AppConfig {
 
   String get appName => 'DigiByte Wallet';
   String get appCompanyLong => 'DigiByte';
-  String get appCompanyShort => 'Komodo';
+  String get appCompanyShort => 'DigiByte';
 
   List<String> get defaultCoins => ['KMD', 'BTC'];
   List<String> get coinsFiat => ['BTC', 'KMD'];

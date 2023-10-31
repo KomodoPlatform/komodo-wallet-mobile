@@ -392,10 +392,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Ваш телефон у режимі економії заряду аккумулятора. Будь-ласка, вимкніть цей режим або НЕ переводьте програму у фоновий режим, інакше програма може бути закрита ОС і заміна не вдасться."),
         "bestAvailableRate":
             MessageLookupByLibrary.simpleMessage("Курс обміну валют"),
-        "builtKomodo":
-            MessageLookupByLibrary.simpleMessage("Побудовано в Komodo"),
+        "builtDigiByte":
+            MessageLookupByLibrary.simpleMessage("Побудовано в DigiByte"),
         "builtOnKmd":
-            MessageLookupByLibrary.simpleMessage("Побудовано в Komodo"),
+            MessageLookupByLibrary.simpleMessage("Побудовано в DigiByte"),
         "buy": MessageLookupByLibrary.simpleMessage("Купити"),
         "buyOrderType": MessageLookupByLibrary.simpleMessage(
             "Перетворити на Адресант (Maker), якщо не збігається"),
@@ -562,7 +562,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "Використовуйте довільні комісії, лише якщо знаєте, що робите!"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Безпека Komodo dPoW"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Безпека DigiByte dPoW"),
         "date": MessageLookupByLibrary.simpleMessage("Дата"),
         "decryptingWallet":
             MessageLookupByLibrary.simpleMessage("Розшифровка гаманця"),
@@ -1164,7 +1164,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Перезапустіть додаток, щоб повторити спробу, або натисніть кнопку нижче."),
         "portfolio": MessageLookupByLibrary.simpleMessage("Портфоліо"),
         "poweredOnKmd":
-            MessageLookupByLibrary.simpleMessage("Powered by Komodo"),
+            MessageLookupByLibrary.simpleMessage("Powered by DigiByte"),
         "price": MessageLookupByLibrary.simpleMessage("ціна"),
         "privateKey": MessageLookupByLibrary.simpleMessage("Приватний ключ"),
         "privateKeys": MessageLookupByLibrary.simpleMessage("Приватні ключі"),

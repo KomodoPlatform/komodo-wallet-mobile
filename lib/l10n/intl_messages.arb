@@ -2346,8 +2346,8 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "builtKomodo": "Built on Komodo",
-  "@builtKomodo": {
+  "builtDigiByte": "Built on DigiByte",
+  "@builtDigiByte": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -2850,13 +2850,13 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "builtOnKmd": "Built on Komodo",
+  "builtOnKmd": "Built on DigiByte",
   "@builtOnKmd": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "poweredOnKmd": "Powered by Komodo",
+  "poweredOnKmd": "Powered by DigiByte",
   "@poweredOnKmd": {
     "type": "text",
     "placeholders_order": [],
@@ -4142,7 +4142,7 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "dPow": "Komodo dPoW security",
+  "dPow": "DigiByte dPoW security",
   "@dPow": {
     "type": "text",
     "placeholders_order": [],

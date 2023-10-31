@@ -2345,8 +2345,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Побудовано в Komodo",
-    "@builtKomodo": {
+    "builtDigiByte": "Побудовано в DigiByte",
+    "@builtDigiByte": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2849,13 +2849,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Побудовано в Komodo",
+    "builtOnKmd": "Побудовано в DigiByte",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Powered by Komodo",
+    "poweredOnKmd": "Powered by DigiByte",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4119,7 +4119,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Безпека Komodo dPoW",
+    "dPow": "Безпека DigiByte dPoW",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

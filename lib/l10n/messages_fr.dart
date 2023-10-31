@@ -408,8 +408,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Votre téléphone est en mode d\'économie de batterie. Veuillez désactiver ce mode ou ne PAS mettre l\'application en arrière-plan, sinon l\'application pourrait être tuée par le système d\'exploitation et l\'échange échouerait."),
         "bestAvailableRate":
             MessageLookupByLibrary.simpleMessage("Meilleur tarif disponible"),
-        "builtKomodo": MessageLookupByLibrary.simpleMessage("Conçu sur Komodo"),
-        "builtOnKmd": MessageLookupByLibrary.simpleMessage("Conçu sur Komodo"),
+        "builtDigiByte":
+            MessageLookupByLibrary.simpleMessage("Conçu sur DigiByte"),
+        "builtOnKmd":
+            MessageLookupByLibrary.simpleMessage("Conçu sur DigiByte"),
         "buy": MessageLookupByLibrary.simpleMessage("Acheter"),
         "buyOrderType": MessageLookupByLibrary.simpleMessage(
             "Convertir en Maker s\'il n\'y a pas de correspondance"),
@@ -570,7 +572,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "N\'utiliser les frais personnalisés que si vous savez ce que vous faite!"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo sécurité dPoW"),
+        "dPow": MessageLookupByLibrary.simpleMessage("DigiByte sécurité dPoW"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "decryptingWallet": MessageLookupByLibrary.simpleMessage(
             "Décryptage du portefeuille..."),
@@ -1167,7 +1169,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Veuillez redémarrer l\'application pour réessayer, ou appuyer sur le bouton ci-dessous."),
         "portfolio": MessageLookupByLibrary.simpleMessage("Portfolio"),
         "poweredOnKmd":
-            MessageLookupByLibrary.simpleMessage("Propulsé par Komodo"),
+            MessageLookupByLibrary.simpleMessage("Propulsé par DigiByte"),
         "price": MessageLookupByLibrary.simpleMessage("prix"),
         "privateKey": MessageLookupByLibrary.simpleMessage("Clé privée"),
         "privateKeys": MessageLookupByLibrary.simpleMessage("Clés privées"),
