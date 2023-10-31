@@ -6,7 +6,7 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/komodoplatform/atomicdex-mobile)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/komodoplatform/atomicdex-mobile)
 ![GitHub repo size](https://img.shields.io/github/repo-size/komodoplatform/atomicdex-mobile)
-![Twitter Follow](https://img.shields.io/twitter/follow/komodoplatform?style=social)
+![Twitter Follow](https://img.shields.io/twitter/follow/DigiByteCoin?style=social)
 
 Welcome to the DigiByte Wallet open-source repository! This cutting-edge project is brought to you by DigiByte, providing a mighty non-custodial wallet and decentralised exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with DigiByte Wallet!
 
