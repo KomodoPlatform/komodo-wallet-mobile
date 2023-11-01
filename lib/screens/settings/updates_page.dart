@@ -125,7 +125,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
                               ? launchURL(
                                   'https://testflight.apple.com/join/c2mOLEoC')
                               : launchURL(
-                                  'https://play.google.com/store/apps/details?id=com.digibyte.atomicdex');
+                                  'https://play.google.com/store/apps/details?id=io.digibyte.dex');
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Theme.of(context).dialogBackgroundColor,
