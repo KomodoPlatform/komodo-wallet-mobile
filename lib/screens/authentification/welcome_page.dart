@@ -54,8 +54,6 @@ class _WelcomePageState extends State<WelcomePage> {
                     .subtitle1
                     .copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
-              Text(AppLocalizations.of(context).welcomeWallet,
-                  style: Theme.of(context).textTheme.subtitle1),
             ],
           ),
           SizedBox(height: 24),
