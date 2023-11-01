@@ -254,8 +254,8 @@ class _CoinsPageState extends State<CoinsPage> {
         .clamp(0.0, 1.0);
 
     final colors = [
-      Color.fromRGBO(98, 90, 229, 1),
-      Color.fromRGBO(45, 184, 240, 1),
+      Color.fromRGBO(38, 104, 197, 1),
+      Color.fromRGBO(57, 161, 238, 1),
     ].map((color) => color.withOpacity((1 - progress).clamp(0.2, 1))).toList();
 
     return LinearGradient(
