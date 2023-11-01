@@ -170,7 +170,7 @@ class AppConfig {
 
   // endpoint source code:
   // https://github.com/KomodoPlatform/discord_feed_parser
-  bool get isFeedEnabled => true;
+  bool get isFeedEnabled => false;
   String get feedProviderSourceUrl => 'https://komodo.earth/messages';
   NewsSource get defaultNewsSource => NewsSource(
         name: 'DigiByte #official-news',
