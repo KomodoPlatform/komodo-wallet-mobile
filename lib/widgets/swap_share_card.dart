@@ -227,8 +227,7 @@ class SwapShareCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
                         child: GestureDetector(
-                          onTap: () =>
-                              launchUrlString('https://komodoplatform.com'),
+                          onTap: () => launchUrlString('https://digibyte.org'),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -240,7 +239,7 @@ class SwapShareCard extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               const Text(
-                                'Download Komodo Wallet on komodoplatform.com',
+                                'Download DigiByte Wallet on digibyte.org',
                                 style: TextStyle(fontSize: 6),
                               ),
                             ],

@@ -44,12 +44,12 @@ class AppConfig {
 
   // Brand config below
 
-  String get appName => 'Komodo Wallet';
-  String get appCompanyLong => 'Komodo Platform';
-  String get appCompanyShort => 'Komodo';
+  String get appName => 'DigiByte Wallet';
+  String get appCompanyLong => 'DigiByte';
+  String get appCompanyShort => 'DigiByte';
 
-  List<String> get defaultCoins => ['KMD', 'BTC'];
-  List<String> get coinsFiat => ['BTC', 'KMD'];
+  List<String> get defaultCoins => ['DGB', 'BTC', 'KMD'];
+  List<String> get coinsFiat => ['BTC', 'DGB'];
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
         'ATOM',
@@ -158,22 +158,22 @@ class AppConfig {
   // support channels (showed on help page)
   List<SupportChannel> supportChannels = [
     SupportChannel(
-      title: 'DISCORD',
-      subtitle: 'Komodo #support',
-      link: 'https://komodoplatform.com/discord',
+      title: 'COMMUNITY',
+      subtitle: 'Community #support',
+      link: 'https://www.digibyte.org/en-us/#community',
       icon: SizedBox(
         width: 60,
-        child: Image.asset('assets/discord_logo.png'),
+        child: Image.asset('assets/branding/logo_app.png'),
       ),
     ),
   ];
 
   // endpoint source code:
   // https://github.com/KomodoPlatform/discord_feed_parser
-  bool get isFeedEnabled => true;
+  bool get isFeedEnabled => false;
   String get feedProviderSourceUrl => 'https://komodo.earth/messages';
   NewsSource get defaultNewsSource => NewsSource(
-        name: 'Komodo #official-news',
+        name: 'DigiByte #official-news',
         url:
             'https://discord.com/channels/412898016371015680/412915799251222539',
         pic:

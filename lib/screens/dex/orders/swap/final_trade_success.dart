@@ -164,8 +164,8 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
     final otherCoin = myInfo['otherCoin'];
 
     final shareText = "I've just atomic swapped $myCoin/$otherCoin"
-        ' on my phone! You can try it too: https://komodoplatform.com\n'
-        '#blockchain #dex #atomicdex #komodoplatform #atomicswap';
+        ' on my phone! You can try it too: https://digibyte.org\n'
+        '#blockchain #dex #atomicdex #digibyte #atomicswap';
 
     await Share.shareFiles(
       [imgFile.path],
