@@ -36,7 +36,7 @@ We've made this repository public to showcase the incredible potential of the Di
 Embrace financial freedom at your fingertips by downloading the DigiByte Wallet:
 
 - [iOS](https://testflight.apple.com/join/c2mOLEoC)
-- [Android](https://play.google.com/store/apps/details?id=io.digibyte.dex)
+- [Android](https://play.google.com/store/apps/details?id=com.komodoplatform.atomicdex)
 
 ## Get Involved 🤝
 We welcome developers, designers, and testers' contributions to our open-source project. If you'd like to contribute, please review the [contribution guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
@@ -97,7 +97,7 @@ See [our wiki](https://github.com/KomodoPlatform/atomicdex-mobile/wiki/Project-S
 
 ## Accessing the database
 
-    adb exec-out run-as io.digibyte.dex cat /data/data/io.digibyte.dex/app_flutter/AtomicDEX.db > AtomicDEX.db
+    adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
     sqlite3 AtomicDEX.db
 
 ## Localization
