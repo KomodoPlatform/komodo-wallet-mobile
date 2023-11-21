@@ -7,7 +7,7 @@ import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list
 import 'package:komodo_dex/utils/log_storage.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../app_config/app_config.dart';
 import '../../blocs/authenticate_bloc.dart';
@@ -556,45 +556,8 @@ class _SettingPageState extends State<SettingPage> {
 
   Future<void> _shareLogs() async {
     Navigator.of(context).pop();
-    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    final String os = Platform.isAndroid ? 'Android' : 'iOS';
 
-    final now = DateTime.now();
-    // final log =  FileAndSink(_logStorage.getLogFilePath(now));
-    if (swapMonitor.swaps.isEmpty) await swapMonitor.update();
-    try {
-      await Log.appendRawLog('\n\n--- my recent swaps ---\n\n');
-      for (Swap swap in swapMonitor.swaps) {
-        final started = swap.started;
-        if (started == null) continue;
-        final tim = DateTime.fromMillisecondsSinceEpoch(started.timestamp);
-        final delta = now.difference(tim);
-        if (delta.inDays > 7) continue; // Skip old swaps.
-        await Log.appendRawLog(json.encode(swap.toJson) + '\n\n');
-      }
-      await Log.appendRawLog('\n\n--- / my recent swaps ---\n\n');
-      // TBD: Replace these with a pretty-printed metrics JSON
-      await Log.appendRawLog('Komodo Wallet ${packageInfo.version} $os\n');
-      await Log.appendRawLog(
-          'mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
-      await Log.appendRawLog('netid ${mmSe.netid}\n');
-    } catch (ex) {
-      Log('setting_page:723', ex);
-      await Log.appendRawLog('Error saving swaps for log export: $ex');
-    }
-
-    // Discord attachment size limit is about 25 MiB
-    final exportedLogFiles = await LogStorage().exportLogs();
-
-    final paths = exportedLogFiles.map((f) => f.path).toList();
-
-    mainBloc.isUrlLaucherIsOpen = true;
-
-    await Share.shareFiles(
-      paths,
-      // mimeTypes: ['application/octet-stream'],
-      subject: 'Komodo Wallet at ${DateTime.now().toIso8601String()}',
-    );
+    Log.downloadLogs().ignore();
   }
 
   Future<void> _shareFileDialog() async {
