@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Komodo Wallet</string>
+	<string>Gleec Wallet</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,7 +27,7 @@
 		<string>uk</string>
 	</array>
 	<key>CFBundleName</key>
-	<string>komodo_dex</string>
+	<string>gleec_dex</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -40,7 +40,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>com.komodoplatform.atomicdex.kmd</string>
+			<string>com.gleec.gleecdex.gleec</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>bitcoin</string>
@@ -50,7 +50,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>com.komodoplatform.atomicdex.kmd</string>
+			<string>com.gleec.gleecdex.gleec</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>ethereum</string>

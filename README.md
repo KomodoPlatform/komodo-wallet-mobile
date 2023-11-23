@@ -35,7 +35,7 @@ We've made this repository public to showcase the incredible potential of the Ko
 Embrace financial freedom at your fingertips by downloading the Gleec Wallet:
 
 - [iOS](https://testflight.apple.com/join/c2mOLEoC)
-- [Android](https://play.google.com/store/apps/details?id=com.komodoplatform.atomicdex)
+- [Android](https://play.google.com/store/apps/details?id=com.gleec.gleecdex)
 
 ## Get Involved 🤝
 We welcome developers, designers, and testers' contributions to our open-source project. If you'd like to contribute, please review the [contribution guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
@@ -96,7 +96,7 @@ See [our wiki](https://github.com/KomodoPlatform/atomicdex-mobile/wiki/Project-S
 
 ## Accessing the database
 
-    adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
+    adb exec-out run-as com.gleec.gleecdex cat /data/data/com.gleec.gleecdex/app_flutter/AtomicDEX.db > AtomicDEX.db
     sqlite3 AtomicDEX.db
 
 ## Localization
