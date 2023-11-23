@@ -503,7 +503,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "answer_3": "Mehrere Faktoren bestimmen die Bearbeitungszeit für einen Swap. Die Blockzeit der gehandelten Assets hängt vom jeweiligen Netzwerk ab (Bitcoin ist normalerweise das langsamste). Außerdem kann der Benutzer die Sicherheitseinstellungen anpassen. Zum Beispiel (können Sie {appName} bitten, eine KMD-Transaktion nach nur 3 Bestätigungen als endgültig zu betrachten, wodurch die Swap-Zeit kürzer wird als beim Warten auf eine <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">Beglaubigung</a>",
+    "answer_3": "Mehrere Faktoren bestimmen die Bearbeitungszeit für einen Swap. Die Blockzeit der gehandelten Assets hängt vom jeweiligen Netzwerk ab (Bitcoin ist normalerweise das langsamste). Außerdem kann der Benutzer die Sicherheitseinstellungen anpassen. Zum Beispiel (können Sie {appName} bitten, eine KMD-Transaktion nach nur 3 Bestätigungen als endgültig zu betrachten, wodurch die Swap-Zeit kürzer wird als beim Warten auf eine <a href=\"https://gleec.com/\">Beglaubigung</a>",
     "@answer_3": {
         "type": "text",
         "placeholders_order": [
@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "Absolut! Weitere Informationen finden Sie in unserer <a href=\"https://developers.komodoplatform.com/\">Entwicklerdokumentation</a> oder kontaktieren Sie uns mit Ihren Partnerschaftsanfragen. Haben Sie eine spezielle technische Frage? Die {appName}-Entwickler-Community ist immer bereit zu helfen!",
+    "answer_9": "Absolut! Weitere Informationen finden Sie in unserer <a href=\"https://gleec.com/\">Entwicklerdokumentation</a> oder kontaktieren Sie uns mit Ihren Partnerschaftsanfragen. Haben Sie eine spezielle technische Frage? Die {appName}-Entwickler-Community ist immer bereit zu helfen!",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [
@@ -635,7 +635,7 @@
             "appName": {}
         }
     },
-    "answer_10": "{appName} ist für Mobilgeräte auf Android und iPhone sowie für Desktops auf <a href=\"https://komodoplatform.com/\">Windows-, Mac- und Linux-Betriebssystemen</a> verfügbar.",
+    "answer_10": "{appName} ist für Mobilgeräte auf Android und iPhone sowie für Desktops auf <a href=\"https://gleec.com/\">Windows-, Mac- und Linux-Betriebssystemen</a> verfügbar.",
     "@answer_10": {
         "type": "text",
         "placeholders_order": [
