@@ -487,7 +487,7 @@
             "appName": {}
         }
     },
-    "answer_2": "Bei anderen DEXs können Sie im Allgemeinen nur Assets handeln, die auf einem einzigen Blockchain-Netzwerk basieren, Proxy-Token verwenden und nur einen einzigen Auftrag mit denselben Geldmitteln aufgeben.\n\n{appName} ermöglicht Ihnen den nativen Handel über zwei verschiedene Blockchain-Netzwerke ohne Proxy-Tokens. Sie können auch mehrere Aufträge mit demselben Guthaben platzieren. Sie können zum Beispiel 0,1 BTC für KMD, QTUM oder VRSC verkaufen - der erste Auftrag, der ausgeführt wird, storniert automatisch alle anderen Aufträge.",
+    "answer_2": "Bei anderen DEXs können Sie im Allgemeinen nur Assets handeln, die auf einem einzigen Blockchain-Netzwerk basieren, Proxy-Token verwenden und nur einen einzigen Auftrag mit denselben Geldmitteln aufgeben.\n\n{appName} ermöglicht Ihnen den nativen Handel über zwei verschiedene Blockchain-Netzwerke ohne Proxy-Tokens. Sie können auch mehrere Aufträge mit demselben Guthaben platzieren. Sie können zum Beispiel 0,1 BTC für GLEEC, QTUM oder VRSC verkaufen - der erste Auftrag, der ausgeführt wird, storniert automatisch alle anderen Aufträge.",
     "@answer_2": {
         "type": "text",
         "placeholders_order": [
@@ -503,7 +503,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "answer_3": "Mehrere Faktoren bestimmen die Bearbeitungszeit für einen Swap. Die Blockzeit der gehandelten Assets hängt vom jeweiligen Netzwerk ab (Bitcoin ist normalerweise das langsamste). Außerdem kann der Benutzer die Sicherheitseinstellungen anpassen. Zum Beispiel (können Sie {appName} bitten, eine KMD-Transaktion nach nur 3 Bestätigungen als endgültig zu betrachten, wodurch die Swap-Zeit kürzer wird als beim Warten auf eine <a href=\"https://gleec.com/\">Beglaubigung</a>",
+    "answer_3": "Mehrere Faktoren bestimmen die Bearbeitungszeit für einen Swap. Die Blockzeit der gehandelten Assets hängt vom jeweiligen Netzwerk ab (Bitcoin ist normalerweise das langsamste). Außerdem kann der Benutzer die Sicherheitseinstellungen anpassen. Zum Beispiel (können Sie {appName} bitten, eine GLEEC-Transaktion nach nur 3 Bestätigungen als endgültig zu betrachten, wodurch die Swap-Zeit kürzer wird als beim Warten auf eine <a href=\"https://gleec.com/\">Beglaubigung</a>",
     "@answer_3": {
         "type": "text",
         "placeholders_order": [
