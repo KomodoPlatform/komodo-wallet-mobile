@@ -1200,7 +1200,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "question_8": m90,
         "question_9": m91,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
-            "Ez egy új korszak! Hivatalosan megváltoztattuk a nevünket „AtomicDEX”-ről „Komodo Wallet”-ra"),
+            "Ez egy új korszak! Hivatalosan megváltoztattuk a nevünket „AtomicDEX”-ről „Gleec Wallet”-ra"),
         "receive": MessageLookupByLibrary.simpleMessage("FOGAD"),
         "receiveLower": MessageLookupByLibrary.simpleMessage("Fogad"),
         "recommendSeedMessage": MessageLookupByLibrary.simpleMessage(

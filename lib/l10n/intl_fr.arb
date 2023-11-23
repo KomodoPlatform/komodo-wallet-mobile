@@ -37,7 +37,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "welcomeInfo": "Komodo Wallet est un portefeuille multi crypto-monnaies de nouvelle génération doté de la fonctionnalité DEX native de troisième génération et encore bien plus.",
+    "welcomeInfo": "Gleec Wallet est un portefeuille multi crypto-monnaies de nouvelle génération doté de la fonctionnalité DEX native de troisième génération et encore bien plus.",
     "@welcomeInfo": {
         "type": "text",
         "placeholders_order": [
@@ -5449,7 +5449,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "rebrandingAnnouncement": "C'est une nouvelle ère ! Nous avons officiellement changé notre nom de 'AtomicDEX' en 'Komodo Wallet'",
+    "rebrandingAnnouncement": "C'est une nouvelle ère ! Nous avons officiellement changé notre nom de 'AtomicDEX' en 'Gleec Wallet'",
     "@rebrandingAnnouncement": {
         "type": "text",
         "placeholders_order": [],

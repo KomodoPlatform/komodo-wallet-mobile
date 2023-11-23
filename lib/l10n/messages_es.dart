@@ -1175,7 +1175,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "question_8": m90,
         "question_9": m91,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
-            "¡Es una nueva era! Hemos cambiado oficialmente nuestro nombre de \'AtomicDEX\' a \'Komodo Wallet\'"),
+            "¡Es una nueva era! Hemos cambiado oficialmente nuestro nombre de \'AtomicDEX\' a \'Gleec Wallet\'"),
         "receive": MessageLookupByLibrary.simpleMessage("RECIBIR"),
         "receiveLower": MessageLookupByLibrary.simpleMessage("Recibir"),
         "recommendSeedMessage": MessageLookupByLibrary.simpleMessage(

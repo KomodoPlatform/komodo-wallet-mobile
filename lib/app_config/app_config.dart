@@ -44,7 +44,7 @@ class AppConfig {
 
   // Brand config below
 
-  String get appName => 'Komodo Wallet';
+  String get appName => 'Gleec Wallet';
   String get appCompanyLong => 'Gleec';
   String get appCompanyShort => 'Komodo';
 

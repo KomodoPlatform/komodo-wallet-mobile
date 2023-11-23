@@ -288,7 +288,6 @@ class MMService {
   /// UI thread.
   static Future<double> getDirectorySize(
     String dirPath, {
-
     /// If not null and not empty, only files ending with this string will be
     /// included in the size calculation.
     ///
@@ -361,7 +360,7 @@ class MMService {
     final String passphrase = await EncryptionTool().read('passphrase');
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
-    gui = 'Komodo Wallet ${packageInfo.version} $os';
+    gui = 'Gleec Wallet ${packageInfo.version} $os';
     if (Platform.isAndroid) {
       final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
       gui += '; BT=${buildTime ~/ 1000}';

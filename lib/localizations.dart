@@ -1899,7 +1899,7 @@ class AppLocalizations {
 
   // Rebranding
   String get rebrandingAnnouncement => Intl.message(
-      "It's a new era! We have officially rebranded from 'AtomicDEX' to 'Komodo Wallet'",
+      "It's a new era! We have officially rebranded from 'AtomicDEX' to 'Gleec Wallet'",
       name: 'rebrandingAnnouncement');
 
   String get officialPressRelease =>
@@ -1968,7 +1968,6 @@ class AppLocalizations {
         name: 'pastTransactionsFromDate',
       );
   // ---
-
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
