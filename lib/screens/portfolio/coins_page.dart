@@ -64,6 +64,7 @@ class _CoinsPageState extends State<CoinsPage> {
     if (mmSe.running) coinsBloc.updateCoinBalances();
 
     // Subscribe to the outIsLogin stream
+    /* Disabled rebranding pop-up
     _loginSubscription = authBloc.outIsLogin.listen((isLogin) async {
       if (isLogin) {
         final rebrandingNotifier =
@@ -77,6 +78,7 @@ class _CoinsPageState extends State<CoinsPage> {
         }
       }
     });
+    */
 
     super.initState();
   }
