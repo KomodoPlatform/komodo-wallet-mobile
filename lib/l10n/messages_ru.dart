@@ -393,9 +393,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "bestAvailableRate":
             MessageLookupByLibrary.simpleMessage("Обменный курс"),
         "builtKomodo":
-            MessageLookupByLibrary.simpleMessage("Построено на Komodo"),
+            MessageLookupByLibrary.simpleMessage("Построено на Gleec"),
         "builtOnKmd":
-            MessageLookupByLibrary.simpleMessage("Построено на Komodo"),
+            MessageLookupByLibrary.simpleMessage("Построено на Gleec"),
         "buy": MessageLookupByLibrary.simpleMessage("Купить"),
         "buyOrderType": MessageLookupByLibrary.simpleMessage(
             "Конвертировать в мейкер если нет совпадений"),
@@ -559,7 +559,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "Используйте настраиваемые комиссии только если знаете, что делаете!"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Защита Komodo dPoW"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Защита Gleec dPoW"),
         "date": MessageLookupByLibrary.simpleMessage("Дата"),
         "decryptingWallet":
             MessageLookupByLibrary.simpleMessage("Расшифровываю кошелек"),
@@ -1155,7 +1155,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Пожалуйста перезапустите приложение чтобы попробовать снова или нажмите на кнопку ниже."),
         "portfolio": MessageLookupByLibrary.simpleMessage("Портфолио"),
         "poweredOnKmd":
-            MessageLookupByLibrary.simpleMessage("Разработано Komodo"),
+            MessageLookupByLibrary.simpleMessage("Разработано Gleec"),
         "price": MessageLookupByLibrary.simpleMessage("цена"),
         "privateKey": MessageLookupByLibrary.simpleMessage("Приватный ключ"),
         "privateKeys": MessageLookupByLibrary.simpleMessage("Приватные ключи"),

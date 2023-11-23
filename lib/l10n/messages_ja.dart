@@ -514,7 +514,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "あなたが何をしているのかを知っている場合にのみ、カスタム料金を使用してください!"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW セキュリティ"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Gleec dPoW セキュリティ"),
         "date": MessageLookupByLibrary.simpleMessage("日にち"),
         "decryptingWallet": MessageLookupByLibrary.simpleMessage("ウォレットの復号化"),
         "delete": MessageLookupByLibrary.simpleMessage("消去"),

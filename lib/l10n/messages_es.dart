@@ -381,9 +381,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "bestAvailableRate":
             MessageLookupByLibrary.simpleMessage("Tipo de cambio"),
         "builtKomodo":
-            MessageLookupByLibrary.simpleMessage("Construido en Komodo"),
+            MessageLookupByLibrary.simpleMessage("Construido en Gleec"),
         "builtOnKmd":
-            MessageLookupByLibrary.simpleMessage("Construido en Komodo"),
+            MessageLookupByLibrary.simpleMessage("Construido en Gleec"),
         "buy": MessageLookupByLibrary.simpleMessage("Comprar"),
         "buyOrderType": MessageLookupByLibrary.simpleMessage(
             "Convertir a Vendedor si no coincide"),
@@ -546,8 +546,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "¡Solo use tarifas personalizadas si sabe lo que está haciendo!"),
         "customSeedWarning": m28,
-        "dPow":
-            MessageLookupByLibrary.simpleMessage("Seguridad de Komodo dPoW"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Seguridad de Gleec dPoW"),
         "date": MessageLookupByLibrary.simpleMessage("Fecha"),
         "decryptingWallet":
             MessageLookupByLibrary.simpleMessage("Billetera de descifrado"),
@@ -1143,7 +1142,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Reinicie la aplicación para volver a intentarlo o presione el botón a continuación."),
         "portfolio": MessageLookupByLibrary.simpleMessage("Portfolio"),
         "poweredOnKmd":
-            MessageLookupByLibrary.simpleMessage("Desarrollado por Komodo"),
+            MessageLookupByLibrary.simpleMessage("Desarrollado por Gleec"),
         "price": MessageLookupByLibrary.simpleMessage("price"),
         "privateKey": MessageLookupByLibrary.simpleMessage("Llave Privada"),
         "privateKeys": MessageLookupByLibrary.simpleMessage("Llaves Privadas"),

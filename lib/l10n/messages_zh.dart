@@ -485,7 +485,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning":
             MessageLookupByLibrary.simpleMessage("选择定制费用前务必明确知晓自己的行为"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW安全"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Gleec dPoW安全"),
         "date": MessageLookupByLibrary.simpleMessage("日期"),
         "decryptingWallet": MessageLookupByLibrary.simpleMessage("钱包解密中"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),

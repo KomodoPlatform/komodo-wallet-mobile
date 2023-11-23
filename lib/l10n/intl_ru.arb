@@ -2333,7 +2333,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Построено на Komodo",
+    "builtKomodo": "Построено на Gleec",
     "@builtKomodo": {
         "type": "text",
         "placeholders_order": [],
@@ -2837,13 +2837,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Построено на Komodo",
+    "builtOnKmd": "Построено на Gleec",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Разработано Komodo",
+    "poweredOnKmd": "Разработано Gleec",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4129,7 +4129,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Защита Komodo dPoW",
+    "dPow": "Защита Gleec dPoW",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

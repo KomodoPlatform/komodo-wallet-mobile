@@ -510,7 +510,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "당신이 무엇을 하고 있는지 알고 있는 경우에만 관세비용을 사용하세요!"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW 보안"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Gleec dPoW 보안"),
         "date": MessageLookupByLibrary.simpleMessage("날짜"),
         "decryptingWallet": MessageLookupByLibrary.simpleMessage("지갑 해석 중"),
         "delete": MessageLookupByLibrary.simpleMessage("삭제"),

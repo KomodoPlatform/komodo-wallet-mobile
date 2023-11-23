@@ -46,7 +46,7 @@ class AppConfig {
 
   String get appName => 'Gleec Wallet';
   String get appCompanyLong => 'Gleec';
-  String get appCompanyShort => 'Komodo';
+  String get appCompanyShort => 'Gleec';
 
   List<String> get defaultCoins => ['KMD', 'BTC'];
   List<String> get coinsFiat => ['BTC', 'KMD'];

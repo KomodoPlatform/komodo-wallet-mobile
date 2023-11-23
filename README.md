@@ -8,7 +8,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/komodoplatform/atomicdex-mobile)
 ![Twitter Follow](https://img.shields.io/twitter/follow/komodoplatform?style=social)
 
-Welcome to the Gleec Wallet open-source repository! This cutting-edge project is brought to you by Komodo, providing a mighty non-custodial wallet and decentralised exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with Gleec Wallet!
+Welcome to the Gleec Wallet open-source repository! This cutting-edge project is brought to you by Gleec, providing a mighty non-custodial wallet and decentralised exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with Gleec Wallet!
 
 <p float="center">
   <img src="https://user-images.githubusercontent.com/77973576/229565868-b121e9b6-2d2b-4390-a81f-a7878d0bfea8.png" width="33%" />
@@ -19,8 +19,8 @@ Welcome to the Gleec Wallet open-source repository! This cutting-edge project is
   <img src="https://user-images.githubusercontent.com/77973576/229566075-aa00a5a9-55ae-4acd-ad7b-d67ed3a65db6.png" width="33%" />
 </p>
 
-## Unleashing the Power of Komodo DeFi Framework 💡
-We've made this repository public to showcase the incredible potential of the Komodo DeFi Framework and to spark interest among companies looking to integrate this game-changing technology into their own applications. Our goal is to drive innovation and expand the reach of decentralised exchange technology worldwide.
+## Unleashing the Power of Gleec DeFi Framework 💡
+We've made this repository public to showcase the incredible potential of the Gleec DeFi Framework and to spark interest among companies looking to integrate this game-changing technology into their own applications. Our goal is to drive innovation and expand the reach of decentralised exchange technology worldwide.
 
 ## Exciting Features 🌟
 - **Non-custodial wallet:** You're in control - only you can access your private keys.
@@ -28,7 +28,7 @@ We've made this repository public to showcase the incredible potential of the Ko
 - **500+ Listed Cryptocurrencies:** A vast and ever-growing list of supported cryptocurrencies.
 - **Unlimited markets:** Over 300,000 completed atomic swaps and a staggering 10,000+ trading pairs.
 - **Most supported protocols:** Gleec Wallet outshines the competition by supporting the most blockchain protocols of any decentralized exchange on the market.
-- **Established team:** Our pioneering Komodo developers have been at the forefront of DEX technology since 2014.
+- **Established team:** Our pioneering Gleec developers have been at the forefront of DEX technology since 2014.
 - **Frequent updates:** Our dedicated developers are constantly working to enhance the app's user experience, security, and feature set.
 
 ## Download Gleec Wallet 📲
@@ -74,11 +74,11 @@ flutter run --dart-define=screenshot=true
 ```
 
 
-## Komodo DeFi Framework Library Setup:
+## Gleec DeFi Framework Library Setup:
 
-Gleec Wallet runs the Komodo DeFi Framework locally on the user's device. The API binary is platform-specific and must be manually set up by the developer instead of a typical Flutter dependency.
+Gleec Wallet runs the Gleec DeFi Framework locally on the user's device. The API binary is platform-specific and must be manually set up by the developer instead of a typical Flutter dependency.
 
-Ensure you run the most recent Komodo DeFi Framework [stable release](https://github.com/KomodoPlatform/atomicDEX-API/releases). Download the API binary for each platform and extract its `libmm2.a` file into the applicable platform's API folder.
+Ensure you run the most recent Gleec DeFi Framework [stable release](https://github.com/KomodoPlatform/atomicDEX-API/releases). Download the API binary for each platform and extract its `libmm2.a` file into the applicable platform's API folder.
 
 
 

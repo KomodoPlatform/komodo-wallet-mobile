@@ -390,8 +390,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Your phone is in battery saving mode. Please disable this mode or do NOT put the application to the background, otherwise, the app might be killed by OS and swap failed."),
         "bestAvailableRate":
             MessageLookupByLibrary.simpleMessage("Exchange rate"),
-        "builtKomodo": MessageLookupByLibrary.simpleMessage("Built on Komodo"),
-        "builtOnKmd": MessageLookupByLibrary.simpleMessage("Built on Komodo"),
+        "builtKomodo": MessageLookupByLibrary.simpleMessage("Built on Gleec"),
+        "builtOnKmd": MessageLookupByLibrary.simpleMessage("Built on Gleec"),
         "buy": MessageLookupByLibrary.simpleMessage("Buy"),
         "buyOrderType": MessageLookupByLibrary.simpleMessage(
             "Convert to Maker if not matched"),
@@ -547,7 +547,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "Only use custom fees if you know what you are doing!"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW security"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Gleec dPoW security"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "decryptingWallet":
             MessageLookupByLibrary.simpleMessage("Decrypting wallet"),
@@ -1123,7 +1123,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please restart the app to try again, or press the button below."),
         "portfolio": MessageLookupByLibrary.simpleMessage("Portfolio"),
         "poweredOnKmd":
-            MessageLookupByLibrary.simpleMessage("Powered by Komodo"),
+            MessageLookupByLibrary.simpleMessage("Powered by Gleec"),
         "price": MessageLookupByLibrary.simpleMessage("price"),
         "privateKey": MessageLookupByLibrary.simpleMessage("Private Key"),
         "privateKeys": MessageLookupByLibrary.simpleMessage("Private Keys"),

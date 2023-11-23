@@ -2333,7 +2333,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Komodo Üzerinde Yapılmıştır",
+    "builtKomodo": "Gleec Üzerinde Yapılmıştır",
     "@builtKomodo": {
         "type": "text",
         "placeholders_order": [],
@@ -2837,13 +2837,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Komodo Üzerinde Yapılmıştır",
+    "builtOnKmd": "Gleec Üzerinde Yapılmıştır",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Komodo tarafından geliştirilmiştir",
+    "poweredOnKmd": "Gleec tarafından geliştirilmiştir",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4129,7 +4129,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Komodo dPoW Koruması",
+    "dPow": "Gleec dPoW Koruması",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

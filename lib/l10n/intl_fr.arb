@@ -2345,7 +2345,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Conçu sur Komodo",
+    "builtKomodo": "Conçu sur Gleec",
     "@builtKomodo": {
         "type": "text",
         "placeholders_order": [],
@@ -2849,13 +2849,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Conçu sur Komodo",
+    "builtOnKmd": "Conçu sur Gleec",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Propulsé par Komodo",
+    "poweredOnKmd": "Propulsé par Gleec",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4141,7 +4141,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Komodo sécurité dPoW",
+    "dPow": "Gleec sécurité dPoW",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

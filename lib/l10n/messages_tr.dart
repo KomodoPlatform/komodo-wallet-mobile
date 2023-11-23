@@ -399,9 +399,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "bestAvailableRate":
             MessageLookupByLibrary.simpleMessage("Mevcut en iyi fiyat"),
         "builtKomodo":
-            MessageLookupByLibrary.simpleMessage("Komodo Üzerinde Yapılmıştır"),
+            MessageLookupByLibrary.simpleMessage("Gleec Üzerinde Yapılmıştır"),
         "builtOnKmd":
-            MessageLookupByLibrary.simpleMessage("Komodo Üzerinde Yapılmıştır"),
+            MessageLookupByLibrary.simpleMessage("Gleec Üzerinde Yapılmıştır"),
         "buy": MessageLookupByLibrary.simpleMessage("Al"),
         "buyOrderType": MessageLookupByLibrary.simpleMessage(
             "Eşleşme olmazsa Yapıcı Emrine çevir"),
@@ -559,7 +559,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "Özelleştirilmiş giderleri yalnızca ne yaptığınızdan emin olduğunuzda kullanın !"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW Koruması"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Gleec dPoW Koruması"),
         "date": MessageLookupByLibrary.simpleMessage("Tarih"),
         "decryptingWallet":
             MessageLookupByLibrary.simpleMessage("Cüzdan deşifre ediliyor"),
@@ -1139,7 +1139,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Yeniden denemek için lütfen uygulamayı yeniden başlatın ya da aşağıdaki düğmeye basınız."),
         "portfolio": MessageLookupByLibrary.simpleMessage("Portföy"),
         "poweredOnKmd": MessageLookupByLibrary.simpleMessage(
-            "Komodo tarafından geliştirilmiştir"),
+            "Gleec tarafından geliştirilmiştir"),
         "price": MessageLookupByLibrary.simpleMessage("fiyat"),
         "privateKey": MessageLookupByLibrary.simpleMessage("Gizli Kelime"),
         "privateKeys": MessageLookupByLibrary.simpleMessage("Gizli Kelimeler"),

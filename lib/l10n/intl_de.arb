@@ -2345,7 +2345,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Auf Komodo aufgebaut",
+    "builtKomodo": "Auf Gleec aufgebaut",
     "@builtKomodo": {
         "type": "text",
         "placeholders_order": [],
@@ -2849,13 +2849,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Auf Komodo aufgebaut",
+    "builtOnKmd": "Auf Gleec aufgebaut",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Unterstützt von Komodo",
+    "poweredOnKmd": "Unterstützt von Gleec",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4141,7 +4141,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Komodo dPoW Sicherheit",
+    "dPow": "Gleec dPoW Sicherheit",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

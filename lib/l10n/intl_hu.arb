@@ -2345,7 +2345,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Komodo rendszerrel fejlesztve",
+    "builtKomodo": "Gleec rendszerrel fejlesztve",
     "@builtKomodo": {
         "type": "text",
         "placeholders_order": [],
@@ -2849,13 +2849,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Komodo rendszerrel fejlesztve",
+    "builtOnKmd": "Gleec rendszerrel fejlesztve",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Komodo által működtetett",
+    "poweredOnKmd": "Gleec által működtetett",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4141,7 +4141,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Komodo dPoW biztonság",
+    "dPow": "Gleec dPoW biztonság",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],
