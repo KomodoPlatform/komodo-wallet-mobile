@@ -45,7 +45,7 @@ class AppConfig {
   // Brand config below
 
   String get appName => 'Komodo Wallet';
-  String get appCompanyLong => 'Komodo Platform';
+  String get appCompanyLong => 'Gleec';
   String get appCompanyShort => 'Komodo';
 
   List<String> get defaultCoins => ['KMD', 'BTC'];
