@@ -48,8 +48,8 @@ class AppConfig {
   String get appCompanyLong => 'Gleec';
   String get appCompanyShort => 'Gleec';
 
-  List<String> get defaultCoins => ['KMD', 'BTC'];
-  List<String> get coinsFiat => ['BTC', 'KMD'];
+  List<String> get defaultCoins => ['GLEEC', 'BTC', 'KMD'];
+  List<String> get coinsFiat => ['BTC', 'GLEEC'];
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
         'ATOM',
