@@ -557,7 +557,20 @@ class _SettingPageState extends State<SettingPage> {
   Future<void> _shareLogs() async {
     Navigator.of(context).pop();
 
-    Log.downloadLogs().ignore();
+    Log.downloadLogs().catchError((dynamic e) {
+      _showSnackbar(e.toString());
+    });
+  }
+
+  void _showSnackbar(String message) {
+    if (context == null) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 
   Future<void> _shareFileDialog() async {

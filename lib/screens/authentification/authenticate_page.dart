@@ -300,7 +300,7 @@ class _FullAppLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepeatedTapDetector(
-      onRepeatedTap: _downloadLogs,
+      onRepeatedTap: () => _downloadLogs(context),
       tapTriggerCount: 7,
       child: SizedBox(
           height: 240,
@@ -315,8 +315,19 @@ class _FullAppLogo extends StatelessWidget {
   /// download the logs and share them via the system share sheet. This is so
   /// that users can download logs even if they can't access the settings page.
   /// E.g. if the app crashes on login.
-  void _downloadLogs() {
-    Log.downloadLogs().ignore();
+  void _downloadLogs(BuildContext context) {
+    Log.downloadLogs().catchError((e) {
+      _showSnackbar(context, e.toString());
+    });
+  }
+
+  void _showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 }
 

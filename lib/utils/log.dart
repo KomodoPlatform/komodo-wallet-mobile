@@ -153,6 +153,9 @@ class Log {
     // Discord attachment size limit is about 25 MiB
     final exportedLogFiles =
         (await LogStorage().exportLogs()).map((f) => XFile(f.path)).toList();
+    if (exportedLogFiles.isEmpty) {
+      throw Exception('No logs to download');
+    }
 
     mainBloc.isUrlLaucherIsOpen = true;
 
