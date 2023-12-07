@@ -191,7 +191,7 @@ class LogStorage {
 
       if (wouldBeOverLimit || isLastFile) {
         final archiveFile = File(
-          '${logFolderPath()}/komodo_wallet_logs_archive_${compressedFiles.length}.g.zip',
+          '${logFolderPath()}/komodo_wallet_logs_archive_${compressedFiles.length}.gz',
         );
 
         final archiveBytes =
@@ -214,7 +214,7 @@ class LogStorage {
     final archives = Directory(logFolderPath())
         .listSync(followLinks: false, recursive: true)
         .whereType<File>()
-        .where((f) => f.path.endsWith('.g.zip'))
+        .where((f) => f.path.endsWith('.gz'))
         .toList();
 
     for (var archive in archives) {
