@@ -3,6 +3,7 @@ import json
 import os
 import shutil
 from typing import Any
+import concurrent.futures
 
 
 COINS_URL = "https://raw.githubusercontent.com/KomodoPlatform/coins"
@@ -21,33 +22,53 @@ def download_coin_configs(coins_repo_commit: str) -> None:
     coins_json_url = COINS_URL + f"/{coins_repo_commit}/coins"
     coins_config_url = COINS_URL + f"/{coins_repo_commit}/utils/coins_config.json"
 
-    coins_json = urllib.request.urlopen(coins_json_url).read().decode('utf-8')
-    coins_config = urllib.request.urlopen(coins_config_url).read().decode('utf-8')
+    coins_json = urllib.request.urlopen(coins_json_url).read().decode("utf-8")
+    coins_config = urllib.request.urlopen(coins_config_url).read().decode("utf-8")
 
-    with open(COINS_PATH, 'w') as f:
+    with open(COINS_PATH, "w") as f:
         f.write(coins_json)
 
-    with open(COINS_CONFIG_PATH, 'w') as f:
+    with open(COINS_CONFIG_PATH, "w") as f:
         f.write(coins_config)
 
 
-def download_coin_icons(coins_repo_commit: str, coin_names: list[str]) -> None:
+def download_icon(coins_repo_commit: str, coin_name: str) -> None:
     """
-    Download the coin icons from the coins repo
+    Download the icon for a single coin from the coins repo
     :param coins_repo_commit: commit id of the coins repo
-    :param coin_names: list of coin names
+    :param coin_name: name of the coin
     :return: None
     """
-    for coin_name in coin_names:
-        try:
-            icon_url = COINS_URL + f"/{coins_repo_commit}/icons/{coin_name}.png"
-            icon = urllib.request.urlopen(icon_url).read()
+    try:
+        icon_url = COINS_URL + f"/{coins_repo_commit}/icons/{coin_name}.png"
+        icon = urllib.request.urlopen(icon_url).read()
 
-            with open(f"{COIN_ICONS_PATH}/{coin_name}.png", 'wb') as f:
-                f.write(icon)
-        except Exception as e:
-            print(f"Failed to download icon for {coin_name}: {e}")
-            raise e
+        with open(f"{COIN_ICONS_PATH}/{coin_name}.png", "wb") as f:
+            f.write(icon)
+    except Exception as e:
+        print(f"Failed to download icon for {coin_name}: {e}")
+
+
+def download_coin_icons(
+    coins_repo_commit: str, coin_names: list[str], max_concurrency: int = 4
+) -> None:
+    """
+    Download the coin icons from the coins repo in parallel
+    :param coins_repo_commit: commit id of the coins repo
+    :param coin_names: list of coin names
+    :param max_concurrency: maximum number of concurrent downloads
+    :return: None
+    """
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_concurrency) as executor:
+        futures = {
+            executor.submit(download_icon, coins_repo_commit, coin_name)
+            for coin_name in coin_names
+        }
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()
+            except Exception as e:
+                print(f"Failed to download an icon: {e}")
 
 
 def load_coin_names(coins_path: str = COINS_PATH) -> list[str]:
@@ -58,7 +79,7 @@ def load_coin_names(coins_path: str = COINS_PATH) -> list[str]:
     :return: list of coin names
     """
     coins: list[dict[str, Any]] = []
-    with open(coins_path, 'r') as f:
+    with open(coins_path, "r") as f:
         coins = json.load(f)
 
     if len(coins) == 0:
@@ -66,7 +87,7 @@ def load_coin_names(coins_path: str = COINS_PATH) -> list[str]:
 
     coin_names = []
     for coin in coins:
-        coin_name = coin['coin'].split('-')[0]
+        coin_name = coin["coin"].split("-")[0]
         coin_names.append(coin_name.lower())
 
     return coin_names
@@ -78,13 +99,13 @@ def load_coins_commit(ci_path: str = COINS_CI_PATH) -> str:
     :param ci_path: path to the coins_ci.json file
     :return: commit id
     """
-    with open(ci_path, 'r') as f:
+    with open(ci_path, "r") as f:
         ci = json.load(f)
 
-    if 'coins_repo_commit' not in ci:
+    if "coins_repo_commit" not in ci:
         raise Exception("coins_repo_commit not found in coins_ci.json")
 
-    return ci['coins_repo_commit']
+    return ci["coins_repo_commit"]
 
 
 def main() -> None:
@@ -109,5 +130,5 @@ def main() -> None:
     download_coin_icons(coins_repo_commit, coin_names)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
