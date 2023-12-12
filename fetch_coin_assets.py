@@ -1,10 +1,10 @@
+#!/usr/bin/env python3
 import urllib.request
 import json
 import os
 import shutil
 import concurrent.futures
 import argparse
-import requests
 
 COINS_REPO_OWNER = "KomodoPlatform"
 COINS_REPO_NAME = "coins"
@@ -63,18 +63,17 @@ def download_coin_configs(coins_repo_commit: str) -> None:
 def download_icon(item: dict[str, str], local_dir: str) -> None:
     """
     Download the icon for a single coin from the coins repo
-    :param coins_repo_commit: commit id of the coins repo
+    :param item: dict containing the download url and name of the icon file
+    :param local_dir: local directory to save the icon
     :return: None
     """
     file_url = item["download_url"]
     file_name = item["name"]
     coin_name = os.path.splitext(file_name)[0]
     try:
-        file_response = requests.get(file_url)
-        file_response.raise_for_status()
-
+        file_response: bytes = urllib.request.urlopen(file_url).read()
         with open(os.path.join(local_dir, file_name), "wb") as f:
-            f.write(file_response.content)
+            f.write(file_response)
     except Exception as e:
         print(f"Failed to download icon for {coin_name}: {e}")
         raise e
@@ -90,8 +89,10 @@ def download_coin_icons(
 ) -> None:
     """
     Download the coin icons from the coins repo in parallel
-    :param coins_repo_commit: commit id of the coins repo
-    :param coin_names: list of coin names
+    :param repo_owner: owner of the coins repo
+    :param repo_name: name of the coins repo
+    :param repo_path: path to the icons directory in the coins repo
+    :param local_dir: local directory to save the icons
     :param max_concurrency: maximum number of concurrent downloads
     :param timeout: timeout for each download in seconds
     :return: None
@@ -100,11 +101,11 @@ def download_coin_icons(
         f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{repo_path}"
     )
     headers = {"Accept": "application/vnd.github.v3+json"}
-    response = requests.get(api_url, headers=headers)
-    response.raise_for_status()
+    req = urllib.request.Request(api_url, headers=headers)
+    response = urllib.request.urlopen(req).read()
 
     coins = []
-    data = response.json()
+    data = json.loads(response)
     for item in data:
         if item["type"] == "file":
             coins.append(item)
@@ -154,7 +155,10 @@ def init_argparse() -> argparse.ArgumentParser:
         "-f",
         "--force",
         action="store_true",
-        help="Force download the latest coin configs and icons. NOTE: This will delete the existing files.",
+        help=(
+            "Force download the latest coin configs and icons. "
+            + " NOTE: This will delete the existing files."
+        ),
     )
     return parser
 
