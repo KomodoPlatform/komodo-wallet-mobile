@@ -288,7 +288,6 @@ class MMService {
   /// UI thread.
   static Future<double> getDirectorySize(
     String dirPath, {
-
     /// If not null and not empty, only files ending with this string will be
     /// included in the size calculation.
     ///
@@ -463,7 +462,7 @@ class MMService {
       if (kDebugMode) {
         Log('mm_service', 'readJsonCoinInit] $e');
         printError('$e');
-        printError('Try to run `\$sh fetch_coins.sh`.'
+        printError('Try to run `\$sh fetch_coin_assets.py`.'
             ' See README.md for details.');
         SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
       }
