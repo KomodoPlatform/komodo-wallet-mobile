@@ -13,6 +13,11 @@ COIN_ICONS_PATH = "./assets/coin-icons"
 
 
 def download_coin_configs(coins_repo_commit: str) -> None:
+    """
+    Download the coins.json and coins_config.json files from the coins repo
+    :param coins_repo_commit: commit id of the coins repo
+    :return: None
+    """
     coins_json_url = COINS_URL + f"/{coins_repo_commit}/coins"
     coins_config_url = COINS_URL + f"/{coins_repo_commit}/utils/coins_config.json"
 
@@ -27,6 +32,12 @@ def download_coin_configs(coins_repo_commit: str) -> None:
 
 
 def download_coin_icons(coins_repo_commit: str, coin_names: list[str]) -> None:
+    """
+    Download the coin icons from the coins repo
+    :param coins_repo_commit: commit id of the coins repo
+    :param coin_names: list of coin names
+    :return: None
+    """
     for coin_name in coin_names:
         try:
             icon_url = COINS_URL + f"/{coins_repo_commit}/icons/{coin_name}.png"
@@ -61,7 +72,7 @@ def load_coin_names(coins_path: str = COINS_PATH) -> list[str]:
     return coin_names
 
 
-def load_coins_commit(ci_path=COINS_CI_PATH) -> str:
+def load_coins_commit(ci_path: str = COINS_CI_PATH) -> str:
     """
     Load the commit id from the coins_ci.json file
     :param ci_path: path to the coins_ci.json file
