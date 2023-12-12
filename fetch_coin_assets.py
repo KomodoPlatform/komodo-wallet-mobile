@@ -2,11 +2,13 @@ import urllib.request
 import json
 import os
 import shutil
-from typing import Any
 import concurrent.futures
 import argparse
+import requests
 
-
+COINS_REPO_OWNER = "KomodoPlatform"
+COINS_REPO_NAME = "coins"
+COINS_REPO_ICONS_PATH = "icons"
 COINS_URL = "https://raw.githubusercontent.com/KomodoPlatform/coins"
 COINS_CI_PATH = "./coins_ci.json"
 COINS_PATH = "./assets/coins.json"
@@ -33,12 +35,10 @@ def main() -> None:
 
     coins_repo_commit = load_coins_commit()
     download_coin_configs(coins_repo_commit)
-    coin_names = load_coin_names()
 
     if not os.path.exists(COIN_ICONS_PATH):
         os.mkdir(COIN_ICONS_PATH)
-
-    download_coin_icons(coins_repo_commit, coin_names)
+    download_coin_icons(COINS_REPO_OWNER, COINS_REPO_NAME, COINS_REPO_ICONS_PATH)
 
 
 def download_coin_configs(coins_repo_commit: str) -> None:
@@ -60,27 +60,31 @@ def download_coin_configs(coins_repo_commit: str) -> None:
         f.write(coins_config)
 
 
-def download_icon(coins_repo_commit: str, coin_name: str) -> None:
+def download_icon(item: dict[str, str], local_dir: str) -> None:
     """
     Download the icon for a single coin from the coins repo
     :param coins_repo_commit: commit id of the coins repo
-    :param coin_name: name of the coin
     :return: None
     """
+    file_url = item["download_url"]
+    file_name = item["name"]
+    coin_name = os.path.splitext(file_name)[0]
     try:
-        icon_url = COINS_URL + f"/{coins_repo_commit}/icons/{coin_name}.png"
-        icon = urllib.request.urlopen(icon_url).read()
+        file_response = requests.get(file_url)
+        file_response.raise_for_status()
 
-        with open(f"{COIN_ICONS_PATH}/{coin_name}.png", "wb") as f:
-            f.write(icon)
+        with open(os.path.join(local_dir, file_name), "wb") as f:
+            f.write(file_response.content)
     except Exception as e:
         print(f"Failed to download icon for {coin_name}: {e}")
         raise e
 
 
 def download_coin_icons(
-    coins_repo_commit: str,
-    coin_names: list[str],
+    repo_owner: str,
+    repo_name: str,
+    repo_path: str,
+    local_dir: str = COIN_ICONS_PATH,
     max_concurrency: int = CONCURRENCY_LIMIT,
     timeout: int = ICON_DOWNLOAD_TIMEOUT_SECONDS,
 ) -> None:
@@ -92,41 +96,33 @@ def download_coin_icons(
     :param timeout: timeout for each download in seconds
     :return: None
     """
+    api_url = (
+        f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{repo_path}"
+    )
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    response = requests.get(api_url, headers=headers)
+    response.raise_for_status()
+
+    coins = []
+    data = response.json()
+    for item in data:
+        if item["type"] == "file":
+            coins.append(item)
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_concurrency) as executor:
         futures = {
-            executor.submit(download_icon, coins_repo_commit, coin_name)
-            for coin_name in coin_names
+            executor.submit(
+                download_icon,
+                coin,
+                local_dir,
+            )
+            for coin in coins
         }
         for future in concurrent.futures.as_completed(futures):
             # Exceptions that occur in the threads are allowed to propagate
             # to the main thread, so that the program can exit with a non-zero
             # exit code. This is useful for CI/CD pipelines.
             future.result(timeout=timeout)
-
-
-def load_coin_names(
-    coins_path: str = COINS_PATH, coins_config_path: str = COINS_CONFIG_PATH
-) -> list[str]:
-    """
-    Load the coin names from the coins.json file
-    by taking the first part of the `coin` field in each coin object
-    :param coins_path: path to the coins.json file
-    :return: list of coin names
-    """
-    coins: list[dict[str, Any]] = []
-    with open(coins_path, "r") as f:
-        coins = json.load(f)
-
-    with open(coins_config_path, "r") as f:
-        coins_config = json.load(f)
-        coins += [coins_config[key] for key in coins_config.keys()]
-
-    if len(coins) == 0:
-        raise Exception("No coins found in coins.json")
-
-    coin_names = [str(coin["coin"].split("-")[0]).lower() for coin in coins]
-
-    return coin_names
 
 
 def load_coins_commit(ci_path: str = COINS_CI_PATH) -> str:
