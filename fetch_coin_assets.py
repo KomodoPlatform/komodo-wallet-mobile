@@ -5,17 +5,35 @@ import os
 import shutil
 import concurrent.futures
 import argparse
+from dataclasses import dataclass
 
+# Constants
 COINS_REPO_OWNER = "KomodoPlatform"
 COINS_REPO_NAME = "coins"
 COINS_REPO_ICONS_PATH = "icons"
 COINS_URL = "https://raw.githubusercontent.com/KomodoPlatform/coins"
-COINS_CI_PATH = "./coins_ci.json"
+COINS_CI_PATH = "assets/coins_ci.json"
 COINS_PATH = "./assets/coins.json"
 COINS_CONFIG_PATH = "./assets/coins_config.json"
 COIN_ICONS_PATH = "./assets/coin-icons"
 ICON_DOWNLOAD_TIMEOUT_SECONDS = 10
 CONCURRENCY_LIMIT = 4
+
+
+@dataclass
+class CoinData:
+    bundled_coins_repo_commit: str
+    coins_repo_url: str
+    coins_repo_branch: str
+    runtime_updates_enabled: bool
+    mapped_files: dict[str, str]
+    mapped_folders: dict[str, str]
+
+    @staticmethod
+    def load_from_file(path: str = COINS_CI_PATH):
+        with open(path, "r") as f:
+            data = json.load(f)
+            return CoinData(**data)  # type: ignore
 
 
 def main() -> None:
@@ -33,8 +51,8 @@ def main() -> None:
         print("Coin configs and icons already exist. Skipping download.")
         return
 
-    coins_repo_commit = load_coins_commit()
-    download_coin_configs(coins_repo_commit)
+    coins_data = CoinData.load_from_file()
+    download_coin_configs(coins_data.bundled_coins_repo_commit)
 
     if not os.path.exists(COIN_ICONS_PATH):
         os.mkdir(COIN_ICONS_PATH)
@@ -124,21 +142,6 @@ def download_coin_icons(
             # to the main thread, so that the program can exit with a non-zero
             # exit code. This is useful for CI/CD pipelines.
             future.result(timeout=timeout)
-
-
-def load_coins_commit(ci_path: str = COINS_CI_PATH) -> str:
-    """
-    Load the commit id from the coins_ci.json file
-    :param ci_path: path to the coins_ci.json file
-    :return: commit id
-    """
-    with open(ci_path, "r") as f:
-        ci = json.load(f)
-
-    if "coins_repo_commit" not in ci:
-        raise Exception("coins_repo_commit not found in coins_ci.json")
-
-    return ci["coins_repo_commit"]
 
 
 def init_argparse() -> argparse.ArgumentParser:

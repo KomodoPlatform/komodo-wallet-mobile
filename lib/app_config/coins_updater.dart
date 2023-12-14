@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
+
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/coin_ci.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -32,22 +35,19 @@ class CoinUpdater {
 
   /// The branch of the coins repository to use.
   //! QA: change branch name here and then restart twice after logging in.
-  static const coinsRepoBranch = 'master';
-
-  static const coinsRepoUrl =
-      'https://raw.githubusercontent.com/KomodoPlatform/coins';
-
-  static const isUpdateEnabled = true;
-
+  final String localAssetPathCIConfig = 'assets/coins_ci.json';
   final String localAssetPathConfig = 'assets/coins_config.json';
   final String localAssetPathCoins = 'assets/coins.json';
 
-  String get remotePathConfig =>
-      '$coinsRepoUrl/$coinsRepoBranch/utils/coins_config.json';
-  String get remotePathCoins => '$coinsRepoUrl/$coinsRepoBranch/coins';
-
   String _cachedConfig;
   String _cachedCoins;
+  CoinsCI _coinsCI;
+
+  Future<CoinsCI> _loadCoinsCIConfig() async {
+    final String coinsCI = await _fetchAsset(localAssetPathCIConfig);
+    final coinsCIResponse = jsonDecode(coinsCI);
+    return CoinsCI.fromJson(coinsCIResponse);
+  }
 
   Future<String> _fetchAsset(String path) async {
     return await rootBundle.loadString(path);
@@ -63,6 +63,7 @@ class CoinUpdater {
     String remoteUrl,
     String cacheName,
     String cacheProperty,
+    bool runtimeUpdatesEnabled,
   ) async {
     try {
       if (cacheProperty != null) {
@@ -73,7 +74,7 @@ class CoinUpdater {
 
       final cacheFileExists = await cacheFile.exists();
 
-      if (isUpdateEnabled) {
+      if (runtimeUpdatesEnabled) {
         scheduleMicrotask(
           () => _updateCacheInBackground(remoteUrl, cacheFile),
         );
@@ -116,7 +117,8 @@ class CoinUpdater {
         Log(
           'CoinUpdater',
           'Coin updater updated coins to latest commit on branch '
-              '$coinsRepoBranch from $coinsRepoUrl. \n $remoteUrl',
+              '${_coinsCI?.coinsRepoBranch} from ${_coinsCI?.coinsRepoUrl}. '
+              '\n $remoteUrl',
         );
       });
     } catch (e) {
@@ -135,22 +137,34 @@ class CoinUpdater {
     }
   }
 
+  Future<String> _getAssetRemotePath(String localPath) async {
+    _coinsCI ??= await _loadCoinsCIConfig();
+    final mappedFile = _coinsCI?.mappedFiles[localPath];
+    return '${_coinsCI?.coinsRepoUrl}/${_coinsCI?.coinsRepoBranch}/$mappedFile';
+  }
+
   Future<String> getConfig() async {
+    final String remotePathConfig =
+        await _getAssetRemotePath(localAssetPathConfig);
     _cachedConfig = await _fetchOrCache(
       localAssetPathConfig,
       remotePathConfig,
       'coins_config_cache.json',
       _cachedConfig,
+      _coinsCI?.runtimeUpdatesEnabled ?? false,
     );
     return _cachedConfig;
   }
 
   Future<String> getCoins() async {
+    final String remotePathCoins =
+        await _getAssetRemotePath(localAssetPathCoins);
     _cachedCoins = await _fetchOrCache(
       localAssetPathCoins,
       remotePathCoins,
       'coins_cache.json',
       _cachedCoins,
+      _coinsCI?.runtimeUpdatesEnabled ?? false,
     );
     return _cachedCoins;
   }

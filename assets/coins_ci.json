@@ -1,0 +1,13 @@
+{
+  "bundled_coins_repo_commit": "8cb5983ab858dde915e8de3175c15cd0f5572356",
+  "coins_repo_url": "https://raw.githubusercontent.com/KomodoPlatform/coins",
+  "coins_repo_branch": "master",
+  "runtime_updates_enabled": true,
+  "mapped_files": {
+    "assets/coins_config.json": "utils/coins_config.json",
+    "assets/coins.json": "coins"
+  },
+  "mapped_folders": {
+    "assets/coin-icons/": "icons/"
+  }
+}
