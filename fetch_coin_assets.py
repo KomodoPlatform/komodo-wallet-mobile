@@ -8,14 +8,10 @@ import argparse
 from dataclasses import dataclass
 
 # Constants
-COINS_REPO_OWNER = "KomodoPlatform"
-COINS_REPO_NAME = "coins"
-COINS_REPO_ICONS_PATH = "icons"
-COINS_URL = "https://raw.githubusercontent.com/KomodoPlatform/coins"
 COINS_CI_PATH = "assets/coins_ci.json"
-COINS_PATH = "./assets/coins.json"
-COINS_CONFIG_PATH = "./assets/coins_config.json"
-COIN_ICONS_PATH = "./assets/coin-icons"
+COINS_PATH = "assets/coins.json"
+COINS_CONFIG_PATH = "assets/coins_config.json"
+COIN_ICONS_PATH = "assets/coin-icons/"
 ICON_DOWNLOAD_TIMEOUT_SECONDS = 10
 CONCURRENCY_LIMIT = 4
 
@@ -30,18 +26,36 @@ class CoinData:
     mapped_folders: dict[str, str]
 
     @staticmethod
-    def load_from_file(path: str = COINS_CI_PATH):
+    def load(path: str = COINS_CI_PATH):
         with open(path, "r") as f:
             data = json.load(f)
             return CoinData(**data)  # type: ignore
 
+    def save(self, path: str = COINS_CI_PATH):
+        with open(path, "w") as f:
+            json.dump(self.__dict__, f, indent=2)
+
 
 def main() -> None:
+    """Entry point for the script."""
     parser = init_argparse()
     args = parser.parse_args()
 
     if args.force:
         clean_coin_assets()
+
+    coins_data = CoinData.load()
+    current_commit_hash = coins_data.bundled_coins_repo_commit
+    latest_commit_hash = get_latest_commit_hash(
+        coins_data.coins_repo_url, coins_data.coins_repo_branch
+    )
+    coins_data.bundled_coins_repo_commit = latest_commit_hash
+    coins_data.save()
+    if not args.force and current_commit_hash != latest_commit_hash:
+        print("New coins repo commit found. Please use the --force flag to update.")
+        print(f"Current commit: {current_commit_hash}")
+        print(f"Latest commit: {latest_commit_hash}")
+        exit(1)
 
     coin_configs_exist = os.path.exists(COINS_PATH) and os.path.exists(
         COINS_CONFIG_PATH
@@ -51,39 +65,146 @@ def main() -> None:
         print("Coin configs and icons already exist. Skipping download.")
         return
 
-    coins_data = CoinData.load_from_file()
-    download_coin_configs(coins_data.bundled_coins_repo_commit)
+    mapped_coins_path = coins_data.mapped_files[COINS_PATH]
+    mapped_coins_config_path = coins_data.mapped_files[COINS_CONFIG_PATH]
+    download_coin_configs(
+        coins_data.coins_repo_url,
+        coins_data.bundled_coins_repo_commit,
+        mapped_coins_path,
+        mapped_coins_config_path,
+    )
 
     if not os.path.exists(COIN_ICONS_PATH):
         os.mkdir(COIN_ICONS_PATH)
-    download_coin_icons(COINS_REPO_OWNER, COINS_REPO_NAME, COINS_REPO_ICONS_PATH)
+    download_coin_icons(
+        coins_data.coins_repo_url,
+        coins_data.mapped_folders[COIN_ICONS_PATH],
+        coins_data.bundled_coins_repo_commit,
+    )
 
 
-def download_coin_configs(coins_repo_commit: str) -> None:
+def get_latest_commit_hash(repo_url: str, branch: str = "master") -> str:
+    """Get the latest commit hash for a repo
+
+    Args:
+        repo_url (str): The GitHub API URL for the repo
+        branch (str, optional): The github branch name or commit hash to be used as ref. Defaults to "master".
+
+    Returns:
+        str: The latest commit hash
     """
-    Download the coins.json and coins_config.json files from the coins repo
-    :param coins_repo_commit: commit id of the coins repo
-    :return: None
+    api_url = f"{repo_url}/commits/{branch}"
+    with urllib.request.urlopen(api_url) as response:
+        data = json.loads(response.read())
+        return data["sha"]
+
+
+def download_coin_configs(
+    repo_url: str,
+    repo_commit: str,
+    mapped_coins_path: str,
+    mapped_coins_config_path: str,
+) -> None:
+    """Download the coins.json and coins_config.json files from the coins repo
+
+    Args:
+        repo_url (str): GitHub API URL for the coins repo
+        repo_commit (str): The commit hash to be used as ref
+        mapped_coins_path (str): mapped path to the coins.json file in the coins repo
+        mapped_coins_config_path (str): mapped path to the coins_config.json file in the coins repo
     """
-    coins_json_url = COINS_URL + f"/{coins_repo_commit}/coins"
-    coins_config_url = COINS_URL + f"/{coins_repo_commit}/utils/coins_config.json"
 
-    coins_json = urllib.request.urlopen(coins_json_url).read().decode("utf-8")
-    coins_config = urllib.request.urlopen(coins_config_url).read().decode("utf-8")
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    coins_json_url = f"{repo_url}/contents/{mapped_coins_path}?ref={repo_commit}"
+    coins_req = urllib.request.Request(coins_json_url, headers=headers)
+    coins_config_url = (
+        f"{repo_url}/contents/{mapped_coins_config_path}?ref={repo_commit}"
+    )
+    coins_config_req = urllib.request.Request(coins_config_url, headers=headers)
 
-    with open(COINS_PATH, "w") as f:
-        f.write(coins_json)
+    with urllib.request.urlopen(coins_req) as response:
+        response = response.read().decode("utf-8")
+        response_json = json.loads(response)
+        if "download_url" not in response_json:
+            print("Failed to download coins.json")
+            exit(1)
 
-    with open(COINS_CONFIG_PATH, "w") as f:
-        f.write(coins_config)
+        with urllib.request.urlopen(response_json["download_url"]) as coins_response:
+            data = coins_response.read().decode("utf-8")
+            with open(COINS_PATH, "w") as f:
+                f.write(data)
+
+    with urllib.request.urlopen(coins_config_req) as response:
+        response = response.read().decode("utf-8")
+        response_json = json.loads(response)
+        if "download_url" not in response_json:
+            print("Failed to download coins_config.json")
+            exit(1)
+
+        with urllib.request.urlopen(
+            response_json["download_url"]
+        ) as coins_config_response:
+            coins_config = coins_config_response.read().decode("utf-8")
+            with open(COINS_CONFIG_PATH, "w") as f:
+                f.write(coins_config)
+
+
+def download_coin_icons(
+    repo_url: str,
+    repo_path: str,
+    repo_commit: str,
+    local_dir: str = COIN_ICONS_PATH,
+    max_concurrency: int = CONCURRENCY_LIMIT,
+    timeout: int = ICON_DOWNLOAD_TIMEOUT_SECONDS,
+) -> None:
+    """Download the coin icons from the coins repo
+
+    Args:
+        repo_url (str): GitHub API URL for the coins repo
+        repo_path (str): path to the icons directory in the coins repo
+        repo_commit (str): The commit hash to be used as ref
+        local_dir (str, optional): local directory to save the icons to. Defaults to COIN_ICONS_PATH.
+        max_concurrency (int, optional): Maximum number of concurrent processes to spawn. Defaults to CONCURRENCY_LIMIT.
+        timeout (int, optional): Maximum timeout in seconds per download task. Defaults to ICON_DOWNLOAD_TIMEOUT_SECONDS.
+    """
+
+    api_url = f"{repo_url}/contents/{repo_path}?ref={repo_commit}"
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    req = urllib.request.Request(api_url, headers=headers)
+    with urllib.request.urlopen(req) as response:
+        coins = []
+        data = json.loads(response.read())
+        for item in data:
+            if item["type"] == "file":
+                coins.append(item)
+
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=max_concurrency
+        ) as executor:
+            futures = {
+                executor.submit(
+                    download_icon,
+                    coin,
+                    local_dir,
+                )
+                for coin in coins
+            }
+            for future in concurrent.futures.as_completed(futures):
+                # Exceptions that occur in the threads are allowed to propagate
+                # to the main thread, so that the program can exit with a non-zero
+                # exit code. This is useful for CI/CD pipelines.
+                future.result(timeout=timeout)
 
 
 def download_icon(item: dict[str, str], local_dir: str) -> None:
-    """
-    Download the icon for a single coin from the coins repo
-    :param item: dict containing the download url and name of the icon file
-    :param local_dir: local directory to save the icon
-    :return: None
+    """Download a single coin icon from the coins repo
+
+    Args:
+        item (dict[str, str]): GitHub API response for a single file in the coins repo
+        local_dir (str): local directory to save the icon
+
+    Raises:
+        e: Any exception that occurs during the download
     """
     file_url = item["download_url"]
     file_name = item["name"]
@@ -95,53 +216,6 @@ def download_icon(item: dict[str, str], local_dir: str) -> None:
     except Exception as e:
         print(f"Failed to download icon for {coin_name}: {e}")
         raise e
-
-
-def download_coin_icons(
-    repo_owner: str,
-    repo_name: str,
-    repo_path: str,
-    local_dir: str = COIN_ICONS_PATH,
-    max_concurrency: int = CONCURRENCY_LIMIT,
-    timeout: int = ICON_DOWNLOAD_TIMEOUT_SECONDS,
-) -> None:
-    """
-    Download the coin icons from the coins repo in parallel
-    :param repo_owner: owner of the coins repo
-    :param repo_name: name of the coins repo
-    :param repo_path: path to the icons directory in the coins repo
-    :param local_dir: local directory to save the icons
-    :param max_concurrency: maximum number of concurrent downloads
-    :param timeout: timeout for each download in seconds
-    :return: None
-    """
-    api_url = (
-        f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{repo_path}"
-    )
-    headers = {"Accept": "application/vnd.github.v3+json"}
-    req = urllib.request.Request(api_url, headers=headers)
-    response = urllib.request.urlopen(req).read()
-
-    coins = []
-    data = json.loads(response)
-    for item in data:
-        if item["type"] == "file":
-            coins.append(item)
-
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_concurrency) as executor:
-        futures = {
-            executor.submit(
-                download_icon,
-                coin,
-                local_dir,
-            )
-            for coin in coins
-        }
-        for future in concurrent.futures.as_completed(futures):
-            # Exceptions that occur in the threads are allowed to propagate
-            # to the main thread, so that the program can exit with a non-zero
-            # exit code. This is useful for CI/CD pipelines.
-            future.result(timeout=timeout)
 
 
 def init_argparse() -> argparse.ArgumentParser:
