@@ -17,7 +17,7 @@ CONCURRENCY_LIMIT = 4
 
 
 @dataclass
-class CoinData:
+class CoinCIConfig:
     bundled_coins_repo_commit: str
     coins_repo_url: str
     coins_repo_branch: str
@@ -29,7 +29,7 @@ class CoinData:
     def load(path: str = COINS_CI_PATH):
         with open(path, "r") as f:
             data = json.load(f)
-            return CoinData(**data)  # type: ignore
+            return CoinCIConfig(**data)  # type: ignore
 
     def save(self, path: str = COINS_CI_PATH):
         with open(path, "w") as f:
@@ -41,10 +41,7 @@ def main() -> None:
     parser = init_argparse()
     args = parser.parse_args()
 
-    if args.force:
-        clean_coin_assets()
-
-    coins_data = CoinData.load()
+    coins_data = CoinCIConfig.load()
     current_commit_hash = coins_data.bundled_coins_repo_commit
     latest_commit_hash = get_latest_commit_hash(
         coins_data.coins_repo_url, coins_data.coins_repo_branch
@@ -52,18 +49,15 @@ def main() -> None:
     coins_data.bundled_coins_repo_commit = latest_commit_hash
     coins_data.save()
     if not args.force and current_commit_hash != latest_commit_hash:
-        print("New coins repo commit found. Please use the --force flag to update.")
+        print("New coins repo commit found and coins_ci.json has been updated.")
+        print("Please run the script again or use the -f/--force flag to update.")
         print(f"Current commit: {current_commit_hash}")
         print(f"Latest commit: {latest_commit_hash}")
         exit(1)
 
-    coin_configs_exist = os.path.exists(COINS_PATH) and os.path.exists(
-        COINS_CONFIG_PATH
-    )
-    coin_icons_exist = os.path.exists(COIN_ICONS_PATH)
-    if coin_configs_exist and coin_icons_exist:
-        print("Coin configs and icons already exist. Skipping download.")
-        return
+    # Default to cleaning existing files and redownloading the latest versions
+    # Could check the sha hash of existing files and skip the download if they match
+    clean_coin_assets()
 
     mapped_coins_path = coins_data.mapped_files[COINS_PATH]
     mapped_coins_config_path = coins_data.mapped_files[COINS_CONFIG_PATH]
