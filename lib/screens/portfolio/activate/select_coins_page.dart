@@ -329,6 +329,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   }
 
   void _pressDoneButton() async {
+    final localisations = AppLocalizations.of(context);
+
     final numCoinsEnabled = coinsBloc.coinBalance.length;
     final numCoinsTryingEnable =
         coinsBloc.coinBeforeActivation.where((c) => c.isActive).toList().length;
@@ -341,23 +343,22 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         context: context,
         builder: (BuildContext context) {
           return CustomSimpleDialog(
-            title:
-                Text(AppLocalizations.of(context).enablingTooManyAssetsTitle),
+            title: Text(localisations.enablingTooManyAssetsTitle),
             children: [
-              Text(AppLocalizations.of(context).enablingTooManyAssetsSpan1 +
+              Text(localisations.enablingTooManyAssetsSpan1 +
                   numCoinsEnabled.toString() +
-                  AppLocalizations.of(context).enablingTooManyAssetsSpan2 +
+                  localisations.enablingTooManyAssetsSpan2 +
                   numCoinsTryingEnable.toString() +
-                  AppLocalizations.of(context).enablingTooManyAssetsSpan3 +
+                  localisations.enablingTooManyAssetsSpan3 +
                   maxCoinPerPlatform.toString() +
-                  AppLocalizations.of(context).enablingTooManyAssetsSpan4),
+                  localisations.enablingTooManyAssetsSpan4),
               SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
                     onPressed: () => dialogBloc.closeDialog(context),
-                    child: Text(AppLocalizations.of(context).warningOkBtn),
+                    child: Text(localisations.warningOkBtn),
                   ),
                 ],
               ),
@@ -373,9 +374,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         ScaffoldMessenger.maybeOf(context)?.showSnackBar(
           SnackBar(
             content: Text(
-              // AppLocalizations.of(context).zCoinActivationNotAcceptedTitle,
-              'Coin Activation Cancelled\n'
-              'Please accept all activation requests to continue or deselect coins to activate.',
+              '${localisations.activationCancelled}\n'
+              '${localisations.pleaseAcceptAllCoinActivationRequests}',
             ),
             duration: const Duration(seconds: 2),
           ),

@@ -960,3 +960,16 @@ bool isCoinPresent(Coin coin, String query, String filter) {
       (coin.abbr.toLowerCase().contains(query.trim().toLowerCase()) ||
           coin.name.toLowerCase().contains(query.trim().toLowerCase()));
 }
+
+String formatAddressShort(String address) {
+  if (address == null) return null;
+  if (address.length < 10) return address;
+  return address.substring(0, 5) +
+      '...' +
+      address.substring(address.length - 5);
+}
+
+String flattenParagraphs(String text) {
+  if (text == null) return null;
+  return text.replaceAll('\n', ' ').replaceAll('\r', ' ').replaceAll('\t', ' ');
+}

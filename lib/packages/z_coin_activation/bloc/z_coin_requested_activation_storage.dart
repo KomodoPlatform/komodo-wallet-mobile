@@ -45,11 +45,18 @@ mixin RequestedZCoinsStorage {
     await setRequestedActivatedCoins(updatedList.toList());
   }
 
+  /// Returns true if all requested coins are enabled.
+  /// Returns false if not all requested coins are enabled.
+  /// Returns null if no coins are requested.
   Future<bool> isAllRequestedZCoinsEnabled() async {
-    return (await outstandingZCoinActivations()).isEmpty;
+    final requestedCoins = await getRequestedActivatedCoins();
+
+    return requestedCoins.isEmpty
+        ? null
+        : (await outstandingZCoinActivations()).isEmpty;
   }
 
   Future<List<String>> outstandingZCoinActivations();
 
-  Future<List<String>> getEnabledZCoins();
+  Future<List<String>> getApiEnabledZCoins();
 }

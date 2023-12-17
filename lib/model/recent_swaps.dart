@@ -152,7 +152,9 @@ class MmSwap {
 
   String myOrderUuid;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> toJson() {
+    try {
+      return <String, dynamic>{
         'error_events':
             List<dynamic>.from(errorEvents.map<dynamic>((dynamic x) => x)) ??
                 <String>[],
@@ -174,6 +176,10 @@ class MmSwap {
         'taker_amount': takerAmount,
         'my_order_uuid': myOrderUuid,
       };
+    } catch (e) {
+      return null;
+    }
+  }
 
   Status get status {
     // cf. SwapHistoryBloc::getStatusSwap

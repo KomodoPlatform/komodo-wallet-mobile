@@ -18,14 +18,23 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
   static Future<String> get taskIdKey async =>
       'activationTaskId_${(await Db.getCurrentWallet()).id}';
 
-  Stream<ZCoinStatus> _activateZCoins(List<String> zCoins) async* {
+  Stream<ZCoinStatus> resyncZCoins() async* {
+    final outStandingZCoins = await outstandingZCoinActivations();
+
+    yield* _activateZCoins(outStandingZCoins, resyncOnly: true);
+  }
+
+  Stream<ZCoinStatus> _activateZCoins(
+    List<String> zCoins, {
+    bool resyncOnly = false,
+  }) async* {
     try {
       if (zCoins.isEmpty) return;
 
       while (zCoins.isNotEmpty) {
         final currentCoinTicker = zCoins.first;
-
-        await for (final update in api.activateCoin(currentCoinTicker)) {
+        await for (final update
+            in api.activateCoin(currentCoinTicker, resync: resyncOnly)) {
           Log(
             'ZCoinActivationRepository:activateZCoins',
             'Update received: ${update.toJson()}',
@@ -37,8 +46,6 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
             if (!isRegistered) {
               await coinsBloc.setupCoinAfterActivation(coin);
             }
-
-            await removeRequestedActivatedCoins([currentCoinTicker]);
           } else if (update.status == ActivationTaskStatus.failed) {
             await removeRequestedActivatedCoins([currentCoinTicker]);
             await api.removeTaskId(currentCoinTicker);
@@ -54,6 +61,7 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     } catch (e) {
       rethrow;
     } finally {
+      api.resetFirstScannedBlocks();
       await coinsBloc.syncCoinsStateWithApi();
     }
   }
@@ -63,11 +71,22 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     yield* _activateZCoins(zCoinsToActivate);
   }
 
+  /// Gets coins currently active in API.
+  ///
+  /// Returns null if there is an error.
   @override
-  Future<List<String>> getEnabledZCoins() async {
-    final enabledCoins = await api.activatedZCoins();
+  Future<List<String>> getApiEnabledZCoins() async {
+    try {
+      final enabledCoins = await api.apiActivatedZCoins();
 
-    return enabledCoins;
+      return enabledCoins;
+    } catch (e) {
+      Log(
+        'z_coin_activation_repository:getEnabledZCoins',
+        'Failed to get enabled ZCoins: $e',
+      );
+      return null;
+    }
   }
 
   Future<void> cancelAllZCoinActivations() async {
@@ -85,20 +104,34 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     }
   }
 
+  // This is a workaround for the legacy coins bloc. It's not a good practice.
+  Future<void> legacyCoinsBlocDisableLocallyCallback(
+    String ticker,
+  ) async {
+    try {
+      await api.cancelCoinActivation(ticker);
+      await removeRequestedActivatedCoins([ticker]);
+    } catch (e) {
+      Log(
+        'z_coin_activation_repository:cancelAllZCoinActivations',
+        'Failed to cancel ZCoin activations: $e',
+      );
+    }
+  }
+
   @override
   Future<List<String>> outstandingZCoinActivations() async {
-    final knownZCoins = await getKnownZCoins();
+    final Set<String> requestedCoins =
+        (await getRequestedActivatedCoins()).toSet();
 
-    final activatedZCoins = (await getEnabledZCoins()).toSet();
-    final requestedCoins = (await getRequestedActivatedCoins()).toSet();
+    final Set<String> locallyActiveCoins = await api.localDbActivatedZCoins();
 
-    final coinsAlreadyActivated = activatedZCoins.intersection(requestedCoins);
+    final Set<String> apiActiveZCoins =
+        ((await getApiEnabledZCoins()) ?? []).toSet();
 
-    if (coinsAlreadyActivated.isNotEmpty) {
-      await removeRequestedActivatedCoins(coinsAlreadyActivated.toList());
-    }
+    apiActiveZCoins.removeWhere((coin) => !locallyActiveCoins.contains(coin));
 
-    return requestedCoins.difference(activatedZCoins).toList();
+    return requestedCoins.difference(apiActiveZCoins).toList();
   }
 
   Future<List<Coin>> getKnownZCoins() async {
@@ -165,5 +198,19 @@ class ZCoinActivationRepository with RequestedZCoinsStorage {
     final status = await api.activationTaskStatus(taskId, ticker: coin);
 
     return status;
+  }
+
+  /// Returns a list of activated coins according to our local database.
+  ///
+  /// This is not related to the activation status of the coins on the API. The
+  /// current API activation status could be `true` or `false`.
+  Future<List<String>> zCoinsTickersWithPreviousActivation() async {
+    final knownZCoins = (await getKnownZCoins()).map((c) => c.abbr).toSet();
+
+    final allActivatedCoins = (await Db.getCoinsFromDb()).toSet();
+
+    final previouslyActivated = knownZCoins.intersection(allActivatedCoins);
+
+    return previouslyActivated.toList();
   }
 }

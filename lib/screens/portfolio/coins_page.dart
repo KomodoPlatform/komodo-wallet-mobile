@@ -1,21 +1,20 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/packages/rebranding/rebranding_dialog.dart';
+import 'package:komodo_dex/packages/rebranding/rebranding_provider.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
-import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
+import 'package:komodo_dex/screens/portfolio/animated_asset_proportions_graph.dart';
+import 'package:komodo_dex/widgets/animated_collapse.dart';
 import 'package:provider/provider.dart';
 
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/packages/rebranding/rebranding_provider.dart';
-import 'add_coin_button.dart';
-import 'package:komodo_dex/packages/rebranding/rebranding_dialog.dart';
 import '../../../../blocs/coins_bloc.dart';
 import '../../../../blocs/settings_bloc.dart';
 import '../../../../localizations.dart';
@@ -23,6 +22,7 @@ import '../../../../model/cex_provider.dart';
 import '../../../../model/coin_balance.dart';
 import '../../../../services/mm_service.dart';
 import '../portfolio/loading_coin.dart';
+import 'add_coin_fab.dart';
 import 'item_coin.dart';
 
 class CoinsPage extends StatefulWidget {
@@ -33,22 +33,13 @@ class CoinsPage extends StatefulWidget {
 class _CoinsPageState extends State<CoinsPage> {
   CexProvider _cexProvider;
   ScrollController _scrollController;
-  double _heightFactor = 2.3;
   BuildContext contextMain;
   NumberFormat f = NumberFormat('###,##0.0#');
-  double _heightScreen;
   double _heightSliver;
-  double _widthScreen;
-
-  bool hideAddCoinLoading = true;
-
-  void _showAddCoinLoading() {
-    setState(() {
-      hideAddCoinLoading = false;
-    });
-  }
 
   StreamSubscription<bool> _loginSubscription;
+
+  Timer _timer;
 
   // Rebranding
   Future<void> showRebrandingDialog(BuildContext context) async {
@@ -57,16 +48,13 @@ class _CoinsPageState extends State<CoinsPage> {
       barrierDismissible: true, // allow dismiss when clicking outside
       builder: (BuildContext context) => RebrandingDialog(),
     ).then((_) {
-      // This is called when the dialog is dismissed
       Provider.of<RebrandingProvider>(context, listen: false)
           .closeThisSession();
     });
   }
 
   void _scrollListener() {
-    setState(() {
-      _heightFactor = (exp(-_scrollController.offset / 60) * 1.3) + 1;
-    });
+    setState(() {});
   }
 
   @override
@@ -74,17 +62,6 @@ class _CoinsPageState extends State<CoinsPage> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     if (mmSe.running) coinsBloc.updateCoinBalances();
-
-    final bloc = BlocProvider.of<ZCoinActivationBloc>(context);
-
-    // Check every 5 seconds if mmSe is running. When it is running, emit the
-    // event [ZCoinActivationStatusRequested] and kill the timer.
-    Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (mmSe.running) {
-        bloc.add(ZCoinActivationStatusRequested());
-        timer.cancel();
-      }
-    });
 
     // Subscribe to the outIsLogin stream
     _loginSubscription = authBloc.outIsLogin.listen((isLogin) async {
@@ -95,9 +72,8 @@ class _CoinsPageState extends State<CoinsPage> {
         // Wait for the prefs to load
         await rebrandingNotifier.prefsLoaded;
 
-        if (!rebrandingNotifier.closedPermanently &&
-            !rebrandingNotifier.closedThisSession) {
-          showRebrandingDialog(context);
+        if (rebrandingNotifier.shouldShowRebrandingDialog) {
+          showRebrandingDialog(context).ignore();
         }
       }
     });
@@ -107,212 +83,155 @@ class _CoinsPageState extends State<CoinsPage> {
 
   @override
   void dispose() {
-    _loginSubscription.cancel();
+    _loginSubscription?.cancel()?.ignore();
+    _timer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     _cexProvider = Provider.of<CexProvider>(context);
-    _heightScreen = MediaQuery.of(context).size.height;
-    _widthScreen = MediaQuery.of(context).size.width;
-    _heightSliver = _heightScreen * 0.25 - MediaQuery.of(context).padding.top;
-    if (_heightSliver < 125) _heightSliver = 125;
+    _heightSliver = (kToolbarHeight + MediaQuery.of(context).padding.top);
 
     final bool isCollapsed = _scrollController.hasClients &&
         _scrollController.offset > _heightSliver;
 
     return Scaffold(
+      floatingActionButton: AddCoinFab(key: Key('add-coin-button')),
       body: NestedScrollView(
         controller: _scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+              elevation: 4,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              expandedHeight: 130,
+              expandedHeight: _heightSliver,
               pinned: true,
-              actions: [
-                AnimatedOpacity(
-                  opacity: isCollapsed ? 1 : 0,
-                  duration: Duration(milliseconds: 600),
-                  curve: Curves.easeInOutExpo,
-                  child: IgnorePointer(
-                    ignoring: !isCollapsed,
-                    child: AddCoinButton(
-                      key: Key('add-coin-button-collapsed'),
-                      isCollapsed: true,
-                      hideAddCoinLoading: hideAddCoinLoading,
-                      onShowAddCoinLoading: _showAddCoinLoading,
+              flexibleSpace: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return AnimatedContainer(
+                    key: Key('animated-container-portfolio-gradient'),
+                    duration: Duration(milliseconds: 200),
+                    decoration: BoxDecoration(
+                      gradient: backgroundGradient,
                     ),
-                  ),
-                ),
-                SizedBox(width: 8),
-              ],
-              flexibleSpace: Builder(
-                builder: (BuildContext context) {
-                  return Stack(
-                    children: <Widget>[
-                      FlexibleSpaceBar(
-                        collapseMode: CollapseMode.pin,
-                        centerTitle: true,
-                        titlePadding: EdgeInsetsDirectional.only(bottom: 10),
-                        title: SizedBox(
-                          width: _widthScreen * 0.5,
-                          child: Center(
-                            heightFactor: _heightFactor,
-                            child: StreamBuilder<List<CoinBalance>>(
-                              initialData: coinsBloc.coinBalance,
-                              stream: coinsBloc.outCoins,
-                              builder: (
-                                BuildContext context,
-                                AsyncSnapshot<List<CoinBalance>> snapshot,
-                              ) {
-                                if (snapshot.data != null) {
-                                  double totalBalanceUSD = 0;
+                    child: SafeArea(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          StreamBuilder<List<CoinBalance>>(
+                            key: Key('stream-builder-coin-balance'),
+                            initialData: coinsBloc.coinBalance,
+                            stream: coinsBloc.outCoins,
+                            builder: (
+                              BuildContext context,
+                              AsyncSnapshot<List<CoinBalance>> snapshot,
+                            ) {
+                              if (snapshot.data != null) {
+                                double totalBalanceUSD = 0;
 
-                                  for (CoinBalance coinBalance
-                                      in snapshot.data) {
-                                    totalBalanceUSD += coinBalance.balanceUSD;
-                                  }
-                                  return StreamBuilder<bool>(
-                                    initialData: settingsBloc.showBalance,
-                                    stream: settingsBloc.outShowBalance,
-                                    builder: (
-                                      BuildContext context,
-                                      AsyncSnapshot<bool> snapshot,
-                                    ) {
-                                      bool hidden = false;
-                                      if (snapshot.hasData && !snapshot.data) {
-                                        hidden = true;
-                                      }
-                                      final String amountText =
-                                          _cexProvider.convert(
-                                        totalBalanceUSD,
-                                        hidden: hidden,
-                                      );
-                                      return TextButton(
-                                        onPressed: () =>
-                                            _cexProvider.switchCurrency(),
-                                        style: TextButton.styleFrom(
-                                          primary: isCollapsed
-                                              ? Theme.of(context).brightness ==
-                                                      Brightness.light
-                                                  ? Colors.black
-                                                      .withOpacity(0.8)
-                                                  : Colors.white
-                                              : Colors.white.withOpacity(0.8),
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
-                                        ),
-                                        child: AutoSizeText(
-                                          amountText,
-                                          maxFontSize: 18,
-                                          minFontSize: 12,
-                                          maxLines: 1,
-                                        ),
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  return Center(
-                                    child: const CircularProgressIndicator(),
-                                  );
+                                for (CoinBalance coinBalance in snapshot.data) {
+                                  totalBalanceUSD += coinBalance.balanceUSD;
                                 }
-                              },
-                            ),
-                          ),
-                        ),
-                        background: Container(
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                const LoadAsset(),
-                                const SizedBox(
-                                  height: 14.0,
-                                ),
-                                StreamBuilder<bool>(
+                                return StreamBuilder<bool>(
                                   initialData: settingsBloc.showBalance,
                                   stream: settingsBloc.outShowBalance,
                                   builder: (
                                     BuildContext context,
                                     AsyncSnapshot<bool> snapshot,
                                   ) {
-                                    return snapshot.hasData && snapshot.data
-                                        ? BarGraph()
-                                        : SizedBox();
+                                    bool hidden = false;
+                                    if (snapshot.hasData && !snapshot.data) {
+                                      hidden = true;
+                                    }
+                                    final String amountText =
+                                        _cexProvider.convert(
+                                      totalBalanceUSD,
+                                      hidden: hidden,
+                                    );
+                                    return Expanded(
+                                      child: Stack(
+                                        fit: StackFit.passthrough,
+                                        children: [
+                                          Center(
+                                            child: AutoSizeText(
+                                              amountText,
+                                              maxFontSize: 24,
+                                              minFontSize: 12,
+                                              maxLines: 1,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline5
+                                                  .copyWith(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: AnimatedOpacity(
+                                              opacity:
+                                                  innerBoxIsScrolled ? 0 : 1,
+                                              duration:
+                                                  Duration(milliseconds: 300),
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  Icons.swap_horiz,
+                                                  color: Colors.white,
+                                                ),
+                                                onPressed: () => _cexProvider
+                                                    .switchCurrency(),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
                                   },
-                                )
-                              ],
+                                );
+                              } else {
+                                return Center(
+                                  child: const CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          ),
+                          AnimatedCollapse(
+                            key: Key('animated-collapse-bar-graph'),
+                            fullHeight: 8,
+                            isCollapsed: isCollapsed,
+                            child: AnimatedAssetProportionsBarGraph(
+                              key: Key('bar-graph'),
                             ),
                           ),
-                          height: _heightScreen * 0.35,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              stops: const <double>[0.01, 1],
-                              colors: const <Color>[
-                                Color.fromRGBO(98, 90, 229, 1),
-                                Color.fromRGBO(45, 184, 240, 1),
-                              ],
-                            ),
-                          ),
-                        ),
+                        ],
                       ),
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: _buildProgressIndicator(),
-                      ),
-                    ],
+                    ),
                   );
                 },
               ),
               automaticallyImplyLeading: false,
             ),
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              toolbarHeight: 48,
-              flexibleSpace: Center(
-                child: IntrinsicWidth(
-                  // Child has infite width. We want to change so that it
-                  // ignores the infinite width and takes up min width.
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: AddCoinButton(
-                      key: Key('add-coin-button'),
-                      hideAddCoinLoading: hideAddCoinLoading,
-                      onShowAddCoinLoading: _showAddCoinLoading,
-                    ),
-                  ),
-                ),
-              ),
-              pinned: false,
-            ),
             BlocBuilder<ZCoinActivationBloc, ZCoinActivationState>(
+              key: Key('bloc-builder-zcoin-activation'),
               builder: (context, state) {
                 final isActivationInProgress =
                     state is ZCoinActivationInProgess;
 
-                return SliverVisibility(
-                  visible: isActivationInProgress,
-                  sliver: isActivationInProgress
-                      ? SliverAppBar(
-                          automaticallyImplyLeading: false,
-                          backgroundColor:
-                              Theme.of(context).scaffoldBackgroundColor,
-                          flexibleSpace: Center(
-                            child: ZCoinStatusWidget(),
-                          ),
-                          pinned: false,
-                        )
-                      : SliverToBoxAdapter(child: SizedBox.shrink()),
+                return SliverToBoxAdapter(
+                  key: Key('sliver-to-box-adapter-zcoin-status'),
+                  child: AnimatedCollapse(
+                    isCollapsed: !isActivationInProgress,
+                    fullHeight: 64,
+                    child: Card(
+                      child: ZCoinStatusWidget(
+                        key: Key('zcoin-status-widget'),
+                      ),
+                      margin: EdgeInsets.zero,
+                    ),
+                  ),
                 );
               },
             ),
@@ -326,79 +245,22 @@ class _CoinsPageState extends State<CoinsPage> {
     );
   }
 
-  Widget _buildProgressIndicator() {
-    return StreamBuilder<CoinToActivate>(
-      initialData: coinsBloc.currentActiveCoin,
-      stream: coinsBloc.outcurrentActiveCoin,
-      builder: (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-        return snapshot.data != null && !hideAddCoinLoading
-            ? const SizedBox(
-                height: 2,
-                child: LinearProgressIndicator(),
-              )
-            : SizedBox();
-      },
-    );
-  }
-}
+  LinearGradient get backgroundGradient {
+    final progress = ((_scrollController.offset - _heightSliver) /
+            (_heightSliver -
+                (kToolbarHeight + MediaQuery.of(context).padding.top)))
+        .clamp(0.0, 1.0);
 
-class BarGraph extends StatefulWidget {
-  @override
-  BarGraphState createState() {
-    return BarGraphState();
-  }
-}
+    final colors = [
+      Color.fromRGBO(98, 90, 229, 1),
+      Color.fromRGBO(45, 184, 240, 1),
+    ].map((color) => color.withOpacity((1 - progress).clamp(0.2, 1))).toList();
 
-class BarGraphState extends State<BarGraph> {
-  @override
-  Widget build(BuildContext context) {
-    final double _widthScreen = MediaQuery.of(context).size.width;
-    final double _widthBar = _widthScreen - 32;
-
-    return StreamBuilder<List<CoinBalance>>(
-      initialData: coinsBloc.coinBalance,
-      stream: coinsBloc.outCoins,
-      builder:
-          (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
-        final bool _isVisible = snapshot.data != null;
-        final List<Container> barItem = <Container>[];
-
-        if (snapshot.data != null) {
-          double sumOfAllBalances = 0;
-
-          for (CoinBalance coinBalance in snapshot.data) {
-            sumOfAllBalances += coinBalance.balanceUSD;
-          }
-
-          for (CoinBalance coinBalance in snapshot.data) {
-            if (coinBalance.balanceUSD > 0) {
-              barItem.add(
-                Container(
-                  color: Color(int.parse(coinBalance.coin.colorCoin)),
-                  width: _widthBar *
-                      (((coinBalance.balanceUSD * 100) / sumOfAllBalances) /
-                          100),
-                ),
-              );
-            }
-          }
-        }
-
-        return AnimatedOpacity(
-          opacity: _isVisible ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 300),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-            child: SizedBox(
-              width: _widthBar,
-              height: 16,
-              child: Row(
-                children: barItem,
-              ),
-            ),
-          ),
-        );
-      },
+    return LinearGradient(
+      begin: Alignment.bottomLeft,
+      end: Alignment.topRight,
+      stops: const <double>[0.01, 1],
+      colors: colors,
     );
   }
 }
@@ -512,30 +374,25 @@ class ListCoinsState extends State<ListCoins> {
                     coinsBloc.sortCoins(snapshot.data);
 
                 return SlidableAutoCloseBehavior(
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      ListView.separated(
-                        padding: const EdgeInsets.all(0),
-                        key: const Key('list-view-coins'),
-                        itemCount: _coinsSorted.length,
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          return ItemCoin(
-                            key: Key(
-                              'coin-list-${_coinsSorted[index].coin.abbr}',
-                            ),
-                            mContext: context,
-                            coinBalance: _coinsSorted[index],
-                          );
-                          // }
-                        },
-                        separatorBuilder: (context, _) => Divider(
-                          color: Theme.of(context).colorScheme.surface,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.all(0),
+                    key: const Key('list-view-coins'),
+                    itemCount: _coinsSorted.length,
+                    physics: ClampingScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return ItemCoin(
+                        key: Key(
+                          'coin-list-${_coinsSorted[index].coin.abbr}',
                         ),
-                      ),
-                    ],
+                        showAlternateColor: index.isOdd,
+                        mContext: context,
+                        coinBalance: _coinsSorted[index],
+                      );
+                      // }
+                    },
+                    separatorBuilder: (context, _) => Divider(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                   ),
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
@@ -544,16 +401,7 @@ class ListCoinsState extends State<ListCoins> {
                 // MRC: Add center to fix random UI glitch
                 // due to loading Add Button
                 return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      AddCoinButton(
-                        key: const Key('add-coin-button-empty'),
-                        isCollapsed: true,
-                      ),
-                      Text(AppLocalizations.of(context).pleaseAddCoin),
-                    ],
-                  ),
+                  child: Text(AppLocalizations.of(context).pleaseAddCoin),
                 );
               } else {
                 return SizedBox();

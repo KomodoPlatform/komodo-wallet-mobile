@@ -1,26 +1,36 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
-import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
-import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
-import 'package:komodo_dex/utils/log_storage.dart';
-
-import '../../app_config/app_config.dart';
-import '../../blocs/camo_bloc.dart';
-import '../../model/cex_provider.dart';
-import '../../model/swap.dart';
-import '../../model/swap_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
+import 'package:komodo_dex/utils/log_storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
+import 'package:share/share.dart';
+
+import '../../app_config/app_config.dart';
 import '../../blocs/authenticate_bloc.dart';
+import '../../blocs/camo_bloc.dart';
 import '../../blocs/dialog_bloc.dart';
 import '../../blocs/main_bloc.dart';
 import '../../blocs/settings_bloc.dart';
 import '../../blocs/wallet_bloc.dart';
 import '../../localizations.dart';
+import '../../model/cex_provider.dart';
+import '../../model/swap.dart';
+import '../../model/swap_provider.dart';
 import '../../model/updates_provider.dart';
 import '../../model/wallet_security_settings_provider.dart';
+import '../../services/mm_service.dart';
+import '../../utils/log.dart';
+import '../../utils/utils.dart';
+import '../../widgets/build_red_dot.dart';
+import '../../widgets/custom_simple_dialog.dart';
+import '../../widgets/eula_contents.dart';
+import '../../widgets/primary_button.dart';
+import '../../widgets/scrollable_dialog.dart';
+import '../../widgets/tac_contents.dart';
 import '../authentification/lock_screen.dart';
 import '../authentification/pin_page.dart';
 import '../authentification/show_delete_wallet_confirmation.dart';
@@ -31,19 +41,6 @@ import '../import-export/import_swap_page.dart';
 import '../settings/camo_pin_setup_page.dart';
 import '../settings/updates_page.dart';
 import '../settings/view_seed_unlock_page.dart';
-import '../../services/mm_service.dart';
-import '../../utils/log.dart';
-import '../../utils/utils.dart';
-import '../../widgets/build_red_dot.dart';
-import '../../widgets/custom_simple_dialog.dart';
-import '../../widgets/eula_contents.dart';
-import '../../widgets/primary_button.dart';
-import '../../widgets/scrollable_dialog.dart';
-import '../../widgets/tac_contents.dart';
-
-import 'package:provider/provider.dart';
-import 'package:share/share.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -57,7 +54,6 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   void initState() {
-    context.read<ZCoinActivationBloc>().add(ZCoinActivationStatusRequested());
     _getVersionApplication().then((String onValue) {
       setState(() {
         version = onValue;
@@ -124,11 +120,6 @@ class _SettingPageState extends State<SettingPage> {
             _buildTitle(AppLocalizations.of(context).developerTitle),
             _buildEnableTestCoins(),
             SizedBox(height: 2),
-
-            //
-            ZCoinStatusWidget(),
-            SizedBox(height: 2),
-
             _buildTitle(version),
             if (appConfig.isUpdateCheckerEnabled) _buildUpdate(),
             const SizedBox(

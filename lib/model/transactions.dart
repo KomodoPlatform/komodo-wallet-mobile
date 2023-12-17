@@ -45,18 +45,31 @@ class Result {
     this.transactions,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
-        fromId: json['from_id'] ?? '',
-        limit: json['limit'] ?? 0,
-        skipped: json['skipped'] ?? 0,
-        total: json['total'] ?? 0,
-        currentBlock: json['current_block'] ?? 0,
-        syncStatus: json['sync_status'] == null
-            ? SyncStatus()
-            : SyncStatus.fromJson(json['sync_status']),
-        transactions: List<Transaction>.from(
-            json['transactions'].map((dynamic x) => Transaction.fromJson(x))),
-      );
+  static Result fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
+
+    final fromIdRaw = json['from_id'] ??
+        (json['paging_options'] != null &&
+                json['paging_options']['FromId'] != null
+            ? json['paging_options']['FromId']
+            : null);
+
+    final fromId = fromIdRaw is int ? fromIdRaw.toString() : fromIdRaw;
+
+    return Result(
+      fromId: fromId,
+      limit: json['limit'] ?? 0,
+      skipped: json['skipped'] ?? 0,
+      total: json['total'] ?? 0,
+      currentBlock: json['current_block'] ?? 0,
+      syncStatus: json['sync_status'] == null
+          ? SyncStatus()
+          : SyncStatus.fromJson(json['sync_status']),
+      transactions: List<Transaction>.from(
+        json['transactions'].map((dynamic x) => Transaction.fromJson(x)),
+      ),
+    );
+  }
 
   String fromId;
   int currentBlock;

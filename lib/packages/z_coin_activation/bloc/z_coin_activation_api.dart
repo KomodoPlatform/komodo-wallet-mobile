@@ -22,11 +22,15 @@ class ZCoinActivationApi {
   final String _baseUrl = mmSe.url;
   String get _userpass => mmSe.userpass;
 
-  String get folder => Platform.isIOS ? '/ZcashParams/' : '/.zcash-params/';
+  Directory get zCashParamsDirectory => Directory(
+        (applicationDocumentsDirectorySync.path + '/zcash-params'),
+      );
 
   bool _paramsDownloaded = false;
 
   Map<String, int> firstScannedBlocks = {};
+
+  void resetFirstScannedBlocks() => firstScannedBlocks = {};
 
   Future<int> userSelectedZhtlcSyncStartTimestamp() async {
     final zhtlcActivationPrefs = await loadZhtlcActivationPrefs();
@@ -44,25 +48,31 @@ class ZCoinActivationApi {
   }
 
   /// Creates a new activation task for the given coin.
-  Future<int> initiateActivation(String ticker) async {
+  Future<int> initiateActivation(
+    String ticker, {
+    bool noSyncParams = false,
+  }) async {
     await musicService.play(MusicMode.ACTIVE);
     await downloadZParams();
 
-    final dir = await applicationDocumentsDirectory;
     Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
 
+    Map<String, dynamic> rpcData = {
+      'electrum_servers': Coin.getServerList(coin.serverList),
+      'light_wallet_d_servers': coin.lightWalletDServers
+    };
+
+    if (!noSyncParams) {
+      rpcData['sync_params'] = {
+        'date': (await userSelectedZhtlcSyncStartTimestamp())
+      };
+    }
+
     Map<String, dynamic> activationParams = {
-      'mode': {
-        'rpc': 'Light',
-        'rpc_data': {
-          'electrum_servers': Coin.getServerList(coin.serverList),
-          'light_wallet_d_servers': coin.lightWalletDServers,
-          'sync_params': {'date': (await userSelectedZhtlcSyncStartTimestamp())}
-        }
-      },
+      'mode': {'rpc': 'Light', 'rpc_data': rpcData},
       'scan_blocks_per_iteration': 150,
       'scan_interval_ms': 150,
-      'zcash_params_path': dir.path + folder
+      'zcash_params_path': zCashParamsDirectory.path,
     };
 
     final response = await http.post(
@@ -93,7 +103,7 @@ class ZCoinActivationApi {
     }
   }
 
-  Future<void> cancelActivation(int taskId) async {
+  Future<void> cancelActivationTask(int taskId) async {
     final response = await http.post(
       Uri.parse(_baseUrl),
       headers: {'Content-Type': 'application/json'},
@@ -126,19 +136,24 @@ class ZCoinActivationApi {
     }
   }
 
+  Future<void> cancelCoinActivation(String ticker) async {
+    int taskId = await getTaskId(ticker);
+
+    if (taskId == null) return;
+
+    await cancelActivationTask(taskId);
+    await _removeCoinTaskId(ticker);
+    firstScannedBlocks.remove(ticker);
+  }
+
   Future<List<String>> cancelAllActivation() async {
     List<Coin> knownZCoins = await getKnownZCoins();
-    List<String> activatedCoins = await activatedZCoins();
+    List<String> activatedCoins = await apiActivatedZCoins();
     List<String> cancelledCoins = [];
 
     for (Coin coin in knownZCoins) {
       String ticker = coin.abbr;
       int coinTaskId = await getTaskId(ticker);
-
-      // Check if taskId exists
-      if (coinTaskId == null) {
-        continue;
-      }
 
       // Check if coin is already activated
       if (activatedCoins.contains(ticker)) {
@@ -155,10 +170,8 @@ class ZCoinActivationApi {
 
       // Attempt to cancel the activation
       try {
-        await cancelActivation(coinTaskId);
-        await _removeCoinTaskId(ticker);
+        await cancelCoinActivation(ticker);
 
-        firstScannedBlocks.remove(ticker);
         cancelledCoins.add(ticker);
       } catch (e) {
         Log(
@@ -181,38 +194,43 @@ class ZCoinActivationApi {
     await storage.write(key: await taskIdKey(abbr), value: taskId.toString());
   }
 
-  Stream<ZCoinStatus> activateCoin(String ticker) async* {
+  Stream<ZCoinStatus> activateCoin(
+    String ticker, {
+    bool resync = false,
+  }) async* {
     int coinTaskId = await getTaskId(ticker);
+    ZCoinStatus taskStatus;
+    final isAlreadyActivated = (await apiActivatedZCoins()).contains(ticker);
 
-    final isAlreadyActivated = (await activatedZCoins()).contains(ticker);
+    if (!resync) {
+      taskStatus = coinTaskId == null
+          ? ZCoinStatus.fromTaskStatus(
+              ticker,
+              isAlreadyActivated
+                  ? ActivationTaskStatus.active
+                  : ActivationTaskStatus.notFound,
+            )
+          : await activationTaskStatus(coinTaskId, ticker: ticker);
+      final isActivatedOnBackend =
+          (isAlreadyActivated || taskStatus.isActivated);
 
-    ZCoinStatus taskStatus = coinTaskId == null
-        ? ZCoinStatus.fromTaskStatus(
-            ticker,
-            isAlreadyActivated
-                ? ActivationTaskStatus.active
-                : ActivationTaskStatus.notFound,
-          )
-        : await activationTaskStatus(coinTaskId, ticker: ticker);
+      final isRegistered = coinsBloc.getBalanceByAbbr(ticker) != null;
 
-    final isActivatedOnBackend = (isAlreadyActivated || taskStatus.isActivated);
+      if (isActivatedOnBackend) {
+        yield taskStatus;
 
-    final isRegistered = coinsBloc.getBalanceByAbbr(ticker) != null;
+        if (!isRegistered) {
+          final coin = (await coins)[ticker];
+          await coinsBloc.setupCoinAfterActivation(coin);
+        }
 
-    if (isActivatedOnBackend) {
-      yield taskStatus;
-
-      if (!isRegistered) {
-        final coin = (await coins)[ticker];
-        await coinsBloc.setupCoinAfterActivation(coin);
+        return;
       }
-
-      return;
     }
 
     ZCoinStatus lastEmittedStatus;
 
-    coinTaskId = await initiateActivation(ticker);
+    coinTaskId = await initiateActivation(ticker, noSyncParams: resync);
 
     lastEmittedStatus = await activationTaskStatus(coinTaskId, ticker: ticker);
 
@@ -228,12 +246,8 @@ class ZCoinActivationApi {
 
       if (shouldEmitStatus) {
         lastEmittedStatus = taskStatus;
-        // yield taskStatus;
         yield taskStatus;
       }
-
-      final isTaskActive = taskStatus.status == ActivationTaskStatus.active;
-      final isTaskNotFound = taskStatus.status == ActivationTaskStatus.notFound;
 
       if (taskStatus.status == ActivationTaskStatus.active ||
           taskStatus.status == ActivationTaskStatus.notFound) {
@@ -311,7 +325,7 @@ class ZCoinActivationApi {
     await storage.delete(key: await taskIdKey(ticker));
   }
 
-  Future<List<String>> activatedZCoins() async {
+  Future<List<String>> apiActivatedZCoins() async {
     final response = await http.post(
       Uri.parse(_baseUrl),
       headers: {'Content-Type': 'application/json'},
@@ -326,19 +340,21 @@ class ZCoinActivationApi {
       final enabledCoins =
           (jsonDecode(response.body)['result']['coins'] as List)
               .map((e) => e['ticker'] as String)
-              .toList();
+              .toSet();
 
-      final knownZCoins = await getKnownZCoins();
+      final knownZCoins = (await getKnownZCoins()).map((c) => c.abbr).toSet();
 
-      final activatedZCoins = knownZCoins
-          .where((c) => enabledCoins.contains(c.abbr) || c.isActive)
-          .map((c) => c.abbr)
-          .toList();
-
-      return activatedZCoins;
+      return knownZCoins.intersection(enabledCoins).toList();
     } else {
       throw Exception('Failed to get activated zcoins');
     }
+  }
+
+  Future<Set<String>> localDbActivatedZCoins() async {
+    return (await getKnownZCoins())
+        .where((c) => c.isActive)
+        .map((c) => c.abbr)
+        .toSet();
   }
 
   Future<List<Coin>> getKnownZCoins() async {
@@ -357,16 +373,17 @@ class ZCoinActivationApi {
   Future<void> downloadZParams() async {
     if (_paramsDownloaded) return;
 
-    final dir = await applicationDocumentsDirectory;
-    final zDir = Directory(dir.path + folder);
+    final doesZcashDirectoryExist = await zCashParamsDirectory.exists();
 
-    final doesZcashDirectoryExist = await zDir.exists();
-
-    final isZcashDirBigEnough =
-        (await MMService.getDirectorySize(zDir.path, endsWith: '')) > 1;
+    final isZcashDirBigEnough = (await MMService.getDirectorySize(
+          zCashParamsDirectory.path,
+          endsWith: '',
+          allowCache: false,
+        )) >
+        1;
 
     if (!doesZcashDirectoryExist) {
-      await zDir.create();
+      await zCashParamsDirectory.create(recursive: true);
     }
 
     if (doesZcashDirectoryExist && isZcashDirBigEnough) {
@@ -386,10 +403,21 @@ class ZCoinActivationApi {
       final request = await client.getUrl(Uri.parse(param));
       final response = await request.close();
 
+      final wasSuccessful = response.statusCode.toString().startsWith('2');
+
+      if (!wasSuccessful) {
+        final exceptionMessage = 'Failed to download $param: '
+            '${response.statusCode} ${response.reasonPhrase}';
+
+        Log('ZCoinActivationApi:downloadZParams', exceptionMessage);
+        throw Exception(exceptionMessage);
+      }
+
       final bytes = await consolidateHttpClientResponseBytes(response);
 
-      final file = File('${zDir.path}/${param.split('/').last}');
-      await file.writeAsBytes(bytes);
+      final file =
+          File('${zCashParamsDirectory.path}/${param.split('/').last}');
+      await file.writeAsBytes(bytes, flush: true);
     });
 
     await Future.wait(futures);
@@ -401,8 +429,8 @@ class ZCoinActivationApi {
     Map<String, dynamic> responseBody,
     String ticker,
   }) async {
-    int _progress = 100;
-    String _messageDetails = '';
+    int _progress = 5;
+    String _messageDetails = 'Activating $ticker';
     if (!responseBody.containsKey('result')) return null;
 
     final result = responseBody['result'] is Map<String, dynamic>
@@ -410,13 +438,6 @@ class ZCoinActivationApi {
         : jsonDecode(responseBody['result']) as Map<String, dynamic>;
     String status = result['status'];
     dynamic details = result['details'];
-
-    // checkPointBlock will be removed
-    //Coin coin = coinsBloc.getKnownCoinByAbbr(ticker);
-    // int blockOffset = 0;
-    // if (coin.type == CoinType.zhtlc) {
-    //   blockOffset = coin.protocol.protocolData.checkPointBlock?.height ?? 0;
-    // }
 
     // use range from checkpoint block to present
     if (status == 'Ok') {
@@ -478,9 +499,6 @@ class ZCoinActivationApi {
         _messageDetails = isBuildingPhase
             ? 'Building $ticker wallet database'
             : 'Updating $ticker blocks cache';
-      } else {
-        _progress = 5;
-        _messageDetails = 'Activating $ticker';
       }
 
       return ZCoinStatus(

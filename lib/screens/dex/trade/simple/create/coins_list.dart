@@ -57,32 +57,34 @@ class _CoinsListState extends State<CoinsList> {
       children: [
         if (widget.type == Market.BUY) ...{
           Container(
-              padding: EdgeInsets.only(bottom: 5),
-              child: Icon(
-                Icons.arrow_left,
-                color: Theme.of(context).textTheme.bodyText1.color,
-              )),
+            padding: EdgeInsets.only(bottom: 5),
+            child: Icon(
+              Icons.arrow_left,
+              color: Theme.of(context).textTheme.bodyText1.color,
+            ),
+          ),
         },
         Expanded(
           child: Container(
-              height: 106,
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 4),
-              alignment: Alignment(0, 1),
-              child: Text(
-                message,
-                textAlign: widget.type == Market.BUY
-                    ? TextAlign.left
-                    : TextAlign.right,
-                style: Theme.of(context).textTheme.bodyText1,
-              )),
+            height: 106,
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 4),
+            alignment: Alignment(0, 1),
+            child: Text(
+              message,
+              textAlign:
+                  widget.type == Market.BUY ? TextAlign.left : TextAlign.right,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
         ),
         if (widget.type == Market.SELL) ...{
           Container(
-              padding: EdgeInsets.only(bottom: 5),
-              child: Icon(
-                Icons.arrow_right,
-                color: Theme.of(context).textTheme.bodyText1.color,
-              )),
+            padding: EdgeInsets.only(bottom: 5),
+            child: Icon(
+              Icons.arrow_right,
+              color: Theme.of(context).textTheme.bodyText1.color,
+            ),
+          ),
           SizedBox(width: 6),
         }
       ],

@@ -75,229 +75,241 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m21(index) => "What is the ${index} word in your seed phrase?";
 
-  static m22(protocolName) => "${protocolName} coins are activated";
+  static m22(coin) => "${coin} activation cancelled";
 
-  static m23(protocolName) => "${protocolName} coins activated successfully";
+  static m23(coin) => "Successfully activated ${coin}";
 
-  static m24(protocolName) => "${protocolName} coins are not activated";
+  static m24(protocolName) => "${protocolName} coins are activated";
 
-  static m25(name) => "Are you sure you want to delete contact ${name}?";
+  static m25(protocolName) => "${protocolName} coins activated successfully";
 
-  static m26(iUnderstand) =>
+  static m26(protocolName) => "${protocolName} coins are not activated";
+
+  static m27(name) => "Are you sure you want to delete contact ${name}?";
+
+  static m28(iUnderstand) =>
       "Custom seed phrases might be less secure and easier to crack than a generated BIP39 compliant seed phrase or private key (WIF). To confirm you understand the risk and know what you are doing, type \"${iUnderstand}\" in the box below.";
 
-  static m27(coinName) => "receive ${coinName} transaction fee";
+  static m29(coinName) => "receive ${coinName} transaction fee";
 
-  static m28(coinName) => "send ${coinName} transaction fee";
+  static m30(coinName) => "send ${coinName} transaction fee";
 
-  static m29(abbr) => "Input ${abbr} address";
+  static m31(abbr) => "Input ${abbr} address";
 
-  static m30(selected, remains) =>
+  static m32(selected, remains) =>
       "You can still enable ${remains}, Selected: ${selected}";
 
-  static m31(gas) => "Not enough gas - use at least ${gas} Gwei";
+  static m33(gas) => "Not enough gas - use at least ${gas} Gwei";
 
-  static m32(appName, appCompanyLong) =>
+  static m34(appName, appCompanyLong) =>
       "This End-User License Agreement (\'EULA\') is a legal agreement between you and ${appCompanyLong}.\n\nThis EULA agreement governs your acquisition and use of our ${appName} mobile software (\'Software\', \'Mobile Application\', \'Application\' or \'App\') directly from ${appCompanyLong} or indirectly through a ${appCompanyLong} authorized entity, reseller or distributor (a \'Distributor\').\nPlease read this EULA agreement carefully before completing the installation process and using the ${appName} mobile software. It provides a license to use the ${appName} mobile software and contains warranty information and liability disclaimers.\nIf you register for the beta program of the ${appName} mobile software, this EULA agreement will also govern that trial. By clicking \'accept\' or installing and/or using the ${appName} mobile software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.\nIf you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.\nThis EULA agreement shall apply only to the Software supplied by ${appCompanyLong} herewith regardless of whether other software is referred to or described herein. The terms also apply to any ${appCompanyLong} updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.\n\nLICENSE GRANT\n\n${appCompanyLong} hereby grants you a personal, non-transferable, non-exclusive license to use the ${appName} mobile software on your devices in accordance with the terms of this EULA agreement.\n\nYou are permitted to load the ${appName} mobile software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the ${appName} mobile software.\n\nYou are not permitted to:\n(a) edit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things;\n(b) reproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose;\n(c) use the Software in any way which breaches any applicable local, national or international law;\n(d) use the Software for any purpose that ${appCompanyLong} considers is a breach of this EULA agreement.\n\nINTELLECTUAL PROPERTY AND OWNERSHIP\n\n${appCompanyLong} shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of ${appCompanyLong}.\n\n${appCompanyLong} reserves the right to grant licenses to use the Software to third parties.\n\nTERMINATION\n\nThis EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to ${appCompanyLong}.\nIt will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.\n\nGOVERNING LAW\n\nThis EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.\n\nThis document was last updated on January 31st, 2020\n\n";
 
-  static m33(appCompanyLong) =>
+  static m35(appCompanyLong) =>
       "${appCompanyLong} is the owner and/or authorised user of all trademarks, service marks, design marks, patents, copyrights, database rights and all other intellectual property appearing on or contained within the application, unless otherwise indicated. All information, text, material, graphics, software and advertisements on the application interface are copyright of ${appCompanyLong}, its suppliers and licensors, unless otherwise expressly indicated by ${appCompanyLong}. \nExcept as provided in the Terms, use of the application does not grant You any right, title, interest or license to any such intellectual property You may have access to on the application. \nWe own the rights, or have permission to use, the trademarks listed in our application. You are not authorised to use any of those trademarks without our written authorization – doing so would constitute a breach of our or another party’s intellectual property rights. \nAlternatively, we might authorise You to use the content in our application if You previously contact us and we agree in writing.\n\n";
 
-  static m34(appCompanyShort, appCompanyLong) =>
+  static m36(appCompanyShort, appCompanyLong) =>
       "${appCompanyLong} cannot guarantee the safety or security of your computer systems. We do not accept liability for any loss or corruption of electronically stored data or any damage to any computer system occurred in connection with the use of the application or of the user content.\n${appCompanyLong} makes no representation or warranty of any kind, express or implied, as to the operation of the application or the user content. You expressly agree that your use of the application is entirely at your sole risk.\nYou agree that the content provided in the application and the user content do not constitute financial product, legal or taxation advice, and You agree on not representing the user content or the application as such.\nTo the extent permitted by current legislation, the application is provided on an “as is, as available” basis.\n\n${appCompanyLong} expressly disclaims all responsibility for any loss, injury, claim, liability, or damage, or any indirect, incidental, special or consequential damages or loss of profits whatsoever resulting from, arising out of or in any way related to: \n(a) any errors in or omissions of the application and/or the user content, including but not limited to technical inaccuracies and typographical errors; \n(b) any third party website, application or content directly or indirectly accessed through links in the application, including but not limited to any errors or omissions; \n(c) the unavailability of the application or any portion of it; \n(d) your use of the application;\n(e) your use of any equipment or software in connection with the application. \n\nAny Services offered in connection with the Platform are provided on an \'as is\' basis, without any representation or warranty, whether express, implied or statutory. To the maximum extent permitted by applicable law, we specifically disclaim any implied warranties of title, merchantability, suitability for a particular purpose and/or non-infringement. We do not make any representations or warranties that use of the Platform will be continuous, uninterrupted, timely, or error-free.\nWe make no warranty that any Platform will be free from viruses, malware, or other related harmful material and that your ability to access any Platform will be uninterrupted. Any defects or malfunction in the product should be directed to the third party offering the Platform, not to ${appCompanyShort}. \nWe will not be responsible or liable to You for any loss of any kind, from action taken, or taken in reliance on the material or information contained in or through the Platform.\nThis is experimental and unfinished software. Use at your own risk. No warranty for any kind of damage. By using this application you agree to this terms and conditions.\n\n";
 
-  static m35(appCompanyLong) =>
+  static m37(appCompanyLong) =>
       "You agree and understand that there are risks associated with utilizing Services involving Virtual Currencies including, but not limited to, the risk of failure of hardware, software and internet connections, the risk of malicious software introduction, and the risk that third parties may obtain unauthorized access to information stored within your Wallet, including but not limited to your public and private keys. You agree and understand that ${appCompanyLong} will not be responsible for any communication failures, disruptions, errors, distortions or delays You may experience when using the Services, however caused.\nYou accept and acknowledge that there are risks associated with utilizing any virtual currency network, including, but not limited to, the risk of unknown vulnerabilities in or unanticipated changes to the network protocol. You acknowledge and accept that ${appCompanyLong} has no control over any cryptocurrency network and will not be responsible for any harm occurring as a result of such risks, including, but not limited to, the inability to reverse a transaction, and any losses in connection therewith due to erroneous or fraudulent actions.\nThe risk of loss in using Services involving Virtual Currencies may be substantial and losses may occur over a short period of time. In addition, price and liquidity are subject to significant fluctuations that may be unpredictable.\nVirtual Currencies are not legal tender and are not backed by any sovereign government. In addition, the legislative and regulatory landscape around Virtual Currencies is constantly changing and may affect your ability to use, transfer, or exchange Virtual Currencies.\nCFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 80.6% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether You understand how CFDs work and whether You can afford to take the high risk of losing your money.\n\n";
 
-  static m36(appCompanyLong) =>
+  static m38(appCompanyLong) =>
       "You agree to indemnify, defend and hold harmless ${appCompanyLong}, its officers, directors, employees, agents, licensors, suppliers and any third party information providers to the application from and against all losses, expenses, damages and costs, including reasonable lawyer fees, resulting from any violation of the Terms by You.\nYou also agree to indemnify ${appCompanyLong} against any claims that information or material which You have submitted to ${appCompanyLong} is in violation of any law or in breach of any third party rights (including, but not limited to, claims in respect of defamation, invasion of privacy, breach of confidence, infringement of copyright or infringement of any other intellectual property right).\n\n";
 
-  static m37(appCompanyLong) =>
+  static m39(appCompanyLong) =>
       "In order to be completed, any Virtual Currency transaction created with the ${appCompanyLong} must be confirmed and recorded in the Virtual Currency ledger associated with the relevant Virtual Currency network. Such networks are decentralized, peer-to-peer networks supported by independent third parties, which are not owned, controlled or operated by ${appCompanyLong}.\n${appCompanyLong} has no control over any Virtual Currency network and therefore cannot and does not ensure that any transaction details You submit via our Services will be confirmed on the relevant Virtual Currency network. You agree and understand that the transaction details You submit via our Services may not be completed, or may be substantially delayed, by the Virtual Currency network used to process the transaction. We do not guarantee that the Wallet can transfer title or right in any Virtual Currency or make any warranties whatsoever with regard to title.\nOnce transaction details have been submitted to a Virtual Currency network, we cannot assist You to cancel or otherwise modify your transaction or transaction details. ${appCompanyLong} has no control over any Virtual Currency network and does not have the ability to facilitate any cancellation or modification requests.\nIn the event of a Fork, ${appCompanyLong} may not be able to support activity related to your Virtual Currency. You agree and understand that, in the event of a Fork, the transactions may not be completed, completed partially, incorrectly completed, or substantially delayed. ${appCompanyLong} is not responsible for any loss incurred by You caused in whole or in part, directly or indirectly, by a Fork.\nIn no event shall ${appCompanyLong}, its affiliates and service providers, or any of their respective officers, directors, agents, employees or representatives, be liable for any lost profits or any special, incidental, indirect, intangible, or consequential damages, whether based on contract, tort, negligence, strict liability, or otherwise, arising out of or in connection with authorized or unauthorized use of the services, or this agreement, even if an authorized representative of ${appCompanyLong} has been advised of, has known of, or should have known of the possibility of such damages. \nFor example (and without limiting the scope of the preceding sentence), You may not recover for lost profits, lost business opportunities, or other types of special, incidental, indirect, intangible, or consequential damages. Some jurisdictions do not allow the exclusion or limitation of incidental or consequential damages, so the above limitation may not apply to You. \nWe will not be responsible or liable to You for any loss and take no responsibility for damages or claims arising in whole or in part, directly or indirectly from: \n(a) user error such as forgotten passwords, incorrectly constructed transactions, or mistyped Virtual Currency addresses; \n(b) server failure or data loss; \n(c) corrupted or otherwise non-performing Wallets or Wallet files; \n(d) unauthorized access to applications; \n(e) any unauthorized activities, including without limitation the use of hacking, viruses, phishing, brute forcing or other means of attack against the Services.\n\n";
 
-  static m38(appCompanyShort, appCompanyLong) =>
+  static m40(appCompanyShort, appCompanyLong) =>
       "For the avoidance of doubt, ${appCompanyLong} does not provide investment, tax or legal advice, nor does ${appCompanyLong} broker trades on your behalf. All ${appCompanyLong} trades are executed automatically, based on the parameters of your order instructions and in accordance with posted Trade execution procedures, and You are solely responsible for determining whether any investment, investment strategy or related transaction is appropriate for You based on your personal investment objectives, financial circumstances and risk tolerance. You should consult your legal or tax professional regarding your specific situation. Neither ${appCompanyShort} nor its owners, members, officers, directors, partners, consultants, nor anyone involved in the publication of this application, is a registered investment adviser or broker-dealer or associated person with a registered investment adviser or broker-dealer and none of the foregoing make any recommendation that the purchase or sale of crypto-assets or securities of any company profiled in the mobile Application is suitable or advisable for any person or that an investment or transaction in such crypto-assets or securities will be profitable. The information contained in the mobile Application is not intended to be, and shall not constitute, an offer to sell or the solicitation of any offer to buy any crypto-asset or security. The information presented in the mobile Application is provided for informational purposes only and is not to be treated as advice or a recommendation to make any specific investment or transaction. Please, consult with a qualified professional before making any decisions. The opinions and analysis included in this applications are based on information from sources deemed to be reliable and are provided “as is” in good faith. ${appCompanyShort} makes no representation or warranty, expressed, implied, or statutory, as to the accuracy or completeness of such information, which may be subject to change without notice. ${appCompanyShort} shall not be liable for any errors or any actions taken in relation to the above. Statements of opinion and belief are those of the authors and/or editors who contribute to this application, and are based solely upon the information possessed by such authors and/or editors. No inference should be drawn that ${appCompanyShort} or such authors or editors have any special or greater knowledge about the crypto-assets or companies profiled or any particular expertise in the industries or markets in which the profiled crypto-assets and companies operate and compete. Information on this application is obtained from sources deemed to be reliable; however, ${appCompanyShort} takes no responsibility for verifying the accuracy of such information and makes no representation that such information is accurate or complete. Certain statements included in this application may be forward-looking statements based on current expectations. ${appCompanyShort} makes no representation and provides no assurance or guarantee that such forward-looking statements will prove to be accurate. Persons using the ${appCompanyShort} application are urged to consult with a qualified professional with respect to an investment or transaction in any crypto-asset or company profiled herein. Additionally, persons using this application expressly represent that the content in this application is not and will not be a consideration in such persons’ investment or transaction decisions. Traders should verify independently information provided in the ${appCompanyShort} application by completing their own due diligence on any crypto-asset or company in which they are contemplating an investment or transaction of any kind and review a complete information package on that crypto-asset or company, which should include, but not be limited to, related blog updates and press releases. Past performance of profiled crypto-assets and securities is not indicative of future results. Crypto-assets and companies profiled on this site may lack an active trading market and invest in a crypto-asset or security that lacks an active trading market or trade on certain media, platforms and markets are deemed highly speculative and carry a high degree of risk. Anyone holding such crypto-assets and securities should be financially able and prepared to bear the risk of loss and the actual loss of his or her entire trade. The information in this application is not designed to be used as a basis for an investment decision. Persons using the ${appCompanyShort} application should confirm to their own satisfaction the veracity of any information prior to entering into any investment or making any transaction. The decision to buy or sell any crypto-asset or security that may be featured by ${appCompanyShort} is done purely and entirely at the reader’s own risk. As a reader and user of this application, You agree that under no circumstances will You seek to hold liable owners, members, officers, directors, partners, consultants or other persons involved in the publication of this application for any losses incurred by the use of information contained in this application ${appCompanyShort} and its contractors and affiliates may profit in the event the crypto-assets and securities increase or decrease in value. Such crypto-assets and securities may be bought or sold from time to time, even after ${appCompanyShort} has distributed positive information regarding the crypto-assets and companies. ${appCompanyShort} has no obligation to inform readers of its trading activities or the trading activities of any of its owners, members, officers, directors, contractors and affiliates and/or any companies affiliated with BC Relations’ owners, members, officers, directors, contractors and affiliates. ${appCompanyShort} and its affiliates may from time to time enter into agreements to purchase crypto-assets or securities to provide a method to reach their goals.\n\n";
 
-  static m39(appCompanyLong) =>
+  static m41(appCompanyLong) =>
       "The Terms are effective until terminated by ${appCompanyLong}. \nIn the event of termination, You are no longer authorized to access the Application, but all restrictions imposed on You and the disclaimers and limitations of liability set out in the Terms will survive termination. \nSuch termination shall not affect any legal right that may have accrued to ${appCompanyLong} against You up to the date of termination. \n${appCompanyLong} may also remove the Application as a whole or any sections or features of the Application at any time. \n\n";
 
-  static m40(appCompanyLong) =>
+  static m42(appCompanyLong) =>
       "The provisions of previous paragraphs are for the benefit of ${appCompanyLong} and its officers, directors, employees, agents, licensors, suppliers, and any third party information providers to the Application. Each of these individuals or entities shall have the right to assert and enforce those provisions directly against You on its own behalf.\n\n";
 
-  static m41(appName, appCompanyLong) =>
+  static m43(appName, appCompanyLong) =>
       "${appName} mobile is a non-custodial, decentralized and blockchain based application and as such does ${appCompanyLong} never store any user-data (accounts and authentication data). \nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on January 31st, 2020\n\n";
 
-  static m42(appName, appCompanyLong) =>
+  static m44(appName, appCompanyLong) =>
       "This disclaimer applies to the contents and services of the app ${appName} and is valid for all users of the “Application” (\'Software\', “Mobile Application”, “Application” or “App”).\n\nThe Application is owned by ${appCompanyLong}.\n\nWe reserve the right to amend the following Terms and Conditions (governing the use of the application “${appName} mobile”) at any time without prior notice and at our sole discretion. It is your responsibility to periodically check this Terms and Conditions for any updates to these Terms, which shall come into force once published.\nYour continued use of the application shall be deemed as acceptance of the following Terms. \nWe are a company incorporated in Vietnam and these Terms and Conditions are governed by and subject to the laws of Vietnam. \nIf You do not agree with these Terms and Conditions, You must not use or access this software.\n\n";
 
-  static m43(appName) =>
+  static m45(appName) =>
       "You are not allowed to decompile, decode, disassemble, rent, lease, loan, sell, sublicense, or create derivative works from the ${appName} mobile application or the user content. Nor are You allowed to use any network monitoring or detection software to determine the software architecture, or extract information about usage or individuals’ or users’ identities. \nYou are not allowed to copy, modify, reproduce, republish, distribute, display, or transmit for commercial, non-profit or public purposes all or any portion of the application or the user content without our prior written authorization.\n\n";
 
-  static m44(appName, appCompanyLong) =>
+  static m46(appName, appCompanyLong) =>
       "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions. \n\n${appName} mobile is a non-custodial wallet implementation and thus ${appCompanyLong} can not access nor restore your account in case of (data) loss.\n\n";
 
-  static m45(appName) =>
+  static m47(appName) =>
       "End-User License Agreement (EULA) of ${appName} mobile";
 
-  static m46(coin) => "Sending request to ${coin} faucet...";
+  static m48(coinAbbr) => "Failed to cancel activation of ${coinAbbr}";
 
-  static m47(appCompanyShort) => "${appCompanyShort} news";
+  static m49(coin) => "Sending request to ${coin} faucet...";
 
-  static m48(value) => "Fees must be up to ${value}";
+  static m50(appCompanyShort) => "${appCompanyShort} news";
 
-  static m49(coin) => "${coin} fee";
+  static m51(value) => "Fees must be up to ${value}";
 
-  static m50(coin) => "Please activate ${coin}.";
+  static m52(coin) => "${coin} fee";
 
-  static m51(value) => "Gwei must be up to ${value}";
+  static m53(coin) => "Please activate ${coin}.";
 
-  static m52(coinName) => "Incoming  ${coinName} txs protection settings";
+  static m54(value) => "Gwei must be up to ${value}";
 
-  static m53(abbr) => "${abbr} balance not sufficient to pay trading fee";
+  static m55(coinName) => "Incoming  ${coinName} txs protection settings";
 
-  static m54(coinAbbr) => "${coinAbbr} is unavailable :(";
+  static m56(abbr) => "${abbr} balance not sufficient to pay trading fee";
 
-  static m55(coinName) =>
+  static m57(coin) => "Invalid ${coin} address";
+
+  static m58(coinAbbr) => "${coinAbbr} is unavailable :(";
+
+  static m59(coinName) =>
       "❗Caution! Market for ${coinName} has less than \$10k 24h trading-volume!";
 
-  static m56(value) => "Limit must be up to ${value}";
+  static m60(value) => "Limit must be up to ${value}";
 
-  static m57(coinName, number) =>
+  static m61(coinName, number) =>
       "The minimum amount to sell is ${number} ${coinName}";
 
-  static m58(coinName, number) =>
+  static m62(coinName, number) =>
       "The minimum amount to buy is ${number} ${coinName}";
 
-  static m59(buyCoin, buyAmount, sellCoin, sellAmount) =>
+  static m63(buyCoin, buyAmount, sellCoin, sellAmount) =>
       "Order minimum amount is ${buyAmount} ${buyCoin}\n(${sellAmount} ${sellCoin})";
 
-  static m60(coinName, number) =>
+  static m64(coinName, number) =>
       "The minimum amount to sell is ${number} ${coinName}";
 
-  static m61(minValue, coin) => "Must be greater than ${minValue} ${coin}";
+  static m65(minValue, coin) => "Must be greater than ${minValue} ${coin}";
 
-  static m62(appName) =>
+  static m66(appName) =>
       "Please note that now you\'re using cellular data and participation in ${appName} P2P network consume internet traffic. It\'s better to use a WiFi network if your cellular data plan is costly.";
 
-  static m63(coin) => "Activate ${coin} and top-up balance first";
+  static m67(coin) => "Activate ${coin} and top-up balance first";
 
-  static m64(number) => "Create ${number} Order(s):";
+  static m68(number) => "Create ${number} Order(s):";
 
-  static m65(coin) => "${coin} balance is too low";
+  static m69(coin) => "${coin} balance is too low";
 
-  static m66(coin, fee) =>
+  static m70(coin, fee) =>
       "Not enough ${coin} to pay fees. MIN balance is ${fee} ${coin}";
 
-  static m67(coinName) => "Please enter the ${coinName} amount.";
+  static m71(coinName) => "Please enter the ${coinName} amount.";
 
-  static m68(coin) => "Not enough ${coin} for transaction!";
+  static m72(coin) => "Not enough ${coin} for transaction!";
 
-  static m69(sell, buy) => "${sell}/${buy} swap was completed successfully";
+  static m73(sell, buy) => "${sell}/${buy} swap was completed successfully";
 
-  static m70(sell, buy) => "${sell}/${buy} swap failed";
+  static m74(sell, buy) => "${sell}/${buy} swap failed";
 
-  static m71(sell, buy) => "${sell}/${buy} swap started";
+  static m75(sell, buy) => "${sell}/${buy} swap started";
 
-  static m72(sell, buy) => "${sell}/${buy} swap was timed out";
+  static m76(sell, buy) => "${sell}/${buy} swap was timed out";
 
-  static m73(coin) => "You have received ${coin} transaction!";
+  static m77(coin) => "You have received ${coin} transaction!";
 
-  static m74(assets) => "${assets} Assets";
+  static m78(assets) => "${assets} Assets";
 
-  static m75(coin) => "All ${coin} orders will be canceled.";
+  static m79(coin) => "All ${coin} orders will be canceled.";
 
-  static m76(delta) => "Expedient: CEX +${delta}%";
+  static m80(delta) => "Expedient: CEX +${delta}%";
 
-  static m77(delta) => "Expensive: CEX ${delta}%";
+  static m81(delta) => "Expensive: CEX ${delta}%";
 
-  static m78(fill) => "${fill}% filled";
+  static m82(fill) => "${fill}% filled";
 
-  static m79(coin) => "Amt. (${coin})";
+  static m83(coin) => "Amt. (${coin})";
 
-  static m80(coin) => "Price (${coin})";
+  static m84(coin) => "Price (${coin})";
 
-  static m81(coin) => "Total (${coin})";
+  static m85(coin) => "Total (${coin})";
 
-  static m82(abbr) => "${abbr} is not active. Please activate and try again.";
+  static m86(abbr) => "${abbr} is not active. Please activate and try again.";
 
-  static m83(appName) => "Which devices can I use ${appName} on?";
+  static m87(appName) => "Which devices can I use ${appName} on?";
 
-  static m84(appName) =>
+  static m88(appName) =>
       "How is trading on ${appName} different from trading on other DEXs?";
 
-  static m85(appName) => "How are the fees on ${appName} calculated?";
+  static m89(appName) => "How are the fees on ${appName} calculated?";
 
-  static m86(appName) => "Who is behind ${appName}?";
+  static m90(appName) => "Who is behind ${appName}?";
 
-  static m87(appName) =>
+  static m91(appName) =>
       "Is it possible to develop my own white-label exchange on ${appName}?";
 
-  static m88(amount) => "Success! ${amount} KMD received.";
+  static m92(amount) => "Success! ${amount} KMD received.";
 
-  static m89(dd) => "${dd} day(s)";
+  static m93(dd) => "${dd} day(s)";
 
-  static m90(hh, minutes) => "${hh}h ${minutes}m";
+  static m94(hh, minutes) => "${hh}h ${minutes}m";
 
-  static m91(mm) => "${mm}min";
+  static m95(mm) => "${mm}min";
 
-  static m92(amount) => "Click to see ${amount} orders";
+  static m96(amount) => "Click to see ${amount} orders";
 
-  static m93(coinName, address) => "My ${coinName} address: \n${address}";
+  static m97(coinName, address) => "My ${coinName} address: \n${address}";
 
-  static m94(count, maxCount) => "Showing ${count} of ${maxCount} orders. ";
+  static m98(coin) => "Scan for past ${coin} transactions?";
 
-  static m95(coin) => "Please enter ${coin} amount to buy";
+  static m99(count, maxCount) => "Showing ${count} of ${maxCount} orders. ";
 
-  static m96(maxCoins) =>
+  static m100(coin) => "Please enter ${coin} amount to buy";
+
+  static m101(maxCoins) =>
       "Max active coins number is ${maxCoins}. Please deactivate some.";
 
-  static m97(coin) => "${coin} is not active!";
+  static m102(coin) => "${coin} is not active!";
 
-  static m98(coin) => "Please enter ${coin} amount to sell";
+  static m103(coin) => "Please enter ${coin} amount to sell";
 
-  static m99(coin) => "Unable to activate ${coin}";
+  static m104(coin) => "Unable to activate ${coin}";
 
-  static m100(description) =>
+  static m105(description) =>
       "Pick an mp3 or wav file please. We\'ll play it when ${description}.";
 
-  static m101(description) => "Played when ${description}";
+  static m106(description) => "Played when ${description}";
 
-  static m102(appName) =>
+  static m107(appName) =>
       "If you have any questions, or think you\'ve found a technical problem with the ${appName} app, you can report it and get support from our team.";
 
-  static m103(coin) => "Please activate ${coin} and top-up balance first";
+  static m108(coin) => "Please activate ${coin} and top-up balance first";
 
-  static m104(coin) =>
+  static m109(coin) =>
       "${coin} balance not sufficient to pay transaction fees.";
 
-  static m105(coin, amount) =>
+  static m110(coin, amount) =>
       "${coin} balance not sufficient to pay transaction fees. ${coin} ${amount} required.";
 
-  static m106(left) => "Transactions Left: ${left}";
+  static m111(name) => "Which ${name} transactions would you like to sync?";
 
-  static m107(amnt, hash) =>
+  static m112(left) => "Transactions Left: ${left}";
+
+  static m113(amnt, hash) =>
       "Successfully unlocked ${amnt} funds - TX: ${hash}";
 
-  static m108(version) => "You are using version ${version}";
+  static m114(version) => "You are using version ${version}";
 
-  static m109(version) => "Version ${version} available. Please update.";
+  static m115(version) => "Version ${version} available. Please update.";
 
-  static m110(appName) => "${appName} update";
+  static m116(appName) => "${appName} update";
 
-  static m111(coinAbbr) => "We failed to activate ${coinAbbr}";
+  static m117(coinAbbr) => "We failed to activate ${coinAbbr}";
 
-  static m112(coinAbbr) =>
+  static m118(coinAbbr) =>
       "We failed to activate ${coinAbbr}.\nPlease restart the app to try again.";
 
-  static m113(appName) =>
+  static m119(appName) =>
       "${appName} mobile is a next generation multi-coin wallet with native third generation DEX functionality and more.";
 
-  static m114(appName) =>
+  static m120(appName) =>
       "You have previously denied ${appName} access to the camera.\nPlease manually change camera permission in your phone settings to proceed with the QR code scan.";
 
-  static m115(amount, coinName) => "WITHDRAW ${amount} ${coinName}";
+  static m121(amount, coinName) => "WITHDRAW ${amount} ${coinName}";
 
-  static m116(amount, coin) => "You will receive ${amount} ${coin}";
+  static m122(amount, coin) => "You will receive ${amount} ${coin}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -325,6 +337,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activateCoins": m0,
         "activating": m1,
         "activation": m2,
+        "activationCancelled":
+            MessageLookupByLibrary.simpleMessage("Coin activation cancelled"),
         "activationInProgress": m3,
         "addCoin": MessageLookupByLibrary.simpleMessage("Add Coin"),
         "addingCoinSuccess": m4,
@@ -344,6 +358,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Recipients address"),
         "advanced": MessageLookupByLibrary.simpleMessage("Advanced"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
+        "allPastTransactions": MessageLookupByLibrary.simpleMessage(
+            "Your wallet will show any past transactions. This will take significant storage and time as all blocks will be downloaded and scanned."),
         "allowCustomSeed":
             MessageLookupByLibrary.simpleMessage("Allow custom seed"),
         "alreadyExists": MessageLookupByLibrary.simpleMessage("Already exists"),
@@ -412,6 +428,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "camouflageSetup":
             MessageLookupByLibrary.simpleMessage("Camouflage PIN Setup"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "cancelActivation":
+            MessageLookupByLibrary.simpleMessage("Cancel Activation"),
+        "cancelActivationQuestion": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to cancel activation?"),
         "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cancelOrder": MessageLookupByLibrary.simpleMessage("Cancel Order"),
         "candleChartError": MessageLookupByLibrary.simpleMessage(
@@ -457,15 +477,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Close Error Message"),
         "closePreview": MessageLookupByLibrary.simpleMessage("Close preview"),
         "code": MessageLookupByLibrary.simpleMessage("Code: "),
+        "cofirmCancelActivation": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to cancel activation?"),
+        "coinActivationCancelled": m22,
+        "coinActivationSuccessfull": m23,
         "coinSelectClear": MessageLookupByLibrary.simpleMessage("Clear"),
         "coinSelectNotFound":
             MessageLookupByLibrary.simpleMessage("No active coins"),
         "coinSelectTitle": MessageLookupByLibrary.simpleMessage("Select Coin"),
         "coinsActivatedLimitReached": MessageLookupByLibrary.simpleMessage(
             "You have selected the max number of assets"),
-        "coinsAreActivated": m22,
-        "coinsAreActivatedSuccessfully": m23,
-        "coinsAreNotActivated": m24,
+        "coinsAreActivated": m24,
+        "coinsAreActivatedSuccessfully": m25,
+        "coinsAreNotActivated": m26,
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon..."),
         "commingsoon":
             MessageLookupByLibrary.simpleMessage("TX details coming soon!"),
@@ -494,7 +518,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "contactCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "contactDelete": MessageLookupByLibrary.simpleMessage("Delete Contact"),
         "contactDeleteBtn": MessageLookupByLibrary.simpleMessage("Delete"),
-        "contactDeleteWarning": m25,
+        "contactDeleteWarning": m27,
         "contactDiscardBtn": MessageLookupByLibrary.simpleMessage("Discard"),
         "contactEdit": MessageLookupByLibrary.simpleMessage("Edit"),
         "contactExit": MessageLookupByLibrary.simpleMessage("Exit"),
@@ -522,7 +546,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFee": MessageLookupByLibrary.simpleMessage("Custom fee"),
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "Only use custom fees if you know what you are doing!"),
-        "customSeedWarning": m26,
+        "customSeedWarning": m28,
         "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW security"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "decryptingWallet":
@@ -539,8 +563,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteWallet": MessageLookupByLibrary.simpleMessage("Delete Wallet"),
         "deletingWallet":
             MessageLookupByLibrary.simpleMessage("Deleting wallet..."),
-        "detailedFeesReceiveCoinTransactionFee": m27,
-        "detailedFeesSendCoinTransactionFee": m28,
+        "detailedFeesReceiveCoinTransactionFee": m29,
+        "detailedFeesSendCoinTransactionFee": m30,
         "detailedFeesSendTradingFeeTransactionFee":
             MessageLookupByLibrary.simpleMessage(
                 "send trading fee transaction fee"),
@@ -564,7 +588,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("I don\'t want a password"),
         "duration": MessageLookupByLibrary.simpleMessage("Duration"),
         "editContact": MessageLookupByLibrary.simpleMessage("Edit Contact"),
-        "emptyCoin": m29,
+        "emptyCoin": m31,
         "emptyExportPass": MessageLookupByLibrary.simpleMessage(
             "Encryption password can\'t be empty"),
         "emptyImportPass":
@@ -573,7 +597,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Contact name cannot be empty"),
         "emptyWallet": MessageLookupByLibrary.simpleMessage(
             "Wallet name must not be empty"),
-        "enable": m30,
+        "enable": m32,
         "enableNotificationsForActivationProgress":
             MessageLookupByLibrary.simpleMessage(
                 "Please enable notifications to get updates on the activation progress."),
@@ -610,7 +634,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Not a valid address"),
         "errorNotAValidAddressSegWit": MessageLookupByLibrary.simpleMessage(
             "Segwit addresses are not supported (yet)"),
-        "errorNotEnoughGas": m31,
+        "errorNotEnoughGas": m33,
         "errorTryAgain":
             MessageLookupByLibrary.simpleMessage("Error, please try again"),
         "errorTryLater":
@@ -621,32 +645,32 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Please input data"),
         "estimateValue":
             MessageLookupByLibrary.simpleMessage("Estimated Total Value"),
-        "eulaParagraphe1": m32,
-        "eulaParagraphe10": m33,
-        "eulaParagraphe11": m34,
+        "eulaParagraphe1": m34,
+        "eulaParagraphe10": m35,
+        "eulaParagraphe11": m36,
         "eulaParagraphe12": MessageLookupByLibrary.simpleMessage(
             "When accessing or using the Services, You agree that You are solely responsible for your conduct while accessing and using our Services. Without limiting the generality of the foregoing, You agree that You will not:\n(a) use the Services in any manner that could interfere with, disrupt, negatively affect or inhibit other users from fully enjoying the Services, or that could damage, disable, overburden or impair the functioning of our Services in any manner;\n(b) use the Services to pay for, support or otherwise engage in any illegal activities, including, but not limited to illegal gambling, fraud, money laundering, or terrorist activities;\n(c) use any robot, spider, crawler, scraper or other automated means or interface not provided by us to access our Services or to extract data;\n(d) use or attempt to use another user’s Wallet or credentials without authorization;\n(e) attempt to circumvent any content filtering techniques we employ, or attempt to access any service or area of our Services that You are not authorized to access;\n(f) introduce to the Services any virus, Trojan, worms, logic bombs or other harmful material;\n(g) develop any third-party applications that interact with our Services without our prior written consent;\n(h) provide false, inaccurate, or misleading information; \n(i) encourage or induce any other person to engage in any of the activities prohibited under this Section.\n\n"),
-        "eulaParagraphe13": m35,
-        "eulaParagraphe14": m36,
-        "eulaParagraphe15": m37,
-        "eulaParagraphe16": m38,
-        "eulaParagraphe17": m39,
-        "eulaParagraphe18": m40,
-        "eulaParagraphe19": m41,
-        "eulaParagraphe2": m42,
+        "eulaParagraphe13": m37,
+        "eulaParagraphe14": m38,
+        "eulaParagraphe15": m39,
+        "eulaParagraphe16": m40,
+        "eulaParagraphe17": m41,
+        "eulaParagraphe18": m42,
+        "eulaParagraphe19": m43,
+        "eulaParagraphe2": m44,
         "eulaParagraphe3": MessageLookupByLibrary.simpleMessage(
             "By entering into this User (each subject accessing or using the site) Agreement (this writing) You declare that You are an individual over the age of majority (at least 18 or older) and have the capacity to enter into this User Agreement and accept to be legally bound by the terms and conditions of this User Agreement, as incorporated herein and amended from time to time. \n\n"),
         "eulaParagraphe4": MessageLookupByLibrary.simpleMessage(
             "We may change the terms of this User Agreement at any time. Any such changes will take effect when published in the application, or when You use the Services.\n\nRead the User Agreement carefully every time You use our Services. Your continued use of the Services shall signify your acceptance to be bound by the current User Agreement. Our failure or delay in enforcing or partially enforcing any provision of this User Agreement shall not be construed as a waiver of any.\n\n"),
-        "eulaParagraphe5": m43,
-        "eulaParagraphe6": m44,
+        "eulaParagraphe5": m45,
+        "eulaParagraphe6": m46,
         "eulaParagraphe7": MessageLookupByLibrary.simpleMessage(
             "We are not responsible for seed-phrases residing in the Mobile Application. In no event shall we be held liable for any loss of any kind. It is your sole responsibility to maintain appropriate backups of your accounts and their seedprases.\n\n"),
         "eulaParagraphe8": MessageLookupByLibrary.simpleMessage(
             "You should not act, or refrain from acting solely on the basis of the content of this application. \nYour access to this application does not itself create an adviser-client relationship between You and us. \nThe content of this application does not constitute a solicitation or inducement to invest in any financial products or services offered by us. \nAny advice included in this application has been prepared without taking into account your objectives, financial situation or needs. You should consider our Risk Disclosure Notice before making any decision on whether to acquire the product described in that document.\n\n"),
         "eulaParagraphe9": MessageLookupByLibrary.simpleMessage(
             "We do not guarantee your continuous access to the application or that your access or use will be error-free. \nWe will not be liable in the event that the application is unavailable to You for any reason (for example, due to computer downtime ascribable to malfunctions, upgrades, server problems, precautionary or corrective maintenance activities or interruption in telecommunication supplies). \n\n"),
-        "eulaTitle1": m45,
+        "eulaTitle1": m47,
         "eulaTitle10":
             MessageLookupByLibrary.simpleMessage("ACCESS AND SECURITY\n\n"),
         "eulaTitle11": MessageLookupByLibrary.simpleMessage(
@@ -698,19 +722,20 @@ class MessageLookup extends MessageLookupByLibrary {
             "Items have been successfully exported:"),
         "exportSwapsTitle": MessageLookupByLibrary.simpleMessage("Swaps"),
         "exportTitle": MessageLookupByLibrary.simpleMessage("Export"),
+        "failedToCancelActivation": m48,
         "fakeBalanceAmt":
             MessageLookupByLibrary.simpleMessage("Fake balance amount:"),
         "faqTitle":
             MessageLookupByLibrary.simpleMessage("Frequently Asked Questions"),
         "faucetError": MessageLookupByLibrary.simpleMessage("Error"),
-        "faucetInProgress": m46,
+        "faucetInProgress": m49,
         "faucetName": MessageLookupByLibrary.simpleMessage("FAUCET"),
         "faucetSuccess": MessageLookupByLibrary.simpleMessage("Success"),
         "faucetTimedOut":
             MessageLookupByLibrary.simpleMessage("Request timed out"),
         "feedNewsTab": MessageLookupByLibrary.simpleMessage("News"),
         "feedNotFound": MessageLookupByLibrary.simpleMessage("Nothing here"),
-        "feedNotifTitle": m47,
+        "feedNotifTitle": m50,
         "feedReadMore": MessageLookupByLibrary.simpleMessage("Read more..."),
         "feedTab": MessageLookupByLibrary.simpleMessage("Feed"),
         "feedTitle": MessageLookupByLibrary.simpleMessage("News Feed"),
@@ -723,7 +748,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "feedUpdated":
             MessageLookupByLibrary.simpleMessage("News feed updated"),
         "feedback": MessageLookupByLibrary.simpleMessage("Share Log File"),
-        "feesError": m48,
+        "feesError": m51,
         "filtersAll": MessageLookupByLibrary.simpleMessage("All"),
         "filtersButton": MessageLookupByLibrary.simpleMessage("Filter"),
         "filtersClearAll":
@@ -744,9 +769,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "foundQrCode": MessageLookupByLibrary.simpleMessage("Found QR Code"),
         "frenchLanguage": MessageLookupByLibrary.simpleMessage("French"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
-        "gasFee": m49,
+        "futureTransactions": MessageLookupByLibrary.simpleMessage(
+            "We will sync future transactions made after activation associated with your public key. This is the quickest option and takes up the least amount of storage."),
+        "gasFee": m52,
         "gasLimit": MessageLookupByLibrary.simpleMessage("Gas limit"),
-        "gasNotActive": m50,
+        "gasNotActive": m53,
         "gasPrice": MessageLookupByLibrary.simpleMessage("Gas price"),
         "generalPinNotActive": MessageLookupByLibrary.simpleMessage(
             "General PIN protection is not active.\nCamouflage mode will not be available.\nPlease activate PIN protection."),
@@ -755,7 +782,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "gettingTxWait": MessageLookupByLibrary.simpleMessage(
             "Getting transaction, please wait"),
         "goToPorfolio": MessageLookupByLibrary.simpleMessage("Go to portfolio"),
-        "gweiError": m51,
+        "gweiError": m54,
         "helpLink": MessageLookupByLibrary.simpleMessage("Help"),
         "helpTitle": MessageLookupByLibrary.simpleMessage("Help and Support"),
         "hideBalance": MessageLookupByLibrary.simpleMessage("Hide balances"),
@@ -807,7 +834,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "importSwapJsonDecodingError":
             MessageLookupByLibrary.simpleMessage("Error decoding json file"),
         "importTitle": MessageLookupByLibrary.simpleMessage("Import"),
-        "incomingTransactionsProtectionSettings": m52,
+        "incomingTransactionsProtectionSettings": m55,
         "infoPasswordDialog": MessageLookupByLibrary.simpleMessage(
             "Use a secure password and do not store it on the same device"),
         "infoTrade1": MessageLookupByLibrary.simpleMessage(
@@ -816,7 +843,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "The swap can take up to 60 minutes. DONT close this application!"),
         "infoWalletPassword": MessageLookupByLibrary.simpleMessage(
             "You have to provide a password for the wallet encryption due to security reasons."),
-        "insufficientBalanceToPay": m53,
+        "insufficientBalanceToPay": m56,
         "insufficientText": MessageLookupByLibrary.simpleMessage(
             "Minumum volume required by this order is"),
         "insufficientTitle":
@@ -825,11 +852,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Refresh"),
         "internetRestored": MessageLookupByLibrary.simpleMessage(
             "Internet Connection Restored"),
+        "invalidCoinAddress": m57,
         "invalidSwap":
             MessageLookupByLibrary.simpleMessage("Unable to proceed swap"),
         "invalidSwapDetailsLink":
             MessageLookupByLibrary.simpleMessage("Details"),
-        "isUnavailable": m54,
+        "isUnavailable": m58,
         "japaneseLanguage": MessageLookupByLibrary.simpleMessage("Japanese"),
         "koreanLanguage": MessageLookupByLibrary.simpleMessage("Korean"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
@@ -837,8 +865,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Latest Transactions"),
         "legalTitle": MessageLookupByLibrary.simpleMessage("Legal"),
         "less": MessageLookupByLibrary.simpleMessage("Less"),
-        "lessThanCaution": m55,
-        "limitError": m56,
+        "lessThanCaution": m59,
+        "limitError": m60,
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
         "loadingOrderbook":
             MessageLookupByLibrary.simpleMessage("Loading orderbook..."),
@@ -904,11 +932,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "milliseconds": MessageLookupByLibrary.simpleMessage("ms"),
         "min": MessageLookupByLibrary.simpleMessage("MIN"),
         "minOrder": MessageLookupByLibrary.simpleMessage("Min order volume:"),
-        "minValue": m57,
-        "minValueBuy": m58,
-        "minValueOrder": m59,
-        "minValueSell": m60,
-        "minVolumeInput": m61,
+        "minValue": m61,
+        "minValueBuy": m62,
+        "minValueOrder": m63,
+        "minValueSell": m64,
+        "minVolumeInput": m65,
         "minVolumeIsTDH": MessageLookupByLibrary.simpleMessage(
             "Must be lower than sell amount"),
         "minVolumeTitle":
@@ -918,17 +946,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimizingWillTerminate": MessageLookupByLibrary.simpleMessage(
             "Warning: Minimizing the app on iOS will terminate the activation process."),
         "minutes": MessageLookupByLibrary.simpleMessage("m"),
-        "mobileDataWarning": m62,
+        "mobileDataWarning": m66,
         "moreInfo": MessageLookupByLibrary.simpleMessage("More Info"),
         "moreTab": MessageLookupByLibrary.simpleMessage("More"),
-        "multiActivateGas": m63,
+        "multiActivateGas": m67,
         "multiBaseAmtPlaceholder":
             MessageLookupByLibrary.simpleMessage("Amount"),
         "multiBasePlaceholder": MessageLookupByLibrary.simpleMessage("Coin"),
         "multiBaseSelectTitle": MessageLookupByLibrary.simpleMessage("Sell"),
         "multiConfirmCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "multiConfirmConfirm": MessageLookupByLibrary.simpleMessage("Confirm"),
-        "multiConfirmTitle": m64,
+        "multiConfirmTitle": m68,
         "multiCreate": MessageLookupByLibrary.simpleMessage("Create"),
         "multiCreateOrder": MessageLookupByLibrary.simpleMessage("Order"),
         "multiCreateOrders": MessageLookupByLibrary.simpleMessage("Orders"),
@@ -943,8 +971,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Invalid amount"),
         "multiInvalidSellAmt":
             MessageLookupByLibrary.simpleMessage("Invalid sell amount"),
-        "multiLowGas": m65,
-        "multiLowerThanFee": m66,
+        "multiLowGas": m69,
+        "multiLowerThanFee": m70,
         "multiMaxSellAmt":
             MessageLookupByLibrary.simpleMessage("Max sell amount is"),
         "multiMinReceiveAmt":
@@ -977,7 +1005,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No items selected"),
         "noMatchingOrders":
             MessageLookupByLibrary.simpleMessage("No matching orders found"),
-        "noOrder": m67,
+        "noOrder": m71,
         "noOrderAvailable":
             MessageLookupByLibrary.simpleMessage("Click to create an order"),
         "noOrders": MessageLookupByLibrary.simpleMessage(
@@ -992,7 +1020,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nonNumericInput":
             MessageLookupByLibrary.simpleMessage("The value must be numeric"),
         "none": MessageLookupByLibrary.simpleMessage("None"),
-        "notEnoughGas": m68,
+        "notEnoughGas": m72,
         "notEnoughtBalanceForFee": MessageLookupByLibrary.simpleMessage(
             "Not enough balance for fees - trade a smaller amount"),
         "noteOnOrder": MessageLookupByLibrary.simpleMessage(
@@ -1000,24 +1028,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "notePlaceholder": MessageLookupByLibrary.simpleMessage("Add a Note"),
         "noteTitle": MessageLookupByLibrary.simpleMessage("Note"),
         "nothingFound": MessageLookupByLibrary.simpleMessage("Nothing found"),
-        "notifSwapCompletedText": m69,
+        "notifSwapCompletedText": m73,
         "notifSwapCompletedTitle":
             MessageLookupByLibrary.simpleMessage("Swap completed"),
-        "notifSwapFailedText": m70,
+        "notifSwapFailedText": m74,
         "notifSwapFailedTitle":
             MessageLookupByLibrary.simpleMessage("Swap failed"),
-        "notifSwapStartedText": m71,
+        "notifSwapStartedText": m75,
         "notifSwapStartedTitle":
             MessageLookupByLibrary.simpleMessage("New swap started"),
         "notifSwapStatusTitle":
             MessageLookupByLibrary.simpleMessage("Swap status changed"),
-        "notifSwapTimeoutText": m72,
+        "notifSwapTimeoutText": m76,
         "notifSwapTimeoutTitle":
             MessageLookupByLibrary.simpleMessage("Swap timed out"),
-        "notifTxText": m73,
+        "notifTxText": m77,
         "notifTxTitle":
             MessageLookupByLibrary.simpleMessage("Incoming transaction"),
-        "numberAssets": m74,
+        "numberAssets": m78,
         "officialPressRelease":
             MessageLookupByLibrary.simpleMessage("Official press release"),
         "okButton": MessageLookupByLibrary.simpleMessage("Ok"),
@@ -1028,14 +1056,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Open Error Message"),
         "orderBookLess": MessageLookupByLibrary.simpleMessage("Less"),
         "orderBookMore": MessageLookupByLibrary.simpleMessage("More"),
-        "orderCancel": m75,
+        "orderCancel": m79,
         "orderCreated": MessageLookupByLibrary.simpleMessage("Order created"),
         "orderCreatedInfo":
             MessageLookupByLibrary.simpleMessage("Order successfully created"),
         "orderDetailsAddress": MessageLookupByLibrary.simpleMessage("Address"),
         "orderDetailsCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
-        "orderDetailsExpedient": m76,
-        "orderDetailsExpensive": m77,
+        "orderDetailsExpedient": m80,
+        "orderDetailsExpensive": m81,
         "orderDetailsFor": MessageLookupByLibrary.simpleMessage("for"),
         "orderDetailsIdentical":
             MessageLookupByLibrary.simpleMessage("Identical to CEX"),
@@ -1048,7 +1076,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Open Details on single tap and select Order by long tap"),
         "orderDetailsSpend": MessageLookupByLibrary.simpleMessage("Spend"),
         "orderDetailsTitle": MessageLookupByLibrary.simpleMessage("Details"),
-        "orderFilled": m78,
+        "orderFilled": m82,
         "orderMatched": MessageLookupByLibrary.simpleMessage("Order matched"),
         "orderMatching": MessageLookupByLibrary.simpleMessage("Order matching"),
         "orderTypePartial": MessageLookupByLibrary.simpleMessage(" Order"),
@@ -1057,9 +1085,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orders": MessageLookupByLibrary.simpleMessage("orders"),
         "ordersActive": MessageLookupByLibrary.simpleMessage("Active"),
         "ordersHistory": MessageLookupByLibrary.simpleMessage("History"),
-        "ordersTableAmount": m79,
-        "ordersTablePrice": m80,
-        "ordersTableTotal": m81,
+        "ordersTableAmount": m83,
+        "ordersTablePrice": m84,
+        "ordersTableTotal": m85,
         "overwrite": MessageLookupByLibrary.simpleMessage("Overwrite"),
         "ownOrder":
             MessageLookupByLibrary.simpleMessage(" This is your own order!"),
@@ -1070,6 +1098,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidWith": MessageLookupByLibrary.simpleMessage("Paid with "),
         "passwordRequirement": MessageLookupByLibrary.simpleMessage(
             "Password must contain at least 12 characters, with one lower-case, one upper-case and one special symbol."),
+        "pastTransactionsFromDate": MessageLookupByLibrary.simpleMessage(
+            "Your wallet will show your past transactions made after the specified date."),
         "paymentUriDetailsAccept": MessageLookupByLibrary.simpleMessage("Pay"),
         "paymentUriDetailsAcceptQuestion": MessageLookupByLibrary.simpleMessage(
             "Do you accept this transaction?"),
@@ -1082,8 +1112,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentUriDetailsDeny": MessageLookupByLibrary.simpleMessage("Cancel"),
         "paymentUriDetailsTitle":
             MessageLookupByLibrary.simpleMessage("Payment Requested"),
-        "paymentUriInactiveCoin": m82,
+        "paymentUriInactiveCoin": m86,
         "placeOrder": MessageLookupByLibrary.simpleMessage("Place your order"),
+        "pleaseAcceptAllCoinActivationRequests":
+            MessageLookupByLibrary.simpleMessage(
+                "Please accept all special coin activation requests or deselect the coins."),
         "pleaseAddCoin":
             MessageLookupByLibrary.simpleMessage("Please Add A Coin"),
         "pleaseRestart": MessageLookupByLibrary.simpleMessage(
@@ -1107,21 +1140,21 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("QR Code Scanner"),
         "question_1": MessageLookupByLibrary.simpleMessage(
             "Do you store my private keys?"),
-        "question_10": m83,
-        "question_2": m84,
+        "question_10": m87,
+        "question_2": m88,
         "question_3": MessageLookupByLibrary.simpleMessage(
             "How long does each atomic swap take?"),
         "question_4": MessageLookupByLibrary.simpleMessage(
             "Do I need to be online for the duration of the swap?"),
-        "question_5": m85,
+        "question_5": m89,
         "question_6": MessageLookupByLibrary.simpleMessage(
             "Do you provide user support?"),
         "question_7": MessageLookupByLibrary.simpleMessage(
             "Do you have country restrictions?"),
-        "question_8": m86,
-        "question_9": m87,
+        "question_8": m90,
+        "question_9": m91,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
-            "It\'s a new era! We have officially changed our name from \'AtomicDEX\' to \'Komodo Wallet\'"),
+            "It\'s a new era! We have officially rebranded from \'AtomicDEX\' to \'Komodo Wallet\'"),
         "receive": MessageLookupByLibrary.simpleMessage("RECEIVE"),
         "receiveLower": MessageLookupByLibrary.simpleMessage("Receive"),
         "recommendSeedMessage": MessageLookupByLibrary.simpleMessage(
@@ -1158,7 +1191,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rewardsReadMore": MessageLookupByLibrary.simpleMessage(
             "Read more about KMD active user rewards"),
         "rewardsReceive": MessageLookupByLibrary.simpleMessage("Receive"),
-        "rewardsSuccess": m88,
+        "rewardsSuccess": m92,
         "rewardsTableFiat": MessageLookupByLibrary.simpleMessage("Fiat"),
         "rewardsTableRewards":
             MessageLookupByLibrary.simpleMessage("Rewards,\nKMD"),
@@ -1168,9 +1201,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Rewards information:"),
         "rewardsTableUXTO":
             MessageLookupByLibrary.simpleMessage("UTXO amt,\nKMD"),
-        "rewardsTimeDays": m89,
-        "rewardsTimeHours": m90,
-        "rewardsTimeMin": m91,
+        "rewardsTimeDays": m93,
+        "rewardsTimeHours": m94,
+        "rewardsTimeMin": m95,
         "rewardsTitle":
             MessageLookupByLibrary.simpleMessage("Rewards information"),
         "russianLanguage": MessageLookupByLibrary.simpleMessage("Russian"),
@@ -1223,7 +1256,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Search for Ticker"),
         "seconds": MessageLookupByLibrary.simpleMessage("s"),
         "security": MessageLookupByLibrary.simpleMessage("Security"),
-        "seeOrders": m92,
+        "seeOrders": m96,
         "seeTxHistory":
             MessageLookupByLibrary.simpleMessage("View Transaction History"),
         "seedPhrase": MessageLookupByLibrary.simpleMessage("Seed Phrase"),
@@ -1238,6 +1271,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Select the coin you want to BUY"),
         "selectCoinToSell": MessageLookupByLibrary.simpleMessage(
             "Select the coin you want to SELL"),
+        "selectDate": MessageLookupByLibrary.simpleMessage("Select a Date"),
         "selectFileImport": MessageLookupByLibrary.simpleMessage("Select file"),
         "selectLanguage":
             MessageLookupByLibrary.simpleMessage("Select Language"),
@@ -1264,35 +1298,36 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Languages"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "share": MessageLookupByLibrary.simpleMessage("Share"),
-        "shareAddress": m93,
+        "shareAddress": m97,
+        "shouldScanPastTransaction": m98,
         "showAddress": MessageLookupByLibrary.simpleMessage("Show Address"),
         "showDetails": MessageLookupByLibrary.simpleMessage("Show Details"),
         "showMyOrders": MessageLookupByLibrary.simpleMessage("Show My Orders"),
-        "showingOrders": m94,
+        "showingOrders": m99,
         "signInWithPassword":
             MessageLookupByLibrary.simpleMessage("Sign in with password"),
         "signInWithSeedPhrase": MessageLookupByLibrary.simpleMessage(
             "Forgot the password? Restore wallet from seed"),
         "simple": MessageLookupByLibrary.simpleMessage("Simple"),
         "simpleTradeActivate": MessageLookupByLibrary.simpleMessage("Activate"),
-        "simpleTradeBuyHint": m95,
+        "simpleTradeBuyHint": m100,
         "simpleTradeBuyTitle": MessageLookupByLibrary.simpleMessage("Buy"),
         "simpleTradeClose": MessageLookupByLibrary.simpleMessage("Close"),
-        "simpleTradeMaxActiveCoins": m96,
-        "simpleTradeNotActive": m97,
+        "simpleTradeMaxActiveCoins": m101,
+        "simpleTradeNotActive": m102,
         "simpleTradeRecieve": MessageLookupByLibrary.simpleMessage("Receive"),
-        "simpleTradeSellHint": m98,
+        "simpleTradeSellHint": m103,
         "simpleTradeSellTitle": MessageLookupByLibrary.simpleMessage("Sell"),
         "simpleTradeSend": MessageLookupByLibrary.simpleMessage("Send"),
         "simpleTradeShowLess":
             MessageLookupByLibrary.simpleMessage("Show less"),
         "simpleTradeShowMore":
             MessageLookupByLibrary.simpleMessage("Show more"),
-        "simpleTradeUnableActivate": m99,
+        "simpleTradeUnableActivate": m104,
         "skip": MessageLookupByLibrary.simpleMessage("Skip"),
         "snackbarDismiss": MessageLookupByLibrary.simpleMessage("Dismiss"),
-        "soundCantPlayThatMsg": m100,
-        "soundPlayedWhen": m101,
+        "soundCantPlayThatMsg": m105,
+        "soundPlayedWhen": m106,
         "soundSettingsLink": MessageLookupByLibrary.simpleMessage("Sound"),
         "soundSettingsTitle":
             MessageLookupByLibrary.simpleMessage("Sound settings"),
@@ -1304,20 +1339,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "soundsNote": MessageLookupByLibrary.simpleMessage(
             "Note that you can set your custom sounds in application settings."),
         "spanishLanguage": MessageLookupByLibrary.simpleMessage("Spanish"),
+        "startDate": MessageLookupByLibrary.simpleMessage("Start Date"),
         "startSwap": MessageLookupByLibrary.simpleMessage("Start Swap"),
         "step": MessageLookupByLibrary.simpleMessage("Step"),
         "success": MessageLookupByLibrary.simpleMessage("Success!"),
         "support": MessageLookupByLibrary.simpleMessage("Support"),
-        "supportLinksDesc": m102,
+        "supportLinksDesc": m107,
         "swap": MessageLookupByLibrary.simpleMessage("swap"),
         "swapCurrent": MessageLookupByLibrary.simpleMessage("Current"),
         "swapDetailTitle":
             MessageLookupByLibrary.simpleMessage("CONFIRM EXCHANGE DETAILS"),
         "swapEstimated": MessageLookupByLibrary.simpleMessage("Estimate"),
         "swapFailed": MessageLookupByLibrary.simpleMessage("Swap failed"),
-        "swapGasActivate": m103,
-        "swapGasAmount": m104,
-        "swapGasAmountRequired": m105,
+        "swapGasActivate": m108,
+        "swapGasAmount": m109,
+        "swapGasAmountRequired": m110,
         "swapOngoing": MessageLookupByLibrary.simpleMessage("Swap ongoing"),
         "swapProgress":
             MessageLookupByLibrary.simpleMessage("Progress details"),
@@ -1326,6 +1362,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "swapTotal": MessageLookupByLibrary.simpleMessage("Total"),
         "swapUUID": MessageLookupByLibrary.simpleMessage("Swap UUID"),
         "switchTheme": MessageLookupByLibrary.simpleMessage("Switch Theme"),
+        "syncFromDate":
+            MessageLookupByLibrary.simpleMessage("Sync from specified date"),
+        "syncFromSaplingActivation": MessageLookupByLibrary.simpleMessage(
+            "Sync from sapling activation"),
+        "syncNewTransactions":
+            MessageLookupByLibrary.simpleMessage("Sync new transactions"),
+        "syncTransactionsQuestion": m111,
         "tagAVX20": MessageLookupByLibrary.simpleMessage("AVX20"),
         "tagBEP20": MessageLookupByLibrary.simpleMessage("BEP20"),
         "tagERC20": MessageLookupByLibrary.simpleMessage("ERC20"),
@@ -1385,24 +1428,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "txLimitExceeded": MessageLookupByLibrary.simpleMessage(
             "Too many requests.\nTransactions history requests limit exceeded.\nPlease try again later."),
         "txNotConfirmed": MessageLookupByLibrary.simpleMessage("UNCONFIRMED"),
-        "txleft": m106,
+        "txleft": m112,
         "ukrainianLanguage": MessageLookupByLibrary.simpleMessage("Ukrainian"),
         "unlock": MessageLookupByLibrary.simpleMessage("unlock"),
         "unlockFunds": MessageLookupByLibrary.simpleMessage("Unlock Funds"),
-        "unlockSuccess": m107,
+        "unlockSuccess": m113,
         "unspendable": MessageLookupByLibrary.simpleMessage("unspendable"),
         "updatesAvailable":
             MessageLookupByLibrary.simpleMessage("New version available"),
         "updatesChecking":
             MessageLookupByLibrary.simpleMessage("Checking for updates..."),
-        "updatesCurrentVersion": m108,
+        "updatesCurrentVersion": m114,
         "updatesNotifAvailable": MessageLookupByLibrary.simpleMessage(
             "New version available. Please update."),
-        "updatesNotifAvailableVersion": m109,
+        "updatesNotifAvailableVersion": m115,
         "updatesNotifTitle":
             MessageLookupByLibrary.simpleMessage("Update available"),
         "updatesSkip": MessageLookupByLibrary.simpleMessage("Skip for now"),
-        "updatesTitle": m110,
+        "updatesTitle": m116,
         "updatesUpToDate":
             MessageLookupByLibrary.simpleMessage("Already up to date"),
         "updatesUpdate": MessageLookupByLibrary.simpleMessage("Update"),
@@ -1428,9 +1471,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "warningOkBtn": MessageLookupByLibrary.simpleMessage("Ok"),
         "warningShareLogs": MessageLookupByLibrary.simpleMessage(
             "Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!"),
-        "weFailedTo": m111,
-        "weFailedToActivate": m112,
-        "welcomeInfo": m113,
+        "weFailedTo": m117,
+        "weFailedToActivate": m118,
+        "welcomeInfo": m119,
         "welcomeLetSetUp":
             MessageLookupByLibrary.simpleMessage("LET\'S GET SET UP!"),
         "welcomeTitle": MessageLookupByLibrary.simpleMessage("WELCOME"),
@@ -1440,14 +1483,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "willTakeTime": MessageLookupByLibrary.simpleMessage(
             "This will take a while and the app must be kept in the foreground.\nTerminating the app while activation is in progress could lead to issues."),
         "withdraw": MessageLookupByLibrary.simpleMessage("Withdraw"),
-        "withdrawCameraAccessText": m114,
+        "withdrawCameraAccessText": m120,
         "withdrawCameraAccessTitle":
             MessageLookupByLibrary.simpleMessage("Access Denied"),
         "withdrawConfirm":
             MessageLookupByLibrary.simpleMessage("Confirm Withdrawal"),
         "withdrawConfirmError": MessageLookupByLibrary.simpleMessage(
             "Something went wrong. Try again later."),
-        "withdrawValue": m115,
+        "withdrawValue": m121,
         "wrongCoinSpan1": MessageLookupByLibrary.simpleMessage(
             "You are trying to scan a payment QR code for "),
         "wrongCoinSpan2":
@@ -1469,7 +1512,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "you have an order that new orders can match with"),
         "youAreSending":
             MessageLookupByLibrary.simpleMessage("You are sending:"),
-        "youWillReceiveClaim": m116,
+        "youWillReceiveClaim": m122,
         "youWillReceived":
             MessageLookupByLibrary.simpleMessage("You will receive: "),
         "yourWallet": MessageLookupByLibrary.simpleMessage("your wallet")

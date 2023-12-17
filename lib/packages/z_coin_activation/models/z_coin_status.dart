@@ -29,9 +29,11 @@ class ZCoinStatus {
   final String message;
   final double progress;
 
-  bool get isActivated => status == ActivationTaskStatus.active;
+  bool get isActivated =>
+      status == ActivationTaskStatus.active ||
+      message.contains('is activated already');
 
-  bool get isFailed => status == ActivationTaskStatus.failed;
+  bool get isFailed => status == ActivationTaskStatus.failed && !isActivated;
 
   bool get isInProgress => status == ActivationTaskStatus.inProgress;
 

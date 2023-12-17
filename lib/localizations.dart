@@ -1266,6 +1266,13 @@ class AppLocalizations {
         name: 'weFailedToActivate',
         args: [coinAbbr],
       );
+
+  String failedToCancelActivation(String coinAbbr) => Intl.message(
+        'Failed to cancel activation of $coinAbbr',
+        name: 'failedToCancelActivation',
+        args: [coinAbbr],
+      );
+
   String isUnavailable(String coinAbbr) => Intl.message(
         '$coinAbbr is unavailable :(',
         name: 'isUnavailable',
@@ -1320,6 +1327,11 @@ class AppLocalizations {
       Intl.message('Min sell amount is', name: 'multiMinSellAmt');
   String get multiInvalidAmt =>
       Intl.message('Invalid amount', name: 'multiInvalidAmt');
+  String invalidCoinAddress(String coin) => Intl.message(
+        'Invalid $coin address',
+        args: [coin],
+        name: 'invalidCoinAddress',
+      );
   String multiActivateGas(String coin) =>
       Intl.message('Activate $coin and top-up balance first',
           name: 'multiActivateGas', args: <Object>[coin]);
@@ -1887,11 +1899,76 @@ class AppLocalizations {
 
   // Rebranding
   String get rebrandingAnnouncement => Intl.message(
-      "It's a new era! We have officially changed our name from 'AtomicDEX' to 'Komodo Wallet'",
+      "It's a new era! We have officially rebranded from 'AtomicDEX' to 'Komodo Wallet'",
       name: 'rebrandingAnnouncement');
 
   String get officialPressRelease =>
       Intl.message('Official press release', name: 'officialPressRelease');
+
+// --- Asyncronous coin activations (requires syncing)
+  String shouldScanPastTransaction(String coin) => Intl.message(
+        'Scan for past $coin transactions?',
+        name: 'shouldScanPastTransaction',
+        args: [coin],
+      );
+
+  String get activationCancelled =>
+      Intl.message('Coin activation cancelled', name: 'activationCancelled');
+
+  String coinActivationSuccessfull(String coin) => Intl.message(
+        'Successfully activated $coin',
+        name: 'coinActivationSuccessfull',
+        args: [coin],
+      );
+
+  String coinActivationCancelled(String coin) => Intl.message(
+        '$coin activation cancelled',
+        name: 'coinActivationCancelled',
+        args: [coin],
+      );
+
+  String get pleaseAcceptAllCoinActivationRequests => Intl.message(
+        'Please accept all special coin activation requests or deselect the coins.',
+        name: 'pleaseAcceptAllCoinActivationRequests',
+      );
+
+  String get cancelActivation =>
+      Intl.message('Cancel Activation', name: 'cancelActivation');
+
+  String get cancelActivationQuestion => Intl.message(
+        'Are you sure you want to cancel activation?',
+        name: 'cancelActivationQuestion',
+      );
+
+  String syncTransactionsQuestion(String name) => Intl.message(
+        'Which $name transactions would you like to sync?',
+        name: 'syncTransactionsQuestion',
+        args: [name],
+      );
+  String get syncNewTransactions =>
+      Intl.message('Sync new transactions', name: 'syncNewTransactions');
+  String get syncFromDate =>
+      Intl.message('Sync from specified date', name: 'syncFromDate');
+  String get syncFromSaplingActivation => Intl.message(
+        'Sync from sapling activation',
+        name: 'syncFromSaplingActivation',
+      );
+  String get selectDate => Intl.message('Select a Date', name: 'selectDate');
+  String get startDate => Intl.message('Start Date', name: 'startDate');
+  String get futureTransactions => Intl.message(
+        'We will sync future transactions made after activation associated with your public key. This is the quickest option and takes up the least amount of storage.',
+        name: 'futureTransactions',
+      );
+  String get allPastTransactions => Intl.message(
+        'Your wallet will show any past transactions. This will take significant storage and time as all blocks will be downloaded and scanned.',
+        name: 'allPastTransactions',
+      );
+  String get pastTransactionsFromDate => Intl.message(
+        'Your wallet will show your past transactions made after the specified date.',
+        name: 'pastTransactionsFromDate',
+      );
+  // ---
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

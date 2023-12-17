@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../blocs/coins_bloc.dart';
 import '../blocs/main_bloc.dart';
 import '../localizations.dart';
@@ -51,11 +52,24 @@ class NotifService {
     }
 
     try {
-      await chanell.invokeMethod<void>('show_notification', <String, dynamic>{
-        'title': notif.title,
-        'text': notif.text,
-        'uid': nativeId,
-      });
+      await FlutterLocalNotificationsPlugin().show(
+        nativeId,
+        notif.title,
+        notif.text,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            'komodo_dex',
+            'Komodo DEX',
+            importance: Importance.defaultImportance,
+            priority: Priority.defaultPriority,
+          ),
+          iOS: DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: null,
+          ),
+        ),
+      );
     } catch (e) {
       Log('notif_service', 'show] $e');
     }
@@ -112,7 +126,7 @@ class NotifService {
             ));
         if (res is! Transactions) continue;
 
-        for (Transaction tx in res.result.transactions) {
+        for (Transaction tx in res.result?.transactions ?? []) {
           if (tx.to.contains(address)) {
             if (double.parse(tx.myBalanceChange) < 0) continue;
             transactions.add(tx);
