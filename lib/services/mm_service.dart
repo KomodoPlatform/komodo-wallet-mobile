@@ -64,9 +64,9 @@ class MMService {
   /// Our name and version
   String gui;
 
-  /// We're using the netid of 7777 currently
-  /// But it's possible in theory to connect the UI to MM running on a different netid
-  int netid = 7777;
+  /// We're using the netid of 8762 as part of the bracking changes in MM2
+  /// warrenting a new netid.
+  int netid = 8762;
 
   /// Effective memory used by the application, MiB
   /// As of now it is specific to iOS
