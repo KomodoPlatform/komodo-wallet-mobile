@@ -99,7 +99,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
           alignment: Alignment.centerRight,
           child: Text(
             AppLocalizations.of(context)
-                .ordersTableTotal(orderBookProvider.activePair.sell.abbr),
+                .ordersTableAmount(orderBookProvider.activePair.buy.abbr),
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
@@ -111,13 +111,13 @@ class _OrderBookTableState extends State<OrderBookTable> {
   List<TableRow> _buildBidsList() {
     final List<Ask> _sortedBids = List.from(widget.sortedBids);
     final List<TableRow> _bidsList = [];
-    double _bidTotal = 0;
 
     for (int i = 0; i < _sortedBids.length; i++) {
       final Ask bid = _sortedBids[i];
-      final double _bidVolume =
-          bid.maxvolume.toDouble() * double.parse(bid.price);
-      _bidTotal += _bidVolume;
+
+      final double _bidVolume = bid.maxvolume.toDouble();
+
+      final double convertedVolume = _bidVolume / bid.priceRat.toDouble();
 
       _bidsList.add(TableRow(
         children: <Widget>[
@@ -185,7 +185,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: 4),
               child: Text(
-                formatPrice(_bidTotal.toString()),
+                formatPrice(convertedVolume.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context)
@@ -225,11 +225,11 @@ class _OrderBookTableState extends State<OrderBookTable> {
   List<TableRow> _buildAsksList() {
     final List<Ask> _sortedAsks = widget.sortedAsks;
     List<TableRow> _asksList = [];
-    double _askTotal = 0;
 
     for (int i = 0; i < _sortedAsks.length; i++) {
       final Ask ask = _sortedAsks[i];
-      _askTotal += ask.maxvolume.toDouble();
+      final convertedVolume =
+          ask.maxvolume.toDouble() * ask.priceRat.toDouble();
 
       _asksList.add(TableRow(
         children: <Widget>[
@@ -297,7 +297,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: 4),
               child: Text(
-                formatPrice(_askTotal.toString()),
+                formatPrice(convertedVolume.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context)

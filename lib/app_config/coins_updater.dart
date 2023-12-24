@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:isolate';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/coin_ci.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 /// Provides methods for fetching coin data either from local assets or a remote Git repository.
 ///
@@ -43,129 +42,152 @@ class CoinUpdater {
   String _cachedCoins;
   CoinsCI _coinsCI;
 
-  Future<CoinsCI> _loadCoinsCIConfig() async {
-    final String coinsCI = await _fetchAsset(localAssetPathCIConfig);
-    final coinsCIResponse = jsonDecode(coinsCI);
-    return CoinsCI.fromJson(coinsCIResponse);
-  }
-
-  Future<String> _fetchAsset(String path) async {
-    return await rootBundle.loadString(path);
-  }
+  Future<String> _fetchAsset(String path) =>
+      rootBundle.loadString(path, cache: false);
 
   Future<File> _getLocalFile(String filename) async {
-    final directory = await getApplicationDocumentsDirectory();
-    return File('${directory.path}/$filename');
+    final directory = await applicationDocumentsDirectory;
+    return File('${directory.path}/config_updates/$filename');
   }
 
-  Future<String> _fetchOrCache(
-    String localPath,
-    String remoteUrl,
-    String cacheName,
-    String cacheProperty,
-    bool runtimeUpdatesEnabled,
-  ) async {
+  Future<String> _fetchCoinFileOrAsset(UpdateCacheParams params) async {
+    File cacheFile;
+    String property;
+
     try {
-      if (cacheProperty != null) {
-        return cacheProperty;
-      }
+      try {
+        cacheFile = await _getLocalFile(params.cacheFileName);
 
-      File cacheFile = await _getLocalFile(cacheName);
-
-      final cacheFileExists = await cacheFile.exists();
-
-      if (runtimeUpdatesEnabled) {
-        scheduleMicrotask(
-          () => _updateCacheInBackground(remoteUrl, cacheFile),
+        final maybeCacheValue = await compute<String, String>(
+          _tryReadValidJsonFile,
+          cacheFile.path,
         );
-      }
 
-      if (cacheFileExists) {
-        cacheProperty = await cacheFile.readAsString();
-
-        return cacheProperty;
-      } else {
-        String localData = await _fetchAsset(localPath);
-        cacheProperty = localData;
-        return localData;
-      }
-    } catch (e) {
-      // If there's an error, first try to return the cached value,
-      // if that's null too, then fall back to the local asset.
-      if (cacheProperty != null) {
-        return cacheProperty;
-      } else {
-        return await _fetchAsset(localPath);
-      }
-    }
-  }
-
-  void _updateCacheInBackground(String remoteUrl, File cacheFile) async {
-    final ReceivePort receivePort = ReceivePort();
-
-    try {
-      await Isolate.spawn(
-        _isolateEntry,
-        [remoteUrl, cacheFile.path],
-        onExit: receivePort.sendPort,
-        errorsAreFatal: false,
-      );
-      receivePort.listen((data) {
-        // Close the receive port when the isolate is done
-        receivePort.close();
-
+        property = maybeCacheValue ?? property;
+      } catch (e) {
         Log(
           'CoinUpdater',
-          'Coin updater updated coins to latest commit on branch '
-              '${_coinsCI?.coinsRepoBranch} from ${_coinsCI?.coinsRepoUrl}. '
-              '\n $remoteUrl',
+          'Error reading coin config cache file: ${e.toString()}',
         );
-      });
+      }
+
+      property ??= await _fetchAsset(params.localPath);
+
+      return property;
     } catch (e) {
-      Log('CoinUpdater', 'Error updating coins: $e');
+      Log('CoinUpdater', 'Error fetching or caching ${params.cacheKey}: $e');
+      rethrow;
+    } finally {
+      if (isUpdateEnabled) {
+        _startUpdateCacheInBackground(params.remoteUrl, cacheFile);
+      }
     }
   }
 
-  static void _isolateEntry(List<String> data) async {
-    final String remoteUrl = data[0];
-    final String filePath = data[1];
+  void _startUpdateCacheInBackground(String remoteUrl, File cacheFile) async {
+    try {
+      Log('CoinUpdater', 'Updating coins in background...');
+      await compute<Map<String, dynamic>, void>(
+        _updateFileFromServer,
+        <String, dynamic>{
+          'remoteUrl': remoteUrl,
+          'filePath': cacheFile.path,
+        },
+      );
 
-    final response = await http.get(Uri.parse(remoteUrl));
-    if (response.statusCode == 200) {
-      final file = File(filePath);
-      file.writeAsString(response.body);
+      Log(
+        'CoinUpdater',
+        'Coin updater updated coins to latest commit on branch $coinsRepoBranch'
+            ' from $coinsRepoUrl. Changes will take effect on next app launch.',
+      );
+    } catch (e) {
+      Log('CoinUpdater', 'Error updating coins in background: $e');
     }
-  }
-
-  Future<String> _getAssetRemotePath(String localPath) async {
-    _coinsCI ??= await _loadCoinsCIConfig();
-    final mappedFile = _coinsCI?.mappedFiles[localPath];
-    return '${_coinsCI?.coinsRepoUrl}/${_coinsCI?.coinsRepoBranch}/$mappedFile';
   }
 
   Future<String> getConfig() async {
-    final String remotePathConfig =
-        await _getAssetRemotePath(localAssetPathConfig);
-    _cachedConfig = await _fetchOrCache(
-      localAssetPathConfig,
-      remotePathConfig,
-      'coins_config_cache.json',
-      _cachedConfig,
-      _coinsCI?.runtimeUpdatesEnabled ?? false,
+    return _cachedConfig ??= await _fetchCoinFileOrAsset(
+      UpdateCacheParams(
+        localPath: localAssetPathConfig,
+        remoteUrl: remotePathConfig,
+        cacheFileName: 'coins_config_cache.json',
+        cacheKey: 'config',
+      ),
     );
-    return _cachedConfig;
   }
 
   Future<String> getCoins() async {
-    final String remotePathCoins =
-        await _getAssetRemotePath(localAssetPathCoins);
-    _cachedCoins = await _fetchOrCache(
-      localAssetPathCoins,
-      remotePathCoins,
-      'coins_cache.json',
-      _cachedCoins,
-      _coinsCI?.runtimeUpdatesEnabled ?? false,
+    return _cachedCoins ??= await _fetchCoinFileOrAsset(
+      UpdateCacheParams(
+        localPath: localAssetPathCoins,
+        remoteUrl: remotePathCoins,
+        cacheFileName: 'coins_cache.json',
+        cacheKey: 'coins',
+      ),
     );
-    return _cachedCoins;
+  }
+}
+
+class UpdateCacheParams {
+  final String localPath;
+  final String remoteUrl;
+  final String cacheFileName;
+  final String cacheKey;
+
+  UpdateCacheParams({
+    @required this.localPath,
+    @required this.remoteUrl,
+    @required this.cacheFileName,
+    @required this.cacheKey,
+  });
+}
+
+/// Isolate-safe method for returning the contents of a JSON file if it is valid
+Future<String> _tryReadValidJsonFile(String path) async {
+  try {
+    final contents = await File(path).readAsString();
+
+    if (!_isJsonValid(contents)) return null;
+
+    return contents;
+  } catch (e) {
+    return null;
+  }
+}
+
+/// An isolate-safe method for checking if a string is valid JSON.
+bool _isJsonValid(String json) {
+  try {
+    if (json?.isEmpty ?? true) return false;
+
+    jsonDecode(json);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+/// Isolate-safe method for fetching and updating a JSON file from a
+/// remote server.
+Future<void> _updateFileFromServer(Map<String, dynamic> params) async {
+  final String remoteUrl = params['remoteUrl'];
+  final String filePath = params['filePath'];
+
+  try {
+    final response = await http.get(Uri.parse(remoteUrl));
+
+    if (response.statusCode != 200 || !_isJsonValid(response.body)) return;
+
+    final file = File(filePath);
+
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
+
+    file.writeAsStringSync(response.body, flush: true);
+  } catch (e) {
+    print('Error in isolate: $e');
+
+    rethrow;
   }
 }

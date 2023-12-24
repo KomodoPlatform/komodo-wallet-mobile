@@ -16,7 +16,6 @@ class OrderBookChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<double> _askTotals = [];
     final List<double> _bidTotals = [];
-    double _maxAmount;
 
     for (int i = 0; i < sortedAsks.length; i++) {
       final double prevTotal = i > 0 ? _askTotals[_askTotals.length - 1] : 0;
@@ -26,11 +25,10 @@ class OrderBookChart extends StatelessWidget {
     for (int i = 0; i < sortedBids.length; i++) {
       final double prevTotal = i > 0 ? _bidTotals[_bidTotals.length - 1] : 0;
       final Ask bid = sortedBids[i];
-      _bidTotals.add(
-          prevTotal + (bid.maxvolume.toDouble() * double.parse(bid.price)));
+      _bidTotals.add(prevTotal + (bid.maxvolume.toDouble()));
     }
 
-    _maxAmount = max(
+    double _maxAmount = max(
       _askTotals.isNotEmpty ? _askTotals[_askTotals.length - 1] : 0,
       _bidTotals.isNotEmpty ? _bidTotals[_bidTotals.length - 1] : 0,
     );
