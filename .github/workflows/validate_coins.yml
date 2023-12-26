@@ -34,6 +34,9 @@ jobs:
           echo "hash=$(jq -r .coins_repo_commit coins_ci.json)" >> $GITHUB_ENV
         shell: bash
 
+      - name: Get coins asset files 
+        run: python3 fetch_coin_assets.py
+
       - name: Get coins.json and coins_config.json from KomodoPlatform/coins repo
         run: |
           curl -O https://raw.githubusercontent.com/KomodoPlatform/coins/${hash}/coins
