@@ -21,6 +21,7 @@ Future<void> createWalletToTest(WidgetTester tester,
 
   try {
     // =========== authenticate_page.dart =============== //
+    await tester.pumpAndSettle();
     await tester.ensureVisible(createWalletButton);
     await tester.tap(createWalletButton);
     await tester.pumpAndSettle();
