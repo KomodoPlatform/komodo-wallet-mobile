@@ -1,5 +1,5 @@
 {
-  "bundled_coins_repo_commit": "8cb5983ab858dde915e8de3175c15cd0f5572356",
+  "bundled_coins_repo_commit": "bb2c35bbc5b29bc64148a015bfeb92ca65cebc8c",
   "coins_repo_url": "https://api.github.com/repos/KomodoPlatform/coins",
   "coins_repo_branch": "master",
   "runtime_updates_enabled": true,
