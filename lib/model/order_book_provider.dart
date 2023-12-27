@@ -130,8 +130,8 @@ class SyncOrderbook {
   /// [ChangeNotifier] proxies linked to this singleton.
   final Set<OrderBookProvider> _providers = {};
 
-  Map<String, Orderbook> _orderBooks = {}; // {'BTC/KMD': Orderbook(),}
-  Map<String, String> _orderBookErrors = {}; // {'BTC/KMD': 'error1',}
+  Map<String, Orderbook> _orderBooks = {}; // {'BTC-segwit/KMD': Orderbook(),}
+  Map<String, String> _orderBookErrors = {}; // {'BTC-segwit/KMD': 'error1',}
   Map<String, OrderbookDepth> _orderbooksDepth = {};
   CoinsPair _activePair;
   bool _updatingDepth = false;
