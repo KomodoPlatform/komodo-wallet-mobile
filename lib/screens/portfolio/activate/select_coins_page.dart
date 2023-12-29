@@ -129,6 +129,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                                 BuildSelectedCoins(_coinsToActivate),
                               Expanded(
                                 child: Scrollbar(
+                                  key: const Key('list-select-coins'),
                                   child: ListView.builder(
                                     itemCount: _listViewItems.length,
                                     itemBuilder:

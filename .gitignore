@@ -19,7 +19,9 @@
 .svn/
 
 # coins file extras
-# /assets/coins.json
+/assets/coins.json
+/assets/coins_config.json
+/assets/coin-icons
 /app_assets
 /coins_assets
 

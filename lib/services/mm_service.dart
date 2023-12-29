@@ -288,7 +288,6 @@ class MMService {
   /// UI thread.
   static Future<double> getDirectorySize(
     String dirPath, {
-
     /// If not null and not empty, only files ending with this string will be
     /// included in the size calculation.
     ///

@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
 import 'address/add_address_test.dart';
+import 'wallet_tests/coin_icons.dart';
 import 'wallet_tests/create_wallet.dart';
 import 'wallet_tests/logout_wallet.dart';
 import 'wallet_tests/restore_old_wallet.dart';
@@ -21,6 +22,7 @@ void main() {
     await tester.pumpAndSettle();
     print('CREATE WALLET TO TEST');
     await createWalletToTest(tester, walletName: firstWalletName);
+    await tester.pumpAndSettle();
     print('LOGOUT WALLET TO WALLETS LIST');
     await logOut(tester);
     await tester.pumpAndSettle();
@@ -32,6 +34,10 @@ void main() {
     await tester.pumpAndSettle();
     print('RESTORE WALLET FROM WALLETS LIST');
     await restoreOldWallet(tester);
+    await tester.pumpAndSettle();
+    print('TEST COINS ICONS');
+    await testCoinIcons(tester);
+    await tester.pumpAndSettle();
     print('TEST COINS ACTIVATION');
     await testActivateCoins(tester);
     await tester.pumpAndSettle();
