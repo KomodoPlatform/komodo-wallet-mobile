@@ -37,7 +37,7 @@ android {
 
     defaultConfig {
         applicationId "com.gleec.gleecdex"
-        minSdkVersion 27
+        minSdkVersion 28
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

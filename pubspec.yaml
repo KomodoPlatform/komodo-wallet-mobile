@@ -7,7 +7,7 @@ description: Multicoin Wallet with DEX gateway
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.8.0+0
+version: 0.9.0+0
 
 publish_to: none
 
@@ -36,8 +36,6 @@ dependencies:
 
   url_launcher: 6.1.5 # flutter.dev (Note: Supports null safety)
 
-  share: 2.0.4 # flutter.dev (Note: Supports null safety)
-
   local_auth: 1.1.11 # flutter.dev (Note: Supports null safety)
 
   http: 0.13.4 # dart.dev (Note: Supports null safety)
@@ -60,6 +58,9 @@ dependencies:
       url: https://github.com/KomodoPlatform/plus_plugins.git
       path: packages/package_info_plus/package_info_plus/
       ref: 08a7a35502d2498ea3dd1473445b4511dea35518 #1.4.2
+
+  share_plus: ^4.5.3
+
 
 
   #------------3rd party-------------
