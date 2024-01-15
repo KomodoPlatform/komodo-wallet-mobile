@@ -48,8 +48,8 @@ class AppConfig {
   String get appCompanyLong => 'DigiByte';
   String get appCompanyShort => 'DigiByte';
 
-  List<String> get defaultCoins => ['DGB', 'BTC', 'KMD'];
-  List<String> get coinsFiat => ['BTC', 'DGB'];
+  List<String> get defaultCoins => ['DGB', 'BTC-segwit', 'KMD'];
+  List<String> get coinsFiat => ['BTC-segwit', 'DGB'];
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
         'ATOM',
@@ -84,6 +84,33 @@ class AppConfig {
         'UST-PLG20',
         'XPM',
         'XVC-OLD',
+        'WHIVE',
+        'SXP-BEP20',
+        'PINK',
+        'tBTC',
+        'BBK',
+        'BTX',
+        'VOTE2023',
+        'VTC',
+        'CY',
+        'LBC',
+        'MONA',
+        'BTE',
+        'NMC',
+        'LTC',
+        'CDN',
+        'RDD',
+        'FJC',
+        'SYS',
+        'FTC',
+        'WCN',
+        'XMY',
+        'BTC',
+        'DGB',
+        'POT',
+        'GALA-BEP20',
+        'LCC',
+        'SXP-ERC20'
       ];
 
   List<String> get protocolSuffixes => [
