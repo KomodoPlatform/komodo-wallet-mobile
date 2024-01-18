@@ -87,7 +87,11 @@ class AppConfig {
         'SXP-BEP20',
         'VOTE2023',
         'GALA-BEP20',
-        'SXP-ERC20'
+        'SXP-ERC20',
+        'BBK',
+        'RDD',
+        'PINK',
+        'POT'
       ];
 
   List<String> get protocolSuffixes => [
