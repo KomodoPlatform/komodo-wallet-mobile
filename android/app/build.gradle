@@ -37,7 +37,7 @@ android {
 
     defaultConfig {
         applicationId "io.digibyte.dex"
-        minSdkVersion 27
+        minSdkVersion 28
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

@@ -1,18 +1,20 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:share_plus/share_plus.dart';
+
 import '../../../../app_config/app_config.dart';
 import '../../../../blocs/dialog_bloc.dart';
 import '../../../../localizations.dart';
 import '../../../../model/swap.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import '../../../dex/orders/swap/detail_swap.dart';
-import '../../../dex/orders/swap/share_preview_overlay.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widgets/swap_share_card.dart';
-import 'package:share/share.dart';
+import '../../../dex/orders/swap/detail_swap.dart';
+import '../../../dex/orders/swap/share_preview_overlay.dart';
 
 class FinalTradeSuccess extends StatefulWidget {
   const FinalTradeSuccess({@required this.swap});
@@ -167,10 +169,9 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
         ' on my phone! You can try it too: https://digibyte.org\n'
         '#blockchain #dex #atomicdex #digibyte #atomicswap';
 
-    await Share.shareFiles(
-      [imgFile.path],
+    await Share.shareXFiles(
+      [XFile(imgFile.path, mimeType: 'image/png')],
       text: shareText,
-      mimeTypes: ['image/png'],
     );
 
     if (Platform.isIOS) {
