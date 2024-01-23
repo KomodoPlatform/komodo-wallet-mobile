@@ -49,6 +49,9 @@ class SwapHistoryBloc implements BlocBase {
         case 'MakerPaymentSpent':
           status = Status.SWAP_SUCCESSFUL;
           break;
+        case 'MakerPaymentSpentByWatcher':
+          status = Status.SWAP_SUCCESSFUL;
+          break;
         case 'TakerPaymentSpent':
           status = Status.SWAP_SUCCESSFUL;
           break;

@@ -69,8 +69,8 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         if (index + 1 > swap.result.successEvents.length) {
           return SwapStepStatus.failed;
         }
-        if (swap.result.events[index].event.type ==
-            swap.result.successEvents[index]) {
+        if (swap.result.successEvents
+            .any((String e) => e == swap.result.events[index].event.type)) {
           return SwapStepStatus.success;
         } else {
           return SwapStepStatus.failed;
